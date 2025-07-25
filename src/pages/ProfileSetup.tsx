@@ -42,8 +42,11 @@ const ProfileSetup = () => {
 
   // Redirect if profile already exists
   if (userProfile) {
+    console.log("Profile exists, redirecting to dashboard:", userProfile);
     return <Navigate to="/" replace />;
   }
+
+  console.log("ProfileSetup - User:", user?.id, "Profile:", userProfile);
 
   const handleInputChange = (field: string, value: any) => {
     setProfileData(prev => ({ ...prev, [field]: value }));
@@ -115,8 +118,12 @@ const ProfileSetup = () => {
         description: "Your profile has been successfully created.",
       });
 
+      console.log("Profile created successfully, refreshing profile...");
+      
       // Refresh profile and navigate to dashboard
       await refreshProfile();
+      
+      console.log("Profile refreshed, navigating to dashboard...");
       navigate('/');
 
     } catch (error: any) {
