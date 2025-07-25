@@ -1005,7 +1005,7 @@ export const AdminChallengeManagement = () => {
                         <SelectValue placeholder="Select sector" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">No sector selected</SelectItem>
+                        
                         {sectors.map((sector) => (
                           <SelectItem key={sector.id} value={sector.id}>
                             {sector.name}
@@ -1022,7 +1022,7 @@ export const AdminChallengeManagement = () => {
                         <SelectValue placeholder="Select department" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">No department selected</SelectItem>
+                        
                         {departments.map((dept) => (
                           <SelectItem key={dept.id} value={dept.id}>
                             {dept.name}
@@ -1041,7 +1041,7 @@ export const AdminChallengeManagement = () => {
                         <SelectValue placeholder="Select domain" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">No domain selected</SelectItem>
+                        
                         {domains.map((domain) => (
                           <SelectItem key={domain.id} value={domain.id}>
                             {domain.name}
@@ -1058,7 +1058,7 @@ export const AdminChallengeManagement = () => {
                         <SelectValue placeholder="Select sub-domain" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">No sub-domain selected</SelectItem>
+                        
                         {subDomains.map((subDomain) => (
                           <SelectItem key={subDomain.id} value={subDomain.id}>
                             {subDomain.name}
@@ -1076,7 +1076,7 @@ export const AdminChallengeManagement = () => {
                       <SelectValue placeholder="Select service" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">No service selected</SelectItem>
+                      
                       {services.map((service) => (
                         <SelectItem key={service.id} value={service.id}>
                           {service.name}
@@ -1108,7 +1108,7 @@ export const AdminChallengeManagement = () => {
                             <SelectValue placeholder="Select primary expert" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="">No expert assigned</SelectItem>
+                            
                             {experts.map((expert) => (
                               <SelectItem key={expert.id} value={expert.id}>
                                 <div className="flex items-center gap-2">
@@ -1134,7 +1134,7 @@ export const AdminChallengeManagement = () => {
                             <SelectValue placeholder="Select primary partner" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="">No partner selected</SelectItem>
+                            
                             {partners.map((partner) => (
                               <SelectItem key={partner.id} value={partner.id}>
                                 <div className="flex items-center gap-2">
