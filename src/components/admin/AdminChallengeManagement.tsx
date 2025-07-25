@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { 
   Plus, 
@@ -738,26 +739,36 @@ export const AdminChallengeManagement = () => {
                         />
                       </div>
                       
-                      <div className="space-y-2">
-                        <Label htmlFor="question_type">Question Type</Label>
-                        <Select 
-                          value={questionFormData.question_type} 
-                          onValueChange={(value) => setQuestionFormData({...questionFormData, question_type: value})}
-                        >
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="general">General</SelectItem>
-                            <SelectItem value="problem_identification">Problem Identification</SelectItem>
-                            <SelectItem value="solution_approach">Solution Approach</SelectItem>
-                            <SelectItem value="implementation">Implementation</SelectItem>
-                            <SelectItem value="impact_assessment">Impact Assessment</SelectItem>
-                            <SelectItem value="sustainability">Sustainability</SelectItem>
-                            <SelectItem value="accessibility">Accessibility</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="question_type">Question Type</Label>
+                          <Select 
+                            value={questionFormData.question_type} 
+                            onValueChange={(value) => setQuestionFormData({...questionFormData, question_type: value})}
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="general">General</SelectItem>
+                              <SelectItem value="technical">Technical</SelectItem>
+                              <SelectItem value="business">Business</SelectItem>
+                              <SelectItem value="impact">Impact</SelectItem>
+                              <SelectItem value="implementation">Implementation</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            id="is_sensitive_tab"
+                            checked={questionFormData.is_sensitive}
+                            onCheckedChange={(checked) => setQuestionFormData({...questionFormData, is_sensitive: checked})}
+                          />
+                          <Label htmlFor="is_sensitive_tab" className="flex items-center gap-2">
+                            <AlertTriangle className="h-4 w-4" />
+                            Sensitive Question
+                          </Label>
+                        </div>
                       
                       <div className="flex justify-end gap-2">
                         <Button variant="outline" onClick={() => setIsQuestionDialogOpen(false)}>

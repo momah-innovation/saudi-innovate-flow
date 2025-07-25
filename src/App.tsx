@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import ProfileSetup from "./pages/ProfileSetup";
 import ChallengeDetails from "./pages/ChallengeDetails";
+import FocusQuestionsManagement from "./pages/FocusQuestionsManagement";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,14 @@ const App = () => (
               element={
                 <ProtectedRoute requireProfile>
                   <ChallengeDetails />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/focus-questions" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <FocusQuestionsManagement />
                 </ProtectedRoute>
               } 
             />
