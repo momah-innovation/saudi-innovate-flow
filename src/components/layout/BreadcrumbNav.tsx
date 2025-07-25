@@ -28,6 +28,7 @@ export const BreadcrumbNav = ({ activeTab }: BreadcrumbNavProps) => {
       trends: "Trends & Insights",
       reports: "Reports",
       "system-analytics": "System Analytics",
+      "challenge-management": "Challenge Management",
       organization: "Organization",
       "user-management": "User Management",
       settings: "Settings",
@@ -46,7 +47,7 @@ export const BreadcrumbNav = ({ activeTab }: BreadcrumbNavProps) => {
     if (["analytics", "trends", "reports", "system-analytics"].includes(tab)) {
       return "Analytics";
     }
-    if (["organization", "user-management"].includes(tab)) {
+    if (["challenge-management", "organization", "user-management"].includes(tab)) {
       return "Administration";
     }
     return null;

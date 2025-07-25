@@ -4,6 +4,7 @@ import { AppSidebar } from "@/components/layout/Sidebar";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
 import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
 import { InnovatorDashboard } from "@/components/dashboard/InnovatorDashboard";
+import { AdminChallengeManagement } from "@/components/admin/AdminChallengeManagement";
 import { ChallengeList } from "@/components/challenges/ChallengeList";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
@@ -109,6 +110,8 @@ const Index = () => {
             <p className="text-muted-foreground">User management interface will be implemented here.</p>
           </div>
         );
+      case "challenge-management":
+        return <AdminChallengeManagement />;
       case "settings":
         return (
           <div className="p-6">

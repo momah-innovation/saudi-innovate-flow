@@ -70,6 +70,7 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     ];
 
     const adminItems = [
+      { id: "challenge-management", label: "Challenge Management", icon: Target, badge: null, roles: ["admin"] },
       { id: "organization", label: "Organization", icon: Briefcase, badge: null, roles: ["admin"] },
       { id: "user-management", label: "User Management", icon: Shield, badge: null, roles: ["admin"] },
       { id: "system-analytics", label: "System Analytics", icon: BarChart3, badge: null, roles: ["admin"] },
