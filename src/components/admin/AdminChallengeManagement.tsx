@@ -112,6 +112,7 @@ export const AdminChallengeManagement = () => {
   const [domains, setDomains] = useState<any[]>([]);
   const [subDomains, setSubDomains] = useState<any[]>([]);
   const [services, setServices] = useState<any[]>([]);
+  const [deputies, setDeputies] = useState<any[]>([]);
   const [selectedExperts, setSelectedExperts] = useState<string[]>([]);
   const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
   const [isTeamMember, setIsTeamMember] = useState(false);
@@ -145,6 +146,7 @@ export const AdminChallengeManagement = () => {
     internal_team_notes: "",
     collaboration_details: "",
     sector_id: "",
+    deputy_id: "",
     department_id: "",
     domain_id: "",
     sub_domain_id: "",
@@ -267,28 +269,33 @@ export const AdminChallengeManagement = () => {
 
   const fetchOrganizationalStructure = async () => {
     try {
-      const [deptData, domainData, subDomainData, serviceData] = await Promise.all([
+      const [deptData, domainData, subDomainData, serviceData, deputyData] = await Promise.all([
         supabase.from('departments').select('*').order('name'),
         supabase.from('domains').select('*').order('name'), 
         supabase.from('sub_domains').select('*').order('name'),
-        supabase.from('services').select('*').order('name')
+        supabase.from('services').select('*').order('name'),
+        supabase.from('deputies').select('*').order('name')
       ]);
 
       setDepartments(deptData.data || []);
       setDomains(domainData.data || []);
       setSubDomains(subDomainData.data || []);
       setServices(serviceData.data || []);
+      setDeputies(deputyData.data || []);
     } catch (error) {
       console.error('Error fetching organizational structure:', error);
     }
   };
 
   // Filter functions for cascading dropdowns
+  const getFilteredDeputies = () => {
+    if (!formData.sector_id) return [];
+    return deputies.filter(deputy => deputy.sector_id === formData.sector_id);
+  };
+
   const getFilteredDepartments = () => {
-    if (!formData.sector_id) return departments;
-    // For now, return all departments since we don't have sector-department relationship
-    // You can modify this when the relationship is established in DB
-    return departments;
+    if (!formData.deputy_id) return [];
+    return departments.filter(dept => dept.deputy_id === formData.deputy_id);
   };
 
   const getFilteredDomains = () => {
@@ -311,6 +318,18 @@ export const AdminChallengeManagement = () => {
     setFormData({
       ...formData,
       sector_id: value,
+      deputy_id: "",
+      department_id: "",
+      domain_id: "",
+      sub_domain_id: "",
+      service_id: ""
+    });
+  };
+
+  const handleDeputyChange = (value: string) => {
+    setFormData({
+      ...formData,
+      deputy_id: value,
       department_id: "",
       domain_id: "",
       sub_domain_id: "",
@@ -517,6 +536,7 @@ export const AdminChallengeManagement = () => {
       internal_team_notes: "",
       collaboration_details: "",
       sector_id: "",
+      deputy_id: "",
       department_id: "",
       domain_id: "",
       sub_domain_id: "",
@@ -778,6 +798,7 @@ export const AdminChallengeManagement = () => {
       internal_team_notes: (challenge as any).internal_team_notes || "",
       collaboration_details: (challenge as any).collaboration_details || "",
       sector_id: (challenge as any).sector_id || "",
+      deputy_id: (challenge as any).deputy_id || "",
       department_id: (challenge as any).department_id || "",
       domain_id: (challenge as any).domain_id || "",
       sub_domain_id: (challenge as any).sub_domain_id || "",
@@ -1077,14 +1098,36 @@ export const AdminChallengeManagement = () => {
                   </div>
                   
                   <div className="space-y-2">
+                    <Label htmlFor="deputy">Deputyship</Label>
+                    <Select 
+                      value={formData.deputy_id} 
+                      onValueChange={handleDeputyChange}
+                      disabled={!formData.sector_id}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={formData.sector_id ? "Select deputyship" : "Select sector first"} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {getFilteredDeputies().map((deputy) => (
+                          <SelectItem key={deputy.id} value={deputy.id}>
+                            {deputy.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
                     <Label htmlFor="department">Department</Label>
                     <Select 
                       value={formData.department_id} 
                       onValueChange={handleDepartmentChange}
-                      disabled={!formData.sector_id}
+                      disabled={!formData.deputy_id}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder={formData.sector_id ? "Select department" : "Select sector first"} />
+                        <SelectValue placeholder={formData.deputy_id ? "Select department" : "Select deputyship first"} />
                       </SelectTrigger>
                       <SelectContent>
                         {getFilteredDepartments().map((dept) => (
@@ -1095,9 +1138,7 @@ export const AdminChallengeManagement = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                </div>
-                
-                <div className="grid gap-4 md:grid-cols-2">
+                  
                   <div className="space-y-2">
                     <Label htmlFor="domain">Domain</Label>
                     <Select 
@@ -1117,7 +1158,9 @@ export const AdminChallengeManagement = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  
+                </div>
+                
+                <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="sub_domain">Sub-Domain</Label>
                     <Select 
@@ -1137,26 +1180,26 @@ export const AdminChallengeManagement = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="service">Service</Label>
-                  <Select 
-                    value={formData.service_id} 
-                    onValueChange={(value) => setFormData({...formData, service_id: value})}
-                    disabled={!formData.sub_domain_id}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder={formData.sub_domain_id ? "Select service" : "Select sub-domain first"} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {getFilteredServices().map((service) => (
-                        <SelectItem key={service.id} value={service.id}>
-                          {service.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="service">Service</Label>
+                    <Select 
+                      value={formData.service_id} 
+                      onValueChange={(value) => setFormData({...formData, service_id: value})}
+                      disabled={!formData.sub_domain_id}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={formData.sub_domain_id ? "Select service" : "Select sub-domain first"} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {getFilteredServices().map((service) => (
+                          <SelectItem key={service.id} value={service.id}>
+                            {service.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
 
