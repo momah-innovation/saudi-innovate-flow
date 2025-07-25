@@ -176,6 +176,45 @@ export type Database = {
           },
         ]
       }
+      challenge_requirements: {
+        Row: {
+          challenge_id: string
+          created_at: string
+          description: string | null
+          id: string
+          is_mandatory: boolean | null
+          order_sequence: number | null
+          requirement_type: string
+          title: string
+          updated_at: string
+          weight_percentage: number | null
+        }
+        Insert: {
+          challenge_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_mandatory?: boolean | null
+          order_sequence?: number | null
+          requirement_type: string
+          title: string
+          updated_at?: string
+          weight_percentage?: number | null
+        }
+        Update: {
+          challenge_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_mandatory?: boolean | null
+          order_sequence?: number | null
+          requirement_type?: string
+          title?: string
+          updated_at?: string
+          weight_percentage?: number | null
+        }
+        Relationships: []
+      }
       challenge_scorecards: {
         Row: {
           challenge_id: string | null

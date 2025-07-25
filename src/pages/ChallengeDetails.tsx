@@ -25,9 +25,14 @@ import {
   Save,
   X,
   Eye,
-  EyeOff
+  EyeOff,
+  UserPlus,
+  Plus,
+  Trash2
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ExpertAssignmentDialog } from "@/components/challenges/ExpertAssignmentDialog";
+import { FocusQuestionDialog } from "@/components/challenges/FocusQuestionDialog";
 
 interface Challenge {
   id: string;
@@ -106,6 +111,11 @@ const ChallengeDetails = () => {
   const [editMode, setEditMode] = useState<{[key: string]: boolean}>({});
   const [editValues, setEditValues] = useState<{[key: string]: any}>({});
   const [saving, setSaving] = useState(false);
+  
+  // Dialog states
+  const [expertDialogOpen, setExpertDialogOpen] = useState(false);
+  const [questionDialogOpen, setQuestionDialogOpen] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState<FocusQuestion | undefined>();
   
   // Check if user can edit
   const canEdit = hasRole('admin') || hasRole('super_admin');
@@ -755,9 +765,9 @@ const ChallengeDetails = () => {
                   <CardTitle className="flex items-center justify-between">
                     <span>Assigned Experts</span>
                     {canEdit && (
-                      <Button onClick={() => navigate(`/admin/expert-assignments`)}>
-                        <Users className="h-4 w-4 mr-2" />
-                        Manage Assignments
+                      <Button onClick={() => setExpertDialogOpen(true)}>
+                        <UserPlus className="h-4 w-4 mr-2" />
+                        Add Expert
                       </Button>
                     )}
                   </CardTitle>
@@ -767,9 +777,18 @@ const ChallengeDetails = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {assignedExperts.length === 0 ? (
-                    <p className="text-muted-foreground text-center py-8">
-                      No experts have been assigned to this challenge yet.
-                    </p>
+                    <div className="text-center py-8">
+                      <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                      <p className="text-muted-foreground mb-4">
+                        No experts have been assigned to this challenge yet.
+                      </p>
+                      {canEdit && (
+                        <Button onClick={() => setExpertDialogOpen(true)}>
+                          <UserPlus className="h-4 w-4 mr-2" />
+                          Assign First Expert
+                        </Button>
+                      )}
+                    </div>
                   ) : (
                     assignedExperts.map((assignment) => (
                       <div key={assignment.id} className="space-y-3 p-4 border rounded-lg">
@@ -814,7 +833,7 @@ const ChallengeDetails = () => {
                               variant="destructive"
                               onClick={() => removeExpert(assignment.id)}
                             >
-                              <X className="h-4 w-4" />
+                              <Trash2 className="h-4 w-4" />
                             </Button>
                           )}
                         </div>
@@ -862,16 +881,39 @@ const ChallengeDetails = () => {
             <TabsContent value="questions" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Focus Questions</CardTitle>
+                  <CardTitle className="flex items-center justify-between">
+                    <span>Focus Questions</span>
+                    {canEdit && (
+                      <Button onClick={() => {
+                        setSelectedQuestion(undefined);
+                        setQuestionDialogOpen(true);
+                      }}>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Question
+                      </Button>
+                    )}
+                  </CardTitle>
                   <CardDescription>
                     Key questions to guide your solution development
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {focusQuestions.length === 0 ? (
-                    <p className="text-muted-foreground text-center py-8">
-                      No focus questions have been added to this challenge yet.
-                    </p>
+                    <div className="text-center py-8">
+                      <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                      <p className="text-muted-foreground mb-4">
+                        No focus questions have been added to this challenge yet.
+                      </p>
+                      {canEdit && (
+                        <Button onClick={() => {
+                          setSelectedQuestion(undefined);
+                          setQuestionDialogOpen(true);
+                        }}>
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add First Question
+                        </Button>
+                      )}
+                    </div>
                   ) : (
                     focusQuestions.map((question, index) => (
                       <div key={question.id} className="space-y-2">
@@ -881,11 +923,24 @@ const ChallengeDetails = () => {
                           </Badge>
                           <div className="flex-1 space-y-1">
                             <div className="flex items-start justify-between">
-                              <div className="flex-1">
+                              <div 
+                                className="flex-1 cursor-pointer hover:bg-muted/30 p-2 rounded-md transition-colors"
+                                onClick={() => {
+                                  if (canEdit) {
+                                    setSelectedQuestion(question);
+                                    setQuestionDialogOpen(true);
+                                  }
+                                }}
+                              >
                                 <p className="font-medium">{question.question_text}</p>
                                 {question.question_text_ar && (
                                   <p className="text-sm text-muted-foreground" dir="rtl">
                                     {question.question_text_ar}
+                                  </p>
+                                )}
+                                {canEdit && (
+                                  <p className="text-xs text-muted-foreground mt-1">
+                                    Click to edit
                                   </p>
                                 )}
                               </div>
@@ -898,6 +953,19 @@ const ChallengeDetails = () => {
                                     <EyeOff className="h-3 w-3 mr-1" />
                                     Sensitive
                                   </Badge>
+                                )}
+                                {canEdit && (
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setSelectedQuestion(question);
+                                      setQuestionDialogOpen(true);
+                                    }}
+                                  >
+                                    <Edit className="h-3 w-3" />
+                                  </Button>
                                 )}
                               </div>
                             </div>
@@ -1187,6 +1255,26 @@ const ChallengeDetails = () => {
           </Card>
         </div>
       </div>
+
+      {/* Dialogs */}
+      <ExpertAssignmentDialog
+        open={expertDialogOpen}
+        onOpenChange={setExpertDialogOpen}
+        challengeId={challengeId!}
+        onAssignmentComplete={() => {
+          fetchAssignedExperts();
+        }}
+      />
+
+      <FocusQuestionDialog
+        open={questionDialogOpen}
+        onOpenChange={setQuestionDialogOpen}
+        challengeId={challengeId!}
+        question={selectedQuestion}
+        onQuestionSaved={() => {
+          fetchFocusQuestions();
+        }}
+      />
     </div>
   );
 };
