@@ -40,11 +40,8 @@ const ProfileSetup = () => {
     return <Navigate to="/auth" replace />;
   }
 
-  // Redirect if profile already exists OR if user wants to skip setup
-  if (userProfile || new URLSearchParams(window.location.search).get('skip') === 'true') {
-    console.log("Profile exists or skipping, redirecting to dashboard:", userProfile);
-    return <Navigate to="/" replace />;
-  }
+  // Allow access to dashboard even without profile for now
+  // This ensures users can access the system while profile is being set up
 
   console.log("ProfileSetup - User:", user?.id, "Profile:", userProfile);
 

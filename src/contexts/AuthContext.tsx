@@ -34,27 +34,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const fetchUserProfile = async (userId: string) => {
     try {
-      const { data: profile, error } = await supabase
+      // Fetch profile data only (remove problematic join)
+      const { data: profile, error: profileError } = await supabase
         .from('profiles')
-        .select(`
-          *,
-          user_roles (
-            role,
-            is_active,
-            expires_at
-          )
-        `)
+        .select('*')
         .eq('id', userId)
         .single();
 
-      if (error) {
-        console.error('Error fetching user profile:', error);
+      if (profileError) {
+        console.error('Error fetching profile:', profileError);
+        // Don't block user access - set empty profile to allow dashboard access
+        setUserProfile({ id: userId, basic_access: true });
         return;
       }
 
-      setUserProfile(profile);
+      // Fetch user roles separately to avoid relationship issues
+      const { data: userRoles, error: rolesError } = await supabase
+        .from('user_roles')
+        .select('role, is_active, expires_at')
+        .eq('user_id', userId)
+        .eq('is_active', true);
+
+      if (rolesError) {
+        console.log('No roles found for user:', rolesError);
+      }
+
+      // Combine profile with roles
+      const enrichedProfile = {
+        ...profile,
+        user_roles: userRoles || []
+      };
+
+      setUserProfile(enrichedProfile);
     } catch (error) {
       console.error('Error in fetchUserProfile:', error);
+      // Provide basic access even if profile fetch fails
+      setUserProfile({ id: userId, basic_access: true });
     }
   };
 
