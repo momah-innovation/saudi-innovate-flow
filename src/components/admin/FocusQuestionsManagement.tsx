@@ -100,7 +100,7 @@ export const FocusQuestionsManagement = () => {
         .from('focus_questions')
         .select(`
           *,
-          challenges(title, status)
+          challenges!challenge_id(title, status)
         `)
         .order('created_at', { ascending: false });
 
