@@ -231,10 +231,18 @@ const ChallengeDetails = () => {
 
       if (error) throw error;
 
+      // Immediately update the local state to reflect the change
+      setAssignedExperts(prevExperts => 
+        prevExperts.filter(expert => expert.id !== expertAssignmentId)
+      );
+
       toast({
         title: "Success",
         description: "Expert removed from challenge",
       });
+
+      // Also refetch to ensure data consistency
+      fetchAssignedExperts();
     } catch (error) {
       console.error('Error removing expert:', error);
       toast({
