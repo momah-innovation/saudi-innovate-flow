@@ -59,10 +59,10 @@ const ProfileSetup = () => {
     setIsSubmitting(true);
 
     try {
-      // Create profile
+      // Create or update profile
       const { error: profileError } = await supabase
         .from('profiles')
-        .insert({
+        .upsert({
           id: user.id,
           email: user.email!,
           name: profileData.name,
