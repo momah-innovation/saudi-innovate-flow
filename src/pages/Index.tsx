@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
@@ -11,7 +12,16 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 // Force cache refresh
 
 const Index = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("dashboard");
+
+  const handleTabChange = (tab: string) => {
+    if (tab === "focus-questions") {
+      navigate("/admin/focus-questions");
+      return;
+    }
+    setActiveTab(tab);
+  };
 
   // Listen for navigation events from other pages
   useEffect(() => {
@@ -140,7 +150,7 @@ const Index = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        <AppSidebar activeTab={activeTab} onTabChange={setActiveTab} />
+        <AppSidebar activeTab={activeTab} onTabChange={handleTabChange} />
         
         <div className="flex-1 flex flex-col">
           <Header />
