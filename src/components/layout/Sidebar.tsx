@@ -72,8 +72,10 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     const adminItems = [
       { id: "challenge-management", label: "Challenge Management", icon: Target, badge: null, roles: ["admin"] },
       { id: "focus-questions", label: "Focus Questions", icon: FileText, badge: null, roles: ["admin"] },
-      { id: "organization", label: "Organization", icon: Briefcase, badge: null, roles: ["admin"] },
-      { id: "user-management", label: "User Management", icon: Shield, badge: null, roles: ["admin"] },
+      { id: "partners", label: "Partners", icon: Briefcase, badge: null, roles: ["admin"] },
+      { id: "sectors", label: "Sectors", icon: Shield, badge: null, roles: ["admin"] },
+      { id: "organizational-structure", label: "Organizational Structure", icon: Users, badge: null, roles: ["admin"] },
+      { id: "user-management", label: "User Management", icon: UserCheck, badge: null, roles: ["admin"] },
       { id: "system-analytics", label: "System Analytics", icon: BarChart3, badge: null, roles: ["admin"] },
     ];
 
@@ -115,7 +117,7 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     ["analytics", "trends", "reports", "system-analytics"].includes(item.id)
   );
   const adminItems = menuItems.filter(item => 
-    ["challenge-management", "focus-questions", "organization", "user-management"].includes(item.id)
+    ["challenge-management", "focus-questions", "partners", "sectors", "organizational-structure", "user-management"].includes(item.id)
   );
   const settingsItems = menuItems.filter(item => item.id === "settings");
 

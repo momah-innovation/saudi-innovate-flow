@@ -20,6 +20,18 @@ const Index = () => {
       navigate("/admin/focus-questions");
       return;
     }
+    if (tab === "partners") {
+      navigate("/admin/partners");
+      return;
+    }
+    if (tab === "sectors") {
+      navigate("/admin/sectors");
+      return;
+    }
+    if (tab === "organizational-structure") {
+      navigate("/admin/organizational-structure");
+      return;
+    }
     setActiveTab(tab);
   };
 

@@ -10,6 +10,9 @@ import Auth from "./pages/Auth";
 import ProfileSetup from "./pages/ProfileSetup";
 import ChallengeDetails from "./pages/ChallengeDetails";
 import FocusQuestionsManagement from "./pages/FocusQuestionsManagement";
+import PartnersManagement from "./pages/PartnersManagement";
+import SectorsManagement from "./pages/SectorsManagement";
+import OrganizationalStructure from "./pages/OrganizationalStructure";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +47,30 @@ const App = () => (
               element={
                 <ProtectedRoute requireProfile>
                   <FocusQuestionsManagement />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/partners" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <PartnersManagement />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/sectors" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <SectorsManagement />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/organizational-structure" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <OrganizationalStructure />
                 </ProtectedRoute>
               } 
             />
