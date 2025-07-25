@@ -15,8 +15,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 }) => {
   const { user, loading, hasRole, userProfile } = useAuth();
 
-  // Show loading spinner while checking auth state
-  if (loading) {
+  // Show loading spinner while checking auth state OR while profile is loading
+  if (loading || (user && requireProfile && userProfile === null)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center space-y-4">
@@ -32,8 +32,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to="/auth" replace />;
   }
 
-  // Check if profile is required but not found
-  if (requireProfile && !userProfile) {
+  // Check if profile is required but not found (only after userProfile has been attempted to load)
+  if (requireProfile && userProfile !== null && !userProfile.id) {
     return <Navigate to="/profile/setup" replace />;
   }
 
