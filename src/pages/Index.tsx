@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
@@ -12,6 +12,19 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+
+  // Listen for navigation events from other pages
+  useEffect(() => {
+    const handleNavigateToTab = (event: CustomEvent) => {
+      setActiveTab(event.detail.tab);
+    };
+
+    window.addEventListener('navigate-to-tab', handleNavigateToTab as EventListener);
+    
+    return () => {
+      window.removeEventListener('navigate-to-tab', handleNavigateToTab as EventListener);
+    };
+  }, []);
 
   const renderContent = () => {
     switch (activeTab) {
