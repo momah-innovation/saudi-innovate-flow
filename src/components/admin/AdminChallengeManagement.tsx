@@ -312,6 +312,68 @@ export const AdminChallengeManagement = () => {
     }).format(budget);
   };
 
+  const handleEditChallenge = (challenge: Challenge) => {
+    // Populate form with challenge data for editing
+    setFormData({
+      title: challenge.title,
+      title_ar: challenge.title_ar || "",
+      description: challenge.description,
+      description_ar: challenge.description_ar || "",
+      status: challenge.status,
+      priority_level: challenge.priority_level,
+      sensitivity_level: challenge.sensitivity_level,
+      challenge_type: challenge.challenge_type || "",
+      start_date: challenge.start_date || "",
+      end_date: challenge.end_date || "",
+      estimated_budget: challenge.estimated_budget?.toString() || "",
+      kpi_alignment: challenge.kpi_alignment || "",
+      vision_2030_goal: challenge.vision_2030_goal || ""
+    });
+    setIsCreateDialogOpen(true);
+  };
+
+  const handleChallengeSettings = (challengeId: string) => {
+    toast({
+      title: "Challenge Settings",
+      description: "Settings panel will be available in the next update.",
+    });
+  };
+
+  const handleDeleteQuestion = async (questionId: string) => {
+    try {
+      const { error } = await supabase
+        .from('focus_questions')
+        .delete()
+        .eq('id', questionId);
+
+      if (error) {
+        console.error('Error deleting focus question:', error);
+        toast({
+          title: "Error",
+          description: "Failed to delete focus question. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Question Deleted",
+        description: "Focus question has been successfully deleted.",
+      });
+
+      if (selectedChallenge) {
+        fetchFocusQuestions(selectedChallenge);
+      }
+    } catch (error) {
+      console.error('Error deleting focus question:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete focus question. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
@@ -585,15 +647,27 @@ export const AdminChallengeManagement = () => {
                         <FileText className="h-4 w-4 mr-2" />
                         Manage Questions
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => navigate(`/challenges/${challenge.id}`)}
+                      >
                         <Eye className="h-4 w-4 mr-2" />
                         Preview
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleEditChallenge(challenge)}
+                      >
                         <Edit className="h-4 w-4 mr-2" />
                         Edit
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleChallengeSettings(challenge.id)}
+                      >
                         <Settings className="h-4 w-4 mr-2" />
                         Settings
                       </Button>
@@ -711,10 +785,24 @@ export const AdminChallengeManagement = () => {
                           )}
                         </div>
                         <div className="flex gap-1 ml-4">
-                          <Button variant="outline" size="sm">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => {
+                              // Edit functionality - could open a dialog
+                              toast({
+                                title: "Edit Question",
+                                description: "Edit functionality will be available in the next update.",
+                              });
+                            }}
+                          >
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="outline" size="sm">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => handleDeleteQuestion(question.id)}
+                          >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
