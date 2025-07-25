@@ -32,6 +32,10 @@ const Index = () => {
       navigate("/admin/organizational-structure");
       return;
     }
+    if (tab === "expert-assignments") {
+      navigate("/admin/expert-assignments");
+      return;
+    }
     setActiveTab(tab);
   };
 
