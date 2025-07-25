@@ -3,6 +3,7 @@ import { Header } from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
 import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
+import { InnovatorDashboard } from "@/components/dashboard/InnovatorDashboard";
 import { ChallengeList } from "@/components/challenges/ChallengeList";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
@@ -16,7 +17,7 @@ const Index = () => {
       case "dashboard":
         return <DashboardOverview />;
       case "challenges":
-        return <ChallengeList />;
+        return <InnovatorDashboard />;
       case "ideas":
         return (
           <div className="p-6">
