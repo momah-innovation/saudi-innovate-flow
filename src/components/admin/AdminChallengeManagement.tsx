@@ -107,6 +107,11 @@ export const AdminChallengeManagement = () => {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [challengeExperts, setChallengeExperts] = useState<ChallengeExpert[]>([]);
   const [challengePartners, setChallengePartners] = useState<ChallengePartner[]>([]);
+  const [sectors, setSectors] = useState<any[]>([]);
+  const [departments, setDepartments] = useState<any[]>([]);
+  const [domains, setDomains] = useState<any[]>([]);
+  const [subDomains, setSubDomains] = useState<any[]>([]);
+  const [services, setServices] = useState<any[]>([]);
   const [isTeamMember, setIsTeamMember] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("challenges");
@@ -136,7 +141,12 @@ export const AdminChallengeManagement = () => {
     assigned_expert_id: "",
     partner_organization_id: "",
     internal_team_notes: "",
-    collaboration_details: ""
+    collaboration_details: "",
+    sector_id: "",
+    department_id: "",
+    domain_id: "",
+    sub_domain_id: "",
+    service_id: ""
   });
   
   // Filtering states
@@ -160,6 +170,8 @@ export const AdminChallengeManagement = () => {
     fetchChallenges();
     fetchExperts();
     fetchPartners();
+    fetchSectors();
+    fetchOrganizationalStructure();
     if (selectedChallenge) {
       fetchFocusQuestions(selectedChallenge);
       fetchChallengeExperts(selectedChallenge);
@@ -230,6 +242,42 @@ export const AdminChallengeManagement = () => {
       setPartners(data || []);
     } catch (error) {
       console.error('Error fetching partners:', error);
+    }
+  };
+
+  const fetchSectors = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('sectors')
+        .select('*')
+        .order('name');
+
+      if (error) {
+        console.error('Error fetching sectors:', error);
+        return;
+      }
+
+      setSectors(data || []);
+    } catch (error) {
+      console.error('Error fetching sectors:', error);
+    }
+  };
+
+  const fetchOrganizationalStructure = async () => {
+    try {
+      const [deptData, domainData, subDomainData, serviceData] = await Promise.all([
+        supabase.from('departments').select('*').order('name'),
+        supabase.from('domains').select('*').order('name'), 
+        supabase.from('sub_domains').select('*').order('name'),
+        supabase.from('services').select('*').order('name')
+      ]);
+
+      setDepartments(deptData.data || []);
+      setDomains(domainData.data || []);
+      setSubDomains(subDomainData.data || []);
+      setServices(serviceData.data || []);
+    } catch (error) {
+      console.error('Error fetching organizational structure:', error);
     }
   };
 
@@ -403,7 +451,12 @@ export const AdminChallengeManagement = () => {
       assigned_expert_id: "",
       partner_organization_id: "",
       internal_team_notes: "",
-      collaboration_details: ""
+      collaboration_details: "",
+      sector_id: "",
+      department_id: "",
+      domain_id: "",
+      sub_domain_id: "",
+      service_id: ""
     });
   };
 
@@ -657,7 +710,12 @@ export const AdminChallengeManagement = () => {
       assigned_expert_id: (challenge as any).assigned_expert_id || "",
       partner_organization_id: (challenge as any).partner_organization_id || "",
       internal_team_notes: (challenge as any).internal_team_notes || "",
-      collaboration_details: (challenge as any).collaboration_details || ""
+      collaboration_details: (challenge as any).collaboration_details || "",
+      sector_id: (challenge as any).sector_id || "",
+      department_id: (challenge as any).department_id || "",
+      domain_id: (challenge as any).domain_id || "",
+      sub_domain_id: (challenge as any).sub_domain_id || "",
+      service_id: (challenge as any).service_id || ""
     });
     setIsCreateDialogOpen(true);
   };
@@ -925,6 +983,104 @@ export const AdminChallengeManagement = () => {
                   placeholder="Define measurable success criteria and KPIs"
                   rows={2}
                 />
+              </div>
+
+              {/* Organizational Linking */}
+              <Separator className="my-6" />
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                  <Building2 className="h-4 w-4" />
+                  Organizational Structure
+                </div>
+                
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="sector">Sector</Label>
+                    <Select value={formData.sector_id} onValueChange={(value) => setFormData({...formData, sector_id: value})}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select sector" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">No sector selected</SelectItem>
+                        {sectors.map((sector) => (
+                          <SelectItem key={sector.id} value={sector.id}>
+                            {sector.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="department">Department</Label>
+                    <Select value={formData.department_id} onValueChange={(value) => setFormData({...formData, department_id: value})}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select department" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">No department selected</SelectItem>
+                        {departments.map((dept) => (
+                          <SelectItem key={dept.id} value={dept.id}>
+                            {dept.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="domain">Domain</Label>
+                    <Select value={formData.domain_id} onValueChange={(value) => setFormData({...formData, domain_id: value})}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select domain" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">No domain selected</SelectItem>
+                        {domains.map((domain) => (
+                          <SelectItem key={domain.id} value={domain.id}>
+                            {domain.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="sub_domain">Sub-Domain</Label>
+                    <Select value={formData.sub_domain_id} onValueChange={(value) => setFormData({...formData, sub_domain_id: value})}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select sub-domain" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">No sub-domain selected</SelectItem>
+                        {subDomains.map((subDomain) => (
+                          <SelectItem key={subDomain.id} value={subDomain.id}>
+                            {subDomain.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="service">Service</Label>
+                  <Select value={formData.service_id} onValueChange={(value) => setFormData({...formData, service_id: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select service" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">No service selected</SelectItem>
+                      {services.map((service) => (
+                        <SelectItem key={service.id} value={service.id}>
+                          {service.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
               {/* Team-only fields - only visible to team members */}
