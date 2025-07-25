@@ -48,6 +48,7 @@ interface FocusQuestion {
   created_at: string;
   challenges?: {
     title: string;
+    title_ar?: string;
     status: string;
   };
 }
@@ -100,7 +101,7 @@ export const FocusQuestionsManagement = () => {
         .from('focus_questions')
         .select(`
           *,
-          challenges!challenge_id(title, status)
+          challenges!challenge_id(title, title_ar, status)
         `)
         .order('created_at', { ascending: false });
 
@@ -615,6 +616,11 @@ export const FocusQuestionsManagement = () => {
                       
                       <div className="text-sm text-muted-foreground">
                         Challenge: {question.challenges?.title || "No challenge linked"}
+                        {question.challenges?.title_ar && (
+                          <div className="text-xs" dir="rtl">
+                            التحدي: {question.challenges.title_ar}
+                          </div>
+                        )}
                       </div>
                     </div>
                     
