@@ -88,7 +88,6 @@ export const AdminChallengeManagement = () => {
     vision_2030_goal: ""
   });
   
-  
   // Filtering states
   const [challengeFilter, setChallengeFilter] = useState('');
   const [challengeStatusFilter, setChallengeStatusFilter] = useState('all');
@@ -179,6 +178,44 @@ export const AdminChallengeManagement = () => {
     }
   };
 
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      title_ar: "",
+      description: "",
+      description_ar: "",
+      status: "draft",
+      priority_level: "medium",
+      sensitivity_level: "normal",
+      challenge_type: "",
+      start_date: "",
+      end_date: "",
+      estimated_budget: "",
+      kpi_alignment: "",
+      vision_2030_goal: ""
+    });
+  };
+
+  const resetQuestionForm = () => {
+    setQuestionFormData({
+      question_text: "",
+      question_text_ar: "",
+      question_type: "general",
+      is_sensitive: false,
+      order_sequence: 1
+    });
+  };
+
+  const handleOpenAddQuestion = () => {
+    resetQuestionForm();
+    setIsQuestionDialogOpen(true);
+  };
+
+  const handleCloseAddQuestion = () => {
+    setIsQuestionDialogOpen(false);
+    resetQuestionForm();
+  };
+
   const handleCreateChallenge = async () => {
     try {
       const { data, error } = await supabase
@@ -197,7 +234,7 @@ export const AdminChallengeManagement = () => {
           estimated_budget: formData.estimated_budget ? parseFloat(formData.estimated_budget) : null,
           kpi_alignment: formData.kpi_alignment || null,
           vision_2030_goal: formData.vision_2030_goal || null,
-          created_by: '8066cfaf-4a91-4985-922b-74f6a286c441', // Current admin user
+          created_by: '8066cfaf-4a91-4985-922b-74f6a286c441',
           challenge_owner_id: '8066cfaf-4a91-4985-922b-74f6a286c441'
         }])
         .select();
@@ -219,7 +256,7 @@ export const AdminChallengeManagement = () => {
       
       setIsCreateDialogOpen(false);
       resetForm();
-      fetchChallenges(); // Refresh the list
+      fetchChallenges();
     } catch (error) {
       console.error('Error creating challenge:', error);
       toast({
@@ -262,8 +299,10 @@ export const AdminChallengeManagement = () => {
       });
       
       setIsQuestionDialogOpen(false);
+      if (selectedChallenge) {
+        fetchFocusQuestions(selectedChallenge);
+      }
       resetQuestionForm();
-      fetchFocusQuestions(selectedChallenge); // Refresh the questions
     } catch (error) {
       console.error('Error creating focus question:', error);
       toast({
@@ -274,40 +313,64 @@ export const AdminChallengeManagement = () => {
     }
   };
 
-  const resetForm = () => {
-    setFormData({
-      title: "",
-      title_ar: "",
-      description: "",
-      description_ar: "",
-      status: "draft",
-      priority_level: "medium",
-      sensitivity_level: "normal",
-      challenge_type: "",
-      start_date: "",
-      end_date: "",
-      estimated_budget: "",
-      kpi_alignment: "",
-      vision_2030_goal: ""
-    });
-  };
-
-  const resetQuestionForm = () => {
+  const handleEditQuestion = (question: FocusQuestion) => {
+    resetQuestionForm();
+    setEditingQuestion(question);
     setQuestionFormData({
-      question_text: "",
-      question_text_ar: "",
-      question_type: "general",
-      is_sensitive: false,
-      order_sequence: 1
+      question_text: question.question_text,
+      question_text_ar: question.question_text_ar || "",
+      question_type: question.question_type,
+      is_sensitive: question.is_sensitive,
+      order_sequence: question.order_sequence
     });
+    setIsEditQuestionDialogOpen(true);
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'published': return 'default';
-      case 'draft': return 'secondary';
-      case 'closed': return 'destructive';
-      default: return 'outline';
+  const handleCloseEditQuestion = () => {
+    setIsEditQuestionDialogOpen(false);
+    setEditingQuestion(null);
+    resetQuestionForm();
+  };
+
+  const handleUpdateQuestion = async () => {
+    if (!editingQuestion || !questionFormData.question_text) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('focus_questions')
+        .update({
+          question_text: questionFormData.question_text,
+          question_text_ar: questionFormData.question_text_ar || null,
+          question_type: questionFormData.question_type,
+          is_sensitive: questionFormData.is_sensitive,
+          order_sequence: questionFormData.order_sequence,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', editingQuestion.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Focus question updated successfully.",
+      });
+
+      setIsEditQuestionDialogOpen(false);
+      setEditingQuestion(null);
+      if (selectedChallenge) {
+        fetchFocusQuestions(selectedChallenge);
+      }
+      resetQuestionForm();
+
+    } catch (error) {
+      console.error('Error updating focus question:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update focus question. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -316,6 +379,16 @@ export const AdminChallengeManagement = () => {
       case 'high': return 'destructive';
       case 'medium': return 'secondary';
       case 'low': return 'outline';
+      default: return 'outline';
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'published': return 'default';
+      case 'draft': return 'secondary';
+      case 'closed': return 'outline';
+      case 'archived': return 'destructive';
       default: return 'outline';
     }
   };
@@ -330,7 +403,6 @@ export const AdminChallengeManagement = () => {
   };
 
   const handleEditChallenge = (challenge: Challenge) => {
-    // Populate form with challenge data for editing
     setFormData({
       title: challenge.title,
       title_ar: challenge.title_ar || "",
@@ -384,66 +456,6 @@ export const AdminChallengeManagement = () => {
       toast({
         title: "Error",
         description: "Failed to delete focus question. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleEditQuestion = (question: FocusQuestion) => {
-    setEditingQuestion(question);
-    setQuestionFormData({
-      question_text: question.question_text,
-      question_text_ar: question.question_text_ar || '',
-      question_type: question.question_type,
-      is_sensitive: question.is_sensitive,
-      order_sequence: question.order_sequence
-    });
-    setIsEditQuestionDialogOpen(true);
-  };
-
-  const handleUpdateQuestion = async () => {
-    if (!editingQuestion || !questionFormData.question_text) {
-      return;
-    }
-
-    try {
-      const { error } = await supabase
-        .from('focus_questions')
-        .update({
-          question_text: questionFormData.question_text,
-          question_text_ar: questionFormData.question_text_ar || null,
-          question_type: questionFormData.question_type,
-          is_sensitive: questionFormData.is_sensitive,
-          order_sequence: questionFormData.order_sequence,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', editingQuestion.id);
-
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "Focus question updated successfully.",
-      });
-
-      setIsEditQuestionDialogOpen(false);
-      setEditingQuestion(null);
-      if (selectedChallenge) {
-        fetchFocusQuestions(selectedChallenge);
-      }
-      setQuestionFormData({
-        question_text: '',
-        question_text_ar: '',
-        question_type: 'general',
-        is_sensitive: false,
-        order_sequence: 1
-      });
-
-    } catch (error) {
-      console.error('Error updating focus question:', error);
-      toast({
-        title: "Error",
-        description: "Failed to update focus question. Please try again.",
         variant: "destructive",
       });
     }
@@ -816,6 +828,19 @@ export const AdminChallengeManagement = () => {
                 </CardContent>
               </Card>
             ))}
+            
+            {filteredChallenges.length === 0 && (
+              <div className="text-center py-12">
+                <Target className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No challenges found</h3>
+                <p className="text-muted-foreground">
+                  {challengeFilter || challengeStatusFilter !== 'all' || challengePriorityFilter !== 'all' 
+                    ? "No challenges match your current filters. Try adjusting your search criteria."
+                    : "Create your first challenge to get started."
+                  }
+                </p>
+              </div>
+            )}
           </div>
         </TabsContent>
 
@@ -829,9 +854,96 @@ export const AdminChallengeManagement = () => {
                     Manage focus questions for the selected challenge
                   </p>
                 </div>
+                
+                <Dialog open={isQuestionDialogOpen} onOpenChange={(open) => {
+                  if (open) {
+                    handleOpenAddQuestion();
+                  } else {
+                    handleCloseAddQuestion();
+                  }
+                }}>
+                  <DialogTrigger asChild>
+                    <Button onClick={handleOpenAddQuestion}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Question
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Add Focus Question</DialogTitle>
+                      <DialogDescription>
+                        Add a guiding question to help innovators develop their solutions.
+                      </DialogDescription>
+                    </DialogHeader>
+                    
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="question_text">Question (English) *</Label>
+                        <Textarea
+                          id="question_text"
+                          value={questionFormData.question_text}
+                          onChange={(e) => setQuestionFormData({...questionFormData, question_text: e.target.value})}
+                          placeholder="What specific problem should this solution address?"
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="question_text_ar">Question (Arabic)</Label>
+                        <Textarea
+                          id="question_text_ar"
+                          value={questionFormData.question_text_ar}
+                          onChange={(e) => setQuestionFormData({...questionFormData, question_text_ar: e.target.value})}
+                          placeholder="ما هي المشكلة المحددة التي يجب أن يعالجها هذا الحل؟"
+                          dir="rtl"
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="question_type">Question Type</Label>
+                        <Select 
+                          value={questionFormData.question_type} 
+                          onValueChange={(value) => setQuestionFormData({...questionFormData, question_type: value})}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="general">General</SelectItem>
+                            <SelectItem value="technical">Technical</SelectItem>
+                            <SelectItem value="business">Business</SelectItem>
+                            <SelectItem value="impact">Impact</SelectItem>
+                            <SelectItem value="implementation">Implementation</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div className="flex items-center space-x-2">
+                        <Switch
+                          id="is_sensitive_tab"
+                          checked={questionFormData.is_sensitive}
+                          onCheckedChange={(checked) => setQuestionFormData({...questionFormData, is_sensitive: checked})}
+                        />
+                        <Label htmlFor="is_sensitive_tab" className="flex items-center gap-2">
+                          <AlertTriangle className="h-4 w-4" />
+                          Sensitive Question
+                        </Label>
+                      </div>
+                    
+                      <div className="flex justify-end gap-2">
+                        <Button variant="outline" onClick={handleCloseAddQuestion}>
+                          Cancel
+                        </Button>
+                        <Button onClick={handleCreateQuestion} disabled={!questionFormData.question_text}>
+                          Add Question
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
               
               {/* Focus Questions Filters */}
-              <div className="flex flex-wrap gap-4 p-4 bg-muted/50 rounded-lg mb-6">
+              <div className="flex flex-wrap gap-4 p-4 bg-muted/50 rounded-lg">
                 <div className="flex-1 min-w-64">
                   <Input
                     placeholder="Search focus questions..."
@@ -867,87 +979,6 @@ export const AdminChallengeManagement = () => {
                     <SelectItem value="sensitive">Sensitive</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
-              
-              <Dialog open={isQuestionDialogOpen} onOpenChange={setIsQuestionDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button>
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Question
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Add Focus Question</DialogTitle>
-                      <DialogDescription>
-                        Add a guiding question to help innovators develop their solutions.
-                      </DialogDescription>
-                    </DialogHeader>
-                    
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="question_text">Question (English) *</Label>
-                        <Textarea
-                          id="question_text"
-                          value={questionFormData.question_text}
-                          onChange={(e) => setQuestionFormData({...questionFormData, question_text: e.target.value})}
-                          placeholder="What specific problem should this solution address?"
-                        />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="question_text_ar">Question (Arabic)</Label>
-                        <Textarea
-                          id="question_text_ar"
-                          value={questionFormData.question_text_ar}
-                          onChange={(e) => setQuestionFormData({...questionFormData, question_text_ar: e.target.value})}
-                          placeholder="ما هي المشكلة المحددة التي يجب أن يعالجها هذا الحل؟"
-                          dir="rtl"
-                        />
-                      </div>
-                      
-                        <div className="space-y-2">
-                          <Label htmlFor="question_type">Question Type</Label>
-                          <Select 
-                            value={questionFormData.question_type} 
-                            onValueChange={(value) => setQuestionFormData({...questionFormData, question_type: value})}
-                          >
-                            <SelectTrigger>
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="general">General</SelectItem>
-                              <SelectItem value="technical">Technical</SelectItem>
-                              <SelectItem value="business">Business</SelectItem>
-                              <SelectItem value="impact">Impact</SelectItem>
-                              <SelectItem value="implementation">Implementation</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        
-                        <div className="flex items-center space-x-2">
-                          <Switch
-                            id="is_sensitive_tab"
-                            checked={questionFormData.is_sensitive}
-                            onCheckedChange={(checked) => setQuestionFormData({...questionFormData, is_sensitive: checked})}
-                          />
-                          <Label htmlFor="is_sensitive_tab" className="flex items-center gap-2">
-                            <AlertTriangle className="h-4 w-4" />
-                            Sensitive Question
-                          </Label>
-                        </div>
-                      
-                      <div className="flex justify-end gap-2">
-                        <Button variant="outline" onClick={() => setIsQuestionDialogOpen(false)}>
-                          Cancel
-                        </Button>
-                        <Button onClick={handleCreateQuestion} disabled={!questionFormData.question_text}>
-                          Add Question
-                        </Button>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
               </div>
               
               <div className="space-y-3">
@@ -1028,7 +1059,11 @@ export const AdminChallengeManagement = () => {
       </Tabs>
       
       {/* Edit Focus Question Dialog */}
-      <Dialog open={isEditQuestionDialogOpen} onOpenChange={setIsEditQuestionDialogOpen}>
+      <Dialog open={isEditQuestionDialogOpen} onOpenChange={(open) => {
+        if (!open) {
+          handleCloseEditQuestion();
+        }
+      }}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit Focus Question</DialogTitle>
@@ -1106,7 +1141,7 @@ export const AdminChallengeManagement = () => {
             </div>
           
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setIsEditQuestionDialogOpen(false)}>
+              <Button variant="outline" onClick={handleCloseEditQuestion}>
                 Cancel
               </Button>
               <Button onClick={handleUpdateQuestion} disabled={!questionFormData.question_text}>
