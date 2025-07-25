@@ -114,7 +114,7 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     ["analytics", "trends", "reports", "system-analytics"].includes(item.id)
   );
   const adminItems = menuItems.filter(item => 
-    ["organization", "user-management"].includes(item.id)
+    ["challenge-management", "organization", "user-management"].includes(item.id)
   );
   const settingsItems = menuItems.filter(item => item.id === "settings");
 
