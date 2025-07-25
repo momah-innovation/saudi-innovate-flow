@@ -196,6 +196,16 @@ export const AdminChallengeManagement = () => {
     });
   };
 
+  const handleOpenCreateChallenge = () => {
+    resetForm();
+    setIsCreateDialogOpen(true);
+  };
+
+  const handleCloseCreateChallenge = () => {
+    setIsCreateDialogOpen(false);
+    resetForm();
+  };
+
   const resetQuestionForm = () => {
     setQuestionFormData({
       question_text: "",
@@ -403,6 +413,10 @@ export const AdminChallengeManagement = () => {
   };
 
   const handleEditChallenge = (challenge: Challenge) => {
+    // First reset the form to clear any previous data
+    resetForm();
+    
+    // Then set the editing challenge data
     setFormData({
       title: challenge.title,
       title_ar: challenge.title_ar || "",
@@ -502,18 +516,24 @@ export const AdminChallengeManagement = () => {
             Manage Focus Questions
           </Button>
           
-          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+          <Dialog open={isCreateDialogOpen} onOpenChange={(open) => {
+            if (open) {
+              handleOpenCreateChallenge();
+            } else {
+              handleCloseCreateChallenge();
+            }
+          }}>
             <DialogTrigger asChild>
-              <Button>
+              <Button onClick={handleOpenCreateChallenge}>
                 <Plus className="h-4 w-4 mr-2" />
                 Create Challenge
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>Create New Challenge</DialogTitle>
+            <DialogHeader>
+              <DialogTitle>{formData.title ? 'Edit Challenge' : 'Create New Challenge'}</DialogTitle>
               <DialogDescription>
-                Create a new innovation challenge for innovators to participate in.
+                {formData.title ? 'Update the challenge details.' : 'Create a new innovation challenge for innovators to participate in.'}
               </DialogDescription>
             </DialogHeader>
             
@@ -681,11 +701,11 @@ export const AdminChallengeManagement = () => {
               </div>
               
               <div className="flex justify-end gap-2">
-                <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
+                <Button variant="outline" onClick={handleCloseCreateChallenge}>
                   Cancel
                 </Button>
                 <Button onClick={handleCreateChallenge} disabled={!formData.title || !formData.description}>
-                  Create Challenge
+                  {formData.title && challenges.some(c => c.title === formData.title) ? 'Update Challenge' : 'Create Challenge'}
                 </Button>
               </div>
             </div>
