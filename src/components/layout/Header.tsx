@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Bell, User, Settings, Globe, Search } from "lucide-react";
+import { Bell, User, Settings, Globe, Search, LogOut, Shield } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,8 +9,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const Header = () => {
+  const { userProfile, signOut, hasRole } = useAuth();
+
+  const getUserDisplayName = () => {
+    if (!userProfile) return 'User';
+    return userProfile.name || userProfile.email || 'User';
+  };
+
+  const getUserRoles = () => {
+    if (!userProfile?.user_roles) return [];
+    return userProfile.user_roles
+      .filter((role: any) => role.is_active && (!role.expires_at || new Date(role.expires_at) > new Date()))
+      .map((role: any) => role.role);
+  };
+
   return (
     <header className="border-b bg-gradient-to-r from-primary via-primary-light to-accent p-4 shadow-elegant">
       <div className="container mx-auto flex items-center justify-between">
@@ -21,10 +36,10 @@ export const Header = () => {
           </div>
           <div>
             <h1 className="text-xl font-bold text-primary-foreground">
-              Innovation Management System
+              Ruwād Innovation System
             </h1>
             <p className="text-sm text-primary-foreground/80">
-              Ministry of Municipal and Housing - CIC
+              Government Innovation Management Platform
             </p>
           </div>
         </div>
@@ -61,10 +76,24 @@ export const Header = () => {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
                 <User className="h-4 w-4 mr-2" />
-                Ahmed Al-Rashid
+                {getUserDisplayName()}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuContent align="end" className="w-64">
+              <div className="px-3 py-2 border-b">
+                <p className="font-medium">{getUserDisplayName()}</p>
+                <p className="text-sm text-muted-foreground">{userProfile?.email}</p>
+                {getUserRoles().length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {getUserRoles().map((role: string) => (
+                      <Badge key={role} variant="secondary" className="text-xs">
+                        <Shield className="w-3 h-3 mr-1" />
+                        {role}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
               <DropdownMenuItem>
                 <User className="mr-2 h-4 w-4" />
                 Profile
@@ -74,7 +103,8 @@ export const Header = () => {
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={signOut} className="text-destructive focus:text-destructive">
+                <LogOut className="mr-2 h-4 w-4" />
                 Sign out
               </DropdownMenuItem>
             </DropdownMenuContent>
