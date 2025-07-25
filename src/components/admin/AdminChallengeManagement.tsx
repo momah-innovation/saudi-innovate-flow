@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { ChallengeSettings } from "./ChallengeSettings";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -66,6 +67,8 @@ export const AdminChallengeManagement = () => {
   // Form states
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isQuestionDialogOpen, setIsQuestionDialogOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [settingsChallenge, setSettingsChallenge] = useState<Challenge | null>(null);
   const [formData, setFormData] = useState({
     title: "",
     title_ar: "",
@@ -332,11 +335,9 @@ export const AdminChallengeManagement = () => {
     setIsCreateDialogOpen(true);
   };
 
-  const handleChallengeSettings = (challengeId: string) => {
-    toast({
-      title: "Challenge Settings",
-      description: "Settings panel will be available in the next update.",
-    });
+  const handleChallengeSettings = (challenge: Challenge) => {
+    setSettingsChallenge(challenge);
+    setIsSettingsOpen(true);
   };
 
   const handleDeleteQuestion = async (questionId: string) => {
@@ -666,7 +667,7 @@ export const AdminChallengeManagement = () => {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={() => handleChallengeSettings(challenge.id)}
+                        onClick={() => handleChallengeSettings(challenge)}
                       >
                         <Settings className="h-4 w-4 mr-2" />
                         Settings
@@ -833,6 +834,23 @@ export const AdminChallengeManagement = () => {
           )}
         </TabsContent>
       </Tabs>
+
+      {/* Challenge Settings Dialog */}
+      {settingsChallenge && (
+        <ChallengeSettings
+          challenge={settingsChallenge}
+          isOpen={isSettingsOpen}
+          onClose={() => {
+            setIsSettingsOpen(false);
+            setSettingsChallenge(null);
+          }}
+          onUpdate={() => {
+            fetchChallenges();
+            setIsSettingsOpen(false);
+            setSettingsChallenge(null);
+          }}
+        />
+      )}
     </div>
   );
 };
