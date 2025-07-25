@@ -157,6 +157,7 @@ export type Database = {
           kpi_alignment: string | null
           priority_level: string | null
           sector_id: string | null
+          sensitivity_level: string | null
           service_id: string | null
           start_date: string | null
           status: string | null
@@ -183,6 +184,7 @@ export type Database = {
           kpi_alignment?: string | null
           priority_level?: string | null
           sector_id?: string | null
+          sensitivity_level?: string | null
           service_id?: string | null
           start_date?: string | null
           status?: string | null
@@ -209,6 +211,7 @@ export type Database = {
           kpi_alignment?: string | null
           priority_level?: string | null
           sector_id?: string | null
+          sensitivity_level?: string | null
           service_id?: string | null
           start_date?: string | null
           status?: string | null
@@ -507,6 +510,7 @@ export type Database = {
           challenge_id: string | null
           created_at: string | null
           id: string
+          is_sensitive: boolean | null
           order_sequence: number | null
           question_text: string
           question_text_ar: string | null
@@ -517,6 +521,7 @@ export type Database = {
           challenge_id?: string | null
           created_at?: string | null
           id?: string
+          is_sensitive?: boolean | null
           order_sequence?: number | null
           question_text: string
           question_text_ar?: string | null
@@ -527,6 +532,7 @@ export type Database = {
           challenge_id?: string | null
           created_at?: string | null
           id?: string
+          is_sensitive?: boolean | null
           order_sequence?: number | null
           question_text?: string
           question_text_ar?: string | null
