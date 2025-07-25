@@ -100,47 +100,45 @@ export const AdminChallengeManagement = () => {
     try {
       setLoading(true);
       
-      // For demo, use sample data
-      const sampleChallenges = [
-        {
-          id: '1',
-          title: 'Digital Government Services Enhancement',
-          title_ar: 'تطوير الخدمات الحكومية الرقمية',
-          description: 'Develop innovative solutions to improve citizen digital services experience and accessibility.',
-          description_ar: 'تطوير حلول مبتكرة لتحسين تجربة المواطنين مع الخدمات الرقمية.',
-          status: 'published',
-          priority_level: 'high',
-          sensitivity_level: 'normal',
-          challenge_type: 'technology',
-          start_date: '2025-01-01',
-          end_date: '2025-03-31',
-          estimated_budget: 500000,
-          kpi_alignment: 'Improve citizen satisfaction scores by 25%',
-          vision_2030_goal: 'Digital Government Program',
-          created_at: '2025-01-20T00:00:00.000Z'
-        },
-        {
-          id: '2',
-          title: 'Sustainable Smart Cities Initiative',
-          title_ar: 'مبادرة المدن الذكية المستدامة',
-          description: 'Create solutions for sustainable urban development using IoT and smart technologies.',
-          description_ar: 'إنشاء حلول للتنمية الحضرية المستدامة باستخدام التقنيات الذكية.',
-          status: 'draft',
-          priority_level: 'medium',
-          sensitivity_level: 'normal',
-          challenge_type: 'sustainability',
-          start_date: '2025-02-01',
-          end_date: '2025-05-31',
-          estimated_budget: 750000,
-          kpi_alignment: 'Reduce urban carbon footprint by 30%',
-          vision_2030_goal: 'Green Riyadh Program',
-          created_at: '2025-01-15T00:00:00.000Z'
-        }
-      ];
-      
-      setChallenges(sampleChallenges);
+      const { data: challengesData, error } = await supabase
+        .from('challenges')
+        .select(`
+          id,
+          title,
+          title_ar,
+          description,
+          description_ar,
+          status,
+          priority_level,
+          sensitivity_level,
+          challenge_type,
+          start_date,
+          end_date,
+          estimated_budget,
+          kpi_alignment,
+          vision_2030_goal,
+          created_at
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching challenges:', error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch challenges. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setChallenges(challengesData || []);
     } catch (error) {
       console.error('Error fetching challenges:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch challenges. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -148,29 +146,18 @@ export const AdminChallengeManagement = () => {
 
   const fetchFocusQuestions = async (challengeId: string) => {
     try {
-      // For demo, use sample questions
-      const sampleQuestions = [
-        {
-          id: '1',
-          challenge_id: challengeId,
-          question_text: 'What are the main barriers that prevent citizens from using current digital government services?',
-          question_text_ar: 'ما هي الحواجز الرئيسية التي تمنع المواطنين من استخدام الخدمات الحكومية الرقمية؟',
-          question_type: 'problem_identification',
-          order_sequence: 1,
-          is_sensitive: false
-        },
-        {
-          id: '2',
-          challenge_id: challengeId,
-          question_text: 'How can we ensure digital services are accessible to all segments of society?',
-          question_text_ar: 'كيف يمكننا ضمان أن الخدمات الرقمية متاحة لجميع شرائح المجتمع؟',
-          question_type: 'accessibility',
-          order_sequence: 2,
-          is_sensitive: false
-        }
-      ];
-      
-      setFocusQuestions(sampleQuestions);
+      const { data: questionsData, error } = await supabase
+        .from('focus_questions')
+        .select('*')
+        .eq('challenge_id', challengeId)
+        .order('order_sequence', { ascending: true });
+
+      if (error) {
+        console.error('Error fetching focus questions:', error);
+        return;
+      }
+
+      setFocusQuestions(questionsData || []);
     } catch (error) {
       console.error('Error fetching focus questions:', error);
     }
@@ -178,18 +165,37 @@ export const AdminChallengeManagement = () => {
 
   const handleCreateChallenge = async () => {
     try {
-      // Generate new ID for demo
-      const newId = (challenges.length + 1).toString();
-      
-      const newChallenge = {
-        id: newId,
-        ...formData,
-        estimated_budget: formData.estimated_budget ? parseInt(formData.estimated_budget) : undefined,
-        created_at: new Date().toISOString()
-      };
-      
-      setChallenges([newChallenge, ...challenges]);
-      
+      const { data, error } = await supabase
+        .from('challenges')
+        .insert([{
+          title: formData.title,
+          title_ar: formData.title_ar || null,
+          description: formData.description,
+          description_ar: formData.description_ar || null,
+          status: formData.status,
+          priority_level: formData.priority_level,
+          sensitivity_level: formData.sensitivity_level,
+          challenge_type: formData.challenge_type || null,
+          start_date: formData.start_date || null,
+          end_date: formData.end_date || null,
+          estimated_budget: formData.estimated_budget ? parseFloat(formData.estimated_budget) : null,
+          kpi_alignment: formData.kpi_alignment || null,
+          vision_2030_goal: formData.vision_2030_goal || null,
+          created_by: '8066cfaf-4a91-4985-922b-74f6a286c441', // Current admin user
+          challenge_owner_id: '8066cfaf-4a91-4985-922b-74f6a286c441'
+        }])
+        .select();
+
+      if (error) {
+        console.error('Error creating challenge:', error);
+        toast({
+          title: "Error",
+          description: error.message || "Failed to create challenge. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       toast({
         title: "Challenge Created",
         description: "New challenge has been successfully created.",
@@ -197,6 +203,7 @@ export const AdminChallengeManagement = () => {
       
       setIsCreateDialogOpen(false);
       resetForm();
+      fetchChallenges(); // Refresh the list
     } catch (error) {
       console.error('Error creating challenge:', error);
       toast({
@@ -211,15 +218,28 @@ export const AdminChallengeManagement = () => {
     if (!selectedChallenge) return;
     
     try {
-      const newQuestion = {
-        id: (focusQuestions.length + 1).toString(),
-        challenge_id: selectedChallenge,
-        ...questionFormData,
-        order_sequence: focusQuestions.length + 1
-      };
-      
-      setFocusQuestions([...focusQuestions, newQuestion]);
-      
+      const { data, error } = await supabase
+        .from('focus_questions')
+        .insert([{
+          challenge_id: selectedChallenge,
+          question_text: questionFormData.question_text,
+          question_text_ar: questionFormData.question_text_ar || null,
+          question_type: questionFormData.question_type,
+          is_sensitive: questionFormData.is_sensitive,
+          order_sequence: focusQuestions.length + 1
+        }])
+        .select();
+
+      if (error) {
+        console.error('Error creating focus question:', error);
+        toast({
+          title: "Error",
+          description: error.message || "Failed to create focus question. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       toast({
         title: "Focus Question Added",
         description: "Focus question has been successfully added to the challenge.",
@@ -227,6 +247,7 @@ export const AdminChallengeManagement = () => {
       
       setIsQuestionDialogOpen(false);
       resetQuestionForm();
+      fetchFocusQuestions(selectedChallenge); // Refresh the questions
     } catch (error) {
       console.error('Error creating focus question:', error);
       toast({
