@@ -8,6 +8,7 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import ProfileSetup from "./pages/ProfileSetup";
+import ChallengeDetails from "./pages/ChallengeDetails";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <ProfileSetup />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/challenges/:challengeId" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <ChallengeDetails />
                 </ProtectedRoute>
               } 
             />

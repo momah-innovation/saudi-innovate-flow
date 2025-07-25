@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,6 +28,7 @@ interface Challenge {
 }
 
 export const InnovatorDashboard = () => {
+  const navigate = useNavigate();
   const { userProfile } = useAuth();
   const { toast } = useToast();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
@@ -152,17 +154,11 @@ export const InnovatorDashboard = () => {
   };
 
   const handleViewChallenge = (challengeId: string) => {
-    toast({
-      title: "Challenge Details",
-      description: "Challenge details view will be implemented next.",
-    });
+    navigate(`/challenges/${challengeId}`);
   };
 
   const handleSubmitIdea = (challengeId: string) => {
-    toast({
-      title: "Idea Submission",
-      description: "Idea submission flow will be implemented next.",
-    });
+    navigate(`/challenges/${challengeId}/submit-idea`);
   };
 
   if (loading) {
