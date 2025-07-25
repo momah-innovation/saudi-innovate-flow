@@ -46,7 +46,7 @@ interface FocusQuestion {
   order_sequence: number;
   is_sensitive: boolean;
   created_at: string;
-  challenge?: {
+  challenges?: {
     title: string;
     status: string;
   };
@@ -614,7 +614,7 @@ export const FocusQuestionsManagement = () => {
                       </div>
                       
                       <div className="text-sm text-muted-foreground">
-                        Challenge: {question.challenge?.title || "No challenge linked"}
+                        Challenge: {question.challenges?.title || "No challenge linked"}
                       </div>
                     </div>
                     
