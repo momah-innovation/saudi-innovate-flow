@@ -47,7 +47,7 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     ];
 
     const innovatorItems = [
-      { id: "challenges", label: "Challenges", icon: Target, badge: 12, roles: ["innovator", "team", "admin"] },
+      { id: "challenges", label: "Challenges", icon: Target, badge: 12, roles: ["innovator", "all"] },
       { id: "ideas", label: "My Ideas", icon: Lightbulb, badge: 3, roles: ["innovator"] },
     ];
 
@@ -57,7 +57,6 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     ];
 
     const teamItems = [
-      { id: "challenges", label: "Challenge Management", icon: Target, badge: 12, roles: ["team", "admin"] },
       { id: "campaigns", label: "Campaigns", icon: Calendar, badge: 3, roles: ["team", "admin"] },
       { id: "events", label: "Events", icon: Award, badge: 2, roles: ["team", "admin"] },
       { id: "innovation-teams", label: "Innovation Teams", icon: Zap, badge: null, roles: ["team", "admin"] },
@@ -85,6 +84,11 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
 
   const isItemVisible = (item: any) => {
     if (item.roles.includes("all")) return true;
+    
+    // For users without specific roles, show basic innovator interface
+    if (!userProfile || !userProfile.user_roles || userProfile.user_roles.length === 0) {
+      return item.roles.includes("innovator");
+    }
     
     const userRoles = [];
     if (userProfile?.innovator_profile) userRoles.push("innovator");
