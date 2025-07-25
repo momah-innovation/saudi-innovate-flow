@@ -112,6 +112,8 @@ export const AdminChallengeManagement = () => {
   const [domains, setDomains] = useState<any[]>([]);
   const [subDomains, setSubDomains] = useState<any[]>([]);
   const [services, setServices] = useState<any[]>([]);
+  const [selectedExperts, setSelectedExperts] = useState<string[]>([]);
+  const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
   const [isTeamMember, setIsTeamMember] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("challenges");
@@ -458,6 +460,8 @@ export const AdminChallengeManagement = () => {
       sub_domain_id: "",
       service_id: ""
     });
+    setSelectedExperts([]);
+    setSelectedPartners([]);
   };
 
   const handleOpenCreateChallenge = () => {
@@ -1095,13 +1099,13 @@ export const AdminChallengeManagement = () => {
                     
                     <div className="grid gap-4 md:grid-cols-2">
                       <div className="space-y-2">
-                        <Label htmlFor="assigned_expert">Assigned Expert</Label>
+                        <Label htmlFor="assigned_expert">Primary Expert (Legacy)</Label>
                         <Select 
                           value={formData.assigned_expert_id} 
                           onValueChange={(value) => setFormData({...formData, assigned_expert_id: value})}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Select an expert" />
+                            <SelectValue placeholder="Select primary expert" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="">No expert assigned</SelectItem>
@@ -1121,13 +1125,13 @@ export const AdminChallengeManagement = () => {
                       </div>
                       
                       <div className="space-y-2">
-                        <Label htmlFor="partner_org">Partner Organization</Label>
+                        <Label htmlFor="partner_org">Primary Partner (Legacy)</Label>
                         <Select 
                           value={formData.partner_organization_id} 
                           onValueChange={(value) => setFormData({...formData, partner_organization_id: value})}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Select a partner" />
+                            <SelectValue placeholder="Select primary partner" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="">No partner selected</SelectItem>
@@ -1144,6 +1148,67 @@ export const AdminChallengeManagement = () => {
                             ))}
                           </SelectContent>
                         </Select>
+                      </div>
+                    </div>
+                    
+                    {/* Multi-select for experts and partners */}
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Challenge Experts (Multi-select)</Label>
+                        <div className="border rounded-md p-2 max-h-32 overflow-y-auto">
+                          {experts.map((expert) => (
+                            <div key={expert.id} className="flex items-center space-x-2 p-1">
+                              <input
+                                type="checkbox"
+                                id={`expert-${expert.id}`}
+                                checked={selectedExperts.includes(expert.id)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedExperts([...selectedExperts, expert.id]);
+                                  } else {
+                                    setSelectedExperts(selectedExperts.filter(id => id !== expert.id));
+                                  }
+                                }}
+                                className="rounded border-gray-300"
+                              />
+                              <label htmlFor={`expert-${expert.id}`} className="text-sm flex-1 cursor-pointer">
+                                {expert.profiles?.name || 'Expert'} - {expert.expertise_areas?.slice(0, 2).join(', ')}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          {selectedExperts.length} expert(s) selected
+                        </p>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label>Challenge Partners (Multi-select)</Label>
+                        <div className="border rounded-md p-2 max-h-32 overflow-y-auto">
+                          {partners.map((partner) => (
+                            <div key={partner.id} className="flex items-center space-x-2 p-1">
+                              <input
+                                type="checkbox"
+                                id={`partner-${partner.id}`}
+                                checked={selectedPartners.includes(partner.id)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedPartners([...selectedPartners, partner.id]);
+                                  } else {
+                                    setSelectedPartners(selectedPartners.filter(id => id !== partner.id));
+                                  }
+                                }}
+                                className="rounded border-gray-300"
+                              />
+                              <label htmlFor={`partner-${partner.id}`} className="text-sm flex-1 cursor-pointer">
+                                {partner.name} ({partner.partner_type})
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          {selectedPartners.length} partner(s) selected
+                        </p>
                       </div>
                     </div>
                     
