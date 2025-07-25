@@ -100,7 +100,7 @@ export const FocusQuestionsManagement = () => {
         .from('focus_questions')
         .select(`
           *,
-          challenges!inner(title, status)
+          challenges(title, status)
         `)
         .order('created_at', { ascending: false });
 
@@ -203,6 +203,7 @@ export const FocusQuestionsManagement = () => {
       const { error } = await supabase
         .from('focus_questions')
         .update({
+          challenge_id: formData.challenge_id,
           question_text: formData.question_text,
           question_text_ar: formData.question_text_ar || null,
           question_type: formData.question_type,
@@ -613,7 +614,7 @@ export const FocusQuestionsManagement = () => {
                       </div>
                       
                       <div className="text-sm text-muted-foreground">
-                        Challenge: {question.challenge?.title}
+                        Challenge: {question.challenge?.title || "No challenge linked"}
                       </div>
                     </div>
                     
@@ -679,6 +680,22 @@ export const FocusQuestionsManagement = () => {
           
           <div className="space-y-4">
             <div className="space-y-2">
+              <Label htmlFor="edit_challenge">Challenge *</Label>
+              <Select value={formData.challenge_id} onValueChange={(value) => setFormData({...formData, challenge_id: value})}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a challenge" />
+                </SelectTrigger>
+                <SelectContent>
+                  {challenges.map((challenge) => (
+                    <SelectItem key={challenge.id} value={challenge.id}>
+                      {challenge.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
               <Label htmlFor="edit_question_text">Question (English) *</Label>
               <Textarea
                 id="edit_question_text"
@@ -735,9 +752,9 @@ export const FocusQuestionsManagement = () => {
               <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button onClick={handleEditQuestion} disabled={!formData.question_text}>
-                Update Question
-              </Button>
+                <Button onClick={handleEditQuestion} disabled={!formData.challenge_id || !formData.question_text}>
+                  Update Question
+                </Button>
             </div>
           </div>
         </DialogContent>
