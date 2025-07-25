@@ -6,6 +6,8 @@ import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
 import { ChallengeList } from "@/components/challenges/ChallengeList";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
+// Force cache refresh
+
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
 

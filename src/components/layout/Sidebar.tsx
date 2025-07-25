@@ -167,3 +167,6 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     </Sidebar>
   );
 };
+
+// Also export as Sidebar for backward compatibility
+export { AppSidebar as Sidebar };
