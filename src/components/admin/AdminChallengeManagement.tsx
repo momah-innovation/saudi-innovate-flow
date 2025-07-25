@@ -24,7 +24,10 @@ import {
   AlertTriangle,
   Users,
   FileText,
-  Settings
+  Settings,
+  Building2,
+  UserCheck,
+  Briefcase
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -56,11 +59,55 @@ interface FocusQuestion {
   is_sensitive: boolean;
 }
 
+interface Expert {
+  id: string;
+  user_id: string;
+  expertise_areas: string[];
+  experience_years: number;
+  expert_level: string;
+  profiles?: {
+    name: string;
+    name_ar?: string;
+    email: string;
+  };
+}
+
+interface Partner {
+  id: string;
+  name: string;
+  name_ar?: string;
+  partner_type: string;
+  status: string;
+  capabilities?: string[];
+}
+
+interface ChallengeExpert {
+  id: string;
+  expert_id: string;
+  role_type: string;
+  status: string;
+  experts: Expert;
+}
+
+interface ChallengePartner {
+  id: string;
+  partner_id: string;
+  partnership_type: string;
+  status: string;
+  funding_amount?: number;
+  partners: Partner;
+}
+
 export const AdminChallengeManagement = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
+  const [experts, setExperts] = useState<Expert[]>([]);
+  const [partners, setPartners] = useState<Partner[]>([]);
+  const [challengeExperts, setChallengeExperts] = useState<ChallengeExpert[]>([]);
+  const [challengePartners, setChallengePartners] = useState<ChallengePartner[]>([]);
+  const [isTeamMember, setIsTeamMember] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("challenges");
   const [selectedChallenge, setSelectedChallenge] = useState<string | null>(null);
@@ -85,7 +132,11 @@ export const AdminChallengeManagement = () => {
     end_date: "",
     estimated_budget: "",
     kpi_alignment: "",
-    vision_2030_goal: ""
+    vision_2030_goal: "",
+    assigned_expert_id: "",
+    partner_organization_id: "",
+    internal_team_notes: "",
+    collaboration_details: ""
   });
   
   // Filtering states
@@ -105,35 +156,190 @@ export const AdminChallengeManagement = () => {
   });
 
   useEffect(() => {
+    checkTeamMembership();
     fetchChallenges();
+    fetchExperts();
+    fetchPartners();
     if (selectedChallenge) {
       fetchFocusQuestions(selectedChallenge);
+      fetchChallengeExperts(selectedChallenge);
+      fetchChallengePartners(selectedChallenge);
     }
   }, [selectedChallenge]);
+
+  const checkTeamMembership = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: teamMember } = await supabase
+        .from('innovation_team_members')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+
+      setIsTeamMember(!!teamMember);
+    } catch (error) {
+      console.error('Error checking team membership:', error);
+    }
+  };
+
+  const fetchExperts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('experts')
+        .select(`
+          id,
+          user_id,
+          expertise_areas,
+          experience_years,
+          expert_level
+        `);
+
+      if (error) throw error;
+      
+      // Fetch profiles separately to avoid relation issues
+      const expertsWithProfiles = [];
+      for (const expert of data || []) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('name, name_ar, email')
+          .eq('id', expert.user_id)
+          .single();
+        
+        expertsWithProfiles.push({
+          ...expert,
+          profiles: profile || { name: 'Unknown Expert', email: '' }
+        });
+      }
+      
+      setExperts(expertsWithProfiles);
+    } catch (error) {
+      console.error('Error fetching experts:', error);
+    }
+  };
+
+  const fetchPartners = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('partners')
+        .select('id, name, name_ar, partner_type, status, capabilities')
+        .eq('status', 'active');
+
+      if (error) throw error;
+      setPartners(data || []);
+    } catch (error) {
+      console.error('Error fetching partners:', error);
+    }
+  };
+
+  const fetchChallengeExperts = async (challengeId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('challenge_experts')
+        .select(`
+          id,
+          expert_id,
+          role_type,
+          status
+        `)
+        .eq('challenge_id', challengeId)
+        .eq('status', 'active');
+
+      if (error) throw error;
+      
+      // Fetch expert details separately
+      const expertsWithDetails = [];
+      for (const ce of data || []) {
+        const { data: expert } = await supabase
+          .from('experts')
+          .select('id, user_id, expertise_areas, experience_years, expert_level')
+          .eq('id', ce.expert_id)
+          .single();
+        
+        if (expert) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('name, name_ar, email')
+            .eq('id', expert.user_id)
+            .single();
+          
+          expertsWithDetails.push({
+            ...ce,
+            experts: {
+              ...expert,
+              profiles: profile || { name: 'Unknown Expert', email: '' }
+            }
+          });
+        }
+      }
+      
+      setChallengeExperts(expertsWithDetails);
+    } catch (error) {
+      console.error('Error fetching challenge experts:', error);
+    }
+  };
+
+  const fetchChallengePartners = async (challengeId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('challenge_partners')
+        .select(`
+          id,
+          partner_id,
+          partnership_type,
+          status,
+          funding_amount,
+          partners:partner_id (
+            id,
+            name,
+            name_ar,
+            partner_type,
+            status,
+            capabilities
+          )
+        `)
+        .eq('challenge_id', challengeId)
+        .eq('status', 'active');
+
+      if (error) throw error;
+      setChallengePartners(data || []);
+    } catch (error) {
+      console.error('Error fetching challenge partners:', error);
+    }
+  };
 
   const fetchChallenges = async () => {
     try {
       setLoading(true);
       
+      // Basic fields that everyone can see
+      let selectFields = `
+        id,
+        title,
+        title_ar,
+        description,
+        description_ar,
+        status,
+        priority_level,
+        sensitivity_level,
+        challenge_type,
+        start_date,
+        end_date,
+        estimated_budget,
+        kpi_alignment,
+        vision_2030_goal,
+        created_at
+      `;
+
+      // Add team-only fields if user is a team member
+      if (isTeamMember) {
+        selectFields += `, assigned_expert_id, partner_organization_id, internal_team_notes, collaboration_details`;
+      }
+
       const { data: challengesData, error } = await supabase
         .from('challenges')
-        .select(`
-          id,
-          title,
-          title_ar,
-          description,
-          description_ar,
-          status,
-          priority_level,
-          sensitivity_level,
-          challenge_type,
-          start_date,
-          end_date,
-          estimated_budget,
-          kpi_alignment,
-          vision_2030_goal,
-          created_at
-        `)
+        .select(selectFields)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -143,10 +349,11 @@ export const AdminChallengeManagement = () => {
           description: "Failed to fetch challenges. Please try again.",
           variant: "destructive",
         });
+        setChallenges([]); // Set empty array on error
         return;
       }
 
-      setChallenges(challengesData || []);
+      setChallenges(challengesData as any || []);
     } catch (error) {
       console.error('Error fetching challenges:', error);
       toast({
@@ -192,7 +399,11 @@ export const AdminChallengeManagement = () => {
       end_date: "",
       estimated_budget: "",
       kpi_alignment: "",
-      vision_2030_goal: ""
+      vision_2030_goal: "",
+      assigned_expert_id: "",
+      partner_organization_id: "",
+      internal_team_notes: "",
+      collaboration_details: ""
     });
   };
 
@@ -228,25 +439,37 @@ export const AdminChallengeManagement = () => {
 
   const handleCreateChallenge = async () => {
     try {
+      const challengeData = {
+        title: formData.title,
+        title_ar: formData.title_ar || null,
+        description: formData.description,
+        description_ar: formData.description_ar || null,
+        status: formData.status,
+        priority_level: formData.priority_level,
+        sensitivity_level: formData.sensitivity_level,
+        challenge_type: formData.challenge_type || null,
+        start_date: formData.start_date || null,
+        end_date: formData.end_date || null,
+        estimated_budget: formData.estimated_budget ? parseFloat(formData.estimated_budget) : null,
+        kpi_alignment: formData.kpi_alignment || null,
+        vision_2030_goal: formData.vision_2030_goal || null,
+        created_by: '8066cfaf-4a91-4985-922b-74f6a286c441',
+        challenge_owner_id: '8066cfaf-4a91-4985-922b-74f6a286c441'
+      };
+
+      // Add team-only fields if user is a team member
+      if (isTeamMember) {
+        Object.assign(challengeData, {
+          assigned_expert_id: formData.assigned_expert_id || null,
+          partner_organization_id: formData.partner_organization_id || null,
+          internal_team_notes: formData.internal_team_notes || null,
+          collaboration_details: formData.collaboration_details || null
+        });
+      }
+
       const { data, error } = await supabase
         .from('challenges')
-        .insert([{
-          title: formData.title,
-          title_ar: formData.title_ar || null,
-          description: formData.description,
-          description_ar: formData.description_ar || null,
-          status: formData.status,
-          priority_level: formData.priority_level,
-          sensitivity_level: formData.sensitivity_level,
-          challenge_type: formData.challenge_type || null,
-          start_date: formData.start_date || null,
-          end_date: formData.end_date || null,
-          estimated_budget: formData.estimated_budget ? parseFloat(formData.estimated_budget) : null,
-          kpi_alignment: formData.kpi_alignment || null,
-          vision_2030_goal: formData.vision_2030_goal || null,
-          created_by: '8066cfaf-4a91-4985-922b-74f6a286c441',
-          challenge_owner_id: '8066cfaf-4a91-4985-922b-74f6a286c441'
-        }])
+        .insert([challengeData])
         .select();
 
       if (error) {
@@ -430,7 +653,11 @@ export const AdminChallengeManagement = () => {
       end_date: challenge.end_date || "",
       estimated_budget: challenge.estimated_budget?.toString() || "",
       kpi_alignment: challenge.kpi_alignment || "",
-      vision_2030_goal: challenge.vision_2030_goal || ""
+      vision_2030_goal: challenge.vision_2030_goal || "",
+      assigned_expert_id: (challenge as any).assigned_expert_id || "",
+      partner_organization_id: (challenge as any).partner_organization_id || "",
+      internal_team_notes: (challenge as any).internal_team_notes || "",
+      collaboration_details: (challenge as any).collaboration_details || ""
     });
     setIsCreateDialogOpen(true);
   };
@@ -699,6 +926,95 @@ export const AdminChallengeManagement = () => {
                   rows={2}
                 />
               </div>
+
+              {/* Team-only fields - only visible to team members */}
+              {isTeamMember && (
+                <>
+                  <Separator className="my-6" />
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                      <Users className="h-4 w-4" />
+                      Team Management (Internal Only)
+                    </div>
+                    
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label htmlFor="assigned_expert">Assigned Expert</Label>
+                        <Select 
+                          value={formData.assigned_expert_id} 
+                          onValueChange={(value) => setFormData({...formData, assigned_expert_id: value})}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select an expert" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="">No expert assigned</SelectItem>
+                            {experts.map((expert) => (
+                              <SelectItem key={expert.id} value={expert.id}>
+                                <div className="flex items-center gap-2">
+                                  <UserCheck className="h-4 w-4" />
+                                  {expert.profiles?.name || 'Expert'} 
+                                  <span className="text-xs text-muted-foreground">
+                                    ({expert.expertise_areas?.slice(0, 2).join(', ')})
+                                  </span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="partner_org">Partner Organization</Label>
+                        <Select 
+                          value={formData.partner_organization_id} 
+                          onValueChange={(value) => setFormData({...formData, partner_organization_id: value})}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a partner" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="">No partner selected</SelectItem>
+                            {partners.map((partner) => (
+                              <SelectItem key={partner.id} value={partner.id}>
+                                <div className="flex items-center gap-2">
+                                  <Building2 className="h-4 w-4" />
+                                  {partner.name}
+                                  <span className="text-xs text-muted-foreground">
+                                    ({partner.partner_type})
+                                  </span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="internal_notes">Internal Team Notes</Label>
+                      <Textarea
+                        id="internal_notes"
+                        value={formData.internal_team_notes}
+                        onChange={(e) => setFormData({...formData, internal_team_notes: e.target.value})}
+                        placeholder="Internal notes for team coordination and planning..."
+                        rows={2}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="collaboration_details">Collaboration Details</Label>
+                      <Textarea
+                        id="collaboration_details"
+                        value={formData.collaboration_details}
+                        onChange={(e) => setFormData({...formData, collaboration_details: e.target.value})}
+                        placeholder="Details about partnerships, expert involvement, and collaboration approach..."
+                        rows={2}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
               
               <div className="flex justify-end gap-2">
                 <Button variant="outline" onClick={handleCloseCreateChallenge}>
@@ -806,6 +1122,43 @@ export const AdminChallengeManagement = () => {
                         </div>
                       )}
                     </div>
+
+                    {/* Team-only information */}
+                    {isTeamMember && (
+                      <div className="mt-3 p-3 bg-muted/50 rounded-md space-y-2">
+                        <div className="flex items-center gap-1 text-xs font-medium text-muted-foreground">
+                          <Users className="h-3 w-3" />
+                          Team Information
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                          {(challenge as any).assigned_expert_id && (
+                            <div className="flex items-center gap-2">
+                              <UserCheck className="h-4 w-4 text-blue-500" />
+                              <span className="text-xs">Expert Assigned</span>
+                            </div>
+                          )}
+                          {(challenge as any).partner_organization_id && (
+                            <div className="flex items-center gap-2">
+                              <Building2 className="h-4 w-4 text-green-500" />
+                              <span className="text-xs">Partner Linked</span>
+                            </div>
+                          )}
+                          {(challenge as any).internal_team_notes && (
+                            <div className="flex items-center gap-2">
+                              <FileText className="h-4 w-4 text-orange-500" />
+                              <span className="text-xs">Internal Notes</span>
+                            </div>
+                          )}
+                          {(challenge as any).collaboration_details && (
+                            <div className="flex items-center gap-2">
+                              <Briefcase className="h-4 w-4 text-purple-500" />
+                              <span className="text-xs">Collaboration Details</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
                     
                     <div className="flex gap-2">
                       <Button 
@@ -835,14 +1188,16 @@ export const AdminChallengeManagement = () => {
                         <Edit className="h-4 w-4 mr-2" />
                         Edit
                       </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => handleChallengeSettings(challenge)}
-                      >
-                        <Settings className="h-4 w-4 mr-2" />
-                        Settings
-                      </Button>
+                      {isTeamMember && (
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleChallengeSettings(challenge)}
+                        >
+                          <Settings className="h-4 w-4 mr-2" />
+                          Settings
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </CardContent>

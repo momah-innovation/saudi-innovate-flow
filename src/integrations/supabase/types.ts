@@ -74,6 +74,108 @@ export type Database = {
         }
         Relationships: []
       }
+      challenge_experts: {
+        Row: {
+          assignment_date: string | null
+          challenge_id: string
+          created_at: string | null
+          expert_id: string
+          id: string
+          notes: string | null
+          role_type: string | null
+          status: string | null
+        }
+        Insert: {
+          assignment_date?: string | null
+          challenge_id: string
+          created_at?: string | null
+          expert_id: string
+          id?: string
+          notes?: string | null
+          role_type?: string | null
+          status?: string | null
+        }
+        Update: {
+          assignment_date?: string | null
+          challenge_id?: string
+          created_at?: string | null
+          expert_id?: string
+          id?: string
+          notes?: string | null
+          role_type?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_experts_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challenge_experts_expert_id_fkey"
+            columns: ["expert_id"]
+            isOneToOne: false
+            referencedRelation: "experts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_partners: {
+        Row: {
+          challenge_id: string
+          contribution_details: string | null
+          created_at: string | null
+          funding_amount: number | null
+          id: string
+          partner_id: string
+          partnership_end_date: string | null
+          partnership_start_date: string | null
+          partnership_type: string | null
+          status: string | null
+        }
+        Insert: {
+          challenge_id: string
+          contribution_details?: string | null
+          created_at?: string | null
+          funding_amount?: number | null
+          id?: string
+          partner_id: string
+          partnership_end_date?: string | null
+          partnership_start_date?: string | null
+          partnership_type?: string | null
+          status?: string | null
+        }
+        Update: {
+          challenge_id?: string
+          contribution_details?: string | null
+          created_at?: string | null
+          funding_amount?: number | null
+          id?: string
+          partner_id?: string
+          partnership_end_date?: string | null
+          partnership_start_date?: string | null
+          partnership_type?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_partners_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challenge_partners_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       challenge_scorecards: {
         Row: {
           challenge_id: string | null
@@ -142,8 +244,10 @@ export type Database = {
       challenges: {
         Row: {
           actual_budget: number | null
+          assigned_expert_id: string | null
           challenge_owner_id: string | null
           challenge_type: string | null
+          collaboration_details: string | null
           created_at: string | null
           created_by: string | null
           department_id: string | null
@@ -154,7 +258,9 @@ export type Database = {
           end_date: string | null
           estimated_budget: number | null
           id: string
+          internal_team_notes: string | null
           kpi_alignment: string | null
+          partner_organization_id: string | null
           priority_level: string | null
           sector_id: string | null
           sensitivity_level: string | null
@@ -169,8 +275,10 @@ export type Database = {
         }
         Insert: {
           actual_budget?: number | null
+          assigned_expert_id?: string | null
           challenge_owner_id?: string | null
           challenge_type?: string | null
+          collaboration_details?: string | null
           created_at?: string | null
           created_by?: string | null
           department_id?: string | null
@@ -181,7 +289,9 @@ export type Database = {
           end_date?: string | null
           estimated_budget?: number | null
           id?: string
+          internal_team_notes?: string | null
           kpi_alignment?: string | null
+          partner_organization_id?: string | null
           priority_level?: string | null
           sector_id?: string | null
           sensitivity_level?: string | null
@@ -196,8 +306,10 @@ export type Database = {
         }
         Update: {
           actual_budget?: number | null
+          assigned_expert_id?: string | null
           challenge_owner_id?: string | null
           challenge_type?: string | null
+          collaboration_details?: string | null
           created_at?: string | null
           created_by?: string | null
           department_id?: string | null
@@ -208,7 +320,9 @@ export type Database = {
           end_date?: string | null
           estimated_budget?: number | null
           id?: string
+          internal_team_notes?: string | null
           kpi_alignment?: string | null
+          partner_organization_id?: string | null
           priority_level?: string | null
           sector_id?: string | null
           sensitivity_level?: string | null
@@ -222,6 +336,13 @@ export type Database = {
           vision_2030_goal?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "challenges_assigned_expert_id_fkey"
+            columns: ["assigned_expert_id"]
+            isOneToOne: false
+            referencedRelation: "experts"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "challenges_department_id_fkey"
             columns: ["department_id"]
@@ -241,6 +362,13 @@ export type Database = {
             columns: ["domain_id"]
             isOneToOne: false
             referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challenges_partner_organization_id_fkey"
+            columns: ["partner_organization_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
             referencedColumns: ["id"]
           },
           {
