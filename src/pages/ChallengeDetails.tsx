@@ -47,6 +47,13 @@ interface Challenge {
   vision_2030_goal?: string;
   created_at: string;
   updated_at: string;
+  // Organizational hierarchy
+  sector_id?: string;
+  deputy_id?: string;
+  department_id?: string;
+  domain_id?: string;
+  sub_domain_id?: string;
+  service_id?: string;
 }
 
 interface FocusQuestion {
@@ -58,6 +65,34 @@ interface FocusQuestion {
   is_sensitive: boolean;
 }
 
+interface ChallengeExpert {
+  id: string;
+  expert_id: string;
+  role_type: string;
+  status: string;
+  notes?: string;
+  assignment_date: string;
+  expert?: {
+    user_id: string;
+    expertise_areas: string[];
+    expert_level: string;
+    availability_status: string;
+    profiles?: {
+      name: string;
+      email: string;
+    };
+  };
+}
+
+interface OrganizationalHierarchy {
+  sector?: { id: string; name: string; name_ar?: string };
+  deputy?: { id: string; name: string; name_ar?: string };
+  department?: { id: string; name: string; name_ar?: string };
+  domain?: { id: string; name: string; name_ar?: string };
+  sub_domain?: { id: string; name: string; name_ar?: string };
+  service?: { id: string; name: string; name_ar?: string };
+}
+
 const ChallengeDetails = () => {
   const { challengeId } = useParams();
   const navigate = useNavigate();
@@ -65,6 +100,8 @@ const ChallengeDetails = () => {
   const { hasRole } = useAuth();
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
+  const [assignedExperts, setAssignedExperts] = useState<ChallengeExpert[]>([]);
+  const [orgHierarchy, setOrgHierarchy] = useState<OrganizationalHierarchy>({});
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState<{[key: string]: boolean}>({});
   const [editValues, setEditValues] = useState<{[key: string]: any}>({});
@@ -111,6 +148,19 @@ const ChallengeDetails = () => {
           fetchFocusQuestions();
         }
       )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'challenge_experts',
+          filter: `challenge_id=eq.${challengeId}`,
+        },
+        () => {
+          // Refetch assigned experts when they change
+          fetchAssignedExperts();
+        }
+      )
       .subscribe();
 
     return () => {
@@ -129,6 +179,59 @@ const ChallengeDetails = () => {
 
     if (!error && data) {
       setFocusQuestions(data);
+    }
+  };
+
+  const fetchAssignedExperts = async () => {
+    if (!challengeId) return;
+    
+    const { data, error } = await supabase
+      .from('challenge_experts')
+      .select(`
+        *,
+        expert:experts(
+          user_id,
+          expertise_areas,
+          expert_level,
+          availability_status
+        )
+      `)
+      .eq('challenge_id', challengeId)
+      .eq('status', 'active');
+
+    if (!error && data) {
+      // Transform the data to match our interface
+      const transformedData = data.map(item => ({
+        ...item,
+        expert: item.expert ? {
+          ...item.expert,
+          profiles: { name: 'Expert Name', email: 'expert@example.com' } // Placeholder - should fetch from profiles
+        } : undefined
+      }));
+      setAssignedExperts(transformedData as ChallengeExpert[]);
+    }
+  };
+
+  const removeExpert = async (expertAssignmentId: string) => {
+    try {
+      const { error } = await supabase
+        .from('challenge_experts')
+        .update({ status: 'inactive' })
+        .eq('id', expertAssignmentId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Expert removed from challenge",
+      });
+    } catch (error) {
+      console.error('Error removing expert:', error);
+      toast({
+        title: "Error",
+        description: "Failed to remove expert",
+        variant: "destructive",
+      });
     }
   };
 
@@ -171,6 +274,38 @@ const ChallengeDetails = () => {
         setFocusQuestions(questionsData || []);
       }
 
+      // Fetch assigned experts
+      const { data: expertsData, error: expertsError } = await supabase
+        .from('challenge_experts')
+        .select(`
+          *,
+          expert:experts(
+            user_id,
+            expertise_areas,
+            expert_level,
+            availability_status
+          )
+        `)
+        .eq('challenge_id', challengeId)
+        .eq('status', 'active');
+
+      if (!expertsError && expertsData) {
+        // Transform the data to match our interface  
+        const transformedData = expertsData.map(item => ({
+          ...item,
+          expert: item.expert ? {
+            ...item.expert,
+            profiles: { name: 'Expert Name', email: 'expert@example.com' } // Placeholder - should fetch from profiles
+          } : undefined
+        }));
+        setAssignedExperts(transformedData as ChallengeExpert[]);
+      }
+
+      // Fetch organizational hierarchy
+      if (challengeData) {
+        await fetchOrganizationalHierarchy(challengeData);
+      }
+
     } catch (error) {
       console.error('Error in fetchChallengeDetails:', error);
       toast({
@@ -180,6 +315,76 @@ const ChallengeDetails = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchOrganizationalHierarchy = async (challenge: Challenge) => {
+    const hierarchy: OrganizationalHierarchy = {};
+
+    try {
+      // Fetch sector
+      if (challenge.sector_id) {
+        const { data: sector } = await supabase
+          .from('sectors')
+          .select('id, name, name_ar')
+          .eq('id', challenge.sector_id)
+          .single();
+        if (sector) hierarchy.sector = sector;
+      }
+
+      // Fetch deputy
+      if (challenge.deputy_id) {
+        const { data: deputy } = await supabase
+          .from('deputies')
+          .select('id, name, name_ar')
+          .eq('id', challenge.deputy_id)
+          .single();
+        if (deputy) hierarchy.deputy = deputy;
+      }
+
+      // Fetch department
+      if (challenge.department_id) {
+        const { data: department } = await supabase
+          .from('departments')
+          .select('id, name, name_ar')
+          .eq('id', challenge.department_id)
+          .single();
+        if (department) hierarchy.department = department;
+      }
+
+      // Fetch domain
+      if (challenge.domain_id) {
+        const { data: domain } = await supabase
+          .from('domains')
+          .select('id, name, name_ar')
+          .eq('id', challenge.domain_id)
+          .single();
+        if (domain) hierarchy.domain = domain;
+      }
+
+      // Fetch sub_domain
+      if (challenge.sub_domain_id) {
+        const { data: subDomain } = await supabase
+          .from('sub_domains')
+          .select('id, name, name_ar')
+          .eq('id', challenge.sub_domain_id)
+          .single();
+        if (subDomain) hierarchy.sub_domain = subDomain;
+      }
+
+      // Fetch service
+      if (challenge.service_id) {
+        const { data: service } = await supabase
+          .from('services')
+          .select('id, name, name_ar')
+          .eq('id', challenge.service_id)
+          .single();
+        if (service) hierarchy.service = service;
+      }
+
+      setOrgHierarchy(hierarchy);
+    } catch (error) {
+      console.error('Error fetching organizational hierarchy:', error);
     }
   };
 
@@ -404,6 +609,7 @@ const ChallengeDetails = () => {
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="questions">Focus Questions</TabsTrigger>
+              <TabsTrigger value="experts">Assigned Experts</TabsTrigger>
               <TabsTrigger value="requirements">Requirements</TabsTrigger>
             </TabsList>
 
@@ -543,6 +749,116 @@ const ChallengeDetails = () => {
               )}
             </TabsContent>
 
+            <TabsContent value="experts" className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <span>Assigned Experts</span>
+                    {canEdit && (
+                      <Button onClick={() => navigate(`/admin/expert-assignments`)}>
+                        <Users className="h-4 w-4 mr-2" />
+                        Manage Assignments
+                      </Button>
+                    )}
+                  </CardTitle>
+                  <CardDescription>
+                    Experts assigned to evaluate and guide this challenge
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {assignedExperts.length === 0 ? (
+                    <p className="text-muted-foreground text-center py-8">
+                      No experts have been assigned to this challenge yet.
+                    </p>
+                  ) : (
+                    assignedExperts.map((assignment) => (
+                      <div key={assignment.id} className="space-y-3 p-4 border rounded-lg">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              <h4 className="font-semibold">
+                                {assignment.expert?.profiles?.name || 'Unknown Expert'}
+                              </h4>
+                              <Badge variant="secondary">
+                                {assignment.role_type}
+                              </Badge>
+                              <Badge 
+                                variant={assignment.expert?.availability_status === 'available' ? 'default' : 'outline'}
+                                className="text-xs"
+                              >
+                                {assignment.expert?.availability_status}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              {assignment.expert?.profiles?.email}
+                            </p>
+                            <div className="flex flex-wrap gap-1 mb-2">
+                              {assignment.expert?.expertise_areas?.map((area, index) => (
+                                <Badge key={index} variant="outline" className="text-xs">
+                                  {area}
+                                </Badge>
+                              ))}
+                            </div>
+                            {assignment.notes && (
+                              <p className="text-sm text-muted-foreground italic">
+                                "{assignment.notes}"
+                              </p>
+                            )}
+                            <p className="text-xs text-muted-foreground mt-2">
+                              Assigned on {formatDate(assignment.assignment_date)}
+                            </p>
+                          </div>
+                          {canEdit && (
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              onClick={() => removeExpert(assignment.id)}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="requirements" className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Submission Requirements</CardTitle>
+                  <CardDescription>
+                    <strong>Note:</strong> These are currently hardcoded sample requirements. 
+                    This content should be made dynamic and stored in the database for each challenge.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div>
+                      <h4 className="font-medium mb-2">Required Documents</h4>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        <li>• Solution overview and methodology</li>
+                        <li>• Technical implementation plan</li>
+                        <li>• Budget breakdown and timeline</li>
+                        <li>• Team composition and expertise</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-medium mb-2">Evaluation Criteria</h4>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        <li>• Innovation and creativity (25%)</li>
+                        <li>• Technical feasibility (25%)</li>
+                        <li>• Impact potential (25%)</li>
+                        <li>• Implementation plan (25%)</li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
             <TabsContent value="questions" className="space-y-4">
               <Card>
                 <CardHeader>
@@ -594,41 +910,58 @@ const ChallengeDetails = () => {
                 </CardContent>
               </Card>
             </TabsContent>
-
-            <TabsContent value="requirements" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Submission Requirements</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div>
-                      <h4 className="font-medium mb-2">Required Documents</h4>
-                      <ul className="text-sm text-muted-foreground space-y-1">
-                        <li>• Solution overview and methodology</li>
-                        <li>• Technical implementation plan</li>
-                        <li>• Budget breakdown and timeline</li>
-                        <li>• Team composition and expertise</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-medium mb-2">Evaluation Criteria</h4>
-                      <ul className="text-sm text-muted-foreground space-y-1">
-                        <li>• Innovation and creativity (25%)</li>
-                        <li>• Technical feasibility (25%)</li>
-                        <li>• Impact potential (25%)</li>
-                        <li>• Implementation plan (25%)</li>
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
           </Tabs>
         </div>
 
         {/* Sidebar */}
         <div className="space-y-4">
+          {/* Organizational Hierarchy */}
+          {Object.keys(orgHierarchy).length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Organizational Structure</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {orgHierarchy.sector && (
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-xs">Sector</Badge>
+                    <span className="text-sm">{orgHierarchy.sector.name}</span>
+                  </div>
+                )}
+                {orgHierarchy.deputy && (
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-xs">Deputy</Badge>
+                    <span className="text-sm">{orgHierarchy.deputy.name}</span>
+                  </div>
+                )}
+                {orgHierarchy.department && (
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-xs">Department</Badge>
+                    <span className="text-sm">{orgHierarchy.department.name}</span>
+                  </div>
+                )}
+                {orgHierarchy.domain && (
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-xs">Domain</Badge>
+                    <span className="text-sm">{orgHierarchy.domain.name}</span>
+                  </div>
+                )}
+                {orgHierarchy.sub_domain && (
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-xs">Sub-domain</Badge>
+                    <span className="text-sm">{orgHierarchy.sub_domain.name}</span>
+                  </div>
+                )}
+                {orgHierarchy.service && (
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-xs">Service</Badge>
+                    <span className="text-sm">{orgHierarchy.service.name}</span>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
           <Card>
             <CardHeader>
               <CardTitle>Challenge Details</CardTitle>
