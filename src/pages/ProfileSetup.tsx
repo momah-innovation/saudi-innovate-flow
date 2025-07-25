@@ -138,6 +138,10 @@ const ProfileSetup = () => {
     }
   };
 
+  const handleSkip = () => {
+    navigate('/');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4">
       <div className="max-w-2xl mx-auto py-8">
@@ -146,6 +150,13 @@ const ProfileSetup = () => {
           <p className="text-muted-foreground mt-2">
             Tell us about yourself to get started with Ruwād Innovation
           </p>
+          <Button 
+            variant="outline" 
+            onClick={handleSkip}
+            className="mt-4"
+          >
+            Skip for now
+          </Button>
         </div>
 
         <Card>
