@@ -283,6 +283,68 @@ export const AdminChallengeManagement = () => {
     }
   };
 
+  // Filter functions for cascading dropdowns
+  const getFilteredDepartments = () => {
+    if (!formData.sector_id) return departments;
+    // For now, return all departments since we don't have sector-department relationship
+    // You can modify this when the relationship is established in DB
+    return departments;
+  };
+
+  const getFilteredDomains = () => {
+    if (!formData.department_id) return [];
+    return domains.filter(domain => domain.department_id === formData.department_id);
+  };
+
+  const getFilteredSubDomains = () => {
+    if (!formData.domain_id) return [];
+    return subDomains.filter(subDomain => subDomain.domain_id === formData.domain_id);
+  };
+
+  const getFilteredServices = () => {
+    if (!formData.sub_domain_id) return [];
+    return services.filter(service => service.sub_domain_id === formData.sub_domain_id);
+  };
+
+  // Handle cascading resets
+  const handleSectorChange = (value: string) => {
+    setFormData({
+      ...formData,
+      sector_id: value,
+      department_id: "",
+      domain_id: "",
+      sub_domain_id: "",
+      service_id: ""
+    });
+  };
+
+  const handleDepartmentChange = (value: string) => {
+    setFormData({
+      ...formData,
+      department_id: value,
+      domain_id: "",
+      sub_domain_id: "",
+      service_id: ""
+    });
+  };
+
+  const handleDomainChange = (value: string) => {
+    setFormData({
+      ...formData,
+      domain_id: value,
+      sub_domain_id: "",
+      service_id: ""
+    });
+  };
+
+  const handleSubDomainChange = (value: string) => {
+    setFormData({
+      ...formData,
+      sub_domain_id: value,
+      service_id: ""
+    });
+  };
+
   const fetchChallengeExperts = async (challengeId: string) => {
     try {
       const { data, error } = await supabase
@@ -1000,12 +1062,11 @@ export const AdminChallengeManagement = () => {
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="sector">Sector</Label>
-                    <Select value={formData.sector_id} onValueChange={(value) => setFormData({...formData, sector_id: value})}>
+                    <Select value={formData.sector_id} onValueChange={handleSectorChange}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select sector" />
                       </SelectTrigger>
                       <SelectContent>
-                        
                         {sectors.map((sector) => (
                           <SelectItem key={sector.id} value={sector.id}>
                             {sector.name}
@@ -1017,13 +1078,16 @@ export const AdminChallengeManagement = () => {
                   
                   <div className="space-y-2">
                     <Label htmlFor="department">Department</Label>
-                    <Select value={formData.department_id} onValueChange={(value) => setFormData({...formData, department_id: value})}>
+                    <Select 
+                      value={formData.department_id} 
+                      onValueChange={handleDepartmentChange}
+                      disabled={!formData.sector_id}
+                    >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select department" />
+                        <SelectValue placeholder={formData.sector_id ? "Select department" : "Select sector first"} />
                       </SelectTrigger>
                       <SelectContent>
-                        
-                        {departments.map((dept) => (
+                        {getFilteredDepartments().map((dept) => (
                           <SelectItem key={dept.id} value={dept.id}>
                             {dept.name}
                           </SelectItem>
@@ -1036,13 +1100,16 @@ export const AdminChallengeManagement = () => {
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="domain">Domain</Label>
-                    <Select value={formData.domain_id} onValueChange={(value) => setFormData({...formData, domain_id: value})}>
+                    <Select 
+                      value={formData.domain_id} 
+                      onValueChange={handleDomainChange}
+                      disabled={!formData.department_id}
+                    >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select domain" />
+                        <SelectValue placeholder={formData.department_id ? "Select domain" : "Select department first"} />
                       </SelectTrigger>
                       <SelectContent>
-                        
-                        {domains.map((domain) => (
+                        {getFilteredDomains().map((domain) => (
                           <SelectItem key={domain.id} value={domain.id}>
                             {domain.name}
                           </SelectItem>
@@ -1053,13 +1120,16 @@ export const AdminChallengeManagement = () => {
                   
                   <div className="space-y-2">
                     <Label htmlFor="sub_domain">Sub-Domain</Label>
-                    <Select value={formData.sub_domain_id} onValueChange={(value) => setFormData({...formData, sub_domain_id: value})}>
+                    <Select 
+                      value={formData.sub_domain_id} 
+                      onValueChange={handleSubDomainChange}
+                      disabled={!formData.domain_id}
+                    >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select sub-domain" />
+                        <SelectValue placeholder={formData.domain_id ? "Select sub-domain" : "Select domain first"} />
                       </SelectTrigger>
                       <SelectContent>
-                        
-                        {subDomains.map((subDomain) => (
+                        {getFilteredSubDomains().map((subDomain) => (
                           <SelectItem key={subDomain.id} value={subDomain.id}>
                             {subDomain.name}
                           </SelectItem>
@@ -1071,13 +1141,16 @@ export const AdminChallengeManagement = () => {
                 
                 <div className="space-y-2">
                   <Label htmlFor="service">Service</Label>
-                  <Select value={formData.service_id} onValueChange={(value) => setFormData({...formData, service_id: value})}>
+                  <Select 
+                    value={formData.service_id} 
+                    onValueChange={(value) => setFormData({...formData, service_id: value})}
+                    disabled={!formData.sub_domain_id}
+                  >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select service" />
+                      <SelectValue placeholder={formData.sub_domain_id ? "Select service" : "Select sub-domain first"} />
                     </SelectTrigger>
                     <SelectContent>
-                      
-                      {services.map((service) => (
+                      {getFilteredServices().map((service) => (
                         <SelectItem key={service.id} value={service.id}>
                           {service.name}
                         </SelectItem>
