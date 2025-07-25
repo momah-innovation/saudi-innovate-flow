@@ -68,6 +68,8 @@ export const AdminChallengeManagement = () => {
   // Form states
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isQuestionDialogOpen, setIsQuestionDialogOpen] = useState(false);
+  const [isEditQuestionDialogOpen, setIsEditQuestionDialogOpen] = useState(false);
+  const [editingQuestion, setEditingQuestion] = useState<FocusQuestion | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [settingsChallenge, setSettingsChallenge] = useState<Challenge | null>(null);
   const [formData, setFormData] = useState({
@@ -86,11 +88,21 @@ export const AdminChallengeManagement = () => {
     vision_2030_goal: ""
   });
   
+  
+  // Filtering states
+  const [challengeFilter, setChallengeFilter] = useState('');
+  const [challengeStatusFilter, setChallengeStatusFilter] = useState('all');
+  const [challengePriorityFilter, setChallengePriorityFilter] = useState('all');
+  const [questionFilter, setQuestionFilter] = useState('');
+  const [questionTypeFilter, setQuestionTypeFilter] = useState('all');
+  const [questionSensitivityFilter, setQuestionSensitivityFilter] = useState('all');
+  
   const [questionFormData, setQuestionFormData] = useState({
     question_text: "",
     question_text_ar: "",
     question_type: "general",
-    is_sensitive: false
+    is_sensitive: false,
+    order_sequence: 1
   });
 
   useEffect(() => {
@@ -285,7 +297,8 @@ export const AdminChallengeManagement = () => {
       question_text: "",
       question_text_ar: "",
       question_type: "general",
-      is_sensitive: false
+      is_sensitive: false,
+      order_sequence: 1
     });
   };
 
@@ -375,6 +388,87 @@ export const AdminChallengeManagement = () => {
       });
     }
   };
+
+  const handleEditQuestion = (question: FocusQuestion) => {
+    setEditingQuestion(question);
+    setQuestionFormData({
+      question_text: question.question_text,
+      question_text_ar: question.question_text_ar || '',
+      question_type: question.question_type,
+      is_sensitive: question.is_sensitive,
+      order_sequence: question.order_sequence
+    });
+    setIsEditQuestionDialogOpen(true);
+  };
+
+  const handleUpdateQuestion = async () => {
+    if (!editingQuestion || !questionFormData.question_text) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('focus_questions')
+        .update({
+          question_text: questionFormData.question_text,
+          question_text_ar: questionFormData.question_text_ar || null,
+          question_type: questionFormData.question_type,
+          is_sensitive: questionFormData.is_sensitive,
+          order_sequence: questionFormData.order_sequence,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', editingQuestion.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Focus question updated successfully.",
+      });
+
+      setIsEditQuestionDialogOpen(false);
+      setEditingQuestion(null);
+      if (selectedChallenge) {
+        fetchFocusQuestions(selectedChallenge);
+      }
+      setQuestionFormData({
+        question_text: '',
+        question_text_ar: '',
+        question_type: 'general',
+        is_sensitive: false,
+        order_sequence: 1
+      });
+
+    } catch (error) {
+      console.error('Error updating focus question:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update focus question. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Filter functions
+  const filteredChallenges = challenges.filter(challenge => {
+    const matchesSearch = challenge.title.toLowerCase().includes(challengeFilter.toLowerCase()) ||
+                         (challenge.title_ar && challenge.title_ar.includes(challengeFilter));
+    const matchesStatus = challengeStatusFilter === 'all' || challenge.status === challengeStatusFilter;
+    const matchesPriority = challengePriorityFilter === 'all' || challenge.priority_level === challengePriorityFilter;
+    
+    return matchesSearch && matchesStatus && matchesPriority;
+  });
+
+  const filteredFocusQuestions = focusQuestions.filter(question => {
+    const matchesSearch = question.question_text.toLowerCase().includes(questionFilter.toLowerCase()) ||
+                         (question.question_text_ar && question.question_text_ar.includes(questionFilter));
+    const matchesType = questionTypeFilter === 'all' || question.question_type === questionTypeFilter;
+    const matchesSensitivity = questionSensitivityFilter === 'all' || 
+                              (questionSensitivityFilter === 'sensitive' && question.is_sensitive) ||
+                              (questionSensitivityFilter === 'normal' && !question.is_sensitive);
+    
+    return matchesSearch && matchesType && matchesSensitivity;
+  });
 
   return (
     <div className="p-6 space-y-6">
@@ -595,9 +689,43 @@ export const AdminChallengeManagement = () => {
         </TabsList>
 
         <TabsContent value="challenges" className="space-y-4">
+          {/* Challenge Filters */}
+          <div className="flex flex-wrap gap-4 p-4 bg-muted/50 rounded-lg">
+            <div className="flex-1 min-w-64">
+              <Input
+                placeholder="Search challenges..."
+                value={challengeFilter}
+                onChange={(e) => setChallengeFilter(e.target.value)}
+                className="w-full"
+              />
+            </div>
+            <Select value={challengeStatusFilter} onValueChange={setChallengeStatusFilter}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Filter by Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="draft">Draft</SelectItem>
+                <SelectItem value="published">Published</SelectItem>
+                <SelectItem value="archived">Archived</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={challengePriorityFilter} onValueChange={setChallengePriorityFilter}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Filter by Priority" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Priorities</SelectItem>
+                <SelectItem value="low">Low</SelectItem>
+                <SelectItem value="medium">Medium</SelectItem>
+                <SelectItem value="high">High</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
           {/* Challenges List */}
           <div className="grid gap-4">
-            {challenges.map((challenge) => (
+            {filteredChallenges.map((challenge) => (
               <Card key={challenge.id}>
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -701,8 +829,47 @@ export const AdminChallengeManagement = () => {
                     Manage focus questions for the selected challenge
                   </p>
                 </div>
-                
-                <Dialog open={isQuestionDialogOpen} onOpenChange={setIsQuestionDialogOpen}>
+              
+              {/* Focus Questions Filters */}
+              <div className="flex flex-wrap gap-4 p-4 bg-muted/50 rounded-lg mb-6">
+                <div className="flex-1 min-w-64">
+                  <Input
+                    placeholder="Search focus questions..."
+                    value={questionFilter}
+                    onChange={(e) => setQuestionFilter(e.target.value)}
+                    className="w-full"
+                  />
+                </div>
+                <Select value={questionTypeFilter} onValueChange={setQuestionTypeFilter}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue placeholder="Filter by Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Types</SelectItem>
+                    <SelectItem value="general">General</SelectItem>
+                    <SelectItem value="technical">Technical</SelectItem>
+                    <SelectItem value="business">Business</SelectItem>
+                    <SelectItem value="impact">Impact</SelectItem>
+                    <SelectItem value="implementation">Implementation</SelectItem>
+                    <SelectItem value="social">Social</SelectItem>
+                    <SelectItem value="ethical">Ethical</SelectItem>
+                    <SelectItem value="medical">Medical</SelectItem>
+                    <SelectItem value="regulatory">Regulatory</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={questionSensitivityFilter} onValueChange={setQuestionSensitivityFilter}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue placeholder="Filter by Sensitivity" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Questions</SelectItem>
+                    <SelectItem value="normal">Normal</SelectItem>
+                    <SelectItem value="sensitive">Sensitive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <Dialog open={isQuestionDialogOpen} onOpenChange={setIsQuestionDialogOpen}>
                   <DialogTrigger asChild>
                     <Button>
                       <Plus className="h-4 w-4 mr-2" />
@@ -784,7 +951,7 @@ export const AdminChallengeManagement = () => {
               </div>
               
               <div className="space-y-3">
-                {focusQuestions.map((question, index) => (
+                {filteredFocusQuestions.map((question, index) => (
                   <Card key={question.id}>
                     <CardContent className="pt-4">
                       <div className="flex items-start justify-between">
@@ -810,13 +977,7 @@ export const AdminChallengeManagement = () => {
                           <Button 
                             variant="outline" 
                             size="sm"
-                            onClick={() => {
-                              // Edit functionality - could open a dialog
-                              toast({
-                                title: "Edit Question",
-                                description: "Edit functionality will be available in the next update.",
-                              });
-                            }}
+                            onClick={() => handleEditQuestion(question)}
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
@@ -832,6 +993,16 @@ export const AdminChallengeManagement = () => {
                     </CardContent>
                   </Card>
                 ))}
+                
+                {filteredFocusQuestions.length === 0 && focusQuestions.length > 0 && (
+                  <div className="text-center py-8">
+                    <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">No questions match your filter</h3>
+                    <p className="text-muted-foreground">
+                      Try adjusting your search criteria or filters.
+                    </p>
+                  </div>
+                )}
                 
                 {focusQuestions.length === 0 && (
                   <div className="text-center py-8">
@@ -855,6 +1026,96 @@ export const AdminChallengeManagement = () => {
           )}
         </TabsContent>
       </Tabs>
+      
+      {/* Edit Focus Question Dialog */}
+      <Dialog open={isEditQuestionDialogOpen} onOpenChange={setIsEditQuestionDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Focus Question</DialogTitle>
+            <DialogDescription>
+              Update the focus question details.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="edit_question_text">Question (English) *</Label>
+              <Textarea
+                id="edit_question_text"
+                value={questionFormData.question_text}
+                onChange={(e) => setQuestionFormData({...questionFormData, question_text: e.target.value})}
+                placeholder="What specific problem should this solution address?"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="edit_question_text_ar">Question (Arabic)</Label>
+              <Textarea
+                id="edit_question_text_ar"
+                value={questionFormData.question_text_ar}
+                onChange={(e) => setQuestionFormData({...questionFormData, question_text_ar: e.target.value})}
+                placeholder="ما هي المشكلة المحددة التي يجب أن يعالجها هذا الحل؟"
+                dir="rtl"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="edit_question_type">Question Type</Label>
+              <Select 
+                value={questionFormData.question_type} 
+                onValueChange={(value) => setQuestionFormData({...questionFormData, question_type: value})}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="general">General</SelectItem>
+                  <SelectItem value="technical">Technical</SelectItem>
+                  <SelectItem value="business">Business</SelectItem>
+                  <SelectItem value="impact">Impact</SelectItem>
+                  <SelectItem value="implementation">Implementation</SelectItem>
+                  <SelectItem value="social">Social</SelectItem>
+                  <SelectItem value="ethical">Ethical</SelectItem>
+                  <SelectItem value="medical">Medical</SelectItem>
+                  <SelectItem value="regulatory">Regulatory</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="edit_order_sequence">Order</Label>
+              <Input
+                id="edit_order_sequence"
+                type="number"
+                value={questionFormData.order_sequence}
+                onChange={(e) => setQuestionFormData({...questionFormData, order_sequence: parseInt(e.target.value) || 1})}
+                min="1"
+              />
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="edit_is_sensitive"
+                checked={questionFormData.is_sensitive}
+                onCheckedChange={(checked) => setQuestionFormData({...questionFormData, is_sensitive: checked})}
+              />
+              <Label htmlFor="edit_is_sensitive" className="flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4" />
+                Sensitive Question
+              </Label>
+            </div>
+          
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setIsEditQuestionDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleUpdateQuestion} disabled={!questionFormData.question_text}>
+                Update Question
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Challenge Settings Dialog */}
       {settingsChallenge && (
