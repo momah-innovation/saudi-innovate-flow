@@ -48,19 +48,10 @@ export function ExpertAssignmentDialog({
     try {
       setFetchingExperts(true);
       
-      // Get all experts with their profiles
+      // Get all experts
       const { data: allExperts, error: expertsError } = await supabase
         .from('experts')
-        .select(`
-          id,
-          user_id,
-          expertise_areas,
-          expert_level,
-          profiles:user_id (
-            name,
-            email
-          )
-        `);
+        .select('id, user_id, expertise_areas, expert_level');
 
       if (expertsError) throw expertsError;
 
@@ -75,18 +66,42 @@ export function ExpertAssignmentDialog({
 
       const assignedExpertIds = assignedExperts?.map(ae => ae.expert_id) || [];
       
-      // Filter out already assigned experts and type-cast properly
-      const availableExperts = (allExperts as any[])?.filter(expert => 
-        !assignedExpertIds.includes(expert.id)
-      ).map(expert => ({
-        id: expert.id,
-        user_id: expert.user_id,
-        expertise_areas: expert.expertise_areas || [],
-        expert_level: expert.expert_level || '',
-        profiles: expert.profiles
-      })) || [];
+      // Filter out already assigned experts
+      const availableExpertIds = (allExperts || [])
+        .filter(expert => !assignedExpertIds.includes(expert.id))
+        .map(expert => expert.user_id);
 
-      setExperts(availableExperts);
+      if (availableExpertIds.length === 0) {
+        setExperts([]);
+        return;
+      }
+
+      // Get profiles for available experts
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, name, email')
+        .in('id', availableExpertIds);
+
+      if (profilesError) throw profilesError;
+
+      // Combine experts with their profiles
+      const expertsWithProfiles = (allExperts || [])
+        .filter(expert => !assignedExpertIds.includes(expert.id))
+        .map(expert => {
+          const profile = (profiles || []).find(p => p.id === expert.user_id);
+          return {
+            id: expert.id,
+            user_id: expert.user_id,
+            expertise_areas: expert.expertise_areas || [],
+            expert_level: expert.expert_level || '',
+            profiles: profile ? {
+              name: profile.name,
+              email: profile.email
+            } : null
+          };
+        });
+
+      setExperts(expertsWithProfiles);
     } catch (error) {
       console.error('Error fetching experts:', error);
       toast.error('Failed to load available experts');
