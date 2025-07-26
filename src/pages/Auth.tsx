@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 
 const Auth = () => {
@@ -13,6 +14,31 @@ const Auth = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordMinLength, setPasswordMinLength] = useState(6);
+  
+  // Load system settings
+  useEffect(() => {
+    const loadSystemSettings = async () => {
+      try {
+        const { data } = await supabase
+          .from('system_settings')
+          .select('setting_key, setting_value')
+          .in('setting_key', ['password_min_length']);
+        
+        if (data) {
+          data.forEach(setting => {
+            if (setting.setting_key === 'password_min_length') {
+              setPasswordMinLength(parseInt(String(setting.setting_value)) || 6);
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error loading system settings:', error);
+      }
+    };
+    
+    loadSystemSettings();
+  }, []);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -55,8 +81,8 @@ const Auth = () => {
       return;
     }
 
-    if (formData.password.length < 6) {
-      alert('Password must be at least 6 characters');
+    if (formData.password.length < passwordMinLength) {
+      alert(`Password must be at least ${passwordMinLength} characters`);
       return;
     }
 
@@ -206,7 +232,7 @@ const Auth = () => {
                       <Input
                         id="signup-password"
                         type={showPassword ? 'text' : 'password'}
-                        placeholder="Create a password (min. 6 characters)"
+                        placeholder={`Create a password (min. ${passwordMinLength} characters)`}
                         value={formData.password}
                         onChange={(e) => handleInputChange('password', e.target.value)}
                         required

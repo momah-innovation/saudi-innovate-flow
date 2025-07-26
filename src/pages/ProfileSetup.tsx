@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -19,6 +19,32 @@ const ProfileSetup = () => {
   const [minExperienceYears, setMinExperienceYears] = useState(0);
   const [maxExperienceYears, setMaxExperienceYears] = useState(50);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Load system settings
+  useEffect(() => {
+    const loadSystemSettings = async () => {
+      try {
+        const { data } = await supabase
+          .from('system_settings')
+          .select('setting_key, setting_value')
+          .in('setting_key', ['user_experience_years_min', 'user_experience_years_max']);
+        
+        if (data) {
+          data.forEach(setting => {
+            if (setting.setting_key === 'user_experience_years_min') {
+              setMinExperienceYears(parseInt(String(setting.setting_value)) || 0);
+            } else if (setting.setting_key === 'user_experience_years_max') {
+              setMaxExperienceYears(parseInt(String(setting.setting_value)) || 50);
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error loading system settings:', error);
+      }
+    };
+    
+    loadSystemSettings();
+  }, []);
   const [profileData, setProfileData] = useState({
     name: '',
     name_ar: '',

@@ -91,6 +91,41 @@ export default function TeamManagement() {
   const [maxConcurrentProjects, setMaxConcurrentProjects] = useState(20);
   const [insights, setInsights] = useState<any[]>([]);
 
+  // Load system settings
+  useEffect(() => {
+    const loadSystemSettings = async () => {
+      try {
+        const { data } = await supabase
+          .from('system_settings')
+          .select('setting_key, setting_value')
+          .in('setting_key', [
+            'team_capacity_warning_threshold',
+            'team_performance_rating_min',
+            'team_performance_rating_max',
+            'team_max_concurrent_projects'
+          ]);
+        
+        if (data) {
+          data.forEach(setting => {
+            if (setting.setting_key === 'team_capacity_warning_threshold') {
+              setCapacityWarningThreshold(parseInt(String(setting.setting_value)) || 90);
+            } else if (setting.setting_key === 'team_performance_rating_min') {
+              setPerformanceRatingMin(parseInt(String(setting.setting_value)) || 0);
+            } else if (setting.setting_key === 'team_performance_rating_max') {
+              setPerformanceRatingMax(parseInt(String(setting.setting_value)) || 5);
+            } else if (setting.setting_key === 'team_max_concurrent_projects') {
+              setMaxConcurrentProjects(parseInt(String(setting.setting_value)) || 20);
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error loading system settings:', error);
+      }
+    };
+    
+    loadSystemSettings();
+  }, []);
+
   useEffect(() => {
     fetchData();
   }, []);
