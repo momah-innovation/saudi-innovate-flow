@@ -18,7 +18,7 @@ import { Header } from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface ProfileForm {
   name: string;
@@ -39,6 +39,7 @@ interface UserRole {
 
 export default function Settings() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user, userProfile, refreshProfile } = useAuth();
   const { toast } = useToast();
   const [profileForm, setProfileForm] = useState<ProfileForm>({
@@ -58,6 +59,10 @@ export default function Settings() {
   const isAdmin = userRoles.some(role => 
     ['admin', 'super_admin'].includes(role.role) && role.is_active
   );
+
+  // Get initial tab from URL params
+  const tabFromUrl = searchParams.get('tab');
+  const defaultTab = (tabFromUrl === 'system' && isAdmin) ? 'system' : 'profile';
 
   useEffect(() => {
     if (userProfile) {
@@ -144,6 +149,10 @@ export default function Settings() {
       navigate("/admin/expert-assignments");
     } else if (tab === "user-management") {
       navigate("/admin/users");
+    } else if (tab === "system-settings") {
+      navigate("/settings?tab=system");
+    } else if (tab === "settings") {
+      navigate("/settings");
     } else {
       navigate("/");
     }
@@ -167,7 +176,7 @@ export default function Settings() {
                 </p>
               </div>
 
-              <Tabs defaultValue="profile" className="space-y-6">
+              <Tabs defaultValue={defaultTab} className="space-y-6">
                 <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-5' : 'grid-cols-4'}`}>
                   <TabsTrigger value="profile" className="flex items-center gap-2">
                     <User className="h-4 w-4" />

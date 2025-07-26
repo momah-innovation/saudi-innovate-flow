@@ -41,6 +41,14 @@ const Index = () => {
       navigate("/admin/users");
       return;
     }
+    if (tab === "system-settings") {
+      navigate("/settings?tab=system");
+      return;
+    }
+    if (tab === "settings") {
+      navigate("/settings");
+      return;
+    }
     setActiveTab(tab);
   };
 
