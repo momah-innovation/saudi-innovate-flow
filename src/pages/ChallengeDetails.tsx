@@ -421,22 +421,22 @@ const ChallengeDetails = () => {
 
       // Fetch sub_domain
       if (challenge.sub_domain_id) {
-        const { data: subDomain } = await supabase
+        const { data: subDomain, error: subDomainError } = await supabase
           .from('sub_domains')
           .select('id, name, name_ar')
           .eq('id', challenge.sub_domain_id)
-          .single();
-        if (subDomain) hierarchy.sub_domain = subDomain;
+          .maybeSingle();
+        if (!subDomainError && subDomain) hierarchy.sub_domain = subDomain;
       }
 
       // Fetch service
       if (challenge.service_id) {
-        const { data: service } = await supabase
+        const { data: service, error: serviceError } = await supabase
           .from('services')
           .select('id, name, name_ar')
           .eq('id', challenge.service_id)
-          .single();
-        if (service) hierarchy.service = service;
+          .maybeSingle();
+        if (!serviceError && service) hierarchy.service = service;
       }
 
       setOrgHierarchy(hierarchy);
