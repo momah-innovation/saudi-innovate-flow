@@ -299,7 +299,6 @@ export default function RoleRequestManagement() {
                       {status.charAt(0).toUpperCase() + status.slice(1)}
                     </SelectItem>
                   ))}
-                  <SelectItem value="rejected">Rejected</SelectItem>
                 </SelectContent>
               </Select>
             </div>
