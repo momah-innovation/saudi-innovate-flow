@@ -39,6 +39,7 @@ export default function SystemSettings() {
   };
 
   const handleSaveTeamDefaults = () => {
+    console.log("Save Team Defaults clicked", values);
     // In a real app, this would save to database
     toast({
       title: "Settings Saved",
