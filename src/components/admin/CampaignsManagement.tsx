@@ -81,6 +81,16 @@ export function CampaignsManagement() {
   const [currentStep, setCurrentStep] = useState(1);
   const [stepErrors, setStepErrors] = useState<{[key: number]: string[]}>({});
   
+  // Organization search states (moved to top level to avoid hooks violations)
+  const [openSector, setOpenSector] = useState(false);
+  const [openDeputy, setOpenDeputy] = useState(false);
+  const [openDepartment, setOpenDepartment] = useState(false);
+  const [openChallenge, setOpenChallenge] = useState(false);
+  
+  // Partners & Stakeholders search states
+  const [partnerSearch, setPartnerSearch] = useState("");
+  const [stakeholderSearch, setStakeholderSearch] = useState("");
+  
   // Form data
   const [formData, setFormData] = useState({
     title: "",
@@ -587,11 +597,6 @@ export function CampaignsManagement() {
   );
 
   const renderOrganization = () => {
-    const [openSector, setOpenSector] = useState(false);
-    const [openDeputy, setOpenDeputy] = useState(false);
-    const [openDepartment, setOpenDepartment] = useState(false);
-    const [openChallenge, setOpenChallenge] = useState(false);
-
     const getSelectedSectorName = () => {
       if (formData.sector_id === "none") return "None";
       const sector = sectors.find(s => s.id === formData.sector_id);
@@ -863,9 +868,6 @@ export function CampaignsManagement() {
   };
 
   const renderPartnersStakeholders = () => {
-    const [partnerSearch, setPartnerSearch] = useState("");
-    const [stakeholderSearch, setStakeholderSearch] = useState("");
-
     const filteredPartners = partners.filter(partner => 
       partner.name.toLowerCase().includes(partnerSearch.toLowerCase())
     );
