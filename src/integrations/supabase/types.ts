@@ -14,6 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
+      campaign_challenge_links: {
+        Row: {
+          campaign_id: string
+          challenge_id: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          campaign_id: string
+          challenge_id: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          campaign_id?: string
+          challenge_id?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      campaign_department_links: {
+        Row: {
+          campaign_id: string
+          created_at: string
+          department_id: string
+          id: string
+        }
+        Insert: {
+          campaign_id: string
+          created_at?: string
+          department_id: string
+          id?: string
+        }
+        Update: {
+          campaign_id?: string
+          created_at?: string
+          department_id?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      campaign_deputy_links: {
+        Row: {
+          campaign_id: string
+          created_at: string
+          deputy_id: string
+          id: string
+        }
+        Insert: {
+          campaign_id: string
+          created_at?: string
+          deputy_id: string
+          id?: string
+        }
+        Update: {
+          campaign_id?: string
+          created_at?: string
+          deputy_id?: string
+          id?: string
+        }
+        Relationships: []
+      }
       campaign_partner_links: {
         Row: {
           campaign_id: string
@@ -94,6 +157,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      campaign_sector_links: {
+        Row: {
+          campaign_id: string
+          created_at: string
+          id: string
+          sector_id: string
+        }
+        Insert: {
+          campaign_id: string
+          created_at?: string
+          id?: string
+          sector_id: string
+        }
+        Update: {
+          campaign_id?: string
+          created_at?: string
+          id?: string
+          sector_id?: string
+        }
+        Relationships: []
       }
       campaign_stakeholder_links: {
         Row: {

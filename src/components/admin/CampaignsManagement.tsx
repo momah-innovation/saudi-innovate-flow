@@ -203,35 +203,71 @@ export function CampaignsManagement() {
     setStepErrors({});
   };
 
-  const handleEdit = (campaign: Campaign) => {
+  const handleEdit = async (campaign: Campaign) => {
     // First reset all form state to ensure clean slate
     resetForm();
     
     setEditingCampaign(campaign);
-    setFormData({
-      title: campaign.title || "",
-      title_ar: campaign.title_ar || "",
-      description: campaign.description || "",
-      description_ar: campaign.description_ar || "",
-      status: campaign.status || "planning",
-      theme: campaign.theme || "digital_transformation",
-      start_date: campaign.start_date || "",
-      end_date: campaign.end_date || "",
-      registration_deadline: campaign.registration_deadline || "",
-      target_participants: campaign.target_participants?.toString() || "",
-      target_ideas: campaign.target_ideas?.toString() || "",
-      budget: campaign.budget?.toString() || "",
-      success_metrics: campaign.success_metrics || "",
-      // Convert single values to arrays for multi-select
-      sector_ids: (campaign as any).sector_id ? [(campaign as any).sector_id] : [],
-      deputy_ids: (campaign as any).deputy_id ? [(campaign as any).deputy_id] : [],
-      department_ids: (campaign as any).department_id ? [(campaign as any).department_id] : [],
-      challenge_ids: (campaign as any).challenge_id ? [(campaign as any).challenge_id] : [],
-    });
     
-    // Reset partner and stakeholder selections
-    setSelectedPartners([]);
-    setSelectedStakeholders([]);
+    // Load existing relationships from linking tables
+    try {
+      const [sectorsRes, deputiesRes, departmentsRes, challengesRes, partnersRes, stakeholdersRes] = await Promise.all([
+        supabase.from('campaign_sector_links').select('sector_id').eq('campaign_id', campaign.id),
+        supabase.from('campaign_deputy_links').select('deputy_id').eq('campaign_id', campaign.id),
+        supabase.from('campaign_department_links').select('department_id').eq('campaign_id', campaign.id),
+        supabase.from('campaign_challenge_links').select('challenge_id').eq('campaign_id', campaign.id),
+        supabase.from('campaign_partner_links').select('partner_id').eq('campaign_id', campaign.id),
+        supabase.from('campaign_stakeholder_links').select('stakeholder_id').eq('campaign_id', campaign.id)
+      ]);
+
+      setFormData({
+        title: campaign.title || "",
+        title_ar: campaign.title_ar || "",
+        description: campaign.description || "",
+        description_ar: campaign.description_ar || "",
+        status: campaign.status || "planning",
+        theme: campaign.theme || "digital_transformation",
+        start_date: campaign.start_date || "",
+        end_date: campaign.end_date || "",
+        registration_deadline: campaign.registration_deadline || "",
+        target_participants: campaign.target_participants?.toString() || "",
+        target_ideas: campaign.target_ideas?.toString() || "",
+        budget: campaign.budget?.toString() || "",
+        success_metrics: campaign.success_metrics || "",
+        // Load from linking tables, fallback to old single fields for backward compatibility
+        sector_ids: sectorsRes.data?.map(s => s.sector_id) || ((campaign as any).sector_id ? [(campaign as any).sector_id] : []),
+        deputy_ids: deputiesRes.data?.map(d => d.deputy_id) || ((campaign as any).deputy_id ? [(campaign as any).deputy_id] : []),
+        department_ids: departmentsRes.data?.map(d => d.department_id) || ((campaign as any).department_id ? [(campaign as any).department_id] : []),
+        challenge_ids: challengesRes.data?.map(c => c.challenge_id) || ((campaign as any).challenge_id ? [(campaign as any).challenge_id] : []),
+      });
+
+      // Set partner and stakeholder selections
+      setSelectedPartners(partnersRes.data?.map(p => p.partner_id) || []);
+      setSelectedStakeholders(stakeholdersRes.data?.map(s => s.stakeholder_id) || []);
+      
+    } catch (error) {
+      console.error('Error loading campaign relationships:', error);
+      // Fallback to basic campaign data
+      setFormData({
+        title: campaign.title || "",
+        title_ar: campaign.title_ar || "",
+        description: campaign.description || "",
+        description_ar: campaign.description_ar || "",
+        status: campaign.status || "planning",
+        theme: campaign.theme || "digital_transformation",
+        start_date: campaign.start_date || "",
+        end_date: campaign.end_date || "",
+        registration_deadline: campaign.registration_deadline || "",
+        target_participants: campaign.target_participants?.toString() || "",
+        target_ideas: campaign.target_ideas?.toString() || "",
+        budget: campaign.budget?.toString() || "",
+        success_metrics: campaign.success_metrics || "",
+        sector_ids: [],
+        deputy_ids: [],
+        department_ids: [],
+        challenge_ids: [],
+      });
+    }
     
     // Reset search states
     setPartnerSearch("");
@@ -352,26 +388,107 @@ export function CampaignsManagement() {
         target_ideas: formData.target_ideas ? parseInt(formData.target_ideas) : null,
         budget: formData.budget ? parseFloat(formData.budget) : null,
         success_metrics: formData.success_metrics || null,
-        // Note: These array fields would need corresponding database columns
-        // sector_ids: formData.sector_ids,
-        // deputy_ids: formData.deputy_ids,
-        // department_ids: formData.department_ids,
-        // challenge_ids: formData.challenge_ids,
       };
 
-      let result;
+      let campaignId: string;
+      
       if (editingCampaign) {
-        result = await supabase
+        // Update existing campaign
+        const { error } = await supabase
           .from('campaigns')
           .update(campaignData)
           .eq('id', editingCampaign.id);
+
+        if (error) throw error;
+        campaignId = editingCampaign.id;
+        
+        // Delete existing relationships
+        await Promise.all([
+          supabase.from('campaign_sector_links').delete().eq('campaign_id', campaignId),
+          supabase.from('campaign_deputy_links').delete().eq('campaign_id', campaignId),
+          supabase.from('campaign_department_links').delete().eq('campaign_id', campaignId),
+          supabase.from('campaign_challenge_links').delete().eq('campaign_id', campaignId),
+          supabase.from('campaign_partner_links').delete().eq('campaign_id', campaignId),
+          supabase.from('campaign_stakeholder_links').delete().eq('campaign_id', campaignId)
+        ]);
       } else {
-        result = await supabase
+        // Create new campaign
+        const { data, error } = await supabase
           .from('campaigns')
-          .insert([campaignData]);
+          .insert([campaignData])
+          .select('id')
+          .single();
+
+        if (error) throw error;
+        campaignId = data.id;
       }
 
-      if (result.error) throw result.error;
+      // Insert new relationships
+      const relationshipInserts = [];
+      
+      // Sectors
+      if (formData.sector_ids.length > 0) {
+        relationshipInserts.push(
+          supabase.from('campaign_sector_links').insert(
+            formData.sector_ids.map(sectorId => ({ campaign_id: campaignId, sector_id: sectorId }))
+          )
+        );
+      }
+      
+      // Deputies
+      if (formData.deputy_ids.length > 0) {
+        relationshipInserts.push(
+          supabase.from('campaign_deputy_links').insert(
+            formData.deputy_ids.map(deputyId => ({ campaign_id: campaignId, deputy_id: deputyId }))
+          )
+        );
+      }
+      
+      // Departments
+      if (formData.department_ids.length > 0) {
+        relationshipInserts.push(
+          supabase.from('campaign_department_links').insert(
+            formData.department_ids.map(departmentId => ({ campaign_id: campaignId, department_id: departmentId }))
+          )
+        );
+      }
+      
+      // Challenges
+      if (formData.challenge_ids.length > 0) {
+        relationshipInserts.push(
+          supabase.from('campaign_challenge_links').insert(
+            formData.challenge_ids.map(challengeId => ({ campaign_id: campaignId, challenge_id: challengeId }))
+          )
+        );
+      }
+      
+      // Partners
+      if (selectedPartners.length > 0) {
+        relationshipInserts.push(
+          supabase.from('campaign_partner_links').insert(
+            selectedPartners.map(partnerId => ({ campaign_id: campaignId, partner_id: partnerId }))
+          )
+        );
+      }
+      
+      // Stakeholders
+      if (selectedStakeholders.length > 0) {
+        relationshipInserts.push(
+          supabase.from('campaign_stakeholder_links').insert(
+            selectedStakeholders.map(stakeholderId => ({ campaign_id: campaignId, stakeholder_id: stakeholderId }))
+          )
+        );
+      }
+
+      // Execute all relationship inserts
+      if (relationshipInserts.length > 0) {
+        const results = await Promise.all(relationshipInserts);
+        const errors = results.filter(result => result.error);
+        if (errors.length > 0) {
+          console.error('Error saving relationships:', errors);
+          throw new Error('Failed to save some campaign relationships');
+        }
+      }
 
       toast({
         title: "Success",
