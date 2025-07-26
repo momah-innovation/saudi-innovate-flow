@@ -640,45 +640,65 @@ export default function TeamManagement() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {teamMembers.map((member) => {
-                  const memberAssignments = getAssignmentsForMember(member.user_id);
-                  if (memberAssignments.length === 0) return null;
-                  
-                  return (
-                    <div key={member.id} className="border rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <div>
-                          <h4 className="font-medium">{member.profiles?.name}</h4>
-                          <p className="text-sm text-muted-foreground">{member.cic_role}</p>
+                {teamMembers.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    No team members added yet. Add team members to see their assignments here.
+                  </div>
+                ) : (
+                  teamMembers.map((member) => {
+                    const memberAssignments = getAssignmentsForMember(member.user_id);
+                    
+                    return (
+                      <div key={member.id} className="border rounded-lg p-4">
+                        <div className="flex items-center justify-between mb-3">
+                          <div>
+                            <h4 className="font-medium">{member.profiles?.name}</h4>
+                            <p className="text-sm text-muted-foreground">{member.cic_role}</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge variant={getCapacityColor(member.current_workload, member.max_concurrent_projects)}>
+                              {memberAssignments.length} assignments
+                            </Badge>
+                            <Badge variant="outline" className="text-xs">
+                              Capacity: {member.current_workload}/{member.max_concurrent_projects}
+                            </Badge>
+                          </div>
                         </div>
-                        <Badge variant={getCapacityColor(member.current_workload, member.max_concurrent_projects)}>
-                          {memberAssignments.length} assignments
-                        </Badge>
-                      </div>
-                      <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
-                        {memberAssignments.map((assignment) => {
-                          const Icon = getTypeIcon(assignment.type);
-                          return (
-                            <div key={assignment.id} className="flex items-center gap-2 p-2 border rounded">
-                              <Icon className="h-4 w-4" />
-                              <div className="flex-1 min-w-0">
-                                <div className="text-sm font-medium truncate">{assignment.title}</div>
-                                <div className="flex items-center gap-2">
-                                  <Badge variant={getTypeColor(assignment.type)} className="text-xs">
-                                    {assignment.type}
-                                  </Badge>
-                                  <Badge variant="outline" className="text-xs">
-                                    {assignment.status}
-                                  </Badge>
-                                </div>
-                              </div>
+                        
+                        {memberAssignments.length === 0 ? (
+                          <div className="text-center py-4 text-muted-foreground border-2 border-dashed rounded">
+                            <div className="text-sm">No assignments yet</div>
+                            <div className="text-xs mt-1">
+                              Assignments will appear here when this member is assigned to campaigns, events, or projects
                             </div>
-                          );
-                        })}
+                          </div>
+                        ) : (
+                          <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+                            {memberAssignments.map((assignment) => {
+                              const Icon = getTypeIcon(assignment.type);
+                              return (
+                                <div key={assignment.id} className="flex items-center gap-2 p-2 border rounded">
+                                  <Icon className="h-4 w-4" />
+                                  <div className="flex-1 min-w-0">
+                                    <div className="text-sm font-medium truncate">{assignment.title}</div>
+                                    <div className="flex items-center gap-2">
+                                      <Badge variant={getTypeColor(assignment.type)} className="text-xs">
+                                        {assignment.type}
+                                      </Badge>
+                                      <Badge variant="outline" className="text-xs">
+                                        {assignment.status}
+                                      </Badge>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                )}
               </div>
             </CardContent>
           </Card>
