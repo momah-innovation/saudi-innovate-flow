@@ -18,14 +18,29 @@ export default function SystemSettings() {
   
   // Default values for system settings
   const defaultValues = {
+    // Team Management Defaults
     maxConcurrentProjects: 5,
     defaultPerformanceRating: 0,
+    maxExpertWorkload: 5,
+    
+    // Challenge Management
     challengeDuration: 30,
     submissionLimit: 5,
     autoApproveIdeas: false,
+    
+    // Role Request Limits
+    roleRejectionWaitDays: 30,
+    maxRoleRequestsPerWeek: 3,
+    
+    // Notification Settings
     emailNotifications: true,
     roleRequestNotifications: true,
     challengeDeadlineReminders: true,
+    notificationFetchLimit: 50,
+    toastTimeoutMs: 1000000,
+    
+    // UI Settings
+    sidebarCookieMaxAgeDays: 7,
   };
 
   // State for form values
@@ -59,6 +74,9 @@ export default function SystemSettings() {
             case 'team_default_performance_rating':
               settingsMap.defaultPerformanceRating = parseFloat(value);
               break;
+            case 'team_max_expert_workload':
+              settingsMap.maxExpertWorkload = parseInt(value);
+              break;
             case 'challenge_default_duration_days':
               settingsMap.challengeDuration = parseInt(value);
               break;
@@ -76,6 +94,21 @@ export default function SystemSettings() {
               break;
             case 'notification_challenge_deadlines_enabled':
               settingsMap.challengeDeadlineReminders = value === 'true' || value === true;
+              break;
+            case 'role_rejection_wait_days':
+              settingsMap.roleRejectionWaitDays = parseInt(value);
+              break;
+            case 'role_max_requests_per_week':
+              settingsMap.maxRoleRequestsPerWeek = parseInt(value);
+              break;
+            case 'notification_fetch_limit':
+              settingsMap.notificationFetchLimit = parseInt(value);
+              break;
+            case 'notification_toast_timeout_ms':
+              settingsMap.toastTimeoutMs = parseInt(value);
+              break;
+            case 'ui_sidebar_cookie_max_age_days':
+              settingsMap.sidebarCookieMaxAgeDays = parseInt(value);
               break;
           }
         });
@@ -130,12 +163,18 @@ export default function SystemSettings() {
     const keyMap = {
       maxConcurrentProjects: 'team_max_concurrent_projects',
       defaultPerformanceRating: 'team_default_performance_rating',
+      maxExpertWorkload: 'team_max_expert_workload',
       challengeDuration: 'challenge_default_duration_days',
       submissionLimit: 'challenge_default_submission_limit',
       autoApproveIdeas: 'challenge_auto_approve_ideas',
+      roleRejectionWaitDays: 'role_rejection_wait_days',
+      maxRoleRequestsPerWeek: 'role_max_requests_per_week',
       emailNotifications: 'notification_email_enabled',
       roleRequestNotifications: 'notification_role_requests_enabled',
       challengeDeadlineReminders: 'notification_challenge_deadlines_enabled',
+      notificationFetchLimit: 'notification_fetch_limit',
+      toastTimeoutMs: 'notification_toast_timeout_ms',
+      sidebarCookieMaxAgeDays: 'ui_sidebar_cookie_max_age_days',
     };
     return keyMap[field] || null;
   };
@@ -143,7 +182,8 @@ export default function SystemSettings() {
   const handleSaveTeamDefaults = async () => {
     const settingsToSave = [
       { key: 'team_max_concurrent_projects', value: values.maxConcurrentProjects },
-      { key: 'team_default_performance_rating', value: values.defaultPerformanceRating }
+      { key: 'team_default_performance_rating', value: values.defaultPerformanceRating },
+      { key: 'team_max_expert_workload', value: values.maxExpertWorkload }
     ];
 
     const success = await saveSettings(settingsToSave);
@@ -165,16 +205,41 @@ export default function SystemSettings() {
     }
   };
 
+  const handleSaveRoleRequestSettings = async () => {
+    const settingsToSave = [
+      { key: 'role_rejection_wait_days', value: values.roleRejectionWaitDays },
+      { key: 'role_max_requests_per_week', value: values.maxRoleRequestsPerWeek }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast.success("Role request settings have been updated successfully.");
+    }
+  };
+
   const handleSaveNotificationSettings = async () => {
     const settingsToSave = [
       { key: 'notification_email_enabled', value: values.emailNotifications },
       { key: 'notification_role_requests_enabled', value: values.roleRequestNotifications },
-      { key: 'notification_challenge_deadlines_enabled', value: values.challengeDeadlineReminders }
+      { key: 'notification_challenge_deadlines_enabled', value: values.challengeDeadlineReminders },
+      { key: 'notification_fetch_limit', value: values.notificationFetchLimit },
+      { key: 'notification_toast_timeout_ms', value: values.toastTimeoutMs }
     ];
 
     const success = await saveSettings(settingsToSave);
     if (success) {
       toast.success("Notification settings have been updated successfully.");
+    }
+  };
+
+  const handleSaveUISettings = async () => {
+    const settingsToSave = [
+      { key: 'ui_sidebar_cookie_max_age_days', value: values.sidebarCookieMaxAgeDays }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast.success("UI settings have been updated successfully.");
     }
   };
 
@@ -300,13 +365,39 @@ export default function SystemSettings() {
                       <p className="text-xs text-muted-foreground">
                         Starting performance rating for new members
                       </p>
-                    </div>
-                  </div>
-                  <div className="flex justify-end pt-4 border-t">
-                    <Button size="sm" onClick={handleSaveTeamDefaults}>
-                      Save Team Defaults
-                    </Button>
-                  </div>
+                     </div>
+                   </div>
+                   <div className="grid gap-4 md:grid-cols-1">
+                     <div className="space-y-2">
+                       <div className="flex items-center justify-between">
+                         <Label>Max Expert Workload</Label>
+                         <Button 
+                           variant="ghost" 
+                           size="sm" 
+                           className="h-8 w-8 p-0"
+                           onClick={() => handleReset('maxExpertWorkload')}
+                         >
+                           <RotateCcw className="h-4 w-4" />
+                         </Button>
+                       </div>
+                       <Input
+                         type="number"
+                         value={values.maxExpertWorkload}
+                         onChange={(e) => setValues(prev => ({ ...prev, maxExpertWorkload: parseInt(e.target.value) || 0 }))}
+                         min="1"
+                         max="20"
+                         placeholder="5"
+                       />
+                       <p className="text-xs text-muted-foreground">
+                         Maximum concurrent challenges an expert can handle
+                       </p>
+                     </div>
+                   </div>
+                   <div className="flex justify-end pt-4 border-t">
+                     <Button size="sm" onClick={handleSaveTeamDefaults}>
+                       Save Team Defaults
+                     </Button>
+                   </div>
                 </CardContent>
               </Card>
 
@@ -391,6 +482,73 @@ export default function SystemSettings() {
                     </Button>
                   </div>
                 </CardContent>
+               </Card>
+
+              {/* Role Request Settings */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Role Request Limits</CardTitle>
+                  <CardDescription>
+                    Configure limits and policies for role requests
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label>Rejection Wait Period (days)</Label>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('roleRejectionWaitDays')}
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <Input
+                        type="number"
+                        value={values.roleRejectionWaitDays}
+                        onChange={(e) => setValues(prev => ({ ...prev, roleRejectionWaitDays: parseInt(e.target.value) || 0 }))}
+                        min="1"
+                        max="365"
+                        placeholder="30"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Days to wait after rejection before re-requesting same role
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label>Max Requests Per Week</Label>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('maxRoleRequestsPerWeek')}
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <Input
+                        type="number"
+                        value={values.maxRoleRequestsPerWeek}
+                        onChange={(e) => setValues(prev => ({ ...prev, maxRoleRequestsPerWeek: parseInt(e.target.value) || 0 }))}
+                        min="1"
+                        max="10"
+                        placeholder="3"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Maximum role requests a user can make per week
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex justify-end pt-4 border-t">
+                    <Button size="sm" onClick={handleSaveRoleRequestSettings}>
+                      Save Role Request Settings
+                    </Button>
+                  </div>
+                </CardContent>
               </Card>
 
               {/* Notification Settings */}
@@ -466,15 +624,108 @@ export default function SystemSettings() {
                       >
                         <RotateCcw className="h-4 w-4" />
                       </Button>
-                    </div>
-                  </div>
-                  <div className="flex justify-end pt-4 border-t">
-                    <Button size="sm" onClick={handleSaveNotificationSettings}>
-                      Save Notification Settings
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                     </div>
+                   </div>
+                   <div className="grid gap-4 md:grid-cols-2">
+                     <div className="space-y-2">
+                       <div className="flex items-center justify-between">
+                         <Label>Notification Fetch Limit</Label>
+                         <Button 
+                           variant="ghost" 
+                           size="sm" 
+                           className="h-8 w-8 p-0"
+                           onClick={() => handleReset('notificationFetchLimit')}
+                         >
+                           <RotateCcw className="h-4 w-4" />
+                         </Button>
+                       </div>
+                       <Input
+                         type="number"
+                         value={values.notificationFetchLimit}
+                         onChange={(e) => setValues(prev => ({ ...prev, notificationFetchLimit: parseInt(e.target.value) || 0 }))}
+                         min="10"
+                         max="200"
+                         placeholder="50"
+                       />
+                       <p className="text-xs text-muted-foreground">
+                         Maximum notifications to fetch per request
+                       </p>
+                     </div>
+                     <div className="space-y-2">
+                       <div className="flex items-center justify-between">
+                         <Label>Toast Timeout (ms)</Label>
+                         <Button 
+                           variant="ghost" 
+                           size="sm" 
+                           className="h-8 w-8 p-0"
+                           onClick={() => handleReset('toastTimeoutMs')}
+                         >
+                           <RotateCcw className="h-4 w-4" />
+                         </Button>
+                       </div>
+                       <Input
+                         type="number"
+                         value={values.toastTimeoutMs}
+                         onChange={(e) => setValues(prev => ({ ...prev, toastTimeoutMs: parseInt(e.target.value) || 0 }))}
+                         min="1000"
+                         max="10000000"
+                         placeholder="1000000"
+                       />
+                       <p className="text-xs text-muted-foreground">
+                         How long toast notifications stay visible
+                       </p>
+                     </div>
+                   </div>
+                   <div className="flex justify-end pt-4 border-t">
+                     <Button size="sm" onClick={handleSaveNotificationSettings}>
+                       Save Notification Settings
+                     </Button>
+                   </div>
+                 </CardContent>
+               </Card>
+
+               {/* UI Settings */}
+               <Card>
+                 <CardHeader>
+                   <CardTitle>UI Settings</CardTitle>
+                   <CardDescription>
+                     Configure user interface behavior and defaults
+                   </CardDescription>
+                 </CardHeader>
+                 <CardContent className="space-y-4">
+                   <div className="grid gap-4 md:grid-cols-1">
+                     <div className="space-y-2">
+                       <div className="flex items-center justify-between">
+                         <Label>Sidebar Cookie Max Age (days)</Label>
+                         <Button 
+                           variant="ghost" 
+                           size="sm" 
+                           className="h-8 w-8 p-0"
+                           onClick={() => handleReset('sidebarCookieMaxAgeDays')}
+                         >
+                           <RotateCcw className="h-4 w-4" />
+                         </Button>
+                       </div>
+                       <Input
+                         type="number"
+                         value={values.sidebarCookieMaxAgeDays}
+                         onChange={(e) => setValues(prev => ({ ...prev, sidebarCookieMaxAgeDays: parseInt(e.target.value) || 0 }))}
+                         min="1"
+                         max="365"
+                         placeholder="7"
+                       />
+                       <p className="text-xs text-muted-foreground">
+                         How long to remember sidebar state
+                       </p>
+                     </div>
+                   </div>
+                   <div className="flex justify-end pt-4 border-t">
+                     <Button size="sm" onClick={handleSaveUISettings}>
+                       Save UI Settings
+                     </Button>
+                   </div>
+                 </CardContent>
+               </Card>
 
               {/* System Information */}
               <Card>
