@@ -14,21 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
+      campaign_partners: {
+        Row: {
+          campaign_id: string
+          contribution_amount: number | null
+          created_at: string | null
+          id: string
+          partner_id: string
+          partnership_role: string | null
+          partnership_status: string | null
+        }
+        Insert: {
+          campaign_id: string
+          contribution_amount?: number | null
+          created_at?: string | null
+          id?: string
+          partner_id: string
+          partnership_role?: string | null
+          partnership_status?: string | null
+        }
+        Update: {
+          campaign_id?: string
+          contribution_amount?: number | null
+          created_at?: string | null
+          id?: string
+          partner_id?: string
+          partnership_role?: string | null
+          partnership_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_partners_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_partners_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       campaigns: {
         Row: {
           budget: number | null
           campaign_manager_id: string | null
+          challenge_id: string | null
           created_at: string | null
+          department_id: string | null
+          deputy_id: string | null
           description: string | null
           description_ar: string | null
           end_date: string
           id: string
+          partner_organizations: string[] | null
           registration_deadline: string | null
+          sector_id: string | null
           start_date: string
           status: string | null
           success_metrics: string | null
           target_ideas: number | null
           target_participants: number | null
+          target_stakeholder_groups: string[] | null
           theme: string | null
           title: string
           title_ar: string | null
@@ -37,17 +88,23 @@ export type Database = {
         Insert: {
           budget?: number | null
           campaign_manager_id?: string | null
+          challenge_id?: string | null
           created_at?: string | null
+          department_id?: string | null
+          deputy_id?: string | null
           description?: string | null
           description_ar?: string | null
           end_date: string
           id?: string
+          partner_organizations?: string[] | null
           registration_deadline?: string | null
+          sector_id?: string | null
           start_date: string
           status?: string | null
           success_metrics?: string | null
           target_ideas?: number | null
           target_participants?: number | null
+          target_stakeholder_groups?: string[] | null
           theme?: string | null
           title: string
           title_ar?: string | null
@@ -56,23 +113,58 @@ export type Database = {
         Update: {
           budget?: number | null
           campaign_manager_id?: string | null
+          challenge_id?: string | null
           created_at?: string | null
+          department_id?: string | null
+          deputy_id?: string | null
           description?: string | null
           description_ar?: string | null
           end_date?: string
           id?: string
+          partner_organizations?: string[] | null
           registration_deadline?: string | null
+          sector_id?: string | null
           start_date?: string
           status?: string | null
           success_metrics?: string | null
           target_ideas?: number | null
           target_participants?: number | null
+          target_stakeholder_groups?: string[] | null
           theme?: string | null
           title?: string
           title_ar?: string | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "campaigns_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaigns_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaigns_deputy_id_fkey"
+            columns: ["deputy_id"]
+            isOneToOne: false
+            referencedRelation: "deputies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaigns_sector_id_fkey"
+            columns: ["sector_id"]
+            isOneToOne: false
+            referencedRelation: "sectors"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       challenge_experts: {
         Row: {
@@ -556,11 +648,54 @@ export type Database = {
           },
         ]
       }
+      event_stakeholders: {
+        Row: {
+          attendance_status: string | null
+          created_at: string | null
+          event_id: string
+          id: string
+          invitation_status: string | null
+          stakeholder_id: string
+        }
+        Insert: {
+          attendance_status?: string | null
+          created_at?: string | null
+          event_id: string
+          id?: string
+          invitation_status?: string | null
+          stakeholder_id: string
+        }
+        Update: {
+          attendance_status?: string | null
+          created_at?: string | null
+          event_id?: string
+          id?: string
+          invitation_status?: string | null
+          stakeholder_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_stakeholders_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_stakeholders_stakeholder_id_fkey"
+            columns: ["stakeholder_id"]
+            isOneToOne: false
+            referencedRelation: "stakeholders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       events: {
         Row: {
           actual_participants: number | null
           budget: number | null
           campaign_id: string | null
+          challenge_id: string | null
           created_at: string | null
           description: string | null
           description_ar: string | null
@@ -572,9 +707,13 @@ export type Database = {
           id: string
           location: string | null
           max_participants: number | null
+          partner_organizations: string[] | null
           registered_participants: number | null
+          related_focus_questions: string[] | null
+          sector_id: string | null
           start_time: string | null
           status: string | null
+          target_stakeholder_groups: string[] | null
           title: string
           title_ar: string | null
           virtual_link: string | null
@@ -583,6 +722,7 @@ export type Database = {
           actual_participants?: number | null
           budget?: number | null
           campaign_id?: string | null
+          challenge_id?: string | null
           created_at?: string | null
           description?: string | null
           description_ar?: string | null
@@ -594,9 +734,13 @@ export type Database = {
           id?: string
           location?: string | null
           max_participants?: number | null
+          partner_organizations?: string[] | null
           registered_participants?: number | null
+          related_focus_questions?: string[] | null
+          sector_id?: string | null
           start_time?: string | null
           status?: string | null
+          target_stakeholder_groups?: string[] | null
           title: string
           title_ar?: string | null
           virtual_link?: string | null
@@ -605,6 +749,7 @@ export type Database = {
           actual_participants?: number | null
           budget?: number | null
           campaign_id?: string | null
+          challenge_id?: string | null
           created_at?: string | null
           description?: string | null
           description_ar?: string | null
@@ -616,9 +761,13 @@ export type Database = {
           id?: string
           location?: string | null
           max_participants?: number | null
+          partner_organizations?: string[] | null
           registered_participants?: number | null
+          related_focus_questions?: string[] | null
+          sector_id?: string | null
           start_time?: string | null
           status?: string | null
+          target_stakeholder_groups?: string[] | null
           title?: string
           title_ar?: string | null
           virtual_link?: string | null
@@ -629,6 +778,20 @@ export type Database = {
             columns: ["campaign_id"]
             isOneToOne: false
             referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "events_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "events_sector_id_fkey"
+            columns: ["sector_id"]
+            isOneToOne: false
+            referencedRelation: "sectors"
             referencedColumns: ["id"]
           },
         ]
