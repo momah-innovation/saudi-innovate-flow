@@ -433,6 +433,83 @@ export default function SystemSettings() {
 
     const success = await saveSettings(settingsToSave);
     if (success) {
+      toast.success("UI and Form settings have been updated successfully.");
+    }
+  };
+
+  const handleSaveProfileSettings = async () => {
+    const settingsToSave = [
+      { key: 'profile_bio_textarea_rows', value: values.profileBioTextareaRows },
+      { key: 'profile_innovation_background_rows', value: values.profileInnovationBackgroundRows },
+      { key: 'profile_max_experience_years', value: values.profileMaxExperienceYears },
+      { key: 'profile_min_experience_years', value: values.profileMinExperienceYears }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast.success("Profile settings have been updated successfully.");
+    }
+  };
+
+  const handleSaveTeamManagementSettings = async () => {
+    const settingsToSave = [
+      { key: 'team_max_concurrent_projects_per_member', value: values.teamMaxConcurrentProjectsPerMember },
+      { key: 'team_max_performance_rating', value: values.teamMaxPerformanceRating },
+      { key: 'team_min_performance_rating', value: values.teamMinPerformanceRating },
+      { key: 'team_insights_display_limit', value: values.teamInsightsDisplayLimit },
+      { key: 'team_insight_title_preview_length', value: values.teamInsightTitlePreviewLength }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast.success("Team management settings have been updated successfully.");
+    }
+  };
+
+  const handleSaveChallengeDetailsSettings = async () => {
+    const settingsToSave = [
+      { key: 'challenge_details_description_rows', value: values.challengeDetailsDescriptionRows },
+      { key: 'challenge_details_vision_rows', value: values.challengeDetailsVisionRows }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast.success("Challenge details settings have been updated successfully.");
+    }
+  };
+
+  const handleSaveFocusQuestionSettings = async () => {
+    const settingsToSave = [
+      { key: 'focus_question_textarea_rows', value: values.focusQuestionTextareaRows }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast.success("Focus question settings have been updated successfully.");
+    }
+  };
+
+  const handleSaveExpertAssignmentSettings = async () => {
+    const settingsToSave = [
+      { key: 'expert_assignment_notes_rows', value: values.expertAssignmentNotesRows },
+      { key: 'expert_assignment_bulk_notes_rows', value: values.expertAssignmentBulkNotesRows },
+      { key: 'expert_expertise_preview_limit', value: values.expertExpertisePreviewLimit }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast.success("Expert assignment settings have been updated successfully.");
+    }
+  };
+
+  const handleSaveUIDisplaySettings = async () => {
+    const settingsToSave = [
+      { key: 'ui_initials_max_length', value: values.uiInitialsMaxLength }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast.success("UI display settings have been updated successfully.");
       toast.success("UI and form settings have been updated successfully.");
     }
   };
@@ -461,19 +538,6 @@ export default function SystemSettings() {
     }
   };
 
-  const handleSaveProfileSettings = async () => {
-    const settingsToSave = [
-      { key: 'profile_bio_textarea_rows', value: values.profileBioTextareaRows },
-      { key: 'profile_innovation_background_rows', value: values.profileInnovationBackgroundRows },
-      { key: 'profile_max_experience_years', value: values.profileMaxExperienceYears },
-      { key: 'profile_min_experience_years', value: values.profileMinExperienceYears }
-    ];
-
-    const success = await saveSettings(settingsToSave);
-    if (success) {
-      toast.success("Profile settings saved successfully.");
-    }
-  };
   const handleSaveComponentSettings = async () => {
     const settingsToSave = [
       { key: 'focus_question_textarea_rows', value: values.focusQuestionTextareaRows },
