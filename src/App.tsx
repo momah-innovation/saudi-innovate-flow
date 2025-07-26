@@ -49,7 +49,7 @@ const App = () => (
             <Route 
               path="/admin/focus-questions" 
               element={
-                <ProtectedRoute requireProfile>
+                <ProtectedRoute requireProfile requiredRole="admin">
                   <FocusQuestionsManagement />
                 </ProtectedRoute>
               } 
@@ -57,7 +57,7 @@ const App = () => (
             <Route 
               path="/admin/partners" 
               element={
-                <ProtectedRoute requireProfile>
+                <ProtectedRoute requireProfile requiredRole="admin">
                   <PartnersManagement />
                 </ProtectedRoute>
               } 
@@ -65,7 +65,7 @@ const App = () => (
             <Route 
               path="/admin/sectors" 
               element={
-                <ProtectedRoute requireProfile>
+                <ProtectedRoute requireProfile requiredRole="admin">
                   <SectorsManagement />
                 </ProtectedRoute>
               } 
@@ -73,7 +73,7 @@ const App = () => (
             <Route 
               path="/admin/organizational-structure" 
               element={
-                <ProtectedRoute requireProfile>
+                <ProtectedRoute requireProfile requiredRole="admin">
                   <OrganizationalStructure />
                 </ProtectedRoute>
               } 
@@ -81,7 +81,7 @@ const App = () => (
             <Route 
               path="/admin/expert-assignments" 
               element={
-                <ProtectedRoute requireProfile>
+                <ProtectedRoute requireProfile requiredRole="admin">
                   <ExpertAssignmentManagementPage />
                 </ProtectedRoute>
               } 
@@ -89,7 +89,7 @@ const App = () => (
             <Route 
               path="/admin/users" 
               element={
-                <ProtectedRoute requireProfile>
+                <ProtectedRoute requireProfile requiredRole="admin">
                   <UserManagementPage />
                 </ProtectedRoute>
               } 
