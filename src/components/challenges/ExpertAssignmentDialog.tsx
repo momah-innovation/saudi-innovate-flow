@@ -119,17 +119,44 @@ export function ExpertAssignmentDialog({
     try {
       setLoading(true);
 
-      const { error } = await supabase
+      // First check if this expert already has an inactive assignment for this challenge and role
+      const { data: existingAssignment, error: checkError } = await supabase
         .from('challenge_experts')
-        .insert({
-          challenge_id: challengeId,
-          expert_id: selectedExpertId,
-          role_type: roleType,
-          notes: notes.trim() || null,
-          status: 'active'
-        });
+        .select('id')
+        .eq('challenge_id', challengeId)
+        .eq('expert_id', selectedExpertId)
+        .eq('role_type', roleType)
+        .eq('status', 'inactive')
+        .maybeSingle();
 
-      if (error) throw error;
+      if (checkError) throw checkError;
+
+      if (existingAssignment) {
+        // Reactivate the existing assignment
+        const { error: updateError } = await supabase
+          .from('challenge_experts')
+          .update({
+            status: 'active',
+            notes: notes.trim() || null,
+            assignment_date: new Date().toISOString()
+          })
+          .eq('id', existingAssignment.id);
+
+        if (updateError) throw updateError;
+      } else {
+        // Create a new assignment
+        const { error: insertError } = await supabase
+          .from('challenge_experts')
+          .insert({
+            challenge_id: challengeId,
+            expert_id: selectedExpertId,
+            role_type: roleType,
+            notes: notes.trim() || null,
+            status: 'active'
+          });
+
+        if (insertError) throw insertError;
+      }
 
       toast.success('Expert assigned successfully');
       onAssignmentComplete();
