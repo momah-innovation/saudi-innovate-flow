@@ -1681,6 +1681,10 @@ export type Database = {
         | "content_manager"
         | "system_auditor"
         | "data_analyst"
+        | "campaign_manager"
+        | "event_manager"
+        | "stakeholder_manager"
+        | "partnership_manager"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1824,6 +1828,10 @@ export const Constants = {
         "content_manager",
         "system_auditor",
         "data_analyst",
+        "campaign_manager",
+        "event_manager",
+        "stakeholder_manager",
+        "partnership_manager",
       ],
     },
   },
