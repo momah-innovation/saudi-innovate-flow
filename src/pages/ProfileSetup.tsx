@@ -10,12 +10,14 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useSystemLists } from '@/hooks/useSystemLists';
 import { Loader2 } from 'lucide-react';
 
 const ProfileSetup = () => {
   const { user, userProfile, refreshProfile } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { experienceLevels } = useSystemLists();
   const [minExperienceYears, setMinExperienceYears] = useState(0);
   const [maxExperienceYears, setMaxExperienceYears] = useState(50);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -369,10 +371,11 @@ const ProfileSetup = () => {
                             <SelectValue placeholder="Select experience level" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="beginner">Beginner</SelectItem>
-                            <SelectItem value="intermediate">Intermediate</SelectItem>
-                            <SelectItem value="advanced">Advanced</SelectItem>
-                            <SelectItem value="expert">Expert</SelectItem>
+                            {experienceLevels.map((level) => (
+                              <SelectItem key={level} value={level}>
+                                {level.charAt(0).toUpperCase() + level.slice(1)}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       </div>

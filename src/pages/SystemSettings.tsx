@@ -145,7 +145,10 @@ export default function SystemSettings() {
       'Research & Market Analysis',
       'Stakeholder Engagement',
       'Change Management'
-    ]
+    ],
+    focusQuestionTypes: ['general', 'technical', 'business', 'impact', 'implementation', 'social', 'ethical', 'medical', 'regulatory'],
+    experienceLevels: ['beginner', 'intermediate', 'advanced', 'expert'],
+    expertRoleTypes: ['lead_expert', 'evaluator', 'reviewer', 'subject_matter_expert', 'external_consultant']
   };
 
   // State for form values
@@ -623,7 +626,10 @@ export default function SystemSettings() {
       { key: 'available_user_roles', value: values.availableUserRoles },
       { key: 'requestable_user_roles', value: values.requestableUserRoles },
       { key: 'team_role_options', value: values.teamRoleOptions },
-      { key: 'team_specialization_options', value: values.teamSpecializationOptions }
+      { key: 'team_specialization_options', value: values.teamSpecializationOptions },
+      { key: 'focus_question_types', value: values.focusQuestionTypes },
+      { key: 'experience_levels', value: values.experienceLevels },
+      { key: 'expert_role_types', value: values.expertRoleTypes }
     ];
 
     const success = await saveSettings(settingsToSave);
@@ -1782,6 +1788,36 @@ export default function SystemSettings() {
                        onChange={(items) => setValues(prev => ({ ...prev, generalStatusOptions: items }))}
                        onReset={() => handleReset('generalStatusOptions')}
                        placeholder="Add status (e.g., paused)"
+                     />
+
+                     {/* Focus Question Types */}
+                     <SimpleListEditor
+                       title="Focus Question Types"
+                       description="Available types for focus questions"
+                       items={values.focusQuestionTypes}
+                       onChange={(items) => setValues(prev => ({ ...prev, focusQuestionTypes: items }))}
+                       onReset={() => handleReset('focusQuestionTypes')}
+                       placeholder="Add question type (e.g., strategic)"
+                     />
+
+                     {/* Experience Levels */}
+                     <SimpleListEditor
+                       title="Experience Levels"
+                       description="Available experience levels for users and experts"
+                       items={values.experienceLevels}
+                       onChange={(items) => setValues(prev => ({ ...prev, experienceLevels: items }))}
+                       onReset={() => handleReset('experienceLevels')}
+                       placeholder="Add experience level (e.g., master)"
+                     />
+
+                     {/* Expert Role Types */}
+                     <SimpleListEditor
+                       title="Expert Role Types"
+                       description="Available role types for expert assignments"
+                       items={values.expertRoleTypes}
+                       onChange={(items) => setValues(prev => ({ ...prev, expertRoleTypes: items }))}
+                       onReset={() => handleReset('expertRoleTypes')}
+                       placeholder="Add role type (e.g., consultant)"
                      />
 
                      <div className="flex justify-end pt-4 border-t">

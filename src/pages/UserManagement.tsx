@@ -39,7 +39,7 @@ interface UserRole {
 
 export default function UserManagement() {
   const { toast } = useToast();
-  const { userStatusOptions } = useSystemLists();
+  const { userStatusOptions, availableUserRoles } = useSystemLists();
   const [users, setUsers] = useState<Profile[]>([]);
   const [userRoles, setUserRoles] = useState<UserRole[]>([]);
   const [loading, setLoading] = useState(true);
@@ -551,12 +551,11 @@ export default function UserManagement() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Roles</SelectItem>
-                      <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="super_admin">Super Admin</SelectItem>
-                      <SelectItem value="expert">Expert</SelectItem>
-                      <SelectItem value="innovator">Innovator</SelectItem>
-                      <SelectItem value="user_manager">User Manager</SelectItem>
-                      <SelectItem value="role_manager">Role Manager</SelectItem>
+                      {availableUserRoles.map((role) => (
+                        <SelectItem key={role.value} value={role.value}>
+                          {role.label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -779,17 +778,11 @@ export default function UserManagement() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="viewer">Viewer</SelectItem>
-                    <SelectItem value="innovator">Innovator</SelectItem>
-                    <SelectItem value="evaluator">Evaluator</SelectItem>
-                    <SelectItem value="domain_expert">Domain Expert</SelectItem>
-                    <SelectItem value="sector_lead">Sector Lead</SelectItem>
-                    <SelectItem value="challenge_manager">Challenge Manager</SelectItem>
-                    <SelectItem value="expert_coordinator">Expert Coordinator</SelectItem>
-                    <SelectItem value="content_manager">Content Manager</SelectItem>
-                    <SelectItem value="data_analyst">Data Analyst</SelectItem>
-                    <SelectItem value="user_manager">User Manager</SelectItem>
-                    <SelectItem value="role_manager">Role Manager</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
+                    {availableUserRoles.map((role) => (
+                      <SelectItem key={role.value} value={role.value}>
+                        {role.label}
+                      </SelectItem>
+                    ))}
                     <SelectItem value="super_admin">Super Admin</SelectItem>
                   </SelectContent>
                 </Select>
@@ -870,17 +863,11 @@ export default function UserManagement() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="viewer">Viewer</SelectItem>
-                  <SelectItem value="innovator">Innovator</SelectItem>
-                  <SelectItem value="evaluator">Evaluator</SelectItem>
-                  <SelectItem value="domain_expert">Domain Expert</SelectItem>
-                  <SelectItem value="sector_lead">Sector Lead</SelectItem>
-                  <SelectItem value="challenge_manager">Challenge Manager</SelectItem>
-                  <SelectItem value="expert_coordinator">Expert Coordinator</SelectItem>
-                  <SelectItem value="content_manager">Content Manager</SelectItem>
-                  <SelectItem value="data_analyst">Data Analyst</SelectItem>
-                  <SelectItem value="user_manager">User Manager</SelectItem>
-                  <SelectItem value="role_manager">Role Manager</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
+                  {availableUserRoles.map((role) => (
+                    <SelectItem key={role.value} value={role.value}>
+                      {role.label}
+                    </SelectItem>
+                  ))}
                   <SelectItem value="super_admin">Super Admin</SelectItem>
                 </SelectContent>
               </Select>
@@ -930,17 +917,11 @@ export default function UserManagement() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="viewer">Viewer</SelectItem>
-                  <SelectItem value="innovator">Innovator</SelectItem>
-                  <SelectItem value="evaluator">Evaluator</SelectItem>
-                  <SelectItem value="domain_expert">Domain Expert</SelectItem>
-                  <SelectItem value="sector_lead">Sector Lead</SelectItem>
-                  <SelectItem value="challenge_manager">Challenge Manager</SelectItem>
-                  <SelectItem value="expert_coordinator">Expert Coordinator</SelectItem>
-                  <SelectItem value="content_manager">Content Manager</SelectItem>
-                  <SelectItem value="data_analyst">Data Analyst</SelectItem>
-                  <SelectItem value="user_manager">User Manager</SelectItem>
-                  <SelectItem value="role_manager">Role Manager</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
+                  {availableUserRoles.map((role) => (
+                    <SelectItem key={role.value} value={role.value}>
+                      {role.label}
+                    </SelectItem>
+                  ))}
                   <SelectItem value="super_admin">Super Admin</SelectItem>
                 </SelectContent>
               </Select>

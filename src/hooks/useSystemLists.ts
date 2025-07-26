@@ -18,6 +18,9 @@ interface SystemListsHook {
   requestableUserRoles: Array<{value: string; label: string; description: string}>;
   teamRoleOptions: string[];
   teamSpecializationOptions: string[];
+  focusQuestionTypes: string[];
+  experienceLevels: string[];
+  expertRoleTypes: string[];
   loading: boolean;
 }
 
@@ -58,6 +61,9 @@ export const useSystemLists = (): SystemListsHook => {
       'Stakeholder Engagement',
       'Change Management'
     ],
+    focusQuestionTypes: ['general', 'technical', 'business', 'impact', 'implementation', 'social', 'ethical', 'medical', 'regulatory'],
+    experienceLevels: ['beginner', 'intermediate', 'advanced', 'expert'],
+    expertRoleTypes: ['lead_expert', 'evaluator', 'reviewer', 'subject_matter_expert', 'external_consultant'],
     loading: true
   });
 
@@ -83,7 +89,10 @@ export const useSystemLists = (): SystemListsHook => {
             'available_user_roles',
             'requestable_user_roles',
             'team_role_options',
-            'team_specialization_options'
+            'team_specialization_options',
+            'focus_question_types',
+            'experience_levels',
+            'expert_role_types'
           ]);
         
         if (data) {
@@ -142,6 +151,15 @@ export const useSystemLists = (): SystemListsHook => {
                 break;
               case 'team_specialization_options':
                 newSettings.teamSpecializationOptions = value;
+                break;
+              case 'focus_question_types':
+                newSettings.focusQuestionTypes = value;
+                break;
+              case 'experience_levels':
+                newSettings.experienceLevels = value;
+                break;
+              case 'expert_role_types':
+                newSettings.expertRoleTypes = value;
                 break;
             }
           });

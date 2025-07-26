@@ -96,7 +96,7 @@ interface FocusQuestion {
 export const FocusQuestionsManagement = () => {
   const { toast } = useToast();
   const systemSettings = useSystemSettings();
-  const { challengeSensitivityLevels } = useSystemLists();
+  const { challengeSensitivityLevels, focusQuestionTypes } = useSystemLists();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
   const [filteredQuestions, setFilteredQuestions] = useState<FocusQuestion[]>([]);
@@ -494,11 +494,11 @@ export const FocusQuestionsManagement = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="general">General</SelectItem>
-                      <SelectItem value="technical">Technical</SelectItem>
-                      <SelectItem value="business">Business</SelectItem>
-                      <SelectItem value="impact">Impact</SelectItem>
-                      <SelectItem value="implementation">Implementation</SelectItem>
+                      {focusQuestionTypes.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type.charAt(0).toUpperCase() + type.slice(1)}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -574,11 +574,11 @@ export const FocusQuestionsManagement = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="general">General</SelectItem>
-                  <SelectItem value="technical">Technical</SelectItem>
-                  <SelectItem value="business">Business</SelectItem>
-                  <SelectItem value="impact">Impact</SelectItem>
-                  <SelectItem value="implementation">Implementation</SelectItem>
+                  {focusQuestionTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type.charAt(0).toUpperCase() + type.slice(1)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -777,11 +777,11 @@ export const FocusQuestionsManagement = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="general">General</SelectItem>
-                    <SelectItem value="technical">Technical</SelectItem>
-                    <SelectItem value="business">Business</SelectItem>
-                    <SelectItem value="impact">Impact</SelectItem>
-                    <SelectItem value="implementation">Implementation</SelectItem>
+                    {focusQuestionTypes.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type.charAt(0).toUpperCase() + type.slice(1)}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>

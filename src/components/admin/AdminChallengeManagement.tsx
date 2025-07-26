@@ -104,7 +104,7 @@ interface ChallengePartner {
 export const AdminChallengeManagement = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { challengePriorityLevels, challengeSensitivityLevels, challengeTypes, challengeStatusOptions } = useSystemLists();
+  const { challengePriorityLevels, challengeSensitivityLevels, challengeTypes, challengeStatusOptions, focusQuestionTypes } = useSystemLists();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
   const [experts, setExperts] = useState<Expert[]>([]);
@@ -1714,11 +1714,11 @@ export const AdminChallengeManagement = () => {
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="general">General</SelectItem>
-                            <SelectItem value="technical">Technical</SelectItem>
-                            <SelectItem value="business">Business</SelectItem>
-                            <SelectItem value="impact">Impact</SelectItem>
-                            <SelectItem value="implementation">Implementation</SelectItem>
+                            {focusQuestionTypes.map((type) => (
+                              <SelectItem key={type} value={type}>
+                                {type.charAt(0).toUpperCase() + type.slice(1)}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       </div>
@@ -1764,15 +1764,11 @@ export const AdminChallengeManagement = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="general">General</SelectItem>
-                    <SelectItem value="technical">Technical</SelectItem>
-                    <SelectItem value="business">Business</SelectItem>
-                    <SelectItem value="impact">Impact</SelectItem>
-                    <SelectItem value="implementation">Implementation</SelectItem>
-                    <SelectItem value="social">Social</SelectItem>
-                    <SelectItem value="ethical">Ethical</SelectItem>
-                    <SelectItem value="medical">Medical</SelectItem>
-                    <SelectItem value="regulatory">Regulatory</SelectItem>
+                    {focusQuestionTypes.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type.charAt(0).toUpperCase() + type.slice(1)}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <Select value={questionSensitivityFilter} onValueChange={setQuestionSensitivityFilter}>
@@ -1913,15 +1909,11 @@ export const AdminChallengeManagement = () => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="general">General</SelectItem>
-                  <SelectItem value="technical">Technical</SelectItem>
-                  <SelectItem value="business">Business</SelectItem>
-                  <SelectItem value="impact">Impact</SelectItem>
-                  <SelectItem value="implementation">Implementation</SelectItem>
-                  <SelectItem value="social">Social</SelectItem>
-                  <SelectItem value="ethical">Ethical</SelectItem>
-                  <SelectItem value="medical">Medical</SelectItem>
-                  <SelectItem value="regulatory">Regulatory</SelectItem>
+                  {focusQuestionTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type.charAt(0).toUpperCase() + type.slice(1)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

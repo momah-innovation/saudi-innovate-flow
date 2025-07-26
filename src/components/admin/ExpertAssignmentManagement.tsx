@@ -57,7 +57,7 @@ interface ChallengeExpert {
 
 export function ExpertAssignmentManagement() {
   const { toast } = useToast();
-  const { assignmentStatusOptions } = useSystemLists();
+  const { assignmentStatusOptions, expertRoleTypes } = useSystemLists();
   const [activeTab, setActiveTab] = useState("assignments");
   const [maxWorkload, setMaxWorkload] = useState(5);
   const [profileTextareaRows, setProfileTextareaRows] = useState(4);
@@ -533,11 +533,11 @@ export function ExpertAssignmentManagement() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Roles</SelectItem>
-                      <SelectItem value="lead_expert">Lead Expert</SelectItem>
-                      <SelectItem value="evaluator">Evaluator</SelectItem>
-                      <SelectItem value="reviewer">Reviewer</SelectItem>
-                      <SelectItem value="subject_matter_expert">Subject Matter Expert</SelectItem>
-                      <SelectItem value="external_consultant">External Consultant</SelectItem>
+                      {expertRoleTypes.map((role) => (
+                        <SelectItem key={role} value={role}>
+                          {role.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -832,11 +832,11 @@ export function ExpertAssignmentManagement() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="lead_expert">Lead Expert</SelectItem>
-                  <SelectItem value="evaluator">Evaluator</SelectItem>
-                  <SelectItem value="reviewer">Reviewer</SelectItem>
-                  <SelectItem value="subject_matter_expert">Subject Matter Expert</SelectItem>
-                  <SelectItem value="external_consultant">External Consultant</SelectItem>
+                  {expertRoleTypes.map((role) => (
+                    <SelectItem key={role} value={role}>
+                      {role.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -940,11 +940,11 @@ export function ExpertAssignmentManagement() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="lead_expert">Lead Expert</SelectItem>
-                  <SelectItem value="evaluator">Evaluator</SelectItem>
-                  <SelectItem value="reviewer">Reviewer</SelectItem>
-                  <SelectItem value="subject_matter_expert">Subject Matter Expert</SelectItem>
-                  <SelectItem value="external_consultant">External Consultant</SelectItem>
+                  {expertRoleTypes.map((role) => (
+                    <SelectItem key={role} value={role}>
+                      {role.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -1004,11 +1004,11 @@ export function ExpertAssignmentManagement() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="lead_expert">Lead Expert</SelectItem>
-                  <SelectItem value="evaluator">Evaluator</SelectItem>
-                  <SelectItem value="reviewer">Reviewer</SelectItem>
-                  <SelectItem value="subject_matter_expert">Subject Matter Expert</SelectItem>
-                  <SelectItem value="external_consultant">External Consultant</SelectItem>
+                  {expertRoleTypes.map((role) => (
+                    <SelectItem key={role} value={role}>
+                      {role.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
