@@ -1,42 +1,46 @@
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Plus, Edit, Trash2, Calendar, MapPin, Users, Clock, Search, X } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  updateEventPartners,
-  updateEventStakeholders,
-  updateEventFocusQuestions
-} from "@/lib/relationshipHelpers";
+import { supabase } from "@/integrations/supabase/client";
+import { 
+  Plus, 
+  Search, 
+  Filter, 
+  Edit, 
+  Trash2, 
+  Users, 
+  Calendar,
+  MapPin,
+  Building,
+  Target,
+  CheckCircle,
+  Clock,
+  AlertCircle,
+  Eye,
+  ChevronsUpDown,
+  Check,
+  X,
+  Video,
+  Globe
+} from "lucide-react";
 
 interface Event {
   id: string;
   title: string;
   title_ar?: string;
-  description: string;
+  description?: string;
   description_ar?: string;
   event_type?: string;
-  type?: string;
   event_date: string;
   start_time?: string;
   end_time?: string;
@@ -44,63 +48,50 @@ interface Event {
   virtual_link?: string;
   format?: string;
   max_participants?: number;
-  registered_participants: number;
-  actual_participants: number;
+  registered_participants?: number;
+  actual_participants?: number;
   status: string;
   budget?: number;
   event_manager_id?: string;
   campaign_id?: string;
   challenge_id?: string;
   sector_id?: string;
-  target_audience?: string;
-  agenda?: string;
-  speakers?: string;
-  created_at: string;
-  // Relationship data
-  partners?: Array<{ id: string; name: string; }>;
-  stakeholders?: Array<{ id: string; name: string; }>;
-  focus_questions?: Array<{ id: string; question_text: string; }>;
-  campaign?: { id: string; title: string; };
-  challenge?: { id: string; title: string; };
-  sector?: { id: string; name: string; };
+  partner_ids?: string[];
+  stakeholder_ids?: string[];
+  focus_question_ids?: string[];
+  created_at?: string;
 }
 
 export function EventsManagement() {
   const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [editingEvent, setEditingEvent] = useState<Event | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  
-  // Relationship data
-  const [campaigns, setCampaigns] = useState([]);
-  const [challenges, setChallenges] = useState([]);
-  const [sectors, setSectors] = useState([]);
-  const [partners, setPartners] = useState([]);
-  const [stakeholders, setStakeholders] = useState([]);
-  const [focusQuestions, setFocusQuestions] = useState([]);
-  
-  // Detail view states
-  const [viewingEvent, setViewingEvent] = useState<Event | null>(null);
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
-  
-  // Search and filter states
+  const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [formatFilter, setFormatFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
-  const { toast } = useToast();
-
-  // Hardcoded options for now
-  const eventTypes = ["workshop", "seminar", "conference", "networking", "hackathon", "pitch_session"];
-  const formatOptions = ["in_person", "virtual", "hybrid"];
-  const statusOptions = ["scheduled", "ongoing", "completed", "cancelled", "postponed"];
-
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+  const [viewingEvent, setViewingEvent] = useState<Event | null>(null);
+  
+  // Multi-step form state
+  const [currentStep, setCurrentStep] = useState(1);
+  const [stepErrors, setStepErrors] = useState<{[key: number]: string[]}>({});
+  
+  // Search states for dropdowns
+  const [openCampaign, setOpenCampaign] = useState(false);
+  const [openChallenge, setOpenChallenge] = useState(false);
+  const [openSector, setOpenSector] = useState(false);
+  const [partnerSearch, setPartnerSearch] = useState("");
+  const [stakeholderSearch, setStakeholderSearch] = useState("");
+  const [focusQuestionSearch, setFocusQuestionSearch] = useState("");
+  
+  // Form data
   const [formData, setFormData] = useState({
     title: "",
     title_ar: "",
     description: "",
     description_ar: "",
-    event_type: "",
+    event_type: "workshop",
     event_date: "",
     start_time: "",
     end_time: "",
@@ -113,25 +104,83 @@ export function EventsManagement() {
     campaign_id: "",
     challenge_id: "",
     sector_id: "",
-    target_stakeholder_groups: [] as string[],
-    partner_organizations: [] as string[],
-    related_focus_questions: [] as string[],
   });
+
+  // Related data
+  const [campaigns, setCampaigns] = useState<any[]>([]);
+  const [challenges, setChallenges] = useState<any[]>([]);
+  const [sectors, setSectors] = useState<any[]>([]);
+  const [partners, setPartners] = useState<any[]>([]);
+  const [stakeholders, setStakeholders] = useState<any[]>([]);
+  const [focusQuestions, setFocusQuestions] = useState<any[]>([]);
+  const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
+  const [selectedStakeholders, setSelectedStakeholders] = useState<string[]>([]);
+  const [selectedFocusQuestions, setSelectedFocusQuestions] = useState<string[]>([]);
+
+  const { toast } = useToast();
+
+  // Event type and format options
+  const eventTypes = [
+    { value: "workshop", label: "Workshop" },
+    { value: "seminar", label: "Seminar" },
+    { value: "conference", label: "Conference" },
+    { value: "networking", label: "Networking Event" },
+    { value: "hackathon", label: "Hackathon" },
+    { value: "pitch_session", label: "Pitch Session" },
+    { value: "training", label: "Training Session" }
+  ];
+
+  const formatOptions = [
+    { value: "in_person", label: "In Person" },
+    { value: "virtual", label: "Virtual" },
+    { value: "hybrid", label: "Hybrid" }
+  ];
+
+  const statusOptions = [
+    { value: "scheduled", label: "Scheduled" },
+    { value: "ongoing", label: "Ongoing" },
+    { value: "completed", label: "Completed" },
+    { value: "cancelled", label: "Cancelled" },
+    { value: "postponed", label: "Postponed" }
+  ];
 
   useEffect(() => {
     fetchEvents();
-    fetchRelationshipData();
+    fetchRelatedData();
   }, []);
 
-  const fetchRelationshipData = async () => {
+  useEffect(() => {
+    filterEvents();
+  }, [events, searchTerm, statusFilter, formatFilter, typeFilter]);
+
+  const fetchEvents = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .order('event_date', { ascending: false });
+
+      if (error) throw error;
+      setEvents(data || []);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch events",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const fetchRelatedData = async () => {
     try {
       const [campaignsRes, challengesRes, sectorsRes, partnersRes, stakeholdersRes, focusQuestionsRes] = await Promise.all([
-        supabase.from("campaigns").select("id, title").order("title"),
-        supabase.from("challenges").select("id, title").order("title"),
-        supabase.from("sectors").select("id, name").order("name"),
-        supabase.from("partners").select("id, name").order("name"),
-        supabase.from("stakeholders").select("id, name").order("name"),
-        supabase.from("focus_questions").select("id, question_text").order("question_text"),
+        supabase.from('campaigns').select('*'),
+        supabase.from('challenges').select('*'),
+        supabase.from('sectors').select('*'),
+        supabase.from('partners').select('*'),
+        supabase.from('stakeholders').select('*'),
+        supabase.from('focus_questions').select('*')
       ]);
 
       setCampaigns(campaignsRes.data || []);
@@ -141,164 +190,34 @@ export function EventsManagement() {
       setStakeholders(stakeholdersRes.data || []);
       setFocusQuestions(focusQuestionsRes.data || []);
     } catch (error) {
-      console.error("Error fetching relationship data:", error);
+      console.error('Error fetching related data:', error);
     }
   };
 
-  const fetchEvents = async () => {
-    try {
-      setLoading(true);
-      
-      // Fetch events with relationships using proper JOINs  
-      const { data, error } = await supabase
-        .from("events")
-        .select(`
-          *,
-          campaign:campaigns!fk_events_campaign_id(id, title),
-          challenge:challenges!fk_events_challenge_id(id, title),
-          sector:sectors!fk_events_sector_id(id, name),
-          partners:event_partner_links(
-            partner:partners(id, name)
-          ),
-          stakeholders:event_stakeholder_links(
-            stakeholder:stakeholders(id, name)
-          ),
-          focus_questions:event_focus_question_links(
-            focus_question:focus_questions(id, question_text)
-          )
-        `)
-        .order("event_date", { ascending: true });
+  const filterEvents = () => {
+    let filtered = events;
 
-      if (error) throw error;
-      
-      // Transform the data to flatten relationships
-      const transformedData = data?.map(event => ({
-        ...event,
-        partners: event.partners?.map((p: any) => p.partner).filter(Boolean) || [],
-        stakeholders: event.stakeholders?.map((s: any) => s.stakeholder).filter(Boolean) || [],
-        focus_questions: event.focus_questions?.map((q: any) => q.focus_question).filter(Boolean) || [],
-        campaign: event.campaign || undefined,
-        challenge: event.challenge || undefined,
-        sector: event.sector || undefined
-      })) || [];
-      
-      setEvents(transformedData);
-    } catch (error) {
-      console.error("Error fetching events:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch events",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
+    if (searchTerm) {
+      filtered = filtered.filter(event =>
+        event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (event.description && event.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (event.location && event.location.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
     }
-  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      const eventData = {
-        ...formData,
-        max_participants: formData.max_participants ? parseInt(formData.max_participants) : null,
-        budget: formData.budget ? parseFloat(formData.budget) : null,
-        campaign_id: formData.campaign_id === "none" ? null : formData.campaign_id,
-        challenge_id: formData.challenge_id === "none" ? null : formData.challenge_id,
-        sector_id: formData.sector_id === "none" ? null : formData.sector_id,
-      };
-
-      if (editingEvent) {
-        const { error } = await supabase
-          .from("events")
-          .update(eventData)
-          .eq("id", editingEvent.id);
-
-        if (error) throw error;
-
-        toast({
-          title: "Success",
-          description: "Event updated successfully",
-        });
-      } else {
-        const { error } = await supabase
-          .from("events")
-          .insert([eventData]);
-
-        if (error) throw error;
-
-        toast({
-          title: "Success",
-          description: "Event created successfully",
-        });
-      }
-
-      setIsDialogOpen(false);
-      setEditingEvent(null);
-      resetForm();
-      fetchEvents();
-    } catch (error) {
-      console.error("Error saving event:", error);
-      toast({
-        title: "Error",
-        description: "Failed to save event",
-        variant: "destructive",
-      });
+    if (statusFilter !== "all") {
+      filtered = filtered.filter(event => event.status === statusFilter);
     }
-  };
 
-  const handleEdit = (event: Event) => {
-    setEditingEvent(event);
-    setFormData({
-      title: event.title,
-      title_ar: event.title_ar || "",
-      description: event.description,
-      description_ar: event.description_ar || "",
-      event_type: event.event_type || "",
-      event_date: event.event_date,
-      start_time: event.start_time || "",
-      end_time: event.end_time || "",
-      location: event.location || "",
-      virtual_link: event.virtual_link || "",
-      format: event.format || "in_person",
-      max_participants: event.max_participants?.toString() || "",
-      status: event.status,
-      budget: event.budget?.toString() || "",
-      campaign_id: event.campaign_id || "none",
-      challenge_id: event.challenge_id || "none",
-      sector_id: event.sector_id || "none",
-      target_stakeholder_groups: event.stakeholders?.map(s => s.id) || [],
-      partner_organizations: event.partners?.map(p => p.id) || [],
-      related_focus_questions: event.focus_questions?.map(q => q.id) || [],
-    });
-    setIsDialogOpen(true);
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this event?")) return;
-
-    try {
-      const { error } = await supabase
-        .from("events")
-        .delete()
-        .eq("id", id);
-
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "Event deleted successfully",
-      });
-      
-      fetchEvents();
-    } catch (error) {
-      console.error("Error deleting event:", error);
-      toast({
-        title: "Error",
-        description: "Failed to delete event",
-        variant: "destructive",
-      });
+    if (formatFilter !== "all") {
+      filtered = filtered.filter(event => event.format === formatFilter);
     }
+
+    if (typeFilter !== "all") {
+      filtered = filtered.filter(event => event.event_type === typeFilter);
+    }
+
+    setFilteredEvents(filtered);
   };
 
   const resetForm = () => {
@@ -307,7 +226,7 @@ export function EventsManagement() {
       title_ar: "",
       description: "",
       description_ar: "",
-      event_type: "",
+      event_type: "workshop",
       event_date: "",
       start_time: "",
       end_time: "",
@@ -320,664 +239,1360 @@ export function EventsManagement() {
       campaign_id: "",
       challenge_id: "",
       sector_id: "",
-      target_stakeholder_groups: [],
-      partner_organizations: [],
-      related_focus_questions: [],
     });
+    setSelectedPartners([]);
+    setSelectedStakeholders([]);
+    setSelectedFocusQuestions([]);
+    setCurrentStep(1);
+    setStepErrors({});
+    
+    // Reset search states
+    setPartnerSearch("");
+    setStakeholderSearch("");
+    setFocusQuestionSearch("");
+    
+    // Reset dropdown states
+    setOpenCampaign(false);
+    setOpenChallenge(false);
+    setOpenSector(false);
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "scheduled": return "bg-blue-100 text-blue-700";
-      case "ongoing": return "bg-green-100 text-green-700";
-      case "completed": return "bg-gray-100 text-gray-700";
-      case "cancelled": return "bg-red-100 text-red-700";
-      case "postponed": return "bg-yellow-100 text-yellow-700";
-      default: return "bg-gray-100 text-gray-700";
+  const validateStep = (step: number): string[] => {
+    const errors: string[] = [];
+    
+    switch (step) {
+      case 1:
+        if (!formData.title.trim()) errors.push("Title is required");
+        if (!formData.description.trim()) errors.push("Description is required");
+        if (!formData.event_date) errors.push("Event date is required");
+        break;
+      case 2:
+        // Organization validation - optional but if selected, should be valid
+        break;
+      case 3:
+        // Partners/stakeholders validation - all optional
+        break;
+    }
+    
+    return errors;
+  };
+
+  const nextStep = () => {
+    const errors = validateStep(currentStep);
+    setStepErrors({...stepErrors, [currentStep]: errors});
+    
+    if (errors.length === 0 && currentStep < 3) {
+      setCurrentStep(currentStep + 1);
+    } else if (errors.length > 0) {
+      toast({
+        title: "Validation Error",
+        description: errors.join(", "),
+        variant: "destructive",
+      });
+    }
+  };
+
+  const prevStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleView = async (event: Event) => {
+    // Load complete event details with relationships
+    try {
+      const [partnersRes, stakeholdersRes, focusQuestionsRes] = await Promise.all([
+        supabase.from('event_partner_links').select('partner_id').eq('event_id', event.id),
+        supabase.from('event_stakeholder_links').select('stakeholder_id').eq('event_id', event.id),
+        supabase.from('event_focus_question_links').select('focus_question_id').eq('event_id', event.id)
+      ]);
+
+      // Enhance event object with relationship data
+      const enhancedEvent = {
+        ...event,
+        partner_ids: partnersRes.data?.map(item => item.partner_id) || [],
+        stakeholder_ids: stakeholdersRes.data?.map(item => item.stakeholder_id) || [],
+        focus_question_ids: focusQuestionsRes.data?.map(item => item.focus_question_id) || []
+      };
+
+      setViewingEvent(enhancedEvent);
+    } catch (error) {
+      console.error('Error loading event details:', error);
+      setViewingEvent(event); // fallback to basic event data
+    }
+  };
+
+  const handleEdit = async (event: Event) => {
+    // First reset all form state to ensure clean slate
+    resetForm();
+    
+    setEditingEvent(event);
+    
+    // Load existing relationships from linking tables
+    try {
+      const [partnersRes, stakeholdersRes, focusQuestionsRes] = await Promise.all([
+        supabase.from('event_partner_links').select('partner_id').eq('event_id', event.id),
+        supabase.from('event_stakeholder_links').select('stakeholder_id').eq('event_id', event.id),
+        supabase.from('event_focus_question_links').select('focus_question_id').eq('event_id', event.id)
+      ]);
+
+      setFormData({
+        title: event.title,
+        title_ar: event.title_ar || "",
+        description: event.description || "",
+        description_ar: event.description_ar || "",
+        event_type: event.event_type || "workshop",
+        event_date: event.event_date,
+        start_time: event.start_time || "",
+        end_time: event.end_time || "",
+        location: event.location || "",
+        virtual_link: event.virtual_link || "",
+        format: event.format || "in_person",
+        max_participants: event.max_participants?.toString() || "",
+        status: event.status,
+        budget: event.budget?.toString() || "",
+        campaign_id: event.campaign_id || "",
+        challenge_id: event.challenge_id || "",
+        sector_id: event.sector_id || "",
+      });
+
+      setSelectedPartners(partnersRes.data?.map(item => item.partner_id) || []);
+      setSelectedStakeholders(stakeholdersRes.data?.map(item => item.stakeholder_id) || []);
+      setSelectedFocusQuestions(focusQuestionsRes.data?.map(item => item.focus_question_id) || []);
+    } catch (error) {
+      console.error('Error loading event relationships:', error);
+    }
+    
+    setShowAddDialog(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this event?")) return;
+
+    try {
+      // Delete related links first
+      await Promise.all([
+        supabase.from('event_partner_links').delete().eq('event_id', id),
+        supabase.from('event_stakeholder_links').delete().eq('event_id', id),
+        supabase.from('event_focus_question_links').delete().eq('event_id', id)
+      ]);
+
+      // Then delete the event
+      const { error } = await supabase
+        .from('events')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Event deleted successfully",
+      });
+      
+      fetchEvents();
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete event",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleSubmit = async () => {
+    // Validate all steps
+    const allErrors: string[] = [];
+    for (let i = 1; i <= 3; i++) {
+      const stepErrors = validateStep(i);
+      allErrors.push(...stepErrors);
+    }
+
+    if (allErrors.length > 0) {
+      toast({
+        title: "Validation Error",
+        description: allErrors.join(", "),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const eventData = {
+        title: formData.title,
+        title_ar: formData.title_ar || null,
+        description: formData.description || null,
+        description_ar: formData.description_ar || null,
+        event_type: formData.event_type,
+        event_date: formData.event_date,
+        start_time: formData.start_time || null,
+        end_time: formData.end_time || null,
+        location: formData.location || null,
+        virtual_link: formData.virtual_link || null,
+        format: formData.format,
+        max_participants: formData.max_participants ? parseInt(formData.max_participants) : null,
+        status: formData.status,
+        budget: formData.budget ? parseFloat(formData.budget) : null,
+        campaign_id: formData.campaign_id || null,
+        challenge_id: formData.challenge_id || null,
+        sector_id: formData.sector_id || null,
+        registered_participants: 0,
+        actual_participants: 0,
+      };
+
+      let eventId: string;
+      
+      if (editingEvent) {
+        // Update existing event
+        const { error } = await supabase
+          .from('events')
+          .update(eventData)
+          .eq('id', editingEvent.id);
+
+        if (error) throw error;
+        eventId = editingEvent.id;
+        
+        // Delete existing relationships
+        await Promise.all([
+          supabase.from('event_partner_links').delete().eq('event_id', eventId),
+          supabase.from('event_stakeholder_links').delete().eq('event_id', eventId),
+          supabase.from('event_focus_question_links').delete().eq('event_id', eventId)
+        ]);
+      } else {
+        // Create new event
+        const { data, error } = await supabase
+          .from('events')
+          .insert([eventData])
+          .select('id')
+          .single();
+
+        if (error) throw error;
+        eventId = data.id;
+      }
+
+      // Insert new relationships
+      const relationshipInserts = [];
+      
+      // Partners
+      if (selectedPartners.length > 0) {
+        relationshipInserts.push(
+          supabase.from('event_partner_links').insert(
+            selectedPartners.map(partnerId => ({ event_id: eventId, partner_id: partnerId }))
+          )
+        );
+      }
+      
+      // Stakeholders
+      if (selectedStakeholders.length > 0) {
+        relationshipInserts.push(
+          supabase.from('event_stakeholder_links').insert(
+            selectedStakeholders.map(stakeholderId => ({ event_id: eventId, stakeholder_id: stakeholderId }))
+          )
+        );
+      }
+      
+      // Focus Questions
+      if (selectedFocusQuestions.length > 0) {
+        relationshipInserts.push(
+          supabase.from('event_focus_question_links').insert(
+            selectedFocusQuestions.map(focusQuestionId => ({ event_id: eventId, focus_question_id: focusQuestionId }))
+          )
+        );
+      }
+
+      // Execute all relationship inserts
+      if (relationshipInserts.length > 0) {
+        const results = await Promise.all(relationshipInserts);
+        const errors = results.filter(result => result.error);
+        if (errors.length > 0) {
+          console.error('Error saving relationships:', errors);
+          throw new Error('Failed to save some event relationships');
+        }
+      }
+
+      toast({
+        title: "Success",
+        description: `Event ${editingEvent ? 'updated' : 'created'} successfully`,
+      });
+
+      setShowAddDialog(false);
+      setEditingEvent(null);
+      resetForm();
+      fetchEvents();
+    } catch (error) {
+      console.error('Error saving event:', error);
+      toast({
+        title: "Error",
+        description: `Failed to ${editingEvent ? 'update' : 'create'} event`,
+        variant: "destructive",
+      });
     }
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "scheduled": return "default";
-      case "ongoing": return "default";
-      case "completed": return "secondary";
-      case "cancelled": return "destructive";
-      case "postponed": return "outline";
-      default: return "outline";
+      case "scheduled": return <Badge variant="default">Scheduled</Badge>;
+      case "ongoing": return <Badge variant="default" className="bg-green-500">Ongoing</Badge>;
+      case "completed": return <Badge variant="secondary">Completed</Badge>;
+      case "cancelled": return <Badge variant="destructive">Cancelled</Badge>;
+      case "postponed": return <Badge variant="outline">Postponed</Badge>;
+      default: return <Badge variant="outline">{status}</Badge>;
     }
   };
 
-  // Filter events based on search and filters
-  const filteredEvents = events.filter((event) => {
-    const searchLower = searchTerm.toLowerCase();
-    const matchesSearch = 
-      event.title.toLowerCase().includes(searchLower) ||
-      (event.description && event.description.toLowerCase().includes(searchLower)) ||
-      (event.location && event.location.toLowerCase().includes(searchLower));
-    
-    const matchesStatus = statusFilter === "all" || event.status === statusFilter;
-    const matchesFormat = formatFilter === "all" || event.format === formatFilter;
-    const matchesType = typeFilter === "all" || event.event_type === typeFilter;
-    
-    return matchesSearch && matchesStatus && matchesFormat && matchesType;
-  });
-
-  const clearFilters = () => {
-    setSearchTerm("");
-    setStatusFilter("all");
-    setFormatFilter("all");
-    setTypeFilter("all");
+  const getFormatIcon = (format: string) => {
+    switch (format) {
+      case "virtual": return <Video className="h-4 w-4" />;
+      case "hybrid": return <Globe className="h-4 w-4" />;
+      default: return <MapPin className="h-4 w-4" />;
+    }
   };
 
-  if (loading) {
+  // Step rendering functions
+  const renderBasicInformation = () => (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 mb-4">
+        <Calendar className="h-5 w-5 text-primary" />
+        <h3 className="text-lg font-semibold">Basic Information</h3>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="title">Event Title *</Label>
+          <Input
+            id="title"
+            value={formData.title}
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            placeholder="Enter event title"
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="title_ar">Event Title (Arabic)</Label>
+          <Input
+            id="title_ar"
+            value={formData.title_ar}
+            onChange={(e) => setFormData({ ...formData, title_ar: e.target.value })}
+            placeholder="عنوان الحدث"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="description">Description *</Label>
+        <Textarea
+          id="description"
+          value={formData.description}
+          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          placeholder="Enter event description"
+          rows={3}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="description_ar">Description (Arabic)</Label>
+        <Textarea
+          id="description_ar"
+          value={formData.description_ar}
+          onChange={(e) => setFormData({ ...formData, description_ar: e.target.value })}
+          placeholder="وصف الحدث"
+          rows={3}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="event_type">Event Type</Label>
+          <Select value={formData.event_type} onValueChange={(value) => setFormData({ ...formData, event_type: value })}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {eventTypes.map((type) => (
+                <SelectItem key={type.value} value={type.value}>
+                  {type.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="format">Format</Label>
+          <Select value={formData.format} onValueChange={(value) => setFormData({ ...formData, format: value })}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {formatOptions.map((format) => (
+                <SelectItem key={format.value} value={format.value}>
+                  {format.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="status">Status</Label>
+          <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {statusOptions.map((status) => (
+                <SelectItem key={status.value} value={status.value}>
+                  {status.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="event_date">Event Date *</Label>
+          <Input
+            id="event_date"
+            type="date"
+            value={formData.event_date}
+            onChange={(e) => setFormData({ ...formData, event_date: e.target.value })}
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="start_time">Start Time</Label>
+          <Input
+            id="start_time"
+            type="time"
+            value={formData.start_time}
+            onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="end_time">End Time</Label>
+          <Input
+            id="end_time"
+            type="time"
+            value={formData.end_time}
+            onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="location">Location</Label>
+          <Input
+            id="location"
+            value={formData.location}
+            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            placeholder="Event venue or address"
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="virtual_link">Virtual Link</Label>
+          <Input
+            id="virtual_link"
+            value={formData.virtual_link}
+            onChange={(e) => setFormData({ ...formData, virtual_link: e.target.value })}
+            placeholder="Virtual meeting link"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="max_participants">Maximum Participants</Label>
+          <Input
+            id="max_participants"
+            type="number"
+            value={formData.max_participants}
+            onChange={(e) => setFormData({ ...formData, max_participants: e.target.value })}
+            placeholder="Maximum number of participants"
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="budget">Budget</Label>
+          <Input
+            id="budget"
+            type="number"
+            step="0.01"
+            value={formData.budget}
+            onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+            placeholder="Event budget"
+          />
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderOrganizationalStructure = () => (
+    <div className="space-y-6">
+      <div className="flex items-center gap-2 mb-4">
+        <Building className="h-5 w-5 text-primary" />
+        <h3 className="text-lg font-semibold">Organizational Structure</h3>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="campaign_id">Related Campaign</Label>
+          <Popover open={openCampaign} onOpenChange={setOpenCampaign}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={openCampaign}
+                className="w-full justify-between"
+              >
+                {formData.campaign_id 
+                  ? campaigns.find(c => c.id === formData.campaign_id)?.title || "Select campaign..."
+                  : "Select campaign..."
+                }
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0">
+              <Command>
+                <CommandInput placeholder="Search campaigns..." />
+                <CommandList>
+                  <CommandEmpty>No campaign found.</CommandEmpty>
+                  <CommandGroup>
+                    <CommandItem
+                      value="none"
+                      onSelect={() => {
+                        setFormData({ ...formData, campaign_id: "" });
+                        setOpenCampaign(false);
+                      }}
+                    >
+                      <Check
+                        className={`mr-2 h-4 w-4 ${
+                          !formData.campaign_id ? "opacity-100" : "opacity-0"
+                        }`}
+                      />
+                      None
+                    </CommandItem>
+                    {campaigns.map((campaign) => (
+                      <CommandItem
+                        key={campaign.id}
+                        value={campaign.title}
+                        onSelect={() => {
+                          setFormData({ ...formData, campaign_id: campaign.id });
+                          setOpenCampaign(false);
+                        }}
+                      >
+                        <Check
+                          className={`mr-2 h-4 w-4 ${
+                            formData.campaign_id === campaign.id ? "opacity-100" : "opacity-0"
+                          }`}
+                        />
+                        {campaign.title}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="challenge_id">Related Challenge</Label>
+          <Popover open={openChallenge} onOpenChange={setOpenChallenge}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={openChallenge}
+                className="w-full justify-between"
+              >
+                {formData.challenge_id 
+                  ? challenges.find(c => c.id === formData.challenge_id)?.title || "Select challenge..."
+                  : "Select challenge..."
+                }
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0">
+              <Command>
+                <CommandInput placeholder="Search challenges..." />
+                <CommandList>
+                  <CommandEmpty>No challenge found.</CommandEmpty>
+                  <CommandGroup>
+                    <CommandItem
+                      value="none"
+                      onSelect={() => {
+                        setFormData({ ...formData, challenge_id: "" });
+                        setOpenChallenge(false);
+                      }}
+                    >
+                      <Check
+                        className={`mr-2 h-4 w-4 ${
+                          !formData.challenge_id ? "opacity-100" : "opacity-0"
+                        }`}
+                      />
+                      None
+                    </CommandItem>
+                    {challenges.map((challenge) => (
+                      <CommandItem
+                        key={challenge.id}
+                        value={challenge.title}
+                        onSelect={() => {
+                          setFormData({ ...formData, challenge_id: challenge.id });
+                          setOpenChallenge(false);
+                        }}
+                      >
+                        <Check
+                          className={`mr-2 h-4 w-4 ${
+                            formData.challenge_id === challenge.id ? "opacity-100" : "opacity-0"
+                          }`}
+                        />
+                        {challenge.title}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="sector_id">Related Sector</Label>
+          <Popover open={openSector} onOpenChange={setOpenSector}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={openSector}
+                className="w-full justify-between"
+              >
+                {formData.sector_id 
+                  ? sectors.find(s => s.id === formData.sector_id)?.name || "Select sector..."
+                  : "Select sector..."
+                }
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0">
+              <Command>
+                <CommandInput placeholder="Search sectors..." />
+                <CommandList>
+                  <CommandEmpty>No sector found.</CommandEmpty>
+                  <CommandGroup>
+                    <CommandItem
+                      value="none"
+                      onSelect={() => {
+                        setFormData({ ...formData, sector_id: "" });
+                        setOpenSector(false);
+                      }}
+                    >
+                      <Check
+                        className={`mr-2 h-4 w-4 ${
+                          !formData.sector_id ? "opacity-100" : "opacity-0"
+                        }`}
+                      />
+                      None
+                    </CommandItem>
+                    {sectors.map((sector) => (
+                      <CommandItem
+                        key={sector.id}
+                        value={sector.name}
+                        onSelect={() => {
+                          setFormData({ ...formData, sector_id: sector.id });
+                          setOpenSector(false);
+                        }}
+                      >
+                        <Check
+                          className={`mr-2 h-4 w-4 ${
+                            formData.sector_id === sector.id ? "opacity-100" : "opacity-0"
+                          }`}
+                        />
+                        {sector.name}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderPartnersStakeholders = () => {
+    const filteredPartners = partners.filter(partner => 
+      partner.name.toLowerCase().includes(partnerSearch.toLowerCase())
+    );
+
+    const filteredStakeholders = stakeholders.filter(stakeholder => 
+      stakeholder.name.toLowerCase().includes(stakeholderSearch.toLowerCase())
+    );
+
+    const filteredFocusQuestions = focusQuestions.filter(question => 
+      question.question_text.toLowerCase().includes(focusQuestionSearch.toLowerCase())
+    );
+
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto" />
-          <p className="text-sm text-muted-foreground">Loading events...</p>
+      <div className="space-y-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Users className="h-5 w-5 text-primary" />
+          <h3 className="text-lg font-semibold">Partners, Stakeholders & Focus Questions</h3>
+        </div>
+
+        {/* Partner Organizations */}
+        <div className="space-y-4">
+          <Label>Partner Organizations</Label>
+          <div className="space-y-2">
+            <Input
+              placeholder="Search partners..."
+              value={partnerSearch}
+              onChange={(e) => setPartnerSearch(e.target.value)}
+            />
+            <div className="border rounded-md p-3 max-h-40 overflow-y-auto">
+              {filteredPartners.map((partner) => (
+                <div key={partner.id} className="flex items-center space-x-2 py-1">
+                  <input
+                    type="checkbox"
+                    id={`partner-${partner.id}`}
+                    checked={selectedPartners.includes(partner.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedPartners([...selectedPartners, partner.id]);
+                      } else {
+                        setSelectedPartners(selectedPartners.filter(id => id !== partner.id));
+                      }
+                    }}
+                  />
+                  <Label htmlFor={`partner-${partner.id}`} className="text-sm">
+                    {partner.name}
+                  </Label>
+                </div>
+              ))}
+            </div>
+            {selectedPartners.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {selectedPartners.map(id => {
+                  const partner = partners.find(p => p.id === id);
+                  return partner ? (
+                    <Badge key={id} variant="outline" className="text-xs">
+                      {partner.name}
+                      <X 
+                        className="ml-1 h-3 w-3 cursor-pointer" 
+                        onClick={() => setSelectedPartners(selectedPartners.filter(pid => pid !== id))}
+                      />
+                    </Badge>
+                  ) : null;
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Target Stakeholders */}
+        <div className="space-y-4">
+          <Label>Target Stakeholders</Label>
+          <div className="space-y-2">
+            <Input
+              placeholder="Search stakeholders..."
+              value={stakeholderSearch}
+              onChange={(e) => setStakeholderSearch(e.target.value)}
+            />
+            <div className="border rounded-md p-3 max-h-40 overflow-y-auto">
+              {filteredStakeholders.map((stakeholder) => (
+                <div key={stakeholder.id} className="flex items-center space-x-2 py-1">
+                  <input
+                    type="checkbox"
+                    id={`stakeholder-${stakeholder.id}`}
+                    checked={selectedStakeholders.includes(stakeholder.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedStakeholders([...selectedStakeholders, stakeholder.id]);
+                      } else {
+                        setSelectedStakeholders(selectedStakeholders.filter(id => id !== stakeholder.id));
+                      }
+                    }}
+                  />
+                  <Label htmlFor={`stakeholder-${stakeholder.id}`} className="text-sm">
+                    {stakeholder.name}
+                  </Label>
+                </div>
+              ))}
+            </div>
+            {selectedStakeholders.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {selectedStakeholders.map(id => {
+                  const stakeholder = stakeholders.find(s => s.id === id);
+                  return stakeholder ? (
+                    <Badge key={id} variant="outline" className="text-xs">
+                      {stakeholder.name}
+                      <X 
+                        className="ml-1 h-3 w-3 cursor-pointer" 
+                        onClick={() => setSelectedStakeholders(selectedStakeholders.filter(sid => sid !== id))}
+                      />
+                    </Badge>
+                  ) : null;
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Related Focus Questions */}
+        <div className="space-y-4">
+          <Label>Related Focus Questions</Label>
+          <div className="space-y-2">
+            <Input
+              placeholder="Search focus questions..."
+              value={focusQuestionSearch}
+              onChange={(e) => setFocusQuestionSearch(e.target.value)}
+            />
+            <div className="border rounded-md p-3 max-h-40 overflow-y-auto">
+              {filteredFocusQuestions.map((question) => (
+                <div key={question.id} className="flex items-center space-x-2 py-1">
+                  <input
+                    type="checkbox"
+                    id={`question-${question.id}`}
+                    checked={selectedFocusQuestions.includes(question.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedFocusQuestions([...selectedFocusQuestions, question.id]);
+                      } else {
+                        setSelectedFocusQuestions(selectedFocusQuestions.filter(id => id !== question.id));
+                      }
+                    }}
+                  />
+                  <Label htmlFor={`question-${question.id}`} className="text-sm">
+                    {question.question_text}
+                  </Label>
+                </div>
+              ))}
+            </div>
+            {selectedFocusQuestions.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {selectedFocusQuestions.map(id => {
+                  const question = focusQuestions.find(q => q.id === id);
+                  return question ? (
+                    <Badge key={id} variant="outline" className="text-xs">
+                      {question.question_text}
+                      <X 
+                        className="ml-1 h-3 w-3 cursor-pointer" 
+                        onClick={() => setSelectedFocusQuestions(selectedFocusQuestions.filter(qid => qid !== id))}
+                      />
+                    </Badge>
+                  ) : null;
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );
-  }
+  };
+
+  const renderCurrentStep = () => {
+    switch (currentStep) {
+      case 1:
+        return renderBasicInformation();
+      case 2:
+        return renderOrganizationalStructure();
+      case 3:
+        return renderPartnersStakeholders();
+      default:
+        return renderBasicInformation();
+    }
+  };
+
+  const steps = [
+    { number: 1, title: "Basic Information", icon: Target },
+    { number: 2, title: "Organization", icon: Building },
+    { number: 3, title: "Partners & Questions", icon: Users },
+  ];
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold">Events Management</h1>
           <p className="text-muted-foreground">Manage innovation events and activities</p>
         </div>
         
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
           <DialogTrigger asChild>
             <Button onClick={() => { resetForm(); setEditingEvent(null); }}>
               <Plus className="h-4 w-4 mr-2" />
               Add Event
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{editingEvent ? "Edit Event" : "Add New Event"}</DialogTitle>
+              <DialogTitle className="flex items-center gap-2">
+                <Calendar className="h-5 w-5" />
+                {editingEvent ? 'Edit Event' : 'Add New Event'}
+              </DialogTitle>
             </DialogHeader>
             
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="title">Title (English)*</Label>
-                  <Input
-                    id="title"
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="title_ar">Title (Arabic)</Label>
-                  <Input
-                    id="title_ar"
-                    value={formData.title_ar}
-                    onChange={(e) => setFormData({ ...formData, title_ar: e.target.value })}
-                  />
-                </div>
+            <div className="space-y-6">
+              {/* Step indicator */}
+              <div className="flex items-center justify-between">
+                {steps.map((step, index) => (
+                  <div key={step.number} className="flex items-center">
+                    <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium
+                      ${currentStep >= step.number 
+                        ? 'bg-primary text-primary-foreground' 
+                        : 'bg-muted text-muted-foreground'
+                      }`}>
+                      {currentStep > step.number ? (
+                        <CheckCircle className="h-4 w-4" />
+                      ) : (
+                        step.number
+                      )}
+                    </div>
+                    <span className="ml-2 text-sm font-medium">{step.title}</span>
+                    {index < steps.length - 1 && (
+                      <div className={`ml-4 w-8 h-0.5 ${
+                        currentStep > step.number ? 'bg-primary' : 'bg-muted'
+                      }`} />
+                    )}
+                  </div>
+                ))}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="event_type">Event Type</Label>
-                  <Select value={formData.event_type} onValueChange={(value) => setFormData({ ...formData, event_type: value })}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {eventTypes.map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="format">Format</Label>
-                  <Select value={formData.format} onValueChange={(value) => setFormData({ ...formData, format: value })}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {formatOptions.map((format) => (
-                        <SelectItem key={format} value={format}>
-                          {format.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="status">Status</Label>
-                  <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {statusOptions.map((status) => (
-                        <SelectItem key={status} value={status}>
-                          {status.charAt(0).toUpperCase() + status.slice(1)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+              {/* Step content */}
+              <div className="min-h-[400px]">
+                {renderCurrentStep()}
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="description">Description (English)*</Label>
-                <Textarea
-                  id="description"
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  required
-                  rows={3}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="description_ar">Description (Arabic)</Label>
-                <Textarea
-                  id="description_ar"
-                  value={formData.description_ar}
-                  onChange={(e) => setFormData({ ...formData, description_ar: e.target.value })}
-                  rows={3}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="event_date">Event Date*</Label>
-                  <Input
-                    id="event_date"
-                    type="date"
-                    value={formData.event_date}
-                    onChange={(e) => setFormData({ ...formData, event_date: e.target.value })}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="start_time">Start Time</Label>
-                  <Input
-                    id="start_time"
-                    type="time"
-                    value={formData.start_time}
-                    onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="end_time">End Time</Label>
-                  <Input
-                    id="end_time"
-                    type="time"
-                    value={formData.end_time}
-                    onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="location">Location</Label>
-                  <Input
-                    id="location"
-                    value={formData.location}
-                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="virtual_link">Virtual Link</Label>
-                  <Input
-                    id="virtual_link"
-                    type="url"
-                    value={formData.virtual_link}
-                    onChange={(e) => setFormData({ ...formData, virtual_link: e.target.value })}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="max_participants">Max Participants</Label>
-                  <Input
-                    id="max_participants"
-                    type="number"
-                    value={formData.max_participants}
-                    onChange={(e) => setFormData({ ...formData, max_participants: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="budget">Budget</Label>
-                  <Input
-                    id="budget"
-                    type="number"
-                    step="0.01"
-                    value={formData.budget}
-                    onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                  />
-                </div>
-              </div>
-
-              {/* Relationship Fields */}
-              <div className="border-t pt-4">
-                <h3 className="text-lg font-medium mb-4">Relationships</h3>
+              {/* Navigation buttons */}
+              <div className="flex justify-between">
+                <Button
+                  variant="outline"
+                  onClick={prevStep}
+                  disabled={currentStep === 1}
+                >
+                  Previous
+                </Button>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="campaign_id">Related Campaign</Label>
-                    <Select value={formData.campaign_id} onValueChange={(value) => setFormData({ ...formData, campaign_id: value })}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select campaign" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
-                        {campaigns.map((campaign: any) => (
-                          <SelectItem key={campaign.id} value={campaign.id}>
-                            {campaign.title}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="challenge_id">Related Challenge</Label>
-                    <Select value={formData.challenge_id} onValueChange={(value) => setFormData({ ...formData, challenge_id: value })}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select challenge" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
-                        {challenges.map((challenge: any) => (
-                          <SelectItem key={challenge.id} value={challenge.id}>
-                            {challenge.title}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="sector_id">Sector</Label>
-                    <Select value={formData.sector_id} onValueChange={(value) => setFormData({ ...formData, sector_id: value })}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select sector" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
-                        {sectors.map((sector: any) => (
-                          <SelectItem key={sector.id} value={sector.id}>
-                            {sector.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <div className="flex gap-2">
+                  {currentStep < 3 ? (
+                    <Button onClick={nextStep}>
+                      Next
+                    </Button>
+                  ) : (
+                    <Button onClick={handleSubmit}>
+                      {editingEvent ? 'Update Event' : 'Create Event'}
+                    </Button>
+                  )}
                 </div>
               </div>
-
-              <div className="flex justify-end space-x-2">
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Cancel
-                </Button>
-                <Button type="submit">
-                  {editingEvent ? "Update" : "Create"} Event
-                </Button>
-              </div>
-            </form>
+            </div>
           </DialogContent>
         </Dialog>
       </div>
 
-      {/* Search and Filters */}
-      <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row gap-4 items-center">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input
-              placeholder="Search events by title, description, or location..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-10"
-            />
-            {searchTerm && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setSearchTerm("")}
-                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-          
-          <div className="flex gap-2">
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="scheduled">Scheduled</SelectItem>
-                <SelectItem value="ongoing">Ongoing</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
-                <SelectItem value="postponed">Postponed</SelectItem>
-              </SelectContent>
-            </Select>
-            
-            <Select value={formatFilter} onValueChange={setFormatFilter}>
-              <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder="Format" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Formats</SelectItem>
-                {formatOptions.map((format) => (
-                  <SelectItem key={format} value={format}>
-                    {format.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder="Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                {eventTypes.map((type) => (
-                  <SelectItem key={type} value={type}>
-                    {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            
-            {(searchTerm || statusFilter !== "all" || formatFilter !== "all" || typeFilter !== "all") && (
-              <Button variant="outline" onClick={clearFilters} size="sm">
-                <X className="h-4 w-4 mr-1" />
-                Clear
-              </Button>
-            )}
-          </div>
+      {/* Filters */}
+      <div className="flex gap-4 items-center flex-wrap">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+          <Input
+            placeholder="Search events..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
         </div>
+        
+        <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <SelectTrigger className="w-48">
+            <Filter className="h-4 w-4 mr-2" />
+            <SelectValue placeholder="Filter by status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Statuses</SelectItem>
+            {statusOptions.map((status) => (
+              <SelectItem key={status.value} value={status.value}>
+                {status.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Select value={formatFilter} onValueChange={setFormatFilter}>
+          <SelectTrigger className="w-48">
+            <SelectValue placeholder="Filter by format" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Formats</SelectItem>
+            {formatOptions.map((format) => (
+              <SelectItem key={format.value} value={format.value}>
+                {format.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Select value={typeFilter} onValueChange={setTypeFilter}>
+          <SelectTrigger className="w-48">
+            <SelectValue placeholder="Filter by type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Types</SelectItem>
+            {eventTypes.map((type) => (
+              <SelectItem key={type.value} value={type.value}>
+                {type.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
-      <div className="grid gap-4">
+      {/* Events grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredEvents.map((event) => (
-          <Card key={event.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => { setViewingEvent(event); setIsDetailOpen(true); }}>
-            <CardHeader>
+          <Card 
+            key={event.id} 
+            className="hover:shadow-lg transition-shadow cursor-pointer"
+            onClick={() => handleView(event)}
+          >
+            <CardHeader className="pb-3">
               <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="flex items-center gap-2">
-                    <Calendar className="h-5 w-5" />
-                    {event.title}
-                  </CardTitle>
-                  <div className="flex items-center gap-4 mt-2">
-                    <Badge variant={getStatusBadge(event.status)}>
-                      {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
-                    </Badge>
-                    <Badge variant="outline">
-                      {event.format.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                    </Badge>
-                    {event.event_type && (
-                      <Badge variant="secondary">
-                        {event.event_type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                      </Badge>
-                    )}
-                  </div>
-                  <CardDescription className="mt-2 line-clamp-2">
-                    {event.description}
-                  </CardDescription>
-                </div>
-                <div className="flex space-x-2" onClick={(e) => e.stopPropagation()}>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEdit(event)}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDelete(event.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
+                <CardTitle className="text-lg">{event.title}</CardTitle>
+                {getStatusBadge(event.status)}
               </div>
+              {event.event_type && (
+                <Badge variant="outline" className="w-fit text-xs">
+                  {eventTypes.find(t => t.value === event.event_type)?.label || event.event_type}
+                </Badge>
+              )}
             </CardHeader>
+            <CardContent className="space-y-3">
+              {event.description && (
+                <p className="text-sm text-muted-foreground line-clamp-2">
+                  {event.description}
+                </p>
+              )}
+              
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  <span>{event.event_date}</span>
+                  {event.start_time && (
+                    <span className="text-muted-foreground">
+                      {event.start_time}
+                      {event.end_time && ` - ${event.end_time}`}
+                    </span>
+                  )}
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  {getFormatIcon(event.format || 'in_person')}
+                  <span>
+                    {event.format === 'virtual' ? 'Virtual Event' :
+                     event.format === 'hybrid' ? 'Hybrid Event' :
+                     event.location || 'In Person'}
+                  </span>
+                </div>
+                
+                {event.max_participants && (
+                  <div className="flex items-center gap-2">
+                    <Users className="h-4 w-4 text-muted-foreground" />
+                    <span>Max {event.max_participants} participants</span>
+                  </div>
+                )}
+                
+                {event.budget && (
+                  <div className="flex items-center gap-2">
+                    <Target className="h-4 w-4 text-muted-foreground" />
+                    <span>Budget: ${event.budget.toLocaleString()}</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex gap-2 pt-2" onClick={(e) => e.stopPropagation()}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleEdit(event);
+                  }}
+                  className="flex-1"
+                >
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(event.id);
+                  }}
+                  className="text-destructive hover:text-destructive"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardContent>
           </Card>
         ))}
-
-        {filteredEvents.length === 0 && (searchTerm || statusFilter !== "all" || formatFilter !== "all" || typeFilter !== "all") && (
-          <Card>
-            <CardContent className="text-center py-8">
-              <p className="text-muted-foreground">No events found matching your criteria</p>
-              <Button 
-                variant="outline" 
-                onClick={clearFilters}
-                className="mt-2"
-              >
-                Clear filters
-              </Button>
-            </CardContent>
-          </Card>
-        )}
-
-        {events.length === 0 && !(searchTerm || statusFilter !== "all" || formatFilter !== "all" || typeFilter !== "all") && (
-          <Card>
-            <CardContent className="text-center py-8">
-              <p className="text-muted-foreground">No events found</p>
-            </CardContent>
-          </Card>
-        )}
       </div>
 
-      {/* Detail View Dialog */}
-      <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <DialogContent className="max-w-3xl">
+      {filteredEvents.length === 0 && (
+        <Card className="p-8 text-center">
+          <p className="text-muted-foreground">
+            {searchTerm || statusFilter !== "all" || formatFilter !== "all" || typeFilter !== "all"
+              ? "No events found matching your criteria." 
+              : "No events created yet. Create your first event to get started."}
+          </p>
+        </Card>
+      )}
+
+      {/* Event Details View Dialog */}
+      <Dialog open={!!viewingEvent} onOpenChange={() => setViewingEvent(null)}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Calendar className="h-5 w-5" />
-              {viewingEvent?.title}
+              <Eye className="h-5 w-5" />
+              Event Details
             </DialogTitle>
-            <DialogDescription>Event Details</DialogDescription>
           </DialogHeader>
           
           {viewingEvent && (
             <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <Badge variant={getStatusBadge(viewingEvent.status)}>
-                  {viewingEvent.status.charAt(0).toUpperCase() + viewingEvent.status.slice(1)}
-                </Badge>
-                <Badge variant="outline">
-                  {viewingEvent.format.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                </Badge>
-                {viewingEvent.event_type && (
-                  <Badge variant="secondary">
-                    {viewingEvent.event_type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                  </Badge>
+              {/* Basic Information */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">Basic Information</h3>
+                  {getStatusBadge(viewingEvent.status)}
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">Title</Label>
+                    <p className="text-sm">{viewingEvent.title}</p>
+                  </div>
+                  {viewingEvent.title_ar && (
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Title (Arabic)</Label>
+                      <p className="text-sm">{viewingEvent.title_ar}</p>
+                    </div>
+                  )}
+                </div>
+
+                {viewingEvent.description && (
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">Description</Label>
+                    <p className="text-sm">{viewingEvent.description}</p>
+                  </div>
                 )}
-              </div>
-              
-              <div>
-                <h4 className="font-medium mb-2">Description</h4>
-                <p className="text-muted-foreground">{viewingEvent.description}</p>
+
                 {viewingEvent.description_ar && (
-                  <p className="text-muted-foreground mt-2" dir="rtl">{viewingEvent.description_ar}</p>
-                )}
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="font-medium mb-2">Date & Time</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4" />
-                      <span>{new Date(viewingEvent.event_date).toLocaleDateString()}</span>
-                    </div>
-                    {(viewingEvent.start_time || viewingEvent.end_time) && (
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4" />
-                        <span>
-                          {viewingEvent.start_time && viewingEvent.end_time 
-                            ? `${viewingEvent.start_time} - ${viewingEvent.end_time}`
-                            : viewingEvent.start_time || viewingEvent.end_time}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                
-                <div>
-                  <h4 className="font-medium mb-2">Location & Access</h4>
-                  <div className="space-y-2 text-sm">
-                    {viewingEvent.location && (
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4" />
-                        <span>{viewingEvent.location}</span>
-                      </div>
-                    )}
-                    {viewingEvent.virtual_link && (
-                      <div className="flex items-center gap-2">
-                        <span>Virtual Link: </span>
-                        <a href={viewingEvent.virtual_link} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                          Join Event
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="font-medium mb-2">Participants</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4" />
-                      <span>
-                        {viewingEvent.registered_participants}
-                        {viewingEvent.max_participants && ` / ${viewingEvent.max_participants}`} registered
-                      </span>
-                    </div>
-                    {viewingEvent.target_audience && (
-                      <p className="text-muted-foreground">Target: {viewingEvent.target_audience}</p>
-                    )}
-                  </div>
-                </div>
-                
-                {viewingEvent.budget && (
                   <div>
-                    <h4 className="font-medium mb-2">Budget</h4>
-                    <p className="text-sm">${viewingEvent.budget.toLocaleString()}</p>
+                    <Label className="text-sm font-medium text-muted-foreground">Description (Arabic)</Label>
+                    <p className="text-sm">{viewingEvent.description_ar}</p>
                   </div>
                 )}
-              </div>
-              
-              {/* Relationships Section */}
-              <div className="border-t pt-6">
-                <h4 className="font-medium mb-4">Relationships</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <h5 className="font-medium mb-2 text-sm">Event Context</h5>
-                    <div className="space-y-2 text-sm">
-                      {viewingEvent.campaign && (
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">Campaign:</span>
-                          <span className="text-muted-foreground">
-                            {viewingEvent.campaign.title}
-                          </span>
-                        </div>
-                      )}
-                      {viewingEvent.challenge && (
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">Challenge:</span>
-                          <span className="text-muted-foreground">
-                            {viewingEvent.challenge.title}
-                          </span>
-                        </div>
-                      )}
-                      {viewingEvent.sector && (
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">Sector:</span>
-                          <span className="text-muted-foreground">
-                            {viewingEvent.sector.name}
-                          </span>
-                        </div>
-                      )}
-                    </div>
+                    <Label className="text-sm font-medium text-muted-foreground">Event Type</Label>
+                    <p className="text-sm">{eventTypes.find(t => t.value === viewingEvent.event_type)?.label || viewingEvent.event_type}</p>
                   </div>
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">Format</Label>
+                    <p className="text-sm">{formatOptions.find(f => f.value === viewingEvent.format)?.label || viewingEvent.format}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">Event Date</Label>
+                    <p className="text-sm">{viewingEvent.event_date}</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {viewingEvent.start_time && (
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Start Time</Label>
+                      <p className="text-sm">{viewingEvent.start_time}</p>
+                    </div>
+                  )}
+                  {viewingEvent.end_time && (
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">End Time</Label>
+                      <p className="text-sm">{viewingEvent.end_time}</p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {viewingEvent.location && (
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Location</Label>
+                      <p className="text-sm">{viewingEvent.location}</p>
+                    </div>
+                  )}
+                  {viewingEvent.virtual_link && (
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Virtual Link</Label>
+                      <p className="text-sm break-all">{viewingEvent.virtual_link}</p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {viewingEvent.max_participants && (
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Max Participants</Label>
+                      <p className="text-sm">{viewingEvent.max_participants}</p>
+                    </div>
+                  )}
+                  {viewingEvent.registered_participants !== undefined && (
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Registered</Label>
+                      <p className="text-sm">{viewingEvent.registered_participants}</p>
+                    </div>
+                  )}
+                  {viewingEvent.budget && (
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Budget</Label>
+                      <p className="text-sm">${viewingEvent.budget.toLocaleString()}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Organizational Structure */}
+              {(viewingEvent.campaign_id || viewingEvent.challenge_id || viewingEvent.sector_id) && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <Building className="h-5 w-5" />
+                    Organizational Structure
+                  </h3>
                   
-                  <div>
-                    <h5 className="font-medium mb-2 text-sm">Stakeholders & Focus</h5>
-                    <div className="space-y-2 text-sm">
-                      {viewingEvent.stakeholders && viewingEvent.stakeholders.length > 0 && (
-                        <div>
-                          <span className="font-medium">Target Stakeholders:</span>
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {viewingEvent.stakeholders.map((stakeholder, index) => (
-                              <Badge key={index} variant="outline" className="text-xs">
-                                {stakeholder.name}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      {viewingEvent.partners && viewingEvent.partners.length > 0 && (
-                        <div>
-                          <span className="font-medium">Partner Organizations:</span>
-                          <div className="space-y-1 mt-1">
-                            {viewingEvent.partners.map((partner, index) => (
-                              <div key={index} className="text-muted-foreground">
-                                {partner.name}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      {viewingEvent.focus_questions && viewingEvent.focus_questions.length > 0 && (
-                        <div>
-                          <span className="font-medium">Focus Questions:</span>
-                          <div className="space-y-1 mt-1">
-                            {viewingEvent.focus_questions.map((question, index) => (
-                              <div key={index} className="text-muted-foreground text-xs">
-                                {question.question_text}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {viewingEvent.campaign_id && (
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Campaign</Label>
+                        <Badge variant="secondary" className="text-xs">
+                          {campaigns.find(c => c.id === viewingEvent.campaign_id)?.title || 'Unknown Campaign'}
+                        </Badge>
+                      </div>
+                    )}
+
+                    {viewingEvent.challenge_id && (
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Challenge</Label>
+                        <Badge variant="secondary" className="text-xs">
+                          {challenges.find(c => c.id === viewingEvent.challenge_id)?.title || 'Unknown Challenge'}
+                        </Badge>
+                      </div>
+                    )}
+
+                    {viewingEvent.sector_id && (
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Sector</Label>
+                        <Badge variant="secondary" className="text-xs">
+                          {sectors.find(s => s.id === viewingEvent.sector_id)?.name || 'Unknown Sector'}
+                        </Badge>
+                      </div>
+                    )}
                   </div>
                 </div>
+              )}
+
+              {/* Partners, Stakeholders & Focus Questions */}
+              {(viewingEvent.partner_ids?.length || viewingEvent.stakeholder_ids?.length || viewingEvent.focus_question_ids?.length) && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <Users className="h-5 w-5" />
+                    Partners, Stakeholders & Focus Questions
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {viewingEvent.partner_ids?.length > 0 && (
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Partner Organizations</Label>
+                        <div className="space-y-2 mt-2">
+                          {viewingEvent.partner_ids.map(partnerId => {
+                            const partner = partners.find(p => p.id === partnerId);
+                            return partner ? (
+                              <div key={partnerId} className="flex items-center gap-2 p-2 bg-muted/50 rounded-md">
+                                <Badge variant="outline" className="text-xs">
+                                  {partner.partner_type}
+                                </Badge>
+                                <span className="text-sm">{partner.name}</span>
+                              </div>
+                            ) : null;
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {viewingEvent.stakeholder_ids?.length > 0 && (
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Target Stakeholders</Label>
+                        <div className="space-y-2 mt-2">
+                          {viewingEvent.stakeholder_ids.map(stakeholderId => {
+                            const stakeholder = stakeholders.find(s => s.id === stakeholderId);
+                            return stakeholder ? (
+                              <div key={stakeholderId} className="flex items-center gap-2 p-2 bg-muted/50 rounded-md">
+                                <Badge variant="outline" className="text-xs">
+                                  {stakeholder.stakeholder_type}
+                                </Badge>
+                                <span className="text-sm">{stakeholder.name}</span>
+                                <span className="text-xs text-muted-foreground">({stakeholder.organization})</span>
+                              </div>
+                            ) : null;
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {viewingEvent.focus_question_ids?.length > 0 && (
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Related Focus Questions</Label>
+                      <div className="space-y-2 mt-2">
+                        {viewingEvent.focus_question_ids.map(questionId => {
+                          const question = focusQuestions.find(q => q.id === questionId);
+                          return question ? (
+                            <div key={questionId} className="p-2 bg-muted/50 rounded-md">
+                              <span className="text-sm">{question.question_text}</span>
+                            </div>
+                          ) : null;
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex gap-2 pt-4 border-t">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setViewingEvent(null);
+                    handleEdit(viewingEvent);
+                  }}
+                >
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit Event
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setViewingEvent(null)}
+                >
+                  Close
+                </Button>
               </div>
-              
-              {viewingEvent.agenda && (
-                <div>
-                  <h4 className="font-medium mb-2">Agenda</h4>
-                  <p className="text-muted-foreground">{viewingEvent.agenda}</p>
-                </div>
-              )}
-              
-              {viewingEvent.speakers && (
-                <div>
-                  <h4 className="font-medium mb-2">Speakers</h4>
-                  <p className="text-muted-foreground">{viewingEvent.speakers}</p>
-                </div>
-              )}
             </div>
           )}
         </DialogContent>
