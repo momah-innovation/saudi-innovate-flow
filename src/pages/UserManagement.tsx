@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { User, Users, Shield, Plus, Search, Edit, Trash2, UserCheck, UserPlus } from 'lucide-react';
+import { User, Users, Shield, Plus, Search, Edit, Trash2, UserCheck, UserPlus, Filter, Eye } from 'lucide-react';
 import RoleRequestManagement from '@/components/admin/RoleRequestManagement';
 import { UserInvitationDialog } from '@/components/admin/UserInvitationDialog';
 import { supabase } from '@/integrations/supabase/client';

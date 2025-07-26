@@ -21,7 +21,9 @@ import {
   FileText,
   Zap,
   BarChart3,
-  Target
+  Target,
+  Filter,
+  Eye
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
