@@ -14,7 +14,7 @@ import PartnersManagement from "./pages/PartnersManagement";
 import SectorsManagement from "./pages/SectorsManagement";
 import OrganizationalStructure from "./pages/OrganizationalStructure";
 import ExpertAssignmentManagementPage from "./pages/ExpertAssignmentManagement";
-import UserManagement from "./pages/UserManagement";
+import UserManagementPage from "./pages/UserManagementPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -88,7 +88,7 @@ const App = () => (
               path="/admin/users" 
               element={
                 <ProtectedRoute requireProfile>
-                  <UserManagement />
+                  <UserManagementPage />
                 </ProtectedRoute>
               } 
             />
