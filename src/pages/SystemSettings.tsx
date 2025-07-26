@@ -107,6 +107,34 @@ export default function SystemSettings() {
     
     // API Settings
     apiRateLimit: 1000,
+    
+    // Configurable Lists
+    challengePriorityLevels: ['low', 'medium', 'high'],
+    challengeSensitivityLevels: ['normal', 'sensitive', 'confidential'],
+    challengeTypes: ['technology', 'sustainability', 'healthcare', 'education', 'governance'],
+    availableUserRoles: [
+      { value: 'innovator', label: 'Innovator', description: 'Default role for new users' },
+      { value: 'evaluator', label: 'Evaluator', description: 'Evaluate challenge submissions and ideas' },
+      { value: 'domain_expert', label: 'Domain Expert', description: 'Subject matter expert in specific domains' }
+    ],
+    requestableUserRoles: [
+      { value: 'evaluator', label: 'Evaluator', description: 'Evaluate challenge submissions and ideas' },
+      { value: 'domain_expert', label: 'Domain Expert', description: 'Subject matter expert in specific domains' }
+    ],
+    teamRoleOptions: [
+      'Innovation Manager',
+      'Data Analyst', 
+      'Content Creator',
+      'Project Manager',
+      'Research Analyst'
+    ],
+    teamSpecializationOptions: [
+      'Innovation Strategy & Planning',
+      'Project Management & Execution', 
+      'Research & Market Analysis',
+      'Stakeholder Engagement',
+      'Change Management'
+    ]
   };
 
   // State for form values
@@ -567,6 +595,22 @@ export default function SystemSettings() {
     }
   };
 
+  const handleSaveConfigurableLists = async () => {
+    const settingsToSave = [
+      { key: 'challenge_priority_levels', value: values.challengePriorityLevels },
+      { key: 'challenge_sensitivity_levels', value: values.challengeSensitivityLevels },
+      { key: 'challenge_types', value: values.challengeTypes },
+      { key: 'available_user_roles', value: values.availableUserRoles },
+      { key: 'requestable_user_roles', value: values.requestableUserRoles },
+      { key: 'team_role_options', value: values.teamRoleOptions },
+      { key: 'team_specialization_options', value: values.teamSpecializationOptions }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast.success("Configurable lists saved successfully.");
+    }
+  };
   const handleSaveComponentSettings = async () => {
     const settingsToSave = [
       { key: 'focus_question_textarea_rows', value: values.focusQuestionTextareaRows },
