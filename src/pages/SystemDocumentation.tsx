@@ -339,6 +339,61 @@ export default function SystemDocumentationPage() {
                 </CardContent>
               </Card>
 
+              {/* Relationship Management System */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Network className="h-5 w-5" />
+                    Relationship Management System
+                  </CardTitle>
+                  <CardDescription>
+                    Comprehensive system for managing many-to-many relationships between entities
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <h4 className="font-semibold mb-2">Junction Tables</h4>
+                        <ul className="text-sm text-muted-foreground space-y-1">
+                          <li>• campaign_partner_links</li>
+                          <li>• campaign_stakeholder_links</li>
+                          <li>• event_partner_links</li>
+                          <li>• event_stakeholder_links</li>
+                          <li>• event_focus_question_links</li>
+                          <li>• challenge_experts</li>
+                          <li>• challenge_partners</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-2">Management Features</h4>
+                        <ul className="text-sm text-muted-foreground space-y-1">
+                          <li>• Visual relationship overview dashboard</li>
+                          <li>• Real-time connection counters</li>
+                          <li>• Enhanced management forms</li>
+                          <li>• Relationship analytics</li>
+                          <li>• Transaction-safe helper functions</li>
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-muted/30 p-4 rounded-lg">
+                      <h5 className="font-semibold mb-2">Relationship Overview Dashboard</h5>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        The <code>/admin/relationships</code> page provides:
+                      </p>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        <li>• Entity browser with connection previews</li>
+                        <li>• Real-time statistics and analytics</li>
+                        <li>• Search and filtering capabilities</li>
+                        <li>• Detailed relationship viewer</li>
+                        <li>• Network visualization (planned)</li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Key Workflows */}
               <Card>
                 <CardHeader>
