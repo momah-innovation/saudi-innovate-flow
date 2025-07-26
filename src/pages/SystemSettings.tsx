@@ -1691,6 +1691,74 @@ export default function SystemSettings() {
                       />
                     </div>
 
+                    {/* Available User Roles */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-lg font-medium">Available User Roles (for Invitations)</h3>
+                          <p className="text-sm text-muted-foreground">
+                            All user roles that can be assigned during user invitations. Enter as JSON array with value, label, and description.
+                          </p>
+                        </div>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('availableUserRoles')}
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <Textarea
+                        value={JSON.stringify(values.availableUserRoles, null, 2)}
+                        onChange={(e) => {
+                          try {
+                            const parsed = JSON.parse(e.target.value);
+                            setValues(prev => ({ ...prev, availableUserRoles: parsed }));
+                          } catch (error) {
+                            // Invalid JSON, keep current value
+                          }
+                        }}
+                        placeholder='[{"value": "innovator", "label": "Innovator", "description": "Default role"}]'
+                        rows={6}
+                        className="font-mono text-sm"
+                      />
+                    </div>
+
+                    {/* Requestable User Roles */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-lg font-medium">Requestable User Roles (for Self-Service)</h3>
+                          <p className="text-sm text-muted-foreground">
+                            User roles that can be requested by users themselves (non-administrative). Enter as JSON array.
+                          </p>
+                        </div>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('requestableUserRoles')}
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <Textarea
+                        value={JSON.stringify(values.requestableUserRoles, null, 2)}
+                        onChange={(e) => {
+                          try {
+                            const parsed = JSON.parse(e.target.value);
+                            setValues(prev => ({ ...prev, requestableUserRoles: parsed }));
+                          } catch (error) {
+                            // Invalid JSON, keep current value
+                          }
+                        }}
+                        placeholder='[{"value": "evaluator", "label": "Evaluator", "description": "Evaluate submissions"}]'
+                        rows={5}
+                        className="font-mono text-sm"
+                      />
+                    </div>
+
                     {/* Team Role Options */}
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
