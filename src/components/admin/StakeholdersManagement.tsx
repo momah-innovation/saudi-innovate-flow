@@ -18,6 +18,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -245,7 +246,7 @@ export function StakeholdersManagement() {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl font-bold">Stakeholders Management</h1>
-          <p className="text-muted-foreground">Manage key stakeholders and their engagement levels</p>
+          <p className="text-muted-foreground">Track and manage stakeholder relationships, influence levels, and engagement strategies</p>
         </div>
         
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -258,6 +259,9 @@ export function StakeholdersManagement() {
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{editingStakeholder ? "Edit Stakeholder" : "Add New Stakeholder"}</DialogTitle>
+              <DialogDescription>
+                {editingStakeholder ? "Update stakeholder engagement profile" : "Add a new stakeholder for engagement tracking and influence analysis"}
+              </DialogDescription>
             </DialogHeader>
             
             <form onSubmit={handleSubmit} className="space-y-4">

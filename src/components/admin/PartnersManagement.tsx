@@ -204,7 +204,7 @@ export function PartnersManagement() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold">Partners Management</h1>
-          <p className="text-muted-foreground">Manage organization partners and collaborators</p>
+          <p className="text-muted-foreground">Manage formal business partnerships, funding relationships, and strategic collaborations</p>
         </div>
         
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -218,7 +218,7 @@ export function PartnersManagement() {
             <DialogHeader>
               <DialogTitle>{editingPartner ? "Edit Partner" : "Add New Partner"}</DialogTitle>
               <DialogDescription>
-                {editingPartner ? "Update partner information" : "Create a new partner profile"}
+                {editingPartner ? "Update formal partnership details" : "Add a new business partner or strategic collaborator"}
               </DialogDescription>
             </DialogHeader>
             
