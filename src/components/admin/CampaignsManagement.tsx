@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2, Plus, Edit, Trash2, Calendar, Users, Target, Megaphone, Search, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -627,8 +628,89 @@ export function CampaignsManagement() {
                       </SelectContent>
                     </Select>
                   </div>
-                </div>
-              </div>
+                 </div>
+
+                 {/* Stakeholders and Partners Selection */}
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                   <div className="space-y-3">
+                     <Label>Target Stakeholder Groups</Label>
+                     <div className="border rounded-md p-3 max-h-40 overflow-y-auto">
+                       {stakeholders.length === 0 ? (
+                         <p className="text-sm text-muted-foreground">No stakeholders available</p>
+                       ) : (
+                         <div className="space-y-2">
+                           {stakeholders.map((stakeholder: any) => (
+                             <div key={stakeholder.id} className="flex items-center space-x-2">
+                               <Checkbox
+                                 id={`stakeholder-${stakeholder.id}`}
+                                 checked={formData.selectedStakeholders.includes(stakeholder.id)}
+                                 onCheckedChange={(checked) => {
+                                   if (checked) {
+                                     setFormData({
+                                       ...formData,
+                                       selectedStakeholders: [...formData.selectedStakeholders, stakeholder.id]
+                                     });
+                                   } else {
+                                     setFormData({
+                                       ...formData,
+                                       selectedStakeholders: formData.selectedStakeholders.filter(id => id !== stakeholder.id)
+                                     });
+                                   }
+                                 }}
+                               />
+                               <Label
+                                 htmlFor={`stakeholder-${stakeholder.id}`}
+                                 className="text-sm font-normal cursor-pointer"
+                               >
+                                 {stakeholder.name}
+                               </Label>
+                             </div>
+                           ))}
+                         </div>
+                       )}
+                     </div>
+                   </div>
+
+                   <div className="space-y-3">
+                     <Label>Partner Organizations</Label>
+                     <div className="border rounded-md p-3 max-h-40 overflow-y-auto">
+                       {partners.length === 0 ? (
+                         <p className="text-sm text-muted-foreground">No partners available</p>
+                       ) : (
+                         <div className="space-y-2">
+                           {partners.map((partner: any) => (
+                             <div key={partner.id} className="flex items-center space-x-2">
+                               <Checkbox
+                                 id={`partner-${partner.id}`}
+                                 checked={formData.selectedPartners.includes(partner.id)}
+                                 onCheckedChange={(checked) => {
+                                   if (checked) {
+                                     setFormData({
+                                       ...formData,
+                                       selectedPartners: [...formData.selectedPartners, partner.id]
+                                     });
+                                   } else {
+                                     setFormData({
+                                       ...formData,
+                                       selectedPartners: formData.selectedPartners.filter(id => id !== partner.id)
+                                     });
+                                   }
+                                 }}
+                               />
+                               <Label
+                                 htmlFor={`partner-${partner.id}`}
+                                 className="text-sm font-normal cursor-pointer"
+                               >
+                                 {partner.name}
+                               </Label>
+                             </div>
+                           ))}
+                         </div>
+                       )}
+                     </div>
+                   </div>
+                 </div>
+               </div>
 
               <div className="flex justify-end space-x-2">
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
