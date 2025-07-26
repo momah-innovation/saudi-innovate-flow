@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Label } from "@/components/ui/label";
 import { Plus, Edit, Trash2, Building2, Phone, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 interface Partner {
   id: string;
@@ -33,6 +34,7 @@ export function PartnersManagement() {
   const [editingPartner, setEditingPartner] = useState<Partner | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
+  const { partnerStatusOptions } = useSystemLists();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -263,9 +265,11 @@ export function PartnersManagement() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="inactive">Inactive</SelectItem>
-                      <SelectItem value="pending">Pending</SelectItem>
+                      {partnerStatusOptions.map((status) => (
+                        <SelectItem key={status} value={status}>
+                          {status.charAt(0).toUpperCase() + status.slice(1)}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>

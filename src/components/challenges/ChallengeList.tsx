@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 
 export const ChallengeList = () => {
-  const { challengePriorityLevels } = useSystemLists();
+  const { challengePriorityLevels, challengeStatusOptions } = useSystemLists();
   const challenges = [
     {
       id: 1,
@@ -156,9 +156,11 @@ export const ChallengeList = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
+                {challengeStatusOptions.map((status) => (
+                  <SelectItem key={status} value={status}>
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             <Select>

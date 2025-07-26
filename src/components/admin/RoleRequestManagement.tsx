@@ -15,6 +15,7 @@ import { CheckCircle2, XCircle, Clock, Search, UserCheck, MessageSquare, Eye, Us
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
+import { useSystemLists } from '@/hooks/useSystemLists';
 import { ExpertProfileView } from '@/components/experts/ExpertProfileCard';
 
 interface RoleRequest {
@@ -48,6 +49,7 @@ interface RoleRequest {
 export default function RoleRequestManagement() {
   const { toast } = useToast();
   const { uiInitialsMaxLength } = useSystemSettings();
+  const { roleRequestStatusOptions } = useSystemLists();
   const [roleRequests, setRoleRequests] = useState<RoleRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState<RoleRequest | null>(null);
@@ -292,8 +294,11 @@ export default function RoleRequestManagement() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="approved">Approved</SelectItem>
+                  {roleRequestStatusOptions.map((status) => (
+                    <SelectItem key={status} value={status}>
+                      {status.charAt(0).toUpperCase() + status.slice(1)}
+                    </SelectItem>
+                  ))}
                   <SelectItem value="rejected">Rejected</SelectItem>
                 </SelectContent>
               </Select>

@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   Plus, 
@@ -95,6 +96,7 @@ interface FocusQuestion {
 export const FocusQuestionsManagement = () => {
   const { toast } = useToast();
   const systemSettings = useSystemSettings();
+  const { challengeSensitivityLevels } = useSystemLists();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
   const [filteredQuestions, setFilteredQuestions] = useState<FocusQuestion[]>([]);
@@ -589,8 +591,11 @@ export const FocusQuestionsManagement = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Questions</SelectItem>
-                  <SelectItem value="normal">Normal</SelectItem>
-                  <SelectItem value="sensitive">Sensitive</SelectItem>
+                  {challengeSensitivityLevels.map((level) => (
+                    <SelectItem key={level} value={level}>
+                      {level.charAt(0).toUpperCase() + level.slice(1)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

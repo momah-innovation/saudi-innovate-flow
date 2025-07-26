@@ -104,7 +104,7 @@ interface ChallengePartner {
 export const AdminChallengeManagement = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { challengePriorityLevels, challengeSensitivityLevels, challengeTypes } = useSystemLists();
+  const { challengePriorityLevels, challengeSensitivityLevels, challengeTypes, challengeStatusOptions } = useSystemLists();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
   const [experts, setExperts] = useState<Expert[]>([]);
@@ -1039,9 +1039,11 @@ export const AdminChallengeManagement = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="draft">Draft</SelectItem>
-                      <SelectItem value="published">Published</SelectItem>
-                      <SelectItem value="closed">Closed</SelectItem>
+                      {challengeStatusOptions.map((status) => (
+                        <SelectItem key={status} value={status}>
+                          {status.charAt(0).toUpperCase() + status.slice(1)}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -1480,9 +1482,11 @@ export const AdminChallengeManagement = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="published">Published</SelectItem>
-                <SelectItem value="archived">Archived</SelectItem>
+                {challengeStatusOptions.map((status) => (
+                  <SelectItem key={status} value={status}>
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             <Select value={challengePriorityFilter} onValueChange={setChallengePriorityFilter}>
@@ -1777,8 +1781,11 @@ export const AdminChallengeManagement = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Questions</SelectItem>
-                    <SelectItem value="normal">Normal</SelectItem>
-                    <SelectItem value="sensitive">Sensitive</SelectItem>
+                    {challengeSensitivityLevels.map((level) => (
+                      <SelectItem key={level} value={level}>
+                        {level.charAt(0).toUpperCase() + level.slice(1)}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>

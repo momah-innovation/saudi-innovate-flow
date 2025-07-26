@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, Clock, Shield, Bell, Users, Archive, Settings as SettingsIcon } from "lucide-react";
 
@@ -41,6 +42,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
   onUpdate
 }) => {
   const { toast } = useToast();
+  const { challengeSensitivityLevels } = useSystemLists();
   const [loading, setLoading] = useState(false);
   
   // System settings
@@ -233,9 +235,14 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
                         <SelectValue placeholder="Select sensitivity level" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="normal">Normal - Public access</SelectItem>
-                        <SelectItem value="sensitive">Sensitive - Team members only</SelectItem>
-                        <SelectItem value="confidential">Confidential - Admins only</SelectItem>
+                        {challengeSensitivityLevels.map((level) => (
+                          <SelectItem key={level} value={level}>
+                            {level.charAt(0).toUpperCase() + level.slice(1)}
+                            {level === 'normal' && ' - Public access'}
+                            {level === 'sensitive' && ' - Team members only'}
+                            {level === 'confidential' && ' - Admins only'}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>

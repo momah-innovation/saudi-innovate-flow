@@ -13,6 +13,7 @@ import RoleRequestManagement from '@/components/admin/RoleRequestManagement';
 import { UserInvitationDialog } from '@/components/admin/UserInvitationDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useSystemLists } from '@/hooks/useSystemLists';
 
 interface Profile {
   id: string;
@@ -38,6 +39,7 @@ interface UserRole {
 
 export default function UserManagement() {
   const { toast } = useToast();
+  const { userStatusOptions } = useSystemLists();
   const [users, setUsers] = useState<Profile[]>([]);
   const [userRoles, setUserRoles] = useState<UserRole[]>([]);
   const [loading, setLoading] = useState(true);
@@ -437,9 +439,11 @@ export default function UserManagement() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Status</SelectItem>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="inactive">Inactive</SelectItem>
-                      <SelectItem value="suspended">Suspended</SelectItem>
+                      {userStatusOptions.map((status) => (
+                        <SelectItem key={status} value={status}>
+                          {status.charAt(0).toUpperCase() + status.slice(1)}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>

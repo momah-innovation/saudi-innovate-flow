@@ -32,7 +32,7 @@ export const InnovatorDashboard = () => {
   const navigate = useNavigate();
   const { userProfile } = useAuth();
   const { toast } = useToast();
-  const { challengePriorityLevels, challengeTypes } = useSystemLists();
+  const { challengePriorityLevels, challengeTypes, challengeStatusOptions } = useSystemLists();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -230,9 +230,11 @@ export const InnovatorDashboard = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="published">Published</SelectItem>
-                  <SelectItem value="draft">Draft</SelectItem>
-                  <SelectItem value="closed">Closed</SelectItem>
+                  {challengeStatusOptions.map((status) => (
+                    <SelectItem key={status} value={status}>
+                      {status.charAt(0).toUpperCase() + status.slice(1)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
