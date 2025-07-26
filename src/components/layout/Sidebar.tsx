@@ -77,6 +77,7 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
       { id: "organizational-structure", label: "Organizational Structure", icon: Users, badge: null, roles: ["admin"] },
       { id: "expert-assignments", label: "Expert Assignments", icon: UserCheck, badge: null, roles: ["admin"] },
       { id: "user-management", label: "User Management", icon: UserCheck, badge: null, roles: ["admin"] },
+      { id: "system-documentation", label: "System Documentation", icon: BookOpen, badge: null, roles: ["all"] },
       { id: "system-settings", label: "System Settings", icon: Settings, badge: null, roles: ["admin", "super_admin"] },
       { id: "system-analytics", label: "System Analytics", icon: BarChart3, badge: null, roles: ["admin"] },
     ];
@@ -119,7 +120,7 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     ["analytics", "trends", "reports", "system-analytics"].includes(item.id)
   );
   const adminItems = menuItems.filter(item => 
-    ["challenge-management", "focus-questions", "partners", "sectors", "organizational-structure", "expert-assignments", "user-management", "system-settings"].includes(item.id)
+    ["challenge-management", "focus-questions", "partners", "sectors", "organizational-structure", "expert-assignments", "user-management", "system-documentation", "system-settings"].includes(item.id)
   );
   const settingsItems = menuItems.filter(item => item.id === "settings");
 

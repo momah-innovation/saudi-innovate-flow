@@ -1,0 +1,533 @@
+import { useNavigate } from "react-router-dom";
+import { Header } from "@/components/layout/Header";
+import { AppSidebar } from "@/components/layout/Sidebar";
+import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { 
+  Target, 
+  Users, 
+  Lightbulb, 
+  FileText, 
+  UserCheck, 
+  Calendar,
+  Building2,
+  Network,
+  ArrowRight,
+  GitBranch,
+  Workflow,
+  Database
+} from "lucide-react";
+
+export default function SystemDocumentationPage() {
+  const navigate = useNavigate();
+
+  const handleTabChange = (tab: string) => {
+    // Navigate based on tab selection
+    if (tab === "dashboard") {
+      navigate("/");
+    } else if (tab === "system-documentation") {
+      navigate("/admin/system-documentation");
+    } else {
+      navigate("/");
+    }
+  };
+
+  return (
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
+        <AppSidebar activeTab="system-documentation" onTabChange={handleTabChange} />
+        
+        <div className="flex-1 flex flex-col">
+          <Header />
+          
+          <div className="flex items-center gap-4 px-6 py-3 border-b bg-background/95">
+            <SidebarTrigger />
+            <BreadcrumbNav activeTab="system-documentation" />
+          </div>
+          
+          <main className="flex-1 overflow-auto">
+            <div className="container mx-auto p-6 space-y-8">
+              {/* Header */}
+              <div className="space-y-2">
+                <h1 className="text-4xl font-bold">System Documentation</h1>
+                <p className="text-xl text-muted-foreground">
+                  Comprehensive guide to entity relationships and system architecture
+                </p>
+              </div>
+
+              {/* Overview */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Database className="h-5 w-5" />
+                    System Overview
+                  </CardTitle>
+                  <CardDescription>
+                    The Innovation Management System is built around interconnected entities that work together to facilitate the complete innovation lifecycle.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="text-center p-4 bg-muted/50 rounded-lg">
+                      <Building2 className="h-8 w-8 mx-auto mb-2 text-primary" />
+                      <h3 className="font-semibold">Organizational Foundation</h3>
+                      <p className="text-sm text-muted-foreground">Sectors, Structure, and Ownership</p>
+                    </div>
+                    <div className="text-center p-4 bg-muted/50 rounded-lg">
+                      <Workflow className="h-8 w-8 mx-auto mb-2 text-primary" />
+                      <h3 className="font-semibold">Innovation Process</h3>
+                      <p className="text-sm text-muted-foreground">Challenges, Ideas, and Evaluations</p>
+                    </div>
+                    <div className="text-center p-4 bg-muted/50 rounded-lg">
+                      <Network className="h-8 w-8 mx-auto mb-2 text-primary" />
+                      <h3 className="font-semibold">Engagement Network</h3>
+                      <p className="text-sm text-muted-foreground">Campaigns, Events, and Collaboration</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Core Workflow */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <GitBranch className="h-5 w-5" />
+                    Core Innovation Workflow
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-center space-x-2 text-sm bg-muted/30 p-4 rounded-lg">
+                    <Badge variant="outline">Sectors</Badge>
+                    <ArrowRight className="h-4 w-4" />
+                    <Badge variant="outline">Organization</Badge>
+                    <ArrowRight className="h-4 w-4" />
+                    <Badge variant="outline">Challenges</Badge>
+                    <ArrowRight className="h-4 w-4" />
+                    <Badge variant="outline">Focus Questions</Badge>
+                    <ArrowRight className="h-4 w-4" />
+                    <Badge variant="outline">Ideas</Badge>
+                    <ArrowRight className="h-4 w-4" />
+                    <Badge variant="outline">Evaluations</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Entity Relationships */}
+              <div className="grid lg:grid-cols-2 gap-6">
+                
+                {/* Organizational Foundation */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Building2 className="h-5 w-5" />
+                      Organizational Foundation
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
+                        <div>
+                          <strong>Sectors</strong> define high-level government areas
+                          <p className="text-sm text-muted-foreground">Health, Education, Transportation, etc.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3 ml-4">
+                        <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
+                        <div>
+                          <strong>Deputies</strong> manage sector operations
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3 ml-8">
+                        <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
+                        <div>
+                          <strong>Departments</strong> handle specific functions
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3 ml-12">
+                        <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
+                        <div>
+                          <strong>Domains & Sub-domains</strong> specialized areas
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3 ml-16">
+                        <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
+                        <div>
+                          <strong>Services</strong> citizen-facing functions
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Challenge-Driven Innovation */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Target className="h-5 w-5" />
+                      Challenge-Driven Innovation
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
+                        <div>
+                          <strong>Challenges</strong> define broad innovation problems
+                          <p className="text-sm text-muted-foreground">Linked to organizational structure for ownership</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3 ml-4">
+                        <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
+                        <div>
+                          <strong>Focus Questions</strong> break challenges into specific questions
+                          <p className="text-sm text-muted-foreground">One challenge → Many focus questions</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3 ml-8">
+                        <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
+                        <div>
+                          <strong>Ideas</strong> submitted in response to questions
+                          <p className="text-sm text-muted-foreground">Many ideas per focus question</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Assessment & Evaluation */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <UserCheck className="h-5 w-5" />
+                      Assessment & Evaluation
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
+                        <div>
+                          <strong>Ideas</strong> submitted by innovators
+                          <p className="text-sm text-muted-foreground">Linked to user profiles</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3 ml-4">
+                        <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
+                        <div>
+                          <strong>Evaluations</strong> assess ideas with scores
+                          <p className="text-sm text-muted-foreground">One idea → Multiple evaluations</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3 ml-8">
+                        <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
+                        <div>
+                          <strong>Experts</strong> conduct evaluations
+                          <p className="text-sm text-muted-foreground">Assigned based on expertise areas</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Outreach & Engagement */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Calendar className="h-5 w-5" />
+                      Outreach & Engagement
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
+                        <div>
+                          <strong>Campaigns</strong> promote innovation initiatives
+                          <p className="text-sm text-muted-foreground">Marketing and outreach programs</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3 ml-4">
+                        <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
+                        <div>
+                          <strong>Events</strong> activities within campaigns
+                          <p className="text-sm text-muted-foreground">One campaign → Many events</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3 ml-8">
+                        <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
+                        <div>
+                          <strong>Stakeholders</strong> participate in events
+                          <p className="text-sm text-muted-foreground">Many-to-many relationship</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Expert Assignment System */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="h-5 w-5" />
+                    Expert Assignment System
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <h4 className="font-semibold">Experts</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Professionals with specific expertise areas who evaluate ideas and provide guidance.
+                      </p>
+                      <Badge variant="secondary">Many-to-Many</Badge>
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="font-semibold">Challenges</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Experts are assigned to challenges based on matching expertise requirements.
+                      </p>
+                      <Badge variant="secondary">Assignment Tracking</Badge>
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="font-semibold">Innovation Teams</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Internal teams that manage the overall innovation process and expert assignments.
+                      </p>
+                      <Badge variant="secondary">Process Management</Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Partnership Network */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Network className="h-5 w-5" />
+                    Partnership & Collaboration Network
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <h4 className="font-semibold mb-2">Partners ↔ Challenges</h4>
+                        <p className="text-sm text-muted-foreground">
+                          External organizations collaborate on specific challenges, providing resources, expertise, or funding.
+                        </p>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-2">Partners ↔ Campaigns</h4>
+                        <p className="text-sm text-muted-foreground">
+                          Partners can sponsor campaigns or co-host events to increase reach and impact.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Key Workflows */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Workflow className="h-5 w-5" />
+                    Key System Workflows
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    
+                    <div>
+                      <h4 className="font-semibold mb-3">Innovation Submission Flow</h4>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs">1</span>
+                          <span>Organization identifies a problem area</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs">2</span>
+                          <span>Challenge is created and assigned to experts</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs">3</span>
+                          <span>Focus Questions are defined to guide solutions</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs">4</span>
+                          <span>Campaign promotes the challenge publicly</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs">5</span>
+                          <span>Events are held to engage participants</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs">6</span>
+                          <span>Ideas are submitted by innovators</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs">7</span>
+                          <span>Experts evaluate ideas</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs">8</span>
+                          <span>Stakeholders review results</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Separator />
+
+                    <div>
+                      <h4 className="font-semibold mb-3">Expert Assignment Flow</h4>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-secondary text-secondary-foreground rounded-full flex items-center justify-center text-xs">1</span>
+                          <span>Innovation Team identifies challenge requirements</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-secondary text-secondary-foreground rounded-full flex items-center justify-center text-xs">2</span>
+                          <span>Experts are matched based on expertise areas</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-secondary text-secondary-foreground rounded-full flex items-center justify-center text-xs">3</span>
+                          <span>Challenge-Expert assignments are created</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-secondary text-secondary-foreground rounded-full flex items-center justify-center text-xs">4</span>
+                          <span>Evaluations are conducted by assigned experts</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-secondary text-secondary-foreground rounded-full flex items-center justify-center text-xs">5</span>
+                          <span>Partners may provide additional expertise</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Separator />
+
+                    <div>
+                      <h4 className="font-semibold mb-3">Campaign-Event Flow</h4>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">1</span>
+                          <span>Campaign is created with specific theme</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">2</span>
+                          <span>Events are planned within the campaign</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">3</span>
+                          <span>Stakeholders are invited to participate</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">4</span>
+                          <span>Partners may sponsor or co-host events</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Entity Summary Table */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Entity Roles Summary</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b">
+                          <th className="text-left p-2 font-semibold">Entity</th>
+                          <th className="text-left p-2 font-semibold">Primary Role</th>
+                          <th className="text-left p-2 font-semibold">Key Relationships</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y">
+                        <tr>
+                          <td className="p-2 font-medium">Sectors</td>
+                          <td className="p-2">Organizational hierarchy</td>
+                          <td className="p-2">→ Deputies, Challenges</td>
+                        </tr>
+                        <tr>
+                          <td className="p-2 font-medium">Organization</td>
+                          <td className="p-2">Structure & ownership</td>
+                          <td className="p-2">→ Challenges, Users</td>
+                        </tr>
+                        <tr>
+                          <td className="p-2 font-medium">Challenges</td>
+                          <td className="p-2">Problem definition</td>
+                          <td className="p-2">→ Focus Questions, Experts, Partners</td>
+                        </tr>
+                        <tr>
+                          <td className="p-2 font-medium">Focus Questions</td>
+                          <td className="p-2">Specific guidance</td>
+                          <td className="p-2">→ Ideas</td>
+                        </tr>
+                        <tr>
+                          <td className="p-2 font-medium">Ideas</td>
+                          <td className="p-2">Solution proposals</td>
+                          <td className="p-2">→ Evaluations</td>
+                        </tr>
+                        <tr>
+                          <td className="p-2 font-medium">Evaluations</td>
+                          <td className="p-2">Assessment & scoring</td>
+                          <td className="p-2">→ Experts, Ideas</td>
+                        </tr>
+                        <tr>
+                          <td className="p-2 font-medium">Experts</td>
+                          <td className="p-2">Knowledge providers</td>
+                          <td className="p-2">→ Evaluations, Challenges</td>
+                        </tr>
+                        <tr>
+                          <td className="p-2 font-medium">Innovation Teams</td>
+                          <td className="p-2">Process management</td>
+                          <td className="p-2">→ All entities</td>
+                        </tr>
+                        <tr>
+                          <td className="p-2 font-medium">Campaigns</td>
+                          <td className="p-2">Marketing & outreach</td>
+                          <td className="p-2">→ Events</td>
+                        </tr>
+                        <tr>
+                          <td className="p-2 font-medium">Events</td>
+                          <td className="p-2">Engagement activities</td>
+                          <td className="p-2">→ Stakeholders, Campaigns</td>
+                        </tr>
+                        <tr>
+                          <td className="p-2 font-medium">Stakeholders</td>
+                          <td className="p-2">External participants</td>
+                          <td className="p-2">→ Events</td>
+                        </tr>
+                        <tr>
+                          <td className="p-2 font-medium">Partners</td>
+                          <td className="p-2">Collaboration entities</td>
+                          <td className="p-2">→ Challenges, Campaigns</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Footer */}
+              <div className="text-center text-sm text-muted-foreground pt-8">
+                <p>This documentation provides a comprehensive overview of the Innovation Management System architecture.</p>
+                <p className="mt-2">For technical support or questions, contact the system administrators.</p>
+              </div>
+
+            </div>
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
+  );
+}

@@ -15,6 +15,7 @@ import SectorsManagement from "./pages/SectorsManagement";
 import OrganizationalStructure from "./pages/OrganizationalStructure";
 import ExpertAssignmentManagementPage from "./pages/ExpertAssignmentManagement";
 import UserManagementPage from "./pages/UserManagementPage";
+import SystemDocumentationPage from "./pages/SystemDocumentation";
 import UserProfile from "./pages/UserProfile";
 import SystemSettings from "./pages/SystemSettings";
 import EvaluationsManagementPage from "./pages/EvaluationsManagement";
@@ -98,14 +99,22 @@ const App = () => (
                   <UserManagementPage />
                 </ProtectedRoute>
               } 
-            /> 
+            />
+            <Route 
+              path="/admin/system-documentation" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <SystemDocumentationPage />
+                </ProtectedRoute>
+              } 
+            />
             <Route 
               path="/admin/system-settings" 
               element={
                 <ProtectedRoute requireProfile requiredRole="admin">
                   <SystemSettings />
                 </ProtectedRoute>
-              } 
+              }
             />
             <Route 
               path="/admin/evaluations" 
