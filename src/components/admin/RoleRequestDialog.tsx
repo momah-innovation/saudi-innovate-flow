@@ -148,12 +148,12 @@ export function RoleRequestDialog({ open, onOpenChange, currentRoles, onRequestS
                 <SelectValue placeholder="Select why you need this role..." />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="expertise">I have relevant expertise in this area</SelectItem>
-                <SelectItem value="experience">I have professional experience in this field</SelectItem>
-                <SelectItem value="contribution">I want to contribute more to the platform</SelectItem>
-                <SelectItem value="responsibility">I'm ready to take on additional responsibilities</SelectItem>
-                <SelectItem value="team_needs">My team/organization needs this role</SelectItem>
-                <SelectItem value="other">Other (please explain in justification)</SelectItem>
+                <SelectItem value="domain_expertise">I have specialized knowledge in specific domains/sectors</SelectItem>
+                <SelectItem value="evaluation_experience">I have experience evaluating innovations, ideas, or projects</SelectItem>
+                <SelectItem value="academic_background">I have relevant academic background or research experience</SelectItem>
+                <SelectItem value="industry_experience">I have relevant industry or professional experience</SelectItem>
+                <SelectItem value="certification">I hold relevant certifications or qualifications</SelectItem>
+                <SelectItem value="volunteer_contribution">I want to volunteer my expertise to help evaluate and guide innovations</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -164,11 +164,11 @@ export function RoleRequestDialog({ open, onOpenChange, currentRoles, onRequestS
             <Textarea
               value={justification}
               onChange={(e) => setJustification(e.target.value)}
-              placeholder="Please provide detailed justification for why you should be granted this role. Include your relevant experience, qualifications, and how you plan to use this role to contribute to the platform..."
-              className="min-h-[120px]"
+              placeholder="Please provide detailed information about your qualifications for this role. For Domain Expert: List your areas of expertise, education, certifications, and relevant experience. For Evaluator: Describe your experience evaluating projects, innovations, or similar work. Include specific examples and how you plan to contribute to the platform..."
+              className="min-h-[140px]"
             />
             <p className="text-xs text-muted-foreground">
-              Provide specific examples of your experience and how you'll use this role responsibly.
+              Be specific about your expertise areas, qualifications, experience level, and any certifications you hold.
             </p>
           </div>
 

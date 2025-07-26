@@ -13,6 +13,7 @@ import { Header } from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { ExpertProfileView } from "@/components/experts/ExpertProfileCard";
 
 interface UserProfile {
   id: string;
@@ -343,6 +344,11 @@ export default function UserProfile() {
                       )}
                     </CardContent>
                   </Card>
+
+                  {/* Expert Profile Section - Show if user has domain_expert role */}
+                  {userRoles.some(role => role.role === 'domain_expert') && (
+                    <ExpertProfileView userId={userId!} />
+                  )}
 
                   {/* Actions */}
                   {isOwnProfile && (
