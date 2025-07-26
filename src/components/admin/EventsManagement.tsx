@@ -45,6 +45,11 @@ interface Event {
   budget?: number;
   event_manager_id?: string;
   campaign_id?: string;
+  challenge_id?: string;
+  sector_id?: string;
+  target_stakeholder_groups?: string[];
+  partner_organizations?: string[];
+  related_focus_questions?: string[];
   target_audience?: string;
   agenda?: string;
   speakers?: string;
@@ -56,6 +61,14 @@ export function EventsManagement() {
   const [loading, setLoading] = useState(true);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
+  // Relationship data
+  const [campaigns, setCampaigns] = useState([]);
+  const [challenges, setChallenges] = useState([]);
+  const [sectors, setSectors] = useState([]);
+  const [partners, setPartners] = useState([]);
+  const [stakeholders, setStakeholders] = useState([]);
+  const [focusQuestions, setFocusQuestions] = useState([]);
   
   // Detail view states
   const [viewingEvent, setViewingEvent] = useState<Event | null>(null);
@@ -88,11 +101,40 @@ export function EventsManagement() {
     max_participants: "",
     status: "scheduled",
     budget: "",
+    campaign_id: "",
+    challenge_id: "",
+    sector_id: "",
+    target_stakeholder_groups: [] as string[],
+    partner_organizations: [] as string[],
+    related_focus_questions: [] as string[],
   });
 
   useEffect(() => {
     fetchEvents();
+    fetchRelationshipData();
   }, []);
+
+  const fetchRelationshipData = async () => {
+    try {
+      const [campaignsRes, challengesRes, sectorsRes, partnersRes, stakeholdersRes, focusQuestionsRes] = await Promise.all([
+        supabase.from("campaigns").select("id, title").order("title"),
+        supabase.from("challenges").select("id, title").order("title"),
+        supabase.from("sectors").select("id, name").order("name"),
+        supabase.from("partners").select("id, name").order("name"),
+        supabase.from("stakeholders").select("id, name").order("name"),
+        supabase.from("focus_questions").select("id, question_text").order("question_text"),
+      ]);
+
+      setCampaigns(campaignsRes.data || []);
+      setChallenges(challengesRes.data || []);
+      setSectors(sectorsRes.data || []);
+      setPartners(partnersRes.data || []);
+      setStakeholders(stakeholdersRes.data || []);
+      setFocusQuestions(focusQuestionsRes.data || []);
+    } catch (error) {
+      console.error("Error fetching relationship data:", error);
+    }
+  };
 
   const fetchEvents = async () => {
     try {
@@ -182,6 +224,12 @@ export function EventsManagement() {
       max_participants: event.max_participants?.toString() || "",
       status: event.status,
       budget: event.budget?.toString() || "",
+      campaign_id: event.campaign_id || "",
+      challenge_id: event.challenge_id || "",
+      sector_id: event.sector_id || "",
+      target_stakeholder_groups: event.target_stakeholder_groups || [],
+      partner_organizations: event.partner_organizations || [],
+      related_focus_questions: event.related_focus_questions || [],
     });
     setIsDialogOpen(true);
   };
@@ -229,6 +277,12 @@ export function EventsManagement() {
       max_participants: "",
       status: "scheduled",
       budget: "",
+      campaign_id: "",
+      challenge_id: "",
+      sector_id: "",
+      target_stakeholder_groups: [],
+      partner_organizations: [],
+      related_focus_questions: [],
     });
   };
 
@@ -467,6 +521,66 @@ export function EventsManagement() {
                     value={formData.budget}
                     onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
                   />
+                </div>
+              </div>
+
+              {/* Relationship Fields */}
+              <div className="border-t pt-4">
+                <h3 className="text-lg font-medium mb-4">Relationships</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="campaign_id">Related Campaign</Label>
+                    <Select value={formData.campaign_id} onValueChange={(value) => setFormData({ ...formData, campaign_id: value })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select campaign" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">None</SelectItem>
+                        {campaigns.map((campaign: any) => (
+                          <SelectItem key={campaign.id} value={campaign.id}>
+                            {campaign.title}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="challenge_id">Related Challenge</Label>
+                    <Select value={formData.challenge_id} onValueChange={(value) => setFormData({ ...formData, challenge_id: value })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select challenge" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">None</SelectItem>
+                        {challenges.map((challenge: any) => (
+                          <SelectItem key={challenge.id} value={challenge.id}>
+                            {challenge.title}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="sector_id">Sector</Label>
+                    <Select value={formData.sector_id} onValueChange={(value) => setFormData({ ...formData, sector_id: value })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select sector" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">None</SelectItem>
+                        {sectors.map((sector: any) => (
+                          <SelectItem key={sector.id} value={sector.id}>
+                            {sector.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
 

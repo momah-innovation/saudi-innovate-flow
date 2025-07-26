@@ -40,6 +40,12 @@ interface Campaign {
   budget?: number;
   campaign_manager_id?: string;
   success_metrics?: string;
+  challenge_id?: string;
+  sector_id?: string;
+  deputy_id?: string;
+  department_id?: string;
+  target_stakeholder_groups?: string[];
+  partner_organizations?: string[];
   created_at: string;
   updated_at: string;
 }
@@ -49,6 +55,14 @@ export function CampaignsManagement() {
   const [loading, setLoading] = useState(true);
   const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
+  // Relationship data
+  const [challenges, setChallenges] = useState([]);
+  const [sectors, setSectors] = useState([]);
+  const [deputies, setDeputies] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [partners, setPartners] = useState([]);
+  const [stakeholders, setStakeholders] = useState([]);
   
   // Detail view states
   const [viewingCampaign, setViewingCampaign] = useState<Campaign | null>(null);
@@ -78,11 +92,40 @@ export function CampaignsManagement() {
     target_ideas: "",
     budget: "",
     success_metrics: "",
+    challenge_id: "",
+    sector_id: "",
+    deputy_id: "",
+    department_id: "",
+    target_stakeholder_groups: [] as string[],
+    partner_organizations: [] as string[],
   });
 
   useEffect(() => {
     fetchCampaigns();
+    fetchRelationshipData();
   }, []);
+
+  const fetchRelationshipData = async () => {
+    try {
+      const [challengesRes, sectorsRes, deputiesRes, departmentsRes, partnersRes, stakeholdersRes] = await Promise.all([
+        supabase.from("challenges").select("id, title").order("title"),
+        supabase.from("sectors").select("id, name").order("name"),
+        supabase.from("deputies").select("id, name").order("name"),
+        supabase.from("departments").select("id, name").order("name"),
+        supabase.from("partners").select("id, name").order("name"),
+        supabase.from("stakeholders").select("id, name").order("name"),
+      ]);
+
+      setChallenges(challengesRes.data || []);
+      setSectors(sectorsRes.data || []);
+      setDeputies(deputiesRes.data || []);
+      setDepartments(departmentsRes.data || []);
+      setPartners(partnersRes.data || []);
+      setStakeholders(stakeholdersRes.data || []);
+    } catch (error) {
+      console.error("Error fetching relationship data:", error);
+    }
+  };
 
   const fetchCampaigns = async () => {
     try {
@@ -172,6 +215,12 @@ export function CampaignsManagement() {
       target_ideas: campaign.target_ideas?.toString() || "",
       budget: campaign.budget?.toString() || "",
       success_metrics: campaign.success_metrics || "",
+      challenge_id: campaign.challenge_id || "",
+      sector_id: campaign.sector_id || "",
+      deputy_id: campaign.deputy_id || "",
+      department_id: campaign.department_id || "",
+      target_stakeholder_groups: campaign.target_stakeholder_groups || [],
+      partner_organizations: campaign.partner_organizations || [],
     });
     setIsDialogOpen(true);
   };
@@ -218,6 +267,12 @@ export function CampaignsManagement() {
       target_ideas: "",
       budget: "",
       success_metrics: "",
+      challenge_id: "",
+      sector_id: "",
+      deputy_id: "",
+      department_id: "",
+      target_stakeholder_groups: [],
+      partner_organizations: [],
     });
   };
 
@@ -438,6 +493,83 @@ export function CampaignsManagement() {
                   onChange={(e) => setFormData({ ...formData, success_metrics: e.target.value })}
                   rows={2}
                 />
+              </div>
+
+              {/* Relationship Fields */}
+              <div className="border-t pt-4">
+                <h3 className="text-lg font-medium mb-4">Relationships</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="challenge_id">Related Challenge</Label>
+                    <Select value={formData.challenge_id} onValueChange={(value) => setFormData({ ...formData, challenge_id: value })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select challenge" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">None</SelectItem>
+                        {challenges.map((challenge: any) => (
+                          <SelectItem key={challenge.id} value={challenge.id}>
+                            {challenge.title}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="sector_id">Sector</Label>
+                    <Select value={formData.sector_id} onValueChange={(value) => setFormData({ ...formData, sector_id: value })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select sector" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">None</SelectItem>
+                        {sectors.map((sector: any) => (
+                          <SelectItem key={sector.id} value={sector.id}>
+                            {sector.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="deputy_id">Deputy</Label>
+                    <Select value={formData.deputy_id} onValueChange={(value) => setFormData({ ...formData, deputy_id: value })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select deputy" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">None</SelectItem>
+                        {deputies.map((deputy: any) => (
+                          <SelectItem key={deputy.id} value={deputy.id}>
+                            {deputy.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="department_id">Department</Label>
+                    <Select value={formData.department_id} onValueChange={(value) => setFormData({ ...formData, department_id: value })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select department" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">None</SelectItem>
+                        {departments.map((department: any) => (
+                          <SelectItem key={department.id} value={department.id}>
+                            {department.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
               </div>
 
               <div className="flex justify-end space-x-2">
