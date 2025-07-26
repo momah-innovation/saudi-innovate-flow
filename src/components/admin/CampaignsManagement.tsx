@@ -204,6 +204,9 @@ export function CampaignsManagement() {
   };
 
   const handleEdit = (campaign: Campaign) => {
+    // First reset all form state to ensure clean slate
+    resetForm();
+    
     setEditingCampaign(campaign);
     setFormData({
       title: campaign.title || "",
@@ -225,6 +228,21 @@ export function CampaignsManagement() {
       department_ids: (campaign as any).department_id ? [(campaign as any).department_id] : [],
       challenge_ids: (campaign as any).challenge_id ? [(campaign as any).challenge_id] : [],
     });
+    
+    // Reset partner and stakeholder selections
+    setSelectedPartners([]);
+    setSelectedStakeholders([]);
+    
+    // Reset search states
+    setPartnerSearch("");
+    setStakeholderSearch("");
+    
+    // Reset dropdown states
+    setOpenSector(false);
+    setOpenDeputy(false);
+    setOpenDepartment(false);
+    setOpenChallenge(false);
+    
     setShowAddDialog(true);
   };
 
