@@ -1,0 +1,145 @@
+-- Seed Campaigns table with diverse innovation campaigns
+INSERT INTO public.campaigns (
+  id,
+  title,
+  title_ar,
+  description,
+  description_ar,
+  theme,
+  success_metrics,
+  status,
+  start_date,
+  end_date,
+  registration_deadline,
+  target_participants,
+  target_ideas,
+  budget,
+  campaign_manager_id,
+  created_at,
+  updated_at
+) VALUES
+-- Digital Transformation Campaign
+(
+  gen_random_uuid(),
+  'Digital Government Transformation 2024',
+  'التحول الرقمي للحكومة 2024',
+  'A comprehensive campaign to accelerate digital transformation across government services, focusing on citizen experience and operational efficiency.',
+  'حملة شاملة لتسريع التحول الرقمي عبر الخدمات الحكومية، مع التركيز على تجربة المواطن والكفاءة التشغيلية.',
+  'Digital Transformation',
+  'Target: 500+ digital service improvements, 80% citizen satisfaction, 40% process efficiency gains',
+  'active',
+  '2024-02-01',
+  '2024-08-31',
+  '2024-07-15',
+  1000,
+  300,
+  5000000,
+  'fa80bed2-ed61-4c27-8941-f713cf050944',
+  now() - interval '30 days',
+  now() - interval '5 days'
+),
+
+-- Sustainability Innovation Campaign
+(
+  gen_random_uuid(),
+  'Green Innovation Challenge 2024',
+  'تحدي الابتكار الأخضر 2024',
+  'Promoting sustainable innovation solutions for environmental challenges, renewable energy, and circular economy initiatives.',
+  'تعزيز حلول الابتكار المستدام للتحديات البيئية ومبادرات الطاقة المتجددة والاقتصاد الدائري.',
+  'Sustainability',
+  'Target: 200+ green innovations, 25% energy efficiency improvement, 50+ pilot projects',
+  'active',
+  '2024-03-15',
+  '2024-09-30',
+  '2024-08-30',
+  800,
+  250,
+  3500000,
+  '8066cfaf-4a91-4985-922b-74f6a286c441',
+  now() - interval '15 days',
+  now() - interval '2 days'
+),
+
+-- Healthcare Innovation Campaign
+(
+  gen_random_uuid(),
+  'HealthTech Revolution 2024',
+  'ثورة التقنية الصحية 2024',
+  'Advancing healthcare through innovative technology solutions, telemedicine, AI diagnostics, and patient care improvements.',
+  'النهوض بالرعاية الصحية من خلال حلول تقنية مبتكرة والطب عن بُعد والتشخيص بالذكاء الاصطناعي وتحسين رعاية المرضى.',
+  'Healthcare Technology',
+  'Target: 150+ healthtech solutions, 30% diagnosis accuracy improvement, 100+ hospitals engaged',
+  'planning',
+  '2024-05-01',
+  '2024-11-30',
+  '2024-04-15',
+  600,
+  180,
+  4200000,
+  'fa80bed2-ed61-4c27-8941-f713cf050944',
+  now() - interval '10 days',
+  now() - interval '1 day'
+),
+
+-- Smart Cities Campaign
+(
+  gen_random_uuid(),
+  'Smart Cities Innovation Hub',
+  'مركز ابتكار المدن الذكية',
+  'Building the future of urban living through smart city technologies, IoT solutions, and data-driven city management.',
+  'بناء مستقبل الحياة الحضرية من خلال تقنيات المدن الذكية وحلول إنترنت الأشياء وإدارة المدن القائمة على البيانات.',
+  'Smart Cities',
+  'Target: 100+ smart city solutions, 20+ pilot deployments, 60% traffic optimization',
+  'active',
+  '2024-01-15',
+  '2024-10-15',
+  '2024-09-01',
+  1200,
+  400,
+  7500000,
+  '8066cfaf-4a91-4985-922b-74f6a286c441',
+  now() - interval '45 days',
+  now() - interval '3 days'
+),
+
+-- Education Technology Campaign
+(
+  gen_random_uuid(),
+  'EdTech Innovation Sprint 2024',
+  'سباق ابتكار التعليم التقني 2024',
+  'Revolutionizing education through innovative learning technologies, virtual classrooms, and personalized learning experiences.',
+  'إحداث ثورة في التعليم من خلال تقنيات التعلم المبتكرة والفصول الافتراضية وتجارب التعلم الشخصية.',
+  'Education Technology',
+  'Target: 120+ EdTech innovations, 85% student engagement increase, 200+ schools impacted',
+  'completed',
+  '2023-09-01',
+  '2024-01-31',
+  '2023-12-15',
+  500,
+  150,
+  2800000,
+  'fa80bed2-ed61-4c27-8941-f713cf050944',
+  now() - interval '120 days',
+  now() - interval '30 days'
+),
+
+-- Fintech Innovation Campaign
+(
+  gen_random_uuid(),
+  'Financial Innovation Challenge',
+  'تحدي الابتكار المالي',
+  'Driving fintech innovation for digital payments, blockchain solutions, and financial inclusion initiatives.',
+  'قيادة ابتكار التقنية المالية للمدفوعات الرقمية وحلول البلوك تشين ومبادرات الشمول المالي.',
+  'Financial Technology',
+  'Target: 80+ fintech solutions, 40% financial inclusion improvement, 15+ banking partnerships',
+  'planning',
+  '2024-06-01',
+  '2024-12-31',
+  '2024-05-15',
+  400,
+  120,
+  3200000,
+  '8066cfaf-4a91-4985-922b-74f6a286c441',
+  now() - interval '5 days',
+  now()
+);
