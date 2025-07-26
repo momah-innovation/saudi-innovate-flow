@@ -1692,13 +1692,103 @@ export default function SystemSettings() {
                       onChange={(items) => setValues(prev => ({ ...prev, teamSpecializationOptions: items }))}
                       onReset={() => handleReset('teamSpecializationOptions')}
                       placeholder="Add specialization (e.g., Digital Innovation)"
-                    />
+                     />
 
-                    <div className="flex justify-end pt-4 border-t">
-                      <Button onClick={handleSaveConfigurableLists} disabled={loading}>
-                        {loading ? 'Saving...' : 'Save Configurable Lists'}
-                      </Button>
-                    </div>
+                     {/* Challenge Status Options */}
+                     <SimpleListEditor
+                       title="Challenge Status Options"
+                       description="Available status options for challenges"
+                       items={values.challengeStatusOptions}
+                       onChange={(items) => setValues(prev => ({ ...prev, challengeStatusOptions: items }))}
+                       onReset={() => handleReset('challengeStatusOptions')}
+                       placeholder="Add status (e.g., on_hold)"
+                     />
+
+                     {/* Partner Status Options */}
+                     <SimpleListEditor
+                       title="Partner Status Options"
+                       description="Available status options for partners"
+                       items={values.partnerStatusOptions}
+                       onChange={(items) => setValues(prev => ({ ...prev, partnerStatusOptions: items }))}
+                       onReset={() => handleReset('partnerStatusOptions')}
+                       placeholder="Add status (e.g., verified)"
+                     />
+
+                     {/* Partner Type Options */}
+                     <SimpleListEditor
+                       title="Partner Type Options"
+                       description="Available partner type classifications"
+                       items={values.partnerTypeOptions}
+                       onChange={(items) => setValues(prev => ({ ...prev, partnerTypeOptions: items }))}
+                       onReset={() => handleReset('partnerTypeOptions')}
+                       placeholder="Add type (e.g., startup)"
+                     />
+
+                     {/* Partnership Type Options */}
+                     <SimpleListEditor
+                       title="Partnership Type Options"
+                       description="Available partnership relationship types"
+                       items={values.partnershipTypeOptions}
+                       onChange={(items) => setValues(prev => ({ ...prev, partnershipTypeOptions: items }))}
+                       onReset={() => handleReset('partnershipTypeOptions')}
+                       placeholder="Add type (e.g., advisor)"
+                     />
+
+                     {/* Expert Status Options */}
+                     <SimpleListEditor
+                       title="Expert Status Options"
+                       description="Available status options for experts"
+                       items={values.expertStatusOptions}
+                       onChange={(items) => setValues(prev => ({ ...prev, expertStatusOptions: items }))}
+                       onReset={() => handleReset('expertStatusOptions')}
+                       placeholder="Add status (e.g., on_leave)"
+                     />
+
+                     {/* Assignment Status Options */}
+                     <SimpleListEditor
+                       title="Assignment Status Options"
+                       description="Available status options for expert assignments"
+                       items={values.assignmentStatusOptions}
+                       onChange={(items) => setValues(prev => ({ ...prev, assignmentStatusOptions: items }))}
+                       onReset={() => handleReset('assignmentStatusOptions')}
+                       placeholder="Add status (e.g., reviewing)"
+                     />
+
+                     {/* Role Request Status Options */}
+                     <SimpleListEditor
+                       title="Role Request Status Options"
+                       description="Available status options for role requests"
+                       items={values.roleRequestStatusOptions}
+                       onChange={(items) => setValues(prev => ({ ...prev, roleRequestStatusOptions: items }))}
+                       onReset={() => handleReset('roleRequestStatusOptions')}
+                       placeholder="Add status (e.g., escalated)"
+                     />
+
+                     {/* User Status Options */}
+                     <SimpleListEditor
+                       title="User Status Options"
+                       description="Available status options for user accounts"
+                       items={values.userStatusOptions}
+                       onChange={(items) => setValues(prev => ({ ...prev, userStatusOptions: items }))}
+                       onReset={() => handleReset('userStatusOptions')}
+                       placeholder="Add status (e.g., locked)"
+                     />
+
+                     {/* General Status Options */}
+                     <SimpleListEditor
+                       title="General Status Options"
+                       description="General status options used across various features"
+                       items={values.generalStatusOptions}
+                       onChange={(items) => setValues(prev => ({ ...prev, generalStatusOptions: items }))}
+                       onReset={() => handleReset('generalStatusOptions')}
+                       placeholder="Add status (e.g., paused)"
+                     />
+
+                     <div className="flex justify-end pt-4 border-t">
+                       <Button onClick={handleSaveConfigurableLists} disabled={loading}>
+                         {loading ? 'Saving...' : 'Save Configurable Lists'}
+                       </Button>
+                     </div>
                   </CardContent>
                 </Card>
 
