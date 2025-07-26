@@ -202,10 +202,10 @@ export function CampaignsManagement() {
         target_ideas: formData.target_ideas ? parseInt(formData.target_ideas) : null,
         budget: formData.budget ? parseFloat(formData.budget) : null,
         success_metrics: formData.success_metrics || null,
-        challenge_id: formData.challenge_id || null,
-        sector_id: formData.sector_id || null,
-        deputy_id: formData.deputy_id || null,
-        department_id: formData.department_id || null,
+        challenge_id: formData.challenge_id === "none" ? null : formData.challenge_id || null,
+        sector_id: formData.sector_id === "none" ? null : formData.sector_id || null,
+        deputy_id: formData.deputy_id === "none" ? null : formData.deputy_id || null,
+        department_id: formData.department_id === "none" ? null : formData.department_id || null,
       };
 
       let campaignId: string;
@@ -273,10 +273,10 @@ export function CampaignsManagement() {
       target_ideas: campaign.target_ideas?.toString() || "",
       budget: campaign.budget?.toString() || "",
       success_metrics: campaign.success_metrics || "",
-      challenge_id: campaign.challenge_id || "",
-      sector_id: campaign.sector_id || "",
-      deputy_id: campaign.deputy_id || "",
-      department_id: campaign.department_id || "",
+      challenge_id: campaign.challenge_id || "none",
+      sector_id: campaign.sector_id || "none",
+      deputy_id: campaign.deputy_id || "none",
+      department_id: campaign.department_id || "none",
       target_stakeholder_groups: campaign.stakeholders?.map(s => s.id) || [],
       partner_organizations: campaign.partners?.map(p => p.id) || [],
     });
@@ -325,10 +325,10 @@ export function CampaignsManagement() {
       target_ideas: "",
       budget: "",
       success_metrics: "",
-      challenge_id: "",
-      sector_id: "",
-      deputy_id: "",
-      department_id: "",
+      challenge_id: "none",
+      sector_id: "none",
+      deputy_id: "none",
+      department_id: "none",
       target_stakeholder_groups: [],
       partner_organizations: [],
     });
@@ -565,7 +565,7 @@ export function CampaignsManagement() {
                         <SelectValue placeholder="Select challenge" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">None</SelectItem>
+                        <SelectItem value="none">None</SelectItem>
                         {challenges.map((challenge: any) => (
                           <SelectItem key={challenge.id} value={challenge.id}>
                             {challenge.title}
@@ -582,7 +582,7 @@ export function CampaignsManagement() {
                         <SelectValue placeholder="Select sector" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">None</SelectItem>
+                        <SelectItem value="none">None</SelectItem>
                         {sectors.map((sector: any) => (
                           <SelectItem key={sector.id} value={sector.id}>
                             {sector.name}
@@ -601,7 +601,7 @@ export function CampaignsManagement() {
                         <SelectValue placeholder="Select deputy" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">None</SelectItem>
+                        <SelectItem value="none">None</SelectItem>
                         {deputies.map((deputy: any) => (
                           <SelectItem key={deputy.id} value={deputy.id}>
                             {deputy.name}
@@ -618,7 +618,7 @@ export function CampaignsManagement() {
                         <SelectValue placeholder="Select department" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">None</SelectItem>
+                        <SelectItem value="none">None</SelectItem>
                         {departments.map((department: any) => (
                           <SelectItem key={department.id} value={department.id}>
                             {department.name}
