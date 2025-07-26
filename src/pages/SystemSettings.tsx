@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Globe, RotateCcw } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/Sidebar";
+import { SimpleListEditor, RoleEditor } from "@/components/admin/ListEditors";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
@@ -1605,217 +1606,75 @@ export default function SystemSettings() {
                       Manage dropdown options and lists used throughout the application
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-6">
+                  <CardContent className="space-y-8">
                     
                     {/* Challenge Priority Levels */}
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-lg font-medium">Challenge Priority Levels</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Available priority levels for challenges (comma-separated)
-                          </p>
-                        </div>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="h-8 w-8 p-0"
-                          onClick={() => handleReset('challengePriorityLevels')}
-                        >
-                          <RotateCcw className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <Input
-                        value={Array.isArray(values.challengePriorityLevels) ? values.challengePriorityLevels.join(', ') : ''}
-                        onChange={(e) => setValues(prev => ({ 
-                          ...prev, 
-                          challengePriorityLevels: e.target.value.split(',').map(s => s.trim()).filter(s => s)
-                        }))}
-                        placeholder="low, medium, high"
-                      />
-                    </div>
+                    <SimpleListEditor
+                      title="Challenge Priority Levels"
+                      description="Available priority levels for challenges"
+                      items={values.challengePriorityLevels}
+                      onChange={(items) => setValues(prev => ({ ...prev, challengePriorityLevels: items }))}
+                      onReset={() => handleReset('challengePriorityLevels')}
+                      placeholder="Add priority level (e.g., urgent)"
+                    />
 
                     {/* Challenge Sensitivity Levels */}
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-lg font-medium">Challenge Sensitivity Levels</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Available sensitivity levels for challenges (comma-separated)
-                          </p>
-                        </div>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="h-8 w-8 p-0"
-                          onClick={() => handleReset('challengeSensitivityLevels')}
-                        >
-                          <RotateCcw className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <Input
-                        value={Array.isArray(values.challengeSensitivityLevels) ? values.challengeSensitivityLevels.join(', ') : ''}
-                        onChange={(e) => setValues(prev => ({ 
-                          ...prev, 
-                          challengeSensitivityLevels: e.target.value.split(',').map(s => s.trim()).filter(s => s)
-                        }))}
-                        placeholder="normal, sensitive, confidential"
-                      />
-                    </div>
+                    <SimpleListEditor
+                      title="Challenge Sensitivity Levels"
+                      description="Available sensitivity levels for challenges"
+                      items={values.challengeSensitivityLevels}
+                      onChange={(items) => setValues(prev => ({ ...prev, challengeSensitivityLevels: items }))}
+                      onReset={() => handleReset('challengeSensitivityLevels')}
+                      placeholder="Add sensitivity level (e.g., restricted)"
+                    />
 
                     {/* Challenge Types */}
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-lg font-medium">Challenge Types</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Available challenge types (comma-separated)
-                          </p>
-                        </div>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="h-8 w-8 p-0"
-                          onClick={() => handleReset('challengeTypes')}
-                        >
-                          <RotateCcw className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <Input
-                        value={Array.isArray(values.challengeTypes) ? values.challengeTypes.join(', ') : ''}
-                        onChange={(e) => setValues(prev => ({ 
-                          ...prev, 
-                          challengeTypes: e.target.value.split(',').map(s => s.trim()).filter(s => s)
-                        }))}
-                        placeholder="technology, sustainability, healthcare, education, governance"
-                      />
-                    </div>
+                    <SimpleListEditor
+                      title="Challenge Types"
+                      description="Available challenge categories and types"
+                      items={values.challengeTypes}
+                      onChange={(items) => setValues(prev => ({ ...prev, challengeTypes: items }))}
+                      onReset={() => handleReset('challengeTypes')}
+                      placeholder="Add challenge type (e.g., innovation)"
+                    />
 
                     {/* Available User Roles */}
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-lg font-medium">Available User Roles (for Invitations)</h3>
-                          <p className="text-sm text-muted-foreground">
-                            All user roles that can be assigned during user invitations. Enter as JSON array with value, label, and description.
-                          </p>
-                        </div>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="h-8 w-8 p-0"
-                          onClick={() => handleReset('availableUserRoles')}
-                        >
-                          <RotateCcw className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <Textarea
-                        value={JSON.stringify(values.availableUserRoles, null, 2)}
-                        onChange={(e) => {
-                          try {
-                            const parsed = JSON.parse(e.target.value);
-                            setValues(prev => ({ ...prev, availableUserRoles: parsed }));
-                          } catch (error) {
-                            // Invalid JSON, keep current value
-                          }
-                        }}
-                        placeholder='[{"value": "innovator", "label": "Innovator", "description": "Default role"}]'
-                        rows={6}
-                        className="font-mono text-sm"
-                      />
-                    </div>
+                    <RoleEditor
+                      title="Available User Roles (for Invitations)"
+                      description="All user roles that can be assigned during user invitations"
+                      roles={values.availableUserRoles}
+                      onChange={(roles) => setValues(prev => ({ ...prev, availableUserRoles: roles }))}
+                      onReset={() => handleReset('availableUserRoles')}
+                    />
 
                     {/* Requestable User Roles */}
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-lg font-medium">Requestable User Roles (for Self-Service)</h3>
-                          <p className="text-sm text-muted-foreground">
-                            User roles that can be requested by users themselves (non-administrative). Enter as JSON array.
-                          </p>
-                        </div>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="h-8 w-8 p-0"
-                          onClick={() => handleReset('requestableUserRoles')}
-                        >
-                          <RotateCcw className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <Textarea
-                        value={JSON.stringify(values.requestableUserRoles, null, 2)}
-                        onChange={(e) => {
-                          try {
-                            const parsed = JSON.parse(e.target.value);
-                            setValues(prev => ({ ...prev, requestableUserRoles: parsed }));
-                          } catch (error) {
-                            // Invalid JSON, keep current value
-                          }
-                        }}
-                        placeholder='[{"value": "evaluator", "label": "Evaluator", "description": "Evaluate submissions"}]'
-                        rows={5}
-                        className="font-mono text-sm"
-                      />
-                    </div>
+                    <RoleEditor
+                      title="Requestable User Roles (for Self-Service)"
+                      description="User roles that can be requested by users themselves (non-administrative)"
+                      roles={values.requestableUserRoles}
+                      onChange={(roles) => setValues(prev => ({ ...prev, requestableUserRoles: roles }))}
+                      onReset={() => handleReset('requestableUserRoles')}
+                    />
 
                     {/* Team Role Options */}
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-lg font-medium">Team Role Options</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Available CIC roles for team members (comma-separated)
-                          </p>
-                        </div>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="h-8 w-8 p-0"
-                          onClick={() => handleReset('teamRoleOptions')}
-                        >
-                          <RotateCcw className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <Textarea
-                        value={Array.isArray(values.teamRoleOptions) ? values.teamRoleOptions.join(', ') : ''}
-                        onChange={(e) => setValues(prev => ({ 
-                          ...prev, 
-                          teamRoleOptions: e.target.value.split(',').map(s => s.trim()).filter(s => s)
-                        }))}
-                        placeholder="Innovation Manager, Data Analyst, Content Creator, Project Manager"
-                        rows={3}
-                      />
-                    </div>
+                    <SimpleListEditor
+                      title="Team Role Options"
+                      description="Available CIC roles for team members"
+                      items={values.teamRoleOptions}
+                      onChange={(items) => setValues(prev => ({ ...prev, teamRoleOptions: items }))}
+                      onReset={() => handleReset('teamRoleOptions')}
+                      placeholder="Add team role (e.g., Innovation Analyst)"
+                    />
 
                     {/* Team Specialization Options */}
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-lg font-medium">Team Specialization Options</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Available specialization areas for team members (comma-separated)
-                          </p>
-                        </div>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="h-8 w-8 p-0"
-                          onClick={() => handleReset('teamSpecializationOptions')}
-                        >
-                          <RotateCcw className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <Textarea
-                        value={Array.isArray(values.teamSpecializationOptions) ? values.teamSpecializationOptions.join(', ') : ''}
-                        onChange={(e) => setValues(prev => ({ 
-                          ...prev, 
-                          teamSpecializationOptions: e.target.value.split(',').map(s => s.trim()).filter(s => s)
-                        }))}
-                        placeholder="Innovation Strategy & Planning, Project Management & Execution, Research & Market Analysis"
-                        rows={4}
-                      />
-                    </div>
+                    <SimpleListEditor
+                      title="Team Specialization Options"
+                      description="Available specialization areas for team members"
+                      items={values.teamSpecializationOptions}
+                      onChange={(items) => setValues(prev => ({ ...prev, teamSpecializationOptions: items }))}
+                      onReset={() => handleReset('teamSpecializationOptions')}
+                      placeholder="Add specialization (e.g., Digital Innovation)"
+                    />
 
                     <div className="flex justify-end pt-4 border-t">
                       <Button onClick={handleSaveConfigurableLists} disabled={loading}>
