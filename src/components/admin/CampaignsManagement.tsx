@@ -145,10 +145,10 @@ export function CampaignsManagement() {
         .from("campaigns")
         .select(`
           *,
-          challenge:challenges!challenge_id(id, title),
-          sector:sectors!sector_id(id, name),
-          department:departments!department_id(id, name),
-          deputy:deputies!deputy_id(id, name),
+          challenge:challenges!fk_campaigns_challenge_id(id, title),
+          sector:sectors!fk_campaigns_sector_id(id, name),
+          department:departments!fk_campaigns_department_id(id, name),
+          deputy:deputies!fk_campaigns_deputy_id(id, name),
           partners:campaign_partner_links(
             partner:partners(id, name)
           ),

@@ -23,6 +23,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  updateEventPartners,
+  updateEventStakeholders,
+  updateEventFocusQuestions
+} from "@/lib/relationshipHelpers";
 
 interface Event {
   id: string;
@@ -144,14 +149,14 @@ export function EventsManagement() {
     try {
       setLoading(true);
       
-      // Fetch events with relationships using proper JOINs
+      // Fetch events with relationships using proper JOINs  
       const { data, error } = await supabase
         .from("events")
         .select(`
           *,
-          campaign:campaigns!campaign_id(id, title),
-          challenge:challenges!challenge_id(id, title),
-          sector:sectors!sector_id(id, name),
+          campaign:campaigns!fk_events_campaign_id(id, title),
+          challenge:challenges!fk_events_challenge_id(id, title),
+          sector:sectors!fk_events_sector_id(id, name),
           partners:event_partner_links(
             partner:partners(id, name)
           ),
