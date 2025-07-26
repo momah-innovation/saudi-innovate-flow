@@ -20,19 +20,19 @@ interface RoleRequestDialogProps {
 const AVAILABLE_ROLES = [
   { value: 'evaluator', label: 'Evaluator', description: 'Evaluate challenge submissions and ideas' },
   { value: 'domain_expert', label: 'Domain Expert', description: 'Subject matter expert in specific domains' },
-  { value: 'sector_lead', label: 'Sector Lead', description: 'Lead and coordinate sector activities' },
-  { value: 'challenge_manager', label: 'Challenge Manager', description: 'Manage and oversee challenges' },
-  { value: 'expert_coordinator', label: 'Expert Coordinator', description: 'Coordinate expert assignments and activities' },
-  { value: 'content_manager', label: 'Content Manager', description: 'Manage platform content and resources' },
-  { value: 'data_analyst', label: 'Data Analyst', description: 'Analyze platform data and generate insights' },
 ];
 
-// Internal roles that can only be assigned by system admins
+// Internal/Administrative roles that can only be assigned by system admins
 const INTERNAL_ROLES = [
-  'user_manager',
-  'role_manager', 
-  'admin',
-  'super_admin'
+  'sector_lead',           // Leadership role - should be admin assigned
+  'challenge_manager',     // Management role - should be admin assigned  
+  'expert_coordinator',    // Coordination role - should be admin assigned
+  'content_manager',       // Management role - should be admin assigned
+  'data_analyst',         // Administrative role - should be admin assigned
+  'user_manager',         // System admin role
+  'role_manager',         // System admin role
+  'admin',               // System admin role
+  'super_admin'          // System admin role
 ];
 
 export function RoleRequestDialog({ open, onOpenChange, currentRoles, onRequestSubmitted }: RoleRequestDialogProps) {
