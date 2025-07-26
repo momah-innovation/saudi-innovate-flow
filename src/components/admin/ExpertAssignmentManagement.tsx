@@ -9,9 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import { Calendar, Clock, Plus, Search, Users, UserCheck, Target, AlertCircle, CheckCircle2, XCircle } from 'lucide-react';
+import { Calendar, Clock, Plus, Search, Users, UserCheck, Target, AlertCircle, CheckCircle2, XCircle, Building, User } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { ExpertProfileDialog } from './ExpertProfileDialog';
 
 interface Expert {
   id: string;
@@ -23,6 +24,10 @@ interface Expert {
   profiles?: {
     name: string;
     email: string;
+    department?: string;
+    position?: string;
+    phone?: string;
+    bio?: string;
   };
 }
 
@@ -80,6 +85,10 @@ export function ExpertAssignmentManagement() {
   const [challengeFilter, setChallengeFilter] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  
+  // Expert profile dialog
+  const [isExpertProfileDialogOpen, setIsExpertProfileDialogOpen] = useState(false);
+  const [selectedExpertId, setSelectedExpertId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -125,7 +134,7 @@ export function ExpertAssignmentManagement() {
       const userIds = expertsData.map(expert => expert.user_id);
       const { data: profilesData, error: profilesError } = await supabase
         .from('profiles')
-        .select('id, name, email')
+        .select('id, name, email, department, position, phone, bio')
         .in('id', userIds);
 
       if (profilesError) throw profilesError;
@@ -137,7 +146,11 @@ export function ExpertAssignmentManagement() {
           ...expert,
           profiles: profile ? {
             name: profile.name,
-            email: profile.email
+            email: profile.email,
+            department: profile.department,
+            position: profile.position,
+            phone: profile.phone,
+            bio: profile.bio
           } : null
         };
       });
@@ -404,6 +417,11 @@ export function ExpertAssignmentManagement() {
     return matchesExpertFilter && matchesChallengeFilter && matchesRoleFilter && matchesStatusFilter;
   });
 
+  const handleViewExpertProfile = (expertId: string) => {
+    setSelectedExpertId(expertId);
+    setIsExpertProfileDialogOpen(true);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -509,14 +527,47 @@ export function ExpertAssignmentManagement() {
                   <div className="flex items-start justify-between">
                     <div className="space-y-2">
                       <CardTitle className="text-lg">
-                        {(() => {
-                          const expert = experts.find(e => e.id === assignment.expert_id);
-                          return expert?.profiles?.name || `Expert ${assignment.expert_id}`;
-                        })()}
+                        <Button
+                          variant="link"
+                          className="p-0 h-auto font-semibold text-lg hover:text-primary"
+                          onClick={() => handleViewExpertProfile(assignment.expert_id)}
+                        >
+                          {(() => {
+                            const expert = experts.find(e => e.id === assignment.expert_id);
+                            return expert?.profiles?.name || `Expert ${assignment.expert_id}`;
+                          })()}
+                        </Button>
                       </CardTitle>
                       <CardDescription>
                         {assignment.challenges?.title}
                       </CardDescription>
+                      {/* Expert Details */}
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                        {(() => {
+                          const expert = experts.find(e => e.id === assignment.expert_id);
+                          return (
+                            <>
+                              {expert?.profiles?.department && (
+                                <div className="flex items-center gap-1">
+                                  <Building className="h-4 w-4" />
+                                  <span>{expert.profiles.department}</span>
+                                </div>
+                              )}
+                              {expert?.profiles?.position && (
+                                <div className="flex items-center gap-1">
+                                  <User className="h-4 w-4" />
+                                  <span>{expert.profiles.position}</span>
+                                </div>
+                              )}
+                              {expert?.expert_level && (
+                                <Badge variant="outline" className="text-xs">
+                                  {expert.expert_level} level
+                                </Badge>
+                              )}
+                            </>
+                          );
+                        })()}
+                      </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <Badge variant={getRoleColor(assignment.role_type)}>
@@ -942,6 +993,13 @@ export function ExpertAssignmentManagement() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Expert Profile Dialog */}
+      <ExpertProfileDialog
+        open={isExpertProfileDialogOpen}
+        onOpenChange={setIsExpertProfileDialogOpen}
+        expertId={selectedExpertId}
+      />
     </div>
   );
 }
