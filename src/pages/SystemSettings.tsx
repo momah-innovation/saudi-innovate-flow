@@ -10,9 +10,11 @@ import { AppSidebar } from "@/components/layout/Sidebar";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SystemSettings() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   
   // Default values for system settings
   const defaultValues = {
@@ -34,6 +36,30 @@ export default function SystemSettings() {
       ...prev,
       [field]: defaultValues[field]
     }));
+  };
+
+  const handleSaveTeamDefaults = () => {
+    // In a real app, this would save to database
+    toast({
+      title: "Settings Saved",
+      description: "Team management defaults have been updated successfully.",
+    });
+  };
+
+  const handleSaveChallengeSettings = () => {
+    // In a real app, this would save to database
+    toast({
+      title: "Settings Saved", 
+      description: "Challenge management settings have been updated successfully.",
+    });
+  };
+
+  const handleSaveNotificationSettings = () => {
+    // In a real app, this would save to database
+    toast({
+      title: "Settings Saved",
+      description: "Notification settings have been updated successfully.",
+    });
   };
 
   const handleTabChange = (tab: string) => {
@@ -140,7 +166,7 @@ export default function SystemSettings() {
                     </div>
                   </div>
                   <div className="flex justify-end pt-4 border-t">
-                    <Button size="sm">
+                    <Button size="sm" onClick={handleSaveTeamDefaults}>
                       Save Team Defaults
                     </Button>
                   </div>
@@ -223,7 +249,7 @@ export default function SystemSettings() {
                     </div>
                   </div>
                   <div className="flex justify-end pt-4 border-t">
-                    <Button size="sm">
+                    <Button size="sm" onClick={handleSaveChallengeSettings}>
                       Save Challenge Settings
                     </Button>
                   </div>
@@ -306,7 +332,7 @@ export default function SystemSettings() {
                     </div>
                   </div>
                   <div className="flex justify-end pt-4 border-t">
-                    <Button size="sm">
+                    <Button size="sm" onClick={handleSaveNotificationSettings}>
                       Save Notification Settings
                     </Button>
                   </div>
