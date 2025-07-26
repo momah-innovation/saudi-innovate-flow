@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useSystemLists } from '@/hooks/useSystemLists';
 
 // System settings hook
 const useSystemSettings = () => {
@@ -123,6 +124,7 @@ interface Assignment {
 
 export default function TeamManagement() {
   const { toast } = useToast();
+  const { teamRoleOptions, teamSpecializationOptions } = useSystemLists();
   const systemSettings = useSystemSettings();
   const [teamMembers, setTeamMembers] = useState<InnovationTeamMember[]>([]);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
@@ -547,41 +549,18 @@ export default function TeamManagement() {
     user.department?.toLowerCase().includes(userSearchTerm.toLowerCase())
   );
 
-  const roleOptions = [
-    'Innovation Manager',
-    'Data Analyst', 
-    'Content Creator',
-    'Project Manager',
-    'Research Analyst',
-    'Strategy Consultant',
-    'Technology Specialist',
-    'Campaign Manager',
-    'Event Coordinator'
-  ];
+  // Use system settings for role and specialization options
+  const roleOptions = teamRoleOptions;
+  const specializationOptions = teamSpecializationOptions;
 
-  const specializationOptions = [
-    'Innovation Strategy & Planning',
-    'Project Management & Execution', 
-    'Research & Market Analysis',
-    'Stakeholder Engagement',
-    'Change Management',
-    'Performance Measurement & KPIs',
-    'Content Creation & Communication',
-    'Event Management & Coordination',
-    'Partnership Development',
-    'Training & Development',
-    'Process Optimization',
-    'Quality Assurance & Evaluation',
-    'Data Analytics & Insights',
-    'Campaign Management',
-    'Innovation Assessment',
-    'Technology Integration',
-    'Digital Transformation',
-    'Innovation Culture Development'
-  ];
-
-  const allSpecializations = [...new Set(teamMembers.flatMap(m => m.specialization || []))];
-  const allRoles = [...new Set(teamMembers.map(m => m.cic_role))];
+  const allSpecializations = [...new Set([
+    ...specializationOptions,
+    ...teamMembers.flatMap(m => m.specialization || [])
+  ])];
+  const allRoles = [...new Set([
+    ...roleOptions,
+    ...teamMembers.map(m => m.cic_role)
+  ])];
 
   if (loading) {
     return (
@@ -927,7 +906,7 @@ export default function TeamManagement() {
             <div className="space-y-2">
               <Label>Role (Multiple Selection Allowed)</Label>
               <div className="grid gap-2 max-h-40 overflow-y-auto border rounded p-2">
-                {roleOptions.map((role) => (
+                      {roleOptions.map((role) => (
                   <label key={role} className="flex items-center space-x-2 text-sm">
                     <input
                       type="checkbox"
@@ -964,7 +943,7 @@ export default function TeamManagement() {
             <div className="space-y-2">
               <Label>Specialization Areas</Label>
               <div className="grid gap-2 max-h-40 overflow-y-auto border rounded p-2">
-                {specializationOptions.map((spec) => (
+                      {specializationOptions.map((spec) => (
                   <label key={spec} className="flex items-center space-x-2 text-sm">
                     <input
                       type="checkbox"

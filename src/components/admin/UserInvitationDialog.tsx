@@ -11,6 +11,7 @@ import { UserPlus, Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 interface UserInvitationDialogProps {
   open: boolean;
@@ -18,23 +19,10 @@ interface UserInvitationDialogProps {
   onInvitationSent?: () => void;
 }
 
-const AVAILABLE_ROLES = [
-  { value: 'innovator', label: 'Innovator', description: 'Default role for new users' },
-  { value: 'evaluator', label: 'Evaluator', description: 'Evaluate challenge submissions and ideas' },
-  { value: 'domain_expert', label: 'Domain Expert', description: 'Subject matter expert in specific domains' },
-  { value: 'sector_lead', label: 'Sector Lead', description: 'Lead and coordinate sector activities' },
-  { value: 'challenge_manager', label: 'Challenge Manager', description: 'Manage and oversee challenges' },
-  { value: 'expert_coordinator', label: 'Expert Coordinator', description: 'Coordinate expert assignments and activities' },
-  { value: 'content_manager', label: 'Content Manager', description: 'Manage platform content and resources' },
-  { value: 'data_analyst', label: 'Data Analyst', description: 'Analyze platform data and generate insights' },
-  { value: 'user_manager', label: 'User Manager', description: 'Manage user accounts and permissions' },
-  { value: 'role_manager', label: 'Role Manager', description: 'Manage role assignments and permissions' },
-  { value: 'admin', label: 'Admin', description: 'Administrative access' },
-];
-
 export function UserInvitationDialog({ open, onOpenChange, onInvitationSent }: UserInvitationDialogProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { availableUserRoles } = useSystemLists();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -210,7 +198,7 @@ export function UserInvitationDialog({ open, onOpenChange, onInvitationSent }: U
               Select the roles this user should have when they join the platform
             </p>
             <div className="grid gap-3 md:grid-cols-2">
-              {AVAILABLE_ROLES.map((role) => (
+              {availableUserRoles.map((role) => (
                 <div key={role.value} className="flex items-start space-x-3 p-3 border rounded-lg">
                   <Checkbox
                     id={role.value}
@@ -232,7 +220,7 @@ export function UserInvitationDialog({ open, onOpenChange, onInvitationSent }: U
               <span className="text-sm font-medium">Selected roles:</span>
               {formData.initial_roles.map(role => (
                 <Badge key={role} variant="secondary">
-                  {AVAILABLE_ROLES.find(r => r.value === role)?.label || role}
+                  {availableUserRoles.find(r => r.value === role)?.label || role}
                 </Badge>
               ))}
             </div>
