@@ -16,6 +16,8 @@ const ProfileSetup = () => {
   const { user, userProfile, refreshProfile } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [minExperienceYears, setMinExperienceYears] = useState(0);
+  const [maxExperienceYears, setMaxExperienceYears] = useState(50);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [profileData, setProfileData] = useState({
     name: '',

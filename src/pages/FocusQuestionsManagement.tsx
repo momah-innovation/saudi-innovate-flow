@@ -17,10 +17,9 @@ const FocusQuestionsManagement = () => {
       case "challenge-management":
         navigate("/");
         // The main app will handle setting the correct tab
-        const delay = await getNavigationDelay();
         setTimeout(() => {
           window.dispatchEvent(new CustomEvent('navigate-to-tab', { detail: { tab: 'challenge-management' } }));
-        }, delay);
+        }, 100);
         break;
       default:
         navigate("/");

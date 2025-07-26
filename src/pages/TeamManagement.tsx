@@ -83,6 +83,13 @@ export default function TeamManagement() {
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [specializationFilter, setSpecializationFilter] = useState('all');
+  
+  // System settings
+  const [capacityWarningThreshold, setCapacityWarningThreshold] = useState(90);
+  const [performanceRatingMin, setPerformanceRatingMin] = useState(0);
+  const [performanceRatingMax, setPerformanceRatingMax] = useState(5);
+  const [maxConcurrentProjects, setMaxConcurrentProjects] = useState(20);
+  const [insights, setInsights] = useState<any[]>([]);
 
   useEffect(() => {
     fetchData();

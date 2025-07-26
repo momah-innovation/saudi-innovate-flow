@@ -12,6 +12,7 @@ const Auth = () => {
   const { user, loading, signIn, signUp } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordMinLength, setPasswordMinLength] = useState(6);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
