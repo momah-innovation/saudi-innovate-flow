@@ -16,13 +16,36 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { supabase } from "@/integrations/supabase/client"
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state"
-const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
+const SIDEBAR_COOKIE_MAX_AGE_DEFAULT = 60 * 60 * 24 * 7
 const SIDEBAR_WIDTH = "16rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
+
+// Function to get sidebar cookie max age from system settings
+const getSidebarCookieMaxAge = async (): Promise<number> => {
+  try {
+    const { data, error } = await supabase
+      .from('system_settings')
+      .select('setting_value')
+      .eq('setting_key', 'ui_sidebar_cookie_max_age_days')
+      .maybeSingle();
+
+    if (error) throw error;
+    
+    const days = data ? 
+      (typeof data.setting_value === 'string' ? parseInt(data.setting_value) : 
+       typeof data.setting_value === 'number' ? data.setting_value : 7) : 7;
+    
+    return 60 * 60 * 24 * days; // Convert days to seconds
+  } catch (error) {
+    console.error('Error fetching sidebar cookie max age:', error);
+    return SIDEBAR_COOKIE_MAX_AGE_DEFAULT; // fallback value
+  }
+};
 
 type SidebarContext = {
   state: "expanded" | "collapsed"
@@ -82,7 +105,7 @@ const SidebarProvider = React.forwardRef<
         }
 
         // This sets the cookie to keep the sidebar state.
-        document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+        document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE_DEFAULT}`
       },
       [setOpenProp, open]
     )

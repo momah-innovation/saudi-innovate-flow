@@ -10,6 +10,46 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserPlus, Send } from "lucide-react";
 
+// Function to get role rejection wait days from system settings
+const getRoleRejectionWaitDays = async (): Promise<number> => {
+  try {
+    const { data, error } = await supabase
+      .from('system_settings')
+      .select('setting_value')
+      .eq('setting_key', 'role_rejection_wait_days')
+      .maybeSingle();
+
+    if (error) throw error;
+    
+    return data ? 
+      (typeof data.setting_value === 'string' ? parseInt(data.setting_value) : 
+       typeof data.setting_value === 'number' ? data.setting_value : 30) : 30;
+  } catch (error) {
+    console.error('Error fetching role rejection wait days:', error);
+    return 30; // fallback value
+  }
+};
+
+// Function to get max role requests per week from system settings
+const getMaxRoleRequestsPerWeek = async (): Promise<number> => {
+  try {
+    const { data, error } = await supabase
+      .from('system_settings')
+      .select('setting_value')
+      .eq('setting_key', 'role_max_requests_per_week')
+      .maybeSingle();
+
+    if (error) throw error;
+    
+    return data ? 
+      (typeof data.setting_value === 'string' ? parseInt(data.setting_value) : 
+       typeof data.setting_value === 'number' ? data.setting_value : 3) : 3;
+  } catch (error) {
+    console.error('Error fetching max role requests per week:', error);
+    return 3; // fallback value
+  }
+};
+
 interface RoleRequestDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -106,12 +146,16 @@ export function RoleRequestDialog({ open, onOpenChange, currentRoles, onRequestS
       if (recentRejections && recentRejections.length > 0) {
         const lastRejection = new Date(recentRejections[0].reviewed_at);
         const daysSince = Math.ceil((Date.now() - lastRejection.getTime()) / (1000 * 60 * 60 * 24));
-        const waitDays = 30 - daysSince;
-        toast.error(`You must wait ${waitDays} more days before re-requesting this role after rejection.`);
-        return;
+        const waitDays = await getRoleRejectionWaitDays() - daysSince;
+        const waitDaysRemaining = Math.max(0, waitDays);
+        if (waitDaysRemaining > 0) {
+          toast.error(`You must wait ${waitDaysRemaining} more days before re-requesting this role after rejection.`);
+          return;
+        }
       }
 
-      // Check rate limit - max 3 requests per week across all roles
+      // Check rate limit - configurable max requests per week
+      const maxRequestsPerWeek = await getMaxRoleRequestsPerWeek();
       const oneWeekAgo = new Date();
       oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
@@ -123,8 +167,8 @@ export function RoleRequestDialog({ open, onOpenChange, currentRoles, onRequestS
 
       if (rateError) throw rateError;
 
-      if (recentRequests && recentRequests.length >= 3) {
-        toast.error('You have reached the maximum of 3 role requests per week. Please wait before submitting new requests.');
+      if (recentRequests && recentRequests.length >= maxRequestsPerWeek) {
+        toast.error(`You can only make ${maxRequestsPerWeek} role requests per week. Please wait before making another request.`);
         return;
       }
 

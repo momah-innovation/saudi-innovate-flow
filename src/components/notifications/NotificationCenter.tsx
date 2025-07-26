@@ -13,6 +13,26 @@ import {
 import { Bell, Check, CheckCircle2, AlertTriangle, Info, X, MoreVertical } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+
+// Function to get notification fetch limit from system settings
+const getNotificationFetchLimit = async (): Promise<number> => {
+  try {
+    const { data, error } = await supabase
+      .from('system_settings')
+      .select('setting_value')
+      .eq('setting_key', 'notification_fetch_limit')
+      .maybeSingle();
+
+    if (error) throw error;
+    
+    return data ? 
+      (typeof data.setting_value === 'string' ? parseInt(data.setting_value) : 
+       typeof data.setting_value === 'number' ? data.setting_value : 50) : 50;
+  } catch (error) {
+    console.error('Error fetching notification fetch limit:', error);
+    return 50; // fallback value
+  }
+};
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -78,7 +98,7 @@ export function NotificationCenter() {
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
-        .limit(50);
+        .limit(await getNotificationFetchLimit());
 
       if (error) throw error;
       setNotifications((data || []).map(item => ({

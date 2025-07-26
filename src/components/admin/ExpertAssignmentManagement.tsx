@@ -57,6 +57,7 @@ interface ChallengeExpert {
 export function ExpertAssignmentManagement() {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("assignments");
+  const [maxWorkload, setMaxWorkload] = useState(5);
   
   // State management
   const [experts, setExperts] = useState<Expert[]>([]);
@@ -92,7 +93,28 @@ export function ExpertAssignmentManagement() {
 
   useEffect(() => {
     fetchData();
+    loadMaxWorkloadSetting();
   }, []);
+
+  const loadMaxWorkloadSetting = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_value')
+        .eq('setting_key', 'team_max_expert_workload')
+        .maybeSingle();
+
+      if (error) throw error;
+      
+      const value = data ? 
+        (typeof data.setting_value === 'string' ? parseInt(data.setting_value) : 
+         typeof data.setting_value === 'number' ? data.setting_value : 5) : 5;
+      setMaxWorkload(value);
+    } catch (error) {
+      console.error('Error fetching max workload setting:', error);
+      setMaxWorkload(5); // fallback value
+    }
+  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -637,7 +659,6 @@ export function ExpertAssignmentManagement() {
           <div className="grid gap-4">
             {experts.map((expert) => {
               const workload = getExpertWorkload(expert.id);
-              const maxWorkload = 5;
               const workloadPercentage = (workload / maxWorkload) * 100;
               
               return (
@@ -684,7 +705,7 @@ export function ExpertAssignmentManagement() {
             {experts.map((expert) => {
               const workload = getExpertWorkload(expert.id);
               const isAvailable = expert.availability_status === 'available';
-              const isOverloaded = workload >= 5;
+              const isOverloaded = workload >= maxWorkload;
               
               return (
                 <Card key={expert.id}>
@@ -720,10 +741,10 @@ export function ExpertAssignmentManagement() {
                         <span>Current Load:</span>
                         <span>{workload} challenges</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span>Capacity:</span>
-                        <span>5 max</span>
-                      </div>
+                       <div className="flex justify-between">
+                         <span>Capacity:</span>
+                         <span>{maxWorkload} max</span>
+                       </div>
                       <div className="flex justify-between">
                         <span>Experience:</span>
                         <span>{expert.experience_years || 0} years</span>
