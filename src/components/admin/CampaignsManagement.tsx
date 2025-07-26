@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Plus, Edit, Trash2, Calendar, Users, Target } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, Calendar, Users, Target, Megaphone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Select,
@@ -18,6 +18,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -225,6 +226,16 @@ export function CampaignsManagement() {
     }
   };
 
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "active": return "default";
+      case "completed": return "secondary";
+      case "cancelled": return "destructive";
+      case "on_hold": return "outline";
+      default: return "outline";
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -417,25 +428,29 @@ export function CampaignsManagement() {
         </Dialog>
       </div>
 
-      <div className="grid gap-6">
+      <div className="grid gap-4">
         {campaigns.map((campaign) => (
-          <Card key={campaign.id}>
+          <Card key={campaign.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => { setViewingCampaign(campaign); setIsDetailOpen(true); }}>
             <CardHeader>
               <div className="flex justify-between items-start">
-                <div className="space-y-2">
-                  <CardTitle className="text-xl">{campaign.title}</CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Badge className={getStatusColor(campaign.status)}>
-                      {campaign.status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <Megaphone className="h-5 w-5" />
+                    {campaign.title}
+                  </CardTitle>
+                  <div className="flex items-center gap-4 mt-2">
+                    <Badge variant={getStatusBadge(campaign.status)}>
+                      {campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}
                     </Badge>
-                    {campaign.theme && (
-                      <Badge variant="outline">
-                        {campaign.theme.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                      </Badge>
-                    )}
+                    <Badge variant="outline">
+                      {campaign.theme.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                    </Badge>
                   </div>
+                  <CardDescription className="mt-2 line-clamp-2">
+                    {campaign.description}
+                  </CardDescription>
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex space-x-2" onClick={(e) => e.stopPropagation()}>
                   <Button
                     variant="outline"
                     size="sm"
@@ -453,36 +468,6 @@ export function CampaignsManagement() {
                 </div>
               </div>
             </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">{campaign.description}</p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4" />
-                  <span>
-                    {new Date(campaign.start_date).toLocaleDateString()} - {new Date(campaign.end_date).toLocaleDateString()}
-                  </span>
-                </div>
-                {campaign.target_participants && (
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4" />
-                    <span>Target: {campaign.target_participants} participants</span>
-                  </div>
-                )}
-                {campaign.target_ideas && (
-                  <div className="flex items-center gap-2">
-                    <Target className="h-4 w-4" />
-                    <span>Target: {campaign.target_ideas} ideas</span>
-                  </div>
-                )}
-              </div>
-              
-              {campaign.budget && (
-                <div className="mt-4 text-sm">
-                  <strong>Budget:</strong> ${campaign.budget.toLocaleString()}
-                </div>
-              )}
-            </CardContent>
           </Card>
         ))}
 
@@ -494,6 +479,92 @@ export function CampaignsManagement() {
           </Card>
         )}
       </div>
+
+      {/* Detail View Dialog */}
+      <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Megaphone className="h-5 w-5" />
+              {viewingCampaign?.title}
+            </DialogTitle>
+            <DialogDescription>Campaign Details</DialogDescription>
+          </DialogHeader>
+          
+          {viewingCampaign && (
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <Badge variant={getStatusBadge(viewingCampaign.status)}>
+                  {viewingCampaign.status.charAt(0).toUpperCase() + viewingCampaign.status.slice(1)}
+                </Badge>
+                <Badge variant="outline">
+                  {viewingCampaign.theme.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                </Badge>
+              </div>
+              
+              <div>
+                <h4 className="font-medium mb-2">Description</h4>
+                <p className="text-muted-foreground">{viewingCampaign.description}</p>
+                {viewingCampaign.description_ar && (
+                  <p className="text-muted-foreground mt-2" dir="rtl">{viewingCampaign.description_ar}</p>
+                )}
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium mb-2">Timeline</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      <span>Start: {new Date(viewingCampaign.start_date).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      <span>End: {new Date(viewingCampaign.end_date).toLocaleDateString()}</span>
+                    </div>
+                    {viewingCampaign.registration_deadline && (
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4" />
+                        <span>Registration Deadline: {new Date(viewingCampaign.registration_deadline).toLocaleDateString()}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                <div>
+                  <h4 className="font-medium mb-2">Targets & Budget</h4>
+                  <div className="space-y-2 text-sm">
+                    {viewingCampaign.target_participants && (
+                      <div className="flex items-center gap-2">
+                        <Users className="h-4 w-4" />
+                        <span>Target Participants: {viewingCampaign.target_participants}</span>
+                      </div>
+                    )}
+                    {viewingCampaign.target_ideas && (
+                      <div className="flex items-center gap-2">
+                        <Target className="h-4 w-4" />
+                        <span>Target Ideas: {viewingCampaign.target_ideas}</span>
+                      </div>
+                    )}
+                    {viewingCampaign.budget && (
+                      <div className="flex items-center gap-2">
+                        <span>Budget: ${viewingCampaign.budget.toLocaleString()}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              
+              {viewingCampaign.success_metrics && (
+                <div>
+                  <h4 className="font-medium mb-2">Success Metrics</h4>
+                  <p className="text-muted-foreground">{viewingCampaign.success_metrics}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

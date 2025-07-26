@@ -814,6 +814,57 @@ export const FocusQuestionsManagement = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Detail View Dialog */}
+      <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              {viewingQuestion && getQuestionTypeIcon(viewingQuestion.question_type)}
+              Focus Question Details
+            </DialogTitle>
+            <DialogDescription>Complete focus question information</DialogDescription>
+          </DialogHeader>
+          
+          {viewingQuestion && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <Badge variant={getQuestionTypeBadge(viewingQuestion.question_type) as "default" | "secondary" | "outline"}>
+                  {viewingQuestion.question_type}
+                </Badge>
+                {viewingQuestion.is_sensitive && (
+                  <Badge variant="destructive" className="flex items-center gap-1">
+                    <Shield className="h-3 w-3" />
+                    Sensitive
+                  </Badge>
+                )}
+              </div>
+              
+              <div>
+                <h4 className="font-medium mb-2">Challenge</h4>
+                <p className="text-muted-foreground">{viewingQuestion.challenges?.title || "No challenge linked"}</p>
+              </div>
+              
+              <div>
+                <h4 className="font-medium mb-2">Question (English)</h4>
+                <p className="text-muted-foreground leading-relaxed">{viewingQuestion.question_text}</p>
+              </div>
+              
+              {viewingQuestion.question_text_ar && (
+                <div>
+                  <h4 className="font-medium mb-2">Question (Arabic)</h4>
+                  <p className="text-muted-foreground leading-relaxed" dir="rtl">{viewingQuestion.question_text_ar}</p>
+                </div>
+              )}
+              
+              <div>
+                <h4 className="font-medium mb-2">Created</h4>
+                <p className="text-muted-foreground">{new Date(viewingQuestion.created_at).toLocaleDateString()}</p>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

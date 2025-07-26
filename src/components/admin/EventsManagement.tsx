@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -30,6 +31,7 @@ interface Event {
   description: string;
   description_ar?: string;
   event_type?: string;
+  type?: string;
   event_date: string;
   start_time?: string;
   end_time?: string;
@@ -43,6 +45,9 @@ interface Event {
   budget?: number;
   event_manager_id?: string;
   campaign_id?: string;
+  target_audience?: string;
+  agenda?: string;
+  speakers?: string;
   created_at: string;
 }
 
@@ -229,6 +234,17 @@ export function EventsManagement() {
       case "cancelled": return "bg-red-100 text-red-700";
       case "postponed": return "bg-yellow-100 text-yellow-700";
       default: return "bg-gray-100 text-gray-700";
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "scheduled": return "default";
+      case "ongoing": return "default";
+      case "completed": return "secondary";
+      case "cancelled": return "destructive";
+      case "postponed": return "outline";
+      default: return "outline";
     }
   };
 
@@ -439,30 +455,34 @@ export function EventsManagement() {
         </Dialog>
       </div>
 
-      <div className="grid gap-6">
+      <div className="grid gap-4">
         {events.map((event) => (
-          <Card key={event.id}>
+          <Card key={event.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => { setViewingEvent(event); setIsDetailOpen(true); }}>
             <CardHeader>
               <div className="flex justify-between items-start">
-                <div className="space-y-2">
-                  <CardTitle className="text-xl">{event.title}</CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Badge className={getStatusColor(event.status)}>
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calendar className="h-5 w-5" />
+                    {event.title}
+                  </CardTitle>
+                  <div className="flex items-center gap-4 mt-2">
+                    <Badge variant={getStatusBadge(event.status)}>
                       {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
                     </Badge>
+                    <Badge variant="outline">
+                      {event.format.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                    </Badge>
                     {event.event_type && (
-                      <Badge variant="outline">
+                      <Badge variant="secondary">
                         {event.event_type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                       </Badge>
                     )}
-                    {event.format && (
-                      <Badge variant="secondary">
-                        {event.format.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                      </Badge>
-                    )}
                   </div>
+                  <CardDescription className="mt-2 line-clamp-2">
+                    {event.description}
+                  </CardDescription>
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex space-x-2" onClick={(e) => e.stopPropagation()}>
                   <Button
                     variant="outline"
                     size="sm"
@@ -480,45 +500,6 @@ export function EventsManagement() {
                 </div>
               </div>
             </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">{event.description}</p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4" />
-                  <span>{new Date(event.event_date).toLocaleDateString()}</span>
-                </div>
-                {(event.start_time || event.end_time) && (
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4" />
-                    <span>
-                      {event.start_time && event.end_time 
-                        ? `${event.start_time} - ${event.end_time}`
-                        : event.start_time || event.end_time}
-                    </span>
-                  </div>
-                )}
-                {event.location && (
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4" />
-                    <span>{event.location}</span>
-                  </div>
-                )}
-                <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4" />
-                  <span>
-                    {event.registered_participants}
-                    {event.max_participants && ` / ${event.max_participants}`} registered
-                  </span>
-                </div>
-              </div>
-              
-              {event.budget && (
-                <div className="mt-4 text-sm">
-                  <strong>Budget:</strong> ${event.budget.toLocaleString()}
-                </div>
-              )}
-            </CardContent>
           </Card>
         ))}
 
@@ -530,6 +511,126 @@ export function EventsManagement() {
           </Card>
         )}
       </div>
+
+      {/* Detail View Dialog */}
+      <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Calendar className="h-5 w-5" />
+              {viewingEvent?.title}
+            </DialogTitle>
+            <DialogDescription>Event Details</DialogDescription>
+          </DialogHeader>
+          
+          {viewingEvent && (
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <Badge variant={getStatusBadge(viewingEvent.status)}>
+                  {viewingEvent.status.charAt(0).toUpperCase() + viewingEvent.status.slice(1)}
+                </Badge>
+                <Badge variant="outline">
+                  {viewingEvent.format.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                </Badge>
+                {viewingEvent.event_type && (
+                  <Badge variant="secondary">
+                    {viewingEvent.event_type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                  </Badge>
+                )}
+              </div>
+              
+              <div>
+                <h4 className="font-medium mb-2">Description</h4>
+                <p className="text-muted-foreground">{viewingEvent.description}</p>
+                {viewingEvent.description_ar && (
+                  <p className="text-muted-foreground mt-2" dir="rtl">{viewingEvent.description_ar}</p>
+                )}
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium mb-2">Date & Time</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      <span>{new Date(viewingEvent.event_date).toLocaleDateString()}</span>
+                    </div>
+                    {(viewingEvent.start_time || viewingEvent.end_time) && (
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4" />
+                        <span>
+                          {viewingEvent.start_time && viewingEvent.end_time 
+                            ? `${viewingEvent.start_time} - ${viewingEvent.end_time}`
+                            : viewingEvent.start_time || viewingEvent.end_time}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                <div>
+                  <h4 className="font-medium mb-2">Location & Access</h4>
+                  <div className="space-y-2 text-sm">
+                    {viewingEvent.location && (
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4" />
+                        <span>{viewingEvent.location}</span>
+                      </div>
+                    )}
+                    {viewingEvent.virtual_link && (
+                      <div className="flex items-center gap-2">
+                        <span>Virtual Link: </span>
+                        <a href={viewingEvent.virtual_link} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                          Join Event
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium mb-2">Participants</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Users className="h-4 w-4" />
+                      <span>
+                        {viewingEvent.registered_participants}
+                        {viewingEvent.max_participants && ` / ${viewingEvent.max_participants}`} registered
+                      </span>
+                    </div>
+                    {viewingEvent.target_audience && (
+                      <p className="text-muted-foreground">Target: {viewingEvent.target_audience}</p>
+                    )}
+                  </div>
+                </div>
+                
+                {viewingEvent.budget && (
+                  <div>
+                    <h4 className="font-medium mb-2">Budget</h4>
+                    <p className="text-sm">${viewingEvent.budget.toLocaleString()}</p>
+                  </div>
+                )}
+              </div>
+              
+              {viewingEvent.agenda && (
+                <div>
+                  <h4 className="font-medium mb-2">Agenda</h4>
+                  <p className="text-muted-foreground">{viewingEvent.agenda}</p>
+                </div>
+              )}
+              
+              {viewingEvent.speakers && (
+                <div>
+                  <h4 className="font-medium mb-2">Speakers</h4>
+                  <p className="text-muted-foreground">{viewingEvent.speakers}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

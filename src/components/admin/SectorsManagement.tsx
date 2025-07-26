@@ -229,7 +229,7 @@ export function SectorsManagement() {
 
       <div className="grid gap-4">
         {sectors.map((sector) => (
-          <Card key={sector.id}>
+          <Card key={sector.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => { setViewingSector(sector); setIsDetailOpen(true); }}>
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div>
@@ -239,12 +239,12 @@ export function SectorsManagement() {
                     {sector.name_ar && <span className="text-sm text-muted-foreground">({sector.name_ar})</span>}
                   </CardTitle>
                   {sector.description && (
-                    <CardDescription className="mt-2">
+                    <CardDescription className="mt-2 line-clamp-2">
                       {sector.description}
                     </CardDescription>
                   )}
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex space-x-2" onClick={(e) => e.stopPropagation()}>
                   <Button variant="outline" size="sm" onClick={() => handleEdit(sector)}>
                     <Edit className="w-4 h-4" />
                   </Button>
@@ -254,17 +254,47 @@ export function SectorsManagement() {
                 </div>
               </div>
             </CardHeader>
-            {sector.vision_2030_alignment && (
-              <CardContent>
-                <div className="text-sm">
-                  <span className="font-medium">Vision 2030 Alignment:</span>
-                  <p className="mt-1 text-muted-foreground">{sector.vision_2030_alignment}</p>
-                </div>
-              </CardContent>
-            )}
           </Card>
         ))}
       </div>
+
+      {/* Detail View Dialog */}
+      <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Building className="w-5 h-5" />
+              {viewingSector?.name}
+            </DialogTitle>
+            {viewingSector?.name_ar && (
+              <DialogDescription>{viewingSector.name_ar}</DialogDescription>
+            )}
+          </DialogHeader>
+          
+          {viewingSector && (
+            <div className="space-y-4">
+              {viewingSector.description && (
+                <div>
+                  <h4 className="font-medium mb-2">Description</h4>
+                  <p className="text-muted-foreground">{viewingSector.description}</p>
+                </div>
+              )}
+              
+              {viewingSector.vision_2030_alignment && (
+                <div>
+                  <h4 className="font-medium mb-2">Vision 2030 Alignment</h4>
+                  <p className="text-muted-foreground">{viewingSector.vision_2030_alignment}</p>
+                </div>
+              )}
+              
+              <div>
+                <h4 className="font-medium mb-2">Created</h4>
+                <p className="text-muted-foreground">{new Date(viewingSector.created_at).toLocaleDateString()}</p>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
