@@ -5,8 +5,27 @@ import type {
   ToastProps,
 } from "@/components/ui/toast"
 
-const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 1000000
+const getToastLimit = async (): Promise<number> => {
+  try {
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data } = await supabase
+      .from('system_settings')
+      .select('setting_value')
+      .eq('setting_key', 'notification_toast_limit')
+      .single();
+    return data ? parseInt(String(data.setting_value)) : 1;
+  } catch {
+    return 1;
+  }
+};
+
+let TOAST_LIMIT = 1;
+const TOAST_REMOVE_DELAY = 1000000;
+
+// Initialize toast limit
+getToastLimit().then(limit => {
+  TOAST_LIMIT = limit;
+});
 
 type ToasterToast = ToastProps & {
   id: string

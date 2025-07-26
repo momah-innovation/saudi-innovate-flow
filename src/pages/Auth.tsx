@@ -209,7 +209,7 @@ const Auth = () => {
                         value={formData.password}
                         onChange={(e) => handleInputChange('password', e.target.value)}
                         required
-                        minLength={6}
+                        minLength={passwordMinLength}
                         disabled={isSubmitting}
                       />
                       <Button

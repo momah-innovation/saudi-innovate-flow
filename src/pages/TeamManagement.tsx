@@ -144,6 +144,21 @@ export default function TeamManagement() {
     }
   };
 
+  const loadInsights = async () => {
+    try {
+      const { data: insightsData, error } = await supabase
+        .from('insights')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (error) throw error;
+      setInsights(insightsData || []);
+    } catch (error) {
+      console.error('Error loading insights:', error);
+    }
+  };
+
   const fetchProfiles = async () => {
     try {
       const { data, error } = await supabase
@@ -373,7 +388,7 @@ export default function TeamManagement() {
 
   const getCapacityColor = (current: number, max: number) => {
     const percentage = (current / max) * 100;
-    if (percentage >= 90) return 'destructive';
+    if (percentage >= capacityWarningThreshold) return 'destructive';
     if (percentage >= 75) return 'default';
     return 'secondary';
   };
@@ -881,7 +896,7 @@ export default function TeamManagement() {
                   value={memberForm.max_concurrent_projects}
                   onChange={(e) => setMemberForm(prev => ({ ...prev, max_concurrent_projects: parseInt(e.target.value) || 5 }))}
                   min="1"
-                  max="20"
+                  max={maxConcurrentProjects}
                 />
               </div>
               <div className="space-y-2">
@@ -890,8 +905,8 @@ export default function TeamManagement() {
                   type="number"
                   value={memberForm.performance_rating}
                   onChange={(e) => setMemberForm(prev => ({ ...prev, performance_rating: parseFloat(e.target.value) || 0 }))}
-                  min="0"
-                  max="5"
+                  min={performanceRatingMin}
+                  max={performanceRatingMax}
                   step="0.1"
                 />
               </div>
@@ -1000,7 +1015,7 @@ export default function TeamManagement() {
                   value={memberForm.max_concurrent_projects}
                   onChange={(e) => setMemberForm(prev => ({ ...prev, max_concurrent_projects: parseInt(e.target.value) || 5 }))}
                   min="1"
-                  max="20"
+                  max={maxConcurrentProjects}
                 />
               </div>
               <div className="space-y-2">
@@ -1009,8 +1024,8 @@ export default function TeamManagement() {
                   type="number"
                   value={memberForm.performance_rating}
                   onChange={(e) => setMemberForm(prev => ({ ...prev, performance_rating: parseFloat(e.target.value) || 0 }))}
-                  min="0"
-                  max="5"
+                  min={performanceRatingMin}
+                  max={performanceRatingMax}
                   step="0.1"
                 />
               </div>
