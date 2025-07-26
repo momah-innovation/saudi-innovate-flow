@@ -103,6 +103,7 @@ export default function SystemSettings() {
     uiInitialsMaxLength: 2,
     teamMemberMinWorkload: 0,
     teamMemberMaxWorkload: 10,
+    teamPerformanceRatingStep: 0.1,
     
     // API Settings
     apiRateLimit: 1000,
@@ -274,6 +275,9 @@ export default function SystemSettings() {
             case 'team_member_max_workload':
               settingsMap.teamMemberMaxWorkload = parseInt(value);
               break;
+            case 'team_performance_rating_step':
+              settingsMap.teamPerformanceRatingStep = parseFloat(value);
+              break;
           }
         });
 
@@ -366,6 +370,9 @@ export default function SystemSettings() {
       formMaxIdeaTitleLength: 'form_max_idea_title_length',
       formMaxDescriptionLength: 'form_max_description_length',
       apiRateLimit: 'api_rate_limit_per_hour',
+      teamMemberMinWorkload: 'team_member_min_workload',
+      teamMemberMaxWorkload: 'team_member_max_workload', 
+      teamPerformanceRatingStep: 'team_performance_rating_step',
     };
     return keyMap[field] || null;
   };
@@ -377,6 +384,8 @@ export default function SystemSettings() {
       { key: 'team_max_expert_workload', value: values.maxExpertWorkload },
       { key: 'team_performance_rating_min', value: values.performanceRatingMin },
       { key: 'team_performance_rating_max', value: values.performanceRatingMax },
+      { key: 'team_performance_rating_step', value: values.teamPerformanceRatingStep },
+      { key: 'team_performance_rating_step', value: values.teamPerformanceRatingStep },
       { key: 'team_capacity_warning_threshold', value: values.capacityWarningThreshold },
       { key: 'expert_workload_warning_threshold', value: values.expertWorkloadWarningThreshold }
     ];
@@ -738,6 +747,28 @@ export default function SystemSettings() {
                         min="1"
                         max="10"
                         placeholder="5"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label>Performance Rating Step</Label>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('teamPerformanceRatingStep')}
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <Input
+                        type="number"
+                        value={values.teamPerformanceRatingStep}
+                        onChange={(e) => setValues(prev => ({ ...prev, teamPerformanceRatingStep: parseFloat(e.target.value) || 0.1 }))}
+                        min="0.01"
+                        max="1"
+                        step="0.01"
+                        placeholder="0.1"
                       />
                     </div>
                   </div>
