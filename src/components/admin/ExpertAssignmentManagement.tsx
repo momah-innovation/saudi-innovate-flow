@@ -835,7 +835,7 @@ export function ExpertAssignmentManagement() {
                 value={assignmentNotes}
                 onChange={(e) => setAssignmentNotes(e.target.value)}
                 placeholder="Additional notes about this assignment..."
-                rows={3}
+                rows={profileTextareaRows}
               />
             </div>
             
@@ -943,7 +943,7 @@ export function ExpertAssignmentManagement() {
                 value={assignmentNotes}
                 onChange={(e) => setAssignmentNotes(e.target.value)}
                 placeholder="Notes applied to all assignments..."
-                rows={2}
+                rows={profileTextareaRows - 1}
               />
             </div>
             
@@ -1007,7 +1007,7 @@ export function ExpertAssignmentManagement() {
                 value={assignmentNotes}
                 onChange={(e) => setAssignmentNotes(e.target.value)}
                 placeholder="Assignment notes..."
-                rows={3}
+                rows={profileTextareaRows}
               />
             </div>
             

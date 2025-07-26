@@ -74,6 +74,34 @@ export default function SystemSettings() {
     formMaxIdeaTitleLength: 200,
     formMaxDescriptionLength: 5000,
     
+    // Profile Management
+    profileBioTextareaRows: 3,
+    profileInnovationBackgroundRows: 2,
+    profileMaxExperienceYears: 50,
+    profileMinExperienceYears: 0,
+    
+    // Team Management
+    teamMaxConcurrentProjectsPerMember: 5,
+    teamMaxPerformanceRating: 5,
+    teamMinPerformanceRating: 0,
+    teamInsightsDisplayLimit: 10,
+    teamInsightTitlePreviewLength: 50,
+    
+    // Challenge Details
+    challengeDetailsDescriptionRows: 4,
+    challengeDetailsVisionRows: 3,
+    
+    // Focus Questions
+    focusQuestionTextareaRows: 3,
+    
+    // Expert Assignment
+    expertAssignmentNotesRows: 3,
+    expertAssignmentBulkNotesRows: 2,
+    expertExpertisePreviewLimit: 2,
+    
+    // UI Display
+    uiInitialsMaxLength: 2,
+    
     // API Settings
     apiRateLimit: 1000,
   };
@@ -424,12 +452,58 @@ export default function SystemSettings() {
 
   const handleSaveAPISettings = async () => {
     const settingsToSave = [
-      { key: 'api_rate_limit_per_hour', value: values.apiRateLimit }
+      { key: 'api_rate_limit', value: values.apiRateLimit }
     ];
 
     const success = await saveSettings(settingsToSave);
     if (success) {
-      toast.success("API settings have been updated successfully.");
+      toast.success("API settings saved successfully.");
+    }
+  };
+
+  const handleSaveProfileSettings = async () => {
+    const settingsToSave = [
+      { key: 'profile_bio_textarea_rows', value: values.profileBioTextareaRows },
+      { key: 'profile_innovation_background_rows', value: values.profileInnovationBackgroundRows },
+      { key: 'profile_max_experience_years', value: values.profileMaxExperienceYears },
+      { key: 'profile_min_experience_years', value: values.profileMinExperienceYears }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast.success("Profile settings saved successfully.");
+    }
+  };
+  const handleSaveComponentSettings = async () => {
+    const settingsToSave = [
+      { key: 'focus_question_textarea_rows', value: values.focusQuestionTextareaRows },
+      { key: 'expert_assignment_notes_rows', value: values.expertAssignmentNotesRows },
+      { key: 'expert_assignment_bulk_notes_rows', value: values.expertAssignmentBulkNotesRows },
+      { key: 'expert_expertise_preview_limit', value: values.expertExpertisePreviewLimit },
+      { key: 'ui_initials_max_length', value: values.uiInitialsMaxLength }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast.success("Component settings saved successfully.");
+    }
+  };
+      title: "Success", 
+      description: "Component settings saved successfully.",
+    });
+  };
+
+  const handleSaveAPISettings = async () => {
+    const settingsToSave = [
+      { key: 'api_rate_limit', value: values.apiRateLimit }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast({
+        title: "Success",
+        description: "API settings saved successfully.",
+      });
     }
   };
 
@@ -1214,9 +1288,173 @@ export default function SystemSettings() {
                      </Button>
                    </div>
                  </CardContent>
-               </Card>
+                </Card>
 
-               {/* System Information */}
+                {/* Profile Management Settings */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Profile Management</CardTitle>
+                    <CardDescription>
+                      Configure profile setup and user experience settings
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>Bio Textarea Rows</Label>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="h-8 w-8 p-0"
+                            onClick={() => handleReset('profileBioTextareaRows')}
+                          >
+                            <RotateCcw className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <Input
+                          type="number"
+                          value={values.profileBioTextareaRows}
+                          onChange={(e) => setValues(prev => ({ ...prev, profileBioTextareaRows: parseInt(e.target.value) || 0 }))}
+                          min="2"
+                          max="10"
+                          placeholder="3"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>Innovation Background Rows</Label>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="h-8 w-8 p-0"
+                            onClick={() => handleReset('profileInnovationBackgroundRows')}
+                          >
+                            <RotateCcw className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <Input
+                          type="number"
+                          value={values.profileInnovationBackgroundRows}
+                          onChange={(e) => setValues(prev => ({ ...prev, profileInnovationBackgroundRows: parseInt(e.target.value) || 0 }))}
+                          min="1"
+                          max="5"
+                          placeholder="2"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>Max Experience Years</Label>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="h-8 w-8 p-0"
+                            onClick={() => handleReset('profileMaxExperienceYears')}
+                          >
+                            <RotateCcw className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <Input
+                          type="number"
+                          value={values.profileMaxExperienceYears}
+                          onChange={(e) => setValues(prev => ({ ...prev, profileMaxExperienceYears: parseInt(e.target.value) || 0 }))}
+                          min="20"
+                          max="100"
+                          placeholder="50"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex justify-end pt-4 border-t">
+                      <Button size="sm" onClick={handleSaveProfileSettings}>
+                        Save Profile Settings
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Additional Component Settings */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Component Configuration</CardTitle>
+                    <CardDescription>
+                      Configure specific component behaviors and limits
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid gap-4 md:grid-cols-3">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>Focus Question Rows</Label>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="h-8 w-8 p-0"
+                            onClick={() => handleReset('focusQuestionTextareaRows')}
+                          >
+                            <RotateCcw className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <Input
+                          type="number"
+                          value={values.focusQuestionTextareaRows}
+                          onChange={(e) => setValues(prev => ({ ...prev, focusQuestionTextareaRows: parseInt(e.target.value) || 0 }))}
+                          min="2"
+                          max="8"
+                          placeholder="3"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>Expert Assignment Notes Rows</Label>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="h-8 w-8 p-0"
+                            onClick={() => handleReset('expertAssignmentNotesRows')}
+                          >
+                            <RotateCcw className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <Input
+                          type="number"
+                          value={values.expertAssignmentNotesRows}
+                          onChange={(e) => setValues(prev => ({ ...prev, expertAssignmentNotesRows: parseInt(e.target.value) || 0 }))}
+                          min="2"
+                          max="8"
+                          placeholder="3"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>Expertise Preview Limit</Label>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="h-8 w-8 p-0"
+                            onClick={() => handleReset('expertExpertisePreviewLimit')}
+                          >
+                            <RotateCcw className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <Input
+                          type="number"
+                          value={values.expertExpertisePreviewLimit}
+                          onChange={(e) => setValues(prev => ({ ...prev, expertExpertisePreviewLimit: parseInt(e.target.value) || 0 }))}
+                          min="1"
+                          max="5"
+                          placeholder="2"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex justify-end pt-4 border-t">
+                      <Button size="sm" onClick={handleSaveComponentSettings}>
+                        Save Component Settings
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* System Information */}
               <Card>
                 <CardHeader>
                   <CardTitle>System Information</CardTitle>

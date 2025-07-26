@@ -428,7 +428,7 @@ export const FocusQuestionsManagement = () => {
                   value={formData.question_text}
                   onChange={(e) => setFormData({...formData, question_text: e.target.value})}
                   placeholder="What specific aspect should innovators focus on?"
-                  rows={3}
+                  rows={systemSettings.focusQuestionTextareaRows}
                 />
               </div>
               
@@ -439,7 +439,7 @@ export const FocusQuestionsManagement = () => {
                   value={formData.question_text_ar}
                   onChange={(e) => setFormData({...formData, question_text_ar: e.target.value})}
                   placeholder="ما الجانب المحدد الذي يجب على المبتكرين التركيز عليه؟"
-                  rows={3}
+                  rows={systemSettings.focusQuestionTextareaRows}
                   dir="rtl"
                 />
               </div>
@@ -708,7 +708,7 @@ export const FocusQuestionsManagement = () => {
                 value={formData.question_text}
                 onChange={(e) => setFormData({...formData, question_text: e.target.value})}
                 placeholder="What specific aspect should innovators focus on?"
-                rows={3}
+                rows={systemSettings.focusQuestionTextareaRows}
               />
             </div>
             
@@ -719,7 +719,7 @@ export const FocusQuestionsManagement = () => {
                 value={formData.question_text_ar}
                 onChange={(e) => setFormData({...formData, question_text_ar: e.target.value})}
                 placeholder="ما الجانب المحدد الذي يجب على المبتكرين التركيز عليه؟"
-                rows={3}
+                rows={systemSettings.focusQuestionTextareaRows}
                 dir="rtl"
               />
             </div>

@@ -280,7 +280,7 @@ const ProfileSetup = () => {
                   value={profileData.bio}
                   onChange={(e) => handleInputChange('bio', e.target.value)}
                   disabled={isSubmitting}
-                  rows={3}
+                  rows={systemSettings.profileBioRows}
                 />
               </div>
 
@@ -312,7 +312,7 @@ const ProfileSetup = () => {
                           value={profileData.innovation_background}
                           onChange={(e) => handleInputChange('innovation_background', e.target.value)}
                           disabled={isSubmitting}
-                          rows={2}
+                          rows={systemSettings.innovationBackgroundRows}
                         />
                       </div>
 
@@ -396,8 +396,8 @@ const ProfileSetup = () => {
                           value={profileData.experience_years}
                           onChange={(e) => handleInputChange('experience_years', e.target.value)}
                           disabled={isSubmitting}
-                        min={0}
-                        max={50}
+                        min={systemSettings.minExperienceYears}
+                        max={systemSettings.maxExperienceYears}
                         />
                       </div>
                     </div>
