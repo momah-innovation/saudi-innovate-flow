@@ -104,22 +104,34 @@ export default function TeamManagement() {
 
   const fetchTeamMembers = async () => {
     try {
-      const { data, error } = await supabase
+      // First get innovation team members
+      const { data: teamData, error: teamError } = await supabase
         .from('innovation_team_members')
-        .select(`
-          *,
-          profiles:user_id (
-            name,
-            name_ar,
-            email,
-            department,
-            position
-          )
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setTeamMembers(data as any || []);
+      if (teamError) throw teamError;
+
+      // Then get profiles for those users
+      if (teamData && teamData.length > 0) {
+        const userIds = teamData.map(member => member.user_id);
+        const { data: profilesData, error: profilesError } = await supabase
+          .from('profiles')
+          .select('id, name, name_ar, email, department, position')
+          .in('id', userIds);
+
+        if (profilesError) throw profilesError;
+
+        // Combine the data
+        const enrichedTeamMembers = teamData.map(member => ({
+          ...member,
+          profiles: profilesData?.find(profile => profile.id === member.user_id)
+        }));
+
+        setTeamMembers(enrichedTeamMembers as any);
+      } else {
+        setTeamMembers([]);
+      }
     } catch (error) {
       console.error('Error fetching team members:', error);
     }
