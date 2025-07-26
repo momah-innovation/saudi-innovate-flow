@@ -101,7 +101,8 @@ export function ExpertAssignmentManagement() {
 
   const fetchExperts = async () => {
     try {
-      const { data, error } = await supabase
+      // Get all experts
+      const { data: expertsData, error: expertsError } = await supabase
         .from('experts')
         .select(`
           id,
@@ -113,8 +114,35 @@ export function ExpertAssignmentManagement() {
         `)
         .order('id');
 
-      if (error) throw error;
-      setExperts(data || []);
+      if (expertsError) throw expertsError;
+
+      if (!expertsData || expertsData.length === 0) {
+        setExperts([]);
+        return;
+      }
+
+      // Get profiles for all experts
+      const userIds = expertsData.map(expert => expert.user_id);
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, name, email')
+        .in('id', userIds);
+
+      if (profilesError) throw profilesError;
+
+      // Combine experts with their profiles
+      const expertsWithProfiles = expertsData.map(expert => {
+        const profile = (profilesData || []).find(p => p.id === expert.user_id);
+        return {
+          ...expert,
+          profiles: profile ? {
+            name: profile.name,
+            email: profile.email
+          } : null
+        };
+      });
+
+      setExperts(expertsWithProfiles);
     } catch (error) {
       console.error('Error fetching experts:', error);
     }
@@ -481,7 +509,10 @@ export function ExpertAssignmentManagement() {
                   <div className="flex items-start justify-between">
                     <div className="space-y-2">
                       <CardTitle className="text-lg">
-                        Expert ID: {assignment.expert_id}
+                        {(() => {
+                          const expert = experts.find(e => e.id === assignment.expert_id);
+                          return expert?.profiles?.name || `Expert ${assignment.expert_id}`;
+                        })()}
                       </CardTitle>
                       <CardDescription>
                         {assignment.challenges?.title}
