@@ -416,18 +416,24 @@ export default function TeamManagement() {
   ];
 
   const specializationOptions = [
-    'AI & Machine Learning',
-    'Healthcare Innovation',
-    'Financial Technology',
+    'Innovation Strategy & Planning',
+    'Project Management & Execution', 
+    'Research & Market Analysis',
+    'Stakeholder Engagement',
+    'Change Management',
+    'Performance Measurement & KPIs',
+    'Content Creation & Communication',
+    'Event Management & Coordination',
+    'Partnership Development',
+    'Training & Development',
+    'Process Optimization',
+    'Quality Assurance & Evaluation',
+    'Data Analytics & Insights',
+    'Campaign Management',
+    'Innovation Assessment',
+    'Technology Integration',
     'Digital Transformation',
-    'Sustainability',
-    'Smart Cities',
-    'Education Technology',
-    'E-Government',
-    'Data Analytics',
-    'User Experience',
-    'Cybersecurity',
-    'Blockchain'
+    'Innovation Culture Development'
   ];
 
   const allSpecializations = [...new Set(teamMembers.flatMap(m => m.specialization || []))];
