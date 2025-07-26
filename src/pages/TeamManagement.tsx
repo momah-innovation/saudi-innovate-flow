@@ -76,6 +76,9 @@ export default function TeamManagement() {
     performance_rating: 0
   });
   
+  // User search state
+  const [userSearchTerm, setUserSearchTerm] = useState('');
+  
   // Filters
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
@@ -342,6 +345,7 @@ export default function TeamManagement() {
       max_concurrent_projects: 5,
       performance_rating: 0
     });
+    setUserSearchTerm('');
   };
 
   const getAssignmentsForMember = (userId: string) => {
@@ -392,6 +396,39 @@ export default function TeamManagement() {
   const availableUsers = profiles.filter(profile => 
     !teamMembers.some(member => member.user_id === profile.id)
   );
+
+  const filteredUsers = availableUsers.filter(user =>
+    user.name.toLowerCase().includes(userSearchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(userSearchTerm.toLowerCase()) ||
+    user.department?.toLowerCase().includes(userSearchTerm.toLowerCase())
+  );
+
+  const roleOptions = [
+    'Innovation Manager',
+    'Data Analyst', 
+    'Content Creator',
+    'Project Manager',
+    'Research Analyst',
+    'Strategy Consultant',
+    'Technology Specialist',
+    'Campaign Manager',
+    'Event Coordinator'
+  ];
+
+  const specializationOptions = [
+    'AI & Machine Learning',
+    'Healthcare Innovation',
+    'Financial Technology',
+    'Digital Transformation',
+    'Sustainability',
+    'Smart Cities',
+    'Education Technology',
+    'E-Government',
+    'Data Analytics',
+    'User Experience',
+    'Cybersecurity',
+    'Blockchain'
+  ];
 
   const allSpecializations = [...new Set(teamMembers.flatMap(m => m.specialization || []))];
   const allRoles = [...new Set(teamMembers.map(m => m.cic_role))];
@@ -451,7 +488,7 @@ export default function TeamManagement() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label>CIC Role</Label>
+                  <Label>Role</Label>
                   <Select value={roleFilter} onValueChange={setRoleFilter}>
                     <SelectTrigger>
                       <SelectValue />
@@ -495,7 +532,7 @@ export default function TeamManagement() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Name</TableHead>
-                    <TableHead>CIC Role</TableHead>
+                    <TableHead>Role</TableHead>
                     <TableHead>Specialization</TableHead>
                     <TableHead>Workload</TableHead>
                     <TableHead>Performance</TableHead>
@@ -686,38 +723,88 @@ export default function TeamManagement() {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label>Select User</Label>
-              <Select value={memberForm.user_id} onValueChange={(value) => setMemberForm(prev => ({ ...prev, user_id: value }))}>
+              <div className="space-y-2">
+                <div className="relative">
+                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search users by name, email, or department..."
+                    value={userSearchTerm}
+                    onChange={(e) => setUserSearchTerm(e.target.value)}
+                    className="pl-8"
+                  />
+                </div>
+                <Select value={memberForm.user_id} onValueChange={(value) => setMemberForm(prev => ({ ...prev, user_id: value }))}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select user..." />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-[200px]">
+                    {filteredUsers.length === 0 ? (
+                      <div className="p-2 text-sm text-muted-foreground">No users found</div>
+                    ) : (
+                      filteredUsers.map((user) => (
+                        <SelectItem key={user.id} value={user.id}>
+                          <div className="flex flex-col">
+                            <span>{user.name}</span>
+                            <span className="text-xs text-muted-foreground">{user.email} • {user.department}</span>
+                          </div>
+                        </SelectItem>
+                      ))
+                    )}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label>Role</Label>
+              <Select value={memberForm.cic_role} onValueChange={(value) => setMemberForm(prev => ({ ...prev, cic_role: value }))}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select user..." />
+                  <SelectValue placeholder="Select role..." />
                 </SelectTrigger>
                 <SelectContent>
-                  {availableUsers.map((user) => (
-                    <SelectItem key={user.id} value={user.id}>
-                      {user.name} ({user.email})
+                  {roleOptions.map((role) => (
+                    <SelectItem key={role} value={role}>
+                      {role}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>CIC Role</Label>
-              <Input
-                value={memberForm.cic_role}
-                onChange={(e) => setMemberForm(prev => ({ ...prev, cic_role: e.target.value }))}
-                placeholder="e.g., Innovation Manager, Data Analyst, Content Creator"
-              />
-            </div>
-            <div className="space-y-2">
               <Label>Specialization Areas</Label>
-              <Textarea
-                value={memberForm.specialization.join(', ')}
-                onChange={(e) => setMemberForm(prev => ({ 
-                  ...prev, 
-                  specialization: e.target.value.split(',').map(s => s.trim()).filter(Boolean)
-                }))}
-                placeholder="e.g., AI, Healthcare, Fintech (comma separated)"
-                rows={2}
-              />
+              <div className="grid gap-2 max-h-40 overflow-y-auto border rounded p-2">
+                {specializationOptions.map((spec) => (
+                  <label key={spec} className="flex items-center space-x-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={memberForm.specialization.includes(spec)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setMemberForm(prev => ({
+                            ...prev,
+                            specialization: [...prev.specialization, spec]
+                          }));
+                        } else {
+                          setMemberForm(prev => ({
+                            ...prev,
+                            specialization: prev.specialization.filter(s => s !== spec)
+                          }));
+                        }
+                      }}
+                      className="rounded"
+                    />
+                    <span>{spec}</span>
+                  </label>
+                ))}
+              </div>
+              {memberForm.specialization.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {memberForm.specialization.map((spec, index) => (
+                    <Badge key={index} variant="secondary" className="text-xs">
+                      {spec}
+                    </Badge>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
@@ -765,24 +852,56 @@ export default function TeamManagement() {
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label>CIC Role</Label>
-              <Input
-                value={memberForm.cic_role}
-                onChange={(e) => setMemberForm(prev => ({ ...prev, cic_role: e.target.value }))}
-                placeholder="e.g., Innovation Manager, Data Analyst, Content Creator"
-              />
+              <Label>Role</Label>
+              <Select value={memberForm.cic_role} onValueChange={(value) => setMemberForm(prev => ({ ...prev, cic_role: value }))}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select role..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {roleOptions.map((role) => (
+                    <SelectItem key={role} value={role}>
+                      {role}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <Label>Specialization Areas</Label>
-              <Textarea
-                value={memberForm.specialization.join(', ')}
-                onChange={(e) => setMemberForm(prev => ({ 
-                  ...prev, 
-                  specialization: e.target.value.split(',').map(s => s.trim()).filter(Boolean)
-                }))}
-                placeholder="e.g., AI, Healthcare, Fintech (comma separated)"
-                rows={2}
-              />
+              <div className="grid gap-2 max-h-40 overflow-y-auto border rounded p-2">
+                {specializationOptions.map((spec) => (
+                  <label key={spec} className="flex items-center space-x-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={memberForm.specialization.includes(spec)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setMemberForm(prev => ({
+                            ...prev,
+                            specialization: [...prev.specialization, spec]
+                          }));
+                        } else {
+                          setMemberForm(prev => ({
+                            ...prev,
+                            specialization: prev.specialization.filter(s => s !== spec)
+                          }));
+                        }
+                      }}
+                      className="rounded"
+                    />
+                    <span>{spec}</span>
+                  </label>
+                ))}
+              </div>
+              {memberForm.specialization.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {memberForm.specialization.map((spec, index) => (
+                    <Badge key={index} variant="secondary" className="text-xs">
+                      {spec}
+                    </Badge>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
