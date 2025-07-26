@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, UserPlus } from "lucide-react";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 interface Expert {
   id: string;
@@ -37,6 +38,8 @@ export function ExpertAssignmentDialog({
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [fetchingExperts, setFetchingExperts] = useState(true);
+  
+  const systemSettings = useSystemLists();
 
   useEffect(() => {
     if (open) {
@@ -226,10 +229,11 @@ export function ExpertAssignmentDialog({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="evaluator">Evaluator</SelectItem>
-                    <SelectItem value="mentor">Mentor</SelectItem>
-                    <SelectItem value="advisor">Advisor</SelectItem>
-                    <SelectItem value="reviewer">Reviewer</SelectItem>
+                    {systemSettings.expertRoleTypes.map((role) => (
+                      <SelectItem key={role} value={role}>
+                        {role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>

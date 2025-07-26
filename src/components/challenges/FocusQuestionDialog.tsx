@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Edit3, Plus } from "lucide-react";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 interface FocusQuestion {
   id: string;
@@ -40,7 +41,8 @@ export function FocusQuestionDialog({
   const [isSensitive, setIsSensitive] = useState(false);
   const [orderSequence, setOrderSequence] = useState(0);
   const [loading, setLoading] = useState(false);
-
+  
+  const systemSettings = useSystemLists();
   const isEditing = !!question;
 
   useEffect(() => {
@@ -156,11 +158,11 @@ export function FocusQuestionDialog({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="open">Open Ended</SelectItem>
-                  <SelectItem value="specific">Specific</SelectItem>
-                  <SelectItem value="technical">Technical</SelectItem>
-                  <SelectItem value="strategic">Strategic</SelectItem>
-                  <SelectItem value="impact">Impact Assessment</SelectItem>
+                  {systemSettings.focusQuestionTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
