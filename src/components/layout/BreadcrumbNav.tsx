@@ -34,6 +34,7 @@ export const BreadcrumbNav = ({ activeTab }: BreadcrumbNavProps) => {
       "sectors": "Sectors Management",
       "organizational-structure": "Organizational Structure",
       "expert-assignments": "Expert Assignments",
+      "relationships": "Relationship Overview",
       organization: "Organization",
       "user-management": "User Management",
       "system-documentation": "System Documentation",
@@ -53,7 +54,7 @@ export const BreadcrumbNav = ({ activeTab }: BreadcrumbNavProps) => {
     if (["analytics", "trends", "reports", "system-analytics"].includes(tab)) {
       return "Analytics";
     }
-    if (["challenge-management", "focus-questions", "partners", "sectors", "organizational-structure", "expert-assignments", "organization", "user-management", "system-documentation"].includes(tab)) {
+    if (["challenge-management", "focus-questions", "partners", "sectors", "organizational-structure", "expert-assignments", "relationships", "organization", "user-management", "system-documentation"].includes(tab)) {
       return "Administration";
     }
     return null;

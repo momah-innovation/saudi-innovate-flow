@@ -22,6 +22,7 @@ import EvaluationsManagementPage from "./pages/EvaluationsManagement";
 import CampaignsManagementPage from "./pages/CampaignsManagement";
 import EventsManagementPage from "./pages/EventsManagement";
 import StakeholdersManagementPage from "./pages/StakeholdersManagement";
+import RelationshipOverviewPage from "./pages/RelationshipOverview";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -145,6 +146,14 @@ const App = () => (
               element={
                 <ProtectedRoute requireProfile requiredRole="admin">
                   <StakeholdersManagementPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/relationships" 
+              element={
+                <ProtectedRoute requireProfile requiredRole="admin">
+                  <RelationshipOverviewPage />
                 </ProtectedRoute>
               } 
             />
