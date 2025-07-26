@@ -59,6 +59,76 @@ export function RoleRequestDialog({ open, onOpenChange, currentRoles, onRequestS
     try {
       setLoading(true);
 
+      // Check if user already has this role
+      const { data: existingRoles, error: rolesError } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', selectedRole as any)
+        .eq('is_active', true);
+
+      if (rolesError) throw rolesError;
+
+      if (existingRoles && existingRoles.length > 0) {
+        toast.error('You already have this role assigned');
+        return;
+      }
+
+      // Check for existing pending requests for the same role
+      const { data: pendingRequests, error: pendingError } = await supabase
+        .from('role_requests')
+        .select('id')
+        .eq('requester_id', user.id)
+        .eq('requested_role', selectedRole as any)
+        .eq('status', 'pending');
+
+      if (pendingError) throw pendingError;
+
+      if (pendingRequests && pendingRequests.length > 0) {
+        toast.error('You already have a pending request for this role. Please wait for review.');
+        return;
+      }
+
+      // Check if they were recently rejected for this role (within 30 days)
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+      const { data: recentRejections, error: rejectionError } = await supabase
+        .from('role_requests')
+        .select('reviewed_at')
+        .eq('requester_id', user.id)
+        .eq('requested_role', selectedRole as any)
+        .eq('status', 'rejected')
+        .gte('reviewed_at', thirtyDaysAgo.toISOString());
+
+      if (rejectionError) throw rejectionError;
+
+      if (recentRejections && recentRejections.length > 0) {
+        const lastRejection = new Date(recentRejections[0].reviewed_at);
+        const daysSince = Math.ceil((Date.now() - lastRejection.getTime()) / (1000 * 60 * 60 * 24));
+        const waitDays = 30 - daysSince;
+        toast.error(`You must wait ${waitDays} more days before re-requesting this role after rejection.`);
+        return;
+      }
+
+      // Check rate limit - max 3 requests per week across all roles
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+      const { data: recentRequests, error: rateError } = await supabase
+        .from('role_requests')
+        .select('id')
+        .eq('requester_id', user.id)
+        .gte('requested_at', oneWeekAgo.toISOString());
+
+      if (rateError) throw rateError;
+
+      if (recentRequests && recentRequests.length >= 3) {
+        toast.error('You have reached the maximum of 3 role requests per week. Please wait before submitting new requests.');
+        return;
+      }
+
+      // All checks passed, submit the request
       const { error } = await supabase
         .from('role_requests')
         .insert({
@@ -170,6 +240,18 @@ export function RoleRequestDialog({ open, onOpenChange, currentRoles, onRequestS
             <p className="text-xs text-muted-foreground">
               Be specific about your expertise areas, qualifications, experience level, and any certifications you hold.
             </p>
+          </div>
+
+          {/* Request Policies */}
+          <div className="p-4 bg-muted/50 rounded-lg space-y-2">
+            <h4 className="font-medium text-sm">Request Policies</h4>
+            <ul className="text-xs text-muted-foreground space-y-1">
+              <li>• Maximum 3 role requests per week</li>
+              <li>• Cannot request roles you already have</li>
+              <li>• Cannot submit duplicate pending requests</li>
+              <li>• Must wait 30 days to re-request after rejection</li>
+              <li>• Administrative roles can only be assigned by system admins</li>
+            </ul>
           </div>
 
           {/* Actions */}
