@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserPlus, Send } from "lucide-react";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 // Function to get role rejection wait days from system settings
 const getRoleRejectionWaitDays = async (): Promise<number> => {
@@ -57,33 +58,18 @@ interface RoleRequestDialogProps {
   onRequestSubmitted?: () => void;
 }
 
-const AVAILABLE_ROLES = [
-  { value: 'evaluator', label: 'Evaluator', description: 'Evaluate challenge submissions and ideas' },
-  { value: 'domain_expert', label: 'Domain Expert', description: 'Subject matter expert in specific domains' },
-];
-
-// Internal/Administrative roles that can only be assigned by system admins
-const INTERNAL_ROLES = [
-  'sector_lead',           // Leadership role - should be admin assigned
-  'challenge_manager',     // Management role - should be admin assigned  
-  'expert_coordinator',    // Coordination role - should be admin assigned
-  'content_manager',       // Management role - should be admin assigned
-  'data_analyst',         // Administrative role - should be admin assigned
-  'user_manager',         // System admin role
-  'role_manager',         // System admin role
-  'admin',               // System admin role
-  'super_admin'          // System admin role
-];
+// These constants are now loaded from system settings via useSystemLists hook
 
 export function RoleRequestDialog({ open, onOpenChange, currentRoles, onRequestSubmitted }: RoleRequestDialogProps) {
   const { user } = useAuth();
+  const { requestableUserRoles } = useSystemLists();
   const [selectedRole, setSelectedRole] = useState("");
   const [reason, setReason] = useState("");
   const [justification, setJustification] = useState("");
   const [loading, setLoading] = useState(false);
 
   // Filter out roles user already has
-  const availableRoles = AVAILABLE_ROLES.filter(role => !currentRoles.includes(role.value));
+  const availableRoles = requestableUserRoles.filter(role => !currentRoles.includes(role.value));
 
   const handleSubmitRequest = async () => {
     if (!selectedRole || !reason || !justification) {

@@ -31,6 +31,7 @@ import {
   Trash2
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { ExpertAssignmentDialog } from "@/components/challenges/ExpertAssignmentDialog";
 import { FocusQuestionDialog } from "@/components/challenges/FocusQuestionDialog";
 
@@ -99,10 +100,11 @@ interface OrganizationalHierarchy {
 }
 
 const ChallengeDetails = () => {
-  const { challengeId } = useParams();
+  const { id: challengeId } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { hasRole } = useAuth();
+  const { challengePriorityLevels, challengeSensitivityLevels, challengeTypes } = useSystemLists();
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
   const [assignedExperts, setAssignedExperts] = useState<ChallengeExpert[]>([]);
@@ -1092,9 +1094,9 @@ const ChallengeDetails = () => {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="low">Low</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="high">High</SelectItem>
+                        {challengePriorityLevels.map((level) => (
+                          <SelectItem key={level} value={level}>{level.charAt(0).toUpperCase() + level.slice(1)}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <Button size="sm" onClick={() => saveField('priority_level')} disabled={saving}>
@@ -1134,10 +1136,9 @@ const ChallengeDetails = () => {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="technology">Technology</SelectItem>
-                        <SelectItem value="process">Process</SelectItem>
-                        <SelectItem value="policy">Policy</SelectItem>
-                        <SelectItem value="service">Service</SelectItem>
+                        {challengeTypes.map((type) => (
+                          <SelectItem key={type} value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <Button size="sm" onClick={() => saveField('challenge_type')} disabled={saving}>
