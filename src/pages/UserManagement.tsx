@@ -8,7 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { User, Users, Shield, Plus, Search, Edit, Trash2, UserCheck } from 'lucide-react';
+import { User, Users, Shield, Plus, Search, Edit, Trash2, UserCheck, UserPlus } from 'lucide-react';
+import RoleRequestManagement from '@/components/admin/RoleRequestManagement';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -272,6 +273,7 @@ export default function UserManagement() {
         <TabsList>
           <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="roles">Role Assignments</TabsTrigger>
+          <TabsTrigger value="requests">Role Requests</TabsTrigger>
         </TabsList>
 
         <TabsContent value="users" className="space-y-4">
@@ -452,6 +454,10 @@ export default function UserManagement() {
             </CardContent>
           </Card>
         </TabsContent>
+
+        <TabsContent value="requests" className="space-y-4">
+          <RoleRequestManagement />
+        </TabsContent>
       </Tabs>
 
       {/* Edit User Dialog */}
@@ -552,6 +558,13 @@ export default function UserManagement() {
                     <SelectItem value="innovator">Innovator</SelectItem>
                     <SelectItem value="evaluator">Evaluator</SelectItem>
                     <SelectItem value="domain_expert">Domain Expert</SelectItem>
+                    <SelectItem value="sector_lead">Sector Lead</SelectItem>
+                    <SelectItem value="challenge_manager">Challenge Manager</SelectItem>
+                    <SelectItem value="expert_coordinator">Expert Coordinator</SelectItem>
+                    <SelectItem value="content_manager">Content Manager</SelectItem>
+                    <SelectItem value="data_analyst">Data Analyst</SelectItem>
+                    <SelectItem value="user_manager">User Manager</SelectItem>
+                    <SelectItem value="role_manager">Role Manager</SelectItem>
                     <SelectItem value="admin">Admin</SelectItem>
                     <SelectItem value="super_admin">Super Admin</SelectItem>
                   </SelectContent>
