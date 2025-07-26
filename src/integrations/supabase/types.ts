@@ -35,10 +35,24 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "fk_campaign_partner_links_campaign"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "fk_campaign_partner_links_campaign_id"
             columns: ["campaign_id"]
             isOneToOne: false
             referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_campaign_partner_links_partner"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
             referencedColumns: ["id"]
           },
           {
@@ -116,10 +130,24 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "fk_campaign_stakeholder_links_campaign"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "fk_campaign_stakeholder_links_campaign_id"
             columns: ["campaign_id"]
             isOneToOne: false
             referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_campaign_stakeholder_links_stakeholder"
+            columns: ["stakeholder_id"]
+            isOneToOne: false
+            referencedRelation: "stakeholders"
             referencedColumns: ["id"]
           },
           {
@@ -143,7 +171,6 @@ export type Database = {
           description_ar: string | null
           end_date: string
           id: string
-          partner_organizations: string[] | null
           registration_deadline: string | null
           sector_id: string | null
           start_date: string
@@ -151,7 +178,6 @@ export type Database = {
           success_metrics: string | null
           target_ideas: number | null
           target_participants: number | null
-          target_stakeholder_groups: string[] | null
           theme: string | null
           title: string
           title_ar: string | null
@@ -168,7 +194,6 @@ export type Database = {
           description_ar?: string | null
           end_date: string
           id?: string
-          partner_organizations?: string[] | null
           registration_deadline?: string | null
           sector_id?: string | null
           start_date: string
@@ -176,7 +201,6 @@ export type Database = {
           success_metrics?: string | null
           target_ideas?: number | null
           target_participants?: number | null
-          target_stakeholder_groups?: string[] | null
           theme?: string | null
           title: string
           title_ar?: string | null
@@ -193,7 +217,6 @@ export type Database = {
           description_ar?: string | null
           end_date?: string
           id?: string
-          partner_organizations?: string[] | null
           registration_deadline?: string | null
           sector_id?: string | null
           start_date?: string
@@ -201,7 +224,6 @@ export type Database = {
           success_metrics?: string | null
           target_ideas?: number | null
           target_participants?: number | null
-          target_stakeholder_groups?: string[] | null
           theme?: string | null
           title?: string
           title_ar?: string | null

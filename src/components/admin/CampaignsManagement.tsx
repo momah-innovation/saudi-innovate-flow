@@ -105,8 +105,8 @@ export function CampaignsManagement() {
     sector_id: "",
     deputy_id: "",
     department_id: "",
-    target_stakeholder_groups: [] as string[],
-    partner_organizations: [] as string[],
+    selectedStakeholders: [] as string[],
+    selectedPartners: [] as string[],
   });
 
   useEffect(() => {
@@ -240,8 +240,8 @@ export function CampaignsManagement() {
       }
 
       // Update junction table relationships
-      await updateCampaignPartners(campaignId, formData.partner_organizations);
-      await updateCampaignStakeholders(campaignId, formData.target_stakeholder_groups);
+      await updateCampaignPartners(campaignId, formData.selectedPartners);
+      await updateCampaignStakeholders(campaignId, formData.selectedStakeholders);
 
       setIsDialogOpen(false);
       setEditingCampaign(null);
@@ -277,8 +277,8 @@ export function CampaignsManagement() {
       sector_id: campaign.sector_id || "none",
       deputy_id: campaign.deputy_id || "none",
       department_id: campaign.department_id || "none",
-      target_stakeholder_groups: campaign.stakeholders?.map(s => s.id) || [],
-      partner_organizations: campaign.partners?.map(p => p.id) || [],
+      selectedStakeholders: campaign.stakeholders?.map(s => s.id) || [],
+      selectedPartners: campaign.partners?.map(p => p.id) || [],
     });
     setIsDialogOpen(true);
   };
@@ -329,8 +329,8 @@ export function CampaignsManagement() {
       sector_id: "none",
       deputy_id: "none",
       department_id: "none",
-      target_stakeholder_groups: [],
-      partner_organizations: [],
+      selectedStakeholders: [],
+      selectedPartners: [],
     });
   };
 
