@@ -62,6 +62,7 @@ export function CampaignsManagement() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null);
+  const [viewingCampaign, setViewingCampaign] = useState<Campaign | null>(null);
   
   // Multi-step form state
   const [currentStep, setCurrentStep] = useState(1);
@@ -290,6 +291,10 @@ export function CampaignsManagement() {
     setOpenChallenge(false);
     
     setShowAddDialog(true);
+  };
+
+  const handleView = async (campaign: Campaign) => {
+    setViewingCampaign(campaign);
   };
 
   const handleDelete = async (id: string) => {
@@ -1280,7 +1285,11 @@ export function CampaignsManagement() {
       {/* Campaigns grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCampaigns.map((campaign) => (
-          <Card key={campaign.id} className="hover:shadow-lg transition-shadow">
+          <Card 
+            key={campaign.id} 
+            className="hover:shadow-lg transition-shadow cursor-pointer"
+            onClick={() => handleView(campaign)}
+          >
             <CardHeader className="pb-3">
               <div className="flex justify-between items-start">
                 <CardTitle className="text-lg">{campaign.title}</CardTitle>
@@ -1320,11 +1329,14 @@ export function CampaignsManagement() {
                 )}
               </div>
 
-              <div className="flex gap-2 pt-2">
+              <div className="flex gap-2 pt-2" onClick={(e) => e.stopPropagation()}>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handleEdit(campaign)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleEdit(campaign);
+                  }}
                   className="flex-1"
                 >
                   <Edit className="h-4 w-4 mr-2" />
@@ -1333,7 +1345,10 @@ export function CampaignsManagement() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handleDelete(campaign.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(campaign.id);
+                  }}
                   className="text-destructive hover:text-destructive"
                 >
                   <Trash2 className="h-4 w-4" />
@@ -1353,6 +1368,127 @@ export function CampaignsManagement() {
           </p>
         </Card>
       )}
+
+      {/* Campaign Details View Dialog */}
+      <Dialog open={!!viewingCampaign} onOpenChange={() => setViewingCampaign(null)}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Eye className="h-5 w-5" />
+              Campaign Details
+            </DialogTitle>
+          </DialogHeader>
+          
+          {viewingCampaign && (
+            <div className="space-y-6">
+              {/* Basic Information */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">Basic Information</h3>
+                  {getStatusBadge(viewingCampaign.status)}
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">Title</Label>
+                    <p className="text-sm">{viewingCampaign.title}</p>
+                  </div>
+                  {viewingCampaign.title_ar && (
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Title (Arabic)</Label>
+                      <p className="text-sm">{viewingCampaign.title_ar}</p>
+                    </div>
+                  )}
+                </div>
+
+                {viewingCampaign.description && (
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">Description</Label>
+                    <p className="text-sm">{viewingCampaign.description}</p>
+                  </div>
+                )}
+
+                {viewingCampaign.description_ar && (
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">Description (Arabic)</Label>
+                    <p className="text-sm">{viewingCampaign.description_ar}</p>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">Theme</Label>
+                    <p className="text-sm">{viewingCampaign.theme?.replace('_', ' ')}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">Start Date</Label>
+                    <p className="text-sm">{viewingCampaign.start_date}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">End Date</Label>
+                    <p className="text-sm">{viewingCampaign.end_date}</p>
+                  </div>
+                </div>
+
+                {viewingCampaign.registration_deadline && (
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">Registration Deadline</Label>
+                    <p className="text-sm">{viewingCampaign.registration_deadline}</p>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {viewingCampaign.target_participants && (
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Target Participants</Label>
+                      <p className="text-sm">{viewingCampaign.target_participants}</p>
+                    </div>
+                  )}
+                  {viewingCampaign.target_ideas && (
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Target Ideas</Label>
+                      <p className="text-sm">{viewingCampaign.target_ideas}</p>
+                    </div>
+                  )}
+                  {viewingCampaign.budget && (
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Budget</Label>
+                      <p className="text-sm">${viewingCampaign.budget.toLocaleString()}</p>
+                    </div>
+                  )}
+                </div>
+
+                {viewingCampaign.success_metrics && (
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">Success Metrics</Label>
+                    <p className="text-sm">{viewingCampaign.success_metrics}</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-2 pt-4 border-t">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setViewingCampaign(null);
+                    handleEdit(viewingCampaign);
+                  }}
+                >
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit Campaign
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setViewingCampaign(null)}
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
