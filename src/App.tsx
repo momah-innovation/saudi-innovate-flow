@@ -15,6 +15,8 @@ import SectorsManagement from "./pages/SectorsManagement";
 import OrganizationalStructure from "./pages/OrganizationalStructure";
 import ExpertAssignmentManagementPage from "./pages/ExpertAssignmentManagement";
 import UserManagementPage from "./pages/UserManagementPage";
+import UserProfile from "./pages/UserProfile";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -89,6 +91,22 @@ const App = () => (
               element={
                 <ProtectedRoute requireProfile>
                   <UserManagementPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/profile/:userId" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <UserProfile />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/settings" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <Settings />
                 </ProtectedRoute>
               } 
             />

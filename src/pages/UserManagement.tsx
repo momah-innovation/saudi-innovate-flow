@@ -349,7 +349,14 @@ export default function UserManagement() {
                 <TableBody>
                   {filteredUsers.map((user) => (
                     <TableRow key={user.id}>
-                      <TableCell className="font-medium">{user.name}</TableCell>
+                      <TableCell className="font-medium">
+                        <button 
+                          onClick={() => window.open(`/profile/${user.id}`, '_blank')}
+                          className="text-primary hover:underline cursor-pointer"
+                        >
+                          {user.name}
+                        </button>
+                      </TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.department || '-'}</TableCell>
                       <TableCell>{user.position || '-'}</TableCell>
