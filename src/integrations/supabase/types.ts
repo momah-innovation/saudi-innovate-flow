@@ -42,13 +42,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_campaign_partner_links_campaign_id"
-            columns: ["campaign_id"]
-            isOneToOne: false
-            referencedRelation: "campaigns"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "fk_campaign_partner_links_partner"
             columns: ["partner_id"]
             isOneToOne: false
@@ -131,13 +124,6 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "fk_campaign_stakeholder_links_campaign"
-            columns: ["campaign_id"]
-            isOneToOne: false
-            referencedRelation: "campaigns"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_campaign_stakeholder_links_campaign_id"
             columns: ["campaign_id"]
             isOneToOne: false
             referencedRelation: "campaigns"
