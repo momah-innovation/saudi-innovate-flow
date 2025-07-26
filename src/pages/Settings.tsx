@@ -53,6 +53,11 @@ export default function Settings() {
   const [userRoles, setUserRoles] = useState<UserRole[]>([]);
   const [loading, setLoading] = useState(false);
   const [isRoleRequestDialogOpen, setIsRoleRequestDialogOpen] = useState(false);
+  
+  // Check if user is admin
+  const isAdmin = userRoles.some(role => 
+    ['admin', 'super_admin'].includes(role.role) && role.is_active
+  );
 
   useEffect(() => {
     if (userProfile) {
@@ -163,7 +168,7 @@ export default function Settings() {
               </div>
 
               <Tabs defaultValue="profile" className="space-y-6">
-                <TabsList className="grid w-full grid-cols-5">
+                <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-5' : 'grid-cols-4'}`}>
                   <TabsTrigger value="profile" className="flex items-center gap-2">
                     <User className="h-4 w-4" />
                     Profile
@@ -176,10 +181,12 @@ export default function Settings() {
                     <Shield className="h-4 w-4" />
                     Roles
                   </TabsTrigger>
-                  <TabsTrigger value="system" className="flex items-center gap-2">
-                    <Globe className="h-4 w-4" />
-                    System
-                  </TabsTrigger>
+                  {isAdmin && (
+                    <TabsTrigger value="system" className="flex items-center gap-2">
+                      <Globe className="h-4 w-4" />
+                      System
+                    </TabsTrigger>
+                  )}
                   <TabsTrigger value="preferences" className="flex items-center gap-2">
                     <Palette className="h-4 w-4" />
                     Preferences
@@ -392,7 +399,8 @@ export default function Settings() {
                   </Card>
                 </TabsContent>
 
-                <TabsContent value="system" className="space-y-6">
+                {isAdmin && (
+                  <TabsContent value="system" className="space-y-6">
                   <Card>
                     <CardHeader>
                       <CardTitle>Team Management Defaults</CardTitle>
@@ -544,6 +552,7 @@ export default function Settings() {
                     </Button>
                   </div>
                 </TabsContent>
+                )}
 
                 <TabsContent value="preferences" className="space-y-6">
                   <Card>
