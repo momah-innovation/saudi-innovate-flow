@@ -32,10 +32,19 @@ export default function SystemSettings() {
     autoApproveIdeas: false,
     digitalMaturityScoreMin: 0,
     digitalMaturityScoreMax: 10,
+    challengeMaxBudget: 1000000,
+    challengeTextareaRows: 4,
+    challengeNotesRows: 2,
+    challengeMaxSubmissionsPerChallenge: 20,
+    
+    // Expert Management
+    expertWorkloadWarningThreshold: 60,
+    expertProfileTextareaRows: 3,
     
     // Role Request Limits
     roleRejectionWaitDays: 30,
     maxRoleRequestsPerWeek: 3,
+    roleJustificationMaxPreviewLength: 50,
     
     // User Profile Settings
     minExperienceYears: 0,
@@ -55,6 +64,15 @@ export default function SystemSettings() {
     navigationDelayMs: 100,
     cssTransitionDurationMs: 300,
     avatarSizePx: 20,
+    uiDefaultTextareaRows: 4,
+    uiDescriptionMaxPreviewLength: 100,
+    uiTablePageSize: 10,
+    uiAnimationDurationMs: 200,
+    
+    // Form Validation
+    formMinBudget: 1000,
+    formMaxIdeaTitleLength: 200,
+    formMaxDescriptionLength: 5000,
     
     // API Settings
     apiRateLimit: 1000,
@@ -103,6 +121,24 @@ export default function SystemSettings() {
             case 'challenge_auto_approve_ideas':
               settingsMap.autoApproveIdeas = value === 'true' || value === true;
               break;
+            case 'challenge_max_budget':
+              settingsMap.challengeMaxBudget = parseInt(value);
+              break;
+            case 'challenge_textarea_rows':
+              settingsMap.challengeTextareaRows = parseInt(value);
+              break;
+            case 'challenge_notes_rows':
+              settingsMap.challengeNotesRows = parseInt(value);
+              break;
+            case 'challenge_max_submissions_per_challenge':
+              settingsMap.challengeMaxSubmissionsPerChallenge = parseInt(value);
+              break;
+            case 'expert_workload_warning_threshold':
+              settingsMap.expertWorkloadWarningThreshold = parseInt(value);
+              break;
+            case 'expert_profile_textarea_rows':
+              settingsMap.expertProfileTextareaRows = parseInt(value);
+              break;
             case 'notification_email_enabled':
               settingsMap.emailNotifications = value === 'true' || value === true;
               break;
@@ -117,6 +153,9 @@ export default function SystemSettings() {
               break;
             case 'role_max_requests_per_week':
               settingsMap.maxRoleRequestsPerWeek = parseInt(value);
+              break;
+            case 'role_justification_max_preview_length':
+              settingsMap.roleJustificationMaxPreviewLength = parseInt(value);
               break;
             case 'notification_fetch_limit':
               settingsMap.notificationFetchLimit = parseInt(value);
@@ -162,6 +201,27 @@ export default function SystemSettings() {
               break;
             case 'ui_avatar_size_px':
               settingsMap.avatarSizePx = parseInt(value);
+              break;
+            case 'ui_default_textarea_rows':
+              settingsMap.uiDefaultTextareaRows = parseInt(value);
+              break;
+            case 'ui_description_max_preview_length':
+              settingsMap.uiDescriptionMaxPreviewLength = parseInt(value);
+              break;
+            case 'ui_table_page_size':
+              settingsMap.uiTablePageSize = parseInt(value);
+              break;
+            case 'ui_animation_duration_ms':
+              settingsMap.uiAnimationDurationMs = parseInt(value);
+              break;
+            case 'form_min_budget':
+              settingsMap.formMinBudget = parseInt(value);
+              break;
+            case 'form_max_idea_title_length':
+              settingsMap.formMaxIdeaTitleLength = parseInt(value);
+              break;
+            case 'form_max_description_length':
+              settingsMap.formMaxDescriptionLength = parseInt(value);
               break;
             case 'api_rate_limit_per_hour':
               settingsMap.apiRateLimit = parseInt(value);
@@ -226,10 +286,17 @@ export default function SystemSettings() {
       challengeDuration: 'challenge_default_duration_days',
       submissionLimit: 'challenge_default_submission_limit',
       autoApproveIdeas: 'challenge_auto_approve_ideas',
+      challengeMaxBudget: 'challenge_max_budget',
+      challengeTextareaRows: 'challenge_textarea_rows',
+      challengeNotesRows: 'challenge_notes_rows',
+      challengeMaxSubmissionsPerChallenge: 'challenge_max_submissions_per_challenge',
       digitalMaturityScoreMin: 'challenge_digital_maturity_score_min',
       digitalMaturityScoreMax: 'challenge_digital_maturity_score_max',
+      expertWorkloadWarningThreshold: 'expert_workload_warning_threshold',
+      expertProfileTextareaRows: 'expert_profile_textarea_rows',
       roleRejectionWaitDays: 'role_rejection_wait_days',
       maxRoleRequestsPerWeek: 'role_max_requests_per_week',
+      roleJustificationMaxPreviewLength: 'role_justification_max_preview_length',
       minExperienceYears: 'user_min_experience_years',
       maxExperienceYears: 'user_max_experience_years',
       passwordMinLength: 'auth_password_min_length',
@@ -243,6 +310,13 @@ export default function SystemSettings() {
       navigationDelayMs: 'ui_navigation_delay_ms',
       cssTransitionDurationMs: 'ui_css_transition_duration_ms',
       avatarSizePx: 'ui_avatar_size_px',
+      uiDefaultTextareaRows: 'ui_default_textarea_rows',
+      uiDescriptionMaxPreviewLength: 'ui_description_max_preview_length',
+      uiTablePageSize: 'ui_table_page_size',
+      uiAnimationDurationMs: 'ui_animation_duration_ms',
+      formMinBudget: 'form_min_budget',
+      formMaxIdeaTitleLength: 'form_max_idea_title_length',
+      formMaxDescriptionLength: 'form_max_description_length',
       apiRateLimit: 'api_rate_limit_per_hour',
     };
     return keyMap[field] || null;
@@ -255,7 +329,8 @@ export default function SystemSettings() {
       { key: 'team_max_expert_workload', value: values.maxExpertWorkload },
       { key: 'team_performance_rating_min', value: values.performanceRatingMin },
       { key: 'team_performance_rating_max', value: values.performanceRatingMax },
-      { key: 'team_capacity_warning_threshold', value: values.capacityWarningThreshold }
+      { key: 'team_capacity_warning_threshold', value: values.capacityWarningThreshold },
+      { key: 'expert_workload_warning_threshold', value: values.expertWorkloadWarningThreshold }
     ];
 
     const success = await saveSettings(settingsToSave);
@@ -269,6 +344,10 @@ export default function SystemSettings() {
       { key: 'challenge_default_duration_days', value: values.challengeDuration },
       { key: 'challenge_default_submission_limit', value: values.submissionLimit },
       { key: 'challenge_auto_approve_ideas', value: values.autoApproveIdeas },
+      { key: 'challenge_max_budget', value: values.challengeMaxBudget },
+      { key: 'challenge_textarea_rows', value: values.challengeTextareaRows },
+      { key: 'challenge_notes_rows', value: values.challengeNotesRows },
+      { key: 'challenge_max_submissions_per_challenge', value: values.challengeMaxSubmissionsPerChallenge },
       { key: 'challenge_digital_maturity_score_min', value: values.digitalMaturityScoreMin },
       { key: 'challenge_digital_maturity_score_max', value: values.digitalMaturityScoreMax }
     ];
@@ -282,7 +361,9 @@ export default function SystemSettings() {
   const handleSaveRoleRequestSettings = async () => {
     const settingsToSave = [
       { key: 'role_rejection_wait_days', value: values.roleRejectionWaitDays },
-      { key: 'role_max_requests_per_week', value: values.maxRoleRequestsPerWeek }
+      { key: 'role_max_requests_per_week', value: values.maxRoleRequestsPerWeek },
+      { key: 'role_justification_max_preview_length', value: values.roleJustificationMaxPreviewLength },
+      { key: 'expert_profile_textarea_rows', value: values.expertProfileTextareaRows }
     ];
 
     const success = await saveSettings(settingsToSave);
@@ -312,12 +393,19 @@ export default function SystemSettings() {
       { key: 'ui_sidebar_cookie_max_age_days', value: values.sidebarCookieMaxAgeDays },
       { key: 'ui_navigation_delay_ms', value: values.navigationDelayMs },
       { key: 'ui_css_transition_duration_ms', value: values.cssTransitionDurationMs },
-      { key: 'ui_avatar_size_px', value: values.avatarSizePx }
+      { key: 'ui_avatar_size_px', value: values.avatarSizePx },
+      { key: 'ui_default_textarea_rows', value: values.uiDefaultTextareaRows },
+      { key: 'ui_description_max_preview_length', value: values.uiDescriptionMaxPreviewLength },
+      { key: 'ui_table_page_size', value: values.uiTablePageSize },
+      { key: 'ui_animation_duration_ms', value: values.uiAnimationDurationMs },
+      { key: 'formMinBudget', value: values.formMinBudget },
+      { key: 'formMaxIdeaTitleLength', value: values.formMaxIdeaTitleLength },
+      { key: 'formMaxDescriptionLength', value: values.formMaxDescriptionLength }
     ];
 
     const success = await saveSettings(settingsToSave);
     if (success) {
-      toast.success("UI settings have been updated successfully.");
+      toast.success("UI and form settings have been updated successfully.");
     }
   };
 
@@ -414,7 +502,7 @@ export default function SystemSettings() {
                 <CardHeader>
                   <CardTitle>Team Management Defaults</CardTitle>
                   <CardDescription>
-                    Configure default settings for team management
+                    Configure default settings for team management and expert workloads
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -445,135 +533,78 @@ export default function SystemSettings() {
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label>Default Performance Rating</Label>
+                        <Label>Expert Workload Warning Threshold (%)</Label>
                         <Button 
                           variant="ghost" 
                           size="sm" 
                           className="h-8 w-8 p-0"
-                          onClick={() => handleReset('defaultPerformanceRating')}
+                          onClick={() => handleReset('expertWorkloadWarningThreshold')}
                         >
                           <RotateCcw className="h-4 w-4" />
                         </Button>
                       </div>
                       <Input
                         type="number"
-                        value={values.defaultPerformanceRating}
-                        onChange={(e) => setValues(prev => ({ ...prev, defaultPerformanceRating: parseFloat(e.target.value) || 0 }))}
-                        min="0"
-                        max="5"
-                        step="0.1"
-                        placeholder="0"
+                        value={values.expertWorkloadWarningThreshold}
+                        onChange={(e) => setValues(prev => ({ ...prev, expertWorkloadWarningThreshold: parseInt(e.target.value) || 0 }))}
+                        min="50"
+                        max="100"
+                        placeholder="60"
                       />
                       <p className="text-xs text-muted-foreground">
-                        Starting performance rating for new members
+                        Show expert workload warning when exceeds this percentage
                       </p>
-                     </div>
-                   </div>
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <Label>Max Expert Workload</Label>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="h-8 w-8 p-0"
-                            onClick={() => handleReset('maxExpertWorkload')}
-                          >
-                            <RotateCcw className="h-4 w-4" />
-                          </Button>
-                        </div>
-                        <Input
-                          type="number"
-                          value={values.maxExpertWorkload}
-                          onChange={(e) => setValues(prev => ({ ...prev, maxExpertWorkload: parseInt(e.target.value) || 0 }))}
-                          min="1"
-                          max="20"
-                          placeholder="5"
-                        />
-                        <p className="text-xs text-muted-foreground">
-                          Maximum concurrent challenges an expert can handle
-                        </p>
-                      </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <Label>Capacity Warning Threshold (%)</Label>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="h-8 w-8 p-0"
-                            onClick={() => handleReset('capacityWarningThreshold')}
-                          >
-                            <RotateCcw className="h-4 w-4" />
-                          </Button>
-                        </div>
-                        <Input
-                          type="number"
-                          value={values.capacityWarningThreshold}
-                          onChange={(e) => setValues(prev => ({ ...prev, capacityWarningThreshold: parseInt(e.target.value) || 0 }))}
-                          min="50"
-                          max="100"
-                          placeholder="90"
-                        />
-                        <p className="text-xs text-muted-foreground">
-                          Show warning when workload exceeds this percentage
-                        </p>
-                      </div>
                     </div>
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <Label>Performance Rating Min</Label>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="h-8 w-8 p-0"
-                            onClick={() => handleReset('performanceRatingMin')}
-                          >
-                            <RotateCcw className="h-4 w-4" />
-                          </Button>
-                        </div>
-                        <Input
-                          type="number"
-                          value={values.performanceRatingMin}
-                          onChange={(e) => setValues(prev => ({ ...prev, performanceRatingMin: parseInt(e.target.value) || 0 }))}
-                          min="0"
-                          max="5"
-                          placeholder="0"
-                        />
-                        <p className="text-xs text-muted-foreground">
-                          Minimum performance rating value
-                        </p>
+                  </div>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label>Performance Rating Min</Label>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('performanceRatingMin')}
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
                       </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <Label>Performance Rating Max</Label>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="h-8 w-8 p-0"
-                            onClick={() => handleReset('performanceRatingMax')}
-                          >
-                            <RotateCcw className="h-4 w-4" />
-                          </Button>
-                        </div>
-                        <Input
-                          type="number"
-                          value={values.performanceRatingMax}
-                          onChange={(e) => setValues(prev => ({ ...prev, performanceRatingMax: parseInt(e.target.value) || 0 }))}
-                          min="1"
-                          max="10"
-                          placeholder="5"
-                        />
-                        <p className="text-xs text-muted-foreground">
-                          Maximum performance rating value
-                        </p>
-                      </div>
+                      <Input
+                        type="number"
+                        value={values.performanceRatingMin}
+                        onChange={(e) => setValues(prev => ({ ...prev, performanceRatingMin: parseInt(e.target.value) || 0 }))}
+                        min="0"
+                        max="5"
+                        placeholder="0"
+                      />
                     </div>
-                   <div className="flex justify-end pt-4 border-t">
-                     <Button size="sm" onClick={handleSaveTeamDefaults}>
-                       Save Team Defaults
-                     </Button>
-                   </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label>Performance Rating Max</Label>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('performanceRatingMax')}
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <Input
+                        type="number"
+                        value={values.performanceRatingMax}
+                        onChange={(e) => setValues(prev => ({ ...prev, performanceRatingMax: parseInt(e.target.value) || 0 }))}
+                        min="1"
+                        max="10"
+                        placeholder="5"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-end pt-4 border-t">
+                    <Button size="sm" onClick={handleSaveTeamDefaults}>
+                      Save Team Defaults
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -582,196 +613,162 @@ export default function SystemSettings() {
                 <CardHeader>
                   <CardTitle>Challenge Management</CardTitle>
                   <CardDescription>
-                    System-wide challenge settings and defaults
+                    System-wide challenge settings, limits, and UI defaults
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label>Default Challenge Duration (days)</Label>
+                        <Label>Max Challenge Budget</Label>
                         <Button 
                           variant="ghost" 
                           size="sm" 
                           className="h-8 w-8 p-0"
-                          onClick={() => handleReset('challengeDuration')}
+                          onClick={() => handleReset('challengeMaxBudget')}
                         >
                           <RotateCcw className="h-4 w-4" />
                         </Button>
                       </div>
                       <Input
                         type="number"
-                        value={values.challengeDuration}
-                        onChange={(e) => setValues(prev => ({ ...prev, challengeDuration: parseInt(e.target.value) || 0 }))}
-                        min="1"
-                        max="365"
-                        placeholder="30"
+                        value={values.challengeMaxBudget}
+                        onChange={(e) => setValues(prev => ({ ...prev, challengeMaxBudget: parseInt(e.target.value) || 0 }))}
+                        min="1000"
+                        max="10000000"
+                        placeholder="1000000"
                       />
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label>Default Submission Limit</Label>
+                        <Label>Max Submissions Per Challenge</Label>
                         <Button 
                           variant="ghost" 
                           size="sm" 
                           className="h-8 w-8 p-0"
-                          onClick={() => handleReset('submissionLimit')}
+                          onClick={() => handleReset('challengeMaxSubmissionsPerChallenge')}
                         >
                           <RotateCcw className="h-4 w-4" />
                         </Button>
                       </div>
                       <Input
                         type="number"
-                        value={values.submissionLimit}
-                        onChange={(e) => setValues(prev => ({ ...prev, submissionLimit: parseInt(e.target.value) || 0 }))}
+                        value={values.challengeMaxSubmissionsPerChallenge}
+                        onChange={(e) => setValues(prev => ({ ...prev, challengeMaxSubmissionsPerChallenge: parseInt(e.target.value) || 0 }))}
                         min="1"
-                        max="50"
-                        placeholder="5"
+                        max="100"
+                        placeholder="20"
                       />
-                     </div>
-                   </div>
-                   <div className="grid gap-4 md:grid-cols-2">
-                     <div className="space-y-2">
-                       <div className="flex items-center justify-between">
-                         <Label>Digital Maturity Score Min</Label>
-                         <Button 
-                           variant="ghost" 
-                           size="sm" 
-                           className="h-8 w-8 p-0"
-                           onClick={() => handleReset('digitalMaturityScoreMin')}
-                         >
-                           <RotateCcw className="h-4 w-4" />
-                         </Button>
-                       </div>
-                       <Input
-                         type="number"
-                         value={values.digitalMaturityScoreMin}
-                         onChange={(e) => setValues(prev => ({ ...prev, digitalMaturityScoreMin: parseInt(e.target.value) || 0 }))}
-                         min="0"
-                         max="10"
-                         placeholder="0"
-                       />
-                       <p className="text-xs text-muted-foreground">
-                         Minimum digital maturity score
-                       </p>
-                     </div>
-                     <div className="space-y-2">
-                       <div className="flex items-center justify-between">
-                         <Label>Digital Maturity Score Max</Label>
-                         <Button 
-                           variant="ghost" 
-                           size="sm" 
-                           className="h-8 w-8 p-0"
-                           onClick={() => handleReset('digitalMaturityScoreMax')}
-                         >
-                           <RotateCcw className="h-4 w-4" />
-                         </Button>
-                       </div>
-                       <Input
-                         type="number"
-                         value={values.digitalMaturityScoreMax}
-                         onChange={(e) => setValues(prev => ({ ...prev, digitalMaturityScoreMax: parseInt(e.target.value) || 0 }))}
-                         min="1"
-                         max="20"
-                         placeholder="10"
-                       />
-                       <p className="text-xs text-muted-foreground">
-                         Maximum digital maturity score
-                       </p>
-                     </div>
-                   </div>
-                   <div className="flex items-center justify-between">
-                     <div>
-                       <p className="font-medium">Auto-approve Ideas</p>
-                       <p className="text-sm text-muted-foreground">
-                         Automatically approve submitted ideas
-                       </p>
-                     </div>
-                     <div className="flex items-center gap-2">
-                       <Switch 
-                         checked={values.autoApproveIdeas}
-                         onCheckedChange={(checked) => setValues(prev => ({ ...prev, autoApproveIdeas: checked }))}
-                       />
-                       <Button 
-                         variant="ghost" 
-                         size="sm" 
-                         className="h-8 w-8 p-0"
-                         onClick={() => handleReset('autoApproveIdeas')}
-                       >
-                         <RotateCcw className="h-4 w-4" />
-                       </Button>
-                     </div>
-                   </div>
+                    </div>
+                  </div>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label>Challenge Description Textarea Rows</Label>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('challengeTextareaRows')}
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <Input
+                        type="number"
+                        value={values.challengeTextareaRows}
+                        onChange={(e) => setValues(prev => ({ ...prev, challengeTextareaRows: parseInt(e.target.value) || 0 }))}
+                        min="2"
+                        max="10"
+                        placeholder="4"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label>Challenge Notes Textarea Rows</Label>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('challengeNotesRows')}
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <Input
+                        type="number"
+                        value={values.challengeNotesRows}
+                        onChange={(e) => setValues(prev => ({ ...prev, challengeNotesRows: parseInt(e.target.value) || 0 }))}
+                        min="1"
+                        max="5"
+                        placeholder="2"
+                      />
+                    </div>
+                  </div>
                   <div className="flex justify-end pt-4 border-t">
                     <Button size="sm" onClick={handleSaveChallengeSettings}>
                       Save Challenge Settings
                     </Button>
                   </div>
                 </CardContent>
-               </Card>
+              </Card>
 
-              {/* Role Request Settings */}
+              {/* Role Management Settings */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Role Request Limits</CardTitle>
+                  <CardTitle>Role Management Settings</CardTitle>
                   <CardDescription>
-                    Configure limits and policies for role requests
+                    Configure role request limits and expert profile settings
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label>Rejection Wait Period (days)</Label>
+                        <Label>Role Justification Preview Length</Label>
                         <Button 
                           variant="ghost" 
                           size="sm" 
                           className="h-8 w-8 p-0"
-                          onClick={() => handleReset('roleRejectionWaitDays')}
+                          onClick={() => handleReset('roleJustificationMaxPreviewLength')}
                         >
                           <RotateCcw className="h-4 w-4" />
                         </Button>
                       </div>
                       <Input
                         type="number"
-                        value={values.roleRejectionWaitDays}
-                        onChange={(e) => setValues(prev => ({ ...prev, roleRejectionWaitDays: parseInt(e.target.value) || 0 }))}
-                        min="1"
-                        max="365"
-                        placeholder="30"
+                        value={values.roleJustificationMaxPreviewLength}
+                        onChange={(e) => setValues(prev => ({ ...prev, roleJustificationMaxPreviewLength: parseInt(e.target.value) || 0 }))}
+                        min="20"
+                        max="200"
+                        placeholder="50"
                       />
-                      <p className="text-xs text-muted-foreground">
-                        Days to wait after rejection before re-requesting same role
-                      </p>
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label>Max Requests Per Week</Label>
+                        <Label>Expert Profile Textarea Rows</Label>
                         <Button 
                           variant="ghost" 
                           size="sm" 
                           className="h-8 w-8 p-0"
-                          onClick={() => handleReset('maxRoleRequestsPerWeek')}
+                          onClick={() => handleReset('expertProfileTextareaRows')}
                         >
                           <RotateCcw className="h-4 w-4" />
                         </Button>
                       </div>
                       <Input
                         type="number"
-                        value={values.maxRoleRequestsPerWeek}
-                        onChange={(e) => setValues(prev => ({ ...prev, maxRoleRequestsPerWeek: parseInt(e.target.value) || 0 }))}
-                        min="1"
-                        max="10"
+                        value={values.expertProfileTextareaRows}
+                        onChange={(e) => setValues(prev => ({ ...prev, expertProfileTextareaRows: parseInt(e.target.value) || 0 }))}
+                        min="2"
+                        max="8"
                         placeholder="3"
                       />
-                      <p className="text-xs text-muted-foreground">
-                        Maximum role requests a user can make per week
-                      </p>
                     </div>
                   </div>
                   <div className="flex justify-end pt-4 border-t">
                     <Button size="sm" onClick={handleSaveRoleRequestSettings}>
-                      Save Role Request Settings
+                      Save Role Settings
                     </Button>
                   </div>
                 </CardContent>
@@ -936,122 +933,152 @@ export default function SystemSettings() {
                  </CardContent>
                </Card>
 
-               {/* UI Settings */}
+               {/* UI & Form Defaults */}
                <Card>
                  <CardHeader>
-                   <CardTitle>UI Settings</CardTitle>
+                   <CardTitle>UI & Form Defaults</CardTitle>
                    <CardDescription>
-                     Configure user interface behavior and defaults
+                     Configure default UI settings and form validation limits
                    </CardDescription>
                  </CardHeader>
                  <CardContent className="space-y-4">
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 md:grid-cols-3">
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <Label>Sidebar Cookie Max Age (days)</Label>
+                          <Label>Default Textarea Rows</Label>
                           <Button 
                             variant="ghost" 
                             size="sm" 
                             className="h-8 w-8 p-0"
-                            onClick={() => handleReset('sidebarCookieMaxAgeDays')}
+                            onClick={() => handleReset('uiDefaultTextareaRows')}
                           >
                             <RotateCcw className="h-4 w-4" />
                           </Button>
                         </div>
                         <Input
                           type="number"
-                          value={values.sidebarCookieMaxAgeDays}
-                          onChange={(e) => setValues(prev => ({ ...prev, sidebarCookieMaxAgeDays: parseInt(e.target.value) || 0 }))}
-                          min="1"
-                          max="365"
-                          placeholder="7"
+                          value={values.uiDefaultTextareaRows}
+                          onChange={(e) => setValues(prev => ({ ...prev, uiDefaultTextareaRows: parseInt(e.target.value) || 0 }))}
+                          min="2"
+                          max="10"
+                          placeholder="4"
                         />
-                        <p className="text-xs text-muted-foreground">
-                          How long to remember sidebar state
-                        </p>
                       </div>
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <Label>Navigation Delay (ms)</Label>
+                          <Label>Description Preview Length</Label>
                           <Button 
                             variant="ghost" 
                             size="sm" 
                             className="h-8 w-8 p-0"
-                            onClick={() => handleReset('navigationDelayMs')}
+                            onClick={() => handleReset('uiDescriptionMaxPreviewLength')}
                           >
                             <RotateCcw className="h-4 w-4" />
                           </Button>
                         </div>
                         <Input
                           type="number"
-                          value={values.navigationDelayMs}
-                          onChange={(e) => setValues(prev => ({ ...prev, navigationDelayMs: parseInt(e.target.value) || 0 }))}
-                          min="0"
-                          max="1000"
+                          value={values.uiDescriptionMaxPreviewLength}
+                          onChange={(e) => setValues(prev => ({ ...prev, uiDescriptionMaxPreviewLength: parseInt(e.target.value) || 0 }))}
+                          min="50"
+                          max="500"
                           placeholder="100"
                         />
-                        <p className="text-xs text-muted-foreground">
-                          Delay before navigation transitions
-                        </p>
                       </div>
-                    </div>
-                    <div className="grid gap-4 md:grid-cols-2">
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <Label>CSS Transition Duration (ms)</Label>
+                          <Label>Table Page Size</Label>
                           <Button 
                             variant="ghost" 
                             size="sm" 
                             className="h-8 w-8 p-0"
-                            onClick={() => handleReset('cssTransitionDurationMs')}
+                            onClick={() => handleReset('uiTablePageSize')}
                           >
                             <RotateCcw className="h-4 w-4" />
                           </Button>
                         </div>
                         <Input
                           type="number"
-                          value={values.cssTransitionDurationMs}
-                          onChange={(e) => setValues(prev => ({ ...prev, cssTransitionDurationMs: parseInt(e.target.value) || 0 }))}
+                          value={values.uiTablePageSize}
+                          onChange={(e) => setValues(prev => ({ ...prev, uiTablePageSize: parseInt(e.target.value) || 0 }))}
+                          min="5"
+                          max="100"
+                          placeholder="10"
+                        />
+                      </div>
+                    </div>
+                    <div className="grid gap-4 md:grid-cols-3">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>Min Budget (Form Validation)</Label>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="h-8 w-8 p-0"
+                            onClick={() => handleReset('formMinBudget')}
+                          >
+                            <RotateCcw className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <Input
+                          type="number"
+                          value={values.formMinBudget}
+                          onChange={(e) => setValues(prev => ({ ...prev, formMinBudget: parseInt(e.target.value) || 0 }))}
                           min="100"
-                          max="2000"
-                          placeholder="300"
+                          max="100000"
+                          placeholder="1000"
                         />
-                        <p className="text-xs text-muted-foreground">
-                          Default CSS animation duration
-                        </p>
                       </div>
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <Label>Avatar Size (px)</Label>
+                          <Label>Max Idea Title Length</Label>
                           <Button 
                             variant="ghost" 
                             size="sm" 
                             className="h-8 w-8 p-0"
-                            onClick={() => handleReset('avatarSizePx')}
+                            onClick={() => handleReset('formMaxIdeaTitleLength')}
                           >
                             <RotateCcw className="h-4 w-4" />
                           </Button>
                         </div>
                         <Input
                           type="number"
-                          value={values.avatarSizePx}
-                          onChange={(e) => setValues(prev => ({ ...prev, avatarSizePx: parseInt(e.target.value) || 0 }))}
-                          min="16"
-                          max="200"
-                          placeholder="20"
+                          value={values.formMaxIdeaTitleLength}
+                          onChange={(e) => setValues(prev => ({ ...prev, formMaxIdeaTitleLength: parseInt(e.target.value) || 0 }))}
+                          min="50"
+                          max="500"
+                          placeholder="200"
                         />
-                        <p className="text-xs text-muted-foreground">
-                          Default avatar size in pixels
-                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>Max Description Length</Label>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="h-8 w-8 p-0"
+                            onClick={() => handleReset('formMaxDescriptionLength')}
+                          >
+                            <RotateCcw className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <Input
+                          type="number"
+                          value={values.formMaxDescriptionLength}
+                          onChange={(e) => setValues(prev => ({ ...prev, formMaxDescriptionLength: parseInt(e.target.value) || 0 }))}
+                          min="500"
+                          max="20000"
+                          placeholder="5000"
+                        />
                       </div>
                     </div>
-                   <div className="flex justify-end pt-4 border-t">
-                     <Button size="sm" onClick={handleSaveUISettings}>
-                       Save UI Settings
-                     </Button>
-                   </div>
+                    <div className="flex justify-end pt-4 border-t">
+                      <Button size="sm" onClick={handleSaveUISettings}>
+                        Save UI & Form Settings
+                      </Button>
+                    </div>
                  </CardContent>
-                </Card>
+               </Card>
 
                {/* User Profile Settings */}
                <Card>
