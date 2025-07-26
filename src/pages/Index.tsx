@@ -61,6 +61,10 @@ const Index = () => {
       navigate("/admin/stakeholders");
       return;
     }
+    if (tab === "system-documentation") {
+      navigate("/admin/system-documentation");
+      return;
+    }
     if (tab === "settings") {
       navigate("/settings");
       return;
