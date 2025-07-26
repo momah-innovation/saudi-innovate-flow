@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Bell, User, Settings, Globe, Search, LogOut, Shield } from "lucide-react";
 import {
   DropdownMenu,
@@ -10,9 +11,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
-  const { userProfile, signOut, hasRole } = useAuth();
+  const { user, userProfile, signOut, hasRole } = useAuth();
+  const navigate = useNavigate();
 
   const getUserDisplayName = () => {
     if (!userProfile) return 'User';
@@ -24,6 +27,25 @@ export const Header = () => {
     return userProfile.user_roles
       .filter((role: any) => role.is_active && (!role.expires_at || new Date(role.expires_at) > new Date()))
       .map((role: any) => role.role);
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(word => word.charAt(0))
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const handleProfileClick = () => {
+    if (user?.id) {
+      navigate(`/profile/${user.id}`);
+    }
+  };
+
+  const handleSettingsClick = () => {
+    navigate('/settings');
   };
 
   return (
@@ -71,42 +93,81 @@ export const Header = () => {
             </Badge>
           </Button>
 
-          {/* User Menu */}
+          {/* User Avatar Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
-                <User className="h-4 w-4 mr-2" />
-                {getUserDisplayName()}
+              <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0 hover:bg-white/10">
+                <Avatar className="h-10 w-10 border-2 border-white/20">
+                  <AvatarImage 
+                    src={userProfile?.profile_image_url} 
+                    alt={getUserDisplayName()} 
+                  />
+                  <AvatarFallback className="bg-primary-foreground text-primary font-medium">
+                    {getInitials(getUserDisplayName())}
+                  </AvatarFallback>
+                </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-64">
-              <div className="px-3 py-2 border-b">
-                <p className="font-medium">{getUserDisplayName()}</p>
-                <p className="text-sm text-muted-foreground">{userProfile?.email}</p>
-                {getUserRoles().length > 0 && (
-                  <div className="flex flex-wrap gap-1 mt-2">
+            <DropdownMenuContent align="end" className="w-72">
+              {/* User Info Header */}
+              <div className="flex items-center gap-3 px-3 py-3 border-b">
+                <Avatar className="h-12 w-12">
+                  <AvatarImage 
+                    src={userProfile?.profile_image_url} 
+                    alt={getUserDisplayName()} 
+                  />
+                  <AvatarFallback className="bg-primary text-primary-foreground font-medium">
+                    {getInitials(getUserDisplayName())}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-sm truncate">{getUserDisplayName()}</p>
+                  <p className="text-xs text-muted-foreground truncate">{userProfile?.email}</p>
+                  {userProfile?.position && (
+                    <p className="text-xs text-muted-foreground truncate">{userProfile.position}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Roles */}
+              {getUserRoles().length > 0 && (
+                <div className="px-3 py-2 border-b">
+                  <p className="text-xs font-medium text-muted-foreground mb-2">Active Roles</p>
+                  <div className="flex flex-wrap gap-1">
                     {getUserRoles().map((role: string) => (
                       <Badge key={role} variant="secondary" className="text-xs">
                         <Shield className="w-3 h-3 mr-1" />
-                        {role}
+                        {role.replace('_', ' ')}
                       </Badge>
                     ))}
                   </div>
-                )}
+                </div>
+              )}
+
+              {/* Menu Items */}
+              <div className="py-1">
+                <DropdownMenuItem onClick={handleProfileClick} className="cursor-pointer">
+                  <User className="mr-3 h-4 w-4" />
+                  <span>View Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSettingsClick} className="cursor-pointer">
+                  <Settings className="mr-3 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
               </div>
-              <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
-                Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                Settings
-              </DropdownMenuItem>
+
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={signOut} className="text-destructive focus:text-destructive">
-                <LogOut className="mr-2 h-4 w-4" />
-                Sign out
-              </DropdownMenuItem>
+
+              {/* Sign Out */}
+              <div className="py-1">
+                <DropdownMenuItem 
+                  onClick={signOut} 
+                  className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
+                >
+                  <LogOut className="mr-3 h-4 w-4" />
+                  <span>Sign out</span>
+                </DropdownMenuItem>
+              </div>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
