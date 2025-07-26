@@ -32,6 +32,7 @@ const useSystemSettings = () => {
     maxConcurrentProjects: 5,
     performanceRatingMin: 0,
     performanceRatingMax: 5,
+    performanceRatingStep: 0.1,
     teamInsightsDisplayLimit: 10,
     insightTitlePreviewLength: 50
   });
@@ -46,6 +47,7 @@ const useSystemSettings = () => {
             'team_max_concurrent_projects_per_member',
             'team_min_performance_rating', 
             'team_max_performance_rating',
+            'team_performance_rating_step',
             'team_insights_display_limit',
             'team_insight_title_preview_length'
           ]);
@@ -66,6 +68,9 @@ const useSystemSettings = () => {
                 break;
               case 'team_max_performance_rating':
                 settings.performanceRatingMax = parseInt(value) || 5;
+                break;
+              case 'team_performance_rating_step':
+                settings.performanceRatingStep = parseFloat(value) || 0.1;
                 break;
               case 'team_insights_display_limit':
                 settings.teamInsightsDisplayLimit = parseInt(value) || 10;
@@ -1012,7 +1017,7 @@ export default function TeamManagement() {
                   onChange={(e) => setMemberForm(prev => ({ ...prev, performance_rating: parseFloat(e.target.value) || 0 }))}
                    min={systemSettings.performanceRatingMin}
                    max={systemSettings.performanceRatingMax}
-                  step="0.1"
+                  step={systemSettings.performanceRatingStep.toString()}
                 />
               </div>
             </div>
@@ -1131,7 +1136,7 @@ export default function TeamManagement() {
                   onChange={(e) => setMemberForm(prev => ({ ...prev, performance_rating: parseFloat(e.target.value) || 0 }))}
                    min={systemSettings.performanceRatingMin}
                    max={systemSettings.performanceRatingMax}
-                  step="0.1"
+                  step={systemSettings.performanceRatingStep.toString()}
                 />
               </div>
             </div>
