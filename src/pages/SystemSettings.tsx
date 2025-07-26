@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function SystemSettings() {
   const navigate = useNavigate();
@@ -29,28 +30,152 @@ export default function SystemSettings() {
 
   // State for form values
   const [values, setValues] = useState(defaultValues);
+  const [loading, setLoading] = useState(true);
 
-  const handleReset = (field: keyof typeof defaultValues) => {
+  // Load settings from database on component mount
+  useEffect(() => {
+    loadSettings();
+  }, []);
+
+  const loadSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_key, setting_value');
+
+      if (error) throw error;
+
+      if (data) {
+        const settingsMap: Record<string, any> = {};
+        data.forEach((setting) => {
+          const value = typeof setting.setting_value === 'string' 
+            ? JSON.parse(setting.setting_value) 
+            : setting.setting_value;
+          
+          switch (setting.setting_key) {
+            case 'team_max_concurrent_projects':
+              settingsMap.maxConcurrentProjects = parseInt(value);
+              break;
+            case 'team_default_performance_rating':
+              settingsMap.defaultPerformanceRating = parseFloat(value);
+              break;
+            case 'challenge_default_duration_days':
+              settingsMap.challengeDuration = parseInt(value);
+              break;
+            case 'challenge_default_submission_limit':
+              settingsMap.submissionLimit = parseInt(value);
+              break;
+            case 'challenge_auto_approve_ideas':
+              settingsMap.autoApproveIdeas = value === 'true' || value === true;
+              break;
+            case 'notification_email_enabled':
+              settingsMap.emailNotifications = value === 'true' || value === true;
+              break;
+            case 'notification_role_requests_enabled':
+              settingsMap.roleRequestNotifications = value === 'true' || value === true;
+              break;
+            case 'notification_challenge_deadlines_enabled':
+              settingsMap.challengeDeadlineReminders = value === 'true' || value === true;
+              break;
+          }
+        });
+
+        setValues(prev => ({ ...prev, ...settingsMap }));
+      }
+    } catch (error) {
+      console.error('Error loading settings:', error);
+      toast.error('Failed to load system settings');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const saveSettings = async (settingsToSave: Array<{key: string, value: any}>) => {
+    try {
+      for (const setting of settingsToSave) {
+        const { error } = await supabase
+          .from('system_settings')
+          .update({ 
+            setting_value: JSON.stringify(setting.value),
+            updated_by: (await supabase.auth.getUser()).data.user?.id 
+          })
+          .eq('setting_key', setting.key);
+
+        if (error) throw error;
+      }
+      return true;
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      toast.error('Failed to save settings');
+      return false;
+    }
+  };
+
+  const handleReset = async (field: keyof typeof defaultValues) => {
+    const originalValue = defaultValues[field];
     setValues(prev => ({
       ...prev,
-      [field]: defaultValues[field]
+      [field]: originalValue
     }));
+
+    // Also reset in database
+    const settingKey = getSettingKey(field);
+    if (settingKey) {
+      await saveSettings([{ key: settingKey, value: originalValue }]);
+      toast.success('Setting reset to default value');
+    }
   };
 
-  const handleSaveTeamDefaults = () => {
-    console.log("Save Team Defaults clicked", values);
-    // In a real app, this would save to database
-    toast.success("Team management defaults have been updated successfully.");
+  const getSettingKey = (field: keyof typeof defaultValues): string | null => {
+    const keyMap = {
+      maxConcurrentProjects: 'team_max_concurrent_projects',
+      defaultPerformanceRating: 'team_default_performance_rating',
+      challengeDuration: 'challenge_default_duration_days',
+      submissionLimit: 'challenge_default_submission_limit',
+      autoApproveIdeas: 'challenge_auto_approve_ideas',
+      emailNotifications: 'notification_email_enabled',
+      roleRequestNotifications: 'notification_role_requests_enabled',
+      challengeDeadlineReminders: 'notification_challenge_deadlines_enabled',
+    };
+    return keyMap[field] || null;
   };
 
-  const handleSaveChallengeSettings = () => {
-    // In a real app, this would save to database
-    toast.success("Challenge management settings have been updated successfully.");
+  const handleSaveTeamDefaults = async () => {
+    const settingsToSave = [
+      { key: 'team_max_concurrent_projects', value: values.maxConcurrentProjects },
+      { key: 'team_default_performance_rating', value: values.defaultPerformanceRating }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast.success("Team management defaults have been updated successfully.");
+    }
   };
 
-  const handleSaveNotificationSettings = () => {
-    // In a real app, this would save to database
-    toast.success("Notification settings have been updated successfully.");
+  const handleSaveChallengeSettings = async () => {
+    const settingsToSave = [
+      { key: 'challenge_default_duration_days', value: values.challengeDuration },
+      { key: 'challenge_default_submission_limit', value: values.submissionLimit },
+      { key: 'challenge_auto_approve_ideas', value: values.autoApproveIdeas }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast.success("Challenge management settings have been updated successfully.");
+    }
+  };
+
+  const handleSaveNotificationSettings = async () => {
+    const settingsToSave = [
+      { key: 'notification_email_enabled', value: values.emailNotifications },
+      { key: 'notification_role_requests_enabled', value: values.roleRequestNotifications },
+      { key: 'notification_challenge_deadlines_enabled', value: values.challengeDeadlineReminders }
+    ];
+
+    const success = await saveSettings(settingsToSave);
+    if (success) {
+      toast.success("Notification settings have been updated successfully.");
+    }
   };
 
   const handleTabChange = (tab: string) => {
@@ -74,6 +199,27 @@ export default function SystemSettings() {
       navigate("/");
     }
   };
+
+  if (loading) {
+    return (
+      <SidebarProvider>
+        <div className="min-h-screen flex w-full">
+          <AppSidebar activeTab="system-settings" onTabChange={handleTabChange} />
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <Header />
+            <main className="flex-1 overflow-y-auto">
+              <div className="container mx-auto p-6 space-y-6">
+                <BreadcrumbNav activeTab="system-settings" />
+                <div className="flex items-center justify-center h-64">
+                  <div className="text-muted-foreground">Loading system settings...</div>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </SidebarProvider>
+    );
+  }
 
   return (
     <SidebarProvider>
