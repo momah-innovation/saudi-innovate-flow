@@ -1297,6 +1297,54 @@ export type Database = {
         }
         Relationships: []
       }
+      role_requests: {
+        Row: {
+          created_at: string
+          current_roles: Database["public"]["Enums"]["app_role"][] | null
+          id: string
+          justification: string | null
+          reason: string | null
+          requested_at: string
+          requested_role: Database["public"]["Enums"]["app_role"]
+          requester_id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          reviewer_notes: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_roles?: Database["public"]["Enums"]["app_role"][] | null
+          id?: string
+          justification?: string | null
+          reason?: string | null
+          requested_at?: string
+          requested_role: Database["public"]["Enums"]["app_role"]
+          requester_id: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_roles?: Database["public"]["Enums"]["app_role"][] | null
+          id?: string
+          justification?: string | null
+          reason?: string | null
+          requested_at?: string
+          requested_role?: Database["public"]["Enums"]["app_role"]
+          requester_id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       sectors: {
         Row: {
           created_at: string | null
