@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Globe, RotateCcw } from "lucide-react";
@@ -1591,6 +1592,166 @@ export default function SystemSettings() {
                     <div className="flex justify-end pt-4 border-t">
                       <Button size="sm" onClick={handleSaveComponentSettings}>
                         Save Component Settings
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Configurable Lists */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Configurable Lists</CardTitle>
+                    <CardDescription>
+                      Manage dropdown options and lists used throughout the application
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    
+                    {/* Challenge Priority Levels */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-lg font-medium">Challenge Priority Levels</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Available priority levels for challenges (comma-separated)
+                          </p>
+                        </div>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('challengePriorityLevels')}
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <Input
+                        value={Array.isArray(values.challengePriorityLevels) ? values.challengePriorityLevels.join(', ') : ''}
+                        onChange={(e) => setValues(prev => ({ 
+                          ...prev, 
+                          challengePriorityLevels: e.target.value.split(',').map(s => s.trim()).filter(s => s)
+                        }))}
+                        placeholder="low, medium, high"
+                      />
+                    </div>
+
+                    {/* Challenge Sensitivity Levels */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-lg font-medium">Challenge Sensitivity Levels</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Available sensitivity levels for challenges (comma-separated)
+                          </p>
+                        </div>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('challengeSensitivityLevels')}
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <Input
+                        value={Array.isArray(values.challengeSensitivityLevels) ? values.challengeSensitivityLevels.join(', ') : ''}
+                        onChange={(e) => setValues(prev => ({ 
+                          ...prev, 
+                          challengeSensitivityLevels: e.target.value.split(',').map(s => s.trim()).filter(s => s)
+                        }))}
+                        placeholder="normal, sensitive, confidential"
+                      />
+                    </div>
+
+                    {/* Challenge Types */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-lg font-medium">Challenge Types</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Available challenge types (comma-separated)
+                          </p>
+                        </div>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('challengeTypes')}
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <Input
+                        value={Array.isArray(values.challengeTypes) ? values.challengeTypes.join(', ') : ''}
+                        onChange={(e) => setValues(prev => ({ 
+                          ...prev, 
+                          challengeTypes: e.target.value.split(',').map(s => s.trim()).filter(s => s)
+                        }))}
+                        placeholder="technology, sustainability, healthcare, education, governance"
+                      />
+                    </div>
+
+                    {/* Team Role Options */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-lg font-medium">Team Role Options</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Available CIC roles for team members (comma-separated)
+                          </p>
+                        </div>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('teamRoleOptions')}
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <Textarea
+                        value={Array.isArray(values.teamRoleOptions) ? values.teamRoleOptions.join(', ') : ''}
+                        onChange={(e) => setValues(prev => ({ 
+                          ...prev, 
+                          teamRoleOptions: e.target.value.split(',').map(s => s.trim()).filter(s => s)
+                        }))}
+                        placeholder="Innovation Manager, Data Analyst, Content Creator, Project Manager"
+                        rows={3}
+                      />
+                    </div>
+
+                    {/* Team Specialization Options */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-lg font-medium">Team Specialization Options</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Available specialization areas for team members (comma-separated)
+                          </p>
+                        </div>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('teamSpecializationOptions')}
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <Textarea
+                        value={Array.isArray(values.teamSpecializationOptions) ? values.teamSpecializationOptions.join(', ') : ''}
+                        onChange={(e) => setValues(prev => ({ 
+                          ...prev, 
+                          teamSpecializationOptions: e.target.value.split(',').map(s => s.trim()).filter(s => s)
+                        }))}
+                        placeholder="Innovation Strategy & Planning, Project Management & Execution, Research & Market Analysis"
+                        rows={4}
+                      />
+                    </div>
+
+                    <div className="flex justify-end pt-4 border-t">
+                      <Button onClick={handleSaveConfigurableLists} disabled={loading}>
+                        {loading ? 'Saving...' : 'Save Configurable Lists'}
                       </Button>
                     </div>
                   </CardContent>
