@@ -1496,6 +1496,69 @@ export type Database = {
         }
         Relationships: []
       }
+      role_audit_log: {
+        Row: {
+          action_type: string
+          created_at: string
+          id: string
+          justification: string | null
+          metadata: Json | null
+          new_expires_at: string | null
+          old_expires_at: string | null
+          performed_by: string
+          target_role: Database["public"]["Enums"]["app_role"]
+          target_user_id: string
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          id?: string
+          justification?: string | null
+          metadata?: Json | null
+          new_expires_at?: string | null
+          old_expires_at?: string | null
+          performed_by: string
+          target_role: Database["public"]["Enums"]["app_role"]
+          target_user_id: string
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          id?: string
+          justification?: string | null
+          metadata?: Json | null
+          new_expires_at?: string | null
+          old_expires_at?: string | null
+          performed_by?: string
+          target_role?: Database["public"]["Enums"]["app_role"]
+          target_user_id?: string
+        }
+        Relationships: []
+      }
+      role_hierarchy: {
+        Row: {
+          can_assign_roles: Database["public"]["Enums"]["app_role"][] | null
+          created_at: string
+          hierarchy_level: Database["public"]["Enums"]["role_hierarchy_level"]
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Insert: {
+          can_assign_roles?: Database["public"]["Enums"]["app_role"][] | null
+          created_at?: string
+          hierarchy_level: Database["public"]["Enums"]["role_hierarchy_level"]
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Update: {
+          can_assign_roles?: Database["public"]["Enums"]["app_role"][] | null
+          created_at?: string
+          hierarchy_level?: Database["public"]["Enums"]["role_hierarchy_level"]
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Relationships: []
+      }
       role_requests: {
         Row: {
           created_at: string
@@ -1889,6 +1952,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      assign_role_with_justification: {
+        Args: {
+          target_user_id: string
+          target_role: Database["public"]["Enums"]["app_role"]
+          justification?: string
+          expires_at?: string
+        }
+        Returns: string
+      }
       generate_invitation_token: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -1909,6 +1981,13 @@ export type Database = {
           notification_metadata?: Json
         }
         Returns: string
+      }
+      validate_role_assignment: {
+        Args: {
+          assigner_user_id: string
+          target_role: Database["public"]["Enums"]["app_role"]
+        }
+        Returns: boolean
       }
     }
     Enums: {
@@ -1932,6 +2011,7 @@ export type Database = {
         | "event_manager"
         | "stakeholder_manager"
         | "partnership_manager"
+      role_hierarchy_level: "1" | "2" | "3" | "4" | "5"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2080,6 +2160,7 @@ export const Constants = {
         "stakeholder_manager",
         "partnership_manager",
       ],
+      role_hierarchy_level: ["1", "2", "3", "4", "5"],
     },
   },
 } as const
