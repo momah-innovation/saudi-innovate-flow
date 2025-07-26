@@ -51,6 +51,8 @@ interface Campaign {
   deputy_ids?: string[];
   department_ids?: string[];
   challenge_ids?: string[];
+  partner_ids?: string[];
+  stakeholder_ids?: string[];
   campaign_manager_id?: string;
   created_at?: string;
 }
@@ -294,7 +296,33 @@ export function CampaignsManagement() {
   };
 
   const handleView = async (campaign: Campaign) => {
-    setViewingCampaign(campaign);
+    // Load complete campaign details with relationships
+    try {
+      const [sectorsRes, deputiesRes, departmentsRes, challengesRes, partnersRes, stakeholdersRes] = await Promise.all([
+        supabase.from('campaign_sector_links').select('sector_id').eq('campaign_id', campaign.id),
+        supabase.from('campaign_deputy_links').select('deputy_id').eq('campaign_id', campaign.id),
+        supabase.from('campaign_department_links').select('department_id').eq('campaign_id', campaign.id),
+        supabase.from('campaign_challenge_links').select('challenge_id').eq('campaign_id', campaign.id),
+        supabase.from('campaign_partner_links').select('partner_id').eq('campaign_id', campaign.id),
+        supabase.from('campaign_stakeholder_links').select('stakeholder_id').eq('campaign_id', campaign.id)
+      ]);
+
+      // Enhance campaign object with relationship data
+      const enhancedCampaign = {
+        ...campaign,
+        sector_ids: sectorsRes.data?.map(item => item.sector_id) || [],
+        deputy_ids: deputiesRes.data?.map(item => item.deputy_id) || [],
+        department_ids: departmentsRes.data?.map(item => item.department_id) || [],
+        challenge_ids: challengesRes.data?.map(item => item.challenge_id) || [],
+        partner_ids: partnersRes.data?.map(item => item.partner_id) || [],
+        stakeholder_ids: stakeholdersRes.data?.map(item => item.stakeholder_id) || []
+      };
+
+      setViewingCampaign(enhancedCampaign);
+    } catch (error) {
+      console.error('Error loading campaign details:', error);
+      setViewingCampaign(campaign); // fallback to basic campaign data
+    }
   };
 
   const handleDelete = async (id: string) => {
@@ -1398,8 +1426,136 @@ export function CampaignsManagement() {
                       <Label className="text-sm font-medium text-muted-foreground">Title (Arabic)</Label>
                       <p className="text-sm">{viewingCampaign.title_ar}</p>
                     </div>
-                  )}
+                )}
+              </div>
+
+              {/* Organizational Structure */}
+              {(viewingCampaign.sector_ids?.length || viewingCampaign.deputy_ids?.length || 
+                viewingCampaign.department_ids?.length || viewingCampaign.challenge_ids?.length) && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <Building className="h-5 w-5" />
+                    Organizational Structure
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {viewingCampaign.sector_ids?.length > 0 && (
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Sectors</Label>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {viewingCampaign.sector_ids.map(sectorId => {
+                            const sector = sectors.find(s => s.id === sectorId);
+                            return sector ? (
+                              <Badge key={sectorId} variant="secondary" className="text-xs">
+                                {sector.name}
+                              </Badge>
+                            ) : null;
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {viewingCampaign.deputy_ids?.length > 0 && (
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Deputies</Label>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {viewingCampaign.deputy_ids.map(deputyId => {
+                            const deputy = deputies.find(d => d.id === deputyId);
+                            return deputy ? (
+                              <Badge key={deputyId} variant="secondary" className="text-xs">
+                                {deputy.name}
+                              </Badge>
+                            ) : null;
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {viewingCampaign.department_ids?.length > 0 && (
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Departments</Label>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {viewingCampaign.department_ids.map(departmentId => {
+                            const department = departments.find(d => d.id === departmentId);
+                            return department ? (
+                              <Badge key={departmentId} variant="secondary" className="text-xs">
+                                {department.name}
+                              </Badge>
+                            ) : null;
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {viewingCampaign.challenge_ids?.length > 0 && (
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Related Challenges</Label>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {viewingCampaign.challenge_ids.map(challengeId => {
+                            const challenge = challenges.find(c => c.id === challengeId);
+                            return challenge ? (
+                              <Badge key={challengeId} variant="secondary" className="text-xs">
+                                {challenge.title}
+                              </Badge>
+                            ) : null;
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
+              )}
+
+              {/* Partners & Stakeholders */}
+              {(viewingCampaign.partner_ids?.length || viewingCampaign.stakeholder_ids?.length) && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <Users className="h-5 w-5" />
+                    Partners & Stakeholders
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {viewingCampaign.partner_ids?.length > 0 && (
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Partner Organizations</Label>
+                        <div className="space-y-2 mt-2">
+                          {viewingCampaign.partner_ids.map(partnerId => {
+                            const partner = partners.find(p => p.id === partnerId);
+                            return partner ? (
+                              <div key={partnerId} className="flex items-center gap-2 p-2 bg-muted/50 rounded-md">
+                                <Badge variant="outline" className="text-xs">
+                                  {partner.partner_type}
+                                </Badge>
+                                <span className="text-sm">{partner.name}</span>
+                              </div>
+                            ) : null;
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {viewingCampaign.stakeholder_ids?.length > 0 && (
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Target Stakeholders</Label>
+                        <div className="space-y-2 mt-2">
+                          {viewingCampaign.stakeholder_ids.map(stakeholderId => {
+                            const stakeholder = stakeholders.find(s => s.id === stakeholderId);
+                            return stakeholder ? (
+                              <div key={stakeholderId} className="flex items-center gap-2 p-2 bg-muted/50 rounded-md">
+                                <Badge variant="outline" className="text-xs">
+                                  {stakeholder.stakeholder_type}
+                                </Badge>
+                                <span className="text-sm">{stakeholder.name}</span>
+                                <span className="text-xs text-muted-foreground">({stakeholder.organization})</span>
+                              </div>
+                            ) : null;
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
 
                 {viewingCampaign.description && (
                   <div>
