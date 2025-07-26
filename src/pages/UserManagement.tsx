@@ -65,6 +65,19 @@ export default function UserManagement() {
   const [searchTerm, setSearchTerm] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
+  
+  // Role Assignment Filters
+  const [roleSearchTerm, setRoleSearchTerm] = useState('');
+  const [roleFilter, setRoleFilter] = useState('all');
+  const [roleStatusFilter, setRoleStatusFilter] = useState('all');
+  const [isAssignRoleDialogOpen, setIsAssignRoleDialogOpen] = useState(false);
+  const [isEditRoleDialogOpen, setIsEditRoleDialogOpen] = useState(false);
+  const [selectedRoleAssignment, setSelectedRoleAssignment] = useState<UserRole | null>(null);
+  const [assignRoleForm, setAssignRoleForm] = useState({
+    userId: '',
+    role: '',
+    expiresAt: ''
+  });
 
   useEffect(() => {
     fetchData();
@@ -212,6 +225,93 @@ export default function UserManagement() {
     }
   };
 
+  const handleEditRoleAssignment = (role: UserRole) => {
+    setSelectedRoleAssignment(role);
+    setAssignRoleForm({
+      userId: role.user_id,
+      role: role.role,
+      expiresAt: role.expires_at ? new Date(role.expires_at).toISOString().split('T')[0] : ''
+    });
+    setIsEditRoleDialogOpen(true);
+  };
+
+  const handleAssignNewRole = async () => {
+    if (!assignRoleForm.userId || !assignRoleForm.role) return;
+
+    try {
+      const insertData: any = {
+        user_id: assignRoleForm.userId,
+        role: assignRoleForm.role,
+        is_active: true
+      };
+
+      if (assignRoleForm.expiresAt) {
+        insertData.expires_at = assignRoleForm.expiresAt;
+      }
+
+      const { error } = await supabase
+        .from('user_roles')
+        .insert(insertData);
+
+      if (error) throw error;
+
+      toast({
+        title: "Role Assigned",
+        description: "Role has been successfully assigned.",
+      });
+
+      setIsAssignRoleDialogOpen(false);
+      setAssignRoleForm({ userId: '', role: '', expiresAt: '' });
+      fetchUserRoles();
+    } catch (error) {
+      console.error('Error assigning role:', error);
+      toast({
+        title: "Error",
+        description: "Failed to assign role.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleUpdateRoleAssignment = async () => {
+    if (!selectedRoleAssignment) return;
+
+    try {
+      const updateData: any = {
+        role: assignRoleForm.role
+      };
+
+      if (assignRoleForm.expiresAt) {
+        updateData.expires_at = assignRoleForm.expiresAt;
+      } else {
+        updateData.expires_at = null;
+      }
+
+      const { error } = await supabase
+        .from('user_roles')
+        .update(updateData)
+        .eq('id', selectedRoleAssignment.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Role Updated",
+        description: "Role assignment has been successfully updated.",
+      });
+
+      setIsEditRoleDialogOpen(false);
+      setSelectedRoleAssignment(null);
+      fetchUserRoles();
+    } catch (error) {
+      console.error('Error updating role assignment:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update role assignment.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const getUserRoles = (userId: string) => {
     return userRoles.filter(role => role.user_id === userId && role.is_active);
   };
@@ -247,6 +347,18 @@ export default function UserManagement() {
   });
 
   const departments = [...new Set(users.map(user => user.department).filter(Boolean))];
+
+  const filteredRoles = userRoles.filter(role => {
+    const user = users.find(u => u.id === role.user_id);
+    const matchesSearch = !roleSearchTerm || 
+      user?.name?.toLowerCase().includes(roleSearchTerm.toLowerCase());
+    
+    const matchesRole = roleFilter === 'all' || role.role === roleFilter;
+    const matchesStatus = roleStatusFilter === 'all' || 
+      (roleStatusFilter === 'active' ? role.is_active : !role.is_active);
+    
+    return matchesSearch && matchesRole && matchesStatus;
+  });
 
   if (loading) {
     return (
@@ -408,9 +520,68 @@ export default function UserManagement() {
         </TabsContent>
 
         <TabsContent value="roles" className="space-y-4">
+          {/* Role Assignment Filters */}
           <Card>
             <CardHeader>
-              <CardTitle>Role Assignments</CardTitle>
+              <CardTitle className="text-lg">Filters</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4 md:grid-cols-4">
+                <div className="space-y-2">
+                  <Label>Search Users</Label>
+                  <div className="relative">
+                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search by user name..."
+                      value={roleSearchTerm}
+                      onChange={(e) => setRoleSearchTerm(e.target.value)}
+                      className="pl-8"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label>Filter by Role</Label>
+                  <Select value={roleFilter} onValueChange={setRoleFilter}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Roles</SelectItem>
+                      <SelectItem value="admin">Admin</SelectItem>
+                      <SelectItem value="super_admin">Super Admin</SelectItem>
+                      <SelectItem value="expert">Expert</SelectItem>
+                      <SelectItem value="innovator">Innovator</SelectItem>
+                      <SelectItem value="user_manager">User Manager</SelectItem>
+                      <SelectItem value="role_manager">Role Manager</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Status</Label>
+                  <Select value={roleStatusFilter} onValueChange={setRoleStatusFilter}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="revoked">Revoked</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex items-end">
+                  <Button onClick={() => setIsAssignRoleDialogOpen(true)}>
+                    <UserPlus className="h-4 w-4 mr-2" />
+                    Assign Role
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Role Assignments ({filteredRoles.length})</CardTitle>
               <CardDescription>
                 Manage user roles and permissions across the system
               </CardDescription>
@@ -428,7 +599,7 @@ export default function UserManagement() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {userRoles.map((role) => {
+                  {filteredRoles.map((role) => {
                     const user = users.find(u => u.id === role.user_id);
                     return (
                       <TableRow key={role.id}>
@@ -450,15 +621,26 @@ export default function UserManagement() {
                           {role.expires_at ? new Date(role.expires_at).toLocaleDateString() : 'Never'}
                         </TableCell>
                         <TableCell>
-                          {role.is_active && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleRevokeRole(role.id)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          )}
+                          <div className="flex gap-2">
+                            {role.is_active && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleEditRoleAssignment(role)}
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                            )}
+                            {role.is_active && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleRevokeRole(role.id)}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
                         </TableCell>
                       </TableRow>
                     );
@@ -650,6 +832,134 @@ export default function UserManagement() {
           console.log('Invitation sent successfully');
         }}
       />
+
+      {/* Assign Role Dialog */}
+      <Dialog open={isAssignRoleDialogOpen} onOpenChange={setIsAssignRoleDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Assign Role</DialogTitle>
+            <DialogDescription>
+              Assign a role to a user
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Select User</Label>
+              <Select value={assignRoleForm.userId} onValueChange={(value) => setAssignRoleForm(prev => ({ ...prev, userId: value }))}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select user..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {users.map((user) => (
+                    <SelectItem key={user.id} value={user.id}>
+                      {user.name} ({user.email})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Select Role</Label>
+              <Select value={assignRoleForm.role} onValueChange={(value) => setAssignRoleForm(prev => ({ ...prev, role: value }))}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select role..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="viewer">Viewer</SelectItem>
+                  <SelectItem value="innovator">Innovator</SelectItem>
+                  <SelectItem value="evaluator">Evaluator</SelectItem>
+                  <SelectItem value="domain_expert">Domain Expert</SelectItem>
+                  <SelectItem value="sector_lead">Sector Lead</SelectItem>
+                  <SelectItem value="challenge_manager">Challenge Manager</SelectItem>
+                  <SelectItem value="expert_coordinator">Expert Coordinator</SelectItem>
+                  <SelectItem value="content_manager">Content Manager</SelectItem>
+                  <SelectItem value="data_analyst">Data Analyst</SelectItem>
+                  <SelectItem value="user_manager">User Manager</SelectItem>
+                  <SelectItem value="role_manager">Role Manager</SelectItem>
+                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="super_admin">Super Admin</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Expiry Date (Optional)</Label>
+              <Input
+                type="date"
+                value={assignRoleForm.expiresAt}
+                onChange={(e) => setAssignRoleForm(prev => ({ ...prev, expiresAt: e.target.value }))}
+              />
+            </div>
+            <div className="flex justify-end gap-3">
+              <Button variant="outline" onClick={() => setIsAssignRoleDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleAssignNewRole} disabled={!assignRoleForm.userId || !assignRoleForm.role}>
+                Assign Role
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Role Assignment Dialog */}
+      <Dialog open={isEditRoleDialogOpen} onOpenChange={setIsEditRoleDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Role Assignment</DialogTitle>
+            <DialogDescription>
+              Modify role assignment details
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>User</Label>
+              <Input 
+                value={users.find(u => u.id === assignRoleForm.userId)?.name || 'Unknown User'} 
+                disabled 
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Role</Label>
+              <Select value={assignRoleForm.role} onValueChange={(value) => setAssignRoleForm(prev => ({ ...prev, role: value }))}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select role..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="viewer">Viewer</SelectItem>
+                  <SelectItem value="innovator">Innovator</SelectItem>
+                  <SelectItem value="evaluator">Evaluator</SelectItem>
+                  <SelectItem value="domain_expert">Domain Expert</SelectItem>
+                  <SelectItem value="sector_lead">Sector Lead</SelectItem>
+                  <SelectItem value="challenge_manager">Challenge Manager</SelectItem>
+                  <SelectItem value="expert_coordinator">Expert Coordinator</SelectItem>
+                  <SelectItem value="content_manager">Content Manager</SelectItem>
+                  <SelectItem value="data_analyst">Data Analyst</SelectItem>
+                  <SelectItem value="user_manager">User Manager</SelectItem>
+                  <SelectItem value="role_manager">Role Manager</SelectItem>
+                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="super_admin">Super Admin</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Expiry Date</Label>
+              <Input
+                type="date"
+                value={assignRoleForm.expiresAt}
+                onChange={(e) => setAssignRoleForm(prev => ({ ...prev, expiresAt: e.target.value }))}
+              />
+            </div>
+            <div className="flex justify-end gap-3">
+              <Button variant="outline" onClick={() => setIsEditRoleDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleUpdateRoleAssignment}>
+                Update Role
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
