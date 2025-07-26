@@ -12,13 +12,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
-import {
-  Megaphone,
-  Plus,
-  Edit,
-  Trash2,
-  Search,
-  X,
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { 
+  Megaphone, 
+  Plus, 
+  Edit, 
+  Trash2, 
+  Search, 
+  X, 
   Calendar,
   Users,
   Target,
@@ -28,7 +30,8 @@ import {
   ChevronLeft,
   Check,
   MapPin,
-  Trophy
+  Trophy,
+  ChevronsUpDown
 } from "lucide-react";
 import { updateCampaignPartners, updateCampaignStakeholders } from "@/lib/relationshipHelpers";
 
@@ -583,157 +586,442 @@ export function CampaignsManagement() {
     </div>
   );
 
-  const renderOrganization = () => (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2 mb-4">
-        <Building className="h-5 w-5 text-primary" />
-        <h3 className="text-lg font-semibold">Organization & Structure</h3>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="sector_id">Sector</Label>
-          <Select value={formData.sector_id} onValueChange={(value) => setFormData({ ...formData, sector_id: value })}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select sector" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="none">None</SelectItem>
-              {sectors.map((sector) => (
-                <SelectItem key={sector.id} value={sector.id}>
-                  {sector.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="deputy_id">Deputy</Label>
-          <Select value={formData.deputy_id} onValueChange={(value) => setFormData({ ...formData, deputy_id: value })}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select deputy" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="none">None</SelectItem>
-              {deputies.map((deputy) => (
-                <SelectItem key={deputy.id} value={deputy.id}>
-                  {deputy.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+  const renderOrganization = () => {
+    const [openSector, setOpenSector] = useState(false);
+    const [openDeputy, setOpenDeputy] = useState(false);
+    const [openDepartment, setOpenDepartment] = useState(false);
+    const [openChallenge, setOpenChallenge] = useState(false);
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="department_id">Department</Label>
-          <Select value={formData.department_id} onValueChange={(value) => setFormData({ ...formData, department_id: value })}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select department" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="none">None</SelectItem>
-              {departments.map((department) => (
-                <SelectItem key={department.id} value={department.id}>
-                  {department.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="challenge_id">Related Challenge</Label>
-          <Select value={formData.challenge_id} onValueChange={(value) => setFormData({ ...formData, challenge_id: value })}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select challenge" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="none">None</SelectItem>
-              {challenges.map((challenge) => (
-                <SelectItem key={challenge.id} value={challenge.id}>
-                  {challenge.title}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-    </div>
-  );
+    const getSelectedSectorName = () => {
+      if (formData.sector_id === "none") return "None";
+      const sector = sectors.find(s => s.id === formData.sector_id);
+      return sector ? sector.name : "Select sector";
+    };
 
-  const renderPartnersStakeholders = () => (
-    <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-4">
-        <Users className="h-5 w-5 text-primary" />
-        <h3 className="text-lg font-semibold">Partners & Stakeholders</h3>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-3">
-          <Label className="text-base font-medium">Partner Organizations</Label>
-          <div className="border rounded-lg p-4 max-h-60 overflow-y-auto space-y-2">
-            {partners.length > 0 ? (
-              partners.map((partner) => (
-                <div key={partner.id} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`partner-${partner.id}`}
-                    checked={selectedPartners.includes(partner.id)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedPartners([...selectedPartners, partner.id]);
-                      } else {
-                        setSelectedPartners(selectedPartners.filter(id => id !== partner.id));
-                      }
-                    }}
-                  />
-                  <Label htmlFor={`partner-${partner.id}`} className="text-sm font-normal cursor-pointer">
-                    {partner.name}
-                  </Label>
-                </div>
-              ))
-            ) : (
-              <p className="text-sm text-muted-foreground">No partners available</p>
-            )}
+    const getSelectedDeputyName = () => {
+      if (formData.deputy_id === "none") return "None";
+      const deputy = deputies.find(d => d.id === formData.deputy_id);
+      return deputy ? deputy.name : "Select deputy";
+    };
+
+    const getSelectedDepartmentName = () => {
+      if (formData.department_id === "none") return "None";
+      const department = departments.find(d => d.id === formData.department_id);
+      return department ? department.name : "Select department";
+    };
+
+    const getSelectedChallengeName = () => {
+      if (formData.challenge_id === "none") return "None";
+      const challenge = challenges.find(c => c.id === formData.challenge_id);
+      return challenge ? challenge.title : "Select challenge";
+    };
+
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 mb-4">
+          <Building className="h-5 w-5 text-primary" />
+          <h3 className="text-lg font-semibold">Organization & Structure</h3>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="sector_id">Sector</Label>
+            <Popover open={openSector} onOpenChange={setOpenSector}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openSector}
+                  className="w-full justify-between"
+                >
+                  {getSelectedSectorName()}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0">
+                <Command>
+                  <CommandInput placeholder="Search sectors..." />
+                  <CommandList>
+                    <CommandEmpty>No sector found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandItem
+                        value="none"
+                        onSelect={() => {
+                          setFormData({ ...formData, sector_id: "none" });
+                          setOpenSector(false);
+                        }}
+                      >
+                        <Check
+                          className={`mr-2 h-4 w-4 ${
+                            formData.sector_id === "none" ? "opacity-100" : "opacity-0"
+                          }`}
+                        />
+                        None
+                      </CommandItem>
+                      {sectors.map((sector) => (
+                        <CommandItem
+                          key={sector.id}
+                          value={sector.name}
+                          onSelect={() => {
+                            setFormData({ ...formData, sector_id: sector.id });
+                            setOpenSector(false);
+                          }}
+                        >
+                          <Check
+                            className={`mr-2 h-4 w-4 ${
+                              formData.sector_id === sector.id ? "opacity-100" : "opacity-0"
+                            }`}
+                          />
+                          {sector.name}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Selected: {selectedPartners.length} partner(s)
-          </p>
+
+          <div className="space-y-2">
+            <Label htmlFor="deputy_id">Deputy</Label>
+            <Popover open={openDeputy} onOpenChange={setOpenDeputy}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openDeputy}
+                  className="w-full justify-between"
+                >
+                  {getSelectedDeputyName()}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0">
+                <Command>
+                  <CommandInput placeholder="Search deputies..." />
+                  <CommandList>
+                    <CommandEmpty>No deputy found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandItem
+                        value="none"
+                        onSelect={() => {
+                          setFormData({ ...formData, deputy_id: "none" });
+                          setOpenDeputy(false);
+                        }}
+                      >
+                        <Check
+                          className={`mr-2 h-4 w-4 ${
+                            formData.deputy_id === "none" ? "opacity-100" : "opacity-0"
+                          }`}
+                        />
+                        None
+                      </CommandItem>
+                      {deputies.map((deputy) => (
+                        <CommandItem
+                          key={deputy.id}
+                          value={deputy.name}
+                          onSelect={() => {
+                            setFormData({ ...formData, deputy_id: deputy.id });
+                            setOpenDeputy(false);
+                          }}
+                        >
+                          <Check
+                            className={`mr-2 h-4 w-4 ${
+                              formData.deputy_id === deputy.id ? "opacity-100" : "opacity-0"
+                            }`}
+                          />
+                          {deputy.name}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
 
-        <div className="space-y-3">
-          <Label className="text-base font-medium">Target Stakeholders</Label>
-          <div className="border rounded-lg p-4 max-h-60 overflow-y-auto space-y-2">
-            {stakeholders.length > 0 ? (
-              stakeholders.map((stakeholder) => (
-                <div key={stakeholder.id} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`stakeholder-${stakeholder.id}`}
-                    checked={selectedStakeholders.includes(stakeholder.id)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedStakeholders([...selectedStakeholders, stakeholder.id]);
-                      } else {
-                        setSelectedStakeholders(selectedStakeholders.filter(id => id !== stakeholder.id));
-                      }
-                    }}
-                  />
-                  <Label htmlFor={`stakeholder-${stakeholder.id}`} className="text-sm font-normal cursor-pointer">
-                    {stakeholder.name}
-                  </Label>
-                </div>
-              ))
-            ) : (
-              <p className="text-sm text-muted-foreground">No stakeholders available</p>
-            )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="department_id">Department</Label>
+            <Popover open={openDepartment} onOpenChange={setOpenDepartment}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openDepartment}
+                  className="w-full justify-between"
+                >
+                  {getSelectedDepartmentName()}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0">
+                <Command>
+                  <CommandInput placeholder="Search departments..." />
+                  <CommandList>
+                    <CommandEmpty>No department found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandItem
+                        value="none"
+                        onSelect={() => {
+                          setFormData({ ...formData, department_id: "none" });
+                          setOpenDepartment(false);
+                        }}
+                      >
+                        <Check
+                          className={`mr-2 h-4 w-4 ${
+                            formData.department_id === "none" ? "opacity-100" : "opacity-0"
+                          }`}
+                        />
+                        None
+                      </CommandItem>
+                      {departments.map((department) => (
+                        <CommandItem
+                          key={department.id}
+                          value={department.name}
+                          onSelect={() => {
+                            setFormData({ ...formData, department_id: department.id });
+                            setOpenDepartment(false);
+                          }}
+                        >
+                          <Check
+                            className={`mr-2 h-4 w-4 ${
+                              formData.department_id === department.id ? "opacity-100" : "opacity-0"
+                            }`}
+                          />
+                          {department.name}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Selected: {selectedStakeholders.length} stakeholder(s)
-          </p>
+
+          <div className="space-y-2">
+            <Label htmlFor="challenge_id">Related Challenge</Label>
+            <Popover open={openChallenge} onOpenChange={setOpenChallenge}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openChallenge}
+                  className="w-full justify-between"
+                >
+                  {getSelectedChallengeName()}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0">
+                <Command>
+                  <CommandInput placeholder="Search challenges..." />
+                  <CommandList>
+                    <CommandEmpty>No challenge found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandItem
+                        value="none"
+                        onSelect={() => {
+                          setFormData({ ...formData, challenge_id: "none" });
+                          setOpenChallenge(false);
+                        }}
+                      >
+                        <Check
+                          className={`mr-2 h-4 w-4 ${
+                            formData.challenge_id === "none" ? "opacity-100" : "opacity-0"
+                          }`}
+                        />
+                        None
+                      </CommandItem>
+                      {challenges.map((challenge) => (
+                        <CommandItem
+                          key={challenge.id}
+                          value={challenge.title}
+                          onSelect={() => {
+                            setFormData({ ...formData, challenge_id: challenge.id });
+                            setOpenChallenge(false);
+                          }}
+                        >
+                          <Check
+                            className={`mr-2 h-4 w-4 ${
+                              formData.challenge_id === challenge.id ? "opacity-100" : "opacity-0"
+                            }`}
+                          />
+                          {challenge.title}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
+
+  const renderPartnersStakeholders = () => {
+    const [partnerSearch, setPartnerSearch] = useState("");
+    const [stakeholderSearch, setStakeholderSearch] = useState("");
+
+    const filteredPartners = partners.filter(partner => 
+      partner.name.toLowerCase().includes(partnerSearch.toLowerCase())
+    );
+
+    const filteredStakeholders = stakeholders.filter(stakeholder => 
+      stakeholder.name.toLowerCase().includes(stakeholderSearch.toLowerCase())
+    );
+
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Users className="h-5 w-5 text-primary" />
+          <h3 className="text-lg font-semibold">Partners & Stakeholders</h3>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-3">
+            <Label className="text-base font-medium">Partner Organizations</Label>
+            
+            {/* Partner Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                placeholder="Search partners..."
+                value={partnerSearch}
+                onChange={(e) => setPartnerSearch(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            
+            <div className="border rounded-lg p-4 max-h-60 overflow-y-auto space-y-2">
+              {filteredPartners.length > 0 ? (
+                filteredPartners.map((partner) => (
+                  <div key={partner.id} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`partner-${partner.id}`}
+                      checked={selectedPartners.includes(partner.id)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setSelectedPartners([...selectedPartners, partner.id]);
+                        } else {
+                          setSelectedPartners(selectedPartners.filter(id => id !== partner.id));
+                        }
+                      }}
+                    />
+                    <Label htmlFor={`partner-${partner.id}`} className="text-sm font-normal cursor-pointer flex-1">
+                      {partner.name}
+                    </Label>
+                  </div>
+                ))
+              ) : partnerSearch ? (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  No partners found matching "{partnerSearch}"
+                </p>
+              ) : (
+                <p className="text-sm text-muted-foreground">No partners available</p>
+              )}
+            </div>
+            <div className="flex items-center justify-between text-xs text-muted-foreground">
+              <span>Selected: {selectedPartners.length} partner(s)</span>
+              {partnerSearch && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setPartnerSearch("")}
+                  className="h-6 px-2"
+                >
+                  <X className="h-3 w-3" />
+                  Clear search
+                </Button>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <Label className="text-base font-medium">Target Stakeholders</Label>
+            
+            {/* Stakeholder Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                placeholder="Search stakeholders..."
+                value={stakeholderSearch}
+                onChange={(e) => setStakeholderSearch(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            
+            <div className="border rounded-lg p-4 max-h-60 overflow-y-auto space-y-2">
+              {filteredStakeholders.length > 0 ? (
+                filteredStakeholders.map((stakeholder) => (
+                  <div key={stakeholder.id} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`stakeholder-${stakeholder.id}`}
+                      checked={selectedStakeholders.includes(stakeholder.id)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setSelectedStakeholders([...selectedStakeholders, stakeholder.id]);
+                        } else {
+                          setSelectedStakeholders(selectedStakeholders.filter(id => id !== stakeholder.id));
+                        }
+                      }}
+                    />
+                    <Label htmlFor={`stakeholder-${stakeholder.id}`} className="text-sm font-normal cursor-pointer flex-1">
+                      {stakeholder.name}
+                    </Label>
+                  </div>
+                ))
+              ) : stakeholderSearch ? (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  No stakeholders found matching "{stakeholderSearch}"
+                </p>
+              ) : (
+                <p className="text-sm text-muted-foreground">No stakeholders available</p>
+              )}
+            </div>
+            <div className="flex items-center justify-between text-xs text-muted-foreground">
+              <span>Selected: {selectedStakeholders.length} stakeholder(s)</span>
+              {stakeholderSearch && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setStakeholderSearch("")}
+                  className="h-6 px-2"
+                >
+                  <X className="h-3 w-3" />
+                  Clear search
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+        
+        <div className="flex gap-4 text-sm">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => setSelectedPartners([])}
+            disabled={selectedPartners.length === 0}
+          >
+            Clear All Partners
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => setSelectedStakeholders([])}
+            disabled={selectedStakeholders.length === 0}
+          >
+            Clear All Stakeholders
+          </Button>
+        </div>
+      </div>
+    );
+  };
 
   const renderReview = () => (
     <div className="space-y-6">
