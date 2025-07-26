@@ -141,38 +141,40 @@ export function CampaignsManagement() {
     try {
       setLoading(true);
       
-      // Fetch campaigns with relationships using proper JOINs
+      // Fetch campaigns first
       const { data, error } = await supabase
         .from("campaigns")
-        .select(`
-          *,
-          challenge:challenges!fk_campaigns_challenge_id(id, title),
-          sector:sectors!fk_campaigns_sector_id(id, name),
-          department:departments!fk_campaigns_department_id(id, name),
-          deputy:deputies!fk_campaigns_deputy_id(id, name),
-          partners:campaign_partner_links!fk_campaign_partner_links_campaign(
-            partner:partners(id, name)
-          ),
-          stakeholders:campaign_stakeholder_links!fk_campaign_stakeholder_links_campaign(
-            stakeholder:stakeholders(id, name)
-          )
-        `)
+        .select("*")
         .order("created_at", { ascending: false });
 
       if (error) throw error;
       
-      // Transform the data to flatten relationships
-      const transformedData = data?.map(campaign => ({
-        ...campaign,
-        partners: campaign.partners?.map((p: any) => p.partner).filter(Boolean) || [],
-        stakeholders: campaign.stakeholders?.map((s: any) => s.stakeholder).filter(Boolean) || [],
-        challenge: campaign.challenge || undefined,
-        sector: campaign.sector || undefined,
-        department: campaign.department || undefined,
-        deputy: campaign.deputy || undefined
-      })) || [];
+      // Fetch relationships separately to avoid PostgREST foreign key ambiguity
+      const campaignsWithRelationships = await Promise.all(
+        (data || []).map(async (campaign) => {
+          // Fetch related entities
+          const [challengeRes, sectorRes, departmentRes, deputyRes, partnerLinks, stakeholderLinks] = await Promise.all([
+            campaign.challenge_id ? supabase.from('challenges').select('id, title').eq('id', campaign.challenge_id).single() : Promise.resolve({ data: null }),
+            campaign.sector_id ? supabase.from('sectors').select('id, name').eq('id', campaign.sector_id).single() : Promise.resolve({ data: null }),
+            campaign.department_id ? supabase.from('departments').select('id, name').eq('id', campaign.department_id).single() : Promise.resolve({ data: null }),
+            campaign.deputy_id ? supabase.from('deputies').select('id, name').eq('id', campaign.deputy_id).single() : Promise.resolve({ data: null }),
+            supabase.from('campaign_partner_links').select('partners(id, name)').eq('campaign_id', campaign.id),
+            supabase.from('campaign_stakeholder_links').select('stakeholders(id, name)').eq('campaign_id', campaign.id)
+          ]);
+          
+          return {
+            ...campaign,
+            partners: partnerLinks.data?.map((link: any) => link.partners).filter(Boolean) || [],
+            stakeholders: stakeholderLinks.data?.map((link: any) => link.stakeholders).filter(Boolean) || [],
+            challenge: challengeRes.data || undefined,
+            sector: sectorRes.data || undefined,
+            department: departmentRes.data || undefined,
+            deputy: deputyRes.data || undefined
+          };
+        })
+      );
       
-      setCampaigns(transformedData);
+      setCampaigns(campaignsWithRelationships);
     } catch (error) {
       console.error("Error fetching campaigns:", error);
       toast({
