@@ -10,11 +10,10 @@ import { AppSidebar } from "@/components/layout/Sidebar";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 export default function SystemSettings() {
   const navigate = useNavigate();
-  const { toast } = useToast();
   
   // Default values for system settings
   const defaultValues = {
@@ -41,26 +40,17 @@ export default function SystemSettings() {
   const handleSaveTeamDefaults = () => {
     console.log("Save Team Defaults clicked", values);
     // In a real app, this would save to database
-    toast({
-      title: "Settings Saved",
-      description: "Team management defaults have been updated successfully.",
-    });
+    toast.success("Team management defaults have been updated successfully.");
   };
 
   const handleSaveChallengeSettings = () => {
     // In a real app, this would save to database
-    toast({
-      title: "Settings Saved", 
-      description: "Challenge management settings have been updated successfully.",
-    });
+    toast.success("Challenge management settings have been updated successfully.");
   };
 
   const handleSaveNotificationSettings = () => {
     // In a real app, this would save to database
-    toast({
-      title: "Settings Saved",
-      description: "Notification settings have been updated successfully.",
-    });
+    toast.success("Notification settings have been updated successfully.");
   };
 
   const handleTabChange = (tab: string) => {
