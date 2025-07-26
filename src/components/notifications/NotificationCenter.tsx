@@ -14,6 +14,7 @@ import { Bell, Check, CheckCircle2, AlertTriangle, Info, X, MoreVertical } from 
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface Notification {
   id: string;
@@ -28,6 +29,7 @@ interface Notification {
 export function NotificationCenter() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
@@ -162,6 +164,29 @@ export function NotificationCenter() {
     }
   };
 
+  const handleNotificationClick = (notification: Notification) => {
+    // Mark as read first
+    if (!notification.is_read) {
+      markAsRead(notification.id);
+    }
+
+    // Navigate to relevant page based on notification metadata
+    if (notification.metadata) {
+      const { role_request_id, challenge_id, expert_assignment_id, type } = notification.metadata;
+      
+      if (role_request_id) {
+        navigate('/admin/users');
+        setIsOpen(false);
+      } else if (challenge_id) {
+        navigate(`/challenges/${challenge_id}`);
+        setIsOpen(false);
+      } else if (expert_assignment_id) {
+        navigate('/expert-assignments');
+        setIsOpen(false);
+      }
+    }
+  };
+
   const unreadCount = notifications.filter(n => !n.is_read).length;
 
   return (
@@ -206,7 +231,7 @@ export function NotificationCenter() {
                   className={`p-3 rounded-md border-l-4 ${getNotificationColor(notification.type)} ${
                     notification.is_read ? 'bg-muted/30' : 'bg-muted/60'
                   } cursor-pointer hover:bg-muted/80 transition-colors`}
-                  onClick={() => !notification.is_read && markAsRead(notification.id)}
+                  onClick={() => handleNotificationClick(notification)}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-start gap-2 flex-1 min-w-0">
