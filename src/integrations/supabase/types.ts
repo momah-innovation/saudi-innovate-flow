@@ -1525,6 +1525,13 @@ export type Database = {
         | "evaluator"
         | "innovator"
         | "viewer"
+        | "user_manager"
+        | "role_manager"
+        | "challenge_manager"
+        | "expert_coordinator"
+        | "content_manager"
+        | "system_auditor"
+        | "data_analyst"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1661,6 +1668,13 @@ export const Constants = {
         "evaluator",
         "innovator",
         "viewer",
+        "user_manager",
+        "role_manager",
+        "challenge_manager",
+        "expert_coordinator",
+        "content_manager",
+        "system_auditor",
+        "data_analyst",
       ],
     },
   },
