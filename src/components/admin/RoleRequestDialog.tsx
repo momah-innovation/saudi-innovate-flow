@@ -25,8 +25,14 @@ const AVAILABLE_ROLES = [
   { value: 'expert_coordinator', label: 'Expert Coordinator', description: 'Coordinate expert assignments and activities' },
   { value: 'content_manager', label: 'Content Manager', description: 'Manage platform content and resources' },
   { value: 'data_analyst', label: 'Data Analyst', description: 'Analyze platform data and generate insights' },
-  { value: 'user_manager', label: 'User Manager', description: 'Manage user accounts and permissions' },
-  { value: 'role_manager', label: 'Role Manager', description: 'Manage role assignments and permissions' },
+];
+
+// Internal roles that can only be assigned by system admins
+const INTERNAL_ROLES = [
+  'user_manager',
+  'role_manager', 
+  'admin',
+  'super_admin'
 ];
 
 export function RoleRequestDialog({ open, onOpenChange, currentRoles, onRequestSubmitted }: RoleRequestDialogProps) {
@@ -129,7 +135,7 @@ export function RoleRequestDialog({ open, onOpenChange, currentRoles, onRequestS
             </Select>
             {availableRoles.length === 0 && (
               <p className="text-sm text-muted-foreground">
-                You already have all available roles or no additional roles are available to request.
+                You already have all available roles that can be requested. Internal system roles (like User Manager, Role Manager, Admin) can only be assigned by system administrators.
               </p>
             )}
           </div>
