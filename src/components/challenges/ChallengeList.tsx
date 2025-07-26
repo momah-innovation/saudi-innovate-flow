@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { 
   Target, 
   Plus, 
@@ -18,6 +19,7 @@ import {
 } from "lucide-react";
 
 export const ChallengeList = () => {
+  const { challengePriorityLevels } = useSystemLists();
   const challenges = [
     {
       id: 1,
@@ -165,9 +167,9 @@ export const ChallengeList = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Priorities</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
+                {challengePriorityLevels.map((level) => (
+                  <SelectItem key={level} value={level}>{level.charAt(0).toUpperCase() + level.slice(1)}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>

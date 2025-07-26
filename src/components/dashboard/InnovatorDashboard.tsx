@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Filter, Clock, Target, AlertTriangle, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 interface Challenge {
   id: string;
@@ -31,6 +32,7 @@ export const InnovatorDashboard = () => {
   const navigate = useNavigate();
   const { userProfile } = useAuth();
   const { toast } = useToast();
+  const { challengePriorityLevels, challengeTypes } = useSystemLists();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -243,9 +245,9 @@ export const InnovatorDashboard = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Priorities</SelectItem>
-                  <SelectItem value="high">High Priority</SelectItem>
-                  <SelectItem value="medium">Medium Priority</SelectItem>
-                  <SelectItem value="low">Low Priority</SelectItem>
+                  {challengePriorityLevels.map((level) => (
+                    <SelectItem key={level} value={level}>{level.charAt(0).toUpperCase() + level.slice(1)} Priority</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -258,10 +260,9 @@ export const InnovatorDashboard = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="technology">Technology</SelectItem>
-                  <SelectItem value="sustainability">Sustainability</SelectItem>
-                  <SelectItem value="healthcare">Healthcare</SelectItem>
-                  <SelectItem value="education">Education</SelectItem>
+                  {challengeTypes.map((type) => (
+                    <SelectItem key={type} value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
