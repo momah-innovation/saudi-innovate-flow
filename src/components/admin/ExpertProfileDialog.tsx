@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { User, Mail, Phone, Building, MapPin, Calendar, Award, Star, Clock } from "lucide-react";
+import { User, Mail, Phone, Building, MapPin, Calendar, Award, Star, Clock, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Expert {
@@ -33,6 +34,7 @@ interface ExpertProfileDialogProps {
 }
 
 export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProfileDialogProps) {
+  const navigate = useNavigate();
   const [expert, setExpert] = useState<Expert | null>(null);
   const [activeAssignments, setActiveAssignments] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -113,6 +115,11 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
       case 'junior': return 'outline';
       default: return 'outline';
     }
+  };
+
+  const handleNavigateToChallenge = (challengeId: string) => {
+    navigate(`/challenges/${challengeId}`);
+    onOpenChange(false); // Close the dialog when navigating
   };
 
   if (!expert) {
@@ -271,12 +278,26 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
               ) : (
                 <div className="space-y-3">
                   {activeAssignments.map((assignment) => (
-                    <div key={assignment.id} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div>
-                        <h4 className="font-medium">{assignment.challenges?.title}</h4>
+                    <div 
+                      key={assignment.id} 
+                      className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors group"
+                      onClick={() => handleNavigateToChallenge(assignment.challenge_id)}
+                    >
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-medium group-hover:text-primary transition-colors">
+                            {assignment.challenges?.title}
+                          </h4>
+                          <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                        </div>
                         <p className="text-sm text-muted-foreground">
                           Role: {assignment.role_type.replace('_', ' ')}
                         </p>
+                        {assignment.challenges?.start_date && (
+                          <p className="text-xs text-muted-foreground">
+                            Started: {new Date(assignment.challenges.start_date).toLocaleDateString()}
+                          </p>
+                        )}
                       </div>
                       <div className="text-right">
                         <Badge variant="outline">
