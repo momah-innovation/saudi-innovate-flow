@@ -36,6 +36,10 @@ const Index = () => {
       navigate("/admin/expert-assignments");
       return;
     }
+    if (tab === "user-management") {
+      navigate("/admin/users");
+      return;
+    }
     setActiveTab(tab);
   };
 
