@@ -201,6 +201,16 @@ export function CampaignsManagement() {
     setSelectedStakeholders([]);
     setCurrentStep(1);
     setStepErrors({});
+    
+    // Reset search states
+    setPartnerSearch("");
+    setStakeholderSearch("");
+    
+    // Reset dropdown states
+    setOpenSector(false);
+    setOpenDeputy(false);
+    setOpenDepartment(false);
+    setOpenChallenge(false);
   };
 
   const handleEdit = async (campaign: Campaign) => {
