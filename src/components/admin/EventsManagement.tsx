@@ -847,6 +847,84 @@ export function EventsManagement() {
                 )}
               </div>
               
+              {/* Relationships Section */}
+              <div className="border-t pt-6">
+                <h4 className="font-medium mb-4">Relationships</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h5 className="font-medium mb-2 text-sm">Event Context</h5>
+                    <div className="space-y-2 text-sm">
+                      {viewingEvent.campaign_id && (
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">Campaign:</span>
+                          <span className="text-muted-foreground">
+                            {campaigns.find((c: any) => c.id === viewingEvent.campaign_id)?.title || 'Unknown'}
+                          </span>
+                        </div>
+                      )}
+                      {viewingEvent.challenge_id && (
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">Challenge:</span>
+                          <span className="text-muted-foreground">
+                            {challenges.find((c: any) => c.id === viewingEvent.challenge_id)?.title || 'Unknown'}
+                          </span>
+                        </div>
+                      )}
+                      {viewingEvent.sector_id && (
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">Sector:</span>
+                          <span className="text-muted-foreground">
+                            {sectors.find((s: any) => s.id === viewingEvent.sector_id)?.name || 'Unknown'}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h5 className="font-medium mb-2 text-sm">Stakeholders & Focus</h5>
+                    <div className="space-y-2 text-sm">
+                      {viewingEvent.target_stakeholder_groups && viewingEvent.target_stakeholder_groups.length > 0 && (
+                        <div>
+                          <span className="font-medium">Target Stakeholders:</span>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {viewingEvent.target_stakeholder_groups.map((group: string, index: number) => (
+                              <Badge key={index} variant="outline" className="text-xs">
+                                {group}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {viewingEvent.partner_organizations && viewingEvent.partner_organizations.length > 0 && (
+                        <div>
+                          <span className="font-medium">Partner Organizations:</span>
+                          <div className="space-y-1 mt-1">
+                            {viewingEvent.partner_organizations.map((partnerId: string, index: number) => (
+                              <div key={index} className="text-muted-foreground">
+                                {partners.find((p: any) => p.id === partnerId)?.name || 'Unknown Partner'}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {viewingEvent.related_focus_questions && viewingEvent.related_focus_questions.length > 0 && (
+                        <div>
+                          <span className="font-medium">Focus Questions:</span>
+                          <div className="space-y-1 mt-1">
+                            {viewingEvent.related_focus_questions.map((questionId: string, index: number) => (
+                              <div key={index} className="text-muted-foreground text-xs">
+                                {focusQuestions.find((q: any) => q.id === questionId)?.question_text || 'Unknown Question'}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
               {viewingEvent.agenda && (
                 <div>
                   <h4 className="font-medium mb-2">Agenda</h4>

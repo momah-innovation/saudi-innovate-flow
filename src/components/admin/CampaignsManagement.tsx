@@ -789,6 +789,80 @@ export function CampaignsManagement() {
                 </div>
               </div>
               
+              {/* Relationships Section */}
+              <div className="border-t pt-6">
+                <h4 className="font-medium mb-4">Relationships</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h5 className="font-medium mb-2 text-sm">Organizational Context</h5>
+                    <div className="space-y-2 text-sm">
+                      {viewingCampaign.challenge_id && (
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">Challenge:</span>
+                          <span className="text-muted-foreground">
+                            {challenges.find((c: any) => c.id === viewingCampaign.challenge_id)?.title || 'Unknown'}
+                          </span>
+                        </div>
+                      )}
+                      {viewingCampaign.sector_id && (
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">Sector:</span>
+                          <span className="text-muted-foreground">
+                            {sectors.find((s: any) => s.id === viewingCampaign.sector_id)?.name || 'Unknown'}
+                          </span>
+                        </div>
+                      )}
+                      {viewingCampaign.deputy_id && (
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">Deputy:</span>
+                          <span className="text-muted-foreground">
+                            {deputies.find((d: any) => d.id === viewingCampaign.deputy_id)?.name || 'Unknown'}
+                          </span>
+                        </div>
+                      )}
+                      {viewingCampaign.department_id && (
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">Department:</span>
+                          <span className="text-muted-foreground">
+                            {departments.find((d: any) => d.id === viewingCampaign.department_id)?.name || 'Unknown'}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h5 className="font-medium mb-2 text-sm">Stakeholders & Partners</h5>
+                    <div className="space-y-2 text-sm">
+                      {viewingCampaign.target_stakeholder_groups && viewingCampaign.target_stakeholder_groups.length > 0 && (
+                        <div>
+                          <span className="font-medium">Target Stakeholders:</span>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {viewingCampaign.target_stakeholder_groups.map((group: string, index: number) => (
+                              <Badge key={index} variant="outline" className="text-xs">
+                                {group}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {viewingCampaign.partner_organizations && viewingCampaign.partner_organizations.length > 0 && (
+                        <div>
+                          <span className="font-medium">Partner Organizations:</span>
+                          <div className="space-y-1 mt-1">
+                            {viewingCampaign.partner_organizations.map((partnerId: string, index: number) => (
+                              <div key={index} className="text-muted-foreground">
+                                {partners.find((p: any) => p.id === partnerId)?.name || 'Unknown Partner'}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
               {viewingCampaign.success_metrics && (
                 <div>
                   <h4 className="font-medium mb-2">Success Metrics</h4>
