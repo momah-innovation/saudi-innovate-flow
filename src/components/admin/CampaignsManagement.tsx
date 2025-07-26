@@ -150,10 +150,10 @@ export function CampaignsManagement() {
           sector:sectors!fk_campaigns_sector_id(id, name),
           department:departments!fk_campaigns_department_id(id, name),
           deputy:deputies!fk_campaigns_deputy_id(id, name),
-          partners:campaign_partner_links(
+          partners:campaign_partner_links!fk_campaign_partner_links_campaign(
             partner:partners(id, name)
           ),
-          stakeholders:campaign_stakeholder_links(
+          stakeholders:campaign_stakeholder_links!fk_campaign_stakeholder_links_campaign(
             stakeholder:stakeholders(id, name)
           )
         `)
