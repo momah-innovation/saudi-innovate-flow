@@ -232,7 +232,7 @@ const Auth = () => {
                       <Input
                         id="signup-password"
                         type={showPassword ? 'text' : 'password'}
-                        placeholder={`Create a password (min. ${passwordMinLength} characters)`}
+                        placeholder={`Create a password (min. 6 characters)`}
                         value={formData.password}
                         onChange={(e) => handleInputChange('password', e.target.value)}
                         required

@@ -938,7 +938,7 @@ export default function TeamManagement() {
                   value={memberForm.max_concurrent_projects}
                   onChange={(e) => setMemberForm(prev => ({ ...prev, max_concurrent_projects: parseInt(e.target.value) || 5 }))}
                   min="1"
-                  max={maxConcurrentProjects}
+                      max={5}
                 />
               </div>
               <div className="space-y-2">
@@ -947,8 +947,8 @@ export default function TeamManagement() {
                   type="number"
                   value={memberForm.performance_rating}
                   onChange={(e) => setMemberForm(prev => ({ ...prev, performance_rating: parseFloat(e.target.value) || 0 }))}
-                  min={performanceRatingMin}
-                  max={performanceRatingMax}
+                      min={0}
+                      max={5}
                   step="0.1"
                 />
               </div>
@@ -1057,7 +1057,7 @@ export default function TeamManagement() {
                   value={memberForm.max_concurrent_projects}
                   onChange={(e) => setMemberForm(prev => ({ ...prev, max_concurrent_projects: parseInt(e.target.value) || 5 }))}
                   min="1"
-                  max={maxConcurrentProjects}
+                  max={5}
                 />
               </div>
               <div className="space-y-2">
@@ -1066,8 +1066,8 @@ export default function TeamManagement() {
                   type="number"
                   value={memberForm.performance_rating}
                   onChange={(e) => setMemberForm(prev => ({ ...prev, performance_rating: parseFloat(e.target.value) || 0 }))}
-                  min={performanceRatingMin}
-                  max={performanceRatingMax}
+                      min={0}
+                      max={5}
                   step="0.1"
                 />
               </div>

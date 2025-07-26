@@ -396,8 +396,8 @@ const ProfileSetup = () => {
                           value={profileData.experience_years}
                           onChange={(e) => handleInputChange('experience_years', e.target.value)}
                           disabled={isSubmitting}
-                          min={minExperienceYears}
-                          max={maxExperienceYears}
+                        min={0}
+                        max={50}
                         />
                       </div>
                     </div>
