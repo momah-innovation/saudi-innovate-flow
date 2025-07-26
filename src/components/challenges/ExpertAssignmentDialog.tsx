@@ -56,7 +56,7 @@ export function ExpertAssignmentDialog({
           user_id,
           expertise_areas,
           expert_level,
-          profiles!experts_user_id_fkey (
+          profiles:user_id (
             name,
             email
           )
