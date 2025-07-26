@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +13,28 @@ import { useNavigate } from "react-router-dom";
 
 export default function SystemSettings() {
   const navigate = useNavigate();
+  
+  // Default values for system settings
+  const defaultValues = {
+    maxConcurrentProjects: 5,
+    defaultPerformanceRating: 0,
+    challengeDuration: 30,
+    submissionLimit: 5,
+    autoApproveIdeas: false,
+    emailNotifications: true,
+    roleRequestNotifications: true,
+    challengeDeadlineReminders: true,
+  };
+
+  // State for form values
+  const [values, setValues] = useState(defaultValues);
+
+  const handleReset = (field: keyof typeof defaultValues) => {
+    setValues(prev => ({
+      ...prev,
+      [field]: defaultValues[field]
+    }));
+  };
 
   const handleTabChange = (tab: string) => {
     if (tab === "focus-questions") {
@@ -69,13 +92,19 @@ export default function SystemSettings() {
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <Label>Default Max Concurrent Projects</Label>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('maxConcurrentProjects')}
+                        >
                           <RotateCcw className="h-4 w-4" />
                         </Button>
                       </div>
                       <Input
                         type="number"
-                        defaultValue="5"
+                        value={values.maxConcurrentProjects}
+                        onChange={(e) => setValues(prev => ({ ...prev, maxConcurrentProjects: parseInt(e.target.value) || 0 }))}
                         min="1"
                         max="20"
                         placeholder="5"
@@ -87,13 +116,19 @@ export default function SystemSettings() {
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <Label>Default Performance Rating</Label>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('defaultPerformanceRating')}
+                        >
                           <RotateCcw className="h-4 w-4" />
                         </Button>
                       </div>
                       <Input
                         type="number"
-                        defaultValue="0"
+                        value={values.defaultPerformanceRating}
+                        onChange={(e) => setValues(prev => ({ ...prev, defaultPerformanceRating: parseFloat(e.target.value) || 0 }))}
                         min="0"
                         max="5"
                         step="0.1"
@@ -125,13 +160,19 @@ export default function SystemSettings() {
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <Label>Default Challenge Duration (days)</Label>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('challengeDuration')}
+                        >
                           <RotateCcw className="h-4 w-4" />
                         </Button>
                       </div>
                       <Input
                         type="number"
-                        defaultValue="30"
+                        value={values.challengeDuration}
+                        onChange={(e) => setValues(prev => ({ ...prev, challengeDuration: parseInt(e.target.value) || 0 }))}
                         min="1"
                         max="365"
                         placeholder="30"
@@ -140,13 +181,19 @@ export default function SystemSettings() {
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <Label>Default Submission Limit</Label>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleReset('submissionLimit')}
+                        >
                           <RotateCcw className="h-4 w-4" />
                         </Button>
                       </div>
                       <Input
                         type="number"
-                        defaultValue="5"
+                        value={values.submissionLimit}
+                        onChange={(e) => setValues(prev => ({ ...prev, submissionLimit: parseInt(e.target.value) || 0 }))}
                         min="1"
                         max="50"
                         placeholder="5"
@@ -161,8 +208,16 @@ export default function SystemSettings() {
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Switch />
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <Switch 
+                        checked={values.autoApproveIdeas}
+                        onCheckedChange={(checked) => setValues(prev => ({ ...prev, autoApproveIdeas: checked }))}
+                      />
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-8 w-8 p-0"
+                        onClick={() => handleReset('autoApproveIdeas')}
+                      >
                         <RotateCcw className="h-4 w-4" />
                       </Button>
                     </div>
@@ -192,8 +247,16 @@ export default function SystemSettings() {
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Switch defaultChecked />
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <Switch 
+                        checked={values.emailNotifications}
+                        onCheckedChange={(checked) => setValues(prev => ({ ...prev, emailNotifications: checked }))}
+                      />
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-8 w-8 p-0"
+                        onClick={() => handleReset('emailNotifications')}
+                      >
                         <RotateCcw className="h-4 w-4" />
                       </Button>
                     </div>
@@ -206,8 +269,16 @@ export default function SystemSettings() {
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Switch defaultChecked />
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <Switch 
+                        checked={values.roleRequestNotifications}
+                        onCheckedChange={(checked) => setValues(prev => ({ ...prev, roleRequestNotifications: checked }))}
+                      />
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-8 w-8 p-0"
+                        onClick={() => handleReset('roleRequestNotifications')}
+                      >
                         <RotateCcw className="h-4 w-4" />
                       </Button>
                     </div>
@@ -220,8 +291,16 @@ export default function SystemSettings() {
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Switch defaultChecked />
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <Switch 
+                        checked={values.challengeDeadlineReminders}
+                        onCheckedChange={(checked) => setValues(prev => ({ ...prev, challengeDeadlineReminders: checked }))}
+                      />
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-8 w-8 p-0"
+                        onClick={() => handleReset('challengeDeadlineReminders')}
+                      >
                         <RotateCcw className="h-4 w-4" />
                       </Button>
                     </div>
