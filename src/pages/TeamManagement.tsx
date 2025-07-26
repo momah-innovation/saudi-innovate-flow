@@ -88,6 +88,13 @@ export default function TeamManagement() {
     fetchData();
   }, []);
 
+  // Refresh assignments when team members change
+  useEffect(() => {
+    if (teamMembers.length > 0) {
+      fetchAssignments();
+    }
+  }, [teamMembers]);
+
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -773,19 +780,41 @@ export default function TeamManagement() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label>Role</Label>
-              <Select value={memberForm.cic_role} onValueChange={(value) => setMemberForm(prev => ({ ...prev, cic_role: value }))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select role..." />
-                </SelectTrigger>
-                <SelectContent>
-                  {roleOptions.map((role) => (
-                    <SelectItem key={role} value={role}>
+              <Label>Role (Multiple Selection Allowed)</Label>
+              <div className="grid gap-2 max-h-40 overflow-y-auto border rounded p-2">
+                {roleOptions.map((role) => (
+                  <label key={role} className="flex items-center space-x-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={memberForm.cic_role.includes(role)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setMemberForm(prev => ({
+                            ...prev,
+                            cic_role: prev.cic_role ? `${prev.cic_role}, ${role}` : role
+                          }));
+                        } else {
+                          setMemberForm(prev => ({
+                            ...prev,
+                            cic_role: prev.cic_role.split(', ').filter(r => r !== role).join(', ')
+                          }));
+                        }
+                      }}
+                      className="rounded"
+                    />
+                    <span>{role}</span>
+                  </label>
+                ))}
+              </div>
+              {memberForm.cic_role && (
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {memberForm.cic_role.split(', ').filter(Boolean).map((role, index) => (
+                    <Badge key={index} variant="outline" className="text-xs">
                       {role}
-                    </SelectItem>
+                    </Badge>
                   ))}
-                </SelectContent>
-              </Select>
+                </div>
+              )}
             </div>
             <div className="space-y-2">
               <Label>Specialization Areas</Label>
@@ -870,19 +899,41 @@ export default function TeamManagement() {
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label>Role</Label>
-              <Select value={memberForm.cic_role} onValueChange={(value) => setMemberForm(prev => ({ ...prev, cic_role: value }))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select role..." />
-                </SelectTrigger>
-                <SelectContent>
-                  {roleOptions.map((role) => (
-                    <SelectItem key={role} value={role}>
+              <Label>Role (Multiple Selection Allowed)</Label>
+              <div className="grid gap-2 max-h-40 overflow-y-auto border rounded p-2">
+                {roleOptions.map((role) => (
+                  <label key={role} className="flex items-center space-x-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={memberForm.cic_role.includes(role)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setMemberForm(prev => ({
+                            ...prev,
+                            cic_role: prev.cic_role ? `${prev.cic_role}, ${role}` : role
+                          }));
+                        } else {
+                          setMemberForm(prev => ({
+                            ...prev,
+                            cic_role: prev.cic_role.split(', ').filter(r => r !== role).join(', ')
+                          }));
+                        }
+                      }}
+                      className="rounded"
+                    />
+                    <span>{role}</span>
+                  </label>
+                ))}
+              </div>
+              {memberForm.cic_role && (
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {memberForm.cic_role.split(', ').filter(Boolean).map((role, index) => (
+                    <Badge key={index} variant="outline" className="text-xs">
                       {role}
-                    </SelectItem>
+                    </Badge>
                   ))}
-                </SelectContent>
-              </Select>
+                </div>
+              )}
             </div>
             <div className="space-y-2">
               <Label>Specialization Areas</Label>
