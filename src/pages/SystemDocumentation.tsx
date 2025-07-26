@@ -242,29 +242,36 @@ export default function SystemDocumentationPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="space-y-3">
-                      <div className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
-                        <div>
-                          <strong>Campaigns</strong> promote innovation initiatives
-                          <p className="text-sm text-muted-foreground">Marketing and outreach programs</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3 ml-4">
-                        <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
-                        <div>
-                          <strong>Events</strong> activities within campaigns
-                          <p className="text-sm text-muted-foreground">One campaign → Many events</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3 ml-8">
-                        <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
-                        <div>
-                          <strong>Stakeholders</strong> participate in events
-                          <p className="text-sm text-muted-foreground">Many-to-many relationship</p>
-                        </div>
-                      </div>
-                    </div>
+                     <div className="space-y-3">
+                       <div className="flex items-start gap-3">
+                         <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
+                         <div>
+                           <strong>Campaigns</strong> promote innovation initiatives
+                           <p className="text-sm text-muted-foreground">Connected to challenges, organizational structure, and partners</p>
+                         </div>
+                       </div>
+                       <div className="flex items-start gap-3 ml-4">
+                         <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
+                         <div>
+                           <strong>Events</strong> activities within campaigns
+                           <p className="text-sm text-muted-foreground">Linked to challenges, focus questions, and stakeholders</p>
+                         </div>
+                       </div>
+                       <div className="flex items-start gap-3 ml-8">
+                         <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
+                         <div>
+                           <strong>Stakeholders</strong> participate in events
+                           <p className="text-sm text-muted-foreground">Many-to-many through event stakeholder targeting</p>
+                         </div>
+                       </div>
+                       <div className="flex items-start gap-3 ml-8">
+                         <ArrowRight className="h-4 w-4 mt-1 text-muted-foreground" />
+                         <div>
+                           <strong>Partners</strong> collaborate in campaigns
+                           <p className="text-sm text-muted-foreground">Support campaigns and co-host events</p>
+                         </div>
+                       </div>
+                     </div>
                   </CardContent>
                 </Card>
               </div>
@@ -411,27 +418,35 @@ export default function SystemDocumentationPage() {
 
                     <Separator />
 
-                    <div>
-                      <h4 className="font-semibold mb-3">Campaign-Event Flow</h4>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex items-center gap-2">
-                          <span className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">1</span>
-                          <span>Campaign is created with specific theme</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">2</span>
-                          <span>Events are planned within the campaign</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">3</span>
-                          <span>Stakeholders are invited to participate</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">4</span>
-                          <span>Partners may sponsor or co-host events</span>
-                        </div>
-                      </div>
-                    </div>
+                     <div>
+                       <h4 className="font-semibold mb-3">Campaign-Event Flow</h4>
+                       <div className="space-y-2 text-sm">
+                         <div className="flex items-center gap-2">
+                           <span className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">1</span>
+                           <span>Campaign is created with organizational context (sector, department)</span>
+                         </div>
+                         <div className="flex items-center gap-2">
+                           <span className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">2</span>
+                           <span>Campaign is linked to specific challenges and partners</span>
+                         </div>
+                         <div className="flex items-center gap-2">
+                           <span className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">3</span>
+                           <span>Events are planned within the campaign framework</span>
+                         </div>
+                         <div className="flex items-center gap-2">
+                           <span className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">4</span>
+                           <span>Events target specific stakeholder groups and focus questions</span>
+                         </div>
+                         <div className="flex items-center gap-2">
+                           <span className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">5</span>
+                           <span>Partners may sponsor campaigns or co-host events</span>
+                         </div>
+                         <div className="flex items-center gap-2">
+                           <span className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">6</span>
+                           <span>Event attendance and outcomes are tracked</span>
+                         </div>
+                       </div>
+                     </div>
                   </div>
                 </CardContent>
               </Card>
@@ -492,26 +507,36 @@ export default function SystemDocumentationPage() {
                           <td className="p-2">Process management</td>
                           <td className="p-2">→ All entities</td>
                         </tr>
-                        <tr>
-                          <td className="p-2 font-medium">Campaigns</td>
-                          <td className="p-2">Marketing & outreach</td>
-                          <td className="p-2">→ Events</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 font-medium">Events</td>
-                          <td className="p-2">Engagement activities</td>
-                          <td className="p-2">→ Stakeholders, Campaigns</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 font-medium">Stakeholders</td>
-                          <td className="p-2">External participants</td>
-                          <td className="p-2">→ Events</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2 font-medium">Partners</td>
-                          <td className="p-2">Collaboration entities</td>
-                          <td className="p-2">→ Challenges, Campaigns</td>
-                        </tr>
+                         <tr>
+                           <td className="p-2 font-medium">Campaigns</td>
+                           <td className="p-2">Marketing & outreach</td>
+                           <td className="p-2">→ Events, Challenges, Sectors, Partners</td>
+                         </tr>
+                         <tr>
+                           <td className="p-2 font-medium">Events</td>
+                           <td className="p-2">Engagement activities</td>
+                           <td className="p-2">→ Campaigns, Challenges, Stakeholders, Focus Questions</td>
+                         </tr>
+                         <tr>
+                           <td className="p-2 font-medium">Campaign Partners</td>
+                           <td className="p-2">Campaign collaboration</td>
+                           <td className="p-2">→ Campaigns, Partners</td>
+                         </tr>
+                         <tr>
+                           <td className="p-2 font-medium">Event Stakeholders</td>
+                           <td className="p-2">Event targeting</td>
+                           <td className="p-2">→ Events, Stakeholders</td>
+                         </tr>
+                         <tr>
+                           <td className="p-2 font-medium">Stakeholders</td>
+                           <td className="p-2">External participants</td>
+                           <td className="p-2">→ Events (through targeting)</td>
+                         </tr>
+                         <tr>
+                           <td className="p-2 font-medium">Partners</td>
+                           <td className="p-2">Collaboration entities</td>
+                           <td className="p-2">→ Challenges, Campaigns (through partnerships)</td>
+                         </tr>
                       </tbody>
                     </table>
                   </div>
