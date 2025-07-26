@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+import { Resend } from 'npm:resend@2.0.0';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -44,16 +45,35 @@ serve(async (req: Request) => {
       );
     }
 
-    // TODO: Integrate with an email service like Resend
-    // For now, we'll just log the email that would be sent
-    console.log('Email notification to be sent:', {
-      to: profile.email,
-      subject: title,
-      body: message,
-      type,
-      metadata,
-      preferredLanguage: profile.preferred_language
-    });
+    // Initialize Resend
+    const resend = new Resend(Deno.env.get('RESEND_API_KEY'));
+
+    try {
+      // Send email notification
+      const emailResponse = await resend.emails.send({
+        from: 'Saudi Innovation Platform <notifications@resend.dev>',
+        to: [profile.email],
+        subject: title,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #333; margin-bottom: 20px;">${title}</h2>
+            <p style="color: #666; line-height: 1.6;">${message}</p>
+            ${metadata?.role_request_id ? `
+              <div style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
+                <p style="margin: 0; font-size: 14px; color: #666;">
+                  This is an automated notification from the Saudi Innovation Platform.
+                </p>
+              </div>
+            ` : ''}
+          </div>
+        `,
+      });
+
+      console.log('Email sent successfully:', emailResponse);
+    } catch (emailError) {
+      console.error('Failed to send email:', emailError);
+      // Don't fail the entire function if email fails - notification is already created
+    }
 
     // NOTE: We don't create the notification here because it's already created 
     // by the database trigger/function that calls this edge function
@@ -61,8 +81,7 @@ serve(async (req: Request) => {
     return new Response(
       JSON.stringify({ 
         success: true,
-        message: 'Notification sent successfully',
-        emailLogged: true // Indicates email was logged (not actually sent yet)
+        message: 'Notification and email sent successfully'
       }),
       { 
         status: 200, 
