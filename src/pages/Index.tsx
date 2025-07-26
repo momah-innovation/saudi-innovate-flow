@@ -8,6 +8,7 @@ import { InnovatorDashboard } from "@/components/dashboard/InnovatorDashboard";
 import { AdminChallengeManagement } from "@/components/admin/AdminChallengeManagement";
 import { ChallengeList } from "@/components/challenges/ChallengeList";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import TeamManagement from "./TeamManagement";
 
 // Force cache refresh
 
@@ -98,12 +99,7 @@ const Index = () => {
           </div>
         );
       case "innovation-teams":
-        return (
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">Innovation Teams</h2>
-            <p className="text-muted-foreground">Team management interface will be implemented here.</p>
-          </div>
-        );
+        return <TeamManagement />;
       case "stakeholders":
         return (
           <div className="p-6">

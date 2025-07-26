@@ -46,6 +46,7 @@ interface Challenge {
   estimated_budget?: number;
   kpi_alignment?: string;
   vision_2030_goal?: string;
+  challenge_owner_id?: string;
   created_at: string;
 }
 
@@ -107,6 +108,7 @@ export const AdminChallengeManagement = () => {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [challengeExperts, setChallengeExperts] = useState<ChallengeExpert[]>([]);
   const [challengePartners, setChallengePartners] = useState<ChallengePartner[]>([]);
+  const [profiles, setProfiles] = useState<any[]>([]);
   const [sectors, setSectors] = useState<any[]>([]);
   const [departments, setDepartments] = useState<any[]>([]);
   const [domains, setDomains] = useState<any[]>([]);
@@ -141,6 +143,7 @@ export const AdminChallengeManagement = () => {
     estimated_budget: "",
     kpi_alignment: "",
     vision_2030_goal: "",
+    challenge_owner_id: "",
     assigned_expert_id: "",
     partner_organization_id: "",
     internal_team_notes: "",
@@ -174,6 +177,7 @@ export const AdminChallengeManagement = () => {
     fetchChallenges();
     fetchExperts();
     fetchPartners();
+    fetchProfiles();
     fetchSectors();
     fetchOrganizationalStructure();
     if (selectedChallenge) {
@@ -246,6 +250,21 @@ export const AdminChallengeManagement = () => {
       setPartners(data || []);
     } catch (error) {
       console.error('Error fetching partners:', error);
+    }
+  };
+
+  const fetchProfiles = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, name, name_ar, email, department, position, status')
+        .eq('status', 'active')
+        .order('name');
+
+      if (error) throw error;
+      setProfiles(data || []);
+    } catch (error) {
+      console.error('Error fetching profiles:', error);
     }
   };
 
@@ -460,6 +479,7 @@ export const AdminChallengeManagement = () => {
         estimated_budget,
         kpi_alignment,
         vision_2030_goal,
+        challenge_owner_id,
         created_at
       `;
 
@@ -531,6 +551,7 @@ export const AdminChallengeManagement = () => {
       estimated_budget: "",
       kpi_alignment: "",
       vision_2030_goal: "",
+      challenge_owner_id: "",
       assigned_expert_id: "",
       partner_organization_id: "",
       internal_team_notes: "",
@@ -593,7 +614,7 @@ export const AdminChallengeManagement = () => {
         kpi_alignment: formData.kpi_alignment || null,
         vision_2030_goal: formData.vision_2030_goal || null,
         created_by: '8066cfaf-4a91-4985-922b-74f6a286c441',
-        challenge_owner_id: '8066cfaf-4a91-4985-922b-74f6a286c441'
+        challenge_owner_id: formData.challenge_owner_id || null
       };
 
       // Add team-only fields if user is a team member
@@ -793,6 +814,7 @@ export const AdminChallengeManagement = () => {
       estimated_budget: challenge.estimated_budget?.toString() || "",
       kpi_alignment: challenge.kpi_alignment || "",
       vision_2030_goal: challenge.vision_2030_goal || "",
+      challenge_owner_id: (challenge as any).challenge_owner_id || "",
       assigned_expert_id: (challenge as any).assigned_expert_id || "",
       partner_organization_id: (challenge as any).partner_organization_id || "",
       internal_team_notes: (challenge as any).internal_team_notes || "",
@@ -1070,6 +1092,22 @@ export const AdminChallengeManagement = () => {
                   placeholder="Define measurable success criteria and KPIs"
                   rows={2}
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="challenge_owner">Challenge Owner</Label>
+                <Select value={formData.challenge_owner_id} onValueChange={(value) => setFormData({...formData, challenge_owner_id: value})}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select challenge owner" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {profiles.map((profile) => (
+                      <SelectItem key={profile.id} value={profile.id}>
+                        {profile.name} {profile.department && `(${profile.department})`}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               {/* Organizational Linking */}
