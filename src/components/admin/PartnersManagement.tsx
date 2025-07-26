@@ -34,12 +34,12 @@ export function PartnersManagement() {
   const [editingPartner, setEditingPartner] = useState<Partner | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
-  const { partnerStatusOptions } = useSystemLists();
+  const { partnerStatusOptions, partnerTypeOptions } = useSystemLists();
 
   const [formData, setFormData] = useState({
     name: "",
     name_ar: "",
-    partner_type: "academic",
+    partner_type: partnerTypeOptions[0] || "government",
     email: "",
     phone: "",
     address: "",
@@ -121,7 +121,7 @@ export function PartnersManagement() {
     setFormData({
       name: partner.name,
       name_ar: partner.name_ar || "",
-      partner_type: partner.partner_type || "academic",
+      partner_type: partner.partner_type || partnerTypeOptions[0] || "government",
       email: partner.email || "",
       phone: partner.phone || "",
       address: partner.address || "",
@@ -164,7 +164,7 @@ export function PartnersManagement() {
     setFormData({
       name: "",
       name_ar: "",
-      partner_type: "academic",
+      partner_type: partnerTypeOptions[0] || "government",
       email: "",
       phone: "",
       address: "",
@@ -251,10 +251,11 @@ export function PartnersManagement() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="academic">Academic</SelectItem>
-                      <SelectItem value="corporate">Corporate</SelectItem>
-                      <SelectItem value="government">Government</SelectItem>
-                      <SelectItem value="ngo">NGO</SelectItem>
+                      {partnerTypeOptions.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
