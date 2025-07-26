@@ -17,6 +17,10 @@ import ExpertAssignmentManagementPage from "./pages/ExpertAssignmentManagement";
 import UserManagementPage from "./pages/UserManagementPage";
 import UserProfile from "./pages/UserProfile";
 import SystemSettings from "./pages/SystemSettings";
+import EvaluationsManagementPage from "./pages/EvaluationsManagement";
+import CampaignsManagementPage from "./pages/CampaignsManagement";
+import EventsManagementPage from "./pages/EventsManagement";
+import StakeholdersManagementPage from "./pages/StakeholdersManagement";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -100,6 +104,38 @@ const App = () => (
               element={
                 <ProtectedRoute requireProfile requiredRole="admin">
                   <SystemSettings />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/evaluations" 
+              element={
+                <ProtectedRoute requireProfile requiredRole="admin">
+                  <EvaluationsManagementPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/campaigns" 
+              element={
+                <ProtectedRoute requireProfile requiredRole="admin">
+                  <CampaignsManagementPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/events" 
+              element={
+                <ProtectedRoute requireProfile requiredRole="admin">
+                  <EventsManagementPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/stakeholders" 
+              element={
+                <ProtectedRoute requireProfile requiredRole="admin">
+                  <StakeholdersManagementPage />
                 </ProtectedRoute>
               } 
             />

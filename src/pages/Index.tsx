@@ -45,6 +45,22 @@ const Index = () => {
       navigate("/admin/system-settings");
       return;
     }
+    if (tab === "evaluations") {
+      navigate("/admin/evaluations");
+      return;
+    }
+    if (tab === "campaigns") {
+      navigate("/admin/campaigns");
+      return;
+    }
+    if (tab === "events") {
+      navigate("/admin/events");
+      return;
+    }
+    if (tab === "stakeholders") {
+      navigate("/admin/stakeholders");
+      return;
+    }
     if (tab === "settings") {
       navigate("/settings");
       return;
