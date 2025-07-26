@@ -172,10 +172,16 @@ export function NotificationCenter() {
 
     // Navigate to relevant page based on notification metadata
     if (notification.metadata) {
-      const { role_request_id, challenge_id, expert_assignment_id, type } = notification.metadata;
+      const { role_request_id, challenge_id, expert_assignment_id, requester_id, type } = notification.metadata;
       
       if (role_request_id) {
-        navigate('/admin/users');
+        // If it's a role request notification for the requester, go to their profile
+        // If it's for an admin, go to admin users page
+        if (requester_id === user?.id) {
+          navigate(`/profile/${user.id}`);
+        } else {
+          navigate('/admin/users');
+        }
         setIsOpen(false);
       } else if (challenge_id) {
         navigate(`/challenges/${challenge_id}`);

@@ -37,21 +37,9 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to="/profile/setup" replace />;
   }
 
-  // Check role requirements
+  // Check role requirements - redirect to dashboard instead of showing access denied
   if (requiredRole && !hasRole(requiredRole)) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <h2 className="text-2xl font-semibold">Access Denied</h2>
-          <p className="text-muted-foreground">
-            You don't have the required permissions to access this page.
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Required role: <code className="bg-muted px-2 py-1 rounded">{requiredRole}</code>
-          </p>
-        </div>
-      </div>
-    );
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;
