@@ -75,43 +75,22 @@ export function StakeholdersManagement() {
     try {
       setLoading(true);
       
-      // Since there's no stakeholders table yet, we'll create mock data
-      // In a real implementation, this would fetch from the database
-      const mockStakeholders: Stakeholder[] = [
-        {
-          id: "1",
-          name: "Dr. Ahmed Al-Rashid",
-          name_ar: "د. أحمد الراشد",
-          organization: "Ministry of Innovation",
-          position: "Director of Digital Transformation",
-          email: "ahmed.rashid@innovation.gov.sa",
-          phone: "+966501234567",
-          stakeholder_type: "government",
-          influence_level: "high",
-          interest_level: "high",
-          engagement_status: "supporter",
-          notes: "Key decision maker for innovation initiatives",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-        {
-          id: "2",
-          name: "Sarah Johnson",
-          organization: "Tech Innovations Ltd",
-          position: "CEO",
-          email: "sarah.johnson@techinnovations.com",
-          phone: "+966507654321",
-          stakeholder_type: "private_sector",
-          influence_level: "high",
-          interest_level: "medium",
-          engagement_status: "active",
-          notes: "Potential partner for technology implementation",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        }
-      ];
-      
-      setStakeholders(mockStakeholders);
+      const { data, error } = await supabase
+        .from("stakeholders")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching stakeholders:", error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch stakeholders",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setStakeholders(data || []);
     } catch (error) {
       console.error("Error fetching stakeholders:", error);
       toast({
@@ -128,16 +107,14 @@ export function StakeholdersManagement() {
     e.preventDefault();
     
     try {
-      const stakeholderData = {
-        ...formData,
-        id: editingStakeholder ? editingStakeholder.id : Date.now().toString(),
-        created_at: editingStakeholder ? editingStakeholder.created_at : new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-
       if (editingStakeholder) {
         // Update existing stakeholder
-        setStakeholders(prev => prev.map(s => s.id === editingStakeholder.id ? stakeholderData : s));
+        const { error } = await supabase
+          .from("stakeholders")
+          .update(formData)
+          .eq("id", editingStakeholder.id);
+
+        if (error) throw error;
         
         toast({
           title: "Success",
@@ -145,7 +122,11 @@ export function StakeholdersManagement() {
         });
       } else {
         // Add new stakeholder
-        setStakeholders(prev => [stakeholderData, ...prev]);
+        const { error } = await supabase
+          .from("stakeholders")
+          .insert([formData]);
+
+        if (error) throw error;
         
         toast({
           title: "Success",
@@ -156,6 +137,7 @@ export function StakeholdersManagement() {
       setIsDialogOpen(false);
       setEditingStakeholder(null);
       resetForm();
+      fetchStakeholders(); // Refresh the list
     } catch (error) {
       console.error("Error saving stakeholder:", error);
       toast({
@@ -188,12 +170,19 @@ export function StakeholdersManagement() {
     if (!confirm("Are you sure you want to delete this stakeholder?")) return;
 
     try {
-      setStakeholders(prev => prev.filter(s => s.id !== id));
+      const { error } = await supabase
+        .from("stakeholders")
+        .delete()
+        .eq("id", id);
+
+      if (error) throw error;
       
       toast({
         title: "Success",
         description: "Stakeholder deleted successfully",
       });
+      
+      fetchStakeholders(); // Refresh the list
     } catch (error) {
       console.error("Error deleting stakeholder:", error);
       toast({

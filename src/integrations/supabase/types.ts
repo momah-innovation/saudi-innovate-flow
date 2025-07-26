@@ -1455,6 +1455,57 @@ export type Database = {
           },
         ]
       }
+      stakeholders: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          engagement_status: string | null
+          id: string
+          influence_level: string | null
+          interest_level: string | null
+          name: string
+          name_ar: string | null
+          notes: string | null
+          organization: string | null
+          phone: string | null
+          position: string | null
+          stakeholder_type: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          engagement_status?: string | null
+          id?: string
+          influence_level?: string | null
+          interest_level?: string | null
+          name: string
+          name_ar?: string | null
+          notes?: string | null
+          organization?: string | null
+          phone?: string | null
+          position?: string | null
+          stakeholder_type?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          engagement_status?: string | null
+          id?: string
+          influence_level?: string | null
+          interest_level?: string | null
+          name?: string
+          name_ar?: string | null
+          notes?: string | null
+          organization?: string | null
+          phone?: string | null
+          position?: string | null
+          stakeholder_type?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       sub_domains: {
         Row: {
           created_at: string | null
