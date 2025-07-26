@@ -60,6 +60,11 @@ export function ExpertAssignmentManagement() {
   const [maxWorkload, setMaxWorkload] = useState(5);
   const [profileTextareaRows, setProfileTextareaRows] = useState(4);
   
+  // System settings
+  const [systemSettings, setSystemSettings] = useState({
+    expertExpertisePreviewLimit: 2
+  });
+  
   // State management
   const [experts, setExperts] = useState<Expert[]>([]);
   const [challenges, setChallenges] = useState<Challenge[]>([]);
@@ -102,7 +107,7 @@ export function ExpertAssignmentManagement() {
       const { data, error } = await supabase
         .from('system_settings')
         .select('setting_key, setting_value')
-        .in('setting_key', ['team_max_expert_workload', 'expert_profile_textarea_rows']);
+        .in('setting_key', ['team_max_expert_workload', 'expert_profile_textarea_rows', 'expert_expertise_preview_limit']);
 
       if (error) throw error;
       
@@ -115,6 +120,8 @@ export function ExpertAssignmentManagement() {
           setMaxWorkload(value || 5);
         } else if (setting.setting_key === 'expert_profile_textarea_rows') {
           setProfileTextareaRows(value || 4);
+        } else if (setting.setting_key === 'expert_expertise_preview_limit') {
+          setSystemSettings(prev => ({ ...prev, expertExpertisePreviewLimit: value || 2 }));
         }
       });
     } catch (error) {
@@ -722,7 +729,7 @@ export function ExpertAssignmentManagement() {
                       <div>
                         <CardTitle className="text-base">{expert.profiles?.name || `Expert ${expert.id}`}</CardTitle>
                         <CardDescription className="text-sm">
-                          {expert.expertise_areas?.slice(0, 2).join(', ')}
+                          {expert.expertise_areas?.slice(0, systemSettings.expertExpertisePreviewLimit).join(', ')}
                         </CardDescription>
                       </div>
                       <div className="flex flex-col items-end gap-2">

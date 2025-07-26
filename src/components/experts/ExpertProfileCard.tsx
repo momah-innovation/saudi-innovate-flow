@@ -14,8 +14,9 @@ import {
   Briefcase,
   Star,
   Calendar
-} from "lucide-react";
+ } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
 
 interface ExpertProfile {
   id: string;
@@ -49,13 +50,10 @@ interface ExpertCardProps {
 }
 
 export function ExpertCard({ expertProfile, userProfile, className = "" }: ExpertCardProps) {
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
+  const { uiInitialsMaxLength } = useSystemSettings();
+  
+  const getInitialsWithSettings = (name: string) => {
+    return getInitials(name, uiInitialsMaxLength);
   };
 
   const getAvailabilityColor = (status: string) => {
@@ -83,7 +81,7 @@ export function ExpertCard({ expertProfile, userProfile, className = "" }: Exper
           <Avatar className="h-16 w-16">
             <AvatarImage src={userProfile.profile_image_url} alt={userProfile.name} />
             <AvatarFallback className="text-lg">
-              {getInitials(userProfile.name)}
+              {getInitialsWithSettings(userProfile.name)}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">

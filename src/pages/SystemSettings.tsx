@@ -101,6 +101,8 @@ export default function SystemSettings() {
     
     // UI Display
     uiInitialsMaxLength: 2,
+    teamMemberMinWorkload: 0,
+    teamMemberMaxWorkload: 10,
     
     // API Settings
     apiRateLimit: 1000,
@@ -253,6 +255,24 @@ export default function SystemSettings() {
               break;
             case 'api_rate_limit_per_hour':
               settingsMap.apiRateLimit = parseInt(value);
+              break;
+            case 'challenge_details_description_rows':
+              settingsMap.challengeDetailsDescriptionRows = parseInt(value);
+              break;
+            case 'challenge_details_vision_rows':
+              settingsMap.challengeDetailsVisionRows = parseInt(value);
+              break;
+            case 'expert_expertise_preview_limit':
+              settingsMap.expertExpertisePreviewLimit = parseInt(value);
+              break;
+            case 'ui_initials_max_length':
+              settingsMap.uiInitialsMaxLength = parseInt(value);
+              break;
+            case 'team_member_min_workload':
+              settingsMap.teamMemberMinWorkload = parseInt(value);
+              break;
+            case 'team_member_max_workload':
+              settingsMap.teamMemberMaxWorkload = parseInt(value);
               break;
           }
         });

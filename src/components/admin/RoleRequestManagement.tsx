@@ -14,6 +14,7 @@ import { Separator } from '@/components/ui/separator';
 import { CheckCircle2, XCircle, Clock, Search, UserCheck, MessageSquare, Eye, User, Shield, Calendar, Mail, Building, Phone } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
 import { ExpertProfileView } from '@/components/experts/ExpertProfileCard';
 
 interface RoleRequest {
@@ -46,6 +47,7 @@ interface RoleRequest {
 
 export default function RoleRequestManagement() {
   const { toast } = useToast();
+  const { uiInitialsMaxLength } = useSystemSettings();
   const [roleRequests, setRoleRequests] = useState<RoleRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState<RoleRequest | null>(null);
@@ -159,14 +161,6 @@ export default function RoleRequestManagement() {
     setIsDetailDialogOpen(true);
   };
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  };
 
   const submitReview = async () => {
     if (!selectedRequest) return;
@@ -400,7 +394,7 @@ export default function RoleRequestManagement() {
                         <Avatar className="h-8 w-8">
                           <AvatarImage src={request.requester?.profile_image_url} alt={request.requester?.name} />
                           <AvatarFallback className="text-xs">
-                            {getInitials(request.requester?.name || '')}
+                            {getInitials(request.requester?.name || '', uiInitialsMaxLength)}
                           </AvatarFallback>
                         </Avatar>
                         <div>
@@ -565,7 +559,7 @@ export default function RoleRequestManagement() {
                     <Avatar className="h-16 w-16">
                       <AvatarImage src={selectedRequest.requester?.profile_image_url} alt={selectedRequest.requester?.name} />
                       <AvatarFallback className="text-lg">
-                        {getInitials(selectedRequest.requester?.name || '')}
+                        {getInitials(selectedRequest.requester?.name || '', uiInitialsMaxLength)}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 space-y-3">

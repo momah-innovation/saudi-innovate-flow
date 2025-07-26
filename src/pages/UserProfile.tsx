@@ -16,6 +16,7 @@ import { AppSidebar } from "@/components/layout/Sidebar";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
+import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
 
 interface ProfileForm {
   name: string;
@@ -30,6 +31,7 @@ interface ProfileForm {
 export default function UserProfile() {
   const navigate = useNavigate();
   const { user, userProfile, refreshProfile } = useAuth();
+  const { uiInitialsMaxLength } = useSystemSettings();
   const { toast } = useToast();
   const [profileForm, setProfileForm] = useState<ProfileForm>({
     name: '',
@@ -86,13 +88,8 @@ export default function UserProfile() {
     }
   };
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
+  const getInitialsWithSettings = (name: string) => {
+    return getInitials(name, uiInitialsMaxLength);
   };
 
   const handleTabChange = (tab: string) => {
@@ -151,7 +148,7 @@ export default function UserProfile() {
                     <Avatar className="h-20 w-20">
                       <AvatarImage src={userProfile?.profile_image_url} alt={profileForm.name} />
                       <AvatarFallback className="text-lg">
-                        {getInitials(profileForm.name || 'User')}
+                        {getInitialsWithSettings(profileForm.name || 'User')}
                       </AvatarFallback>
                     </Avatar>
                     <div>

@@ -126,7 +126,8 @@ export const AdminChallengeManagement = () => {
   const [systemSettings, setSystemSettings] = useState({
     maxBudget: 1000000,
     maxSubmissions: 10,
-    textareaRows: 5
+    textareaRows: 5,
+    expertExpertisePreviewLimit: 2
   });
   
   // Form states
@@ -203,7 +204,8 @@ export const AdminChallengeManagement = () => {
         .in('setting_key', [
           'challenge_max_budget',
           'challenge_max_submissions_per_challenge',
-          'challenge_textarea_rows'
+          'challenge_textarea_rows',
+          'expert_expertise_preview_limit'
         ]);
 
       if (error) throw error;
@@ -222,6 +224,9 @@ export const AdminChallengeManagement = () => {
             break;
           case 'challenge_textarea_rows':
             acc.textareaRows = value;
+            break;
+          case 'expert_expertise_preview_limit':
+            acc.expertExpertisePreviewLimit = value;
             break;
         }
         return acc;
@@ -1315,7 +1320,7 @@ export const AdminChallengeManagement = () => {
                                   <UserCheck className="h-4 w-4" />
                                   {expert.profiles?.name || 'Expert'} 
                                   <span className="text-xs text-muted-foreground">
-                                    ({expert.expertise_areas?.slice(0, 2).join(', ')})
+                                    ({expert.expertise_areas?.slice(0, systemSettings.expertExpertisePreviewLimit).join(', ')})
                                   </span>
                                 </div>
                               </SelectItem>
@@ -1372,7 +1377,7 @@ export const AdminChallengeManagement = () => {
                                 className="rounded border-gray-300"
                               />
                               <label htmlFor={`expert-${expert.id}`} className="text-sm flex-1 cursor-pointer">
-                                {expert.profiles?.name || 'Expert'} - {expert.expertise_areas?.slice(0, 2).join(', ')}
+                                {expert.profiles?.name || 'Expert'} - {expert.expertise_areas?.slice(0, systemSettings.expertExpertisePreviewLimit).join(', ')}
                               </label>
                             </div>
                           ))}

@@ -13,9 +13,11 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { NotificationCenter } from "@/components/notifications/NotificationCenter";
+import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
 
 export const Header = () => {
   const { user, userProfile, signOut, hasRole } = useAuth();
+  const { uiInitialsMaxLength } = useSystemSettings();
   const navigate = useNavigate();
 
   const getUserDisplayName = () => {
@@ -30,13 +32,8 @@ export const Header = () => {
       .map((role: any) => role.role);
   };
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
+  const getInitialsWithSettings = (name: string) => {
+    return getInitials(name, uiInitialsMaxLength);
   };
 
   const handleProfileClick = () => {
@@ -99,7 +96,7 @@ export const Header = () => {
                     alt={getUserDisplayName()} 
                   />
                   <AvatarFallback className="bg-primary-foreground text-primary font-medium">
-                    {getInitials(getUserDisplayName())}
+                    {getInitialsWithSettings(getUserDisplayName())}
                   </AvatarFallback>
                 </Avatar>
               </Button>
@@ -113,7 +110,7 @@ export const Header = () => {
                     alt={getUserDisplayName()} 
                   />
                   <AvatarFallback className="bg-primary text-primary-foreground font-medium">
-                    {getInitials(getUserDisplayName())}
+                    {getInitialsWithSettings(getUserDisplayName())}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">

@@ -112,6 +112,12 @@ const ChallengeDetails = () => {
   const [editValues, setEditValues] = useState<{[key: string]: any}>({});
   const [saving, setSaving] = useState(false);
   
+  // System settings
+  const [systemSettings, setSystemSettings] = useState({
+    challengeDetailsDescriptionRows: 4,
+    challengeDetailsVisionRows: 3
+  });
+  
   // Dialog states
   const [expertDialogOpen, setExpertDialogOpen] = useState(false);
   const [questionDialogOpen, setQuestionDialogOpen] = useState(false);
@@ -123,8 +129,39 @@ const ChallengeDetails = () => {
   useEffect(() => {
     if (challengeId) {
       fetchChallengeDetails();
+      fetchSystemSettings();
     }
   }, [challengeId]);
+
+  const fetchSystemSettings = async () => {
+    try {
+      const { data } = await supabase
+        .from('system_settings')
+        .select('setting_key, setting_value')
+        .in('setting_key', ['challenge_details_description_rows', 'challenge_details_vision_rows']);
+      
+      if (data) {
+        const settings = { ...systemSettings };
+        data.forEach(setting => {
+          const value = typeof setting.setting_value === 'string' 
+            ? JSON.parse(setting.setting_value) 
+            : setting.setting_value;
+            
+          switch (setting.setting_key) {
+            case 'challenge_details_description_rows':
+              settings.challengeDetailsDescriptionRows = parseInt(value) || 4;
+              break;
+            case 'challenge_details_vision_rows':
+              settings.challengeDetailsVisionRows = parseInt(value) || 3;
+              break;
+          }
+        });
+        setSystemSettings(settings);
+      }
+    } catch (error) {
+      console.error('Error loading system settings:', error);
+    }
+  };
 
   // Set up real-time subscriptions
   useEffect(() => {
@@ -655,7 +692,7 @@ const ChallengeDetails = () => {
                         <Textarea
                           value={editValues.description || ''}
                           onChange={(e) => setEditValues({ ...editValues, description: e.target.value })}
-                          rows={4}
+                          rows={systemSettings.challengeDetailsDescriptionRows}
                         />
                         <div className="flex gap-2">
                           <Button size="sm" onClick={() => saveField('description')} disabled={saving}>
@@ -693,7 +730,7 @@ const ChallengeDetails = () => {
                           <Textarea
                             value={editValues.description_ar || ''}
                             onChange={(e) => setEditValues({ ...editValues, description_ar: e.target.value })}
-                            rows={4}
+                            rows={systemSettings.challengeDetailsDescriptionRows}
                             dir="rtl"
                           />
                           <div className="flex gap-2">
@@ -744,7 +781,7 @@ const ChallengeDetails = () => {
                         <Textarea
                           value={editValues.vision_2030_goal || ''}
                           onChange={(e) => setEditValues({ ...editValues, vision_2030_goal: e.target.value })}
-                          rows={3}
+                          rows={systemSettings.challengeDetailsVisionRows}
                         />
                         <div className="flex gap-2">
                           <Button size="sm" onClick={() => saveField('vision_2030_goal')} disabled={saving}>
