@@ -597,6 +597,16 @@ export function CampaignsManagement() {
   );
 
   const renderOrganization = () => {
+    // Filter deputies based on selected sector
+    const filteredDeputies = formData.sector_id && formData.sector_id !== "none" 
+      ? deputies.filter(deputy => deputy.sector_id === formData.sector_id)
+      : deputies;
+
+    // Filter departments based on selected deputy
+    const filteredDepartments = formData.deputy_id && formData.deputy_id !== "none"
+      ? departments.filter(department => department.deputy_id === formData.deputy_id)
+      : departments;
+
     const getSelectedSectorName = () => {
       if (formData.sector_id === "none") return "None";
       const sector = sectors.find(s => s.id === formData.sector_id);
@@ -605,13 +615,13 @@ export function CampaignsManagement() {
 
     const getSelectedDeputyName = () => {
       if (formData.deputy_id === "none") return "None";
-      const deputy = deputies.find(d => d.id === formData.deputy_id);
+      const deputy = filteredDeputies.find(d => d.id === formData.deputy_id);
       return deputy ? deputy.name : "Select deputy";
     };
 
     const getSelectedDepartmentName = () => {
       if (formData.department_id === "none") return "None";
-      const department = departments.find(d => d.id === formData.department_id);
+      const department = filteredDepartments.find(d => d.id === formData.department_id);
       return department ? department.name : "Select department";
     };
 
@@ -619,6 +629,25 @@ export function CampaignsManagement() {
       if (formData.challenge_id === "none") return "None";
       const challenge = challenges.find(c => c.id === formData.challenge_id);
       return challenge ? challenge.title : "Select challenge";
+    };
+
+    const handleSectorChange = (value: string) => {
+      setFormData(prev => ({
+        ...prev,
+        sector_id: value,
+        deputy_id: "none", // Clear deputy when sector changes
+        department_id: "none" // Clear department when sector changes
+      }));
+      setOpenSector(false);
+    };
+
+    const handleDeputyChange = (value: string) => {
+      setFormData(prev => ({
+        ...prev,
+        deputy_id: value,
+        department_id: "none" // Clear department when deputy changes
+      }));
+      setOpenDeputy(false);
     };
 
     return (
@@ -651,10 +680,7 @@ export function CampaignsManagement() {
                     <CommandGroup>
                       <CommandItem
                         value="none"
-                        onSelect={() => {
-                          setFormData({ ...formData, sector_id: "none" });
-                          setOpenSector(false);
-                        }}
+                        onSelect={() => handleSectorChange("none")}
                       >
                         <Check
                           className={`mr-2 h-4 w-4 ${
@@ -667,10 +693,7 @@ export function CampaignsManagement() {
                         <CommandItem
                           key={sector.id}
                           value={sector.name}
-                          onSelect={() => {
-                            setFormData({ ...formData, sector_id: sector.id });
-                            setOpenSector(false);
-                          }}
+                          onSelect={() => handleSectorChange(sector.id)}
                         >
                           <Check
                             className={`mr-2 h-4 w-4 ${
@@ -709,10 +732,7 @@ export function CampaignsManagement() {
                     <CommandGroup>
                       <CommandItem
                         value="none"
-                        onSelect={() => {
-                          setFormData({ ...formData, deputy_id: "none" });
-                          setOpenDeputy(false);
-                        }}
+                        onSelect={() => handleDeputyChange("none")}
                       >
                         <Check
                           className={`mr-2 h-4 w-4 ${
@@ -721,14 +741,11 @@ export function CampaignsManagement() {
                         />
                         None
                       </CommandItem>
-                      {deputies.map((deputy) => (
+                      {filteredDeputies.map((deputy) => (
                         <CommandItem
                           key={deputy.id}
                           value={deputy.name}
-                          onSelect={() => {
-                            setFormData({ ...formData, deputy_id: deputy.id });
-                            setOpenDeputy(false);
-                          }}
+                          onSelect={() => handleDeputyChange(deputy.id)}
                         >
                           <Check
                             className={`mr-2 h-4 w-4 ${
@@ -781,7 +798,7 @@ export function CampaignsManagement() {
                         />
                         None
                       </CommandItem>
-                      {departments.map((department) => (
+                      {filteredDepartments.map((department) => (
                         <CommandItem
                           key={department.id}
                           value={department.name}
