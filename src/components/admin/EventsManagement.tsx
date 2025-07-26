@@ -203,6 +203,9 @@ export function EventsManagement() {
         ...formData,
         max_participants: formData.max_participants ? parseInt(formData.max_participants) : null,
         budget: formData.budget ? parseFloat(formData.budget) : null,
+        campaign_id: formData.campaign_id === "none" ? null : formData.campaign_id,
+        challenge_id: formData.challenge_id === "none" ? null : formData.challenge_id,
+        sector_id: formData.sector_id === "none" ? null : formData.sector_id,
       };
 
       if (editingEvent) {
@@ -261,9 +264,9 @@ export function EventsManagement() {
       max_participants: event.max_participants?.toString() || "",
       status: event.status,
       budget: event.budget?.toString() || "",
-      campaign_id: event.campaign_id || "",
-      challenge_id: event.challenge_id || "",
-      sector_id: event.sector_id || "",
+      campaign_id: event.campaign_id || "none",
+      challenge_id: event.challenge_id || "none",
+      sector_id: event.sector_id || "none",
       target_stakeholder_groups: event.stakeholders?.map(s => s.id) || [],
       partner_organizations: event.partners?.map(p => p.id) || [],
       related_focus_questions: event.focus_questions?.map(q => q.id) || [],
@@ -573,7 +576,7 @@ export function EventsManagement() {
                         <SelectValue placeholder="Select campaign" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">None</SelectItem>
+                        <SelectItem value="none">None</SelectItem>
                         {campaigns.map((campaign: any) => (
                           <SelectItem key={campaign.id} value={campaign.id}>
                             {campaign.title}
@@ -590,7 +593,7 @@ export function EventsManagement() {
                         <SelectValue placeholder="Select challenge" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">None</SelectItem>
+                        <SelectItem value="none">None</SelectItem>
                         {challenges.map((challenge: any) => (
                           <SelectItem key={challenge.id} value={challenge.id}>
                             {challenge.title}
@@ -609,7 +612,7 @@ export function EventsManagement() {
                         <SelectValue placeholder="Select sector" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">None</SelectItem>
+                        <SelectItem value="none">None</SelectItem>
                         {sectors.map((sector: any) => (
                           <SelectItem key={sector.id} value={sector.id}>
                             {sector.name}
