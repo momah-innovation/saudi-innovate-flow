@@ -86,7 +86,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
       const { data, error } = await supabase
         .from('system_settings')
         .select('setting_key, setting_value')
-        .in('setting_key', ['ui_default_textarea_rows', 'challenge_max_submissions']);
+        .in('setting_key', ['ui_default_textarea_rows', 'challenge_max_submissions_per_challenge']);
 
       if (error) throw error;
 
@@ -99,7 +99,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
           case 'ui_default_textarea_rows':
             acc.textareaRows = value;
             break;
-          case 'challenge_max_submissions':
+          case 'challenge_max_submissions_per_challenge':
             acc.maxSubmissions = value;
             break;
         }

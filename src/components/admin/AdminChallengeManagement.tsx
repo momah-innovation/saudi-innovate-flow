@@ -202,7 +202,7 @@ export const AdminChallengeManagement = () => {
         .select('setting_key, setting_value')
         .in('setting_key', [
           'challenge_max_budget',
-          'challenge_max_submissions',
+          'challenge_max_submissions_per_challenge',
           'challenge_textarea_rows'
         ]);
 
@@ -217,7 +217,7 @@ export const AdminChallengeManagement = () => {
           case 'challenge_max_budget':
             acc.maxBudget = value;
             break;
-          case 'challenge_max_submissions':
+          case 'challenge_max_submissions_per_challenge':
             acc.maxSubmissions = value;
             break;
           case 'challenge_textarea_rows':

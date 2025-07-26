@@ -31,10 +31,39 @@ import {
 
 // System settings hook
 const useSystemSettings = () => {
-  const [systemSettings] = useState({
-    focusQuestionTextareaRows: 4,
+  const [systemSettings, setSystemSettings] = useState({
+    focusQuestionTextareaRows: 3,
     focusQuestionNotesRows: 2
   });
+  
+  useEffect(() => {
+    const loadSystemSettings = async () => {
+      try {
+        const { data } = await supabase
+          .from('system_settings')
+          .select('setting_key, setting_value')
+          .in('setting_key', ['focus_question_textarea_rows']);
+        
+        if (data) {
+          const settings = { ...systemSettings };
+          data.forEach(setting => {
+            const value = typeof setting.setting_value === 'string' 
+              ? JSON.parse(setting.setting_value) 
+              : setting.setting_value;
+              
+            if (setting.setting_key === 'focus_question_textarea_rows') {
+              settings.focusQuestionTextareaRows = parseInt(value) || 3;
+            }
+          });
+          setSystemSettings(settings);
+        }
+      } catch (error) {
+        console.error('Error loading system settings:', error);
+      }
+    };
+    
+    loadSystemSettings();
+  }, []);
   
   return systemSettings;
 };

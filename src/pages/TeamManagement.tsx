@@ -26,15 +26,64 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
-// System settings state
+// System settings hook
 const useSystemSettings = () => {
   const [systemSettings, setSystemSettings] = useState({
     maxConcurrentProjects: 5,
     performanceRatingMin: 0,
     performanceRatingMax: 5,
-    teamInsightsDisplayLimit: 5,
+    teamInsightsDisplayLimit: 10,
     insightTitlePreviewLength: 50
   });
+  
+  useEffect(() => {
+    const loadSystemSettings = async () => {
+      try {
+        const { data } = await supabase
+          .from('system_settings')
+          .select('setting_key, setting_value')
+          .in('setting_key', [
+            'team_max_concurrent_projects_per_member',
+            'team_min_performance_rating', 
+            'team_max_performance_rating',
+            'team_insights_display_limit',
+            'team_insight_title_preview_length'
+          ]);
+        
+        if (data) {
+          const settings = { ...systemSettings };
+          data.forEach(setting => {
+            const value = typeof setting.setting_value === 'string' 
+              ? JSON.parse(setting.setting_value) 
+              : setting.setting_value;
+              
+            switch (setting.setting_key) {
+              case 'team_max_concurrent_projects_per_member':
+                settings.maxConcurrentProjects = parseInt(value) || 5;
+                break;
+              case 'team_min_performance_rating':
+                settings.performanceRatingMin = parseInt(value) || 0;
+                break;
+              case 'team_max_performance_rating':
+                settings.performanceRatingMax = parseInt(value) || 5;
+                break;
+              case 'team_insights_display_limit':
+                settings.teamInsightsDisplayLimit = parseInt(value) || 10;
+                break;
+              case 'team_insight_title_preview_length':
+                settings.insightTitlePreviewLength = parseInt(value) || 50;
+                break;
+            }
+          });
+          setSystemSettings(settings);
+        }
+      } catch (error) {
+        console.error('Error loading system settings:', error);
+      }
+    };
+    
+    loadSystemSettings();
+  }, []);
   
   return systemSettings;
 };

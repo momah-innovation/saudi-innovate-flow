@@ -22,8 +22,8 @@ const ProfileSetup = () => {
   
   // System settings state
   const [systemSettings, setSystemSettings] = useState({
-    profileBioRows: 4,
-    profileInnovationBackgroundRows: 4,
+    profileBioRows: 3,
+    profileInnovationBackgroundRows: 2,
     userExperienceYearsMin: 0,
     userExperienceYearsMax: 50
   });
@@ -35,16 +35,38 @@ const ProfileSetup = () => {
         const { data } = await supabase
           .from('system_settings')
           .select('setting_key, setting_value')
-          .in('setting_key', ['user_experience_years_min', 'user_experience_years_max']);
+          .in('setting_key', [
+            'profile_bio_textarea_rows', 
+            'profile_innovation_background_rows',
+            'user_min_experience_years', 
+            'user_max_experience_years'
+          ]);
         
         if (data) {
+          const settings = { ...systemSettings };
           data.forEach(setting => {
-            if (setting.setting_key === 'user_experience_years_min') {
-              setMinExperienceYears(parseInt(String(setting.setting_value)) || 0);
-            } else if (setting.setting_key === 'user_experience_years_max') {
-              setMaxExperienceYears(parseInt(String(setting.setting_value)) || 50);
+            const value = typeof setting.setting_value === 'string' 
+              ? JSON.parse(setting.setting_value) 
+              : setting.setting_value;
+              
+            switch (setting.setting_key) {
+              case 'profile_bio_textarea_rows':
+                settings.profileBioRows = parseInt(value) || 3;
+                break;
+              case 'profile_innovation_background_rows':
+                settings.profileInnovationBackgroundRows = parseInt(value) || 2;
+                break;
+              case 'user_min_experience_years':
+                settings.userExperienceYearsMin = parseInt(value) || 0;
+                setMinExperienceYears(parseInt(value) || 0);
+                break;
+              case 'user_max_experience_years':
+                settings.userExperienceYearsMax = parseInt(value) || 50;
+                setMaxExperienceYears(parseInt(value) || 50);
+                break;
             }
           });
+          setSystemSettings(settings);
         }
       } catch (error) {
         console.error('Error loading system settings:', error);
