@@ -29,7 +29,9 @@ import {
   Settings,
   Building2,
   UserCheck,
-  Briefcase
+  Briefcase,
+  Search,
+  Filter
 } from "lucide-react";
 import { toast } from "sonner";
 

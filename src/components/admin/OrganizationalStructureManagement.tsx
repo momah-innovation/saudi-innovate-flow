@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Edit, Trash2, Users, Building, Network, Mail } from "lucide-react";
+import { Plus, Edit, Trash2, Users, Building, Network, Mail, Search, Filter, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Deputy {
@@ -69,6 +69,9 @@ export function OrganizationalStructureManagement() {
   const [services, setServices] = useState<Service[]>([]);
   const [sectors, setSectors] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const { toast } = useToast();
 
   // States for dialogs and editing
@@ -252,61 +255,78 @@ export function OrganizationalStructureManagement() {
         <TabsContent value="deputies">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold">Deputies</h2>
-            <Dialog open={isDeputyDialogOpen} onOpenChange={setIsDeputyDialogOpen}>
-              <DialogTrigger asChild>
-                <Button onClick={() => { setEditingDeputy(null); setDeputyForm({ name: "", name_ar: "", deputy_minister: "", contact_email: "", sector_id: "" }); }}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Deputy
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>{editingDeputy ? "Edit Deputy" : "Add New Deputy"}</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleDeputySubmit} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label>Name (English)</Label>
-                      <Input value={deputyForm.name} onChange={(e) => setDeputyForm({...deputyForm, name: e.target.value})} required />
+            <div className="flex gap-2">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                <Input
+                  placeholder="Search deputies..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-9 w-64"
+                />
+              </div>
+              <Dialog open={isDeputyDialogOpen} onOpenChange={setIsDeputyDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button onClick={() => { setEditingDeputy(null); setDeputyForm({ name: "", name_ar: "", deputy_minister: "", contact_email: "", sector_id: "" }); }}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Deputy
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>{editingDeputy ? "Edit Deputy" : "Add New Deputy"}</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handleDeputySubmit} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Name (English)</Label>
+                        <Input value={deputyForm.name} onChange={(e) => setDeputyForm({...deputyForm, name: e.target.value})} required />
+                      </div>
+                      <div>
+                        <Label>Name (Arabic)</Label>
+                        <Input value={deputyForm.name_ar} onChange={(e) => setDeputyForm({...deputyForm, name_ar: e.target.value})} />
+                      </div>
                     </div>
                     <div>
-                      <Label>Name (Arabic)</Label>
-                      <Input value={deputyForm.name_ar} onChange={(e) => setDeputyForm({...deputyForm, name_ar: e.target.value})} />
+                      <Label>Deputy Minister</Label>
+                      <Input value={deputyForm.deputy_minister} onChange={(e) => setDeputyForm({...deputyForm, deputy_minister: e.target.value})} />
                     </div>
-                  </div>
-                  <div>
-                    <Label>Deputy Minister</Label>
-                    <Input value={deputyForm.deputy_minister} onChange={(e) => setDeputyForm({...deputyForm, deputy_minister: e.target.value})} />
-                  </div>
-                  <div>
-                    <Label>Contact Email</Label>
-                    <Input type="email" value={deputyForm.contact_email} onChange={(e) => setDeputyForm({...deputyForm, contact_email: e.target.value})} />
-                  </div>
-                  <div>
-                    <Label>Sector</Label>
-                    <Select value={deputyForm.sector_id} onValueChange={(value) => setDeputyForm({...deputyForm, sector_id: value})}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select sector" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {sectors.map((sector) => (
-                          <SelectItem key={sector.id} value={sector.id}>{sector.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" onClick={() => setIsDeputyDialogOpen(false)}>Cancel</Button>
-                    <Button type="submit">{editingDeputy ? "Update" : "Create"}</Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
+                    <div>
+                      <Label>Contact Email</Label>
+                      <Input type="email" value={deputyForm.contact_email} onChange={(e) => setDeputyForm({...deputyForm, contact_email: e.target.value})} />
+                    </div>
+                    <div>
+                      <Label>Sector</Label>
+                      <Select value={deputyForm.sector_id} onValueChange={(value) => setDeputyForm({...deputyForm, sector_id: value})}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select sector" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {sectors.map((sector) => (
+                            <SelectItem key={sector.id} value={sector.id}>{sector.name}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex justify-end space-x-2">
+                      <Button type="button" variant="outline" onClick={() => setIsDeputyDialogOpen(false)}>Cancel</Button>
+                      <Button type="submit">{editingDeputy ? "Update" : "Create"}</Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
           <div className="grid gap-4">
-            {deputies.map((deputy) => (
-              <Card key={deputy.id}>
-                <CardHeader>
+            {deputies
+              .filter(deputy => 
+                deputy.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                deputy.name_ar?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                deputy.deputy_minister?.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              .map((deputy) => (
+              <Card key={deputy.id} className="cursor-pointer hover:shadow-lg transition-shadow">
+                <CardHeader onClick={() => { setSelectedItem(deputy); setIsDetailDialogOpen(true); }}>
                   <div className="flex justify-between items-start">
                     <div>
                       <CardTitle className="flex items-center gap-2">
@@ -316,7 +336,13 @@ export function OrganizationalStructureManagement() {
                       </CardTitle>
                       {deputy.deputy_minister && <CardDescription>{deputy.deputy_minister}</CardDescription>}
                     </div>
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-2" onClick={(e) => e.stopPropagation()}>
+                      <Button variant="outline" size="sm" onClick={() => {
+                        setSelectedItem(deputy);
+                        setIsDetailDialogOpen(true);
+                      }}>
+                        <Eye className="w-4 h-4" />
+                      </Button>
                       <Button variant="outline" size="sm" onClick={() => {
                         setEditingDeputy(deputy);
                         setDeputyForm({
@@ -346,7 +372,6 @@ export function OrganizationalStructureManagement() {
           </div>
         </TabsContent>
 
-        {/* Similar structure for other tabs - departments, domains, subdomains, services */}
         <TabsContent value="departments">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold">Departments</h2>
@@ -715,6 +740,51 @@ export function OrganizationalStructureManagement() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Detail Dialog */}
+      <Dialog open={isDetailDialogOpen} onOpenChange={setIsDetailDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>
+              {selectedItem?.name} Details
+            </DialogTitle>
+          </DialogHeader>
+          {selectedItem && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-sm font-medium">Name (English)</Label>
+                  <p className="text-sm text-muted-foreground">{selectedItem.name}</p>
+                </div>
+                {selectedItem.name_ar && (
+                  <div>
+                    <Label className="text-sm font-medium">Name (Arabic)</Label>
+                    <p className="text-sm text-muted-foreground">{selectedItem.name_ar}</p>
+                  </div>
+                )}
+              </div>
+              {selectedItem.deputy_minister && (
+                <div>
+                  <Label className="text-sm font-medium">Deputy Minister</Label>
+                  <p className="text-sm text-muted-foreground">{selectedItem.deputy_minister}</p>
+                </div>
+              )}
+              {selectedItem.contact_email && (
+                <div>
+                  <Label className="text-sm font-medium">Contact Email</Label>
+                  <p className="text-sm text-muted-foreground">{selectedItem.contact_email}</p>
+                </div>
+              )}
+              <div>
+                <Label className="text-sm font-medium">Created</Label>
+                <p className="text-sm text-muted-foreground">
+                  {new Date(selectedItem.created_at).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
