@@ -106,6 +106,10 @@ export const FocusQuestionsManagement = () => {
   const [questionTypeFilter, setQuestionTypeFilter] = useState('all');
   const [sensitivityFilter, setSensitivityFilter] = useState('all');
   
+  // Detail view states
+  const [viewingQuestion, setViewingQuestion] = useState<FocusQuestion | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  
   // Form states
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);

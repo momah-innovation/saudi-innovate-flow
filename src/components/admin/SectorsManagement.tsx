@@ -23,6 +23,10 @@ export function SectorsManagement() {
   const [isLoading, setIsLoading] = useState(true);
   const [editingSector, setEditingSector] = useState<Sector | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
+  // Detail view states
+  const [viewingSector, setViewingSector] = useState<Sector | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({

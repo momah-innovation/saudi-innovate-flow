@@ -48,6 +48,10 @@ export function CampaignsManagement() {
   const [loading, setLoading] = useState(true);
   const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
+  // Detail view states
+  const [viewingCampaign, setViewingCampaign] = useState<Campaign | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const { toast } = useToast();
 
   // Hardcoded options for now

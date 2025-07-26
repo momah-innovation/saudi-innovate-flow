@@ -51,6 +51,10 @@ export function EventsManagement() {
   const [loading, setLoading] = useState(true);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
+  // Detail view states
+  const [viewingEvent, setViewingEvent] = useState<Event | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const { toast } = useToast();
 
   // Hardcoded options for now
