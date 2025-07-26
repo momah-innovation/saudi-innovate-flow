@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { User, Users, Shield, Plus, Search, Edit, Trash2, UserCheck, UserPlus } from 'lucide-react';
 import RoleRequestManagement from '@/components/admin/RoleRequestManagement';
+import { UserInvitationDialog } from '@/components/admin/UserInvitationDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -45,6 +46,7 @@ export default function UserManagement() {
   // Dialog states
   const [isEditUserDialogOpen, setIsEditUserDialogOpen] = useState(false);
   const [isManageRolesDialogOpen, setIsManageRolesDialogOpen] = useState(false);
+  const [isInviteUserDialogOpen, setIsInviteUserDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<Profile | null>(null);
   
   // Form states
@@ -267,11 +269,16 @@ export default function UserManagement() {
             Manage user accounts, roles, and permissions
           </p>
         </div>
+        <Button onClick={() => setIsInviteUserDialogOpen(true)}>
+          <UserPlus className="h-4 w-4 mr-2" />
+          Invite User
+        </Button>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
           <TabsTrigger value="users">Users</TabsTrigger>
+          <TabsTrigger value="invitations">Invitations</TabsTrigger>
           <TabsTrigger value="roles">Role Assignments</TabsTrigger>
           <TabsTrigger value="requests">Role Requests</TabsTrigger>
         </TabsList>
@@ -462,6 +469,30 @@ export default function UserManagement() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="invitations" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>User Invitations</CardTitle>
+              <CardDescription>
+                Manage pending and sent user invitations
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-8">
+                <UserPlus className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">Invitation management coming soon</p>
+                <Button 
+                  className="mt-4"
+                  onClick={() => setIsInviteUserDialogOpen(true)}
+                >
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Send New Invitation
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="requests" className="space-y-4">
           <RoleRequestManagement />
         </TabsContent>
@@ -609,6 +640,16 @@ export default function UserManagement() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* User Invitation Dialog */}
+      <UserInvitationDialog
+        open={isInviteUserDialogOpen}
+        onOpenChange={setIsInviteUserDialogOpen}
+        onInvitationSent={() => {
+          // Refresh data or handle invitation sent
+          console.log('Invitation sent successfully');
+        }}
+      />
     </div>
   );
 }

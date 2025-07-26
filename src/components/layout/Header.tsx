@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 
 export const Header = () => {
   const { user, userProfile, signOut, hasRole } = useAuth();
@@ -86,12 +87,7 @@ export const Header = () => {
           </Button>
 
           {/* Notifications */}
-          <Button variant="ghost" size="sm" className="relative text-primary-foreground hover:bg-white/10">
-            <Bell className="h-4 w-4" />
-            <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-warning text-warning-foreground">
-              3
-            </Badge>
-          </Button>
+          <NotificationCenter />
 
           {/* User Avatar Menu */}
           <DropdownMenu>
