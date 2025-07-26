@@ -5,6 +5,15 @@ interface SystemListsHook {
   challengePriorityLevels: string[];
   challengeSensitivityLevels: string[];
   challengeTypes: string[];
+  challengeStatusOptions: string[];
+  partnerStatusOptions: string[];
+  partnerTypeOptions: string[];
+  partnershipTypeOptions: string[];
+  expertStatusOptions: string[];
+  assignmentStatusOptions: string[];
+  roleRequestStatusOptions: string[];
+  userStatusOptions: string[];
+  generalStatusOptions: string[];
   availableUserRoles: Array<{value: string; label: string; description: string}>;
   requestableUserRoles: Array<{value: string; label: string; description: string}>;
   teamRoleOptions: string[];
@@ -17,6 +26,15 @@ export const useSystemLists = (): SystemListsHook => {
     challengePriorityLevels: ['low', 'medium', 'high'],
     challengeSensitivityLevels: ['normal', 'sensitive', 'confidential'],
     challengeTypes: ['technology', 'sustainability', 'healthcare', 'education', 'governance'],
+    challengeStatusOptions: ['draft', 'published', 'active', 'closed', 'archived', 'completed'],
+    partnerStatusOptions: ['active', 'inactive', 'pending', 'suspended'],
+    partnerTypeOptions: ['government', 'private', 'academic', 'non_profit', 'international'],
+    partnershipTypeOptions: ['collaborator', 'sponsor', 'technical_partner', 'strategic_partner', 'implementation_partner'],
+    expertStatusOptions: ['active', 'inactive', 'available', 'busy', 'unavailable'],
+    assignmentStatusOptions: ['active', 'inactive', 'pending', 'completed', 'cancelled'],
+    roleRequestStatusOptions: ['pending', 'approved', 'rejected', 'withdrawn'],
+    userStatusOptions: ['active', 'inactive', 'suspended', 'pending', 'revoked'],
+    generalStatusOptions: ['active', 'inactive', 'pending', 'completed', 'cancelled', 'draft', 'published', 'archived'],
     availableUserRoles: [
       { value: 'innovator', label: 'Innovator', description: 'Default role for new users' },
       { value: 'evaluator', label: 'Evaluator', description: 'Evaluate challenge submissions and ideas' },
@@ -53,6 +71,15 @@ export const useSystemLists = (): SystemListsHook => {
             'challenge_priority_levels',
             'challenge_sensitivity_levels', 
             'challenge_types',
+            'challenge_status_options',
+            'partner_status_options',
+            'partner_type_options',
+            'partnership_type_options',
+            'expert_status_options',
+            'assignment_status_options',
+            'role_request_status_options',
+            'user_status_options',
+            'general_status_options',
             'available_user_roles',
             'requestable_user_roles',
             'team_role_options',
@@ -76,6 +103,33 @@ export const useSystemLists = (): SystemListsHook => {
                 break;
               case 'challenge_types':
                 newSettings.challengeTypes = value;
+                break;
+              case 'challenge_status_options':
+                newSettings.challengeStatusOptions = value;
+                break;
+              case 'partner_status_options':
+                newSettings.partnerStatusOptions = value;
+                break;
+              case 'partner_type_options':
+                newSettings.partnerTypeOptions = value;
+                break;
+              case 'partnership_type_options':
+                newSettings.partnershipTypeOptions = value;
+                break;
+              case 'expert_status_options':
+                newSettings.expertStatusOptions = value;
+                break;
+              case 'assignment_status_options':
+                newSettings.assignmentStatusOptions = value;
+                break;
+              case 'role_request_status_options':
+                newSettings.roleRequestStatusOptions = value;
+                break;
+              case 'user_status_options':
+                newSettings.userStatusOptions = value;
+                break;
+              case 'general_status_options':
+                newSettings.generalStatusOptions = value;
                 break;
               case 'available_user_roles':
                 newSettings.availableUserRoles = value;
