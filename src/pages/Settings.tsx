@@ -163,7 +163,7 @@ export default function Settings() {
               </div>
 
               <Tabs defaultValue="profile" className="space-y-6">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-5">
                   <TabsTrigger value="profile" className="flex items-center gap-2">
                     <User className="h-4 w-4" />
                     Profile
@@ -175,6 +175,10 @@ export default function Settings() {
                   <TabsTrigger value="roles" className="flex items-center gap-2">
                     <Shield className="h-4 w-4" />
                     Roles
+                  </TabsTrigger>
+                  <TabsTrigger value="system" className="flex items-center gap-2">
+                    <Globe className="h-4 w-4" />
+                    System
                   </TabsTrigger>
                   <TabsTrigger value="preferences" className="flex items-center gap-2">
                     <Palette className="h-4 w-4" />
@@ -386,6 +390,159 @@ export default function Settings() {
                       )}
                     </CardContent>
                   </Card>
+                </TabsContent>
+
+                <TabsContent value="system" className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Team Management Defaults</CardTitle>
+                      <CardDescription>
+                        Configure default settings for team management
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <div className="space-y-2">
+                          <Label>Default Max Concurrent Projects</Label>
+                          <Input
+                            type="number"
+                            defaultValue="5"
+                            min="1"
+                            max="20"
+                            placeholder="5"
+                          />
+                          <p className="text-xs text-muted-foreground">
+                            Default capacity for new team members
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Default Performance Rating</Label>
+                          <Input
+                            type="number"
+                            defaultValue="0"
+                            min="0"
+                            max="5"
+                            step="0.1"
+                            placeholder="0"
+                          />
+                          <p className="text-xs text-muted-foreground">
+                            Starting performance rating for new members
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Challenge Management</CardTitle>
+                      <CardDescription>
+                        System-wide challenge settings and defaults
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <div className="space-y-2">
+                          <Label>Default Challenge Duration (days)</Label>
+                          <Input
+                            type="number"
+                            defaultValue="30"
+                            min="1"
+                            max="365"
+                            placeholder="30"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Default Submission Limit</Label>
+                          <Input
+                            type="number"
+                            defaultValue="5"
+                            min="1"
+                            max="50"
+                            placeholder="5"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">Auto-approve Ideas</p>
+                          <p className="text-sm text-muted-foreground">
+                            Automatically approve submitted ideas
+                          </p>
+                        </div>
+                        <Switch />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Notification Settings</CardTitle>
+                      <CardDescription>
+                        Configure system-wide notification preferences
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">Email Notifications</p>
+                          <p className="text-sm text-muted-foreground">
+                            Send email notifications for important events
+                          </p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">Role Request Notifications</p>
+                          <p className="text-sm text-muted-foreground">
+                            Notify admins of new role requests
+                          </p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">Challenge Deadline Reminders</p>
+                          <p className="text-sm text-muted-foreground">
+                            Send reminders before challenge deadlines
+                          </p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>System Information</CardTitle>
+                      <CardDescription>
+                        Current system configuration and limits
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid gap-4 md:grid-cols-3">
+                        <div className="space-y-1">
+                          <Label className="text-sm font-medium">Max File Upload Size</Label>
+                          <p className="text-2xl font-bold">5MB</p>
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-sm font-medium">Session Timeout</Label>
+                          <p className="text-2xl font-bold">24h</p>
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-sm font-medium">API Rate Limit</Label>
+                          <p className="text-2xl font-bold">1000/hr</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <div className="flex justify-end">
+                    <Button>
+                      Save System Settings
+                    </Button>
+                  </div>
                 </TabsContent>
 
                 <TabsContent value="preferences" className="space-y-6">
