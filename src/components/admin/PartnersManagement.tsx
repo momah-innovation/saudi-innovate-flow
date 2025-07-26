@@ -32,7 +32,9 @@ export function PartnersManagement() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingPartner, setEditingPartner] = useState<Partner | null>(null);
+  const [viewingPartner, setViewingPartner] = useState<Partner | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const { toast } = useToast();
   const { partnerStatusOptions, partnerTypeOptions } = useSystemLists();
 
@@ -346,71 +348,161 @@ export function PartnersManagement() {
         </Dialog>
       </div>
 
-      <div className="grid gap-4">
-        {partners.map((partner) => (
-          <Card key={partner.id}>
-            <CardHeader>
-              <div className="flex justify-between items-start">
+      {/* Detail View Dialog */}
+      <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Partner Details</DialogTitle>
+          </DialogHeader>
+          {viewingPartner && (
+            <div className="space-y-6">
+              <div className="flex items-start justify-between">
                 <div>
-                  <CardTitle className="flex items-center gap-2">
-                    <Building2 className="w-5 h-5" />
-                    {partner.name}
-                    {partner.name_ar && <span className="text-sm text-muted-foreground">({partner.name_ar})</span>}
-                  </CardTitle>
-                  <CardDescription className="flex items-center gap-2 mt-2">
-                    <Badge className={getPartnerTypeColor(partner.partner_type || '')}>
+                  <h3 className="text-xl font-semibold">{viewingPartner.name}</h3>
+                  {viewingPartner.name_ar && (
+                    <p className="text-muted-foreground">{viewingPartner.name_ar}</p>
+                  )}
+                  <div className="flex gap-2 mt-2">
+                    <Badge className={getPartnerTypeColor(viewingPartner.partner_type || '')}>
+                      {viewingPartner.partner_type}
+                    </Badge>
+                    <Badge className={getStatusColor(viewingPartner.status)}>
+                      {viewingPartner.status}
+                    </Badge>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={() => {
+                    setIsDetailOpen(false);
+                    handleEdit(viewingPartner);
+                  }}>
+                    <Edit className="w-4 h-4 mr-2" />
+                    Edit
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => {
+                    setIsDetailOpen(false);
+                    handleDelete(viewingPartner.id);
+                  }}>
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete
+                  </Button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {viewingPartner.contact_person && (
+                  <div>
+                    <span className="font-medium text-sm text-muted-foreground">Contact Person</span>
+                    <p>{viewingPartner.contact_person}</p>
+                  </div>
+                )}
+                {viewingPartner.email && (
+                  <div>
+                    <span className="font-medium text-sm text-muted-foreground">Email</span>
+                    <div className="flex items-center gap-2">
+                      <Mail className="w-4 h-4" />
+                      <span>{viewingPartner.email}</span>
+                    </div>
+                  </div>
+                )}
+                {viewingPartner.phone && (
+                  <div>
+                    <span className="font-medium text-sm text-muted-foreground">Phone</span>
+                    <div className="flex items-center gap-2">
+                      <Phone className="w-4 h-4" />
+                      <span>{viewingPartner.phone}</span>
+                    </div>
+                  </div>
+                )}
+                {viewingPartner.funding_capacity && (
+                  <div>
+                    <span className="font-medium text-sm text-muted-foreground">Funding Capacity</span>
+                    <p>${viewingPartner.funding_capacity.toLocaleString()}</p>
+                  </div>
+                )}
+              </div>
+
+              {viewingPartner.address && (
+                <div>
+                  <span className="font-medium text-sm text-muted-foreground">Address</span>
+                  <p className="mt-1">{viewingPartner.address}</p>
+                </div>
+              )}
+
+              {viewingPartner.collaboration_history && (
+                <div>
+                  <span className="font-medium text-sm text-muted-foreground">Collaboration History</span>
+                  <p className="mt-1 text-sm">{viewingPartner.collaboration_history}</p>
+                </div>
+              )}
+
+              {viewingPartner.capabilities && viewingPartner.capabilities.length > 0 && (
+                <div>
+                  <span className="font-medium text-sm text-muted-foreground">Capabilities</span>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {viewingPartner.capabilities.map((capability, index) => (
+                      <Badge key={index} variant="secondary">{capability}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Minimal Cards Grid */}
+      <div className="grid gap-3">
+        {partners.map((partner) => (
+          <Card 
+            key={partner.id} 
+            className="cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => {
+              setViewingPartner(partner);
+              setIsDetailOpen(true);
+            }}
+          >
+            <CardContent className="p-4">
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Building2 className="w-4 h-4" />
+                    <h3 className="font-medium">{partner.name}</h3>
+                  </div>
+                  <div className="flex gap-2">
+                    <Badge variant="outline" className={getPartnerTypeColor(partner.partner_type || '')}>
                       {partner.partner_type}
                     </Badge>
                     <Badge className={getStatusColor(partner.status)}>
                       {partner.status}
                     </Badge>
-                  </CardDescription>
+                  </div>
+                  {partner.contact_person && (
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Contact: {partner.contact_person}
+                    </p>
+                  )}
                 </div>
-                <div className="flex space-x-2">
-                  <Button variant="outline" size="sm" onClick={() => handleEdit(partner)}>
+                <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
+                  <Button variant="ghost" size="sm" onClick={() => handleEdit(partner)}>
                     <Edit className="w-4 h-4" />
                   </Button>
-                  <Button variant="outline" size="sm" onClick={() => handleDelete(partner.id)}>
+                  <Button variant="ghost" size="sm" onClick={() => handleDelete(partner.id)}>
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                {partner.contact_person && (
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">Contact:</span>
-                    <span>{partner.contact_person}</span>
-                  </div>
-                )}
-                {partner.email && (
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4" />
-                    <span>{partner.email}</span>
-                  </div>
-                )}
-                {partner.phone && (
-                  <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4" />
-                    <span>{partner.phone}</span>
-                  </div>
-                )}
-                {partner.funding_capacity && (
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">Funding Capacity:</span>
-                    <span>${partner.funding_capacity.toLocaleString()}</span>
-                  </div>
-                )}
-              </div>
-              {partner.address && (
-                <div className="mt-2 text-sm">
-                  <span className="font-medium">Address:</span> {partner.address}
-                </div>
-              )}
             </CardContent>
           </Card>
         ))}
+
+        {partners.length === 0 && (
+          <Card>
+            <CardContent className="text-center py-8">
+              <p className="text-muted-foreground">No partners found</p>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

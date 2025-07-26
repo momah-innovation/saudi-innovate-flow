@@ -45,7 +45,9 @@ export function StakeholdersManagement() {
   const [stakeholders, setStakeholders] = useState<Stakeholder[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingStakeholder, setEditingStakeholder] = useState<Stakeholder | null>(null);
+  const [viewingStakeholder, setViewingStakeholder] = useState<Stakeholder | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const { toast } = useToast();
 
   // Hardcoded options for now
@@ -416,14 +418,131 @@ export function StakeholdersManagement() {
         </Dialog>
       </div>
 
-      <div className="grid gap-6">
+      {/* Detail View Dialog */}
+      <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Stakeholder Details</DialogTitle>
+          </DialogHeader>
+          {viewingStakeholder && (
+            <div className="space-y-6">
+              <div className="flex items-start justify-between">
+                <div>
+                  <h3 className="text-xl font-semibold">{viewingStakeholder.name}</h3>
+                  {viewingStakeholder.name_ar && (
+                    <p className="text-muted-foreground">{viewingStakeholder.name_ar}</p>
+                  )}
+                  <div className="flex gap-2 mt-2">
+                    <Badge variant="outline">
+                      {viewingStakeholder.stakeholder_type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                    </Badge>
+                    <Badge className={getInfluenceColor(viewingStakeholder.influence_level)}>
+                      {viewingStakeholder.influence_level} influence
+                    </Badge>
+                    <Badge className={getEngagementColor(viewingStakeholder.engagement_status)}>
+                      {viewingStakeholder.engagement_status}
+                    </Badge>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={() => {
+                    setIsDetailOpen(false);
+                    handleEdit(viewingStakeholder);
+                  }}>
+                    <Edit className="w-4 h-4 mr-2" />
+                    Edit
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => {
+                    setIsDetailOpen(false);
+                    handleDelete(viewingStakeholder.id);
+                  }}>
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete
+                  </Button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <span className="font-medium text-sm text-muted-foreground">Organization</span>
+                  <div className="flex items-center gap-2 mt-1">
+                    <Building className="w-4 h-4" />
+                    <span>{viewingStakeholder.organization}</span>
+                  </div>
+                </div>
+                <div>
+                  <span className="font-medium text-sm text-muted-foreground">Position</span>
+                  <div className="flex items-center gap-2 mt-1">
+                    <User className="w-4 h-4" />
+                    <span>{viewingStakeholder.position}</span>
+                  </div>
+                </div>
+                <div>
+                  <span className="font-medium text-sm text-muted-foreground">Email</span>
+                  <div className="flex items-center gap-2 mt-1">
+                    <Mail className="w-4 h-4" />
+                    <span>{viewingStakeholder.email}</span>
+                  </div>
+                </div>
+                {viewingStakeholder.phone && (
+                  <div>
+                    <span className="font-medium text-sm text-muted-foreground">Phone</span>
+                    <div className="flex items-center gap-2 mt-1">
+                      <Phone className="w-4 h-4" />
+                      <span>{viewingStakeholder.phone}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <span className="font-medium text-sm text-muted-foreground">Interest Level</span>
+                  <Badge className={getInfluenceColor(viewingStakeholder.interest_level)} variant="secondary">
+                    {viewingStakeholder.interest_level}
+                  </Badge>
+                </div>
+                <div>
+                  <span className="font-medium text-sm text-muted-foreground">Engagement Status</span>
+                  <Badge className={getEngagementColor(viewingStakeholder.engagement_status)}>
+                    {viewingStakeholder.engagement_status}
+                  </Badge>
+                </div>
+              </div>
+
+              {viewingStakeholder.notes && (
+                <div>
+                  <span className="font-medium text-sm text-muted-foreground">Notes</span>
+                  <p className="mt-1 text-sm">{viewingStakeholder.notes}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Minimal Cards Grid */}
+      <div className="grid gap-3">
         {stakeholders.map((stakeholder) => (
-          <Card key={stakeholder.id}>
-            <CardHeader>
+          <Card 
+            key={stakeholder.id}
+            className="cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => {
+              setViewingStakeholder(stakeholder);
+              setIsDetailOpen(true);
+            }}
+          >
+            <CardContent className="p-4">
               <div className="flex justify-between items-start">
-                <div className="space-y-2">
-                  <CardTitle className="text-xl">{stakeholder.name}</CardTitle>
-                  <div className="flex items-center gap-2">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <User className="w-4 h-4" />
+                    <h3 className="font-medium">{stakeholder.name}</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    {stakeholder.position} at {stakeholder.organization}
+                  </p>
+                  <div className="flex gap-2 flex-wrap">
                     <Badge variant="outline">
                       {stakeholder.stakeholder_type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                     </Badge>
@@ -435,60 +554,15 @@ export function StakeholdersManagement() {
                     </Badge>
                   </div>
                 </div>
-                <div className="flex space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEdit(stakeholder)}
-                  >
-                    <Edit className="h-4 w-4" />
+                <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
+                  <Button variant="ghost" size="sm" onClick={() => handleEdit(stakeholder)}>
+                    <Edit className="w-4 h-4" />
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDelete(stakeholder.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
+                  <Button variant="ghost" size="sm" onClick={() => handleDelete(stakeholder.id)}>
+                    <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm mb-4">
-                <div className="flex items-center gap-2">
-                  <Building className="h-4 w-4" />
-                  <span>{stakeholder.organization}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
-                  <span>{stakeholder.position}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4" />
-                  <span>{stakeholder.email}</span>
-                </div>
-                {stakeholder.phone && (
-                  <div className="flex items-center gap-2">
-                    <Phone className="h-4 w-4" />
-                    <span>{stakeholder.phone}</span>
-                  </div>
-                )}
-              </div>
-              
-              <div className="flex items-center gap-4 text-sm mb-4">
-                <div>
-                  <span className="font-semibold">Interest Level:</span>
-                  <Badge className={getInfluenceColor(stakeholder.interest_level)} variant="secondary">
-                    {stakeholder.interest_level}
-                  </Badge>
-                </div>
-              </div>
-              
-              {stakeholder.notes && (
-                <div className="text-sm">
-                  <strong>Notes:</strong> {stakeholder.notes}
-                </div>
-              )}
             </CardContent>
           </Card>
         ))}
