@@ -94,6 +94,11 @@ export default function SystemSettings() {
                       </p>
                     </div>
                   </div>
+                  <div className="flex justify-end pt-4 border-t">
+                    <Button size="sm">
+                      Save Team Defaults
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -137,6 +142,11 @@ export default function SystemSettings() {
                     </div>
                     <Switch />
                   </div>
+                  <div className="flex justify-end pt-4 border-t">
+                    <Button size="sm">
+                      Save Challenge Settings
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -176,6 +186,11 @@ export default function SystemSettings() {
                     </div>
                     <Switch defaultChecked />
                   </div>
+                  <div className="flex justify-end pt-4 border-t">
+                    <Button size="sm">
+                      Save Notification Settings
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -204,12 +219,6 @@ export default function SystemSettings() {
                   </div>
                 </CardContent>
               </Card>
-
-              <div className="flex justify-end">
-                <Button>
-                  Save System Settings
-                </Button>
-              </div>
             </div>
           </main>
         </div>
