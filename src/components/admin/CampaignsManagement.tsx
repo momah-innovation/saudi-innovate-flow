@@ -269,10 +269,10 @@ export function CampaignsManagement() {
         target_participants: formData.target_participants ? parseInt(formData.target_participants) : null,
         target_ideas: formData.target_ideas ? parseInt(formData.target_ideas) : null,
         budget: formData.budget ? parseFloat(formData.budget) : null,
-        sector_id: formData.sector_id || null,
-        deputy_id: formData.deputy_id || null,
-        department_id: formData.department_id || null,
-        challenge_id: formData.challenge_id || null,
+        sector_id: formData.sector_id === "none" ? null : formData.sector_id || null,
+        deputy_id: formData.deputy_id === "none" ? null : formData.deputy_id || null,
+        department_id: formData.department_id === "none" ? null : formData.department_id || null,
+        challenge_id: formData.challenge_id === "none" ? null : formData.challenge_id || null,
         registration_deadline: formData.registration_deadline || null,
         title_ar: formData.title_ar || null,
         description_ar: formData.description_ar || null,
@@ -339,10 +339,10 @@ export function CampaignsManagement() {
       target_ideas: campaign.target_ideas?.toString() || "",
       budget: campaign.budget?.toString() || "",
       success_metrics: campaign.success_metrics || "",
-      sector_id: campaign.sector_id || "",
-      deputy_id: campaign.deputy_id || "",
-      department_id: campaign.department_id || "",
-      challenge_id: campaign.challenge_id || "",
+      sector_id: campaign.sector_id || "none",
+      deputy_id: campaign.deputy_id || "none",
+      department_id: campaign.department_id || "none",
+      challenge_id: campaign.challenge_id || "none",
     });
     setSelectedPartners(campaign.partners?.map(p => p.id) || []);
     setSelectedStakeholders(campaign.stakeholders?.map(s => s.id) || []);
@@ -598,7 +598,7 @@ export function CampaignsManagement() {
               <SelectValue placeholder="Select sector" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">None</SelectItem>
+              <SelectItem value="none">None</SelectItem>
               {sectors.map((sector) => (
                 <SelectItem key={sector.id} value={sector.id}>
                   {sector.name}
@@ -614,7 +614,7 @@ export function CampaignsManagement() {
               <SelectValue placeholder="Select deputy" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">None</SelectItem>
+              <SelectItem value="none">None</SelectItem>
               {deputies.map((deputy) => (
                 <SelectItem key={deputy.id} value={deputy.id}>
                   {deputy.name}
@@ -633,7 +633,7 @@ export function CampaignsManagement() {
               <SelectValue placeholder="Select department" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">None</SelectItem>
+              <SelectItem value="none">None</SelectItem>
               {departments.map((department) => (
                 <SelectItem key={department.id} value={department.id}>
                   {department.name}
@@ -649,7 +649,7 @@ export function CampaignsManagement() {
               <SelectValue placeholder="Select challenge" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">None</SelectItem>
+              <SelectItem value="none">None</SelectItem>
               {challenges.map((challenge) => (
                 <SelectItem key={challenge.id} value={challenge.id}>
                   {challenge.title}
