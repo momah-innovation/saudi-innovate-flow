@@ -571,11 +571,23 @@ export function CampaignsManagement() {
           ? prev.sector_ids.filter(id => id !== value)
           : [...prev.sector_ids, value];
         
+        // Filter valid deputies based on new sector selection
+        const validDeputyIds = prev.deputy_ids.filter(deputyId => {
+          const deputy = deputies.find(d => d.id === deputyId);
+          return deputy && newSectorIds.includes(deputy.sector_id);
+        });
+        
+        // Filter valid departments based on remaining valid deputies
+        const validDepartmentIds = prev.department_ids.filter(deptId => {
+          const department = departments.find(d => d.id === deptId);
+          return department && validDeputyIds.includes(department.deputy_id);
+        });
+        
         return {
           ...prev,
           sector_ids: newSectorIds,
-          deputy_ids: [], // Clear deputies when sectors change
-          department_ids: [] // Clear departments when sectors change
+          deputy_ids: validDeputyIds,
+          department_ids: validDepartmentIds
         };
       });
     };
@@ -586,10 +598,16 @@ export function CampaignsManagement() {
           ? prev.deputy_ids.filter(id => id !== value)
           : [...prev.deputy_ids, value];
         
+        // Filter valid departments based on new deputy selection
+        const validDepartmentIds = prev.department_ids.filter(deptId => {
+          const department = departments.find(d => d.id === deptId);
+          return department && newDeputyIds.includes(department.deputy_id);
+        });
+        
         return {
           ...prev,
           deputy_ids: newDeputyIds,
-          department_ids: [] // Clear departments when deputies change
+          department_ids: validDepartmentIds
         };
       });
     };
