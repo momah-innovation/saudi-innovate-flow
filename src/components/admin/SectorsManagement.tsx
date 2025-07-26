@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Plus, Edit, Trash2, Building } from "lucide-react";
+import { Plus, Edit, Trash2, Building, Search, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Sector {
@@ -27,6 +27,9 @@ export function SectorsManagement() {
   // Detail view states
   const [viewingSector, setViewingSector] = useState<Sector | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  
+  // Search and filter states
+  const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -34,6 +37,17 @@ export function SectorsManagement() {
     name_ar: "",
     description: "",
     vision_2030_alignment: ""
+  });
+
+  // Filter sectors based on search term
+  const filteredSectors = sectors.filter((sector) => {
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      sector.name.toLowerCase().includes(searchLower) ||
+      (sector.name_ar && sector.name_ar.toLowerCase().includes(searchLower)) ||
+      (sector.description && sector.description.toLowerCase().includes(searchLower)) ||
+      (sector.vision_2030_alignment && sector.vision_2030_alignment.toLowerCase().includes(searchLower))
+    );
   });
 
   useEffect(() => {
@@ -227,8 +241,31 @@ export function SectorsManagement() {
         </Dialog>
       </div>
 
+      {/* Search and Filters */}
+      <div className="flex flex-col sm:flex-row gap-4 items-center">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+          <Input
+            placeholder="Search sectors by name, description, or Vision 2030 alignment..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 pr-10"
+          />
+          {searchTerm && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSearchTerm("")}
+              className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+      </div>
+
       <div className="grid gap-4">
-        {sectors.map((sector) => (
+        {filteredSectors.map((sector) => (
           <Card key={sector.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => { setViewingSector(sector); setIsDetailOpen(true); }}>
             <CardHeader>
               <div className="flex justify-between items-start">
@@ -256,6 +293,29 @@ export function SectorsManagement() {
             </CardHeader>
           </Card>
         ))}
+
+        {filteredSectors.length === 0 && searchTerm && (
+          <Card>
+            <CardContent className="text-center py-8">
+              <p className="text-muted-foreground">No sectors found matching your search criteria</p>
+              <Button 
+                variant="outline" 
+                onClick={() => setSearchTerm("")}
+                className="mt-2"
+              >
+                Clear search
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {sectors.length === 0 && !searchTerm && (
+          <Card>
+            <CardContent className="text-center py-8">
+              <p className="text-muted-foreground">No sectors found</p>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* Detail View Dialog */}

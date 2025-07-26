@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Plus, Edit, Trash2, Building2, Phone, Mail } from "lucide-react";
+import { Plus, Edit, Trash2, Building2, Phone, Mail, Search, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 
@@ -32,9 +32,15 @@ export function PartnersManagement() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingPartner, setEditingPartner] = useState<Partner | null>(null);
+  // Detail view states
   const [viewingPartner, setViewingPartner] = useState<Partner | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  
+  // Search and filter states
+  const [searchTerm, setSearchTerm] = useState("");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
   const { toast } = useToast();
   const { partnerStatusOptions, partnerTypeOptions } = useSystemLists();
 
@@ -134,6 +140,27 @@ export function PartnersManagement() {
       status: partner.status
     });
     setIsDialogOpen(true);
+  };
+
+  // Filter partners based on search and filters
+  const filteredPartners = partners.filter((partner) => {
+    const searchLower = searchTerm.toLowerCase();
+    const matchesSearch = 
+      partner.name.toLowerCase().includes(searchLower) ||
+      (partner.name_ar && partner.name_ar.toLowerCase().includes(searchLower)) ||
+      (partner.contact_person && partner.contact_person.toLowerCase().includes(searchLower)) ||
+      (partner.email && partner.email.toLowerCase().includes(searchLower));
+    
+    const matchesType = typeFilter === "all" || partner.partner_type === typeFilter;
+    const matchesStatus = statusFilter === "all" || partner.status === statusFilter;
+    
+    return matchesSearch && matchesType && matchesStatus;
+  });
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setTypeFilter("all");
+    setStatusFilter("all");
   };
 
   const handleDelete = async (id: string) => {
@@ -257,7 +284,30 @@ export function PartnersManagement() {
                         <SelectItem key={type} value={type}>
                           {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                         </SelectItem>
-                      ))}
+        ))}
+
+        {filteredPartners.length === 0 && (searchTerm || typeFilter !== "all" || statusFilter !== "all") && (
+          <Card>
+            <CardContent className="text-center py-8">
+              <p className="text-muted-foreground">No partners found matching your criteria</p>
+              <Button 
+                variant="outline" 
+                onClick={clearFilters}
+                className="mt-2"
+              >
+                Clear filters
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {partners.length === 0 && !(searchTerm || typeFilter !== "all" || statusFilter !== "all") && (
+          <Card>
+            <CardContent className="text-center py-8">
+              <p className="text-muted-foreground">No partners found</p>
+            </CardContent>
+          </Card>
+        )}
                     </SelectContent>
                   </Select>
                 </div>

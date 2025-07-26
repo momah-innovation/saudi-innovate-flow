@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Plus, Edit, Trash2, Calendar, Users, Target, Megaphone } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, Calendar, Users, Target, Megaphone, Search, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Select,
@@ -53,6 +53,11 @@ export function CampaignsManagement() {
   // Detail view states
   const [viewingCampaign, setViewingCampaign] = useState<Campaign | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  
+  // Search and filter states
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [themeFilter, setThemeFilter] = useState("all");
   const { toast } = useToast();
 
   // Hardcoded options for now
@@ -234,6 +239,26 @@ export function CampaignsManagement() {
       case "on_hold": return "outline";
       default: return "outline";
     }
+  };
+
+  // Filter campaigns based on search and filters
+  const filteredCampaigns = campaigns.filter((campaign) => {
+    const searchLower = searchTerm.toLowerCase();
+    const matchesSearch = 
+      campaign.title.toLowerCase().includes(searchLower) ||
+      (campaign.description && campaign.description.toLowerCase().includes(searchLower)) ||
+      (campaign.title_ar && campaign.title_ar.toLowerCase().includes(searchLower));
+    
+    const matchesStatus = statusFilter === "all" || campaign.status === statusFilter;
+    const matchesTheme = themeFilter === "all" || campaign.theme === themeFilter;
+    
+    return matchesSearch && matchesStatus && matchesTheme;
+  });
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setStatusFilter("all");
+    setThemeFilter("all");
   };
 
   if (loading) {
@@ -428,8 +453,70 @@ export function CampaignsManagement() {
         </Dialog>
       </div>
 
+      {/* Search and Filters */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row gap-4 items-center">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <Input
+              placeholder="Search campaigns by title or description..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-10"
+            />
+            {searchTerm && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSearchTerm("")}
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+          
+          <div className="flex gap-2">
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-[140px]">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="planning">Planning</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="on_hold">On Hold</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Select value={themeFilter} onValueChange={setThemeFilter}>
+              <SelectTrigger className="w-[160px]">
+                <SelectValue placeholder="Theme" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Themes</SelectItem>
+                {themeOptions.map((theme) => (
+                  <SelectItem key={theme} value={theme}>
+                    {theme.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            {(searchTerm || statusFilter !== "all" || themeFilter !== "all") && (
+              <Button variant="outline" onClick={clearFilters} size="sm">
+                <X className="h-4 w-4 mr-1" />
+                Clear
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+
       <div className="grid gap-4">
-        {campaigns.map((campaign) => (
+        {filteredCampaigns.map((campaign) => (
           <Card key={campaign.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => { setViewingCampaign(campaign); setIsDetailOpen(true); }}>
             <CardHeader>
               <div className="flex justify-between items-start">
@@ -471,7 +558,22 @@ export function CampaignsManagement() {
           </Card>
         ))}
 
-        {campaigns.length === 0 && (
+        {filteredCampaigns.length === 0 && (searchTerm || statusFilter !== "all" || themeFilter !== "all") && (
+          <Card>
+            <CardContent className="text-center py-8">
+              <p className="text-muted-foreground">No campaigns found matching your criteria</p>
+              <Button 
+                variant="outline" 
+                onClick={clearFilters}
+                className="mt-2"
+              >
+                Clear filters
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {campaigns.length === 0 && !(searchTerm || statusFilter !== "all" || themeFilter !== "all") && (
           <Card>
             <CardContent className="text-center py-8">
               <p className="text-muted-foreground">No campaigns found</p>

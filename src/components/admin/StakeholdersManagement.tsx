@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Plus, Edit, Trash2, User, Mail, Phone, Building } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, User, Mail, Phone, Building, Search, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Select,
@@ -48,6 +48,12 @@ export function StakeholdersManagement() {
   const [viewingStakeholder, setViewingStakeholder] = useState<Stakeholder | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  
+  // Search and filter states
+  const [searchTerm, setSearchTerm] = useState("");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [influenceFilter, setInfluenceFilter] = useState("all");
+  const [engagementFilter, setEngagementFilter] = useState("all");
   const { toast } = useToast();
 
   // Hardcoded options for now
@@ -196,6 +202,30 @@ export function StakeholdersManagement() {
     }
   };
 
+  // Filter stakeholders based on search and filters
+  const filteredStakeholders = stakeholders.filter((stakeholder) => {
+    const searchLower = searchTerm.toLowerCase();
+    const matchesSearch = 
+      stakeholder.name.toLowerCase().includes(searchLower) ||
+      (stakeholder.name_ar && stakeholder.name_ar.toLowerCase().includes(searchLower)) ||
+      (stakeholder.organization && stakeholder.organization.toLowerCase().includes(searchLower)) ||
+      (stakeholder.position && stakeholder.position.toLowerCase().includes(searchLower)) ||
+      (stakeholder.email && stakeholder.email.toLowerCase().includes(searchLower));
+    
+    const matchesType = typeFilter === "all" || stakeholder.stakeholder_type === typeFilter;
+    const matchesInfluence = influenceFilter === "all" || stakeholder.influence_level === influenceFilter;
+    const matchesEngagement = engagementFilter === "all" || stakeholder.engagement_status === engagementFilter;
+    
+    return matchesSearch && matchesType && matchesInfluence && matchesEngagement;
+  });
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setTypeFilter("all");
+    setInfluenceFilter("all");
+    setEngagementFilter("all");
+  };
+
   const resetForm = () => {
     setFormData({
       name: "",
@@ -341,7 +371,30 @@ export function StakeholdersManagement() {
                         <SelectItem key={type} value={type}>
                           {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                         </SelectItem>
-                      ))}
+        ))}
+
+        {filteredStakeholders.length === 0 && (searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all") && (
+          <Card>
+            <CardContent className="text-center py-8">
+              <p className="text-muted-foreground">No stakeholders found matching your criteria</p>
+              <Button 
+                variant="outline" 
+                onClick={clearFilters}
+                className="mt-2"
+              >
+                Clear filters
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {stakeholders.length === 0 && !(searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all") && (
+          <Card>
+            <CardContent className="text-center py-8">
+              <p className="text-muted-foreground">No stakeholders found</p>
+            </CardContent>
+          </Card>
+        )}
                     </SelectContent>
                   </Select>
                 </div>

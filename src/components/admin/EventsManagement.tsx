@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Plus, Edit, Trash2, Calendar, MapPin, Users, Clock } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, Calendar, MapPin, Users, Clock, Search, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Select,
@@ -60,6 +60,12 @@ export function EventsManagement() {
   // Detail view states
   const [viewingEvent, setViewingEvent] = useState<Event | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  
+  // Search and filter states
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [formatFilter, setFormatFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
   const { toast } = useToast();
 
   // Hardcoded options for now
@@ -246,6 +252,28 @@ export function EventsManagement() {
       case "postponed": return "outline";
       default: return "outline";
     }
+  };
+
+  // Filter events based on search and filters
+  const filteredEvents = events.filter((event) => {
+    const searchLower = searchTerm.toLowerCase();
+    const matchesSearch = 
+      event.title.toLowerCase().includes(searchLower) ||
+      (event.description && event.description.toLowerCase().includes(searchLower)) ||
+      (event.location && event.location.toLowerCase().includes(searchLower));
+    
+    const matchesStatus = statusFilter === "all" || event.status === statusFilter;
+    const matchesFormat = formatFilter === "all" || event.format === formatFilter;
+    const matchesType = typeFilter === "all" || event.event_type === typeFilter;
+    
+    return matchesSearch && matchesStatus && matchesFormat && matchesType;
+  });
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setStatusFilter("all");
+    setFormatFilter("all");
+    setTypeFilter("all");
   };
 
   if (loading) {
@@ -455,8 +483,84 @@ export function EventsManagement() {
         </Dialog>
       </div>
 
+      {/* Search and Filters */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row gap-4 items-center">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <Input
+              placeholder="Search events by title, description, or location..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-10"
+            />
+            {searchTerm && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSearchTerm("")}
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+          
+          <div className="flex gap-2">
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="scheduled">Scheduled</SelectItem>
+                <SelectItem value="ongoing">Ongoing</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="postponed">Postponed</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Select value={formatFilter} onValueChange={setFormatFilter}>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue placeholder="Format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Formats</SelectItem>
+                {formatOptions.map((format) => (
+                  <SelectItem key={format} value={format}>
+                    {format.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            <Select value={typeFilter} onValueChange={setTypeFilter}>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue placeholder="Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                {eventTypes.map((type) => (
+                  <SelectItem key={type} value={type}>
+                    {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            {(searchTerm || statusFilter !== "all" || formatFilter !== "all" || typeFilter !== "all") && (
+              <Button variant="outline" onClick={clearFilters} size="sm">
+                <X className="h-4 w-4 mr-1" />
+                Clear
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+
       <div className="grid gap-4">
-        {events.map((event) => (
+        {filteredEvents.map((event) => (
           <Card key={event.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => { setViewingEvent(event); setIsDetailOpen(true); }}>
             <CardHeader>
               <div className="flex justify-between items-start">
@@ -503,7 +607,22 @@ export function EventsManagement() {
           </Card>
         ))}
 
-        {events.length === 0 && (
+        {filteredEvents.length === 0 && (searchTerm || statusFilter !== "all" || formatFilter !== "all" || typeFilter !== "all") && (
+          <Card>
+            <CardContent className="text-center py-8">
+              <p className="text-muted-foreground">No events found matching your criteria</p>
+              <Button 
+                variant="outline" 
+                onClick={clearFilters}
+                className="mt-2"
+              >
+                Clear filters
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {events.length === 0 && !(searchTerm || statusFilter !== "all" || formatFilter !== "all" || typeFilter !== "all") && (
           <Card>
             <CardContent className="text-center py-8">
               <p className="text-muted-foreground">No events found</p>
