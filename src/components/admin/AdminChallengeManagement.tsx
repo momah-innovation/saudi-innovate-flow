@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useSystemLists } from "@/hooks/useSystemLists";
+import { useToast } from "@/hooks/use-toast";
 import { ChallengeSettings } from "./ChallengeSettings";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -29,7 +31,7 @@ import {
   UserCheck,
   Briefcase
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 interface Challenge {
   id: string;
