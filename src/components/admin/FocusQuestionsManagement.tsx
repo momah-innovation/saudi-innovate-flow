@@ -29,6 +29,16 @@ import {
   Shield
 } from "lucide-react";
 
+// System settings hook
+const useSystemSettings = () => {
+  const [systemSettings] = useState({
+    focusQuestionTextareaRows: 4,
+    focusQuestionNotesRows: 2
+  });
+  
+  return systemSettings;
+};
+
 interface Challenge {
   id: string;
   title: string;
@@ -55,6 +65,7 @@ interface FocusQuestion {
 
 export const FocusQuestionsManagement = () => {
   const { toast } = useToast();
+  const systemSettings = useSystemSettings();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
   const [filteredQuestions, setFilteredQuestions] = useState<FocusQuestion[]>([]);

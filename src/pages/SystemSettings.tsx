@@ -488,24 +488,7 @@ export default function SystemSettings() {
       toast.success("Component settings saved successfully.");
     }
   };
-      title: "Success", 
-      description: "Component settings saved successfully.",
-    });
-  };
 
-  const handleSaveAPISettings = async () => {
-    const settingsToSave = [
-      { key: 'api_rate_limit', value: values.apiRateLimit }
-    ];
-
-    const success = await saveSettings(settingsToSave);
-    if (success) {
-      toast({
-        title: "Success",
-        description: "API settings saved successfully.",
-      });
-    }
-  };
 
   const handleTabChange = (tab: string) => {
     if (tab === "focus-questions") {

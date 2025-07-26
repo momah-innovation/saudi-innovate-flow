@@ -26,6 +26,19 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
+// System settings state
+const useSystemSettings = () => {
+  const [systemSettings, setSystemSettings] = useState({
+    maxConcurrentProjects: 5,
+    performanceRatingMin: 0,
+    performanceRatingMax: 5,
+    teamInsightsDisplayLimit: 5,
+    insightTitlePreviewLength: 50
+  });
+  
+  return systemSettings;
+};
+
 interface InnovationTeamMember {
   id: string;
   user_id: string;
@@ -56,6 +69,7 @@ interface Assignment {
 
 export default function TeamManagement() {
   const { toast } = useToast();
+  const systemSettings = useSystemSettings();
   const [teamMembers, setTeamMembers] = useState<InnovationTeamMember[]>([]);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [profiles, setProfiles] = useState<any[]>([]);
@@ -192,7 +206,7 @@ export default function TeamManagement() {
         .from('insights')
         .select('*')
         .order('created_at', { ascending: false })
-        .limit(systemSettings.insightsDisplayLimit);
+        .limit(systemSettings.teamInsightsDisplayLimit);
 
       if (error) throw error;
       setInsights(insightsData || []);
@@ -293,7 +307,7 @@ export default function TeamManagement() {
         allAssignments.push({
           id: insight.id,
           type: 'analysis',
-          title: insight.insight_text.substring(0, systemSettings.insightTitlePreviewLength) + '...',
+           title: insight.insight_text.substring(0, systemSettings.insightTitlePreviewLength) + '...',
           status: 'completed',
           start_date: insight.created_at,
           user_id: insight.extracted_by
@@ -938,7 +952,7 @@ export default function TeamManagement() {
                   value={memberForm.max_concurrent_projects}
                   onChange={(e) => setMemberForm(prev => ({ ...prev, max_concurrent_projects: parseInt(e.target.value) || 5 }))}
                   min="1"
-                      max={systemSettings.maxConcurrentProjects}
+                   max={systemSettings.maxConcurrentProjects}
                 />
               </div>
               <div className="space-y-2">
@@ -947,8 +961,8 @@ export default function TeamManagement() {
                   type="number"
                   value={memberForm.performance_rating}
                   onChange={(e) => setMemberForm(prev => ({ ...prev, performance_rating: parseFloat(e.target.value) || 0 }))}
-                      min={systemSettings.minPerformanceRating}
-                      max={systemSettings.maxPerformanceRating}
+                   min={systemSettings.performanceRatingMin}
+                   max={systemSettings.performanceRatingMax}
                   step="0.1"
                 />
               </div>
@@ -1057,7 +1071,7 @@ export default function TeamManagement() {
                   value={memberForm.max_concurrent_projects}
                   onChange={(e) => setMemberForm(prev => ({ ...prev, max_concurrent_projects: parseInt(e.target.value) || 5 }))}
                   min="1"
-                  max={systemSettings.maxConcurrentProjects}
+                   max={systemSettings.maxConcurrentProjects}
                 />
               </div>
               <div className="space-y-2">
@@ -1066,8 +1080,8 @@ export default function TeamManagement() {
                   type="number"
                   value={memberForm.performance_rating}
                   onChange={(e) => setMemberForm(prev => ({ ...prev, performance_rating: parseFloat(e.target.value) || 0 }))}
-                      min={systemSettings.minPerformanceRating}
-                      max={systemSettings.maxPerformanceRating}
+                   min={systemSettings.performanceRatingMin}
+                   max={systemSettings.performanceRatingMax}
                   step="0.1"
                 />
               </div>

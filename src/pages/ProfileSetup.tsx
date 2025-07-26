@@ -20,6 +20,14 @@ const ProfileSetup = () => {
   const [maxExperienceYears, setMaxExperienceYears] = useState(50);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
+  // System settings state
+  const [systemSettings, setSystemSettings] = useState({
+    profileBioRows: 4,
+    profileInnovationBackgroundRows: 4,
+    userExperienceYearsMin: 0,
+    userExperienceYearsMax: 50
+  });
+  
   // Load system settings
   useEffect(() => {
     const loadSystemSettings = async () => {
@@ -312,7 +320,7 @@ const ProfileSetup = () => {
                           value={profileData.innovation_background}
                           onChange={(e) => handleInputChange('innovation_background', e.target.value)}
                           disabled={isSubmitting}
-                          rows={systemSettings.innovationBackgroundRows}
+                          rows={systemSettings.profileInnovationBackgroundRows}
                         />
                       </div>
 
@@ -396,8 +404,8 @@ const ProfileSetup = () => {
                           value={profileData.experience_years}
                           onChange={(e) => handleInputChange('experience_years', e.target.value)}
                           disabled={isSubmitting}
-                        min={systemSettings.minExperienceYears}
-                        max={systemSettings.maxExperienceYears}
+                       min={systemSettings.userExperienceYearsMin}
+                       max={systemSettings.userExperienceYearsMax}
                         />
                       </div>
                     </div>
