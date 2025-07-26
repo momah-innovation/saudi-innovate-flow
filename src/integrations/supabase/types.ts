@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      campaign_partner_links: {
+        Row: {
+          campaign_id: string
+          created_at: string
+          id: string
+          partner_id: string
+        }
+        Insert: {
+          campaign_id: string
+          created_at?: string
+          id?: string
+          partner_id: string
+        }
+        Update: {
+          campaign_id?: string
+          created_at?: string
+          id?: string
+          partner_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_campaign_partner_links_campaign_id"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_campaign_partner_links_partner_id"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       campaign_partners: {
         Row: {
           campaign_id: string
@@ -55,6 +91,42 @@ export type Database = {
             columns: ["partner_id"]
             isOneToOne: false
             referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campaign_stakeholder_links: {
+        Row: {
+          campaign_id: string
+          created_at: string
+          id: string
+          stakeholder_id: string
+        }
+        Insert: {
+          campaign_id: string
+          created_at?: string
+          id?: string
+          stakeholder_id: string
+        }
+        Update: {
+          campaign_id?: string
+          created_at?: string
+          id?: string
+          stakeholder_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_campaign_stakeholder_links_campaign_id"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_campaign_stakeholder_links_stakeholder_id"
+            columns: ["stakeholder_id"]
+            isOneToOne: false
+            referencedRelation: "stakeholders"
             referencedColumns: ["id"]
           },
         ]
@@ -159,6 +231,34 @@ export type Database = {
           },
           {
             foreignKeyName: "campaigns_sector_id_fkey"
+            columns: ["sector_id"]
+            isOneToOne: false
+            referencedRelation: "sectors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_campaigns_challenge_id"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_campaigns_department_id"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_campaigns_deputy_id"
+            columns: ["deputy_id"]
+            isOneToOne: false
+            referencedRelation: "deputies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_campaigns_sector_id"
             columns: ["sector_id"]
             isOneToOne: false
             referencedRelation: "sectors"
@@ -523,6 +623,48 @@ export type Database = {
             referencedRelation: "sub_domains"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_challenges_department_id"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_challenges_deputy_id"
+            columns: ["deputy_id"]
+            isOneToOne: false
+            referencedRelation: "deputies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_challenges_domain_id"
+            columns: ["domain_id"]
+            isOneToOne: false
+            referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_challenges_sector_id"
+            columns: ["sector_id"]
+            isOneToOne: false
+            referencedRelation: "sectors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_challenges_service_id"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_challenges_sub_domain_id"
+            columns: ["sub_domain_id"]
+            isOneToOne: false
+            referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
         ]
       }
       departments: {
@@ -644,6 +786,114 @@ export type Database = {
             columns: ["department_id"]
             isOneToOne: false
             referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_focus_question_links: {
+        Row: {
+          created_at: string
+          event_id: string
+          focus_question_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          focus_question_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          focus_question_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_event_focus_question_links_event_id"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_event_focus_question_links_focus_question_id"
+            columns: ["focus_question_id"]
+            isOneToOne: false
+            referencedRelation: "focus_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_partner_links: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          partner_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          partner_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          partner_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_event_partner_links_event_id"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_event_partner_links_partner_id"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_stakeholder_links: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          stakeholder_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          stakeholder_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          stakeholder_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_event_stakeholder_links_event_id"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_event_stakeholder_links_stakeholder_id"
+            columns: ["stakeholder_id"]
+            isOneToOne: false
+            referencedRelation: "stakeholders"
             referencedColumns: ["id"]
           },
         ]
@@ -789,6 +1039,27 @@ export type Database = {
           },
           {
             foreignKeyName: "events_sector_id_fkey"
+            columns: ["sector_id"]
+            isOneToOne: false
+            referencedRelation: "sectors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_events_campaign_id"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_events_challenge_id"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_events_sector_id"
             columns: ["sector_id"]
             isOneToOne: false
             referencedRelation: "sectors"

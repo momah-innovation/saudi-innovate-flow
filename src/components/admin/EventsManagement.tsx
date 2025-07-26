@@ -47,13 +47,17 @@ interface Event {
   campaign_id?: string;
   challenge_id?: string;
   sector_id?: string;
-  target_stakeholder_groups?: string[];
-  partner_organizations?: string[];
-  related_focus_questions?: string[];
   target_audience?: string;
   agenda?: string;
   speakers?: string;
   created_at: string;
+  // Relationship data
+  partners?: Array<{ id: string; name: string; }>;
+  stakeholders?: Array<{ id: string; name: string; }>;
+  focus_questions?: Array<{ id: string; question_text: string; }>;
+  campaign?: { id: string; title: string; };
+  challenge?: { id: string; title: string; };
+  sector?: { id: string; name: string; };
 }
 
 export function EventsManagement() {
@@ -139,13 +143,41 @@ export function EventsManagement() {
   const fetchEvents = async () => {
     try {
       setLoading(true);
+      
+      // Fetch events with relationships using proper JOINs
       const { data, error } = await supabase
         .from("events")
-        .select("*")
+        .select(`
+          *,
+          campaign:campaigns!campaign_id(id, title),
+          challenge:challenges!challenge_id(id, title),
+          sector:sectors!sector_id(id, name),
+          partners:event_partner_links(
+            partner:partners(id, name)
+          ),
+          stakeholders:event_stakeholder_links(
+            stakeholder:stakeholders(id, name)
+          ),
+          focus_questions:event_focus_question_links(
+            focus_question:focus_questions(id, question_text)
+          )
+        `)
         .order("event_date", { ascending: true });
 
       if (error) throw error;
-      setEvents(data || []);
+      
+      // Transform the data to flatten relationships
+      const transformedData = data?.map(event => ({
+        ...event,
+        partners: event.partners?.map((p: any) => p.partner).filter(Boolean) || [],
+        stakeholders: event.stakeholders?.map((s: any) => s.stakeholder).filter(Boolean) || [],
+        focus_questions: event.focus_questions?.map((q: any) => q.focus_question).filter(Boolean) || [],
+        campaign: event.campaign || undefined,
+        challenge: event.challenge || undefined,
+        sector: event.sector || undefined
+      })) || [];
+      
+      setEvents(transformedData);
     } catch (error) {
       console.error("Error fetching events:", error);
       toast({
@@ -227,9 +259,9 @@ export function EventsManagement() {
       campaign_id: event.campaign_id || "",
       challenge_id: event.challenge_id || "",
       sector_id: event.sector_id || "",
-      target_stakeholder_groups: event.target_stakeholder_groups || [],
-      partner_organizations: event.partner_organizations || [],
-      related_focus_questions: event.related_focus_questions || [],
+      target_stakeholder_groups: event.stakeholders?.map(s => s.id) || [],
+      partner_organizations: event.partners?.map(p => p.id) || [],
+      related_focus_questions: event.focus_questions?.map(q => q.id) || [],
     });
     setIsDialogOpen(true);
   };
@@ -854,27 +886,27 @@ export function EventsManagement() {
                   <div>
                     <h5 className="font-medium mb-2 text-sm">Event Context</h5>
                     <div className="space-y-2 text-sm">
-                      {viewingEvent.campaign_id && (
+                      {viewingEvent.campaign && (
                         <div className="flex items-center gap-2">
                           <span className="font-medium">Campaign:</span>
                           <span className="text-muted-foreground">
-                            {campaigns.find((c: any) => c.id === viewingEvent.campaign_id)?.title || 'Unknown'}
+                            {viewingEvent.campaign.title}
                           </span>
                         </div>
                       )}
-                      {viewingEvent.challenge_id && (
+                      {viewingEvent.challenge && (
                         <div className="flex items-center gap-2">
                           <span className="font-medium">Challenge:</span>
                           <span className="text-muted-foreground">
-                            {challenges.find((c: any) => c.id === viewingEvent.challenge_id)?.title || 'Unknown'}
+                            {viewingEvent.challenge.title}
                           </span>
                         </div>
                       )}
-                      {viewingEvent.sector_id && (
+                      {viewingEvent.sector && (
                         <div className="flex items-center gap-2">
                           <span className="font-medium">Sector:</span>
                           <span className="text-muted-foreground">
-                            {sectors.find((s: any) => s.id === viewingEvent.sector_id)?.name || 'Unknown'}
+                            {viewingEvent.sector.name}
                           </span>
                         </div>
                       )}
@@ -884,37 +916,37 @@ export function EventsManagement() {
                   <div>
                     <h5 className="font-medium mb-2 text-sm">Stakeholders & Focus</h5>
                     <div className="space-y-2 text-sm">
-                      {viewingEvent.target_stakeholder_groups && viewingEvent.target_stakeholder_groups.length > 0 && (
+                      {viewingEvent.stakeholders && viewingEvent.stakeholders.length > 0 && (
                         <div>
                           <span className="font-medium">Target Stakeholders:</span>
                           <div className="flex flex-wrap gap-1 mt-1">
-                            {viewingEvent.target_stakeholder_groups.map((group: string, index: number) => (
+                            {viewingEvent.stakeholders.map((stakeholder, index) => (
                               <Badge key={index} variant="outline" className="text-xs">
-                                {group}
+                                {stakeholder.name}
                               </Badge>
                             ))}
                           </div>
                         </div>
                       )}
-                      {viewingEvent.partner_organizations && viewingEvent.partner_organizations.length > 0 && (
+                      {viewingEvent.partners && viewingEvent.partners.length > 0 && (
                         <div>
                           <span className="font-medium">Partner Organizations:</span>
                           <div className="space-y-1 mt-1">
-                            {viewingEvent.partner_organizations.map((partnerId: string, index: number) => (
+                            {viewingEvent.partners.map((partner, index) => (
                               <div key={index} className="text-muted-foreground">
-                                {partners.find((p: any) => p.id === partnerId)?.name || 'Unknown Partner'}
+                                {partner.name}
                               </div>
                             ))}
                           </div>
                         </div>
                       )}
-                      {viewingEvent.related_focus_questions && viewingEvent.related_focus_questions.length > 0 && (
+                      {viewingEvent.focus_questions && viewingEvent.focus_questions.length > 0 && (
                         <div>
                           <span className="font-medium">Focus Questions:</span>
                           <div className="space-y-1 mt-1">
-                            {viewingEvent.related_focus_questions.map((questionId: string, index: number) => (
+                            {viewingEvent.focus_questions.map((question, index) => (
                               <div key={index} className="text-muted-foreground text-xs">
-                                {focusQuestions.find((q: any) => q.id === questionId)?.question_text || 'Unknown Question'}
+                                {question.question_text}
                               </div>
                             ))}
                           </div>

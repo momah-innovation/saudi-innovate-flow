@@ -23,6 +23,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  updateCampaignPartners,
+  updateCampaignStakeholders
+} from "@/lib/relationshipHelpers";
 
 interface Campaign {
   id: string;
@@ -44,10 +48,15 @@ interface Campaign {
   sector_id?: string;
   deputy_id?: string;
   department_id?: string;
-  target_stakeholder_groups?: string[];
-  partner_organizations?: string[];
   created_at: string;
   updated_at: string;
+  // Relationship data
+  partners?: Array<{ id: string; name: string; }>;
+  stakeholders?: Array<{ id: string; name: string; }>;
+  challenge?: { id: string; title: string; };
+  sector?: { id: string; name: string; };
+  department?: { id: string; name: string; };
+  deputy?: { id: string; name: string; };
 }
 
 export function CampaignsManagement() {
@@ -130,13 +139,39 @@ export function CampaignsManagement() {
   const fetchCampaigns = async () => {
     try {
       setLoading(true);
+      
+      // Fetch campaigns with relationships using proper JOINs
       const { data, error } = await supabase
         .from("campaigns")
-        .select("*")
+        .select(`
+          *,
+          challenge:challenges!challenge_id(id, title),
+          sector:sectors!sector_id(id, name),
+          department:departments!department_id(id, name),
+          deputy:deputies!deputy_id(id, name),
+          partners:campaign_partner_links(
+            partner:partners(id, name)
+          ),
+          stakeholders:campaign_stakeholder_links(
+            stakeholder:stakeholders(id, name)
+          )
+        `)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      setCampaigns(data || []);
+      
+      // Transform the data to flatten relationships
+      const transformedData = data?.map(campaign => ({
+        ...campaign,
+        partners: campaign.partners?.map((p: any) => p.partner).filter(Boolean) || [],
+        stakeholders: campaign.stakeholders?.map((s: any) => s.stakeholder).filter(Boolean) || [],
+        challenge: campaign.challenge || undefined,
+        sector: campaign.sector || undefined,
+        department: campaign.department || undefined,
+        deputy: campaign.deputy || undefined
+      })) || [];
+      
+      setCampaigns(transformedData);
     } catch (error) {
       console.error("Error fetching campaigns:", error);
       toast({
@@ -154,11 +189,26 @@ export function CampaignsManagement() {
     
     try {
       const campaignData = {
-        ...formData,
+        title: formData.title,
+        title_ar: formData.title_ar || null,
+        description: formData.description,
+        description_ar: formData.description_ar || null,
+        status: formData.status,
+        theme: formData.theme || null,
+        start_date: formData.start_date,
+        end_date: formData.end_date,
+        registration_deadline: formData.registration_deadline || null,
         target_participants: formData.target_participants ? parseInt(formData.target_participants) : null,
         target_ideas: formData.target_ideas ? parseInt(formData.target_ideas) : null,
         budget: formData.budget ? parseFloat(formData.budget) : null,
+        success_metrics: formData.success_metrics || null,
+        challenge_id: formData.challenge_id || null,
+        sector_id: formData.sector_id || null,
+        deputy_id: formData.deputy_id || null,
+        department_id: formData.department_id || null,
       };
+
+      let campaignId: string;
 
       if (editingCampaign) {
         const { error } = await supabase
@@ -167,23 +217,31 @@ export function CampaignsManagement() {
           .eq("id", editingCampaign.id);
 
         if (error) throw error;
+        campaignId = editingCampaign.id;
 
         toast({
           title: "Success",
           description: "Campaign updated successfully",
         });
       } else {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from("campaigns")
-          .insert([campaignData]);
+          .insert([campaignData])
+          .select()
+          .single();
 
         if (error) throw error;
+        campaignId = data.id;
 
         toast({
           title: "Success",
           description: "Campaign created successfully",
         });
       }
+
+      // Update junction table relationships
+      await updateCampaignPartners(campaignId, formData.partner_organizations);
+      await updateCampaignStakeholders(campaignId, formData.target_stakeholder_groups);
 
       setIsDialogOpen(false);
       setEditingCampaign(null);
@@ -219,8 +277,8 @@ export function CampaignsManagement() {
       sector_id: campaign.sector_id || "",
       deputy_id: campaign.deputy_id || "",
       department_id: campaign.department_id || "",
-      target_stakeholder_groups: campaign.target_stakeholder_groups || [],
-      partner_organizations: campaign.partner_organizations || [],
+      target_stakeholder_groups: campaign.stakeholders?.map(s => s.id) || [],
+      partner_organizations: campaign.partners?.map(p => p.id) || [],
     });
     setIsDialogOpen(true);
   };
@@ -796,35 +854,35 @@ export function CampaignsManagement() {
                   <div>
                     <h5 className="font-medium mb-2 text-sm">Organizational Context</h5>
                     <div className="space-y-2 text-sm">
-                      {viewingCampaign.challenge_id && (
+                      {viewingCampaign.challenge && (
                         <div className="flex items-center gap-2">
                           <span className="font-medium">Challenge:</span>
                           <span className="text-muted-foreground">
-                            {challenges.find((c: any) => c.id === viewingCampaign.challenge_id)?.title || 'Unknown'}
+                            {viewingCampaign.challenge.title}
                           </span>
                         </div>
                       )}
-                      {viewingCampaign.sector_id && (
+                      {viewingCampaign.sector && (
                         <div className="flex items-center gap-2">
                           <span className="font-medium">Sector:</span>
                           <span className="text-muted-foreground">
-                            {sectors.find((s: any) => s.id === viewingCampaign.sector_id)?.name || 'Unknown'}
+                            {viewingCampaign.sector.name}
                           </span>
                         </div>
                       )}
-                      {viewingCampaign.deputy_id && (
+                      {viewingCampaign.deputy && (
                         <div className="flex items-center gap-2">
                           <span className="font-medium">Deputy:</span>
                           <span className="text-muted-foreground">
-                            {deputies.find((d: any) => d.id === viewingCampaign.deputy_id)?.name || 'Unknown'}
+                            {viewingCampaign.deputy.name}
                           </span>
                         </div>
                       )}
-                      {viewingCampaign.department_id && (
+                      {viewingCampaign.department && (
                         <div className="flex items-center gap-2">
                           <span className="font-medium">Department:</span>
                           <span className="text-muted-foreground">
-                            {departments.find((d: any) => d.id === viewingCampaign.department_id)?.name || 'Unknown'}
+                            {viewingCampaign.department.name}
                           </span>
                         </div>
                       )}
@@ -834,25 +892,25 @@ export function CampaignsManagement() {
                   <div>
                     <h5 className="font-medium mb-2 text-sm">Stakeholders & Partners</h5>
                     <div className="space-y-2 text-sm">
-                      {viewingCampaign.target_stakeholder_groups && viewingCampaign.target_stakeholder_groups.length > 0 && (
+                      {viewingCampaign.stakeholders && viewingCampaign.stakeholders.length > 0 && (
                         <div>
                           <span className="font-medium">Target Stakeholders:</span>
                           <div className="flex flex-wrap gap-1 mt-1">
-                            {viewingCampaign.target_stakeholder_groups.map((group: string, index: number) => (
+                            {viewingCampaign.stakeholders.map((stakeholder, index) => (
                               <Badge key={index} variant="outline" className="text-xs">
-                                {group}
+                                {stakeholder.name}
                               </Badge>
                             ))}
                           </div>
                         </div>
                       )}
-                      {viewingCampaign.partner_organizations && viewingCampaign.partner_organizations.length > 0 && (
+                      {viewingCampaign.partners && viewingCampaign.partners.length > 0 && (
                         <div>
                           <span className="font-medium">Partner Organizations:</span>
                           <div className="space-y-1 mt-1">
-                            {viewingCampaign.partner_organizations.map((partnerId: string, index: number) => (
+                            {viewingCampaign.partners.map((partner, index) => (
                               <div key={index} className="text-muted-foreground">
-                                {partners.find((p: any) => p.id === partnerId)?.name || 'Unknown Partner'}
+                                {partner.name}
                               </div>
                             ))}
                           </div>
