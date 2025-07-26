@@ -58,10 +58,34 @@ export default function RoleRequestManagement() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [roleFilter, setRoleFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // System settings
+  const [justificationPreviewLength, setJustificationPreviewLength] = useState(50);
 
   useEffect(() => {
     fetchRoleRequests();
+    fetchSystemSettings();
   }, []);
+
+  const fetchSystemSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_value')
+        .eq('setting_key', 'role_justification_preview_length')
+        .maybeSingle();
+
+      if (error) throw error;
+
+      const value = data ? 
+        (typeof data.setting_value === 'string' ? parseInt(data.setting_value) : 
+         typeof data.setting_value === 'number' ? data.setting_value : 50) : 50;
+      setJustificationPreviewLength(value);
+    } catch (error) {
+      console.error('Error fetching system settings:', error);
+      setJustificationPreviewLength(50);
+    }
+  };
 
   const fetchRoleRequests = async () => {
     try {
@@ -408,7 +432,7 @@ export default function RoleRequestManagement() {
                       <div className="text-sm">{request.reason.replace('_', ' ')}</div>
                       {request.justification && (
                         <div className="text-xs text-muted-foreground truncate">
-                          {request.justification.substring(0, 50)}...
+                          {request.justification.substring(0, justificationPreviewLength)}...
                         </div>
                       )}
                     </div>

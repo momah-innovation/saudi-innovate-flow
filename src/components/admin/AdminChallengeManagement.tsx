@@ -122,6 +122,13 @@ export const AdminChallengeManagement = () => {
   const [activeTab, setActiveTab] = useState("challenges");
   const [selectedChallenge, setSelectedChallenge] = useState<string | null>(null);
   
+  // System settings
+  const [systemSettings, setSystemSettings] = useState({
+    maxBudget: 1000000,
+    maxSubmissions: 10,
+    textareaRows: 5
+  });
+  
   // Form states
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isQuestionDialogOpen, setIsQuestionDialogOpen] = useState(false);
@@ -180,12 +187,51 @@ export const AdminChallengeManagement = () => {
     fetchProfiles();
     fetchSectors();
     fetchOrganizationalStructure();
+    fetchSystemSettings();
     if (selectedChallenge) {
       fetchFocusQuestions(selectedChallenge);
       fetchChallengeExperts(selectedChallenge);
       fetchChallengePartners(selectedChallenge);
     }
   }, [selectedChallenge]);
+
+  const fetchSystemSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_key, setting_value')
+        .in('setting_key', [
+          'challenge_max_budget',
+          'challenge_max_submissions',
+          'challenge_textarea_rows'
+        ]);
+
+      if (error) throw error;
+
+      const settings = data?.reduce((acc: any, setting) => {
+        const value = typeof setting.setting_value === 'string' ? 
+          parseInt(setting.setting_value) || 0 : 
+          setting.setting_value || 0;
+        
+        switch (setting.setting_key) {
+          case 'challenge_max_budget':
+            acc.maxBudget = value;
+            break;
+          case 'challenge_max_submissions':
+            acc.maxSubmissions = value;
+            break;
+          case 'challenge_textarea_rows':
+            acc.textareaRows = value;
+            break;
+        }
+        return acc;
+      }, {}) || {};
+
+      setSystemSettings(prev => ({ ...prev, ...settings }));
+    } catch (error) {
+      console.error('Error fetching system settings:', error);
+    }
+  };
 
   const checkTeamMembership = async () => {
     try {
@@ -961,7 +1007,7 @@ export const AdminChallengeManagement = () => {
                   value={formData.description}
                   onChange={(e) => setFormData({...formData, description: e.target.value})}
                   placeholder="Detailed description of the challenge"
-                  rows={4}
+                  rows={systemSettings.textareaRows}
                 />
               </div>
               
@@ -972,7 +1018,7 @@ export const AdminChallengeManagement = () => {
                   value={formData.description_ar}
                   onChange={(e) => setFormData({...formData, description_ar: e.target.value})}
                   placeholder="وصف مفصل للتحدي"
-                  rows={4}
+                  rows={systemSettings.textareaRows}
                   dir="rtl"
                 />
               </div>
@@ -1079,7 +1125,7 @@ export const AdminChallengeManagement = () => {
                   value={formData.vision_2030_goal}
                   onChange={(e) => setFormData({...formData, vision_2030_goal: e.target.value})}
                   placeholder="How this challenge aligns with Saudi Vision 2030"
-                  rows={2}
+                  rows={systemSettings.textareaRows - 2}
                 />
               </div>
               
@@ -1090,7 +1136,7 @@ export const AdminChallengeManagement = () => {
                   value={formData.kpi_alignment}
                   onChange={(e) => setFormData({...formData, kpi_alignment: e.target.value})}
                   placeholder="Define measurable success criteria and KPIs"
-                  rows={2}
+                  rows={systemSettings.textareaRows - 2}
                 />
               </div>
 
@@ -1373,7 +1419,7 @@ export const AdminChallengeManagement = () => {
                         value={formData.internal_team_notes}
                         onChange={(e) => setFormData({...formData, internal_team_notes: e.target.value})}
                         placeholder="Internal notes for team coordination and planning..."
-                        rows={2}
+                        rows={systemSettings.textareaRows - 2}
                       />
                     </div>
                     
@@ -1384,7 +1430,7 @@ export const AdminChallengeManagement = () => {
                         value={formData.collaboration_details}
                         onChange={(e) => setFormData({...formData, collaboration_details: e.target.value})}
                         placeholder="Details about partnerships, expert involvement, and collaboration approach..."
-                        rows={2}
+                        rows={systemSettings.textareaRows - 2}
                       />
                     </div>
                   </div>

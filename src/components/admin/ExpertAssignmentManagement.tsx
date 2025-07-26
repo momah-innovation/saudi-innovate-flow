@@ -58,6 +58,7 @@ export function ExpertAssignmentManagement() {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("assignments");
   const [maxWorkload, setMaxWorkload] = useState(5);
+  const [profileTextareaRows, setProfileTextareaRows] = useState(4);
   
   // State management
   const [experts, setExperts] = useState<Expert[]>([]);
@@ -100,19 +101,26 @@ export function ExpertAssignmentManagement() {
     try {
       const { data, error } = await supabase
         .from('system_settings')
-        .select('setting_value')
-        .eq('setting_key', 'team_max_expert_workload')
-        .maybeSingle();
+        .select('setting_key, setting_value')
+        .in('setting_key', ['team_max_expert_workload', 'expert_profile_textarea_rows']);
 
       if (error) throw error;
       
-      const value = data ? 
-        (typeof data.setting_value === 'string' ? parseInt(data.setting_value) : 
-         typeof data.setting_value === 'number' ? data.setting_value : 5) : 5;
-      setMaxWorkload(value);
+      data?.forEach(setting => {
+        const value = typeof setting.setting_value === 'string' ? 
+          parseInt(setting.setting_value) : 
+          typeof setting.setting_value === 'number' ? setting.setting_value : 0;
+        
+        if (setting.setting_key === 'team_max_expert_workload') {
+          setMaxWorkload(value || 5);
+        } else if (setting.setting_key === 'expert_profile_textarea_rows') {
+          setProfileTextareaRows(value || 4);
+        }
+      });
     } catch (error) {
-      console.error('Error fetching max workload setting:', error);
-      setMaxWorkload(5); // fallback value
+      console.error('Error fetching system settings:', error);
+      setMaxWorkload(5);
+      setProfileTextareaRows(4);
     }
   };
 

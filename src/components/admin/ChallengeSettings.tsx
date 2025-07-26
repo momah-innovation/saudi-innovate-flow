@@ -42,6 +42,12 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
 }) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  
+  // System settings
+  const [systemSettings, setSystemSettings] = useState({
+    textareaRows: 3,
+    maxSubmissions: 20
+  });
   const [settings, setSettings] = useState({
     // Access Control
     visibility: challenge.sensitivity_level || 'normal',
@@ -71,8 +77,40 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
         ...prev,
         visibility: challenge.sensitivity_level || 'normal',
       }));
+      fetchSystemSettings();
     }
   }, [challenge, isOpen]);
+
+  const fetchSystemSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_key, setting_value')
+        .in('setting_key', ['ui_default_textarea_rows', 'challenge_max_submissions']);
+
+      if (error) throw error;
+
+      const settingsUpdate = data?.reduce((acc: any, setting) => {
+        const value = typeof setting.setting_value === 'string' ? 
+          parseInt(setting.setting_value) || 0 : 
+          setting.setting_value || 0;
+        
+        switch (setting.setting_key) {
+          case 'ui_default_textarea_rows':
+            acc.textareaRows = value;
+            break;
+          case 'challenge_max_submissions':
+            acc.maxSubmissions = value;
+            break;
+        }
+        return acc;
+      }, {}) || {};
+
+      setSystemSettings(prev => ({ ...prev, ...settingsUpdate }));
+    } catch (error) {
+      console.error('Error fetching system settings:', error);
+    }
+  };
 
   const handleSave = async () => {
     setLoading(true);
@@ -322,7 +360,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
                       id="max-submissions"
                       type="number"
                       min="1"
-                      max="20"
+                      max={systemSettings.maxSubmissions.toString()}
                       value={settings.maxSubmissionsPerUser}
                       onChange={(e) => setSettings(prev => ({ ...prev, maxSubmissionsPerUser: parseInt(e.target.value) || 5 }))}
                     />
