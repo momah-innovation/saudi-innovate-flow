@@ -219,10 +219,11 @@ export function CampaignsManagement() {
       target_ideas: campaign.target_ideas?.toString() || "",
       budget: campaign.budget?.toString() || "",
       success_metrics: campaign.success_metrics || "",
-      sector_ids: campaign.sector_ids || [],
-      deputy_ids: campaign.deputy_ids || [],
-      department_ids: campaign.department_ids || [],
-      challenge_ids: campaign.challenge_ids || [],
+      // Convert single values to arrays for multi-select
+      sector_ids: (campaign as any).sector_id ? [(campaign as any).sector_id] : [],
+      deputy_ids: (campaign as any).deputy_id ? [(campaign as any).deputy_id] : [],
+      department_ids: (campaign as any).department_id ? [(campaign as any).department_id] : [],
+      challenge_ids: (campaign as any).challenge_id ? [(campaign as any).challenge_id] : [],
     });
     setShowAddDialog(true);
   };
