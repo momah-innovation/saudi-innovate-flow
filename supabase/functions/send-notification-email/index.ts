@@ -44,8 +44,8 @@ serve(async (req: Request) => {
       );
     }
 
+    // TODO: Integrate with an email service like Resend
     // For now, we'll just log the email that would be sent
-    // In production, you would integrate with an email service like Resend
     console.log('Email notification to be sent:', {
       to: profile.email,
       subject: title,
@@ -55,24 +55,8 @@ serve(async (req: Request) => {
       preferredLanguage: profile.preferred_language
     });
 
-    // Create the notification in the database
-    const { error: notificationError } = await supabase
-      .from('notifications')
-      .insert({
-        user_id: userId,
-        title,
-        message,
-        type,
-        metadata
-      });
-
-    if (notificationError) {
-      console.error('Error creating notification:', notificationError);
-      return new Response(
-        JSON.stringify({ error: 'Failed to create notification' }),
-        { status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
-      );
-    }
+    // NOTE: We don't create the notification here because it's already created 
+    // by the database trigger/function that calls this edge function
 
     return new Response(
       JSON.stringify({ 
