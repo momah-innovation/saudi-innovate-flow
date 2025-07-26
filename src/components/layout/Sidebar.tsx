@@ -77,7 +77,7 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
       { id: "organizational-structure", label: "Organizational Structure", icon: Users, badge: null, roles: ["admin"] },
       { id: "expert-assignments", label: "Expert Assignments", icon: UserCheck, badge: null, roles: ["admin"] },
       { id: "user-management", label: "User Management", icon: UserCheck, badge: null, roles: ["admin"] },
-      { id: "system-settings", label: "System Settings", icon: Settings, badge: null, roles: ["admin"] },
+      { id: "system-settings", label: "System Settings", icon: Settings, badge: null, roles: ["admin", "super_admin"] },
       { id: "system-analytics", label: "System Analytics", icon: BarChart3, badge: null, roles: ["admin"] },
     ];
 

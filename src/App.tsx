@@ -16,6 +16,7 @@ import OrganizationalStructure from "./pages/OrganizationalStructure";
 import ExpertAssignmentManagementPage from "./pages/ExpertAssignmentManagement";
 import UserManagementPage from "./pages/UserManagementPage";
 import UserProfile from "./pages/UserProfile";
+import SystemSettings from "./pages/SystemSettings";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -93,9 +94,25 @@ const App = () => (
                   <UserManagementPage />
                 </ProtectedRoute>
               } 
+            /> 
+            <Route 
+              path="/admin/system-settings" 
+              element={
+                <ProtectedRoute requireProfile requiredRole="admin">
+                  <SystemSettings />
+                </ProtectedRoute>
+              } 
             />
             <Route 
               path="/profile/:userId" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <UserProfile />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/profile" 
               element={
                 <ProtectedRoute requireProfile>
                   <UserProfile />

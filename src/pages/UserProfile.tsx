@@ -1,105 +1,88 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Mail, Phone, Building, MapPin, Calendar, User, Shield } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { RoleRequestDialog } from "@/components/admin/RoleRequestDialog";
+import { useToast } from "@/hooks/use-toast";
 import { Header } from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { ExpertProfileView } from "@/components/experts/ExpertProfileCard";
+import { useNavigate } from "react-router-dom";
 
-interface UserProfile {
-  id: string;
-  email: string;
+interface ProfileForm {
   name: string;
-  name_ar?: string;
-  phone?: string;
-  department?: string;
-  position?: string;
-  bio?: string;
-  status: string;
-  created_at: string;
-  profile_image_url?: string;
-}
-
-interface UserRole {
-  id: string;
-  role: string;
-  is_active: boolean;
-  granted_at: string;
-  expires_at?: string;
+  name_ar: string;
+  phone: string;
+  department: string;
+  position: string;
+  bio: string;
+  preferred_language: string;
 }
 
 export default function UserProfile() {
-  const { userId } = useParams<{ userId: string }>();
   const navigate = useNavigate();
-  const { user: currentUser } = useAuth();
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [userRoles, setUserRoles] = useState<UserRole[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isRoleRequestDialogOpen, setIsRoleRequestDialogOpen] = useState(false);
-
-  const isOwnProfile = currentUser?.id === userId;
+  const { user, userProfile, refreshProfile } = useAuth();
+  const { toast } = useToast();
+  const [profileForm, setProfileForm] = useState<ProfileForm>({
+    name: '',
+    name_ar: '',
+    phone: '',
+    department: '',
+    position: '',
+    bio: '',
+    preferred_language: 'en'
+  });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (userId) {
-      fetchUserProfile();
-      fetchUserRoles();
+    if (userProfile) {
+      setProfileForm({
+        name: userProfile.name || '',
+        name_ar: userProfile.name_ar || '',
+        phone: userProfile.phone || '',
+        department: userProfile.department || '',
+        position: userProfile.position || '',
+        bio: userProfile.bio || '',
+        preferred_language: userProfile.preferred_language || 'en'
+      });
     }
-  }, [userId]);
+  }, [userProfile]);
 
-  const fetchUserProfile = async () => {
-    if (!userId) return;
+  const handleUpdateProfile = async () => {
+    if (!user) return;
 
+    setLoading(true);
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .maybeSingle();
+        .update(profileForm)
+        .eq('id', user.id);
 
       if (error) throw error;
-      setUserProfile(data);
+
+      toast({
+        title: "Profile Updated",
+        description: "Your profile has been successfully updated.",
+      });
+
+      await refreshProfile();
     } catch (error) {
-      console.error('Error fetching user profile:', error);
-    }
-  };
-
-  const fetchUserRoles = async () => {
-    if (!userId) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('is_active', true)
-        .order('granted_at', { ascending: false });
-
-      if (error) throw error;
-      setUserRoles(data || []);
-    } catch (error) {
-      console.error('Error fetching user roles:', error);
+      console.error('Error updating profile:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update profile. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
-    }
-  };
-
-  const getRoleColor = (role: string) => {
-    switch (role) {
-      case 'super_admin': return 'destructive';
-      case 'admin': return 'default';
-      case 'evaluator': return 'secondary';
-      case 'domain_expert': return 'outline';
-      case 'innovator': return 'outline';
-      default: return 'outline';
     }
   };
 
@@ -125,276 +108,156 @@ export default function UserProfile() {
       navigate("/admin/expert-assignments");
     } else if (tab === "user-management") {
       navigate("/admin/users");
+    } else if (tab === "system-settings") {
+      navigate("/admin/system-settings");
+    } else if (tab === "settings") {
+      navigate("/settings");
     } else {
       navigate("/");
     }
   };
 
-  if (loading) {
-    return (
-      <SidebarProvider>
-        <div className="min-h-screen flex w-full">
-          <AppSidebar activeTab="user-management" onTabChange={handleTabChange} />
-          <div className="flex-1 flex flex-col overflow-hidden">
-            <Header />
-            <main className="flex-1 overflow-y-auto">
-              <div className="container mx-auto p-6">
-                <div className="flex items-center justify-center h-64">
-                  <div className="text-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                    <p className="mt-2 text-muted-foreground">Loading profile...</p>
-                  </div>
-                </div>
-              </div>
-            </main>
-          </div>
-        </div>
-      </SidebarProvider>
-    );
-  }
-
-  if (!userProfile) {
-    return (
-      <SidebarProvider>
-        <div className="min-h-screen flex w-full">
-          <AppSidebar activeTab="user-management" onTabChange={handleTabChange} />
-          <div className="flex-1 flex flex-col overflow-hidden">
-            <Header />
-            <main className="flex-1 overflow-y-auto">
-              <div className="container mx-auto p-6">
-                <div className="text-center">
-                  <h1 className="text-2xl font-bold">User Not Found</h1>
-                  <p className="text-muted-foreground mt-2">The requested user profile could not be found.</p>
-                  <Button onClick={() => navigate(-1)} className="mt-4">
-                    <ArrowLeft className="h-4 w-4 mr-2" />
-                    Go Back
-                  </Button>
-                </div>
-              </div>
-            </main>
-          </div>
-        </div>
-      </SidebarProvider>
-    );
-  }
-
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        <AppSidebar activeTab="user-management" onTabChange={handleTabChange} />
+        <AppSidebar activeTab="" onTabChange={handleTabChange} />
         <div className="flex-1 flex flex-col overflow-hidden">
           <Header />
           <main className="flex-1 overflow-y-auto">
             <div className="container mx-auto p-6 space-y-6">
-              <BreadcrumbNav activeTab="user-management" />
+              <BreadcrumbNav activeTab="" />
               
               {/* Header */}
-              <div className="flex items-center gap-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => navigate(-1)}
-                >
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back
-                </Button>
-                <div>
-                  <h1 className="text-3xl font-bold">User Profile</h1>
-                  <p className="text-muted-foreground">
-                    {isOwnProfile ? 'Your profile information' : `Profile for ${userProfile.name}`}
-                  </p>
-                </div>
+              <div>
+                <h1 className="text-3xl font-bold">My Profile</h1>
+                <p className="text-muted-foreground">
+                  Manage your personal information and professional details
+                </p>
               </div>
 
-              <div className="grid gap-6 md:grid-cols-3">
-                {/* Profile Overview */}
-                <div className="md:col-span-1">
-                  <Card>
-                    <CardHeader className="text-center">
-                      <div className="flex justify-center mb-4">
-                        <Avatar className="h-24 w-24">
-                          <AvatarImage src={userProfile.profile_image_url} alt={userProfile.name} />
-                          <AvatarFallback className="text-lg">
-                            {getInitials(userProfile.name)}
-                          </AvatarFallback>
-                        </Avatar>
-                      </div>
-                      <CardTitle className="text-xl">{userProfile.name}</CardTitle>
-                      {userProfile.name_ar && (
-                        <p className="text-muted-foreground">{userProfile.name_ar}</p>
-                      )}
-                      <div className="flex justify-center">
-                        <Badge variant={userProfile.status === 'active' ? 'default' : 'secondary'}>
-                          {userProfile.status}
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center gap-2 text-sm">
-                        <Mail className="h-4 w-4 text-muted-foreground" />
-                        <span>{userProfile.email}</span>
-                      </div>
-                      {userProfile.phone && (
-                        <div className="flex items-center gap-2 text-sm">
-                          <Phone className="h-4 w-4 text-muted-foreground" />
-                          <span>{userProfile.phone}</span>
-                        </div>
-                      )}
-                      {userProfile.department && (
-                        <div className="flex items-center gap-2 text-sm">
-                          <Building className="h-4 w-4 text-muted-foreground" />
-                          <span>{userProfile.department}</span>
-                        </div>
-                      )}
-                      {userProfile.position && (
-                        <div className="flex items-center gap-2 text-sm">
-                          <MapPin className="h-4 w-4 text-muted-foreground" />
-                          <span>{userProfile.position}</span>
-                        </div>
-                      )}
-                      <div className="flex items-center gap-2 text-sm">
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span>Joined {new Date(userProfile.created_at).toLocaleDateString()}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <User className="h-5 w-5" />
+                    Profile Information
+                  </CardTitle>
+                  <CardDescription>
+                    Update your personal information and contact details
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Avatar Section */}
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-20 w-20">
+                      <AvatarImage src={userProfile?.profile_image_url} alt={profileForm.name} />
+                      <AvatarFallback className="text-lg">
+                        {getInitials(profileForm.name || 'User')}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <Button variant="outline" size="sm">
+                        Change Avatar
+                      </Button>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        JPG, PNG or GIF (max. 2MB)
+                      </p>
+                    </div>
+                  </div>
 
-                {/* Profile Details */}
-                <div className="md:col-span-2 space-y-6">
-                  {/* Bio */}
-                  {userProfile.bio && (
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <User className="h-5 w-5" />
-                          About
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground">{userProfile.bio}</p>
-                      </CardContent>
-                    </Card>
-                  )}
+                  <Separator />
 
-                  {/* Roles */}
-                  <Card>
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="flex items-center gap-2">
-                          <Shield className="h-5 w-5" />
-                          Roles & Permissions
-                        </CardTitle>
-                        {isOwnProfile && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setIsRoleRequestDialogOpen(true)}
-                          >
-                            Request Role
-                          </Button>
-                        )}
-                      </div>
-                      <CardDescription>
-                        Current active roles assigned to this user
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      {userRoles.length > 0 ? (
-                        <div className="space-y-3">
-                          {userRoles.map((role) => (
-                            <div key={role.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                              <div className="flex items-center gap-3">
-                                <Badge variant={getRoleColor(role.role)}>
-                                  {role.role.replace('_', ' ')}
-                                </Badge>
-                                <div>
-                                  <p className="text-sm font-medium">
-                                    {role.role.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                                  </p>
-                                  <p className="text-xs text-muted-foreground">
-                                    Granted on {new Date(role.granted_at).toLocaleDateString()}
-                                  </p>
-                                </div>
-                              </div>
-                              {role.expires_at && (
-                                <div className="text-right">
-                                  <p className="text-xs text-muted-foreground">
-                                    Expires: {new Date(role.expires_at).toLocaleDateString()}
-                                  </p>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="text-center py-8">
-                          <Shield className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                          <p className="text-muted-foreground">No additional roles assigned</p>
-                          {isOwnProfile && (
-                            <Button
-                              variant="outline"
-                              className="mt-2"
-                              onClick={() => setIsRoleRequestDialogOpen(true)}
-                            >
-                              Request a Role
-                            </Button>
-                          )}
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
+                  {/* Personal Information */}
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Full Name *</Label>
+                      <Input
+                        id="name"
+                        value={profileForm.name}
+                        onChange={(e) => setProfileForm(prev => ({ ...prev, name: e.target.value }))}
+                        placeholder="Enter your full name"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="name_ar">Name (Arabic)</Label>
+                      <Input
+                        id="name_ar"
+                        value={profileForm.name_ar}
+                        onChange={(e) => setProfileForm(prev => ({ ...prev, name_ar: e.target.value }))}
+                        placeholder="اسمك باللغة العربية"
+                        dir="rtl"
+                      />
+                    </div>
+                  </div>
 
-                  {/* Expert Profile Section - Show if user has domain_expert role */}
-                  {userRoles.some(role => role.role === 'domain_expert') && (
-                    <ExpertProfileView userId={userId!} />
-                  )}
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone Number</Label>
+                      <Input
+                        id="phone"
+                        value={profileForm.phone}
+                        onChange={(e) => setProfileForm(prev => ({ ...prev, phone: e.target.value }))}
+                        placeholder="+966 50 123 4567"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="department">Department</Label>
+                      <Input
+                        id="department"
+                        value={profileForm.department}
+                        onChange={(e) => setProfileForm(prev => ({ ...prev, department: e.target.value }))}
+                        placeholder="Your department"
+                      />
+                    </div>
+                  </div>
 
-                  {/* Actions */}
-                  {isOwnProfile && (
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Account Actions</CardTitle>
-                        <CardDescription>
-                          Manage your account and preferences
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex gap-2">
-                          <Button 
-                            variant="outline"
-                            onClick={() => navigate('/settings')}
-                          >
-                            Edit Profile
-                          </Button>
-                          <Button 
-                            variant="outline"
-                            onClick={() => navigate('/settings')}
-                          >
-                            Account Settings
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
-                </div>
-              </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="position">Position/Title</Label>
+                    <Input
+                      id="position"
+                      value={profileForm.position}
+                      onChange={(e) => setProfileForm(prev => ({ ...prev, position: e.target.value }))}
+                      placeholder="Your job title or position"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="bio">Bio</Label>
+                    <Textarea
+                      id="bio"
+                      value={profileForm.bio}
+                      onChange={(e) => setProfileForm(prev => ({ ...prev, bio: e.target.value }))}
+                      placeholder="Tell us about yourself..."
+                      className="min-h-[100px]"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Preferred Language</Label>
+                    <Select 
+                      value={profileForm.preferred_language} 
+                      onValueChange={(value) => setProfileForm(prev => ({ ...prev, preferred_language: value }))}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="en">English</SelectItem>
+                        <SelectItem value="ar">العربية</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <Button onClick={handleUpdateProfile} disabled={loading}>
+                      {loading ? 'Updating...' : 'Update Profile'}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </main>
         </div>
       </div>
-
-      {/* Role Request Dialog */}
-      {isOwnProfile && (
-        <RoleRequestDialog
-          open={isRoleRequestDialogOpen}
-          onOpenChange={setIsRoleRequestDialogOpen}
-          currentRoles={userRoles.map(role => role.role)}
-          onRequestSubmitted={() => {
-            fetchUserRoles();
-          }}
-        />
-      )}
     </SidebarProvider>
   );
 }

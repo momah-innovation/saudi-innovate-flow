@@ -42,7 +42,7 @@ const Index = () => {
       return;
     }
     if (tab === "system-settings") {
-      navigate("/settings?tab=system");
+      navigate("/admin/system-settings");
       return;
     }
     if (tab === "settings") {
