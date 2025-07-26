@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Globe } from "lucide-react";
+import { Globe, RotateCcw } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
@@ -67,7 +67,12 @@ export default function SystemSettings() {
                 <CardContent className="space-y-4">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
-                      <Label>Default Max Concurrent Projects</Label>
+                      <div className="flex items-center justify-between">
+                        <Label>Default Max Concurrent Projects</Label>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
                       <Input
                         type="number"
                         defaultValue="5"
@@ -80,7 +85,12 @@ export default function SystemSettings() {
                       </p>
                     </div>
                     <div className="space-y-2">
-                      <Label>Default Performance Rating</Label>
+                      <div className="flex items-center justify-between">
+                        <Label>Default Performance Rating</Label>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
                       <Input
                         type="number"
                         defaultValue="0"
@@ -113,7 +123,12 @@ export default function SystemSettings() {
                 <CardContent className="space-y-4">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
-                      <Label>Default Challenge Duration (days)</Label>
+                      <div className="flex items-center justify-between">
+                        <Label>Default Challenge Duration (days)</Label>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
                       <Input
                         type="number"
                         defaultValue="30"
@@ -123,7 +138,12 @@ export default function SystemSettings() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label>Default Submission Limit</Label>
+                      <div className="flex items-center justify-between">
+                        <Label>Default Submission Limit</Label>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <RotateCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
                       <Input
                         type="number"
                         defaultValue="5"
@@ -140,7 +160,12 @@ export default function SystemSettings() {
                         Automatically approve submitted ideas
                       </p>
                     </div>
-                    <Switch />
+                    <div className="flex items-center gap-2">
+                      <Switch />
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <RotateCcw className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                   <div className="flex justify-end pt-4 border-t">
                     <Button size="sm">
@@ -166,7 +191,12 @@ export default function SystemSettings() {
                         Send email notifications for important events
                       </p>
                     </div>
-                    <Switch defaultChecked />
+                    <div className="flex items-center gap-2">
+                      <Switch defaultChecked />
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <RotateCcw className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
@@ -175,7 +205,12 @@ export default function SystemSettings() {
                         Notify admins of new role requests
                       </p>
                     </div>
-                    <Switch defaultChecked />
+                    <div className="flex items-center gap-2">
+                      <Switch defaultChecked />
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <RotateCcw className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
@@ -184,7 +219,12 @@ export default function SystemSettings() {
                         Send reminders before challenge deadlines
                       </p>
                     </div>
-                    <Switch defaultChecked />
+                    <div className="flex items-center gap-2">
+                      <Switch defaultChecked />
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <RotateCcw className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                   <div className="flex justify-end pt-4 border-t">
                     <Button size="sm">
