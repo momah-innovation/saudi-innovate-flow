@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Globe, RotateCcw } from "lucide-react";
-import { Header } from "@/components/layout/Header";
+import { Header } from "@/components/ui/header";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { SimpleListEditor, RoleEditor } from "@/components/admin/ListEditors";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";

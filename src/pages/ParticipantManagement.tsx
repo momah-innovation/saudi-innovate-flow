@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ParticipantManagement } from "@/components/events/ParticipantManagement";
-import { Header } from "@/components/layout/Header";
+import { Header } from "@/components/ui/header";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";

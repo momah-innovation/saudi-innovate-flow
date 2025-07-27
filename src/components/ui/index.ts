@@ -1,3 +1,6 @@
+// Header Component
+export { Header } from './header';
+
 // Core Layout Components
 export { LayoutSelector } from './layout-selector';
 export { SearchAndFilters } from './search-and-filters';

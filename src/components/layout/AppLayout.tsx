@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { AdminLayout } from './AdminLayout';
-import { Header } from './Header';
+import { Header } from '@/components/ui/header';
 import { PageContainer } from './PageContainer';
 
 interface AppLayoutProps {
