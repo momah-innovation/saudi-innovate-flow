@@ -53,9 +53,11 @@ interface Event {
   actual_participants?: number;
   status?: string;
   budget?: number;
+  event_manager_id?: string;
   campaign_id?: string;
   challenge_id?: string;
   sector_id?: string;
+  target_stakeholder_groups?: string[];
   created_at?: string;
   // Relationships
   sectors?: any[];
@@ -107,11 +109,15 @@ export function EventsManagement() {
     virtual_link: "",
     format: "in_person",
     max_participants: "",
+    registered_participants: "",
+    actual_participants: "",
     status: "scheduled",
     budget: "",
+    event_manager_id: "",
     campaign_id: "",
     challenge_id: "",
     sector_id: "",
+    target_stakeholder_groups: [] as string[],
   });
 
   // Related data
@@ -121,9 +127,14 @@ export function EventsManagement() {
   const [partners, setPartners] = useState<any[]>([]);
   const [stakeholders, setStakeholders] = useState<any[]>([]);
   const [focusQuestions, setFocusQuestions] = useState<any[]>([]);
+  const [eventManagers, setEventManagers] = useState<any[]>([]);
   const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
   const [selectedStakeholders, setSelectedStakeholders] = useState<string[]>([]);
   const [selectedFocusQuestions, setSelectedFocusQuestions] = useState<string[]>([]);
+  
+  // Search states for dropdowns
+  const [openEventManager, setOpenEventManager] = useState(false);
+  const [eventManagerSearch, setEventManagerSearch] = useState("");
 
   // Relationship link data
   const [campaignChallengeLinks, setCampaignChallengeLinks] = useState<any[]>([]);
@@ -197,6 +208,7 @@ export function EventsManagement() {
         partnersRes, 
         stakeholdersRes, 
         focusQuestionsRes,
+        eventManagersRes,
         campaignChallengeLinksRes,
         challengeSectorLinksRes,
         campaignPartnerLinksRes,
@@ -210,6 +222,7 @@ export function EventsManagement() {
         supabase.from('partners').select('*'),
         supabase.from('stakeholders').select('*'),
         supabase.from('focus_questions').select('*'),
+        supabase.from('profiles').select('id, name, email, position').order('name'),
         supabase.from('campaign_challenge_links').select('*'),
         supabase.from('campaign_sector_links').select('*'),
         supabase.from('campaign_partner_links').select('*'),
@@ -224,6 +237,7 @@ export function EventsManagement() {
       setPartners(partnersRes.data || []);
       setStakeholders(stakeholdersRes.data || []);
       setFocusQuestions(focusQuestionsRes.data || []);
+      setEventManagers(eventManagersRes.data || []);
       setCampaignChallengeLinks(campaignChallengeLinksRes.data || []);
       setChallengeSectorLinks(challengeSectorLinksRes.data || []);
       setCampaignPartnerLinks(campaignPartnerLinksRes.data || []);
@@ -275,11 +289,15 @@ export function EventsManagement() {
       virtual_link: "",
       format: "in_person",
       max_participants: "",
+      registered_participants: "",
+      actual_participants: "",
       status: "scheduled",
       budget: "",
+      event_manager_id: "",
       campaign_id: "",
       challenge_id: "",
       sector_id: "",
+      target_stakeholder_groups: [],
     });
     setSelectedPartners([]);
     setSelectedStakeholders([]);
@@ -291,11 +309,13 @@ export function EventsManagement() {
     setPartnerSearch("");
     setStakeholderSearch("");
     setFocusQuestionSearch("");
+    setEventManagerSearch("");
     
     // Reset dropdown states
     setOpenCampaign(false);
     setOpenChallenge(false);
     setOpenSector(false);
+    setOpenEventManager(false);
   };
 
   const validateStep = (step: number): string[] => {
@@ -512,11 +532,15 @@ export function EventsManagement() {
         virtual_link: event.virtual_link || "",
         format: event.format || "in_person",
         max_participants: event.max_participants?.toString() || "",
+        registered_participants: event.registered_participants?.toString() || "",
+        actual_participants: event.actual_participants?.toString() || "",
         status: event.status || "scheduled",
         budget: event.budget?.toString() || "",
+        event_manager_id: event.event_manager_id || "",
         campaign_id: event.campaign_id || "",
         challenge_id: event.challenge_id || "",
         sector_id: event.sector_id || "",
+        target_stakeholder_groups: event.target_stakeholder_groups || [],
       });
 
       setSelectedPartners(partnersRes.data?.map(item => item.partner_id) || []);
@@ -595,13 +619,15 @@ export function EventsManagement() {
         virtual_link: formData.virtual_link || null,
         format: formData.format,
         max_participants: formData.max_participants ? parseInt(formData.max_participants) : null,
+        registered_participants: formData.registered_participants ? parseInt(formData.registered_participants) : 0,
+        actual_participants: formData.actual_participants ? parseInt(formData.actual_participants) : 0,
         status: formData.status,
         budget: formData.budget ? parseFloat(formData.budget) : null,
+        event_manager_id: formData.event_manager_id || null,
         campaign_id: formData.campaign_id || null,
         challenge_id: formData.challenge_id || null,
         sector_id: formData.sector_id || null,
-        registered_participants: 0,
-        actual_participants: 0,
+        target_stakeholder_groups: formData.target_stakeholder_groups.length > 0 ? formData.target_stakeholder_groups : null,
       };
 
       let eventId: string;
@@ -852,7 +878,72 @@ export function EventsManagement() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="space-y-2">
+        <Label htmlFor="event_manager_id">Event Manager *</Label>
+        <Popover open={openEventManager} onOpenChange={setOpenEventManager}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={openEventManager}
+              className="w-full justify-between"
+            >
+              {formData.event_manager_id
+                ? eventManagers.find((manager) => manager.id === formData.event_manager_id)?.name
+                : "Select event manager..."}
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-full p-0">
+            <Command>
+              <CommandInput 
+                placeholder="Search event managers..." 
+                value={eventManagerSearch}
+                onValueChange={setEventManagerSearch}
+              />
+              <CommandEmpty>No event manager found.</CommandEmpty>
+              <CommandGroup>
+                <CommandList>
+                  {eventManagers
+                    .filter((manager) =>
+                      manager.name.toLowerCase().includes(eventManagerSearch.toLowerCase()) ||
+                      (manager.email && manager.email.toLowerCase().includes(eventManagerSearch.toLowerCase())) ||
+                      (manager.position && manager.position.toLowerCase().includes(eventManagerSearch.toLowerCase()))
+                    )
+                    .map((manager) => (
+                      <CommandItem
+                        key={manager.id}
+                        value={manager.id}
+                        onSelect={(currentValue) => {
+                          setFormData({ ...formData, event_manager_id: currentValue === formData.event_manager_id ? "" : currentValue });
+                          setOpenEventManager(false);
+                          setEventManagerSearch("");
+                        }}
+                      >
+                        <Check
+                          className={`mr-2 h-4 w-4 ${
+                            formData.event_manager_id === manager.id ? "opacity-100" : "opacity-0"
+                          }`}
+                        />
+                        <div className="flex flex-col">
+                          <span className="font-medium">{manager.name}</span>
+                          <span className="text-xs text-muted-foreground">
+                            {manager.position || 'No position'} • {manager.email}
+                          </span>
+                        </div>
+                      </CommandItem>
+                    ))}
+                </CommandList>
+              </CommandGroup>
+            </Command>
+          </PopoverContent>
+        </Popover>
+        <p className="text-xs text-muted-foreground">
+          Person responsible for managing this event
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-2">
           <Label htmlFor="max_participants">Maximum Participants</Label>
           <Input
@@ -866,17 +957,39 @@ export function EventsManagement() {
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="budget">Budget</Label>
+          <Label htmlFor="registered_participants">Registered Participants</Label>
           <Input
-            id="budget"
+            id="registered_participants"
             type="number"
-            step="0.01"
-            value={formData.budget}
-            onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-            placeholder="Event budget"
-            className={stepErrors[2]?.some(error => error.includes("Budget")) ? "border-destructive" : ""}
+            value={formData.registered_participants}
+            onChange={(e) => setFormData({ ...formData, registered_participants: e.target.value })}
+            placeholder="Number registered"
           />
         </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="actual_participants">Actual Participants</Label>
+          <Input
+            id="actual_participants"
+            type="number"
+            value={formData.actual_participants}
+            onChange={(e) => setFormData({ ...formData, actual_participants: e.target.value })}
+            placeholder="Number attended"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="budget">Budget</Label>
+        <Input
+          id="budget"
+          type="number"
+          step="0.01"
+          value={formData.budget}
+          onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+          placeholder="Event budget"
+          className={stepErrors[2]?.some(error => error.includes("Budget")) ? "border-destructive" : ""}
+        />
       </div>
     </div>
   );
