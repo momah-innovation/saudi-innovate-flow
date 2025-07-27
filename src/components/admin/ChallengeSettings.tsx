@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, Clock, Shield, Bell, Users, Archive, Settings as SettingsIcon } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface Challenge {
   id: string;
@@ -41,6 +42,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
   onClose,
   onUpdate
 }) => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const { challengeSensitivityLevels } = useSystemLists();
   const [loading, setLoading] = useState(false);
@@ -129,7 +131,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
       if (error) throw error;
 
       toast({
-        title: "Settings Updated",
+        title: t('settingsUpdated'),
         description: "Challenge settings have been successfully updated.",
       });
       
@@ -161,7 +163,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
       if (error) throw error;
 
       toast({
-        title: "Challenge Archived",
+        title: t('challengeArchived'),
         description: "Challenge has been successfully archived.",
       });
       
@@ -456,7 +458,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
               Cancel
             </Button>
             <Button onClick={handleSave} disabled={loading}>
-              {loading ? "Saving..." : "Save Settings"}
+              {loading ? t('savingText') : t('saveSettings')}
             </Button>
           </div>
         </div>

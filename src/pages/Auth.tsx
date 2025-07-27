@@ -9,6 +9,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Eye, EyeOff, ArrowLeft, Home } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const Auth = () => {
   // Force light mode for auth page
@@ -25,6 +26,7 @@ const Auth = () => {
   const { user, loading, signIn, signUp } = useAuth();
   const navigate = useNavigate();
   const { language, isRTL } = useDirection();
+  const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordMinLength, setPasswordMinLength] = useState(6);
@@ -91,12 +93,12 @@ const Auth = () => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match');
+      alert(t('passwordsDoNotMatch'));
       return;
     }
 
     if (formData.password.length < passwordMinLength) {
-      alert(`Password must be at least ${passwordMinLength} characters`);
+      alert(t('passwordMinLength', { length: passwordMinLength }));
       return;
     }
 

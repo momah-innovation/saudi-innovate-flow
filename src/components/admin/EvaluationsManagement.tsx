@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Loader2, Eye, Edit, Filter, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useTranslation";
 import {
   Select,
   SelectContent,
@@ -62,6 +63,7 @@ export function EvaluationsManagement() {
   const [filterType, setFilterType] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const evaluatorTypes = ["expert", "internal", "external", "peer"];
 
@@ -215,14 +217,14 @@ export function EvaluationsManagement() {
               <div className="flex justify-between items-start">
                 <div className="space-y-2">
                   <CardTitle className="text-lg">
-                    {ideas[evaluation.idea_id]?.title || "Unknown Idea"}
+                    {ideas[evaluation.idea_id]?.title || t('unknownIdea')}
                   </CardTitle>
                   <div className="flex items-center gap-2">
                     <Badge variant="secondary">
                       {evaluation.evaluator_type}
                     </Badge>
                     <span className="text-sm text-muted-foreground">
-                      by {profiles[evaluation.evaluator_id]?.name || "Unknown Evaluator"}
+                      by {profiles[evaluation.evaluator_id]?.name || t('unknownEvaluator')}
                     </span>
                   </div>
                 </div>

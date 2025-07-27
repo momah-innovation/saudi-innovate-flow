@@ -1454,7 +1454,7 @@ export const AdminChallengeManagement = () => {
                   Cancel
                 </Button>
                 <Button onClick={handleCreateChallenge} disabled={!formData.title || !formData.description}>
-                  {formData.title && challenges.some(c => c.title === formData.title) ? 'Update Challenge' : 'Create Challenge'}
+                  {formData.title && challenges.some(c => c.title === formData.title) ? t('updateChallenge') : t('createChallenge')}
                 </Button>
               </div>
             </div>
@@ -1465,8 +1465,8 @@ export const AdminChallengeManagement = () => {
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
-          <TabsTrigger value="challenges">Challenges</TabsTrigger>
-          <TabsTrigger value="questions">Focus Questions</TabsTrigger>
+          <TabsTrigger value="challenges">{t('challengesTab')}</TabsTrigger>
+          <TabsTrigger value="questions">{t('focusQuestionsTab')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="challenges" className="space-y-4">
@@ -1474,7 +1474,7 @@ export const AdminChallengeManagement = () => {
           <div className="flex flex-wrap gap-4 p-4 bg-muted/50 rounded-lg">
             <div className="flex-1 min-w-64">
               <Input
-                placeholder="Search challenges..."
+                placeholder={t('searchChallenges')}
                 value={challengeFilter}
                 onChange={(e) => setChallengeFilter(e.target.value)}
                 className="w-full"
@@ -1482,10 +1482,10 @@ export const AdminChallengeManagement = () => {
             </div>
             <Select value={challengeStatusFilter} onValueChange={setChallengeStatusFilter}>
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="Filter by Status" />
+                <SelectValue placeholder={t('filterByStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="all">{t('allStatuses')}</SelectItem>
                 {challengeStatusOptions.map((status) => (
                   <SelectItem key={status} value={status}>
                     {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -1495,10 +1495,10 @@ export const AdminChallengeManagement = () => {
             </Select>
             <Select value={challengePriorityFilter} onValueChange={setChallengePriorityFilter}>
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="Filter by Priority" />
+                <SelectValue placeholder={t('filterByPriorityLevel')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Priorities</SelectItem>
+                <SelectItem value="all">{t('allPriorities')}</SelectItem>
                 {challengePriorityLevels.map((level) => (
                   <SelectItem key={level} value={level}>{level.charAt(0).toUpperCase() + level.slice(1)}</SelectItem>
                 ))}
