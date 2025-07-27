@@ -35,6 +35,11 @@ export { AdvancedFilters } from './advanced-filters';
 export { ThemeProvider, useTheme, themePresets } from './theme-provider';
 export { ThemeCustomizer } from './theme-customizer';
 
+// Direction & Internationalization Components
+export { DirectionProvider, useDirection, directionUtils } from './direction-provider';
+export { LayoutGrid, Container, FlexLayout, CardGrid } from './layout-grid';
+export { DirectionalDropdownMenu, DirectionalContextMenu, ActionDropdownMenu } from './directional-menu';
+
 // Typography Components
 export { Typography, Heading1, Heading2, Heading3, BodyText, Lead, Caption, MutedText } from './typography';
 

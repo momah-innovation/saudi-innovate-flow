@@ -222,3 +222,71 @@ All colors MUST be HSL for theming consistency.
   animation-iteration-count: 1 !important;
   transition-duration: 0.01ms !important;
 }
+
+/* RTL Support */
+.rtl {
+  direction: rtl;
+}
+
+/* RTL-specific spacing utilities */
+.rtl .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+
+.rtl .divide-x-reverse > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-x-reverse: 1;
+}
+
+/* Direction-aware text alignment */
+.text-start {
+  text-align: start;
+}
+
+.text-end {
+  text-align: end;
+}
+
+/* RTL-specific flex utilities */
+.rtl .flex-row {
+  flex-direction: row-reverse;
+}
+
+.rtl .flex-row-reverse {
+  flex-direction: row;
+}
+
+/* Direction-aware positioning */
+.start-0 {
+  inset-inline-start: 0;
+}
+
+.end-0 {
+  inset-inline-end: 0;
+}
+
+/* Direction-aware margins and padding */
+.ms-auto {
+  margin-inline-start: auto;
+}
+
+.me-auto {
+  margin-inline-end: auto;
+}
+
+.ps-4 {
+  padding-inline-start: 1rem;
+}
+
+.pe-4 {
+  padding-inline-end: 1rem;
+}
+
+/* Smooth transitions for direction changes */
+.direction-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Fix for dropdowns in RTL */
+.rtl [data-radix-popper-content-wrapper] {
+  transform-origin: var(--radix-popper-transform-origin);
+}
