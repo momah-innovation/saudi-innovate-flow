@@ -61,10 +61,7 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     ];
 
     const teamItems = [
-      { id: "campaigns", label: "Campaigns", icon: Calendar, badge: 3, roles: ["team", "admin"] },
-      { id: "events", label: "Events", icon: Award, badge: 2, roles: ["team", "admin"] },
-      { id: "innovation-teams", label: "Innovation Teams", icon: Zap, badge: null, roles: ["team", "admin"] },
-      { id: "stakeholders", label: "Stakeholders", icon: Users, badge: null, roles: ["team", "admin"] },
+      // Moved to admin items to consolidate
     ];
 
     const analyticsItems = [
@@ -74,17 +71,18 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     ];
 
     const adminItems = [
-      { id: "challenge-management", label: "Challenge Management", icon: Target, badge: null, roles: ["admin"] },
+      { id: "campaigns", label: "Campaigns", icon: Target, badge: null, roles: ["team", "admin"] },
+      { id: "events", label: "Events", icon: Calendar, badge: null, roles: ["team", "admin"] },
+      { id: "stakeholders", label: "Stakeholders", icon: Users, badge: null, roles: ["team", "admin"] },
+      { id: "evaluations", label: "Evaluations", icon: UserCheck, badge: null, roles: ["team", "admin"] },
+      { id: "user-management", label: "User Management", icon: UserCheck, badge: null, roles: ["admin"] },
       { id: "focus-questions", label: "Focus Questions", icon: FileText, badge: null, roles: ["admin"] },
       { id: "partners", label: "Partners", icon: Briefcase, badge: null, roles: ["admin"] },
       { id: "sectors", label: "Sectors", icon: Shield, badge: null, roles: ["admin"] },
-      { id: "organizational-structure", label: "Organizational Structure", icon: Users, badge: null, roles: ["admin"] },
-      { id: "expert-assignments", label: "Expert Assignments", icon: UserCheck, badge: null, roles: ["admin"] },
-      { id: "relationships", label: "Relationship Overview", icon: Network, badge: null, roles: ["admin"] },
-      { id: "user-management", label: "User Management", icon: UserCheck, badge: null, roles: ["admin"] },
+      { id: "organizational-structure", label: "Organizational Structure", icon: Network, badge: null, roles: ["admin"] },
+      { id: "expert-assignments", label: "Expert Assignments", icon: Award, badge: null, roles: ["admin"] },
+      { id: "system-settings", label: "System Settings", icon: Settings, badge: null, roles: ["admin"] },
       { id: "system-documentation", label: "System Documentation", icon: BookOpen, badge: null, roles: ["all"] },
-      { id: "system-settings", label: "System Settings", icon: Settings, badge: null, roles: ["admin", "super_admin"] },
-      { id: "system-analytics", label: "System Analytics", icon: BarChart3, badge: null, roles: ["admin"] },
     ];
 
     const settingsItems = [
@@ -125,7 +123,7 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     ["analytics", "trends", "reports", "system-analytics"].includes(item.id)
   );
   const adminItems = menuItems.filter(item => 
-    ["challenge-management", "focus-questions", "partners", "sectors", "organizational-structure", "expert-assignments", "relationships", "user-management", "system-documentation", "system-settings"].includes(item.id)
+    ["campaigns", "events", "stakeholders", "evaluations", "user-management", "focus-questions", "partners", "sectors", "organizational-structure", "expert-assignments", "system-settings", "system-documentation"].includes(item.id)
   );
   const settingsItems = menuItems.filter(item => item.id === "settings");
 
@@ -147,17 +145,14 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
         'Analytics': 'التحليلات',
         'Trends & Insights': 'الاتجاهات والرؤى',
         'Reports': 'التقارير',
-        'Challenge Management': 'إدارة التحديات',
         'Focus Questions': 'الأسئلة المحورية',
         'Partners': 'الشركاء',
         'Sectors': 'القطاعات',
         'Organizational Structure': 'الهيكل التنظيمي',
         'Expert Assignments': 'تعيين الخبراء',
-        'Relationship Overview': 'نظرة عامة على العلاقات',
         'User Management': 'إدارة المستخدمين',
         'System Documentation': 'وثائق النظام',
         'System Settings': 'إعدادات النظام',
-        'System Analytics': 'تحليلات النظام',
         'Settings': 'الإعدادات'
       };
       
