@@ -81,7 +81,7 @@ const ParticipantManagementPage = () => {
             <h1 className="text-3xl font-bold">{event.title_ar}</h1>
             <p className="text-muted-foreground">Manage participants for this event</p>
           </div>
-          <ParticipantManagement eventId={eventId!} />
+          <ParticipantManagement eventId={eventId!} eventTitle={event.title_ar} />
         </div>
       </div>
     </AppShell>

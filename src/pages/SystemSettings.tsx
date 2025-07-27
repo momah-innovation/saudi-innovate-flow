@@ -51,12 +51,6 @@ const SystemSettings = () => {
 
   const fetchSystemLists = async () => {
     try {
-      // Fetch themes
-      const { data: themesData } = await supabase
-        .from('themes')
-        .select('name_ar')
-        .order('name_ar');
-
       // Fetch sectors
       const { data: sectorsData } = await supabase
         .from('sectors')
@@ -64,7 +58,7 @@ const SystemSettings = () => {
         .order('name_ar');
 
       setSystemLists({
-        themes: themesData?.map(t => t.name_ar) || [],
+        themes: ['التكنولوجيا المالية', 'الصحة', 'التعليم', 'البيئة'],
         sectors: sectorsData?.map(s => s.name_ar) || [],
         challengeTypes: ['تحدي تقني', 'تحدي إبداعي', 'تحدي تشغيلي', 'تحدي استراتيجي'],
         ideaCategories: ['تطوير منتج', 'تحسين عملية', 'حل مشكلة', 'ابتكار تقني'],
@@ -259,45 +253,41 @@ const SystemSettings = () => {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid gap-6">
-                <SimpleListEditor
-                  title="المواضيع"
-                  items={systemLists.themes}
-                  onUpdate={(newList) => handleListUpdate('themes', newList)}
-                  placeholder="إضافة موضوع جديد"
-                />
+                <div className="space-y-4">
+                  <h4 className="text-lg font-medium">المواضيع</h4>
+                  <p className="text-sm text-muted-foreground">إدارة قائمة المواضيع المتاحة</p>
+                  <div className="space-y-2">
+                    {systemLists.themes.map((theme, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <span className="flex-1 p-2 bg-muted rounded">{theme}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 
-                <SimpleListEditor
-                  title="القطاعات"
-                  items={systemLists.sectors}
-                  onUpdate={(newList) => handleListUpdate('sectors', newList)}
-                  placeholder="إضافة قطاع جديد"
-                />
+                <div className="space-y-4">
+                  <h4 className="text-lg font-medium">القطاعات</h4>
+                  <p className="text-sm text-muted-foreground">إدارة قائمة القطاعات المتاحة</p>
+                  <div className="space-y-2">
+                    {systemLists.sectors.map((sector, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <span className="flex-1 p-2 bg-muted rounded">{sector}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 
-                <SimpleListEditor
-                  title="أنواع التحديات"
-                  items={systemLists.challengeTypes}
-                  onUpdate={(newList) => handleListUpdate('challengeTypes', newList)}
-                  placeholder="إضافة نوع تحدي جديد"
-                />
-                
-                <SimpleListEditor
-                  title="فئات الأفكار"
-                  items={systemLists.ideaCategories}
-                  onUpdate={(newList) => handleListUpdate('ideaCategories', newList)}
-                  placeholder="إضافة فئة أفكار جديدة"
-                />
-                
-                <SimpleListEditor
-                  title="معايير التقييم"
-                  items={systemLists.evaluationCriteria}
-                  onUpdate={(newList) => handleListUpdate('evaluationCriteria', newList)}
-                  placeholder="إضافة معيار تقييم جديد"
-                />
-                
-                <RoleEditor
-                  roles={systemLists.roles}
-                  onUpdate={(newList) => handleListUpdate('roles', newList)}
-                />
+                <div className="space-y-4">
+                  <h4 className="text-lg font-medium">أنواع التحديات</h4>
+                  <p className="text-sm text-muted-foreground">إدارة قائمة أنواع التحديات</p>
+                  <div className="space-y-2">
+                    {systemLists.challengeTypes.map((type, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <span className="flex-1 p-2 bg-muted rounded">{type}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>

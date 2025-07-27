@@ -204,6 +204,7 @@ const Settings = () => {
         <RoleRequestDialog 
           open={showRoleDialog}
           onOpenChange={setShowRoleDialog}
+          currentRoles={userRoles.map(role => role.role)}
         />
       </div>
     </AppShell>
