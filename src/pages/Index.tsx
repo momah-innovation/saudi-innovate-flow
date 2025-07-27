@@ -6,10 +6,12 @@ import { AdminChallengeManagement } from "@/components/admin/AdminChallengeManag
 import { AppLayout } from "@/components/layout/AppLayout";
 import { PageContainer, Section, ContentArea, PageHeader } from "@/components/ui";
 import TeamManagement from "./TeamManagement";
+import { useTranslation } from "@/hooks/useTranslation";
 
 // Force cache refresh
 
 const Index = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("dashboard");
 
@@ -101,21 +103,21 @@ const Index = () => {
         return <InnovatorDashboard />;
       case "ideas":
         return wrapInSection(
-          "My Ideas",
-          "Ideas management interface will be implemented here.",
-          <div>Ideas content placeholder</div>
+          t('myIdeas'),
+          t('ideasManagement'),
+          <div>{t('ideasManagement')}</div>
         );
       case "evaluations":
         return wrapInSection(
-          "Evaluations",
-          "Expert evaluation interface will be implemented here.",
-          <div>Evaluations content placeholder</div>
+          t('evaluations'),
+          t('evaluations'),
+          <div>{t('evaluations')}</div>
         );
       case "expertise":
         return wrapInSection(
-          "Expertise Profile",
-          "Expert profile management will be implemented here.",
-          <div>Expertise content placeholder</div>
+          t('expertiseProfile'),
+          t('expertiseProfile'),
+          <div>{t('expertiseProfile')}</div>
         );
       case "campaigns":
         return wrapInSection(
@@ -131,8 +133,8 @@ const Index = () => {
         );
       case "innovation-teams":
         return wrapInSection(
-          "Innovation Teams",
-          "Manage and coordinate innovation teams",
+          t('innovationTeamsNav'),
+          t('manageCoordinateTeams'),
           <TeamManagement />
         );
       case "stakeholders":
@@ -179,8 +181,8 @@ const Index = () => {
         );
       case "challenge-management":
         return wrapInSection(
-          "Challenge Management",
-          "Manage and configure innovation challenges",
+          t('challengeManagementNav'),
+          t('manageChallengesDesc'),
           <AdminChallengeManagement />
         );
       case "settings":
@@ -195,7 +197,7 @@ const Index = () => {
   };
 
   const breadcrumbs = [
-    { label: "Dashboard", href: "/" }
+    { label: t('dashboard'), href: "/" }
   ];
 
   return (

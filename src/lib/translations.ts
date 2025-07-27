@@ -189,8 +189,42 @@ export const translations = {
     vibrant: 'نابض بالحياة',
     default: 'افتراضي',
     
-    // Layout modes
-    cards: 'بطاقات',
+    // Authentication and Onboarding
+    signIn: 'تسجيل الدخول',
+    signUp: 'إنشاء حساب',
+    welcomeBack: 'أهلاً بعودتك',
+    createAccount: 'إنشاء حساب',
+    email: 'البريد الإلكتروني',
+    password: 'كلمة المرور',
+    confirmPassword: 'تأكيد كلمة المرور',
+    name: 'الاسم',
+    nameEnglish: 'الاسم (إنجليزي)',
+    nameArabic: 'الاسم (عربي)',
+    backToHome: 'العودة للرئيسية',
+    
+    // Landing Page
+    innovationSystem: 'نظام رواد للابتكار',
+    governmentInnovationPlatform: 'منصة إدارة الابتكار الحكومي',
+    accessPlatform: 'الوصول إلى المنصة',
+    learnMore: 'اعرف المزيد',
+    platformImpact: 'تأثير المنصة',
+    howItWorks: 'كيف يعمل',
+    frequentlyAskedQuestions: 'الأسئلة الشائعة',
+    getStartedToday: 'ابدأ اليوم',
+    
+    // Navigation placeholders
+    myIdeas: 'أفكاري',
+    ideasManagement: 'سيتم تنفيذ واجهة إدارة الأفكار هنا.',
+    expertiseProfile: 'ملف الخبرة',
+    manageCoordinateTeams: 'إدارة وتنسيق فرق الابتكار',
+    innovationTeamsNav: 'فرق الابتكار',
+    analyticsNav: 'التحليلات',
+    trendsInsights: 'الاتجاهات والرؤى',
+    reportsNav: 'التقارير',
+    challengeManagementNav: 'إدارة التحديات',
+    manageChallengesDesc: 'إدارة وتكوين تحديات الابتكار',
+    organizationNav: 'المؤسسة',
+    systemAnalyticsNav: 'تحليلات النظام',
     list: 'قائمة',
     grid: 'شبكة',
     
@@ -396,8 +430,42 @@ export const translations = {
     vibrant: 'Vibrant',
     default: 'Default',
     
-    // Layout modes
-    cards: 'Cards',
+    // Authentication and Onboarding
+    signIn: 'Sign In',
+    signUp: 'Sign Up',
+    welcomeBack: 'Welcome Back',
+    createAccount: 'Create Account',
+    email: 'Email',
+    password: 'Password',
+    confirmPassword: 'Confirm Password',
+    name: 'Name',
+    nameEnglish: 'Name (English)',
+    nameArabic: 'Name (Arabic)',
+    backToHome: 'Back to Home',
+    
+    // Landing Page
+    innovationSystem: 'Ruwād Innovation System',
+    governmentInnovationPlatform: 'Government Innovation Management Platform',
+    accessPlatform: 'Access Platform',
+    learnMore: 'Learn More',
+    platformImpact: 'Platform Impact',
+    howItWorks: 'How It Works',
+    frequentlyAskedQuestions: 'Frequently Asked Questions',
+    getStartedToday: 'Get Started Today',
+    
+    // Navigation placeholders
+    myIdeas: 'My Ideas',
+    ideasManagement: 'Ideas management interface will be implemented here.',
+    expertiseProfile: 'Expertise Profile',
+    manageCoordinateTeams: 'Manage and coordinate innovation teams',
+    innovationTeamsNav: 'Innovation Teams',
+    analyticsNav: 'Analytics',
+    trendsInsights: 'Trends & Insights',
+    reportsNav: 'Reports',
+    challengeManagementNav: 'Challenge Management',
+    manageChallengesDesc: 'Manage and configure innovation challenges',
+    organizationNav: 'Organization',
+    systemAnalyticsNav: 'System Analytics',
     list: 'List',
     grid: 'Grid',
     
