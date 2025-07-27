@@ -287,6 +287,7 @@ export function EventsManagement() {
       description_ar: "",
       event_type: "workshop",
       event_date: "",
+      end_date: "",
       start_time: "",
       end_time: "",
       location: "",
@@ -301,21 +302,14 @@ export function EventsManagement() {
       campaign_id: "",
       challenge_id: "",
       sector_id: "",
-      deputy_id: "",
-      department_id: "",
-      domain_id: "",
-      sub_domain_id: "",
-      service_id: "",
+      is_recurring: false,
+      recurrence_pattern: "",
+      recurrence_end_date: "",
       target_stakeholder_groups: [],
     });
     setSelectedPartners([]);
     setSelectedStakeholders([]);
     setSelectedFocusQuestions([]);
-    setSelectedDeputy("");
-    setSelectedDepartment("");
-    setSelectedDomain("");
-    setSelectedSubDomain("");
-    setSelectedService("");
     setCurrentStep(1);
     setStepErrors({});
     
