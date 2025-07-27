@@ -1520,10 +1520,10 @@ export function CampaignsManagement() {
             <div className="space-y-6">
               {/* Step indicator */}
               <div className="flex items-center justify-between">
-                {[1, 2, 3].map((step) => (
+                {[1, 2, 3, 4, 5].map((step) => (
                   <div
                     key={step}
-                    className={`flex items-center ${step < 3 ? 'flex-1' : ''}`}
+                    className={`flex items-center ${step < 5 ? 'flex-1' : ''}`}
                   >
                     <div
                       className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
@@ -1536,7 +1536,7 @@ export function CampaignsManagement() {
                     >
                       {step}
                     </div>
-                    {step < 3 && (
+                    {step < 5 && (
                       <div
                         className={`flex-1 h-0.5 mx-2 ${
                           currentStep > step ? 'bg-primary' : 'bg-muted'
@@ -1545,6 +1545,15 @@ export function CampaignsManagement() {
                     )}
                   </div>
                 ))}
+              </div>
+              
+              {/* Step labels */}
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>Basic Info</span>
+                <span>Details</span>
+                <span>Structure</span>
+                <span>Partners</span>
+                <span>Settings</span>
               </div>
 
               {/* Step content */}
@@ -1563,7 +1572,7 @@ export function CampaignsManagement() {
                 </Button>
                 
                 <div className="flex gap-2">
-                  {currentStep < 3 ? (
+                  {currentStep < 5 ? (
                     <Button onClick={nextStep}>
                       Next
                     </Button>
