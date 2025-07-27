@@ -68,6 +68,7 @@ export function CampaignsManagement() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [themeFilter, setThemeFilter] = useState("all");
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [bulkMode, setBulkMode] = useState(false);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null);
   
@@ -351,27 +352,26 @@ export function CampaignsManagement() {
     }
   };
 
-  // Bulk actions
+  // Bulk actions - More specific to campaigns
   const bulkActions: BulkAction[] = [
-    {
-      id: 'edit',
-      label: 'Edit Selected',
-      icon: <Edit className="w-4 h-4" />,
-      onClick: (ids) => console.log('Edit campaigns:', ids),
-      variant: 'outline'
-    },
     {
       id: 'archive',
       label: 'Archive Selected',
       icon: <Archive className="w-4 h-4" />,
-      onClick: (ids) => console.log('Archive campaigns:', ids),
+      onClick: (ids) => {
+        console.log('Archive campaigns:', ids);
+        // Handle bulk archive
+      },
       variant: 'outline'
     },
     {
       id: 'export',
       label: 'Export Selected',
       icon: <Download className="w-4 h-4" />,
-      onClick: (ids) => console.log('Export campaigns:', ids),
+      onClick: (ids) => {
+        console.log('Export campaigns:', ids);
+        // Handle bulk export
+      },
       variant: 'outline'
     },
     {
@@ -414,8 +414,8 @@ export function CampaignsManagement() {
         item={campaign}
         title={campaign.title}
         description={campaign.description}
-        selected={selectedItems.includes(campaign.id)}
-        onSelect={(selected) => handleSelectItem(campaign.id, selected)}
+        selected={bulkMode ? selectedItems.includes(campaign.id) : false}
+        onSelect={bulkMode ? (selected) => handleSelectItem(campaign.id, selected) : undefined}
         badges={[
           { 
             label: campaign.status,
@@ -534,6 +534,13 @@ export function CampaignsManagement() {
         onSelectItem={handleSelectItem}
         bulkActions={bulkActions}
         totalItems={filteredCampaigns.length}
+        bulkMode={bulkMode}
+        onToggleBulkMode={() => {
+          setBulkMode(!bulkMode);
+          if (bulkMode) {
+            setSelectedItems([]); // Clear selections when exiting bulk mode
+          }
+        }}
         
         // Additional header actions
         headerActions={

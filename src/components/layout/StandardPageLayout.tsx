@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { Plus, Filter } from "lucide-react";
+import { Plus, Users } from "lucide-react";
 import { PageHeader } from "@/components/ui/page-header";
 import { LayoutSelector } from "@/components/ui/layout-selector";
 import { ViewLayouts } from "@/components/ui/view-layouts";
@@ -60,6 +60,8 @@ interface StandardPageLayoutProps {
   onSelectItem?: (id: string, selected: boolean) => void;
   bulkActions?: BulkAction[];
   totalItems?: number;
+  bulkMode?: boolean;
+  onToggleBulkMode?: () => void;
   
   // Content
   children: ReactNode | ReactNode[];
@@ -95,6 +97,8 @@ export function StandardPageLayout({
   onSelectItem,
   bulkActions = [],
   totalItems = 0,
+  bulkMode = false,
+  onToggleBulkMode,
   children,
   emptyState,
   loading,
@@ -111,6 +115,7 @@ export function StandardPageLayout({
   const showSearch = onSearchChange !== undefined;
   const showFilters = filters.length > 0 || quickFilters !== undefined;
   const showBulkActions = bulkActions.length > 0 && totalItems > 0;
+  const showBulkToggle = bulkActions.length > 0 && totalItems > 0;
   
   const handleLayoutChange = (layout: ViewMode) => {
     setCurrentLayout(layout);
@@ -162,6 +167,17 @@ export function StandardPageLayout({
         } : undefined}
       >
         {headerActions}
+        {showBulkToggle && (
+          <Button
+            variant={bulkMode ? "default" : "outline"}
+            size="sm"
+            onClick={onToggleBulkMode}
+            className="gap-2"
+          >
+            <Users className="w-4 h-4" />
+            {bulkMode ? 'Exit Bulk' : 'Bulk Actions'}
+          </Button>
+        )}
         {showLayoutSelector && (
           <LayoutSelector
             viewMode={currentLayout as 'cards' | 'list' | 'grid'}
@@ -171,7 +187,7 @@ export function StandardPageLayout({
       </PageHeader>
       
       {/* Search, Filters, and Bulk Actions - All on same level */}
-      {(showSearch || showFilters || showBulkActions) && (
+      {(showSearch || showFilters || (showBulkActions && bulkMode)) && (
         <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
           {/* Search and Filters */}
           {(showSearch || showFilters) && (
@@ -187,8 +203,8 @@ export function StandardPageLayout({
             </div>
           )}
           
-          {/* Bulk Actions - Inline */}
-          {showBulkActions && (
+          {/* Bulk Actions - Only when bulk mode is active */}
+          {showBulkActions && bulkMode && (
             <div className="lg:min-w-[200px]">
               <BulkActions
                 selectedItems={selectedItems}
@@ -202,8 +218,8 @@ export function StandardPageLayout({
         </div>
       )}
       
-      {/* Content Area */}
-      <div className="space-y-4">
+      {/* Content Area - Pass bulk mode to children */}
+      <div className="space-y-4" data-bulk-mode={bulkMode}>
         {renderContent()}
       </div>
     </div>
