@@ -328,6 +328,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
       case 1: // Basic Information
         if (!formData.title.trim()) errors.push("Title is required");
         if (!formData.event_type) errors.push("Event type is required");
+        if (!formData.description?.trim()) errors.push("Description is required");
         break;
       case 2: // Event Details
         if (!formData.event_date) errors.push("Event date is required");
@@ -338,6 +339,9 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
         if (formData.format === "virtual" && !formData.virtual_link?.trim()) {
           errors.push("Virtual link is required for virtual events");
         }
+        if (formData.format === "hybrid" && (!formData.location?.trim() || !formData.virtual_link?.trim())) {
+          errors.push("Both location and virtual link are required for hybrid events");
+        }
         if (formData.max_participants && parseInt(formData.max_participants) <= 0) {
           errors.push("Maximum participants must be greater than 0");
         }
@@ -346,6 +350,23 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
         }
         if (formData.start_time && formData.end_time && formData.start_time >= formData.end_time) {
           errors.push("End time must be after start time");
+        }
+        if (formData.end_date && formData.event_date && formData.end_date < formData.event_date) {
+          errors.push("End date cannot be before start date");
+        }
+        break;
+      case 3: // Organization & Campaign
+        // Optional validation
+        break;
+      case 4: // Partners & Stakeholders
+        // Optional validation
+        break;
+      case 5: // Additional Settings
+        if (formData.is_recurring && !formData.recurrence_pattern) {
+          errors.push("Recurrence pattern is required for recurring events");
+        }
+        if (formData.is_recurring && formData.recurrence_pattern && !formData.recurrence_end_date) {
+          errors.push("Recurrence end date is required for recurring events");
         }
         break;
     }
@@ -368,6 +389,10 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
     setStepErrors({ ...stepErrors, [currentStep]: [] });
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
+      toast({
+        title: "Step Complete",
+        description: `Step ${currentStep} completed successfully`,
+      });
     }
   };
 
@@ -481,14 +506,18 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
         return (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-              <div>
+                <div>
                 <Label htmlFor="title">Title (English) *</Label>
                 <Input
                   id="title"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="Event title"
+                  className={stepErrors[1]?.some(e => e.includes("Title")) ? "border-destructive" : ""}
                 />
+                {stepErrors[1]?.some(e => e.includes("Title")) && (
+                  <p className="text-sm text-destructive mt-1">Title is required</p>
+                )}
               </div>
               <div>
                 <Label htmlFor="title_ar">Title (Arabic)</Label>
@@ -504,14 +533,18 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="description">Description (English)</Label>
+                <Label htmlFor="description">Description (English) *</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="Event description"
                   rows={3}
+                  className={stepErrors[1]?.some(e => e.includes("Description")) ? "border-destructive" : ""}
                 />
+                {stepErrors[1]?.some(e => e.includes("Description")) && (
+                  <p className="text-sm text-destructive mt-1">Description is required</p>
+                )}
               </div>
               <div>
                 <Label htmlFor="description_ar">Description (Arabic)</Label>

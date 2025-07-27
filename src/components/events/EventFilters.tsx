@@ -6,8 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
-import { CalendarIcon, Filter, X } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { CalendarIcon, Filter, X, ChevronDown, ChevronUp } from "lucide-react";
 import { format } from "date-fns";
+import { useState } from "react";
 
 interface EventFiltersProps {
   searchTerm: string;
@@ -62,6 +64,8 @@ export function EventFilters({
   onClearFilters,
   activeFiltersCount
 }: EventFiltersProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  
   const eventTypes = [
     { value: "all", label: "All Types" },
     { value: "workshop", label: "Workshop" },
@@ -105,309 +109,330 @@ export function EventFilters({
   ];
 
   return (
-    <Card>
-      <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Filter className="h-5 w-5" />
-            Event Filters
-          </CardTitle>
-          {activeFiltersCount > 0 && (
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary">{activeFiltersCount} active</Badge>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onClearFilters}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <X className="h-4 w-4 mr-1" />
-                Clear All
-              </Button>
-            </div>
-          )}
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Search */}
-        <div>
-          <Label htmlFor="search">Search Events</Label>
-          <Input
-            id="search"
-            placeholder="Search by title, description, or location..."
-            value={searchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
-          />
-        </div>
+    <div className="space-y-4">
+      {/* Always visible search bar */}
+      <div>
+        <Input
+          placeholder="Search events by title, description, location, type, manager..."
+          value={searchTerm}
+          onChange={(e) => onSearchChange(e.target.value)}
+          className="w-full"
+        />
+      </div>
 
-        {/* Quick Filters Row 1 */}
-        <div className="grid grid-cols-3 gap-4">
-          <div>
-            <Label>Status</Label>
-            <Select value={statusFilter} onValueChange={onStatusChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select status" />
-              </SelectTrigger>
-              <SelectContent>
-                {statusOptions.map((status) => (
-                  <SelectItem key={status.value} value={status.value}>
-                    {status.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+      {/* Collapsible filters */}
+      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+        <Card>
+          <CollapsibleTrigger asChild>
+            <CardHeader className="pb-4 cursor-pointer hover:bg-muted/50 transition-colors">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Filter className="h-5 w-5" />
+                  Advanced Filters
+                  {activeFiltersCount > 0 && (
+                    <Badge variant="secondary" className="ml-2">
+                      {activeFiltersCount} active
+                    </Badge>
+                  )}
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  {activeFiltersCount > 0 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onClearFilters();
+                      }}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="h-4 w-4 mr-1" />
+                      Clear All
+                    </Button>
+                  )}
+                  {isOpen ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </div>
+              </div>
+            </CardHeader>
+          </CollapsibleTrigger>
+          
+          <CollapsibleContent>
+            <CardContent className="space-y-4 pt-0">
+              {/* Quick Filters Row 1 */}
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <Label>Status</Label>
+                  <Select value={statusFilter} onValueChange={onStatusChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {statusOptions.map((status) => (
+                        <SelectItem key={status.value} value={status.value}>
+                          {status.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-          <div>
-            <Label>Format</Label>
-            <Select value={formatFilter} onValueChange={onFormatChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select format" />
-              </SelectTrigger>
-              <SelectContent>
-                {formatOptions.map((format) => (
-                  <SelectItem key={format.value} value={format.value}>
-                    {format.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+                <div>
+                  <Label>Format</Label>
+                  <Select value={formatFilter} onValueChange={onFormatChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select format" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {formatOptions.map((format) => (
+                        <SelectItem key={format.value} value={format.value}>
+                          {format.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-          <div>
-            <Label>Type</Label>
-            <Select value={typeFilter} onValueChange={onTypeChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select type" />
-              </SelectTrigger>
-              <SelectContent>
-                {eventTypes.map((type) => (
-                  <SelectItem key={type.value} value={type.value}>
-                    {type.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
+                <div>
+                  <Label>Type</Label>
+                  <Select value={typeFilter} onValueChange={onTypeChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {eventTypes.map((type) => (
+                        <SelectItem key={type.value} value={type.value}>
+                          {type.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
 
-        {/* Quick Filters Row 2 */}
-        <div className="grid grid-cols-3 gap-4">
-          <div>
-            <Label>Category</Label>
-            <Select value={categoryFilter} onValueChange={onCategoryChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categoryOptions.map((category) => (
-                  <SelectItem key={category.value} value={category.value}>
-                    {category.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+              {/* Quick Filters Row 2 */}
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <Label>Category</Label>
+                  <Select value={categoryFilter} onValueChange={onCategoryChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categoryOptions.map((category) => (
+                        <SelectItem key={category.value} value={category.value}>
+                          {category.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-          <div>
-            <Label>Visibility</Label>
-            <Select value={visibilityFilter} onValueChange={onVisibilityChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select visibility" />
-              </SelectTrigger>
-              <SelectContent>
-                {visibilityOptions.map((visibility) => (
-                  <SelectItem key={visibility.value} value={visibility.value}>
-                    {visibility.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+                <div>
+                  <Label>Visibility</Label>
+                  <Select value={visibilityFilter} onValueChange={onVisibilityChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select visibility" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {visibilityOptions.map((visibility) => (
+                        <SelectItem key={visibility.value} value={visibility.value}>
+                          {visibility.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-          <div>
-            <Label>Campaign</Label>
-            <Select value={selectedCampaign} onValueChange={onCampaignChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select campaign" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Campaigns</SelectItem>
-                {campaigns.map((campaign) => (
-                  <SelectItem key={campaign.id} value={campaign.id}>
-                    {campaign.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
+                <div>
+                  <Label>Campaign</Label>
+                  <Select value={selectedCampaign} onValueChange={onCampaignChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select campaign" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Campaigns</SelectItem>
+                      {campaigns.map((campaign) => (
+                        <SelectItem key={campaign.id} value={campaign.id}>
+                          {campaign.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
 
-        {/* Date Range and Sector */}
-        <div className="grid grid-cols-3 gap-4">
-          <div>
-            <Label>From Date</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start text-left font-normal"
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {dateFrom ? format(dateFrom, "PPP") : "Pick a date"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={dateFrom}
-                  onSelect={onDateFromChange}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
+              {/* Date Range and Sector */}
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <Label>From Date</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start text-left font-normal"
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {dateFrom ? format(dateFrom, "PPP") : "Pick a date"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={dateFrom}
+                        onSelect={onDateFromChange}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
 
-          <div>
-            <Label>To Date</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start text-left font-normal"
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {dateTo ? format(dateTo, "PPP") : "Pick a date"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={dateTo}
-                  onSelect={onDateToChange}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
+                <div>
+                  <Label>To Date</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start text-left font-normal"
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {dateTo ? format(dateTo, "PPP") : "Pick a date"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={dateTo}
+                        onSelect={onDateToChange}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
 
-          <div>
-            <Label>Sector</Label>
-            <Select value={selectedSector} onValueChange={onSectorChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select sector" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Sectors</SelectItem>
-                {sectors.map((sector) => (
-                  <SelectItem key={sector.id} value={sector.id}>
-                    {sector.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
+                <div>
+                  <Label>Sector</Label>
+                  <Select value={selectedSector} onValueChange={onSectorChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select sector" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Sectors</SelectItem>
+                      {sectors.map((sector) => (
+                        <SelectItem key={sector.id} value={sector.id}>
+                          {sector.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
 
-        {/* Active Filters Display */}
-        {activeFiltersCount > 0 && (
-          <div className="border-t pt-4">
-            <Label className="text-sm font-medium">Active Filters:</Label>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {searchTerm && (
-                <Badge variant="outline" className="text-xs">
-                  Search: "{searchTerm}"
-                  <X 
-                    className="ml-1 h-3 w-3 cursor-pointer" 
-                    onClick={() => onSearchChange("")}
-                  />
-                </Badge>
+              {/* Active Filters Display */}
+              {activeFiltersCount > 0 && (
+                <div className="border-t pt-4">
+                  <Label className="text-sm font-medium">Active Filters:</Label>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {searchTerm && (
+                      <Badge variant="outline" className="text-xs">
+                        Search: "{searchTerm}"
+                        <X 
+                          className="ml-1 h-3 w-3 cursor-pointer" 
+                          onClick={() => onSearchChange("")}
+                        />
+                      </Badge>
+                    )}
+                    {statusFilter !== "all" && (
+                      <Badge variant="outline" className="text-xs">
+                        Status: {statusOptions.find(s => s.value === statusFilter)?.label}
+                        <X 
+                          className="ml-1 h-3 w-3 cursor-pointer" 
+                          onClick={() => onStatusChange("all")}
+                        />
+                      </Badge>
+                    )}
+                    {formatFilter !== "all" && (
+                      <Badge variant="outline" className="text-xs">
+                        Format: {formatOptions.find(f => f.value === formatFilter)?.label}
+                        <X 
+                          className="ml-1 h-3 w-3 cursor-pointer" 
+                          onClick={() => onFormatChange("all")}
+                        />
+                      </Badge>
+                    )}
+                    {typeFilter !== "all" && (
+                      <Badge variant="outline" className="text-xs">
+                        Type: {eventTypes.find(t => t.value === typeFilter)?.label}
+                        <X 
+                          className="ml-1 h-3 w-3 cursor-pointer" 
+                          onClick={() => onTypeChange("all")}
+                        />
+                      </Badge>
+                    )}
+                    {categoryFilter !== "all" && (
+                      <Badge variant="outline" className="text-xs">
+                        Category: {categoryOptions.find(c => c.value === categoryFilter)?.label}
+                        <X 
+                          className="ml-1 h-3 w-3 cursor-pointer" 
+                          onClick={() => onCategoryChange("all")}
+                        />
+                      </Badge>
+                    )}
+                    {visibilityFilter !== "all" && (
+                      <Badge variant="outline" className="text-xs">
+                        Visibility: {visibilityOptions.find(v => v.value === visibilityFilter)?.label}
+                        <X 
+                          className="ml-1 h-3 w-3 cursor-pointer" 
+                          onClick={() => onVisibilityChange("all")}
+                        />
+                      </Badge>
+                    )}
+                    {selectedCampaign !== "all" && (
+                      <Badge variant="outline" className="text-xs">
+                        Campaign: {campaigns.find(c => c.id === selectedCampaign)?.title}
+                        <X 
+                          className="ml-1 h-3 w-3 cursor-pointer" 
+                          onClick={() => onCampaignChange("all")}
+                        />
+                      </Badge>
+                    )}
+                    {selectedSector !== "all" && (
+                      <Badge variant="outline" className="text-xs">
+                        Sector: {sectors.find(s => s.id === selectedSector)?.name}
+                        <X 
+                          className="ml-1 h-3 w-3 cursor-pointer" 
+                          onClick={() => onSectorChange("all")}
+                        />
+                      </Badge>
+                    )}
+                    {dateFrom && (
+                      <Badge variant="outline" className="text-xs">
+                        From: {format(dateFrom, "MMM dd, yyyy")}
+                        <X 
+                          className="ml-1 h-3 w-3 cursor-pointer" 
+                          onClick={() => onDateFromChange(undefined)}
+                        />
+                      </Badge>
+                    )}
+                    {dateTo && (
+                      <Badge variant="outline" className="text-xs">
+                        To: {format(dateTo, "MMM dd, yyyy")}
+                        <X 
+                          className="ml-1 h-3 w-3 cursor-pointer" 
+                          onClick={() => onDateToChange(undefined)}
+                        />
+                      </Badge>
+                    )}
+                  </div>
+                </div>
               )}
-              {statusFilter !== "all" && (
-                <Badge variant="outline" className="text-xs">
-                  Status: {statusOptions.find(s => s.value === statusFilter)?.label}
-                  <X 
-                    className="ml-1 h-3 w-3 cursor-pointer" 
-                    onClick={() => onStatusChange("all")}
-                  />
-                </Badge>
-              )}
-              {formatFilter !== "all" && (
-                <Badge variant="outline" className="text-xs">
-                  Format: {formatOptions.find(f => f.value === formatFilter)?.label}
-                  <X 
-                    className="ml-1 h-3 w-3 cursor-pointer" 
-                    onClick={() => onFormatChange("all")}
-                  />
-                </Badge>
-              )}
-              {typeFilter !== "all" && (
-                <Badge variant="outline" className="text-xs">
-                  Type: {eventTypes.find(t => t.value === typeFilter)?.label}
-                  <X 
-                    className="ml-1 h-3 w-3 cursor-pointer" 
-                    onClick={() => onTypeChange("all")}
-                  />
-                </Badge>
-              )}
-              {categoryFilter !== "all" && (
-                <Badge variant="outline" className="text-xs">
-                  Category: {categoryOptions.find(c => c.value === categoryFilter)?.label}
-                  <X 
-                    className="ml-1 h-3 w-3 cursor-pointer" 
-                    onClick={() => onCategoryChange("all")}
-                  />
-                </Badge>
-              )}
-              {visibilityFilter !== "all" && (
-                <Badge variant="outline" className="text-xs">
-                  Visibility: {visibilityOptions.find(v => v.value === visibilityFilter)?.label}
-                  <X 
-                    className="ml-1 h-3 w-3 cursor-pointer" 
-                    onClick={() => onVisibilityChange("all")}
-                  />
-                </Badge>
-              )}
-              {selectedCampaign !== "all" && (
-                <Badge variant="outline" className="text-xs">
-                  Campaign: {campaigns.find(c => c.id === selectedCampaign)?.title}
-                  <X 
-                    className="ml-1 h-3 w-3 cursor-pointer" 
-                    onClick={() => onCampaignChange("all")}
-                  />
-                </Badge>
-              )}
-              {selectedSector !== "all" && (
-                <Badge variant="outline" className="text-xs">
-                  Sector: {sectors.find(s => s.id === selectedSector)?.name}
-                  <X 
-                    className="ml-1 h-3 w-3 cursor-pointer" 
-                    onClick={() => onSectorChange("all")}
-                  />
-                </Badge>
-              )}
-              {dateFrom && (
-                <Badge variant="outline" className="text-xs">
-                  From: {format(dateFrom, "MMM dd, yyyy")}
-                  <X 
-                    className="ml-1 h-3 w-3 cursor-pointer" 
-                    onClick={() => onDateFromChange(undefined)}
-                  />
-                </Badge>
-              )}
-              {dateTo && (
-                <Badge variant="outline" className="text-xs">
-                  To: {format(dateTo, "MMM dd, yyyy")}
-                  <X 
-                    className="ml-1 h-3 w-3 cursor-pointer" 
-                    onClick={() => onDateToChange(undefined)}
-                  />
-                </Badge>
-              )}
-            </div>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+            </CardContent>
+          </CollapsibleContent>
+        </Card>
+      </Collapsible>
+    </div>
   );
 }

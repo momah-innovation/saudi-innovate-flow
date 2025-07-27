@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Calendar, MapPin, Users, Clock, Edit, Trash2, Eye } from "lucide-react";
+import { Plus, Calendar, MapPin, Users, Clock, Edit, Trash2, Eye, Grid, List, LayoutGrid } from "lucide-react";
 import { format } from "date-fns";
 import { EventDialog } from "@/components/events/EventDialog";
 import { EventFilters } from "@/components/events/EventFilters";
@@ -49,6 +50,7 @@ export function EventsManagement() {
   const [campaigns, setCampaigns] = useState<any[]>([]);
   const [sectors, setSectors] = useState<any[]>([]);
   const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
+  const [viewMode, setViewMode] = useState<"card" | "list" | "grid">("card");
   
   // Filters
   const [searchTerm, setSearchTerm] = useState("");
@@ -115,10 +117,17 @@ export function EventsManagement() {
     let filtered = events;
 
     if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
       filtered = filtered.filter(event =>
-        event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (event.description && event.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (event.location && event.location.toLowerCase().includes(searchTerm.toLowerCase()))
+        event.title.toLowerCase().includes(searchLower) ||
+        (event.title_ar && event.title_ar.toLowerCase().includes(searchLower)) ||
+        (event.description && event.description.toLowerCase().includes(searchLower)) ||
+        (event.description_ar && event.description_ar.toLowerCase().includes(searchLower)) ||
+        (event.location && event.location.toLowerCase().includes(searchLower)) ||
+        (event.event_type && event.event_type.toLowerCase().includes(searchLower)) ||
+        (event.format && event.format.toLowerCase().includes(searchLower)) ||
+        (event.status && event.status.toLowerCase().includes(searchLower)) ||
+        (event.virtual_link && event.virtual_link.toLowerCase().includes(searchLower))
       );
     }
 
@@ -200,7 +209,7 @@ export function EventsManagement() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this event?")) return;
+    if (!confirm("Are you sure you want to delete this event? This action cannot be undone.")) return;
 
     try {
       // Delete related links first
@@ -296,10 +305,30 @@ export function EventsManagement() {
           <h1 className="text-3xl font-bold">Events Management</h1>
           <p className="text-muted-foreground">Manage and organize all events</p>
         </div>
-        <Button onClick={() => setShowEventDialog(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Event
-        </Button>
+        <div className="flex items-center gap-3">
+          {/* Layout Selector */}
+          <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as "card" | "list" | "grid")}>
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="card" className="flex items-center gap-2">
+                <LayoutGrid className="h-4 w-4" />
+                Cards
+              </TabsTrigger>
+              <TabsTrigger value="list" className="flex items-center gap-2">
+                <List className="h-4 w-4" />
+                List
+              </TabsTrigger>
+              <TabsTrigger value="grid" className="flex items-center gap-2">
+                <Grid className="h-4 w-4" />
+                Grid
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+          
+          <Button onClick={() => setShowEventDialog(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add Event
+          </Button>
+        </div>
       </div>
 
       <EventFilters
@@ -336,99 +365,240 @@ export function EventsManagement() {
         onRefresh={fetchEvents}
       />
 
-      <div className="grid gap-4">
-        {filteredEvents.map((event) => (
-          <Card key={event.id} className="hover:shadow-md transition-shadow">
-            <CardHeader className="pb-3">
-              <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <CardTitle className="text-lg">{event.title}</CardTitle>
-                  {event.title_ar && (
-                    <p className="text-sm text-muted-foreground mt-1" dir="rtl">
-                      {event.title_ar}
-                    </p>
-                  )}
-                  <div className="flex gap-2 mt-2">
-                    <Badge className={getStatusColor(event.status || 'scheduled')}>
-                      {event.status || 'scheduled'}
-                    </Badge>
-                    <Badge className={getFormatColor(event.format || 'in_person')}>
-                      {event.format || 'in_person'}
-                    </Badge>
-                    {event.event_type && (
-                      <Badge variant="outline">
-                        {event.event_type}
-                      </Badge>
+      {/* Events Display with Different View Modes */}
+      <Tabs value={viewMode} className="w-full">
+        <TabsContent value="card" className="space-y-4">
+          <div className="grid gap-4">
+            {filteredEvents.map((event) => (
+              <Card key={event.id} className="hover:shadow-md transition-shadow">
+                <CardHeader className="pb-3">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <CardTitle className="text-lg">{event.title}</CardTitle>
+                      {event.title_ar && (
+                        <p className="text-sm text-muted-foreground mt-1" dir="rtl">
+                          {event.title_ar}
+                        </p>
+                      )}
+                      <div className="flex gap-2 mt-2">
+                        <Badge className={getStatusColor(event.status || 'scheduled')}>
+                          {event.status || 'scheduled'}
+                        </Badge>
+                        <Badge className={getFormatColor(event.format || 'in_person')}>
+                          {event.format || 'in_person'}
+                        </Badge>
+                        {event.event_type && (
+                          <Badge variant="outline">
+                            {event.event_type}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleView(event)}
+                        className="h-9 w-9 p-0"
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEdit(event)}
+                        className="h-9 w-9 p-0"
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDelete(event.id)}
+                        className="h-9 w-9 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-muted-foreground" />
+                      <span>{format(new Date(event.event_date), 'PPP')}</span>
+                    </div>
+                    {event.start_time && (
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-muted-foreground" />
+                        <span>{event.start_time} - {event.end_time}</span>
+                      </div>
+                    )}
+                    {event.location && (
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-muted-foreground" />
+                        <span className="truncate">{event.location}</span>
+                      </div>
+                    )}
+                    {event.max_participants && (
+                      <div className="flex items-center gap-2">
+                        <Users className="h-4 w-4 text-muted-foreground" />
+                        <span>{event.registered_participants || 0}/{event.max_participants}</span>
+                      </div>
                     )}
                   </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleView(event)}
-                  >
-                    <Eye className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleEdit(event)}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleDelete(event.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span>{format(new Date(event.event_date), 'PPP')}</span>
-                </div>
-                {event.start_time && (
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-muted-foreground" />
-                    <span>{event.start_time} - {event.end_time}</span>
+                  {event.description && (
+                    <p className="text-sm text-muted-foreground mt-3 line-clamp-2">
+                      {event.description}
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="list" className="space-y-2">
+          <div className="space-y-2">
+            {filteredEvents.map((event) => (
+              <Card key={event.id} className="hover:shadow-sm transition-shadow">
+                <CardContent className="py-4">
+                  <div className="flex justify-between items-center">
+                    <div className="flex-1 grid grid-cols-1 md:grid-cols-6 gap-4 items-center">
+                      <div className="md:col-span-2">
+                        <h3 className="font-medium">{event.title}</h3>
+                        <p className="text-sm text-muted-foreground">{event.event_type}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm">{format(new Date(event.event_date), 'MMM dd, yyyy')}</span>
+                      </div>
+                      <div>
+                        <Badge className={getStatusColor(event.status || 'scheduled')} variant="outline">
+                          {event.status || 'scheduled'}
+                        </Badge>
+                      </div>
+                      <div>
+                        <Badge className={getFormatColor(event.format || 'in_person')} variant="outline">
+                          {event.format || 'in_person'}
+                        </Badge>
+                      </div>
+                    <div className="flex items-center gap-2">
+                      <Users className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">{event.registered_participants || 0}/{event.max_participants || '∞'}</span>
+                    </div>
                   </div>
-                )}
-                {event.location && (
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <span className="truncate">{event.location}</span>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleView(event)}
+                      className="h-9 w-9 p-0"
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleEdit(event)}
+                      className="h-9 w-9 p-0"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDelete(event.id)}
+                      className="h-9 w-9 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
-                )}
-                {event.max_participants && (
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 text-muted-foreground" />
-                    <span>{event.registered_participants || 0}/{event.max_participants}</span>
                   </div>
-                )}
-              </div>
-              {event.description && (
-                <p className="text-sm text-muted-foreground mt-3 line-clamp-2">
-                  {event.description}
-                </p>
-              )}
-            </CardContent>
-          </Card>
-        ))}
-        
-        {filteredEvents.length === 0 && (
-          <Card>
-            <CardContent className="py-8 text-center">
-              <p className="text-muted-foreground">No events found matching your criteria.</p>
-            </CardContent>
-          </Card>
-        )}
-      </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="grid" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredEvents.map((event) => (
+              <Card key={event.id} className="hover:shadow-md transition-shadow">
+                <CardHeader className="pb-3">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <CardTitle className="text-base line-clamp-1">{event.title}</CardTitle>
+                       <div className="flex gap-1 mt-2">
+                         <Badge variant="outline" className={`text-xs ${getStatusColor(event.status || 'scheduled')}`}>
+                           {event.status || 'scheduled'}
+                         </Badge>
+                         <Badge variant="outline" className={`text-xs ${getFormatColor(event.format || 'in_person')}`}>
+                           {event.format || 'in_person'}
+                         </Badge>
+                       </div>
+                    </div>
+                    <div className="flex gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleView(event)}
+                        className="h-8 w-8 p-0"
+                      >
+                        <Eye className="h-3 w-3" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEdit(event)}
+                        className="h-8 w-8 p-0"
+                      >
+                        <Edit className="h-3 w-3" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDelete(event.id)}
+                        className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-3 w-3 text-muted-foreground" />
+                      <span>{format(new Date(event.event_date), 'MMM dd')}</span>
+                    </div>
+                    {event.location && (
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-3 w-3 text-muted-foreground" />
+                        <span className="truncate text-xs">{event.location}</span>
+                      </div>
+                    )}
+                    {event.max_participants && (
+                      <div className="flex items-center gap-2">
+                        <Users className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-xs">{event.registered_participants || 0}/{event.max_participants}</span>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      {filteredEvents.length === 0 && (
+        <Card>
+          <CardContent className="py-8 text-center">
+            <p className="text-muted-foreground">No events found matching your criteria.</p>
+          </CardContent>
+        </Card>
+      )}
 
       <EventDialog
         isOpen={showEventDialog}
