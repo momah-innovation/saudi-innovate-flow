@@ -171,7 +171,7 @@ export default function LandingPage() {
             <Button 
               variant="outline" 
               size="lg"
-              className="border-background/30 text-primary-foreground hover:bg-background/10 text-lg px-8 py-4"
+              className="border-foreground/30 text-foreground hover:bg-foreground/10 text-lg px-8 py-4"
               onClick={() => {
                 const featuresSection = document.getElementById('features-section');
                 featuresSection?.scrollIntoView({ behavior: 'smooth' });
