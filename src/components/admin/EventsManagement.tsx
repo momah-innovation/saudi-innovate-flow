@@ -103,6 +103,7 @@ export function EventsManagement() {
     description_ar: "",
     event_type: "workshop",
     event_date: "",
+    end_date: "",
     start_time: "",
     end_time: "",
     location: "",
@@ -117,11 +118,9 @@ export function EventsManagement() {
     campaign_id: "",
     challenge_id: "",
     sector_id: "",
-    deputy_id: "",
-    department_id: "",
-    domain_id: "",
-    sub_domain_id: "",
-    service_id: "",
+    is_recurring: false,
+    recurrence_pattern: "",
+    recurrence_end_date: "",
     target_stakeholder_groups: [] as string[],
   });
 
@@ -129,11 +128,6 @@ export function EventsManagement() {
   const [campaigns, setCampaigns] = useState<any[]>([]);
   const [challenges, setChallenges] = useState<any[]>([]);
   const [sectors, setSectors] = useState<any[]>([]);
-  const [deputies, setDeputies] = useState<any[]>([]);
-  const [departments, setDepartments] = useState<any[]>([]);
-  const [domains, setDomains] = useState<any[]>([]);
-  const [subDomains, setSubDomains] = useState<any[]>([]);
-  const [services, setServices] = useState<any[]>([]);
   const [partners, setPartners] = useState<any[]>([]);
   const [stakeholders, setStakeholders] = useState<any[]>([]);
   const [focusQuestions, setFocusQuestions] = useState<any[]>([]);
@@ -141,13 +135,6 @@ export function EventsManagement() {
   const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
   const [selectedStakeholders, setSelectedStakeholders] = useState<string[]>([]);
   const [selectedFocusQuestions, setSelectedFocusQuestions] = useState<string[]>([]);
-  
-  // Organizational structure selections
-  const [selectedDeputy, setSelectedDeputy] = useState<string>("");
-  const [selectedDepartment, setSelectedDepartment] = useState<string>("");
-  const [selectedDomain, setSelectedDomain] = useState<string>("");
-  const [selectedSubDomain, setSelectedSubDomain] = useState<string>("");
-  const [selectedService, setSelectedService] = useState<string>("");
   
   // Search states for dropdowns
   const [openEventManager, setOpenEventManager] = useState(false);
@@ -222,11 +209,6 @@ export function EventsManagement() {
         campaignsRes, 
         challengesRes, 
         sectorsRes,
-        deputiesRes,
-        departmentsRes,
-        domainsRes,
-        subDomainsRes,
-        servicesRes,
         partnersRes, 
         stakeholdersRes, 
         focusQuestionsRes,
@@ -241,11 +223,6 @@ export function EventsManagement() {
         supabase.from('campaigns').select('*'),
         supabase.from('challenges').select('*'),
         supabase.from('sectors').select('*'),
-        supabase.from('deputies').select('*'),
-        supabase.from('departments').select('*'),
-        supabase.from('domains').select('*'),
-        supabase.from('sub_domains').select('*'),
-        supabase.from('services').select('*'),
         supabase.from('partners').select('*'),
         supabase.from('stakeholders').select('*'),
         supabase.from('focus_questions').select('*'),
@@ -261,11 +238,6 @@ export function EventsManagement() {
       setCampaigns(campaignsRes.data || []);
       setChallenges(challengesRes.data || []);
       setSectors(sectorsRes.data || []);
-      setDeputies(deputiesRes.data || []);
-      setDepartments(departmentsRes.data || []);
-      setDomains(domainsRes.data || []);
-      setSubDomains(subDomainsRes.data || []);
-      setServices(servicesRes.data || []);
       setPartners(partnersRes.data || []);
       setStakeholders(stakeholdersRes.data || []);
       setFocusQuestions(focusQuestionsRes.data || []);
@@ -446,31 +418,8 @@ export function EventsManagement() {
     });
   };
 
-  // Organizational Structure Dynamic Filtering
-  const getFilteredDeputies = () => {
-    if (!formData.sector_id) return deputies;
-    return deputies.filter(deputy => deputy.sector_id === formData.sector_id);
-  };
-
-  const getFilteredDepartments = () => {
-    if (!selectedDeputy) return departments;
-    return departments.filter(department => department.deputy_id === selectedDeputy);
-  };
-
-  const getFilteredDomains = () => {
-    if (!selectedDepartment) return domains;
-    return domains.filter(domain => domain.department_id === selectedDepartment);
-  };
-
-  const getFilteredSubDomains = () => {
-    if (!selectedDomain) return subDomains;
-    return subDomains.filter(subDomain => subDomain.domain_id === selectedDomain);
-  };
-
-  const getFilteredServices = () => {
-    if (!selectedSubDomain) return services;
-    return services.filter(service => service.sub_domain_id === selectedSubDomain);
-  };
+  // Remove invalid organizational structure filtering functions
+  // Only keeping the valid ones for the actual events table schema
 
   const getFilteredPartners = () => {
     const basePartners = partners.filter(partner => 

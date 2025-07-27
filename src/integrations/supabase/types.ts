@@ -904,6 +904,81 @@ export type Database = {
           },
         ]
       }
+      event_participant_notifications: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          message_content: string | null
+          notification_type: string
+          participant_id: string
+          sent_at: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          message_content?: string | null
+          notification_type: string
+          participant_id: string
+          sent_at?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          message_content?: string | null
+          notification_type?: string
+          participant_id?: string
+          sent_at?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      event_participants: {
+        Row: {
+          attendance_status: string
+          check_in_time: string | null
+          check_out_time: string | null
+          created_at: string
+          event_id: string
+          id: string
+          notes: string | null
+          registration_date: string
+          registration_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attendance_status?: string
+          check_in_time?: string | null
+          check_out_time?: string | null
+          created_at?: string
+          event_id: string
+          id?: string
+          notes?: string | null
+          registration_date?: string
+          registration_type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attendance_status?: string
+          check_in_time?: string | null
+          check_out_time?: string | null
+          created_at?: string
+          event_id?: string
+          id?: string
+          notes?: string | null
+          registration_date?: string
+          registration_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       event_partner_links: {
         Row: {
           created_at: string
@@ -1027,15 +1102,19 @@ export type Database = {
           created_at: string | null
           description: string | null
           description_ar: string | null
+          end_date: string | null
           end_time: string | null
           event_date: string
           event_manager_id: string | null
           event_type: string | null
           format: string | null
           id: string
+          is_recurring: boolean | null
           location: string | null
           max_participants: number | null
           partner_organizations: string[] | null
+          recurrence_end_date: string | null
+          recurrence_pattern: string | null
           registered_participants: number | null
           related_focus_questions: string[] | null
           sector_id: string | null
@@ -1054,15 +1133,19 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           description_ar?: string | null
+          end_date?: string | null
           end_time?: string | null
           event_date: string
           event_manager_id?: string | null
           event_type?: string | null
           format?: string | null
           id?: string
+          is_recurring?: boolean | null
           location?: string | null
           max_participants?: number | null
           partner_organizations?: string[] | null
+          recurrence_end_date?: string | null
+          recurrence_pattern?: string | null
           registered_participants?: number | null
           related_focus_questions?: string[] | null
           sector_id?: string | null
@@ -1081,15 +1164,19 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           description_ar?: string | null
+          end_date?: string | null
           end_time?: string | null
           event_date?: string
           event_manager_id?: string | null
           event_type?: string | null
           format?: string | null
           id?: string
+          is_recurring?: boolean | null
           location?: string | null
           max_participants?: number | null
           partner_organizations?: string[] | null
+          recurrence_end_date?: string | null
+          recurrence_pattern?: string | null
           registered_participants?: number | null
           related_focus_questions?: string[] | null
           sector_id?: string | null
