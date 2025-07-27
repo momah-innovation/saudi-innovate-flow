@@ -5,14 +5,17 @@ import { useTranslation } from "@/hooks/useTranslation"
 import { cn } from "@/lib/utils"
 import { ButtonProps, buttonVariants } from "@/components/ui/button"
 
-const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
-  <nav
-    role="navigation"
-    aria-label="pagination"
-    className={cn("mx-auto flex w-full justify-center", className)}
-    {...props}
-  />
-)
+const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => {
+  const { t } = useTranslation();
+  return (
+    <nav
+      role="navigation"
+      aria-label={t('pagination')}
+      className={cn("mx-auto flex w-full justify-center", className)}
+      {...props}
+    />
+  );
+}
 Pagination.displayName = "Pagination"
 
 const PaginationContent = React.forwardRef<
@@ -68,7 +71,7 @@ const PaginationPrevious = ({
   
   return (
     <PaginationLink
-      aria-label="Go to previous page"
+      aria-label={t('goToPreviousPage')}
       size="default"
       className={cn("gap-1 pl-2.5", className)}
       {...props}
@@ -88,7 +91,7 @@ const PaginationNext = ({
   
   return (
     <PaginationLink
-      aria-label="Go to next page"
+      aria-label={t('goToNextPage')}
       size="default"
       className={cn("gap-1 pr-2.5", className)}
       {...props}

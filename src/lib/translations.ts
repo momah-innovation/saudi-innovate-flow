@@ -373,6 +373,12 @@ export const translations = {
     from: 'من',
     to: 'إلى',
     statusUpdate: 'تحديث الحالة',
+    breadcrumb: 'مسار التنقل',
+    pagination: 'ترقيم الصفحات',
+    goToPreviousPage: 'الانتقال إلى الصفحة السابقة',
+    goToNextPage: 'الانتقال إلى الصفحة التالية',
+    toggleSidebar: 'تبديل الشريط الجانبي',
+    more: 'المزيد',
     
     
   },
