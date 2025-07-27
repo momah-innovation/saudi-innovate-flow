@@ -1,0 +1,1285 @@
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Switch } from "@/components/ui/switch";
+import { useToast } from "@/hooks/use-toast";
+import { 
+  Check,
+  ChevronsUpDown,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Calendar,
+  MapPin,
+  Users,
+  Clock,
+  Target,
+  Building,
+  UserCheck,
+  HelpCircle,
+  Settings
+} from "lucide-react";
+import { updateEventPartners, updateEventStakeholders, updateEventFocusQuestions, updateEventChallenges } from "@/lib/relationshipHelpers";
+
+interface Event {
+  id: string;
+  title: string;
+  title_ar?: string;
+  description?: string;
+  description_ar?: string;
+  event_type?: string;
+  event_date: string;
+  end_date?: string;
+  start_time?: string;
+  end_time?: string;
+  location?: string;
+  virtual_link?: string;
+  format?: string;
+  max_participants?: number;
+  registered_participants?: number;
+  actual_participants?: number;
+  status?: string;
+  budget?: number;
+  event_manager_id?: string;
+  campaign_id?: string;
+  challenge_id?: string;
+  sector_id?: string;
+  event_visibility?: string;
+  event_category?: string;
+  inherit_from_campaign?: boolean;
+  is_recurring?: boolean;
+  recurrence_pattern?: string;
+  recurrence_end_date?: string;
+  target_stakeholder_groups?: string[];
+  created_at?: string;
+}
+
+interface EventDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  event: Event | null;
+  onSave: () => void;
+}
+
+export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps) {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [stepErrors, setStepErrors] = useState<{[key: number]: string[]}>({});
+  const totalSteps = 5;
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Search states for dropdowns
+  const [openCampaign, setOpenCampaign] = useState(false);
+  const [openChallenge, setOpenChallenge] = useState(false);
+  const [openSector, setOpenSector] = useState(false);
+  const [openEventManager, setOpenEventManager] = useState(false);
+  const [partnerSearch, setPartnerSearch] = useState("");
+  const [stakeholderSearch, setStakeholderSearch] = useState("");
+  const [focusQuestionSearch, setFocusQuestionSearch] = useState("");
+  const [challengeSearch, setChallengeSearch] = useState("");
+
+  // Form data
+  const [formData, setFormData] = useState({
+    title: "",
+    title_ar: "",
+    description: "",
+    description_ar: "",
+    event_type: "workshop",
+    event_date: "",
+    end_date: "",
+    start_time: "",
+    end_time: "",
+    location: "",
+    virtual_link: "",
+    format: "in_person",
+    max_participants: "",
+    registered_participants: "",
+    actual_participants: "",
+    status: "scheduled",
+    budget: "",
+    event_manager_id: "",
+    campaign_id: "",
+    challenge_id: "",
+    sector_id: "",
+    event_visibility: "public",
+    event_category: "standalone",
+    inherit_from_campaign: false,
+    is_recurring: false,
+    recurrence_pattern: "",
+    recurrence_end_date: "",
+    target_stakeholder_groups: [] as string[],
+  });
+
+  // Related data
+  const [campaigns, setCampaigns] = useState<any[]>([]);
+  const [challenges, setChallenges] = useState<any[]>([]);
+  const [sectors, setSectors] = useState<any[]>([]);
+  const [partners, setPartners] = useState<any[]>([]);
+  const [stakeholders, setStakeholders] = useState<any[]>([]);
+  const [focusQuestions, setFocusQuestions] = useState<any[]>([]);
+  const [eventManagers, setEventManagers] = useState<any[]>([]);
+  const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
+  const [selectedStakeholders, setSelectedStakeholders] = useState<string[]>([]);
+  const [selectedFocusQuestions, setSelectedFocusQuestions] = useState<string[]>([]);
+  const [selectedChallenges, setSelectedChallenges] = useState<string[]>([]);
+
+  const { toast } = useToast();
+
+  // Options
+  const eventTypes = [
+    { value: "workshop", label: "Workshop" },
+    { value: "seminar", label: "Seminar" },
+    { value: "conference", label: "Conference" },
+    { value: "networking", label: "Networking Event" },
+    { value: "hackathon", label: "Hackathon" },
+    { value: "pitch_session", label: "Pitch Session" },
+    { value: "training", label: "Training Session" }
+  ];
+
+  const formatOptions = [
+    { value: "in_person", label: "In Person" },
+    { value: "virtual", label: "Virtual" },
+    { value: "hybrid", label: "Hybrid" }
+  ];
+
+  const statusOptions = [
+    { value: "scheduled", label: "Scheduled" },
+    { value: "ongoing", label: "Ongoing" },
+    { value: "completed", label: "Completed" },
+    { value: "cancelled", label: "Cancelled" },
+    { value: "postponed", label: "Postponed" }
+  ];
+
+  const visibilityOptions = [
+    { value: "public", label: "Public" },
+    { value: "private", label: "Private" },
+    { value: "internal", label: "Internal" }
+  ];
+
+  const categoryOptions = [
+    { value: "standalone", label: "Standalone Event" },
+    { value: "campaign_event", label: "Campaign Event" },
+    { value: "training", label: "Training" },
+    { value: "workshop", label: "Workshop" }
+  ];
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchRelatedData();
+      if (event) {
+        loadEventData(event);
+      } else {
+        resetForm();
+      }
+    }
+  }, [isOpen, event]);
+
+  const fetchRelatedData = async () => {
+    try {
+      const [
+        campaignsRes, 
+        challengesRes, 
+        sectorsRes,
+        partnersRes, 
+        stakeholdersRes, 
+        focusQuestionsRes,
+        eventManagersRes
+      ] = await Promise.all([
+        supabase.from('campaigns').select('*').order('title'),
+        supabase.from('challenges').select('*').order('title'),
+        supabase.from('sectors').select('*').order('name'),
+        supabase.from('partners').select('*').order('name'),
+        supabase.from('stakeholders').select('*').order('name'),
+        supabase.from('focus_questions').select('*').order('question_text'),
+        supabase.from('profiles').select('id, name, email, position').order('name')
+      ]);
+
+      setCampaigns(campaignsRes.data || []);
+      setChallenges(challengesRes.data || []);
+      setSectors(sectorsRes.data || []);
+      setPartners(partnersRes.data || []);
+      setStakeholders(stakeholdersRes.data || []);
+      setFocusQuestions(focusQuestionsRes.data || []);
+      setEventManagers(eventManagersRes.data || []);
+    } catch (error) {
+      console.error('Error fetching related data:', error);
+    }
+  };
+
+  const loadEventData = async (eventData: Event) => {
+    // Load basic event data
+    setFormData({
+      title: eventData.title || "",
+      title_ar: eventData.title_ar || "",
+      description: eventData.description || "",
+      description_ar: eventData.description_ar || "",
+      event_type: eventData.event_type || "workshop",
+      event_date: eventData.event_date || "",
+      end_date: eventData.end_date || "",
+      start_time: eventData.start_time || "",
+      end_time: eventData.end_time || "",
+      location: eventData.location || "",
+      virtual_link: eventData.virtual_link || "",
+      format: eventData.format || "in_person",
+      max_participants: eventData.max_participants?.toString() || "",
+      registered_participants: eventData.registered_participants?.toString() || "",
+      actual_participants: eventData.actual_participants?.toString() || "",
+      status: eventData.status || "scheduled",
+      budget: eventData.budget?.toString() || "",
+      event_manager_id: eventData.event_manager_id || "",
+      campaign_id: eventData.campaign_id || "",
+      challenge_id: eventData.challenge_id || "",
+      sector_id: eventData.sector_id || "",
+      event_visibility: eventData.event_visibility || "public",
+      event_category: eventData.event_category || "standalone",
+      inherit_from_campaign: eventData.inherit_from_campaign || false,
+      is_recurring: eventData.is_recurring || false,
+      recurrence_pattern: eventData.recurrence_pattern || "",
+      recurrence_end_date: eventData.recurrence_end_date || "",
+      target_stakeholder_groups: eventData.target_stakeholder_groups || [],
+    });
+
+    // Load relationships
+    if (eventData.id) {
+      await loadEventRelationships(eventData.id);
+    }
+  };
+
+  const loadEventRelationships = async (eventId: string) => {
+    try {
+      const [partnersRes, stakeholdersRes, focusQuestionsRes, challengesRes] = await Promise.all([
+        supabase
+          .from('event_partner_links')
+          .select('partner_id')
+          .eq('event_id', eventId),
+        supabase
+          .from('event_stakeholder_links')
+          .select('stakeholder_id')
+          .eq('event_id', eventId),
+        supabase
+          .from('event_focus_question_links')
+          .select('focus_question_id')
+          .eq('event_id', eventId),
+        supabase
+          .from('event_challenge_links')
+          .select('challenge_id')
+          .eq('event_id', eventId)
+      ]);
+
+      setSelectedPartners(partnersRes.data?.map(link => link.partner_id) || []);
+      setSelectedStakeholders(stakeholdersRes.data?.map(link => link.stakeholder_id) || []);
+      setSelectedFocusQuestions(focusQuestionsRes.data?.map(link => link.focus_question_id) || []);
+      setSelectedChallenges(challengesRes.data?.map(link => link.challenge_id) || []);
+    } catch (error) {
+      console.error('Error loading event relationships:', error);
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      title_ar: "",
+      description: "",
+      description_ar: "",
+      event_type: "workshop",
+      event_date: "",
+      end_date: "",
+      start_time: "",
+      end_time: "",
+      location: "",
+      virtual_link: "",
+      format: "in_person",
+      max_participants: "",
+      registered_participants: "",
+      actual_participants: "",
+      status: "scheduled",
+      budget: "",
+      event_manager_id: "",
+      campaign_id: "",
+      challenge_id: "",
+      sector_id: "",
+      event_visibility: "public",
+      event_category: "standalone",
+      inherit_from_campaign: false,
+      is_recurring: false,
+      recurrence_pattern: "",
+      recurrence_end_date: "",
+      target_stakeholder_groups: [],
+    });
+    setSelectedPartners([]);
+    setSelectedStakeholders([]);
+    setSelectedFocusQuestions([]);
+    setSelectedChallenges([]);
+    setCurrentStep(1);
+    setStepErrors({});
+  };
+
+  const validateStep = (step: number): string[] => {
+    const errors: string[] = [];
+
+    switch (step) {
+      case 1: // Basic Information
+        if (!formData.title.trim()) errors.push("Title is required");
+        if (!formData.event_type) errors.push("Event type is required");
+        break;
+      case 2: // Event Details
+        if (!formData.event_date) errors.push("Event date is required");
+        if (!formData.format) errors.push("Event format is required");
+        if (formData.format === "in_person" && !formData.location?.trim()) {
+          errors.push("Location is required for in-person events");
+        }
+        if (formData.format === "virtual" && !formData.virtual_link?.trim()) {
+          errors.push("Virtual link is required for virtual events");
+        }
+        if (formData.max_participants && parseInt(formData.max_participants) <= 0) {
+          errors.push("Maximum participants must be greater than 0");
+        }
+        if (formData.budget && parseFloat(formData.budget) < 0) {
+          errors.push("Budget cannot be negative");
+        }
+        if (formData.start_time && formData.end_time && formData.start_time >= formData.end_time) {
+          errors.push("End time must be after start time");
+        }
+        break;
+    }
+
+    return errors;
+  };
+
+  const nextStep = () => {
+    const errors = validateStep(currentStep);
+    if (errors.length > 0) {
+      setStepErrors({ ...stepErrors, [currentStep]: errors });
+      toast({
+        title: "Validation Error",
+        description: errors.join(", "),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setStepErrors({ ...stepErrors, [currentStep]: [] });
+    if (currentStep < totalSteps) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const prevStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleSave = async () => {
+    const allErrors: string[] = [];
+    for (let step = 1; step <= totalSteps; step++) {
+      const stepErrors = validateStep(step);
+      allErrors.push(...stepErrors);
+    }
+
+    if (allErrors.length > 0) {
+      toast({
+        title: "Validation Error",
+        description: allErrors.join(", "),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const eventData = {
+        title: formData.title,
+        title_ar: formData.title_ar || null,
+        description: formData.description || null,
+        description_ar: formData.description_ar || null,
+        event_type: formData.event_type,
+        event_date: formData.event_date,
+        end_date: formData.end_date || null,
+        start_time: formData.start_time || null,
+        end_time: formData.end_time || null,
+        location: formData.location || null,
+        virtual_link: formData.virtual_link || null,
+        format: formData.format,
+        max_participants: formData.max_participants ? parseInt(formData.max_participants) : null,
+        registered_participants: formData.registered_participants ? parseInt(formData.registered_participants) : null,
+        actual_participants: formData.actual_participants ? parseInt(formData.actual_participants) : null,
+        status: formData.status,
+        budget: formData.budget ? parseFloat(formData.budget) : null,
+        event_manager_id: formData.event_manager_id || null,
+        campaign_id: formData.campaign_id || null,
+        challenge_id: formData.challenge_id || null,
+        sector_id: formData.sector_id || null,
+        event_visibility: formData.event_visibility,
+        event_category: formData.event_category,
+        inherit_from_campaign: formData.inherit_from_campaign,
+        is_recurring: formData.is_recurring,
+        recurrence_pattern: formData.recurrence_pattern || null,
+        recurrence_end_date: formData.recurrence_end_date || null,
+        target_stakeholder_groups: formData.target_stakeholder_groups,
+      };
+
+      let result;
+      if (event?.id) {
+        // Update existing event
+        result = await supabase
+          .from('events')
+          .update(eventData)
+          .eq('id', event.id)
+          .select()
+          .single();
+      } else {
+        // Create new event
+        result = await supabase
+          .from('events')
+          .insert(eventData)
+          .select()
+          .single();
+      }
+
+      if (result.error) throw result.error;
+
+      const eventId = result.data.id;
+
+      // Update relationships
+      await Promise.all([
+        updateEventPartners(eventId, selectedPartners),
+        updateEventStakeholders(eventId, selectedStakeholders),
+        updateEventFocusQuestions(eventId, selectedFocusQuestions),
+        updateEventChallenges(eventId, selectedChallenges)
+      ]);
+
+      toast({
+        title: "Success",
+        description: `Event ${event?.id ? 'updated' : 'created'} successfully`,
+      });
+
+      onSave();
+      onClose();
+    } catch (error) {
+      console.error('Error saving event:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save event",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="title">Title (English) *</Label>
+                <Input
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  placeholder="Event title"
+                />
+              </div>
+              <div>
+                <Label htmlFor="title_ar">Title (Arabic)</Label>
+                <Input
+                  id="title_ar"
+                  value={formData.title_ar}
+                  onChange={(e) => setFormData({ ...formData, title_ar: e.target.value })}
+                  placeholder="عنوان الحدث"
+                  dir="rtl"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="description">Description (English)</Label>
+                <Textarea
+                  id="description"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Event description"
+                  rows={3}
+                />
+              </div>
+              <div>
+                <Label htmlFor="description_ar">Description (Arabic)</Label>
+                <Textarea
+                  id="description_ar"
+                  value={formData.description_ar}
+                  onChange={(e) => setFormData({ ...formData, description_ar: e.target.value })}
+                  placeholder="وصف الحدث"
+                  dir="rtl"
+                  rows={3}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <Label>Event Type *</Label>
+                <Select
+                  value={formData.event_type}
+                  onValueChange={(value) => setFormData({ ...formData, event_type: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {eventTypes.map((type) => (
+                      <SelectItem key={type.value} value={type.value}>
+                        {type.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label>Visibility</Label>
+                <Select
+                  value={formData.event_visibility}
+                  onValueChange={(value) => setFormData({ ...formData, event_visibility: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select visibility" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {visibilityOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label>Category</Label>
+                <Select
+                  value={formData.event_category}
+                  onValueChange={(value) => setFormData({ ...formData, event_category: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categoryOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="space-y-4">
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="event_date">Event Date *</Label>
+                <Input
+                  id="event_date"
+                  type="date"
+                  value={formData.event_date}
+                  onChange={(e) => setFormData({ ...formData, event_date: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="start_time">Start Time</Label>
+                <Input
+                  id="start_time"
+                  type="time"
+                  value={formData.start_time}
+                  onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="end_time">End Time</Label>
+                <Input
+                  id="end_time"
+                  type="time"
+                  value={formData.end_time}
+                  onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Format *</Label>
+                <Select
+                  value={formData.format}
+                  onValueChange={(value) => setFormData({ ...formData, format: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select format" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {formatOptions.map((format) => (
+                      <SelectItem key={format.value} value={format.value}>
+                        {format.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Status</Label>
+                <Select
+                  value={formData.status}
+                  onValueChange={(value) => setFormData({ ...formData, status: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {statusOptions.map((status) => (
+                      <SelectItem key={status.value} value={status.value}>
+                        {status.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {(formData.format === "in_person" || formData.format === "hybrid") && (
+              <div>
+                <Label htmlFor="location">Location</Label>
+                <Input
+                  id="location"
+                  value={formData.location}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                  placeholder="Event location"
+                />
+              </div>
+            )}
+
+            {(formData.format === "virtual" || formData.format === "hybrid") && (
+              <div>
+                <Label htmlFor="virtual_link">Virtual Link</Label>
+                <Input
+                  id="virtual_link"
+                  value={formData.virtual_link}
+                  onChange={(e) => setFormData({ ...formData, virtual_link: e.target.value })}
+                  placeholder="https://..."
+                />
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="max_participants">Max Participants</Label>
+                <Input
+                  id="max_participants"
+                  type="number"
+                  min="1"
+                  value={formData.max_participants}
+                  onChange={(e) => setFormData({ ...formData, max_participants: e.target.value })}
+                  placeholder="Maximum participants"
+                />
+              </div>
+              <div>
+                <Label htmlFor="budget">Budget</Label>
+                <Input
+                  id="budget"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={formData.budget}
+                  onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                  placeholder="Event budget"
+                />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Campaign</Label>
+                <Popover open={openCampaign} onOpenChange={setOpenCampaign}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={openCampaign}
+                      className="w-full justify-between"
+                    >
+                      {formData.campaign_id
+                        ? campaigns.find((campaign) => campaign.id === formData.campaign_id)?.title
+                        : "Select campaign..."}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0">
+                    <Command>
+                      <CommandInput placeholder="Search campaigns..." />
+                      <CommandList>
+                        <CommandEmpty>No campaign found.</CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem
+                            value=""
+                            onSelect={() => {
+                              setFormData({ ...formData, campaign_id: "" });
+                              setOpenCampaign(false);
+                            }}
+                          >
+                            <Check className="mr-2 h-4 w-4 opacity-0" />
+                            None
+                          </CommandItem>
+                          {campaigns.map((campaign) => (
+                            <CommandItem
+                              key={campaign.id}
+                              value={campaign.title}
+                              onSelect={() => {
+                                setFormData({ ...formData, campaign_id: campaign.id });
+                                setOpenCampaign(false);
+                              }}
+                            >
+                              <Check
+                                className={`mr-2 h-4 w-4 ${
+                                  formData.campaign_id === campaign.id ? "opacity-100" : "opacity-0"
+                                }`}
+                              />
+                              {campaign.title}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              <div>
+                <Label>Sector</Label>
+                <Popover open={openSector} onOpenChange={setOpenSector}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={openSector}
+                      className="w-full justify-between"
+                    >
+                      {formData.sector_id
+                        ? sectors.find((sector) => sector.id === formData.sector_id)?.name
+                        : "Select sector..."}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0">
+                    <Command>
+                      <CommandInput placeholder="Search sectors..." />
+                      <CommandList>
+                        <CommandEmpty>No sector found.</CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem
+                            value=""
+                            onSelect={() => {
+                              setFormData({ ...formData, sector_id: "" });
+                              setOpenSector(false);
+                            }}
+                          >
+                            <Check className="mr-2 h-4 w-4 opacity-0" />
+                            None
+                          </CommandItem>
+                          {sectors.map((sector) => (
+                            <CommandItem
+                              key={sector.id}
+                              value={sector.name}
+                              onSelect={() => {
+                                setFormData({ ...formData, sector_id: sector.id });
+                                setOpenSector(false);
+                              }}
+                            >
+                              <Check
+                                className={`mr-2 h-4 w-4 ${
+                                  formData.sector_id === sector.id ? "opacity-100" : "opacity-0"
+                                }`}
+                              />
+                              {sector.name}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </div>
+
+            <div>
+              <Label>Event Manager</Label>
+              <Popover open={openEventManager} onOpenChange={setOpenEventManager}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={openEventManager}
+                    className="w-full justify-between"
+                  >
+                    {formData.event_manager_id
+                      ? eventManagers.find((manager) => manager.id === formData.event_manager_id)?.name
+                      : "Select event manager..."}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0">
+                  <Command>
+                    <CommandInput placeholder="Search managers..." />
+                    <CommandList>
+                      <CommandEmpty>No manager found.</CommandEmpty>
+                      <CommandGroup>
+                        <CommandItem
+                          value=""
+                          onSelect={() => {
+                            setFormData({ ...formData, event_manager_id: "" });
+                            setOpenEventManager(false);
+                          }}
+                        >
+                          <Check className="mr-2 h-4 w-4 opacity-0" />
+                          None
+                        </CommandItem>
+                        {eventManagers.map((manager) => (
+                          <CommandItem
+                            key={manager.id}
+                            value={manager.name || manager.email}
+                            onSelect={() => {
+                              setFormData({ ...formData, event_manager_id: manager.id });
+                              setOpenEventManager(false);
+                            }}
+                          >
+                            <Check
+                              className={`mr-2 h-4 w-4 ${
+                                formData.event_manager_id === manager.id ? "opacity-100" : "opacity-0"
+                              }`}
+                            />
+                            {manager.name || manager.email}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+        );
+
+      case 4:
+        return (
+          <div className="space-y-6">
+            {/* Challenges */}
+            <div>
+              <Label className="text-base font-medium mb-3 flex items-center gap-2">
+                <Target className="h-4 w-4" />
+                Related Challenges
+              </Label>
+              <div className="space-y-2">
+                <Input
+                  placeholder="Search challenges..."
+                  value={challengeSearch}
+                  onChange={(e) => setChallengeSearch(e.target.value)}
+                />
+                <div className="border rounded-md max-h-40 overflow-y-auto">
+                  {challenges
+                    .filter(challenge => 
+                      challenge.title.toLowerCase().includes(challengeSearch.toLowerCase())
+                    )
+                    .map((challenge) => (
+                      <div key={challenge.id} className="flex items-center space-x-2 p-2 hover:bg-muted">
+                        <input
+                          type="checkbox"
+                          id={`challenge-${challenge.id}`}
+                          checked={selectedChallenges.includes(challenge.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedChallenges([...selectedChallenges, challenge.id]);
+                            } else {
+                              setSelectedChallenges(selectedChallenges.filter(id => id !== challenge.id));
+                            }
+                          }}
+                        />
+                        <label htmlFor={`challenge-${challenge.id}`} className="text-sm flex-1 cursor-pointer">
+                          {challenge.title}
+                        </label>
+                      </div>
+                    ))}
+                </div>
+                {selectedChallenges.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {selectedChallenges.map((challengeId) => {
+                      const challenge = challenges.find(c => c.id === challengeId);
+                      return (
+                        <Badge key={challengeId} variant="secondary" className="text-xs">
+                          {challenge?.title}
+                          <X
+                            className="ml-1 h-3 w-3 cursor-pointer"
+                            onClick={() => setSelectedChallenges(selectedChallenges.filter(id => id !== challengeId))}
+                          />
+                        </Badge>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Partners */}
+            <div>
+              <Label className="text-base font-medium mb-3 flex items-center gap-2">
+                <Building className="h-4 w-4" />
+                Partner Organizations
+              </Label>
+              <div className="space-y-2">
+                <Input
+                  placeholder="Search partners..."
+                  value={partnerSearch}
+                  onChange={(e) => setPartnerSearch(e.target.value)}
+                />
+                <div className="border rounded-md max-h-40 overflow-y-auto">
+                  {partners
+                    .filter(partner => 
+                      partner.name.toLowerCase().includes(partnerSearch.toLowerCase())
+                    )
+                    .map((partner) => (
+                      <div key={partner.id} className="flex items-center space-x-2 p-2 hover:bg-muted">
+                        <input
+                          type="checkbox"
+                          id={`partner-${partner.id}`}
+                          checked={selectedPartners.includes(partner.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedPartners([...selectedPartners, partner.id]);
+                            } else {
+                              setSelectedPartners(selectedPartners.filter(id => id !== partner.id));
+                            }
+                          }}
+                        />
+                        <label htmlFor={`partner-${partner.id}`} className="text-sm flex-1 cursor-pointer">
+                          {partner.name}
+                        </label>
+                      </div>
+                    ))}
+                </div>
+                {selectedPartners.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {selectedPartners.map((partnerId) => {
+                      const partner = partners.find(p => p.id === partnerId);
+                      return (
+                        <Badge key={partnerId} variant="secondary" className="text-xs">
+                          {partner?.name}
+                          <X
+                            className="ml-1 h-3 w-3 cursor-pointer"
+                            onClick={() => setSelectedPartners(selectedPartners.filter(id => id !== partnerId))}
+                          />
+                        </Badge>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Stakeholders */}
+            <div>
+              <Label className="text-base font-medium mb-3 flex items-center gap-2">
+                <UserCheck className="h-4 w-4" />
+                Key Stakeholders
+              </Label>
+              <div className="space-y-2">
+                <Input
+                  placeholder="Search stakeholders..."
+                  value={stakeholderSearch}
+                  onChange={(e) => setStakeholderSearch(e.target.value)}
+                />
+                <div className="border rounded-md max-h-40 overflow-y-auto">
+                  {stakeholders
+                    .filter(stakeholder => 
+                      stakeholder.name.toLowerCase().includes(stakeholderSearch.toLowerCase())
+                    )
+                    .map((stakeholder) => (
+                      <div key={stakeholder.id} className="flex items-center space-x-2 p-2 hover:bg-muted">
+                        <input
+                          type="checkbox"
+                          id={`stakeholder-${stakeholder.id}`}
+                          checked={selectedStakeholders.includes(stakeholder.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedStakeholders([...selectedStakeholders, stakeholder.id]);
+                            } else {
+                              setSelectedStakeholders(selectedStakeholders.filter(id => id !== stakeholder.id));
+                            }
+                          }}
+                        />
+                        <label htmlFor={`stakeholder-${stakeholder.id}`} className="text-sm flex-1 cursor-pointer">
+                          {stakeholder.name}
+                        </label>
+                      </div>
+                    ))}
+                </div>
+                {selectedStakeholders.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {selectedStakeholders.map((stakeholderId) => {
+                      const stakeholder = stakeholders.find(s => s.id === stakeholderId);
+                      return (
+                        <Badge key={stakeholderId} variant="secondary" className="text-xs">
+                          {stakeholder?.name}
+                          <X
+                            className="ml-1 h-3 w-3 cursor-pointer"
+                            onClick={() => setSelectedStakeholders(selectedStakeholders.filter(id => id !== stakeholderId))}
+                          />
+                        </Badge>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 5:
+        return (
+          <div className="space-y-6">
+            {/* Focus Questions */}
+            <div>
+              <Label className="text-base font-medium mb-3 flex items-center gap-2">
+                <HelpCircle className="h-4 w-4" />
+                Focus Questions
+              </Label>
+              <div className="space-y-2">
+                <Input
+                  placeholder="Search focus questions..."
+                  value={focusQuestionSearch}
+                  onChange={(e) => setFocusQuestionSearch(e.target.value)}
+                />
+                <div className="border rounded-md max-h-40 overflow-y-auto">
+                  {focusQuestions
+                    .filter(question => 
+                      question.question_text.toLowerCase().includes(focusQuestionSearch.toLowerCase())
+                    )
+                    .map((question) => (
+                      <div key={question.id} className="flex items-center space-x-2 p-2 hover:bg-muted">
+                        <input
+                          type="checkbox"
+                          id={`question-${question.id}`}
+                          checked={selectedFocusQuestions.includes(question.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedFocusQuestions([...selectedFocusQuestions, question.id]);
+                            } else {
+                              setSelectedFocusQuestions(selectedFocusQuestions.filter(id => id !== question.id));
+                            }
+                          }}
+                        />
+                        <label htmlFor={`question-${question.id}`} className="text-sm flex-1 cursor-pointer">
+                          {question.question_text}
+                        </label>
+                      </div>
+                    ))}
+                </div>
+                {selectedFocusQuestions.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {selectedFocusQuestions.map((questionId) => {
+                      const question = focusQuestions.find(q => q.id === questionId);
+                      return (
+                        <Badge key={questionId} variant="secondary" className="text-xs">
+                          {question?.question_text.substring(0, 50)}...
+                          <X
+                            className="ml-1 h-3 w-3 cursor-pointer"
+                            onClick={() => setSelectedFocusQuestions(selectedFocusQuestions.filter(id => id !== questionId))}
+                          />
+                        </Badge>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Settings */}
+            <div className="space-y-4">
+              <Label className="text-base font-medium flex items-center gap-2">
+                <Settings className="h-4 w-4" />
+                Additional Settings
+              </Label>
+              
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="inherit_from_campaign"
+                  checked={formData.inherit_from_campaign}
+                  onCheckedChange={(checked) => setFormData({ ...formData, inherit_from_campaign: checked })}
+                />
+                <Label htmlFor="inherit_from_campaign">Inherit settings from campaign</Label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="is_recurring"
+                  checked={formData.is_recurring}
+                  onCheckedChange={(checked) => setFormData({ ...formData, is_recurring: checked })}
+                />
+                <Label htmlFor="is_recurring">Recurring event</Label>
+              </div>
+
+              {formData.is_recurring && (
+                <div className="grid grid-cols-2 gap-4 ml-6">
+                  <div>
+                    <Label htmlFor="recurrence_pattern">Recurrence Pattern</Label>
+                    <Select
+                      value={formData.recurrence_pattern}
+                      onValueChange={(value) => setFormData({ ...formData, recurrence_pattern: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select pattern" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="daily">Daily</SelectItem>
+                        <SelectItem value="weekly">Weekly</SelectItem>
+                        <SelectItem value="monthly">Monthly</SelectItem>
+                        <SelectItem value="yearly">Yearly</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="recurrence_end_date">Recurrence End Date</Label>
+                    <Input
+                      id="recurrence_end_date"
+                      type="date"
+                      value={formData.recurrence_end_date}
+                      onChange={(e) => setFormData({ ...formData, recurrence_end_date: e.target.value })}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  const stepTitles = [
+    "Basic Information",
+    "Event Details",
+    "Organization",
+    "Relationships",
+    "Questions & Settings"
+  ];
+
+  const stepIcons = [
+    Calendar,
+    Clock,
+    Building,
+    Users,
+    Settings
+  ];
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>
+            {event ? "Edit Event" : "Create New Event"}
+          </DialogTitle>
+        </DialogHeader>
+
+        {/* Step indicators */}
+        <div className="flex items-center justify-between mb-6">
+          {Array.from({ length: totalSteps }, (_, i) => {
+            const step = i + 1;
+            const Icon = stepIcons[i];
+            const isActive = step === currentStep;
+            const isCompleted = step < currentStep;
+            const hasError = stepErrors[step]?.length > 0;
+
+            return (
+              <div key={step} className="flex items-center">
+                <div
+                  className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
+                    hasError
+                      ? "border-destructive bg-destructive text-destructive-foreground"
+                      : isCompleted
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : isActive
+                      ? "border-primary bg-background text-primary"
+                      : "border-muted-foreground bg-background text-muted-foreground"
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                </div>
+                {step < totalSteps && (
+                  <div
+                    className={`w-12 h-0.5 ${
+                      isCompleted ? "bg-primary" : "bg-muted-foreground"
+                    }`}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mb-4">
+          <h3 className="text-lg font-medium">{stepTitles[currentStep - 1]}</h3>
+          <p className="text-sm text-muted-foreground">
+            Step {currentStep} of {totalSteps}
+          </p>
+        </div>
+
+        {renderStepContent()}
+
+        {/* Navigation buttons */}
+        <div className="flex justify-between pt-6">
+          <Button
+            variant="outline"
+            onClick={prevStep}
+            disabled={currentStep === 1}
+          >
+            <ChevronLeft className="mr-2 h-4 w-4" />
+            Previous
+          </Button>
+
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            {currentStep === totalSteps ? (
+              <Button onClick={handleSave} disabled={isLoading}>
+                {isLoading ? "Saving..." : event ? "Update Event" : "Create Event"}
+              </Button>
+            ) : (
+              <Button onClick={nextStep}>
+                Next
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            )}
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

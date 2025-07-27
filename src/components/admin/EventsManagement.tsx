@@ -1,39 +1,13 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { useToast } from "@/hooks/use-toast";
-import { 
-  Plus, 
-  Calendar, 
-  MapPin, 
-  Users, 
-  Clock, 
-  Target,
-  Building,
-  UserCheck,
-  HelpCircle,
-  Settings,
-  Edit, 
-  Trash2, 
-  Eye,
-  Check,
-  ChevronsUpDown,
-  X,
-  CheckCircle,
-  AlertCircle,
-  ChevronLeft,
-  ChevronRight
-} from "lucide-react";
-import { updateEventPartners, updateEventStakeholders, updateEventFocusQuestions } from "@/lib/relationshipHelpers";
+import { Plus, Calendar, MapPin, Users, Clock, Edit, Trash2, Eye } from "lucide-react";
+import { EventDialog } from "@/components/events/EventDialog";
+import { EventFilters } from "@/components/events/EventFilters";
+import { EventBulkActions } from "@/components/events/EventBulkActions";
 
 interface Event {
   id: string;
@@ -70,15 +44,25 @@ interface Event {
 export function EventsManagement() {
   const [events, setEvents] = useState<Event[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
+  const [campaigns, setCampaigns] = useState<any[]>([]);
+  const [sectors, setSectors] = useState<any[]>([]);
+  const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
   
   // Filters
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [formatFilter, setFormatFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
-  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [visibilityFilter, setVisibilityFilter] = useState("all");
+  const [selectedCampaign, setSelectedCampaign] = useState("all");
+  const [selectedSector, setSelectedSector] = useState("all");
+  const [dateFrom, setDateFrom] = useState<Date | undefined>();
+  const [dateTo, setDateTo] = useState<Date | undefined>();
+  
+  // Dialog states
+  const [showEventDialog, setShowEventDialog] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
-  const [viewingEvent, setViewingEvent] = useState<Event | null>(null);
   
   // Wizard state
   const [currentStep, setCurrentStep] = useState(1);
