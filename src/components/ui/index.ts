@@ -1,5 +1,4 @@
 // Core Layout Components
-export { PageHeader } from './page-header';
 export { LayoutSelector } from './layout-selector';
 export { SearchAndFilters } from './search-and-filters';
 export { ViewLayouts } from './view-layouts';
@@ -47,6 +46,7 @@ export { ContentArea } from '../layout/ContentArea';
 export { Container as ResponsiveContainer } from '../layout/Container';
 export { AdminLayout } from '../layout/AdminLayout';
 export { ResponsiveGrid } from '../layout/ResponsiveGrid';
+export { PageHeader } from '../layout/PageHeader';
 
 // Typography Components
 export { Typography, Heading1, Heading2, Heading3, BodyText, Lead, Caption, MutedText } from './typography';

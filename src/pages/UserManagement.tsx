@@ -14,6 +14,7 @@ import { UserInvitationDialog } from '@/components/admin/UserInvitationDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from '@/hooks/useSystemLists';
+import { PageHeader } from '@/components/ui';
 
 interface Profile {
   id: string;
@@ -375,19 +376,17 @@ export default function UserManagement() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">User Management</h1>
-          <p className="text-muted-foreground">
-            Manage user accounts, roles, and permissions
-          </p>
-        </div>
-        <Button onClick={() => setIsInviteUserDialogOpen(true)}>
-          <UserPlus className="h-4 w-4 mr-2" />
-          Invite User
-        </Button>
-      </div>
+      {/* Header - Structured with PageHeader */}
+      <PageHeader 
+        title="User Management" 
+        description="Manage user accounts, roles, and permissions"
+        action={
+          <Button onClick={() => setIsInviteUserDialogOpen(true)}>
+            <UserPlus className="h-4 w-4 mr-2" />
+            Invite User
+          </Button>
+        }
+      />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
