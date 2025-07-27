@@ -428,17 +428,17 @@ export function CampaignsManagement() {
         metadata={[
           {
             icon: <Calendar className="w-4 h-4" />,
-            label: 'Period',
+            label: t('period'),
             value: `${campaign.start_date} - ${campaign.end_date}`
           },
           ...(campaign.target_participants ? [{
             icon: <Target className="w-4 h-4" />,
-            label: 'Target',
-            value: `${campaign.target_participants} participants`
+            label: t('target'),
+            value: `${campaign.target_participants} ${t('participants')}`
           }] : []),
           ...(campaign.budget ? [{
             icon: <span>💰</span>,
-            label: 'Budget',
+            label: t('budget'),
             value: `$${campaign.budget.toLocaleString()}`
           }] : [])
         ]}

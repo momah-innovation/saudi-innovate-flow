@@ -39,6 +39,9 @@ export const translations = {
     budget: 'Budget',
     targetParticipants: 'Target Participants',
     targetIdeas: 'Target Ideas',
+    period: 'Period',
+    target: 'Target',
+    participants: 'participants',
     
     // Status values
     statusPlanning: 'Planning',
@@ -107,6 +110,9 @@ export const translations = {
     budget: 'الميزانية',
     targetParticipants: 'المشاركون المستهدفون',
     targetIdeas: 'الأفكار المستهدفة',
+    period: 'الفترة',
+    target: 'الهدف',
+    participants: 'مشاركين',
     
     // Status values
     statusPlanning: 'تخطيط',
