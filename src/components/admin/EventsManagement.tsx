@@ -426,26 +426,9 @@ export function EventsManagement() {
       partner.name.toLowerCase().includes(partnerSearch.toLowerCase())
     );
     
-    // First filter by organizational structure
-    let filteredByOrg = basePartners;
-    if (formData.sector_id || selectedDeputy || selectedDepartment || selectedDomain || selectedSubDomain || selectedService) {
-      filteredByOrg = basePartners.filter(partner => {
-        // Filter partners based on organizational alignment
-        return (
-          !formData.sector_id || partner.sector_id === formData.sector_id ||
-          !selectedDeputy || partner.deputy_id === selectedDeputy ||
-          !selectedDepartment || partner.department_id === selectedDepartment ||
-          !selectedDomain || partner.domain_id === selectedDomain ||
-          !selectedSubDomain || partner.sub_domain_id === selectedSubDomain ||
-          !selectedService || partner.service_id === selectedService
-        );
-      });
-    }
+    if (!formData.campaign_id && !formData.challenge_id) return basePartners;
     
-    // Then filter by campaign or challenge relationships
-    if (!formData.campaign_id && !formData.challenge_id) return filteredByOrg;
-    
-    return filteredByOrg.filter(partner => {
+    return basePartners.filter(partner => {
       if (formData.campaign_id) {
         return campaignPartnerLinks.some(link => 
           link.campaign_id === formData.campaign_id && link.partner_id === partner.id
@@ -465,26 +448,9 @@ export function EventsManagement() {
       stakeholder.name.toLowerCase().includes(stakeholderSearch.toLowerCase())
     );
     
-    // First filter by organizational structure
-    let filteredByOrg = baseStakeholders;
-    if (formData.sector_id || selectedDeputy || selectedDepartment || selectedDomain || selectedSubDomain || selectedService) {
-      filteredByOrg = baseStakeholders.filter(stakeholder => {
-        // Filter stakeholders based on organizational alignment
-        return (
-          !formData.sector_id || stakeholder.sector_id === formData.sector_id ||
-          !selectedDeputy || stakeholder.deputy_id === selectedDeputy ||
-          !selectedDepartment || stakeholder.department_id === selectedDepartment ||
-          !selectedDomain || stakeholder.domain_id === selectedDomain ||
-          !selectedSubDomain || stakeholder.sub_domain_id === selectedSubDomain ||
-          !selectedService || stakeholder.service_id === selectedService
-        );
-      });
-    }
+    if (!formData.campaign_id && !formData.challenge_id) return baseStakeholders;
     
-    // Then filter by campaign or challenge relationships
-    if (!formData.campaign_id && !formData.challenge_id) return filteredByOrg;
-    
-    return filteredByOrg.filter(stakeholder => {
+    return baseStakeholders.filter(stakeholder => {
       if (formData.campaign_id) {
         return campaignStakeholderLinks.some(link => 
           link.campaign_id === formData.campaign_id && link.stakeholder_id === stakeholder.id
@@ -575,6 +541,7 @@ export function EventsManagement() {
         description_ar: event.description_ar || "",
         event_type: event.event_type || "workshop",
         event_date: event.event_date || "",
+        end_date: (event as any).end_date || "",
         start_time: event.start_time || "",
         end_time: event.end_time || "",
         location: event.location || "",
@@ -589,11 +556,9 @@ export function EventsManagement() {
         campaign_id: event.campaign_id || "",
         challenge_id: event.challenge_id || "",
         sector_id: event.sector_id || "",
-        deputy_id: (event as any).deputy_id || "",
-        department_id: (event as any).department_id || "",
-        domain_id: (event as any).domain_id || "",
-        sub_domain_id: (event as any).sub_domain_id || "",
-        service_id: (event as any).service_id || "",
+        is_recurring: (event as any).is_recurring || false,
+        recurrence_pattern: (event as any).recurrence_pattern || "",
+        recurrence_end_date: (event as any).recurrence_end_date || "",
         target_stakeholder_groups: event.target_stakeholder_groups || [],
       });
 
@@ -1051,11 +1016,6 @@ export function EventsManagement() {
   const renderOrganizationalStructure = () => {
     const filteredChallenges = getFilteredChallenges();
     const filteredSectors = getFilteredSectors();
-    const filteredDeputies = getFilteredDeputies();
-    const filteredDepartments = getFilteredDepartments();
-    const filteredDomains = getFilteredDomains();
-    const filteredSubDomains = getFilteredSubDomains();
-    const filteredServices = getFilteredServices();
 
     return (
       <div className="space-y-6">
@@ -1064,7 +1024,6 @@ export function EventsManagement() {
           <h3 className="text-lg font-semibold">Organizational Structure</h3>
         </div>
 
-        {/* Campaign & Challenge Selection */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-2">
             <Label htmlFor="campaign_id">Related Campaign</Label>
@@ -1133,11 +1092,6 @@ export function EventsManagement() {
               onValueChange={(value) => {
                 const sectorId = value === "none" ? "" : value;
                 setFormData({ ...formData, sector_id: sectorId });
-                setSelectedDeputy("");
-                setSelectedDepartment("");
-                setSelectedDomain("");
-                setSelectedSubDomain("");
-                setSelectedService("");
               }}
               disabled={formData.challenge_id && filteredSectors.length === 0}
             >
@@ -1153,154 +1107,6 @@ export function EventsManagement() {
                 {filteredSectors.map((sector) => (
                   <SelectItem key={sector.id} value={sector.id}>
                     {sector.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        {/* Hierarchical Organizational Structure */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="deputy_id">Deputy</Label>
-            <Select
-              value={selectedDeputy || "none"}
-              onValueChange={(value) => {
-                const deputyId = value === "none" ? "" : value;
-                setSelectedDeputy(deputyId);
-                setSelectedDepartment("");
-                setSelectedDomain("");
-                setSelectedSubDomain("");
-                setSelectedService("");
-                setFormData({ ...formData, deputy_id: deputyId });
-              }}
-              disabled={!formData.sector_id}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={
-                  !formData.sector_id ? "Select sector first" : "Select deputy..."
-                } />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">None</SelectItem>
-                {filteredDeputies.map((deputy) => (
-                  <SelectItem key={deputy.id} value={deputy.id}>
-                    {deputy.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="department_id">Department</Label>
-            <Select
-              value={selectedDepartment || "none"}
-              onValueChange={(value) => {
-                const departmentId = value === "none" ? "" : value;
-                setSelectedDepartment(departmentId);
-                setSelectedDomain("");
-                setSelectedSubDomain("");
-                setSelectedService("");
-                setFormData({ ...formData, department_id: departmentId });
-              }}
-              disabled={!selectedDeputy}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={
-                  !selectedDeputy ? "Select deputy first" : "Select department..."
-                } />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">None</SelectItem>
-                {filteredDepartments.map((department) => (
-                  <SelectItem key={department.id} value={department.id}>
-                    {department.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="domain_id">Domain</Label>
-            <Select
-              value={selectedDomain || "none"}
-              onValueChange={(value) => {
-                const domainId = value === "none" ? "" : value;
-                setSelectedDomain(domainId);
-                setSelectedSubDomain("");
-                setSelectedService("");
-                setFormData({ ...formData, domain_id: domainId });
-              }}
-              disabled={!selectedDepartment}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={
-                  !selectedDepartment ? "Select department first" : "Select domain..."
-                } />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">None</SelectItem>
-                {filteredDomains.map((domain) => (
-                  <SelectItem key={domain.id} value={domain.id}>
-                    {domain.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="sub_domain_id">Sub-Domain</Label>
-            <Select
-              value={selectedSubDomain || "none"}
-              onValueChange={(value) => {
-                const subDomainId = value === "none" ? "" : value;
-                setSelectedSubDomain(subDomainId);
-                setSelectedService("");
-                setFormData({ ...formData, sub_domain_id: subDomainId });
-              }}
-              disabled={!selectedDomain}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={
-                  !selectedDomain ? "Select domain first" : "Select sub-domain..."
-                } />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">None</SelectItem>
-                {filteredSubDomains.map((subDomain) => (
-                  <SelectItem key={subDomain.id} value={subDomain.id}>
-                    {subDomain.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="service_id">Service</Label>
-            <Select
-              value={selectedService || "none"}
-              onValueChange={(value) => {
-                const serviceId = value === "none" ? "" : value;
-                setSelectedService(serviceId);
-                setFormData({ ...formData, service_id: serviceId });
-              }}
-              disabled={!selectedSubDomain}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={
-                  !selectedSubDomain ? "Select sub-domain first" : "Select service..."
-                } />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">None</SelectItem>
-                {filteredServices.map((service) => (
-                  <SelectItem key={service.id} value={service.id}>
-                    {service.name}
                   </SelectItem>
                 ))}
               </SelectContent>
