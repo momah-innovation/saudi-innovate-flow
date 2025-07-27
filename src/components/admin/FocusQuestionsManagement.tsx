@@ -92,7 +92,7 @@ const FocusQuestionsManagement = () => {
         .from('focus_questions')
         .select(`
           *,
-          challenges!challenge_id(title_ar, status)
+          challenges!challenge_id(id, title_ar, status, sensitivity_level)
         `)
         .order('created_at', { ascending: false });
 
@@ -138,7 +138,7 @@ const FocusQuestionsManagement = () => {
       } else {
         const { error } = await supabase
           .from('focus_questions')
-          .insert([newQuestion]);
+          .insert([newQuestion as any]);
 
         if (error) throw error;
 

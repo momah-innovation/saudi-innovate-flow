@@ -92,7 +92,7 @@ export function EventsManagement() {
         .order('event_date', { ascending: false });
 
       if (error) throw error;
-      setEvents(data || []);
+      setEvents((data as any) || []);
     } catch (error) {
       console.error('Error fetching events:', error);
       toast({
@@ -106,7 +106,7 @@ export function EventsManagement() {
   const fetchRelatedData = async () => {
     try {
       const [campaignsRes, sectorsRes] = await Promise.all([
-        supabase.from('campaigns').select('*').order('name'),
+        supabase.from('campaigns').select('*').order('title_ar'),
         supabase.from('sectors').select('*').order('name')
       ]);
 
@@ -469,10 +469,10 @@ export function EventsManagement() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Campaigns</SelectItem>
-                {campaigns.map((campaign) => (
-                  <SelectItem key={campaign.id} value={campaign.id}>
-                    {campaign.title}
-                  </SelectItem>
+                 {campaigns.map((campaign) => (
+                   <SelectItem key={campaign.id} value={campaign.id}>
+                     {campaign.title_ar}
+                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>

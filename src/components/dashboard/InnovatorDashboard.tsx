@@ -63,7 +63,7 @@ export const InnovatorDashboard = () => {
         return;
       }
 
-      setChallenges(challengesData || []);
+      setChallenges((challengesData as any) || []);
     } catch (error) {
       console.error('Error in fetchChallenges:', error);
       // Show some sample challenges for demo purposes

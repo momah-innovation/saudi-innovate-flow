@@ -22,8 +22,8 @@ interface Challenge {
   challenge_type: string;
   start_date: string;
   end_date: string;
-  estimated_budget: string;
-  actual_budget: string;
+  estimated_budget: number;
+  actual_budget: number;
   vision_2030_goal: string;
   kpi_alignment: string;
   collaboration_details: string;
@@ -76,8 +76,8 @@ export function AdminChallengeManagement() {
     challenge_type: '',
     start_date: '',
     end_date: '',
-    estimated_budget: '',
-    actual_budget: '',
+    estimated_budget: 0,
+    actual_budget: 0,
     vision_2030_goal: '',
     kpi_alignment: '',
     collaboration_details: '',
@@ -179,8 +179,8 @@ export function AdminChallengeManagement() {
       challenge_type: '',
       start_date: '',
       end_date: '',
-      estimated_budget: '',
-      actual_budget: '',
+      estimated_budget: 0,
+      actual_budget: 0,
       vision_2030_goal: '',
       kpi_alignment: '',
       collaboration_details: '',
