@@ -95,6 +95,9 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
   const isItemVisible = (item: any) => {
     if (item.roles.includes("all")) return true;
     
+    // Debug authentication state
+    console.log('Auth state:', { userProfile, hasAdminRole: hasRole("admin"), hasSuperAdminRole: hasRole("super_admin") });
+    
     // For users without specific roles, show basic innovator interface
     if (!userProfile || !userProfile.user_roles || userProfile.user_roles.length === 0) {
       console.log('No user profile or roles found, showing innovator interface');
