@@ -112,6 +112,15 @@ export function NavigationSidebar() {
 
     const adminItems = [
       { 
+        id: 'focus-questions', 
+        label: 'Focus Questions', 
+        arabicLabel: 'الأسئلة المحورية',
+        icon: FileText, 
+        path: '/admin/focus-questions',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
         id: 'partners', 
         label: 'Partners', 
         arabicLabel: 'الشركاء',
@@ -126,6 +135,24 @@ export function NavigationSidebar() {
         arabicLabel: 'القطاعات',
         icon: Shield, 
         path: '/admin/sectors',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'organizational-structure', 
+        label: 'Organizational Structure', 
+        arabicLabel: 'الهيكل التنظيمي',
+        icon: Network, 
+        path: '/admin/organizational-structure',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'expert-assignments', 
+        label: 'Expert Assignments', 
+        arabicLabel: 'تعيين الخبراء',
+        icon: Award, 
+        path: '/admin/expert-assignments',
         group: 'admin',
         roles: ['admin'] 
       },
@@ -146,6 +173,15 @@ export function NavigationSidebar() {
         path: '/admin/system-settings',
         group: 'admin',
         roles: ['admin'] 
+      },
+      { 
+        id: 'system-documentation', 
+        label: 'System Documentation', 
+        arabicLabel: 'وثائق النظام',
+        icon: BookOpen, 
+        path: '/admin/system-documentation',
+        group: 'admin',
+        roles: ['all'] 
       },
     ];
 
