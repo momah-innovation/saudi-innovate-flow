@@ -11,15 +11,7 @@ export default function ExpertAssignmentManagementPage() {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <PageContainer maxWidth="full" padding="lg">
-        <PageHeader 
-          title="Expert Assignment Management" 
-          description="Assign experts to challenges and manage evaluations" 
-        />
-        <Section>
-          <ContentArea>
-            <ExpertAssignmentManagement />
-          </ContentArea>
-        </Section>
+        <ExpertAssignmentManagement />
       </PageContainer>
     </AppLayout>
   );

@@ -11,15 +11,7 @@ export default function EvaluationsManagementPage() {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <PageContainer maxWidth="full" padding="lg">
-        <PageHeader 
-          title="Evaluations Management" 
-          description="Manage expert evaluations and assessments" 
-        />
-        <Section>
-          <ContentArea>
-            <EvaluationsManagement />
-          </ContentArea>
-        </Section>
+        <EvaluationsManagement />
       </PageContainer>
     </AppLayout>
   );

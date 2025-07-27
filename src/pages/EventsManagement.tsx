@@ -11,15 +11,7 @@ export default function EventsManagementPage() {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <PageContainer maxWidth="full" padding="lg">
-        <PageHeader 
-          title="Events Management" 
-          description="Manage innovation events and activities" 
-        />
-        <Section>
-          <ContentArea>
-            <EventsManagement />
-          </ContentArea>
-        </Section>
+        <EventsManagement />
       </PageContainer>
     </AppLayout>
   );

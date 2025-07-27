@@ -11,15 +11,7 @@ export default function RelationshipOverviewPage() {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <PageContainer maxWidth="full" padding="lg">
-        <PageHeader 
-          title="Relationship Overview" 
-          description="Visualize and manage entity relationships across the system" 
-        />
-        <Section>
-          <ContentArea>
-            <RelationshipOverview />
-          </ContentArea>
-        </Section>
+        <RelationshipOverview />
       </PageContainer>
     </AppLayout>
   );

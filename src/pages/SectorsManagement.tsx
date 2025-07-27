@@ -11,15 +11,7 @@ export default function SectorsManagementPage() {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <PageContainer maxWidth="full" padding="lg">
-        <PageHeader 
-          title="Sectors Management" 
-          description="Manage innovation sectors and categories" 
-        />
-        <Section>
-          <ContentArea>
-            <SectorsManagement />
-          </ContentArea>
-        </Section>
+        <SectorsManagement />
       </PageContainer>
     </AppLayout>
   );

@@ -11,15 +11,7 @@ export default function PartnersManagementPage() {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <PageContainer maxWidth="full" padding="lg">
-        <PageHeader 
-          title="Partners Management" 
-          description="Manage innovation partners and collaborators" 
-        />
-        <Section>
-          <ContentArea>
-            <PartnersManagement />
-          </ContentArea>
-        </Section>
+        <PartnersManagement />
       </PageContainer>
     </AppLayout>
   );

@@ -11,15 +11,7 @@ export default function OrganizationalStructurePage() {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <PageContainer maxWidth="full" padding="lg">
-        <PageHeader 
-          title="Organizational Structure" 
-          description="Manage organizational hierarchy and structure" 
-        />
-        <Section>
-          <ContentArea>
-            <OrganizationalStructureManagement />
-          </ContentArea>
-        </Section>
+        <OrganizationalStructureManagement />
       </PageContainer>
     </AppLayout>
   );

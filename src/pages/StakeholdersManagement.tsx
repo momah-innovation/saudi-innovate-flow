@@ -11,15 +11,7 @@ export default function StakeholdersManagementPage() {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <PageContainer maxWidth="full" padding="lg">
-        <PageHeader 
-          title="Stakeholders Management" 
-          description="Manage innovation stakeholders and relationships" 
-        />
-        <Section>
-          <ContentArea>
-            <StakeholdersManagement />
-          </ContentArea>
-        </Section>
+        <StakeholdersManagement />
       </PageContainer>
     </AppLayout>
   );
