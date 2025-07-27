@@ -379,6 +379,7 @@ export const translations = {
     goToNextPage: 'الانتقال إلى الصفحة التالية',
     toggleSidebar: 'تبديل الشريط الجانبي',
     more: 'المزيد',
+    cards: 'البطاقات',
     
     
   },
