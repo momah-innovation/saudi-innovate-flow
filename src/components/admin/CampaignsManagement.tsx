@@ -149,7 +149,7 @@ export function CampaignsManagement() {
     } catch (error) {
       console.error('Error fetching campaigns:', error);
       toast({
-        title: "Error",
+        title: t('error'),
         description: "Failed to fetch campaigns",
         variant: "destructive",
       });
@@ -303,7 +303,7 @@ export function CampaignsManagement() {
       if (error) throw error;
 
       toast({
-        title: "Success",
+        title: t('success'),
         description: "Campaign deleted successfully",
       });
 
@@ -311,7 +311,7 @@ export function CampaignsManagement() {
     } catch (error) {
       console.error('Error deleting campaign:', error);
       toast({
-        title: "Error",
+        title: t('error'),
         description: "Failed to delete campaign",
         variant: "destructive",
       });

@@ -18,6 +18,34 @@ export const translations = {
     selectAll: 'تحديد الكل',
     selected: 'محدد',
     
+    // Toast messages
+    success: 'نجح',
+    error: 'خطأ',
+    warning: 'تحذير',
+    info: 'معلومات',
+    
+    // Form actions
+    submit: 'إرسال',
+    close: 'إغلاق',
+    open: 'فتح',
+    back: 'رجوع',
+    next: 'التالي',
+    previous: 'السابق',
+    yes: 'نعم',
+    no: 'لا',
+    all: 'الكل',
+    none: 'لا شيء',
+    
+    // Empty states
+    noData: 'لا توجد بيانات متاحة',
+    emptyList: 'لا توجد عناصر للعرض',
+    noItemsFound: 'لم يتم العثور على عناصر',
+    
+    // Placeholders
+    searchPlaceholder: 'البحث...',
+    selectOption: 'اختر خيار',
+    addNew: 'إضافة جديد',
+    
     // Campaigns
     campaigns: 'الحملات',
     campaign: 'حملة',
@@ -94,6 +122,34 @@ export const translations = {
     noResults: 'No results found',
     selectAll: 'Select all',
     selected: 'selected',
+    
+    // Toast messages
+    success: 'Success',
+    error: 'Error',
+    warning: 'Warning',
+    info: 'Info',
+    
+    // Form actions
+    submit: 'Submit',
+    close: 'Close',
+    open: 'Open',
+    back: 'Back',
+    next: 'Next',
+    previous: 'Previous',
+    yes: 'Yes',
+    no: 'No',
+    all: 'All',
+    none: 'None',
+    
+    // Empty states
+    noData: 'No data available',
+    emptyList: 'No items to display',
+    noItemsFound: 'No items found',
+    
+    // Placeholders
+    searchPlaceholder: 'Search...',
+    selectOption: 'Select option',
+    addNew: 'Add new',
     
     // Campaigns
     campaigns: 'Campaigns',

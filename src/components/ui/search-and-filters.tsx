@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Search, Filter, ChevronDown, ChevronRight, X } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface SearchAndFiltersProps {
   searchTerm: string;
@@ -19,7 +20,7 @@ interface SearchAndFiltersProps {
 export function SearchAndFilters({
   searchTerm,
   onSearchChange,
-  searchPlaceholder = "Search...",
+  searchPlaceholder,
   filtersOpen,
   onFiltersOpenChange,
   hasActiveFilters = false,
@@ -27,6 +28,8 @@ export function SearchAndFilters({
   children,
   rightContent
 }: SearchAndFiltersProps) {
+  const { t } = useTranslation();
+  const defaultPlaceholder = searchPlaceholder || t('searchPlaceholder');
   return (
     <div className="space-y-4">
       {/* Main search and controls */}
@@ -34,7 +37,7 @@ export function SearchAndFilters({
         <div className="relative flex-1">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder={searchPlaceholder}
+            placeholder={defaultPlaceholder}
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
             className="pl-10"
@@ -51,7 +54,7 @@ export function SearchAndFilters({
             <Button variant="outline" className="w-full justify-between">
               <span className="flex items-center gap-2">
                 <Filter className="w-4 h-4" />
-                Filters {hasActiveFilters && '(Active)'}
+                {t('filters')} {hasActiveFilters && '(Active)'}
               </span>
               {filtersOpen ? (
                 <ChevronDown className="w-4 h-4" />
@@ -72,7 +75,7 @@ export function SearchAndFilters({
                     className="gap-2"
                   >
                     <X className="w-4 h-4" />
-                    Clear Filters
+                    {t('clearFilters')}
                   </Button>
                 </div>
               )}

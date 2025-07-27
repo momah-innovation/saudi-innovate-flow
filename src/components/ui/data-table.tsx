@@ -1,10 +1,13 @@
-import { ReactNode } from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Checkbox } from "@/components/ui/checkbox";
+import { ReactNode, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal, ArrowUpDown, Search } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Search, ArrowUpDown, Filter } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export interface Column<T> {
   key: keyof T;
@@ -46,11 +49,13 @@ export function DataTable<T extends Record<string, any>>({
   searchTerm = "",
   onSearchChange,
   actions,
-  emptyMessage = "No data available",
+  emptyMessage,
   loading = false,
   className,
   idField = 'id' as keyof T
 }: DataTableProps<T>) {
+  const { t } = useTranslation();
+  const defaultEmptyMessage = emptyMessage || t('noData');
   const allSelected = data.length > 0 && selectedItems.length === data.length;
   const someSelected = selectedItems.length > 0;
 
@@ -74,7 +79,7 @@ export function DataTable<T extends Record<string, any>>({
         <div className="relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search..."
+            placeholder={t('searchPlaceholder')}
             value={searchTerm}
             onChange={(e) => onSearchChange?.(e.target.value)}
             className="pl-10"
@@ -121,15 +126,22 @@ export function DataTable<T extends Record<string, any>>({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.length === 0 ? (
-              <TableRow>
-                <TableCell 
-                  colSpan={columns.length + (onSelectItem ? 1 : 0) + (actions ? 1 : 0)} 
-                  className="h-24 text-center"
-                >
-                  {emptyMessage}
+        {loading ? (
+          Array.from({ length: 3 }).map((_, i) => (
+            <TableRow key={i}>
+              {columns.map((col, j) => (
+                <TableCell key={j}>
+                  <Skeleton className="h-4 w-[100px]" />
                 </TableCell>
-              </TableRow>
+              ))}
+            </TableRow>
+          ))
+        ) : data.length === 0 ? (
+          <TableRow>
+            <TableCell colSpan={columns.length + (onSelectItem ? 1 : 0) + (actions ? 1 : 0)} className="text-center py-8 text-muted-foreground">
+              {defaultEmptyMessage}
+            </TableCell>
+          </TableRow>
             ) : (
               data.map((item) => (
                 <TableRow key={String(item[idField])}>
