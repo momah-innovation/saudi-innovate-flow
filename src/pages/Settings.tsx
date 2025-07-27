@@ -95,10 +95,14 @@ export default function Settings() {
               </div>
 
               <Tabs defaultValue="account" className="space-y-6">
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger value="account" className="flex items-center gap-2">
                     <SettingsIcon className="h-4 w-4" />
                     Account
+                  </TabsTrigger>
+                  <TabsTrigger value="theme" className="flex items-center gap-2">
+                    <SettingsIcon className="h-4 w-4" />
+                    Theme
                   </TabsTrigger>
                   <TabsTrigger value="roles" className="flex items-center gap-2">
                     <Shield className="h-4 w-4" />
@@ -155,6 +159,29 @@ export default function Settings() {
                             <span className="inline-flex items-center px-2 py-1 rounded-full bg-green-100 text-green-800">
                               Active
                             </span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="theme" className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Theme & Appearance</CardTitle>
+                      <CardDescription>
+                        Customize the look and feel of the application
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex justify-center">
+                        <div className="w-full max-w-md">
+                          {/* Theme Customizer will be rendered here */}
+                          <div className="p-4 border rounded-lg">
+                            <p className="text-sm text-muted-foreground text-center">
+                              Theme customization panel will be available soon
+                            </p>
                           </div>
                         </div>
                       </div>

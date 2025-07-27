@@ -23,6 +23,18 @@ export { MultiStepForm } from './multi-step-form';
 export { ListItemCard } from './list-item-card';
 export { DetailView } from './detail-view';
 
+// Data Components
+export { DataTable, badgeRenderer, dateRenderer, truncateRenderer } from './data-table';
+export { DataCard, UserCard, ProjectCard } from './data-card';
+
+// Form Components
+export { FormLayout, FormField, FormFieldGroup } from './form-layout';
+export { AdvancedFilters } from './advanced-filters';
+
+// Theme Components
+export { ThemeProvider, useTheme, themePresets } from './theme-provider';
+export { ThemeCustomizer } from './theme-customizer';
+
 // Re-export all existing shadcn components for consistency
 export * from './accordion';
 export * from './alert';
