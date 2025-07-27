@@ -115,7 +115,7 @@ export function DataCard<T>({
           
           {actions && (
             <div 
-              className="flex items-center gap-1" 
+              className="flex items-center gap-1 flex-shrink-0" 
               onClick={(e) => e.stopPropagation()}
             >
               {actions}

@@ -18,12 +18,17 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        // Action button variants for consistent styling
+        "action-edit": "border border-input bg-background hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200",
+        "action-delete": "border border-destructive/20 bg-background hover:bg-destructive hover:text-destructive-foreground text-destructive",
+        "action-view": "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
+        "action-icon": "h-8 w-8 rounded-md",
       },
     },
     defaultVariants: {

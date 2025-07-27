@@ -443,30 +443,39 @@ export function CampaignsManagement() {
           }] : [])
         ]}
         actions={
-          <div className="flex gap-1">
-            <Button variant="outline" size="sm" onClick={() => handleEdit(campaign)}>
+          <div className="flex items-center gap-1">
+            <Button 
+              variant="action-edit" 
+              size="action-icon" 
+              onClick={() => handleEdit(campaign)}
+              title={t('edit')}
+            >
               <Edit className="w-4 h-4" />
             </Button>
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="outline" size="sm">
+                <Button 
+                  variant="action-delete" 
+                  size="action-icon"
+                  title={t('delete')}
+                >
                   <Trash2 className="w-4 h-4" />
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Delete Campaign</AlertDialogTitle>
+                  <AlertDialogTitle>{t('delete')} {t('campaign')}</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Are you sure you want to delete "{campaign.title}"? This action cannot be undone.
+                    Are you sure you want to delete "{getDynamicText(campaign.title, campaign.title_ar)}"? This action cannot be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => handleDelete(campaign.id)}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   >
-                    Delete Campaign
+                    {t('delete')} {t('campaign')}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
