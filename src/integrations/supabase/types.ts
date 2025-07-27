@@ -223,7 +223,6 @@ export type Database = {
           created_at: string | null
           department_id: string | null
           deputy_id: string | null
-          description: string | null
           description_ar: string | null
           end_date: string
           id: string
@@ -235,8 +234,7 @@ export type Database = {
           target_ideas: number | null
           target_participants: number | null
           theme: string | null
-          title: string
-          title_ar: string | null
+          title_ar: string
           updated_at: string | null
         }
         Insert: {
@@ -246,7 +244,6 @@ export type Database = {
           created_at?: string | null
           department_id?: string | null
           deputy_id?: string | null
-          description?: string | null
           description_ar?: string | null
           end_date: string
           id?: string
@@ -258,8 +255,7 @@ export type Database = {
           target_ideas?: number | null
           target_participants?: number | null
           theme?: string | null
-          title: string
-          title_ar?: string | null
+          title_ar: string
           updated_at?: string | null
         }
         Update: {
@@ -269,7 +265,6 @@ export type Database = {
           created_at?: string | null
           department_id?: string | null
           deputy_id?: string | null
-          description?: string | null
           description_ar?: string | null
           end_date?: string
           id?: string
@@ -281,8 +276,7 @@ export type Database = {
           target_ideas?: number | null
           target_participants?: number | null
           theme?: string | null
-          title?: string
-          title_ar?: string | null
+          title_ar?: string
           updated_at?: string | null
         }
         Relationships: [
@@ -561,8 +555,7 @@ export type Database = {
           created_by: string | null
           department_id: string | null
           deputy_id: string | null
-          description: string
-          description_ar: string | null
+          description_ar: string
           domain_id: string | null
           end_date: string | null
           estimated_budget: number | null
@@ -577,8 +570,7 @@ export type Database = {
           start_date: string | null
           status: string | null
           sub_domain_id: string | null
-          title: string
-          title_ar: string | null
+          title_ar: string
           updated_at: string | null
           vision_2030_goal: string | null
         }
@@ -592,8 +584,7 @@ export type Database = {
           created_by?: string | null
           department_id?: string | null
           deputy_id?: string | null
-          description: string
-          description_ar?: string | null
+          description_ar: string
           domain_id?: string | null
           end_date?: string | null
           estimated_budget?: number | null
@@ -608,8 +599,7 @@ export type Database = {
           start_date?: string | null
           status?: string | null
           sub_domain_id?: string | null
-          title: string
-          title_ar?: string | null
+          title_ar: string
           updated_at?: string | null
           vision_2030_goal?: string | null
         }
@@ -623,8 +613,7 @@ export type Database = {
           created_by?: string | null
           department_id?: string | null
           deputy_id?: string | null
-          description?: string
-          description_ar?: string | null
+          description_ar?: string
           domain_id?: string | null
           end_date?: string | null
           estimated_budget?: number | null
@@ -639,8 +628,7 @@ export type Database = {
           start_date?: string | null
           status?: string | null
           sub_domain_id?: string | null
-          title?: string
-          title_ar?: string | null
+          title_ar?: string
           updated_at?: string | null
           vision_2030_goal?: string | null
         }
@@ -1121,7 +1109,6 @@ export type Database = {
           campaign_id: string | null
           challenge_id: string | null
           created_at: string | null
-          description: string | null
           description_ar: string | null
           end_date: string | null
           end_time: string | null
@@ -1145,8 +1132,7 @@ export type Database = {
           start_time: string | null
           status: string | null
           target_stakeholder_groups: string[] | null
-          title: string
-          title_ar: string | null
+          title_ar: string
           virtual_link: string | null
         }
         Insert: {
@@ -1155,7 +1141,6 @@ export type Database = {
           campaign_id?: string | null
           challenge_id?: string | null
           created_at?: string | null
-          description?: string | null
           description_ar?: string | null
           end_date?: string | null
           end_time?: string | null
@@ -1179,8 +1164,7 @@ export type Database = {
           start_time?: string | null
           status?: string | null
           target_stakeholder_groups?: string[] | null
-          title: string
-          title_ar?: string | null
+          title_ar: string
           virtual_link?: string | null
         }
         Update: {
@@ -1189,7 +1173,6 @@ export type Database = {
           campaign_id?: string | null
           challenge_id?: string | null
           created_at?: string | null
-          description?: string | null
           description_ar?: string | null
           end_date?: string | null
           end_time?: string | null
@@ -1213,8 +1196,7 @@ export type Database = {
           start_time?: string | null
           status?: string | null
           target_stakeholder_groups?: string[] | null
-          title?: string
-          title_ar?: string | null
+          title_ar?: string
           virtual_link?: string | null
         }
         Relationships: [
@@ -1308,8 +1290,7 @@ export type Database = {
           id: string
           is_sensitive: boolean | null
           order_sequence: number | null
-          question_text: string
-          question_text_ar: string | null
+          question_text_ar: string
           question_type: string | null
           updated_at: string | null
         }
@@ -1319,8 +1300,7 @@ export type Database = {
           id?: string
           is_sensitive?: boolean | null
           order_sequence?: number | null
-          question_text: string
-          question_text_ar?: string | null
+          question_text_ar: string
           question_type?: string | null
           updated_at?: string | null
         }
@@ -1330,8 +1310,7 @@ export type Database = {
           id?: string
           is_sensitive?: boolean | null
           order_sequence?: number | null
-          question_text?: string
-          question_text_ar?: string | null
+          question_text_ar?: string
           question_type?: string | null
           updated_at?: string | null
         }
@@ -1415,8 +1394,7 @@ export type Database = {
           alignment_score: number | null
           challenge_id: string | null
           created_at: string | null
-          description: string
-          description_ar: string | null
+          description_ar: string
           expected_impact: string | null
           feasibility_score: number | null
           focus_question_id: string | null
@@ -1430,16 +1408,14 @@ export type Database = {
           resource_requirements: string | null
           solution_approach: string | null
           status: string | null
-          title: string
-          title_ar: string | null
+          title_ar: string
           updated_at: string | null
         }
         Insert: {
           alignment_score?: number | null
           challenge_id?: string | null
           created_at?: string | null
-          description: string
-          description_ar?: string | null
+          description_ar: string
           expected_impact?: string | null
           feasibility_score?: number | null
           focus_question_id?: string | null
@@ -1453,16 +1429,14 @@ export type Database = {
           resource_requirements?: string | null
           solution_approach?: string | null
           status?: string | null
-          title: string
-          title_ar?: string | null
+          title_ar: string
           updated_at?: string | null
         }
         Update: {
           alignment_score?: number | null
           challenge_id?: string | null
           created_at?: string | null
-          description?: string
-          description_ar?: string | null
+          description_ar?: string
           expected_impact?: string | null
           feasibility_score?: number | null
           focus_question_id?: string | null
@@ -1476,8 +1450,7 @@ export type Database = {
           resource_requirements?: string | null
           solution_approach?: string | null
           status?: string | null
-          title?: string
-          title_ar?: string | null
+          title_ar?: string
           updated_at?: string | null
         }
         Relationships: [
@@ -1707,8 +1680,7 @@ export type Database = {
           created_at: string | null
           extracted_by: string | null
           id: string
-          insight_text: string
-          insight_text_ar: string | null
+          insight_text_ar: string
           insight_type: string | null
           trend_report_id: string | null
         }
@@ -1718,8 +1690,7 @@ export type Database = {
           created_at?: string | null
           extracted_by?: string | null
           id?: string
-          insight_text: string
-          insight_text_ar?: string | null
+          insight_text_ar: string
           insight_type?: string | null
           trend_report_id?: string | null
         }
@@ -1729,8 +1700,7 @@ export type Database = {
           created_at?: string | null
           extracted_by?: string | null
           id?: string
-          insight_text?: string
-          insight_text_ar?: string | null
+          insight_text_ar?: string
           insight_type?: string | null
           trend_report_id?: string | null
         }
@@ -1746,8 +1716,7 @@ export type Database = {
       }
       landing_page_content: {
         Row: {
-          content_ar: string | null
-          content_en: string
+          content_ar: string
           created_at: string | null
           display_order: number | null
           id: string
@@ -1755,13 +1724,11 @@ export type Database = {
           metadata: Json | null
           section_key: string
           section_type: string | null
-          title_ar: string | null
-          title_en: string
+          title_ar: string
           updated_at: string | null
         }
         Insert: {
-          content_ar?: string | null
-          content_en: string
+          content_ar: string
           created_at?: string | null
           display_order?: number | null
           id?: string
@@ -1769,13 +1736,11 @@ export type Database = {
           metadata?: Json | null
           section_key: string
           section_type?: string | null
-          title_ar?: string | null
-          title_en: string
+          title_ar: string
           updated_at?: string | null
         }
         Update: {
-          content_ar?: string | null
-          content_en?: string
+          content_ar?: string
           created_at?: string | null
           display_order?: number | null
           id?: string
@@ -1783,47 +1748,40 @@ export type Database = {
           metadata?: Json | null
           section_key?: string
           section_type?: string | null
-          title_ar?: string | null
-          title_en?: string
+          title_ar?: string
           updated_at?: string | null
         }
         Relationships: []
       }
       landing_page_faqs: {
         Row: {
-          answer_ar: string | null
-          answer_en: string
+          answer_ar: string
           category: string | null
           created_at: string | null
           id: string
           is_active: boolean | null
           order_sequence: number | null
-          question_ar: string | null
-          question_en: string
+          question_ar: string
           updated_at: string | null
         }
         Insert: {
-          answer_ar?: string | null
-          answer_en: string
+          answer_ar: string
           category?: string | null
           created_at?: string | null
           id?: string
           is_active?: boolean | null
           order_sequence?: number | null
-          question_ar?: string | null
-          question_en: string
+          question_ar: string
           updated_at?: string | null
         }
         Update: {
-          answer_ar?: string | null
-          answer_en?: string
+          answer_ar?: string
           category?: string | null
           created_at?: string | null
           id?: string
           is_active?: boolean | null
           order_sequence?: number | null
-          question_ar?: string | null
-          question_en?: string
+          question_ar?: string
           updated_at?: string | null
         }
         Relationships: []
