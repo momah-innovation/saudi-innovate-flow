@@ -1,45 +1,26 @@
-import { useNavigate } from "react-router-dom";
 import { EvaluationsManagement } from "@/components/admin/EvaluationsManagement";
-import { Header } from "@/components/layout/Header";
-import { AppSidebar } from "@/components/layout/Sidebar";
-import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppLayout } from "@/components/layout/AppLayout";
+import { PageContainer, PageHeader, Section, ContentArea } from "@/components/ui";
 
 export default function EvaluationsManagementPage() {
-  const navigate = useNavigate();
-
-  const handleTabChange = (tab: string) => {
-    if (tab === "evaluations") {
-      navigate("/admin/evaluations");
-    } else if (tab === "campaigns") {
-      navigate("/admin/campaigns");
-    } else if (tab === "events") {
-      navigate("/admin/events");
-    } else if (tab === "stakeholders") {
-      navigate("/admin/stakeholders");
-    } else {
-      navigate("/");
-    }
-  };
+  const breadcrumbs = [
+    { label: "Admin", href: "/admin" },
+    { label: "Evaluations", href: "/admin/evaluations" }
+  ];
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full">
-        <AppSidebar activeTab="evaluations" onTabChange={handleTabChange} />
-        
-        <div className="flex-1 flex flex-col">
-          <Header />
-          
-          <div className="flex items-center gap-4 px-6 py-3 border-b bg-background/95">
-            <SidebarTrigger />
-            <BreadcrumbNav activeTab="evaluations" />
-          </div>
-          
-          <main className="flex-1 overflow-auto">
+    <AppLayout breadcrumbs={breadcrumbs}>
+      <PageContainer maxWidth="full" padding="lg">
+        <PageHeader 
+          title="Evaluations Management" 
+          description="Manage expert evaluations and assessments" 
+        />
+        <Section>
+          <ContentArea>
             <EvaluationsManagement />
-          </main>
-        </div>
-      </div>
-    </SidebarProvider>
+          </ContentArea>
+        </Section>
+      </PageContainer>
+    </AppLayout>
   );
 }

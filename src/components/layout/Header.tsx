@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell, User, Settings, Globe, Search, LogOut, Shield } from "lucide-react";
+import { Bell, User, Settings, Globe, Search, LogOut, Shield, Languages, Moon, Sun } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,12 +15,14 @@ import { useNavigate } from "react-router-dom";
 import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
 import { Heading1 } from "@/components/ui";
-import { useDirection } from "@/components/ui";
+import { useDirection, directionUtils } from "@/components/ui";
+import { useTheme } from "@/components/ui/theme-provider";
 
 export const Header = () => {
   const { user, userProfile, signOut, hasRole } = useAuth();
   const { uiInitialsMaxLength } = useSystemSettings();
-  const { isRTL } = useDirection();
+  const { isRTL, language, setLanguage, toggleDirection } = useDirection();
+  const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
 
   const getUserDisplayName = () => {
@@ -49,6 +51,31 @@ export const Header = () => {
     navigate('/settings');
   };
 
+  const languageOptions = [
+    { code: 'en', label: 'English', nativeLabel: 'English' },
+    { code: 'ar', label: 'Arabic', nativeLabel: 'العربية' },
+    { code: 'he', label: 'Hebrew', nativeLabel: 'עברית' },
+    { code: 'fa', label: 'Persian', nativeLabel: 'فارسی' },
+  ];
+
+  const toggleTheme = () => {
+    setTheme({
+      colorScheme: theme.colorScheme === 'dark' ? 'light' : 'dark'
+    });
+  };
+
+  const getSystemTitle = () => {
+    return isRTL ? 'نظام رواد للابتكار' : 'Ruwād Innovation System';
+  };
+
+  const getSystemSubtitle = () => {
+    return isRTL ? 'منصة إدارة الابتكار الحكومي' : 'Government Innovation Management Platform';
+  };
+
+  const getSearchPlaceholder = () => {
+    return isRTL ? 'البحث في التحديات والأفكار والمعنيين...' : 'Search challenges, ideas, or stakeholders...';
+  };
+
   return (
     <header className="border-b bg-gradient-to-r from-primary via-primary-light to-accent p-4 shadow-elegant">
       <div className={`container mx-auto flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
@@ -57,12 +84,12 @@ export const Header = () => {
           <div className="h-10 w-10 rounded-lg bg-background/20 flex items-center justify-center">
             <div className="text-xl font-bold text-primary-foreground">🏗️</div>
           </div>
-          <div>
+          <div className={isRTL ? 'text-right' : 'text-left'}>
             <Heading1 className="text-xl font-bold text-primary-foreground">
-              Ruwād Innovation System
+              {getSystemTitle()}
             </Heading1>
             <p className="text-sm text-primary-foreground/80">
-              Government Innovation Management Platform
+              {getSystemSubtitle()}
             </p>
           </div>
         </div>
@@ -70,21 +97,50 @@ export const Header = () => {
         {/* Search Bar */}
         <div className="flex-1 max-w-md mx-8">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
             <Input
-              placeholder="Search challenges, ideas, or stakeholders..."
-              className="pl-10 bg-background/10 border-background/20 text-primary-foreground placeholder:text-primary-foreground/60"
+              placeholder={getSearchPlaceholder()}
+              className={`${isRTL ? 'pr-10 text-right' : 'pl-10'} bg-background/10 border-background/20 text-primary-foreground placeholder:text-primary-foreground/60`}
+              dir={isRTL ? 'rtl' : 'ltr'}
             />
           </div>
         </div>
 
         {/* Action Buttons */}
         <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
-          {/* Language Toggle */}
-          <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-background/10">
-            <Globe className="h-4 w-4 mr-2" />
-            EN | العربية
-          </Button>
+          {/* Language & Theme Toggle */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-background/10">
+                <Languages className="h-4 w-4 mr-2" />
+                {languageOptions.find(l => l.code === language)?.nativeLabel}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent 
+              align={isRTL ? 'start' : 'end'}
+              className="min-w-[180px]"
+            >
+              {languageOptions.map((lang) => (
+                <DropdownMenuItem
+                  key={lang.code}
+                  onClick={() => setLanguage(lang.code as any)}
+                  className={`flex items-center justify-between ${language === lang.code ? 'bg-accent' : ''}`}
+                >
+                  <span>{lang.nativeLabel}</span>
+                  <span className="text-muted-foreground text-sm">{lang.label}</span>
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={toggleDirection} className="flex items-center gap-2">
+                <Globe className="h-4 w-4" />
+                {isRTL ? 'Switch to LTR' : 'Switch to RTL'}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={toggleTheme} className="flex items-center gap-2">
+                {theme.colorScheme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                {theme.colorScheme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {/* Notifications */}
           <NotificationCenter />
@@ -104,9 +160,9 @@ export const Header = () => {
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-72">
+            <DropdownMenuContent align={isRTL ? 'start' : 'end'} className="w-72">
               {/* User Info Header */}
-              <div className="flex items-center gap-3 px-3 py-3 border-b">
+              <div className={`flex items-center gap-3 px-3 py-3 border-b ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Avatar className="h-12 w-12">
                   <AvatarImage 
                     src={userProfile?.profile_image_url} 
@@ -116,7 +172,7 @@ export const Header = () => {
                     {getInitialsWithSettings(getUserDisplayName())}
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex-1 min-w-0">
+                <div className={`flex-1 min-w-0 ${isRTL ? 'text-right' : ''}`}>
                   <p className="font-medium text-sm truncate">{getUserDisplayName()}</p>
                   <p className="text-xs text-muted-foreground truncate">{userProfile?.email}</p>
                   {userProfile?.position && (
@@ -143,12 +199,12 @@ export const Header = () => {
               {/* Menu Items */}
               <div className="py-1">
                 <DropdownMenuItem onClick={handleProfileClick} className="cursor-pointer">
-                  <User className="mr-3 h-4 w-4" />
-                  <span>View Profile</span>
+                  <User className={`h-4 w-4 ${isRTL ? 'ml-3' : 'mr-3'}`} />
+                  <span>{isRTL ? 'عرض الملف الشخصي' : 'View Profile'}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleSettingsClick} className="cursor-pointer">
-                  <Settings className="mr-3 h-4 w-4" />
-                  <span>Settings</span>
+                  <Settings className={`h-4 w-4 ${isRTL ? 'ml-3' : 'mr-3'}`} />
+                  <span>{isRTL ? 'الإعدادات' : 'Settings'}</span>
                 </DropdownMenuItem>
               </div>
 
@@ -160,8 +216,8 @@ export const Header = () => {
                   onClick={signOut} 
                   className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
                 >
-                  <LogOut className="mr-3 h-4 w-4" />
-                  <span>Sign out</span>
+                  <LogOut className={`h-4 w-4 ${isRTL ? 'ml-3' : 'mr-3'}`} />
+                  <span>{isRTL ? 'تسجيل الخروج' : 'Sign out'}</span>
                 </DropdownMenuItem>
               </div>
             </DropdownMenuContent>

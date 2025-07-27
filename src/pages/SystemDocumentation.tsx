@@ -1,8 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { Header } from "@/components/layout/Header";
-import { AppSidebar } from "@/components/layout/Sidebar";
-import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppLayout } from "@/components/layout/AppLayout";
+import { PageContainer, PageHeader, Section, ContentArea } from "@/components/ui";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -22,41 +19,21 @@ import {
 } from "lucide-react";
 
 export default function SystemDocumentationPage() {
-  const navigate = useNavigate();
-
-  const handleTabChange = (tab: string) => {
-    // Navigate based on tab selection
-    if (tab === "dashboard") {
-      navigate("/");
-    } else if (tab === "system-documentation") {
-      navigate("/admin/system-documentation");
-    } else {
-      navigate("/");
-    }
-  };
+  const breadcrumbs = [
+    { label: "Admin", href: "/admin" },
+    { label: "Documentation", href: "/admin/system-documentation" }
+  ];
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full">
-        <AppSidebar activeTab="system-documentation" onTabChange={handleTabChange} />
-        
-        <div className="flex-1 flex flex-col">
-          <Header />
-          
-          <div className="flex items-center gap-4 px-6 py-3 border-b bg-background/95">
-            <SidebarTrigger />
-            <BreadcrumbNav activeTab="system-documentation" />
-          </div>
-          
-          <main className="flex-1 overflow-auto">
-            <div className="container mx-auto p-6 space-y-8">
-              {/* Header */}
-              <div className="space-y-2">
-                <h1 className="text-4xl font-bold">System Documentation</h1>
-                <p className="text-xl text-muted-foreground">
-                  Comprehensive guide to entity relationships and system architecture
-                </p>
-              </div>
+    <AppLayout breadcrumbs={breadcrumbs}>
+      <PageContainer maxWidth="full" padding="lg">
+        <PageHeader 
+          title="System Documentation" 
+          description="Comprehensive guide to entity relationships and system architecture" 
+        />
+        <Section>
+          <ContentArea>
+            <div className="space-y-8">{/* Content from original file below */}
 
               {/* Overview */}
               <Card>
@@ -605,9 +582,9 @@ export default function SystemDocumentationPage() {
               </div>
 
             </div>
-          </main>
-        </div>
-      </div>
-    </SidebarProvider>
+          </ContentArea>
+        </Section>
+      </PageContainer>
+    </AppLayout>
   );
 }
