@@ -84,6 +84,16 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
     try {
       const searchLower = searchQuery.toLowerCase();
 
+      // Check if user is team member once
+      const { data: teamMemberData } = await supabase
+        .from('innovation_team_members')
+        .select('id')
+        .eq('user_id', userProfile?.id)
+        .maybeSingle();
+      
+      const isTeamMemberFlag = !!teamMemberData;
+      const isAdmin = hasRole('admin');
+
       // Search campaigns (all users can view campaigns)
       const { data: campaigns } = await supabase
         .from('campaigns')
@@ -112,17 +122,11 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
         .limit(5);
 
       // Filter based on user permissions
-      if (!hasRole('admin')) {
+      if (!isAdmin) {
         challengeQuery = challengeQuery.eq('sensitivity_level', 'normal');
         
         // Team members can see sensitive challenges
-        const isTeamMember = await supabase
-          .from('innovation_team_members')
-          .select('id')
-          .eq('user_id', userProfile?.id)
-          .single();
-
-        if (isTeamMember.data) {
+        if (isTeamMemberFlag) {
           challengeQuery = challengeQuery.in('sensitivity_level', ['normal', 'sensitive']);
         }
       }
@@ -169,7 +173,7 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
       });
 
       // Search stakeholders (team members and admins only)
-      if (hasRole('admin') || await isTeamMember()) {
+      if (isAdmin || isTeamMemberFlag) {
         const { data: stakeholders } = await supabase
           .from('stakeholders')
           .select('id, name, organization, email')
@@ -190,7 +194,7 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
       }
 
       // Search partners (team members and admins only)
-      if (hasRole('admin') || await isTeamMember()) {
+      if (isAdmin || isTeamMemberFlag) {
         const { data: partners } = await supabase
           .from('partners')
           .select('id, name, partner_type, email')
@@ -220,7 +224,7 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
         .or(`title_ar.ilike.%${searchQuery}%,description_ar.ilike.%${searchQuery}%`)
         .limit(5);
 
-      if (!hasRole('admin')) {
+      if (!isAdmin) {
         // Regular users see only their own ideas
         ideaQuery = ideaQuery.eq('innovators.user_id', userProfile?.id);
       }
@@ -250,15 +254,6 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const isTeamMember = async () => {
-    const { data } = await supabase
-      .from('innovation_team_members')
-      .select('id')
-      .eq('user_id', userProfile?.id)
-      .single();
-    return !!data;
   };
 
   const handleResultClick = (result: SearchResult) => {

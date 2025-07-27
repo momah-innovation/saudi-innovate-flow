@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Bell, User, Settings, Globe, Search, LogOut, Shield, Languages, Moon, Sun } from "lucide-react";
 import { GlobalSearch } from "@/components/search/GlobalSearch";
+import { SimpleSearch } from "@/components/search/SimpleSearch";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -93,8 +94,8 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Global Search */}
-        <GlobalSearch 
+        {/* Test Simple Search */}
+        <SimpleSearch 
           className="flex-1 max-w-md mx-8"
           placeholder={getSearchPlaceholder()}
         />
