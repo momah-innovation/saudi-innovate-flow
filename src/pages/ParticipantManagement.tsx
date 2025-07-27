@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 
 interface Event {
   id: string;
-  title: string;
+  title_ar: string;
   max_participants?: number;
 }
 
@@ -31,7 +31,7 @@ export default function ParticipantManagementPage() {
       setLoading(true);
       const { data, error } = await supabase
         .from('events')
-        .select('id, title, max_participants')
+        .select('id, title_ar, max_participants')
         .eq('id', eventId)
         .single();
 
@@ -109,7 +109,7 @@ export default function ParticipantManagementPage() {
           <main className="flex-1 overflow-auto p-6">
             <ParticipantManagement 
               eventId={event.id}
-              eventTitle={event.title}
+              eventTitle={event.title_ar}
               maxParticipants={event.max_participants}
             />
           </main>

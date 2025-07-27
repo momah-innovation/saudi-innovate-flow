@@ -195,7 +195,7 @@ export function EventBulkActions({
         const duplicateData = {
           ...originalEvent,
           id: undefined,
-          title: `${originalEvent.title} (Copy)`,
+          title_ar: `${originalEvent.title_ar} (نسخة)`,
           status: 'scheduled',
           registered_participants: 0,
           actual_participants: 0,

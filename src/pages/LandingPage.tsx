@@ -248,10 +248,10 @@ export default function LandingPage() {
                     </div>
                     <div className={`flex-1 ${isRTL ? 'text-right' : ''}`}>
                       <h3 className="text-xl font-semibold mb-2">
-                        {getText(step.title_en, step.title_ar)}
+                        {step.title_ar}
                       </h3>
                       <p className="text-muted-foreground">
-                        {getText(step.content_en, step.content_ar)}
+                        {step.content_ar}
                       </p>
                     </div>
                     {index < processSteps.length - 1 && (
@@ -319,10 +319,10 @@ export default function LandingPage() {
               {faqs.map((faq, index) => (
                 <AccordionItem key={faq.id} value={`item-${index}`}>
                   <AccordionTrigger className={`text-left ${isRTL ? 'text-right' : ''}`}>
-                    {getText(faq.question_en, faq.question_ar)}
+                    {faq.question_ar}
                   </AccordionTrigger>
                   <AccordionContent className={`text-muted-foreground ${isRTL ? 'text-right' : ''}`}>
-                    {getText(faq.answer_en, faq.answer_ar)}
+                    {faq.answer_ar}
                   </AccordionContent>
                 </AccordionItem>
               ))}

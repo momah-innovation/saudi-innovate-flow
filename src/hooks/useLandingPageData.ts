@@ -3,10 +3,8 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface FAQ {
   id: string;
-  question_en: string;
-  question_ar: string | null;
-  answer_en: string;
-  answer_ar: string | null;
+  question_ar: string;
+  answer_ar: string;
   category: string;
   order_sequence: number;
 }
@@ -24,10 +22,8 @@ interface PublicStatistic {
 interface ContentSection {
   id: string;
   section_key: string;
-  title_en: string;
-  title_ar: string | null;
-  content_en: string;
-  content_ar: string | null;
+  title_ar: string;
+  content_ar: string;
   section_type: string;
   display_order: number;
 }

@@ -90,7 +90,7 @@ export function EvaluationsManagement() {
       if (ideaIds.length > 0) {
         const { data: ideasData, error: ideasError } = await supabase
           .from("ideas")
-          .select("id, title, description, status")
+          .select("id, title_ar, description_ar, status")
           .in("id", ideaIds);
 
         if (ideasError) throw ideasError;

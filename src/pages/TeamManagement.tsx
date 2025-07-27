@@ -292,11 +292,11 @@ export default function TeamManagement() {
     try {
       // Fetch various types of assignments for team members
       const [campaigns, events, implementations, trendReports, insights] = await Promise.all([
-        supabase.from('campaigns').select('id, title, status, start_date, end_date, campaign_manager_id').not('campaign_manager_id', 'is', null),
-        supabase.from('events').select('id, title, status, event_date, event_manager_id').not('event_manager_id', 'is', null),
+        supabase.from('campaigns').select('id, title_ar, status, start_date, end_date, campaign_manager_id').not('campaign_manager_id', 'is', null),
+        supabase.from('events').select('id, title_ar, status, event_date, event_manager_id').not('event_manager_id', 'is', null),
         supabase.from('implementation_tracker').select('id, challenge_id, implementation_stage, project_manager_id, implementation_owner_id').not('project_manager_id', 'is', null),
         supabase.from('trend_reports').select('id, title, created_at, created_by').not('created_by', 'is', null),
-        supabase.from('insights').select('id, insight_text, created_at, extracted_by').not('extracted_by', 'is', null)
+        supabase.from('insights').select('id, insight_text_ar, created_at, extracted_by').not('extracted_by', 'is', null)
       ]);
 
       const allAssignments: Assignment[] = [];

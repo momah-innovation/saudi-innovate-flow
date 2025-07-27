@@ -13,8 +13,7 @@ import { useSystemLists } from "@/hooks/useSystemLists";
 
 interface FocusQuestion {
   id: string;
-  question_text: string;
-  question_text_ar?: string;
+  question_text_ar: string;
   question_type?: string;
   is_sensitive: boolean;
   order_sequence: number;
@@ -47,7 +46,7 @@ export function FocusQuestionDialog({
 
   useEffect(() => {
     if (question) {
-      setQuestionText(question.question_text);
+      setQuestionText("");
       setQuestionTextAr(question.question_text_ar || "");
       setQuestionType(question.question_type || "open");
       setIsSensitive(question.is_sensitive);

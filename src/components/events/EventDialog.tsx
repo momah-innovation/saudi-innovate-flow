@@ -31,8 +31,7 @@ import { updateEventPartners, updateEventStakeholders, updateEventFocusQuestions
 
 interface Event {
   id: string;
-  title: string;
-  title_ar?: string;
+  title_ar: string;
   description?: string;
   description_ar?: string;
   event_type?: string;
@@ -192,12 +191,12 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
         focusQuestionsRes,
         eventManagersRes
       ] = await Promise.all([
-        supabase.from('campaigns').select('*').order('title'),
-        supabase.from('challenges').select('*').order('title'),
+        supabase.from('campaigns').select('*').order('title_ar'),
+        supabase.from('challenges').select('*').order('title_ar'),
         supabase.from('sectors').select('*').order('name'),
         supabase.from('partners').select('*').order('name'),
         supabase.from('stakeholders').select('*').order('name'),
-        supabase.from('focus_questions').select('*').order('question_text'),
+        supabase.from('focus_questions').select('*').order('question_text_ar'),
         supabase.from('profiles').select('id, name, email, position').order('name')
       ]);
 
@@ -216,7 +215,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
   const loadEventData = async (eventData: Event) => {
     // Load basic event data
     setFormData({
-      title: eventData.title || "",
+      title: "",
       title_ar: eventData.title_ar || "",
       description: eventData.description || "",
       description_ar: eventData.description_ar || "",
@@ -759,7 +758,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
                       className="w-full justify-between"
                     >
                       {formData.campaign_id
-                        ? campaigns.find((campaign) => campaign.id === formData.campaign_id)?.title
+                        ? campaigns.find((campaign) => campaign.id === formData.campaign_id)?.title_ar
                         : "Select campaign..."}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -783,7 +782,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
                           {campaigns.map((campaign) => (
                             <CommandItem
                               key={campaign.id}
-                              value={campaign.title}
+                              value={campaign.title_ar}
                               onSelect={() => {
                                 setFormData({ ...formData, campaign_id: campaign.id });
                                 setOpenCampaign(false);
@@ -794,7 +793,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
                                   formData.campaign_id === campaign.id ? "opacity-100" : "opacity-0"
                                 }`}
                               />
-                              {campaign.title}
+                              {campaign.title_ar}
                             </CommandItem>
                           ))}
                         </CommandGroup>
@@ -937,7 +936,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
                 <div className="border rounded-md max-h-40 overflow-y-auto">
                   {challenges
                     .filter(challenge => 
-                      challenge.title.toLowerCase().includes(challengeSearch.toLowerCase())
+                      challenge.title_ar.toLowerCase().includes(challengeSearch.toLowerCase())
                     )
                     .map((challenge) => (
                       <div key={challenge.id} className="flex items-center space-x-2 p-2 hover:bg-muted">
@@ -954,7 +953,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
                           }}
                         />
                         <label htmlFor={`challenge-${challenge.id}`} className="text-sm flex-1 cursor-pointer">
-                          {challenge.title}
+                          {challenge.title_ar}
                         </label>
                       </div>
                     ))}
@@ -965,7 +964,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
                       const challenge = challenges.find(c => c.id === challengeId);
                       return (
                         <Badge key={challengeId} variant="secondary" className="text-xs">
-                          {challenge?.title}
+                          {challenge?.title_ar}
                           <X
                             className="ml-1 h-3 w-3 cursor-pointer"
                             onClick={() => setSelectedChallenges(selectedChallenges.filter(id => id !== challengeId))}
@@ -1110,7 +1109,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
                 <div className="border rounded-md max-h-40 overflow-y-auto">
                   {focusQuestions
                     .filter(question => 
-                      question.question_text.toLowerCase().includes(focusQuestionSearch.toLowerCase())
+                      question.question_text_ar.toLowerCase().includes(focusQuestionSearch.toLowerCase())
                     )
                     .map((question) => (
                       <div key={question.id} className="flex items-center space-x-2 p-2 hover:bg-muted">
@@ -1127,7 +1126,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
                           }}
                         />
                         <label htmlFor={`question-${question.id}`} className="text-sm flex-1 cursor-pointer">
-                          {question.question_text}
+                          {question.question_text_ar}
                         </label>
                       </div>
                     ))}
@@ -1138,7 +1137,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
                       const question = focusQuestions.find(q => q.id === questionId);
                       return (
                         <Badge key={questionId} variant="secondary" className="text-xs">
-                          {question?.question_text.substring(0, 50)}...
+                          {question?.question_text_ar.substring(0, 50)}...
                           <X
                             className="ml-1 h-3 w-3 cursor-pointer"
                             onClick={() => setSelectedFocusQuestions(selectedFocusQuestions.filter(id => id !== questionId))}

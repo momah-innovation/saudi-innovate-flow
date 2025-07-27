@@ -37,10 +37,8 @@ import { FocusQuestionDialog } from "@/components/challenges/FocusQuestionDialog
 
 interface Challenge {
   id: string;
-  title: string;
-  title_ar?: string;
-  description: string;
-  description_ar?: string;
+  title_ar: string;
+  description_ar: string;
   status: string;
   priority_level: string;
   sensitivity_level: string;
@@ -64,8 +62,7 @@ interface Challenge {
 
 interface FocusQuestion {
   id: string;
-  question_text: string;
-  question_text_ar?: string;
+  question_text_ar: string;
   question_type: string;
   order_sequence: number;
   is_sensitive: boolean;
@@ -621,18 +618,13 @@ const ChallengeDetails = () => {
             ) : (
               <div className="flex items-center gap-2">
                 <div>
-                  <h1 className="text-2xl font-bold">{challenge.title}</h1>
-                  {challenge.title_ar && (
-                    <p className="text-lg text-muted-foreground" dir="rtl">
-                      {challenge.title_ar}
-                    </p>
-                  )}
+                   <h1 className="text-2xl font-bold">{challenge.title_ar}</h1>
                 </div>
                 {canEdit && (
                   <Button
                     size="sm"
                     variant="ghost"
-                    onClick={() => startEdit('title', challenge.title)}
+                    onClick={() => startEdit('title_ar', challenge.title_ar)}
                   >
                     <Edit className="h-4 w-4" />
                   </Button>
@@ -683,7 +675,7 @@ const ChallengeDetails = () => {
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => startEdit('description', challenge.description)}
+                          onClick={() => startEdit('description_ar', challenge.description_ar)}
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
@@ -709,7 +701,7 @@ const ChallengeDetails = () => {
                       </div>
                     ) : (
                       <p className="text-muted-foreground leading-relaxed">
-                        {challenge.description}
+                        {challenge.description_ar}
                       </p>
                     )}
                   </div>
@@ -979,7 +971,7 @@ const ChallengeDetails = () => {
                                   }
                                 }}
                               >
-                                <p className="font-medium">{question.question_text}</p>
+                                <p className="font-medium">{question.question_text_ar}</p>
                                 {question.question_text_ar && (
                                   <p className="text-sm text-muted-foreground" dir="rtl">
                                     {question.question_text_ar}
