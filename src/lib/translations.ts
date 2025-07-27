@@ -1,79 +1,8 @@
-export type Language = 'en' | 'ar';
+export type Language = 'ar' | 'en';
 
 export const translations = {
-  en: {
-    // Common UI
-    search: 'Search',
-    filters: 'Filters',
-    actions: 'Actions',
-    bulkActions: 'Bulk Actions',
-    cancel: 'Cancel',
-    save: 'Save',
-    edit: 'Edit',
-    delete: 'Delete',
-    create: 'Create',
-    update: 'Update',
-    loading: 'Loading...',
-    noResults: 'No results found',
-    selectAll: 'Select all',
-    selected: 'selected',
-    
-    // Campaigns
-    campaigns: 'Campaigns',
-    campaign: 'Campaign',
-    campaignManagement: 'Campaign Management',
-    campaignManagementDesc: 'Create and manage innovation campaigns',
-    createCampaign: 'Create Campaign',
-    editCampaign: 'Edit Campaign',
-    archiveCampaigns: 'Archive Selected',
-    exportCampaigns: 'Export Selected',
-    deleteCampaigns: 'Delete Selected',
-    
-    // Campaign fields
-    title: 'Title',
-    description: 'Description',
-    status: 'Status',
-    startDate: 'Start Date',
-    endDate: 'End Date',
-    theme: 'Theme',
-    budget: 'Budget',
-    targetParticipants: 'Target Participants',
-    targetIdeas: 'Target Ideas',
-    period: 'Period',
-    target: 'Target',
-    participants: 'participants',
-    
-    // Status values
-    statusPlanning: 'Planning',
-    statusActive: 'Active',
-    statusCompleted: 'Completed',
-    statusArchived: 'Archived',
-    statusOnHold: 'On Hold',
-    
-    // Theme values
-    themeDigitalTransformation: 'Digital Transformation',
-    themeSustainability: 'Sustainability',
-    themeSmartCities: 'Smart Cities',
-    themeHealthcare: 'Healthcare Innovation',
-    themeEducation: 'Education Technology',
-    themeFintech: 'Financial Technology',
-    
-    // Filters
-    filterByStatus: 'Filter by Status',
-    filterByTheme: 'Filter by Theme',
-    clearFilters: 'Clear Filters',
-    
-    // Layout and UI
-    items: 'Items',
-    
-    // Actions
-    viewDetails: 'View Details',
-    editDetails: 'Edit Details',
-    manageChallenges: 'Manage Challenges',
-    viewParticipants: 'View Participants',
-  },
   ar: {
-    // Common UI
+    // Common UI - Arabic as primary
     search: 'بحث',
     filters: 'المرشحات',
     actions: 'الإجراءات',
@@ -142,6 +71,77 @@ export const translations = {
     editDetails: 'تعديل التفاصيل',
     manageChallenges: 'إدارة التحديات',
     viewParticipants: 'عرض المشاركين',
+  },
+  en: {
+    // Common UI - English as secondary/fallback
+    search: 'Search',
+    filters: 'Filters',
+    actions: 'Actions',
+    bulkActions: 'Bulk Actions',
+    cancel: 'Cancel',
+    save: 'Save',
+    edit: 'Edit',
+    delete: 'Delete',
+    create: 'Create',
+    update: 'Update',
+    loading: 'Loading...',
+    noResults: 'No results found',
+    selectAll: 'Select all',
+    selected: 'selected',
+    
+    // Campaigns
+    campaigns: 'Campaigns',
+    campaign: 'Campaign',
+    campaignManagement: 'Campaign Management',
+    campaignManagementDesc: 'Create and manage innovation campaigns',
+    createCampaign: 'Create Campaign',
+    editCampaign: 'Edit Campaign',
+    archiveCampaigns: 'Archive Selected',
+    exportCampaigns: 'Export Selected',
+    deleteCampaigns: 'Delete Selected',
+    
+    // Campaign fields
+    title: 'Title',
+    description: 'Description',
+    status: 'Status',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+    theme: 'Theme',
+    budget: 'Budget',
+    targetParticipants: 'Target Participants',
+    targetIdeas: 'Target Ideas',
+    period: 'Period',
+    target: 'Target',
+    participants: 'participants',
+    
+    // Status values
+    statusPlanning: 'Planning',
+    statusActive: 'Active',
+    statusCompleted: 'Completed',
+    statusArchived: 'Archived',
+    statusOnHold: 'On Hold',
+    
+    // Theme values
+    themeDigitalTransformation: 'Digital Transformation',
+    themeSustainability: 'Sustainability',
+    themeSmartCities: 'Smart Cities',
+    themeHealthcare: 'Healthcare Innovation',
+    themeEducation: 'Education Technology',
+    themeFintech: 'Financial Technology',
+    
+    // Filters
+    filterByStatus: 'Filter by Status',
+    filterByTheme: 'Filter by Theme',
+    clearFilters: 'Clear Filters',
+    
+    // Layout and UI
+    items: 'Items',
+    
+    // Actions
+    viewDetails: 'View Details',
+    editDetails: 'Edit Details',
+    manageChallenges: 'Manage Challenges',
+    viewParticipants: 'View Participants',
   }
 };
 

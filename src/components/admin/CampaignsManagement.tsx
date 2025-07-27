@@ -415,8 +415,8 @@ export function CampaignsManagement() {
       <DataCard
         key={campaign.id}
         item={campaign}
-        title={getDynamicText(campaign.title, campaign.title_ar)}
-        description={getDynamicText(campaign.description || '', campaign.description_ar)}
+        title={getDynamicText(campaign.title_ar || campaign.title, campaign.title)}
+        description={getDynamicText(campaign.description_ar || campaign.description || '', campaign.description)}
         selected={bulkMode ? selectedItems.includes(campaign.id) : false}
         onSelect={bulkMode ? (selected) => handleSelectItem(campaign.id, selected) : undefined}
         badges={[
@@ -466,7 +466,7 @@ export function CampaignsManagement() {
                 <AlertDialogHeader>
                   <AlertDialogTitle>{t('delete')} {t('campaign')}</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Are you sure you want to delete "{getDynamicText(campaign.title, campaign.title_ar)}"? This action cannot be undone.
+                    Are you sure you want to delete "{getDynamicText(campaign.title_ar || campaign.title, campaign.title)}"? This action cannot be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

@@ -1,7 +1,7 @@
 import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
 
 type Direction = 'ltr' | 'rtl';
-type Language = 'en' | 'ar';
+type Language = 'ar' | 'en';  // Arabic first
 
 interface DirectionConfig {
   direction: Direction;
@@ -19,8 +19,8 @@ interface DirectionContextType {
 }
 
 const defaultConfig: DirectionConfig = {
-  direction: 'ltr',
-  language: 'en',
+  direction: 'rtl',  // Arabic as default
+  language: 'ar',    // Arabic as default
   autoDetect: true
 };
 
@@ -64,8 +64,10 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
       document.documentElement.lang = savedLanguage;
     } else if (defaultConfig.autoDetect) {
       const browserLang = navigator.language.split('-')[0] as Language;
-      if (RTL_LANGUAGES.includes(browserLang)) {
-        setLanguage(browserLang);
+      if (browserLang === 'en') {
+        setLanguage(browserLang);  // Only switch to English if explicitly detected
+      } else {
+        setLanguage('ar');  // Default to Arabic for all other cases
       }
     }
   }, []);

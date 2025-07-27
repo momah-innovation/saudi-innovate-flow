@@ -15,7 +15,7 @@ export function useTranslation() {
     }
     
     if (typeof value !== 'string') {
-      // Fallback to English if translation not found
+      // Fallback to English if Arabic translation not found
       value = translations.en;
       for (const k of keys) {
         value = value?.[k];
@@ -29,11 +29,11 @@ export function useTranslation() {
     return params ? interpolate(value, params) : value;
   };
 
-  const getDynamicText = (textEn: string, textAr?: string | null): string => {
-    if (currentLang === 'ar' && textAr) {
-      return textAr;
+  const getDynamicText = (textAr: string, textEn?: string | null): string => {
+    if (currentLang === 'en' && textEn) {
+      return textEn;
     }
-    return textEn;
+    return textAr;
   };
 
   const getStatusText = (status: string): string => {
