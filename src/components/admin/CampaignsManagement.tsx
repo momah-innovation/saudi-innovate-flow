@@ -13,7 +13,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { StandardPageLayout, BulkAction } from "@/components/layout/StandardPageLayout";
+import { ViewLayouts } from "@/components/ui/view-layouts";
 import { DataCard } from "@/components/ui/data-card";
 import { useTranslation } from "@/hooks/useTranslation";
 import { 
@@ -63,9 +63,22 @@ interface Campaign {
   created_at?: string;
 }
 
-export function CampaignsManagement() {
+interface CampaignsManagementProps {
+  viewMode?: 'cards' | 'list' | 'grid';
+  searchTerm?: string;
+}
+
+export function CampaignsManagement({ 
+  viewMode = 'cards', 
+  searchTerm: externalSearchTerm = '' 
+}: CampaignsManagementProps = {}) {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(externalSearchTerm);
+  
+  // Update internal search term when external prop changes
+  useEffect(() => {
+    setSearchTerm(externalSearchTerm);
+  }, [externalSearchTerm]);
   const [statusFilter, setStatusFilter] = useState("all");
   const [themeFilter, setThemeFilter] = useState("all");
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -356,12 +369,12 @@ export function CampaignsManagement() {
   };
 
   // Bulk actions - More specific to campaigns
-  const bulkActions: BulkAction[] = [
+  const bulkActions = [
     {
       id: 'archive',
       label: t('archiveCampaigns'),
       icon: <Archive className="w-4 h-4" />,
-      onClick: (ids) => {
+      onClick: (ids: string[]) => {
         console.log('Archive campaigns:', ids);
         // Handle bulk archive
       },
@@ -371,7 +384,7 @@ export function CampaignsManagement() {
       id: 'export',
       label: t('exportCampaigns'),
       icon: <Download className="w-4 h-4" />,
-      onClick: (ids) => {
+      onClick: (ids: string[]) => {
         console.log('Export campaigns:', ids);
         // Handle bulk export
       },
@@ -381,7 +394,7 @@ export function CampaignsManagement() {
       id: 'delete',
       label: t('deleteCampaigns'),
       icon: <Trash2 className="w-4 h-4" />,
-      onClick: (ids) => {
+      onClick: (ids: string[]) => {
         if (confirm(`Delete ${ids.length} selected campaigns?`)) {
           ids.forEach(id => handleDelete(id));
           setSelectedItems([]);
@@ -496,85 +509,10 @@ export function CampaignsManagement() {
 
   return (
     <>
-      <StandardPageLayout
-        title={t('campaignManagement')}
-        description={t('campaignManagementDesc')}
-        itemCount={filteredCampaigns.length}
-        
-        // Add button
-        addButton={{
-          label: t('createCampaign'),
-          onClick: () => {
-            resetForm();
-            setEditingCampaign(null);
-            setShowAddDialog(true);
-          }
-        }}
-        
-        // Layout options
-        supportedLayouts={['cards', 'list', 'grid']}
-        defaultLayout="cards"
-        
-        // Search and filters
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        filters={[
-          {
-            id: 'status',
-            label: t('status'),
-            type: 'select' as const,
-            options: statusOptions,
-            placeholder: t('filterByStatus'),
-            value: statusFilter,
-            onChange: (value: string) => setStatusFilter(value)
-          },
-          {
-            id: 'theme',
-            label: t('theme'),
-            type: 'select' as const,
-            options: themeOptions,
-            placeholder: t('filterByTheme'),
-            value: themeFilter,
-            onChange: (value: string) => setThemeFilter(value)
-          }
-        ]}
-        hasActiveFilters={hasActiveFilters}
-        onClearFilters={clearFilters}
-        // Bulk actions
-        selectedItems={selectedItems}
-        onSelectAll={handleSelectAll}
-        onSelectItem={handleSelectItem}
-        bulkActions={bulkActions}
-        totalItems={filteredCampaigns.length}
-        bulkMode={bulkMode}
-        onToggleBulkMode={() => {
-          setBulkMode(!bulkMode);
-          if (bulkMode) {
-            setSelectedItems([]); // Clear selections when exiting bulk mode
-          }
-        }}
-        
-        // Additional header actions
-        headerActions={
-          <div className="flex gap-2">
-            <Select onValueChange={(value) => {
-              console.log('Export type:', value);
-              // Handle export based on value (csv, excel, pdf)
-            }}>
-              <SelectTrigger className="w-32">
-                <SelectValue placeholder="Export" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="csv">Export CSV</SelectItem>
-                <SelectItem value="excel">Export Excel</SelectItem>
-                <SelectItem value="pdf">Export PDF</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        }
-      >
+      {/* Content only - header is handled by PageLayout */}
+      <ViewLayouts viewMode={viewMode}>
         {renderCampaigns()}
-      </StandardPageLayout>
+      </ViewLayouts>
 
       {/* Form Dialog - keeping existing implementation */}
       {/* ... existing form dialog code would go here ... */}

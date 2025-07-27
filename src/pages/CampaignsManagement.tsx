@@ -94,7 +94,7 @@ export default function CampaignsManagementPage() {
         spacing="md"
         maxWidth="full"
       >
-        <CampaignsManagement />
+        <CampaignsManagement viewMode={viewMode} searchTerm={searchValue} />
       </PageLayout>
     </AppShell>
   );
