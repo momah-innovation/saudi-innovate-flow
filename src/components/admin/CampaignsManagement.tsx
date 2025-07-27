@@ -533,10 +533,18 @@ export function CampaignsManagement() {
         
         // Additional header actions
         headerActions={
-          <Button variant="outline" size="sm">
-            <Download className="w-4 h-4 mr-2" />
-            Export All
-          </Button>
+          <div className="flex gap-2">
+            <Select>
+              <SelectTrigger className="w-32">
+                <SelectValue placeholder="Export" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="csv">Export CSV</SelectItem>
+                <SelectItem value="excel">Export Excel</SelectItem>
+                <SelectItem value="pdf">Export PDF</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         }
       >
         {renderCampaigns()}

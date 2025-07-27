@@ -167,36 +167,40 @@ export function StandardPageLayout({
       
       {/* Search and Filters */}
       {(showSearch || showFilters) && (
-        <SearchAndFilters
-          searchTerm={searchTerm}
-          onSearchChange={onSearchChange}
-          filtersOpen={filtersOpen}
-          onFiltersOpenChange={setFiltersOpen}
-          hasActiveFilters={hasActiveFilters}
-          onClearFilters={onClearFilters}
-          rightContent={quickFilters}
-        >
-          {filters.map((filter) => (
-            <div key={filter.id} className="space-y-2">
-              <label className="text-sm font-medium">{filter.label}</label>
-              {/* Filter implementation would go here based on filter.type */}
-              <div className="text-xs text-muted-foreground">
-                {filter.type} filter - {filter.placeholder}
+        <div className="bg-card border rounded-lg p-4">
+          <SearchAndFilters
+            searchTerm={searchTerm}
+            onSearchChange={onSearchChange}
+            filtersOpen={filtersOpen}
+            onFiltersOpenChange={setFiltersOpen}
+            hasActiveFilters={hasActiveFilters}
+            onClearFilters={onClearFilters}
+            rightContent={quickFilters}
+          >
+            {filters.map((filter) => (
+              <div key={filter.id} className="space-y-2">
+                <label className="text-sm font-medium">{filter.label}</label>
+                {/* Filter implementation would go here based on filter.type */}
+                <div className="text-xs text-muted-foreground">
+                  {filter.type} filter - {filter.placeholder}
+                </div>
               </div>
-            </div>
-          ))}
-        </SearchAndFilters>
+            ))}
+          </SearchAndFilters>
+        </div>
       )}
       
       {/* Bulk Actions */}
       {showBulkActions && (
-        <BulkActions
-          selectedItems={selectedItems}
-          onSelectAll={onSelectAll || (() => {})}
-          onSelectItem={onSelectItem || (() => {})}
-          totalItems={totalItems}
-          actions={bulkActions}
-        />
+        <div className="bg-card border rounded-lg p-3">
+          <BulkActions
+            selectedItems={selectedItems}
+            onSelectAll={onSelectAll || (() => {})}
+            onSelectItem={onSelectItem || (() => {})}
+            totalItems={totalItems}
+            actions={bulkActions}
+          />
+        </div>
       )}
       
       {/* Content Area */}

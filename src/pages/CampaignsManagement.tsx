@@ -11,10 +11,6 @@ export default function CampaignsManagementPage() {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <PageContainer maxWidth="full" padding="lg">
-        <PageHeader 
-          title="Campaigns Management" 
-          description="Manage innovation campaigns and initiatives" 
-        />
         <Section>
           <ContentArea>
             <CampaignsManagement />
