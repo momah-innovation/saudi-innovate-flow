@@ -28,10 +28,10 @@ export function Section({
 }: SectionProps) {
   const spacingClasses = {
     none: '',
-    sm: 'py-4',
-    md: 'py-6',
-    lg: 'py-8',
-    xl: 'py-12'
+    sm: 'py-2',
+    md: 'py-3',
+    lg: 'py-4',
+    xl: 'py-6'
   };
 
   const backgroundClasses = {

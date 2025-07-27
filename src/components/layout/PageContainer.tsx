@@ -34,9 +34,9 @@ export function PageContainer({
 
   const paddingClasses = {
     none: '',
-    sm: 'p-4',
-    md: 'p-6',
-    lg: 'p-6 lg:p-8'
+    sm: 'p-2',
+    md: 'p-4',
+    lg: 'p-4 lg:p-6'
   };
 
   const backgroundClasses = {
