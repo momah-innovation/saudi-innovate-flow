@@ -1,6 +1,8 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Header } from './Header';
-import { PageContainer } from './PageContainer';
+import { AppSidebar } from './Sidebar';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb';
 
 interface AdminLayoutProps {
@@ -10,48 +12,129 @@ interface AdminLayoutProps {
 }
 
 /**
- * AdminLayout - Main layout for admin pages
- * Provides consistent structure with header and content area
+ * AdminLayout - Main layout for admin pages with collapsible sidebar
+ * Provides consistent structure with header, sidebar, and content area
  */
 export function AdminLayout({ children, title, breadcrumbs }: AdminLayoutProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState('dashboard');
+
+  // Update active tab based on current route
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === '/') {
+      setActiveTab('dashboard');
+    } else if (path.includes('/admin/campaigns')) {
+      setActiveTab('campaigns');
+    } else if (path.includes('/admin/events')) {
+      setActiveTab('events');
+    } else if (path.includes('/admin/stakeholders')) {
+      setActiveTab('stakeholders');
+    } else if (path.includes('/admin/evaluations')) {
+      setActiveTab('evaluations');
+    } else if (path.includes('/admin/users')) {
+      setActiveTab('user-management');
+    } else if (path.includes('/admin/focus-questions')) {
+      setActiveTab('focus-questions');
+    } else if (path.includes('/admin/partners')) {
+      setActiveTab('partners');
+    } else if (path.includes('/admin/sectors')) {
+      setActiveTab('sectors');
+    } else if (path.includes('/admin/organizational-structure')) {
+      setActiveTab('organizational-structure');
+    } else if (path.includes('/admin/expert-assignments')) {
+      setActiveTab('expert-assignments');
+    } else if (path.includes('/admin/system-settings')) {
+      setActiveTab('system-settings');
+    } else if (path.includes('/admin/system-documentation')) {
+      setActiveTab('system-documentation');
+    } else if (path.includes('/settings')) {
+      setActiveTab('settings');
+    }
+  }, [location.pathname]);
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    
+    // Navigate to appropriate route
+    if (tab === 'dashboard') {
+      navigate('/');
+    } else if (tab === 'campaigns') {
+      navigate('/admin/campaigns');
+    } else if (tab === 'events') {
+      navigate('/admin/events');
+    } else if (tab === 'stakeholders') {
+      navigate('/admin/stakeholders');
+    } else if (tab === 'evaluations') {
+      navigate('/admin/evaluations');
+    } else if (tab === 'user-management') {
+      navigate('/admin/users');
+    } else if (tab === 'focus-questions') {
+      navigate('/admin/focus-questions');
+    } else if (tab === 'partners') {
+      navigate('/admin/partners');
+    } else if (tab === 'sectors') {
+      navigate('/admin/sectors');
+    } else if (tab === 'organizational-structure') {
+      navigate('/admin/organizational-structure');
+    } else if (tab === 'expert-assignments') {
+      navigate('/admin/expert-assignments');
+    } else if (tab === 'system-settings') {
+      navigate('/admin/system-settings');
+    } else if (tab === 'system-documentation') {
+      navigate('/admin/system-documentation');
+    } else if (tab === 'settings') {
+      navigate('/settings');
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col w-full bg-background">
-      {/* Global Header */}
-      <Header />
-      
-      {/* Main Content Area */}
-      <main className="flex-1 overflow-hidden">
-        {/* Breadcrumb Navigation */}
-        {breadcrumbs && breadcrumbs.length > 0 && (
-          <div className="border-b bg-muted/20 px-6 py-3">
-            <Breadcrumb>
-              <BreadcrumbList>
-                {breadcrumbs.map((item, index) => (
-                  <BreadcrumbItem key={index}>
-                    {index < breadcrumbs.length - 1 ? (
-                      <>
-                        {item.href ? (
-                          <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
-                        ) : (
-                          <span>{item.label}</span>
-                        )}
-                        <BreadcrumbSeparator />
-                      </>
-                    ) : (
-                      <BreadcrumbPage>{item.label}</BreadcrumbPage>
-                    )}
-                  </BreadcrumbItem>
-                ))}
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-        )}
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
+        {/* Collapsible Sidebar */}
+        <AppSidebar activeTab={activeTab} onTabChange={handleTabChange} />
         
-        {/* Page Content */}
-        <PageContainer>
-          {children}
-        </PageContainer>
-      </main>
-    </div>
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col">
+          {/* Global Header with Sidebar Trigger */}
+          <div className="h-12 flex items-center border-b bg-background">
+            <SidebarTrigger className="ml-2" />
+            <Header />
+          </div>
+          
+          {/* Breadcrumb Navigation */}
+          {breadcrumbs && breadcrumbs.length > 0 && (
+            <div className="border-b bg-muted/20 px-6 py-3">
+              <Breadcrumb>
+                <BreadcrumbList>
+                  {breadcrumbs.map((item, index) => (
+                    <BreadcrumbItem key={index}>
+                      {index < breadcrumbs.length - 1 ? (
+                        <>
+                          {item.href ? (
+                            <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
+                          ) : (
+                            <span>{item.label}</span>
+                          )}
+                          <BreadcrumbSeparator />
+                        </>
+                      ) : (
+                        <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                      )}
+                    </BreadcrumbItem>
+                  ))}
+                </BreadcrumbList>
+              </Breadcrumb>
+            </div>
+          )}
+          
+          {/* Page Content */}
+          <main className="flex-1 overflow-auto">
+            {children}
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
   );
 }
