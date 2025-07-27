@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { DataCard } from "@/components/ui/data-card";
+import { MultiStepForm } from "@/components/ui/multi-step-form";
 import { useTranslation } from "@/hooks/useTranslation";
 import { 
   Plus, 
@@ -511,6 +512,364 @@ export function CampaignsManagement({
 
   const hasActiveFilters = searchTerm.length > 0 || (statusFilter !== 'all' && statusFilter.length > 0) || (themeFilter !== 'all' && themeFilter.length > 0);
 
+  // Wizard Steps Configuration
+  const createWizardSteps = () => [
+    {
+      id: 'basic-info',
+      title: t('basicInformation'),
+      description: t('campaignBasicInfoDesc'),
+      content: (
+        <div className="space-y-6">
+          {/* Basic Information */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="title">{t('title')} (EN)</Label>
+              <Input
+                id="title"
+                value={formData.title}
+                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                placeholder="Enter campaign title in English"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="title_ar">{t('title')} (AR)</Label>
+              <Input
+                id="title_ar"
+                value={formData.title_ar}
+                onChange={(e) => setFormData(prev => ({ ...prev, title_ar: e.target.value }))}
+                placeholder="أدخل عنوان الحملة بالعربية"
+                dir="rtl"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="description">{t('description')} (EN)</Label>
+              <Textarea
+                id="description"
+                value={formData.description}
+                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                placeholder="Enter campaign description in English"
+                rows={3}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="description_ar">{t('description')} (AR)</Label>
+              <Textarea
+                id="description_ar"
+                value={formData.description_ar}
+                onChange={(e) => setFormData(prev => ({ ...prev, description_ar: e.target.value }))}
+                placeholder="أدخل وصف الحملة بالعربية"
+                dir="rtl"
+                rows={3}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="status">{t('status')}</Label>
+              <Select
+                value={formData.status}
+                onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="planning">{getStatusText('planning')}</SelectItem>
+                  <SelectItem value="active">{getStatusText('active')}</SelectItem>
+                  <SelectItem value="completed">{getStatusText('completed')}</SelectItem>
+                  <SelectItem value="archived">{getStatusText('archived')}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="theme">{t('theme')}</Label>
+              <Select
+                value={formData.theme}
+                onValueChange={(value) => setFormData(prev => ({ ...prev, theme: value }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select theme" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="digital_transformation">{getThemeText('digital_transformation')}</SelectItem>
+                  <SelectItem value="sustainability">{getThemeText('sustainability')}</SelectItem>
+                  <SelectItem value="smart_cities">{getThemeText('smart_cities')}</SelectItem>
+                  <SelectItem value="healthcare">{getThemeText('healthcare')}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+      ),
+      validation: () => {
+        return formData.title.length > 0 && formData.title_ar.length > 0;
+      }
+    },
+    {
+      id: 'timeline-targets',
+      title: t('timelineAndTargets'),
+      description: t('campaignTimelineTargetsDesc'),
+      content: (
+        <div className="space-y-6">
+          {/* Timeline */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="start_date">{t('startDate')}</Label>
+              <Input
+                id="start_date"
+                type="date"
+                value={formData.start_date}
+                onChange={(e) => setFormData(prev => ({ ...prev, start_date: e.target.value }))}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="end_date">{t('endDate')}</Label>
+              <Input
+                id="end_date"
+                type="date"
+                value={formData.end_date}
+                onChange={(e) => setFormData(prev => ({ ...prev, end_date: e.target.value }))}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="registration_deadline">{t('registrationDeadline')}</Label>
+              <Input
+                id="registration_deadline"
+                type="date"
+                value={formData.registration_deadline}
+                onChange={(e) => setFormData(prev => ({ ...prev, registration_deadline: e.target.value }))}
+              />
+            </div>
+          </div>
+
+          {/* Targets */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="target_participants">{t('targetParticipants')}</Label>
+              <Input
+                id="target_participants"
+                type="number"
+                value={formData.target_participants}
+                onChange={(e) => setFormData(prev => ({ ...prev, target_participants: e.target.value }))}
+                placeholder="Enter target number of participants"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="target_ideas">{t('targetIdeas')}</Label>
+              <Input
+                id="target_ideas"
+                type="number"
+                value={formData.target_ideas}
+                onChange={(e) => setFormData(prev => ({ ...prev, target_ideas: e.target.value }))}
+                placeholder="Enter target number of ideas"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="budget">{t('budget')}</Label>
+              <Input
+                id="budget"
+                type="number"
+                value={formData.budget}
+                onChange={(e) => setFormData(prev => ({ ...prev, budget: e.target.value }))}
+                placeholder="Enter campaign budget"
+              />
+            </div>
+          </div>
+
+          {/* Success Metrics */}
+          <div className="space-y-2">
+            <Label htmlFor="success_metrics">{t('successMetrics')}</Label>
+            <Textarea
+              id="success_metrics"
+              value={formData.success_metrics}
+              onChange={(e) => setFormData(prev => ({ ...prev, success_metrics: e.target.value }))}
+              placeholder="Define success metrics and KPIs"
+              rows={3}
+            />
+          </div>
+        </div>
+      ),
+      validation: () => {
+        return formData.start_date.length > 0 && formData.end_date.length > 0;
+      }
+    },
+    {
+      id: 'organization',
+      title: t('organizationalAlignment'),
+      description: t('campaignOrgAlignmentDesc'),
+      content: (
+        <div className="space-y-6">
+          {/* Campaign Manager */}
+          <div className="space-y-2">
+            <Label>{t('campaignManager')}</Label>
+            <Popover open={openCampaignManager} onOpenChange={setOpenCampaignManager}>
+              <PopoverTrigger asChild>
+                <Button variant="outline" role="combobox" className="w-full justify-between">
+                  {formData.campaign_manager_id 
+                    ? campaignManagers.find(m => m.id === formData.campaign_manager_id)?.name || "Select manager"
+                    : "Select campaign manager"
+                  }
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0">
+                <Command>
+                  <CommandInput 
+                    placeholder="Search managers..." 
+                    value={campaignManagerSearch}
+                    onValueChange={setCampaignManagerSearch}
+                  />
+                  <CommandEmpty>No manager found.</CommandEmpty>
+                  <CommandList>
+                    <CommandGroup>
+                      {campaignManagers
+                        .filter(manager => 
+                          manager.name.toLowerCase().includes(campaignManagerSearch.toLowerCase()) ||
+                          manager.email.toLowerCase().includes(campaignManagerSearch.toLowerCase())
+                        )
+                        .map(manager => (
+                          <CommandItem
+                            key={manager.id}
+                            value={manager.id}
+                            onSelect={() => {
+                              setFormData(prev => ({ ...prev, campaign_manager_id: manager.id }));
+                              setOpenCampaignManager(false);
+                            }}
+                          >
+                            <Check className={`mr-2 h-4 w-4 ${formData.campaign_manager_id === manager.id ? "opacity-100" : "opacity-0"}`} />
+                            <div>
+                              <div className="font-medium">{manager.name}</div>
+                              <div className="text-sm text-muted-foreground">{manager.email} • {manager.position}</div>
+                            </div>
+                          </CommandItem>
+                        ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          {/* Organizational Links */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>{t('sector')}</Label>
+              <Popover open={openSector} onOpenChange={setOpenSector}>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" role="combobox" className="w-full justify-between">
+                    {formData.sector_id 
+                      ? sectors.find(s => s.id === formData.sector_id)?.name || "Select sector"
+                      : "Select sector"
+                    }
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0">
+                  <Command>
+                    <CommandInput placeholder="Search sectors..." />
+                    <CommandEmpty>No sector found.</CommandEmpty>
+                    <CommandList>
+                      <CommandGroup>
+                        {sectors.map(sector => (
+                          <CommandItem
+                            key={sector.id}
+                            value={sector.id}
+                            onSelect={() => {
+                              setFormData(prev => ({ ...prev, sector_id: sector.id }));
+                              setOpenSector(false);
+                            }}
+                          >
+                            <Check className={`mr-2 h-4 w-4 ${formData.sector_id === sector.id ? "opacity-100" : "opacity-0"}`} />
+                            {getDynamicText(sector.name_ar, sector.name)}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <div className="space-y-2">
+              <Label>{t('deputy')}</Label>
+              <Popover open={openDeputy} onOpenChange={setOpenDeputy}>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" role="combobox" className="w-full justify-between">
+                    {formData.deputy_id 
+                      ? deputies.find(d => d.id === formData.deputy_id)?.name || "Select deputy"
+                      : "Select deputy"
+                    }
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0">
+                  <Command>
+                    <CommandInput placeholder="Search deputies..." />
+                    <CommandEmpty>No deputy found.</CommandEmpty>
+                    <CommandList>
+                      <CommandGroup>
+                        {deputies.map(deputy => (
+                          <CommandItem
+                            key={deputy.id}
+                            value={deputy.id}
+                            onSelect={() => {
+                              setFormData(prev => ({ ...prev, deputy_id: deputy.id }));
+                              setOpenDeputy(false);
+                            }}
+                          >
+                            <Check className={`mr-2 h-4 w-4 ${formData.deputy_id === deputy.id ? "opacity-100" : "opacity-0"}`} />
+                            {getDynamicText(deputy.name_ar, deputy.name)}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+        </div>
+      ),
+      validation: () => {
+        return formData.campaign_manager_id.length > 0;
+      }
+    }
+  ];
+
+  const handleWizardComplete = async () => {
+    try {
+      // TODO: Implement save functionality
+      console.log('Save campaign:', formData);
+      
+      toast({
+        title: t('success'),
+        description: editingCampaign ? t('campaignUpdated') : t('campaignCreated'),
+      });
+      
+      onAddDialogChange?.(false);
+      resetForm();
+      fetchCampaigns();
+    } catch (error) {
+      console.error('Error saving campaign:', error);
+      toast({
+        title: t('error'),
+        description: "Failed to save campaign",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <>
       {/* Content only - header is handled by PageLayout */}
@@ -518,158 +877,20 @@ export function CampaignsManagement({
         {renderCampaigns()}
       </ViewLayouts>
 
-      {/* Campaign Form Dialog */}
-      <Dialog open={showAddDialog} onOpenChange={(open) => {
-        onAddDialogChange?.(open);
-        if (!open) {
+      {/* Campaign Form Wizard */}
+      <MultiStepForm
+        isOpen={showAddDialog}
+        onClose={() => {
+          onAddDialogChange?.(false);
           resetForm();
           setEditingCampaign(null);
-        }
-      }}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>
-              {editingCampaign ? t('editCampaign') : t('createCampaign')}
-            </DialogTitle>
-          </DialogHeader>
-          
-          <div className="space-y-6">
-            {/* Basic Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="title">{t('title')} (EN)</Label>
-                <Input
-                  id="title"
-                  value={formData.title}
-                  onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                  placeholder="Enter campaign title in English"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="title_ar">{t('title')} (AR)</Label>
-                <Input
-                  id="title_ar"
-                  value={formData.title_ar}
-                  onChange={(e) => setFormData(prev => ({ ...prev, title_ar: e.target.value }))}
-                  placeholder="أدخل عنوان الحملة بالعربية"
-                  dir="rtl"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="description">{t('description')} (EN)</Label>
-                <Textarea
-                  id="description"
-                  value={formData.description}
-                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                  placeholder="Enter campaign description in English"
-                  rows={3}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="description_ar">{t('description')} (AR)</Label>
-                <Textarea
-                  id="description_ar"
-                  value={formData.description_ar}
-                  onChange={(e) => setFormData(prev => ({ ...prev, description_ar: e.target.value }))}
-                  placeholder="أدخل وصف الحملة بالعربية"
-                  dir="rtl"
-                  rows={3}
-                />
-              </div>
-            </div>
-
-            {/* Campaign Details */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="status">{t('status')}</Label>
-                <Select
-                  value={formData.status}
-                  onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="planning">{getStatusText('planning')}</SelectItem>
-                    <SelectItem value="active">{getStatusText('active')}</SelectItem>
-                    <SelectItem value="completed">{getStatusText('completed')}</SelectItem>
-                    <SelectItem value="archived">{getStatusText('archived')}</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="start_date">{t('startDate')}</Label>
-                <Input
-                  id="start_date"
-                  type="date"
-                  value={formData.start_date}
-                  onChange={(e) => setFormData(prev => ({ ...prev, start_date: e.target.value }))}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="end_date">{t('endDate')}</Label>
-                <Input
-                  id="end_date"
-                  type="date"
-                  value={formData.end_date}
-                  onChange={(e) => setFormData(prev => ({ ...prev, end_date: e.target.value }))}
-                />
-              </div>
-            </div>
-
-            {/* Additional fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="target_participants">{t('targetParticipants')}</Label>
-                <Input
-                  id="target_participants"
-                  type="number"
-                  value={formData.target_participants}
-                  onChange={(e) => setFormData(prev => ({ ...prev, target_participants: e.target.value }))}
-                  placeholder="Enter target number of participants"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="budget">{t('budget')}</Label>
-                <Input
-                  id="budget"
-                  type="number"
-                  value={formData.budget}
-                  onChange={(e) => setFormData(prev => ({ ...prev, budget: e.target.value }))}
-                  placeholder="Enter campaign budget"
-                />
-              </div>
-            </div>
-
-            {/* Form Actions */}
-            <div className="flex justify-end gap-3 pt-4 border-t">
-              <Button 
-                variant="outline" 
-                onClick={() => onAddDialogChange?.(false)}
-              >
-                {t('cancel')}
-              </Button>
-              <Button 
-                onClick={async () => {
-                  // TODO: Implement save functionality
-                  console.log('Save campaign:', formData);
-                  onAddDialogChange?.(false);
-                }}
-              >
-                {editingCampaign ? t('update') : t('create')}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+        }}
+        title={editingCampaign ? t('editCampaign') : t('createCampaign')}
+        steps={createWizardSteps()}
+        onComplete={handleWizardComplete}
+        showProgress={true}
+        allowSkip={false}
+      />
     </>
   );
 }
