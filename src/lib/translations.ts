@@ -63,6 +63,19 @@ export const translations = {
     users: 'المستخدمون',
     team: 'الفريق',
     
+    // User Management specific
+    totalUsers: 'إجمالي المستخدمين',
+    activeUsers: 'المستخدمون النشطون',
+    pendingInvitations: 'الدعوات المعلقة',
+    expertUsers: 'المستخدمون الخبراء',
+    inviteUser: 'دعوة مستخدم',
+    manageUsersRolesPermissions: 'إدارة المستخدمين والأدوار والصلاحيات',
+    searchUsers: 'البحث في المستخدمين...',
+    fromLastMonth: 'من الشهر الماضي',
+    neverLoggedIn: 'لم يسجل دخول مطلقاً',
+    lastLogin: 'آخر تسجيل دخول',
+    department: 'القسم',
+    
     // Navigation Sections
     workspace: 'مساحة العمل',
     ideas: 'الأفكار',
@@ -150,7 +163,13 @@ export const translations = {
     
     // Filters
     filterByStatus: 'تصفية حسب الحالة',
+    filterByRole: 'تصفية حسب الدور',
     filterByTheme: 'تصفية حسب الموضوع',
+    allStatus: 'جميع الحالات',
+    allRoles: 'جميع الأدوار',
+    editProfile: 'تعديل الملف الشخصي',
+    manageRole: 'إدارة الدور',
+    sendInvitation: 'إرسال دعوة',
     clearFilters: 'مسح المرشحات',
     
     // Layout and UI
@@ -445,6 +464,19 @@ export const translations = {
     users: 'Users',
     team: 'Team',
     
+    // User Management specific
+    totalUsers: 'Total Users',
+    activeUsers: 'Active Users',
+    pendingInvitations: 'Pending Invitations',
+    expertUsers: 'Expert Users',
+    inviteUser: 'Invite User',
+    manageUsersRolesPermissions: 'Manage users, roles, and permissions',
+    searchUsers: 'Search users...',
+    fromLastMonth: 'from last month',
+    neverLoggedIn: 'Never logged in',
+    lastLogin: 'Last Login',
+    department: 'Department',
+    
     // Navigation Sections
     workspace: 'Workspace',
     ideas: 'Ideas',
@@ -532,7 +564,13 @@ export const translations = {
     
     // Filters
     filterByStatus: 'Filter by Status',
+    filterByRole: 'Filter by Role',
     filterByTheme: 'Filter by Theme',
+    allStatus: 'All Status',
+    allRoles: 'All Roles',
+    editProfile: 'Edit Profile',
+    manageRole: 'Manage Role',
+    sendInvitation: 'Send Invitation',
     clearFilters: 'Clear Filters',
     
     // Layout and UI
