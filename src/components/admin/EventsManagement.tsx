@@ -61,8 +61,6 @@ interface Event {
   created_at?: string;
   // Relationships
   sectors?: any[];
-  deputies?: any[];
-  departments?: any[];
   challenges?: any[];
   partners?: any[];
   stakeholders?: any[];
