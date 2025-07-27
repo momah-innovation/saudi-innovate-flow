@@ -95,6 +95,7 @@ export function CampaignsManagement() {
     target_ideas: "",
     budget: "",
     success_metrics: "",
+    campaign_manager_id: "",
     sector_ids: [] as string[],
     deputy_ids: [] as string[],
     department_ids: [] as string[],
@@ -110,6 +111,7 @@ export function CampaignsManagement() {
   const [stakeholders, setStakeholders] = useState<any[]>([]);
   const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
   const [selectedStakeholders, setSelectedStakeholders] = useState<string[]>([]);
+  const [campaignManagers, setCampaignManagers] = useState<any[]>([]);
 
   const { toast } = useToast();
 
@@ -143,13 +145,14 @@ export function CampaignsManagement() {
 
   const fetchRelatedData = async () => {
     try {
-      const [sectorsRes, deputiesRes, departmentsRes, challengesRes, partnersRes, stakeholdersRes] = await Promise.all([
+      const [sectorsRes, deputiesRes, departmentsRes, challengesRes, partnersRes, stakeholdersRes, managersRes] = await Promise.all([
         supabase.from('sectors').select('*'),
         supabase.from('deputies').select('*'),
         supabase.from('departments').select('*'),
         supabase.from('challenges').select('*'),
         supabase.from('partners').select('*'),
-        supabase.from('stakeholders').select('*')
+        supabase.from('stakeholders').select('*'),
+        supabase.from('profiles').select('id, name, email, position').eq('status', 'active')
       ]);
 
       setSectors(sectorsRes.data || []);
@@ -158,6 +161,7 @@ export function CampaignsManagement() {
       setChallenges(challengesRes.data || []);
       setPartners(partnersRes.data || []);
       setStakeholders(stakeholdersRes.data || []);
+      setCampaignManagers(managersRes.data || []);
     } catch (error) {
       console.error('Error fetching related data:', error);
     }
@@ -203,6 +207,7 @@ export function CampaignsManagement() {
       target_ideas: "",
       budget: "",
       success_metrics: "",
+      campaign_manager_id: "",
       sector_ids: [],
       deputy_ids: [],
       department_ids: [],
@@ -255,6 +260,7 @@ export function CampaignsManagement() {
         target_ideas: campaign.target_ideas?.toString() || "",
         budget: campaign.budget?.toString() || "",
         success_metrics: campaign.success_metrics || "",
+        campaign_manager_id: campaign.campaign_manager_id || "",
         // Load from linking tables, fallback to old single fields for backward compatibility
         sector_ids: sectorsRes.data?.map(s => s.sector_id) || ((campaign as any).sector_id ? [(campaign as any).sector_id] : []),
         deputy_ids: deputiesRes.data?.map(d => d.deputy_id) || ((campaign as any).deputy_id ? [(campaign as any).deputy_id] : []),
@@ -283,6 +289,7 @@ export function CampaignsManagement() {
         target_ideas: campaign.target_ideas?.toString() || "",
         budget: campaign.budget?.toString() || "",
         success_metrics: campaign.success_metrics || "",
+        campaign_manager_id: campaign.campaign_manager_id || "",
         sector_ids: [],
         deputy_ids: [],
         department_ids: [],
@@ -468,6 +475,7 @@ export function CampaignsManagement() {
         target_ideas: formData.target_ideas ? parseInt(formData.target_ideas) : null,
         budget: formData.budget ? parseFloat(formData.budget) : null,
         success_metrics: formData.success_metrics || null,
+        campaign_manager_id: formData.campaign_manager_id || null,
       };
 
       let campaignId: string;
@@ -674,6 +682,26 @@ export function CampaignsManagement() {
               <SelectItem value="cancelled">Cancelled</SelectItem>
             </SelectContent>
           </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="campaign_manager_id">Campaign Manager</Label>
+          <Select value={formData.campaign_manager_id} onValueChange={(value) => setFormData({ ...formData, campaign_manager_id: value })}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select campaign manager" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">None Selected</SelectItem>
+              {campaignManagers.map((manager) => (
+                <SelectItem key={manager.id} value={manager.id}>
+                  {manager.name} - {manager.position || 'No position'}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <p className="text-xs text-muted-foreground">
+            Person responsible for managing this campaign
+          </p>
         </div>
       </div>
     </div>
