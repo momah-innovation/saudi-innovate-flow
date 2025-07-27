@@ -101,16 +101,16 @@ export function AdminLayout({ children, title, breadcrumbs }: AdminLayoutProps) 
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col">
           {/* Global Header */}
-          <header className="h-14 flex items-center border-b bg-background shrink-0">
+          <header className="h-14 flex items-center border-b bg-background">
             <div className="flex-1 min-w-0 px-4">
-              <SidebarTrigger className="shrink-0 mr-4" />
               <Header />
             </div>
           </header>
           
           {/* Breadcrumb Navigation */}
           {breadcrumbs && breadcrumbs.length > 0 && (
-            <div className={cn("h-12 border-b bg-muted/20 px-6 flex items-center", isRTL && "text-right flex-row-reverse")}>
+            <div className={cn("h-12 border-b bg-muted/20 px-6 flex items-center gap-3", isRTL && "text-right flex-row-reverse")}>
+              <SidebarTrigger className="shrink-0" />
               <Breadcrumb>
                 <BreadcrumbList>
                   {breadcrumbs.map((item, index) => (

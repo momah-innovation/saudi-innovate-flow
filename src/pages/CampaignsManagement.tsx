@@ -7,8 +7,10 @@ export default function CampaignsManagementPage() {
   return (
     <AppLayout>
       <SimplePageLayout spacing="md">
-        <BreadcrumbNav activeTab="campaigns" />
-        <CampaignsManagement />
+        <div className="space-y-6">
+          <BreadcrumbNav activeTab="campaigns" />
+          <CampaignsManagement />
+        </div>
       </SimplePageLayout>
     </AppLayout>
   );
