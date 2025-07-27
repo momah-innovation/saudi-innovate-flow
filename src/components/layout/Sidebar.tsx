@@ -97,6 +97,7 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     
     // For users without specific roles, show basic innovator interface
     if (!userProfile || !userProfile.user_roles || userProfile.user_roles.length === 0) {
+      console.log('No user profile or roles found, showing innovator interface');
       return item.roles.includes("innovator");
     }
     
@@ -104,7 +105,10 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     if (userProfile?.innovator_profile) userRoles.push("innovator");
     if (userProfile?.expert_profile) userRoles.push("expert");
     if (hasRole("admin")) userRoles.push("admin");
+    if (hasRole("super_admin")) userRoles.push("admin"); // super_admin should see admin items
     if (hasRole("team_member")) userRoles.push("team");
+    
+    console.log('User roles:', userRoles, 'Item roles:', item.roles, 'Item:', item.label);
     
     return item.roles.some((role: string) => userRoles.includes(role));
   };
