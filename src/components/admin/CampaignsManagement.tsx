@@ -118,6 +118,9 @@ export function CampaignsManagement() {
   const [sectors, setSectors] = useState<any[]>([]);
   const [deputies, setDeputies] = useState<any[]>([]);
   const [departments, setDepartments] = useState<any[]>([]);
+  const [domains, setDomains] = useState<any[]>([]);
+  const [subDomains, setSubDomains] = useState<any[]>([]);
+  const [services, setServices] = useState<any[]>([]);
   const [challenges, setChallenges] = useState<any[]>([]);
   const [partners, setPartners] = useState<any[]>([]);
   const [stakeholders, setStakeholders] = useState<any[]>([]);
@@ -159,10 +162,13 @@ export function CampaignsManagement() {
 
   const fetchRelatedData = async () => {
     try {
-      const [sectorsRes, deputiesRes, departmentsRes, challengesRes, partnersRes, stakeholdersRes, managersRes] = await Promise.all([
+      const [sectorsRes, deputiesRes, departmentsRes, domainsRes, subDomainsRes, servicesRes, challengesRes, partnersRes, stakeholdersRes, managersRes] = await Promise.all([
         supabase.from('sectors').select('*'),
         supabase.from('deputies').select('*'),
         supabase.from('departments').select('*'),
+        supabase.from('domains').select('*'),
+        supabase.from('sub_domains').select('*'),
+        supabase.from('services').select('*'),
         supabase.from('challenges').select('*'),
         supabase.from('partners').select('*'),
         supabase.from('stakeholders').select('*'),
@@ -172,6 +178,9 @@ export function CampaignsManagement() {
       setSectors(sectorsRes.data || []);
       setDeputies(deputiesRes.data || []);
       setDepartments(departmentsRes.data || []);
+      setDomains(domainsRes.data || []);
+      setSubDomains(subDomainsRes.data || []);
+      setServices(servicesRes.data || []);
       setChallenges(challengesRes.data || []);
       setPartners(partnersRes.data || []);
       setStakeholders(stakeholdersRes.data || []);
