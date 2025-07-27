@@ -407,25 +407,36 @@ export function CampaignsManagement() {
       setStepErrors({ ...stepErrors, [currentStep]: errors });
       toast({
         title: "Validation Error",
-        description: errors.join(", "),
+        description: `Please fix the errors in step ${currentStep} before proceeding`,
         variant: "destructive",
       });
+      // Scroll to top of form to show errors
+      document.querySelector('.dialog-content')?.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
     setStepErrors({ ...stepErrors, [currentStep]: [] });
     if (currentStep < 5) {
       setCurrentStep(currentStep + 1);
+      // Success feedback for step completion
+      toast({
+        title: "Step Complete",
+        description: `Step ${currentStep} completed successfully`,
+      });
     }
   };
 
   const prevStep = () => {
     if (currentStep > 1) {
+      // Clear current step errors when going back
+      setStepErrors({ ...stepErrors, [currentStep]: [] });
       setCurrentStep(currentStep - 1);
     }
   };
 
   const handleSubmit = async () => {
+    console.log('Starting campaign submission...');
+    
     // Validate all steps
     const allErrors: string[] = [];
     for (let i = 1; i <= 5; i++) {
@@ -684,6 +695,11 @@ export function CampaignsManagement() {
         </div>
       )}
 
+      <div className="flex items-center gap-2 mb-4">
+        <Calendar className="h-5 w-5 text-primary" />
+        <h3 className="text-lg font-semibold">Campaign Timeline</h3>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-2">
           <Label htmlFor="start_date">Start Date *</Label>
@@ -694,6 +710,12 @@ export function CampaignsManagement() {
             onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
             className={stepErrors[2]?.includes("Start date is required") ? "border-destructive" : ""}
           />
+          {stepErrors[2]?.includes("Start date is required") && (
+            <p className="text-sm text-destructive flex items-center gap-1">
+              <AlertCircle className="h-3 w-3" />
+              Start date is required
+            </p>
+          )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="end_date">End Date *</Label>
@@ -704,6 +726,12 @@ export function CampaignsManagement() {
             onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
             className={stepErrors[2]?.includes("End date is required") || stepErrors[2]?.includes("End date must be after start date") ? "border-destructive" : ""}
           />
+          {(stepErrors[2]?.includes("End date is required") || stepErrors[2]?.includes("End date must be after start date")) && (
+            <p className="text-sm text-destructive flex items-center gap-1">
+              <AlertCircle className="h-3 w-3" />
+              {stepErrors[2]?.includes("End date is required") ? "End date is required" : "End date must be after start date"}
+            </p>
+          )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="registration_deadline">Registration Deadline</Label>
@@ -717,18 +745,13 @@ export function CampaignsManagement() {
           <p className="text-xs text-muted-foreground">
             When participants can register until
           </p>
+          {stepErrors[2]?.includes("Registration deadline must be before start date") && (
+            <p className="text-sm text-destructive flex items-center gap-1">
+              <AlertCircle className="h-3 w-3" />
+              Registration deadline must be before start date
+            </p>
+          )}
         </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="campaign_description">Additional Details</Label>
-        <Textarea
-          id="campaign_description"
-          value={formData.description || ""}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          placeholder="Add any additional details about timing, logistics, or special requirements"
-          className="min-h-[80px]"
-        />
       </div>
     </div>
   );
@@ -749,43 +772,75 @@ export function CampaignsManagement() {
         </div>
       )}
 
+      <div className="flex items-center gap-2 mb-4">
+        <Target className="h-5 w-5 text-primary" />
+        <h3 className="text-lg font-semibold">Goals & Metrics</h3>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-2">
           <Label htmlFor="target_participants">Target Participants</Label>
           <Input
             id="target_participants"
             type="number"
+            min="1"
             value={formData.target_participants}
             onChange={(e) => setFormData({ ...formData, target_participants: e.target.value })}
-            placeholder="Number of participants"
+            placeholder="100"
             className={stepErrors[5]?.includes("Target participants must be a positive number") ? "border-destructive" : ""}
           />
+          <p className="text-xs text-muted-foreground">
+            Expected number of participants
+          </p>
+          {stepErrors[5]?.includes("Target participants must be a positive number") && (
+            <p className="text-sm text-destructive flex items-center gap-1">
+              <AlertCircle className="h-3 w-3" />
+              Must be a positive number
+            </p>
+          )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="target_ideas">Target Ideas</Label>
           <Input
             id="target_ideas"
             type="number"
+            min="1"
             value={formData.target_ideas}
             onChange={(e) => setFormData({ ...formData, target_ideas: e.target.value })}
-            placeholder="Number of ideas"
+            placeholder="50"
             className={stepErrors[5]?.includes("Target ideas must be a positive number") ? "border-destructive" : ""}
           />
+          <p className="text-xs text-muted-foreground">
+            Expected number of ideas/submissions
+          </p>
+          {stepErrors[5]?.includes("Target ideas must be a positive number") && (
+            <p className="text-sm text-destructive flex items-center gap-1">
+              <AlertCircle className="h-3 w-3" />
+              Must be a positive number
+            </p>
+          )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="budget">Budget (SAR)</Label>
           <Input
             id="budget"
             type="number"
+            min="0"
             step="0.01"
             value={formData.budget}
             onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-            placeholder="0.00"
+            placeholder="10000.00"
             className={stepErrors[5]?.includes("Budget must be a positive number") ? "border-destructive" : ""}
           />
           <p className="text-xs text-muted-foreground">
             Total budget allocated for this campaign
           </p>
+          {stepErrors[5]?.includes("Budget must be a positive number") && (
+            <p className="text-sm text-destructive flex items-center gap-1">
+              <AlertCircle className="h-3 w-3" />
+              Must be a positive number
+            </p>
+          )}
         </div>
       </div>
 
