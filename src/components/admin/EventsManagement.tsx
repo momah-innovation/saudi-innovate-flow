@@ -118,6 +118,14 @@ export function EventsManagement() {
   const [selectedStakeholders, setSelectedStakeholders] = useState<string[]>([]);
   const [selectedFocusQuestions, setSelectedFocusQuestions] = useState<string[]>([]);
 
+  // Relationship link data
+  const [campaignChallengeLinks, setCampaignChallengeLinks] = useState<any[]>([]);
+  const [challengeSectorLinks, setChallengeSectorLinks] = useState<any[]>([]);
+  const [campaignPartnerLinks, setCampaignPartnerLinks] = useState<any[]>([]);
+  const [campaignStakeholderLinks, setCampaignStakeholderLinks] = useState<any[]>([]);
+  const [challengePartnerLinks, setChallengePartnerLinks] = useState<any[]>([]);
+  const [challengeStakeholderLinks, setChallengeStakeholderLinks] = useState<any[]>([]);
+
   const { toast } = useToast();
 
   // Event type and format options
@@ -175,13 +183,32 @@ export function EventsManagement() {
 
   const fetchRelatedData = async () => {
     try {
-      const [campaignsRes, challengesRes, sectorsRes, partnersRes, stakeholdersRes, focusQuestionsRes] = await Promise.all([
+      const [
+        campaignsRes, 
+        challengesRes, 
+        sectorsRes, 
+        partnersRes, 
+        stakeholdersRes, 
+        focusQuestionsRes,
+        campaignChallengeLinksRes,
+        challengeSectorLinksRes,
+        campaignPartnerLinksRes,
+        campaignStakeholderLinksRes,
+        challengePartnerLinksRes,
+        challengeStakeholderLinksRes
+      ] = await Promise.all([
         supabase.from('campaigns').select('*'),
         supabase.from('challenges').select('*'),
         supabase.from('sectors').select('*'),
         supabase.from('partners').select('*'),
         supabase.from('stakeholders').select('*'),
-        supabase.from('focus_questions').select('*')
+        supabase.from('focus_questions').select('*'),
+        supabase.from('campaign_challenge_links').select('*'),
+        supabase.from('campaign_sector_links').select('*'),
+        supabase.from('campaign_partner_links').select('*'),
+        supabase.from('campaign_stakeholder_links').select('*'),
+        supabase.from('challenge_partners').select('*'),
+        supabase.from('stakeholders').select('*') // Challenge stakeholders can be derived from general stakeholders
       ]);
 
       setCampaigns(campaignsRes.data || []);
@@ -190,6 +217,12 @@ export function EventsManagement() {
       setPartners(partnersRes.data || []);
       setStakeholders(stakeholdersRes.data || []);
       setFocusQuestions(focusQuestionsRes.data || []);
+      setCampaignChallengeLinks(campaignChallengeLinksRes.data || []);
+      setChallengeSectorLinks(challengeSectorLinksRes.data || []);
+      setCampaignPartnerLinks(campaignPartnerLinksRes.data || []);
+      setCampaignStakeholderLinks(campaignStakeholderLinksRes.data || []);
+      setChallengePartnerLinks(challengePartnerLinksRes.data || []);
+      setChallengeStakeholderLinks(challengeStakeholderLinksRes.data || []);
     } catch (error) {
       console.error('Error fetching related data:', error);
     }
@@ -733,7 +766,91 @@ export function EventsManagement() {
     </div>
   );
 
-  const renderOrganizationalStructure = () => (
+  // Filter data based on relationships
+  const getFilteredChallenges = () => {
+    if (!formData.campaign_id) return challenges;
+    // Filter challenges that are linked to the selected campaign
+    return challenges.filter(challenge => {
+      return campaignChallengeLinks.some(link => 
+        link.campaign_id === formData.campaign_id && link.challenge_id === challenge.id
+      );
+    });
+  };
+
+  const getFilteredSectors = () => {
+    if (!formData.challenge_id) return sectors;
+    // Filter sectors that are linked to the selected challenge
+    return sectors.filter(sector => {
+      return challengeSectorLinks.some(link => 
+        link.challenge_id === formData.challenge_id && link.sector_id === sector.id
+      );
+    });
+  };
+
+  const getFilteredPartners = () => {
+    const basePartners = partners.filter(partner => 
+      partner.name.toLowerCase().includes(partnerSearch.toLowerCase())
+    );
+    
+    if (!formData.campaign_id && !formData.challenge_id) return basePartners;
+    
+    // Filter partners based on campaign or challenge relationships
+    return basePartners.filter(partner => {
+      if (formData.campaign_id) {
+        return campaignPartnerLinks.some(link => 
+          link.campaign_id === formData.campaign_id && link.partner_id === partner.id
+        );
+      }
+      if (formData.challenge_id) {
+        return challengePartnerLinks.some(link => 
+          link.challenge_id === formData.challenge_id && link.partner_id === partner.id
+        );
+      }
+      return true;
+    });
+  };
+
+  const getFilteredStakeholders = () => {
+    const baseStakeholders = stakeholders.filter(stakeholder => 
+      stakeholder.name.toLowerCase().includes(stakeholderSearch.toLowerCase())
+    );
+    
+    if (!formData.campaign_id && !formData.challenge_id) return baseStakeholders;
+    
+    // Filter stakeholders based on campaign or challenge relationships
+    return baseStakeholders.filter(stakeholder => {
+      if (formData.campaign_id) {
+        return campaignStakeholderLinks.some(link => 
+          link.campaign_id === formData.campaign_id && link.stakeholder_id === stakeholder.id
+        );
+      }
+      if (formData.challenge_id) {
+        return challengeStakeholderLinks.some(link => 
+          link.challenge_id === formData.challenge_id && link.stakeholder_id === stakeholder.id
+        );
+      }
+      return true;
+    });
+  };
+
+  const getFilteredFocusQuestions = () => {
+    const baseFocusQuestions = focusQuestions.filter(question => 
+      question.question_text.toLowerCase().includes(focusQuestionSearch.toLowerCase())
+    );
+    
+    if (!formData.challenge_id) return baseFocusQuestions;
+    
+    // Filter focus questions that belong to the selected challenge
+    return baseFocusQuestions.filter(question => 
+      question.challenge_id === formData.challenge_id
+    );
+  };
+
+  const renderOrganizationalStructure = () => {
+    const filteredChallenges = getFilteredChallenges();
+    const filteredSectors = getFilteredSectors();
+
+    return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 mb-4">
         <Building className="h-5 w-5 text-primary" />
@@ -764,13 +881,13 @@ export function EventsManagement() {
                 <CommandList>
                   <CommandEmpty>No campaign found.</CommandEmpty>
                   <CommandGroup>
-                    <CommandItem
-                      value="none"
-                      onSelect={() => {
-                        setFormData({ ...formData, campaign_id: "" });
-                        setOpenCampaign(false);
-                      }}
-                    >
+                     <CommandItem
+                       value="none"
+                       onSelect={() => {
+                         setFormData({ ...formData, campaign_id: "", challenge_id: "", sector_id: "" });
+                         setOpenCampaign(false);
+                       }}
+                     >
                       <Check
                         className={`mr-2 h-4 w-4 ${
                           !formData.campaign_id ? "opacity-100" : "opacity-0"
@@ -778,167 +895,166 @@ export function EventsManagement() {
                       />
                       None
                     </CommandItem>
-                    {campaigns.map((campaign) => (
-                      <CommandItem
-                        key={campaign.id}
-                        value={campaign.title}
-                        onSelect={() => {
-                          setFormData({ ...formData, campaign_id: campaign.id });
-                          setOpenCampaign(false);
-                        }}
-                      >
-                        <Check
-                          className={`mr-2 h-4 w-4 ${
-                            formData.campaign_id === campaign.id ? "opacity-100" : "opacity-0"
-                          }`}
-                        />
-                        {campaign.title}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </PopoverContent>
-          </Popover>
-        </div>
+                     {campaigns.map((campaign) => (
+                       <CommandItem
+                         key={campaign.id}
+                         value={campaign.title}
+                         onSelect={() => {
+                           setFormData({ ...formData, campaign_id: campaign.id, challenge_id: "", sector_id: "" });
+                           setOpenCampaign(false);
+                         }}
+                       >
+                         <Check
+                           className={`mr-2 h-4 w-4 ${
+                             formData.campaign_id === campaign.id ? "opacity-100" : "opacity-0"
+                           }`}
+                         />
+                         {campaign.title}
+                       </CommandItem>
+                     ))}
+                   </CommandGroup>
+                 </CommandList>
+               </Command>
+             </PopoverContent>
+           </Popover>
+         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="challenge_id">Related Challenge</Label>
-          <Popover open={openChallenge} onOpenChange={setOpenChallenge}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={openChallenge}
-                className="w-full justify-between"
-              >
-                {formData.challenge_id 
-                  ? challenges.find(c => c.id === formData.challenge_id)?.title || "Select challenge..."
-                  : "Select challenge..."
-                }
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-full p-0">
-              <Command>
-                <CommandInput placeholder="Search challenges..." />
-                <CommandList>
-                  <CommandEmpty>No challenge found.</CommandEmpty>
-                  <CommandGroup>
-                    <CommandItem
-                      value="none"
-                      onSelect={() => {
-                        setFormData({ ...formData, challenge_id: "" });
-                        setOpenChallenge(false);
-                      }}
-                    >
-                      <Check
-                        className={`mr-2 h-4 w-4 ${
-                          !formData.challenge_id ? "opacity-100" : "opacity-0"
-                        }`}
-                      />
-                      None
-                    </CommandItem>
-                    {challenges.map((challenge) => (
-                      <CommandItem
-                        key={challenge.id}
-                        value={challenge.title}
-                        onSelect={() => {
-                          setFormData({ ...formData, challenge_id: challenge.id });
-                          setOpenChallenge(false);
-                        }}
-                      >
-                        <Check
-                          className={`mr-2 h-4 w-4 ${
-                            formData.challenge_id === challenge.id ? "opacity-100" : "opacity-0"
-                          }`}
-                        />
-                        {challenge.title}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </PopoverContent>
-          </Popover>
-        </div>
+         <div className="space-y-2">
+           <Label htmlFor="challenge_id">Related Challenge</Label>
+           <Popover open={openChallenge} onOpenChange={setOpenChallenge}>
+             <PopoverTrigger asChild>
+               <Button
+                 variant="outline"
+                 role="combobox"
+                 aria-expanded={openChallenge}
+                 className="w-full justify-between"
+                 disabled={formData.campaign_id && filteredChallenges.length === 0}
+               >
+                 {formData.challenge_id 
+                   ? challenges.find(c => c.id === formData.challenge_id)?.title || "Select challenge..."
+                   : filteredChallenges.length === 0 && formData.campaign_id
+                   ? "No challenges available"
+                   : "Select challenge..."
+                 }
+                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+               </Button>
+             </PopoverTrigger>
+             <PopoverContent className="w-full p-0">
+               <Command>
+                 <CommandInput placeholder="Search challenges..." />
+                 <CommandList>
+                   <CommandEmpty>No challenge found.</CommandEmpty>
+                   <CommandGroup>
+                     <CommandItem
+                       value="none"
+                       onSelect={() => {
+                         setFormData({ ...formData, challenge_id: "", sector_id: "" });
+                         setOpenChallenge(false);
+                       }}
+                     >
+                       <Check
+                         className={`mr-2 h-4 w-4 ${
+                           !formData.challenge_id ? "opacity-100" : "opacity-0"
+                         }`}
+                       />
+                       None
+                     </CommandItem>
+                     {filteredChallenges.map((challenge) => (
+                       <CommandItem
+                         key={challenge.id}
+                         value={challenge.title}
+                         onSelect={() => {
+                           setFormData({ ...formData, challenge_id: challenge.id, sector_id: "" });
+                           setOpenChallenge(false);
+                         }}
+                       >
+                         <Check
+                           className={`mr-2 h-4 w-4 ${
+                             formData.challenge_id === challenge.id ? "opacity-100" : "opacity-0"
+                           }`}
+                         />
+                         {challenge.title}
+                       </CommandItem>
+                     ))}
+                   </CommandGroup>
+                 </CommandList>
+               </Command>
+             </PopoverContent>
+           </Popover>
+         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="sector_id">Related Sector</Label>
-          <Popover open={openSector} onOpenChange={setOpenSector}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={openSector}
-                className="w-full justify-between"
-              >
-                {formData.sector_id 
-                  ? sectors.find(s => s.id === formData.sector_id)?.name || "Select sector..."
-                  : "Select sector..."
-                }
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-full p-0">
-              <Command>
-                <CommandInput placeholder="Search sectors..." />
-                <CommandList>
-                  <CommandEmpty>No sector found.</CommandEmpty>
-                  <CommandGroup>
-                    <CommandItem
-                      value="none"
-                      onSelect={() => {
-                        setFormData({ ...formData, sector_id: "" });
-                        setOpenSector(false);
-                      }}
-                    >
-                      <Check
-                        className={`mr-2 h-4 w-4 ${
-                          !formData.sector_id ? "opacity-100" : "opacity-0"
-                        }`}
-                      />
-                      None
-                    </CommandItem>
-                    {sectors.map((sector) => (
-                      <CommandItem
-                        key={sector.id}
-                        value={sector.name}
-                        onSelect={() => {
-                          setFormData({ ...formData, sector_id: sector.id });
-                          setOpenSector(false);
-                        }}
-                      >
-                        <Check
-                          className={`mr-2 h-4 w-4 ${
-                            formData.sector_id === sector.id ? "opacity-100" : "opacity-0"
-                          }`}
-                        />
-                        {sector.name}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </PopoverContent>
-          </Popover>
-        </div>
-      </div>
-    </div>
-  );
+         <div className="space-y-2">
+           <Label htmlFor="sector_id">Related Sector</Label>
+           <Popover open={openSector} onOpenChange={setOpenSector}>
+             <PopoverTrigger asChild>
+               <Button
+                 variant="outline"
+                 role="combobox"
+                 aria-expanded={openSector}
+                 className="w-full justify-between"
+                 disabled={formData.challenge_id && filteredSectors.length === 0}
+               >
+                 {formData.sector_id 
+                   ? sectors.find(s => s.id === formData.sector_id)?.name || "Select sector..."
+                   : filteredSectors.length === 0 && formData.challenge_id
+                   ? "No sectors available"
+                   : "Select sector..."
+                 }
+                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+               </Button>
+             </PopoverTrigger>
+             <PopoverContent className="w-full p-0">
+               <Command>
+                 <CommandInput placeholder="Search sectors..." />
+                 <CommandList>
+                   <CommandEmpty>No sector found.</CommandEmpty>
+                   <CommandGroup>
+                     <CommandItem
+                       value="none"
+                       onSelect={() => {
+                         setFormData({ ...formData, sector_id: "" });
+                         setOpenSector(false);
+                       }}
+                     >
+                       <Check
+                         className={`mr-2 h-4 w-4 ${
+                           !formData.sector_id ? "opacity-100" : "opacity-0"
+                         }`}
+                       />
+                       None
+                     </CommandItem>
+                     {filteredSectors.map((sector) => (
+                       <CommandItem
+                         key={sector.id}
+                         value={sector.name}
+                         onSelect={() => {
+                           setFormData({ ...formData, sector_id: sector.id });
+                           setOpenSector(false);
+                         }}
+                       >
+                         <Check
+                           className={`mr-2 h-4 w-4 ${
+                             formData.sector_id === sector.id ? "opacity-100" : "opacity-0"
+                           }`}
+                         />
+                         {sector.name}
+                       </CommandItem>
+                     ))}
+                   </CommandGroup>
+                 </CommandList>
+               </Command>
+             </PopoverContent>
+           </Popover>
+         </div>
+       </div>
+     </div>
+   );
+ };
 
   const renderPartnersStakeholders = () => {
-    const filteredPartners = partners.filter(partner => 
-      partner.name.toLowerCase().includes(partnerSearch.toLowerCase())
-    );
-
-    const filteredStakeholders = stakeholders.filter(stakeholder => 
-      stakeholder.name.toLowerCase().includes(stakeholderSearch.toLowerCase())
-    );
-
-    const filteredFocusQuestions = focusQuestions.filter(question => 
-      question.question_text.toLowerCase().includes(focusQuestionSearch.toLowerCase())
-    );
+    const filteredPartners = getFilteredPartners();
+    const filteredStakeholders = getFilteredStakeholders();
+    const filteredFocusQuestions = getFilteredFocusQuestions();
 
     return (
       <div className="space-y-6">
