@@ -868,6 +868,27 @@ export type Database = {
           },
         ]
       }
+      event_challenge_links: {
+        Row: {
+          challenge_id: string
+          created_at: string
+          event_id: string
+          id: string
+        }
+        Insert: {
+          challenge_id: string
+          created_at?: string
+          event_id: string
+          id?: string
+        }
+        Update: {
+          challenge_id?: string
+          created_at?: string
+          event_id?: string
+          id?: string
+        }
+        Relationships: []
+      }
       event_focus_question_links: {
         Row: {
           created_at: string
@@ -1104,11 +1125,14 @@ export type Database = {
           description_ar: string | null
           end_date: string | null
           end_time: string | null
+          event_category: string | null
           event_date: string
           event_manager_id: string | null
           event_type: string | null
+          event_visibility: string | null
           format: string | null
           id: string
+          inherit_from_campaign: boolean | null
           is_recurring: boolean | null
           location: string | null
           max_participants: number | null
@@ -1135,11 +1159,14 @@ export type Database = {
           description_ar?: string | null
           end_date?: string | null
           end_time?: string | null
+          event_category?: string | null
           event_date: string
           event_manager_id?: string | null
           event_type?: string | null
+          event_visibility?: string | null
           format?: string | null
           id?: string
+          inherit_from_campaign?: boolean | null
           is_recurring?: boolean | null
           location?: string | null
           max_participants?: number | null
@@ -1166,11 +1193,14 @@ export type Database = {
           description_ar?: string | null
           end_date?: string | null
           end_time?: string | null
+          event_category?: string | null
           event_date?: string
           event_manager_id?: string | null
           event_type?: string | null
+          event_visibility?: string | null
           format?: string | null
           id?: string
+          inherit_from_campaign?: boolean | null
           is_recurring?: boolean | null
           location?: string | null
           max_participants?: number | null

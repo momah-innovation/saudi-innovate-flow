@@ -111,3 +111,25 @@ export const updateEventFocusQuestions = async (eventId: string, focusQuestionId
     if (error) throw error;
   }
 };
+
+export const updateEventChallenges = async (eventId: string, challengeIds: string[]) => {
+  // First, delete existing relationships
+  await supabase
+    .from("event_challenge_links")
+    .delete()
+    .eq("event_id", eventId);
+
+  // Then insert new relationships
+  if (challengeIds.length > 0) {
+    const links = challengeIds.map(challengeId => ({
+      event_id: eventId,
+      challenge_id: challengeId
+    }));
+
+    const { error } = await supabase
+      .from("event_challenge_links")
+      .insert(links);
+
+    if (error) throw error;
+  }
+};
