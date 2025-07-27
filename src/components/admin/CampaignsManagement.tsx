@@ -108,11 +108,9 @@ export function CampaignsManagement({
   const [partnerSearch, setPartnerSearch] = useState("");
   const [stakeholderSearch, setStakeholderSearch] = useState("");
   
-  // Form data with both single and multi-select fields
+  // Form data with Arabic fields only
   const [formData, setFormData] = useState({
-    title: "",
     title_ar: "",
-    description: "",
     description_ar: "",
     status: "planning",
     theme: "digital_transformation",
@@ -225,9 +223,7 @@ export function CampaignsManagement({
     nextMonth.setMonth(nextMonth.getMonth() + 1);
 
     setFormData({
-      title: "",
       title_ar: "",
-      description: "",
       description_ar: "",
       status: "planning",
       theme: "digital_transformation",
@@ -277,9 +273,7 @@ export function CampaignsManagement({
       ]);
 
       setFormData({
-        title: campaign.title || "",
         title_ar: campaign.title_ar || "",
-        description: campaign.description || "",
         description_ar: campaign.description_ar || "",
         status: campaign.status || "planning",
         theme: campaign.theme || "digital_transformation",
@@ -521,63 +515,48 @@ export function CampaignsManagement({
       content: (
         <div className="space-y-6">
           {/* Basic Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="title">{t('title')} (EN)</Label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                placeholder="Enter campaign title in English"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="title_ar">{t('title')} (AR)</Label>
+              <Label htmlFor="title_ar">عنوان الحملة *</Label>
               <Input
                 id="title_ar"
                 value={formData.title_ar}
                 onChange={(e) => setFormData(prev => ({ ...prev, title_ar: e.target.value }))}
-                placeholder="أدخل عنوان الحملة بالعربية"
+                placeholder="أدخل عنوان الحملة"
                 dir="rtl"
+                className={!formData.title_ar ? "border-destructive" : ""}
               />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="description">{t('description')} (EN)</Label>
-              <Textarea
-                id="description"
-                value={formData.description}
-                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Enter campaign description in English"
-                rows={3}
-              />
+              {!formData.title_ar && (
+                <p className="text-sm text-destructive">عنوان الحملة مطلوب</p>
+              )}
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="description_ar">{t('description')} (AR)</Label>
+              <Label htmlFor="description_ar">وصف الحملة *</Label>
               <Textarea
                 id="description_ar"
                 value={formData.description_ar}
                 onChange={(e) => setFormData(prev => ({ ...prev, description_ar: e.target.value }))}
-                placeholder="أدخل وصف الحملة بالعربية"
+                placeholder="أدخل وصف الحملة"
                 dir="rtl"
                 rows={3}
+                className={!formData.description_ar ? "border-destructive" : ""}
               />
+              {!formData.description_ar && (
+                <p className="text-sm text-destructive">وصف الحملة مطلوب</p>
+              )}
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="status">{t('status')}</Label>
+              <Label htmlFor="status">حالة الحملة</Label>
               <Select
                 value={formData.status}
                 onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select status" />
+                  <SelectValue placeholder="اختر الحالة" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="planning">{getStatusText('planning')}</SelectItem>
@@ -589,13 +568,13 @@ export function CampaignsManagement({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="theme">{t('theme')}</Label>
+              <Label htmlFor="theme">موضوع الحملة</Label>
               <Select
                 value={formData.theme}
                 onValueChange={(value) => setFormData(prev => ({ ...prev, theme: value }))}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select theme" />
+                  <SelectValue placeholder="اختر الموضوع" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="digital_transformation">{getThemeText('digital_transformation')}</SelectItem>
@@ -609,39 +588,50 @@ export function CampaignsManagement({
         </div>
       ),
       validation: () => {
-        return formData.title.length > 0 && formData.title_ar.length > 0;
+        if (!formData.title_ar || !formData.description_ar) {
+          return false;
+        }
+        return true;
       }
     },
     {
       id: 'timeline-targets',
-      title: t('timelineAndTargets'),
-      description: t('campaignTimelineTargetsDesc'),
+      title: 'الجدول الزمني والأهداف',
+      description: 'حدد الجدول الزمني وأهداف الحملة',
       content: (
         <div className="space-y-6">
           {/* Timeline */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="start_date">{t('startDate')}</Label>
+              <Label htmlFor="start_date">تاريخ البدء *</Label>
               <Input
                 id="start_date"
                 type="date"
                 value={formData.start_date}
                 onChange={(e) => setFormData(prev => ({ ...prev, start_date: e.target.value }))}
+                className={!formData.start_date ? "border-destructive" : ""}
               />
+              {!formData.start_date && (
+                <p className="text-sm text-destructive">تاريخ البدء مطلوب</p>
+              )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="end_date">{t('endDate')}</Label>
+              <Label htmlFor="end_date">تاريخ الانتهاء *</Label>
               <Input
                 id="end_date"
                 type="date"
                 value={formData.end_date}
                 onChange={(e) => setFormData(prev => ({ ...prev, end_date: e.target.value }))}
+                className={!formData.end_date ? "border-destructive" : ""}
               />
+              {!formData.end_date && (
+                <p className="text-sm text-destructive">تاريخ الانتهاء مطلوب</p>
+              )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="registration_deadline">{t('registrationDeadline')}</Label>
+              <Label htmlFor="registration_deadline">آخر موعد للتسجيل</Label>
               <Input
                 id="registration_deadline"
                 type="date"
@@ -654,71 +644,79 @@ export function CampaignsManagement({
           {/* Targets */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="target_participants">{t('targetParticipants')}</Label>
+              <Label htmlFor="target_participants">المشاركون المستهدفون</Label>
               <Input
                 id="target_participants"
                 type="number"
                 value={formData.target_participants}
                 onChange={(e) => setFormData(prev => ({ ...prev, target_participants: e.target.value }))}
-                placeholder="Enter target number of participants"
+                placeholder="عدد المشاركين المستهدف"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="target_ideas">{t('targetIdeas')}</Label>
+              <Label htmlFor="target_ideas">الأفكار المستهدفة</Label>
               <Input
                 id="target_ideas"
                 type="number"
                 value={formData.target_ideas}
                 onChange={(e) => setFormData(prev => ({ ...prev, target_ideas: e.target.value }))}
-                placeholder="Enter target number of ideas"
+                placeholder="عدد الأفكار المستهدف"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="budget">{t('budget')}</Label>
+              <Label htmlFor="budget">الميزانية</Label>
               <Input
                 id="budget"
                 type="number"
                 value={formData.budget}
                 onChange={(e) => setFormData(prev => ({ ...prev, budget: e.target.value }))}
-                placeholder="Enter campaign budget"
+                placeholder="ميزانية الحملة"
               />
             </div>
           </div>
 
           {/* Success Metrics */}
           <div className="space-y-2">
-            <Label htmlFor="success_metrics">{t('successMetrics')}</Label>
+            <Label htmlFor="success_metrics">مقاييس النجاح</Label>
             <Textarea
               id="success_metrics"
               value={formData.success_metrics}
               onChange={(e) => setFormData(prev => ({ ...prev, success_metrics: e.target.value }))}
-              placeholder="Define success metrics and KPIs"
+              placeholder="حدد مقاييس ومؤشرات النجاح"
               rows={3}
+              dir="rtl"
             />
           </div>
         </div>
       ),
       validation: () => {
-        return formData.start_date.length > 0 && formData.end_date.length > 0;
+        if (!formData.start_date || !formData.end_date) {
+          return false;
+        }
+        return true;
       }
     },
     {
       id: 'organization',
-      title: t('organizationalAlignment'),
-      description: t('campaignOrgAlignmentDesc'),
+      title: 'التوزيع التنظيمي',
+      description: 'حدد المسؤولين والتنظيم الإداري للحملة',
       content: (
         <div className="space-y-6">
           {/* Campaign Manager */}
           <div className="space-y-2">
-            <Label>{t('campaignManager')}</Label>
+            <Label>مدير الحملة *</Label>
             <Popover open={openCampaignManager} onOpenChange={setOpenCampaignManager}>
               <PopoverTrigger asChild>
-                <Button variant="outline" role="combobox" className="w-full justify-between">
+                <Button 
+                  variant="outline" 
+                  role="combobox" 
+                  className={`w-full justify-between ${!formData.campaign_manager_id ? "border-destructive" : ""}`}
+                >
                   {formData.campaign_manager_id 
-                    ? campaignManagers.find(m => m.id === formData.campaign_manager_id)?.name || "Select manager"
-                    : "Select campaign manager"
+                    ? campaignManagers.find(m => m.id === formData.campaign_manager_id)?.name || "اختر المدير"
+                    : "اختر مدير الحملة"
                   }
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -726,11 +724,11 @@ export function CampaignsManagement({
               <PopoverContent className="w-full p-0">
                 <Command>
                   <CommandInput 
-                    placeholder="Search managers..." 
+                    placeholder="ابحث عن المديرين..." 
                     value={campaignManagerSearch}
                     onValueChange={setCampaignManagerSearch}
                   />
-                  <CommandEmpty>No manager found.</CommandEmpty>
+                  <CommandEmpty>لم يتم العثور على مدير.</CommandEmpty>
                   <CommandList>
                     <CommandGroup>
                       {campaignManagers
@@ -759,26 +757,29 @@ export function CampaignsManagement({
                 </Command>
               </PopoverContent>
             </Popover>
+            {!formData.campaign_manager_id && (
+              <p className="text-sm text-destructive">مدير الحملة مطلوب</p>
+            )}
           </div>
 
           {/* Organizational Links */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>{t('sector')}</Label>
+              <Label>القطاع</Label>
               <Popover open={openSector} onOpenChange={setOpenSector}>
                 <PopoverTrigger asChild>
                   <Button variant="outline" role="combobox" className="w-full justify-between">
                     {formData.sector_id 
-                      ? sectors.find(s => s.id === formData.sector_id)?.name || "Select sector"
-                      : "Select sector"
+                      ? sectors.find(s => s.id === formData.sector_id)?.name || "اختر القطاع"
+                      : "اختر القطاع"
                     }
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-full p-0">
                   <Command>
-                    <CommandInput placeholder="Search sectors..." />
-                    <CommandEmpty>No sector found.</CommandEmpty>
+                    <CommandInput placeholder="ابحث عن القطاعات..." />
+                    <CommandEmpty>لم يتم العثور على قطاع.</CommandEmpty>
                     <CommandList>
                       <CommandGroup>
                         {sectors.map(sector => (
@@ -802,21 +803,21 @@ export function CampaignsManagement({
             </div>
 
             <div className="space-y-2">
-              <Label>{t('deputy')}</Label>
+              <Label>النائب</Label>
               <Popover open={openDeputy} onOpenChange={setOpenDeputy}>
                 <PopoverTrigger asChild>
                   <Button variant="outline" role="combobox" className="w-full justify-between">
                     {formData.deputy_id 
-                      ? deputies.find(d => d.id === formData.deputy_id)?.name || "Select deputy"
-                      : "Select deputy"
+                      ? deputies.find(d => d.id === formData.deputy_id)?.name || "اختر النائب"
+                      : "اختر النائب"
                     }
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-full p-0">
                   <Command>
-                    <CommandInput placeholder="Search deputies..." />
-                    <CommandEmpty>No deputy found.</CommandEmpty>
+                    <CommandInput placeholder="ابحث عن النواب..." />
+                    <CommandEmpty>لم يتم العثور على نائب.</CommandEmpty>
                     <CommandList>
                       <CommandGroup>
                         {deputies.map(deputy => (
@@ -842,29 +843,65 @@ export function CampaignsManagement({
         </div>
       ),
       validation: () => {
-        return formData.campaign_manager_id.length > 0;
+        if (!formData.campaign_manager_id) {
+          return false;
+        }
+        return true;
       }
     }
   ];
 
   const handleWizardComplete = async () => {
     try {
-      // TODO: Implement save functionality
-      console.log('Save campaign:', formData);
+      const campaignData = {
+        title: formData.title_ar, // Use Arabic title as main title
+        title_ar: formData.title_ar,
+        description: formData.description_ar, // Use Arabic description as main description
+        description_ar: formData.description_ar,
+        status: formData.status,
+        theme: formData.theme,
+        start_date: formData.start_date,
+        end_date: formData.end_date,
+        registration_deadline: formData.registration_deadline || null,
+        target_participants: formData.target_participants ? parseInt(formData.target_participants) : null,
+        target_ideas: formData.target_ideas ? parseInt(formData.target_ideas) : null,
+        budget: formData.budget ? parseFloat(formData.budget) : null,
+        success_metrics: formData.success_metrics || null,
+        campaign_manager_id: formData.campaign_manager_id || null,
+        sector_id: formData.sector_id || null,
+        deputy_id: formData.deputy_id || null,
+        department_id: formData.department_id || null,
+        challenge_id: formData.challenge_id || null,
+      };
+
+      let result;
+      if (editingCampaign) {
+        result = await supabase
+          .from('campaigns')
+          .update(campaignData)
+          .eq('id', editingCampaign.id);
+      } else {
+        result = await supabase
+          .from('campaigns')
+          .insert(campaignData);
+      }
+
+      if (result.error) throw result.error;
       
       toast({
-        title: t('success'),
-        description: editingCampaign ? t('campaignUpdated') : t('campaignCreated'),
+        title: "تم بنجاح",
+        description: editingCampaign ? "تم تحديث الحملة بنجاح" : "تم إنشاء الحملة بنجاح",
       });
       
       onAddDialogChange?.(false);
       resetForm();
+      setEditingCampaign(null);
       fetchCampaigns();
     } catch (error) {
       console.error('Error saving campaign:', error);
       toast({
-        title: t('error'),
-        description: "Failed to save campaign",
+        title: "خطأ",
+        description: "فشل في حفظ الحملة. يرجى المحاولة مرة أخرى.",
         variant: "destructive",
       });
     }
@@ -885,7 +922,7 @@ export function CampaignsManagement({
           resetForm();
           setEditingCampaign(null);
         }}
-        title={editingCampaign ? t('editCampaign') : t('createCampaign')}
+        title={editingCampaign ? "تعديل الحملة" : "إنشاء حملة جديدة"}
         steps={createWizardSteps()}
         onComplete={handleWizardComplete}
         showProgress={true}
