@@ -181,6 +181,14 @@ export function CampaignsManagement() {
   };
 
   const resetForm = () => {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const nextWeek = new Date(today);
+    nextWeek.setDate(nextWeek.getDate() + 7);
+    const nextMonth = new Date(today);
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
+
     setFormData({
       title: "",
       title_ar: "",
@@ -188,9 +196,9 @@ export function CampaignsManagement() {
       description_ar: "",
       status: "planning",
       theme: "digital_transformation",
-      start_date: "",
-      end_date: "",
-      registration_deadline: "",
+      start_date: nextWeek.toISOString().split('T')[0], // Default to next week
+      end_date: nextMonth.toISOString().split('T')[0], // Default to next month
+      registration_deadline: tomorrow.toISOString().split('T')[0], // Default to tomorrow
       target_participants: "",
       target_ideas: "",
       budget: "",
@@ -657,77 +665,6 @@ export function CampaignsManagement() {
           </Select>
         </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="start_date">Start Date *</Label>
-          <Input
-            id="start_date"
-            type="date"
-            value={formData.start_date}
-            onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="end_date">End Date *</Label>
-          <Input
-            id="end_date"
-            type="date"
-            value={formData.end_date}
-            onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="registration_deadline">Registration Deadline</Label>
-          <Input
-            id="registration_deadline"
-            type="date"
-            value={formData.registration_deadline}
-            onChange={(e) => setFormData({ ...formData, registration_deadline: e.target.value })}
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="target_participants">Target Participants</Label>
-          <Input
-            id="target_participants"
-            type="number"
-            value={formData.target_participants}
-            onChange={(e) => setFormData({ ...formData, target_participants: e.target.value })}
-            placeholder="Number of participants"
-            min="0"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="target_ideas">Target Ideas</Label>
-          <Input
-            id="target_ideas"
-            type="number"
-            value={formData.target_ideas}
-            onChange={(e) => setFormData({ ...formData, target_ideas: e.target.value })}
-            placeholder="Number of ideas"
-            min="0"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="budget">Budget</Label>
-          <Input
-            id="budget"
-            type="number"
-            value={formData.budget}
-            onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-            placeholder="Campaign budget"
-            min="0"
-            step="0.01"
-          />
-        </div>
-      </div>
     </div>
   );
 
@@ -777,7 +714,21 @@ export function CampaignsManagement() {
             onChange={(e) => setFormData({ ...formData, registration_deadline: e.target.value })}
             className={stepErrors[2]?.includes("Registration deadline must be before start date") ? "border-destructive" : ""}
           />
+          <p className="text-xs text-muted-foreground">
+            When participants can register until
+          </p>
         </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="campaign_description">Additional Details</Label>
+        <Textarea
+          id="campaign_description"
+          value={formData.description || ""}
+          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          placeholder="Add any additional details about timing, logistics, or special requirements"
+          className="min-h-[80px]"
+        />
       </div>
     </div>
   );
@@ -829,21 +780,29 @@ export function CampaignsManagement() {
             step="0.01"
             value={formData.budget}
             onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-            placeholder="Campaign budget"
+            placeholder="0.00"
             className={stepErrors[5]?.includes("Budget must be a positive number") ? "border-destructive" : ""}
           />
+          <p className="text-xs text-muted-foreground">
+            Total budget allocated for this campaign
+          </p>
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="success_metrics">Success Metrics</Label>
-        <Textarea
-          id="success_metrics"
-          value={formData.success_metrics}
-          onChange={(e) => setFormData({ ...formData, success_metrics: e.target.value })}
-          placeholder="Define how success will be measured"
-          className="min-h-[80px]"
-        />
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="success_metrics">Success Metrics & KPIs</Label>
+          <Textarea
+            id="success_metrics"
+            value={formData.success_metrics}
+            onChange={(e) => setFormData({ ...formData, success_metrics: e.target.value })}
+            placeholder="Define how success will be measured (e.g., number of submissions, quality scores, participant engagement, innovation metrics)"
+            className="min-h-[100px]"
+          />
+          <p className="text-xs text-muted-foreground">
+            Describe the key performance indicators and success criteria
+          </p>
+        </div>
       </div>
     </div>
   );
