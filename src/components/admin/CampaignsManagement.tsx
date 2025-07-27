@@ -518,8 +518,158 @@ export function CampaignsManagement({
         {renderCampaigns()}
       </ViewLayouts>
 
-      {/* Form Dialog - keeping existing implementation */}
-      {/* ... existing form dialog code would go here ... */}
+      {/* Campaign Form Dialog */}
+      <Dialog open={showAddDialog} onOpenChange={(open) => {
+        onAddDialogChange?.(open);
+        if (!open) {
+          resetForm();
+          setEditingCampaign(null);
+        }
+      }}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {editingCampaign ? t('editCampaign') : t('createCampaign')}
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-6">
+            {/* Basic Information */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="title">{t('title')} (EN)</Label>
+                <Input
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                  placeholder="Enter campaign title in English"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="title_ar">{t('title')} (AR)</Label>
+                <Input
+                  id="title_ar"
+                  value={formData.title_ar}
+                  onChange={(e) => setFormData(prev => ({ ...prev, title_ar: e.target.value }))}
+                  placeholder="أدخل عنوان الحملة بالعربية"
+                  dir="rtl"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="description">{t('description')} (EN)</Label>
+                <Textarea
+                  id="description"
+                  value={formData.description}
+                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                  placeholder="Enter campaign description in English"
+                  rows={3}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="description_ar">{t('description')} (AR)</Label>
+                <Textarea
+                  id="description_ar"
+                  value={formData.description_ar}
+                  onChange={(e) => setFormData(prev => ({ ...prev, description_ar: e.target.value }))}
+                  placeholder="أدخل وصف الحملة بالعربية"
+                  dir="rtl"
+                  rows={3}
+                />
+              </div>
+            </div>
+
+            {/* Campaign Details */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="status">{t('status')}</Label>
+                <Select
+                  value={formData.status}
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="planning">{getStatusText('planning')}</SelectItem>
+                    <SelectItem value="active">{getStatusText('active')}</SelectItem>
+                    <SelectItem value="completed">{getStatusText('completed')}</SelectItem>
+                    <SelectItem value="archived">{getStatusText('archived')}</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="start_date">{t('startDate')}</Label>
+                <Input
+                  id="start_date"
+                  type="date"
+                  value={formData.start_date}
+                  onChange={(e) => setFormData(prev => ({ ...prev, start_date: e.target.value }))}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="end_date">{t('endDate')}</Label>
+                <Input
+                  id="end_date"
+                  type="date"
+                  value={formData.end_date}
+                  onChange={(e) => setFormData(prev => ({ ...prev, end_date: e.target.value }))}
+                />
+              </div>
+            </div>
+
+            {/* Additional fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="target_participants">{t('targetParticipants')}</Label>
+                <Input
+                  id="target_participants"
+                  type="number"
+                  value={formData.target_participants}
+                  onChange={(e) => setFormData(prev => ({ ...prev, target_participants: e.target.value }))}
+                  placeholder="Enter target number of participants"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="budget">{t('budget')}</Label>
+                <Input
+                  id="budget"
+                  type="number"
+                  value={formData.budget}
+                  onChange={(e) => setFormData(prev => ({ ...prev, budget: e.target.value }))}
+                  placeholder="Enter campaign budget"
+                />
+              </div>
+            </div>
+
+            {/* Form Actions */}
+            <div className="flex justify-end gap-3 pt-4 border-t">
+              <Button 
+                variant="outline" 
+                onClick={() => onAddDialogChange?.(false)}
+              >
+                {t('cancel')}
+              </Button>
+              <Button 
+                onClick={async () => {
+                  // TODO: Implement save functionality
+                  console.log('Save campaign:', formData);
+                  onAddDialogChange?.(false);
+                }}
+              >
+                {editingCampaign ? t('update') : t('create')}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
