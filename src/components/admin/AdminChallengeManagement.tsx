@@ -38,10 +38,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 interface Challenge {
   id: string;
-  title: string;
-  title_ar?: string;
-  description: string;
-  description_ar?: string;
+  title_ar: string;
+  description_ar: string;
   status: string;
   priority_level: string;
   sensitivity_level: string;
@@ -58,8 +56,7 @@ interface Challenge {
 interface FocusQuestion {
   id: string;
   challenge_id: string;
-  question_text: string;
-  question_text_ar?: string;
+  question_text_ar: string;
   question_type: string;
   order_sequence: number;
   is_sensitive: boolean;
@@ -145,9 +142,7 @@ export const AdminChallengeManagement = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [settingsChallenge, setSettingsChallenge] = useState<Challenge | null>(null);
   const [formData, setFormData] = useState({
-    title: "",
     title_ar: "",
-    description: "",
     description_ar: "",
     status: "draft",
     priority_level: "medium",
@@ -180,7 +175,6 @@ export const AdminChallengeManagement = () => {
   const [questionSensitivityFilter, setQuestionSensitivityFilter] = useState('all');
   
   const [questionFormData, setQuestionFormData] = useState({
-    question_text: "",
     question_text_ar: "",
     question_type: "general",
     is_sensitive: false,
@@ -658,10 +652,8 @@ export const AdminChallengeManagement = () => {
   const handleCreateChallenge = async () => {
     try {
       const challengeData = {
-        title: formData.title,
-        title_ar: formData.title_ar || null,
-        description: formData.description,
-        description_ar: formData.description_ar || null,
+        title_ar: formData.title_ar,
+        description_ar: formData.description_ar,
         status: formData.status,
         priority_level: formData.priority_level,
         sensitivity_level: formData.sensitivity_level,
@@ -929,8 +921,7 @@ export const AdminChallengeManagement = () => {
 
   // Filter functions
   const filteredChallenges = challenges.filter(challenge => {
-    const matchesSearch = challenge.title.toLowerCase().includes(challengeFilter.toLowerCase()) ||
-                         (challenge.title_ar && challenge.title_ar.includes(challengeFilter));
+    const matchesSearch = challenge.title_ar.toLowerCase().includes(challengeFilter.toLowerCase());
     const matchesStatus = challengeStatusFilter === 'all' || challenge.status === challengeStatusFilter;
     const matchesPriority = challengePriorityFilter === 'all' || challenge.priority_level === challengePriorityFilter;
     
@@ -983,9 +974,9 @@ export const AdminChallengeManagement = () => {
             </DialogTrigger>
             <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{formData.title ? t('editChallenge') : t('createNewChallenge')}</DialogTitle>
+              <DialogTitle>{formData.title_ar ? t('editChallenge') : t('createNewChallenge')}</DialogTitle>
               <DialogDescription>
-                {formData.title ? t('updateChallengeDetails') : t('createInnovationChallenge')}
+                {formData.title_ar ? t('updateChallengeDetails') : t('createInnovationChallenge')}
               </DialogDescription>
             </DialogHeader>
             
@@ -1011,29 +1002,22 @@ export const AdminChallengeManagement = () => {
                   />
                 </div>
               </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="description">Description (English) *</Label>
-                <Textarea
-                  id="description"
-                  value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  placeholder="Detailed description of the challenge"
-                  rows={systemSettings.textareaRows}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="description_ar">Description (Arabic)</Label>
-                <Textarea
-                  id="description_ar"
-                  value={formData.description_ar}
-                  onChange={(e) => setFormData({...formData, description_ar: e.target.value})}
-                  placeholder="وصف مفصل للتحدي"
-                  rows={systemSettings.textareaRows}
-                  dir="rtl"
-                />
-              </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="description_ar">وصف التحدي *</Label>
+                  <Textarea
+                    id="description_ar"
+                    value={formData.description_ar}
+                    onChange={(e) => setFormData({...formData, description_ar: e.target.value})}
+                    placeholder="أدخل وصف مفصل للتحدي"
+                    rows={systemSettings.textareaRows}
+                    dir="rtl"
+                    className={!formData.description_ar ? "border-destructive" : ""}
+                  />
+                  {!formData.description_ar && (
+                    <p className="text-sm text-destructive">وصف التحدي مطلوب</p>
+                  )}
+                </div>
               
               <div className="grid gap-4 md:grid-cols-3">
                 <div className="space-y-2">
@@ -1453,8 +1437,8 @@ export const AdminChallengeManagement = () => {
                 <Button variant="outline" onClick={handleCloseCreateChallenge}>
                   Cancel
                 </Button>
-                <Button onClick={handleCreateChallenge} disabled={!formData.title || !formData.description}>
-                  {formData.title && challenges.some(c => c.title === formData.title) ? t('updateChallenge') : t('createChallenge')}
+                <Button onClick={handleCreateChallenge} disabled={!formData.title_ar || !formData.description_ar}>
+                  {formData.title_ar && challenges.some(c => c.title_ar === formData.title_ar) ? t('updateChallenge') : t('createChallenge')}
                 </Button>
               </div>
             </div>
@@ -1513,7 +1497,7 @@ export const AdminChallengeManagement = () => {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="space-y-1 flex-1">
-                      <CardTitle className="text-lg">{challenge.title}</CardTitle>
+                      <CardTitle className="text-lg">{challenge.title_ar}</CardTitle>
                       {challenge.title_ar && (
                         <CardDescription className="text-right" dir="rtl">
                           {challenge.title_ar}

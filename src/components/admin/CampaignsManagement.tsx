@@ -35,9 +35,7 @@ import {
 
 interface Campaign {
   id: string;
-  title: string;
-  title_ar?: string;
-  description?: string;
+  title_ar: string;
   description_ar?: string;
   status: string;
   theme?: string;
@@ -199,9 +197,7 @@ export function CampaignsManagement({
   const getFilteredCampaigns = () => {
     return campaigns.filter(campaign => {
       const matchesSearch = !searchTerm || 
-        campaign.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         campaign.title_ar?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        campaign.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         campaign.description_ar?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         campaign.theme?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         campaign.success_metrics?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -427,8 +423,8 @@ export function CampaignsManagement({
       <DataCard
         key={campaign.id}
         item={campaign}
-        title={getDynamicText(campaign.title_ar || campaign.title, campaign.title)}
-        description={getDynamicText(campaign.description_ar || campaign.description || '', campaign.description)}
+        title={campaign.title_ar}
+        description={campaign.description_ar || ''}
         selected={bulkMode ? selectedItems.includes(campaign.id) : false}
         onSelect={bulkMode ? (selected) => handleSelectItem(campaign.id, selected) : undefined}
         badges={[
@@ -478,7 +474,7 @@ export function CampaignsManagement({
                 <AlertDialogHeader>
                   <AlertDialogTitle>{t('delete')} {t('campaign')}</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Are you sure you want to delete "{getDynamicText(campaign.title_ar || campaign.title, campaign.title)}"? This action cannot be undone.
+                    Are you sure you want to delete "{campaign.title_ar}"? This action cannot be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -854,9 +850,7 @@ export function CampaignsManagement({
   const handleWizardComplete = async () => {
     try {
       const campaignData = {
-        title: formData.title_ar, // Use Arabic title as main title
         title_ar: formData.title_ar,
-        description: formData.description_ar, // Use Arabic description as main description
         description_ar: formData.description_ar,
         status: formData.status,
         theme: formData.theme,
