@@ -688,10 +688,9 @@ export function CampaignsManagement() {
           <Label htmlFor="campaign_manager_id">Campaign Manager</Label>
           <Select value={formData.campaign_manager_id} onValueChange={(value) => setFormData({ ...formData, campaign_manager_id: value })}>
             <SelectTrigger>
-              <SelectValue placeholder="Select campaign manager" />
+              <SelectValue placeholder="Select campaign manager (optional)" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">None Selected</SelectItem>
               {campaignManagers.map((manager) => (
                 <SelectItem key={manager.id} value={manager.id}>
                   {manager.name} - {manager.position || 'No position'}
@@ -700,7 +699,7 @@ export function CampaignsManagement() {
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
-            Person responsible for managing this campaign
+            Person responsible for managing this campaign (optional)
           </p>
         </div>
       </div>
