@@ -106,7 +106,7 @@ export const translations = {
     // Status & States
     registered: 'مسجل',
     registering: 'جاري التسجيل',
-    registerForEvent: 'التسجيل في الحدث',
+    registerForEvent: 'التسجيل في الفعالية',
     
     // Campaigns
     campaigns: 'الحملات',
@@ -379,7 +379,7 @@ export const translations = {
     goToNextPage: 'الانتقال إلى الصفحة التالية',
     toggleSidebar: 'تبديل الشريط الجانبي',
     more: 'المزيد',
-    cards: 'البطاقات',
+    cards: 'بطاقات',
     
     
   },
