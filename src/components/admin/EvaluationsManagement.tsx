@@ -42,8 +42,8 @@ interface Evaluation {
 
 interface Idea {
   id: string;
-  title: string;
-  description: string;
+  title_ar: string;
+  description_ar: string;
   status: string;
 }
 
@@ -154,7 +154,7 @@ export function EvaluationsManagement() {
   const filteredEvaluations = evaluations.filter(evaluation => {
     const matchesType = filterType === "all" || evaluation.evaluator_type === filterType;
     const matchesSearch = searchTerm === "" || 
-      ideas[evaluation.idea_id]?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ideas[evaluation.idea_id]?.title_ar?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       profiles[evaluation.evaluator_id]?.name?.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesType && matchesSearch;
   });
@@ -217,7 +217,7 @@ export function EvaluationsManagement() {
               <div className="flex justify-between items-start">
                 <div className="space-y-2">
                   <CardTitle className="text-lg">
-                    {ideas[evaluation.idea_id]?.title || t('unknownIdea')}
+                    {ideas[evaluation.idea_id]?.title_ar || t('unknownIdea')}
                   </CardTitle>
                   <div className="flex items-center gap-2">
                     <Badge variant="secondary">
@@ -311,7 +311,7 @@ export function EvaluationsManagement() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <h3 className="font-semibold mb-2">Idea Information</h3>
-                  <p className="text-sm"><strong>Title:</strong> {ideas[selectedEvaluation.idea_id]?.title || "Unknown"}</p>
+                  <p className="text-sm"><strong>Title:</strong> {ideas[selectedEvaluation.idea_id]?.title_ar || "Unknown"}</p>
                   <p className="text-sm"><strong>Status:</strong> {ideas[selectedEvaluation.idea_id]?.status || "Unknown"}</p>
                 </div>
                 <div>

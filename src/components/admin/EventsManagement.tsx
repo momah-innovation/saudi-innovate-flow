@@ -23,9 +23,7 @@ import { BulkActions } from "@/components/ui/bulk-actions";
 
 interface Event {
   id: string;
-  title: string;
-  title_ar?: string;
-  description?: string;
+  title_ar: string;
   description_ar?: string;
   event_type?: string;
   event_date: string;
@@ -125,9 +123,7 @@ export function EventsManagement() {
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
       filtered = filtered.filter(event =>
-        event.title.toLowerCase().includes(searchLower) ||
-        (event.title_ar && event.title_ar.toLowerCase().includes(searchLower)) ||
-        (event.description && event.description.toLowerCase().includes(searchLower)) ||
+        event.title_ar.toLowerCase().includes(searchLower) ||
         (event.description_ar && event.description_ar.toLowerCase().includes(searchLower)) ||
         (event.location && event.location.toLowerCase().includes(searchLower)) ||
         (event.event_type && event.event_type.toLowerCase().includes(searchLower)) ||
@@ -273,12 +269,7 @@ export function EventsManagement() {
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start">
           <div className="flex-1">
-            <CardTitle className="text-lg">{event.title}</CardTitle>
-            {event.title_ar && (
-              <p className="text-sm text-muted-foreground mt-1" dir="rtl">
-                {event.title_ar}
-              </p>
-            )}
+            <CardTitle className="text-lg">{event.title_ar}</CardTitle>
             <div className="flex gap-2 mt-2">
               <Badge className={getStatusColor(event.status || 'scheduled')}>
                 {event.status || 'scheduled'}
@@ -302,7 +293,7 @@ export function EventsManagement() {
             </Button>
             <DeleteConfirmation
               title="Delete Event"
-              description={`Are you sure you want to delete "${event.title}"? This action cannot be undone and will permanently remove the event and all associated data.`}
+              description={`Are you sure you want to delete "${event.title_ar}"? This action cannot be undone and will permanently remove the event and all associated data.`}
               onConfirm={() => handleDelete(event.id)}
             />
           </div>
@@ -333,9 +324,9 @@ export function EventsManagement() {
             </div>
           )}
         </div>
-        {event.description && (
+        {event.description_ar && (
           <p className="text-sm text-muted-foreground mt-3 line-clamp-2">
-            {event.description}
+            {event.description_ar}
           </p>
         )}
       </CardContent>
@@ -349,7 +340,7 @@ export function EventsManagement() {
           <div className="flex items-center justify-between">
             <div className="flex-1 space-y-1">
               <div className="flex items-center gap-3">
-                <h3 className="font-semibold">{event.title}</h3>
+                <h3 className="font-semibold">{event.title_ar}</h3>
                 <Badge className={`${getStatusColor(event.status || 'scheduled')} flex items-center gap-1`}>
                   {event.status || 'scheduled'}
                 </Badge>
@@ -357,7 +348,7 @@ export function EventsManagement() {
                   {event.format || 'in_person'}
                 </Badge>
               </div>
-              <p className="text-sm text-muted-foreground line-clamp-1">{event.description}</p>
+              <p className="text-sm text-muted-foreground line-clamp-1">{event.description_ar}</p>
               <div className="flex items-center gap-4 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1">
                   <Calendar className="w-3 h-3" />
@@ -386,7 +377,7 @@ export function EventsManagement() {
               </Button>
               <DeleteConfirmation
                 title="Delete Event"
-                description={`Are you sure you want to delete "${event.title}"? This action cannot be undone.`}
+                description={`Are you sure you want to delete "${event.title_ar}"? This action cannot be undone.`}
                 onConfirm={() => handleDelete(event.id)}
               />
             </div>
@@ -569,14 +560,14 @@ export function EventsManagement() {
           setShowEventDialog(false);
           setEditingEvent(null);
         }}
-        event={editingEvent}
+        event={editingEvent || undefined}
         onSave={handleEventSave}
       />
 
       <Dialog open={!!viewingEvent} onOpenChange={(open) => !open && setViewingEvent(null)}>
         <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{viewingEvent?.title}</DialogTitle>
+            <DialogTitle>{viewingEvent?.title_ar}</DialogTitle>
           </DialogHeader>
           {viewingEvent && (
             <div className="space-y-6">
@@ -603,10 +594,10 @@ export function EventsManagement() {
                 </div>
               </div>
               
-              {viewingEvent.description && (
+              {viewingEvent.description_ar && (
                 <div>
                   <h4 className="font-semibold mb-2">Description</h4>
-                  <p className="text-sm">{viewingEvent.description}</p>
+                  <p className="text-sm">{viewingEvent.description_ar}</p>
                 </div>
               )}
 
