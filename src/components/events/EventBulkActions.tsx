@@ -4,6 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { 
@@ -16,7 +17,9 @@ import {
   Archive,
   Calendar,
   MapPin,
-  Users
+  Users,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 
 interface Event {
@@ -45,6 +48,7 @@ export function EventBulkActions({
   const [isLoading, setIsLoading] = useState(false);
   const [bulkAction, setBulkAction] = useState("");
   const [newStatus, setNewStatus] = useState("");
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const { toast } = useToast();
 
   const selectedEventData = events.filter(event => selectedEvents.includes(event.id));
@@ -259,49 +263,79 @@ export function EventBulkActions({
 
   if (selectedEvents.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <CheckSquare className="h-5 w-5" />
-            Bulk Actions
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground text-sm">
-            Select events to perform bulk actions
-          </p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleSelectAll}
-            className="mt-2"
-          >
-            <Square className="mr-2 h-4 w-4" />
-            Select All ({events.length})
-          </Button>
-        </CardContent>
-      </Card>
+      <Collapsible open={!isCollapsed} onOpenChange={(open) => setIsCollapsed(!open)}>
+        <Card>
+          <CollapsibleTrigger asChild>
+            <CardHeader className="cursor-pointer hover:bg-accent/50 transition-colors">
+              <CardTitle className="text-lg flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <CheckSquare className="h-5 w-5" />
+                  Bulk Actions
+                </div>
+                {isCollapsed ? (
+                  <ChevronDown className="h-4 w-4" />
+                ) : (
+                  <ChevronUp className="h-4 w-4" />
+                )}
+              </CardTitle>
+            </CardHeader>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <CardContent>
+              <p className="text-muted-foreground text-sm">
+                Select events to perform bulk actions
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleSelectAll}
+                className="mt-2"
+              >
+                <Square className="mr-2 h-4 w-4" />
+                Select All ({events.length})
+              </Button>
+            </CardContent>
+          </CollapsibleContent>
+        </Card>
+      </Collapsible>
     );
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <CheckSquare className="h-5 w-5" />
-            Bulk Actions
-          </CardTitle>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onSelectionChange([])}
-          >
-            Clear Selection
-          </Button>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <Collapsible open={!isCollapsed} onOpenChange={(open) => setIsCollapsed(!open)}>
+      <Card>
+        <CollapsibleTrigger asChild>
+          <CardHeader className="cursor-pointer hover:bg-accent/50 transition-colors">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <CheckSquare className="h-5 w-5" />
+                Bulk Actions
+                <Badge variant="secondary" className="ml-2">
+                  {selectedEvents.length} selected
+                </Badge>
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelectionChange([]);
+                  }}
+                >
+                  Clear Selection
+                </Button>
+                {isCollapsed ? (
+                  <ChevronDown className="h-4 w-4" />
+                ) : (
+                  <ChevronUp className="h-4 w-4" />
+                )}
+              </div>
+            </div>
+          </CardHeader>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <CardContent className="space-y-4">
         {/* Selection Status */}
         <div className="flex items-center gap-2">
           <Button
@@ -458,7 +492,9 @@ export function EventBulkActions({
             )}
           </div>
         </div>
-      </CardContent>
-    </Card>
+          </CardContent>
+        </CollapsibleContent>
+      </Card>
+    </Collapsible>
   );
 }
