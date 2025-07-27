@@ -31,7 +31,7 @@ export function NavigationSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Memoized menu items for performance
+  // Memoized menu items for performance - consolidated from all sidebars
   const menuItems = useMemo(() => {
     const baseItems = [
       { 
@@ -76,6 +76,15 @@ export function NavigationSidebar() {
         group: 'workflow',
         roles: ['expert', 'team', 'admin'] 
       },
+      { 
+        id: 'expertise', 
+        label: 'Expertise Profile', 
+        arabicLabel: 'ملف الخبرة',
+        icon: BookOpen, 
+        path: '/expertise',
+        group: 'workflow',
+        roles: ['expert'] 
+      },
     ];
 
     const managementItems = [
@@ -107,6 +116,54 @@ export function NavigationSidebar() {
         path: '/admin/stakeholders',
         group: 'management',
         roles: ['team', 'admin'] 
+      },
+      { 
+        id: 'innovation-teams', 
+        label: 'Innovation Teams', 
+        arabicLabel: 'فرق الابتكار',
+        icon: Zap, 
+        path: '/innovation-teams',
+        group: 'management',
+        roles: ['team', 'admin'] 
+      },
+    ];
+
+    const analyticsItems = [
+      { 
+        id: 'analytics', 
+        label: 'Analytics', 
+        arabicLabel: 'التحليلات',
+        icon: PieChart, 
+        path: '/analytics',
+        group: 'analytics',
+        roles: ['team', 'admin'] 
+      },
+      { 
+        id: 'trends', 
+        label: 'Trends & Insights', 
+        arabicLabel: 'الاتجاهات والرؤى',
+        icon: TrendingUp, 
+        path: '/trends',
+        group: 'analytics',
+        roles: ['team', 'admin'] 
+      },
+      { 
+        id: 'reports', 
+        label: 'Reports', 
+        arabicLabel: 'التقارير',
+        icon: FileText, 
+        path: '/reports',
+        group: 'analytics',
+        roles: ['team', 'admin'] 
+      },
+      { 
+        id: 'system-analytics', 
+        label: 'System Analytics', 
+        arabicLabel: 'تحليلات النظام',
+        icon: BarChart3, 
+        path: '/admin/system-analytics',
+        group: 'analytics',
+        roles: ['admin'] 
       },
     ];
 
@@ -185,10 +242,22 @@ export function NavigationSidebar() {
       },
     ];
 
-    return [...baseItems, ...workflowItems, ...managementItems, ...adminItems];
+    const settingsItems = [
+      { 
+        id: 'settings', 
+        label: 'Settings', 
+        arabicLabel: 'الإعدادات',
+        icon: Settings, 
+        path: '/settings',
+        group: 'settings',
+        roles: ['all'] 
+      },
+    ];
+
+    return [...baseItems, ...workflowItems, ...managementItems, ...analyticsItems, ...adminItems, ...settingsItems];
   }, []);
 
-  // Check if user can see a menu item
+  // Check if user can see a menu item - same logic as AppSidebar
   const canAccessItem = (item: any) => {
     if (item.roles.includes('all')) return true;
     
@@ -200,6 +269,7 @@ export function NavigationSidebar() {
     if (userProfile?.innovator_profile) userRoles.push('innovator');
     if (userProfile?.expert_profile) userRoles.push('expert');
     if (hasRole('admin')) userRoles.push('admin');
+    if (hasRole('super_admin')) userRoles.push('admin'); // super_admin should see admin items
     if (hasRole('team_member')) userRoles.push('team');
     
     return item.roles.some((role: string) => userRoles.includes(role));
@@ -212,7 +282,9 @@ export function NavigationSidebar() {
       main: filtered.filter(item => item.group === 'main'),
       workflow: filtered.filter(item => item.group === 'workflow'),
       management: filtered.filter(item => item.group === 'management'),
+      analytics: filtered.filter(item => item.group === 'analytics'),
       admin: filtered.filter(item => item.group === 'admin'),
+      settings: filtered.filter(item => item.group === 'settings'),
     };
   }, [menuItems, userProfile, hasRole]);
 
@@ -236,6 +308,7 @@ export function NavigationSidebar() {
     const labels = {
       workflow: isRTL ? 'سير العمل' : 'Workflow',
       management: isRTL ? 'الإدارة' : 'Management',
+      analytics: isRTL ? 'التحليلات' : 'Analytics',
       admin: isRTL ? 'الإدارة العامة' : 'Administration',
     };
     return labels[key as keyof typeof labels];
@@ -310,7 +383,9 @@ export function NavigationSidebar() {
         {renderGroup(visibleItems.main)}
         {renderGroup(visibleItems.workflow, 'workflow')}
         {renderGroup(visibleItems.management, 'management')}
+        {renderGroup(visibleItems.analytics, 'analytics')}
         {renderGroup(visibleItems.admin, 'admin')}
+        {renderGroup(visibleItems.settings)}
       </SidebarContent>
     </Sidebar>
   );

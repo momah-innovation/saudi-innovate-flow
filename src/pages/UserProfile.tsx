@@ -4,83 +4,104 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { Header } from "@/components/ui/header";
-import { AppSidebar } from "@/components/layout/Sidebar";
-import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppShell } from "@/components/layout/AppShell";
 import { useNavigate } from "react-router-dom";
 import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
 
 interface ProfileForm {
   name: string;
   name_ar: string;
-  phone: string;
-  department: string;
-  position: string;
-  bio: string;
-  preferred_language: string;
+  email: string;
+  phone?: string;
+  job_title?: string;
+  organization?: string;
+  bio?: string;
+  bio_ar?: string;
+  linkedin_url?: string;
+  twitter_url?: string;
 }
 
-export default function UserProfile() {
+const UserProfile = () => {
   const navigate = useNavigate();
   const { user, userProfile, refreshProfile } = useAuth();
-  const { uiInitialsMaxLength } = useSystemSettings();
   const { toast } = useToast();
-  const [profileForm, setProfileForm] = useState<ProfileForm>({
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState<ProfileForm>({
     name: '',
     name_ar: '',
+    email: '',
     phone: '',
-    department: '',
-    position: '',
+    job_title: '',
+    organization: '',
     bio: '',
-    preferred_language: 'en'
+    bio_ar: '',
+    linkedin_url: '',
+    twitter_url: ''
   });
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (userProfile) {
-      setProfileForm({
-        name: userProfile.name || '',
+      setForm({
+        name: userProfile.name_en || '',
         name_ar: userProfile.name_ar || '',
+        email: user?.email || '',
         phone: userProfile.phone || '',
-        department: userProfile.department || '',
-        position: userProfile.position || '',
-        bio: userProfile.bio || '',
-        preferred_language: userProfile.preferred_language || 'en'
+        job_title: userProfile.job_title || '',
+        organization: userProfile.organization || '',
+        bio: userProfile.bio_en || '',
+        bio_ar: userProfile.bio_ar || '',
+        linkedin_url: userProfile.linkedin_url || '',
+        twitter_url: userProfile.twitter_url || ''
       });
     }
-  }, [userProfile]);
+  }, [userProfile, user]);
 
-  const handleUpdateProfile = async () => {
-    if (!user) return;
+  const handleInputChange = (field: keyof ProfileForm, value: string) => {
+    setForm(prev => ({ ...prev, [field]: value }));
+  };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setLoading(true);
+
     try {
+      const updateData = {
+        name_en: form.name,
+        name_ar: form.name_ar,
+        phone: form.phone,
+        job_title: form.job_title,
+        organization: form.organization,
+        bio_en: form.bio,
+        bio_ar: form.bio_ar,
+        linkedin_url: form.linkedin_url,
+        twitter_url: form.twitter_url,
+        updated_at: new Date().toISOString()
+      };
+
       const { error } = await supabase
         .from('profiles')
-        .update(profileForm)
-        .eq('id', user.id);
+        .update(updateData)
+        .eq('id', user?.id);
 
       if (error) throw error;
 
-      toast({
-        title: "Profile Updated",
-        description: "Your profile has been successfully updated.",
-      });
-
       await refreshProfile();
-    } catch (error) {
+      
+      toast({
+        title: "تم التحديث بنجاح",
+        description: "تم تحديث معلومات ملفك الشخصي",
+      });
+    } catch (error: any) {
       console.error('Error updating profile:', error);
       toast({
-        title: "Error",
-        description: "Failed to update profile. Please try again.",
+        title: "خطأ في التحديث",
+        description: error.message || "فشل في تحديث الملف الشخصي",
         variant: "destructive",
       });
     } finally {
@@ -88,173 +109,187 @@ export default function UserProfile() {
     }
   };
 
-  const getInitialsWithSettings = (name: string) => {
-    return getInitials(name, uiInitialsMaxLength);
-  };
-
-  const handleTabChange = (tab: string) => {
-    if (tab === "focus-questions") {
-      navigate("/admin/focus-questions");
-    } else if (tab === "partners") {
-      navigate("/admin/partners");
-    } else if (tab === "sectors") {
-      navigate("/admin/sectors");
-    } else if (tab === "organizational-structure") {
-      navigate("/admin/organizational-structure");
-    } else if (tab === "expert-assignments") {
-      navigate("/admin/expert-assignments");
-    } else if (tab === "user-management") {
-      navigate("/admin/users");
-    } else if (tab === "system-settings") {
-      navigate("/admin/system-settings");
-    } else if (tab === "settings") {
-      navigate("/settings");
-    } else {
-      navigate("/");
-    }
-  };
-
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full">
-        <AppSidebar activeTab="" onTabChange={handleTabChange} />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <Header />
-          <main className="flex-1 overflow-y-auto">
-            <div className="container mx-auto p-6 space-y-6">
-              <BreadcrumbNav activeTab="" />
-              
-              {/* Header */}
-              <div>
-                <h1 className="text-3xl font-bold">My Profile</h1>
-                <p className="text-muted-foreground">
-                  Manage your personal information and professional details
-                </p>
+    <AppShell>
+      <div className="container mx-auto p-6 space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold">الملف الشخصي</h1>
+          <p className="text-muted-foreground">إدارة معلومات ملفك الشخصي</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Profile Picture Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle>الصورة الشخصية</CardTitle>
+              <CardDescription>صورتك الشخصية التي تظهر في النظام</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center gap-4">
+                <Avatar className="h-20 w-20">
+                  <AvatarImage src={userProfile?.avatar_url} />
+                  <AvatarFallback>
+                    {userProfile?.name_ar ? getInitials(userProfile.name_ar) : <User className="h-8 w-8" />}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <Button variant="outline" type="button">
+                    تغيير الصورة
+                  </Button>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    JPG, PNG أو GIF. الحد الأقصى 2MB.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Basic Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle>المعلومات الأساسية</CardTitle>
+              <CardDescription>معلوماتك الشخصية الأساسية</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name_ar">الاسم بالعربية *</Label>
+                  <Input
+                    id="name_ar"
+                    value={form.name_ar}
+                    onChange={(e) => handleInputChange('name_ar', e.target.value)}
+                    placeholder="أدخل اسمك بالعربية"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="name">الاسم بالإنجليزية</Label>
+                  <Input
+                    id="name"
+                    value={form.name}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    placeholder="Enter your name in English"
+                  />
+                </div>
               </div>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="h-5 w-5" />
-                    Profile Information
-                  </CardTitle>
-                  <CardDescription>
-                    Update your personal information and contact details
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Avatar Section */}
-                  <div className="flex items-center gap-4">
-                    <Avatar className="h-20 w-20">
-                      <AvatarImage src={userProfile?.profile_image_url} alt={profileForm.name} />
-                      <AvatarFallback className="text-lg">
-                        {getInitialsWithSettings(profileForm.name || 'User')}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <Button variant="outline" size="sm">
-                        Change Avatar
-                      </Button>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        JPG, PNG or GIF (max. 2MB)
-                      </p>
-                    </div>
-                  </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email">البريد الإلكتروني</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={form.email}
+                    disabled
+                    className="bg-muted"
+                  />
+                  <p className="text-sm text-muted-foreground">
+                    لا يمكن تغيير البريد الإلكتروني
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone">رقم الهاتف</Label>
+                  <Input
+                    id="phone"
+                    value={form.phone}
+                    onChange={(e) => handleInputChange('phone', e.target.value)}
+                    placeholder="أدخل رقم هاتفك"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-                  <Separator />
+          {/* Professional Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle>المعلومات المهنية</CardTitle>
+              <CardDescription>معلومات عملك ومنصبك</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="job_title">المنصب الوظيفي</Label>
+                  <Input
+                    id="job_title"
+                    value={form.job_title}
+                    onChange={(e) => handleInputChange('job_title', e.target.value)}
+                    placeholder="أدخل منصبك الوظيفي"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="organization">المؤسسة</Label>
+                  <Input
+                    id="organization"
+                    value={form.organization}
+                    onChange={(e) => handleInputChange('organization', e.target.value)}
+                    placeholder="أدخل اسم مؤسستك"
+                  />
+                </div>
+              </div>
 
-                  {/* Personal Information */}
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Full Name *</Label>
-                      <Input
-                        id="name"
-                        value={profileForm.name}
-                        onChange={(e) => setProfileForm(prev => ({ ...prev, name: e.target.value }))}
-                        placeholder="Enter your full name"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="name_ar">Name (Arabic)</Label>
-                      <Input
-                        id="name_ar"
-                        value={profileForm.name_ar}
-                        onChange={(e) => setProfileForm(prev => ({ ...prev, name_ar: e.target.value }))}
-                        placeholder="اسمك باللغة العربية"
-                        dir="rtl"
-                      />
-                    </div>
-                  </div>
+              <div className="space-y-2">
+                <Label htmlFor="bio_ar">نبذة شخصية بالعربية</Label>
+                <Textarea
+                  id="bio_ar"
+                  value={form.bio_ar}
+                  onChange={(e) => handleInputChange('bio_ar', e.target.value)}
+                  placeholder="اكتب نبذة مختصرة عنك بالعربية"
+                  rows={4}
+                />
+              </div>
 
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number</Label>
-                      <Input
-                        id="phone"
-                        value={profileForm.phone}
-                        onChange={(e) => setProfileForm(prev => ({ ...prev, phone: e.target.value }))}
-                        placeholder="+966 50 123 4567"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="department">Department</Label>
-                      <Input
-                        id="department"
-                        value={profileForm.department}
-                        onChange={(e) => setProfileForm(prev => ({ ...prev, department: e.target.value }))}
-                        placeholder="Your department"
-                      />
-                    </div>
-                  </div>
+              <div className="space-y-2">
+                <Label htmlFor="bio">Bio in English</Label>
+                <Textarea
+                  id="bio"
+                  value={form.bio}
+                  onChange={(e) => handleInputChange('bio', e.target.value)}
+                  placeholder="Write a brief bio about yourself in English"
+                  rows={4}
+                />
+              </div>
+            </CardContent>
+          </Card>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="position">Position/Title</Label>
-                    <Input
-                      id="position"
-                      value={profileForm.position}
-                      onChange={(e) => setProfileForm(prev => ({ ...prev, position: e.target.value }))}
-                      placeholder="Your job title or position"
-                    />
-                  </div>
+          {/* Social Links */}
+          <Card>
+            <CardHeader>
+              <CardTitle>الروابط الاجتماعية</CardTitle>
+              <CardDescription>روابط حساباتك على وسائل التواصل الاجتماعي</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="linkedin_url">LinkedIn</Label>
+                <Input
+                  id="linkedin_url"
+                  value={form.linkedin_url}
+                  onChange={(e) => handleInputChange('linkedin_url', e.target.value)}
+                  placeholder="https://linkedin.com/in/username"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="twitter_url">Twitter</Label>
+                <Input
+                  id="twitter_url"
+                  value={form.twitter_url}
+                  onChange={(e) => handleInputChange('twitter_url', e.target.value)}
+                  placeholder="https://twitter.com/username"
+                />
+              </div>
+            </CardContent>
+          </Card>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="bio">Bio</Label>
-                    <Textarea
-                      id="bio"
-                      value={profileForm.bio}
-                      onChange={(e) => setProfileForm(prev => ({ ...prev, bio: e.target.value }))}
-                      placeholder="Tell us about yourself..."
-                      className="min-h-[100px]"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Preferred Language</Label>
-                    <Select 
-                      value={profileForm.preferred_language} 
-                      onValueChange={(value) => setProfileForm(prev => ({ ...prev, preferred_language: value }))}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="en">English</SelectItem>
-                        <SelectItem value="ar">العربية</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="flex justify-end">
-                    <Button onClick={handleUpdateProfile} disabled={loading}>
-                      {loading ? 'Updating...' : 'Update Profile'}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </main>
-        </div>
+          {/* Save Button */}
+          <div className="flex justify-end">
+            <Button type="submit" disabled={loading}>
+              {loading ? "جاري الحفظ..." : "حفظ التغييرات"}
+            </Button>
+          </div>
+        </form>
       </div>
-    </SidebarProvider>
+    </AppShell>
   );
-}
+};
+
+export default UserProfile;

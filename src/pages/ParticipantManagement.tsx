@@ -2,19 +2,18 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ParticipantManagement } from "@/components/events/ParticipantManagement";
-import { Header } from "@/components/ui/header";
-import { AppSidebar } from "@/components/layout/Sidebar";
-import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppShell } from "@/components/layout/AppShell";
 import { useToast } from "@/hooks/use-toast";
 
 interface Event {
   id: string;
   title_ar: string;
-  max_participants?: number;
+  title_en?: string;
+  description_ar?: string;
+  description_en?: string;
 }
 
-export default function ParticipantManagementPage() {
+const ParticipantManagementPage = () => {
   const { eventId } = useParams<{ eventId: string }>();
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
@@ -28,20 +27,20 @@ export default function ParticipantManagementPage() {
 
   const fetchEvent = async () => {
     try {
-      setLoading(true);
       const { data, error } = await supabase
         .from('events')
-        .select('id, title_ar, max_participants')
+        .select('*')
         .eq('id', eventId)
         .single();
 
       if (error) throw error;
+
       setEvent(data);
     } catch (error) {
       console.error('Error fetching event:', error);
       toast({
         title: "Error",
-        description: "Failed to load event details",
+        description: "Failed to fetch event details",
         variant: "destructive",
       });
     } finally {
@@ -51,70 +50,42 @@ export default function ParticipantManagementPage() {
 
   if (loading) {
     return (
-      <SidebarProvider>
-        <div className="min-h-screen flex w-full">
-          <AppSidebar activeTab="events" onTabChange={() => {}} />
-          <div className="flex-1 flex flex-col">
-            <Header />
-            <div className="flex items-center gap-4 px-6 py-3 border-b bg-background/95">
-              <SidebarTrigger />
-              <BreadcrumbNav activeTab="events" />
-            </div>
-            <main className="flex-1 overflow-auto">
-              <div className="flex items-center justify-center p-8">
-                <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                  <p className="mt-2 text-sm text-muted-foreground">Loading event...</p>
-                </div>
-              </div>
-            </main>
+      <AppShell>
+        <div className="p-6">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-lg">Loading...</div>
           </div>
         </div>
-      </SidebarProvider>
+      </AppShell>
     );
   }
 
   if (!event) {
     return (
-      <SidebarProvider>
-        <div className="min-h-screen flex w-full">
-          <AppSidebar activeTab="events" onTabChange={() => {}} />
-          <div className="flex-1 flex flex-col">
-            <Header />
-            <div className="flex items-center gap-4 px-6 py-3 border-b bg-background/95">
-              <SidebarTrigger />
-              <BreadcrumbNav activeTab="events" />
-            </div>
-            <main className="flex-1 overflow-auto">
-              <div className="text-center p-8">
-                <p className="text-muted-foreground">Event not found</p>
-              </div>
-            </main>
+      <AppShell>
+        <div className="p-6">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-900">Event not found</h1>
+            <p className="text-gray-600">The requested event could not be found.</p>
           </div>
         </div>
-      </SidebarProvider>
+      </AppShell>
     );
   }
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full">
-        <AppSidebar activeTab="events" onTabChange={() => {}} />
-        <div className="flex-1 flex flex-col">
-          <Header />
-          <div className="flex items-center gap-4 px-6 py-3 border-b bg-background/95">
-            <SidebarTrigger />
-            <BreadcrumbNav activeTab="events" />
+    <AppShell>
+      <div className="p-6">
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-3xl font-bold">{event.title_ar}</h1>
+            <p className="text-muted-foreground">Manage participants for this event</p>
           </div>
-          <main className="flex-1 overflow-auto p-6">
-            <ParticipantManagement 
-              eventId={event.id}
-              eventTitle={event.title_ar}
-              maxParticipants={event.max_participants}
-            />
-          </main>
+          <ParticipantManagement eventId={eventId!} />
         </div>
       </div>
-    </SidebarProvider>
+    </AppShell>
   );
-}
+};
+
+export default ParticipantManagementPage;
