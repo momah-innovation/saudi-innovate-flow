@@ -14,10 +14,13 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
+import { Heading1 } from "@/components/ui";
+import { useDirection } from "@/components/ui";
 
 export const Header = () => {
   const { user, userProfile, signOut, hasRole } = useAuth();
   const { uiInitialsMaxLength } = useSystemSettings();
+  const { isRTL } = useDirection();
   const navigate = useNavigate();
 
   const getUserDisplayName = () => {
@@ -48,16 +51,16 @@ export const Header = () => {
 
   return (
     <header className="border-b bg-gradient-to-r from-primary via-primary-light to-accent p-4 shadow-elegant">
-      <div className="container mx-auto flex items-center justify-between">
+      <div className={`container mx-auto flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
         {/* Logo and Title */}
-        <div className="flex items-center space-x-4">
-          <div className="h-10 w-10 rounded-lg bg-white/20 flex items-center justify-center">
+        <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
+          <div className="h-10 w-10 rounded-lg bg-background/20 flex items-center justify-center">
             <div className="text-xl font-bold text-primary-foreground">🏗️</div>
           </div>
           <div>
-            <h1 className="text-xl font-bold text-primary-foreground">
+            <Heading1 className="text-xl font-bold text-primary-foreground">
               Ruwād Innovation System
-            </h1>
+            </Heading1>
             <p className="text-sm text-primary-foreground/80">
               Government Innovation Management Platform
             </p>
@@ -70,15 +73,15 @@ export const Header = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
               placeholder="Search challenges, ideas, or stakeholders..."
-              className="pl-10 bg-white/10 border-white/20 text-primary-foreground placeholder:text-primary-foreground/60"
+              className="pl-10 bg-background/10 border-background/20 text-primary-foreground placeholder:text-primary-foreground/60"
             />
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center space-x-3">
+        <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
           {/* Language Toggle */}
-          <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
+          <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-background/10">
             <Globe className="h-4 w-4 mr-2" />
             EN | العربية
           </Button>
@@ -89,8 +92,8 @@ export const Header = () => {
           {/* User Avatar Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0 hover:bg-white/10">
-                <Avatar className="h-10 w-10 border-2 border-white/20">
+              <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0 hover:bg-background/10">
+                <Avatar className="h-10 w-10 border-2 border-background/20">
                   <AvatarImage 
                     src={userProfile?.profile_image_url} 
                     alt={getUserDisplayName()} 

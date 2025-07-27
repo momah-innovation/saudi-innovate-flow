@@ -14,6 +14,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { PageHeader, LayoutSelector, SearchAndFilters, EmptyState, Heading1 } from "@/components/ui";
 import { 
   Plus, 
   Search, 
@@ -518,132 +519,72 @@ export function CampaignsManagement() {
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Campaigns Management</h1>
-          <p className="text-muted-foreground mt-1">
-            Manage and monitor innovation campaigns ({filteredCampaigns.length} campaigns)
-          </p>
-        </div>
-        <Button onClick={() => { resetForm(); setShowAddDialog(true); }} className="gap-2">
-          <Plus className="w-4 h-4" />
-          Create Campaign
-        </Button>
-      </div>
+      <PageHeader
+        title="Campaigns Management"
+        description="Manage and monitor innovation campaigns"
+        itemCount={filteredCampaigns.length}
+        actionButton={{
+          label: "Create Campaign",
+          icon: <Plus className="w-4 h-4" />,
+          onClick: () => { resetForm(); setShowAddDialog(true); }
+        }}
+      />
 
       {/* Search, Filters & Layout Controls */}
       <div className="space-y-4">
         {/* Main search and view controls */}
         <div className="flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search campaigns by title, description, theme, or metrics..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          
-          {/* Layout Selector */}
-          <div className="flex items-center gap-1 p-1 bg-muted rounded-lg">
-            <Button
-              variant={viewMode === 'cards' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setViewMode('cards')}
-              className="gap-2"
-            >
-              <LayoutGrid className="w-4 h-4" />
-              Cards
-            </Button>
-            <Button
-              variant={viewMode === 'list' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setViewMode('list')}
-              className="gap-2"
-            >
-              <List className="w-4 h-4" />
-              List
-            </Button>
-            <Button
-              variant={viewMode === 'grid' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setViewMode('grid')}
-              className="gap-2"
-            >
-              <Grid className="w-4 h-4" />
-              Grid
-            </Button>
-          </div>
-        </div>
-
-        {/* Collapsible Filters */}
-        <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
-          <CollapsibleTrigger asChild>
-            <Button variant="outline" className="w-full justify-between">
-              <span className="flex items-center gap-2">
-                <Filter className="w-4 h-4" />
-                Filters {(statusFilter !== 'all' || themeFilter !== 'all') && '(Active)'}
-              </span>
-              {filtersOpen ? (
-                <ChevronDown className="w-4 h-4" />
-              ) : (
-                <ChevronRight className="w-4 h-4" />
-              )}
-            </Button>
-          </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-4 pt-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <SearchAndFilters
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            searchPlaceholder="Search campaigns by title, description, theme, or metrics..."
+            filtersOpen={filtersOpen}
+            onFiltersOpenChange={setFiltersOpen}
+            hasActiveFilters={statusFilter !== 'all' || themeFilter !== 'all'}
+            onClearFilters={() => {
+              setStatusFilter('all');
+              setThemeFilter('all');
+            }}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="status-filter">Status</Label>
+                <Label htmlFor="status-filter" className="text-sm font-medium">Status</Label>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All statuses" />
+                  <SelectTrigger id="status-filter">
+                    <SelectValue placeholder="All Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Statuses</SelectItem>
-                    <SelectItem value="planning">Planning</SelectItem>
+                    <SelectItem value="all">All Status</SelectItem>
                     <SelectItem value="active">Active</SelectItem>
                     <SelectItem value="completed">Completed</SelectItem>
                     <SelectItem value="cancelled">Cancelled</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-
               <div>
-                <Label htmlFor="theme-filter">Theme</Label>
+                <Label htmlFor="theme-filter" className="text-sm font-medium">Theme</Label>
                 <Select value={themeFilter} onValueChange={setThemeFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All themes" />
+                  <SelectTrigger id="theme-filter">
+                    <SelectValue placeholder="All Themes" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Themes</SelectItem>
                     <SelectItem value="digital_transformation">Digital Transformation</SelectItem>
                     <SelectItem value="sustainability">Sustainability</SelectItem>
-                    <SelectItem value="innovation">Innovation</SelectItem>
-                    <SelectItem value="education">Education</SelectItem>
-                    <SelectItem value="healthcare">Healthcare</SelectItem>
+                    <SelectItem value="smart_cities">Smart Cities</SelectItem>
+                    <SelectItem value="citizen_services">Citizen Services</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-
-              <div className="md:col-span-2 flex items-end gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setStatusFilter('all');
-                    setThemeFilter('all');
-                    setSearchTerm('');
-                  }}
-                  className="gap-2"
-                >
-                  <X className="w-4 h-4" />
-                  Clear Filters
-                </Button>
-              </div>
             </div>
-          </CollapsibleContent>
-        </Collapsible>
+          </SearchAndFilters>
+          
+          {/* Layout Selector */}
+          <LayoutSelector 
+            viewMode={viewMode} 
+            onViewModeChange={setViewMode}
+          />
+        </div>
       </div>
 
       {/* Content based on view mode */}
@@ -662,23 +603,19 @@ export function CampaignsManagement() {
       {viewMode === 'list' && renderListView()}
 
       {filteredCampaigns.length === 0 && (
-        <div className="text-center py-12 bg-muted/20 rounded-lg border-2 border-dashed">
-          <div className="mx-auto w-12 h-12 bg-muted rounded-full flex items-center justify-center mb-4">
-            <Search className="w-6 h-6 text-muted-foreground" />
-          </div>
-          <h3 className="text-lg font-semibold mb-2">No campaigns found</h3>
-          <p className="text-muted-foreground mb-4">
-            {searchTerm || statusFilter !== 'all' || themeFilter !== 'all'
+        <EmptyState
+          icon={<Search className="h-12 w-12" />}
+          title="No campaigns found"
+          description={
+            searchTerm || statusFilter !== 'all' || themeFilter !== 'all'
               ? "Try adjusting your search criteria or filters"
-              : "Get started by creating your first campaign"}
-          </p>
-          {(!searchTerm && statusFilter === 'all' && themeFilter === 'all') && (
-            <Button onClick={() => { resetForm(); setShowAddDialog(true); }} className="gap-2">
-              <Plus className="w-4 h-4" />
-              Create First Campaign
-            </Button>
-          )}
-        </div>
+              : "Get started by creating your first campaign"
+          }
+          action={(!searchTerm && statusFilter === 'all' && themeFilter === 'all') ? {
+            label: "Create First Campaign",
+            onClick: () => { resetForm(); setShowAddDialog(true); }
+          } : undefined}
+        />
       )}
 
       {/* Add/Edit Dialog - simplified for now */}

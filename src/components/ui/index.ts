@@ -58,6 +58,9 @@ export { fontManager, useFontLoader, FontSelector, injectFontStyles, FONT_CONFIG
 // Loading Components
 export { LoadingSpinner, LoadingDots, LoadingPulse, ProgressBar, CardSkeleton, TableSkeleton, ListSkeleton, FormSkeleton, LoadingOverlay, LoadingState } from './loading';
 
+// Migration Helper
+export * from './ui-migration-helper';
+
 // Re-export all existing shadcn components for consistency
 export * from './accordion';
 export * from './alert';
