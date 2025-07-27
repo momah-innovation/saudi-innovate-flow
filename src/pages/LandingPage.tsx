@@ -160,6 +160,10 @@ export default function LandingPage() {
               variant="outline" 
               size="lg"
               className="border-background/30 text-primary-foreground hover:bg-background/10 text-lg px-8 py-4"
+              onClick={() => {
+                const featuresSection = document.getElementById('features-section');
+                featuresSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               {getText("Learn More", "اعرف المزيد")}
             </Button>
@@ -251,7 +255,7 @@ export default function LandingPage() {
         </section>
       )}
       {/* Features Section */}
-      <section className="py-20 px-4">
+      <section id="features-section" className="py-20 px-4">
         <div className="container mx-auto">
           <div className={`text-center mb-16 ${isRTL ? 'text-right' : ''}`}>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-6">
