@@ -60,6 +60,9 @@ export const translations = {
     filterByTheme: 'Filter by Theme',
     clearFilters: 'Clear Filters',
     
+    // Layout and UI
+    items: 'Items',
+    
     // Actions
     viewDetails: 'View Details',
     editDetails: 'Edit Details',
@@ -124,6 +127,9 @@ export const translations = {
     filterByStatus: 'تصفية حسب الحالة',
     filterByTheme: 'تصفية حسب الموضوع',
     clearFilters: 'مسح المرشحات',
+    
+    // Layout and UI
+    items: 'عناصر',
     
     // Actions
     viewDetails: 'عرض التفاصيل',
