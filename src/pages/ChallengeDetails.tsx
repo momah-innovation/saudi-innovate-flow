@@ -34,6 +34,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { ExpertAssignmentDialog } from "@/components/challenges/ExpertAssignmentDialog";
 import { FocusQuestionDialog } from "@/components/challenges/FocusQuestionDialog";
+import { AdminLayout } from "@/components/layout/AdminLayout";
 
 interface Challenge {
   id: string;
@@ -580,8 +581,14 @@ const ChallengeDetails = () => {
     );
   }
 
+  const breadcrumbs = [
+    { label: "التحديات", href: "/challenges" },
+    { label: challenge?.title_ar || "تفاصيل التحدي" }
+  ];
+
   return (
-    <div className="p-6 space-y-6">
+    <AdminLayout breadcrumbs={breadcrumbs}>
+      <div className="p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -1312,8 +1319,9 @@ const ChallengeDetails = () => {
         onQuestionSaved={() => {
           fetchFocusQuestions();
         }}
-      />
-    </div>
+        />
+      </div>
+    </AdminLayout>
   );
 };
 
