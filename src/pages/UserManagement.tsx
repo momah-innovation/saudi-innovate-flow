@@ -380,12 +380,11 @@ export default function UserManagement() {
       <PageHeader 
         title="User Management" 
         description="Manage user accounts, roles, and permissions"
-        action={
-          <Button onClick={() => setIsInviteUserDialogOpen(true)}>
-            <UserPlus className="h-4 w-4 mr-2" />
-            Invite User
-          </Button>
-        }
+        actionButton={{
+          label: "Invite User",
+          icon: <UserPlus className="h-4 w-4" />,
+          onClick: () => setIsInviteUserDialogOpen(true)
+        }}
       />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>

@@ -49,7 +49,7 @@ export { ContentArea } from '../layout/ContentArea';
 export { Container as ResponsiveContainer } from '../layout/Container';
 export { AdminLayout } from '../layout/AdminLayout';
 export { ResponsiveGrid } from '../layout/ResponsiveGrid';
-export { PageHeader } from '../layout/PageHeader';
+export { PageHeader } from './page-header';
 
 // Typography Components
 export { Typography, Heading1, Heading2, Heading3, BodyText, Lead, Caption, MutedText } from './typography';
