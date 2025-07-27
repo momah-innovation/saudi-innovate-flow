@@ -34,7 +34,7 @@ interface Expert {
 
 interface Challenge {
   id: string;
-  title: string;
+  title_ar: string;
   status: string;
   priority_level: string;
   estimated_budget: number;
@@ -204,8 +204,8 @@ export function ExpertAssignmentManagement() {
     try {
       const { data, error } = await supabase
         .from('challenges')
-        .select('id, title, status, priority_level, estimated_budget')
-        .order('title');
+        .select('id, title_ar, status, priority_level, estimated_budget')
+        .order('title_ar');
 
       if (error) throw error;
       setChallenges(data || []);
@@ -228,7 +228,7 @@ export function ExpertAssignmentManagement() {
           notes,
           challenges:challenge_id (
             id,
-            title,
+            title_ar,
             status,
             priority_level,
             estimated_budget
@@ -448,7 +448,7 @@ export function ExpertAssignmentManagement() {
       assignment.expert_id?.toLowerCase().includes(expertFilter.toLowerCase());
     
     const matchesChallengeFilter = !challengeFilter || 
-      challenge?.title?.toLowerCase().includes(challengeFilter.toLowerCase());
+      challenge?.title_ar?.toLowerCase().includes(challengeFilter.toLowerCase());
     
     const matchesRoleFilter = roleFilter === 'all' || assignment.role_type === roleFilter;
     const matchesStatusFilter = statusFilter === 'all' || assignment.status === statusFilter;
@@ -581,7 +581,7 @@ export function ExpertAssignmentManagement() {
                         </Button>
                       </CardTitle>
                       <CardDescription>
-                        {assignment.challenges?.title}
+                        {assignment.challenges?.title_ar}
                       </CardDescription>
                       {/* Expert Details */}
                       <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
@@ -797,7 +797,7 @@ export function ExpertAssignmentManagement() {
                 <SelectContent>
                   {challenges.map((challenge) => (
                     <SelectItem key={challenge.id} value={challenge.id}>
-                      {challenge.title}
+                      {challenge.title_ar}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -893,7 +893,7 @@ export function ExpertAssignmentManagement() {
                         className="rounded border-gray-300"
                       />
                       <label htmlFor={`challenge-${challenge.id}`} className="text-sm flex-1 cursor-pointer">
-                        {challenge.title}
+                        {challenge.title_ar}
                       </label>
                     </div>
                   ))}
@@ -992,7 +992,7 @@ export function ExpertAssignmentManagement() {
             <div className="space-y-2">
               <Label>Challenge</Label>
               <Input 
-                value={editingAssignment?.challenges?.title || 'Challenge'} 
+                value={editingAssignment?.challenges?.title_ar || 'Challenge'} 
                 disabled 
               />
             </div>
