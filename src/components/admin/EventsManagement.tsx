@@ -117,6 +117,11 @@ export function EventsManagement() {
     campaign_id: "",
     challenge_id: "",
     sector_id: "",
+    deputy_id: "",
+    department_id: "",
+    domain_id: "",
+    sub_domain_id: "",
+    service_id: "",
     target_stakeholder_groups: [] as string[],
   });
 
@@ -124,6 +129,11 @@ export function EventsManagement() {
   const [campaigns, setCampaigns] = useState<any[]>([]);
   const [challenges, setChallenges] = useState<any[]>([]);
   const [sectors, setSectors] = useState<any[]>([]);
+  const [deputies, setDeputies] = useState<any[]>([]);
+  const [departments, setDepartments] = useState<any[]>([]);
+  const [domains, setDomains] = useState<any[]>([]);
+  const [subDomains, setSubDomains] = useState<any[]>([]);
+  const [services, setServices] = useState<any[]>([]);
   const [partners, setPartners] = useState<any[]>([]);
   const [stakeholders, setStakeholders] = useState<any[]>([]);
   const [focusQuestions, setFocusQuestions] = useState<any[]>([]);
@@ -131,6 +141,13 @@ export function EventsManagement() {
   const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
   const [selectedStakeholders, setSelectedStakeholders] = useState<string[]>([]);
   const [selectedFocusQuestions, setSelectedFocusQuestions] = useState<string[]>([]);
+  
+  // Organizational structure selections
+  const [selectedDeputy, setSelectedDeputy] = useState<string>("");
+  const [selectedDepartment, setSelectedDepartment] = useState<string>("");
+  const [selectedDomain, setSelectedDomain] = useState<string>("");
+  const [selectedSubDomain, setSelectedSubDomain] = useState<string>("");
+  const [selectedService, setSelectedService] = useState<string>("");
   
   // Search states for dropdowns
   const [openEventManager, setOpenEventManager] = useState(false);
@@ -204,7 +221,12 @@ export function EventsManagement() {
       const [
         campaignsRes, 
         challengesRes, 
-        sectorsRes, 
+        sectorsRes,
+        deputiesRes,
+        departmentsRes,
+        domainsRes,
+        subDomainsRes,
+        servicesRes,
         partnersRes, 
         stakeholdersRes, 
         focusQuestionsRes,
@@ -219,6 +241,11 @@ export function EventsManagement() {
         supabase.from('campaigns').select('*'),
         supabase.from('challenges').select('*'),
         supabase.from('sectors').select('*'),
+        supabase.from('deputies').select('*'),
+        supabase.from('departments').select('*'),
+        supabase.from('domains').select('*'),
+        supabase.from('sub_domains').select('*'),
+        supabase.from('services').select('*'),
         supabase.from('partners').select('*'),
         supabase.from('stakeholders').select('*'),
         supabase.from('focus_questions').select('*'),
@@ -234,6 +261,11 @@ export function EventsManagement() {
       setCampaigns(campaignsRes.data || []);
       setChallenges(challengesRes.data || []);
       setSectors(sectorsRes.data || []);
+      setDeputies(deputiesRes.data || []);
+      setDepartments(departmentsRes.data || []);
+      setDomains(domainsRes.data || []);
+      setSubDomains(subDomainsRes.data || []);
+      setServices(servicesRes.data || []);
       setPartners(partnersRes.data || []);
       setStakeholders(stakeholdersRes.data || []);
       setFocusQuestions(focusQuestionsRes.data || []);
@@ -297,11 +329,21 @@ export function EventsManagement() {
       campaign_id: "",
       challenge_id: "",
       sector_id: "",
+      deputy_id: "",
+      department_id: "",
+      domain_id: "",
+      sub_domain_id: "",
+      service_id: "",
       target_stakeholder_groups: [],
     });
     setSelectedPartners([]);
     setSelectedStakeholders([]);
     setSelectedFocusQuestions([]);
+    setSelectedDeputy("");
+    setSelectedDepartment("");
+    setSelectedDomain("");
+    setSelectedSubDomain("");
+    setSelectedService("");
     setCurrentStep(1);
     setStepErrors({});
     
@@ -404,15 +446,57 @@ export function EventsManagement() {
     });
   };
 
+  // Organizational Structure Dynamic Filtering
+  const getFilteredDeputies = () => {
+    if (!formData.sector_id) return deputies;
+    return deputies.filter(deputy => deputy.sector_id === formData.sector_id);
+  };
+
+  const getFilteredDepartments = () => {
+    if (!selectedDeputy) return departments;
+    return departments.filter(department => department.deputy_id === selectedDeputy);
+  };
+
+  const getFilteredDomains = () => {
+    if (!selectedDepartment) return domains;
+    return domains.filter(domain => domain.department_id === selectedDepartment);
+  };
+
+  const getFilteredSubDomains = () => {
+    if (!selectedDomain) return subDomains;
+    return subDomains.filter(subDomain => subDomain.domain_id === selectedDomain);
+  };
+
+  const getFilteredServices = () => {
+    if (!selectedSubDomain) return services;
+    return services.filter(service => service.sub_domain_id === selectedSubDomain);
+  };
+
   const getFilteredPartners = () => {
     const basePartners = partners.filter(partner => 
       partner.name.toLowerCase().includes(partnerSearch.toLowerCase())
     );
     
-    if (!formData.campaign_id && !formData.challenge_id) return basePartners;
+    // First filter by organizational structure
+    let filteredByOrg = basePartners;
+    if (formData.sector_id || selectedDeputy || selectedDepartment || selectedDomain || selectedSubDomain || selectedService) {
+      filteredByOrg = basePartners.filter(partner => {
+        // Filter partners based on organizational alignment
+        return (
+          !formData.sector_id || partner.sector_id === formData.sector_id ||
+          !selectedDeputy || partner.deputy_id === selectedDeputy ||
+          !selectedDepartment || partner.department_id === selectedDepartment ||
+          !selectedDomain || partner.domain_id === selectedDomain ||
+          !selectedSubDomain || partner.sub_domain_id === selectedSubDomain ||
+          !selectedService || partner.service_id === selectedService
+        );
+      });
+    }
     
-    // Filter partners based on campaign or challenge relationships
-    return basePartners.filter(partner => {
+    // Then filter by campaign or challenge relationships
+    if (!formData.campaign_id && !formData.challenge_id) return filteredByOrg;
+    
+    return filteredByOrg.filter(partner => {
       if (formData.campaign_id) {
         return campaignPartnerLinks.some(link => 
           link.campaign_id === formData.campaign_id && link.partner_id === partner.id
@@ -432,10 +516,26 @@ export function EventsManagement() {
       stakeholder.name.toLowerCase().includes(stakeholderSearch.toLowerCase())
     );
     
-    if (!formData.campaign_id && !formData.challenge_id) return baseStakeholders;
+    // First filter by organizational structure
+    let filteredByOrg = baseStakeholders;
+    if (formData.sector_id || selectedDeputy || selectedDepartment || selectedDomain || selectedSubDomain || selectedService) {
+      filteredByOrg = baseStakeholders.filter(stakeholder => {
+        // Filter stakeholders based on organizational alignment
+        return (
+          !formData.sector_id || stakeholder.sector_id === formData.sector_id ||
+          !selectedDeputy || stakeholder.deputy_id === selectedDeputy ||
+          !selectedDepartment || stakeholder.department_id === selectedDepartment ||
+          !selectedDomain || stakeholder.domain_id === selectedDomain ||
+          !selectedSubDomain || stakeholder.sub_domain_id === selectedSubDomain ||
+          !selectedService || stakeholder.service_id === selectedService
+        );
+      });
+    }
     
-    // Filter stakeholders based on campaign or challenge relationships
-    return baseStakeholders.filter(stakeholder => {
+    // Then filter by campaign or challenge relationships
+    if (!formData.campaign_id && !formData.challenge_id) return filteredByOrg;
+    
+    return filteredByOrg.filter(stakeholder => {
       if (formData.campaign_id) {
         return campaignStakeholderLinks.some(link => 
           link.campaign_id === formData.campaign_id && link.stakeholder_id === stakeholder.id
@@ -540,6 +640,11 @@ export function EventsManagement() {
         campaign_id: event.campaign_id || "",
         challenge_id: event.challenge_id || "",
         sector_id: event.sector_id || "",
+        deputy_id: (event as any).deputy_id || "",
+        department_id: (event as any).department_id || "",
+        domain_id: (event as any).domain_id || "",
+        sub_domain_id: (event as any).sub_domain_id || "",
+        service_id: (event as any).service_id || "",
         target_stakeholder_groups: event.target_stakeholder_groups || [],
       });
 
@@ -997,6 +1102,11 @@ export function EventsManagement() {
   const renderOrganizationalStructure = () => {
     const filteredChallenges = getFilteredChallenges();
     const filteredSectors = getFilteredSectors();
+    const filteredDeputies = getFilteredDeputies();
+    const filteredDepartments = getFilteredDepartments();
+    const filteredDomains = getFilteredDomains();
+    const filteredSubDomains = getFilteredSubDomains();
+    const filteredServices = getFilteredServices();
 
     return (
       <div className="space-y-6">
@@ -1005,194 +1115,239 @@ export function EventsManagement() {
           <h3 className="text-lg font-semibold">Organizational Structure</h3>
         </div>
 
+        {/* Campaign & Challenge Selection */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-2">
             <Label htmlFor="campaign_id">Related Campaign</Label>
-            <Popover open={openCampaign} onOpenChange={setOpenCampaign}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={openCampaign}
-                  className="w-full justify-between"
-                >
-                  {formData.campaign_id 
-                    ? campaigns.find(c => c.id === formData.campaign_id)?.title || "Select campaign..."
-                    : "Select campaign..."
-                  }
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-full p-0">
-                <Command>
-                  <CommandInput placeholder="Search campaigns..." />
-                  <CommandList>
-                    <CommandEmpty>No campaign found.</CommandEmpty>
-                    <CommandGroup>
-                      <CommandItem
-                        value="none"
-                        onSelect={() => {
-                          setFormData({ ...formData, campaign_id: "", challenge_id: "", sector_id: "" });
-                          setOpenCampaign(false);
-                        }}
-                      >
-                        <Check
-                          className={`mr-2 h-4 w-4 ${
-                            !formData.campaign_id ? "opacity-100" : "opacity-0"
-                          }`}
-                        />
-                        None
-                      </CommandItem>
-                      {campaigns.map((campaign) => (
-                        <CommandItem
-                          key={campaign.id}
-                          value={campaign.title}
-                          onSelect={() => {
-                            setFormData({ ...formData, campaign_id: campaign.id, challenge_id: "", sector_id: "" });
-                            setOpenCampaign(false);
-                          }}
-                        >
-                          <Check
-                            className={`mr-2 h-4 w-4 ${
-                              formData.campaign_id === campaign.id ? "opacity-100" : "opacity-0"
-                            }`}
-                          />
-                          {campaign.title}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
+            <Select
+              value={formData.campaign_id}
+              onValueChange={(value) => {
+                setFormData({ 
+                  ...formData, 
+                  campaign_id: value,
+                  challenge_id: "",
+                  sector_id: ""
+                });
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select campaign..." />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">None</SelectItem>
+                {campaigns.map((campaign) => (
+                  <SelectItem key={campaign.id} value={campaign.id}>
+                    {campaign.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="challenge_id">Related Challenge</Label>
-            <Popover open={openChallenge} onOpenChange={setOpenChallenge}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={openChallenge}
-                  className="w-full justify-between"
-                  disabled={formData.campaign_id && filteredChallenges.length === 0}
-                >
-                  {formData.challenge_id 
-                    ? challenges.find(c => c.id === formData.challenge_id)?.title || "Select challenge..."
-                    : filteredChallenges.length === 0 && formData.campaign_id
+            <Select
+              value={formData.challenge_id}
+              onValueChange={(value) => {
+                setFormData({ 
+                  ...formData, 
+                  challenge_id: value,
+                  sector_id: ""
+                });
+              }}
+              disabled={formData.campaign_id && filteredChallenges.length === 0}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={
+                  filteredChallenges.length === 0 && formData.campaign_id
                     ? "No challenges available"
                     : "Select challenge..."
-                  }
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-full p-0">
-                <Command>
-                  <CommandInput placeholder="Search challenges..." />
-                  <CommandList>
-                    <CommandEmpty>No challenge found.</CommandEmpty>
-                    <CommandGroup>
-                      <CommandItem
-                        value="none"
-                        onSelect={() => {
-                          setFormData({ ...formData, challenge_id: "", sector_id: "" });
-                          setOpenChallenge(false);
-                        }}
-                      >
-                        <Check
-                          className={`mr-2 h-4 w-4 ${
-                            !formData.challenge_id ? "opacity-100" : "opacity-0"
-                          }`}
-                        />
-                        None
-                      </CommandItem>
-                      {filteredChallenges.map((challenge) => (
-                        <CommandItem
-                          key={challenge.id}
-                          value={challenge.title}
-                          onSelect={() => {
-                            setFormData({ ...formData, challenge_id: challenge.id, sector_id: "" });
-                            setOpenChallenge(false);
-                          }}
-                        >
-                          <Check
-                            className={`mr-2 h-4 w-4 ${
-                              formData.challenge_id === challenge.id ? "opacity-100" : "opacity-0"
-                            }`}
-                          />
-                          {challenge.title}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
+                } />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">None</SelectItem>
+                {filteredChallenges.map((challenge) => (
+                  <SelectItem key={challenge.id} value={challenge.id}>
+                    {challenge.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="sector_id">Related Sector</Label>
-            <Popover open={openSector} onOpenChange={setOpenSector}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={openSector}
-                  className="w-full justify-between"
-                  disabled={formData.challenge_id && filteredSectors.length === 0}
-                >
-                  {formData.sector_id 
-                    ? sectors.find(s => s.id === formData.sector_id)?.name || "Select sector..."
-                    : filteredSectors.length === 0 && formData.challenge_id
+            <Label htmlFor="sector_id">Sector</Label>
+            <Select
+              value={formData.sector_id}
+              onValueChange={(value) => {
+                setFormData({ ...formData, sector_id: value });
+                setSelectedDeputy("");
+                setSelectedDepartment("");
+                setSelectedDomain("");
+                setSelectedSubDomain("");
+                setSelectedService("");
+              }}
+              disabled={formData.challenge_id && filteredSectors.length === 0}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={
+                  filteredSectors.length === 0 && formData.challenge_id
                     ? "No sectors available"
                     : "Select sector..."
-                  }
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-full p-0">
-                <Command>
-                  <CommandInput placeholder="Search sectors..." />
-                  <CommandList>
-                    <CommandEmpty>No sector found.</CommandEmpty>
-                    <CommandGroup>
-                      <CommandItem
-                        value="none"
-                        onSelect={() => {
-                          setFormData({ ...formData, sector_id: "" });
-                          setOpenSector(false);
-                        }}
-                      >
-                        <Check
-                          className={`mr-2 h-4 w-4 ${
-                            !formData.sector_id ? "opacity-100" : "opacity-0"
-                          }`}
-                        />
-                        None
-                      </CommandItem>
-                      {filteredSectors.map((sector) => (
-                        <CommandItem
-                          key={sector.id}
-                          value={sector.name}
-                          onSelect={() => {
-                            setFormData({ ...formData, sector_id: sector.id });
-                            setOpenSector(false);
-                          }}
-                        >
-                          <Check
-                            className={`mr-2 h-4 w-4 ${
-                              formData.sector_id === sector.id ? "opacity-100" : "opacity-0"
-                            }`}
-                          />
-                          {sector.name}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
+                } />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">None</SelectItem>
+                {filteredSectors.map((sector) => (
+                  <SelectItem key={sector.id} value={sector.id}>
+                    {sector.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Hierarchical Organizational Structure */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="deputy_id">Deputy</Label>
+            <Select
+              value={selectedDeputy}
+              onValueChange={(value) => {
+                setSelectedDeputy(value);
+                setSelectedDepartment("");
+                setSelectedDomain("");
+                setSelectedSubDomain("");
+                setSelectedService("");
+                setFormData({ ...formData, deputy_id: value });
+              }}
+              disabled={!formData.sector_id}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={
+                  !formData.sector_id ? "Select sector first" : "Select deputy..."
+                } />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">None</SelectItem>
+                {filteredDeputies.map((deputy) => (
+                  <SelectItem key={deputy.id} value={deputy.id}>
+                    {deputy.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="department_id">Department</Label>
+            <Select
+              value={selectedDepartment}
+              onValueChange={(value) => {
+                setSelectedDepartment(value);
+                setSelectedDomain("");
+                setSelectedSubDomain("");
+                setSelectedService("");
+                setFormData({ ...formData, department_id: value });
+              }}
+              disabled={!selectedDeputy}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={
+                  !selectedDeputy ? "Select deputy first" : "Select department..."
+                } />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">None</SelectItem>
+                {filteredDepartments.map((department) => (
+                  <SelectItem key={department.id} value={department.id}>
+                    {department.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="domain_id">Domain</Label>
+            <Select
+              value={selectedDomain}
+              onValueChange={(value) => {
+                setSelectedDomain(value);
+                setSelectedSubDomain("");
+                setSelectedService("");
+                setFormData({ ...formData, domain_id: value });
+              }}
+              disabled={!selectedDepartment}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={
+                  !selectedDepartment ? "Select department first" : "Select domain..."
+                } />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">None</SelectItem>
+                {filteredDomains.map((domain) => (
+                  <SelectItem key={domain.id} value={domain.id}>
+                    {domain.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="sub_domain_id">Sub-Domain</Label>
+            <Select
+              value={selectedSubDomain}
+              onValueChange={(value) => {
+                setSelectedSubDomain(value);
+                setSelectedService("");
+                setFormData({ ...formData, sub_domain_id: value });
+              }}
+              disabled={!selectedDomain}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={
+                  !selectedDomain ? "Select domain first" : "Select sub-domain..."
+                } />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">None</SelectItem>
+                {filteredSubDomains.map((subDomain) => (
+                  <SelectItem key={subDomain.id} value={subDomain.id}>
+                    {subDomain.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="service_id">Service</Label>
+            <Select
+              value={selectedService}
+              onValueChange={(value) => {
+                setSelectedService(value);
+                setFormData({ ...formData, service_id: value });
+              }}
+              disabled={!selectedSubDomain}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={
+                  !selectedSubDomain ? "Select sub-domain first" : "Select service..."
+                } />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">None</SelectItem>
+                {filteredServices.map((service) => (
+                  <SelectItem key={service.id} value={service.id}>
+                    {service.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
