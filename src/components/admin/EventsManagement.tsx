@@ -4,13 +4,21 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Calendar, MapPin, Users, Clock, Edit, Trash2, Eye, Grid, List, LayoutGrid } from "lucide-react";
+import { Plus, Calendar, MapPin, Users, Clock, Edit, Trash2, Eye } from "lucide-react";
 import { format } from "date-fns";
 import { EventDialog } from "@/components/events/EventDialog";
-import { EventFilters } from "@/components/events/EventFilters";
-import { EventBulkActions } from "@/components/events/EventBulkActions";
+
+// New UI Library Components
+import { PageHeader } from "@/components/ui/page-header";
+import { LayoutSelector } from "@/components/ui/layout-selector";
+import { SearchAndFilters } from "@/components/ui/search-and-filters";
+import { EmptyState } from "@/components/ui/empty-state";
+import { DeleteConfirmation } from "@/components/ui/delete-confirmation";
+import { ViewLayouts } from "@/components/ui/view-layouts";
+import { BulkActions } from "@/components/ui/bulk-actions";
 
 interface Event {
   id: string;
@@ -50,19 +58,16 @@ export function EventsManagement() {
   const [campaigns, setCampaigns] = useState<any[]>([]);
   const [sectors, setSectors] = useState<any[]>([]);
   const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
-  const [viewMode, setViewMode] = useState<"card" | "list" | "grid">("card");
+  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   
   // Filters
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [formatFilter, setFormatFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
-  const [categoryFilter, setCategoryFilter] = useState("all");
-  const [visibilityFilter, setVisibilityFilter] = useState("all");
   const [selectedCampaign, setSelectedCampaign] = useState("all");
   const [selectedSector, setSelectedSector] = useState("all");
-  const [dateFrom, setDateFrom] = useState<Date | undefined>();
-  const [dateTo, setDateTo] = useState<Date | undefined>();
+  const [filtersOpen, setFiltersOpen] = useState(false);
   
   // Dialog states
   const [showEventDialog, setShowEventDialog] = useState(false);
@@ -78,7 +83,7 @@ export function EventsManagement() {
 
   useEffect(() => {
     filterEvents();
-  }, [events, searchTerm, statusFilter, formatFilter, typeFilter, categoryFilter, visibilityFilter, selectedCampaign, selectedSector, dateFrom, dateTo]);
+  }, [events, searchTerm, statusFilter, formatFilter, typeFilter, selectedCampaign, selectedSector]);
 
   const fetchEvents = async () => {
     try {
@@ -151,41 +156,23 @@ export function EventsManagement() {
       filtered = filtered.filter(event => event.sector_id === selectedSector);
     }
 
-    if (dateFrom) {
-      filtered = filtered.filter(event => new Date(event.event_date) >= dateFrom);
-    }
-
-    if (dateTo) {
-      filtered = filtered.filter(event => new Date(event.event_date) <= dateTo);
-    }
-
     setFilteredEvents(filtered);
   };
 
   const handleView = async (event: Event) => {
     try {
-      // Fetch detailed relationship data for viewing
       const [partnersRes, stakeholdersRes, focusQuestionsRes] = await Promise.all([
         supabase
           .from('event_partner_links')
-          .select(`
-            partner_id,
-            partners!inner(*)
-          `)
+          .select('partner_id, partners!inner(*)')
           .eq('event_id', event.id),
         supabase
           .from('event_stakeholder_links')
-          .select(`
-            stakeholder_id,
-            stakeholders!inner(*)
-          `)
+          .select('stakeholder_id, stakeholders!inner(*)')
           .eq('event_id', event.id),
         supabase
           .from('event_focus_question_links')
-          .select(`
-            focus_question_id,
-            focus_questions!inner(*)
-          `)
+          .select('focus_question_id, focus_questions!inner(*)')
           .eq('event_id', event.id)
       ]);
 
@@ -209,10 +196,7 @@ export function EventsManagement() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this event? This action cannot be undone.")) return;
-
     try {
-      // Delete related links first
       await Promise.all([
         supabase.from('event_partner_links').delete().eq('event_id', id),
         supabase.from('event_stakeholder_links').delete().eq('event_id', id),
@@ -220,7 +204,6 @@ export function EventsManagement() {
         supabase.from('event_challenge_links').delete().eq('event_id', id)
       ]);
 
-      // Then delete the event
       const { error } = await supabase
         .from('events')
         .delete()
@@ -255,27 +238,13 @@ export function EventsManagement() {
     setStatusFilter("all");
     setFormatFilter("all");
     setTypeFilter("all");
-    setCategoryFilter("all");
-    setVisibilityFilter("all");
     setSelectedCampaign("all");
     setSelectedSector("all");
-    setDateFrom(undefined);
-    setDateTo(undefined);
   };
 
-  const getActiveFiltersCount = () => {
-    let count = 0;
-    if (searchTerm) count++;
-    if (statusFilter !== "all") count++;
-    if (formatFilter !== "all") count++;
-    if (typeFilter !== "all") count++;
-    if (categoryFilter !== "all") count++;
-    if (visibilityFilter !== "all") count++;
-    if (selectedCampaign !== "all") count++;
-    if (selectedSector !== "all") count++;
-    if (dateFrom) count++;
-    if (dateTo) count++;
-    return count;
+  const hasActiveFilters = () => {
+    return statusFilter !== "all" || formatFilter !== "all" || typeFilter !== "all" || 
+           selectedCampaign !== "all" || selectedSector !== "all";
   };
 
   const getStatusColor = (status: string) => {
@@ -298,306 +267,299 @@ export function EventsManagement() {
     }
   };
 
+  const renderEventCard = (event: Event) => (
+    <Card key={event.id} className="hover:shadow-lg transition-shadow">
+      <CardHeader className="pb-3">
+        <div className="flex justify-between items-start">
+          <div className="flex-1">
+            <CardTitle className="text-lg">{event.title}</CardTitle>
+            {event.title_ar && (
+              <p className="text-sm text-muted-foreground mt-1" dir="rtl">
+                {event.title_ar}
+              </p>
+            )}
+            <div className="flex gap-2 mt-2">
+              <Badge className={getStatusColor(event.status || 'scheduled')}>
+                {event.status || 'scheduled'}
+              </Badge>
+              <Badge className={getFormatColor(event.format || 'in_person')}>
+                {event.format || 'in_person'}
+              </Badge>
+              {event.event_type && (
+                <Badge variant="outline">
+                  {event.event_type}
+                </Badge>
+              )}
+            </div>
+          </div>
+          <div className="flex gap-1">
+            <Button variant="ghost" size="sm" onClick={() => handleView(event)} className="h-9 w-9 p-0">
+              <Eye className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="sm" onClick={() => handleEdit(event)} className="h-9 w-9 p-0">
+              <Edit className="h-4 w-4" />
+            </Button>
+            <DeleteConfirmation
+              title="Delete Event"
+              description={`Are you sure you want to delete "${event.title}"? This action cannot be undone and will permanently remove the event and all associated data.`}
+              onConfirm={() => handleDelete(event.id)}
+            />
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div className="flex items-center gap-2">
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+            <span>{format(new Date(event.event_date), 'PPP')}</span>
+          </div>
+          {event.start_time && (
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4 text-muted-foreground" />
+              <span>{event.start_time} - {event.end_time}</span>
+            </div>
+          )}
+          {event.location && (
+            <div className="flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-muted-foreground" />
+              <span className="truncate">{event.location}</span>
+            </div>
+          )}
+          {event.max_participants && (
+            <div className="flex items-center gap-2">
+              <Users className="h-4 w-4 text-muted-foreground" />
+              <span>{event.registered_participants || 0}/{event.max_participants}</span>
+            </div>
+          )}
+        </div>
+        {event.description && (
+          <p className="text-sm text-muted-foreground mt-3 line-clamp-2">
+            {event.description}
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  );
+
+  const renderListView = (events: React.ReactNode[]) => (
+    <div className="space-y-3">
+      {filteredEvents.map((event) => (
+        <Card key={event.id} className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex-1 space-y-1">
+              <div className="flex items-center gap-3">
+                <h3 className="font-semibold">{event.title}</h3>
+                <Badge className={`${getStatusColor(event.status || 'scheduled')} flex items-center gap-1`}>
+                  {event.status || 'scheduled'}
+                </Badge>
+                <Badge className={`${getFormatColor(event.format || 'in_person')} flex items-center gap-1`}>
+                  {event.format || 'in_person'}
+                </Badge>
+              </div>
+              <p className="text-sm text-muted-foreground line-clamp-1">{event.description}</p>
+              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1">
+                  <Calendar className="w-3 h-3" />
+                  {format(new Date(event.event_date), 'PPP')}
+                </span>
+                {event.location && (
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-3 h-3" />
+                    {event.location}
+                  </span>
+                )}
+                {event.max_participants && (
+                  <span className="flex items-center gap-1">
+                    <Users className="w-3 h-3" />
+                    {event.registered_participants || 0}/{event.max_participants}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" onClick={() => handleView(event)}>
+                <Eye className="w-4 h-4" />
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => handleEdit(event)}>
+                <Edit className="w-4 h-4" />
+              </Button>
+              <DeleteConfirmation
+                title="Delete Event"
+                description={`Are you sure you want to delete "${event.title}"? This action cannot be undone.`}
+                onConfirm={() => handleDelete(event.id)}
+              />
+            </div>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+
   return (
     <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">Events Management</h1>
-          <p className="text-muted-foreground">Manage and organize all events</p>
-        </div>
-        <div className="flex items-center gap-3">
-          {/* Layout Selector */}
-          <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as "card" | "list" | "grid")}>
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="card" className="flex items-center gap-2">
-                <LayoutGrid className="h-4 w-4" />
-                Cards
-              </TabsTrigger>
-              <TabsTrigger value="list" className="flex items-center gap-2">
-                <List className="h-4 w-4" />
-                List
-              </TabsTrigger>
-              <TabsTrigger value="grid" className="flex items-center gap-2">
-                <Grid className="h-4 w-4" />
-                Grid
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-          
-          <Button onClick={() => setShowEventDialog(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Event
-          </Button>
-        </div>
-      </div>
+      <PageHeader
+        title="Events Management"
+        description="Manage and organize all events"
+        itemCount={filteredEvents.length}
+        actionButton={{
+          label: "Create Event",
+          icon: <Plus className="w-4 h-4" />,
+          onClick: () => setShowEventDialog(true)
+        }}
+      >
+        <LayoutSelector viewMode={viewMode} onViewModeChange={setViewMode} />
+      </PageHeader>
 
-      <EventFilters
+      <SearchAndFilters
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        statusFilter={statusFilter}
-        onStatusChange={setStatusFilter}
-        formatFilter={formatFilter}
-        onFormatChange={setFormatFilter}
-        typeFilter={typeFilter}
-        onTypeChange={setTypeFilter}
-        categoryFilter={categoryFilter}
-        onCategoryChange={setCategoryFilter}
-        visibilityFilter={visibilityFilter}
-        onVisibilityChange={setVisibilityFilter}
-        selectedCampaign={selectedCampaign}
-        onCampaignChange={setSelectedCampaign}
-        selectedSector={selectedSector}
-        onSectorChange={setSelectedSector}
-        dateFrom={dateFrom}
-        onDateFromChange={setDateFrom}
-        dateTo={dateTo}
-        onDateToChange={setDateTo}
-        campaigns={campaigns}
-        sectors={sectors}
+        searchPlaceholder="Search events by title, description, location, type, format, or status..."
+        filtersOpen={filtersOpen}
+        onFiltersOpenChange={setFiltersOpen}
+        hasActiveFilters={hasActiveFilters()}
         onClearFilters={clearAllFilters}
-        activeFiltersCount={getActiveFiltersCount()}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div>
+            <Label htmlFor="status-filter">Status</Label>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder="All statuses" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="scheduled">Scheduled</SelectItem>
+                <SelectItem value="ongoing">Ongoing</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="postponed">Postponed</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="format-filter">Format</Label>
+            <Select value={formatFilter} onValueChange={setFormatFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder="All formats" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Formats</SelectItem>
+                <SelectItem value="in_person">In Person</SelectItem>
+                <SelectItem value="virtual">Virtual</SelectItem>
+                <SelectItem value="hybrid">Hybrid</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="type-filter">Type</Label>
+            <Select value={typeFilter} onValueChange={setTypeFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder="All types" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value="workshop">Workshop</SelectItem>
+                <SelectItem value="seminar">Seminar</SelectItem>
+                <SelectItem value="conference">Conference</SelectItem>
+                <SelectItem value="networking">Networking</SelectItem>
+                <SelectItem value="training">Training</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="campaign-filter">Campaign</Label>
+            <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
+              <SelectTrigger>
+                <SelectValue placeholder="All campaigns" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Campaigns</SelectItem>
+                {campaigns.map((campaign) => (
+                  <SelectItem key={campaign.id} value={campaign.id}>
+                    {campaign.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="sector-filter">Sector</Label>
+            <Select value={selectedSector} onValueChange={setSelectedSector}>
+              <SelectTrigger>
+                <SelectValue placeholder="All sectors" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Sectors</SelectItem>
+                {sectors.map((sector) => (
+                  <SelectItem key={sector.id} value={sector.id}>
+                    {sector.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </SearchAndFilters>
+
+      <BulkActions
+        selectedItems={selectedEvents}
+        onSelectAll={(selected) => {
+          if (selected) {
+            setSelectedEvents(filteredEvents.map(e => e.id));
+          } else {
+            setSelectedEvents([]);
+          }
+        }}
+        onSelectItem={(id, selected) => {
+          if (selected) {
+            setSelectedEvents([...selectedEvents, id]);
+          } else {
+            setSelectedEvents(selectedEvents.filter(eventId => eventId !== id));
+          }
+        }}
+        totalItems={filteredEvents.length}
+        actions={[
+          {
+            id: 'delete',
+            label: 'Delete Selected',
+            icon: <Trash2 className="w-4 h-4" />,
+            variant: 'destructive',
+            onClick: (selectedIds) => {
+              if (confirm(`Are you sure you want to delete ${selectedIds.length} events?`)) {
+                Promise.all(selectedIds.map(id => handleDelete(id)))
+                  .then(() => setSelectedEvents([]));
+              }
+            }
+          }
+        ]}
       />
 
-      <EventBulkActions
-        selectedEvents={selectedEvents}
-        onSelectionChange={setSelectedEvents}
-        events={filteredEvents}
-        onRefresh={fetchEvents}
-      />
-
-      {/* Events Display with Different View Modes */}
-      <Tabs value={viewMode} className="w-full">
-        <TabsContent value="card" className="space-y-4">
-          <div className="grid gap-4">
-            {filteredEvents.map((event) => (
-              <Card key={event.id} className="hover:shadow-md transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <CardTitle className="text-lg">{event.title}</CardTitle>
-                      {event.title_ar && (
-                        <p className="text-sm text-muted-foreground mt-1" dir="rtl">
-                          {event.title_ar}
-                        </p>
-                      )}
-                      <div className="flex gap-2 mt-2">
-                        <Badge className={getStatusColor(event.status || 'scheduled')}>
-                          {event.status || 'scheduled'}
-                        </Badge>
-                        <Badge className={getFormatColor(event.format || 'in_person')}>
-                          {event.format || 'in_person'}
-                        </Badge>
-                        {event.event_type && (
-                          <Badge variant="outline">
-                            {event.event_type}
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex gap-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleView(event)}
-                        className="h-9 w-9 p-0"
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEdit(event)}
-                        className="h-9 w-9 p-0"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDelete(event.id)}
-                        className="h-9 w-9 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <span>{format(new Date(event.event_date), 'PPP')}</span>
-                    </div>
-                    {event.start_time && (
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4 text-muted-foreground" />
-                        <span>{event.start_time} - {event.end_time}</span>
-                      </div>
-                    )}
-                    {event.location && (
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4 text-muted-foreground" />
-                        <span className="truncate">{event.location}</span>
-                      </div>
-                    )}
-                    {event.max_participants && (
-                      <div className="flex items-center gap-2">
-                        <Users className="h-4 w-4 text-muted-foreground" />
-                        <span>{event.registered_participants || 0}/{event.max_participants}</span>
-                      </div>
-                    )}
-                  </div>
-                  {event.description && (
-                    <p className="text-sm text-muted-foreground mt-3 line-clamp-2">
-                      {event.description}
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="list" className="space-y-2">
-          <div className="space-y-2">
-            {filteredEvents.map((event) => (
-              <Card key={event.id} className="hover:shadow-sm transition-shadow">
-                <CardContent className="py-4">
-                  <div className="flex justify-between items-center">
-                    <div className="flex-1 grid grid-cols-1 md:grid-cols-6 gap-4 items-center">
-                      <div className="md:col-span-2">
-                        <h3 className="font-medium">{event.title}</h3>
-                        <p className="text-sm text-muted-foreground">{event.event_type}</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">{format(new Date(event.event_date), 'MMM dd, yyyy')}</span>
-                      </div>
-                      <div>
-                        <Badge className={getStatusColor(event.status || 'scheduled')} variant="outline">
-                          {event.status || 'scheduled'}
-                        </Badge>
-                      </div>
-                      <div>
-                        <Badge className={getFormatColor(event.format || 'in_person')} variant="outline">
-                          {event.format || 'in_person'}
-                        </Badge>
-                      </div>
-                    <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">{event.registered_participants || 0}/{event.max_participants || '∞'}</span>
-                    </div>
-                  </div>
-                  <div className="flex gap-1">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleView(event)}
-                      className="h-9 w-9 p-0"
-                    >
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleEdit(event)}
-                      className="h-9 w-9 p-0"
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDelete(event.id)}
-                      className="h-9 w-9 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="grid" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredEvents.map((event) => (
-              <Card key={event.id} className="hover:shadow-md transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <CardTitle className="text-base line-clamp-1">{event.title}</CardTitle>
-                       <div className="flex gap-1 mt-2">
-                         <Badge variant="outline" className={`text-xs ${getStatusColor(event.status || 'scheduled')}`}>
-                           {event.status || 'scheduled'}
-                         </Badge>
-                         <Badge variant="outline" className={`text-xs ${getFormatColor(event.format || 'in_person')}`}>
-                           {event.format || 'in_person'}
-                         </Badge>
-                       </div>
-                    </div>
-                    <div className="flex gap-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleView(event)}
-                        className="h-8 w-8 p-0"
-                      >
-                        <Eye className="h-3 w-3" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEdit(event)}
-                        className="h-8 w-8 p-0"
-                      >
-                        <Edit className="h-3 w-3" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDelete(event.id)}
-                        className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
-                      >
-                        <Trash2 className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-3 w-3 text-muted-foreground" />
-                      <span>{format(new Date(event.event_date), 'MMM dd')}</span>
-                    </div>
-                    {event.location && (
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-3 w-3 text-muted-foreground" />
-                        <span className="truncate text-xs">{event.location}</span>
-                      </div>
-                    )}
-                    {event.max_participants && (
-                      <div className="flex items-center gap-2">
-                        <Users className="h-3 w-3 text-muted-foreground" />
-                        <span className="text-xs">{event.registered_participants || 0}/{event.max_participants}</span>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-      </Tabs>
+      <ViewLayouts
+        viewMode={viewMode}
+        listRenderer={renderListView}
+      >
+        {filteredEvents.map(renderEventCard)}
+      </ViewLayouts>
 
       {filteredEvents.length === 0 && (
-        <Card>
-          <CardContent className="py-8 text-center">
-            <p className="text-muted-foreground">No events found matching your criteria.</p>
-          </CardContent>
-        </Card>
+        <EmptyState
+          title="No events found"
+          description={
+            searchTerm || hasActiveFilters()
+              ? "Try adjusting your search criteria or filters"
+              : "Get started by creating your first event"
+          }
+          action={
+            !searchTerm && !hasActiveFilters()
+              ? { label: "Create First Event", onClick: () => setShowEventDialog(true) }
+              : undefined
+          }
+          isFiltered={searchTerm !== "" || hasActiveFilters()}
+        />
       )}
 
       <EventDialog
@@ -613,9 +575,7 @@ export function EventsManagement() {
       <Dialog open={!!viewingEvent} onOpenChange={(open) => !open && setViewingEvent(null)}>
         <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>
-              {viewingEvent?.title}
-            </DialogTitle>
+            <DialogTitle>{viewingEvent?.title}</DialogTitle>
           </DialogHeader>
           {viewingEvent && (
             <div className="space-y-6">
