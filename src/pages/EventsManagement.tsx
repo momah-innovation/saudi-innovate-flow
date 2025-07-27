@@ -21,12 +21,13 @@ export default function EventsManagementPage() {
   const createNewLabel = isRTL && language === 'ar' ? 'إنشاء جديد' : 'Create New';
   const bulkActionsLabel = isRTL && language === 'ar' ? 'الإجراءات المجمعة' : 'Bulk Actions';
   const searchPlaceholder = isRTL && language === 'ar' ? 'بحث في الأحداث...' : 'Search events...';
+  const exportLabel = isRTL && language === 'ar' ? 'تصدير' : 'Export';
 
   const secondaryActions = (
     <>
       <Select>
         <SelectTrigger className="w-32">
-          <SelectValue placeholder="Export" />
+          <SelectValue placeholder={exportLabel} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="pdf">PDF</SelectItem>

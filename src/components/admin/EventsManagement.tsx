@@ -95,6 +95,7 @@ export function EventsManagement({
   const currentShowAddDialog = externalShowAddDialog ?? showEventDialog;
 
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchEvents();
@@ -251,16 +252,16 @@ export function EventsManagement({
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Event deleted successfully",
+        title: t('success'),
+        description: t('deletedSuccessfully'),
       });
       
       fetchEvents();
     } catch (error) {
       console.error('Error deleting event:', error);
       toast({
-        title: "Error",
-        description: "Failed to delete event",
+        title: t('error'),
+        description: t('failedToDelete'),
         variant: "destructive",
       });
     }
@@ -312,12 +313,32 @@ export function EventsManagement({
     }
   };
 
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'scheduled': return t('scheduled');
+      case 'ongoing': return t('ongoing');
+      case 'completed': return t('completed');
+      case 'cancelled': return t('cancelled');
+      case 'postponed': return t('postponed');
+      default: return status;
+    }
+  };
+
   const getFormatColor = (format: string) => {
     switch (format) {
       case 'in_person': return 'bg-purple-100 text-purple-800';
       case 'virtual': return 'bg-cyan-100 text-cyan-800';
       case 'hybrid': return 'bg-orange-100 text-orange-800';
       default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getFormatLabel = (format: string) => {
+    switch (format) {
+      case 'in_person': return t('inPerson');
+      case 'virtual': return t('virtual');
+      case 'hybrid': return t('hybrid');
+      default: return format;
     }
   };
 
@@ -329,10 +350,10 @@ export function EventsManagement({
             <CardTitle className="text-lg">{event.title_ar}</CardTitle>
             <div className="flex gap-2 mt-2">
               <Badge className={getStatusColor(event.status || 'scheduled')}>
-                {event.status || 'scheduled'}
+                {getStatusLabel(event.status || 'scheduled')}
               </Badge>
               <Badge className={getFormatColor(event.format || 'in_person')}>
-                {event.format || 'in_person'}
+                {getFormatLabel(event.format || 'in_person')}
               </Badge>
               {event.event_type && (
                 <Badge variant="outline">
@@ -349,8 +370,8 @@ export function EventsManagement({
               <Edit className="h-4 w-4" />
             </Button>
             <DeleteConfirmation
-              title="Delete Event"
-              description={`Are you sure you want to delete "${event.title_ar}"? This action cannot be undone and will permanently remove the event and all associated data.`}
+              title={t('deleteEvent')}
+              description={`${t('areYouSure')} "${event.title_ar}"? ${t('thisActionCannotBeUndone')}`}
               onConfirm={() => handleDelete(event.id)}
             />
           </div>
@@ -399,10 +420,10 @@ export function EventsManagement({
               <div className="flex items-center gap-3">
                 <h3 className="font-semibold">{event.title_ar}</h3>
                 <Badge className={`${getStatusColor(event.status || 'scheduled')} flex items-center gap-1`}>
-                  {event.status || 'scheduled'}
+                  {getStatusLabel(event.status || 'scheduled')}
                 </Badge>
                 <Badge className={`${getFormatColor(event.format || 'in_person')} flex items-center gap-1`}>
-                  {event.format || 'in_person'}
+                  {getFormatLabel(event.format || 'in_person')}
                 </Badge>
               </div>
               <p className="text-sm text-muted-foreground line-clamp-1">{event.description_ar}</p>
@@ -433,8 +454,8 @@ export function EventsManagement({
                 <Edit className="w-4 h-4" />
               </Button>
               <DeleteConfirmation
-                title="Delete Event"
-                description={`Are you sure you want to delete "${event.title_ar}"? This action cannot be undone.`}
+                title={t('deleteEvent')}
+                description={`${t('areYouSure')} "${event.title_ar}"? ${t('thisActionCannotBeUndone')}`}
                 onConfirm={() => handleDelete(event.id)}
               />
             </div>
@@ -449,62 +470,62 @@ export function EventsManagement({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <div>
           <div>
-            <Label htmlFor="status-filter">Status</Label>
+            <Label htmlFor="status-filter">{t('status')}</Label>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="All statuses" />
+                <SelectValue placeholder={t('allStatuses')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="scheduled">Scheduled</SelectItem>
-                <SelectItem value="ongoing">Ongoing</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
-                <SelectItem value="postponed">Postponed</SelectItem>
+                <SelectItem value="all">{t('allStatuses')}</SelectItem>
+                <SelectItem value="scheduled">{t('scheduled')}</SelectItem>
+                <SelectItem value="ongoing">{t('ongoing')}</SelectItem>
+                <SelectItem value="completed">{t('completed')}</SelectItem>
+                <SelectItem value="cancelled">{t('cancelled')}</SelectItem>
+                <SelectItem value="postponed">{t('postponed')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
-            <Label htmlFor="format-filter">Format</Label>
+            <Label htmlFor="format-filter">{t('format')}</Label>
             <Select value={formatFilter} onValueChange={setFormatFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="All formats" />
+                <SelectValue placeholder={t('allFormats')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Formats</SelectItem>
-                <SelectItem value="in_person">In Person</SelectItem>
-                <SelectItem value="virtual">Virtual</SelectItem>
-                <SelectItem value="hybrid">Hybrid</SelectItem>
+                <SelectItem value="all">{t('allFormats')}</SelectItem>
+                <SelectItem value="in_person">{t('inPerson')}</SelectItem>
+                <SelectItem value="virtual">{t('virtual')}</SelectItem>
+                <SelectItem value="hybrid">{t('hybrid')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
-            <Label htmlFor="type-filter">Type</Label>
+            <Label htmlFor="type-filter">{t('type')}</Label>
             <Select value={typeFilter} onValueChange={setTypeFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="All types" />
+                <SelectValue placeholder={t('allTypes')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="workshop">Workshop</SelectItem>
-                <SelectItem value="seminar">Seminar</SelectItem>
-                <SelectItem value="conference">Conference</SelectItem>
-                <SelectItem value="networking">Networking</SelectItem>
-                <SelectItem value="training">Training</SelectItem>
+                <SelectItem value="all">{t('allTypes')}</SelectItem>
+                <SelectItem value="workshop">ورشة عمل</SelectItem>
+                <SelectItem value="seminar">ندوة</SelectItem>
+                <SelectItem value="conference">مؤتمر</SelectItem>
+                <SelectItem value="networking">شبكات تواصل</SelectItem>
+                <SelectItem value="training">تدريب</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
-            <Label htmlFor="campaign-filter">Campaign</Label>
+            <Label htmlFor="campaign-filter">{t('campaign')}</Label>
             <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
               <SelectTrigger>
-                <SelectValue placeholder="All campaigns" />
+                <SelectValue placeholder="جميع الحملات" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Campaigns</SelectItem>
+                <SelectItem value="all">جميع الحملات</SelectItem>
                  {campaigns.map((campaign) => (
                    <SelectItem key={campaign.id} value={campaign.id}>
                      {campaign.title_ar}
@@ -515,13 +536,13 @@ export function EventsManagement({
           </div>
 
           <div>
-            <Label htmlFor="sector-filter">Sector</Label>
+            <Label htmlFor="sector-filter">{t('sectors')}</Label>
             <Select value={selectedSector} onValueChange={setSelectedSector}>
               <SelectTrigger>
-                <SelectValue placeholder="All sectors" />
+                <SelectValue placeholder="جميع القطاعات" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Sectors</SelectItem>
+                <SelectItem value="all">جميع القطاعات</SelectItem>
                 {sectors.map((sector) => (
                   <SelectItem key={sector.id} value={sector.id}>
                     {sector.name}
@@ -575,15 +596,15 @@ export function EventsManagement({
 
       {filteredEvents.length === 0 && (
         <EmptyState
-          title="No events found"
+          title={t('noEventsFound')}
           description={
             currentSearchTerm || hasActiveFilters()
-              ? "Try adjusting your search criteria or filters"
-              : "Get started by creating your first event"
+              ? t('noResults')
+              : t('emptyList')
           }
           action={
             !currentSearchTerm && !hasActiveFilters()
-              ? { label: "Create First Event", onClick: handleCreateNew }
+              ? { label: t('createEvent'), onClick: handleCreateNew }
               : undefined
           }
           isFiltered={currentSearchTerm !== "" || hasActiveFilters()}
