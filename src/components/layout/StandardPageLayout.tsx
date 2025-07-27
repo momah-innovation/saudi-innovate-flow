@@ -170,28 +170,35 @@ export function StandardPageLayout({
         )}
       </PageHeader>
       
-      {/* Search and Filters - Compact Layout */}
-      {(showSearch || showFilters) && (
-        <CompactSearchAndFilters
-          searchTerm={searchTerm}
-          onSearchChange={onSearchChange}
-          filters={filters}
-          hasActiveFilters={hasActiveFilters}
-          onClearFilters={onClearFilters}
-          rightContent={rightContent}
-        />
-      )}
-      
-      {/* Bulk Actions - Always show when available */}
-      {showBulkActions && (
-        <div className="bg-primary/5 border border-primary/20 rounded-lg px-4 py-2">
-          <BulkActions
-            selectedItems={selectedItems}
-            onSelectAll={onSelectAll || (() => {})}
-            onSelectItem={onSelectItem || (() => {})}
-            totalItems={totalItems}
-            actions={bulkActions}
-          />
+      {/* Search, Filters, and Bulk Actions - All on same level */}
+      {(showSearch || showFilters || showBulkActions) && (
+        <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
+          {/* Search and Filters */}
+          {(showSearch || showFilters) && (
+            <div className="flex-1">
+              <CompactSearchAndFilters
+                searchTerm={searchTerm}
+                onSearchChange={onSearchChange}
+                filters={filters}
+                hasActiveFilters={hasActiveFilters}
+                onClearFilters={onClearFilters}
+                rightContent={rightContent}
+              />
+            </div>
+          )}
+          
+          {/* Bulk Actions - Inline */}
+          {showBulkActions && (
+            <div className="lg:min-w-[200px]">
+              <BulkActions
+                selectedItems={selectedItems}
+                onSelectAll={onSelectAll || (() => {})}
+                onSelectItem={onSelectItem || (() => {})}
+                totalItems={totalItems}
+                actions={bulkActions}
+              />
+            </div>
+          )}
         </div>
       )}
       
