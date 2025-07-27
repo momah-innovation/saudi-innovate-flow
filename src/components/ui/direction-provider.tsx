@@ -1,7 +1,7 @@
 import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
 
 type Direction = 'ltr' | 'rtl';
-type Language = 'en' | 'ar' | 'he' | 'fa' | 'ur';
+type Language = 'en' | 'ar';
 
 interface DirectionConfig {
   direction: Direction;
@@ -24,7 +24,7 @@ const defaultConfig: DirectionConfig = {
   autoDetect: true
 };
 
-const RTL_LANGUAGES: Language[] = ['ar', 'he', 'fa', 'ur'];
+const RTL_LANGUAGES: Language[] = ['ar'];
 
 const DirectionContext = createContext<DirectionContextType | undefined>(undefined);
 

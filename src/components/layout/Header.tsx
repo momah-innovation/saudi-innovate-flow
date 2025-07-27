@@ -54,8 +54,6 @@ export const Header = () => {
   const languageOptions = [
     { code: 'en', label: 'English', nativeLabel: 'English' },
     { code: 'ar', label: 'Arabic', nativeLabel: 'العربية' },
-    { code: 'he', label: 'Hebrew', nativeLabel: 'עברית' },
-    { code: 'fa', label: 'Persian', nativeLabel: 'فارسی' },
   ];
 
   const toggleTheme = () => {
@@ -77,8 +75,8 @@ export const Header = () => {
   };
 
   return (
-    <header className="border-b bg-gradient-to-r from-primary via-primary-light to-accent p-4 shadow-elegant">
-      <div className={`container mx-auto flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+    <header className="bg-gradient-to-r from-primary via-primary-light to-accent shadow-elegant">
+      <div className={`container mx-auto flex items-center justify-between p-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
         {/* Logo and Title */}
         <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
           <div className="h-10 w-10 rounded-lg bg-background/20 flex items-center justify-center">
@@ -118,13 +116,13 @@ export const Header = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent 
               align={isRTL ? 'start' : 'end'}
-              className="min-w-[180px]"
+              className="min-w-[180px] bg-background border shadow-lg z-50"
             >
               {languageOptions.map((lang) => (
                 <DropdownMenuItem
                   key={lang.code}
                   onClick={() => setLanguage(lang.code as any)}
-                  className={`flex items-center justify-between ${language === lang.code ? 'bg-accent' : ''}`}
+                  className={`flex items-center justify-between hover:bg-accent ${language === lang.code ? 'bg-accent' : ''}`}
                 >
                   <span>{lang.nativeLabel}</span>
                   <span className="text-muted-foreground text-sm">{lang.label}</span>
@@ -160,7 +158,7 @@ export const Header = () => {
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align={isRTL ? 'start' : 'end'} className="w-72">
+            <DropdownMenuContent align={isRTL ? 'start' : 'end'} className="w-72 bg-background border shadow-lg z-50">
               {/* User Info Header */}
               <div className={`flex items-center gap-3 px-3 py-3 border-b ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Avatar className="h-12 w-12">

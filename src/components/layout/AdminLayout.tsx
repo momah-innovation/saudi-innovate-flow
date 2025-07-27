@@ -4,6 +4,8 @@ import { Header } from './Header';
 import { AppSidebar } from './Sidebar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb';
+import { useDirection } from '@/components/ui/direction-provider';
+import { cn } from '@/lib/utils';
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -19,6 +21,7 @@ export function AdminLayout({ children, title, breadcrumbs }: AdminLayoutProps) 
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const { isRTL } = useDirection();
 
   // Update active tab based on current route
   useEffect(() => {
@@ -91,21 +94,23 @@ export function AdminLayout({ children, title, breadcrumbs }: AdminLayoutProps) 
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full">
+      <div className={cn("min-h-screen flex w-full", isRTL && "flex-row-reverse")}>
         {/* Collapsible Sidebar */}
         <AppSidebar activeTab={activeTab} onTabChange={handleTabChange} />
         
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col min-w-0">
           {/* Global Header with Sidebar Trigger */}
-          <div className="h-12 flex items-center border-b bg-background">
-            <SidebarTrigger className="ml-2" />
-            <Header />
-          </div>
+          <header className="h-14 flex items-center border-b bg-background">
+            <SidebarTrigger className={cn(isRTL ? "mr-2" : "ml-2")} />
+            <div className="flex-1 min-w-0">
+              <Header />
+            </div>
+          </header>
           
           {/* Breadcrumb Navigation */}
           {breadcrumbs && breadcrumbs.length > 0 && (
-            <div className="border-b bg-muted/20 px-6 py-3">
+            <div className={cn("border-b bg-muted/20 px-6 py-3", isRTL && "text-right")}>
               <Breadcrumb>
                 <BreadcrumbList>
                   {breadcrumbs.map((item, index) => (

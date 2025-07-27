@@ -1,4 +1,5 @@
 import { useAuth } from '@/contexts/AuthContext';
+import { useDirection } from '@/components/ui/direction-provider';
 import {
   Home,
   Target,
@@ -31,6 +32,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 interface SidebarProps {
   activeTab: string;
@@ -40,6 +42,7 @@ interface SidebarProps {
 export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
   const { state } = useSidebar();
   const { userProfile, hasRole } = useAuth();
+  const { isRTL, language } = useDirection();
 
   // Role-based menu items
   const getMenuItems = () => {
@@ -129,9 +132,57 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
   const renderMenuItems = (items: any[], groupLabel?: string) => {
     if (items.length === 0) return null;
     
+    const getLocalizedLabel = (item: any) => {
+      // Add Arabic translations for menu items
+      const arabicLabels: Record<string, string> = {
+        'Dashboard': 'لوحة التحكم',
+        'Challenges': 'التحديات',
+        'My Ideas': 'أفكاري',
+        'Evaluations': 'التقييمات',
+        'Expertise Profile': 'ملف الخبرة',
+        'Campaigns': 'الحملات',
+        'Events': 'الفعاليات',
+        'Innovation Teams': 'فرق الابتكار',
+        'Stakeholders': 'المعنيين',
+        'Analytics': 'التحليلات',
+        'Trends & Insights': 'الاتجاهات والرؤى',
+        'Reports': 'التقارير',
+        'Challenge Management': 'إدارة التحديات',
+        'Focus Questions': 'الأسئلة المحورية',
+        'Partners': 'الشركاء',
+        'Sectors': 'القطاعات',
+        'Organizational Structure': 'الهيكل التنظيمي',
+        'Expert Assignments': 'تعيين الخبراء',
+        'Relationship Overview': 'نظرة عامة على العلاقات',
+        'User Management': 'إدارة المستخدمين',
+        'System Documentation': 'وثائق النظام',
+        'System Settings': 'إعدادات النظام',
+        'System Analytics': 'تحليلات النظام',
+        'Settings': 'الإعدادات'
+      };
+      
+      return isRTL && language === 'ar' ? arabicLabels[item.label] || item.label : item.label;
+    };
+
+    const getLocalizedGroupLabel = (label?: string) => {
+      if (!label) return undefined;
+      const arabicGroupLabels: Record<string, string> = {
+        'Workflow': 'سير العمل',
+        'Management': 'الإدارة',
+        'Analytics': 'التحليلات',
+        'Administration': 'الإدارة العامة'
+      };
+      
+      return isRTL && language === 'ar' ? arabicGroupLabels[label] || label : label;
+    };
+    
     return (
       <SidebarGroup>
-        {groupLabel && <SidebarGroupLabel>{groupLabel}</SidebarGroupLabel>}
+        {groupLabel && (
+          <SidebarGroupLabel className={cn(isRTL && 'text-right')}>
+            {getLocalizedGroupLabel(groupLabel)}
+          </SidebarGroupLabel>
+        )}
         <SidebarGroupContent>
           <SidebarMenu>
             {items.map((item) => {
@@ -142,15 +193,26 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton 
                     asChild
-                    className={isActive ? "bg-primary/10 text-primary font-medium" : ""}
+                    className={cn(
+                      isActive ? "bg-primary/10 text-primary font-medium" : "",
+                      isRTL && "flex-row-reverse"
+                    )}
                   >
-                    <button onClick={() => onTabChange(item.id)} className="w-full">
+                    <button onClick={() => onTabChange(item.id)} className={cn(
+                      "w-full",
+                      isRTL && "flex-row-reverse"
+                    )}>
                       <Icon className="h-4 w-4" />
                       {state !== "collapsed" && (
                         <>
-                          <span>{item.label}</span>
+                          <span className={cn(isRTL && "text-right")}>
+                            {getLocalizedLabel(item)}
+                          </span>
                           {item.badge && (
-                            <Badge variant="secondary" className="ml-auto bg-primary/10 text-primary">
+                            <Badge variant="secondary" className={cn(
+                              "bg-primary/10 text-primary",
+                              isRTL ? "mr-auto" : "ml-auto"
+                            )}>
                               {item.badge}
                             </Badge>
                           )}
@@ -168,8 +230,15 @@ export const AppSidebar = ({ activeTab, onTabChange }: SidebarProps) => {
   };
 
   return (
-    <Sidebar className={state === "collapsed" ? "w-14" : "w-60"} collapsible="icon">
-      <SidebarContent>
+    <Sidebar 
+      className={cn(
+        state === "collapsed" ? "w-14" : "w-60",
+        isRTL && "border-l border-r-0"
+      )} 
+      collapsible="icon"
+      side={isRTL ? "right" : "left"}
+    >
+      <SidebarContent className={cn(isRTL && "text-right")}>
         {renderMenuItems(dashboardItems)}
         {renderMenuItems(workflowItems, "Workflow")}
         {renderMenuItems(managementItems, "Management")}
