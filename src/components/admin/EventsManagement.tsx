@@ -73,9 +73,10 @@ export function EventsManagement() {
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [viewingEvent, setViewingEvent] = useState<Event | null>(null);
   
-  // Multi-step form state
+  // Wizard state
   const [currentStep, setCurrentStep] = useState(1);
   const [stepErrors, setStepErrors] = useState<{[key: number]: string[]}>({});
+  const totalSteps = 3;
   
   // Search states for dropdowns
   const [openCampaign, setOpenCampaign] = useState(false);
@@ -1140,29 +1141,53 @@ export function EventsManagement() {
             </DialogHeader>
             
             <div className="space-y-6">
-              {/* Step indicator */}
-              <div className="flex items-center justify-between">
-                {steps.map((step, index) => (
-                  <div key={step.number} className="flex items-center">
-                    <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium
-                      ${currentStep >= step.number 
-                        ? 'bg-primary text-primary-foreground' 
-                        : 'bg-muted text-muted-foreground'
-                      }`}>
-                      {currentStep > step.number ? (
-                        <CheckCircle className="h-4 w-4" />
-                      ) : (
-                        step.number
-                      )}
-                    </div>
-                    <span className="ml-2 text-sm font-medium">{step.title}</span>
-                    {index < steps.length - 1 && (
-                      <div className={`ml-4 w-8 h-0.5 ${
-                        currentStep > step.number ? 'bg-primary' : 'bg-muted'
-                      }`} />
-                    )}
-                  </div>
-                ))}
+              {/* Enhanced Wizard Step Indicator */}
+              <div className="relative">
+                <div className="absolute top-5 left-0 right-0 h-0.5 bg-muted -z-10"></div>
+                <div className="flex items-center justify-between">
+                  {steps.map((step, index) => {
+                    const StepIcon = step.icon;
+                    const isCompleted = currentStep > step.number;
+                    const isCurrent = currentStep === step.number;
+                    const isUpcoming = currentStep < step.number;
+                    
+                    return (
+                      <div key={step.number} className="flex flex-col items-center space-y-2">
+                        <div className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-200 ${
+                          isCompleted 
+                            ? 'bg-primary border-primary text-primary-foreground shadow-lg' 
+                            : isCurrent
+                            ? 'bg-primary/10 border-primary text-primary shadow-md'
+                            : 'bg-background border-muted-foreground/30 text-muted-foreground'
+                        }`}>
+                          {isCompleted ? (
+                            <CheckCircle className="h-5 w-5" />
+                          ) : (
+                            <StepIcon className="h-5 w-5" />
+                          )}
+                          {isCurrent && (
+                            <div className="absolute -inset-1 rounded-full border-2 border-primary/30 animate-pulse"></div>
+                          )}
+                        </div>
+                        <div className="text-center">
+                          <p className={`text-sm font-medium ${
+                            isCurrent ? 'text-primary' : isCompleted ? 'text-foreground' : 'text-muted-foreground'
+                          }`}>
+                            {step.title}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            Step {step.number} of {totalSteps}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {/* Progress Line */}
+                <div 
+                  className="absolute top-5 left-0 h-0.5 bg-primary transition-all duration-300 -z-10"
+                  style={{ width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` }}
+                ></div>
               </div>
 
               {/* Step content */}
@@ -1170,24 +1195,50 @@ export function EventsManagement() {
                 {renderCurrentStep()}
               </div>
 
-              {/* Navigation buttons */}
-              <div className="flex justify-between">
+              {/* Enhanced Navigation Buttons */}
+              <div className="flex justify-between items-center pt-6 border-t bg-muted/30 -mx-6 px-6 -mb-6 pb-6">
                 <Button
                   variant="outline"
                   onClick={prevStep}
                   disabled={currentStep === 1}
+                  className="min-w-[100px]"
                 >
-                  Previous
+                  <div className="flex items-center gap-2">
+                    <div className="h-4 w-4">←</div>
+                    Previous
+                  </div>
                 </Button>
                 
+                <div className="flex items-center gap-3">
+                  <div className="text-sm text-muted-foreground">
+                    Step {currentStep} of {totalSteps}
+                  </div>
+                  <div className="flex gap-1">
+                    {Array.from({ length: totalSteps }, (_, i) => (
+                      <div
+                        key={i}
+                        className={`w-2 h-2 rounded-full transition-colors ${
+                          i + 1 <= currentStep ? 'bg-primary' : 'bg-muted'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+                
                 <div className="flex gap-2">
-                  {currentStep < 3 ? (
-                    <Button onClick={nextStep}>
-                      Next
+                  {currentStep < totalSteps ? (
+                    <Button onClick={nextStep} className="min-w-[100px]">
+                      <div className="flex items-center gap-2">
+                        Next
+                        <div className="h-4 w-4">→</div>
+                      </div>
                     </Button>
                   ) : (
-                    <Button onClick={handleSubmit}>
-                      {editingEvent ? 'Update Event' : 'Create Event'}
+                    <Button onClick={handleSubmit} className="min-w-[120px]">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4" />
+                        {editingEvent ? 'Update Event' : 'Create Event'}
+                      </div>
                     </Button>
                   )}
                 </div>
