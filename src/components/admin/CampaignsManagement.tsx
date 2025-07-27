@@ -358,17 +358,35 @@ export function CampaignsManagement() {
     switch (step) {
       case 1: // Basic Information
         if (!formData.title.trim()) errors.push("Title is required");
+        if (!formData.description?.trim()) errors.push("Description is required");
+        if (!formData.status) errors.push("Status is required");
+        break;
+      case 2: // Campaign Details
         if (!formData.start_date) errors.push("Start date is required");
         if (!formData.end_date) errors.push("End date is required");
         if (formData.start_date && formData.end_date && formData.start_date >= formData.end_date) {
           errors.push("End date must be after start date");
         }
+        if (formData.registration_deadline && formData.start_date && formData.registration_deadline >= formData.start_date) {
+          errors.push("Registration deadline must be before start date");
+        }
         break;
-      case 2: // Organization & Structure
+      case 3: // Organizational Structure
         // Multi-select validation can be optional
         break;
-      case 3: // Partners & Stakeholders
+      case 4: // Partners & Stakeholders
         // Optional validation
+        break;
+      case 5: // Additional Settings
+        if (formData.target_participants && parseInt(formData.target_participants) <= 0) {
+          errors.push("Target participants must be a positive number");
+        }
+        if (formData.target_ideas && parseInt(formData.target_ideas) <= 0) {
+          errors.push("Target ideas must be a positive number");
+        }
+        if (formData.budget && parseFloat(formData.budget) <= 0) {
+          errors.push("Budget must be a positive number");
+        }
         break;
     }
 
@@ -388,7 +406,7 @@ export function CampaignsManagement() {
     }
 
     setStepErrors({ ...stepErrors, [currentStep]: [] });
-    if (currentStep < 3) {
+    if (currentStep < 5) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -402,7 +420,7 @@ export function CampaignsManagement() {
   const handleSubmit = async () => {
     // Validate all steps
     const allErrors: string[] = [];
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 5; i++) {
       const stepErrors = validateStep(i);
       allErrors.push(...stepErrors);
     }
@@ -713,7 +731,124 @@ export function CampaignsManagement() {
     </div>
   );
 
-  const renderOrganization = () => {
+  const renderCampaignDetails = () => (
+    <div className="space-y-6">
+      {stepErrors[2] && stepErrors[2].length > 0 && (
+        <div className="bg-destructive/15 border border-destructive/20 rounded-lg p-4">
+          <div className="flex items-center gap-2 text-destructive mb-2">
+            <AlertCircle className="h-4 w-4" />
+            <span className="font-medium">Please fix the following errors:</span>
+          </div>
+          <ul className="list-disc list-inside text-sm text-destructive/80">
+            {stepErrors[2].map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="start_date">Start Date *</Label>
+          <Input
+            id="start_date"
+            type="date"
+            value={formData.start_date}
+            onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+            className={stepErrors[2]?.includes("Start date is required") ? "border-destructive" : ""}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="end_date">End Date *</Label>
+          <Input
+            id="end_date"
+            type="date"
+            value={formData.end_date}
+            onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
+            className={stepErrors[2]?.includes("End date is required") || stepErrors[2]?.includes("End date must be after start date") ? "border-destructive" : ""}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="registration_deadline">Registration Deadline</Label>
+          <Input
+            id="registration_deadline"
+            type="date"
+            value={formData.registration_deadline}
+            onChange={(e) => setFormData({ ...formData, registration_deadline: e.target.value })}
+            className={stepErrors[2]?.includes("Registration deadline must be before start date") ? "border-destructive" : ""}
+          />
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderAdditionalSettings = () => (
+    <div className="space-y-6">
+      {stepErrors[5] && stepErrors[5].length > 0 && (
+        <div className="bg-destructive/15 border border-destructive/20 rounded-lg p-4">
+          <div className="flex items-center gap-2 text-destructive mb-2">
+            <AlertCircle className="h-4 w-4" />
+            <span className="font-medium">Please fix the following errors:</span>
+          </div>
+          <ul className="list-disc list-inside text-sm text-destructive/80">
+            {stepErrors[5].map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="target_participants">Target Participants</Label>
+          <Input
+            id="target_participants"
+            type="number"
+            value={formData.target_participants}
+            onChange={(e) => setFormData({ ...formData, target_participants: e.target.value })}
+            placeholder="Number of participants"
+            className={stepErrors[5]?.includes("Target participants must be a positive number") ? "border-destructive" : ""}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="target_ideas">Target Ideas</Label>
+          <Input
+            id="target_ideas"
+            type="number"
+            value={formData.target_ideas}
+            onChange={(e) => setFormData({ ...formData, target_ideas: e.target.value })}
+            placeholder="Number of ideas"
+            className={stepErrors[5]?.includes("Target ideas must be a positive number") ? "border-destructive" : ""}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="budget">Budget (SAR)</Label>
+          <Input
+            id="budget"
+            type="number"
+            step="0.01"
+            value={formData.budget}
+            onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+            placeholder="Campaign budget"
+            className={stepErrors[5]?.includes("Budget must be a positive number") ? "border-destructive" : ""}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="success_metrics">Success Metrics</Label>
+        <Textarea
+          id="success_metrics"
+          value={formData.success_metrics}
+          onChange={(e) => setFormData({ ...formData, success_metrics: e.target.value })}
+          placeholder="Define how success will be measured"
+          className="min-h-[80px]"
+        />
+      </div>
+    </div>
+  );
+
+  const renderOrganizationalStructure = () => {
     // Filter deputies based on selected sectors
     const filteredDeputies = formData.sector_ids.length > 0
       ? deputies.filter(deputy => formData.sector_ids.includes(deputy.sector_id))
@@ -1062,6 +1197,32 @@ export function CampaignsManagement() {
 
     return (
       <div className="space-y-6">
+        {stepErrors[4] && stepErrors[4].length > 0 && (
+          <div className="bg-destructive/15 border border-destructive/20 rounded-lg p-4">
+            <div className="flex items-center gap-2 text-destructive mb-2">
+              <AlertCircle className="h-4 w-4" />
+              <span className="font-medium">Please fix the following errors:</span>
+            </div>
+            <ul className="list-disc list-inside text-sm text-destructive/80">
+              {stepErrors[4].map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {stepErrors[3] && stepErrors[3].length > 0 && (
+          <div className="bg-destructive/15 border border-destructive/20 rounded-lg p-4">
+            <div className="flex items-center gap-2 text-destructive mb-2">
+              <AlertCircle className="h-4 w-4" />
+              <span className="font-medium">Please fix the following errors:</span>
+            </div>
+            <ul className="list-disc list-inside text-sm text-destructive/80">
+              {stepErrors[3].map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        )}
         <div className="flex items-center gap-2 mb-4">
           <Users className="h-5 w-5 text-primary" />
           <h3 className="text-lg font-semibold">Partners & Stakeholders</h3>
@@ -1173,9 +1334,13 @@ export function CampaignsManagement() {
       case 1:
         return renderBasicInformation();
       case 2:
-        return renderOrganization();
+        return renderCampaignDetails();
       case 3:
+        return renderOrganizationalStructure();
+      case 4:
         return renderPartnersStakeholders();
+      case 5:
+        return renderAdditionalSettings();
       default:
         return renderBasicInformation();
     }
