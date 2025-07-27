@@ -351,12 +351,82 @@ export default function LandingPage() {
 
             <div className={isRTL ? 'lg:col-start-1' : ''}>
               <div className="relative">
-                <div className="aspect-video rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-border/50">
-                  <div className="text-center">
-                    <div className="text-6xl mb-4">📊</div>
-                    <p className="text-lg text-muted-foreground">
-                      {getText("Innovation Dashboard Preview", "معاينة لوحة معلومات الابتكار")}
-                    </p>
+                <div className="aspect-video rounded-2xl bg-gradient-to-br from-background to-muted border border-border shadow-lg overflow-hidden">
+                  {/* Dashboard Mockup */}
+                  <div className="p-6 h-full">
+                    {/* Header */}
+                    <div className={`flex items-center justify-between mb-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <div className="w-8 h-8 rounded bg-primary/20 flex items-center justify-center">
+                          <div className="text-sm">🏗️</div>
+                        </div>
+                        <span className="font-semibold text-sm">
+                          {getText("Innovation Dashboard", "لوحة الابتكار")}
+                        </span>
+                      </div>
+                      <div className="flex gap-1">
+                        <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                        <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                        <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                      </div>
+                    </div>
+                    
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-3 gap-2 mb-4">
+                      <div className="bg-primary/10 rounded p-2">
+                        <div className="text-xs text-muted-foreground">
+                          {getText("Active", "نشط")}
+                        </div>
+                        <div className="font-bold text-sm">24</div>
+                      </div>
+                      <div className="bg-accent/10 rounded p-2">
+                        <div className="text-xs text-muted-foreground">
+                          {getText("Ideas", "أفكار")}
+                        </div>
+                        <div className="font-bold text-sm">156</div>
+                      </div>
+                      <div className="bg-success/10 rounded p-2">
+                        <div className="text-xs text-muted-foreground">
+                          {getText("Complete", "مكتمل")}
+                        </div>
+                        <div className="font-bold text-sm">89%</div>
+                      </div>
+                    </div>
+                    
+                    {/* Chart Area */}
+                    <div className="bg-muted/50 rounded-lg p-3 mb-3">
+                      <div className="flex items-end justify-between h-16 gap-1">
+                        {[40, 65, 45, 80, 55, 90, 70].map((height, i) => (
+                          <div
+                            key={i}
+                            className="bg-primary/60 rounded-sm flex-1"
+                            style={{ height: `${height}%` }}
+                          ></div>
+                        ))}
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-1 text-center">
+                        {getText("Innovation Trends", "اتجاهات الابتكار")}
+                      </div>
+                    </div>
+                    
+                    {/* Recent Activity */}
+                    <div className="space-y-1">
+                      <div className="text-xs font-medium text-muted-foreground">
+                        {getText("Recent Activity", "النشاط الأخير")}
+                      </div>
+                      <div className="flex items-center gap-2 text-xs">
+                        <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                        <span className="text-muted-foreground">
+                          {getText("New challenge submitted", "تم تقديم تحدي جديد")}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs">
+                        <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                        <span className="text-muted-foreground">
+                          {getText("Expert assigned", "تم تعيين خبير")}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
