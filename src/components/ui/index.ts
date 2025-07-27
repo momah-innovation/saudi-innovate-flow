@@ -40,6 +40,14 @@ export { DirectionProvider, useDirection, directionUtils } from './direction-pro
 export { LayoutGrid, Container, FlexLayout, CardGrid } from './layout-grid';
 export { DirectionalDropdownMenu, DirectionalContextMenu, ActionDropdownMenu } from './directional-menu';
 
+// Layout System Components
+export { PageContainer } from '../layout/PageContainer';
+export { Section } from '../layout/Section';
+export { ContentArea } from '../layout/ContentArea';
+export { Container as ResponsiveContainer } from '../layout/Container';
+export { AdminLayout } from '../layout/AdminLayout';
+export { ResponsiveGrid } from '../layout/ResponsiveGrid';
+
 // Typography Components
 export { Typography, Heading1, Heading2, Heading3, BodyText, Lead, Caption, MutedText } from './typography';
 
