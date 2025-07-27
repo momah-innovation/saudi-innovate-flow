@@ -1744,6 +1744,90 @@ export type Database = {
           },
         ]
       }
+      landing_page_content: {
+        Row: {
+          content_ar: string | null
+          content_en: string
+          created_at: string | null
+          display_order: number | null
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          section_key: string
+          section_type: string | null
+          title_ar: string | null
+          title_en: string
+          updated_at: string | null
+        }
+        Insert: {
+          content_ar?: string | null
+          content_en: string
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          section_key: string
+          section_type?: string | null
+          title_ar?: string | null
+          title_en: string
+          updated_at?: string | null
+        }
+        Update: {
+          content_ar?: string | null
+          content_en?: string
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          section_key?: string
+          section_type?: string | null
+          title_ar?: string | null
+          title_en?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      landing_page_faqs: {
+        Row: {
+          answer_ar: string | null
+          answer_en: string
+          category: string | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          order_sequence: number | null
+          question_ar: string | null
+          question_en: string
+          updated_at: string | null
+        }
+        Insert: {
+          answer_ar?: string | null
+          answer_en: string
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          order_sequence?: number | null
+          question_ar?: string | null
+          question_en: string
+          updated_at?: string | null
+        }
+        Update: {
+          answer_ar?: string | null
+          answer_en?: string
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          order_sequence?: number | null
+          question_ar?: string | null
+          question_en?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string
@@ -1917,6 +2001,45 @@ export type Database = {
           profile_image_url?: string | null
           status?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      public_statistics: {
+        Row: {
+          created_at: string | null
+          display_order: number | null
+          icon_name: string | null
+          id: string
+          is_visible: boolean | null
+          last_updated: string | null
+          metric_description_ar: string | null
+          metric_description_en: string | null
+          metric_name: string
+          metric_value: number
+        }
+        Insert: {
+          created_at?: string | null
+          display_order?: number | null
+          icon_name?: string | null
+          id?: string
+          is_visible?: boolean | null
+          last_updated?: string | null
+          metric_description_ar?: string | null
+          metric_description_en?: string | null
+          metric_name: string
+          metric_value?: number
+        }
+        Update: {
+          created_at?: string | null
+          display_order?: number | null
+          icon_name?: string | null
+          id?: string
+          is_visible?: boolean | null
+          last_updated?: string | null
+          metric_description_ar?: string | null
+          metric_description_en?: string | null
+          metric_name?: string
+          metric_value?: number
         }
         Relationships: []
       }
