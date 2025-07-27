@@ -106,35 +106,15 @@ export const Header = () => {
 
         {/* Action Buttons */}
         <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
-          {/* Language & Theme Toggle */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-background/10">
-                <Languages className="h-4 w-4 mr-2" />
-                {languageOptions.find(l => l.code === language)?.nativeLabel}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent 
-              align={isRTL ? 'start' : 'end'}
-              className="min-w-[180px] bg-background border shadow-lg z-50"
-            >
-              {languageOptions.map((lang) => (
-                <DropdownMenuItem
-                  key={lang.code}
-                  onClick={() => setLanguage(lang.code as any)}
-                  className={`flex items-center justify-between hover:bg-accent ${language === lang.code ? 'bg-accent' : ''}`}
-                >
-                  <span>{lang.nativeLabel}</span>
-                  <span className="text-muted-foreground text-sm">{lang.label}</span>
-                </DropdownMenuItem>
-               ))}
-               <DropdownMenuSeparator />
-               <DropdownMenuItem onClick={toggleTheme} className="flex items-center gap-2">
-                {theme.colorScheme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                {theme.colorScheme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* Language Toggle - Direct Click */}
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-primary-foreground hover:bg-background/10"
+            onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
+          >
+            {language === 'en' ? 'العربية' : 'English'}
+          </Button>
 
           {/* Notifications */}
           <NotificationCenter />
@@ -199,6 +179,10 @@ export const Header = () => {
                 <DropdownMenuItem onClick={handleSettingsClick} className="cursor-pointer">
                   <Settings className={`h-4 w-4 ${isRTL ? 'ml-3' : 'mr-3'}`} />
                   <span>{isRTL ? 'الإعدادات' : 'Settings'}</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={toggleTheme} className="cursor-pointer">
+                  {theme.colorScheme === 'dark' ? <Sun className={`h-4 w-4 ${isRTL ? 'ml-3' : 'mr-3'}`} /> : <Moon className={`h-4 w-4 ${isRTL ? 'ml-3' : 'mr-3'}`} />}
+                  <span>{theme.colorScheme === 'dark' ? (isRTL ? 'الوضع الفاتح' : 'Light Mode') : (isRTL ? 'الوضع الداكن' : 'Dark Mode')}</span>
                 </DropdownMenuItem>
               </div>
 

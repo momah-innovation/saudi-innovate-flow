@@ -99,9 +99,9 @@ export function AdminLayout({ children, title, breadcrumbs }: AdminLayoutProps) 
         <AppSidebar activeTab={activeTab} onTabChange={handleTabChange} />
         
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0">
+        <div className="flex-1 flex flex-col min-w-0 h-screen">
           {/* Global Header */}
-          <header className="h-14 flex items-center border-b bg-background shrink-0">
+          <header className="h-14 flex items-center border-b bg-background flex-shrink-0">
             <div className="flex-1 min-w-0 px-4">
               <Header />
             </div>
