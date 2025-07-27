@@ -3,8 +3,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Calendar, MapPin, Users, Clock, Edit, Trash2, Eye } from "lucide-react";
+import { format } from "date-fns";
 import { EventDialog } from "@/components/events/EventDialog";
 import { EventFilters } from "@/components/events/EventFilters";
 import { EventBulkActions } from "@/components/events/EventBulkActions";
@@ -33,7 +35,7 @@ interface Event {
   sector_id?: string;
   target_stakeholder_groups?: string[];
   created_at?: string;
-  // Relationships
+  // Relationships for display
   sectors?: any[];
   challenges?: any[];
   partners?: any[];
@@ -63,99 +65,9 @@ export function EventsManagement() {
   // Dialog states
   const [showEventDialog, setShowEventDialog] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
-  
-  // Wizard state
-  const [currentStep, setCurrentStep] = useState(1);
-  const [stepErrors, setStepErrors] = useState<{[key: number]: string[]}>({});
-  const totalSteps = 5;
-  
-  // Search states for dropdowns
-  const [openCampaign, setOpenCampaign] = useState(false);
-  const [openChallenge, setOpenChallenge] = useState(false);
-  const [openSector, setOpenSector] = useState(false);
-  const [partnerSearch, setPartnerSearch] = useState("");
-  const [stakeholderSearch, setStakeholderSearch] = useState("");
-  const [focusQuestionSearch, setFocusQuestionSearch] = useState("");
-  
-  // Form data
-  const [formData, setFormData] = useState({
-    title: "",
-    title_ar: "",
-    description: "",
-    description_ar: "",
-    event_type: "workshop",
-    event_date: "",
-    end_date: "",
-    start_time: "",
-    end_time: "",
-    location: "",
-    virtual_link: "",
-    format: "in_person",
-    max_participants: "",
-    registered_participants: "",
-    actual_participants: "",
-    status: "scheduled",
-    budget: "",
-    event_manager_id: "",
-    campaign_id: "",
-    challenge_id: "",
-    sector_id: "",
-    is_recurring: false,
-    recurrence_pattern: "",
-    recurrence_end_date: "",
-    target_stakeholder_groups: [] as string[],
-  });
-
-  // Related data
-  const [campaigns, setCampaigns] = useState<any[]>([]);
-  const [challenges, setChallenges] = useState<any[]>([]);
-  const [sectors, setSectors] = useState<any[]>([]);
-  const [partners, setPartners] = useState<any[]>([]);
-  const [stakeholders, setStakeholders] = useState<any[]>([]);
-  const [focusQuestions, setFocusQuestions] = useState<any[]>([]);
-  const [eventManagers, setEventManagers] = useState<any[]>([]);
-  const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
-  const [selectedStakeholders, setSelectedStakeholders] = useState<string[]>([]);
-  const [selectedFocusQuestions, setSelectedFocusQuestions] = useState<string[]>([]);
-  
-  // Search states for dropdowns
-  const [openEventManager, setOpenEventManager] = useState(false);
-  const [eventManagerSearch, setEventManagerSearch] = useState("");
-
-  // Relationship link data
-  const [campaignChallengeLinks, setCampaignChallengeLinks] = useState<any[]>([]);
-  const [challengeSectorLinks, setChallengeSectorLinks] = useState<any[]>([]);
-  const [campaignPartnerLinks, setCampaignPartnerLinks] = useState<any[]>([]);
-  const [campaignStakeholderLinks, setCampaignStakeholderLinks] = useState<any[]>([]);
-  const [challengePartnerLinks, setChallengePartnerLinks] = useState<any[]>([]);
-  const [challengeStakeholderLinks, setChallengeStakeholderLinks] = useState<any[]>([]);
+  const [viewingEvent, setViewingEvent] = useState<Event | null>(null);
 
   const { toast } = useToast();
-
-  // Event type and format options
-  const eventTypes = [
-    { value: "workshop", label: "Workshop" },
-    { value: "seminar", label: "Seminar" },
-    { value: "conference", label: "Conference" },
-    { value: "networking", label: "Networking Event" },
-    { value: "hackathon", label: "Hackathon" },
-    { value: "pitch_session", label: "Pitch Session" },
-    { value: "training", label: "Training Session" }
-  ];
-
-  const formatOptions = [
-    { value: "in_person", label: "In Person" },
-    { value: "virtual", label: "Virtual" },
-    { value: "hybrid", label: "Hybrid" }
-  ];
-
-  const statusOptions = [
-    { value: "scheduled", label: "Scheduled" },
-    { value: "ongoing", label: "Ongoing" },
-    { value: "completed", label: "Completed" },
-    { value: "cancelled", label: "Cancelled" },
-    { value: "postponed", label: "Postponed" }
-  ];
 
   useEffect(() => {
     fetchEvents();
@@ -164,7 +76,7 @@ export function EventsManagement() {
 
   useEffect(() => {
     filterEvents();
-  }, [events, searchTerm, statusFilter, formatFilter, typeFilter]);
+  }, [events, searchTerm, statusFilter, formatFilter, typeFilter, categoryFilter, visibilityFilter, selectedCampaign, selectedSector, dateFrom, dateTo]);
 
   const fetchEvents = async () => {
     try {
@@ -187,49 +99,13 @@ export function EventsManagement() {
 
   const fetchRelatedData = async () => {
     try {
-      const [
-        campaignsRes, 
-        challengesRes, 
-        sectorsRes,
-        partnersRes, 
-        stakeholdersRes, 
-        focusQuestionsRes,
-        eventManagersRes,
-        campaignChallengeLinksRes,
-        challengeSectorLinksRes,
-        campaignPartnerLinksRes,
-        campaignStakeholderLinksRes,
-        challengePartnerLinksRes,
-        challengeStakeholderLinksRes
-      ] = await Promise.all([
-        supabase.from('campaigns').select('*'),
-        supabase.from('challenges').select('*'),
-        supabase.from('sectors').select('*'),
-        supabase.from('partners').select('*'),
-        supabase.from('stakeholders').select('*'),
-        supabase.from('focus_questions').select('*'),
-        supabase.from('profiles').select('id, name, email, position').order('name'),
-        supabase.from('campaign_challenge_links').select('*'),
-        supabase.from('campaign_sector_links').select('*'),
-        supabase.from('campaign_partner_links').select('*'),
-        supabase.from('campaign_stakeholder_links').select('*'),
-        supabase.from('challenge_partners').select('*'),
-        supabase.from('stakeholders').select('*') // Challenge stakeholders can be derived from general stakeholders
+      const [campaignsRes, sectorsRes] = await Promise.all([
+        supabase.from('campaigns').select('*').order('name'),
+        supabase.from('sectors').select('*').order('name')
       ]);
 
       setCampaigns(campaignsRes.data || []);
-      setChallenges(challengesRes.data || []);
       setSectors(sectorsRes.data || []);
-      setPartners(partnersRes.data || []);
-      setStakeholders(stakeholdersRes.data || []);
-      setFocusQuestions(focusQuestionsRes.data || []);
-      setEventManagers(eventManagersRes.data || []);
-      setCampaignChallengeLinks(campaignChallengeLinksRes.data || []);
-      setChallengeSectorLinks(challengeSectorLinksRes.data || []);
-      setCampaignPartnerLinks(campaignPartnerLinksRes.data || []);
-      setCampaignStakeholderLinks(campaignStakeholderLinksRes.data || []);
-      setChallengePartnerLinks(challengePartnerLinksRes.data || []);
-      setChallengeStakeholderLinks(challengeStakeholderLinksRes.data || []);
     } catch (error) {
       console.error('Error fetching related data:', error);
     }
@@ -258,200 +134,23 @@ export function EventsManagement() {
       filtered = filtered.filter(event => event.event_type === typeFilter);
     }
 
+    if (selectedCampaign !== "all") {
+      filtered = filtered.filter(event => event.campaign_id === selectedCampaign);
+    }
+
+    if (selectedSector !== "all") {
+      filtered = filtered.filter(event => event.sector_id === selectedSector);
+    }
+
+    if (dateFrom) {
+      filtered = filtered.filter(event => new Date(event.event_date) >= dateFrom);
+    }
+
+    if (dateTo) {
+      filtered = filtered.filter(event => new Date(event.event_date) <= dateTo);
+    }
+
     setFilteredEvents(filtered);
-  };
-
-  const resetForm = () => {
-    setFormData({
-      title: "",
-      title_ar: "",
-      description: "",
-      description_ar: "",
-      event_type: "workshop",
-      event_date: "",
-      end_date: "",
-      start_time: "",
-      end_time: "",
-      location: "",
-      virtual_link: "",
-      format: "in_person",
-      max_participants: "",
-      registered_participants: "",
-      actual_participants: "",
-      status: "scheduled",
-      budget: "",
-      event_manager_id: "",
-      campaign_id: "",
-      challenge_id: "",
-      sector_id: "",
-      is_recurring: false,
-      recurrence_pattern: "",
-      recurrence_end_date: "",
-      target_stakeholder_groups: [],
-    });
-    setSelectedPartners([]);
-    setSelectedStakeholders([]);
-    setSelectedFocusQuestions([]);
-    setCurrentStep(1);
-    setStepErrors({});
-    
-    // Reset search states
-    setPartnerSearch("");
-    setStakeholderSearch("");
-    setFocusQuestionSearch("");
-    setEventManagerSearch("");
-    
-    // Reset dropdown states
-    setOpenCampaign(false);
-    setOpenChallenge(false);
-    setOpenSector(false);
-    setOpenEventManager(false);
-  };
-
-  const validateStep = (step: number): string[] => {
-    const errors: string[] = [];
-
-    switch (step) {
-      case 1: // Basic Information
-        if (!formData.title.trim()) errors.push("Title is required");
-        if (!formData.event_type) errors.push("Event type is required");
-        break;
-      case 2: // Event Details
-        if (!formData.event_date) errors.push("Event date is required");
-        if (!formData.format) errors.push("Event format is required");
-        if (formData.format === "in_person" && !formData.location?.trim()) {
-          errors.push("Location is required for in-person events");
-        }
-        if (formData.format === "virtual" && !formData.virtual_link?.trim()) {
-          errors.push("Virtual link is required for virtual events");
-        }
-        if (formData.max_participants && parseInt(formData.max_participants) <= 0) {
-          errors.push("Maximum participants must be greater than 0");
-        }
-        if (formData.budget && parseFloat(formData.budget) < 0) {
-          errors.push("Budget cannot be negative");
-        }
-        if (formData.start_time && formData.end_time && formData.start_time >= formData.end_time) {
-          errors.push("End time must be after start time");
-        }
-        break;
-      case 3: // Organizational Structure
-        // Optional validations
-        break;
-      case 4: // Partners & Stakeholders
-        // Optional validations
-        break;
-      case 5: // Focus Questions & Settings
-        // Optional validations
-        break;
-    }
-
-    return errors;
-  };
-
-  const nextStep = () => {
-    const errors = validateStep(currentStep);
-    if (errors.length > 0) {
-      setStepErrors({ ...stepErrors, [currentStep]: errors });
-      toast({
-        title: "Validation Error",
-        description: errors.join(", "),
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setStepErrors({ ...stepErrors, [currentStep]: [] });
-    if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const prevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
-  // Filter data based on relationships
-  const getFilteredChallenges = () => {
-    if (!formData.campaign_id) return challenges;
-    // Filter challenges that are linked to the selected campaign
-    return challenges.filter(challenge => {
-      return campaignChallengeLinks.some(link => 
-        link.campaign_id === formData.campaign_id && link.challenge_id === challenge.id
-      );
-    });
-  };
-
-  const getFilteredSectors = () => {
-    if (!formData.challenge_id) return sectors;
-    // Filter sectors that are linked to the selected challenge
-    return sectors.filter(sector => {
-      return challengeSectorLinks.some(link => 
-        link.challenge_id === formData.challenge_id && link.sector_id === sector.id
-      );
-    });
-  };
-
-  // Remove invalid organizational structure filtering functions
-  // Only keeping the valid ones for the actual events table schema
-
-  const getFilteredPartners = () => {
-    const basePartners = partners.filter(partner => 
-      partner.name.toLowerCase().includes(partnerSearch.toLowerCase())
-    );
-    
-    if (!formData.campaign_id && !formData.challenge_id) return basePartners;
-    
-    return basePartners.filter(partner => {
-      if (formData.campaign_id) {
-        return campaignPartnerLinks.some(link => 
-          link.campaign_id === formData.campaign_id && link.partner_id === partner.id
-        );
-      }
-      if (formData.challenge_id) {
-        return challengePartnerLinks.some(link => 
-          link.challenge_id === formData.challenge_id && link.partner_id === partner.id
-        );
-      }
-      return true;
-    });
-  };
-
-  const getFilteredStakeholders = () => {
-    const baseStakeholders = stakeholders.filter(stakeholder => 
-      stakeholder.name.toLowerCase().includes(stakeholderSearch.toLowerCase())
-    );
-    
-    if (!formData.campaign_id && !formData.challenge_id) return baseStakeholders;
-    
-    return baseStakeholders.filter(stakeholder => {
-      if (formData.campaign_id) {
-        return campaignStakeholderLinks.some(link => 
-          link.campaign_id === formData.campaign_id && link.stakeholder_id === stakeholder.id
-        );
-      }
-      if (formData.challenge_id) {
-        return challengeStakeholderLinks.some(link => 
-          link.challenge_id === formData.challenge_id && link.stakeholder_id === stakeholder.id
-        );
-      }
-      return true;
-    });
-  };
-
-  const getFilteredFocusQuestions = () => {
-    const baseFocusQuestions = focusQuestions.filter(question => 
-      question.question_text.toLowerCase().includes(focusQuestionSearch.toLowerCase())
-    );
-    
-    if (!formData.challenge_id) return baseFocusQuestions;
-    
-    // Filter focus questions that belong to the selected challenge
-    return baseFocusQuestions.filter(question => 
-      question.challenge_id === formData.challenge_id
-    );
   };
 
   const handleView = async (event: Event) => {
@@ -491,61 +190,13 @@ export function EventsManagement() {
       setViewingEvent(enhancedEvent);
     } catch (error) {
       console.error('Error loading event details:', error);
-      setViewingEvent(event); // fallback to basic event data
+      setViewingEvent(event);
     }
   };
 
-  const handleEdit = async (event: Event) => {
-    // First reset all form state to ensure clean slate
-    resetForm();
-    
+  const handleEdit = (event: Event) => {
     setEditingEvent(event);
-    
-    // Load existing relationships from linking tables
-    try {
-      const [partnersRes, stakeholdersRes, focusQuestionsRes] = await Promise.all([
-        supabase.from('event_partner_links').select('partner_id').eq('event_id', event.id),
-        supabase.from('event_stakeholder_links').select('stakeholder_id').eq('event_id', event.id),
-        supabase.from('event_focus_question_links').select('focus_question_id').eq('event_id', event.id)
-      ]);
-
-      // Set form data including fetched relationships
-      setFormData({
-        title: event.title || "",
-        title_ar: event.title_ar || "",
-        description: event.description || "",
-        description_ar: event.description_ar || "",
-        event_type: event.event_type || "workshop",
-        event_date: event.event_date || "",
-        end_date: (event as any).end_date || "",
-        start_time: event.start_time || "",
-        end_time: event.end_time || "",
-        location: event.location || "",
-        virtual_link: event.virtual_link || "",
-        format: event.format || "in_person",
-        max_participants: event.max_participants?.toString() || "",
-        registered_participants: event.registered_participants?.toString() || "",
-        actual_participants: event.actual_participants?.toString() || "",
-        status: event.status || "scheduled",
-        budget: event.budget?.toString() || "",
-        event_manager_id: event.event_manager_id || "",
-        campaign_id: event.campaign_id || "",
-        challenge_id: event.challenge_id || "",
-        sector_id: event.sector_id || "",
-        is_recurring: (event as any).is_recurring || false,
-        recurrence_pattern: (event as any).recurrence_pattern || "",
-        recurrence_end_date: (event as any).recurrence_end_date || "",
-        target_stakeholder_groups: event.target_stakeholder_groups || [],
-      });
-
-      setSelectedPartners(partnersRes.data?.map(item => item.partner_id) || []);
-      setSelectedStakeholders(stakeholdersRes.data?.map(item => item.stakeholder_id) || []);
-      setSelectedFocusQuestions(focusQuestionsRes.data?.map(item => item.focus_question_id) || []);
-    } catch (error) {
-      console.error('Error loading event relationships:', error);
-    }
-    
-    setShowAddDialog(true);
+    setShowEventDialog(true);
   };
 
   const handleDelete = async (id: string) => {
@@ -556,7 +207,8 @@ export function EventsManagement() {
       await Promise.all([
         supabase.from('event_partner_links').delete().eq('event_id', id),
         supabase.from('event_stakeholder_links').delete().eq('event_id', id),
-        supabase.from('event_focus_question_links').delete().eq('event_id', id)
+        supabase.from('event_focus_question_links').delete().eq('event_id', id),
+        supabase.from('event_challenge_links').delete().eq('event_id', id)
       ]);
 
       // Then delete the event
@@ -583,1094 +235,288 @@ export function EventsManagement() {
     }
   };
 
-  const handleSubmit = async () => {
-    // Validate all steps
-    const allErrors: string[] = [];
-    for (let i = 1; i <= totalSteps; i++) {
-      const stepErrors = validateStep(i);
-      allErrors.push(...stepErrors);
-    }
+  const handleEventSave = () => {
+    setShowEventDialog(false);
+    setEditingEvent(null);
+    fetchEvents();
+  };
 
-    if (allErrors.length > 0) {
-      toast({
-        title: "Validation Error",
-        description: allErrors.join(", "),
-        variant: "destructive",
-      });
-      return;
-    }
+  const clearAllFilters = () => {
+    setSearchTerm("");
+    setStatusFilter("all");
+    setFormatFilter("all");
+    setTypeFilter("all");
+    setCategoryFilter("all");
+    setVisibilityFilter("all");
+    setSelectedCampaign("all");
+    setSelectedSector("all");
+    setDateFrom(undefined);
+    setDateTo(undefined);
+  };
 
-    try {
-      const eventData = {
-        title: formData.title,
-        title_ar: formData.title_ar || null,
-        description: formData.description || null,
-        description_ar: formData.description_ar || null,
-        event_type: formData.event_type,
-        event_date: formData.event_date,
-        start_time: formData.start_time || null,
-        end_time: formData.end_time || null,
-        location: formData.location || null,
-        virtual_link: formData.virtual_link || null,
-        format: formData.format,
-        max_participants: formData.max_participants ? parseInt(formData.max_participants) : null,
-        registered_participants: formData.registered_participants ? parseInt(formData.registered_participants) : 0,
-        actual_participants: formData.actual_participants ? parseInt(formData.actual_participants) : 0,
-        status: formData.status,
-        budget: formData.budget ? parseFloat(formData.budget) : null,
-        event_manager_id: formData.event_manager_id || null,
-        campaign_id: formData.campaign_id || null,
-        challenge_id: formData.challenge_id || null,
-        sector_id: formData.sector_id || null,
-        target_stakeholder_groups: formData.target_stakeholder_groups.length > 0 ? formData.target_stakeholder_groups : null,
-      };
+  const getActiveFiltersCount = () => {
+    let count = 0;
+    if (searchTerm) count++;
+    if (statusFilter !== "all") count++;
+    if (formatFilter !== "all") count++;
+    if (typeFilter !== "all") count++;
+    if (categoryFilter !== "all") count++;
+    if (visibilityFilter !== "all") count++;
+    if (selectedCampaign !== "all") count++;
+    if (selectedSector !== "all") count++;
+    if (dateFrom) count++;
+    if (dateTo) count++;
+    return count;
+  };
 
-      let eventId: string;
-      
-      if (editingEvent) {
-        // Update existing event
-        const { error } = await supabase
-          .from('events')
-          .update(eventData)
-          .eq('id', editingEvent.id);
-
-        if (error) throw error;
-        eventId = editingEvent.id;
-        
-        // Delete existing relationships
-        await Promise.all([
-          supabase.from('event_partner_links').delete().eq('event_id', eventId),
-          supabase.from('event_stakeholder_links').delete().eq('event_id', eventId),
-          supabase.from('event_focus_question_links').delete().eq('event_id', eventId)
-        ]);
-      } else {
-        // Create new event
-        const { data, error } = await supabase
-          .from('events')
-          .insert([eventData])
-          .select('id')
-          .single();
-
-        if (error) throw error;
-        eventId = data.id;
-      }
-
-      // Insert new relationships using helper functions
-      await Promise.all([
-        updateEventPartners(eventId, selectedPartners),
-        updateEventStakeholders(eventId, selectedStakeholders),
-        updateEventFocusQuestions(eventId, selectedFocusQuestions)
-      ]);
-
-      toast({
-        title: "Success",
-        description: `Event ${editingEvent ? 'updated' : 'created'} successfully`,
-      });
-
-      setShowAddDialog(false);
-      setEditingEvent(null);
-      resetForm();
-      fetchEvents();
-    } catch (error) {
-      console.error('Error saving event:', error);
-      toast({
-        title: "Error",
-        description: `Failed to ${editingEvent ? 'update' : 'create'} event`,
-        variant: "destructive",
-      });
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'scheduled': return 'bg-blue-100 text-blue-800';
+      case 'ongoing': return 'bg-green-100 text-green-800';
+      case 'completed': return 'bg-gray-100 text-gray-800';
+      case 'cancelled': return 'bg-red-100 text-red-800';
+      case 'postponed': return 'bg-yellow-100 text-yellow-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
-  // Render step content
-  const renderBasicInformation = () => (
-    <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-4">
-        <Target className="h-5 w-5 text-primary" />
-        <h3 className="text-lg font-semibold">Basic Information</h3>
-      </div>
-
-      {/* Error Messages */}
-      {stepErrors[1] && stepErrors[1].length > 0 && (
-        <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-          <div className="flex items-center gap-2 text-destructive">
-            <AlertCircle className="h-4 w-4" />
-            <span className="font-medium">Please fix the following errors:</span>
-          </div>
-          <ul className="mt-2 text-sm text-destructive ml-6 list-disc">
-            {stepErrors[1].map((error, index) => (
-              <li key={index}>{error}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="title">Title (English) *</Label>
-          <Input
-            id="title"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            placeholder="Event title in English"
-            className={stepErrors[1]?.some(error => error.includes("Title")) ? "border-destructive" : ""}
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="title_ar">Title (Arabic)</Label>
-          <Input
-            id="title_ar"
-            value={formData.title_ar}
-            onChange={(e) => setFormData({ ...formData, title_ar: e.target.value })}
-            placeholder="Event title in Arabic"
-          />
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="description">Description (English)</Label>
-        <Textarea
-          id="description"
-          value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          placeholder="Event description in English"
-          rows={4}
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="description_ar">Description (Arabic)</Label>
-        <Textarea
-          id="description_ar"
-          value={formData.description_ar}
-          onChange={(e) => setFormData({ ...formData, description_ar: e.target.value })}
-          placeholder="Event description in Arabic"
-          rows={4}
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="event_type">Event Type *</Label>
-        <Select
-          value={formData.event_type}
-          onValueChange={(value) => setFormData({ ...formData, event_type: value })}
-        >
-          <SelectTrigger className={stepErrors[1]?.some(error => error.includes("Event type")) ? "border-destructive" : ""}>
-            <SelectValue placeholder="Select event type" />
-          </SelectTrigger>
-          <SelectContent>
-            {eventTypes.map((type) => (
-              <SelectItem key={type.value} value={type.value}>
-                {type.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-    </div>
-  );
-
-  const renderEventDetails = () => (
-    <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-4">
-        <Calendar className="h-5 w-5 text-primary" />
-        <h3 className="text-lg font-semibold">Event Details</h3>
-      </div>
-
-      {/* Error Messages */}
-      {stepErrors[2] && stepErrors[2].length > 0 && (
-        <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-          <div className="flex items-center gap-2 text-destructive">
-            <AlertCircle className="h-4 w-4" />
-            <span className="font-medium">Please fix the following errors:</span>
-          </div>
-          <ul className="mt-2 text-sm text-destructive ml-6 list-disc">
-            {stepErrors[2].map((error, index) => (
-              <li key={index}>{error}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="event_date">Event Date *</Label>
-          <Input
-            id="event_date"
-            type="date"
-            value={formData.event_date}
-            onChange={(e) => setFormData({ ...formData, event_date: e.target.value })}
-            className={stepErrors[2]?.some(error => error.includes("Event date")) ? "border-destructive" : ""}
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="format">Event Format *</Label>
-          <Select
-            value={formData.format}
-            onValueChange={(value) => setFormData({ ...formData, format: value })}
-          >
-            <SelectTrigger className={stepErrors[2]?.some(error => error.includes("Event format")) ? "border-destructive" : ""}>
-              <SelectValue placeholder="Select event format" />
-            </SelectTrigger>
-            <SelectContent>
-              {formatOptions.map((format) => (
-                <SelectItem key={format.value} value={format.value}>
-                  {format.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="start_time">Start Time</Label>
-          <Input
-            id="start_time"
-            type="time"
-            value={formData.start_time}
-            onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="end_time">End Time</Label>
-          <Input
-            id="end_time"
-            type="time"
-            value={formData.end_time}
-            onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
-            className={stepErrors[2]?.some(error => error.includes("End time")) ? "border-destructive" : ""}
-          />
-        </div>
-      </div>
-
-      {formData.format === "in_person" && (
-        <div className="space-y-2">
-          <Label htmlFor="location">Location *</Label>
-          <Input
-            id="location"
-            value={formData.location}
-            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-            placeholder="Event location"
-            className={stepErrors[2]?.some(error => error.includes("Location")) ? "border-destructive" : ""}
-          />
-        </div>
-      )}
-
-      {formData.format === "virtual" && (
-        <div className="space-y-2">
-          <Label htmlFor="virtual_link">Virtual Link *</Label>
-          <Input
-            id="virtual_link"
-            value={formData.virtual_link}
-            onChange={(e) => setFormData({ ...formData, virtual_link: e.target.value })}
-            placeholder="Virtual meeting link"
-            className={stepErrors[2]?.some(error => error.includes("Virtual link")) ? "border-destructive" : ""}
-          />
-        </div>
-      )}
-
-      <div className="space-y-2">
-        <Label htmlFor="event_manager_id">Event Manager *</Label>
-        <Popover open={openEventManager} onOpenChange={setOpenEventManager}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={openEventManager}
-              className="w-full justify-between"
-            >
-              {formData.event_manager_id
-                ? eventManagers.find((manager) => manager.id === formData.event_manager_id)?.name
-                : "Select event manager..."}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0">
-            <Command>
-              <CommandInput 
-                placeholder="Search event managers..." 
-                value={eventManagerSearch}
-                onValueChange={setEventManagerSearch}
-              />
-              <CommandEmpty>No event manager found.</CommandEmpty>
-              <CommandGroup>
-                <CommandList>
-                  {eventManagers
-                    .filter((manager) =>
-                      manager.name.toLowerCase().includes(eventManagerSearch.toLowerCase()) ||
-                      (manager.email && manager.email.toLowerCase().includes(eventManagerSearch.toLowerCase())) ||
-                      (manager.position && manager.position.toLowerCase().includes(eventManagerSearch.toLowerCase()))
-                    )
-                    .map((manager) => (
-                      <CommandItem
-                        key={manager.id}
-                        value={manager.id}
-                        onSelect={(currentValue) => {
-                          setFormData({ ...formData, event_manager_id: currentValue === formData.event_manager_id ? "" : currentValue });
-                          setOpenEventManager(false);
-                          setEventManagerSearch("");
-                        }}
-                      >
-                        <Check
-                          className={`mr-2 h-4 w-4 ${
-                            formData.event_manager_id === manager.id ? "opacity-100" : "opacity-0"
-                          }`}
-                        />
-                        <div className="flex flex-col">
-                          <span className="font-medium">{manager.name}</span>
-                          <span className="text-xs text-muted-foreground">
-                            {manager.position || 'No position'} • {manager.email}
-                          </span>
-                        </div>
-                      </CommandItem>
-                    ))}
-                </CommandList>
-              </CommandGroup>
-            </Command>
-          </PopoverContent>
-        </Popover>
-        <p className="text-xs text-muted-foreground">
-          Person responsible for managing this event
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="max_participants">Maximum Participants</Label>
-          <Input
-            id="max_participants"
-            type="number"
-            value={formData.max_participants}
-            onChange={(e) => setFormData({ ...formData, max_participants: e.target.value })}
-            placeholder="Maximum number of participants"
-            className={stepErrors[2]?.some(error => error.includes("Maximum participants")) ? "border-destructive" : ""}
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="registered_participants">Registered Participants</Label>
-          <Input
-            id="registered_participants"
-            type="number"
-            value={formData.registered_participants}
-            onChange={(e) => setFormData({ ...formData, registered_participants: e.target.value })}
-            placeholder="Number registered"
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="actual_participants">Actual Participants</Label>
-          <Input
-            id="actual_participants"
-            type="number"
-            value={formData.actual_participants}
-            onChange={(e) => setFormData({ ...formData, actual_participants: e.target.value })}
-            placeholder="Number attended"
-          />
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="budget">Budget</Label>
-        <Input
-          id="budget"
-          type="number"
-          step="0.01"
-          value={formData.budget}
-          onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-          placeholder="Event budget"
-          className={stepErrors[2]?.some(error => error.includes("Budget")) ? "border-destructive" : ""}
-        />
-      </div>
-    </div>
-  );
-
-  const renderOrganizationalStructure = () => {
-    const filteredChallenges = getFilteredChallenges();
-    const filteredSectors = getFilteredSectors();
-
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Building className="h-5 w-5 text-primary" />
-          <h3 className="text-lg font-semibold">Organizational Structure</h3>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="campaign_id">Related Campaign</Label>
-            <Select
-              value={formData.campaign_id || "none"}
-              onValueChange={(value) => {
-                const campaignId = value === "none" ? "" : value;
-                setFormData({ 
-                  ...formData, 
-                  campaign_id: campaignId,
-                  challenge_id: "",
-                  sector_id: ""
-                });
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select campaign..." />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">None</SelectItem>
-                {campaigns.map((campaign) => (
-                  <SelectItem key={campaign.id} value={campaign.id}>
-                    {campaign.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="challenge_id">Related Challenge</Label>
-            <Select
-              value={formData.challenge_id || "none"}
-              onValueChange={(value) => {
-                const challengeId = value === "none" ? "" : value;
-                setFormData({ 
-                  ...formData, 
-                  challenge_id: challengeId,
-                  sector_id: ""
-                });
-              }}
-              disabled={formData.campaign_id && filteredChallenges.length === 0}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={
-                  filteredChallenges.length === 0 && formData.campaign_id
-                    ? "No challenges available"
-                    : "Select challenge..."
-                } />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">None</SelectItem>
-                {filteredChallenges.map((challenge) => (
-                  <SelectItem key={challenge.id} value={challenge.id}>
-                    {challenge.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="sector_id">Sector</Label>
-            <Select
-              value={formData.sector_id || "none"}
-              onValueChange={(value) => {
-                const sectorId = value === "none" ? "" : value;
-                setFormData({ ...formData, sector_id: sectorId });
-              }}
-              disabled={formData.challenge_id && filteredSectors.length === 0}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={
-                  filteredSectors.length === 0 && formData.challenge_id
-                    ? "No sectors available"
-                    : "Select sector..."
-                } />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">None</SelectItem>
-                {filteredSectors.map((sector) => (
-                  <SelectItem key={sector.id} value={sector.id}>
-                    {sector.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderPartnersStakeholders = () => {
-    const filteredPartners = getFilteredPartners();
-    const filteredStakeholders = getFilteredStakeholders();
-
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center gap-2 mb-4">
-          <UserCheck className="h-5 w-5 text-primary" />
-          <h3 className="text-lg font-semibold">Partners & Stakeholders</h3>
-        </div>
-
-        {/* Partner Organizations */}
-        <div className="space-y-4">
-          <Label>Partner Organizations</Label>
-          <div className="space-y-2">
-            <Input
-              placeholder="Search partners..."
-              value={partnerSearch}
-              onChange={(e) => setPartnerSearch(e.target.value)}
-            />
-            <div className="border rounded-md p-3 max-h-40 overflow-y-auto">
-              {filteredPartners.map((partner) => (
-                <div key={partner.id} className="flex items-center space-x-2 py-1">
-                  <input
-                    type="checkbox"
-                    id={`partner-${partner.id}`}
-                    checked={selectedPartners.includes(partner.id)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedPartners([...selectedPartners, partner.id]);
-                      } else {
-                        setSelectedPartners(selectedPartners.filter(id => id !== partner.id));
-                      }
-                    }}
-                  />
-                  <Label htmlFor={`partner-${partner.id}`} className="text-sm">
-                    {partner.name}
-                  </Label>
-                </div>
-              ))}
-            </div>
-            {selectedPartners.length > 0 && (
-              <div className="flex flex-wrap gap-1">
-                {selectedPartners.map(id => {
-                  const partner = partners.find(p => p.id === id);
-                  return partner ? (
-                    <Badge key={id} variant="outline" className="text-xs">
-                      {partner.name}
-                      <X 
-                        className="ml-1 h-3 w-3 cursor-pointer" 
-                        onClick={() => setSelectedPartners(selectedPartners.filter(pid => pid !== id))}
-                      />
-                    </Badge>
-                  ) : null;
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Target Stakeholders */}
-        <div className="space-y-4">
-          <Label>Target Stakeholders</Label>
-          <div className="space-y-2">
-            <Input
-              placeholder="Search stakeholders..."
-              value={stakeholderSearch}
-              onChange={(e) => setStakeholderSearch(e.target.value)}
-            />
-            <div className="border rounded-md p-3 max-h-40 overflow-y-auto">
-              {filteredStakeholders.map((stakeholder) => (
-                <div key={stakeholder.id} className="flex items-center space-x-2 py-1">
-                  <input
-                    type="checkbox"
-                    id={`stakeholder-${stakeholder.id}`}
-                    checked={selectedStakeholders.includes(stakeholder.id)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedStakeholders([...selectedStakeholders, stakeholder.id]);
-                      } else {
-                        setSelectedStakeholders(selectedStakeholders.filter(id => id !== stakeholder.id));
-                      }
-                    }}
-                  />
-                  <Label htmlFor={`stakeholder-${stakeholder.id}`} className="text-sm">
-                    {stakeholder.name}
-                  </Label>
-                </div>
-              ))}
-            </div>
-            {selectedStakeholders.length > 0 && (
-              <div className="flex flex-wrap gap-1">
-                {selectedStakeholders.map(id => {
-                  const stakeholder = stakeholders.find(s => s.id === id);
-                  return stakeholder ? (
-                    <Badge key={id} variant="outline" className="text-xs">
-                      {stakeholder.name}
-                      <X 
-                        className="ml-1 h-3 w-3 cursor-pointer" 
-                        onClick={() => setSelectedStakeholders(selectedStakeholders.filter(sid => sid !== id))}
-                      />
-                    </Badge>
-                  ) : null;
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderFocusQuestionsSettings = () => {
-    const filteredFocusQuestions = getFilteredFocusQuestions();
-
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center gap-2 mb-4">
-          <HelpCircle className="h-5 w-5 text-primary" />
-          <h3 className="text-lg font-semibold">Focus Questions & Settings</h3>
-        </div>
-
-        {/* Related Focus Questions */}
-        <div className="space-y-4">
-          <Label>Related Focus Questions</Label>
-          <div className="space-y-2">
-            <Input
-              placeholder="Search focus questions..."
-              value={focusQuestionSearch}
-              onChange={(e) => setFocusQuestionSearch(e.target.value)}
-            />
-            <div className="border rounded-md p-3 max-h-40 overflow-y-auto">
-              {filteredFocusQuestions.map((question) => (
-                <div key={question.id} className="flex items-center space-x-2 py-1">
-                  <input
-                    type="checkbox"
-                    id={`question-${question.id}`}
-                    checked={selectedFocusQuestions.includes(question.id)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedFocusQuestions([...selectedFocusQuestions, question.id]);
-                      } else {
-                        setSelectedFocusQuestions(selectedFocusQuestions.filter(id => id !== question.id));
-                      }
-                    }}
-                  />
-                  <Label htmlFor={`question-${question.id}`} className="text-sm">
-                    {question.question_text}
-                  </Label>
-                </div>
-              ))}
-            </div>
-            {selectedFocusQuestions.length > 0 && (
-              <div className="flex flex-wrap gap-1">
-                {selectedFocusQuestions.map(id => {
-                  const question = focusQuestions.find(q => q.id === id);
-                  return question ? (
-                    <Badge key={id} variant="outline" className="text-xs">
-                      {question.question_text}
-                      <X 
-                        className="ml-1 h-3 w-3 cursor-pointer" 
-                        onClick={() => setSelectedFocusQuestions(selectedFocusQuestions.filter(qid => qid !== id))}
-                      />
-                    </Badge>
-                  ) : null;
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Event Status */}
-        <div className="space-y-2">
-          <Label htmlFor="status">Event Status</Label>
-          <Select
-            value={formData.status}
-            onValueChange={(value) => setFormData({ ...formData, status: value })}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select event status" />
-            </SelectTrigger>
-            <SelectContent>
-              {statusOptions.map((status) => (
-                <SelectItem key={status.value} value={status.value}>
-                  {status.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-    );
-  };
-
-  const renderCurrentStep = () => {
-    switch (currentStep) {
-      case 1:
-        return renderBasicInformation();
-      case 2:
-        return renderEventDetails();
-      case 3:
-        return renderOrganizationalStructure();
-      case 4:
-        return renderPartnersStakeholders();
-      case 5:
-        return renderFocusQuestionsSettings();
-      default:
-        return renderBasicInformation();
+  const getFormatColor = (format: string) => {
+    switch (format) {
+      case 'in_person': return 'bg-purple-100 text-purple-800';
+      case 'virtual': return 'bg-cyan-100 text-cyan-800';
+      case 'hybrid': return 'bg-orange-100 text-orange-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
-
-  const steps = [
-    { number: 1, title: "Basic Info", icon: Target },
-    { number: 2, title: "Event Details", icon: Calendar },
-    { number: 3, title: "Organization", icon: Building },
-    { number: 4, title: "Partners", icon: UserCheck },
-    { number: 5, title: "Questions", icon: HelpCircle },
-  ];
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
+    <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold">Events Management</h1>
-          <p className="text-muted-foreground">Manage innovation events and activities</p>
+          <p className="text-muted-foreground">Manage and organize all events</p>
         </div>
-        
-        <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-          <DialogTrigger asChild>
-            <Button onClick={() => { resetForm(); setEditingEvent(null); }}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Event
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <Calendar className="h-5 w-5" />
-                {editingEvent ? 'Edit Event' : 'Add New Event'}
-              </DialogTitle>
-            </DialogHeader>
-            
-            <div className="space-y-6">
-              {/* Enhanced Wizard Step Indicator */}
-              <div className="relative">
-                <div className="absolute top-5 left-0 right-0 h-0.5 bg-muted -z-10"></div>
-                <div className="flex items-center justify-between">
-                  {steps.map((step, index) => {
-                    const StepIcon = step.icon;
-                    const isCompleted = currentStep > step.number;
-                    const isCurrent = currentStep === step.number;
-                    const isUpcoming = currentStep < step.number;
-                    
-                    return (
-                      <div key={step.number} className="flex flex-col items-center space-y-2">
-                        <div className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-200 ${
-                          isCompleted 
-                            ? 'bg-primary border-primary text-primary-foreground shadow-lg' 
-                            : isCurrent
-                            ? 'bg-primary/10 border-primary text-primary shadow-md'
-                            : 'bg-background border-muted-foreground/30 text-muted-foreground'
-                        }`}>
-                          {isCompleted ? (
-                            <CheckCircle className="h-5 w-5" />
-                          ) : (
-                            <StepIcon className="h-5 w-5" />
-                          )}
-                          {isCurrent && (
-                            <div className="absolute -inset-1 rounded-full border-2 border-primary/30 animate-pulse"></div>
-                          )}
-                        </div>
-                        <div className="text-center">
-                          <p className={`text-sm font-medium ${
-                            isCurrent ? 'text-primary' : isCompleted ? 'text-foreground' : 'text-muted-foreground'
-                          }`}>
-                            {step.title}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            Step {step.number} of {totalSteps}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                {/* Progress Line */}
-                <div 
-                  className="absolute top-5 left-0 h-0.5 bg-primary transition-all duration-300 -z-10"
-                  style={{ width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` }}
-                ></div>
-              </div>
+        <Button onClick={() => setShowEventDialog(true)}>
+          <Plus className="h-4 w-4 mr-2" />
+          Add Event
+        </Button>
+      </div>
 
-              {/* Step content */}
-              <div className="min-h-[400px]">
-                {renderCurrentStep()}
-              </div>
+      <EventFilters
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        statusFilter={statusFilter}
+        onStatusChange={setStatusFilter}
+        formatFilter={formatFilter}
+        onFormatChange={setFormatFilter}
+        typeFilter={typeFilter}
+        onTypeChange={setTypeFilter}
+        categoryFilter={categoryFilter}
+        onCategoryChange={setCategoryFilter}
+        visibilityFilter={visibilityFilter}
+        onVisibilityChange={setVisibilityFilter}
+        selectedCampaign={selectedCampaign}
+        onCampaignChange={setSelectedCampaign}
+        selectedSector={selectedSector}
+        onSectorChange={setSelectedSector}
+        dateFrom={dateFrom}
+        onDateFromChange={setDateFrom}
+        dateTo={dateTo}
+        onDateToChange={setDateTo}
+        campaigns={campaigns}
+        sectors={sectors}
+        onClearFilters={clearAllFilters}
+        activeFiltersCount={getActiveFiltersCount()}
+      />
 
-              {/* Enhanced Navigation Buttons */}
-              <div className="flex justify-between items-center pt-6 border-t bg-muted/30 -mx-6 px-6 -mb-6 pb-6">
-                <Button
-                  variant="outline"
-                  onClick={prevStep}
-                  disabled={currentStep === 1}
-                  className="flex items-center gap-2"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                  Previous
-                </Button>
-                
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>Step {currentStep} of {totalSteps}</span>
-                  <div className="flex space-x-1">
-                    {Array.from({ length: totalSteps }, (_, i) => (
-                      <div
-                        key={i + 1}
-                        className={`h-2 w-2 rounded-full transition-colors ${
-                          i + 1 === currentStep
-                            ? 'bg-primary'
-                            : i + 1 < currentStep
-                            ? 'bg-primary/60'
-                            : 'bg-muted-foreground/30'
-                        }`}
-                      />
-                    ))}
+      <EventBulkActions
+        selectedEvents={selectedEvents}
+        onSelectionChange={setSelectedEvents}
+        events={filteredEvents}
+        onRefresh={fetchEvents}
+      />
+
+      <div className="grid gap-4">
+        {filteredEvents.map((event) => (
+          <Card key={event.id} className="hover:shadow-md transition-shadow">
+            <CardHeader className="pb-3">
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <CardTitle className="text-lg">{event.title}</CardTitle>
+                  {event.title_ar && (
+                    <p className="text-sm text-muted-foreground mt-1" dir="rtl">
+                      {event.title_ar}
+                    </p>
+                  )}
+                  <div className="flex gap-2 mt-2">
+                    <Badge className={getStatusColor(event.status || 'scheduled')}>
+                      {event.status || 'scheduled'}
+                    </Badge>
+                    <Badge className={getFormatColor(event.format || 'in_person')}>
+                      {event.format || 'in_person'}
+                    </Badge>
+                    {event.event_type && (
+                      <Badge variant="outline">
+                        {event.event_type}
+                      </Badge>
+                    )}
                   </div>
                 </div>
-
-                {currentStep < totalSteps ? (
-                  <Button
-                    onClick={nextStep}
-                    className="flex items-center gap-2"
-                  >
-                    Next
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={handleSubmit}
-                    className="flex items-center gap-2"
-                  >
-                    <CheckCircle className="h-4 w-4" />
-                    {editingEvent ? 'Update Event' : 'Create Event'}
-                  </Button>
-                )}
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      {/* Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Input
-          placeholder="Search events..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger>
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Status</SelectItem>
-            {statusOptions.map((status) => (
-              <SelectItem key={status.value} value={status.value}>
-                {status.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select value={formatFilter} onValueChange={setFormatFilter}>
-          <SelectTrigger>
-            <SelectValue placeholder="Format" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Formats</SelectItem>
-            {formatOptions.map((format) => (
-              <SelectItem key={format.value} value={format.value}>
-                {format.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select value={typeFilter} onValueChange={setTypeFilter}>
-          <SelectTrigger>
-            <SelectValue placeholder="Type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
-            {eventTypes.map((type) => (
-              <SelectItem key={type.value} value={type.value}>
-                {type.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Events Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredEvents.map((event) => (
-          <Card key={event.id} className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleView(event)}>
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <CardTitle className="text-lg line-clamp-2">{event.title}</CardTitle>
-                <div className="flex space-x-1">
+                <div className="flex gap-2">
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEdit(event);
-                    }}
+                    onClick={() => handleView(event)}
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleEdit(event)}
                   >
                     <Edit className="h-4 w-4" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(event.id);
-                    }}
+                    onClick={() => handleDelete(event.id)}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Calendar className="h-4 w-4" />
-                {new Date(event.event_date).toLocaleDateString()}
-                {event.start_time && (
-                  <>
-                    <Clock className="h-4 w-4 ml-2" />
-                    {event.start_time}
-                  </>
-                )}
-              </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                {event.description && (
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {event.description}
-                  </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  <span>{format(new Date(event.event_date), 'PPP')}</span>
+                </div>
+                {event.start_time && (
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <span>{event.start_time} - {event.end_time}</span>
+                  </div>
                 )}
-                
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="outline">{event.event_type}</Badge>
-                  <Badge variant="outline">{event.format}</Badge>
-                  <Badge variant={event.status === 'completed' ? 'default' : 'secondary'}>
-                    {event.status}
-                  </Badge>
-                </div>
-
-                <div className="flex items-center justify-between text-sm">
-                  {event.location && (
-                    <div className="flex items-center gap-1">
-                      <MapPin className="h-4 w-4" />
-                      <span className="line-clamp-1">{event.location}</span>
-                    </div>
-                  )}
-                  {event.max_participants && (
-                    <div className="flex items-center gap-1">
-                      <Users className="h-4 w-4" />
-                      <span>{event.registered_participants || 0}/{event.max_participants}</span>
-                    </div>
-                  )}
-                </div>
+                {event.location && (
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-muted-foreground" />
+                    <span className="truncate">{event.location}</span>
+                  </div>
+                )}
+                {event.max_participants && (
+                  <div className="flex items-center gap-2">
+                    <Users className="h-4 w-4 text-muted-foreground" />
+                    <span>{event.registered_participants || 0}/{event.max_participants}</span>
+                  </div>
+                )}
               </div>
+              {event.description && (
+                <p className="text-sm text-muted-foreground mt-3 line-clamp-2">
+                  {event.description}
+                </p>
+              )}
             </CardContent>
           </Card>
         ))}
+        
+        {filteredEvents.length === 0 && (
+          <Card>
+            <CardContent className="py-8 text-center">
+              <p className="text-muted-foreground">No events found matching your criteria.</p>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
-      {/* View Event Dialog */}
-      <Dialog open={!!viewingEvent} onOpenChange={() => setViewingEvent(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <EventDialog
+        isOpen={showEventDialog}
+        onClose={() => {
+          setShowEventDialog(false);
+          setEditingEvent(null);
+        }}
+        event={editingEvent}
+        onSave={handleEventSave}
+      />
+
+      <Dialog open={!!viewingEvent} onOpenChange={(open) => !open && setViewingEvent(null)}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {viewingEvent?.title}
+            </DialogTitle>
+          </DialogHeader>
           {viewingEvent && (
             <div className="space-y-6">
-              <DialogHeader>
-                <DialogTitle className="flex items-center gap-2">
-                  <Eye className="h-5 w-5" />
-                  {viewingEvent.title}
-                </DialogTitle>
-              </DialogHeader>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h4 className="font-semibold mb-2">Event Details</h4>
+                  <div className="space-y-2 text-sm">
+                    <p><strong>Date:</strong> {format(new Date(viewingEvent.event_date), 'PPP')}</p>
+                    <p><strong>Time:</strong> {viewingEvent.start_time} - {viewingEvent.end_time}</p>
+                    <p><strong>Format:</strong> {viewingEvent.format}</p>
+                    <p><strong>Status:</strong> {viewingEvent.status}</p>
+                    {viewingEvent.location && <p><strong>Location:</strong> {viewingEvent.location}</p>}
+                    {viewingEvent.virtual_link && <p><strong>Virtual Link:</strong> {viewingEvent.virtual_link}</p>}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Participants</h4>
+                  <div className="space-y-2 text-sm">
+                    <p><strong>Max Participants:</strong> {viewingEvent.max_participants || 'No limit'}</p>
+                    <p><strong>Registered:</strong> {viewingEvent.registered_participants || 0}</p>
+                    <p><strong>Actual:</strong> {viewingEvent.actual_participants || 0}</p>
+                    {viewingEvent.budget && <p><strong>Budget:</strong> ${viewingEvent.budget}</p>}
+                  </div>
+                </div>
+              </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-semibold mb-2">Event Details</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4" />
-                        {new Date(viewingEvent.event_date).toLocaleDateString()}
-                      </div>
-                      {viewingEvent.start_time && (
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4" />
-                          {viewingEvent.start_time} - {viewingEvent.end_time}
-                        </div>
-                      )}
-                      {viewingEvent.location && (
-                        <div className="flex items-center gap-2">
-                          <MapPin className="h-4 w-4" />
-                          {viewingEvent.location}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {viewingEvent.description && (
-                    <div>
-                      <h4 className="font-semibold mb-2">Description</h4>
-                      <p className="text-sm text-muted-foreground">{viewingEvent.description}</p>
-                    </div>
-                  )}
+              {viewingEvent.description && (
+                <div>
+                  <h4 className="font-semibold mb-2">Description</h4>
+                  <p className="text-sm">{viewingEvent.description}</p>
                 </div>
+              )}
 
-                <div className="space-y-4">
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="outline">{viewingEvent.event_type}</Badge>
-                    <Badge variant="outline">{viewingEvent.format}</Badge>
-                    <Badge variant={viewingEvent.status === 'completed' ? 'default' : 'secondary'}>
-                      {viewingEvent.status}
-                    </Badge>
+              {viewingEvent.partners && viewingEvent.partners.length > 0 && (
+                <div>
+                  <h4 className="font-semibold mb-2">Partners</h4>
+                  <div className="flex gap-2 flex-wrap">
+                    {viewingEvent.partners.map((partner: any) => (
+                      <Badge key={partner.id} variant="outline">
+                        {partner.name}
+                      </Badge>
+                    ))}
                   </div>
-
-                  {viewingEvent.partners && viewingEvent.partners.length > 0 && (
-                    <div>
-                      <h4 className="font-semibold mb-2">Partners</h4>
-                      <div className="flex flex-wrap gap-1">
-                        {viewingEvent.partners.map((partner: any) => (
-                          <Badge key={partner.id} variant="outline" className="text-xs">
-                            {partner.name}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {viewingEvent.stakeholders && viewingEvent.stakeholders.length > 0 && (
-                    <div>
-                      <h4 className="font-semibold mb-2">Stakeholders</h4>
-                      <div className="flex flex-wrap gap-1">
-                        {viewingEvent.stakeholders.map((stakeholder: any) => (
-                          <Badge key={stakeholder.id} variant="outline" className="text-xs">
-                            {stakeholder.name}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                 </div>
-              </div>
+              )}
 
-              <div className="flex justify-between">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setViewingEvent(null);
-                    handleEdit(viewingEvent);
-                  }}
-                >
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit Event
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setViewingEvent(null)}
-                >
-                  Close
-                </Button>
-              </div>
+              {viewingEvent.stakeholders && viewingEvent.stakeholders.length > 0 && (
+                <div>
+                  <h4 className="font-semibold mb-2">Stakeholders</h4>
+                  <div className="flex gap-2 flex-wrap">
+                    {viewingEvent.stakeholders.map((stakeholder: any) => (
+                      <Badge key={stakeholder.id} variant="outline">
+                        {stakeholder.name}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {viewingEvent.focusQuestions && viewingEvent.focusQuestions.length > 0 && (
+                <div>
+                  <h4 className="font-semibold mb-2">Focus Questions</h4>
+                  <div className="space-y-2">
+                    {viewingEvent.focusQuestions.map((question: any) => (
+                      <div key={question.id} className="p-3 bg-muted rounded-lg">
+                        <p className="text-sm">{question.question_text}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </DialogContent>
