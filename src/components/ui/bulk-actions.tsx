@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, ChevronRight, Users } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface BulkAction {
   id: string;
@@ -30,6 +31,7 @@ export function BulkActions({
   className
 }: BulkActionsProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
   
   const isAllSelected = selectedItems.length === totalItems && totalItems > 0;
   const isIndeterminate = selectedItems.length > 0 && selectedItems.length < totalItems;
@@ -42,10 +44,10 @@ export function BulkActions({
         <Button variant="outline" className="w-full justify-between">
           <span className="flex items-center gap-2">
             <Users className="w-4 h-4" />
-            Bulk Actions
+            {t('bulkActions')}
             {selectedItems.length > 0 && (
               <span className="text-sm font-medium">
-                ({selectedItems.length} selected)
+                {t('selectedCount', { count: selectedItems.length })}
               </span>
             )}
           </span>
@@ -66,7 +68,7 @@ export function BulkActions({
             className={isIndeterminate ? "data-[state=checked]:bg-primary" : ""}
           />
           <label htmlFor="select-all" className="text-sm font-medium">
-            Select all ({totalItems} items)
+            {t('selectAllItems', { count: totalItems })}
           </label>
         </div>
 

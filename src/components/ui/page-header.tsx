@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface PageHeaderProps {
   title: string;
@@ -20,6 +21,7 @@ export function PageHeader({
   actionButton, 
   children 
 }: PageHeaderProps) {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
       <div>
@@ -27,7 +29,7 @@ export function PageHeader({
         {(description || itemCount !== undefined) && (
           <p className="text-muted-foreground mt-1">
             {description}
-            {itemCount !== undefined && ` (${itemCount} ${itemCount === 1 ? 'item' : 'items'})`}
+            {itemCount !== undefined && ` (${itemCount} ${itemCount === 1 ? t('item') : t('items')})`}
           </p>
         )}
       </div>

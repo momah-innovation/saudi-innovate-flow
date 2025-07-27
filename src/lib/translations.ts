@@ -65,6 +65,12 @@ export const translations = {
     
     // Layout and UI
     items: 'عناصر',
+    item: 'عنصر',
+    selectAllItems: 'تحديد الكل ({{count}} عناصر)',
+    selectedCount: '({{count}} محدد)',
+    copy: 'نسخ',
+    download: 'تحميل', 
+    share: 'مشاركة',
     
     // Actions
     viewDetails: 'عرض التفاصيل',
@@ -136,6 +142,12 @@ export const translations = {
     
     // Layout and UI
     items: 'Items',
+    item: 'item',
+    selectAllItems: 'Select all ({{count}} items)',
+    selectedCount: '({{count}} selected)',
+    copy: 'Copy',
+    download: 'Download',
+    share: 'Share',
     
     // Actions
     viewDetails: 'View Details',
