@@ -47,13 +47,19 @@ interface Campaign {
   target_ideas?: number;
   budget?: number;
   success_metrics?: string;
+  campaign_manager_id?: string;
+  // Single select fields from campaigns table
+  sector_id?: string;
+  deputy_id?: string;
+  department_id?: string;
+  challenge_id?: string;
+  // Multi-select arrays for compatibility
   sector_ids?: string[];
   deputy_ids?: string[];
   department_ids?: string[];
   challenge_ids?: string[];
   partner_ids?: string[];
   stakeholder_ids?: string[];
-  campaign_manager_id?: string;
   created_at?: string;
 }
 
@@ -80,7 +86,7 @@ export function CampaignsManagement() {
   const [partnerSearch, setPartnerSearch] = useState("");
   const [stakeholderSearch, setStakeholderSearch] = useState("");
   
-  // Form data with multi-select arrays
+  // Form data with both single and multi-select fields
   const [formData, setFormData] = useState({
     title: "",
     title_ar: "",
@@ -96,6 +102,12 @@ export function CampaignsManagement() {
     budget: "",
     success_metrics: "",
     campaign_manager_id: "",
+    // Single select fields from campaigns table
+    sector_id: "",
+    deputy_id: "",
+    department_id: "",
+    challenge_id: "",
+    // Multi-select arrays for linking tables
     sector_ids: [] as string[],
     deputy_ids: [] as string[],
     department_ids: [] as string[],
@@ -112,6 +124,8 @@ export function CampaignsManagement() {
   const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
   const [selectedStakeholders, setSelectedStakeholders] = useState<string[]>([]);
   const [campaignManagers, setCampaignManagers] = useState<any[]>([]);
+  const [campaignManagerSearch, setCampaignManagerSearch] = useState("");
+  const [openCampaignManager, setOpenCampaignManager] = useState(false);
 
   const { toast } = useToast();
 
@@ -208,6 +222,12 @@ export function CampaignsManagement() {
       budget: "",
       success_metrics: "",
       campaign_manager_id: "",
+      // Single select fields
+      sector_id: "",
+      deputy_id: "",
+      department_id: "",
+      challenge_id: "",
+      // Multi-select arrays
       sector_ids: [],
       deputy_ids: [],
       department_ids: [],
@@ -221,12 +241,14 @@ export function CampaignsManagement() {
     // Reset search states
     setPartnerSearch("");
     setStakeholderSearch("");
+    setCampaignManagerSearch("");
     
     // Reset dropdown states
     setOpenSector(false);
     setOpenDeputy(false);
     setOpenDepartment(false);
     setOpenChallenge(false);
+    setOpenCampaignManager(false);
   };
 
   const handleEdit = async (campaign: Campaign) => {
@@ -261,6 +283,11 @@ export function CampaignsManagement() {
         budget: campaign.budget?.toString() || "",
         success_metrics: campaign.success_metrics || "",
         campaign_manager_id: campaign.campaign_manager_id || "",
+        // Single select fields
+        sector_id: campaign.sector_id || "",
+        deputy_id: campaign.deputy_id || "",
+        department_id: campaign.department_id || "",
+        challenge_id: campaign.challenge_id || "",
         // Load from linking tables, fallback to old single fields for backward compatibility
         sector_ids: sectorsRes.data?.map(s => s.sector_id) || ((campaign as any).sector_id ? [(campaign as any).sector_id] : []),
         deputy_ids: deputiesRes.data?.map(d => d.deputy_id) || ((campaign as any).deputy_id ? [(campaign as any).deputy_id] : []),
@@ -290,6 +317,12 @@ export function CampaignsManagement() {
         budget: campaign.budget?.toString() || "",
         success_metrics: campaign.success_metrics || "",
         campaign_manager_id: campaign.campaign_manager_id || "",
+        // Single select fields
+        sector_id: campaign.sector_id || "",
+        deputy_id: campaign.deputy_id || "",
+        department_id: campaign.department_id || "",
+        challenge_id: campaign.challenge_id || "",
+        // Multi-select arrays
         sector_ids: [],
         deputy_ids: [],
         department_ids: [],
@@ -300,12 +333,14 @@ export function CampaignsManagement() {
     // Reset search states
     setPartnerSearch("");
     setStakeholderSearch("");
+    setCampaignManagerSearch("");
     
     // Reset dropdown states
     setOpenSector(false);
     setOpenDeputy(false);
     setOpenDepartment(false);
     setOpenChallenge(false);
+    setOpenCampaignManager(false);
     
     setShowAddDialog(true);
   };
@@ -375,6 +410,7 @@ export function CampaignsManagement() {
         if (!formData.title.trim()) errors.push("Title is required");
         if (!formData.description?.trim()) errors.push("Description is required");
         if (!formData.status) errors.push("Status is required");
+        if (!formData.campaign_manager_id) errors.push("Campaign Manager is required");
         break;
       case 2: // Campaign Details
         if (!formData.start_date) errors.push("Start date is required");
@@ -476,6 +512,11 @@ export function CampaignsManagement() {
         budget: formData.budget ? parseFloat(formData.budget) : null,
         success_metrics: formData.success_metrics || null,
         campaign_manager_id: formData.campaign_manager_id || null,
+        // Single select fields
+        sector_id: formData.sector_id || null,
+        deputy_id: formData.deputy_id || null,
+        department_id: formData.department_id || null,
+        challenge_id: formData.challenge_id || null,
       };
 
       let campaignId: string;
@@ -685,21 +726,73 @@ export function CampaignsManagement() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="campaign_manager_id">Campaign Manager</Label>
-          <Select value={formData.campaign_manager_id} onValueChange={(value) => setFormData({ ...formData, campaign_manager_id: value })}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select campaign manager (optional)" />
-            </SelectTrigger>
-            <SelectContent>
-              {campaignManagers.map((manager) => (
-                <SelectItem key={manager.id} value={manager.id}>
-                  {manager.name} - {manager.position || 'No position'}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Label htmlFor="campaign_manager_id">Campaign Manager *</Label>
+          <Popover open={openCampaignManager} onOpenChange={setOpenCampaignManager}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={openCampaignManager}
+                className={`w-full justify-between ${stepErrors[1]?.includes("Campaign Manager is required") ? "border-destructive" : ""}`}
+              >
+                {formData.campaign_manager_id
+                  ? campaignManagers.find((manager) => manager.id === formData.campaign_manager_id)?.name
+                  : "Select campaign manager..."}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0">
+              <Command>
+                <CommandInput 
+                  placeholder="Search campaign managers..." 
+                  value={campaignManagerSearch}
+                  onValueChange={setCampaignManagerSearch}
+                />
+                <CommandEmpty>No campaign manager found.</CommandEmpty>
+                <CommandGroup>
+                  <CommandList>
+                    {campaignManagers
+                      .filter((manager) =>
+                        manager.name.toLowerCase().includes(campaignManagerSearch.toLowerCase()) ||
+                        (manager.email && manager.email.toLowerCase().includes(campaignManagerSearch.toLowerCase())) ||
+                        (manager.position && manager.position.toLowerCase().includes(campaignManagerSearch.toLowerCase()))
+                      )
+                      .map((manager) => (
+                        <CommandItem
+                          key={manager.id}
+                          value={manager.id}
+                          onSelect={(currentValue) => {
+                            setFormData({ ...formData, campaign_manager_id: currentValue === formData.campaign_manager_id ? "" : currentValue });
+                            setOpenCampaignManager(false);
+                            setCampaignManagerSearch("");
+                          }}
+                        >
+                          <Check
+                            className={`mr-2 h-4 w-4 ${
+                              formData.campaign_manager_id === manager.id ? "opacity-100" : "opacity-0"
+                            }`}
+                          />
+                          <div className="flex flex-col">
+                            <span className="font-medium">{manager.name}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {manager.position || 'No position'} • {manager.email}
+                            </span>
+                          </div>
+                        </CommandItem>
+                      ))}
+                  </CommandList>
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          </Popover>
+          {stepErrors[1]?.includes("Campaign Manager is required") && (
+            <p className="text-sm text-destructive flex items-center gap-1">
+              <AlertCircle className="h-3 w-3" />
+              Campaign Manager is required
+            </p>
+          )}
           <p className="text-xs text-muted-foreground">
-            Person responsible for managing this campaign (optional)
+            Person responsible for managing this campaign
           </p>
         </div>
       </div>
