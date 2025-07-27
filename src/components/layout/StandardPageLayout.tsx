@@ -8,6 +8,7 @@ import { CompactSearchAndFilters } from "@/components/ui/compact-search-filters"
 import { BulkActions } from "@/components/ui/bulk-actions";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export type ViewMode = 'cards' | 'list' | 'grid' | 'calendar' | 'gantt' | 'timeline';
 export type FilterConfig = {
@@ -109,6 +110,7 @@ export function StandardPageLayout({
 }: StandardPageLayoutProps) {
   const [currentLayout, setCurrentLayout] = useState<ViewMode>(defaultLayout);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const { t } = useTranslation();
   
   const hasSelectedItems = selectedItems.length > 0;
   const showLayoutSelector = supportedLayouts.length > 1;
@@ -124,13 +126,13 @@ export function StandardPageLayout({
   
   const renderContent = () => {
     if (loading) {
-      return <div className="flex items-center justify-center p-8">Loading...</div>;
+      return <div className="flex items-center justify-center p-8">{t('loading')}</div>;
     }
     
     if (!Array.isArray(children) && !children) {
       return emptyState || (
         <div className="text-center p-8 text-muted-foreground">
-          No items found
+          {t('noResults')}
         </div>
       );
     }
@@ -175,7 +177,7 @@ export function StandardPageLayout({
             className="gap-2"
           >
             <Users className="w-4 h-4" />
-            {bulkMode ? 'Exit Bulk' : 'Bulk Actions'}
+            {bulkMode ? t('cancel') : t('bulkActions')}
           </Button>
         )}
         {showLayoutSelector && (

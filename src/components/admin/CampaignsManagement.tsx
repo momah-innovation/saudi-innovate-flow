@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { StandardPageLayout, BulkAction } from "@/components/layout/StandardPageLayout";
 import { DataCard } from "@/components/ui/data-card";
+import { useTranslation } from "@/hooks/useTranslation";
 import { 
   Plus, 
   Edit, 
@@ -72,6 +73,9 @@ export function CampaignsManagement() {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null);
   
+  const { toast } = useToast();
+  const { t, getDynamicText, getStatusText, getThemeText } = useTranslation();
+  
   // Multi-step form state
   const [currentStep, setCurrentStep] = useState(1);
   const [stepErrors, setStepErrors] = useState<{[key: number]: string[]}>({});
@@ -127,7 +131,6 @@ export function CampaignsManagement() {
   const [campaignManagerSearch, setCampaignManagerSearch] = useState("");
   const [openCampaignManager, setOpenCampaignManager] = useState(false);
 
-  const { toast } = useToast();
 
   useEffect(() => {
     fetchCampaigns();
@@ -356,7 +359,7 @@ export function CampaignsManagement() {
   const bulkActions: BulkAction[] = [
     {
       id: 'archive',
-      label: 'Archive Selected',
+      label: t('archiveCampaigns'),
       icon: <Archive className="w-4 h-4" />,
       onClick: (ids) => {
         console.log('Archive campaigns:', ids);
@@ -366,7 +369,7 @@ export function CampaignsManagement() {
     },
     {
       id: 'export',
-      label: 'Export Selected',
+      label: t('exportCampaigns'),
       icon: <Download className="w-4 h-4" />,
       onClick: (ids) => {
         console.log('Export campaigns:', ids);
@@ -376,7 +379,7 @@ export function CampaignsManagement() {
     },
     {
       id: 'delete',
-      label: 'Delete Selected',
+      label: t('deleteCampaigns'),
       icon: <Trash2 className="w-4 h-4" />,
       onClick: (ids) => {
         if (confirm(`Delete ${ids.length} selected campaigns?`)) {
@@ -390,19 +393,19 @@ export function CampaignsManagement() {
 
   // Filter options
   const statusOptions = [
-    { label: 'All Statuses', value: 'all' },
-    { label: 'Planning', value: 'planning' },
-    { label: 'Active', value: 'active' },
-    { label: 'Completed', value: 'completed' },
-    { label: 'Cancelled', value: 'cancelled' }
+    { label: t('filterByStatus'), value: 'all' },
+    { label: getStatusText('planning'), value: 'planning' },
+    { label: getStatusText('active'), value: 'active' },
+    { label: getStatusText('completed'), value: 'completed' },
+    { label: getStatusText('archived'), value: 'archived' }
   ];
 
   const themeOptions = [
-    { label: 'All Themes', value: 'all' },
-    { label: 'Digital Transformation', value: 'digital_transformation' },
-    { label: 'Sustainability', value: 'sustainability' },
-    { label: 'Innovation', value: 'innovation' },
-    { label: 'Education', value: 'education' }
+    { label: t('filterByTheme'), value: 'all' },
+    { label: getThemeText('digital_transformation'), value: 'digital_transformation' },
+    { label: getThemeText('sustainability'), value: 'sustainability' },
+    { label: getThemeText('smart_cities'), value: 'smart_cities' },
+    { label: getThemeText('healthcare'), value: 'healthcare' }
   ];
 
   const filteredCampaigns = getFilteredCampaigns();
@@ -412,13 +415,13 @@ export function CampaignsManagement() {
       <DataCard
         key={campaign.id}
         item={campaign}
-        title={campaign.title}
-        description={campaign.description}
+        title={getDynamicText(campaign.title, campaign.title_ar)}
+        description={getDynamicText(campaign.description || '', campaign.description_ar)}
         selected={bulkMode ? selectedItems.includes(campaign.id) : false}
         onSelect={bulkMode ? (selected) => handleSelectItem(campaign.id, selected) : undefined}
         badges={[
           { 
-            label: campaign.status,
+            label: getStatusText(campaign.status),
             variant: 'outline'
           }
         ]}
@@ -485,13 +488,13 @@ export function CampaignsManagement() {
   return (
     <>
       <StandardPageLayout
-        title="Campaigns Management"
-        description="Manage innovation campaigns and initiatives"
+        title={t('campaignManagement')}
+        description={t('campaignManagementDesc')}
         itemCount={filteredCampaigns.length}
         
         // Add button
         addButton={{
-          label: "Create Campaign",
+          label: t('createCampaign'),
           onClick: () => {
             resetForm();
             setEditingCampaign(null);
@@ -509,19 +512,19 @@ export function CampaignsManagement() {
         filters={[
           {
             id: 'status',
-            label: 'Status',
+            label: t('status'),
             type: 'select' as const,
             options: statusOptions,
-            placeholder: 'All Statuses',
+            placeholder: t('filterByStatus'),
             value: statusFilter,
             onChange: (value: string) => setStatusFilter(value)
           },
           {
             id: 'theme',
-            label: 'Theme',
+            label: t('theme'),
             type: 'select' as const,
             options: themeOptions,
-            placeholder: 'All Themes',
+            placeholder: t('filterByTheme'),
             value: themeFilter,
             onChange: (value: string) => setThemeFilter(value)
           }
