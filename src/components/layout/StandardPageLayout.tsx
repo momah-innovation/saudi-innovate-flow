@@ -182,8 +182,8 @@ export function StandardPageLayout({
         />
       )}
       
-      {/* Bulk Actions - Only show when items are selected */}
-      {showBulkActions && hasSelectedItems && (
+      {/* Bulk Actions - Always show when available */}
+      {showBulkActions && (
         <div className="bg-primary/5 border border-primary/20 rounded-lg px-4 py-2">
           <BulkActions
             selectedItems={selectedItems}
