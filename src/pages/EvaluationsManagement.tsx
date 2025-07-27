@@ -4,8 +4,8 @@ import { PageContainer, PageHeader, Section, ContentArea } from "@/components/ui
 
 export default function EvaluationsManagementPage() {
   const breadcrumbs = [
-    { label: "Admin", href: "/admin" },
-    { label: "Evaluations", href: "/admin/evaluations" }
+    { label: "الإدارة", href: "/admin" },
+    { label: "التقييمات", href: "/admin/evaluations" }
   ];
 
   return (

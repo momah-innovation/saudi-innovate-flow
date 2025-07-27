@@ -4,8 +4,8 @@ import { PageContainer, PageHeader, Section, ContentArea } from "@/components/ui
 
 export default function OrganizationalStructurePage() {
   const breadcrumbs = [
-    { label: "Admin", href: "/admin" },
-    { label: "Organization", href: "/admin/organizational-structure" }
+    { label: "الإدارة", href: "/admin" },
+    { label: "التنظيم", href: "/admin/organizational-structure" }
   ];
 
   return (

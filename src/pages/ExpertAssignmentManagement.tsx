@@ -4,8 +4,8 @@ import { PageContainer, PageHeader, Section, ContentArea } from "@/components/ui
 
 export default function ExpertAssignmentManagementPage() {
   const breadcrumbs = [
-    { label: "Admin", href: "/admin" },
-    { label: "Expert Assignments", href: "/admin/expert-assignments" }
+    { label: "الإدارة", href: "/admin" },
+    { label: "مهام الخبراء", href: "/admin/expert-assignments" }
   ];
 
   return (

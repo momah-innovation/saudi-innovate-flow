@@ -4,8 +4,8 @@ import { PageContainer, PageHeader, Section, ContentArea } from "@/components/ui
 
 export default function StakeholdersManagementPage() {
   const breadcrumbs = [
-    { label: "Admin", href: "/admin" },
-    { label: "Stakeholders", href: "/admin/stakeholders" }
+    { label: "الإدارة", href: "/admin" },
+    { label: "أصحاب المصلحة", href: "/admin/stakeholders" }
   ];
 
   return (

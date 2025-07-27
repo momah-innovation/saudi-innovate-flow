@@ -4,8 +4,8 @@ import { PageContainer } from "@/components/ui";
 
 export default function UserManagementPage() {
   const breadcrumbs = [
-    { label: "Admin", href: "/admin" },
-    { label: "Users", href: "/admin/users" }
+    { label: "الإدارة", href: "/admin" },
+    { label: "المستخدمون", href: "/admin/users" }
   ];
 
   return (

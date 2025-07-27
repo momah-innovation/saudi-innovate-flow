@@ -4,8 +4,8 @@ import { PageContainer, PageHeader, Section, ContentArea } from "@/components/ui
 
 export default function PartnersManagementPage() {
   const breadcrumbs = [
-    { label: "Admin", href: "/admin" },
-    { label: "Partners", href: "/admin/partners" }
+    { label: "الإدارة", href: "/admin" },
+    { label: "الشركاء", href: "/admin/partners" }
   ];
 
   return (

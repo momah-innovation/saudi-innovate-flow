@@ -4,8 +4,8 @@ import { PageContainer, PageHeader, Section, ContentArea } from "@/components/ui
 
 export default function EventsManagementPage() {
   const breadcrumbs = [
-    { label: "Admin", href: "/admin" },
-    { label: "Events", href: "/admin/events" }
+    { label: "الإدارة", href: "/admin" },
+    { label: "الأحداث", href: "/admin/events" }
   ];
 
   return (

@@ -46,6 +46,60 @@ export const translations = {
     selectOption: 'اختر خيار',
     addNew: 'إضافة جديد',
     
+    // Navigation & Pages
+    dashboard: 'لوحة التحكم',
+    admin: 'المدير',
+    administration: 'الإدارة',
+    management: 'الإدارة',
+    userManagement: 'إدارة المستخدمين',
+    teamManagement: 'إدارة الفريق',
+    settings: 'الإعدادات',
+    profile: 'الملف الشخصي',
+    users: 'المستخدمون',
+    team: 'الفريق',
+    
+    // Navigation Sections
+    workspace: 'مساحة العمل',
+    ideas: 'الأفكار',
+    challenges: 'التحديات',
+    evaluations: 'التقييمات',
+    expertise: 'الخبرة',
+    events: 'الأحداث',
+    innovationTeams: 'فرق الابتكار',
+    stakeholders: 'أصحاب المصلحة',
+    analytics: 'التحليلات',
+    trends: 'الاتجاهات والرؤى',
+    reports: 'التقارير',
+    challengeManagement: 'إدارة التحديات',
+    focusQuestions: 'أسئلة التركيز',
+    partners: 'الشركاء',
+    sectors: 'القطاعات',
+    organizationalStructure: 'الهيكل التنظيمي',
+    expertAssignments: 'مهام الخبراء',
+    relationshipOverview: 'نظرة عامة على العلاقات',
+    systemSettings: 'إعدادات النظام',
+    systemAnalytics: 'تحليلات النظام',
+    systemDocumentation: 'وثائق النظام',
+    
+    // Authentication
+    login: 'تسجيل الدخول',
+    register: 'التسجيل',
+    logout: 'تسجيل الخروج',
+    
+    // Common Actions
+    export: 'تصدير',
+    import: 'استيراد',
+    download: 'تحميل',
+    upload: 'رفع',
+    send: 'إرسال',
+    notification: 'إشعار',
+    notifications: 'الإشعارات',
+    
+    // Status & States
+    registered: 'مسجل',
+    registering: 'جاري التسجيل',
+    registerForEvent: 'التسجيل في الحدث',
+    
     // Campaigns
     campaigns: 'الحملات',
     campaign: 'حملة',
@@ -97,7 +151,6 @@ export const translations = {
     selectAllItems: 'تحديد الكل ({{count}} عناصر)',
     selectedCount: '({{count}} محدد)',
     copy: 'نسخ',
-    download: 'تحميل', 
     share: 'مشاركة',
     
     // Actions
@@ -151,6 +204,60 @@ export const translations = {
     selectOption: 'Select option',
     addNew: 'Add new',
     
+    // Navigation & Pages
+    dashboard: 'Dashboard',
+    admin: 'Admin',
+    administration: 'Administration',
+    management: 'Management',
+    userManagement: 'User Management',
+    teamManagement: 'Team Management',
+    settings: 'Settings',
+    profile: 'Profile',
+    users: 'Users',
+    team: 'Team',
+    
+    // Navigation Sections
+    workspace: 'Workspace',
+    ideas: 'Ideas',
+    challenges: 'Challenges',
+    evaluations: 'Evaluations',
+    expertise: 'Expertise',
+    events: 'Events',
+    innovationTeams: 'Innovation Teams',
+    stakeholders: 'Stakeholders',
+    analytics: 'Analytics',
+    trends: 'Trends & Insights',
+    reports: 'Reports',
+    challengeManagement: 'Challenge Management',
+    focusQuestions: 'Focus Questions',
+    partners: 'Partners',
+    sectors: 'Sectors',
+    organizationalStructure: 'Organizational Structure',
+    expertAssignments: 'Expert Assignments',
+    relationshipOverview: 'Relationship Overview',
+    systemSettings: 'System Settings',
+    systemAnalytics: 'System Analytics',
+    systemDocumentation: 'System Documentation',
+    
+    // Authentication
+    login: 'Login',
+    register: 'Register',
+    logout: 'Logout',
+    
+    // Common Actions
+    export: 'Export',
+    import: 'Import',
+    download: 'Download',
+    upload: 'Upload',
+    send: 'Send',
+    notification: 'Notification',
+    notifications: 'Notifications',
+    
+    // Status & States
+    registered: 'Registered',
+    registering: 'Registering...',
+    registerForEvent: 'Register for Event',
+    
     // Campaigns
     campaigns: 'Campaigns',
     campaign: 'Campaign',
@@ -202,7 +309,6 @@ export const translations = {
     selectAllItems: 'Select all ({{count}} items)',
     selectedCount: '({{count}} selected)',
     copy: 'Copy',
-    download: 'Download',
     share: 'Share',
     
     // Actions

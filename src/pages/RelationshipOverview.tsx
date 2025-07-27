@@ -4,8 +4,8 @@ import { PageContainer, PageHeader, Section, ContentArea } from "@/components/ui
 
 export default function RelationshipOverviewPage() {
   const breadcrumbs = [
-    { label: "Admin", href: "/admin" },
-    { label: "Relationships", href: "/admin/relationships" }
+    { label: "الإدارة", href: "/admin" },
+    { label: "العلاقات", href: "/admin/relationships" }
   ];
 
   return (

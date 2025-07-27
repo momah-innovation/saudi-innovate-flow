@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -41,6 +42,7 @@ export function ParticipantRegistration({ event, onRegistrationChange }: Partici
   const [registering, setRegistering] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (user) {
@@ -181,7 +183,7 @@ export function ParticipantRegistration({ event, onRegistrationChange }: Partici
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      registered: { label: "Registered", variant: "default" as const, icon: UserCheck },
+      registered: { label: t('registered'), variant: "default" as const, icon: UserCheck },
       confirmed: { label: "Confirmed", variant: "default" as const, icon: UserCheck },
       attended: { label: "Attended", variant: "secondary" as const, icon: UserCheck },
       no_show: { label: "No Show", variant: "destructive" as const, icon: UserX },
@@ -314,7 +316,7 @@ export function ParticipantRegistration({ event, onRegistrationChange }: Partici
                 disabled={!canRegister || registering}
                 className="w-full"
               >
-                {registering ? "Registering..." : "Register for Event"}
+                {registering ? t('registering') : t('registerForEvent')}
               </Button>
             </div>
           )}

@@ -4,8 +4,8 @@ import { PageContainer, PageHeader, Section, ContentArea } from "@/components/ui
 
 export default function SectorsManagementPage() {
   const breadcrumbs = [
-    { label: "Admin", href: "/admin" },
-    { label: "Sectors", href: "/admin/sectors" }
+    { label: "الإدارة", href: "/admin" },
+    { label: "القطاعات", href: "/admin/sectors" }
   ];
 
   return (
