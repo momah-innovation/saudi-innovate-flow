@@ -1120,11 +1120,12 @@ export function EventsManagement() {
           <div className="space-y-2">
             <Label htmlFor="campaign_id">Related Campaign</Label>
             <Select
-              value={formData.campaign_id}
+              value={formData.campaign_id || "none"}
               onValueChange={(value) => {
+                const campaignId = value === "none" ? "" : value;
                 setFormData({ 
                   ...formData, 
-                  campaign_id: value,
+                  campaign_id: campaignId,
                   challenge_id: "",
                   sector_id: ""
                 });
@@ -1134,7 +1135,7 @@ export function EventsManagement() {
                 <SelectValue placeholder="Select campaign..." />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
+                <SelectItem value="none">None</SelectItem>
                 {campaigns.map((campaign) => (
                   <SelectItem key={campaign.id} value={campaign.id}>
                     {campaign.title}
@@ -1147,11 +1148,12 @@ export function EventsManagement() {
           <div className="space-y-2">
             <Label htmlFor="challenge_id">Related Challenge</Label>
             <Select
-              value={formData.challenge_id}
+              value={formData.challenge_id || "none"}
               onValueChange={(value) => {
+                const challengeId = value === "none" ? "" : value;
                 setFormData({ 
                   ...formData, 
-                  challenge_id: value,
+                  challenge_id: challengeId,
                   sector_id: ""
                 });
               }}
@@ -1165,7 +1167,7 @@ export function EventsManagement() {
                 } />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
+                <SelectItem value="none">None</SelectItem>
                 {filteredChallenges.map((challenge) => (
                   <SelectItem key={challenge.id} value={challenge.id}>
                     {challenge.title}
@@ -1178,9 +1180,10 @@ export function EventsManagement() {
           <div className="space-y-2">
             <Label htmlFor="sector_id">Sector</Label>
             <Select
-              value={formData.sector_id}
+              value={formData.sector_id || "none"}
               onValueChange={(value) => {
-                setFormData({ ...formData, sector_id: value });
+                const sectorId = value === "none" ? "" : value;
+                setFormData({ ...formData, sector_id: sectorId });
                 setSelectedDeputy("");
                 setSelectedDepartment("");
                 setSelectedDomain("");
@@ -1197,7 +1200,7 @@ export function EventsManagement() {
                 } />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
+                <SelectItem value="none">None</SelectItem>
                 {filteredSectors.map((sector) => (
                   <SelectItem key={sector.id} value={sector.id}>
                     {sector.name}
@@ -1213,14 +1216,15 @@ export function EventsManagement() {
           <div className="space-y-2">
             <Label htmlFor="deputy_id">Deputy</Label>
             <Select
-              value={selectedDeputy}
+              value={selectedDeputy || "none"}
               onValueChange={(value) => {
-                setSelectedDeputy(value);
+                const deputyId = value === "none" ? "" : value;
+                setSelectedDeputy(deputyId);
                 setSelectedDepartment("");
                 setSelectedDomain("");
                 setSelectedSubDomain("");
                 setSelectedService("");
-                setFormData({ ...formData, deputy_id: value });
+                setFormData({ ...formData, deputy_id: deputyId });
               }}
               disabled={!formData.sector_id}
             >
@@ -1230,7 +1234,7 @@ export function EventsManagement() {
                 } />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
+                <SelectItem value="none">None</SelectItem>
                 {filteredDeputies.map((deputy) => (
                   <SelectItem key={deputy.id} value={deputy.id}>
                     {deputy.name}
@@ -1243,13 +1247,14 @@ export function EventsManagement() {
           <div className="space-y-2">
             <Label htmlFor="department_id">Department</Label>
             <Select
-              value={selectedDepartment}
+              value={selectedDepartment || "none"}
               onValueChange={(value) => {
-                setSelectedDepartment(value);
+                const departmentId = value === "none" ? "" : value;
+                setSelectedDepartment(departmentId);
                 setSelectedDomain("");
                 setSelectedSubDomain("");
                 setSelectedService("");
-                setFormData({ ...formData, department_id: value });
+                setFormData({ ...formData, department_id: departmentId });
               }}
               disabled={!selectedDeputy}
             >
@@ -1259,7 +1264,7 @@ export function EventsManagement() {
                 } />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
+                <SelectItem value="none">None</SelectItem>
                 {filteredDepartments.map((department) => (
                   <SelectItem key={department.id} value={department.id}>
                     {department.name}
@@ -1272,12 +1277,13 @@ export function EventsManagement() {
           <div className="space-y-2">
             <Label htmlFor="domain_id">Domain</Label>
             <Select
-              value={selectedDomain}
+              value={selectedDomain || "none"}
               onValueChange={(value) => {
-                setSelectedDomain(value);
+                const domainId = value === "none" ? "" : value;
+                setSelectedDomain(domainId);
                 setSelectedSubDomain("");
                 setSelectedService("");
-                setFormData({ ...formData, domain_id: value });
+                setFormData({ ...formData, domain_id: domainId });
               }}
               disabled={!selectedDepartment}
             >
@@ -1287,7 +1293,7 @@ export function EventsManagement() {
                 } />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
+                <SelectItem value="none">None</SelectItem>
                 {filteredDomains.map((domain) => (
                   <SelectItem key={domain.id} value={domain.id}>
                     {domain.name}
@@ -1300,11 +1306,12 @@ export function EventsManagement() {
           <div className="space-y-2">
             <Label htmlFor="sub_domain_id">Sub-Domain</Label>
             <Select
-              value={selectedSubDomain}
+              value={selectedSubDomain || "none"}
               onValueChange={(value) => {
-                setSelectedSubDomain(value);
+                const subDomainId = value === "none" ? "" : value;
+                setSelectedSubDomain(subDomainId);
                 setSelectedService("");
-                setFormData({ ...formData, sub_domain_id: value });
+                setFormData({ ...formData, sub_domain_id: subDomainId });
               }}
               disabled={!selectedDomain}
             >
@@ -1314,7 +1321,7 @@ export function EventsManagement() {
                 } />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
+                <SelectItem value="none">None</SelectItem>
                 {filteredSubDomains.map((subDomain) => (
                   <SelectItem key={subDomain.id} value={subDomain.id}>
                     {subDomain.name}
@@ -1327,10 +1334,11 @@ export function EventsManagement() {
           <div className="space-y-2">
             <Label htmlFor="service_id">Service</Label>
             <Select
-              value={selectedService}
+              value={selectedService || "none"}
               onValueChange={(value) => {
-                setSelectedService(value);
-                setFormData({ ...formData, service_id: value });
+                const serviceId = value === "none" ? "" : value;
+                setSelectedService(serviceId);
+                setFormData({ ...formData, service_id: serviceId });
               }}
               disabled={!selectedSubDomain}
             >
@@ -1340,7 +1348,7 @@ export function EventsManagement() {
                 } />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
+                <SelectItem value="none">None</SelectItem>
                 {filteredServices.map((service) => (
                   <SelectItem key={service.id} value={service.id}>
                     {service.name}
