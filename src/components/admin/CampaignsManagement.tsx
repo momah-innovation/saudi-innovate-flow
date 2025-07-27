@@ -10,6 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { 
@@ -29,7 +31,12 @@ import {
   Eye,
   ChevronsUpDown,
   Check,
-  X
+  X,
+  Grid,
+  List,
+  LayoutGrid,
+  ChevronDown,
+  ChevronRight
 } from "lucide-react";
 
 interface Campaign {
@@ -68,9 +75,12 @@ export function CampaignsManagement() {
   const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [themeFilter, setThemeFilter] = useState("all");
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null);
   const [viewingCampaign, setViewingCampaign] = useState<Campaign | null>(null);
+  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
+  const [filtersOpen, setFiltersOpen] = useState(false);
   
   // Multi-step form state
   const [currentStep, setCurrentStep] = useState(1);
@@ -136,7 +146,7 @@ export function CampaignsManagement() {
 
   useEffect(() => {
     filterCampaigns();
-  }, [campaigns, searchTerm, statusFilter]);
+  }, [campaigns, searchTerm, statusFilter, themeFilter]);
 
   const fetchCampaigns = async () => {
     try {
@@ -187,12 +197,20 @@ export function CampaignsManagement() {
     if (searchTerm) {
       filtered = filtered.filter(campaign =>
         campaign.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        campaign.description?.toLowerCase().includes(searchTerm.toLowerCase())
+        campaign.title_ar?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        campaign.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        campaign.description_ar?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        campaign.theme?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        campaign.success_metrics?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     if (statusFilter !== "all") {
       filtered = filtered.filter(campaign => campaign.status === statusFilter);
+    }
+
+    if (themeFilter !== "all") {
+      filtered = filtered.filter(campaign => campaign.theme === themeFilter);
     }
 
     setFilteredCampaigns(filtered);
@@ -363,104 +381,303 @@ export function CampaignsManagement() {
     }
   };
 
-  return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-foreground">Campaigns Management</h1>
-        <Button onClick={() => { resetForm(); setShowAddDialog(true); }}>
-          <Plus className="w-4 h-4 mr-2" />
-          Create Campaign
-        </Button>
-      </div>
-
-      {/* Search and Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search campaigns..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
+  const renderCampaignCard = (campaign: Campaign) => (
+    <Card key={campaign.id} className="hover:shadow-lg transition-shadow">
+      <CardHeader className="pb-3">
+        <div className="flex justify-between items-start">
+          <CardTitle className="text-lg font-semibold line-clamp-2">
+            {campaign.title}
+          </CardTitle>
+          <Badge className={`${getStatusColor(campaign.status)} flex items-center gap-1`}>
+            {getStatusIcon(campaign.status)}
+            {campaign.status}
+          </Badge>
         </div>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-48">
-            <SelectValue placeholder="Filter by status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
-            <SelectItem value="planning">Planning</SelectItem>
-            <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
-            <SelectItem value="cancelled">Cancelled</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <p className="text-sm text-muted-foreground line-clamp-3">
+          {campaign.description}
+        </p>
+        
+        <div className="space-y-2 text-sm">
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-muted-foreground" />
+            <span>{campaign.start_date} - {campaign.end_date}</span>
+          </div>
+          {campaign.target_participants && (
+            <div className="flex items-center gap-2">
+              <Target className="w-4 h-4 text-muted-foreground" />
+              <span>{campaign.target_participants} participants</span>
+            </div>
+          )}
+          {campaign.budget && (
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground">💰</span>
+              <span>${campaign.budget.toLocaleString()}</span>
+            </div>
+          )}
+        </div>
 
-      {/* Campaigns Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCampaigns.map((campaign) => (
-          <Card key={campaign.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader className="pb-3">
-              <div className="flex justify-between items-start">
-                <CardTitle className="text-lg font-semibold line-clamp-2">
-                  {campaign.title}
-                </CardTitle>
+        <div className="flex justify-end gap-2 pt-4 border-t">
+          <Button variant="outline" size="sm" onClick={() => handleEdit(campaign)}>
+            <Edit className="w-4 h-4" />
+          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete Campaign</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to delete "{campaign.title}"? This action cannot be undone and will permanently remove the campaign and all associated data.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => handleDelete(campaign.id)}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Delete Campaign
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const renderListView = () => (
+    <div className="space-y-3">
+      {filteredCampaigns.map((campaign) => (
+        <Card key={campaign.id} className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex-1 space-y-1">
+              <div className="flex items-center gap-3">
+                <h3 className="font-semibold">{campaign.title}</h3>
                 <Badge className={`${getStatusColor(campaign.status)} flex items-center gap-1`}>
                   {getStatusIcon(campaign.status)}
                   {campaign.status}
                 </Badge>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground line-clamp-3">
+              <p className="text-sm text-muted-foreground line-clamp-1">
                 {campaign.description}
               </p>
-              
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-muted-foreground" />
-                  <span>{campaign.start_date} - {campaign.end_date}</span>
-                </div>
+              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1">
+                  <Calendar className="w-3 h-3" />
+                  {campaign.start_date} - {campaign.end_date}
+                </span>
                 {campaign.target_participants && (
-                  <div className="flex items-center gap-2">
-                    <Target className="w-4 h-4 text-muted-foreground" />
-                    <span>{campaign.target_participants} participants</span>
-                  </div>
-                )}
-                {campaign.budget && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-muted-foreground">💰</span>
-                    <span>${campaign.budget.toLocaleString()}</span>
-                  </div>
+                  <span className="flex items-center gap-1">
+                    <Target className="w-3 h-3" />
+                    {campaign.target_participants} participants
+                  </span>
                 )}
               </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" onClick={() => handleEdit(campaign)}>
+                <Edit className="w-4 h-4" />
+              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete Campaign</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Are you sure you want to delete "{campaign.title}"? This action cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => handleDelete(campaign.id)}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
 
-              <div className="flex justify-end gap-2 pt-4 border-t">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleEdit(campaign)}
-                >
-                  <Edit className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleDelete(campaign.id)}
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+  return (
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Campaigns Management</h1>
+          <p className="text-muted-foreground mt-1">
+            Manage and monitor innovation campaigns ({filteredCampaigns.length} campaigns)
+          </p>
+        </div>
+        <Button onClick={() => { resetForm(); setShowAddDialog(true); }} className="gap-2">
+          <Plus className="w-4 h-4" />
+          Create Campaign
+        </Button>
       </div>
 
+      {/* Search, Filters & Layout Controls */}
+      <div className="space-y-4">
+        {/* Main search and view controls */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search campaigns by title, description, theme, or metrics..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          
+          {/* Layout Selector */}
+          <div className="flex items-center gap-1 p-1 bg-muted rounded-lg">
+            <Button
+              variant={viewMode === 'cards' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('cards')}
+              className="gap-2"
+            >
+              <LayoutGrid className="w-4 h-4" />
+              Cards
+            </Button>
+            <Button
+              variant={viewMode === 'list' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('list')}
+              className="gap-2"
+            >
+              <List className="w-4 h-4" />
+              List
+            </Button>
+            <Button
+              variant={viewMode === 'grid' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('grid')}
+              className="gap-2"
+            >
+              <Grid className="w-4 h-4" />
+              Grid
+            </Button>
+          </div>
+        </div>
+
+        {/* Collapsible Filters */}
+        <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
+          <CollapsibleTrigger asChild>
+            <Button variant="outline" className="w-full justify-between">
+              <span className="flex items-center gap-2">
+                <Filter className="w-4 h-4" />
+                Filters {(statusFilter !== 'all' || themeFilter !== 'all') && '(Active)'}
+              </span>
+              {filtersOpen ? (
+                <ChevronDown className="w-4 h-4" />
+              ) : (
+                <ChevronRight className="w-4 h-4" />
+              )}
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="space-y-4 pt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div>
+                <Label htmlFor="status-filter">Status</Label>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="All statuses" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Statuses</SelectItem>
+                    <SelectItem value="planning">Planning</SelectItem>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="completed">Completed</SelectItem>
+                    <SelectItem value="cancelled">Cancelled</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label htmlFor="theme-filter">Theme</Label>
+                <Select value={themeFilter} onValueChange={setThemeFilter}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="All themes" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Themes</SelectItem>
+                    <SelectItem value="digital_transformation">Digital Transformation</SelectItem>
+                    <SelectItem value="sustainability">Sustainability</SelectItem>
+                    <SelectItem value="innovation">Innovation</SelectItem>
+                    <SelectItem value="education">Education</SelectItem>
+                    <SelectItem value="healthcare">Healthcare</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="md:col-span-2 flex items-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setStatusFilter('all');
+                    setThemeFilter('all');
+                    setSearchTerm('');
+                  }}
+                  className="gap-2"
+                >
+                  <X className="w-4 h-4" />
+                  Clear Filters
+                </Button>
+              </div>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+      </div>
+
+      {/* Content based on view mode */}
+      {viewMode === 'cards' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredCampaigns.map(renderCampaignCard)}
+        </div>
+      )}
+
+      {viewMode === 'grid' && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {filteredCampaigns.map(renderCampaignCard)}
+        </div>
+      )}
+
+      {viewMode === 'list' && renderListView()}
+
       {filteredCampaigns.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">No campaigns found</p>
+        <div className="text-center py-12 bg-muted/20 rounded-lg border-2 border-dashed">
+          <div className="mx-auto w-12 h-12 bg-muted rounded-full flex items-center justify-center mb-4">
+            <Search className="w-6 h-6 text-muted-foreground" />
+          </div>
+          <h3 className="text-lg font-semibold mb-2">No campaigns found</h3>
+          <p className="text-muted-foreground mb-4">
+            {searchTerm || statusFilter !== 'all' || themeFilter !== 'all'
+              ? "Try adjusting your search criteria or filters"
+              : "Get started by creating your first campaign"}
+          </p>
+          {(!searchTerm && statusFilter === 'all' && themeFilter === 'all') && (
+            <Button onClick={() => { resetForm(); setShowAddDialog(true); }} className="gap-2">
+              <Plus className="w-4 h-4" />
+              Create First Campaign
+            </Button>
+          )}
         </div>
       )}
 
