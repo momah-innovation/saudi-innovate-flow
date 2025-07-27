@@ -135,7 +135,7 @@ export function AdminLayout({ children, title, breadcrumbs }: AdminLayoutProps) 
           )}
           
           {/* Page Content */}
-          <main className="flex-1 overflow-auto">
+          <main className="flex-1 overflow-auto bg-background">
             {children}
           </main>
         </div>

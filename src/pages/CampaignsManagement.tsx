@@ -1,20 +1,17 @@
 import { CampaignsManagement } from "@/components/admin/CampaignsManagement";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { PageContainer, Section, ContentArea, PageHeader } from "@/components/ui";
+import { SimplePageLayout } from "@/components/layout/SimplePageLayout";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
 
 export default function CampaignsManagementPage() {
-
   return (
     <AppLayout>
-      <PageContainer maxWidth="full" padding="lg">
-        <Section>
-          <ContentArea>
-            <BreadcrumbNav activeTab="campaigns" />
-            <CampaignsManagement />
-          </ContentArea>
-        </Section>
-      </PageContainer>
+      <SimplePageLayout spacing="md">
+        <div className="space-y-6">
+          <BreadcrumbNav activeTab="campaigns" />
+          <CampaignsManagement />
+        </div>
+      </SimplePageLayout>
     </AppLayout>
   );
 }
