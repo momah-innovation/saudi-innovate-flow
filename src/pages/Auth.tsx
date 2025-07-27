@@ -11,6 +11,17 @@ import { Loader2, Eye, EyeOff, ArrowLeft, Home } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 
 const Auth = () => {
+  // Force light mode for auth page
+  useEffect(() => {
+    const root = document.documentElement;
+    const originalClasses = root.className;
+    root.classList.remove('dark');
+    root.classList.add('light');
+    
+    return () => {
+      root.className = originalClasses;
+    };
+  }, []);
   const { user, loading, signIn, signUp } = useAuth();
   const navigate = useNavigate();
   const { language, isRTL } = useDirection();

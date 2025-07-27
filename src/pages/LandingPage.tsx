@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -23,6 +23,18 @@ import {
 } from "lucide-react";
 
 export default function LandingPage() {
+  // Force light mode for landing page
+  useEffect(() => {
+    const root = document.documentElement;
+    const originalClasses = root.className;
+    root.classList.remove('dark');
+    root.classList.add('light');
+    
+    return () => {
+      root.className = originalClasses;
+    };
+  }, []);
+
   const navigate = useNavigate();
   const { language, setLanguage, isRTL } = useDirection();
   const { faqs, statistics, loading, getText, getProcessSteps } = useLandingPageData(language);
