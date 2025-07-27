@@ -328,7 +328,7 @@ const ChallengeDetails = () => {
       if (questionsError) {
         console.error('Error fetching focus questions:', questionsError);
       } else {
-        setFocusQuestions(questionsData || []);
+        setFocusQuestions((questionsData as any) || []);
       }
 
       // Fetch assigned experts

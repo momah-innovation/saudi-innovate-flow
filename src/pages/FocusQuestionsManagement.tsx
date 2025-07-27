@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/ui/header";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
-import { FocusQuestionsManagement as FocusQuestionsManagementComponent } from "@/components/admin/FocusQuestionsManagement";
+import FocusQuestionsManagementComponent from "@/components/admin/FocusQuestionsManagement";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 const FocusQuestionsManagement = () => {

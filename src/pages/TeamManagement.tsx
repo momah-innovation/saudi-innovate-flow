@@ -306,7 +306,7 @@ export default function TeamManagement() {
         allAssignments.push({
           id: campaign.id,
           type: 'campaign',
-          title: campaign.title,
+          title: campaign.title_ar,
           status: campaign.status,
           start_date: campaign.start_date,
           end_date: campaign.end_date,
@@ -319,7 +319,7 @@ export default function TeamManagement() {
         allAssignments.push({
           id: event.id,
           type: 'event',
-          title: event.title,
+          title: event.title_ar,
           status: event.status,
           start_date: event.event_date,
           user_id: event.event_manager_id
@@ -365,7 +365,7 @@ export default function TeamManagement() {
         allAssignments.push({
           id: insight.id,
           type: 'analysis',
-           title: insight.insight_text.substring(0, systemSettings.insightTitlePreviewLength) + '...',
+           title: insight.insight_text_ar.substring(0, systemSettings.insightTitlePreviewLength) + '...',
           status: 'completed',
           start_date: insight.created_at,
           user_id: insight.extracted_by
