@@ -65,8 +65,8 @@ interface Campaign {
 export function CampaignsManagement() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [themeFilter, setThemeFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [themeFilter, setThemeFilter] = useState("all");
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null);
@@ -186,8 +186,8 @@ export function CampaignsManagement() {
         campaign.theme?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         campaign.success_metrics?.toLowerCase().includes(searchTerm.toLowerCase());
       
-      const matchesStatus = !statusFilter || campaign.status === statusFilter;
-      const matchesTheme = !themeFilter || campaign.theme === themeFilter;
+      const matchesStatus = statusFilter === 'all' || !statusFilter || campaign.status === statusFilter;
+      const matchesTheme = themeFilter === 'all' || !themeFilter || campaign.theme === themeFilter;
       
       return matchesSearch && matchesStatus && matchesTheme;
     });
@@ -390,7 +390,7 @@ export function CampaignsManagement() {
 
   // Filter options
   const statusOptions = [
-    { label: 'All Statuses', value: '' },
+    { label: 'All Statuses', value: 'all' },
     { label: 'Planning', value: 'planning' },
     { label: 'Active', value: 'active' },
     { label: 'Completed', value: 'completed' },
@@ -398,7 +398,7 @@ export function CampaignsManagement() {
   ];
 
   const themeOptions = [
-    { label: 'All Themes', value: '' },
+    { label: 'All Themes', value: 'all' },
     { label: 'Digital Transformation', value: 'digital_transformation' },
     { label: 'Sustainability', value: 'sustainability' },
     { label: 'Innovation', value: 'innovation' },
@@ -476,11 +476,11 @@ export function CampaignsManagement() {
 
   const clearFilters = () => {
     setSearchTerm('');
-    setStatusFilter('');
-    setThemeFilter('');
+    setStatusFilter('all');
+    setThemeFilter('all');
   };
 
-  const hasActiveFilters = searchTerm.length > 0 || statusFilter.length > 0 || themeFilter.length > 0;
+  const hasActiveFilters = searchTerm.length > 0 || (statusFilter !== 'all' && statusFilter.length > 0) || (themeFilter !== 'all' && themeFilter.length > 0);
 
   return (
     <>
