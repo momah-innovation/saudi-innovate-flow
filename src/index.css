@@ -139,3 +139,86 @@ All colors MUST be HSL for theming consistency.
     @apply bg-background text-foreground;
   }
 }
+
+/* Theme Variants */
+.theme-modern {
+  --primary: 262.1 83.3% 57.8%;
+  --primary-foreground: 210 20% 98%;
+  --accent: 270 95.2% 75.8%;
+  --accent-foreground: 226.2 84% 9%;
+}
+
+.theme-minimal {
+  --primary: 0 0% 9%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 96.1%;
+  --secondary-foreground: 0 0% 9%;
+  --muted: 0 0% 96.1%;
+  --muted-foreground: 0 0% 45.1%;
+}
+
+.theme-vibrant {
+  --primary: 346.8 77.2% 49.8%;
+  --primary-foreground: 355.7 100% 97.3%;
+  --accent: 346.8 77.2% 49.8%;
+  --accent-foreground: 355.7 100% 97.3%;
+}
+
+/* Border Radius Variants */
+.radius-none * {
+  border-radius: 0;
+}
+
+.radius-sm * {
+  border-radius: 0.125rem;
+}
+
+.radius-md * {
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.radius-lg * {
+  border-radius: 0.5rem;
+}
+
+.radius-xl * {
+  border-radius: 0.75rem;
+}
+
+/* Compact Mode */
+.compact-mode {
+  --spacing-unit: 0.75;
+}
+
+.compact-mode .p-6 {
+  padding: calc(1.5rem * var(--spacing-unit));
+}
+
+.compact-mode .p-4 {
+  padding: calc(1rem * var(--spacing-unit));
+}
+
+.compact-mode .gap-6 {
+  gap: calc(1.5rem * var(--spacing-unit));
+}
+
+.compact-mode .gap-4 {
+  gap: calc(1rem * var(--spacing-unit));
+}
+
+.compact-mode .space-y-6 > * + * {
+  margin-top: calc(1.5rem * var(--spacing-unit));
+}
+
+.compact-mode .space-y-4 > * + * {
+  margin-top: calc(1rem * var(--spacing-unit));
+}
+
+/* Disable Animations */
+.no-animations *,
+.no-animations *::before,
+.no-animations *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}

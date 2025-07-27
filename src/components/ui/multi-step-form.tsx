@@ -1,0 +1,162 @@
+import { ReactNode, useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+interface FormStep {
+  id: string;
+  title: string;
+  description?: string;
+  content: ReactNode;
+  validation?: () => Promise<boolean> | boolean;
+}
+
+interface MultiStepFormProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  steps: FormStep[];
+  onComplete: () => void;
+  showProgress?: boolean;
+  allowSkip?: boolean;
+}
+
+export function MultiStepForm({
+  isOpen,
+  onClose,
+  title,
+  steps,
+  onComplete,
+  showProgress = true,
+  allowSkip = false
+}: MultiStepFormProps) {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isValidating, setIsValidating] = useState(false);
+
+  const handleNext = async () => {
+    const step = steps[currentStep];
+    
+    if (step.validation) {
+      setIsValidating(true);
+      try {
+        const isValid = await step.validation();
+        if (!isValid) {
+          setIsValidating(false);
+          return;
+        }
+      } catch (error) {
+        setIsValidating(false);
+        return;
+      }
+      setIsValidating(false);
+    }
+
+    if (currentStep === steps.length - 1) {
+      onComplete();
+    } else {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleClose = () => {
+    setCurrentStep(0);
+    onClose();
+  };
+
+  const progressPercentage = ((currentStep + 1) / steps.length) * 100;
+  const currentStepData = steps[currentStep];
+
+  return (
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="max-w-2xl max-h-[90vh]">
+        <DialogHeader>
+          <DialogTitle className="flex items-center justify-between">
+            <span>{title}</span>
+            <span className="text-sm font-normal text-muted-foreground">
+              Step {currentStep + 1} of {steps.length}
+            </span>
+          </DialogTitle>
+        </DialogHeader>
+
+        {showProgress && (
+          <div className="space-y-2">
+            <Progress value={progressPercentage} className="h-2" />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>{currentStepData.title}</span>
+              <span>{Math.round(progressPercentage)}%</span>
+            </div>
+          </div>
+        )}
+
+        <div className="flex-1 overflow-y-auto">
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-lg font-semibold">{currentStepData.title}</h3>
+              {currentStepData.description && (
+                <p className="text-sm text-muted-foreground mt-1">
+                  {currentStepData.description}
+                </p>
+              )}
+            </div>
+            
+            <div className="space-y-4">
+              {currentStepData.content}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-between items-center pt-4 border-t">
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={handlePrevious}
+              disabled={currentStep === 0}
+              className="gap-2"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Previous
+            </Button>
+            
+            {allowSkip && currentStep < steps.length - 1 && (
+              <Button
+                variant="ghost"
+                onClick={() => setCurrentStep(currentStep + 1)}
+              >
+                Skip
+              </Button>
+            )}
+          </div>
+
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleNext}
+              disabled={isValidating}
+              className="gap-2"
+            >
+              {isValidating ? (
+                "Validating..."
+              ) : currentStep === steps.length - 1 ? (
+                "Complete"
+              ) : (
+                <>
+                  Next
+                  <ChevronRight className="w-4 h-4" />
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
