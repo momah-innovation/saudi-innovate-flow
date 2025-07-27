@@ -99,17 +99,17 @@ export function AdminLayout({ children, title, breadcrumbs }: AdminLayoutProps) 
         <AppSidebar activeTab={activeTab} onTabChange={handleTabChange} />
         
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0 h-screen">
-          {/* Global Header */}
-          <header className="h-14 flex items-center border-b bg-background flex-shrink-0">
+        <div className="flex-1 flex flex-col min-w-0 max-w-0">
+          {/* Global Header - Fixed at top */}
+          <header className="h-14 flex items-center border-b bg-background z-10 relative">
             <div className="flex-1 min-w-0 px-4">
               <Header />
             </div>
           </header>
           
-          {/* Breadcrumb Navigation */}
+          {/* Breadcrumb Navigation - Below header */}
           {breadcrumbs && breadcrumbs.length > 0 && (
-            <div className={cn("border-b bg-muted/20 px-6 py-3 flex items-center gap-3 shrink-0", isRTL && "text-right flex-row-reverse")}>
+            <div className={cn("h-12 border-b bg-muted/20 px-6 flex items-center gap-3 z-10 relative", isRTL && "text-right flex-row-reverse")}>
               <SidebarTrigger className="shrink-0" />
               <Breadcrumb>
                 <BreadcrumbList>
@@ -134,9 +134,11 @@ export function AdminLayout({ children, title, breadcrumbs }: AdminLayoutProps) 
             </div>
           )}
           
-          {/* Page Content */}
-          <main className="flex-1 overflow-auto">
-            {children}
+          {/* Page Content - Scrollable area */}
+          <main className="flex-1 overflow-auto min-h-0">
+            <div className="h-full">
+              {children}
+            </div>
           </main>
         </div>
       </div>
