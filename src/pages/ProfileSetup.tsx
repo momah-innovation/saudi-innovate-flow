@@ -12,7 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from '@/hooks/useSystemLists';
 import { Loader2 } from 'lucide-react';
-import { AppLayout } from '@/components/layout/AppLayout';
+import { AppShell } from '@/components/layout/AppShell';
 
 const ProfileSetup = () => {
   const { user, userProfile, refreshProfile } = useAuth();
@@ -205,7 +205,7 @@ const ProfileSetup = () => {
   ];
 
   return (
-    <AppLayout breadcrumbs={breadcrumbs}>
+    <AppShell>
       <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4">
       <div className="max-w-2xl mx-auto py-8">
         <div className="text-center mb-8">
@@ -457,7 +457,7 @@ const ProfileSetup = () => {
         </Card>
       </div>
       </div>
-    </AppLayout>
+    </AppShell>
   );
 };
 

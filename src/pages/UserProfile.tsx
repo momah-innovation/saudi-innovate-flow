@@ -10,7 +10,7 @@ import { User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { AppLayout } from "@/components/layout/AppLayout";
+import { AppShell } from "@/components/layout/AppShell";
 import { useNavigate } from "react-router-dom";
 import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
 
@@ -114,7 +114,7 @@ const UserProfile = () => {
   ];
 
   return (
-    <AppLayout breadcrumbs={breadcrumbs}>
+    <AppShell>
       <div className="container mx-auto p-6 space-y-6">
         <div>
           <h1 className="text-3xl font-bold">الملف الشخصي</h1>
@@ -292,7 +292,7 @@ const UserProfile = () => {
           </div>
         </form>
       </div>
-    </AppLayout>
+    </AppShell>
   );
 };
 

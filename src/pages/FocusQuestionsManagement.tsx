@@ -1,16 +1,11 @@
-import { AppLayout } from "@/components/layout/AppLayout";
+import { AppShell } from "@/components/layout/AppShell";
 import FocusQuestionsManagementComponent from "@/components/admin/FocusQuestionsManagement";
 
 const FocusQuestionsManagement = () => {
-  const breadcrumbs = [
-    { label: "الإدارة", href: "/admin" },
-    { label: "الأسئلة المحورية", href: "/admin/focus-questions" }
-  ];
-
   return (
-    <AppLayout breadcrumbs={breadcrumbs}>
+    <AppShell>
       <FocusQuestionsManagementComponent />
-    </AppLayout>
+    </AppShell>
   );
 };
 

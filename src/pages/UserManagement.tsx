@@ -1,3 +1,4 @@
+import { AppShell } from "@/components/layout/AppShell";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useState } from "react";
@@ -296,7 +297,7 @@ const UserManagement = () => {
   );
 
   return (
-    <>
+    <AppShell>
       <PageLayout 
         title={title}
         description={description}
@@ -341,7 +342,7 @@ const UserManagement = () => {
         onOpenChange={setShowExpertDialog}
         expertId={selectedUser?.id?.toString() || null}
       />
-    </>
+    </AppShell>
   );
 };
 

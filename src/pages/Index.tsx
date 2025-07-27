@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
 import { InnovatorDashboard } from "@/components/dashboard/InnovatorDashboard";
 import { AdminChallengeManagement } from "@/components/admin/AdminChallengeManagement";
-import { AppLayout } from "@/components/layout/AppLayout";
+import { AppShell } from "@/components/layout/AppShell";
 import { PageContainer, Section, ContentArea, PageHeader } from "@/components/ui";
 import TeamManagement from "./TeamManagement";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -201,11 +201,11 @@ const Index = () => {
   ];
 
   return (
-    <AppLayout breadcrumbs={breadcrumbs}>
+    <AppShell>
       <PageContainer maxWidth="full" padding="lg">
         {renderContent()}
       </PageContainer>
-    </AppLayout>
+    </AppShell>
   );
 };
 
