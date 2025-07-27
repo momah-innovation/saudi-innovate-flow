@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Bell, User, Settings, Globe, Search, LogOut, Shield, Languages, Moon, Sun } from "lucide-react";
+import { GlobalSearch } from "@/components/search/GlobalSearch";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -92,17 +93,11 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Search Bar */}
-        <div className="flex-1 max-w-md mx-8">
-          <div className="relative">
-            <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
-            <Input
-              placeholder={getSearchPlaceholder()}
-              className={`${isRTL ? 'pr-10 text-right' : 'pl-10'} bg-background/10 border-background/20 text-primary-foreground placeholder:text-primary-foreground/60`}
-              dir={isRTL ? 'rtl' : 'ltr'}
-            />
-          </div>
-        </div>
+        {/* Global Search */}
+        <GlobalSearch 
+          className="flex-1 max-w-md mx-8"
+          placeholder={getSearchPlaceholder()}
+        />
 
         {/* Action Buttons */}
         <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>

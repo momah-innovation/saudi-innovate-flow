@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { useUrlHighlight } from "@/hooks/useUrlHighlight";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -77,6 +78,7 @@ export function CampaignsManagement({
 }: CampaignsManagementProps = {}) {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [searchTerm, setSearchTerm] = useState(externalSearchTerm);
+  const { highlightId } = useUrlHighlight();
   
   // Update internal search term when external prop changes
   useEffect(() => {
@@ -427,6 +429,7 @@ export function CampaignsManagement({
         description={campaign.description_ar || ''}
         selected={bulkMode ? selectedItems.includes(campaign.id) : false}
         onSelect={bulkMode ? (selected) => handleSelectItem(campaign.id, selected) : undefined}
+        className={highlightId === campaign.id ? "ring-2 ring-primary animate-pulse" : ""}
         badges={[
           { 
             label: getStatusText(campaign.status),
