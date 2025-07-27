@@ -372,6 +372,7 @@ export const translations = {
     // Date/Time
     from: 'من',
     to: 'إلى',
+    statusUpdate: 'تحديث الحالة',
     
     
   },

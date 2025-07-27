@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
@@ -45,6 +46,7 @@ export function EventBulkActions({
   events,
   onRefresh 
 }: EventBulkActionsProps) {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [bulkAction, setBulkAction] = useState("");
   const [newStatus, setNewStatus] = useState("");
@@ -350,7 +352,7 @@ export function EventBulkActions({
             ) : (
               <Square className="mr-2 h-4 w-4" />
             )}
-            {allSelected ? "Deselect All" : "Select All"}
+            {allSelected ? t('selectAll') : t('selectAll')}
           </Button>
           <Badge variant="secondary">
             {selectedEvents.length} of {events.length} selected
@@ -383,13 +385,13 @@ export function EventBulkActions({
             <label className="text-sm font-medium">Bulk Action</label>
             <Select value={bulkAction} onValueChange={setBulkAction}>
               <SelectTrigger>
-                <SelectValue placeholder="Select action" />
+                <SelectValue placeholder={t('selectOption')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="update_status">Update Status</SelectItem>
-                <SelectItem value="export">Export to CSV</SelectItem>
-                <SelectItem value="duplicate">Duplicate Events</SelectItem>
-                <SelectItem value="delete">Delete Events</SelectItem>
+                <SelectItem value="update_status">{t('statusUpdate')}</SelectItem>
+                <SelectItem value="export">{t('export')}</SelectItem>
+                <SelectItem value="duplicate">{t('duplicate')}</SelectItem>
+                <SelectItem value="delete">{t('delete')}</SelectItem>
               </SelectContent>
             </Select>
           </div>

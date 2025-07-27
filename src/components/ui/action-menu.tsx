@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Edit, Eye, Trash2, Copy, Download, Share } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export interface ActionItem {
   id: string;
@@ -53,28 +54,32 @@ export const getViewEditDeleteActions = (
   onView: () => void,
   onEdit: () => void,
   onDelete: () => void
-): ActionItem[] => [
-  {
-    id: 'view',
-    label: 'View Details',
-    icon: <Eye className="w-4 h-4" />,
-    onClick: onView
-  },
-  {
-    id: 'edit',
-    label: 'Edit',
-    icon: <Edit className="w-4 h-4" />,
-    onClick: onEdit
-  },
-  {
-    id: 'delete',
-    label: 'Delete',
-    icon: <Trash2 className="w-4 h-4" />,
-    onClick: onDelete,
-    variant: 'destructive',
-    separator: true
-  }
-];
+): ActionItem[] => {
+  const { t } = useTranslation();
+  
+  return [
+    {
+      id: 'view',
+      label: t('viewDetails'),
+      icon: <Eye className="w-4 h-4" />,
+      onClick: onView
+    },
+    {
+      id: 'edit',
+      label: t('edit'),
+      icon: <Edit className="w-4 h-4" />,
+      onClick: onEdit
+    },
+    {
+      id: 'delete',
+      label: t('delete'),
+      icon: <Trash2 className="w-4 h-4" />,
+      onClick: onDelete,
+      variant: 'destructive',
+      separator: true
+    }
+  ];
+};
 
 export const getExtendedActions = (
   onView: () => void,
@@ -83,44 +88,48 @@ export const getExtendedActions = (
   onDuplicate?: () => void,
   onDownload?: () => void,
   onShare?: () => void
-): ActionItem[] => [
-  {
-    id: 'view',
-    label: 'View Details',
-    icon: <Eye className="w-4 h-4" />,
-    onClick: onView
-  },
-  {
-    id: 'edit',
-    label: 'Edit',
-    icon: <Edit className="w-4 h-4" />,
-    onClick: onEdit
-  },
-  ...(onDuplicate ? [{
-    id: 'duplicate',
-    label: 'Duplicate',
-    icon: <Copy className="w-4 h-4" />,
-    onClick: onDuplicate,
-    separator: true
-  }] : []),
-  ...(onDownload ? [{
-    id: 'download',
-    label: 'Download',
-    icon: <Download className="w-4 h-4" />,
-    onClick: onDownload
-  }] : []),
-  ...(onShare ? [{
-    id: 'share',
-    label: 'Share',
-    icon: <Share className="w-4 h-4" />,
-    onClick: onShare
-  }] : []),
-  {
-    id: 'delete',
-    label: 'Delete',
-    icon: <Trash2 className="w-4 h-4" />,
-    onClick: onDelete,
-    variant: 'destructive',
-    separator: true
-  }
-];
+): ActionItem[] => {
+  const { t } = useTranslation();
+  
+  return [
+    {
+      id: 'view',
+      label: t('viewDetails'),
+      icon: <Eye className="w-4 h-4" />,
+      onClick: onView
+    },
+    {
+      id: 'edit',
+      label: t('edit'),
+      icon: <Edit className="w-4 h-4" />,
+      onClick: onEdit
+    },
+    ...(onDuplicate ? [{
+      id: 'duplicate',
+      label: t('duplicate'),
+      icon: <Copy className="w-4 h-4" />,
+      onClick: onDuplicate,
+      separator: true
+    }] : []),
+    ...(onDownload ? [{
+      id: 'download',
+      label: t('download'),
+      icon: <Download className="w-4 h-4" />,
+      onClick: onDownload
+    }] : []),
+    ...(onShare ? [{
+      id: 'share',
+      label: t('share'),
+      icon: <Share className="w-4 h-4" />,
+      onClick: onShare
+    }] : []),
+    {
+      id: 'delete',
+      label: t('delete'),
+      icon: <Trash2 className="w-4 h-4" />,
+      onClick: onDelete,
+      variant: 'destructive',
+      separator: true
+    }
+  ];
+};

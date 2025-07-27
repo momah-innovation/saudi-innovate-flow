@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslation } from "@/hooks/useTranslation";
 
 // Loading Spinner
 interface LoadingSpinnerProps {
@@ -74,11 +75,13 @@ export function ProgressBar({
     lg: 'h-3',
   };
 
+  const { t } = useTranslation();
+  
   return (
     <div className={cn("space-y-2", className)}>
       {showLabel && (
         <div className="flex justify-between text-sm">
-          <span>Progress</span>
+          <span>{t('loading')}</span>
           <span>{Math.round(percentage)}%</span>
         </div>
       )}
@@ -185,7 +188,10 @@ interface LoadingOverlayProps {
   className?: string;
 }
 
-export function LoadingOverlay({ message = "Loading...", className }: LoadingOverlayProps) {
+export function LoadingOverlay({ message, className }: LoadingOverlayProps) {
+  const { t } = useTranslation();
+  const defaultMessage = message || t('loading');
+  
   return (
     <div className={cn(
       "fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center",
@@ -193,7 +199,7 @@ export function LoadingOverlay({ message = "Loading...", className }: LoadingOve
     )}>
       <div className="text-center space-y-4">
         <LoadingSpinner size="lg" />
-        <p className="text-muted-foreground">{message}</p>
+        <p className="text-muted-foreground">{defaultMessage}</p>
       </div>
     </div>
   );
