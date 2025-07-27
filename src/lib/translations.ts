@@ -35,6 +35,7 @@ export const translations = {
     no: 'لا',
     all: 'الكل',
     none: 'لا شيء',
+    noneThing: 'لا شيء',
     
     // Empty states
     noData: 'لا توجد بيانات متاحة',
@@ -158,6 +159,41 @@ export const translations = {
     editDetails: 'تعديل التفاصيل',
     manageChallenges: 'إدارة التحديات',
     viewParticipants: 'عرض المشاركين',
+    
+    // UI Text
+    step: 'خطوة',
+    of: 'من',
+    skip: 'تخطي',
+    complete: 'إكمال',
+    validating: 'جاري التحقق...',
+    
+    // Theme & Layout
+    themeCustomizer: 'مخصص المظهر',
+    presets: 'القوالب الجاهزة',
+    custom: 'مخصص',
+    themeVariant: 'نوع المظهر',
+    colorScheme: 'نظام الألوان',
+    light: 'فاتح',
+    dark: 'داكن',
+    auto: 'تلقائي',
+    borderRadius: 'انحناء الحواف',
+    animations: 'الحركات',
+    compactMode: 'الوضع المضغوط',
+    resetToDefault: 'إعادة تعيين إلى الافتراضي',
+    small: 'صغير',
+    medium: 'متوسط',
+    large: 'كبير',
+    extraLarge: 'كبير جداً',
+    minimal: 'بسيط',
+    modern: 'عصري',
+    vibrant: 'نابض بالحياة',
+    default: 'افتراضي',
+    
+    // Layout modes
+    cards: 'بطاقات',
+    list: 'قائمة',
+    grid: 'شبكة',
+    
   },
   en: {
     // Common UI - English as secondary/fallback
@@ -193,6 +229,7 @@ export const translations = {
     no: 'No',
     all: 'All',
     none: 'None',
+    noneThing: 'None',
     
     // Empty states
     noData: 'No data available',
@@ -316,6 +353,41 @@ export const translations = {
     editDetails: 'Edit Details',
     manageChallenges: 'Manage Challenges',
     viewParticipants: 'View Participants',
+    
+    // UI Text
+    step: 'Step',
+    of: 'of',
+    skip: 'Skip',
+    complete: 'Complete',
+    validating: 'Validating...',
+    
+    // Theme & Layout
+    themeCustomizer: 'Theme Customizer',
+    presets: 'Presets',
+    custom: 'Custom',
+    themeVariant: 'Theme Variant',
+    colorScheme: 'Color Scheme',
+    light: 'Light',
+    dark: 'Dark',
+    auto: 'Auto',
+    borderRadius: 'Border Radius',
+    animations: 'Animations',
+    compactMode: 'Compact Mode',
+    resetToDefault: 'Reset to Default',
+    small: 'Small',
+    medium: 'Medium',
+    large: 'Large',
+    extraLarge: 'Extra Large',
+    minimal: 'Minimal',
+    modern: 'Modern',
+    vibrant: 'Vibrant',
+    default: 'Default',
+    
+    // Layout modes
+    cards: 'Cards',
+    list: 'List',
+    grid: 'Grid',
+    
   }
 };
 

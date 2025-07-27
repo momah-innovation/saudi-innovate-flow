@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { LayoutGrid, List, Grid } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type ViewMode = 'cards' | 'list' | 'grid';
 
@@ -10,6 +11,8 @@ interface LayoutSelectorProps {
 }
 
 export function LayoutSelector({ viewMode, onViewModeChange, className }: LayoutSelectorProps) {
+  const { t } = useTranslation();
+  
   return (
     <div className={`flex items-center gap-1 p-1 bg-muted rounded-lg ${className}`}>
       <Button
@@ -19,7 +22,7 @@ export function LayoutSelector({ viewMode, onViewModeChange, className }: Layout
         className="gap-2"
       >
         <LayoutGrid className="w-4 h-4" />
-        Cards
+        {t('cards')}
       </Button>
       <Button
         variant={viewMode === 'list' ? 'default' : 'ghost'}
@@ -28,7 +31,7 @@ export function LayoutSelector({ viewMode, onViewModeChange, className }: Layout
         className="gap-2"
       >
         <List className="w-4 h-4" />
-        List
+        {t('list')}
       </Button>
       <Button
         variant={viewMode === 'grid' ? 'default' : 'ghost'}
@@ -37,7 +40,7 @@ export function LayoutSelector({ viewMode, onViewModeChange, className }: Layout
         className="gap-2"
       >
         <Grid className="w-4 h-4" />
-        Grid
+        {t('grid')}
       </Button>
     </div>
   );

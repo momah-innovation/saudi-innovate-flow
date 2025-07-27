@@ -6,8 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTheme, themePresets } from "./theme-provider";
 import { Palette, Settings, Monitor, Sun, Moon } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function ThemeCustomizer() {
+  const { t } = useTranslation();
   const { theme, setTheme, applyTheme } = useTheme();
 
   const handlePresetChange = (presetName: string) => {
@@ -23,34 +25,34 @@ export function ThemeCustomizer() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Palette className="w-5 h-5" />
-          Theme Customizer
+          {t('themeCustomizer')}
         </CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="presets" className="space-y-4">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="presets">Presets</TabsTrigger>
-            <TabsTrigger value="custom">Custom</TabsTrigger>
+            <TabsTrigger value="presets">{t('presets')}</TabsTrigger>
+            <TabsTrigger value="custom">{t('custom')}</TabsTrigger>
           </TabsList>
           
           <TabsContent value="presets" className="space-y-4">
             <div>
-              <Label htmlFor="theme-preset">Theme Variant</Label>
+              <Label htmlFor="theme-preset">{t('themeVariant')}</Label>
               <Select value={theme.variant} onValueChange={(value) => handlePresetChange(value)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="default">Default</SelectItem>
-                  <SelectItem value="modern">Modern</SelectItem>
-                  <SelectItem value="minimal">Minimal</SelectItem>
-                  <SelectItem value="vibrant">Vibrant</SelectItem>
+                  <SelectItem value="default">{t('default')}</SelectItem>
+                  <SelectItem value="modern">{t('modern')}</SelectItem>
+                  <SelectItem value="minimal">{t('minimal')}</SelectItem>
+                  <SelectItem value="vibrant">{t('vibrant')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div>
-              <Label htmlFor="color-scheme">Color Scheme</Label>
+              <Label htmlFor="color-scheme">{t('colorScheme')}</Label>
               <Select 
                 value={theme.colorScheme} 
                 onValueChange={(value: 'light' | 'dark' | 'auto') => {
@@ -65,19 +67,19 @@ export function ThemeCustomizer() {
                   <SelectItem value="light">
                     <div className="flex items-center gap-2">
                       <Sun className="w-4 h-4" />
-                      Light
+                      {t('light')}
                     </div>
                   </SelectItem>
                   <SelectItem value="dark">
                     <div className="flex items-center gap-2">
                       <Moon className="w-4 h-4" />
-                      Dark
+                      {t('dark')}
                     </div>
                   </SelectItem>
                   <SelectItem value="auto">
                     <div className="flex items-center gap-2">
                       <Monitor className="w-4 h-4" />
-                      Auto
+                      {t('auto')}
                     </div>
                   </SelectItem>
                 </SelectContent>
@@ -87,7 +89,7 @@ export function ThemeCustomizer() {
           
           <TabsContent value="custom" className="space-y-4">
             <div>
-              <Label htmlFor="border-radius">Border Radius</Label>
+              <Label htmlFor="border-radius">{t('borderRadius')}</Label>
               <Select 
                 value={theme.borderRadius} 
                 onValueChange={(value: 'none' | 'sm' | 'md' | 'lg' | 'xl') => {
@@ -99,17 +101,17 @@ export function ThemeCustomizer() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">None</SelectItem>
-                  <SelectItem value="sm">Small</SelectItem>
-                  <SelectItem value="md">Medium</SelectItem>
-                  <SelectItem value="lg">Large</SelectItem>
-                  <SelectItem value="xl">Extra Large</SelectItem>
+                  <SelectItem value="none">{t('noneThing')}</SelectItem>
+                  <SelectItem value="sm">{t('small')}</SelectItem>
+                  <SelectItem value="md">{t('medium')}</SelectItem>
+                  <SelectItem value="lg">{t('large')}</SelectItem>
+                  <SelectItem value="xl">{t('extraLarge')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="flex items-center justify-between">
-              <Label htmlFor="animations">Animations</Label>
+              <Label htmlFor="animations">{t('animations')}</Label>
               <Switch
                 id="animations"
                 checked={theme.animations}
@@ -121,7 +123,7 @@ export function ThemeCustomizer() {
             </div>
 
             <div className="flex items-center justify-between">
-              <Label htmlFor="compact-mode">Compact Mode</Label>
+              <Label htmlFor="compact-mode">{t('compactMode')}</Label>
               <Switch
                 id="compact-mode"
                 checked={theme.compactMode}
@@ -143,7 +145,7 @@ export function ThemeCustomizer() {
             variant="outline" 
             className="w-full"
           >
-            Reset to Default
+            {t('resetToDefault')}
           </Button>
         </div>
       </CardContent>

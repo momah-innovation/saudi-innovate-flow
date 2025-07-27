@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface FormStep {
   id: string;
@@ -31,6 +32,7 @@ export function MultiStepForm({
   showProgress = true,
   allowSkip = false
 }: MultiStepFormProps) {
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(0);
   const [isValidating, setIsValidating] = useState(false);
 
@@ -80,7 +82,7 @@ export function MultiStepForm({
           <DialogTitle className="flex items-center justify-between">
             <span>{title}</span>
             <span className="text-sm font-normal text-muted-foreground">
-              Step {currentStep + 1} of {steps.length}
+              {t('step')} {currentStep + 1} {t('of')} {steps.length}
             </span>
           </DialogTitle>
         </DialogHeader>
@@ -121,7 +123,7 @@ export function MultiStepForm({
               className="gap-2"
             >
               <ChevronLeft className="w-4 h-4" />
-              Previous
+              {t('previous')}
             </Button>
             
             {allowSkip && currentStep < steps.length - 1 && (
@@ -129,14 +131,14 @@ export function MultiStepForm({
                 variant="ghost"
                 onClick={() => setCurrentStep(currentStep + 1)}
               >
-                Skip
+                {t('skip')}
               </Button>
             )}
           </div>
 
           <div className="flex gap-2">
             <Button variant="outline" onClick={handleClose}>
-              Cancel
+              {t('cancel')}
             </Button>
             <Button 
               onClick={handleNext}
@@ -144,12 +146,12 @@ export function MultiStepForm({
               className="gap-2"
             >
               {isValidating ? (
-                "Validating..."
+                t('validating')
               ) : currentStep === steps.length - 1 ? (
-                "Complete"
+                t('complete')
               ) : (
                 <>
-                  Next
+                  {t('next')}
                   <ChevronRight className="w-4 h-4" />
                 </>
               )}

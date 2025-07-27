@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle, AlertCircle, Info, AlertTriangle, Loader2 } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type StateType = 'loading' | 'success' | 'error' | 'warning' | 'info';
 
@@ -57,20 +58,22 @@ export function StateMessage({ type, title, message, action, className }: StateM
 }
 
 // Predefined common states
-export const LoadingState = ({ message = "Loading..." }: { message?: string }) => (
-  <StateMessage type="loading" message={message} />
-);
+export const LoadingState = ({ message }: { message?: string }) => {
+  const { t } = useTranslation();
+  return <StateMessage type="loading" message={message || t('loading')} />;
+};
 
 export const ErrorState = ({ 
-  message = "Something went wrong", 
+  message, 
   action 
 }: { 
   message?: string; 
   action?: ReactNode;
-}) => (
-  <StateMessage type="error" title="Error" message={message} action={action} />
-);
+}) => {
+  const { t } = useTranslation();
+  return <StateMessage type="error" title={t('error')} message={message || t('error')} action={action} />;
+};
 
-export const SuccessState = ({ message, action }: { message: string; action?: ReactNode }) => (
-  <StateMessage type="success" message={message} action={action} />
-);
+export const SuccessState = ({ message, action }: { message: string; action?: ReactNode }) => {
+  return <StateMessage type="success" message={message} action={action} />;
+};
