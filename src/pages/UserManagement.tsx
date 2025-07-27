@@ -1,26 +1,22 @@
-import { useState } from "react";
+import { AppShell } from "@/components/layout/AppShell";
+import { PageLayout } from "@/components/layout/PageLayout";
 import { useTranslation } from "@/hooks/useTranslation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from "react";
+import { UserPlus, Users, Download, Search, MoreHorizontal, Settings, Mail } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { 
-  UserPlus, 
-  Search, 
-  Filter, 
-  MoreHorizontal,
-  Users,
-  Settings,
-  Mail
-} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
 import { UserInvitationDialog } from "@/components/admin/UserInvitationDialog";
 import { RoleRequestDialog } from "@/components/admin/RoleRequestDialog";
 import { ExpertProfileDialog } from "@/components/admin/ExpertProfileDialog";
 
 const UserManagement = () => {
-  const { t } = useTranslation();
-  const [searchQuery, setSearchQuery] = useState("");
+  const { t, language, isRTL } = useTranslation();
+  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('list');
+  const [searchValue, setSearchValue] = useState('');
   const [showInviteDialog, setShowInviteDialog] = useState(false);
   const [showRoleDialog, setShowRoleDialog] = useState(false);
   const [showExpertDialog, setShowExpertDialog] = useState(false);
@@ -146,34 +142,64 @@ const UserManagement = () => {
     </div>
   );
 
-  return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">{t("userManagement")}</h1>
-          <p className="text-muted-foreground">
-            {t("manageUsersRolesPermissions")}
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Button 
-            variant="outline"
-            className="gap-2"
-          >
-            <Filter className="h-4 w-4" />
-            {t("filters")}
-          </Button>
-          <Button 
-            onClick={() => setShowInviteDialog(true)}
-            className="gap-2"
-          >
-            <UserPlus className="h-4 w-4" />
-            {t("inviteUser")}
-          </Button>
-        </div>
-      </div>
+  const title = t("userManagement");
+  const description = t("manageUsersRolesPermissions");
+  const createNewLabel = t("inviteUser");
+  const bulkActionsLabel = t("bulkActions");
+  const searchPlaceholder = t("searchUsers");
 
+  const secondaryActions = (
+    <>
+      <Select>
+        <SelectTrigger className="w-32">
+          <SelectValue placeholder="Export" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="pdf">PDF</SelectItem>
+          <SelectItem value="excel">Excel</SelectItem>
+          <SelectItem value="csv">CSV</SelectItem>
+        </SelectContent>
+      </Select>
+      <Button variant="outline" className="gap-2">
+        <Users className="w-4 h-4" />
+        {bulkActionsLabel}
+      </Button>
+    </>
+  );
+
+  const filters = (
+    <>
+      <div className="min-w-[120px]">
+        <Select>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder={t("filterByStatus")} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{t("allStatus")}</SelectItem>
+            <SelectItem value="active">{t("active")}</SelectItem>
+            <SelectItem value="inactive">{t("inactive")}</SelectItem>
+            <SelectItem value="pending">{t("pending")}</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="min-w-[120px]">
+        <Select>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder={t("filterByRole")} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{t("allRoles")}</SelectItem>
+            <SelectItem value="admin">{t("admin")}</SelectItem>
+            <SelectItem value="expert">{t("expert")}</SelectItem>
+            <SelectItem value="innovator">{t("innovator")}</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </>
+  );
+
+  const renderContent = () => (
+    <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
@@ -246,9 +272,9 @@ const UserManagement = () => {
               <div className="relative">
                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder={t("searchUsers")}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={searchPlaceholder}
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
                   className="pl-8 w-[300px]"
                 />
               </div>
@@ -267,6 +293,33 @@ const UserManagement = () => {
           />
         </CardContent>
       </Card>
+    </div>
+  );
+
+  return (
+    <AppShell>
+      <PageLayout 
+        title={title}
+        description={description}
+        primaryAction={{
+          label: createNewLabel,
+          onClick: () => setShowInviteDialog(true),
+          icon: <UserPlus className="w-4 h-4" />
+        }}
+        secondaryActions={secondaryActions}
+        showLayoutSelector={true}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+        showSearch={true}
+        searchValue={searchValue}
+        onSearchChange={setSearchValue}
+        searchPlaceholder={searchPlaceholder}
+        filters={filters}
+        spacing="md"
+        maxWidth="full"
+      >
+        {renderContent()}
+      </PageLayout>
 
       {/* Dialogs */}
       <UserInvitationDialog
@@ -289,7 +342,7 @@ const UserManagement = () => {
         onOpenChange={setShowExpertDialog}
         expertId={selectedUser?.id?.toString() || null}
       />
-    </div>
+    </AppShell>
   );
 };
 
