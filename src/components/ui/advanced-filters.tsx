@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Search, Filter, X, ChevronDown, ChevronRight, Calendar, SlidersHorizontal } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export interface FilterOption {
   label: string;
@@ -53,6 +54,7 @@ export function AdvancedFilters({
   quickFilters,
   className
 }: AdvancedFiltersProps) {
+  const { t } = useTranslation();
   const hasActiveFilters = filters.some(filter => 
     filter.value && 
     (Array.isArray(filter.value) ? filter.value.length > 0 : filter.value !== '')
@@ -70,7 +72,7 @@ export function AdvancedFilters({
         <div className="relative flex-1">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder={searchPlaceholder}
+            placeholder={searchPlaceholder || t('searchPlaceholder')}
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
             className="pl-10"
@@ -102,7 +104,7 @@ export function AdvancedFilters({
           <Button variant="outline" className="w-full justify-between">
             <span className="flex items-center gap-2">
               <SlidersHorizontal className="w-4 h-4" />
-              Advanced Filters
+              {t('advancedFilters')}
               {hasActiveFilters && (
                 <Badge variant="secondary" className="ml-2">
                   {activeFilterCount}
@@ -133,7 +135,7 @@ export function AdvancedFilters({
                 className="gap-2"
               >
                 <X className="w-4 h-4" />
-                Clear All Filters
+                {t('clearAllFilters')}
               </Button>
             </div>
           )}
@@ -144,6 +146,8 @@ export function AdvancedFilters({
 }
 
 function FilterField({ filter }: { filter: FilterConfig }) {
+  const { t } = useTranslation();
+  
   switch (filter.type) {
     case 'select':
       return (
@@ -151,10 +155,10 @@ function FilterField({ filter }: { filter: FilterConfig }) {
           <Label>{filter.label}</Label>
           <Select value={filter.value || ''} onValueChange={filter.onChange}>
             <SelectTrigger>
-              <SelectValue placeholder={filter.placeholder || `Select ${filter.label.toLowerCase()}`} />
+              <SelectValue placeholder={filter.placeholder || t('selectPlaceholder', { label: filter.label.toLowerCase() })} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All</SelectItem>
+              <SelectItem value="">{t('allOption')}</SelectItem>
               {filter.options?.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}
@@ -238,14 +242,14 @@ function FilterField({ filter }: { filter: FilterConfig }) {
               type="date"
               value={filter.value?.from || ''}
               onChange={(e) => filter.onChange?.({ ...filter.value, from: e.target.value })}
-              placeholder="From"
+              placeholder={t('fromPlaceholder')}
             />
-            <span>to</span>
+            <span>{t('to')}</span>
             <Input
               type="date"
               value={filter.value?.to || ''}
               onChange={(e) => filter.onChange?.({ ...filter.value, to: e.target.value })}
-              placeholder="To"
+              placeholder={t('toPlaceholder')}
             />
           </div>
         </div>

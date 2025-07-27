@@ -194,6 +194,19 @@ export const translations = {
     list: 'قائمة',
     grid: 'شبكة',
     
+    // Filters
+    advancedFilters: 'المرشحات المتقدمة',
+    clearAllFilters: 'مسح جميع المرشحات',
+    selectPlaceholder: 'اختر {{label}}',
+    allOption: 'الكل',
+    fromPlaceholder: 'من',
+    toPlaceholder: 'إلى',
+    
+    // Date/Time
+    from: 'من',
+    to: 'إلى',
+    
+    
   },
   en: {
     // Common UI - English as secondary/fallback
@@ -387,6 +400,19 @@ export const translations = {
     cards: 'Cards',
     list: 'List',
     grid: 'Grid',
+    
+    // Filters
+    advancedFilters: 'Advanced Filters',
+    clearAllFilters: 'Clear All Filters',
+    selectPlaceholder: 'Select {{label}}',
+    allOption: 'All',
+    fromPlaceholder: 'From',
+    toPlaceholder: 'To',
+    
+    // Date/Time
+    from: 'from',
+    to: 'to',
+    
     
   }
 };

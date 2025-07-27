@@ -36,8 +36,9 @@ export function List({
   size = 'md', 
   divided = false,
   className,
-  emptyMessage = "No items to display"
+  emptyMessage
 }: ListProps) {
+  const { t } = useTranslation();
   const sizeClasses = {
     sm: 'py-1 px-2 text-sm',
     md: 'py-2 px-3',
@@ -47,7 +48,7 @@ export function List({
   if (items.length === 0) {
     return (
       <div className={cn("text-center py-8 text-muted-foreground", className)}>
-        {emptyMessage}
+        {emptyMessage || t('emptyList')}
       </div>
     );
   }
