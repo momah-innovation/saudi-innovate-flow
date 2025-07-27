@@ -127,13 +127,9 @@ export const Header = () => {
                   <span>{lang.nativeLabel}</span>
                   <span className="text-muted-foreground text-sm">{lang.label}</span>
                 </DropdownMenuItem>
-              ))}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={toggleDirection} className="flex items-center gap-2">
-                <Globe className="h-4 w-4" />
-                {isRTL ? 'Switch to LTR' : 'Switch to RTL'}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={toggleTheme} className="flex items-center gap-2">
+               ))}
+               <DropdownMenuSeparator />
+               <DropdownMenuItem onClick={toggleTheme} className="flex items-center gap-2">
                 {theme.colorScheme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                 {theme.colorScheme === 'dark' ? 'Light Mode' : 'Dark Mode'}
               </DropdownMenuItem>
