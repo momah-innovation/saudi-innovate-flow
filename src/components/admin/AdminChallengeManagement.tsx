@@ -34,6 +34,7 @@ import {
   Filter
 } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface Challenge {
   id: string;
@@ -104,6 +105,7 @@ interface ChallengePartner {
 }
 
 export const AdminChallengeManagement = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { challengePriorityLevels, challengeSensitivityLevels, challengeTypes, challengeStatusOptions, focusQuestionTypes } = useSystemLists();
@@ -285,7 +287,7 @@ export const AdminChallengeManagement = () => {
         
         expertsWithProfiles.push({
           ...expert,
-          profiles: profile || { name: 'Unknown Expert', email: '' }
+          profiles: profile || { name: t('unknownExpert'), email: '' }
         });
       }
       
@@ -474,7 +476,7 @@ export const AdminChallengeManagement = () => {
             ...ce,
             experts: {
               ...expert,
-              profiles: profile || { name: 'Unknown Expert', email: '' }
+              profiles: profile || { name: t('unknownExpert'), email: '' }
             }
           });
         }
@@ -699,7 +701,7 @@ export const AdminChallengeManagement = () => {
       }
 
       toast({
-        title: "Challenge Created",
+        title: t('challengeCreated'),
         description: "New challenge has been successfully created.",
       });
       
@@ -843,7 +845,7 @@ export const AdminChallengeManagement = () => {
   };
 
   const formatBudget = (budget?: number) => {
-    if (!budget) return 'Not specified';
+    if (!budget) return t('notSpecified');
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'SAR',
@@ -908,7 +910,7 @@ export const AdminChallengeManagement = () => {
       }
 
       toast({
-        title: "Question Deleted",
+        title: t('questionDeleted'),
         description: "Focus question has been successfully deleted.",
       });
 
@@ -981,9 +983,9 @@ export const AdminChallengeManagement = () => {
             </DialogTrigger>
             <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{formData.title ? 'Edit Challenge' : 'Create New Challenge'}</DialogTitle>
+              <DialogTitle>{formData.title ? t('editChallenge') : t('createNewChallenge')}</DialogTitle>
               <DialogDescription>
-                {formData.title ? 'Update the challenge details.' : 'Create a new innovation challenge for innovators to participate in.'}
+                {formData.title ? t('updateChallengeDetails') : t('createInnovationChallenge')}
               </DialogDescription>
             </DialogHeader>
             
