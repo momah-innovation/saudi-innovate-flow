@@ -1,12 +1,16 @@
-import { useNavigate } from "react-router-dom";
-import { AppShell } from "@/components/layout/AppShell";
+import { AppLayout } from "@/components/layout/AppLayout";
 import FocusQuestionsManagementComponent from "@/components/admin/FocusQuestionsManagement";
 
 const FocusQuestionsManagement = () => {
+  const breadcrumbs = [
+    { label: "الإدارة", href: "/admin" },
+    { label: "الأسئلة المحورية", href: "/admin/focus-questions" }
+  ];
+
   return (
-    <AppShell>
+    <AppLayout breadcrumbs={breadcrumbs}>
       <FocusQuestionsManagementComponent />
-    </AppShell>
+    </AppLayout>
   );
 };
 
