@@ -66,11 +66,15 @@ interface Campaign {
 interface CampaignsManagementProps {
   viewMode?: 'cards' | 'list' | 'grid';
   searchTerm?: string;
+  showAddDialog?: boolean;
+  onAddDialogChange?: (open: boolean) => void;
 }
 
 export function CampaignsManagement({ 
   viewMode = 'cards', 
-  searchTerm: externalSearchTerm = '' 
+  searchTerm: externalSearchTerm = '',
+  showAddDialog = false,
+  onAddDialogChange
 }: CampaignsManagementProps = {}) {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [searchTerm, setSearchTerm] = useState(externalSearchTerm);
@@ -83,7 +87,7 @@ export function CampaignsManagement({
   const [themeFilter, setThemeFilter] = useState("all");
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [bulkMode, setBulkMode] = useState(false);
-  const [showAddDialog, setShowAddDialog] = useState(false);
+  
   const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null);
   
   const { toast } = useToast();
@@ -303,7 +307,7 @@ export function CampaignsManagement({
       console.error('Error loading campaign relationships:', error);
     }
     
-    setShowAddDialog(true);
+    onAddDialogChange?.(true);
   };
 
   const handleDelete = async (id: string) => {

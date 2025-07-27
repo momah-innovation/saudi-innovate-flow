@@ -11,13 +11,14 @@ export default function CampaignsManagementPage() {
   const { isRTL, language } = useDirection();
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
+  const [showAddDialog, setShowAddDialog] = useState(false);
   
   const title = isRTL && language === 'ar' ? 'إدارة الحملات' : 'Campaign Management';
   const description = isRTL && language === 'ar' 
     ? 'إنشاء وإدارة حملات الابتكار' 
     : 'Create and manage innovation campaigns';
 
-  const createCampaignLabel = isRTL && language === 'ar' ? 'إنشاء حملة' : 'Create Campaign';
+  const createNewLabel = isRTL && language === 'ar' ? 'إنشاء جديد' : 'Create New';
   const bulkActionsLabel = isRTL && language === 'ar' ? 'الإجراءات المجمعة' : 'Bulk Actions';
   const searchPlaceholder = isRTL && language === 'ar' ? 'بحث' : 'Search';
 
@@ -78,8 +79,8 @@ export default function CampaignsManagementPage() {
         description={description}
         itemCount={6}
         primaryAction={{
-          label: createCampaignLabel,
-          onClick: () => console.log('Create campaign'),
+          label: createNewLabel,
+          onClick: () => setShowAddDialog(true),
           icon: <Plus className="w-4 h-4" />
         }}
         secondaryActions={secondaryActions}
@@ -94,7 +95,12 @@ export default function CampaignsManagementPage() {
         spacing="md"
         maxWidth="full"
       >
-        <CampaignsManagement viewMode={viewMode} searchTerm={searchValue} />
+        <CampaignsManagement 
+          viewMode={viewMode} 
+          searchTerm={searchValue} 
+          showAddDialog={showAddDialog}
+          onAddDialogChange={setShowAddDialog}
+        />
       </PageLayout>
     </AppShell>
   );
