@@ -480,6 +480,8 @@ export function CampaignsManagement() {
     setThemeFilter('');
   };
 
+  const hasActiveFilters = searchTerm.length > 0 || statusFilter.length > 0 || themeFilter.length > 0;
+
   return (
     <>
       <StandardPageLayout
@@ -508,22 +510,24 @@ export function CampaignsManagement() {
           {
             id: 'status',
             label: 'Status',
-            type: 'select',
+            type: 'select' as const,
             options: statusOptions,
-            placeholder: 'Select status',
-            onChange: setStatusFilter
+            placeholder: 'All Statuses',
+            value: statusFilter,
+            onChange: (value: string) => setStatusFilter(value)
           },
           {
             id: 'theme',
             label: 'Theme',
-            type: 'select',
+            type: 'select' as const,
             options: themeOptions,
-            placeholder: 'Select theme',
-            onChange: setThemeFilter
+            placeholder: 'All Themes',
+            value: themeFilter,
+            onChange: (value: string) => setThemeFilter(value)
           }
         ]}
+        hasActiveFilters={hasActiveFilters}
         onClearFilters={clearFilters}
-        
         // Bulk actions
         selectedItems={selectedItems}
         onSelectAll={handleSelectAll}
@@ -534,7 +538,10 @@ export function CampaignsManagement() {
         // Additional header actions
         headerActions={
           <div className="flex gap-2">
-            <Select>
+            <Select onValueChange={(value) => {
+              console.log('Export type:', value);
+              // Handle export based on value (csv, excel, pdf)
+            }}>
               <SelectTrigger className="w-32">
                 <SelectValue placeholder="Export" />
               </SelectTrigger>

@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { LayoutSelector } from "@/components/ui/layout-selector";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { SearchAndFilters } from "@/components/ui/search-and-filters";
+import { CompactSearchAndFilters } from "@/components/ui/compact-search-filters";
 import { BulkActions } from "@/components/ui/bulk-actions";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -15,6 +16,7 @@ export type FilterConfig = {
   type: 'select' | 'multiselect' | 'date' | 'daterange' | 'text' | 'number';
   options?: { label: string; value: string }[];
   placeholder?: string;
+  value?: any;
   onChange: (value: any) => void;
 };
 
@@ -48,6 +50,7 @@ interface StandardPageLayoutProps {
   searchTerm?: string;
   onSearchChange?: (term: string) => void;
   filters?: FilterConfig[];
+  hasActiveFilters?: boolean;
   quickFilters?: ReactNode;
   onClearFilters?: () => void;
   
@@ -65,6 +68,7 @@ interface StandardPageLayoutProps {
   
   // Additional header content
   headerActions?: ReactNode;
+  rightContent?: ReactNode;
   
   // Custom content renderer for special layouts
   customRenderer?: (layout: ViewMode, children: ReactNode | ReactNode[]) => ReactNode;
@@ -83,6 +87,7 @@ export function StandardPageLayout({
   searchTerm = '',
   onSearchChange,
   filters = [],
+  hasActiveFilters = false,
   quickFilters,
   onClearFilters,
   selectedItems = [],
@@ -94,13 +99,13 @@ export function StandardPageLayout({
   emptyState,
   loading,
   headerActions,
+  rightContent,
   customRenderer,
   className
 }: StandardPageLayoutProps) {
   const [currentLayout, setCurrentLayout] = useState<ViewMode>(defaultLayout);
   const [filtersOpen, setFiltersOpen] = useState(false);
   
-  const hasActiveFilters = searchTerm.length > 0 || filters.some(f => f.onChange);
   const hasSelectedItems = selectedItems.length > 0;
   const showLayoutSelector = supportedLayouts.length > 1;
   const showSearch = onSearchChange !== undefined;
@@ -165,34 +170,21 @@ export function StandardPageLayout({
         )}
       </PageHeader>
       
-      {/* Search and Filters */}
+      {/* Search and Filters - Compact Layout */}
       {(showSearch || showFilters) && (
-        <div className="bg-card border rounded-lg p-4">
-          <SearchAndFilters
-            searchTerm={searchTerm}
-            onSearchChange={onSearchChange}
-            filtersOpen={filtersOpen}
-            onFiltersOpenChange={setFiltersOpen}
-            hasActiveFilters={hasActiveFilters}
-            onClearFilters={onClearFilters}
-            rightContent={quickFilters}
-          >
-            {filters.map((filter) => (
-              <div key={filter.id} className="space-y-2">
-                <label className="text-sm font-medium">{filter.label}</label>
-                {/* Filter implementation would go here based on filter.type */}
-                <div className="text-xs text-muted-foreground">
-                  {filter.type} filter - {filter.placeholder}
-                </div>
-              </div>
-            ))}
-          </SearchAndFilters>
-        </div>
+        <CompactSearchAndFilters
+          searchTerm={searchTerm}
+          onSearchChange={onSearchChange}
+          filters={filters}
+          hasActiveFilters={hasActiveFilters}
+          onClearFilters={onClearFilters}
+          rightContent={rightContent}
+        />
       )}
       
-      {/* Bulk Actions */}
-      {showBulkActions && (
-        <div className="bg-card border rounded-lg p-3">
+      {/* Bulk Actions - Only show when items are selected */}
+      {showBulkActions && hasSelectedItems && (
+        <div className="bg-primary/5 border border-primary/20 rounded-lg px-4 py-2">
           <BulkActions
             selectedItems={selectedItems}
             onSelectAll={onSelectAll || (() => {})}
