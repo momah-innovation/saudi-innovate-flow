@@ -44,7 +44,6 @@ export { DirectionalDropdownMenu, DirectionalContextMenu, ActionDropdownMenu } f
 
 // Layout System Components
 export { PageContainer } from '../layout/PageContainer';
-export { SimplePageLayout } from '../layout/SimplePageLayout';
 export { Section } from '../layout/Section';
 export { ContentArea } from '../layout/ContentArea';
 export { Container as ResponsiveContainer } from '../layout/Container';
