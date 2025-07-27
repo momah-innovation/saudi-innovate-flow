@@ -75,8 +75,8 @@ export const Header = () => {
   };
 
   return (
-    <header className="bg-gradient-to-r from-primary via-primary-light to-accent shadow-elegant">
-      <div className={`container mx-auto flex items-center justify-between p-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+    <div className="bg-gradient-to-r from-primary via-primary-light to-accent shadow-elegant h-full">
+      <div className={`container mx-auto flex items-center justify-between px-4 h-full ${isRTL ? 'flex-row-reverse' : ''}`}>
         {/* Logo and Title */}
         <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
           <div className="h-10 w-10 rounded-lg bg-background/20 flex items-center justify-center">
@@ -202,6 +202,6 @@ export const Header = () => {
           </DropdownMenu>
         </div>
       </div>
-    </header>
+    </div>
   );
 };
