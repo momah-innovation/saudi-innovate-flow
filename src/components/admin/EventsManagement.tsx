@@ -51,7 +51,23 @@ interface Event {
   focusQuestions?: any[];
 }
 
-export function EventsManagement() {
+interface EventsManagementProps {
+  searchValue?: string;
+  onSearchChange?: (value: string) => void;
+  viewMode?: 'cards' | 'list' | 'grid';
+  onViewModeChange?: (mode: 'cards' | 'list' | 'grid') => void;
+  showAddDialog?: boolean;
+  setShowAddDialog?: (show: boolean) => void;
+}
+
+export function EventsManagement({
+  searchValue,
+  onSearchChange,
+  viewMode: externalViewMode,
+  onViewModeChange,
+  showAddDialog: externalShowAddDialog,
+  setShowAddDialog: externalSetShowAddDialog
+}: EventsManagementProps = {}) {
   const [events, setEvents] = useState<Event[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [campaigns, setCampaigns] = useState<any[]>([]);
@@ -73,6 +89,11 @@ export function EventsManagement() {
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [viewingEvent, setViewingEvent] = useState<Event | null>(null);
 
+  // Use external controls if provided, otherwise use internal state
+  const currentSearchTerm = searchValue ?? searchTerm;
+  const currentViewMode = externalViewMode ?? viewMode;
+  const currentShowAddDialog = externalShowAddDialog ?? showEventDialog;
+
   const { toast } = useToast();
 
   useEffect(() => {
@@ -82,7 +103,28 @@ export function EventsManagement() {
 
   useEffect(() => {
     filterEvents();
-  }, [events, searchTerm, statusFilter, formatFilter, typeFilter, selectedCampaign, selectedSector]);
+  }, [events, currentSearchTerm, statusFilter, formatFilter, typeFilter, selectedCampaign, selectedSector]);
+
+  // Update internal search when external search changes
+  useEffect(() => {
+    if (searchValue !== undefined) {
+      setSearchTerm(searchValue);
+    }
+  }, [searchValue]);
+
+  // Update external view mode when internal changes
+  useEffect(() => {
+    if (onViewModeChange && externalViewMode === undefined) {
+      onViewModeChange(viewMode);
+    }
+  }, [viewMode, onViewModeChange, externalViewMode]);
+
+  // Handle external add dialog
+  useEffect(() => {
+    if (externalShowAddDialog !== undefined) {
+      setShowEventDialog(externalShowAddDialog);
+    }
+  }, [externalShowAddDialog]);
 
   const fetchEvents = async () => {
     try {
@@ -120,8 +162,8 @@ export function EventsManagement() {
   const filterEvents = () => {
     let filtered = events;
 
-    if (searchTerm) {
-      const searchLower = searchTerm.toLowerCase();
+    if (currentSearchTerm) {
+      const searchLower = currentSearchTerm.toLowerCase();
       filtered = filtered.filter(event =>
         event.title_ar.toLowerCase().includes(searchLower) ||
         (event.description_ar && event.description_ar.toLowerCase().includes(searchLower)) ||
@@ -226,12 +268,27 @@ export function EventsManagement() {
 
   const handleEventSave = () => {
     setShowEventDialog(false);
+    if (externalSetShowAddDialog) {
+      externalSetShowAddDialog(false);
+    }
     setEditingEvent(null);
     fetchEvents();
   };
 
+  const handleCreateNew = () => {
+    if (externalSetShowAddDialog) {
+      externalSetShowAddDialog(true);
+    } else {
+      setShowEventDialog(true);
+    }
+  };
+
   const clearAllFilters = () => {
-    setSearchTerm("");
+    if (onSearchChange) {
+      onSearchChange("");
+    } else {
+      setSearchTerm("");
+    }
     setStatusFilter("all");
     setFormatFilter("all");
     setTypeFilter("all");
@@ -388,30 +445,9 @@ export function EventsManagement() {
   );
 
   return (
-    <div className="p-6 space-y-6">
-      <PageHeader
-        title="Events Management"
-        description="Manage and organize all events"
-        itemCount={filteredEvents.length}
-        actionButton={{
-          label: "Create Event",
-          icon: <Plus className="w-4 h-4" />,
-          onClick: () => setShowEventDialog(true)
-        }}
-      >
-        <LayoutSelector viewMode={viewMode} onViewModeChange={setViewMode} />
-      </PageHeader>
-
-      <SearchAndFilters
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        searchPlaceholder="Search events by title, description, location, type, format, or status..."
-        filtersOpen={filtersOpen}
-        onFiltersOpenChange={setFiltersOpen}
-        hasActiveFilters={hasActiveFilters()}
-        onClearFilters={clearAllFilters}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div>
           <div>
             <Label htmlFor="status-filter">Status</Label>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -495,7 +531,7 @@ export function EventsManagement() {
             </Select>
           </div>
         </div>
-      </SearchAndFilters>
+      </div>
 
       <BulkActions
         selectedItems={selectedEvents}
@@ -531,7 +567,7 @@ export function EventsManagement() {
       />
 
       <ViewLayouts
-        viewMode={viewMode}
+        viewMode={currentViewMode}
         listRenderer={renderListView}
       >
         {filteredEvents.map(renderEventCard)}
@@ -541,26 +577,31 @@ export function EventsManagement() {
         <EmptyState
           title="No events found"
           description={
-            searchTerm || hasActiveFilters()
+            currentSearchTerm || hasActiveFilters()
               ? "Try adjusting your search criteria or filters"
               : "Get started by creating your first event"
           }
           action={
-            !searchTerm && !hasActiveFilters()
-              ? { label: "Create First Event", onClick: () => setShowEventDialog(true) }
+            !currentSearchTerm && !hasActiveFilters()
+              ? { label: "Create First Event", onClick: handleCreateNew }
               : undefined
           }
-          isFiltered={searchTerm !== "" || hasActiveFilters()}
+          isFiltered={currentSearchTerm !== "" || hasActiveFilters()}
         />
       )}
 
+
       <EventDialog
-        isOpen={showEventDialog}
+        isOpen={currentShowAddDialog}
         onClose={() => {
-          setShowEventDialog(false);
+          if (externalSetShowAddDialog) {
+            externalSetShowAddDialog(false);
+          } else {
+            setShowEventDialog(false);
+          }
           setEditingEvent(null);
         }}
-        event={editingEvent || undefined}
+        event={editingEvent}
         onSave={handleEventSave}
       />
 

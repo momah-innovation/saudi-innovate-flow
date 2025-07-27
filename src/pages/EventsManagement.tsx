@@ -18,7 +18,7 @@ export default function EventsManagementPage() {
     ? 'إدارة أحداث وأنشطة الابتكار' 
     : 'Manage innovation events and activities';
 
-  const createNewLabel = isRTL && language === 'ar' ? 'إنشاء حدث' : 'Create Event';
+  const createNewLabel = isRTL && language === 'ar' ? 'إنشاء جديد' : 'Create New';
   const bulkActionsLabel = isRTL && language === 'ar' ? 'الإجراءات المجمعة' : 'Bulk Actions';
   const searchPlaceholder = isRTL && language === 'ar' ? 'بحث في الأحداث...' : 'Search events...';
 
@@ -95,7 +95,14 @@ export default function EventsManagementPage() {
         spacing="md"
         maxWidth="full"
       >
-        <EventsManagement />
+        <EventsManagement 
+          searchValue={searchValue}
+          onSearchChange={setSearchValue}
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
+          showAddDialog={showAddDialog}
+          setShowAddDialog={setShowAddDialog}
+        />
       </PageLayout>
     </AppShell>
   );
