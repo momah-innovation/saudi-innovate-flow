@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode, useState } from 'react';
+import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 
 type ThemeVariant = 'default' | 'modern' | 'minimal' | 'vibrant';
 type ColorScheme = 'light' | 'dark' | 'auto';
@@ -29,7 +29,18 @@ const defaultTheme: ThemeConfig = {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeConfig>(defaultTheme);
+  const [theme, setThemeState] = useState<ThemeConfig>(() => {
+    // Load theme from localStorage on initialization
+    try {
+      const savedTheme = localStorage.getItem('ui-theme');
+      if (savedTheme) {
+        return { ...defaultTheme, ...JSON.parse(savedTheme) };
+      }
+    } catch (error) {
+      console.error('Error loading saved theme:', error);
+    }
+    return defaultTheme;
+  });
 
   const setTheme = (newTheme: Partial<ThemeConfig>) => {
     const updatedTheme = { ...theme, ...newTheme };
@@ -39,6 +50,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const applyTheme = () => {
     const root = document.documentElement;
+    
+    // Apply color scheme (dark/light mode)
+    root.classList.remove('light', 'dark');
+    if (theme.colorScheme === 'auto') {
+      // Use system preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.classList.add(prefersDark ? 'dark' : 'light');
+    } else {
+      root.classList.add(theme.colorScheme);
+    }
     
     // Apply theme variant classes
     root.classList.remove('theme-default', 'theme-modern', 'theme-minimal', 'theme-vibrant');
@@ -67,6 +88,21 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       root.style.setProperty('--primary', theme.primaryColor);
     }
   };
+
+  // Apply theme on mount and when theme changes
+  React.useEffect(() => {
+    applyTheme();
+  }, [theme]);
+
+  // Listen for system color scheme changes when in auto mode
+  React.useEffect(() => {
+    if (theme.colorScheme === 'auto') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const handleChange = () => applyTheme();
+      mediaQuery.addEventListener('change', handleChange);
+      return () => mediaQuery.removeEventListener('change', handleChange);
+    }
+  }, [theme.colorScheme]);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, applyTheme }}>

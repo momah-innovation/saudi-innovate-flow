@@ -15,6 +15,7 @@ import { Header } from "@/components/ui/header";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { ThemeCustomizer } from "@/components/ui/theme-customizer";
 import { useNavigate } from "react-router-dom";
 
 interface UserRole {
@@ -176,14 +177,7 @@ export default function Settings() {
                     </CardHeader>
                     <CardContent>
                       <div className="flex justify-center">
-                        <div className="w-full max-w-md">
-                          {/* Theme Customizer will be rendered here */}
-                          <div className="p-4 border rounded-lg">
-                            <p className="text-sm text-muted-foreground text-center">
-                              Theme customization panel will be available soon
-                            </p>
-                          </div>
-                        </div>
+                        <ThemeCustomizer />
                       </div>
                     </CardContent>
                   </Card>
