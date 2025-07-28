@@ -13,16 +13,16 @@ interface IntegrationSettingsProps {
 
 export function IntegrationSettings({ settings, onSettingChange }: IntegrationSettingsProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 rtl:text-right ltr:text-left">
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>إعدادات API</CardTitle>
           <CardDescription>إدارة الوصول إلى واجهة برمجة التطبيقات</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
+              <div className="flex items-center gap-2 rtl:flex-row-reverse">
                 <Label className="text-base">تفعيل وصول API</Label>
                 <Badge variant="secondary">متقدم</Badge>
               </div>
@@ -44,6 +44,7 @@ export function IntegrationSettings({ settings, onSettingChange }: IntegrationSe
               value={settings.apiRateLimit || 1000}
               onChange={(e) => onSettingChange('apiRateLimit', parseInt(e.target.value))}
               disabled={!settings.enableApiAccess}
+              className="rtl:text-right ltr:text-left"
             />
           </div>
 
@@ -56,19 +57,20 @@ export function IntegrationSettings({ settings, onSettingChange }: IntegrationSe
               placeholder="example.com, api.partner.com"
               rows={2}
               disabled={!settings.enableApiAccess}
+              className="rtl:text-right ltr:text-left"
             />
           </div>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>إعدادات Webhooks</CardTitle>
           <CardDescription>إرسال إشعارات تلقائية للأنظمة الخارجية</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">تفعيل Webhooks</Label>
               <p className="text-sm text-muted-foreground">إرسال تحديثات للأنظمة الخارجية</p>
             </div>
@@ -87,6 +89,7 @@ export function IntegrationSettings({ settings, onSettingChange }: IntegrationSe
               onChange={(e) => onSettingChange('webhookUrl', e.target.value)}
               placeholder="https://api.example.com/webhooks"
               disabled={!settings.enableWebhooks}
+              className="rtl:text-right ltr:text-left"
             />
           </div>
 
@@ -99,6 +102,7 @@ export function IntegrationSettings({ settings, onSettingChange }: IntegrationSe
               onChange={(e) => onSettingChange('webhookSecret', e.target.value)}
               placeholder="مفتاح سري للتحقق من صحة الطلبات"
               disabled={!settings.enableWebhooks}
+              className="rtl:text-right ltr:text-left"
             />
           </div>
 
@@ -109,7 +113,7 @@ export function IntegrationSettings({ settings, onSettingChange }: IntegrationSe
               onValueChange={(value) => onSettingChange('webhookEvents', value)}
               disabled={!settings.enableWebhooks}
             >
-              <SelectTrigger>
+              <SelectTrigger className="rtl:text-right ltr:text-left">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -124,13 +128,13 @@ export function IntegrationSettings({ settings, onSettingChange }: IntegrationSe
       </Card>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>التكامل مع الأنظمة الخارجية</CardTitle>
           <CardDescription>ربط النظام مع منصات أخرى</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">تكامل Microsoft Teams</Label>
               <p className="text-sm text-muted-foreground">إرسال إشعارات لقنوات Teams</p>
             </div>
@@ -140,8 +144,8 @@ export function IntegrationSettings({ settings, onSettingChange }: IntegrationSe
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">تكامل Slack</Label>
               <p className="text-sm text-muted-foreground">إرسال إشعارات لقنوات Slack</p>
             </div>
@@ -151,8 +155,8 @@ export function IntegrationSettings({ settings, onSettingChange }: IntegrationSe
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">تكامل البريد الإلكتروني</Label>
               <p className="text-sm text-muted-foreground">ربط مع خدمات البريد الخارجية</p>
             </div>
@@ -165,13 +169,13 @@ export function IntegrationSettings({ settings, onSettingChange }: IntegrationSe
       </Card>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>النسخ الاحتياطي والاستعادة</CardTitle>
           <CardDescription>إعدادات النسخ الاحتياطي التلقائي</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">النسخ الاحتياطي التلقائي</Label>
               <p className="text-sm text-muted-foreground">إنشاء نسخ احتياطية بشكل دوري</p>
             </div>
@@ -181,7 +185,7 @@ export function IntegrationSettings({ settings, onSettingChange }: IntegrationSe
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
             <div className="space-y-2">
               <Label htmlFor="backupFrequency">تكرار النسخ الاحتياطي</Label>
               <Select 
@@ -189,7 +193,7 @@ export function IntegrationSettings({ settings, onSettingChange }: IntegrationSe
                 onValueChange={(value) => onSettingChange('backupFrequency', value)}
                 disabled={!settings.autoBackup}
               >
-                <SelectTrigger>
+                <SelectTrigger className="rtl:text-right ltr:text-left">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -211,6 +215,7 @@ export function IntegrationSettings({ settings, onSettingChange }: IntegrationSe
                 value={settings.retentionPeriod || 30}
                 onChange={(e) => onSettingChange('retentionPeriod', parseInt(e.target.value))}
                 disabled={!settings.autoBackup}
+                className="rtl:text-right ltr:text-left"
               />
             </div>
           </div>
@@ -222,7 +227,7 @@ export function IntegrationSettings({ settings, onSettingChange }: IntegrationSe
               onValueChange={(value) => onSettingChange('backupLocation', value)}
               disabled={!settings.autoBackup}
             >
-              <SelectTrigger>
+              <SelectTrigger className="rtl:text-right ltr:text-left">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

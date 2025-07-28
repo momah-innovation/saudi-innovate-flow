@@ -12,15 +12,15 @@ interface NotificationSettingsProps {
 
 export function NotificationSettings({ settings, onSettingChange }: NotificationSettingsProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 rtl:text-right ltr:text-left">
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>إعدادات الإشعارات العامة</CardTitle>
           <CardDescription>تحكم في أنواع الإشعارات الأساسية</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">إشعارات البريد الإلكتروني</Label>
               <p className="text-sm text-muted-foreground">إرسال إشعارات عبر البريد الإلكتروني</p>
             </div>
@@ -30,8 +30,8 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">إشعارات النظام</Label>
               <p className="text-sm text-muted-foreground">إشعارات داخل النظام</p>
             </div>
@@ -41,8 +41,8 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">إشعارات الهاتف المحمول</Label>
               <p className="text-sm text-muted-foreground">إرسال إشعارات push للتطبيق المحمول</p>
             </div>
@@ -55,13 +55,13 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
       </Card>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>إشعارات التحديات والأفكار</CardTitle>
           <CardDescription>إعدادات الإشعارات الخاصة بالتحديات والأفكار</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">إشعار عند التقديم الجديد</Label>
               <p className="text-sm text-muted-foreground">إشعار عند تقديم أفكار جديدة</p>
             </div>
@@ -71,8 +71,8 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">إشعار عند تغيير الحالة</Label>
               <p className="text-sm text-muted-foreground">إشعار عند تغيير حالة التحدي</p>
             </div>
@@ -82,8 +82,8 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">تذكير المواعيد النهائية</Label>
               <p className="text-sm text-muted-foreground">إرسال تذكيرات قبل انتهاء المواعيد</p>
             </div>
@@ -93,8 +93,8 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">إشعار عند التقييم</Label>
               <p className="text-sm text-muted-foreground">إشعار عند تقييم الأفكار من قبل الخبراء</p>
             </div>
@@ -107,12 +107,12 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
       </Card>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>إعدادات التذكيرات</CardTitle>
           <CardDescription>تخصيص توقيت وتكرار التذكيرات</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
             <div className="space-y-2">
               <Label htmlFor="reminderDaysBefore">تذكير قبل انتهاء الموعد بـ (أيام)</Label>
               <Input
@@ -122,6 +122,7 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
                 max="30"
                 value={settings.reminderDaysBefore || 7}
                 onChange={(e) => onSettingChange('reminderDaysBefore', parseInt(e.target.value))}
+                className="rtl:text-right ltr:text-left"
               />
             </div>
 
@@ -131,7 +132,7 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
                 value={settings.reminderFrequency || 'daily'} 
                 onValueChange={(value) => onSettingChange('reminderFrequency', value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className="rtl:text-right ltr:text-left">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -146,7 +147,7 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
       </Card>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>قوالب الإشعارات</CardTitle>
           <CardDescription>تخصيص نصوص الإشعارات المرسلة</CardDescription>
         </CardHeader>
@@ -159,6 +160,7 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
               onChange={(e) => onSettingChange('newSubmissionTemplate', e.target.value)}
               rows={3}
               placeholder="نص الإشعار..."
+              className="rtl:text-right ltr:text-left"
             />
           </div>
 
@@ -170,6 +172,7 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
               onChange={(e) => onSettingChange('statusChangeTemplate', e.target.value)}
               rows={3}
               placeholder="نص الإشعار..."
+              className="rtl:text-right ltr:text-left"
             />
           </div>
         </CardContent>

@@ -155,21 +155,91 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 rtl:text-right ltr:text-left">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {Object.entries(systemLists).map(([listKey, items]) => 
-          renderList(listKey, items)
+          <Card key={listKey}>
+            <CardHeader className="rtl:text-right ltr:text-left">
+              <div className="flex items-center justify-between rtl:flex-row-reverse">
+                <div>
+                  <CardTitle className="text-lg">{listLabels[listKey as keyof typeof listLabels]}</CardTitle>
+                  <CardDescription>إدارة قائمة {listLabels[listKey as keyof typeof listLabels]}</CardDescription>
+                </div>
+                <Badge variant="outline">{items.length} عنصر</Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                {items.map((item, index) => (
+                  <div key={index} className="flex items-center justify-between p-2 bg-muted rounded-lg rtl:flex-row-reverse">
+                    <span className="flex-1 rtl:text-right ltr:text-left">{item}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeItem(listKey, index)}
+                      className="text-destructive hover:text-destructive"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+
+              {editingList === listKey ? (
+                <div className="flex gap-2 rtl:flex-row-reverse">
+                  <Input
+                    value={newItem}
+                    onChange={(e) => setNewItem(e.target.value)}
+                    placeholder="أدخل عنصر جديد..."
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        addItem(listKey);
+                      } else if (e.key === 'Escape') {
+                        setEditingList(null);
+                        setNewItem("");
+                      }
+                    }}
+                    autoFocus
+                    className="rtl:text-right ltr:text-left"
+                  />
+                  <Button onClick={() => addItem(listKey)} size="sm">
+                    إضافة
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => {
+                      setEditingList(null);
+                      setNewItem("");
+                    }}
+                  >
+                    إلغاء
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setEditingList(listKey)}
+                  className="w-full"
+                >
+                  <Plus className="w-4 h-4 rtl:ml-2 ltr:mr-2" />
+                  إضافة عنصر جديد
+                </Button>
+              )}
+            </CardContent>
+          </Card>
         )}
       </div>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>إعدادات القوائم المتقدمة</CardTitle>
           <CardDescription>خيارات متقدمة لإدارة القوائم</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">السماح بالقيم المخصصة</Label>
               <p className="text-sm text-muted-foreground">السماح للمستخدمين بإدخال قيم جديدة غير موجودة في القوائم</p>
             </div>
@@ -181,8 +251,8 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">ترتيب القوائم أبجدياً</Label>
               <p className="text-sm text-muted-foreground">ترتيب عناصر القوائم حسب الترتيب الأبجدي</p>
             </div>
