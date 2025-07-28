@@ -13,14 +13,14 @@ interface GeneralSettingsProps {
 
 export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 rtl:text-right ltr:text-left">
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>معلومات النظام الأساسية</CardTitle>
           <CardDescription>الإعدادات الأساسية للمنصة</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
             <div className="space-y-2">
               <Label htmlFor="systemName">اسم النظام</Label>
               <Input
@@ -28,6 +28,7 @@ export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsPr
                 value={settings.systemName || ''}
                 onChange={(e) => onSettingChange('systemName', e.target.value)}
                 placeholder="نظام إدارة الابتكار"
+                className="rtl:text-right ltr:text-left"
               />
             </div>
             <div className="space-y-2">
@@ -36,7 +37,7 @@ export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsPr
                 value={settings.systemLanguage || 'ar'} 
                 onValueChange={(value) => onSettingChange('systemLanguage', value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className="rtl:text-right ltr:text-left">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -55,19 +56,20 @@ export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsPr
               onChange={(e) => onSettingChange('systemDescription', e.target.value)}
               placeholder="منصة شاملة لإدارة التحديات والأفكار الابتكارية"
               rows={3}
+              className="rtl:text-right ltr:text-left"
             />
           </div>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>إعدادات عامة</CardTitle>
           <CardDescription>إعدادات تؤثر على سلوك النظام العام</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">وضع الصيانة</Label>
               <p className="text-sm text-muted-foreground">منع وصول المستخدمين العاديين للنظام</p>
             </div>
@@ -77,8 +79,8 @@ export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsPr
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">السماح بالتسجيل العام</Label>
               <p className="text-sm text-muted-foreground">السماح للمستخدمين الجدد بالتسجيل بدون دعوة</p>
             </div>
@@ -88,7 +90,7 @@ export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsPr
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
             <div className="space-y-2">
               <Label htmlFor="maxFileUploadSize">الحد الأقصى لحجم الملف (MB)</Label>
               <Input
@@ -98,6 +100,7 @@ export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsPr
                 max="100"
                 value={settings.maxFileUploadSize || 10}
                 onChange={(e) => onSettingChange('maxFileUploadSize', parseInt(e.target.value))}
+                className="rtl:text-right ltr:text-left"
               />
             </div>
             <div className="space-y-2">
@@ -109,6 +112,7 @@ export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsPr
                 max="3650"
                 value={settings.autoArchiveAfterDays || 365}
                 onChange={(e) => onSettingChange('autoArchiveAfterDays', parseInt(e.target.value))}
+                className="rtl:text-right ltr:text-left"
               />
             </div>
           </div>

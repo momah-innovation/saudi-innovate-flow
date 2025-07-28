@@ -11,21 +11,21 @@ interface ChallengeSettingsProps {
 
 export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettingsProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 rtl:text-right ltr:text-left">
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>الإعدادات الافتراضية للتحديات</CardTitle>
           <CardDescription>القيم الافتراضية عند إنشاء تحديات جديدة</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 rtl:text-right ltr:text-left">
             <div className="space-y-2">
               <Label htmlFor="defaultStatus">الحالة الافتراضية</Label>
               <Select 
                 value={settings.defaultStatus || 'draft'} 
                 onValueChange={(value) => onSettingChange('defaultStatus', value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className="rtl:text-right ltr:text-left">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -42,7 +42,7 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
                 value={settings.defaultPriority || 'medium'} 
                 onValueChange={(value) => onSettingChange('defaultPriority', value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className="rtl:text-right ltr:text-left">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -59,7 +59,7 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
                 value={settings.defaultSensitivity || 'normal'} 
                 onValueChange={(value) => onSettingChange('defaultSensitivity', value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className="rtl:text-right ltr:text-left">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -74,12 +74,12 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
       </Card>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>حدود وقيود التحديات</CardTitle>
           <CardDescription>إعدادات الحدود والقيود الخاصة بالتحديات</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
             <div className="space-y-2">
               <Label htmlFor="maxChallengesPerUser">الحد الأقصى للتحديات لكل مستخدم</Label>
               <Input
@@ -89,6 +89,7 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
                 max="100"
                 value={settings.maxChallengesPerUser || 10}
                 onChange={(e) => onSettingChange('maxChallengesPerUser', parseInt(e.target.value))}
+                className="rtl:text-right ltr:text-left"
               />
             </div>
 
@@ -98,7 +99,7 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
                 value={(settings.itemsPerPage || 12).toString()} 
                 onValueChange={(value) => onSettingChange('itemsPerPage', parseInt(value))}
               >
-                <SelectTrigger>
+                <SelectTrigger className="rtl:text-right ltr:text-left">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -114,7 +115,7 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
       </Card>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>إعدادات واجهة المستخدم</CardTitle>
           <CardDescription>تخصيص تجربة المستخدم لصفحات التحديات</CardDescription>
         </CardHeader>
@@ -125,7 +126,7 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
               value={settings.defaultViewMode || 'cards'} 
               onValueChange={(value) => onSettingChange('defaultViewMode', value)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="rtl:text-right ltr:text-left">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -136,8 +137,8 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
             </Select>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">تفعيل المرشحات المتقدمة</Label>
               <p className="text-sm text-muted-foreground">عرض خيارات تصفية إضافية</p>
             </div>
@@ -147,8 +148,8 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">معاينة عند التمرير</Label>
               <p className="text-sm text-muted-foreground">عرض معاينة سريعة عند التمرير فوق البطاقات</p>
             </div>
@@ -161,13 +162,13 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
       </Card>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>إعدادات سير العمل</CardTitle>
           <CardDescription>تحكم في آلية عمل التحديات والتعاون</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">مطالبة الموافقة للنشر</Label>
               <p className="text-sm text-muted-foreground">مطالبة موافقة إدارية قبل نشر التحديات</p>
             </div>
@@ -177,8 +178,8 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">السماح بالمشاركات المجهولة</Label>
               <p className="text-sm text-muted-foreground">السماح بتقديم أفكار بدون الكشف عن الهوية</p>
             </div>
@@ -188,8 +189,8 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">تفعيل التعاون</Label>
               <p className="text-sm text-muted-foreground">السماح بالعمل التعاوني على التحديات</p>
             </div>
@@ -199,8 +200,8 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">تفعيل التعليقات</Label>
               <p className="text-sm text-muted-foreground">السماح بالتعليق على التحديات والأفكار</p>
             </div>
@@ -210,8 +211,8 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
               <Label className="text-base">تفعيل التقييمات</Label>
               <p className="text-sm text-muted-foreground">السماح بتقييم التحديات والأفكار</p>
             </div>
