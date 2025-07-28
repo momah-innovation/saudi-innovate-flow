@@ -80,14 +80,20 @@ const priorityConfig = {
   high: { label: 'عالي', variant: 'destructive' as const }
 };
 
-export function CampaignsManagement() {
+interface CampaignsManagementProps {
+  viewMode: 'cards' | 'list' | 'grid';
+  searchTerm: string;
+  showAddDialog: boolean;
+  onAddDialogChange: (open: boolean) => void;
+}
+
+export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: CampaignsManagementProps) {
   const { language } = useTranslation();
-  const [showWizard, setShowWizard] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
 
   const handleEdit = (campaign: any) => {
     setSelectedCampaign(campaign);
-    setShowWizard(true);
+    onAddDialogChange(true);
   };
 
   const handleView = (campaign: any) => {
@@ -106,10 +112,10 @@ export function CampaignsManagement() {
         itemCount={mockCampaigns.length}
         addButton={{
           label: "حملة جديدة",
-          onClick: () => setShowWizard(true),
+          onClick: () => onAddDialogChange(true),
           icon: <Target className="w-4 h-4" />
         }}
-        searchTerm=""
+        searchTerm={searchTerm}
         onSearchChange={() => {}}
         filters={[
           {
@@ -195,9 +201,9 @@ export function CampaignsManagement() {
       </StandardPageLayout>
 
       <CampaignWizard
-        open={showWizard}
-        onOpenChange={setShowWizard}
-        onSuccess={() => setShowWizard(false)}
+        open={showAddDialog}
+        onOpenChange={onAddDialogChange}
+        onSuccess={() => onAddDialogChange(false)}
       />
     </>
   );
