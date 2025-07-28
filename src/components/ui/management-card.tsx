@@ -160,12 +160,12 @@ export function ManagementCard({
       className={`hover:shadow-md transition-shadow ${onClick ? 'cursor-pointer' : ''} ${className}`}
       onClick={onClick}
     >
-      <CardHeader className={viewMode === 'grid' ? 'pb-2' : 'pb-3'}>
+      <CardHeader className={viewMode === 'grid' ? 'p-3 pb-2' : 'pb-3'}>
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
-            <CardTitle className={viewMode === 'grid' ? 'text-base leading-5' : 'text-lg leading-6'}>{title}</CardTitle>
-            {subtitle && (
-              <p className={`text-muted-foreground mt-1 ${viewMode === 'grid' ? 'text-xs' : 'text-sm'}`}>{subtitle}</p>
+            <CardTitle className={viewMode === 'grid' ? 'text-sm leading-4 font-medium' : 'text-lg leading-6'}>{title}</CardTitle>
+            {subtitle && viewMode !== 'grid' && (
+              <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>
             )}
             
             {badges.length > 0 && (
@@ -185,8 +185,8 @@ export function ManagementCard({
         </div>
       </CardHeader>
       
-      <CardContent className="pt-0">
-        {description && (
+      <CardContent className={viewMode === 'grid' ? 'p-3 pt-0' : 'pt-0'}>
+        {description && viewMode !== 'grid' && (
           <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
             {description}
           </p>
