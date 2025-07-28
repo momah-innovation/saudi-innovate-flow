@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { StakeholderWizard } from "./StakeholderWizard";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { StandardPageLayout, ViewMode } from "@/components/layout/StandardPageLayout";
 
 interface Stakeholder {
   id: string;
@@ -35,6 +35,12 @@ export function StakeholdersManagement() {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
+  
+  const handleLayoutChange = (layout: ViewMode) => {
+    if (layout === 'cards' || layout === 'list' || layout === 'grid') {
+      setViewMode(layout);
+    }
+  };
   
   // Search and filter states
   const [searchTerm, setSearchTerm] = useState("");
@@ -175,56 +181,42 @@ export function StakeholdersManagement() {
     );
   }
 
-  // Create filters for PageLayout
-  const filters = (
-    <>
-      <div className="min-w-[140px]">
-        <Select value={typeFilter} onValueChange={setTypeFilter}>
-          <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="جميع الأنواع" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">جميع الأنواع</SelectItem>
-            {stakeholderTypes.map((type) => (
-              <SelectItem key={type} value={type}>
-                {type}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="min-w-[140px]">
-        <Select value={influenceFilter} onValueChange={setInfluenceFilter}>
-          <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="جميع مستويات التأثير" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">جميع مستويات التأثير</SelectItem>
-            {influenceLevels.map((level) => (
-              <SelectItem key={level} value={level}>
-                {level}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="min-w-[140px]">
-        <Select value={engagementFilter} onValueChange={setEngagementFilter}>
-          <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="جميع حالات المشاركة" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">جميع حالات المشاركة</SelectItem>
-            {engagementStatuses.map((status) => (
-              <SelectItem key={status} value={status}>
-                {status}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-    </>
-  );
+  // Create filters for StandardPageLayout
+  const filters = [
+    {
+      id: 'type',
+      label: 'نوع أصحاب المصلحة',
+      type: 'select' as const,
+      value: typeFilter,
+      onChange: setTypeFilter,
+      options: [
+        { label: 'جميع الأنواع', value: 'all' },
+        ...stakeholderTypes.map(type => ({ label: type, value: type }))
+      ]
+    },
+    {
+      id: 'influence',
+      label: 'مستوى التأثير',
+      type: 'select' as const,
+      value: influenceFilter,
+      onChange: setInfluenceFilter,
+      options: [
+        { label: 'جميع مستويات التأثير', value: 'all' },
+        ...influenceLevels.map(level => ({ label: level, value: level }))
+      ]
+    },
+    {
+      id: 'engagement',
+      label: 'حالة المشاركة',
+      type: 'select' as const,
+      value: engagementFilter,
+      onChange: setEngagementFilter,
+      options: [
+        { label: 'جميع حالات المشاركة', value: 'all' },
+        ...engagementStatuses.map(status => ({ label: status, value: status }))
+      ]
+    }
+  ];
 
   const secondaryActions = (
     <Button
@@ -242,26 +234,22 @@ export function StakeholdersManagement() {
 
   return (
     <>
-      <PageLayout 
+      <StandardPageLayout 
         title="إدارة أصحاب المصلحة"
         description="تتبع وإدارة علاقات أصحاب المصلحة ومستويات التأثير واستراتيجيات المشاركة"
         itemCount={filteredStakeholders.length}
-        primaryAction={{
+        addButton={{
           label: "إضافة صاحب مصلحة",
           onClick: () => { setEditingStakeholder(null); setIsWizardOpen(true); },
           icon: <Plus className="w-4 h-4" />
         }}
-        secondaryActions={secondaryActions}
-        showLayoutSelector={true}
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
-        showSearch={true}
-        searchValue={searchTerm}
+        headerActions={secondaryActions}
+        supportedLayouts={['cards', 'list', 'grid']}
+        defaultLayout={viewMode}
+        onLayoutChange={handleLayoutChange}
+        searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        searchPlaceholder="البحث في أصحاب المصلحة..."
         filters={filters}
-        spacing="md"
-        maxWidth="full"
       >
         <div className={
           viewMode === 'cards' ? 'grid gap-4 md:grid-cols-2 lg:grid-cols-3' :
@@ -439,7 +427,7 @@ export function StakeholdersManagement() {
           </Button>
         </div>
       )}
-      </PageLayout>
+      </StandardPageLayout>
 
       {/* Stakeholder Wizard */}
       <StakeholderWizard
