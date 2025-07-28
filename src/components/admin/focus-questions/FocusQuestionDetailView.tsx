@@ -201,18 +201,18 @@ export function FocusQuestionDetailView({
       <Card>
         <CollapsibleTrigger asChild>
           <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
-            <CardTitle className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+            <CardTitle className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Icon className="w-5 h-5" />
-                {title}
+                <span dir={isRTL ? 'rtl' : 'ltr'}>{title}</span>
                 {count !== undefined && (
-                  <Badge variant="secondary" className="ml-2">{count}</Badge>
+                  <Badge variant="secondary" className={isRTL ? 'mr-2' : 'ml-2'}>{count}</Badge>
                 )}
               </div>
               {openSections[id] ? (
                 <ChevronDown className="w-4 h-4" />
               ) : (
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
               )}
             </CardTitle>
           </CardHeader>
@@ -232,10 +232,10 @@ export function FocusQuestionDetailView({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] p-0">
         <DialogHeader className="p-6 pb-4">
-          <div className="flex items-start justify-between">
+          <div className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className="space-y-2">
-              <DialogTitle className="text-2xl font-bold">{question.question_text_ar}</DialogTitle>
-              <div className="flex items-center gap-2">
+              <DialogTitle className="text-2xl font-bold" dir="rtl">{question.question_text_ar}</DialogTitle>
+              <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Badge variant="outline">{getTypeLabel(question.question_type)}</Badge>
                 {question.is_sensitive && (
                   <Badge variant="destructive">حساس</Badge>
@@ -247,9 +247,9 @@ export function FocusQuestionDetailView({
                 )}
               </div>
             </div>
-            <Button onClick={() => onEdit(question)} size="sm">
-              <Edit className="w-4 h-4 mr-2" />
-              تعديل
+            <Button onClick={() => onEdit(question)} size="sm" className={isRTL ? 'mr-2' : 'ml-2'}>
+              <Edit className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              <span dir="rtl">تعديل</span>
             </Button>
           </div>
         </DialogHeader>
@@ -265,22 +265,22 @@ export function FocusQuestionDetailView({
             >
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="text-center p-4 border rounded-lg">
-                  <div className="text-2xl font-bold text-primary">{relatedData.analytics.totalResponses}</div>
-                  <div className="text-sm text-muted-foreground">إجمالي الردود</div>
+                  <div className="text-2xl font-bold text-primary" dir="ltr">{relatedData.analytics.totalResponses}</div>
+                  <div className="text-sm text-muted-foreground" dir="rtl">إجمالي الردود</div>
                 </div>
                 <div className="text-center p-4 border rounded-lg">
-                  <div className="text-2xl font-bold text-primary">{relatedData.analytics.averageRating.toFixed(1)}</div>
-                  <div className="text-sm text-muted-foreground">متوسط التقييم</div>
+                  <div className="text-2xl font-bold text-primary" dir="ltr">{relatedData.analytics.averageRating.toFixed(1)}</div>
+                  <div className="text-sm text-muted-foreground" dir="rtl">متوسط التقييم</div>
                 </div>
                 <div className="text-center p-4 border rounded-lg">
-                  <div className="text-2xl font-bold text-primary">{relatedData.analytics.completionRate}%</div>
-                  <div className="text-sm text-muted-foreground">معدل الإكمال</div>
+                  <div className="text-2xl font-bold text-primary" dir="ltr">{relatedData.analytics.completionRate}%</div>
+                  <div className="text-sm text-muted-foreground" dir="rtl">معدل الإكمال</div>
                 </div>
                 <div className="text-center p-4 border rounded-lg">
                   <div className="text-2xl font-bold text-primary">
                     <Clock className="w-6 h-6 mx-auto mb-1" />
                   </div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-sm text-muted-foreground" dir="rtl">
                     {relatedData.analytics.lastActivity 
                       ? format(new Date(relatedData.analytics.lastActivity), 'dd/MM/yyyy')
                       : 'لا يوجد نشاط'
@@ -297,36 +297,36 @@ export function FocusQuestionDetailView({
               icon={HelpCircle}
             >
               <div className="space-y-4">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4" dir={isRTL ? 'rtl' : 'ltr'}>
                   <div>
-                    <h4 className="font-semibold mb-1 text-sm">نوع السؤال</h4>
-                    <p className="text-sm text-muted-foreground">{getTypeLabel(question.question_type)}</p>
+                    <h4 className="font-semibold mb-1 text-sm" dir="rtl">نوع السؤال</h4>
+                    <p className="text-sm text-muted-foreground" dir="rtl">{getTypeLabel(question.question_type)}</p>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-1 text-sm">ترتيب السؤال</h4>
-                    <p className="text-sm flex items-center gap-1">
+                    <h4 className="font-semibold mb-1 text-sm" dir="rtl">ترتيب السؤال</h4>
+                    <p className={`text-sm flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <Hash className="w-4 h-4" />
-                      {question.order_sequence}
+                      <span dir="ltr">{question.order_sequence}</span>
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-1 text-sm">مستوى الحساسية</h4>
-                    <p className="text-sm flex items-center gap-1">
+                    <h4 className="font-semibold mb-1 text-sm" dir="rtl">مستوى الحساسية</h4>
+                    <p className={`text-sm flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <Shield className="w-4 h-4" />
-                      {question.is_sensitive ? 'حساس' : 'عادي'}
+                      <span dir="rtl">{question.is_sensitive ? 'حساس' : 'عادي'}</span>
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-1 text-sm">تاريخ الإنشاء</h4>
-                    <p className="text-sm flex items-center gap-1">
+                    <h4 className="font-semibold mb-1 text-sm" dir="rtl">تاريخ الإنشاء</h4>
+                    <p className={`text-sm flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <Calendar className="w-4 h-4" />
-                      {format(new Date(question.created_at), 'dd/MM/yyyy')}
+                      <span dir="ltr">{format(new Date(question.created_at), 'dd/MM/yyyy')}</span>
                     </p>
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-semibold mb-2">نص السؤال الكامل</h4>
+                  <h4 className="font-semibold mb-2" dir="rtl">نص السؤال الكامل</h4>
                   <div className="p-4 bg-muted/30 rounded-lg">
                     <p className="text-base leading-relaxed" dir="rtl">{question.question_text_ar}</p>
                   </div>
@@ -334,11 +334,11 @@ export function FocusQuestionDetailView({
 
                 {question.challenge && (
                   <div>
-                    <h4 className="font-semibold mb-2">التحدي المرتبط</h4>
+                    <h4 className="font-semibold mb-2" dir="rtl">التحدي المرتبط</h4>
                     <div className="p-3 border rounded-lg">
-                      <div className="flex items-center gap-2">
+                      <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <Target className="w-4 h-4" />
-                        <span className="font-medium">{question.challenge.title_ar}</span>
+                        <span className="font-medium" dir="rtl">{question.challenge.title_ar}</span>
                         <Badge variant="outline">{question.challenge.status}</Badge>
                       </div>
                     </div>
@@ -346,15 +346,17 @@ export function FocusQuestionDetailView({
                 )}
 
                 <div>
-                  <h4 className="font-semibold mb-2">تواريخ التعديل</h4>
+                  <h4 className="font-semibold mb-2" dir="rtl">تواريخ التعديل</h4>
                   <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="flex items-center gap-2">
+                    <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <Calendar className="w-4 h-4" />
-                      <span>تاريخ الإنشاء: {format(new Date(question.created_at), 'PPp')}</span>
+                      <span dir="rtl">تاريخ الإنشاء: </span>
+                      <span dir="ltr">{format(new Date(question.created_at), 'PPp')}</span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <Activity className="w-4 h-4" />
-                      <span>آخر تحديث: {format(new Date(question.updated_at), 'PPp')}</span>
+                      <span dir="rtl">آخر تحديث: </span>
+                      <span dir="ltr">{format(new Date(question.updated_at), 'PPp')}</span>
                     </div>
                   </div>
                 </div>
@@ -373,24 +375,24 @@ export function FocusQuestionDetailView({
                   {relatedData.ideas.map((idea: any) => (
                     <div key={idea.id} className="flex items-start gap-3 p-4 border rounded-lg">
                       <Eye className="w-5 h-5 text-muted-foreground mt-1" />
-                      <div className="flex-1 space-y-2">
-                        <div className="flex items-start justify-between">
-                          <h5 className="font-medium">{idea.title_ar}</h5>
+                      <div className="flex-1 space-y-2" dir="rtl">
+                        <div className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <h5 className="font-medium" dir="rtl">{idea.title_ar}</h5>
                           <Badge variant={idea.status === 'approved' ? 'default' : 'secondary'}>
                             {idea.status}
                           </Badge>
                         </div>
                         {idea.description_ar && (
-                          <p className="text-sm text-muted-foreground line-clamp-2">{idea.description_ar}</p>
+                          <p className="text-sm text-muted-foreground line-clamp-2" dir="rtl">{idea.description_ar}</p>
                         )}
-                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                          <div className="flex items-center gap-1">
+                        <div className={`flex items-center gap-4 text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                             <User className="w-3 h-3" />
-                            مبتكر
+                            <span dir="rtl">مبتكر</span>
                           </div>
-                          <div className="flex items-center gap-1">
+                          <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                             <Calendar className="w-3 h-3" />
-                            {format(new Date(idea.created_at), 'dd/MM/yyyy')}
+                            <span dir="ltr">{format(new Date(idea.created_at), 'dd/MM/yyyy')}</span>
                           </div>
                         </div>
                       </div>
@@ -442,7 +444,7 @@ export function FocusQuestionDetailView({
               ) : (
                 <div className="text-center py-8">
                   <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
-                  <p className="text-sm text-muted-foreground">لا توجد ردود على هذا السؤال</p>
+                  <p className="text-sm text-muted-foreground" dir="rtl">لا توجد ردود على هذا السؤال</p>
                 </div>
               )}
             </CollapsibleSection>
@@ -458,11 +460,11 @@ export function FocusQuestionDetailView({
                 <div className="space-y-3">
                   {relatedData.events.map((eventLink: any) => (
                     <div key={eventLink.id} className="p-4 border rounded-lg space-y-2">
-                      <div className="flex items-start justify-between">
+                      <div className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <div className="flex-1">
-                          <h5 className="font-medium">{eventLink.events?.title_ar}</h5>
+                          <h5 className="font-medium" dir="rtl">{eventLink.events?.title_ar}</h5>
                           {eventLink.events?.description_ar && (
-                            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                            <p className="text-sm text-muted-foreground mt-1 line-clamp-2" dir="rtl">
                               {eventLink.events.description_ar}
                             </p>
                           )}
@@ -471,21 +473,21 @@ export function FocusQuestionDetailView({
                           {eventLink.events?.status}
                         </Badge>
                       </div>
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                        <div className="flex items-center gap-1">
+                      <div className={`flex items-center gap-4 text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                           <Calendar className="w-3 h-3" />
-                          {format(new Date(eventLink.events?.event_date), 'PPP')}
+                          <span dir="ltr">{format(new Date(eventLink.events?.event_date), 'PPP')}</span>
                         </div>
                         {eventLink.events?.format && (
-                          <div className="flex items-center gap-1">
+                          <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                             <Activity className="w-3 h-3" />
-                            {eventLink.events.format}
+                            <span>{eventLink.events.format}</span>
                           </div>
                         )}
                         {eventLink.events?.location && (
-                          <div className="flex items-center gap-1">
+                          <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                             <Target className="w-3 h-3" />
-                            {eventLink.events.location}
+                            <span dir="rtl">{eventLink.events.location}</span>
                           </div>
                         )}
                       </div>
@@ -495,7 +497,7 @@ export function FocusQuestionDetailView({
               ) : (
                 <div className="text-center py-8">
                   <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
-                  <p className="text-sm text-muted-foreground">لا توجد فعاليات مرتبطة بهذا السؤال</p>
+                  <p className="text-sm text-muted-foreground" dir="rtl">لا توجد فعاليات مرتبطة بهذا السؤال</p>
                 </div>
               )}
             </CollapsibleSection>
