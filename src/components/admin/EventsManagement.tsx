@@ -343,7 +343,7 @@ export function EventsManagement({
   };
 
   const renderEventCard = (event: Event) => (
-    <Card key={event.id} className="hover:shadow-lg transition-shadow">
+    <Card key={event.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleView(event)}>
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start">
           <div className="flex-1">
@@ -362,7 +362,7 @@ export function EventsManagement({
               )}
             </div>
           </div>
-          <div className="flex gap-1">
+          <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
             <Button variant="ghost" size="sm" onClick={() => handleView(event)} className="h-9 w-9 p-0">
               <Eye className="h-4 w-4" />
             </Button>
@@ -370,8 +370,8 @@ export function EventsManagement({
               <Edit className="h-4 w-4" />
             </Button>
             <DeleteConfirmation
-              title={t('deleteEvent')}
-              description={`${t('areYouSure')} "${event.title_ar}"? ${t('thisActionCannotBeUndone')}`}
+              title="حذف الحدث"
+              description={`هل أنت متأكد من حذف "${event.title_ar}"؟ لا يمكن التراجع عن هذا الإجراء.`}
               onConfirm={() => handleDelete(event.id)}
             />
           </div>
@@ -635,37 +635,37 @@ export function EventsManagement({
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Event Details</h4>
+                  <h4 className="font-semibold mb-2">تفاصيل الحدث</h4>
                   <div className="space-y-2 text-sm">
-                    <p><strong>Date:</strong> {format(new Date(viewingEvent.event_date), 'PPP')}</p>
-                    <p><strong>Time:</strong> {viewingEvent.start_time} - {viewingEvent.end_time}</p>
-                    <p><strong>Format:</strong> {viewingEvent.format}</p>
-                    <p><strong>Status:</strong> {viewingEvent.status}</p>
-                    {viewingEvent.location && <p><strong>Location:</strong> {viewingEvent.location}</p>}
-                    {viewingEvent.virtual_link && <p><strong>Virtual Link:</strong> {viewingEvent.virtual_link}</p>}
+                    <p><strong>التاريخ:</strong> {format(new Date(viewingEvent.event_date), 'PPP')}</p>
+                    <p><strong>الوقت:</strong> {viewingEvent.start_time} - {viewingEvent.end_time}</p>
+                    <p><strong>النوع:</strong> {viewingEvent.format}</p>
+                    <p><strong>الحالة:</strong> {viewingEvent.status}</p>
+                    {viewingEvent.location && <p><strong>الموقع:</strong> {viewingEvent.location}</p>}
+                    {viewingEvent.virtual_link && <p><strong>الرابط الافتراضي:</strong> {viewingEvent.virtual_link}</p>}
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Participants</h4>
+                  <h4 className="font-semibold mb-2">المشاركون</h4>
                   <div className="space-y-2 text-sm">
-                    <p><strong>Max Participants:</strong> {viewingEvent.max_participants || 'No limit'}</p>
-                    <p><strong>Registered:</strong> {viewingEvent.registered_participants || 0}</p>
-                    <p><strong>Actual:</strong> {viewingEvent.actual_participants || 0}</p>
-                    {viewingEvent.budget && <p><strong>Budget:</strong> ${viewingEvent.budget}</p>}
+                    <p><strong>الحد الأقصى:</strong> {viewingEvent.max_participants || 'غير محدد'}</p>
+                    <p><strong>المسجلون:</strong> {viewingEvent.registered_participants || 0}</p>
+                    <p><strong>الفعلي:</strong> {viewingEvent.actual_participants || 0}</p>
+                    {viewingEvent.budget && <p><strong>الميزانية:</strong> {viewingEvent.budget} ريال</p>}
                   </div>
                 </div>
               </div>
               
               {viewingEvent.description_ar && (
                 <div>
-                  <h4 className="font-semibold mb-2">Description</h4>
+                  <h4 className="font-semibold mb-2">الوصف</h4>
                   <p className="text-sm">{viewingEvent.description_ar}</p>
                 </div>
               )}
 
               {viewingEvent.partners && viewingEvent.partners.length > 0 && (
                 <div>
-                  <h4 className="font-semibold mb-2">Partners</h4>
+                  <h4 className="font-semibold mb-2">الشركاء</h4>
                   <div className="flex gap-2 flex-wrap">
                     {viewingEvent.partners.map((partner: any) => (
                       <Badge key={partner.id} variant="outline">
@@ -678,7 +678,7 @@ export function EventsManagement({
 
               {viewingEvent.stakeholders && viewingEvent.stakeholders.length > 0 && (
                 <div>
-                  <h4 className="font-semibold mb-2">Stakeholders</h4>
+                  <h4 className="font-semibold mb-2">أصحاب المصلحة</h4>
                   <div className="flex gap-2 flex-wrap">
                     {viewingEvent.stakeholders.map((stakeholder: any) => (
                       <Badge key={stakeholder.id} variant="outline">
@@ -691,11 +691,11 @@ export function EventsManagement({
 
               {viewingEvent.focusQuestions && viewingEvent.focusQuestions.length > 0 && (
                 <div>
-                  <h4 className="font-semibold mb-2">Focus Questions</h4>
+                  <h4 className="font-semibold mb-2">أسئلة التركيز</h4>
                   <div className="space-y-2">
                     {viewingEvent.focusQuestions.map((question: any) => (
                       <div key={question.id} className="p-3 bg-muted rounded-lg">
-                        <p className="text-sm">{question.question_text}</p>
+                        <p className="text-sm">{question.question_text_ar}</p>
                       </div>
                     ))}
                   </div>
