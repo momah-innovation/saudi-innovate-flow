@@ -2362,6 +2362,386 @@ export type Database = {
         }
         Relationships: []
       }
+      team_activities: {
+        Row: {
+          activity_date: string | null
+          activity_description: string
+          activity_type: string
+          assignment_id: string | null
+          collaboration_rating: number | null
+          created_at: string | null
+          deliverables: string | null
+          end_time: string | null
+          hours_spent: number | null
+          id: string
+          innovation_rating: number | null
+          notes: string | null
+          quality_rating: number | null
+          start_time: string | null
+          team_member_id: string
+        }
+        Insert: {
+          activity_date?: string | null
+          activity_description: string
+          activity_type: string
+          assignment_id?: string | null
+          collaboration_rating?: number | null
+          created_at?: string | null
+          deliverables?: string | null
+          end_time?: string | null
+          hours_spent?: number | null
+          id?: string
+          innovation_rating?: number | null
+          notes?: string | null
+          quality_rating?: number | null
+          start_time?: string | null
+          team_member_id: string
+        }
+        Update: {
+          activity_date?: string | null
+          activity_description?: string
+          activity_type?: string
+          assignment_id?: string | null
+          collaboration_rating?: number | null
+          created_at?: string | null
+          deliverables?: string | null
+          end_time?: string | null
+          hours_spent?: number | null
+          id?: string
+          innovation_rating?: number | null
+          notes?: string | null
+          quality_rating?: number | null
+          start_time?: string | null
+          team_member_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_activities_assignment_id_fkey"
+            columns: ["assignment_id"]
+            isOneToOne: false
+            referencedRelation: "team_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_activities_team_member_id_fkey"
+            columns: ["team_member_id"]
+            isOneToOne: false
+            referencedRelation: "innovation_team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_assignments: {
+        Row: {
+          actual_hours: number | null
+          assigned_by: string | null
+          assigned_date: string | null
+          assignment_id: string
+          assignment_type: string
+          completion_date: string | null
+          created_at: string | null
+          due_date: string | null
+          estimated_hours: number | null
+          id: string
+          notes: string | null
+          priority_level: string | null
+          role_in_assignment: string | null
+          start_date: string | null
+          status: string | null
+          team_member_id: string
+          updated_at: string | null
+          workload_percentage: number | null
+        }
+        Insert: {
+          actual_hours?: number | null
+          assigned_by?: string | null
+          assigned_date?: string | null
+          assignment_id: string
+          assignment_type: string
+          completion_date?: string | null
+          created_at?: string | null
+          due_date?: string | null
+          estimated_hours?: number | null
+          id?: string
+          notes?: string | null
+          priority_level?: string | null
+          role_in_assignment?: string | null
+          start_date?: string | null
+          status?: string | null
+          team_member_id: string
+          updated_at?: string | null
+          workload_percentage?: number | null
+        }
+        Update: {
+          actual_hours?: number | null
+          assigned_by?: string | null
+          assigned_date?: string | null
+          assignment_id?: string
+          assignment_type?: string
+          completion_date?: string | null
+          created_at?: string | null
+          due_date?: string | null
+          estimated_hours?: number | null
+          id?: string
+          notes?: string | null
+          priority_level?: string | null
+          role_in_assignment?: string | null
+          start_date?: string | null
+          status?: string | null
+          team_member_id?: string
+          updated_at?: string | null
+          workload_percentage?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_assignments_assigned_by_fkey"
+            columns: ["assigned_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_assignments_team_member_id_fkey"
+            columns: ["team_member_id"]
+            isOneToOne: false
+            referencedRelation: "innovation_team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_capacity_history: {
+        Row: {
+          actual_hours_worked: number | null
+          allocated_hours: number | null
+          availability_status: string | null
+          created_at: string | null
+          id: string
+          leave_type: string | null
+          notes: string | null
+          peak_workload_day: string | null
+          planned_capacity_hours: number | null
+          team_member_id: string
+          utilization_percentage: number | null
+          week_start_date: string
+        }
+        Insert: {
+          actual_hours_worked?: number | null
+          allocated_hours?: number | null
+          availability_status?: string | null
+          created_at?: string | null
+          id?: string
+          leave_type?: string | null
+          notes?: string | null
+          peak_workload_day?: string | null
+          planned_capacity_hours?: number | null
+          team_member_id: string
+          utilization_percentage?: number | null
+          week_start_date: string
+        }
+        Update: {
+          actual_hours_worked?: number | null
+          allocated_hours?: number | null
+          availability_status?: string | null
+          created_at?: string | null
+          id?: string
+          leave_type?: string | null
+          notes?: string | null
+          peak_workload_day?: string | null
+          planned_capacity_hours?: number | null
+          team_member_id?: string
+          utilization_percentage?: number | null
+          week_start_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_capacity_history_team_member_id_fkey"
+            columns: ["team_member_id"]
+            isOneToOne: false
+            referencedRelation: "innovation_team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_performance_metrics: {
+        Row: {
+          assignments_completed: number | null
+          assignments_overdue: number | null
+          average_collaboration_rating: number | null
+          average_innovation_rating: number | null
+          average_quality_rating: number | null
+          certifications_earned: number | null
+          created_at: string | null
+          evaluated_by: string | null
+          evaluation_period: string
+          goals_achieved: number | null
+          goals_total: number | null
+          id: string
+          overall_performance_score: number | null
+          peer_feedback_score: number | null
+          performance_notes: string | null
+          period_end_date: string
+          period_start_date: string
+          projects_contributed: number | null
+          projects_led: number | null
+          stakeholder_feedback_score: number | null
+          supervisor_rating: number | null
+          team_member_id: string
+          total_hours_worked: number | null
+          training_hours_completed: number | null
+        }
+        Insert: {
+          assignments_completed?: number | null
+          assignments_overdue?: number | null
+          average_collaboration_rating?: number | null
+          average_innovation_rating?: number | null
+          average_quality_rating?: number | null
+          certifications_earned?: number | null
+          created_at?: string | null
+          evaluated_by?: string | null
+          evaluation_period: string
+          goals_achieved?: number | null
+          goals_total?: number | null
+          id?: string
+          overall_performance_score?: number | null
+          peer_feedback_score?: number | null
+          performance_notes?: string | null
+          period_end_date: string
+          period_start_date: string
+          projects_contributed?: number | null
+          projects_led?: number | null
+          stakeholder_feedback_score?: number | null
+          supervisor_rating?: number | null
+          team_member_id: string
+          total_hours_worked?: number | null
+          training_hours_completed?: number | null
+        }
+        Update: {
+          assignments_completed?: number | null
+          assignments_overdue?: number | null
+          average_collaboration_rating?: number | null
+          average_innovation_rating?: number | null
+          average_quality_rating?: number | null
+          certifications_earned?: number | null
+          created_at?: string | null
+          evaluated_by?: string | null
+          evaluation_period?: string
+          goals_achieved?: number | null
+          goals_total?: number | null
+          id?: string
+          overall_performance_score?: number | null
+          peer_feedback_score?: number | null
+          performance_notes?: string | null
+          period_end_date?: string
+          period_start_date?: string
+          projects_contributed?: number | null
+          projects_led?: number | null
+          stakeholder_feedback_score?: number | null
+          supervisor_rating?: number | null
+          team_member_id?: string
+          total_hours_worked?: number | null
+          training_hours_completed?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_performance_metrics_evaluated_by_fkey"
+            columns: ["evaluated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_performance_metrics_team_member_id_fkey"
+            columns: ["team_member_id"]
+            isOneToOne: false
+            referencedRelation: "innovation_team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_project_outcomes: {
+        Row: {
+          achievement_percentage: number | null
+          actual_value: number | null
+          assignment_id: string
+          budget_variance_percentage: number | null
+          completed_date: string | null
+          created_at: string | null
+          id: string
+          impact_level: string | null
+          lessons_learned: string | null
+          outcome_description: string
+          outcome_type: string
+          project_id: string
+          project_type: string
+          recognition_received: string | null
+          recommendations: string | null
+          stakeholder_satisfaction: number | null
+          success_metrics: Json | null
+          target_value: number | null
+          team_member_id: string
+          timeline_variance_days: number | null
+        }
+        Insert: {
+          achievement_percentage?: number | null
+          actual_value?: number | null
+          assignment_id: string
+          budget_variance_percentage?: number | null
+          completed_date?: string | null
+          created_at?: string | null
+          id?: string
+          impact_level?: string | null
+          lessons_learned?: string | null
+          outcome_description: string
+          outcome_type: string
+          project_id: string
+          project_type: string
+          recognition_received?: string | null
+          recommendations?: string | null
+          stakeholder_satisfaction?: number | null
+          success_metrics?: Json | null
+          target_value?: number | null
+          team_member_id: string
+          timeline_variance_days?: number | null
+        }
+        Update: {
+          achievement_percentage?: number | null
+          actual_value?: number | null
+          assignment_id?: string
+          budget_variance_percentage?: number | null
+          completed_date?: string | null
+          created_at?: string | null
+          id?: string
+          impact_level?: string | null
+          lessons_learned?: string | null
+          outcome_description?: string
+          outcome_type?: string
+          project_id?: string
+          project_type?: string
+          recognition_received?: string | null
+          recommendations?: string | null
+          stakeholder_satisfaction?: number | null
+          success_metrics?: Json | null
+          target_value?: number | null
+          team_member_id?: string
+          timeline_variance_days?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_project_outcomes_assignment_id_fkey"
+            columns: ["assignment_id"]
+            isOneToOne: false
+            referencedRelation: "team_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_project_outcomes_team_member_id_fkey"
+            columns: ["team_member_id"]
+            isOneToOne: false
+            referencedRelation: "innovation_team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trend_reports: {
         Row: {
           content: string
