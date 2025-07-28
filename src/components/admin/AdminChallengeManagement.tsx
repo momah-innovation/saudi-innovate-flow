@@ -227,256 +227,87 @@ export function AdminChallengeManagement() {
         onSearchChange={setSearchTerm}
         filters={filterConfigs}
       >
-        <div className="grid gap-4">
-          {viewMode === 'cards' && (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {filteredChallenges.map((challenge) => (
-                <Card key={challenge.id} className="hover:shadow-md transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-2 flex-1">
-                        <CardTitle className="text-lg">{challenge.title_ar}</CardTitle>
-                        <CardDescription className="line-clamp-2">
-                          {challenge.description_ar}
-                        </CardDescription>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <Badge variant={challenge.status === 'published' ? 'default' : 'secondary'}>
-                            {challenge.status === 'draft' ? 'مسودة' :
-                             challenge.status === 'published' ? 'منشور' :
-                             challenge.status === 'active' ? 'نشط' :
-                             challenge.status === 'closed' ? 'مغلق' : 
-                             challenge.status === 'archived' ? 'مؤرشف' : challenge.status}
-                          </Badge>
-                          <Badge variant="outline">
-                            {challenge.priority_level === 'low' ? 'منخفض' :
-                             challenge.priority_level === 'medium' ? 'متوسط' :
-                             challenge.priority_level === 'high' ? 'عالي' :
-                             challenge.priority_level === 'urgent' ? 'عاجل' : challenge.priority_level}
-                          </Badge>
-                          <Badge variant="outline">
-                            {challenge.sensitivity_level === 'normal' ? 'عادي' :
-                             challenge.sensitivity_level === 'sensitive' ? 'حساس' :
-                             challenge.sensitivity_level === 'confidential' ? 'سري' : challenge.sensitivity_level}
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex gap-2 pt-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleViewChallenge(challenge)}
-                        className="flex-1"
-                      >
-                        <Eye className="h-4 w-4 mr-2" />
-                        عرض
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEditChallenge(challenge)}
-                        className="flex-1"
-                      >
-                        <Edit className="h-4 w-4 mr-2" />
-                        تعديل
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleOpenSettings(challenge)}
-                      >
-                        <Settings className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleDeleteChallenge(challenge.id)}
-                        className="text-destructive hover:text-destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
+        <ViewLayouts viewMode={viewMode}>
+          {filteredChallenges.map((challenge) => (
+            <ManagementCard
+              key={challenge.id}
+              id={challenge.id}
+              title={challenge.title_ar}
+              description={challenge.description_ar}
+              viewMode={viewMode}
+              badges={[
+                { 
+                  label: challenge.status === 'draft' ? 'مسودة' :
+                         challenge.status === 'published' ? 'منشور' :
+                         challenge.status === 'active' ? 'نشط' :
+                         challenge.status === 'closed' ? 'مغلق' : 
+                         challenge.status === 'archived' ? 'مؤرشف' : challenge.status,
+                  variant: challenge.status === 'published' ? 'default' : 'secondary'
+                },
+                { 
+                  label: challenge.priority_level === 'low' ? 'منخفض' :
+                         challenge.priority_level === 'medium' ? 'متوسط' :
+                         challenge.priority_level === 'high' ? 'عالي' :
+                         challenge.priority_level === 'urgent' ? 'عاجل' : challenge.priority_level,
+                  variant: 'outline' as const
+                },
+                { 
+                  label: challenge.sensitivity_level === 'normal' ? 'عادي' :
+                         challenge.sensitivity_level === 'sensitive' ? 'حساس' :
+                         challenge.sensitivity_level === 'confidential' ? 'سري' : challenge.sensitivity_level,
+                  variant: 'outline' as const
+                }
+              ]}
+              metadata={[
+                ...(challenge.start_date ? [{ 
+                  icon: <Calendar className="h-4 w-4" />, 
+                  label: "تاريخ البداية", 
+                  value: challenge.start_date 
+                }] : []),
+                ...(challenge.end_date ? [{ 
+                  icon: <Calendar className="h-4 w-4" />, 
+                  label: "تاريخ النهاية", 
+                  value: challenge.end_date 
+                }] : []),
+                ...(challenge.estimated_budget > 0 ? [{ 
+                  icon: <Target className="h-4 w-4" />, 
+                  label: "الميزانية المقدرة", 
+                  value: `${challenge.estimated_budget.toLocaleString()} ريال` 
+                }] : [])
+              ]}
+              actions={[
+                {
+                  type: 'edit',
+                  label: 'تعديل',
+                  onClick: () => handleEditChallenge(challenge)
+                },
+                {
+                  type: 'settings',
+                  label: 'الإعدادات',
+                  onClick: () => handleOpenSettings(challenge)
+                },
+                {
+                  type: 'delete',
+                  label: 'حذف',
+                  onClick: () => handleDeleteChallenge(challenge.id)
+                }
+              ]}
+              onClick={() => handleViewChallenge(challenge)}
+            />
+          ))}
+        </ViewLayouts>
 
-          {viewMode === 'list' && (
-            <div className="space-y-4">
-              {filteredChallenges.map((challenge) => (
-                <Card key={challenge.id}>
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-2 flex-1">
-                        <CardTitle>{challenge.title_ar}</CardTitle>
-                        <CardDescription>
-                          {challenge.description_ar}
-                        </CardDescription>
-                        <div className="flex items-center gap-2">
-                          <Badge variant={challenge.status === 'published' ? 'default' : 'secondary'}>
-                            {challenge.status === 'draft' ? 'مسودة' :
-                             challenge.status === 'published' ? 'منشور' :
-                             challenge.status === 'active' ? 'نشط' :
-                             challenge.status === 'closed' ? 'مغلق' : 
-                             challenge.status === 'archived' ? 'مؤرشف' : challenge.status}
-                          </Badge>
-                          <Badge variant="outline">
-                            {challenge.priority_level === 'low' ? 'منخفض' :
-                             challenge.priority_level === 'medium' ? 'متوسط' :
-                             challenge.priority_level === 'high' ? 'عالي' :
-                             challenge.priority_level === 'urgent' ? 'عاجل' : challenge.priority_level}
-                          </Badge>
-                          <Badge variant="outline">
-                            {challenge.sensitivity_level === 'normal' ? 'عادي' :
-                             challenge.sensitivity_level === 'sensitive' ? 'حساس' :
-                             challenge.sensitivity_level === 'confidential' ? 'سري' : challenge.sensitivity_level}
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleViewChallenge(challenge)}
-                        >
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleEditChallenge(challenge)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleOpenSettings(challenge)}
-                        >
-                          <Settings className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDeleteChallenge(challenge.id)}
-                          className="text-destructive hover:text-destructive"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              ))}
+        {filteredChallenges.length === 0 && (
+          <div className="text-center py-8">
+            <div className="text-muted-foreground mb-4">
+              {searchTerm || statusFilter !== 'all' ? 'لا توجد تحديات تطابق البحث' : 'لا توجد تحديات'}
             </div>
-          )}
-
-          {viewMode === 'grid' && (
-            <div className="grid gap-6 md:grid-cols-2">
-              {filteredChallenges.map((challenge) => (
-                <Card key={challenge.id} className="hover:shadow-md transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-2 flex-1">
-                        <CardTitle className="text-lg">{challenge.title_ar}</CardTitle>
-                        <CardDescription className="line-clamp-3">
-                          {challenge.description_ar}
-                        </CardDescription>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <Badge variant={challenge.status === 'published' ? 'default' : 'secondary'}>
-                            {challenge.status === 'draft' ? 'مسودة' :
-                             challenge.status === 'published' ? 'منشور' :
-                             challenge.status === 'active' ? 'نشط' :
-                             challenge.status === 'closed' ? 'مغلق' : 
-                             challenge.status === 'archived' ? 'مؤرشف' : challenge.status}
-                          </Badge>
-                          <Badge variant="outline">
-                            {challenge.priority_level === 'low' ? 'منخفض' :
-                             challenge.priority_level === 'medium' ? 'متوسط' :
-                             challenge.priority_level === 'high' ? 'عالي' :
-                             challenge.priority_level === 'urgent' ? 'عاجل' : challenge.priority_level}
-                          </Badge>
-                          <Badge variant="outline">
-                            {challenge.sensitivity_level === 'normal' ? 'عادي' :
-                             challenge.sensitivity_level === 'sensitive' ? 'حساس' :
-                             challenge.sensitivity_level === 'confidential' ? 'سري' : challenge.sensitivity_level}
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {(challenge.start_date || challenge.end_date || challenge.estimated_budget > 0) && (
-                        <div className="space-y-2 text-sm text-muted-foreground">
-                          {challenge.start_date && (
-                            <div>تاريخ البداية: {challenge.start_date}</div>
-                          )}
-                          {challenge.end_date && (
-                            <div>تاريخ النهاية: {challenge.end_date}</div>
-                          )}
-                          {challenge.estimated_budget > 0 && (
-                            <div>الميزانية المقدرة: {challenge.estimated_budget.toLocaleString()} ريال</div>
-                          )}
-                        </div>
-                      )}
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleViewChallenge(challenge)}
-                          className="flex-1"
-                        >
-                          <Eye className="h-4 w-4 mr-2" />
-                          عرض
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleEditChallenge(challenge)}
-                          className="flex-1"
-                        >
-                          <Edit className="h-4 w-4 mr-2" />
-                          تعديل
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleOpenSettings(challenge)}
-                        >
-                          <Settings className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDeleteChallenge(challenge.id)}
-                          className="text-destructive hover:text-destructive"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-
-          {filteredChallenges.length === 0 && (
-            <div className="text-center py-8">
-              <div className="text-muted-foreground mb-4">
-                {searchTerm || statusFilter !== 'all' ? 'لا توجد تحديات تطابق البحث' : 'لا توجد تحديات'}
-              </div>
-              <Button onClick={() => setIsWizardOpen(true)}>
-                <Plus className="w-4 h-4 mr-2" />
-                إنشاء تحدي جديد
-              </Button>
-            </div>
-          )}
-        </div>
+            <Button onClick={() => setIsWizardOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              إنشاء تحدي جديد
+            </Button>
+          </div>
+        )}
       </StandardPageLayout>
 
       <ChallengeWizard
