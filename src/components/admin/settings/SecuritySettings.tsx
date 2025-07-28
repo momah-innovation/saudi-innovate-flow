@@ -12,14 +12,14 @@ interface SecuritySettingsProps {
 
 export function SecuritySettings({ settings, onSettingChange }: SecuritySettingsProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 rtl:text-right ltr:text-left">
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>إعدادات الجلسة والأمان</CardTitle>
           <CardDescription>إدارة إعدادات الجلسات وحماية النظام</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
             <div className="space-y-2">
               <Label htmlFor="sessionTimeout">انتهاء الجلسة (دقيقة)</Label>
               <Input
@@ -29,6 +29,7 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
                 max="480"
                 value={settings.sessionTimeout || 60}
                 onChange={(e) => onSettingChange('sessionTimeout', parseInt(e.target.value))}
+                className="rtl:text-right ltr:text-left"
               />
             </div>
 
@@ -41,6 +42,7 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
                 max="10"
                 value={settings.maxLoginAttempts || 5}
                 onChange={(e) => onSettingChange('maxLoginAttempts', parseInt(e.target.value))}
+                className="rtl:text-right ltr:text-left"
               />
             </div>
           </div>
@@ -48,14 +50,14 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
       </Card>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>حماية البيانات</CardTitle>
           <CardDescription>إعدادات تشفير وحماية البيانات الحساسة</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
+              <div className="flex items-center gap-2 rtl:flex-row-reverse">
                 <Label className="text-base">تفعيل تشفير البيانات</Label>
                 <Badge variant="secondary">موصى به</Badge>
               </div>
@@ -67,9 +69,9 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
+              <div className="flex items-center gap-2 rtl:flex-row-reverse">
                 <Label className="text-base">تفعيل سجلات الوصول</Label>
                 <Badge variant="outline">أمان</Badge>
               </div>
@@ -84,12 +86,12 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
       </Card>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="rtl:text-right ltr:text-left">
           <CardTitle>السياسات الأمنية</CardTitle>
           <CardDescription>إعدادات السياسات والقوانين الأمنية</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
+          <div className="space-y-2 rtl:text-right ltr:text-left">
             <Label htmlFor="passwordPolicy">سياسة كلمات المرور</Label>
             <Textarea
               id="passwordPolicy"
@@ -97,10 +99,11 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
               onChange={(e) => onSettingChange('passwordPolicy', e.target.value)}
               rows={3}
               placeholder="وصف سياسة كلمات المرور..."
+              className="rtl:text-right ltr:text-left"
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 rtl:text-right ltr:text-left">
             <Label htmlFor="dataRetentionPolicy">سياسة الاحتفاظ بالبيانات</Label>
             <Textarea
               id="dataRetentionPolicy"
@@ -108,6 +111,7 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
               onChange={(e) => onSettingChange('dataRetentionPolicy', e.target.value)}
               rows={3}
               placeholder="وصف سياسة الاحتفاظ بالبيانات..."
+              className="rtl:text-right ltr:text-left"
             />
           </div>
         </CardContent>
