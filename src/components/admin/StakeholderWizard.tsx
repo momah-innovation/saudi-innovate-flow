@@ -43,44 +43,44 @@ export function StakeholderWizard({
     position: "",
     email: "",
     phone: "",
-    stakeholder_type: "government",
-    influence_level: "medium",
-    interest_level: "medium",
-    engagement_status: "neutral",
+    stakeholder_type: "حكومي",
+    influence_level: "متوسط",
+    interest_level: "متوسط",
+    engagement_status: "محايد",
     notes: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Predefined options
+  // Predefined options in Arabic
   const stakeholderTypes = [
-    { value: "government", label: "Government" },
-    { value: "private_sector", label: "Private Sector" },
-    { value: "academic", label: "Academic" },
-    { value: "ngo", label: "NGO/Non-Profit" },
-    { value: "community", label: "Community" },
-    { value: "international", label: "International" },
+    { value: "حكومي", label: "حكومي" },
+    { value: "قطاع_خاص", label: "قطاع خاص" },
+    { value: "أكاديمي", label: "أكاديمي" },
+    { value: "منظمة_غير_ربحية", label: "منظمة غير ربحية" },
+    { value: "مجتمعي", label: "مجتمعي" },
+    { value: "دولي", label: "دولي" },
   ];
 
   const influenceLevels = [
-    { value: "high", label: "High" },
-    { value: "medium", label: "Medium" },
-    { value: "low", label: "Low" },
+    { value: "عالي", label: "عالي" },
+    { value: "متوسط", label: "متوسط" },
+    { value: "منخفض", label: "منخفض" },
   ];
 
   const interestLevels = [
-    { value: "high", label: "High" },
-    { value: "medium", label: "Medium" },
-    { value: "low", label: "Low" },
+    { value: "عالي", label: "عالي" },
+    { value: "متوسط", label: "متوسط" },
+    { value: "منخفض", label: "منخفض" },
   ];
 
   const engagementStatuses = [
-    { value: "supporter", label: "Supporter" },
-    { value: "active", label: "Active" },
-    { value: "neutral", label: "Neutral" },
-    { value: "passive", label: "Passive" },
-    { value: "resistant", label: "Resistant" },
+    { value: "مؤيد", label: "مؤيد" },
+    { value: "نشط", label: "نشط" },
+    { value: "محايد", label: "محايد" },
+    { value: "سلبي", label: "سلبي" },
+    { value: "مقاوم", label: "مقاوم" },
   ];
 
   useEffect(() => {
@@ -91,10 +91,10 @@ export function StakeholderWizard({
         position: stakeholder.position || "",
         email: stakeholder.email || "",
         phone: stakeholder.phone || "",
-        stakeholder_type: stakeholder.stakeholder_type || "government",
-        influence_level: stakeholder.influence_level || "medium",
-        interest_level: stakeholder.interest_level || "medium",
-        engagement_status: stakeholder.engagement_status || "neutral",
+        stakeholder_type: stakeholder.stakeholder_type || "حكومي",
+        influence_level: stakeholder.influence_level || "متوسط",
+        interest_level: stakeholder.interest_level || "متوسط",
+        engagement_status: stakeholder.engagement_status || "محايد",
         notes: stakeholder.notes || "",
       });
     } else {
@@ -104,10 +104,10 @@ export function StakeholderWizard({
         position: "",
         email: "",
         phone: "",
-        stakeholder_type: "government",
-        influence_level: "medium",
-        interest_level: "medium",
-        engagement_status: "neutral",
+        stakeholder_type: "حكومي",
+        influence_level: "متوسط",
+        interest_level: "متوسط",
+        engagement_status: "محايد",
         notes: "",
       });
     }
@@ -120,22 +120,22 @@ export function StakeholderWizard({
     if (step === 0) {
       // Basic Information validation
       if (!formData.name.trim()) {
-        newErrors.name = "Name is required";
+        newErrors.name = "الاسم مطلوب";
       }
       if (!formData.organization.trim()) {
-        newErrors.organization = "Organization is required";
+        newErrors.organization = "المؤسسة مطلوبة";
       }
       if (!formData.position.trim()) {
-        newErrors.position = "Position is required";
+        newErrors.position = "المنصب مطلوب";
       }
     }
 
     if (step === 1) {
       // Contact Information validation
       if (!formData.email.trim()) {
-        newErrors.email = "Email is required";
+        newErrors.email = "البريد الإلكتروني مطلوب";
       } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-        newErrors.email = "Please enter a valid email address";
+        newErrors.email = "يرجى إدخال بريد إلكتروني صحيح";
       }
     }
 
@@ -174,8 +174,8 @@ export function StakeholderWizard({
         if (error) throw error;
 
         toast({
-          title: "Success",
-          description: "Stakeholder updated successfully",
+          title: "نجح",
+          description: "تم تحديث صاحب المصلحة بنجاح",
         });
       } else {
         // Create new stakeholder
@@ -186,8 +186,8 @@ export function StakeholderWizard({
         if (error) throw error;
 
         toast({
-          title: "Success",
-          description: "Stakeholder created successfully",
+          title: "نجح",
+          description: "تم إنشاء صاحب المصلحة بنجاح",
         });
       }
 
@@ -197,14 +197,18 @@ export function StakeholderWizard({
     } catch (error) {
       console.error("Error saving stakeholder:", error);
       toast({
-        title: "Error",
-        description: "Failed to save stakeholder. Please try again.",
+        title: "خطأ",
+        description: "فشل في حفظ صاحب المصلحة. يرجى المحاولة مرة أخرى.",
         variant: "destructive",
       });
       return false;
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleComplete = async () => {
+    return await handleSubmit();
   };
 
   const updateFormData = (field: string, value: string) => {
@@ -214,26 +218,23 @@ export function StakeholderWizard({
     }
   };
 
-  const handleComplete = async () => {
-    return await handleSubmit();
-  };
-
   const steps = [
     {
       id: "basic-info",
-      title: "Basic Information",
-      description: "Enter the stakeholder's basic details",
+      title: "المعلومات الأساسية",
+      description: "أدخل التفاصيل الأساسية لصاحب المصلحة",
       content: (
         <div className="space-y-6">
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Name *</Label>
+              <Label htmlFor="name">الاسم *</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => updateFormData("name", e.target.value)}
-                placeholder="Enter stakeholder name"
+                placeholder="أدخل اسم صاحب المصلحة"
                 className={errors.name ? "border-destructive" : ""}
+                dir="rtl"
               />
               {errors.name && (
                 <p className="text-sm text-destructive">{errors.name}</p>
@@ -241,13 +242,14 @@ export function StakeholderWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="organization">Organization *</Label>
+              <Label htmlFor="organization">المؤسسة *</Label>
               <Input
                 id="organization"
                 value={formData.organization}
                 onChange={(e) => updateFormData("organization", e.target.value)}
-                placeholder="Enter organization name"
+                placeholder="أدخل اسم المؤسسة"
                 className={errors.organization ? "border-destructive" : ""}
+                dir="rtl"
               />
               {errors.organization && (
                 <p className="text-sm text-destructive">{errors.organization}</p>
@@ -255,13 +257,14 @@ export function StakeholderWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="position">Position *</Label>
+              <Label htmlFor="position">المنصب *</Label>
               <Input
                 id="position"
                 value={formData.position}
                 onChange={(e) => updateFormData("position", e.target.value)}
-                placeholder="Enter position/role"
+                placeholder="أدخل المنصب/الدور"
                 className={errors.position ? "border-destructive" : ""}
+                dir="rtl"
               />
               {errors.position && (
                 <p className="text-sm text-destructive">{errors.position}</p>
@@ -269,13 +272,13 @@ export function StakeholderWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="stakeholder_type">Stakeholder Type</Label>
+              <Label htmlFor="stakeholder_type">نوع صاحب المصلحة</Label>
               <Select
                 value={formData.stakeholder_type}
                 onValueChange={(value) => updateFormData("stakeholder_type", value)}
               >
                 <SelectTrigger id="stakeholder_type">
-                  <SelectValue placeholder="Select stakeholder type" />
+                  <SelectValue placeholder="اختر نوع صاحب المصلحة" />
                 </SelectTrigger>
                 <SelectContent>
                   {stakeholderTypes.map((type) => (
@@ -293,19 +296,19 @@ export function StakeholderWizard({
     },
     {
       id: "contact-info",
-      title: "Contact Information",
-      description: "Add contact details",
+      title: "معلومات الاتصال",
+      description: "أضف تفاصيل الاتصال",
       content: (
         <div className="space-y-6">
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email Address *</Label>
+              <Label htmlFor="email">البريد الإلكتروني *</Label>
               <Input
                 id="email"
                 type="email"
                 value={formData.email}
                 onChange={(e) => updateFormData("email", e.target.value)}
-                placeholder="Enter email address"
+                placeholder="أدخل البريد الإلكتروني"
                 className={errors.email ? "border-destructive" : ""}
               />
               {errors.email && (
@@ -314,13 +317,14 @@ export function StakeholderWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number</Label>
+              <Label htmlFor="phone">رقم الهاتف</Label>
               <Input
                 id="phone"
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => updateFormData("phone", e.target.value)}
-                placeholder="Enter phone number (optional)"
+                placeholder="أدخل رقم الهاتف (اختياري)"
+                dir="rtl"
               />
             </div>
           </div>
@@ -330,19 +334,19 @@ export function StakeholderWizard({
     },
     {
       id: "engagement-details",
-      title: "Engagement Details",
-      description: "Define influence and engagement levels",
+      title: "تفاصيل المشاركة",
+      description: "حدد مستويات التأثير والمشاركة",
       content: (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="influence_level">Influence Level</Label>
+              <Label htmlFor="influence_level">مستوى التأثير</Label>
               <Select
                 value={formData.influence_level}
                 onValueChange={(value) => updateFormData("influence_level", value)}
               >
                 <SelectTrigger id="influence_level">
-                  <SelectValue placeholder="Select influence level" />
+                  <SelectValue placeholder="اختر مستوى التأثير" />
                 </SelectTrigger>
                 <SelectContent>
                   {influenceLevels.map((level) => (
@@ -355,13 +359,13 @@ export function StakeholderWizard({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="interest_level">Interest Level</Label>
+              <Label htmlFor="interest_level">مستوى الاهتمام</Label>
               <Select
                 value={formData.interest_level}
                 onValueChange={(value) => updateFormData("interest_level", value)}
               >
                 <SelectTrigger id="interest_level">
-                  <SelectValue placeholder="Select interest level" />
+                  <SelectValue placeholder="اختر مستوى الاهتمام" />
                 </SelectTrigger>
                 <SelectContent>
                   {interestLevels.map((level) => (
@@ -374,13 +378,13 @@ export function StakeholderWizard({
             </div>
 
             <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="engagement_status">Engagement Status</Label>
+              <Label htmlFor="engagement_status">حالة المشاركة</Label>
               <Select
                 value={formData.engagement_status}
                 onValueChange={(value) => updateFormData("engagement_status", value)}
               >
                 <SelectTrigger id="engagement_status">
-                  <SelectValue placeholder="Select engagement status" />
+                  <SelectValue placeholder="اختر حالة المشاركة" />
                 </SelectTrigger>
                 <SelectContent>
                   {engagementStatuses.map((status) => (
@@ -397,19 +401,20 @@ export function StakeholderWizard({
     },
     {
       id: "additional-notes",
-      title: "Additional Notes",
-      description: "Add any additional information or notes",
+      title: "ملاحظات إضافية",
+      description: "أضف أي معلومات أو ملاحظات إضافية",
       content: (
         <div className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="notes">Notes</Label>
+            <Label htmlFor="notes">ملاحظات</Label>
             <Textarea
               id="notes"
               value={formData.notes}
               onChange={(e) => updateFormData("notes", e.target.value)}
-              placeholder="Enter any additional notes about this stakeholder..."
+              placeholder="أدخل أي ملاحظات إضافية حول صاحب المصلحة هذا..."
               rows={4}
               className="resize-none"
+              dir="rtl"
             />
           </div>
         </div>
@@ -421,7 +426,7 @@ export function StakeholderWizard({
     <MultiStepForm
       isOpen={isOpen}
       onClose={onClose}
-      title={stakeholder ? "Edit Stakeholder" : "Add New Stakeholder"}
+      title={stakeholder ? "تحرير صاحب المصلحة" : "إضافة صاحب مصلحة جديد"}
       steps={steps}
       onComplete={handleComplete}
     />

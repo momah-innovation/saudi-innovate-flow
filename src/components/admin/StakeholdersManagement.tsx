@@ -65,8 +65,8 @@ export function StakeholdersManagement() {
       if (error) {
         console.error("Error fetching stakeholders:", error);
         toast({
-          title: "Error",
-          description: "Failed to fetch stakeholders",
+          title: "خطأ",
+          description: "فشل في جلب أصحاب المصلحة",
           variant: "destructive",
         });
         return;
@@ -76,8 +76,8 @@ export function StakeholdersManagement() {
     } catch (error) {
       console.error("Error fetching stakeholders:", error);
       toast({
-        title: "Error",
-        description: "Failed to fetch stakeholders",
+        title: "خطأ",
+        description: "فشل في جلب أصحاب المصلحة",
         variant: "destructive",
       });
     } finally {
@@ -97,7 +97,7 @@ export function StakeholdersManagement() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this stakeholder?")) return;
+    if (!confirm("هل أنت متأكد من حذف صاحب المصلحة هذا؟")) return;
 
     try {
       const { error } = await supabase
@@ -108,16 +108,16 @@ export function StakeholdersManagement() {
       if (error) throw error;
       
       toast({
-        title: "Success",
-        description: "Stakeholder deleted successfully",
+        title: "نجح",
+        description: "تم حذف صاحب المصلحة بنجاح",
       });
       
       fetchStakeholders();
     } catch (error) {
       console.error("Error deleting stakeholder:", error);
       toast({
-        title: "Error",
-        description: "Failed to delete stakeholder",
+        title: "خطأ",
+        description: "فشل في حذف صاحب المصلحة",
         variant: "destructive",
       });
     }
@@ -170,7 +170,7 @@ export function StakeholdersManagement() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center space-y-4">
           <Loader2 className="h-8 w-8 animate-spin mx-auto" />
-          <p className="text-sm text-muted-foreground">Loading stakeholders...</p>
+          <p className="text-sm text-muted-foreground">جاري تحميل أصحاب المصلحة...</p>
         </div>
       </div>
     );
@@ -182,10 +182,10 @@ export function StakeholdersManagement() {
       <div className="min-w-[140px]">
         <Select value={typeFilter} onValueChange={setTypeFilter}>
           <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="All Types" />
+            <SelectValue placeholder="جميع الأنواع" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
+            <SelectItem value="all">جميع الأنواع</SelectItem>
             {stakeholderTypes.map((type) => (
               <SelectItem key={type} value={type}>
                 {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
@@ -197,10 +197,10 @@ export function StakeholdersManagement() {
       <div className="min-w-[140px]">
         <Select value={influenceFilter} onValueChange={setInfluenceFilter}>
           <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="All Influence Levels" />
+            <SelectValue placeholder="جميع مستويات التأثير" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Influence Levels</SelectItem>
+            <SelectItem value="all">جميع مستويات التأثير</SelectItem>
             {influenceLevels.map((level) => (
               <SelectItem key={level} value={level}>
                 {level.charAt(0).toUpperCase() + level.slice(1)}
@@ -212,10 +212,10 @@ export function StakeholdersManagement() {
       <div className="min-w-[140px]">
         <Select value={engagementFilter} onValueChange={setEngagementFilter}>
           <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="All Engagement Statuses" />
+            <SelectValue placeholder="جميع حالات المشاركة" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Engagement Statuses</SelectItem>
+            <SelectItem value="all">جميع حالات المشاركة</SelectItem>
             {engagementStatuses.map((status) => (
               <SelectItem key={status} value={status}>
                 {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -232,23 +232,23 @@ export function StakeholdersManagement() {
       variant="outline"
       onClick={() => {
         toast({
-          title: "Export Data",
-          description: "Export functionality will be added soon",
+          title: "تصدير البيانات",
+          description: "سيتم إضافة وظيفة التصدير قريباً",
         });
       }}
     >
-      Export
+      تصدير
     </Button>
   );
 
   return (
     <>
       <PageLayout 
-        title="Stakeholders Management"
-        description="Track and manage stakeholder relationships, influence levels, and engagement strategies"
+        title="إدارة أصحاب المصلحة"
+        description="تتبع وإدارة علاقات أصحاب المصلحة ومستويات التأثير واستراتيجيات المشاركة"
         itemCount={filteredStakeholders.length}
         primaryAction={{
-          label: "Add Stakeholder",
+          label: "إضافة صاحب مصلحة",
           onClick: () => { setEditingStakeholder(null); setIsWizardOpen(true); },
           icon: <Plus className="w-4 h-4" />
         }}
@@ -259,7 +259,7 @@ export function StakeholdersManagement() {
         showSearch={true}
         searchValue={searchTerm}
         onSearchChange={setSearchTerm}
-        searchPlaceholder="Search stakeholders..."
+        searchPlaceholder="البحث في أصحاب المصلحة..."
         filters={filters}
         spacing="md"
         maxWidth="full"
@@ -396,7 +396,7 @@ export function StakeholdersManagement() {
                     className="flex-1"
                   >
                     <Eye className="h-4 w-4 mr-2" />
-                    View
+                    عرض
                   </Button>
                   <Button
                     variant="outline"
@@ -405,7 +405,7 @@ export function StakeholdersManagement() {
                     className="flex-1"
                   >
                     <Edit className="h-4 w-4 mr-2" />
-                    Edit
+                    تعديل
                   </Button>
                   <Button
                     variant="outline"
@@ -425,10 +425,10 @@ export function StakeholdersManagement() {
       {(filteredStakeholders.length === 0 && (searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all")) && (
         <div className="text-center py-8">
           <div className="text-muted-foreground mb-4">
-            No stakeholders match the search criteria
+            لا توجد أصحاب مصلحة تطابق معايير البحث
           </div>
           <Button variant="outline" onClick={clearFilters}>
-            Clear All Filters
+            مسح جميع المرشحات
           </Button>
         </div>
       )}
@@ -436,11 +436,11 @@ export function StakeholdersManagement() {
       {(stakeholders.length === 0 && !(searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all")) && (
         <div className="text-center py-8">
           <div className="text-muted-foreground mb-4">
-            No stakeholders
+            لا توجد أصحاب مصلحة
           </div>
           <Button onClick={() => { setEditingStakeholder(null); setIsWizardOpen(true); }}>
             <Plus className="h-4 w-4 mr-2" />
-            Add New Stakeholder
+            إضافة صاحب مصلحة جديد
           </Button>
         </div>
       )}
@@ -461,7 +461,7 @@ export function StakeholdersManagement() {
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Stakeholder Details</DialogTitle>
+            <DialogTitle>تفاصيل صاحب المصلحة</DialogTitle>
           </DialogHeader>
           {viewingStakeholder && (
             <div className="space-y-6">
@@ -481,7 +481,7 @@ export function StakeholdersManagement() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-medium text-sm text-muted-foreground mb-2">Contact Information</h4>
+                  <h4 className="font-medium text-sm text-muted-foreground mb-2">معلومات الاتصال</h4>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <Mail className="h-4 w-4 text-muted-foreground" />
@@ -497,22 +497,22 @@ export function StakeholdersManagement() {
                 </div>
 
                 <div>
-                  <h4 className="font-medium text-sm text-muted-foreground mb-2">Influence and Engagement Levels</h4>
+                  <h4 className="font-medium text-sm text-muted-foreground mb-2">مستويات التأثير والمشاركة</h4>
                   <div className="space-y-2">
                     <div>
-                      <span className="text-sm font-medium">Influence Level: </span>
+                      <span className="text-sm font-medium">مستوى التأثير: </span>
                       <Badge variant="outline" className={getInfluenceColor(viewingStakeholder.influence_level)}>
                         {viewingStakeholder.influence_level.charAt(0).toUpperCase() + viewingStakeholder.influence_level.slice(1)}
                       </Badge>
                     </div>
                     <div>
-                      <span className="text-sm font-medium">Interest Level: </span>
+                      <span className="text-sm font-medium">مستوى الاهتمام: </span>
                       <Badge variant="outline">
                         {viewingStakeholder.interest_level.charAt(0).toUpperCase() + viewingStakeholder.interest_level.slice(1)}
                       </Badge>
                     </div>
                     <div>
-                      <span className="text-sm font-medium">Engagement Status: </span>
+                      <span className="text-sm font-medium">حالة المشاركة: </span>
                       <Badge variant="outline" className={getEngagementColor(viewingStakeholder.engagement_status)}>
                         {viewingStakeholder.engagement_status.charAt(0).toUpperCase() + viewingStakeholder.engagement_status.slice(1)}
                       </Badge>
@@ -523,7 +523,7 @@ export function StakeholdersManagement() {
 
               {viewingStakeholder.notes && (
                 <div>
-                  <h4 className="font-medium text-sm text-muted-foreground mb-2">Notes</h4>
+                  <h4 className="font-medium text-sm text-muted-foreground mb-2">ملاحظات</h4>
                   <p className="text-sm text-muted-foreground bg-muted p-3 rounded">{viewingStakeholder.notes}</p>
                 </div>
               )}
