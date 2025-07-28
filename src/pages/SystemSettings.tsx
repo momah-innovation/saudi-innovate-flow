@@ -113,28 +113,28 @@ const SystemSettings = () => {
 
         {/* Settings Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6 rtl:text-right ltr:text-left">
-          <TabsList className="grid w-full grid-cols-6 h-auto p-1">
-            <TabsTrigger value="general" className="flex items-center gap-2 h-12 text-sm">
+          <TabsList className="grid w-full grid-cols-6 h-auto p-1 rtl:text-right ltr:text-left">
+            <TabsTrigger value="general" className="flex items-center gap-2 h-12 text-sm rtl:flex-row-reverse">
               <Settings className="w-4 h-4" />
               <span className="hidden sm:inline">عام</span>
             </TabsTrigger>
-            <TabsTrigger value="challenges" className="flex items-center gap-2 h-12 text-sm">
+            <TabsTrigger value="challenges" className="flex items-center gap-2 h-12 text-sm rtl:flex-row-reverse">
               <Target className="w-4 h-4" />
               <span className="hidden sm:inline">التحديات</span>
             </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center gap-2 h-12 text-sm">
+            <TabsTrigger value="security" className="flex items-center gap-2 h-12 text-sm rtl:flex-row-reverse">
               <Shield className="w-4 h-4" />
               <span className="hidden sm:inline">الأمان</span>
             </TabsTrigger>
-            <TabsTrigger value="notifications" className="flex items-center gap-2 h-12 text-sm">
+            <TabsTrigger value="notifications" className="flex items-center gap-2 h-12 text-sm rtl:flex-row-reverse">
               <Bell className="w-4 h-4" />
               <span className="hidden sm:inline">الإشعارات</span>
             </TabsTrigger>
-            <TabsTrigger value="integrations" className="flex items-center gap-2 h-12 text-sm">
+            <TabsTrigger value="integrations" className="flex items-center gap-2 h-12 text-sm rtl:flex-row-reverse">
               <Database className="w-4 h-4" />
               <span className="hidden sm:inline">التكامل</span>
             </TabsTrigger>
-            <TabsTrigger value="lists" className="flex items-center gap-2 h-12 text-sm">
+            <TabsTrigger value="lists" className="flex items-center gap-2 h-12 text-sm rtl:flex-row-reverse">
               <List className="w-4 h-4" />
               <span className="hidden sm:inline">القوائم</span>
             </TabsTrigger>
