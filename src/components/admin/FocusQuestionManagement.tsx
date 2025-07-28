@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { ManagementCard } from "@/components/ui/management-card";
 import { FocusQuestionWizard } from "./FocusQuestionWizard";
+import { FocusQuestionDetailView } from "./focus-questions/FocusQuestionDetailView";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { useToast } from "@/hooks/use-toast";
@@ -59,6 +60,7 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedQuestion, setSelectedQuestion] = useState<FocusQuestion | null>(null);
+  const [showDetailView, setShowDetailView] = useState(false);
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
 
@@ -97,7 +99,8 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
   };
 
   const handleView = (question: FocusQuestion) => {
-    console.log('View question:', question);
+    setSelectedQuestion(question);
+    setShowDetailView(true);
   };
 
   const handleDelete = async (question: FocusQuestion) => {
@@ -177,6 +180,7 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
             id={question.id}
             title={question.question_text_ar}
             subtitle={question.challenge?.title_ar ? `التحدي: ${question.challenge.title_ar}` : 'سؤال عام'}
+            onClick={() => handleView(question)}
             badges={[
               {
                 label: getTypeLabel(question.question_type),
@@ -247,6 +251,21 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
           setSelectedQuestion(null);
         }}
         question={selectedQuestion}
+      />
+
+      <FocusQuestionDetailView
+        isOpen={showDetailView}
+        onClose={() => {
+          setShowDetailView(false);
+          setSelectedQuestion(null);
+        }}
+        question={selectedQuestion}
+        onEdit={(question) => {
+          setSelectedQuestion(question);
+          setShowDetailView(false);
+          onAddDialogChange(true);
+        }}
+        onRefresh={fetchFocusQuestions}
       />
     </>
   );
