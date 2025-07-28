@@ -2925,6 +2925,10 @@ export type Database = {
         }
         Returns: string
       }
+      update_weekly_capacity: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       validate_role_assignment: {
         Args: {
           assigner_user_id: string
