@@ -275,7 +275,20 @@ export const translations = {
     recentActivity: 'النشاط الحديث',
     viewAssignment: 'عرض المهمة',
     editAssignment: 'تعديل المهمة',
-    deleteAssignment: 'حذف المهمة'
+    deleteAssignment: 'حذف المهمة',
+    performance: 'الأداء',
+    tasks: 'مهام',
+    nameNotSpecified: 'اسم غير محدد',
+    notSpecified: 'غير محدد',
+    basicInfo: 'المعلومات الأساسية',
+    teamMemberDetails: 'تفاصيل عضو الفريق',
+    memberProfile: 'الملف الشخصي للعضو',
+    noDataAvailable: 'لا توجد بيانات متاحة',
+    currentLoad: 'العبء الحالي',
+    currentAssignments: 'المهام الحالية',
+    noActiveAssignments: 'لا توجد مهام نشطة',
+    editMember: 'تعديل العضو',
+    activeAssignments: 'المهام النشطة'
   },
   en: {
     // Common UI - English as secondary

@@ -37,6 +37,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from '@/hooks/useSystemLists';
+import { useTranslation } from '@/hooks/useTranslation';
 
 // System settings hook
 const useSystemSettings = () => {
@@ -153,6 +154,7 @@ export function TeamManagementContent({
   const { toast } = useToast();
   const { teamRoleOptions, teamSpecializationOptions } = useSystemLists();
   const systemSettings = useSystemSettings();
+  const { t } = useTranslation();
   const [teamMembers, setTeamMembers] = useState<InnovationTeamMember[]>([]);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [profiles, setProfiles] = useState<any[]>([]);
@@ -183,6 +185,7 @@ export function TeamManagementContent({
   
   // Dialog states
   const [isEditMemberDialogOpen, setIsEditMemberDialogOpen] = useState(false);
+  const [isMemberDetailDialogOpen, setIsMemberDetailDialogOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<InnovationTeamMember | null>(null);
   
   // Form states
@@ -653,8 +656,8 @@ export function TeamManagementContent({
   };
 
   const handleMemberClick = (member: InnovationTeamMember) => {
-    // Show member details dialog or navigate to member profile
-    console.log('View member details:', member);
+    setSelectedMember(member);
+    setIsMemberDetailDialogOpen(true);
   };
 
   const filteredTeamMembers = teamMembers.filter(member => {
@@ -741,30 +744,30 @@ export function TeamManagementContent({
               const metadata = [
                 {
                   icon: <Users className="w-4 h-4" />,
-                  label: 'القسم',
-                  value: member.profiles?.department || 'غير محدد'
+                  label: t('department'),
+                  value: member.profiles?.department || t('notSpecified')
                 },
                 {
                   icon: <Target className="w-4 h-4" />,
-                  label: 'الأداء',
+                  label: t('performance'),
                   value: `${member.performance_rating}/5`
                 },
                 {
                   icon: <Calendar className="w-4 h-4" />,
-                  label: 'المهام',
-                  value: `${memberAssignments.length} مهمة`
+                  label: t('assignments'),
+                  value: `${memberAssignments.length} ${t('tasks')}`
                 }
               ];
 
               const actions = [
                 {
                   type: 'edit' as const,
-                  label: 'تعديل',
+                  label: t('edit'),
                   onClick: () => handleEditMember(member)
                 },
                 {
                   type: 'delete' as const,
-                  label: 'حذف',
+                  label: t('delete'),
                   onClick: () => handleRemoveMember(member.id)
                 }
               ];
@@ -773,7 +776,7 @@ export function TeamManagementContent({
                 <ManagementCard
                   key={member.id}
                   id={member.id}
-                  title={member.profiles?.name || 'اسم غير محدد'}
+                  title={member.profiles?.name || t('nameNotSpecified')}
                   subtitle={member.profiles?.email || ''}
                   badges={badges}
                   metadata={metadata}
@@ -1316,6 +1319,198 @@ export function TeamManagementContent({
               </Button>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Member Detail Dialog */}
+      <Dialog open={isMemberDetailDialogOpen} onOpenChange={setIsMemberDetailDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Users className="h-5 w-5" />
+              {t('teamMemberDetails')}
+            </DialogTitle>
+            <DialogDescription>
+              {selectedMember?.profiles?.name || t('memberProfile')}
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedMember && (
+            <div className="space-y-6">
+              {/* Basic Information */}
+              <div className="grid gap-4 md:grid-cols-2">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-sm">{t('basicInfo')}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('name')}:</span>
+                      <span className="font-medium">{selectedMember.profiles?.name || t('notSpecified')}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('email')}:</span>
+                      <span className="font-medium">{selectedMember.profiles?.email || t('notSpecified')}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('department')}:</span>
+                      <span className="font-medium">{selectedMember.profiles?.department || t('notSpecified')}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('position')}:</span>
+                      <span className="font-medium">{selectedMember.profiles?.position || t('notSpecified')}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-sm">{t('roleInTeam')}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('role')}:</span>
+                      <Badge variant="default">{selectedMember.cic_role}</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('joinDate')}:</span>
+                      <span className="font-medium">
+                        {new Date(selectedMember.created_at).toLocaleDateString('ar-SA')}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('memberStatus')}:</span>
+                      <Badge variant="secondary">{t('active')}</Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Specializations */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm">{t('specializations')}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedMember.specialization?.length > 0 ? (
+                      selectedMember.specialization.map((spec) => (
+                        <Badge key={spec} variant="outline">{spec}</Badge>
+                      ))
+                    ) : (
+                      <span className="text-muted-foreground">{t('noDataAvailable')}</span>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Performance & Capacity */}
+              <div className="grid gap-4 md:grid-cols-2">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-sm">{t('performanceRating')}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center gap-4">
+                      <div className="text-2xl font-bold">
+                        {selectedMember.performance_rating.toFixed(1)}/5
+                      </div>
+                      <div className="flex-1">
+                        <div className="w-full bg-secondary rounded-full h-2">
+                          <div 
+                            className="h-2 rounded-full bg-primary"
+                            style={{ width: `${(selectedMember.performance_rating / 5) * 100}%` }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-sm">{t('currentWorkload')}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>{t('currentLoad')}:</span>
+                        <span className="font-medium">
+                          {selectedMember.current_workload}/{selectedMember.max_concurrent_projects}
+                        </span>
+                      </div>
+                      <div className="w-full bg-secondary rounded-full h-2">
+                        <div 
+                          className={`h-2 rounded-full ${
+                            (selectedMember.current_workload / selectedMember.max_concurrent_projects) * 100 >= 90 
+                              ? 'bg-destructive' 
+                              : (selectedMember.current_workload / selectedMember.max_concurrent_projects) * 100 >= 75 
+                                ? 'bg-yellow-500' 
+                                : 'bg-primary'
+                          }`}
+                          style={{ 
+                            width: `${Math.min((selectedMember.current_workload / selectedMember.max_concurrent_projects) * 100, 100)}%` 
+                          }}
+                        />
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {Math.round((selectedMember.current_workload / selectedMember.max_concurrent_projects) * 100)}% {t('capacityUtilization')}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Current Assignments */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm">{t('currentAssignments')}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {getAssignmentsForMember(selectedMember.user_id).length > 0 ? (
+                      getAssignmentsForMember(selectedMember.user_id).map((assignment) => {
+                        const TypeIcon = getTypeIcon(assignment.type);
+                        return (
+                          <div key={assignment.id} className="flex items-center gap-3 p-2 border rounded-md">
+                            <TypeIcon className="h-4 w-4 text-muted-foreground" />
+                            <div className="flex-1">
+                              <p className="font-medium text-sm">{assignment.title}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {assignment.type} • {assignment.status}
+                              </p>
+                            </div>
+                            <Badge variant="outline" className="text-xs">
+                              {assignment.status}
+                            </Badge>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <div className="text-center py-4">
+                        <Target className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                        <p className="text-muted-foreground">{t('noActiveAssignments')}</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Action Buttons */}
+              <div className="flex justify-end gap-3 pt-4 border-t">
+                <Button variant="outline" onClick={() => setIsMemberDetailDialogOpen(false)}>
+                  {t('close')}
+                </Button>
+                <Button onClick={() => {
+                  setIsMemberDetailDialogOpen(false);
+                  handleEditMember(selectedMember);
+                }}>
+                  <Edit className="h-4 w-4 mr-2" />
+                  {t('editMember')}
+                </Button>
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>
