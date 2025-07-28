@@ -88,8 +88,35 @@ export function MultiStepForm({
         </DialogHeader>
 
         {showProgress && (
-          <div className="space-y-2">
+          <div className="space-y-4">
             <Progress value={progressPercentage} className="h-2" />
+            
+            {/* Step indicators with icons and titles */}
+            <div className="flex justify-between items-center">
+              {steps.map((step, index) => (
+                <div key={step.id} className="flex flex-col items-center space-y-2 flex-1">
+                  <div className={`
+                    w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium
+                    ${index <= currentStep 
+                      ? 'bg-primary text-primary-foreground' 
+                      : 'bg-muted text-muted-foreground'
+                    }
+                  `}>
+                    {index + 1}
+                  </div>
+                  <span className={`
+                    text-xs text-center leading-tight max-w-[80px]
+                    ${index <= currentStep 
+                      ? 'text-primary font-medium' 
+                      : 'text-muted-foreground'
+                    }
+                  `}>
+                    {step.title}
+                  </span>
+                </div>
+              ))}
+            </div>
+            
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>{currentStepData.title}</span>
               <span>{Math.round(progressPercentage)}%</span>
