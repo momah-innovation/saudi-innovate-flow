@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { StakeholderWizard } from "./StakeholderWizard";
 import { StandardPageLayout, ViewMode } from "@/components/layout/StandardPageLayout";
 import { ViewLayouts } from "@/components/ui/view-layouts";
-import { ListItemCard } from "@/components/ui/list-item-card";
+import { ManagementCard } from "@/components/ui/management-card";
 
 interface Stakeholder {
   id: string;
@@ -255,7 +255,7 @@ export function StakeholdersManagement() {
       >
         <ViewLayouts viewMode={viewMode}>
           {filteredStakeholders.map((stakeholder) => (
-            <ListItemCard
+            <ManagementCard
               key={stakeholder.id}
               id={stakeholder.id}
               title={stakeholder.name}
@@ -266,12 +266,12 @@ export function StakeholdersManagement() {
                 { 
                   label: stakeholder.influence_level, 
                   variant: 'outline',
-                  color: getInfluenceColor(stakeholder.influence_level)
+                  className: getInfluenceColor(stakeholder.influence_level)
                 },
                 { 
                   label: stakeholder.engagement_status, 
                   variant: 'outline',
-                  color: getEngagementColor(stakeholder.engagement_status)
+                  className: getEngagementColor(stakeholder.engagement_status)
                 }
               ]}
               metadata={[
@@ -279,35 +279,26 @@ export function StakeholdersManagement() {
                 ...(stakeholder.phone ? [{ icon: <Phone className="h-3 w-3" />, label: "الهاتف", value: stakeholder.phone }] : []),
                 { icon: <User className="h-3 w-3" />, label: "الاهتمام", value: stakeholder.interest_level }
               ]}
-              actions={
-                <div className="flex gap-1">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setViewingStakeholder(stakeholder);
-                      setIsDetailOpen(true);
-                    }}
-                  >
-                    <Eye className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEdit(stakeholder)}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDelete(stakeholder.id)}
-                    className="text-destructive hover:text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              }
+              actions={[
+                { 
+                  type: 'view', 
+                  label: 'عرض',
+                  onClick: () => {
+                    setViewingStakeholder(stakeholder);
+                    setIsDetailOpen(true);
+                  }
+                },
+                { 
+                  type: 'edit', 
+                  label: 'تعديل',
+                  onClick: () => handleEdit(stakeholder)
+                },
+                { 
+                  type: 'delete',
+                  onClick: () => handleDelete(stakeholder.id)
+                }
+              ]}
+              viewMode={viewMode}
             />
           ))}
         </ViewLayouts>

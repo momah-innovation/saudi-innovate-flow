@@ -10,7 +10,9 @@ import { Plus, Calendar, MapPin, Users, Clock, Edit, Trash2, Eye, Download } fro
 import { format } from "date-fns";
 import { EventWizard } from "@/components/events/EventWizard";
 import { AppShell } from "@/components/layout/AppShell";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { StandardPageLayout } from "@/components/layout/StandardPageLayout";
+import { ViewLayouts } from "@/components/ui/view-layouts";
+import { ManagementCard } from "@/components/ui/management-card";
 import { EmptyState } from "@/components/ui/empty-state";
 
 interface Event {
@@ -419,102 +421,111 @@ export function EventsManagement() {
     </>
   );
 
-  const filters = (
-    <>
-      <div className="min-w-[120px]">
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="تصفية حسب الحالة" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">جميع الحالات</SelectItem>
-            <SelectItem value="scheduled">مجدول</SelectItem>
-            <SelectItem value="ongoing">جاري</SelectItem>
-            <SelectItem value="completed">مكتمل</SelectItem>
-            <SelectItem value="cancelled">ملغي</SelectItem>
-            <SelectItem value="postponed">مؤجل</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="min-w-[120px]">
-        <Select value={typeFilter} onValueChange={setTypeFilter}>
-          <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="تصفية حسب النوع" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">جميع الأنواع</SelectItem>
-            <SelectItem value="workshop">ورشة عمل</SelectItem>
-            <SelectItem value="seminar">ندوة</SelectItem>
-            <SelectItem value="conference">مؤتمر</SelectItem>
-            <SelectItem value="networking">شبكات تواصل</SelectItem>
-            <SelectItem value="training">تدريب</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="min-w-[120px]">
-        <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
-          <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="تصفية حسب الحملة" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">جميع الحملات</SelectItem>
-            {campaigns.map((campaign) => (
-              <SelectItem key={campaign.id} value={campaign.id}>
-                {campaign.title_ar}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="min-w-[120px]">
-        <Select value={selectedSector} onValueChange={setSelectedSector}>
-          <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="تصفية حسب القطاع" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">جميع القطاعات</SelectItem>
-            {sectors.map((sector) => (
-              <SelectItem key={sector.id} value={sector.id}>
-                {sector.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-    </>
-  );
+  const handleLayoutChange = (layout: 'cards' | 'list' | 'grid') => {
+    setViewMode(layout);
+  };
+
+  const filters = [
+    {
+      id: 'status',
+      label: 'الحالة',
+      type: 'select' as const,
+      value: statusFilter,
+      onChange: setStatusFilter,
+      options: [
+        { label: 'جميع الحالات', value: 'all' },
+        { label: 'مجدول', value: 'scheduled' },
+        { label: 'جاري', value: 'ongoing' },
+        { label: 'مكتمل', value: 'completed' },
+        { label: 'ملغي', value: 'cancelled' },
+        { label: 'مؤجل', value: 'postponed' }
+      ]
+    },
+    {
+      id: 'type',
+      label: 'النوع',
+      type: 'select' as const,
+      value: typeFilter,
+      onChange: setTypeFilter,
+      options: [
+        { label: 'جميع الأنواع', value: 'all' },
+        { label: 'ورشة عمل', value: 'workshop' },
+        { label: 'ندوة', value: 'seminar' },
+        { label: 'مؤتمر', value: 'conference' },
+        { label: 'شبكات تواصل', value: 'networking' },
+        { label: 'تدريب', value: 'training' }
+      ]
+    }
+  ];
 
   return (
     <AppShell>
-      <PageLayout 
+      <StandardPageLayout 
         title="إدارة الأحداث"
         description="إدارة أحداث وأنشطة الابتكار"
         itemCount={filteredEvents.length}
-        primaryAction={{
+        addButton={{
           label: "إنشاء جديد",
-          onClick: () => setShowEventWizard(true),
+          onClick: () => { setEditingEvent(null); setShowEventWizard(true); },
           icon: <Plus className="w-4 h-4" />
         }}
-        secondaryActions={secondaryActions}
-        showLayoutSelector={true}
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
-        showSearch={true}
-        searchValue={searchTerm}
+        headerActions={secondaryActions}
+        supportedLayouts={['cards', 'list', 'grid']}
+        defaultLayout={viewMode}
+        onLayoutChange={handleLayoutChange}
+        searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        searchPlaceholder="بحث في الأحداث..."
         filters={filters}
-        spacing="md"
-        maxWidth="full"
       >
-        {/* Events List */}
-        {viewMode === 'list' ? (
-          renderListView()
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredEvents.map(renderEventCard)}
-          </div>
-        )}
+        <ViewLayouts viewMode={viewMode}>
+          {filteredEvents.map((event) => (
+            <ManagementCard
+              key={event.id}
+              id={event.id}
+              title={event.title_ar}
+              description={event.description_ar}
+              badges={[
+                { 
+                  label: getStatusLabel(event.status || 'scheduled'),
+                  className: getStatusColor(event.status || 'scheduled')
+                },
+                { 
+                  label: getFormatLabel(event.format || 'in_person'),
+                  className: getFormatColor(event.format || 'in_person')
+                },
+                ...(event.event_type ? [{ label: event.event_type, variant: 'outline' as const }] : [])
+              ]}
+              metadata={[
+                { icon: <Calendar className="h-3 w-3" />, label: "التاريخ", value: format(new Date(event.event_date), 'PPP') },
+                ...(event.start_time ? [{ icon: <Clock className="h-3 w-3" />, label: "الوقت", value: `${event.start_time} - ${event.end_time}` }] : []),
+                ...(event.location ? [{ icon: <MapPin className="h-3 w-3" />, label: "المكان", value: event.location }] : []),
+                ...(event.max_participants ? [{ icon: <Users className="h-3 w-3" />, label: "المشاركين", value: `${event.registered_participants || 0}/${event.max_participants}` }] : [])
+              ]}
+              actions={[
+                { 
+                  type: 'view', 
+                  label: 'عرض',
+                  onClick: () => handleView(event)
+                },
+                { 
+                  type: 'edit', 
+                  label: 'تعديل',
+                  onClick: () => handleEdit(event)
+                },
+                { 
+                  type: 'delete',
+                  onClick: () => {
+                    if (confirm(`هل أنت متأكد من حذف "${event.title_ar}"؟`)) {
+                      handleDelete(event.id);
+                    }
+                  }
+                }
+              ]}
+              viewMode={viewMode}
+              onClick={() => handleView(event)}
+            />
+          ))}
+        </ViewLayouts>
 
         {filteredEvents.length === 0 && (
           <EmptyState
@@ -532,7 +543,7 @@ export function EventsManagement() {
             isFiltered={searchTerm !== "" || hasActiveFilters()}
           />
         )}
-      </PageLayout>
+      </StandardPageLayout>
 
       {/* Event Wizard */}
       <EventWizard

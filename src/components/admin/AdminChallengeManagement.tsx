@@ -13,7 +13,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { ChallengeWizard } from './ChallengeWizard';
 import { ChallengeSettings } from './ChallengeSettings';
-import { PageLayout } from '@/components/layout/PageLayout';
+import { StandardPageLayout } from "@/components/layout/StandardPageLayout";
+import { ViewLayouts } from "@/components/ui/view-layouts";
+import { ManagementCard } from "@/components/ui/management-card";
 
 interface Challenge {
   id: string;
@@ -218,28 +220,46 @@ export function AdminChallengeManagement() {
     </>
   );
 
+  const handleLayoutChange = (layout: 'cards' | 'list' | 'grid') => {
+    setViewMode(layout);
+  };
+
+  const filters = [
+    {
+      id: 'status',
+      label: 'الحالة',
+      type: 'select' as const,
+      value: statusFilter,
+      onChange: setStatusFilter,
+      options: [
+        { label: 'جميع الحالات', value: 'all' },
+        { label: 'مسودة', value: 'draft' },
+        { label: 'منشور', value: 'published' },
+        { label: 'نشط', value: 'active' },
+        { label: 'مغلق', value: 'closed' },
+        { label: 'مؤرشف', value: 'archived' }
+      ]
+    }
+  ];
+
   return (
     <>
-      <PageLayout 
+      <StandardPageLayout 
         title="إدارة التحديات"
         description="إنشاء وإدارة التحديات والأسئلة المحورية"
         itemCount={filteredChallenges.length}
-        primaryAction={{
+        addButton={{
           label: "إنشاء تحدي جديد",
-          onClick: () => setIsWizardOpen(true),
+          onClick: () => { setSelectedChallenge(null); setIsWizardOpen(true); },
           icon: <Plus className="w-4 h-4" />
         }}
-        secondaryActions={secondaryActions}
-        showLayoutSelector={true}
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
-        showSearch={true}
-        searchValue={searchTerm}
+        headerActions={secondaryActions}
+        supportedLayouts={['cards', 'list', 'grid']}
+        defaultLayout={viewMode}
+        onLayoutChange={handleLayoutChange}
+        searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        searchPlaceholder="البحث في التحديات..."
         filters={filters}
-        spacing="md"
-        maxWidth="full"
       >
         <div className="grid gap-4">
           {viewMode === 'cards' && (
