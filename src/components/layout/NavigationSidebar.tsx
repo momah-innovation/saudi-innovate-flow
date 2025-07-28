@@ -109,6 +109,15 @@ export function NavigationSidebar() {
         roles: ['team', 'admin'] 
       },
       { 
+        id: 'focus-questions', 
+        label: 'Focus Questions', 
+        arabicLabel: 'الأسئلة المحورية',
+        icon: FileText, 
+        path: '/admin/focus-questions',
+        group: 'management',
+        roles: ['admin'] 
+      },
+      { 
         id: 'events', 
         label: 'Events', 
         arabicLabel: 'الفعاليات',
@@ -178,15 +187,6 @@ export function NavigationSidebar() {
     ];
 
     const adminItems = [
-      { 
-        id: 'focus-questions', 
-        label: 'Focus Questions', 
-        arabicLabel: 'الأسئلة المحورية',
-        icon: FileText, 
-        path: '/admin/focus-questions',
-        group: 'admin',
-        roles: ['admin'] 
-      },
       { 
         id: 'partners', 
         label: 'Partners', 
