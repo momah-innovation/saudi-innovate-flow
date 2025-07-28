@@ -1,10 +1,109 @@
+import { FocusQuestionManagement } from "@/components/admin/FocusQuestionManagement";
 import { AppShell } from "@/components/layout/AppShell";
-import FocusQuestionsManagementComponent from "@/components/admin/FocusQuestionsManagement";
+import { PageLayout } from "@/components/layout/PageLayout";
+import { useState } from "react";
+import { Plus, HelpCircle, Download } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 const FocusQuestionsManagement = () => {
+  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
+  const [searchValue, setSearchValue] = useState('');
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  
+  const secondaryActions = (
+    <>
+      <Select>
+        <SelectTrigger className="w-32">
+          <SelectValue placeholder="تصدير" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="pdf">PDF</SelectItem>
+          <SelectItem value="excel">Excel</SelectItem>
+          <SelectItem value="csv">CSV</SelectItem>
+        </SelectContent>
+      </Select>
+      <Button variant="outline" className="gap-2">
+        <HelpCircle className="w-4 h-4" />
+        الإجراءات المجمعة
+      </Button>
+    </>
+  );
+
+  const filters = (
+    <>
+      <div className="min-w-[120px]">
+        <Select>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder="تصفية حسب النوع" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">جميع الأنواع</SelectItem>
+            <SelectItem value="open_ended">سؤال مفتوح</SelectItem>
+            <SelectItem value="multiple_choice">متعدد الخيارات</SelectItem>
+            <SelectItem value="yes_no">نعم/لا</SelectItem>
+            <SelectItem value="rating">تقييم</SelectItem>
+            <SelectItem value="ranking">ترتيب</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="min-w-[120px]">
+        <Select>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder="تصفية حسب الحساسية" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">جميع المستويات</SelectItem>
+            <SelectItem value="normal">عادي</SelectItem>
+            <SelectItem value="sensitive">حساس</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="min-w-[120px]">
+        <Select>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder="تصفية حسب الارتباط" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">جميع الأسئلة</SelectItem>
+            <SelectItem value="challenge_linked">مرتبط بتحدي</SelectItem>
+            <SelectItem value="general">سؤال عام</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </>
+  );
+
   return (
     <AppShell>
-      <FocusQuestionsManagementComponent />
+      <PageLayout 
+        title="إدارة الأسئلة المحورية"
+        description="إنشاء وإدارة الأسئلة المحورية للتحديات"
+        itemCount={12}
+        primaryAction={{
+          label: "إنشاء سؤال محوري جديد",
+          onClick: () => setShowAddDialog(true),
+          icon: <Plus className="w-4 h-4" />
+        }}
+        secondaryActions={secondaryActions}
+        showLayoutSelector={true}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+        showSearch={true}
+        searchValue={searchValue}
+        onSearchChange={setSearchValue}
+        searchPlaceholder="بحث في الأسئلة المحورية..."
+        filters={filters}
+        spacing="md"
+        maxWidth="full"
+      >
+        <FocusQuestionManagement 
+          viewMode={viewMode} 
+          searchTerm={searchValue} 
+          showAddDialog={showAddDialog}
+          onAddDialogChange={setShowAddDialog}
+        />
+      </PageLayout>
     </AppShell>
   );
 };
