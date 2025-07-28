@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { AssignmentDetailView } from '@/components/admin/AssignmentDetailView';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -34,7 +35,8 @@ import {
   TrendingDown,
   Activity,
   CheckCircle,
-  AlertTriangle
+  AlertTriangle,
+  ExternalLink
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -191,8 +193,8 @@ export function TeamManagementContent({
   const [isEditMemberDialogOpen, setIsEditMemberDialogOpen] = useState(false);
   const [isMemberDetailDialogOpen, setIsMemberDetailDialogOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<InnovationTeamMember | null>(null);
-  const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
-  const [isAssignmentDetailDialogOpen, setIsAssignmentDetailDialogOpen] = useState(false);
+  const [selectedAssignment, setSelectedAssignment] = useState<any | null>(null);
+  const [showAssignmentDetail, setShowAssignmentDetail] = useState(false);
   
   // Form states
   const [memberForm, setMemberForm] = useState({
@@ -639,9 +641,20 @@ export function TeamManagementContent({
   };
 
   const handleViewAssignment = (assignment: Assignment) => {
-    // Open detail modal for specific assignment based on type
-    setSelectedAssignment(assignment);
-    setIsAssignmentDetailDialogOpen(true);
+    // Transform assignment to match AssignmentDetailView props
+    const transformedAssignment = {
+      id: assignment.id,
+      assignment_type: assignment.type === 'project' ? 'challenge' : assignment.type, // Map project to challenge for now
+      assignment_id: assignment.id,
+      role: 'team_member', // Default role, could be dynamic
+      status: assignment.status,
+      start_date: assignment.start_date,
+      end_date: assignment.end_date,
+      notes: undefined
+    };
+    
+    setSelectedAssignment(transformedAssignment);
+    setShowAssignmentDetail(true);
   };
 
   const handleEditAssignment = (assignment: Assignment) => {
@@ -1541,125 +1554,15 @@ export function TeamManagementContent({
         </DialogContent>
       </Dialog>
 
-      {/* Assignment Detail Dialog */}
-      <Dialog open={isAssignmentDetailDialogOpen} onOpenChange={setIsAssignmentDetailDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh]" dir={direction}>
-          <DialogHeader>
-            <DialogTitle className="text-xl font-semibold">
-              {selectedAssignment && t(`${selectedAssignment.type}Details`)}
-            </DialogTitle>
-            <DialogDescription>
-              {selectedAssignment?.title}
-            </DialogDescription>
-          </DialogHeader>
-          
-          {selectedAssignment && (
-            <div className="space-y-6" dir={direction}>
-              <Accordion type="multiple" defaultValue={["basic", "details"]} className="w-full">
-                {/* Basic Information */}
-                <AccordionItem value="basic">
-                  <AccordionTrigger className="text-lg font-semibold">
-                    {t('basicInfo')}
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <Card>
-                        <CardContent className="pt-6">
-                          <div className="space-y-3">
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">{t('title')}:</span>
-                              <span className="font-medium">{selectedAssignment.title}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">{t('typeField')}:</span>
-                              <Badge variant="secondary">{selectedAssignment.type}</Badge>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">{t('status')}:</span>
-                              <Badge variant="outline">{selectedAssignment.status}</Badge>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-
-                      <Card>
-                        <CardContent className="pt-6">
-                          <div className="space-y-3">
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">{t('startDateField')}:</span>
-                              <span className="font-medium">
-                                {selectedAssignment.start_date ? new Date(selectedAssignment.start_date).toLocaleDateString() : t('notSpecified')}
-                              </span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">{t('endDateField')}:</span>
-                              <span className="font-medium">
-                                {selectedAssignment.end_date ? new Date(selectedAssignment.end_date).toLocaleDateString() : t('notSpecified')}
-                              </span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">{t('responsible')}:</span>
-                              <span className="font-medium">
-                                {teamMembers.find(m => m.user_id === selectedAssignment.user_id)?.profiles?.name || t('notSpecified')}
-                              </span>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-
-                {/* Assignment Details */}
-                <AccordionItem value="details">
-                  <AccordionTrigger className="text-lg font-semibold">
-                    {t('assignmentDetails')}
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <Card>
-                      <CardContent className="pt-6">
-                        <div className="text-center py-8">
-                          <div className="text-muted-foreground">
-                            {t('detailedViewComingSoon')}
-                          </div>
-                          <p className="text-sm text-muted-foreground mt-2">
-                            {t('clickToNavigateToFullView')}
-                          </p>
-                          <div className="mt-4">
-                            <Button onClick={() => {
-                              const baseUrl = '/admin';
-                              switch (selectedAssignment.type) {
-                                case 'campaign':
-                                  window.open(`${baseUrl}/campaigns`, '_blank');
-                                  break;
-                                case 'event':
-                                  window.open(`${baseUrl}/events`, '_blank');
-                                  break;
-                                case 'project':
-                                  window.open(`${baseUrl}/implementation`, '_blank');
-                                  break;
-                              }
-                            }}>
-                              {t('openFullView')}
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-
-              {/* Action Buttons */}
-              <div className="flex justify-end gap-3 pt-4 border-t">
-                <Button variant="outline" onClick={() => setIsAssignmentDetailDialogOpen(false)}>
-                  {t('close')}
-                </Button>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* Assignment Detail View */}
+      <AssignmentDetailView
+        assignment={selectedAssignment}
+        isOpen={showAssignmentDetail}
+        onClose={() => {
+          setShowAssignmentDetail(false);
+          setSelectedAssignment(null);
+        }}
+      />
     </div>
   );
 }
