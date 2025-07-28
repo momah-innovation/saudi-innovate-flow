@@ -160,21 +160,21 @@ export function ManagementCard({
       className={`hover:shadow-md transition-shadow ${onClick ? 'cursor-pointer' : ''} ${className}`}
       onClick={onClick}
     >
-      <CardHeader className="pb-3">
+      <CardHeader className={viewMode === 'grid' ? 'pb-2' : 'pb-3'}>
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
-            <CardTitle className="text-lg leading-6">{title}</CardTitle>
+            <CardTitle className={viewMode === 'grid' ? 'text-base leading-5' : 'text-lg leading-6'}>{title}</CardTitle>
             {subtitle && (
-              <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>
+              <p className={`text-muted-foreground mt-1 ${viewMode === 'grid' ? 'text-xs' : 'text-sm'}`}>{subtitle}</p>
             )}
             
             {badges.length > 0 && (
-              <div className="flex gap-1 flex-wrap mt-2">
-                {badges.map((badge, index) => (
+              <div className={`flex gap-1 flex-wrap ${viewMode === 'grid' ? 'mt-1' : 'mt-2'}`}>
+                {(viewMode === 'grid' ? badges.slice(0, 2) : badges).map((badge, index) => (
                   <Badge 
                     key={index} 
                     variant={badge.variant || 'outline'}
-                    className={badge.className}
+                    className={`${badge.className} ${viewMode === 'grid' ? 'text-xs px-1.5 py-0.5' : ''}`}
                   >
                     {badge.label}
                   </Badge>
@@ -193,17 +193,17 @@ export function ManagementCard({
         )}
         
         {metadata.length > 0 && (
-          <div className="space-y-2 text-sm mb-4">
-            {metadata.map((item, index) => (
+          <div className={`${viewMode === 'grid' ? 'space-y-1' : 'space-y-2'} text-sm mb-4`}>
+            {(viewMode === 'grid' ? metadata.slice(0, 2) : metadata).map((item, index) => (
               <div key={index} className="flex items-start gap-2 min-w-0">
                 {item.icon && (
-                  <span className="text-muted-foreground flex-shrink-0 mt-0.5">
+                  <span className={`text-muted-foreground flex-shrink-0 ${viewMode === 'grid' ? 'mt-0' : 'mt-0.5'}`}>
                     {item.icon}
                   </span>
                 )}
                 <div className="min-w-0 flex-1">
-                  <span className="text-muted-foreground block">{item.label}:</span>
-                  <span className="text-foreground break-words">{item.value}</span>
+                  <span className={`text-muted-foreground ${viewMode === 'grid' ? 'text-xs' : 'text-sm'}`}>{item.label}:</span>
+                  <span className={`text-foreground break-words ml-1 ${viewMode === 'grid' ? 'text-xs' : 'text-sm'}`}>{item.value}</span>
                 </div>
               </div>
             ))}
