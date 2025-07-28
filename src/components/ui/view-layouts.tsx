@@ -17,7 +17,7 @@ export function ViewLayouts({ viewMode, children, listRenderer }: ViewLayoutsPro
 
   if (viewMode === 'grid') {
     return (
-      <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-3">
+      <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
         {children}
       </div>
     );

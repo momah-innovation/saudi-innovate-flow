@@ -157,7 +157,9 @@ export function ManagementCard({
   // Cards/Grid view layout
   return (
     <Card 
-      className={`hover:shadow-md transition-shadow ${onClick ? 'cursor-pointer' : ''} ${className}`}
+      className={`hover:shadow-md transition-shadow ${onClick ? 'cursor-pointer' : ''} ${className} ${
+        viewMode === 'grid' ? 'min-w-0 w-full' : ''
+      }`}
       onClick={onClick}
     >
       <CardHeader className={viewMode === 'grid' ? 'p-3 pb-2' : 'pb-3'}>
