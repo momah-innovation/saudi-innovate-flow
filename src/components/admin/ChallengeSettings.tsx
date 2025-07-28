@@ -18,7 +18,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 interface Challenge {
   id: string;
-  title: string;
+  title_ar: string;
   status: string;
   priority_level: string;
   sensitivity_level: string;
@@ -187,7 +187,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <SettingsIcon className="h-5 w-5" />
-            Challenge Settings: {challenge.title}
+            Challenge Settings: {challenge.title_ar}
           </DialogTitle>
         </DialogHeader>
 
