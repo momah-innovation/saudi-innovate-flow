@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { StandardPageLayout } from '@/components/layout/StandardPageLayout';
 import { ManagementCard } from '@/components/ui/management-card';
+import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useTranslation } from '@/hooks/useTranslation';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { StakeholderWizard } from './StakeholderWizard';
 import { 
   User,
@@ -100,14 +98,20 @@ const engagementConfig = {
   'محظور': { label: 'محظور', variant: 'destructive' as const }
 };
 
-export function StakeholdersManagement() {
+interface StakeholdersManagementProps {
+  viewMode: 'cards' | 'list' | 'grid';
+  searchTerm: string;
+  showAddDialog: boolean;
+  onAddDialogChange: (open: boolean) => void;
+}
+
+export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: StakeholdersManagementProps) {
   const { language } = useTranslation();
-  const [showWizard, setShowWizard] = useState(false);
   const [selectedStakeholder, setSelectedStakeholder] = useState<any>(null);
 
   const handleEdit = (stakeholder: any) => {
     setSelectedStakeholder(stakeholder);
-    setShowWizard(true);
+    onAddDialogChange(true);
   };
 
   const handleView = (stakeholder: any) => {
@@ -120,110 +124,82 @@ export function StakeholdersManagement() {
 
   return (
     <>
-      <StandardPageLayout
-        title="إدارة أصحاب المصلحة"
-        description="إدارة وتنظيم علاقات أصحاب المصلحة ومستويات التأثير"
-        itemCount={mockStakeholders.length}
-        addButton={{
-          label: "صاحب مصلحة جديد",
-          onClick: () => setShowWizard(true),
-          icon: <User className="w-4 h-4" />
-        }}
-        searchTerm=""
-        onSearchChange={() => {}}
-        filters={[
-          {
-            id: 'stakeholder_type',
-            label: 'نوع الجهة',
-            type: 'select' as const,
-            options: [
-              { label: 'الكل', value: 'all' },
-              { label: 'حكومي', value: 'حكومي' },
-              { label: 'خاص', value: 'خاص' },
-              { label: 'أكاديمي', value: 'أكاديمي' },
-              { label: 'غير ربحي', value: 'غير ربحي' }
-            ],
-            value: 'all',
-            onChange: () => {}
-          }
-        ]}
-      >
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {mockStakeholders.map((stakeholder) => (
-            <ManagementCard
-              key={stakeholder.id}
-              id={stakeholder.id}
-              title={stakeholder.name}
-              subtitle={`${stakeholder.position} - ${stakeholder.organization}`}
-              description={stakeholder.notes}
-              badges={[
-                {
-                  label: typeConfig[stakeholder.stakeholder_type as keyof typeof typeConfig]?.label,
-                  variant: typeConfig[stakeholder.stakeholder_type as keyof typeof typeConfig]?.variant
-                },
-                {
-                  label: `تأثير ${stakeholder.influence_level}`,
-                  variant: influenceConfig[stakeholder.influence_level as keyof typeof influenceConfig]?.variant
-                },
-                {
-                  label: engagementConfig[stakeholder.engagement_status as keyof typeof engagementConfig]?.label,
-                  variant: engagementConfig[stakeholder.engagement_status as keyof typeof engagementConfig]?.variant
-                }
-              ]}
-              metadata={[
-                {
-                  icon: <Mail className="w-4 h-4" />,
-                  label: 'البريد الإلكتروني',
-                  value: stakeholder.email
-                },
-                {
-                  icon: <Phone className="w-4 h-4" />,
-                  label: 'الهاتف',
-                  value: stakeholder.phone
-                },
-                {
-                  icon: <Target className="w-4 h-4" />,
-                  label: 'مستوى الاهتمام',
-                  value: stakeholder.interest_level
-                },
-                {
-                  icon: <Activity className="w-4 h-4" />,
-                  label: 'المشاريع',
-                  value: `${stakeholder.projects_count} مشروع`
-                }
-              ]}
-              actions={[
-                {
-                  type: 'view',
-                  label: 'عرض',
-                  onClick: () => handleView(stakeholder)
-                },
-                {
-                  type: 'edit',
-                  label: 'تعديل',
-                  onClick: () => handleEdit(stakeholder)
-                },
-                {
-                  type: 'delete',
-                  label: 'حذف',
-                  onClick: () => handleDelete(stakeholder)
-                }
-              ]}
-              onClick={() => handleView(stakeholder)}
-            />
-          ))}
-        </div>
-      </StandardPageLayout>
+      <ViewLayouts viewMode={viewMode}>
+        {mockStakeholders.map((stakeholder) => (
+          <ManagementCard
+            key={stakeholder.id}
+            id={stakeholder.id}
+            title={stakeholder.name}
+            subtitle={`${stakeholder.position} - ${stakeholder.organization}`}
+            description={stakeholder.notes}
+            viewMode={viewMode}
+            badges={[
+              {
+                label: typeConfig[stakeholder.stakeholder_type as keyof typeof typeConfig]?.label,
+                variant: typeConfig[stakeholder.stakeholder_type as keyof typeof typeConfig]?.variant
+              },
+              {
+                label: `تأثير ${stakeholder.influence_level}`,
+                variant: influenceConfig[stakeholder.influence_level as keyof typeof influenceConfig]?.variant
+              },
+              {
+                label: engagementConfig[stakeholder.engagement_status as keyof typeof engagementConfig]?.label,
+                variant: engagementConfig[stakeholder.engagement_status as keyof typeof engagementConfig]?.variant
+              }
+            ]}
+            metadata={[
+              {
+                icon: <Mail className="w-4 h-4" />,
+                label: 'البريد الإلكتروني',
+                value: stakeholder.email
+              },
+              {
+                icon: <Phone className="w-4 h-4" />,
+                label: 'الهاتف',
+                value: stakeholder.phone
+              },
+              {
+                icon: <Target className="w-4 h-4" />,
+                label: 'مستوى الاهتمام',
+                value: stakeholder.interest_level
+              },
+              {
+                icon: <Activity className="w-4 h-4" />,
+                label: 'المشاريع',
+                value: `${stakeholder.projects_count} مشروع`
+              }
+            ]}
+            actions={[
+              {
+                type: 'view',
+                label: 'عرض',
+                onClick: () => handleView(stakeholder)
+              },
+              {
+                type: 'edit',
+                label: 'تعديل',
+                onClick: () => handleEdit(stakeholder)
+              },
+              {
+                type: 'delete',
+                label: 'حذف',
+                onClick: () => handleDelete(stakeholder)
+              }
+            ]}
+            onClick={() => handleView(stakeholder)}
+          />
+        ))}
+      </ViewLayouts>
 
       <StakeholderWizard
-        isOpen={showWizard}
+        isOpen={showAddDialog}
         onClose={() => {
-          setShowWizard(false);
+          onAddDialogChange(false);
           setSelectedStakeholder(null);
         }}
         stakeholder={selectedStakeholder}
         onSave={() => {
-          setShowWizard(false);
+          onAddDialogChange(false);
           setSelectedStakeholder(null);
         }}
       />

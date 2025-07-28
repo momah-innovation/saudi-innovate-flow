@@ -1,18 +1,14 @@
 import { useState } from 'react';
-import { StandardPageLayout } from '@/components/layout/StandardPageLayout';
 import { ManagementCard } from '@/components/ui/management-card';
+import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useTranslation } from '@/hooks/useTranslation';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { EventWizard } from '@/components/events/EventWizard';
 import { 
   Calendar, 
   Clock,
   MapPin,
   Users,
-  Monitor,
-  DollarSign,
-  Target
+  Monitor
 } from 'lucide-react';
 
 // Mock data - will be replaced with real data
@@ -93,14 +89,20 @@ const typeConfig = {
   networking: { label: 'شبكات تواصل', variant: 'secondary' as const }
 };
 
-export function EventsManagement() {
+interface EventsManagementProps {
+  viewMode: 'cards' | 'list' | 'grid';
+  searchTerm: string;
+  showAddDialog: boolean;
+  onAddDialogChange: (open: boolean) => void;
+}
+
+export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: EventsManagementProps) {
   const { language } = useTranslation();
-  const [showWizard, setShowWizard] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
 
   const handleEdit = (event: any) => {
     setSelectedEvent(event);
-    setShowWizard(true);
+    onAddDialogChange(true);
   };
 
   const handleView = (event: any) => {
@@ -113,109 +115,80 @@ export function EventsManagement() {
 
   return (
     <>
-      <StandardPageLayout
-        title="إدارة الأحداث"
-        description="إدارة وتنظيم الأحداث والفعاليات والورش التدريبية"
-        itemCount={mockEvents.length}
-        addButton={{
-          label: "حدث جديد",
-          onClick: () => setShowWizard(true),
-          icon: <Calendar className="w-4 h-4" />
-        }}
-        searchTerm=""
-        onSearchChange={() => {}}
-        filters={[
-          {
-            id: 'status',
-            label: 'الحالة',
-            type: 'select' as const,
-            options: [
-              { label: 'الكل', value: 'all' },
-              { label: 'مجدول', value: 'scheduled' },
-              { label: 'جاري', value: 'ongoing' },
-              { label: 'مكتمل', value: 'completed' },
-              { label: 'ملغي', value: 'cancelled' },
-              { label: 'مؤجل', value: 'postponed' }
-            ],
-            value: 'all',
-            onChange: () => {}
-          }
-        ]}
-      >
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {mockEvents.map((event) => (
-            <ManagementCard
-              key={event.id}
-              id={event.id}
-              title={event.title_ar}
-              description={event.description_ar}
-              badges={[
-                {
-                  label: statusConfig[event.status as keyof typeof statusConfig]?.label,
-                  variant: statusConfig[event.status as keyof typeof statusConfig]?.variant
-                },
-                {
-                  label: typeConfig[event.event_type as keyof typeof typeConfig]?.label || event.event_type,
-                  variant: typeConfig[event.event_type as keyof typeof typeConfig]?.variant || 'default'
-                },
-                {
-                  label: formatConfig[event.format as keyof typeof formatConfig]?.label,
-                  variant: formatConfig[event.format as keyof typeof formatConfig]?.variant
-                }
-              ]}
-              metadata={[
-                {
-                  icon: <Calendar className="w-4 h-4" />,
-                  label: 'التاريخ',
-                  value: new Date(event.event_date).toLocaleDateString('ar-SA')
-                },
-                {
-                  icon: <Clock className="w-4 h-4" />,
-                  label: 'الوقت',
-                  value: `${event.start_time} - ${event.end_time}`
-                },
-                {
-                  icon: <MapPin className="w-4 h-4" />,
-                  label: 'المكان',
-                  value: event.format === 'virtual' ? 'افتراضي' : event.location
-                },
-                {
-                  icon: <Users className="w-4 h-4" />,
-                  label: 'المشاركون',
-                  value: `${event.registered_participants}/${event.max_participants}`
-                }
-              ]}
-              actions={[
-                {
-                  type: 'view',
-                  label: 'عرض',
-                  onClick: () => handleView(event)
-                },
-                {
-                  type: 'edit',
-                  label: 'تعديل',
-                  onClick: () => handleEdit(event)
-                },
-                {
-                  type: 'delete',
-                  label: 'حذف',
-                  onClick: () => handleDelete(event)
-                }
-              ]}
-              onClick={() => handleView(event)}
-            />
-          ))}
-        </div>
-      </StandardPageLayout>
+      <ViewLayouts viewMode={viewMode}>
+        {mockEvents.map((event) => (
+          <ManagementCard
+            key={event.id}
+            id={event.id}
+            title={event.title_ar}
+            description={event.description_ar}
+            viewMode={viewMode}
+            badges={[
+              {
+                label: statusConfig[event.status as keyof typeof statusConfig]?.label,
+                variant: statusConfig[event.status as keyof typeof statusConfig]?.variant
+              },
+              {
+                label: typeConfig[event.event_type as keyof typeof typeConfig]?.label || event.event_type,
+                variant: typeConfig[event.event_type as keyof typeof typeConfig]?.variant || 'default'
+              },
+              {
+                label: formatConfig[event.format as keyof typeof formatConfig]?.label,
+                variant: formatConfig[event.format as keyof typeof formatConfig]?.variant
+              }
+            ]}
+            metadata={[
+              {
+                icon: <Calendar className="w-4 h-4" />,
+                label: 'التاريخ',
+                value: new Date(event.event_date).toLocaleDateString('ar-SA')
+              },
+              {
+                icon: <Clock className="w-4 h-4" />,
+                label: 'الوقت',
+                value: `${event.start_time} - ${event.end_time}`
+              },
+              {
+                icon: <MapPin className="w-4 h-4" />,
+                label: 'المكان',
+                value: event.format === 'virtual' ? 'افتراضي' : event.location
+              },
+              {
+                icon: <Users className="w-4 h-4" />,
+                label: 'المشاركون',
+                value: `${event.registered_participants}/${event.max_participants}`
+              }
+            ]}
+            actions={[
+              {
+                type: 'view',
+                label: 'عرض',
+                onClick: () => handleView(event)
+              },
+              {
+                type: 'edit',
+                label: 'تعديل',
+                onClick: () => handleEdit(event)
+              },
+              {
+                type: 'delete',
+                label: 'حذف',
+                onClick: () => handleDelete(event)
+              }
+            ]}
+            onClick={() => handleView(event)}
+          />
+        ))}
+      </ViewLayouts>
 
       <EventWizard
-        isOpen={showWizard}
+        isOpen={showAddDialog}
         onClose={() => {
-          setShowWizard(false);
+          onAddDialogChange(false);
           setSelectedEvent(null);
         }}
         event={selectedEvent}
-        onSave={() => setShowWizard(false)}
+        onSave={() => onAddDialogChange(false)}
       />
     </>
   );
