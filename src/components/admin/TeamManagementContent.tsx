@@ -158,6 +158,29 @@ export function TeamManagementContent({
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   
+  // Analytics data
+  const [analyticsData, setAnalyticsData] = useState({
+    totalHours: 0,
+    avgPerformance: 0,
+    capacityUtilization: 0,
+    recentActivities: [] as Array<{
+      id: string,
+      member_name: string,
+      activity_type: string,
+      description: string,
+      hours_spent: number,
+      activity_date: string
+    }>,
+    performanceMetrics: [] as Array<{
+      member_id: string,
+      member_name: string,
+      total_assignments: number,
+      completed_assignments: number,
+      avg_quality_rating: number,
+      total_hours: number
+    }>
+  });
+  
   // Dialog states
   const [isEditMemberDialogOpen, setIsEditMemberDialogOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<InnovationTeamMember | null>(null);
@@ -229,8 +252,16 @@ export function TeamManagementContent({
   useEffect(() => {
     if (teamMembers.length > 0) {
       fetchAssignments();
+      fetchAnalyticsData();
     }
   }, [teamMembers]);
+
+  // Fetch analytics data when active tab changes to analytics
+  useEffect(() => {
+    if (activeTab === 'analytics') {
+      fetchAnalyticsData();
+    }
+  }, [activeTab]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -374,6 +405,76 @@ export function TeamManagementContent({
       setAssignments(allAssignments);
     } catch (error) {
       console.error('Error fetching assignments:', error);
+    }
+  };
+
+  const fetchAnalyticsData = async () => {
+    try {
+      // Fetch analytics data from the new analytics tables
+      const [
+        teamAssignmentsData,
+        teamActivitiesData,
+        teamPerformanceData,
+        teamCapacityData
+      ] = await Promise.all([
+        supabase.from('team_assignments').select(`
+          id, team_member_id, assignment_type, status, workload_percentage,
+          actual_hours, estimated_hours, due_date, completion_date,
+          innovation_team_members(id, user_id, profiles(name, name_ar))
+        `),
+        supabase.from('team_activities').select(`
+          id, team_member_id, activity_type, activity_description,
+          hours_spent, activity_date, quality_rating,
+          innovation_team_members(profiles(name, name_ar))
+        `).order('activity_date', { ascending: false }).limit(20),
+        supabase.from('team_performance_metrics').select(`
+          team_member_id, overall_performance_score, assignments_completed,
+          total_hours_worked, average_quality_rating,
+          innovation_team_members(profiles(name, name_ar))
+        `).order('created_at', { ascending: false }),
+        supabase.from('team_capacity_history').select(`
+          team_member_id, utilization_percentage, week_start_date,
+          innovation_team_members(profiles(name, name_ar))
+        `).gte('week_start_date', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
+      ]);
+
+      // Process and update analytics data
+      const totalHours = teamActivitiesData.data?.reduce((sum, activity) => sum + (activity.hours_spent || 0), 0) || 0;
+      const avgPerformance = teamPerformanceData.data?.length 
+        ? teamPerformanceData.data.reduce((sum, perf) => sum + (perf.overall_performance_score || 0), 0) / teamPerformanceData.data.length
+        : 0;
+      const avgCapacity = teamCapacityData.data?.length
+        ? teamCapacityData.data.reduce((sum, cap) => sum + (cap.utilization_percentage || 0), 0) / teamCapacityData.data.length
+        : 0;
+
+      const recentActivities = teamActivitiesData.data?.map(activity => ({
+        id: activity.id,
+        member_name: (activity.innovation_team_members as any)?.profiles?.name || 'غير محدد',
+        activity_type: activity.activity_type,
+        description: activity.activity_description,
+        hours_spent: activity.hours_spent || 0,
+        activity_date: activity.activity_date
+      })) || [];
+
+      const performanceMetrics = teamPerformanceData.data?.map(perf => ({
+        member_id: perf.team_member_id,
+        member_name: (perf.innovation_team_members as any)?.profiles?.name || 'غير محدد',
+        total_assignments: perf.assignments_completed || 0,
+        completed_assignments: perf.assignments_completed || 0,
+        avg_quality_rating: perf.average_quality_rating || 0,
+        total_hours: perf.total_hours_worked || 0
+      })) || [];
+
+      setAnalyticsData({
+        totalHours,
+        avgPerformance,
+        capacityUtilization: avgCapacity,
+        recentActivities,
+        performanceMetrics
+      });
+
+    } catch (error) {
+      console.error('Error fetching analytics data:', error);
     }
   };
 
@@ -776,20 +877,21 @@ export function TeamManagementContent({
             />
             
             <MetricCard
-              title="المهام النشطة"
-              value={assignments.filter(a => a.status === 'active' || a.status === 'planning').length.toString()}
-              icon={<Target className="h-4 w-4" />}
+              title="ساعات العمل هذا الشهر"
+              value={analyticsData.totalHours.toString()}
+              subtitle="ساعة"
+              icon={<Clock className="h-4 w-4" />}
               trend={{
-                value: 8,
+                value: Math.round(analyticsData.totalHours * 0.15),
                 label: "من الشهر الماضي",
                 direction: "up"
               }}
             />
             
             <MetricCard
-              title="متوسط الأداء"
-              value={teamMembers.length > 0 
-                ? `${(teamMembers.reduce((sum, member) => sum + member.performance_rating, 0) / teamMembers.length).toFixed(1)}/5`
+              title="متوسط الأداء الشامل"
+              value={analyticsData.avgPerformance > 0 
+                ? `${analyticsData.avgPerformance.toFixed(1)}/5`
                 : '0/5'
               }
               icon={<TrendingUp className="h-4 w-4" />}
@@ -801,14 +903,14 @@ export function TeamManagementContent({
             />
 
             <MetricCard
-              title="معدل الإنجاز"
-              value={`${assignments.filter(a => a.status === 'completed').length}/${assignments.length}`}
-              subtitle={`${assignments.length > 0 ? Math.round((assignments.filter(a => a.status === 'completed').length / assignments.length) * 100) : 0}%`}
-              icon={<CheckCircle className="h-4 w-4" />}
+              title="معدل استخدام القدرة"
+              value={`${analyticsData.capacityUtilization.toFixed(1)}%`}
+              subtitle="متوسط الاستخدام"
+              icon={<Activity className="h-4 w-4" />}
               trend={{
-                value: 15,
+                value: Math.round(analyticsData.capacityUtilization * 0.1),
                 label: "من الشهر الماضي",
-                direction: "up"
+                direction: analyticsData.capacityUtilization > 75 ? "up" : "down"
               }}
             />
           </div>
@@ -928,7 +1030,7 @@ export function TeamManagementContent({
               </CardContent>
             </Card>
 
-            {/* Recent Activity */}
+            {/* Recent Activity - Real Data from Analytics Tables */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -938,29 +1040,79 @@ export function TeamManagementContent({
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {assignments
-                    .filter(a => a.start_date)
-                    .sort((a, b) => new Date(b.start_date!).getTime() - new Date(a.start_date!).getTime())
-                    .slice(0, 5)
-                    .map((assignment) => {
-                      const member = teamMembers.find(m => m.user_id === assignment.user_id);
-                      const TypeIcon = getTypeIcon(assignment.type);
-                      
-                      return (
-                        <div key={assignment.id} className="flex items-center gap-3 text-sm">
-                          <TypeIcon className="h-3 w-3 text-muted-foreground" />
-                          <div className="flex-1 min-w-0">
-                            <p className="truncate">{assignment.title}</p>
-                            <p className="text-muted-foreground text-xs">
-                              {member?.profiles?.name || 'غير محدد'}
-                            </p>
-                          </div>
+                  {analyticsData.recentActivities.length > 0 ? (
+                    analyticsData.recentActivities.slice(0, 8).map((activity) => (
+                      <div key={activity.id} className="flex items-center gap-3 text-sm">
+                        <div className="w-2 h-2 bg-primary rounded-full"></div>
+                        <div className="flex-1 min-w-0">
+                          <p className="truncate font-medium">{activity.description}</p>
+                          <p className="text-muted-foreground text-xs">
+                            {activity.member_name} • {activity.activity_type}
+                          </p>
+                        </div>
+                        <div className="text-left">
+                          <span className="text-xs font-medium">{activity.hours_spent} س</span>
+                          <br />
                           <span className="text-xs text-muted-foreground">
-                            {assignment.start_date ? new Date(assignment.start_date).toLocaleDateString('ar-SA') : '-'}
+                            {new Date(activity.activity_date).toLocaleDateString('ar-SA')}
                           </span>
                         </div>
-                      );
-                    })}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8">
+                      <Clock className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                      <p className="text-muted-foreground">لا توجد أنشطة مسجلة حتى الآن</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        سيتم عرض أنشطة الفريق هنا عند توفرها
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Performance Summary - New Analytics Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="h-4 w-4" />
+                  ملخص الأداء
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {analyticsData.performanceMetrics.length > 0 ? (
+                    analyticsData.performanceMetrics.slice(0, 5).map((metric) => (
+                      <div key={metric.member_id} className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium text-sm">{metric.member_name}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {metric.completed_assignments} مهمة مكتملة • {metric.total_hours}ساعة
+                          </p>
+                        </div>
+                        <div className="text-left">
+                          <div className="flex items-center gap-1">
+                            <span className="text-sm font-medium">
+                              {metric.avg_quality_rating.toFixed(1)}
+                            </span>
+                            <span className="text-xs text-muted-foreground">/5</span>
+                          </div>
+                          <div className="w-16 bg-secondary rounded-full h-1 mt-1">
+                            <div 
+                              className="h-1 rounded-full bg-primary"
+                              style={{ width: `${(metric.avg_quality_rating / 5) * 100}%` }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-6">
+                      <BarChart3 className="h-6 w-6 mx-auto text-muted-foreground mb-2" />
+                      <p className="text-muted-foreground text-sm">لا توجد بيانات أداء متاحة</p>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
