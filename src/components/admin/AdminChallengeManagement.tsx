@@ -229,12 +229,11 @@ export function AdminChallengeManagement() {
       >
         <ViewLayouts viewMode={viewMode}>
           {filteredChallenges.map((challenge) => (
-            <ManagementCard
-              key={challenge.id}
-              id={challenge.id}
-              title={challenge.title_ar}
-              description={challenge.description_ar}
-              viewMode={viewMode}
+             <ManagementCard
+               key={challenge.id}
+               id={challenge.id}
+               title={challenge.title_ar}
+               description={challenge.description_ar}
               badges={[
                 { 
                   label: challenge.status === 'draft' ? 'مسودة' :
@@ -291,8 +290,9 @@ export function AdminChallengeManagement() {
                   label: 'حذف',
                   onClick: () => handleDeleteChallenge(challenge.id)
                 }
-              ]}
-              onClick={() => handleViewChallenge(challenge)}
+               ]}
+               viewMode={viewMode}
+               onClick={() => handleViewChallenge(challenge)}
             />
           ))}
         </ViewLayouts>

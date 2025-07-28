@@ -380,9 +380,9 @@ export function EventsManagement() {
                      }
                    }
                  }
-               ]}
-              viewMode={viewMode}
-              onClick={() => handleView(event)}
+                ]}
+                viewMode={viewMode}
+                onClick={() => handleView(event)}
             />
           ))}
         </ViewLayouts>
