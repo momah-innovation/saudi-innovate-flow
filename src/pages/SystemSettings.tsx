@@ -1,111 +1,289 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Globe, RotateCcw } from "lucide-react";
-import { AppShell } from "@/components/layout/AppShell";
-import { SimpleListEditor, RoleEditor } from "@/components/admin/ListEditors";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { 
+  Settings, 
+  Shield, 
+  Bell, 
+  Database,
+  List,
+  Target,
+  Save,
+  RotateCcw,
+  Loader2
+} from "lucide-react";
+import { AppShell } from "@/components/layout/AppShell";
+import { GeneralSettings } from "@/components/admin/settings/GeneralSettings";
+import { ChallengeSettings } from "@/components/admin/settings/ChallengeSettings";
+import { SecuritySettings } from "@/components/admin/settings/SecuritySettings";
+import { NotificationSettings } from "@/components/admin/settings/NotificationSettings";
+import { IntegrationSettings } from "@/components/admin/settings/IntegrationSettings";
+import { SystemListSettings } from "@/components/admin/settings/SystemListSettings";
 
 const SystemSettings = () => {
-  const navigate = useNavigate();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState("general");
   const [settings, setSettings] = useState({
+    // General Settings
     systemName: "نظام إدارة الابتكار",
     systemDescription: "منصة شاملة لإدارة التحديات والأفكار الابتكارية",
+    systemLanguage: "ar",
     maintenanceMode: false,
     allowPublicRegistration: true,
     maxFileUploadSize: 10,
-    sessionTimeout: 60,
-    emailNotifications: true,
-    systemLanguage: "ar"
-  });
+    autoArchiveAfterDays: 365,
 
-  const [systemLists, setSystemLists] = useState({
-    themes: [] as string[],
-    sectors: [] as string[],
-    challengeTypes: [] as string[],
-    ideaCategories: [] as string[],
-    evaluationCriteria: [] as string[],
-    roles: [] as string[]
+    // Challenge Settings
+    defaultStatus: 'draft',
+    defaultPriority: 'medium',
+    defaultSensitivity: 'normal',
+    maxChallengesPerUser: 10,
+    itemsPerPage: 12,
+    defaultViewMode: 'cards',
+    enableAdvancedFilters: true,
+    showPreviewOnHover: true,
+    requireApprovalForPublish: true,
+    allowAnonymousSubmissions: false,
+    enableCollaboration: true,
+    enableComments: true,
+    enableRatings: true,
+
+    // Security Settings
+    sessionTimeout: 60,
+    maxLoginAttempts: 5,
+    enableDataEncryption: true,
+    enableAccessLogs: true,
+    passwordPolicy: 'كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل، حرف كبير، حرف صغير، رقم، ورمز خاص',
+    dataRetentionPolicy: 'يتم الاحتفاظ بالبيانات الشخصية لمدة 5 سنوات من آخر نشاط للمستخدم',
+
+    // Notification Settings
+    emailNotifications: true,
+    systemNotifications: true,
+    mobileNotifications: false,
+    notifyOnNewSubmission: true,
+    notifyOnStatusChange: true,
+    notifyOnDeadline: true,
+    notifyOnEvaluation: false,
+    reminderDaysBefore: 7,
+    reminderFrequency: 'daily',
+    newSubmissionTemplate: 'تم تقديم فكرة جديدة للتحدي: {challengeTitle}',
+    statusChangeTemplate: 'تم تغيير حالة التحدي {challengeTitle} إلى {newStatus}',
+
+    // Integration Settings
+    enableApiAccess: false,
+    apiRateLimit: 1000,
+    allowedDomains: '',
+    enableWebhooks: false,
+    webhookUrl: '',
+    webhookSecret: '',
+    webhookEvents: 'all',
+    enableTeamsIntegration: false,
+    enableSlackIntegration: false,
+    enableEmailIntegration: true,
+    autoBackup: true,
+    backupFrequency: 'daily',
+    retentionPeriod: 30,
+    backupLocation: 'cloud',
+
+    // System Lists
+    challengeTypes: ['تحدي تقني', 'تحدي إبداعي', 'تحدي تشغيلي', 'تحدي استراتيجي'],
+    ideaCategories: ['تطوير منتج', 'تحسين عملية', 'حل مشكلة', 'ابتكار تقني'],
+    evaluationCriteria: ['الجدوى التقنية', 'الأثر المتوقع', 'التكلفة', 'سهولة التنفيذ', 'الابتكار'],
+    themes: ['التكنولوجيا المالية', 'الصحة', 'التعليم', 'البيئة'],
+    roles: ['مبتكر', 'خبير', 'منسق فريق', 'مدير', 'مدير عام'],
+    statusOptions: ['مسودة', 'منشور', 'نشط', 'مكتمل', 'ملغي'],
+    priorityLevels: ['منخفض', 'متوسط', 'عالي', 'عاجل'],
+    sensitivityLevels: ['عادي', 'حساس', 'سري', 'سري للغاية'],
+    allowCustomValues: true,
+    sortListsAlphabetically: false
   });
 
   useEffect(() => {
     fetchSettings();
-    fetchSystemLists();
   }, []);
 
   const fetchSettings = async () => {
     try {
-      setLoading(false);
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('*');
+
+      if (error) throw error;
+
+      // Process settings data
+      const processedSettings = data?.reduce((acc, setting) => {
+        let value = setting.setting_value;
+        
+        // Handle JSON arrays
+        if (typeof value === 'string' && (value.startsWith('[') || value.startsWith('{'))) {
+          try {
+            value = JSON.parse(value);
+          } catch (e) {
+            // Keep as string if parsing fails
+          }
+        }
+        
+        // Convert string booleans
+        if (value === 'true') value = true;
+        if (value === 'false') value = false;
+        
+        // Convert string numbers
+        if (typeof value === 'string' && !isNaN(Number(value)) && value !== '') {
+          value = Number(value);
+        }
+
+        acc[setting.setting_key.replace(/^(challenge_|system_|notification_|security_|integration_)/, '')] = value;
+        return acc;
+      }, {}) || {};
+
+      setSettings(prev => ({ ...prev, ...processedSettings }));
     } catch (error) {
       console.error('Error fetching settings:', error);
-      setLoading(false);
-    }
-  };
-
-  const fetchSystemLists = async () => {
-    try {
-      // Fetch sectors
-      const { data: sectorsData } = await supabase
-        .from('sectors')
-        .select('name_ar')
-        .order('name_ar');
-
-      setSystemLists({
-        themes: ['التكنولوجيا المالية', 'الصحة', 'التعليم', 'البيئة'],
-        sectors: sectorsData?.map(s => s.name_ar) || [],
-        challengeTypes: ['تحدي تقني', 'تحدي إبداعي', 'تحدي تشغيلي', 'تحدي استراتيجي'],
-        ideaCategories: ['تطوير منتج', 'تحسين عملية', 'حل مشكلة', 'ابتكار تقني'],
-        evaluationCriteria: ['الجدوى التقنية', 'الأثر المتوقع', 'التكلفة', 'سهولة التنفيذ', 'الابتكار'],
-        roles: ['مبتكر', 'خبير', 'منسق فريق', 'مدير', 'مدير عام']
+      toast({
+        title: "خطأ",
+        description: "فشل في تحميل الإعدادات",
+        variant: "destructive"
       });
-    } catch (error) {
-      console.error('Error fetching system lists:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSettingChange = (key: string, value: any) => {
-    setSettings(prev => ({
-      ...prev,
-      [key]: value
-    }));
-  };
-
-  const handleListUpdate = (listName: keyof typeof systemLists, newList: string[]) => {
-    setSystemLists(prev => ({
-      ...prev,
-      [listName]: newList
-    }));
+    setSettings(prev => ({ ...prev, [key]: value }));
   };
 
   const saveSettings = async () => {
     try {
-      // Here you would save settings to your backend
-      toast.success("تم حفظ الإعدادات بنجاح");
+      setSaving(true);
+      
+      const settingsToUpdate = Object.entries(settings).map(([key, value]) => {
+        let category = 'system';
+        let prefixedKey = key;
+        
+        // Categorize settings
+        if (['defaultStatus', 'defaultPriority', 'defaultSensitivity', 'maxChallengesPerUser', 'itemsPerPage', 'defaultViewMode', 'enableAdvancedFilters', 'showPreviewOnHover', 'requireApprovalForPublish', 'allowAnonymousSubmissions', 'enableCollaboration', 'enableComments', 'enableRatings'].includes(key)) {
+          category = 'challenges';
+          prefixedKey = `challenge_${key}`;
+        } else if (['emailNotifications', 'systemNotifications', 'mobileNotifications', 'notifyOnNewSubmission', 'notifyOnStatusChange', 'notifyOnDeadline', 'notifyOnEvaluation', 'reminderDaysBefore', 'reminderFrequency', 'newSubmissionTemplate', 'statusChangeTemplate'].includes(key)) {
+          category = 'notifications';
+          prefixedKey = `notification_${key}`;
+        } else if (['sessionTimeout', 'maxLoginAttempts', 'enableDataEncryption', 'enableAccessLogs', 'passwordPolicy', 'dataRetentionPolicy'].includes(key)) {
+          category = 'security';
+          prefixedKey = `security_${key}`;
+        } else if (['enableApiAccess', 'apiRateLimit', 'allowedDomains', 'enableWebhooks', 'webhookUrl', 'webhookSecret', 'webhookEvents', 'enableTeamsIntegration', 'enableSlackIntegration', 'enableEmailIntegration', 'autoBackup', 'backupFrequency', 'retentionPeriod', 'backupLocation'].includes(key)) {
+          category = 'integration';
+          prefixedKey = `integration_${key}`;
+        } else {
+          prefixedKey = `system_${key}`;
+        }
+
+        return {
+          setting_key: prefixedKey,
+          setting_value: Array.isArray(value) ? JSON.stringify(value) : value.toString(),
+          setting_category: category,
+          updated_at: new Date().toISOString()
+        };
+      });
+
+      const { error } = await supabase
+        .from('system_settings')
+        .upsert(settingsToUpdate, { onConflict: 'setting_key' });
+
+      if (error) throw error;
+
+      toast({
+        title: "تم الحفظ بنجاح",
+        description: "تم حفظ جميع إعدادات النظام بنجاح",
+      });
     } catch (error) {
       console.error('Error saving settings:', error);
-      toast.error("فشل في حفظ الإعدادات");
+      toast({
+        title: "خطأ",
+        description: "فشل في حفظ الإعدادات",
+        variant: "destructive"
+      });
+    } finally {
+      setSaving(false);
     }
   };
 
-  const resetToDefaults = () => {
-    setSettings({
-      systemName: "نظام إدارة الابتكار",
-      systemDescription: "منصة شاملة لإدارة التحديات والأفكار الابتكارية",
-      maintenanceMode: false,
-      allowPublicRegistration: true,
-      maxFileUploadSize: 10,
-      sessionTimeout: 60,
-      emailNotifications: true,
-      systemLanguage: "ar"
-    });
-    toast.success("تم إعادة تعيين الإعدادات إلى القيم الافتراضية");
+  const resetToDefaults = async () => {
+    if (confirm('هل أنت متأكد من إعادة تعيين جميع الإعدادات إلى القيم الافتراضية؟ سيتم فقدان جميع التخصيصات الحالية.')) {
+      setSettings({
+        systemName: "نظام إدارة الابتكار",
+        systemDescription: "منصة شاملة لإدارة التحديات والأفكار الابتكارية",
+        systemLanguage: "ar",
+        maintenanceMode: false,
+        allowPublicRegistration: true,
+        maxFileUploadSize: 10,
+        autoArchiveAfterDays: 365,
+        defaultStatus: 'draft',
+        defaultPriority: 'medium',
+        defaultSensitivity: 'normal',
+        maxChallengesPerUser: 10,
+        itemsPerPage: 12,
+        defaultViewMode: 'cards',
+        enableAdvancedFilters: true,
+        showPreviewOnHover: true,
+        requireApprovalForPublish: true,
+        allowAnonymousSubmissions: false,
+        enableCollaboration: true,
+        enableComments: true,
+        enableRatings: true,
+        sessionTimeout: 60,
+        maxLoginAttempts: 5,
+        enableDataEncryption: true,
+        enableAccessLogs: true,
+        passwordPolicy: 'كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل، حرف كبير، حرف صغير، رقم، ورمز خاص',
+        dataRetentionPolicy: 'يتم الاحتفاظ بالبيانات الشخصية لمدة 5 سنوات من آخر نشاط للمستخدم',
+        emailNotifications: true,
+        systemNotifications: true,
+        mobileNotifications: false,
+        notifyOnNewSubmission: true,
+        notifyOnStatusChange: true,
+        notifyOnDeadline: true,
+        notifyOnEvaluation: false,
+        reminderDaysBefore: 7,
+        reminderFrequency: 'daily',
+        newSubmissionTemplate: 'تم تقديم فكرة جديدة للتحدي: {challengeTitle}',
+        statusChangeTemplate: 'تم تغيير حالة التحدي {challengeTitle} إلى {newStatus}',
+        enableApiAccess: false,
+        apiRateLimit: 1000,
+        allowedDomains: '',
+        enableWebhooks: false,
+        webhookUrl: '',
+        webhookSecret: '',
+        webhookEvents: 'all',
+        enableTeamsIntegration: false,
+        enableSlackIntegration: false,
+        enableEmailIntegration: true,
+        autoBackup: true,
+        backupFrequency: 'daily',
+        retentionPeriod: 30,
+        backupLocation: 'cloud',
+        challengeTypes: ['تحدي تقني', 'تحدي إبداعي', 'تحدي تشغيلي', 'تحدي استراتيجي'],
+        ideaCategories: ['تطوير منتج', 'تحسين عملية', 'حل مشكلة', 'ابتكار تقني'],
+        evaluationCriteria: ['الجدوى التقنية', 'الأثر المتوقع', 'التكلفة', 'سهولة التنفيذ', 'الابتكار'],
+        themes: ['التكنولوجيا المالية', 'الصحة', 'التعليم', 'البيئة'],
+        roles: ['مبتكر', 'خبير', 'منسق فريق', 'مدير', 'مدير عام'],
+        statusOptions: ['مسودة', 'منشور', 'نشط', 'مكتمل', 'ملغي'],
+        priorityLevels: ['منخفض', 'متوسط', 'عالي', 'عاجل'],
+        sensitivityLevels: ['عادي', 'حساس', 'سري', 'سري للغاية'],
+        allowCustomValues: true,
+        sortListsAlphabetically: false
+      });
+
+      toast({
+        title: "تم بنجاح",
+        description: "تم إعادة تعيين جميع الإعدادات إلى القيم الافتراضية"
+      });
+    }
   };
 
   if (loading) {
@@ -113,7 +291,10 @@ const SystemSettings = () => {
       <AppShell>
         <div className="container mx-auto p-6 space-y-6">
           <div className="flex items-center justify-center h-64">
-            <div className="text-lg">جاري التحميل...</div>
+            <div className="flex items-center gap-2">
+              <Loader2 className="w-5 h-5 animate-spin" />
+              <span className="text-lg">جاري تحميل الإعدادات...</span>
+            </div>
           </div>
         </div>
       </AppShell>
@@ -123,199 +304,99 @@ const SystemSettings = () => {
   return (
     <AppShell>
       <div className="container mx-auto p-6 space-y-6">
+        {/* Header */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold">إعدادات النظام</h1>
-            <p className="text-muted-foreground">إدارة إعدادات النظام العامة والقوائم</p>
+            <p className="text-muted-foreground">إدارة شاملة لجميع إعدادات المنصة والنظام</p>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={resetToDefaults}>
-              <RotateCcw className="h-4 w-4 mr-2" />
+            <Button variant="outline" onClick={resetToDefaults} disabled={saving}>
+              <RotateCcw className="w-4 h-4 mr-2" />
               إعادة تعيين
             </Button>
-            <Button onClick={saveSettings}>
-              <Globe className="h-4 w-4 mr-2" />
+            <Button onClick={saveSettings} disabled={saving}>
+              {saving ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <Save className="w-4 h-4 mr-2" />
+              )}
               حفظ الإعدادات
             </Button>
           </div>
         </div>
 
-        <div className="grid gap-6">
-          {/* General Settings */}
-          <Card>
-            <CardHeader>
-              <CardTitle>الإعدادات العامة</CardTitle>
-              <CardDescription>
-                إعدادات النظام الأساسية والمعلومات العامة
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="systemName">اسم النظام</Label>
-                  <Input
-                    id="systemName"
-                    value={settings.systemName}
-                    onChange={(e) => handleSettingChange('systemName', e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="systemLanguage">لغة النظام</Label>
-                  <select
-                    id="systemLanguage"
-                    value={settings.systemLanguage}
-                    onChange={(e) => handleSettingChange('systemLanguage', e.target.value)}
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
-                  >
-                    <option value="ar">العربية</option>
-                    <option value="en">English</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="systemDescription">وصف النظام</Label>
-                <Textarea
-                  id="systemDescription"
-                  value={settings.systemDescription}
-                  onChange={(e) => handleSettingChange('systemDescription', e.target.value)}
-                  rows={3}
-                />
-              </div>
-            </CardContent>
-          </Card>
+        {/* Settings Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-6 h-auto p-1">
+            <TabsTrigger value="general" className="flex items-center gap-2 h-12 text-sm">
+              <Settings className="w-4 h-4" />
+              <span className="hidden sm:inline">عام</span>
+            </TabsTrigger>
+            <TabsTrigger value="challenges" className="flex items-center gap-2 h-12 text-sm">
+              <Target className="w-4 h-4" />
+              <span className="hidden sm:inline">التحديات</span>
+            </TabsTrigger>
+            <TabsTrigger value="security" className="flex items-center gap-2 h-12 text-sm">
+              <Shield className="w-4 h-4" />
+              <span className="hidden sm:inline">الأمان</span>
+            </TabsTrigger>
+            <TabsTrigger value="notifications" className="flex items-center gap-2 h-12 text-sm">
+              <Bell className="w-4 h-4" />
+              <span className="hidden sm:inline">الإشعارات</span>
+            </TabsTrigger>
+            <TabsTrigger value="integrations" className="flex items-center gap-2 h-12 text-sm">
+              <Database className="w-4 h-4" />
+              <span className="hidden sm:inline">التكامل</span>
+            </TabsTrigger>
+            <TabsTrigger value="lists" className="flex items-center gap-2 h-12 text-sm">
+              <List className="w-4 h-4" />
+              <span className="hidden sm:inline">القوائم</span>
+            </TabsTrigger>
+          </TabsList>
 
-          {/* Security & Access Settings */}
-          <Card>
-            <CardHeader>
-              <CardTitle>إعدادات الأمان والوصول</CardTitle>
-              <CardDescription>
-                إدارة إعدادات الأمان وصلاحيات الوصول
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label className="text-base">وضع الصيانة</Label>
-                  <div className="text-sm text-muted-foreground">
-                    تفعيل وضع الصيانة يمنع وصول المستخدمين العاديين
-                  </div>
-                </div>
-                <Switch
-                  checked={settings.maintenanceMode}
-                  onCheckedChange={(value) => handleSettingChange('maintenanceMode', value)}
-                />
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label className="text-base">السماح بالتسجيل العام</Label>
-                  <div className="text-sm text-muted-foreground">
-                    السماح للمستخدمين الجدد بالتسجيل دون دعوة
-                  </div>
-                </div>
-                <Switch
-                  checked={settings.allowPublicRegistration}
-                  onCheckedChange={(value) => handleSettingChange('allowPublicRegistration', value)}
-                />
-              </div>
+          <TabsContent value="general">
+            <GeneralSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="maxFileUploadSize">الحد الأقصى لحجم الملف (MB)</Label>
-                  <Input
-                    id="maxFileUploadSize"
-                    type="number"
-                    value={settings.maxFileUploadSize}
-                    onChange={(e) => handleSettingChange('maxFileUploadSize', parseInt(e.target.value))}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="sessionTimeout">انتهاء الجلسة (دقيقة)</Label>
-                  <Input
-                    id="sessionTimeout"
-                    type="number"
-                    value={settings.sessionTimeout}
-                    onChange={(e) => handleSettingChange('sessionTimeout', parseInt(e.target.value))}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <TabsContent value="challenges">
+            <ChallengeSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
 
-          {/* System Lists Management */}
-          <Card>
-            <CardHeader>
-              <CardTitle>إدارة قوائم النظام</CardTitle>
-              <CardDescription>
-                إدارة القوائم المختلفة المستخدمة في النظام
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid gap-6">
-                <div className="space-y-4">
-                  <h4 className="text-lg font-medium">المواضيع</h4>
-                  <p className="text-sm text-muted-foreground">إدارة قائمة المواضيع المتاحة</p>
-                  <div className="space-y-2">
-                    {systemLists.themes.map((theme, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <span className="flex-1 p-2 bg-muted rounded">{theme}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <h4 className="text-lg font-medium">القطاعات</h4>
-                  <p className="text-sm text-muted-foreground">إدارة قائمة القطاعات المتاحة</p>
-                  <div className="space-y-2">
-                    {systemLists.sectors.map((sector, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <span className="flex-1 p-2 bg-muted rounded">{sector}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <h4 className="text-lg font-medium">أنواع التحديات</h4>
-                  <p className="text-sm text-muted-foreground">إدارة قائمة أنواع التحديات</p>
-                  <div className="space-y-2">
-                    {systemLists.challengeTypes.map((type, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <span className="flex-1 p-2 bg-muted rounded">{type}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <TabsContent value="security">
+            <SecuritySettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
 
-          {/* Notification Settings */}
-          <Card>
-            <CardHeader>
-              <CardTitle>إعدادات الإشعارات</CardTitle>
-              <CardDescription>
-                إدارة إعدادات الإشعارات والتنبيهات
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label className="text-base">إشعارات البريد الإلكتروني</Label>
-                  <div className="text-sm text-muted-foreground">
-                    تفعيل إرسال الإشعارات عبر البريد الإلكتروني
-                  </div>
-                </div>
-                <Switch
-                  checked={settings.emailNotifications}
-                  onCheckedChange={(value) => handleSettingChange('emailNotifications', value)}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+          <TabsContent value="notifications">
+            <NotificationSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="integrations">
+            <IntegrationSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="lists">
+            <SystemListSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+        </Tabs>
       </div>
     </AppShell>
   );
