@@ -325,9 +325,9 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
 
     switch (step) {
       case 1: // Basic Information
-        if (!formData.title.trim()) errors.push("Title is required");
-        if (!formData.event_type) errors.push("Event type is required");
-        if (!formData.description?.trim()) errors.push("Description is required");
+        if (!formData.title_ar.trim()) errors.push("العنوان بالعربية مطلوب");
+        if (!formData.event_type) errors.push("نوع الحدث مطلوب");
+        if (!formData.description_ar?.trim()) errors.push("الوصف بالعربية مطلوب");
         break;
       case 2: // Event Details
         if (!formData.event_date) errors.push("Event date is required");
@@ -1215,11 +1215,11 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
   };
 
   const stepTitles = [
-    "Basic Information",
-    "Event Details",
-    "Organization",
-    "Relationships",
-    "Questions & Settings"
+    "المعلومات الأساسية",
+    "تفاصيل الحدث", 
+    "التنظيم",
+    "العلاقات",
+    "الأسئلة والإعدادات"
   ];
 
   const stepIcons = [
@@ -1235,7 +1235,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {event ? "Edit Event" : "Create New Event"}
+            {event ? "تعديل الحدث" : "إنشاء حدث جديد"}
           </DialogTitle>
         </DialogHeader>
 
@@ -1275,37 +1275,37 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
           })}
         </div>
 
-        <div className="mb-4">
-          <h3 className="text-lg font-medium">{stepTitles[currentStep - 1]}</h3>
-          <p className="text-sm text-muted-foreground">
-            Step {currentStep} of {totalSteps}
-          </p>
-        </div>
+          <div className="mb-4">
+            <h3 className="text-lg font-medium">{stepTitles[currentStep - 1]}</h3>
+            <p className="text-sm text-muted-foreground">
+              الخطوة {currentStep} من {totalSteps}
+            </p>
+          </div>
 
         {renderStepContent()}
 
         {/* Navigation buttons */}
         <div className="flex justify-between pt-6">
-          <Button
-            variant="outline"
-            onClick={prevStep}
-            disabled={currentStep === 1}
-          >
-            <ChevronLeft className="mr-2 h-4 w-4" />
-            Previous
-          </Button>
+            <Button
+              variant="outline"
+              onClick={prevStep}
+              disabled={currentStep === 1}
+            >
+              <ChevronLeft className="mr-2 h-4 w-4" />
+              السابق
+            </Button>
 
           <div className="flex gap-2">
             <Button variant="outline" onClick={onClose}>
-              Cancel
+              إلغاء
             </Button>
             {currentStep === totalSteps ? (
               <Button onClick={handleSave} disabled={isLoading}>
-                {isLoading ? "Saving..." : event ? "Update Event" : "Create Event"}
+                {isLoading ? "جاري الحفظ..." : event ? "تحديث الحدث" : "إنشاء الحدث"}
               </Button>
             ) : (
               <Button onClick={nextStep}>
-                Next
+                التالي
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
             )}
