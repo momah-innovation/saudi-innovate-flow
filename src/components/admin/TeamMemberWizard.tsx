@@ -124,15 +124,23 @@ export function TeamMemberWizard({
 
   const fetchAvailableUsers = async () => {
     try {
+      // First get all team member user IDs
+      const { data: teamMembers } = await supabase
+        .from('innovation_team_members')
+        .select('user_id');
+      
+      const teamMemberIds = teamMembers?.map(member => member.user_id).filter(Boolean) || [];
+      
       // Get users who are not already team members
-      const { data, error } = await supabase
+      const query = supabase
         .from('profiles')
         .select('id, name, email, department, position')
-        .not('id', 'in', `(
-          SELECT user_id FROM innovation_team_members 
-          WHERE user_id IS NOT NULL
-        )`)
         .order('name');
+      
+      // Only apply the filter if there are team members
+      const { data, error } = teamMemberIds.length > 0 
+        ? await query.not('id', 'in', `(${teamMemberIds.join(',')})`)
+        : await query;
 
       if (error) throw error;
       setAvailableUsers(data || []);
