@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App.tsx";
 import "./index.css";
 import { AuthProvider } from "./contexts/AuthContext";
+import { SystemSettingsProvider } from "./contexts/SystemSettingsContext";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { DirectionProvider } from "@/components/ui/direction-provider";
@@ -15,10 +16,12 @@ createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <DirectionProvider>
         <ThemeProvider>
-          <AuthProvider>
-            <App />
-            <Toaster />
-          </AuthProvider>
+          <SystemSettingsProvider>
+            <AuthProvider>
+              <App />
+              <Toaster />
+            </AuthProvider>
+          </SystemSettingsProvider>
         </ThemeProvider>
       </DirectionProvider>
     </QueryClientProvider>

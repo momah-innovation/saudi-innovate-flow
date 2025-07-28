@@ -9,7 +9,7 @@ import { UserMenu } from './UserMenu';
 import { LanguageToggle } from './LanguageToggle';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDirection } from '@/components/ui/direction-provider';
-import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
+import { getInitials, useSystemSettings } from '@/contexts/SystemSettingsContext';
 import { cn } from '@/lib/utils';
 
 /**

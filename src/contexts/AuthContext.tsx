@@ -34,12 +34,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const fetchUserProfile = async (userId: string) => {
     try {
-      // Fetch profile data only (remove problematic join)
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
+      // Use Promise.all to fetch profile and roles simultaneously
+      const [profileResponse, rolesResponse] = await Promise.all([
+        supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', userId)
+          .single(),
+        supabase
+          .from('user_roles')
+          .select('role, is_active, expires_at')
+          .eq('user_id', userId)
+          .eq('is_active', true)
+      ]);
+
+      const { data: profile, error: profileError } = profileResponse;
+      const { data: userRoles, error: rolesError } = rolesResponse;
 
       if (profileError) {
         console.error('Error fetching profile:', profileError);
@@ -47,13 +57,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUserProfile({ id: userId, basic_access: true });
         return;
       }
-
-      // Fetch user roles separately to avoid relationship issues
-      const { data: userRoles, error: rolesError } = await supabase
-        .from('user_roles')
-        .select('role, is_active, expires_at')
-        .eq('user_id', userId)
-        .eq('is_active', true);
 
       if (rolesError) {
         console.log('No roles found for user:', rolesError);
@@ -80,18 +83,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
+    let isSubscribed = true;
+
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        if (!isSubscribed) return;
+        
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
 
         // Defer profile fetching to avoid auth state change deadlock
         if (session?.user) {
+          // Use a small delay to ensure auth state is fully set
           setTimeout(() => {
-            fetchUserProfile(session.user.id);
-          }, 0);
+            if (isSubscribed) {
+              fetchUserProfile(session.user.id);
+            }
+          }, 100);
         } else {
           setUserProfile(null);
         }
@@ -100,18 +110,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!isSubscribed) return;
+      
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
 
       if (session?.user) {
         setTimeout(() => {
-          fetchUserProfile(session.user.id);
-        }, 0);
+          if (isSubscribed) {
+            fetchUserProfile(session.user.id);
+          }
+        }, 100);
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isSubscribed = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signUp = async (email: string, password: string, userData?: { name: string; name_ar?: string }) => {
