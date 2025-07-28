@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useRTLAware } from "@/hooks/useRTL";
 import { 
   Target, 
   Calendar, 
@@ -69,7 +70,8 @@ export function ChallengeManagementList() {
   const [showDetails, setShowDetails] = useState(false);
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t, isRTL } = useTranslation();
+  const { getMarginClass, flexReverse } = useRTLAware();
 
   useEffect(() => {
     fetchChallenges();
@@ -198,7 +200,7 @@ export function ChallengeManagementList() {
     <>
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
           <div>
             <h2 className="text-2xl font-bold">إدارة التحديات</h2>
             <p className="text-muted-foreground">إنشاء وإدارة التحديات الابتكارية ({filteredChallenges.length})</p>
@@ -232,8 +234,8 @@ export function ChallengeManagementList() {
             <Button onClick={() => {
               setSelectedChallenge(null);
               setShowWizard(true);
-            }}>
-              <Target className="w-4 h-4 mr-2" />
+            }} className={`${getMarginClass('right', '2')}`}>
+              <Target className={`w-4 h-4 ${getMarginClass('right', '2')}`} />
               تحدي جديد
             </Button>
           </div>
