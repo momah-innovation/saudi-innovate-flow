@@ -14,6 +14,7 @@ import {
   Loader2
 } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
+import { LanguageToggle } from "@/components/layout/LanguageToggle";
 import { GeneralSettings } from "@/components/admin/settings/GeneralSettings";
 import { ChallengeSettings } from "@/components/admin/settings/ChallengeSettings";
 import { SecuritySettings } from "@/components/admin/settings/SecuritySettings";
@@ -96,6 +97,7 @@ const SystemSettings = () => {
             <p className="text-muted-foreground">إدارة شاملة لجميع إعدادات المنصة والنظام</p>
           </div>
           <div className="flex gap-2 rtl:flex-row-reverse">
+            <LanguageToggle />
             <Button variant="outline" onClick={resetToDefaults} disabled={saving} className="rtl:ml-2 ltr:mr-2">
               <RotateCcw className="w-4 h-4 rtl:ml-2 ltr:mr-2" />
               إعادة تعيين

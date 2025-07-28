@@ -35,7 +35,8 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
   const setDirection = (newDirection: Direction) => {
     setDirectionState(newDirection);
     document.documentElement.dir = newDirection;
-    document.documentElement.classList.toggle('rtl', newDirection === 'rtl');
+    document.documentElement.className = document.documentElement.className.replace(/\b(ltr|rtl)\b/g, '');
+    document.documentElement.classList.add(newDirection);
     localStorage.setItem('ui-direction', newDirection);
   };
 
