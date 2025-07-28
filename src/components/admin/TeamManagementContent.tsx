@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
@@ -1394,15 +1395,17 @@ export function TeamManagementContent({
                   <CardTitle className="text-sm">{t('specializations')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedMember.specialization?.length > 0 ? (
-                      selectedMember.specialization.map((spec) => (
-                        <Badge key={spec} variant="outline">{spec}</Badge>
-                      ))
-                    ) : (
-                      <span className="text-muted-foreground">{t('noDataAvailable')}</span>
-                    )}
-                  </div>
+                  <ScrollArea className="h-[120px] w-full">
+                    <div className="flex flex-wrap gap-2 pr-4">
+                      {selectedMember.specialization?.length > 0 ? (
+                        selectedMember.specialization.map((spec) => (
+                          <Badge key={spec} variant="outline">{spec}</Badge>
+                        ))
+                      ) : (
+                        <span className="text-muted-foreground">{t('noDataAvailable')}</span>
+                      )}
+                    </div>
+                  </ScrollArea>
                 </CardContent>
               </Card>
 
@@ -1469,32 +1472,34 @@ export function TeamManagementContent({
                   <CardTitle className="text-sm">{t('currentAssignments')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2">
-                    {getAssignmentsForMember(selectedMember.user_id).length > 0 ? (
-                      getAssignmentsForMember(selectedMember.user_id).map((assignment) => {
-                        const TypeIcon = getTypeIcon(assignment.type);
-                        return (
-                          <div key={assignment.id} className="flex items-center gap-3 p-2 border rounded-md">
-                            <TypeIcon className="h-4 w-4 text-muted-foreground" />
-                            <div className="flex-1">
-                              <p className="font-medium text-sm">{assignment.title}</p>
-                              <p className="text-xs text-muted-foreground">
-                                {assignment.type} • {assignment.status}
-                              </p>
+                  <ScrollArea className="h-[300px] w-full">
+                    <div className="space-y-2 pr-4">
+                      {getAssignmentsForMember(selectedMember.user_id).length > 0 ? (
+                        getAssignmentsForMember(selectedMember.user_id).map((assignment) => {
+                          const TypeIcon = getTypeIcon(assignment.type);
+                          return (
+                            <div key={assignment.id} className="flex items-center gap-3 p-2 border rounded-md">
+                              <TypeIcon className="h-4 w-4 text-muted-foreground" />
+                              <div className="flex-1">
+                                <p className="font-medium text-sm">{assignment.title}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {assignment.type} • {assignment.status}
+                                </p>
+                              </div>
+                              <Badge variant="outline" className="text-xs">
+                                {assignment.status}
+                              </Badge>
                             </div>
-                            <Badge variant="outline" className="text-xs">
-                              {assignment.status}
-                            </Badge>
-                          </div>
-                        );
-                      })
-                    ) : (
-                      <div className="text-center py-4">
-                        <Target className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-                        <p className="text-muted-foreground">{t('noActiveAssignments')}</p>
-                      </div>
-                    )}
-                  </div>
+                          );
+                        })
+                      ) : (
+                        <div className="text-center py-4">
+                          <Target className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                          <p className="text-muted-foreground">{t('noActiveAssignments')}</p>
+                        </div>
+                      )}
+                    </div>
+                  </ScrollArea>
                 </CardContent>
               </Card>
 
