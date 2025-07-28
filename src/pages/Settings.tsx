@@ -7,7 +7,7 @@ import { Settings as SettingsIcon, Shield, Bell } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { RoleRequestDialog } from "@/components/admin/RoleRequestDialog";
+import { RoleRequestWizard } from "@/components/admin/RoleRequestWizard";
 import { AppShell } from "@/components/layout/AppShell";
 import { ThemeCustomizer } from "@/components/ui/theme-customizer";
 import { useNavigate } from "react-router-dom";
@@ -201,7 +201,7 @@ const Settings = () => {
           </Card>
         </div>
 
-        <RoleRequestDialog 
+        <RoleRequestWizard 
           open={showRoleDialog}
           onOpenChange={setShowRoleDialog}
           currentRoles={userRoles.map(role => role.role)}

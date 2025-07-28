@@ -32,8 +32,8 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
-import { ExpertAssignmentDialog } from "@/components/challenges/ExpertAssignmentDialog";
-import { FocusQuestionDialog } from "@/components/challenges/FocusQuestionDialog";
+import { ExpertAssignmentWizard } from "@/components/challenges/ExpertAssignmentWizard";
+import { FocusQuestionWizard } from "@/components/challenges/FocusQuestionWizard";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 
 interface Challenge {
@@ -1302,7 +1302,7 @@ const ChallengeDetails = () => {
       </div>
 
       {/* Dialogs */}
-      <ExpertAssignmentDialog
+      <ExpertAssignmentWizard
         open={expertDialogOpen}
         onOpenChange={setExpertDialogOpen}
         challengeId={challengeId!}
@@ -1311,7 +1311,7 @@ const ChallengeDetails = () => {
         }}
       />
 
-      <FocusQuestionDialog
+      <FocusQuestionWizard
         open={questionDialogOpen}
         onOpenChange={setQuestionDialogOpen}
         challengeId={challengeId!}

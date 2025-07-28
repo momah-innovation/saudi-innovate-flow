@@ -13,13 +13,13 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 
-interface UserInvitationDialogProps {
+interface UserInvitationWizardProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onInvitationSent?: () => void;
 }
 
-export function UserInvitationDialog({ open, onOpenChange, onInvitationSent }: UserInvitationDialogProps) {
+export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: UserInvitationWizardProps) {
   const { user } = useAuth();
   const { toast } = useToast();
   const { availableUserRoles } = useSystemLists();

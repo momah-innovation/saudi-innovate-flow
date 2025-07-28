@@ -9,8 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
-import { UserInvitationDialog } from "@/components/admin/UserInvitationDialog";
-import { RoleRequestDialog } from "@/components/admin/RoleRequestDialog";
+import { UserInvitationWizard } from "@/components/admin/UserInvitationWizard";
+import { RoleRequestWizard } from "@/components/admin/RoleRequestWizard";
 import { ExpertProfileDialog } from "@/components/admin/ExpertProfileDialog";
 
 const UserManagement = () => {
@@ -322,12 +322,12 @@ const UserManagement = () => {
       </PageLayout>
 
       {/* Dialogs */}
-      <UserInvitationDialog
+      <UserInvitationWizard
         open={showInviteDialog}
         onOpenChange={setShowInviteDialog}
       />
       
-      <RoleRequestDialog
+      <RoleRequestWizard
         open={showRoleDialog}
         onOpenChange={setShowRoleDialog}
         currentRoles={selectedUser?.role ? [selectedUser.role] : []}

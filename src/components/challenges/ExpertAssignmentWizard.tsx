@@ -19,19 +19,19 @@ interface Expert {
   } | null;
 }
 
-interface ExpertAssignmentDialogProps {
+interface ExpertAssignmentWizardProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   challengeId: string;
   onAssignmentComplete: () => void;
 }
 
-export function ExpertAssignmentDialog({ 
+export function ExpertAssignmentWizard({ 
   open, 
   onOpenChange, 
   challengeId,
   onAssignmentComplete 
-}: ExpertAssignmentDialogProps) {
+}: ExpertAssignmentWizardProps) {
   const [experts, setExperts] = useState<Expert[]>([]);
   const [selectedExpertId, setSelectedExpertId] = useState<string>("");
   const [roleType, setRoleType] = useState<string>("evaluator");

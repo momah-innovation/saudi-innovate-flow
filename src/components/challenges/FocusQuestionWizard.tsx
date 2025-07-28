@@ -19,7 +19,7 @@ interface FocusQuestion {
   order_sequence: number;
 }
 
-interface FocusQuestionDialogProps {
+interface FocusQuestionWizardProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   challengeId: string;
@@ -27,13 +27,13 @@ interface FocusQuestionDialogProps {
   onQuestionSaved: () => void;
 }
 
-export function FocusQuestionDialog({ 
+export function FocusQuestionWizard({ 
   open, 
   onOpenChange, 
   challengeId,
   question,
   onQuestionSaved 
-}: FocusQuestionDialogProps) {
+}: FocusQuestionWizardProps) {
   const [questionText, setQuestionText] = useState("");
   const [questionTextAr, setQuestionTextAr] = useState("");
   const [questionType, setQuestionType] = useState("open");

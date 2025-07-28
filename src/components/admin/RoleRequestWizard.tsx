@@ -51,7 +51,7 @@ const getMaxRoleRequestsPerWeek = async (): Promise<number> => {
   }
 };
 
-interface RoleRequestDialogProps {
+interface RoleRequestWizardProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   currentRoles: string[];
@@ -60,7 +60,7 @@ interface RoleRequestDialogProps {
 
 // These constants are now loaded from system settings via useSystemLists hook
 
-export function RoleRequestDialog({ open, onOpenChange, currentRoles, onRequestSubmitted }: RoleRequestDialogProps) {
+export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestSubmitted }: RoleRequestWizardProps) {
   const { user } = useAuth();
   const { requestableUserRoles } = useSystemLists();
   const [selectedRole, setSelectedRole] = useState("");
