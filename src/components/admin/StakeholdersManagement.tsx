@@ -4,23 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Edit, Trash2, User, Mail, Phone, Building, Search, X } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, User, Mail, Phone, Building, Search, X, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { StakeholderWizard } from "./StakeholderWizard";
+import { PageLayout } from "@/components/layout/PageLayout";
 
 interface Stakeholder {
   id: string;
@@ -76,8 +65,8 @@ export function StakeholdersManagement() {
       if (error) {
         console.error("Error fetching stakeholders:", error);
         toast({
-          title: "Error",
-          description: "Failed to fetch stakeholders",
+          title: "خطأ",
+          description: "فشل في جلب أصحاب المصلحة",
           variant: "destructive",
         });
         return;
@@ -87,8 +76,8 @@ export function StakeholdersManagement() {
     } catch (error) {
       console.error("Error fetching stakeholders:", error);
       toast({
-        title: "Error",
-        description: "Failed to fetch stakeholders",
+        title: "خطأ",
+        description: "فشل في جلب أصحاب المصلحة",
         variant: "destructive",
       });
     } finally {
@@ -108,7 +97,7 @@ export function StakeholdersManagement() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this stakeholder?")) return;
+    if (!confirm("هل أنت متأكد من حذف صاحب المصلحة هذا؟")) return;
 
     try {
       const { error } = await supabase
@@ -119,16 +108,16 @@ export function StakeholdersManagement() {
       if (error) throw error;
       
       toast({
-        title: "Success",
-        description: "Stakeholder deleted successfully",
+        title: "نجح",
+        description: "تم حذف صاحب المصلحة بنجاح",
       });
       
-      fetchStakeholders(); // Refresh the list
+      fetchStakeholders();
     } catch (error) {
       console.error("Error deleting stakeholder:", error);
       toast({
-        title: "Error",
-        description: "Failed to delete stakeholder",
+        title: "خطأ",
+        description: "فشل في حذف صاحب المصلحة",
         variant: "destructive",
       });
     }
@@ -183,145 +172,203 @@ export function StakeholdersManagement() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center space-y-4">
           <Loader2 className="h-8 w-8 animate-spin mx-auto" />
-          <p className="text-sm text-muted-foreground">Loading stakeholders...</p>
+          <p className="text-sm text-muted-foreground">جاري تحميل أصحاب المصلحة...</p>
         </div>
       </div>
     );
   }
 
-  return (
-    <div className="container mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-bold">Stakeholders Management</h1>
-          <p className="text-muted-foreground">Track and manage stakeholder relationships, influence levels, and engagement strategies</p>
-        </div>
-        
-        <Button onClick={() => { setEditingStakeholder(null); setIsWizardOpen(true); }}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Stakeholder
-        </Button>
+  // Create filters for PageLayout
+  const filters = (
+    <>
+      <div className="min-w-[140px]">
+        <Select value={typeFilter} onValueChange={setTypeFilter}>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder="جميع الأنواع" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">جميع الأنواع</SelectItem>
+            {stakeholderTypes.map((type) => (
+              <SelectItem key={type} value={type}>
+                {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
+      <div className="min-w-[140px]">
+        <Select value={influenceFilter} onValueChange={setInfluenceFilter}>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder="جميع مستويات التأثير" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">جميع مستويات التأثير</SelectItem>
+            {influenceLevels.map((level) => (
+              <SelectItem key={level} value={level}>
+                {level.charAt(0).toUpperCase() + level.slice(1)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="min-w-[140px]">
+        <Select value={engagementFilter} onValueChange={setEngagementFilter}>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder="جميع حالات المشاركة" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">جميع حالات المشاركة</SelectItem>
+            {engagementStatuses.map((status) => (
+              <SelectItem key={status} value={status}>
+                {status.charAt(0).toUpperCase() + status.slice(1)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </>
+  );
 
-      {/* Search and Filters */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="text-lg">Search & Filter</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search stakeholders..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
+  const secondaryActions = (
+    <Button
+      variant="outline"
+      onClick={() => {
+        toast({
+          title: "تصدير البيانات",
+          description: "سيتم إضافة وظيفة التصدير قريباً",
+        });
+      }}
+    >
+      تصدير
+    </Button>
+  );
+
+  return (
+    <>
+      <PageLayout 
+        title="إدارة أصحاب المصلحة"
+        description="تتبع وإدارة علاقات أصحاب المصلحة ومستويات التأثير واستراتيجيات المشاركة"
+        itemCount={filteredStakeholders.length}
+        primaryAction={{
+          label: "إضافة صاحب مصلحة",
+          onClick: () => { setEditingStakeholder(null); setIsWizardOpen(true); },
+          icon: <Plus className="w-4 h-4" />
+        }}
+        secondaryActions={secondaryActions}
+        showSearch={true}
+        searchValue={searchTerm}
+        onSearchChange={setSearchTerm}
+        searchPlaceholder="البحث في أصحاب المصلحة..."
+        filters={filters}
+        spacing="md"
+        maxWidth="full"
+      >
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {filteredStakeholders.map((stakeholder) => (
+            <Card key={stakeholder.id} className="hover:shadow-md transition-shadow">
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="space-y-2 flex-1">
+                    <CardTitle className="text-lg">{stakeholder.name}</CardTitle>
+                    {stakeholder.name_ar && (
+                      <p className="text-sm text-muted-foreground" dir="rtl">{stakeholder.name_ar}</p>
+                    )}
+                    <div className="space-y-1 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2">
+                        <Building className="h-3 w-3" />
+                        {stakeholder.organization}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <User className="h-3 w-3" />
+                        {stakeholder.position}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Mail className="h-3 w-3" />
+                        {stakeholder.email}
+                      </div>
+                      {stakeholder.phone && (
+                        <div className="flex items-center gap-2">
+                          <Phone className="h-3 w-3" />
+                          {stakeholder.phone}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <Badge variant="outline">
+                        {stakeholder.stakeholder_type.split('_').map(word => 
+                          word.charAt(0).toUpperCase() + word.slice(1)
+                        ).join(' ')}
+                      </Badge>
+                      <Badge variant="outline" className={getInfluenceColor(stakeholder.influence_level)}>
+                        {stakeholder.influence_level.charAt(0).toUpperCase() + stakeholder.influence_level.slice(1)}
+                      </Badge>
+                      <Badge variant="outline" className={getEngagementColor(stakeholder.engagement_status)}>
+                        {stakeholder.engagement_status.charAt(0).toUpperCase() + stakeholder.engagement_status.slice(1)}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setViewingStakeholder(stakeholder);
+                      setIsDetailOpen(true);
+                    }}
+                    className="flex-1"
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    عرض
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleEdit(stakeholder)}
+                    className="flex-1"
+                  >
+                    <Edit className="h-4 w-4 mr-2" />
+                    تعديل
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleDelete(stakeholder.id)}
+                    className="text-destructive hover:text-destructive"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {(filteredStakeholders.length === 0 && (searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all")) && (
+          <div className="text-center py-8">
+            <div className="text-muted-foreground mb-4">
+              لا توجد أصحاب مصلحة تطابق معايير البحث
             </div>
-            
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder="All Types" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                {stakeholderTypes.map((type) => (
-                  <SelectItem key={type} value={type}>
-                    {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={influenceFilter} onValueChange={setInfluenceFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder="All Influence Levels" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Influence Levels</SelectItem>
-                {influenceLevels.map((level) => (
-                  <SelectItem key={level} value={level}>
-                    {level.charAt(0).toUpperCase() + level.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={engagementFilter} onValueChange={setEngagementFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder="All Engagement" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Engagement</SelectItem>
-                {engagementStatuses.map((status) => (
-                  <SelectItem key={status} value={status}>
-                    {status.charAt(0).toUpperCase() + status.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          
-          {(searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all") && (
-            <div className="mt-4 flex justify-between items-center">
-              <div className="flex gap-2">
-                {searchTerm && (
-                  <Badge variant="secondary" className="gap-1">
-                    Search: {searchTerm}
-                    <X className="w-3 h-3 cursor-pointer" onClick={() => setSearchTerm("")} />
-                  </Badge>
-                )}
-                {typeFilter !== "all" && (
-                  <Badge variant="secondary" className="gap-1">
-                    Type: {typeFilter.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                    <X className="w-3 h-3 cursor-pointer" onClick={() => setTypeFilter("all")} />
-                  </Badge>
-                )}
-                {influenceFilter !== "all" && (
-                  <Badge variant="secondary" className="gap-1">
-                    Influence: {influenceFilter}
-                    <X className="w-3 h-3 cursor-pointer" onClick={() => setInfluenceFilter("all")} />
-                  </Badge>
-                )}
-                {engagementFilter !== "all" && (
-                  <Badge variant="secondary" className="gap-1">
-                    Engagement: {engagementFilter}
-                    <X className="w-3 h-3 cursor-pointer" onClick={() => setEngagementFilter("all")} />
-                  </Badge>
-                )}
-              </div>
-              <Button variant="outline" size="sm" onClick={clearFilters}>
-                Clear All
-              </Button>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Results */}
-      {filteredStakeholders.length === 0 && (searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all") && (
-        <Card>
-          <CardContent className="text-center py-8">
-            <p className="text-muted-foreground">No stakeholders found matching your criteria</p>
-            <Button 
-              variant="outline" 
-              onClick={clearFilters}
-              className="mt-2"
-            >
-              Clear filters
+            <Button variant="outline" onClick={clearFilters}>
+              مسح جميع المرشحات
             </Button>
-          </CardContent>
-        </Card>
-      )}
+          </div>
+        )}
 
-      {stakeholders.length === 0 && !(searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all") && (
-        <Card>
-          <CardContent className="text-center py-8">
-            <p className="text-muted-foreground">No stakeholders found</p>
-          </CardContent>
-        </Card>
-      )}
+        {(stakeholders.length === 0 && !(searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all")) && (
+          <div className="text-center py-8">
+            <div className="text-muted-foreground mb-4">
+              لا توجد أصحاب مصلحة
+            </div>
+            <Button onClick={() => { setEditingStakeholder(null); setIsWizardOpen(true); }}>
+              <Plus className="h-4 w-4 mr-2" />
+              إضافة صاحب مصلحة جديد
+            </Button>
+          </div>
+        )}
+      </PageLayout>
 
       {/* Stakeholder Wizard */}
       <StakeholderWizard
@@ -338,7 +385,7 @@ export function StakeholdersManagement() {
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Stakeholder Details</DialogTitle>
+            <DialogTitle>تفاصيل صاحب المصلحة</DialogTitle>
           </DialogHeader>
           {viewingStakeholder && (
             <div className="space-y-6">
@@ -346,151 +393,73 @@ export function StakeholdersManagement() {
                 <div>
                   <h3 className="text-xl font-semibold">{viewingStakeholder.name}</h3>
                   {viewingStakeholder.name_ar && (
-                    <p className="text-muted-foreground">{viewingStakeholder.name_ar}</p>
+                    <p className="text-lg text-muted-foreground" dir="rtl">{viewingStakeholder.name_ar}</p>
                   )}
-                  <div className="flex gap-2 mt-2">
-                    <Badge variant="outline">
-                      {viewingStakeholder.stakeholder_type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                    </Badge>
-                    <Badge className={getInfluenceColor(viewingStakeholder.influence_level)}>
-                      {viewingStakeholder.influence_level} influence
-                    </Badge>
-                    <Badge className={getEngagementColor(viewingStakeholder.engagement_status)}>
-                      {viewingStakeholder.engagement_status}
-                    </Badge>
-                  </div>
+                  <p className="text-muted-foreground">{viewingStakeholder.position} - {viewingStakeholder.organization}</p>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={() => {
-                    setIsDetailOpen(false);
-                    handleEdit(viewingStakeholder);
-                  }}>
-                    <Edit className="w-4 h-4 mr-2" />
-                    Edit
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={() => {
-                    setIsDetailOpen(false);
-                    handleDelete(viewingStakeholder.id);
-                  }}>
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Delete
-                  </Button>
+                  <Badge variant="outline">
+                    {viewingStakeholder.stakeholder_type.split('_').map(word => 
+                      word.charAt(0).toUpperCase() + word.slice(1)
+                    ).join(' ')}
+                  </Badge>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <span className="font-medium text-sm text-muted-foreground">Organization</span>
-                  <div className="flex items-center gap-2 mt-1">
-                    <Building className="w-4 h-4" />
-                    <span>{viewingStakeholder.organization}</span>
+                  <h4 className="font-medium text-sm text-muted-foreground mb-2">معلومات الاتصال</h4>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">{viewingStakeholder.email}</span>
+                    </div>
+                    {viewingStakeholder.phone && (
+                      <div className="flex items-center gap-2">
+                        <Phone className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm">{viewingStakeholder.phone}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
+
                 <div>
-                  <span className="font-medium text-sm text-muted-foreground">Position</span>
-                  <div className="flex items-center gap-2 mt-1">
-                    <User className="w-4 h-4" />
-                    <span>{viewingStakeholder.position}</span>
-                  </div>
-                </div>
-                <div>
-                  <span className="font-medium text-sm text-muted-foreground">Email</span>
-                  <div className="flex items-center gap-2 mt-1">
-                    <Mail className="w-4 h-4" />
-                    <span>{viewingStakeholder.email}</span>
-                  </div>
-                </div>
-                {viewingStakeholder.phone && (
-                  <div>
-                    <span className="font-medium text-sm text-muted-foreground">Phone</span>
-                    <div className="flex items-center gap-2 mt-1">
-                      <Phone className="w-4 h-4" />
-                      <span>{viewingStakeholder.phone}</span>
+                  <h4 className="font-medium text-sm text-muted-foreground mb-2">مستويات التأثير والمشاركة</h4>
+                  <div className="space-y-2">
+                    <div>
+                      <span className="text-sm font-medium">مستوى التأثير: </span>
+                      <Badge variant="outline" className={getInfluenceColor(viewingStakeholder.influence_level)}>
+                        {viewingStakeholder.influence_level.charAt(0).toUpperCase() + viewingStakeholder.influence_level.slice(1)}
+                      </Badge>
+                    </div>
+                    <div>
+                      <span className="text-sm font-medium">مستوى الاهتمام: </span>
+                      <Badge variant="outline">
+                        {viewingStakeholder.interest_level.charAt(0).toUpperCase() + viewingStakeholder.interest_level.slice(1)}
+                      </Badge>
+                    </div>
+                    <div>
+                      <span className="text-sm font-medium">حالة المشاركة: </span>
+                      <Badge variant="outline" className={getEngagementColor(viewingStakeholder.engagement_status)}>
+                        {viewingStakeholder.engagement_status.charAt(0).toUpperCase() + viewingStakeholder.engagement_status.slice(1)}
+                      </Badge>
                     </div>
                   </div>
-                )}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <span className="font-medium text-sm text-muted-foreground">Interest Level</span>
-                  <Badge className={getInfluenceColor(viewingStakeholder.interest_level)} variant="secondary">
-                    {viewingStakeholder.interest_level}
-                  </Badge>
-                </div>
-                <div>
-                  <span className="font-medium text-sm text-muted-foreground">Engagement Status</span>
-                  <Badge className={getEngagementColor(viewingStakeholder.engagement_status)}>
-                    {viewingStakeholder.engagement_status}
-                  </Badge>
                 </div>
               </div>
 
               {viewingStakeholder.notes && (
                 <div>
-                  <span className="font-medium text-sm text-muted-foreground">Notes</span>
-                  <p className="mt-1 text-sm">{viewingStakeholder.notes}</p>
+                  <h4 className="font-medium text-sm text-muted-foreground mb-2">ملاحظات</h4>
+                  <p className="text-sm text-muted-foreground bg-muted p-3 rounded">{viewingStakeholder.notes}</p>
                 </div>
               )}
             </div>
           )}
         </DialogContent>
       </Dialog>
-
-      {/* Minimal Cards Grid */}
-      <div className="grid gap-3">
-        {stakeholders.map((stakeholder) => (
-          <Card 
-            key={stakeholder.id}
-            className="cursor-pointer hover:shadow-md transition-shadow"
-            onClick={() => {
-              setViewingStakeholder(stakeholder);
-              setIsDetailOpen(true);
-            }}
-          >
-            <CardContent className="p-4">
-              <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <User className="w-4 h-4" />
-                    <h3 className="font-medium">{stakeholder.name}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    {stakeholder.position} at {stakeholder.organization}
-                  </p>
-                  <div className="flex gap-2 flex-wrap">
-                    <Badge variant="outline">
-                      {stakeholder.stakeholder_type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                    </Badge>
-                    <Badge className={getInfluenceColor(stakeholder.influence_level)}>
-                      {stakeholder.influence_level} influence
-                    </Badge>
-                    <Badge className={getEngagementColor(stakeholder.engagement_status)}>
-                      {stakeholder.engagement_status}
-                    </Badge>
-                  </div>
-                </div>
-                <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
-                  <Button variant="ghost" size="sm" onClick={() => handleEdit(stakeholder)}>
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button variant="ghost" size="sm" onClick={() => handleDelete(stakeholder.id)}>
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-
-        {stakeholders.length === 0 && (
-          <Card>
-            <CardContent className="text-center py-8">
-              <p className="text-muted-foreground">No stakeholders found</p>
-            </CardContent>
-          </Card>
-        )}
-      </div>
-    </div>
+    </>
   );
 }
+
+export default StakeholdersManagement;
