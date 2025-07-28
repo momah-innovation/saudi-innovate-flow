@@ -193,17 +193,17 @@ export function ManagementCard({
         )}
         
         {metadata.length > 0 && (
-          <div className="grid grid-cols-2 gap-3 text-sm mb-4">
+          <div className="space-y-2 text-sm mb-4">
             {metadata.map((item, index) => (
-              <div key={index} className="flex items-center gap-2 min-w-0">
+              <div key={index} className="flex items-start gap-2 min-w-0">
                 {item.icon && (
-                  <span className="text-muted-foreground flex-shrink-0">
+                  <span className="text-muted-foreground flex-shrink-0 mt-0.5">
                     {item.icon}
                   </span>
                 )}
-                <div className="min-w-0">
-                  <span className="text-muted-foreground">{item.label}:</span>
-                  <span className="ml-1 truncate">{item.value}</span>
+                <div className="min-w-0 flex-1">
+                  <span className="text-muted-foreground block">{item.label}:</span>
+                  <span className="text-foreground break-words">{item.value}</span>
                 </div>
               </div>
             ))}
