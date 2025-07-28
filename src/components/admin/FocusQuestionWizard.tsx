@@ -8,6 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 interface Challenge {
   id: string;
@@ -52,6 +54,8 @@ export function FocusQuestionWizard({
   });
 
   const [challenges, setChallenges] = useState<Challenge[]>([]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   // Question type options
   const questionTypes = [
@@ -103,18 +107,37 @@ export function FocusQuestionWizard({
   };
 
   const validateQuestionText = () => {
-    if (!formData.question_text_ar.trim()) return false;
-    if (formData.question_text_ar.length < 10) return false;
-    return true;
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.question_text_ar.trim()) {
+      newErrors.question_text_ar = "نص السؤال مطلوب";
+    } else if (formData.question_text_ar.length < 10) {
+      newErrors.question_text_ar = "يجب أن يكون نص السؤال أكثر من 10 أحرف";
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const validateQuestionDetails = () => {
-    if (!formData.question_type) return false;
-    if (formData.order_sequence < 0) return false;
-    return true;
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.question_type) {
+      newErrors.question_type = "نوع السؤال مطلوب";
+    }
+    
+    if (formData.order_sequence < 0) {
+      newErrors.order_sequence = "ترتيب السؤال يجب أن يكون صفر أو أكثر";
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSave = async () => {
+    setIsLoading(true);
+    setErrors({});
+    
     try {
       const questionData = {
         question_text_ar: formData.question_text_ar.trim(),
@@ -153,13 +176,23 @@ export function FocusQuestionWizard({
 
       onSave();
       onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving focus question:", error);
-      toast({
-        title: "خطأ",
-        description: "فشل في حفظ السؤال المحوري",
-        variant: "destructive",
-      });
+      
+      // Handle specific database errors
+      if (error?.message?.includes('duplicate')) {
+        setErrors({ question_text_ar: "يوجد سؤال مماثل بالفعل" });
+      } else if (error?.message?.includes('constraint')) {
+        setErrors({ general: "خطأ في القيود المدخلة" });
+      } else {
+        toast({
+          title: "خطأ",
+          description: error?.message || "فشل في حفظ السؤال المحوري",
+          variant: "destructive",
+        });
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -171,19 +204,36 @@ export function FocusQuestionWizard({
       validation: validateQuestionText,
       content: (
         <div className="space-y-6">
+          {errors.general && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{errors.general}</AlertDescription>
+            </Alert>
+          )}
+          
           <div className="space-y-2">
             <Label htmlFor="question_text_ar">نص السؤال المحوري *</Label>
             <Textarea
               id="question_text_ar"
               value={formData.question_text_ar}
-              onChange={(e) => setFormData({ ...formData, question_text_ar: e.target.value })}
+              onChange={(e) => {
+                setFormData({ ...formData, question_text_ar: e.target.value });
+                if (errors.question_text_ar) {
+                  setErrors({ ...errors, question_text_ar: "" });
+                }
+              }}
               placeholder="أدخل نص السؤال المحوري الذي ستطرحه على المبتكرين"
               rows={4}
               dir="rtl"
+              className={errors.question_text_ar ? "border-destructive" : ""}
             />
-            <p className="text-sm text-muted-foreground">
-              يجب أن يكون السؤال واضحاً ومفهوماً ولا يقل عن 10 أحرف
-            </p>
+            {errors.question_text_ar ? (
+              <p className="text-sm text-destructive">{errors.question_text_ar}</p>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                يجب أن يكون السؤال واضحاً ومفهوماً ولا يقل عن 10 أحرف
+              </p>
+            )}
           </div>
         </div>
       ),
@@ -197,12 +247,17 @@ export function FocusQuestionWizard({
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="question_type">نوع السؤال</Label>
+              <Label htmlFor="question_type">نوع السؤال *</Label>
               <Select 
                 value={formData.question_type} 
-                onValueChange={(value) => setFormData({ ...formData, question_type: value })}
+                onValueChange={(value) => {
+                  setFormData({ ...formData, question_type: value });
+                  if (errors.question_type) {
+                    setErrors({ ...errors, question_type: "" });
+                  }
+                }}
               >
-                <SelectTrigger>
+                <SelectTrigger className={errors.question_type ? "border-destructive" : ""}>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -213,6 +268,9 @@ export function FocusQuestionWizard({
                   ))}
                 </SelectContent>
               </Select>
+              {errors.question_type && (
+                <p className="text-sm text-destructive">{errors.question_type}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -221,10 +279,19 @@ export function FocusQuestionWizard({
                 id="order_sequence"
                 type="number"
                 value={formData.order_sequence}
-                onChange={(e) => setFormData({ ...formData, order_sequence: parseInt(e.target.value) || 0 })}
+                onChange={(e) => {
+                  setFormData({ ...formData, order_sequence: parseInt(e.target.value) || 0 });
+                  if (errors.order_sequence) {
+                    setErrors({ ...errors, order_sequence: "" });
+                  }
+                }}
                 min="0"
                 placeholder="0"
+                className={errors.order_sequence ? "border-destructive" : ""}
               />
+              {errors.order_sequence && (
+                <p className="text-sm text-destructive">{errors.order_sequence}</p>
+              )}
             </div>
           </div>
         </div>
@@ -288,7 +355,11 @@ export function FocusQuestionWizard({
   return (
     <MultiStepForm
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => {
+        onClose();
+        setErrors({});
+        setIsLoading(false);
+      }}
       title={question ? "تعديل السؤال المحوري" : "إضافة سؤال محوري جديد"}
       steps={steps}
       onComplete={handleSave}
