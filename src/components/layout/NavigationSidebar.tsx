@@ -99,6 +99,16 @@ export function NavigationSidebar() {
         roles: ['team', 'admin'] 
       },
       { 
+        id: 'admin-challenges', 
+        label: 'Challenge Management', 
+        arabicLabel: 'إدارة التحديات',
+        icon: Target, 
+        path: '/admin/challenges',
+        badge: 5,
+        group: 'management',
+        roles: ['team', 'admin'] 
+      },
+      { 
         id: 'events', 
         label: 'Events', 
         arabicLabel: 'الفعاليات',
