@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { StakeholderWizard } from "./StakeholderWizard";
+import { PageLayout } from "@/components/layout/PageLayout";
 
 interface Stakeholder {
   id: string;
@@ -244,6 +245,24 @@ export function StakeholdersManagement() {
 
   return (
     <>
+      <PageLayout 
+        title="إدارة أصحاب المصلحة"
+        description="تتبع وإدارة علاقات أصحاب المصلحة ومستويات التأثير واستراتيجيات المشاركة"
+        itemCount={filteredStakeholders.length}
+        primaryAction={{
+          label: "إضافة صاحب مصلحة",
+          onClick: () => { setEditingStakeholder(null); setIsWizardOpen(true); },
+          icon: <Plus className="w-4 h-4" />
+        }}
+        secondaryActions={secondaryActions}
+        showSearch={true}
+        searchValue={searchTerm}
+        onSearchChange={setSearchTerm}
+        searchPlaceholder="البحث في أصحاب المصلحة..."
+        filters={filters}
+        spacing="md"
+        maxWidth="full"
+      >
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {filteredStakeholders.map((stakeholder) => (
           <Card key={stakeholder.id} className="hover:shadow-md transition-shadow">
@@ -349,6 +368,7 @@ export function StakeholdersManagement() {
           </Button>
         </div>
       )}
+      </PageLayout>
 
       {/* Stakeholder Wizard */}
       <StakeholderWizard
