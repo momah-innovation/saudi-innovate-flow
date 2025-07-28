@@ -186,45 +186,11 @@ export function AdminChallengeManagement() {
     </>
   );
 
-  const filters = (
-    <>
-      <div className="min-w-[120px]">
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="تصفية حسب الحالة" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">جميع الحالات</SelectItem>
-            <SelectItem value="draft">مسودة</SelectItem>
-            <SelectItem value="published">منشور</SelectItem>
-            <SelectItem value="active">نشط</SelectItem>
-            <SelectItem value="closed">مغلق</SelectItem>
-            <SelectItem value="archived">مؤرشف</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="min-w-[120px]">
-        <Select>
-          <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="تصفية حسب النوع" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">جميع الأنواع</SelectItem>
-            <SelectItem value="technical">تقني</SelectItem>
-            <SelectItem value="administrative">إداري</SelectItem>
-            <SelectItem value="creative">إبداعي</SelectItem>
-            <SelectItem value="strategic">استراتيجي</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-    </>
-  );
-
   const handleLayoutChange = (layout: 'cards' | 'list' | 'grid') => {
     setViewMode(layout);
   };
 
-  const filters = [
+  const filterConfigs = [
     {
       id: 'status',
       label: 'الحالة',
@@ -259,7 +225,7 @@ export function AdminChallengeManagement() {
         onLayoutChange={handleLayoutChange}
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        filters={filters}
+        filters={filterConfigs}
       >
         <div className="grid gap-4">
           {viewMode === 'cards' && (
@@ -511,7 +477,7 @@ export function AdminChallengeManagement() {
             </div>
           )}
         </div>
-      </PageLayout>
+      </StandardPageLayout>
 
       <ChallengeWizard
         isOpen={isWizardOpen}
