@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { ManagementCard } from '@/components/ui/management-card';
+import { MetricCard } from '@/components/ui/metric-card';
+import { ActionMenu, getViewEditDeleteActions } from '@/components/ui/action-menu';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,7 +27,12 @@ import {
   BarChart3,
   Target,
   Filter,
-  Eye
+  Eye,
+  Clock,
+  TrendingDown,
+  Activity,
+  CheckCircle,
+  AlertTriangle
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -170,6 +177,7 @@ export function TeamManagementContent({
   // Filters
   const [roleFilter, setRoleFilter] = useState('all');
   const [specializationFilter, setSpecializationFilter] = useState('all');
+  const [assignmentSearchTerm, setAssignmentSearchTerm] = useState('');
   
   // System settings
   const [capacityWarningThreshold, setCapacityWarningThreshold] = useState(90);
@@ -520,6 +528,34 @@ export function TeamManagementContent({
     }
   };
 
+  const handleViewAssignment = (assignment: Assignment) => {
+    // Navigate to assignment details based on type
+    const baseUrl = '/admin';
+    switch (assignment.type) {
+      case 'campaign':
+        window.open(`${baseUrl}/campaigns`, '_blank');
+        break;
+      case 'event':
+        window.open(`${baseUrl}/events`, '_blank');
+        break;
+      case 'project':
+        window.open(`${baseUrl}/implementation`, '_blank');
+        break;
+      default:
+        console.log('View assignment:', assignment);
+    }
+  };
+
+  const handleEditAssignment = (assignment: Assignment) => {
+    // Navigate to edit assignment based on type
+    console.log('Edit assignment:', assignment);
+  };
+
+  const handleMemberClick = (member: InnovationTeamMember) => {
+    // Show member details dialog or navigate to member profile
+    console.log('View member details:', member);
+  };
+
   const filteredTeamMembers = teamMembers.filter(member => {
     const matchesSearch = !searchTerm || 
       member.profiles?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -530,6 +566,16 @@ export function TeamManagementContent({
       member.specialization?.includes(specializationFilter);
     
     return matchesSearch && matchesRole && matchesSpecialization;
+  });
+
+  const filteredAssignments = assignments.filter(assignment => {
+    const member = teamMembers.find(m => m.user_id === assignment.user_id);
+    const matchesSearch = !assignmentSearchTerm || 
+      assignment.title?.toLowerCase().includes(assignmentSearchTerm.toLowerCase()) ||
+      assignment.type?.toLowerCase().includes(assignmentSearchTerm.toLowerCase()) ||
+      member?.profiles?.name?.toLowerCase().includes(assignmentSearchTerm.toLowerCase());
+    
+    return matchesSearch;
   });
 
   const availableUsers = profiles.filter(profile => 
@@ -632,6 +678,7 @@ export function TeamManagementContent({
                   metadata={metadata}
                   actions={actions}
                   viewMode={viewMode}
+                  onClick={() => handleMemberClick(member)}
                 />
               );
             })}
@@ -641,8 +688,23 @@ export function TeamManagementContent({
         <TabsContent value="assignments" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>مهام الفريق</CardTitle>
-              <CardDescription>جميع المهام المخصصة لأعضاء فريق الابتكار</CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>مهام الفريق</CardTitle>
+                  <CardDescription>جميع المهام المخصصة لأعضاء فريق الابتكار</CardDescription>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="relative">
+                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="بحث في المهام..."
+                      value={assignmentSearchTerm}
+                      onChange={(e) => setAssignmentSearchTerm(e.target.value)}
+                      className="pl-8 w-64"
+                    />
+                  </div>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <Table>
@@ -653,15 +715,20 @@ export function TeamManagementContent({
                     <TableHead>المسؤول</TableHead>
                     <TableHead>الحالة</TableHead>
                     <TableHead>تاريخ البداية</TableHead>
+                    <TableHead>الإجراءات</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {assignments.map((assignment) => {
+                  {filteredAssignments.map((assignment) => {
                     const member = teamMembers.find(m => m.user_id === assignment.user_id);
                     const TypeIcon = getTypeIcon(assignment.type);
                     
                     return (
-                      <TableRow key={assignment.id}>
+                      <TableRow 
+                        key={assignment.id} 
+                        className="cursor-pointer hover:bg-muted/50"
+                        onClick={() => handleViewAssignment(assignment)}
+                      >
                         <TableCell className="font-medium">{assignment.title}</TableCell>
                         <TableCell>
                           <Badge variant={getTypeColor(assignment.type) as any} className="gap-1">
@@ -676,6 +743,15 @@ export function TeamManagementContent({
                         <TableCell>
                           {assignment.start_date ? new Date(assignment.start_date).toLocaleDateString('ar-SA') : '-'}
                         </TableCell>
+                        <TableCell>
+                          <ActionMenu
+                            actions={getViewEditDeleteActions(
+                              () => handleViewAssignment(assignment),
+                              () => handleEditAssignment(assignment),
+                              () => console.log('Delete assignment:', assignment)
+                            )}
+                          />
+                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -685,41 +761,206 @@ export function TeamManagementContent({
           </Card>
         </TabsContent>
 
-        <TabsContent value="analytics" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <TabsContent value="analytics" className="space-y-6">
+          {/* Overview Metrics */}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <MetricCard
+              title="إجمالي أعضاء الفريق"
+              value={teamMembers.length.toString()}
+              icon={<Users className="h-4 w-4" />}
+              trend={{
+                value: 12,
+                label: "من الشهر الماضي",
+                direction: "up"
+              }}
+            />
+            
+            <MetricCard
+              title="المهام النشطة"
+              value={assignments.filter(a => a.status === 'active' || a.status === 'planning').length.toString()}
+              icon={<Target className="h-4 w-4" />}
+              trend={{
+                value: 8,
+                label: "من الشهر الماضي",
+                direction: "up"
+              }}
+            />
+            
+            <MetricCard
+              title="متوسط الأداء"
+              value={teamMembers.length > 0 
+                ? `${(teamMembers.reduce((sum, member) => sum + member.performance_rating, 0) / teamMembers.length).toFixed(1)}/5`
+                : '0/5'
+              }
+              icon={<TrendingUp className="h-4 w-4" />}
+              trend={{
+                value: 0.3,
+                label: "من الشهر الماضي",
+                direction: "up"
+              }}
+            />
+
+            <MetricCard
+              title="معدل الإنجاز"
+              value={`${assignments.filter(a => a.status === 'completed').length}/${assignments.length}`}
+              subtitle={`${assignments.length > 0 ? Math.round((assignments.filter(a => a.status === 'completed').length / assignments.length) * 100) : 0}%`}
+              icon={<CheckCircle className="h-4 w-4" />}
+              trend={{
+                value: 15,
+                label: "من الشهر الماضي",
+                direction: "up"
+              }}
+            />
+          </div>
+
+          {/* Detailed Analytics */}
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Team Capacity Analysis */}
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">إجمالي أعضاء الفريق</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Activity className="h-4 w-4" />
+                  تحليل قدرة الفريق
+                </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{teamMembers.length}</div>
+              <CardContent className="space-y-4">
+                {teamMembers.map((member) => {
+                  const capacityPercentage = (member.current_workload / member.max_concurrent_projects) * 100;
+                  const memberAssignments = assignments.filter(a => a.user_id === member.user_id);
+                  
+                  return (
+                    <div key={member.id} className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-medium">{member.profiles?.name}</span>
+                        <span className="text-muted-foreground">
+                          {member.current_workload}/{member.max_concurrent_projects} ({Math.round(capacityPercentage)}%)
+                        </span>
+                      </div>
+                      <div className="w-full bg-secondary rounded-full h-2">
+                        <div 
+                          className={`h-2 rounded-full transition-all ${
+                            capacityPercentage >= 90 ? 'bg-destructive' : 
+                            capacityPercentage >= 75 ? 'bg-yellow-500' : 'bg-primary'
+                          }`}
+                          style={{ width: `${Math.min(capacityPercentage, 100)}%` }}
+                        />
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {memberAssignments.length} مهمة نشطة
+                      </div>
+                    </div>
+                  );
+                })}
               </CardContent>
             </Card>
-            
+
+            {/* Performance Distribution */}
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">المهام النشطة</CardTitle>
-                <Target className="h-4 w-4 text-muted-foreground" />
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart3 className="h-4 w-4" />
+                  توزيع الأداء
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
-                  {assignments.filter(a => a.status === 'active').length}
+                <div className="space-y-4">
+                  {[5, 4, 3, 2, 1].map((rating) => {
+                    const count = teamMembers.filter(m => Math.floor(m.performance_rating) === rating).length;
+                    const percentage = teamMembers.length > 0 ? (count / teamMembers.length) * 100 : 0;
+                    
+                    return (
+                      <div key={rating} className="space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="flex items-center gap-2">
+                            {rating} نجوم
+                            {rating >= 4 && <Award className="h-3 w-3 text-yellow-500" />}
+                            {rating <= 2 && <AlertTriangle className="h-3 w-3 text-red-500" />}
+                          </span>
+                          <span className="text-muted-foreground">{count} أعضاء</span>
+                        </div>
+                        <div className="w-full bg-secondary rounded-full h-2">
+                          <div 
+                            className="h-2 rounded-full bg-primary transition-all"
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
-            
+
+            {/* Assignment Types Distribution */}
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">متوسط الأداء</CardTitle>
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  توزيع أنواع المهام
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
-                  {teamMembers.length > 0 
-                    ? (teamMembers.reduce((sum, member) => sum + member.performance_rating, 0) / teamMembers.length).toFixed(1)
-                    : '0'
-                  }/5
+                <div className="space-y-4">
+                  {['campaign', 'event', 'project', 'content', 'analysis'].map((type) => {
+                    const count = assignments.filter(a => a.type === type).length;
+                    const percentage = assignments.length > 0 ? (count / assignments.length) * 100 : 0;
+                    const TypeIcon = getTypeIcon(type);
+                    
+                    return (
+                      <div key={type} className="space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="flex items-center gap-2">
+                            <TypeIcon className="h-3 w-3" />
+                            {type}
+                          </span>
+                          <span className="text-muted-foreground">{count} مهمة</span>
+                        </div>
+                        <div className="w-full bg-secondary rounded-full h-2">
+                          <div 
+                            className="h-2 rounded-full bg-primary transition-all"
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Recent Activity */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="h-4 w-4" />
+                  النشاط الأخير
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {assignments
+                    .filter(a => a.start_date)
+                    .sort((a, b) => new Date(b.start_date!).getTime() - new Date(a.start_date!).getTime())
+                    .slice(0, 5)
+                    .map((assignment) => {
+                      const member = teamMembers.find(m => m.user_id === assignment.user_id);
+                      const TypeIcon = getTypeIcon(assignment.type);
+                      
+                      return (
+                        <div key={assignment.id} className="flex items-center gap-3 text-sm">
+                          <TypeIcon className="h-3 w-3 text-muted-foreground" />
+                          <div className="flex-1 min-w-0">
+                            <p className="truncate">{assignment.title}</p>
+                            <p className="text-muted-foreground text-xs">
+                              {member?.profiles?.name || 'غير محدد'}
+                            </p>
+                          </div>
+                          <span className="text-xs text-muted-foreground">
+                            {assignment.start_date ? new Date(assignment.start_date).toLocaleDateString('ar-SA') : '-'}
+                          </span>
+                        </div>
+                      );
+                    })}
                 </div>
               </CardContent>
             </Card>
