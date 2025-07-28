@@ -14,7 +14,6 @@ import { PageLayout } from "@/components/layout/PageLayout";
 interface Stakeholder {
   id: string;
   name: string;
-  name_ar?: string;
   organization: string;
   position: string;
   email: string;
@@ -129,7 +128,6 @@ export function StakeholdersManagement() {
     const searchLower = searchTerm.toLowerCase();
     const matchesSearch = 
       stakeholder.name.toLowerCase().includes(searchLower) ||
-      (stakeholder.name_ar && stakeholder.name_ar.toLowerCase().includes(searchLower)) ||
       (stakeholder.organization && stakeholder.organization.toLowerCase().includes(searchLower)) ||
       (stakeholder.position && stakeholder.position.toLowerCase().includes(searchLower)) ||
       (stakeholder.email && stakeholder.email.toLowerCase().includes(searchLower));
@@ -247,11 +245,11 @@ export function StakeholdersManagement() {
   return (
     <>
       <PageLayout 
-        title="إدارة أصحاب المصلحة"
-        description="تتبع وإدارة علاقات أصحاب المصلحة ومستويات التأثير واستراتيجيات المشاركة"
+        title="Stakeholders Management"
+        description="Track and manage stakeholder relationships, influence levels, and engagement strategies"
         itemCount={filteredStakeholders.length}
         primaryAction={{
-          label: "إضافة صاحب مصلحة",
+          label: "Add Stakeholder",
           onClick: () => { setEditingStakeholder(null); setIsWizardOpen(true); },
           icon: <Plus className="w-4 h-4" />
         }}
@@ -262,7 +260,7 @@ export function StakeholdersManagement() {
         showSearch={true}
         searchValue={searchTerm}
         onSearchChange={setSearchTerm}
-        searchPlaceholder="البحث في أصحاب المصلحة..."
+        searchPlaceholder="Search stakeholders..."
         filters={filters}
         spacing="md"
         maxWidth="full"
@@ -282,9 +280,6 @@ export function StakeholdersManagement() {
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="font-semibold text-lg truncate">{stakeholder.name}</h3>
-                        {stakeholder.name_ar && (
-                          <span className="text-sm text-muted-foreground" dir="rtl">({stakeholder.name_ar})</span>
-                        )}
                       </div>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground mb-2">
                         <div className="flex items-center gap-1">
@@ -354,9 +349,6 @@ export function StakeholdersManagement() {
                 <div className="flex items-start justify-between">
                   <div className="space-y-2 flex-1">
                     <CardTitle className="text-lg">{stakeholder.name}</CardTitle>
-                    {stakeholder.name_ar && (
-                      <p className="text-sm text-muted-foreground" dir="rtl">{stakeholder.name_ar}</p>
-                    )}
                     <div className="space-y-1 text-sm text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <Building className="h-3 w-3" />
@@ -477,9 +469,6 @@ export function StakeholdersManagement() {
               <div className="flex items-start justify-between">
                 <div>
                   <h3 className="text-xl font-semibold">{viewingStakeholder.name}</h3>
-                  {viewingStakeholder.name_ar && (
-                    <p className="text-lg text-muted-foreground" dir="rtl">{viewingStakeholder.name_ar}</p>
-                  )}
                   <p className="text-muted-foreground">{viewingStakeholder.position} - {viewingStakeholder.organization}</p>
                 </div>
                 <div className="flex gap-2">
