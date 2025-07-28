@@ -128,6 +128,15 @@ export function NavigationSidebar() {
         roles: ['team', 'admin'] 
       },
       { 
+        id: 'ideas-admin', 
+        label: 'Ideas', 
+        arabicLabel: 'الأفكار',
+        icon: Lightbulb, 
+        path: '/admin/ideas',
+        group: 'management',
+        roles: ['team', 'admin'] 
+      },
+      { 
         id: 'stakeholders', 
         label: 'Stakeholders', 
         arabicLabel: 'المعنيين',
