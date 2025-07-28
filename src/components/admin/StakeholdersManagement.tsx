@@ -267,87 +267,168 @@ export function StakeholdersManagement() {
         spacing="md"
         maxWidth="full"
       >
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {filteredStakeholders.map((stakeholder) => (
-          <Card key={stakeholder.id} className="hover:shadow-md transition-shadow">
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="space-y-2 flex-1">
-                  <CardTitle className="text-lg">{stakeholder.name}</CardTitle>
-                  {stakeholder.name_ar && (
-                    <p className="text-sm text-muted-foreground" dir="rtl">{stakeholder.name_ar}</p>
-                  )}
-                  <div className="space-y-1 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <Building className="h-3 w-3" />
-                      {stakeholder.organization}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <User className="h-3 w-3" />
-                      {stakeholder.position}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Mail className="h-3 w-3" />
-                      {stakeholder.email}
-                    </div>
-                    {stakeholder.phone && (
-                      <div className="flex items-center gap-2">
-                        <Phone className="h-3 w-3" />
-                        {stakeholder.phone}
+        <div className={
+          viewMode === 'cards' ? 'grid gap-4 md:grid-cols-2 lg:grid-cols-3' :
+          viewMode === 'grid' ? 'grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4' :
+          'space-y-4'
+        }>
+        {viewMode === 'list' ? (
+          // List View
+          filteredStakeholders.map((stakeholder) => (
+            <Card key={stakeholder.id} className="hover:shadow-md transition-shadow">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-semibold text-lg truncate">{stakeholder.name}</h3>
+                        {stakeholder.name_ar && (
+                          <span className="text-sm text-muted-foreground" dir="rtl">({stakeholder.name_ar})</span>
+                        )}
                       </div>
-                    )}
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground mb-2">
+                        <div className="flex items-center gap-1">
+                          <Building className="h-3 w-3" />
+                          {stakeholder.organization}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <User className="h-3 w-3" />
+                          {stakeholder.position}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Mail className="h-3 w-3" />
+                          {stakeholder.email}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <Badge variant="outline" className="text-xs">
+                          {stakeholder.stakeholder_type.split('_').map(word => 
+                            word.charAt(0).toUpperCase() + word.slice(1)
+                          ).join(' ')}
+                        </Badge>
+                        <Badge variant="outline" className={`text-xs ${getInfluenceColor(stakeholder.influence_level)}`}>
+                          {stakeholder.influence_level.charAt(0).toUpperCase() + stakeholder.influence_level.slice(1)}
+                        </Badge>
+                        <Badge variant="outline" className={`text-xs ${getEngagementColor(stakeholder.engagement_status)}`}>
+                          {stakeholder.engagement_status.charAt(0).toUpperCase() + stakeholder.engagement_status.slice(1)}
+                        </Badge>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <Badge variant="outline">
-                      {stakeholder.stakeholder_type.split('_').map(word => 
-                        word.charAt(0).toUpperCase() + word.slice(1)
-                      ).join(' ')}
-                    </Badge>
-                    <Badge variant="outline" className={getInfluenceColor(stakeholder.influence_level)}>
-                      {stakeholder.influence_level.charAt(0).toUpperCase() + stakeholder.influence_level.slice(1)}
-                    </Badge>
-                    <Badge variant="outline" className={getEngagementColor(stakeholder.engagement_status)}>
-                      {stakeholder.engagement_status.charAt(0).toUpperCase() + stakeholder.engagement_status.slice(1)}
-                    </Badge>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setViewingStakeholder(stakeholder);
+                        setIsDetailOpen(true);
+                      }}
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleEdit(stakeholder)}
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDelete(stakeholder.id)}
+                      className="text-destructive hover:text-destructive"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setViewingStakeholder(stakeholder);
-                    setIsDetailOpen(true);
-                  }}
-                  className="flex-1"
-                >
-                  <Eye className="h-4 w-4 mr-2" />
-                  عرض
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleEdit(stakeholder)}
-                  className="flex-1"
-                >
-                  <Edit className="h-4 w-4 mr-2" />
-                  تعديل
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleDelete(stakeholder.id)}
-                  className="text-destructive hover:text-destructive"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          // Card/Grid View
+          filteredStakeholders.map((stakeholder) => (
+            <Card key={stakeholder.id} className="hover:shadow-md transition-shadow">
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="space-y-2 flex-1">
+                    <CardTitle className="text-lg">{stakeholder.name}</CardTitle>
+                    {stakeholder.name_ar && (
+                      <p className="text-sm text-muted-foreground" dir="rtl">{stakeholder.name_ar}</p>
+                    )}
+                    <div className="space-y-1 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2">
+                        <Building className="h-3 w-3" />
+                        {stakeholder.organization}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <User className="h-3 w-3" />
+                        {stakeholder.position}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Mail className="h-3 w-3" />
+                        {stakeholder.email}
+                      </div>
+                      {stakeholder.phone && (
+                        <div className="flex items-center gap-2">
+                          <Phone className="h-3 w-3" />
+                          {stakeholder.phone}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <Badge variant="outline">
+                        {stakeholder.stakeholder_type.split('_').map(word => 
+                          word.charAt(0).toUpperCase() + word.slice(1)
+                        ).join(' ')}
+                      </Badge>
+                      <Badge variant="outline" className={getInfluenceColor(stakeholder.influence_level)}>
+                        {stakeholder.influence_level.charAt(0).toUpperCase() + stakeholder.influence_level.slice(1)}
+                      </Badge>
+                      <Badge variant="outline" className={getEngagementColor(stakeholder.engagement_status)}>
+                        {stakeholder.engagement_status.charAt(0).toUpperCase() + stakeholder.engagement_status.slice(1)}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setViewingStakeholder(stakeholder);
+                      setIsDetailOpen(true);
+                    }}
+                    className="flex-1"
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    عرض
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleEdit(stakeholder)}
+                    className="flex-1"
+                  >
+                    <Edit className="h-4 w-4 mr-2" />
+                    تعديل
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleDelete(stakeholder.id)}
+                    className="text-destructive hover:text-destructive"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
 
       {(filteredStakeholders.length === 0 && (searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all")) && (
