@@ -5,21 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Calendar, MapPin, Users, Clock, Edit, Trash2, Eye } from "lucide-react";
-import { useTranslation } from "@/hooks/useTranslation";
+import { Plus, Calendar, MapPin, Users, Clock, Edit, Trash2, Eye, Download } from "lucide-react";
 import { format } from "date-fns";
 import { EventWizard } from "@/components/events/EventWizard";
-
-// New UI Library Components
-import { PageHeader } from "@/components/ui/page-header";
-import { LayoutSelector } from "@/components/ui/layout-selector";
-import { SearchAndFilters } from "@/components/ui/search-and-filters";
+import { AppShell } from "@/components/layout/AppShell";
+import { PageLayout } from "@/components/layout/PageLayout";
 import { EmptyState } from "@/components/ui/empty-state";
-import { DeleteConfirmation } from "@/components/ui/delete-confirmation";
-import { ViewLayouts } from "@/components/ui/view-layouts";
-import { BulkActions } from "@/components/ui/bulk-actions";
 
 interface Event {
   id: string;
@@ -51,51 +43,24 @@ interface Event {
   focusQuestions?: any[];
 }
 
-interface EventsManagementProps {
-  searchValue?: string;
-  onSearchChange?: (value: string) => void;
-  viewMode?: 'cards' | 'list' | 'grid';
-  onViewModeChange?: (mode: 'cards' | 'list' | 'grid') => void;
-  showAddDialog?: boolean;
-  setShowAddDialog?: (show: boolean) => void;
-}
-
-export function EventsManagement({
-  searchValue,
-  onSearchChange,
-  viewMode: externalViewMode,
-  onViewModeChange,
-  showAddDialog: externalShowAddDialog,
-  setShowAddDialog: externalSetShowAddDialog
-}: EventsManagementProps = {}) {
+export function EventsManagement() {
   const [events, setEvents] = useState<Event[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [campaigns, setCampaigns] = useState<any[]>([]);
   const [sectors, setSectors] = useState<any[]>([]);
-  const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
-  
-  // Filters
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [formatFilter, setFormatFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
   const [selectedCampaign, setSelectedCampaign] = useState("all");
   const [selectedSector, setSelectedSector] = useState("all");
-  const [filtersOpen, setFiltersOpen] = useState(false);
   
   // Dialog states
-  const [showEventDialog, setShowEventDialog] = useState(false);
+  const [showEventWizard, setShowEventWizard] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [viewingEvent, setViewingEvent] = useState<Event | null>(null);
 
-  // Use external controls if provided, otherwise use internal state
-  const currentSearchTerm = searchValue ?? searchTerm;
-  const currentViewMode = externalViewMode ?? viewMode;
-  const currentShowAddDialog = externalShowAddDialog ?? showEventDialog;
-
   const { toast } = useToast();
-  const { t } = useTranslation();
 
   useEffect(() => {
     fetchEvents();
@@ -104,28 +69,7 @@ export function EventsManagement({
 
   useEffect(() => {
     filterEvents();
-  }, [events, currentSearchTerm, statusFilter, formatFilter, typeFilter, selectedCampaign, selectedSector]);
-
-  // Update internal search when external search changes
-  useEffect(() => {
-    if (searchValue !== undefined) {
-      setSearchTerm(searchValue);
-    }
-  }, [searchValue]);
-
-  // Update external view mode when internal changes
-  useEffect(() => {
-    if (onViewModeChange && externalViewMode === undefined) {
-      onViewModeChange(viewMode);
-    }
-  }, [viewMode, onViewModeChange, externalViewMode]);
-
-  // Handle external add dialog
-  useEffect(() => {
-    if (externalShowAddDialog !== undefined) {
-      setShowEventDialog(externalShowAddDialog);
-    }
-  }, [externalShowAddDialog]);
+  }, [events, searchTerm, statusFilter, typeFilter, selectedCampaign, selectedSector]);
 
   const fetchEvents = async () => {
     try {
@@ -139,8 +83,8 @@ export function EventsManagement({
     } catch (error) {
       console.error('Error fetching events:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch events",
+        title: "خطأ",
+        description: "فشل في تحميل الأحداث",
         variant: "destructive",
       });
     }
@@ -163,25 +107,18 @@ export function EventsManagement({
   const filterEvents = () => {
     let filtered = events;
 
-    if (currentSearchTerm) {
-      const searchLower = currentSearchTerm.toLowerCase();
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
       filtered = filtered.filter(event =>
         event.title_ar.toLowerCase().includes(searchLower) ||
         (event.description_ar && event.description_ar.toLowerCase().includes(searchLower)) ||
         (event.location && event.location.toLowerCase().includes(searchLower)) ||
-        (event.event_type && event.event_type.toLowerCase().includes(searchLower)) ||
-        (event.format && event.format.toLowerCase().includes(searchLower)) ||
-        (event.status && event.status.toLowerCase().includes(searchLower)) ||
-        (event.virtual_link && event.virtual_link.toLowerCase().includes(searchLower))
+        (event.event_type && event.event_type.toLowerCase().includes(searchLower))
       );
     }
 
     if (statusFilter !== "all") {
       filtered = filtered.filter(event => event.status === statusFilter);
-    }
-
-    if (formatFilter !== "all") {
-      filtered = filtered.filter(event => event.format === formatFilter);
     }
 
     if (typeFilter !== "all") {
@@ -232,7 +169,7 @@ export function EventsManagement({
 
   const handleEdit = (event: Event) => {
     setEditingEvent(event);
-    setShowEventDialog(true);
+    setShowEventWizard(true);
   };
 
   const handleDelete = async (id: string) => {
@@ -252,53 +189,37 @@ export function EventsManagement({
       if (error) throw error;
 
       toast({
-        title: t('success'),
-        description: t('deletedSuccessfully'),
+        title: "نجح",
+        description: "تم حذف الحدث بنجاح",
       });
       
       fetchEvents();
     } catch (error) {
       console.error('Error deleting event:', error);
       toast({
-        title: t('error'),
-        description: t('failedToDelete'),
+        title: "خطأ",
+        description: "فشل في حذف الحدث",
         variant: "destructive",
       });
     }
   };
 
   const handleEventSave = () => {
-    setShowEventDialog(false);
-    if (externalSetShowAddDialog) {
-      externalSetShowAddDialog(false);
-    }
+    setShowEventWizard(false);
     setEditingEvent(null);
     fetchEvents();
   };
 
-  const handleCreateNew = () => {
-    if (externalSetShowAddDialog) {
-      externalSetShowAddDialog(true);
-    } else {
-      setShowEventDialog(true);
-    }
-  };
-
   const clearAllFilters = () => {
-    if (onSearchChange) {
-      onSearchChange("");
-    } else {
-      setSearchTerm("");
-    }
+    setSearchTerm("");
     setStatusFilter("all");
-    setFormatFilter("all");
     setTypeFilter("all");
     setSelectedCampaign("all");
     setSelectedSector("all");
   };
 
   const hasActiveFilters = () => {
-    return statusFilter !== "all" || formatFilter !== "all" || typeFilter !== "all" || 
+    return statusFilter !== "all" || typeFilter !== "all" || 
            selectedCampaign !== "all" || selectedSector !== "all";
   };
 
@@ -315,11 +236,11 @@ export function EventsManagement({
 
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'scheduled': return t('scheduled');
-      case 'ongoing': return t('ongoing');
-      case 'completed': return t('completed');
-      case 'cancelled': return t('cancelled');
-      case 'postponed': return t('postponed');
+      case 'scheduled': return 'مجدول';
+      case 'ongoing': return 'جاري';
+      case 'completed': return 'مكتمل';
+      case 'cancelled': return 'ملغي';
+      case 'postponed': return 'مؤجل';
       default: return status;
     }
   };
@@ -335,9 +256,9 @@ export function EventsManagement({
 
   const getFormatLabel = (format: string) => {
     switch (format) {
-      case 'in_person': return t('inPerson');
-      case 'virtual': return t('virtual');
-      case 'hybrid': return t('hybrid');
+      case 'in_person': return 'حضوري';
+      case 'virtual': return 'افتراضي';
+      case 'hybrid': return 'مختلط';
       default: return format;
     }
   };
@@ -369,11 +290,18 @@ export function EventsManagement({
             <Button variant="ghost" size="sm" onClick={() => handleEdit(event)} className="h-9 w-9 p-0">
               <Edit className="h-4 w-4" />
             </Button>
-            <DeleteConfirmation
-              title="حذف الحدث"
-              description={`هل أنت متأكد من حذف "${event.title_ar}"؟ لا يمكن التراجع عن هذا الإجراء.`}
-              onConfirm={() => handleDelete(event.id)}
-            />
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => {
+                if (confirm(`هل أنت متأكد من حذف "${event.title_ar}"؟`)) {
+                  handleDelete(event.id);
+                }
+              }} 
+              className="h-9 w-9 p-0 text-destructive hover:text-destructive"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
           </div>
         </div>
       </CardHeader>
@@ -411,18 +339,18 @@ export function EventsManagement({
     </Card>
   );
 
-  const renderListView = (events: React.ReactNode[]) => (
+  const renderListView = () => (
     <div className="space-y-3">
       {filteredEvents.map((event) => (
-        <Card key={event.id} className="p-4">
+        <Card key={event.id} className="p-4 cursor-pointer hover:shadow-md" onClick={() => handleView(event)}>
           <div className="flex items-center justify-between">
             <div className="flex-1 space-y-1">
               <div className="flex items-center gap-3">
                 <h3 className="font-semibold">{event.title_ar}</h3>
-                <Badge className={`${getStatusColor(event.status || 'scheduled')} flex items-center gap-1`}>
+                <Badge className={getStatusColor(event.status || 'scheduled')}>
                   {getStatusLabel(event.status || 'scheduled')}
                 </Badge>
-                <Badge className={`${getFormatColor(event.format || 'in_person')} flex items-center gap-1`}>
+                <Badge className={getFormatColor(event.format || 'in_person')}>
                   {getFormatLabel(event.format || 'in_person')}
                 </Badge>
               </div>
@@ -446,18 +374,25 @@ export function EventsManagement({
                 )}
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
               <Button variant="outline" size="sm" onClick={() => handleView(event)}>
                 <Eye className="w-4 h-4" />
               </Button>
               <Button variant="outline" size="sm" onClick={() => handleEdit(event)}>
                 <Edit className="w-4 h-4" />
               </Button>
-              <DeleteConfirmation
-                title={t('deleteEvent')}
-                description={`${t('areYouSure')} "${event.title_ar}"? ${t('thisActionCannotBeUndone')}`}
-                onConfirm={() => handleDelete(event.id)}
-              />
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => {
+                  if (confirm(`هل أنت متأكد من حذف "${event.title_ar}"؟`)) {
+                    handleDelete(event.id);
+                  }
+                }} 
+                className="text-destructive hover:text-destructive"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
             </div>
           </div>
         </Card>
@@ -465,171 +400,156 @@ export function EventsManagement({
     </div>
   );
 
-  return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-        <div>
-          <div>
-            <Label htmlFor="status-filter">{t('status')}</Label>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder={t('allStatuses')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('allStatuses')}</SelectItem>
-                <SelectItem value="scheduled">{t('scheduled')}</SelectItem>
-                <SelectItem value="ongoing">{t('ongoing')}</SelectItem>
-                <SelectItem value="completed">{t('completed')}</SelectItem>
-                <SelectItem value="cancelled">{t('cancelled')}</SelectItem>
-                <SelectItem value="postponed">{t('postponed')}</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+  const secondaryActions = (
+    <>
+      <Select>
+        <SelectTrigger className="w-32">
+          <SelectValue placeholder="تصدير" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="pdf">PDF</SelectItem>
+          <SelectItem value="excel">Excel</SelectItem>
+          <SelectItem value="csv">CSV</SelectItem>
+        </SelectContent>
+      </Select>
+      <Button variant="outline" className="gap-2">
+        <Users className="w-4 h-4" />
+        الإجراءات المجمعة
+      </Button>
+    </>
+  );
 
-          <div>
-            <Label htmlFor="format-filter">{t('format')}</Label>
-            <Select value={formatFilter} onValueChange={setFormatFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder={t('allFormats')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('allFormats')}</SelectItem>
-                <SelectItem value="in_person">{t('inPerson')}</SelectItem>
-                <SelectItem value="virtual">{t('virtual')}</SelectItem>
-                <SelectItem value="hybrid">{t('hybrid')}</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label htmlFor="type-filter">{t('type')}</Label>
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder={t('allTypes')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('allTypes')}</SelectItem>
-                <SelectItem value="workshop">ورشة عمل</SelectItem>
-                <SelectItem value="seminar">ندوة</SelectItem>
-                <SelectItem value="conference">مؤتمر</SelectItem>
-                <SelectItem value="networking">شبكات تواصل</SelectItem>
-                <SelectItem value="training">تدريب</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label htmlFor="campaign-filter">{t('campaign')}</Label>
-            <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
-              <SelectTrigger>
-                <SelectValue placeholder="جميع الحملات" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">جميع الحملات</SelectItem>
-                 {campaigns.map((campaign) => (
-                   <SelectItem key={campaign.id} value={campaign.id}>
-                     {campaign.title_ar}
-                   </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label htmlFor="sector-filter">{t('sectors')}</Label>
-            <Select value={selectedSector} onValueChange={setSelectedSector}>
-              <SelectTrigger>
-                <SelectValue placeholder="جميع القطاعات" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">جميع القطاعات</SelectItem>
-                {sectors.map((sector) => (
-                  <SelectItem key={sector.id} value={sector.id}>
-                    {sector.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
+  const filters = (
+    <>
+      <div className="min-w-[120px]">
+        <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder="تصفية حسب الحالة" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">جميع الحالات</SelectItem>
+            <SelectItem value="scheduled">مجدول</SelectItem>
+            <SelectItem value="ongoing">جاري</SelectItem>
+            <SelectItem value="completed">مكتمل</SelectItem>
+            <SelectItem value="cancelled">ملغي</SelectItem>
+            <SelectItem value="postponed">مؤجل</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
+      <div className="min-w-[120px]">
+        <Select value={typeFilter} onValueChange={setTypeFilter}>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder="تصفية حسب النوع" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">جميع الأنواع</SelectItem>
+            <SelectItem value="workshop">ورشة عمل</SelectItem>
+            <SelectItem value="seminar">ندوة</SelectItem>
+            <SelectItem value="conference">مؤتمر</SelectItem>
+            <SelectItem value="networking">شبكات تواصل</SelectItem>
+            <SelectItem value="training">تدريب</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="min-w-[120px]">
+        <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder="تصفية حسب الحملة" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">جميع الحملات</SelectItem>
+            {campaigns.map((campaign) => (
+              <SelectItem key={campaign.id} value={campaign.id}>
+                {campaign.title_ar}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="min-w-[120px]">
+        <Select value={selectedSector} onValueChange={setSelectedSector}>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder="تصفية حسب القطاع" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">جميع القطاعات</SelectItem>
+            {sectors.map((sector) => (
+              <SelectItem key={sector.id} value={sector.id}>
+                {sector.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </>
+  );
 
-      <BulkActions
-        selectedItems={selectedEvents}
-        onSelectAll={(selected) => {
-          if (selected) {
-            setSelectedEvents(filteredEvents.map(e => e.id));
-          } else {
-            setSelectedEvents([]);
-          }
+  return (
+    <AppShell>
+      <PageLayout 
+        title="إدارة الأحداث"
+        description="إدارة أحداث وأنشطة الابتكار"
+        itemCount={filteredEvents.length}
+        primaryAction={{
+          label: "إنشاء جديد",
+          onClick: () => setShowEventWizard(true),
+          icon: <Plus className="w-4 h-4" />
         }}
-        onSelectItem={(id, selected) => {
-          if (selected) {
-            setSelectedEvents([...selectedEvents, id]);
-          } else {
-            setSelectedEvents(selectedEvents.filter(eventId => eventId !== id));
-          }
-        }}
-        totalItems={filteredEvents.length}
-        actions={[
-          {
-            id: 'delete',
-            label: 'Delete Selected',
-            icon: <Trash2 className="w-4 h-4" />,
-            variant: 'destructive',
-            onClick: (selectedIds) => {
-              if (confirm(`Are you sure you want to delete ${selectedIds.length} events?`)) {
-                Promise.all(selectedIds.map(id => handleDelete(id)))
-                  .then(() => setSelectedEvents([]));
-              }
-            }
-          }
-        ]}
-      />
-
-      <ViewLayouts
-        viewMode={currentViewMode}
-        listRenderer={renderListView}
+        secondaryActions={secondaryActions}
+        showLayoutSelector={true}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+        showSearch={true}
+        searchValue={searchTerm}
+        onSearchChange={setSearchTerm}
+        searchPlaceholder="بحث في الأحداث..."
+        filters={filters}
+        spacing="md"
+        maxWidth="full"
       >
-        {filteredEvents.map(renderEventCard)}
-      </ViewLayouts>
+        {/* Events List */}
+        {viewMode === 'list' ? (
+          renderListView()
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredEvents.map(renderEventCard)}
+          </div>
+        )}
 
-      {filteredEvents.length === 0 && (
-        <EmptyState
-          title={t('noEventsFound')}
-          description={
-            currentSearchTerm || hasActiveFilters()
-              ? t('noResults')
-              : t('emptyList')
-          }
-          action={
-            !currentSearchTerm && !hasActiveFilters()
-              ? { label: t('createEvent'), onClick: handleCreateNew }
-              : undefined
-          }
-          isFiltered={currentSearchTerm !== "" || hasActiveFilters()}
-        />
-      )}
+        {filteredEvents.length === 0 && (
+          <EmptyState
+            title="لا توجد أحداث"
+            description={
+              searchTerm || hasActiveFilters()
+                ? "لا توجد نتائج تطابق معايير البحث والتصفية"
+                : "لم يتم إنشاء أي أحداث بعد"
+            }
+            action={
+              !searchTerm && !hasActiveFilters()
+                ? { label: "إنشاء حدث جديد", onClick: () => setShowEventWizard(true) }
+                : { label: "مسح جميع المرشحات", onClick: clearAllFilters }
+            }
+            isFiltered={searchTerm !== "" || hasActiveFilters()}
+          />
+        )}
+      </PageLayout>
 
-
+      {/* Event Wizard */}
       <EventWizard
-        isOpen={currentShowAddDialog}
+        isOpen={showEventWizard}
         onClose={() => {
-          if (externalSetShowAddDialog) {
-            externalSetShowAddDialog(false);
-          } else {
-            setShowEventDialog(false);
-          }
+          setShowEventWizard(false);
           setEditingEvent(null);
         }}
         event={editingEvent}
         onSave={handleEventSave}
       />
 
+      {/* Event Detail Dialog */}
       <Dialog open={!!viewingEvent} onOpenChange={(open) => !open && setViewingEvent(null)}>
         <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{viewingEvent?.title_ar}</DialogTitle>
+            <DialogTitle>تفاصيل الحدث</DialogTitle>
           </DialogHeader>
           {viewingEvent && (
             <div className="space-y-6">
@@ -637,10 +557,11 @@ export function EventsManagement({
                 <div>
                   <h4 className="font-semibold mb-2">تفاصيل الحدث</h4>
                   <div className="space-y-2 text-sm">
+                    <p><strong>العنوان:</strong> {viewingEvent.title_ar}</p>
                     <p><strong>التاريخ:</strong> {format(new Date(viewingEvent.event_date), 'PPP')}</p>
                     <p><strong>الوقت:</strong> {viewingEvent.start_time} - {viewingEvent.end_time}</p>
-                    <p><strong>النوع:</strong> {viewingEvent.format}</p>
-                    <p><strong>الحالة:</strong> {viewingEvent.status}</p>
+                    <p><strong>النوع:</strong> {getFormatLabel(viewingEvent.format || 'in_person')}</p>
+                    <p><strong>الحالة:</strong> {getStatusLabel(viewingEvent.status || 'scheduled')}</p>
                     {viewingEvent.location && <p><strong>الموقع:</strong> {viewingEvent.location}</p>}
                     {viewingEvent.virtual_link && <p><strong>الرابط الافتراضي:</strong> {viewingEvent.virtual_link}</p>}
                   </div>
@@ -705,6 +626,6 @@ export function EventsManagement({
           )}
         </DialogContent>
       </Dialog>
-    </div>
+    </AppShell>
   );
 }
