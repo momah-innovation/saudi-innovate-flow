@@ -124,9 +124,14 @@ export function TeamMemberWizard({
 
   const fetchAvailableUsers = async () => {
     try {
+      // Get users who are not already team members
       const { data, error } = await supabase
         .from('profiles')
         .select('id, name, email, department, position')
+        .not('id', 'in', `(
+          SELECT user_id FROM innovation_team_members 
+          WHERE user_id IS NOT NULL
+        )`)
         .order('name');
 
       if (error) throw error;
@@ -147,10 +152,12 @@ export function TeamMemberWizard({
         .from('system_settings')
         .select('setting_key, setting_value')
         .in('setting_key', [
-          'max_concurrent_projects',
-          'performance_rating_min',
-          'performance_rating_max',
-          'performance_rating_step'
+          'team_max_concurrent_projects',
+          'team_performance_rating_min', 
+          'team_performance_rating_max',
+          'team_performance_rating_step',
+          'team_default_concurrent_projects',
+          'team_default_performance_rating'
         ]);
 
       if (error) throw error;
@@ -161,11 +168,20 @@ export function TeamMemberWizard({
       }, {} as Record<string, number>) || {};
 
       setSystemSettings({
-        maxConcurrentProjects: settings.max_concurrent_projects || 10,
-        performanceRatingMin: settings.performance_rating_min || 1,
-        performanceRatingMax: settings.performance_rating_max || 5,
-        performanceRatingStep: settings.performance_rating_step || 0.5
+        maxConcurrentProjects: settings.team_max_concurrent_projects || 10,
+        performanceRatingMin: settings.team_performance_rating_min || 1,
+        performanceRatingMax: settings.team_performance_rating_max || 5,
+        performanceRatingStep: settings.team_performance_rating_step || 0.5
       });
+
+      // Update form defaults with system settings
+      if (!editingMember) {
+        setFormData(prev => ({
+          ...prev,
+          max_concurrent_projects: settings.team_default_concurrent_projects || 5,
+          performance_rating: settings.team_default_performance_rating || 3.0
+        }));
+      }
     } catch (error) {
       console.error('Error fetching system settings:', error);
     }
