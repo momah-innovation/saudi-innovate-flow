@@ -9,7 +9,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { StakeholderWizard } from "./StakeholderWizard";
-import { PageLayout } from "@/components/layout/PageLayout";
 
 interface Stakeholder {
   id: string;
@@ -245,130 +244,111 @@ export function StakeholdersManagement() {
 
   return (
     <>
-      <PageLayout 
-        title="إدارة أصحاب المصلحة"
-        description="تتبع وإدارة علاقات أصحاب المصلحة ومستويات التأثير واستراتيجيات المشاركة"
-        itemCount={filteredStakeholders.length}
-        primaryAction={{
-          label: "إضافة صاحب مصلحة",
-          onClick: () => { setEditingStakeholder(null); setIsWizardOpen(true); },
-          icon: <Plus className="w-4 h-4" />
-        }}
-        secondaryActions={secondaryActions}
-        showSearch={true}
-        searchValue={searchTerm}
-        onSearchChange={setSearchTerm}
-        searchPlaceholder="البحث في أصحاب المصلحة..."
-        filters={filters}
-        spacing="md"
-        maxWidth="full"
-      >
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {filteredStakeholders.map((stakeholder) => (
-            <Card key={stakeholder.id} className="hover:shadow-md transition-shadow">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="space-y-2 flex-1">
-                    <CardTitle className="text-lg">{stakeholder.name}</CardTitle>
-                    {stakeholder.name_ar && (
-                      <p className="text-sm text-muted-foreground" dir="rtl">{stakeholder.name_ar}</p>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {filteredStakeholders.map((stakeholder) => (
+          <Card key={stakeholder.id} className="hover:shadow-md transition-shadow">
+            <CardHeader>
+              <div className="flex items-start justify-between">
+                <div className="space-y-2 flex-1">
+                  <CardTitle className="text-lg">{stakeholder.name}</CardTitle>
+                  {stakeholder.name_ar && (
+                    <p className="text-sm text-muted-foreground" dir="rtl">{stakeholder.name_ar}</p>
+                  )}
+                  <div className="space-y-1 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <Building className="h-3 w-3" />
+                      {stakeholder.organization}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <User className="h-3 w-3" />
+                      {stakeholder.position}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-3 w-3" />
+                      {stakeholder.email}
+                    </div>
+                    {stakeholder.phone && (
+                      <div className="flex items-center gap-2">
+                        <Phone className="h-3 w-3" />
+                        {stakeholder.phone}
+                      </div>
                     )}
-                    <div className="space-y-1 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-2">
-                        <Building className="h-3 w-3" />
-                        {stakeholder.organization}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <User className="h-3 w-3" />
-                        {stakeholder.position}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Mail className="h-3 w-3" />
-                        {stakeholder.email}
-                      </div>
-                      {stakeholder.phone && (
-                        <div className="flex items-center gap-2">
-                          <Phone className="h-3 w-3" />
-                          {stakeholder.phone}
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <Badge variant="outline">
-                        {stakeholder.stakeholder_type.split('_').map(word => 
-                          word.charAt(0).toUpperCase() + word.slice(1)
-                        ).join(' ')}
-                      </Badge>
-                      <Badge variant="outline" className={getInfluenceColor(stakeholder.influence_level)}>
-                        {stakeholder.influence_level.charAt(0).toUpperCase() + stakeholder.influence_level.slice(1)}
-                      </Badge>
-                      <Badge variant="outline" className={getEngagementColor(stakeholder.engagement_status)}>
-                        {stakeholder.engagement_status.charAt(0).toUpperCase() + stakeholder.engagement_status.slice(1)}
-                      </Badge>
-                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Badge variant="outline">
+                      {stakeholder.stakeholder_type.split('_').map(word => 
+                        word.charAt(0).toUpperCase() + word.slice(1)
+                      ).join(' ')}
+                    </Badge>
+                    <Badge variant="outline" className={getInfluenceColor(stakeholder.influence_level)}>
+                      {stakeholder.influence_level.charAt(0).toUpperCase() + stakeholder.influence_level.slice(1)}
+                    </Badge>
+                    <Badge variant="outline" className={getEngagementColor(stakeholder.engagement_status)}>
+                      {stakeholder.engagement_status.charAt(0).toUpperCase() + stakeholder.engagement_status.slice(1)}
+                    </Badge>
                   </div>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setViewingStakeholder(stakeholder);
-                      setIsDetailOpen(true);
-                    }}
-                    className="flex-1"
-                  >
-                    <Eye className="h-4 w-4 mr-2" />
-                    عرض
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEdit(stakeholder)}
-                    className="flex-1"
-                  >
-                    <Edit className="h-4 w-4 mr-2" />
-                    تعديل
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDelete(stakeholder.id)}
-                    className="text-destructive hover:text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setViewingStakeholder(stakeholder);
+                    setIsDetailOpen(true);
+                  }}
+                  className="flex-1"
+                >
+                  <Eye className="h-4 w-4 mr-2" />
+                  عرض
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleEdit(stakeholder)}
+                  className="flex-1"
+                >
+                  <Edit className="h-4 w-4 mr-2" />
+                  تعديل
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDelete(stakeholder.id)}
+                  className="text-destructive hover:text-destructive"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {(filteredStakeholders.length === 0 && (searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all")) && (
+        <div className="text-center py-8">
+          <div className="text-muted-foreground mb-4">
+            لا توجد أصحاب مصلحة تطابق معايير البحث
+          </div>
+          <Button variant="outline" onClick={clearFilters}>
+            مسح جميع المرشحات
+          </Button>
         </div>
+      )}
 
-        {(filteredStakeholders.length === 0 && (searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all")) && (
-          <div className="text-center py-8">
-            <div className="text-muted-foreground mb-4">
-              لا توجد أصحاب مصلحة تطابق معايير البحث
-            </div>
-            <Button variant="outline" onClick={clearFilters}>
-              مسح جميع المرشحات
-            </Button>
+      {(stakeholders.length === 0 && !(searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all")) && (
+        <div className="text-center py-8">
+          <div className="text-muted-foreground mb-4">
+            لا توجد أصحاب مصلحة
           </div>
-        )}
-
-        {(stakeholders.length === 0 && !(searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all")) && (
-          <div className="text-center py-8">
-            <div className="text-muted-foreground mb-4">
-              لا توجد أصحاب مصلحة
-            </div>
-            <Button onClick={() => { setEditingStakeholder(null); setIsWizardOpen(true); }}>
-              <Plus className="h-4 w-4 mr-2" />
-              إضافة صاحب مصلحة جديد
-            </Button>
-          </div>
-        )}
-      </PageLayout>
+          <Button onClick={() => { setEditingStakeholder(null); setIsWizardOpen(true); }}>
+            <Plus className="h-4 w-4 mr-2" />
+            إضافة صاحب مصلحة جديد
+          </Button>
+        </div>
+      )}
 
       {/* Stakeholder Wizard */}
       <StakeholderWizard
