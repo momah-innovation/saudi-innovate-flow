@@ -279,26 +279,23 @@ export function StakeholdersManagement() {
                 ...(stakeholder.phone ? [{ icon: <Phone className="h-3 w-3" />, label: "الهاتف", value: stakeholder.phone }] : []),
                 { icon: <User className="h-3 w-3" />, label: "الاهتمام", value: stakeholder.interest_level }
               ]}
-              actions={[
-                { 
-                  type: 'view', 
-                  label: 'عرض',
-                  onClick: () => {
-                    setViewingStakeholder(stakeholder);
-                    setIsDetailOpen(true);
-                  }
-                },
-                { 
-                  type: 'edit', 
-                  label: 'تعديل',
-                  onClick: () => handleEdit(stakeholder)
-                },
-                { 
-                  type: 'delete',
-                  onClick: () => handleDelete(stakeholder.id)
-                }
-              ]}
-              viewMode={viewMode}
+               actions={[
+                 { 
+                   type: 'edit', 
+                   label: 'تعديل',
+                   onClick: () => handleEdit(stakeholder)
+                 },
+                 { 
+                   type: 'delete',
+                   label: 'حذف',
+                   onClick: () => handleDelete(stakeholder.id)
+                 }
+               ]}
+               viewMode={viewMode}
+               onClick={() => {
+                 setViewingStakeholder(stakeholder);
+                 setIsDetailOpen(true);
+               }}
             />
           ))}
         </ViewLayouts>
