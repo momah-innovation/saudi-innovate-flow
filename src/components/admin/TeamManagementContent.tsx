@@ -726,7 +726,7 @@ export function TeamManagementContent({
           <TabsTrigger value="analytics" className={isRTL ? 'flex-row-reverse' : ''}>{t('analytics')}</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="members" className="space-y-4">
+        <TabsContent value="members" className={`space-y-4 ${isRTL ? 'rtl' : 'ltr'}`} dir={direction}>
           <ViewLayouts viewMode={viewMode}>
             {filteredTeamMembers.map((member) => {
               const memberAssignments = getAssignmentsForMember(member.user_id);
@@ -791,37 +791,37 @@ export function TeamManagementContent({
           </ViewLayouts>
         </TabsContent>
 
-        <TabsContent value="assignments" className="space-y-4">
+        <TabsContent value="assignments" className={`space-y-4 ${isRTL ? 'rtl' : 'ltr'}`} dir={direction}>
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
+              <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <div>
-                  <CardTitle>مهام الفريق</CardTitle>
-                  <CardDescription>جميع المهام المخصصة لأعضاء فريق الابتكار</CardDescription>
+                  <CardTitle>{t('assignments')}</CardTitle>
+                  <CardDescription>{t('allAssignmentsForTeamMembers')}</CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="relative">
-                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Search className={`absolute ${isRTL ? 'right-2' : 'left-2'} top-2.5 h-4 w-4 text-muted-foreground`} />
                     <Input
-                      placeholder="بحث في المهام..."
+                      placeholder={t('searchAssignments')}
                       value={assignmentSearchTerm}
                       onChange={(e) => setAssignmentSearchTerm(e.target.value)}
-                      className="pl-8 w-64"
+                      className={`${isRTL ? 'pr-8' : 'pl-8'} w-64`}
                     />
                   </div>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <Table>
+              <Table dir={direction}>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>المهمة</TableHead>
-                    <TableHead>النوع</TableHead>
-                    <TableHead>المسؤول</TableHead>
-                    <TableHead>الحالة</TableHead>
-                    <TableHead>تاريخ البداية</TableHead>
-                    <TableHead>الإجراءات</TableHead>
+                    <TableHead className={isRTL ? 'text-right' : 'text-left'}>{t('task')}</TableHead>
+                    <TableHead className={isRTL ? 'text-right' : 'text-left'}>{t('typeField')}</TableHead>
+                    <TableHead className={isRTL ? 'text-right' : 'text-left'}>{t('responsible')}</TableHead>
+                    <TableHead className={isRTL ? 'text-right' : 'text-left'}>{t('status')}</TableHead>
+                    <TableHead className={isRTL ? 'text-right' : 'text-left'}>{t('startDateField')}</TableHead>
+                    <TableHead className={isRTL ? 'text-right' : 'text-left'}>{t('actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -842,7 +842,7 @@ export function TeamManagementContent({
                             {assignment.type}
                           </Badge>
                         </TableCell>
-                        <TableCell>{member?.profiles?.name || 'غير محدد'}</TableCell>
+                        <TableCell>{member?.profiles?.name || t('notSpecified')}</TableCell>
                         <TableCell>
                           <Badge variant="outline">{assignment.status}</Badge>
                         </TableCell>
@@ -867,16 +867,16 @@ export function TeamManagementContent({
           </Card>
         </TabsContent>
 
-        <TabsContent value="analytics" className="space-y-6">
+        <TabsContent value="analytics" className={`space-y-6 ${isRTL ? 'rtl' : 'ltr'}`} dir={direction}>
           {/* Overview Metrics */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <MetricCard
-              title="إجمالي أعضاء الفريق"
+              title={t('totalTeamMembers')}
               value={teamMembers.length.toString()}
               icon={<Users className="h-4 w-4" />}
               trend={{
                 value: 12,
-                label: "من الشهر الماضي",
+                label: t('fromLastMonth'),
                 direction: "up"
               }}
             />

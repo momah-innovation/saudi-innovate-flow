@@ -86,7 +86,6 @@ export const translations = {
     inviteUser: 'دعوة مستخدم',
     manageUsersRolesPermissions: 'إدارة المستخدمين والأدوار والصلاحيات',
     searchUsers: 'البحث في المستخدمين...',
-    fromLastMonth: 'من الشهر الماضي',
     neverLoggedIn: 'لم يسجل دخول مطلقاً',
     lastLogin: 'آخر تسجيل دخول',
     department: 'القسم',
@@ -140,12 +139,12 @@ export const translations = {
     location: 'الموقع',
     date: 'التاريخ',
     time: 'الوقت',
-    startDate: 'تاريخ البداية',
+    startDateField: 'تاريخ البداية',
     endDate: 'تاريخ النهاية',
     startTime: 'وقت البداية',
     endTime: 'وقت النهاية',
     budget: 'الميزانية',
-    type: 'النوع',
+    typeField: 'النوع',
     category: 'الفئة',
     priority: 'الأولوية',
     
@@ -288,7 +287,13 @@ export const translations = {
     currentAssignments: 'المهام الحالية',
     noActiveAssignments: 'لا توجد مهام نشطة',
     editMember: 'تعديل العضو',
-    activeAssignments: 'المهام النشطة'
+    activeAssignments: 'المهام النشطة',
+    allAssignmentsForTeamMembers: 'جميع المهام المخصصة لأعضاء فريق الابتكار',
+    searchAssignments: 'بحث في المهام...',
+    task: 'المهمة',
+    responsible: 'المسؤول',
+    totalTeamMembers: 'إجمالي أعضاء الفريق',
+    fromLastMonth: 'من الشهر الماضي'
   },
   en: {
     // Common UI - English as secondary
@@ -375,7 +380,6 @@ export const translations = {
     inviteUser: 'Invite User',
     manageUsersRolesPermissions: 'Manage users, roles, and permissions',
     searchUsers: 'Search users...',
-    fromLastMonth: 'from last month',
     neverLoggedIn: 'Never logged in',
     lastLogin: 'Last Login',
     department: 'Department',
@@ -429,12 +433,12 @@ export const translations = {
     location: 'Location',
     date: 'Date',
     time: 'Time',
-    startDate: 'Start Date',
+    startDateField: 'Start Date',
     endDate: 'End Date',
     startTime: 'Start Time',
     endTime: 'End Time',
     budget: 'Budget',
-    type: 'Type',
+    typeField: 'Type',
     category: 'Category',
     priority: 'Priority',
     
@@ -564,7 +568,26 @@ export const translations = {
     recentActivity: 'Recent Activity',
     viewAssignment: 'View Assignment',
     editAssignment: 'Edit Assignment',
-    deleteAssignment: 'Delete Assignment'
+    deleteAssignment: 'Delete Assignment',
+    performance: 'Performance',
+    tasks: 'Tasks',
+    nameNotSpecified: 'Name not specified',
+    notSpecified: 'Not specified',
+    basicInfo: 'Basic Information',
+    teamMemberDetails: 'Team Member Details',
+    memberProfile: 'Member Profile',
+    noDataAvailable: 'No data available',
+    currentLoad: 'Current Load',
+    currentAssignments: 'Current Assignments',
+    noActiveAssignments: 'No active assignments',
+    editMember: 'Edit Member',
+    activeAssignments: 'Active Assignments',
+    allAssignmentsForTeamMembers: 'All assignments for innovation team members',
+    searchAssignments: 'Search assignments...',
+    task: 'Task',
+    responsible: 'Responsible',
+    totalTeamMembers: 'Total Team Members',
+    fromLastMonth: 'from last month'
   }
 };
 
