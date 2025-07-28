@@ -330,28 +330,28 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
         if (!formData.description_ar?.trim()) errors.push("الوصف بالعربية مطلوب");
         break;
       case 2: // Event Details
-        if (!formData.event_date) errors.push("Event date is required");
-        if (!formData.format) errors.push("Event format is required");
+        if (!formData.event_date) errors.push("تاريخ الحدث مطلوب");
+        if (!formData.format) errors.push("تنسيق الحدث مطلوب");
         if (formData.format === "in_person" && !formData.location?.trim()) {
-          errors.push("Location is required for in-person events");
+          errors.push("الموقع مطلوب للأحداث الحضورية");
         }
         if (formData.format === "virtual" && !formData.virtual_link?.trim()) {
-          errors.push("Virtual link is required for virtual events");
+          errors.push("الرابط الافتراضي مطلوب للأحداث الافتراضية");
         }
         if (formData.format === "hybrid" && (!formData.location?.trim() || !formData.virtual_link?.trim())) {
-          errors.push("Both location and virtual link are required for hybrid events");
+          errors.push("الموقع والرابط الافتراضي مطلوبان للأحداث المختلطة");
         }
         if (formData.max_participants && parseInt(formData.max_participants) <= 0) {
-          errors.push("Maximum participants must be greater than 0");
+          errors.push("الحد الأقصى للمشاركين يجب أن يكون أكبر من صفر");
         }
         if (formData.budget && parseFloat(formData.budget) < 0) {
-          errors.push("Budget cannot be negative");
+          errors.push("الميزانية لا يمكن أن تكون سالبة");
         }
         if (formData.start_time && formData.end_time && formData.start_time >= formData.end_time) {
-          errors.push("End time must be after start time");
+          errors.push("وقت الانتهاء يجب أن يكون بعد وقت البداية");
         }
         if (formData.end_date && formData.event_date && formData.end_date < formData.event_date) {
-          errors.push("End date cannot be before start date");
+          errors.push("تاريخ الانتهاء لا يمكن أن يكون قبل تاريخ البداية");
         }
         break;
       case 3: // Organization & Campaign
@@ -362,10 +362,10 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
         break;
       case 5: // Additional Settings
         if (formData.is_recurring && !formData.recurrence_pattern) {
-          errors.push("Recurrence pattern is required for recurring events");
+          errors.push("نمط التكرار مطلوب للأحداث المتكررة");
         }
         if (formData.is_recurring && formData.recurrence_pattern && !formData.recurrence_end_date) {
-          errors.push("Recurrence end date is required for recurring events");
+          errors.push("تاريخ انتهاء التكرار مطلوب للأحداث المتكررة");
         }
         break;
     }
@@ -378,8 +378,8 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
     if (errors.length > 0) {
       setStepErrors({ ...stepErrors, [currentStep]: errors });
       toast({
-        title: "Validation Error",
-        description: errors.join(", "),
+        title: "خطأ في التحقق",
+        description: errors.join("، "),
         variant: "destructive",
       });
       return;
@@ -389,8 +389,8 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
       toast({
-        title: "Step Complete",
-        description: `Step ${currentStep} completed successfully`,
+        title: "اكتملت الخطوة",
+        description: `تم إكمال الخطوة ${currentStep} بنجاح`,
       });
     }
   };
@@ -410,8 +410,8 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
 
     if (allErrors.length > 0) {
       toast({
-        title: "Validation Error",
-        description: allErrors.join(", "),
+        title: "خطأ في التحقق",
+        description: allErrors.join("، "),
         variant: "destructive",
       });
       return;
@@ -481,8 +481,8 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
       ]);
 
       toast({
-        title: "Success",
-        description: `Event ${event?.id ? 'updated' : 'created'} successfully`,
+        title: "نجح",
+        description: `تم ${event?.id ? 'تحديث' : 'إنشاء'} الحدث بنجاح`,
       });
 
       onSave();
@@ -490,8 +490,8 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
     } catch (error) {
       console.error('Error saving event:', error);
       toast({
-        title: "Error",
-        description: "Failed to save event",
+        title: "خطأ",
+        description: "فشل في حفظ الحدث",
         variant: "destructive",
       });
     } finally {
@@ -505,48 +505,44 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
         return (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-                <div>
-                <Label htmlFor="title">Title (English) *</Label>
+              <div>
+                <Label htmlFor="title">العنوان (الإنجليزية)</Label>
                 <Input
                   id="title"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="Event title"
-                  className={stepErrors[1]?.some(e => e.includes("Title")) ? "border-destructive" : ""}
                 />
-                {stepErrors[1]?.some(e => e.includes("Title")) && (
-                  <p className="text-sm text-destructive mt-1">Title is required</p>
-                )}
               </div>
               <div>
-                <Label htmlFor="title_ar">Title (Arabic)</Label>
+                <Label htmlFor="title_ar">العنوان (العربية) *</Label>
                 <Input
                   id="title_ar"
                   value={formData.title_ar}
                   onChange={(e) => setFormData({ ...formData, title_ar: e.target.value })}
                   placeholder="عنوان الحدث"
                   dir="rtl"
+                  className={stepErrors[1]?.some(e => e.includes("العنوان بالعربية")) ? "border-destructive" : ""}
                 />
+                {stepErrors[1]?.some(e => e.includes("العنوان بالعربية")) && (
+                  <p className="text-sm text-destructive mt-1">العنوان بالعربية مطلوب</p>
+                )}
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="description">Description (English) *</Label>
+                <Label htmlFor="description">الوصف (الإنجليزية)</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="Event description"
                   rows={3}
-                  className={stepErrors[1]?.some(e => e.includes("Description")) ? "border-destructive" : ""}
                 />
-                {stepErrors[1]?.some(e => e.includes("Description")) && (
-                  <p className="text-sm text-destructive mt-1">Description is required</p>
-                )}
               </div>
               <div>
-                <Label htmlFor="description_ar">Description (Arabic)</Label>
+                <Label htmlFor="description_ar">الوصف (العربية) *</Label>
                 <Textarea
                   id="description_ar"
                   value={formData.description_ar}
@@ -554,19 +550,23 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
                   placeholder="وصف الحدث"
                   dir="rtl"
                   rows={3}
+                  className={stepErrors[1]?.some(e => e.includes("الوصف بالعربية")) ? "border-destructive" : ""}
                 />
+                {stepErrors[1]?.some(e => e.includes("الوصف بالعربية")) && (
+                  <p className="text-sm text-destructive mt-1">الوصف بالعربية مطلوب</p>
+                )}
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <Label>Event Type *</Label>
+                <Label>نوع الحدث *</Label>
                 <Select
                   value={formData.event_type}
                   onValueChange={(value) => setFormData({ ...formData, event_type: value })}
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select type" />
+                  <SelectTrigger className={stepErrors[1]?.some(e => e.includes("نوع الحدث")) ? "border-destructive" : ""}>
+                    <SelectValue placeholder="اختر النوع" />
                   </SelectTrigger>
                   <SelectContent>
                     {eventTypes.map((type) => (
@@ -576,6 +576,9 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
                     ))}
                   </SelectContent>
                 </Select>
+                {stepErrors[1]?.some(e => e.includes("نوع الحدث")) && (
+                  <p className="text-sm text-destructive mt-1">نوع الحدث مطلوب</p>
+                )}
               </div>
 
               <div>
@@ -624,13 +627,17 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
           <div className="space-y-4">
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <Label htmlFor="event_date">Event Date *</Label>
+                <Label htmlFor="event_date">تاريخ الحدث *</Label>
                 <Input
                   id="event_date"
                   type="date"
                   value={formData.event_date}
                   onChange={(e) => setFormData({ ...formData, event_date: e.target.value })}
+                  className={stepErrors[2]?.some(e => e.includes("تاريخ الحدث")) ? "border-destructive" : ""}
                 />
+                {stepErrors[2]?.some(e => e.includes("تاريخ الحدث")) && (
+                  <p className="text-sm text-destructive mt-1">تاريخ الحدث مطلوب</p>
+                )}
               </div>
               <div>
                 <Label htmlFor="start_time">Start Time</Label>
@@ -654,13 +661,13 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Format *</Label>
+                <Label>التنسيق *</Label>
                 <Select
                   value={formData.format}
                   onValueChange={(value) => setFormData({ ...formData, format: value })}
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select format" />
+                  <SelectTrigger className={stepErrors[2]?.some(e => e.includes("تنسيق الحدث")) ? "border-destructive" : ""}>
+                    <SelectValue placeholder="اختر التنسيق" />
                   </SelectTrigger>
                   <SelectContent>
                     {formatOptions.map((format) => (
@@ -670,6 +677,9 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
                     ))}
                   </SelectContent>
                 </Select>
+                {stepErrors[2]?.some(e => e.includes("تنسيق الحدث")) && (
+                  <p className="text-sm text-destructive mt-1">تنسيق الحدث مطلوب</p>
+                )}
               </div>
               <div>
                 <Label>Status</Label>
@@ -693,25 +703,33 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
 
             {(formData.format === "in_person" || formData.format === "hybrid") && (
               <div>
-                <Label htmlFor="location">Location</Label>
+                <Label htmlFor="location">الموقع</Label>
                 <Input
                   id="location"
                   value={formData.location}
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                  placeholder="Event location"
+                  placeholder="موقع الحدث"
+                  className={stepErrors[2]?.some(e => e.includes("الموقع مطلوب")) ? "border-destructive" : ""}
                 />
+                {stepErrors[2]?.some(e => e.includes("الموقع مطلوب")) && (
+                  <p className="text-sm text-destructive mt-1">الموقع مطلوب للأحداث الحضورية</p>
+                )}
               </div>
             )}
 
             {(formData.format === "virtual" || formData.format === "hybrid") && (
               <div>
-                <Label htmlFor="virtual_link">Virtual Link</Label>
+                <Label htmlFor="virtual_link">الرابط الافتراضي</Label>
                 <Input
                   id="virtual_link"
                   value={formData.virtual_link}
                   onChange={(e) => setFormData({ ...formData, virtual_link: e.target.value })}
                   placeholder="https://..."
+                  className={stepErrors[2]?.some(e => e.includes("الرابط الافتراضي")) ? "border-destructive" : ""}
                 />
+                {stepErrors[2]?.some(e => e.includes("الرابط الافتراضي")) && (
+                  <p className="text-sm text-destructive mt-1">الرابط الافتراضي مطلوب للأحداث الافتراضية</p>
+                )}
               </div>
             )}
 
