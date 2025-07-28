@@ -84,12 +84,11 @@ export function ManagementCard({
       );
     }
 
-    // Full view for cards/grid mode
+    // Full view for cards/grid mode - now icon-only for consistency
     return (
       <div className="flex gap-2">
         {actions.map((action, index) => {
           const icon = action.icon || defaultIcons[action.type as keyof typeof defaultIcons];
-          const showLabel = viewMode === 'cards' && action.type !== 'delete' && action.type !== 'settings';
           
           return (
             <Button
@@ -97,14 +96,12 @@ export function ManagementCard({
               variant={action.variant || 'outline'}
               size="sm"
               onClick={action.onClick}
-              className={`${showLabel ? 'flex-1' : ''} ${action.className || ''} ${
-                action.type === 'delete' ? 'text-destructive hover:text-destructive' : ''
+              className={`h-8 w-8 p-0 ${action.className || ''} ${
+                action.type === 'delete' ? 'text-destructive hover:text-destructive hover:bg-destructive/10' : ''
               }`}
+              title={action.label || action.type}
             >
               {icon}
-              {showLabel && action.label && (
-                <span className="ml-2">{action.label}</span>
-              )}
             </Button>
           );
         })}
