@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import "./index.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import { SystemSettingsProvider } from "./contexts/SystemSettingsContext";
+import { SettingsProvider } from "./contexts/SettingsContext";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { DirectionProvider } from "@/components/ui/direction-provider";
@@ -17,10 +18,12 @@ createRoot(document.getElementById("root")!).render(
       <DirectionProvider>
         <ThemeProvider>
           <SystemSettingsProvider>
-            <AuthProvider>
-              <App />
-              <Toaster />
-            </AuthProvider>
+            <SettingsProvider>
+              <AuthProvider>
+                <App />
+                <Toaster />
+              </AuthProvider>
+            </SettingsProvider>
           </SystemSettingsProvider>
         </ThemeProvider>
       </DirectionProvider>

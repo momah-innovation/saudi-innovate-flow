@@ -1,3 +1,3 @@
-// This file is now deprecated - use the SystemSettingsContext instead
+// This file is now deprecated - use the SettingsContext instead
 // Re-exporting from the context for backwards compatibility
-export { useSystemSettings, getInitials } from '@/contexts/SystemSettingsContext';
+export { useSettings as useSystemSettings, getInitials } from '@/contexts/SettingsContext';
