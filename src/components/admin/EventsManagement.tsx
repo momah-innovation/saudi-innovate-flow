@@ -340,14 +340,14 @@ export function EventsManagement() {
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
         filters={filters}
-      >
+       >
         <ViewLayouts viewMode={viewMode}>
           {filteredEvents.map((event) => (
-            <ManagementCard
-              key={event.id}
-              id={event.id}
-              title={event.title_ar}
-              description={event.description_ar}
+             <ManagementCard
+               key={event.id}
+               id={event.id}
+               title={event.title_ar}
+               description={event.description_ar}
               badges={[
                 { 
                   label: getStatusLabel(event.status || 'scheduled'),
@@ -359,30 +359,30 @@ export function EventsManagement() {
                 },
                 ...(event.event_type ? [{ label: event.event_type, variant: 'outline' as const }] : [])
               ]}
-               metadata={[
-                 { icon: <Calendar className="h-4 w-4" />, label: "التاريخ", value: format(new Date(event.event_date), 'PPP') },
-                 ...(event.start_time ? [{ icon: <Clock className="h-4 w-4" />, label: "الوقت", value: `${event.start_time} - ${event.end_time}` }] : []),
-                 ...(event.location ? [{ icon: <MapPin className="h-4 w-4" />, label: "المكان", value: event.location }] : []),
-                 ...(event.max_participants ? [{ icon: <Users className="h-4 w-4" />, label: "المشاركين", value: `${event.registered_participants || 0}/${event.max_participants}` }] : [])
-               ]}
-               actions={[
-                 { 
-                   type: 'edit', 
-                   label: 'تعديل',
-                   onClick: () => handleEdit(event)
-                 },
-                 { 
-                   type: 'delete',
-                   label: 'حذف',
-                   onClick: () => {
-                     if (confirm(`هل أنت متأكد من حذف "${event.title_ar}"؟`)) {
-                       handleDelete(event.id);
-                     }
-                   }
-                 }
-                ]}
-                viewMode={viewMode}
-                onClick={() => handleView(event)}
+              metadata={[
+                { icon: <Calendar className="h-4 w-4" />, label: "التاريخ", value: format(new Date(event.event_date), 'PPP') },
+                ...(event.start_time ? [{ icon: <Clock className="h-4 w-4" />, label: "الوقت", value: `${event.start_time} - ${event.end_time}` }] : []),
+                ...(event.location ? [{ icon: <MapPin className="h-4 w-4" />, label: "المكان", value: event.location }] : []),
+                ...(event.max_participants ? [{ icon: <Users className="h-4 w-4" />, label: "المشاركين", value: `${event.registered_participants || 0}/${event.max_participants}` }] : [])
+              ]}
+              actions={[
+                {
+                  type: 'edit',
+                  label: 'تعديل',
+                  onClick: () => handleEdit(event)
+                },
+                {
+                  type: 'delete',
+                  label: 'حذف',
+                  onClick: () => {
+                    if (confirm(`هل أنت متأكد من حذف "${event.title_ar}"؟`)) {
+                      handleDelete(event.id);
+                    }
+                  }
+                }
+              ]}
+              viewMode={viewMode}
+              onClick={() => handleView(event)}
             />
           ))}
         </ViewLayouts>
