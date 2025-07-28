@@ -61,14 +61,14 @@ interface Event {
   created_at?: string;
 }
 
-interface EventDialogProps {
+interface EventWizardProps {
   isOpen: boolean;
   onClose: () => void;
   event: Event | null;
   onSave: () => void;
 }
 
-export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps) {
+export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [stepErrors, setStepErrors] = useState<{[key: number]: string[]}>({});
   const totalSteps = 5;
@@ -86,9 +86,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
 
   // Form data
   const [formData, setFormData] = useState({
-    title: "",
     title_ar: "",
-    description: "",
     description_ar: "",
     event_type: "workshop",
     event_date: "",
@@ -215,9 +213,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
   const loadEventData = async (eventData: Event) => {
     // Load basic event data
     setFormData({
-      title: "",
       title_ar: eventData.title_ar || "",
-      description: eventData.description || "",
       description_ar: eventData.description_ar || "",
       event_type: eventData.event_type || "workshop",
       event_date: eventData.event_date || "",
@@ -283,9 +279,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
 
   const resetForm = () => {
     setFormData({
-      title: "",
       title_ar: "",
-      description: "",
       description_ar: "",
       event_type: "workshop",
       event_date: "",
@@ -420,9 +414,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
     setIsLoading(true);
     try {
       const eventData = {
-        title: formData.title,
         title_ar: formData.title_ar || null,
-        description: formData.description || null,
         description_ar: formData.description_ar || null,
         event_type: formData.event_type,
         event_date: formData.event_date,
@@ -504,16 +496,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
       case 1:
         return (
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="title">العنوان (الإنجليزية)</Label>
-                <Input
-                  id="title"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="Event title"
-                />
-              </div>
+            <div className="grid grid-cols-1 gap-4">
               <div>
                 <Label htmlFor="title_ar">العنوان (العربية) *</Label>
                 <Input
@@ -530,17 +513,7 @@ export function EventDialog({ isOpen, onClose, event, onSave }: EventDialogProps
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="description">الوصف (الإنجليزية)</Label>
-                <Textarea
-                  id="description"
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="Event description"
-                  rows={3}
-                />
-              </div>
+            <div className="grid grid-cols-1 gap-4">
               <div>
                 <Label htmlFor="description_ar">الوصف (العربية) *</Label>
                 <Textarea

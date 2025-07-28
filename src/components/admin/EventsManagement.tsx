@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Plus, Calendar, MapPin, Users, Clock, Edit, Trash2, Eye } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { format } from "date-fns";
-import { EventDialog } from "@/components/events/EventDialog";
+import { EventWizard } from "@/components/events/EventWizard";
 
 // New UI Library Components
 import { PageHeader } from "@/components/ui/page-header";
@@ -612,7 +612,7 @@ export function EventsManagement({
       )}
 
 
-      <EventDialog
+      <EventWizard
         isOpen={currentShowAddDialog}
         onClose={() => {
           if (externalSetShowAddDialog) {
