@@ -22,9 +22,11 @@ import { IntegrationSettings } from "@/components/admin/settings/IntegrationSett
 import { SystemListSettings } from "@/components/admin/settings/SystemListSettings";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useDirection } from "@/components/ui/direction-provider";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const SystemSettings = () => {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState("general");
   const settings = useSettings();
@@ -36,8 +38,8 @@ const SystemSettings = () => {
     } catch (error) {
       console.error('Error updating setting:', error);
       toast({
-        title: "خطأ",
-        description: "فشل في تحديث الإعداد",
+        title: t('error'),
+        description: t('updateSettingError'),
         variant: "destructive"
       });
     }
@@ -48,14 +50,14 @@ const SystemSettings = () => {
       setSaving(true);
       await settings.refetch();
       toast({
-        title: "تم الحفظ بنجاح",
-        description: "تم حفظ جميع إعدادات النظام بنجاح",
+        title: t('success'),
+        description: t('settingsSaved'),
       });
     } catch (error) {
       console.error('Error saving settings:', error);
       toast({
-        title: "خطأ",
-        description: "فشل في حفظ الإعدادات",
+        title: t('error'),
+        description: t('saveSettingsError'),
         variant: "destructive"
       });
     } finally {
@@ -64,11 +66,11 @@ const SystemSettings = () => {
   };
 
   const resetToDefaults = async () => {
-    if (confirm('هل أنت متأكد من إعادة تعيين جميع الإعدادات إلى القيم الافتراضية؟ سيتم فقدان جميع التخصيصات الحالية.')) {
+    if (confirm(t('resetConfirmation'))) {
       // This would need to be implemented as a reset function in the context
       toast({
-        title: "تم بنجاح",
-        description: "تم إعادة تعيين جميع الإعدادات إلى القيم الافتراضية"
+        title: t('success'),
+        description: t('resetSuccess')
       });
     }
   };
@@ -80,7 +82,7 @@ const SystemSettings = () => {
           <div className="flex items-center justify-center h-64">
             <div className="flex items-center gap-2">
               <Loader2 className="w-5 h-5 animate-spin" />
-              <span className="text-lg">جاري تحميل الإعدادات...</span>
+              <span className="text-lg">{t('loadingSettings')}</span>
             </div>
           </div>
         </div>
@@ -94,13 +96,13 @@ const SystemSettings = () => {
         {/* Header */}
         <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
           <div className={isRTL ? 'text-right' : 'text-left'}>
-            <h1 className="text-3xl font-bold">إعدادات النظام</h1>
-            <p className="text-muted-foreground">إدارة شاملة لجميع إعدادات المنصة والنظام</p>
+            <h1 className="text-3xl font-bold">{t('systemSettings')}</h1>
+            <p className="text-muted-foreground">{t('systemSettingsDescription')}</p>
           </div>
           <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Button variant="outline" onClick={resetToDefaults} disabled={saving} className={isRTL ? 'ml-2' : 'mr-2'}>
               <RotateCcw className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              إعادة تعيين
+              {t('resetSettings')}
             </Button>
             <Button onClick={saveSettings} disabled={saving}>
               {saving ? (
@@ -108,7 +110,7 @@ const SystemSettings = () => {
               ) : (
                 <Save className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               )}
-              حفظ الإعدادات
+              {t('saveSettings')}
             </Button>
           </div>
         </div>
@@ -118,27 +120,27 @@ const SystemSettings = () => {
           <TabsList className={`grid w-full grid-cols-6 h-auto p-1 ${isRTL ? 'text-right' : 'text-left'}`}>
             <TabsTrigger value="general" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Settings className="w-4 h-4" />
-              <span className="hidden sm:inline">عام</span>
+              <span className="hidden sm:inline">{t('general')}</span>
             </TabsTrigger>
             <TabsTrigger value="challenges" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Target className="w-4 h-4" />
-              <span className="hidden sm:inline">التحديات</span>
+              <span className="hidden sm:inline">{t('challenges')}</span>
             </TabsTrigger>
             <TabsTrigger value="security" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Shield className="w-4 h-4" />
-              <span className="hidden sm:inline">الأمان</span>
+              <span className="hidden sm:inline">{t('security')}</span>
             </TabsTrigger>
             <TabsTrigger value="notifications" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Bell className="w-4 h-4" />
-              <span className="hidden sm:inline">الإشعارات</span>
+              <span className="hidden sm:inline">{t('notifications')}</span>
             </TabsTrigger>
             <TabsTrigger value="integrations" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Database className="w-4 h-4" />
-              <span className="hidden sm:inline">التكامل</span>
+              <span className="hidden sm:inline">{t('integrations')}</span>
             </TabsTrigger>
             <TabsTrigger value="lists" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <List className="w-4 h-4" />
-              <span className="hidden sm:inline">القوائم</span>
+              <span className="hidden sm:inline">{t('lists')}</span>
             </TabsTrigger>
           </TabsList>
 

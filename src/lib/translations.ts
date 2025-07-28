@@ -112,6 +112,20 @@ export const translations = {
     expertAssignments: 'مهام الخبراء',
     relationshipOverview: 'نظرة عامة على العلاقات',
     systemSettings: 'إعدادات النظام',
+    systemSettingsDescription: 'إدارة شاملة لجميع إعدادات المنصة والنظام',
+    resetSettings: 'إعادة تعيين',
+    saveSettings: 'حفظ الإعدادات',
+    loadingSettings: 'جاري تحميل الإعدادات...',
+    resetConfirmation: 'هل أنت متأكد من إعادة تعيين جميع الإعدادات إلى القيم الافتراضية؟ سيتم فقدان جميع التخصيصات الحالية.',
+    settingsSaved: 'تم حفظ جميع إعدادات النظام بنجاح',
+    resetSuccess: 'تم إعادة تعيين جميع الإعدادات إلى القيم الافتراضية',
+    updateSettingError: 'فشل في تحديث الإعداد',
+    saveSettingsError: 'فشل في حفظ الإعدادات',
+    // Settings tabs
+    general: 'عام',
+    security: 'الأمان',
+    integrations: 'التكامل',
+    lists: 'القوائم',
     
     // Status and States
     status: 'الحالة',
@@ -434,6 +448,20 @@ export const translations = {
     expertAssignments: 'Expert Assignments',
     relationshipOverview: 'Relationship Overview',
     systemSettings: 'System Settings',
+    systemSettingsDescription: 'Comprehensive management of all platform and system settings',
+    resetSettings: 'Reset',
+    saveSettings: 'Save Settings',
+    loadingSettings: 'Loading settings...',
+    resetConfirmation: 'Are you sure you want to reset all settings to default values? All current customizations will be lost.',
+    settingsSaved: 'All system settings saved successfully',
+    resetSuccess: 'All settings have been reset to default values',
+    updateSettingError: 'Failed to update setting',
+    saveSettingsError: 'Failed to save settings',
+    // Settings tabs
+    general: 'General',
+    security: 'Security',
+    integrations: 'Integrations',
+    lists: 'Lists',
     
     // Status and States
     status: 'Status',
