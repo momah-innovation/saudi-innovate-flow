@@ -38,6 +38,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from '@/hooks/useSystemLists';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useDirection } from '@/components/ui/direction-provider';
 
 // System settings hook
 const useSystemSettings = () => {
@@ -154,7 +155,8 @@ export function TeamManagementContent({
   const { toast } = useToast();
   const { teamRoleOptions, teamSpecializationOptions } = useSystemLists();
   const systemSettings = useSystemSettings();
-  const { t } = useTranslation();
+  const { t, isRTL } = useTranslation();
+  const { direction } = useDirection();
   const [teamMembers, setTeamMembers] = useState<InnovationTeamMember[]>([]);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [profiles, setProfiles] = useState<any[]>([]);
@@ -716,12 +718,12 @@ export function TeamManagementContent({
   }
 
   return (
-    <div className="space-y-6">
-      <Tabs value={activeTab} onValueChange={onTabChange}>
-        <TabsList>
-          <TabsTrigger value="members">أعضاء الفريق</TabsTrigger>
-          <TabsTrigger value="assignments">المهام</TabsTrigger>
-          <TabsTrigger value="analytics">تحليلات الفريق</TabsTrigger>
+    <div className="space-y-6" dir={direction}>
+      <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
+        <TabsList className={`grid w-full grid-cols-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <TabsTrigger value="members" className={isRTL ? 'flex-row-reverse' : ''}>{t('members')}</TabsTrigger>
+          <TabsTrigger value="assignments" className={isRTL ? 'flex-row-reverse' : ''}>{t('assignments')}</TabsTrigger>
+          <TabsTrigger value="analytics" className={isRTL ? 'flex-row-reverse' : ''}>{t('analytics')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="members" className="space-y-4">
