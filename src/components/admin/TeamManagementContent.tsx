@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AssignmentDetailView } from '@/components/admin/AssignmentDetailView';
+import { TeamMemberWizard } from '@/components/admin/TeamMemberWizard';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -193,6 +194,7 @@ export function TeamManagementContent({
   const [isEditMemberDialogOpen, setIsEditMemberDialogOpen] = useState(false);
   const [isMemberDetailDialogOpen, setIsMemberDetailDialogOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<InnovationTeamMember | null>(null);
+  const [editingMember, setEditingMember] = useState<InnovationTeamMember | null>(null);
   const [selectedAssignment, setSelectedAssignment] = useState<any | null>(null);
   const [showAssignmentDetail, setShowAssignmentDetail] = useState(false);
   
@@ -525,14 +527,7 @@ export function TeamManagementContent({
   };
 
   const handleEditMember = (member: InnovationTeamMember) => {
-    setSelectedMember(member);
-    setMemberForm({
-      user_id: member.user_id,
-      cic_role: member.cic_role,
-      specialization: member.specialization || [],
-      max_concurrent_projects: member.max_concurrent_projects || 5,
-      performance_rating: member.performance_rating || 0
-    });
+    setEditingMember(member);
     setIsEditMemberDialogOpen(true);
   };
 
@@ -1130,204 +1125,24 @@ export function TeamManagementContent({
         </TabsContent>
       </Tabs>
 
-      {/* Add Member Dialog */}
-      <Dialog open={showAddDialog} onOpenChange={onAddDialogChange}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>إضافة عضو فريق جديد</DialogTitle>
-            <DialogDescription>
-              إضافة عضو جديد إلى فريق الابتكار الأساسي
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>البحث عن مستخدم</Label>
-              <Input
-                placeholder="ابحث بالاسم أو البريد الإلكتروني..."
-                value={userSearchTerm}
-                onChange={(e) => setUserSearchTerm(e.target.value)}
-              />
-              {userSearchTerm && (
-                <div className="max-h-32 overflow-y-auto border rounded-md">
-                  {filteredUsers.map((user) => (
-                    <div
-                      key={user.id}
-                      className={`p-2 cursor-pointer hover:bg-muted ${
-                        memberForm.user_id === user.id ? 'bg-muted' : ''
-                      }`}
-                      onClick={() => {
-                        setMemberForm(prev => ({ ...prev, user_id: user.id }));
-                        setUserSearchTerm(user.name);
-                      }}
-                    >
-                      <div className="font-medium">{user.name}</div>
-                      <div className="text-sm text-muted-foreground">{user.email}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            
-            <div className="space-y-2">
-              <Label>الدور في فريق الابتكار</Label>
-              <Select
-                value={memberForm.cic_role}
-                onValueChange={(value) => setMemberForm(prev => ({ ...prev, cic_role: value }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="اختر الدور" />
-                </SelectTrigger>
-                <SelectContent>
-                  {roleOptions.map((role) => (
-                    <SelectItem key={role} value={role}>{role}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="space-y-2">
-              <Label>التخصصات</Label>
-              <div className="flex flex-wrap gap-2">
-                {specializationOptions.map((spec) => (
-                  <Badge
-                    key={spec}
-                    variant={memberForm.specialization.includes(spec) ? 'default' : 'outline'}
-                    className="cursor-pointer"
-                    onClick={() => {
-                      setMemberForm(prev => ({
-                        ...prev,
-                        specialization: prev.specialization.includes(spec)
-                          ? prev.specialization.filter(s => s !== spec)
-                          : [...prev.specialization, spec]
-                      }));
-                    }}
-                  >
-                    {spec}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-            
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label>الحد الأقصى للمشاريع المتزامنة</Label>
-                <Input
-                  type="number"
-                  value={memberForm.max_concurrent_projects}
-                  onChange={(e) => setMemberForm(prev => ({ ...prev, max_concurrent_projects: parseInt(e.target.value) || 5 }))}
-                  min="1"
-                  max={systemSettings.maxConcurrentProjects}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>تقييم الأداء</Label>
-                <Input
-                  type="number"
-                  value={memberForm.performance_rating}
-                  onChange={(e) => setMemberForm(prev => ({ ...prev, performance_rating: parseFloat(e.target.value) || 0 }))}
-                  min={systemSettings.performanceRatingMin}
-                  max={systemSettings.performanceRatingMax}
-                  step={systemSettings.performanceRatingStep.toString()}
-                />
-              </div>
-            </div>
-            
-            <div className="flex justify-end gap-3">
-              <Button variant="outline" onClick={() => onAddDialogChange(false)}>
-                إلغاء
-              </Button>
-              <Button onClick={handleAddMember}>
-                إضافة عضو
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Edit Member Dialog */}
-      <Dialog open={isEditMemberDialogOpen} onOpenChange={setIsEditMemberDialogOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>تعديل عضو الفريق</DialogTitle>
-            <DialogDescription>
-              تعديل معلومات عضو فريق الابتكار
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>الدور في فريق الابتكار</Label>
-              <Select
-                value={memberForm.cic_role}
-                onValueChange={(value) => setMemberForm(prev => ({ ...prev, cic_role: value }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="اختر الدور" />
-                </SelectTrigger>
-                <SelectContent>
-                  {roleOptions.map((role) => (
-                    <SelectItem key={role} value={role}>{role}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="space-y-2">
-              <Label>التخصصات</Label>
-              <div className="flex flex-wrap gap-2">
-                {specializationOptions.map((spec) => (
-                  <Badge
-                    key={spec}
-                    variant={memberForm.specialization.includes(spec) ? 'default' : 'outline'}
-                    className="cursor-pointer"
-                    onClick={() => {
-                      setMemberForm(prev => ({
-                        ...prev,
-                        specialization: prev.specialization.includes(spec)
-                          ? prev.specialization.filter(s => s !== spec)
-                          : [...prev.specialization, spec]
-                      }));
-                    }}
-                  >
-                    {spec}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-            
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label>الحد الأقصى للمشاريع المتزامنة</Label>
-                <Input
-                  type="number"
-                  value={memberForm.max_concurrent_projects}
-                  onChange={(e) => setMemberForm(prev => ({ ...prev, max_concurrent_projects: parseInt(e.target.value) || 5 }))}
-                  min="1"
-                  max={systemSettings.maxConcurrentProjects}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>تقييم الأداء</Label>
-                <Input
-                  type="number"
-                  value={memberForm.performance_rating}
-                  onChange={(e) => setMemberForm(prev => ({ ...prev, performance_rating: parseFloat(e.target.value) || 0 }))}
-                  min={systemSettings.performanceRatingMin}
-                  max={systemSettings.performanceRatingMax}
-                  step={systemSettings.performanceRatingStep.toString()}
-                />
-              </div>
-            </div>
-            <div className="flex justify-end gap-3">
-              <Button variant="outline" onClick={() => setIsEditMemberDialogOpen(false)}>
-                إلغاء
-              </Button>
-              <Button onClick={handleUpdateMember}>
-                تحديث العضو
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/* Team Member Wizard */}
+      <TeamMemberWizard
+        open={showAddDialog || isEditMemberDialogOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            onAddDialogChange(false);
+            setIsEditMemberDialogOpen(false);
+            setEditingMember(null);
+          }
+        }}
+        editingMember={editingMember}
+        onSuccess={() => {
+          fetchTeamMembers();
+          onAddDialogChange(false);
+          setIsEditMemberDialogOpen(false);
+          setEditingMember(null);
+        }}
+      />
 
       {/* Member Detail Dialog */}
       <Dialog open={isMemberDetailDialogOpen} onOpenChange={setIsMemberDetailDialogOpen}>
