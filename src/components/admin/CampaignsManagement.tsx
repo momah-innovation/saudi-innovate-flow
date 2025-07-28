@@ -6,7 +6,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ViewLayouts } from "@/components/ui/view-layouts";
-import { DataCard } from "@/components/ui/data-card";
+import { ManagementCard } from "@/components/ui/management-card";
 import { CampaignWizard } from "./CampaignWizard";
 import { 
   Edit, 
@@ -261,13 +261,12 @@ export function CampaignsManagement({
 
   const renderCampaigns = () => {
     return filteredCampaigns.map((campaign) => (
-      <DataCard
+      <ManagementCard
         key={campaign.id}
-        item={campaign}
+        id={campaign.id}
         title={campaign.title_ar}
-        description={campaign.description_ar || ''}
-        selected={bulkMode ? selectedItems.includes(campaign.id) : false}
-        onSelect={bulkMode ? (selected) => handleSelectItem(campaign.id, selected) : undefined}
+        description={campaign.description_ar}
+        viewMode={viewMode}
         className={highlightId === campaign.id ? "ring-2 ring-primary animate-pulse" : ""}
         badges={[
           { 
@@ -296,47 +295,23 @@ export function CampaignsManagement({
             value: `${campaign.budget.toLocaleString()} ر.س`
           }] : [])
         ]}
-        actions={
-          <div className="flex items-center gap-1">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => handleEdit(campaign)}
-              title="تعديل"
-            >
-              <Edit className="w-4 h-4" />
-            </Button>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  title="حذف"
-                  className="text-destructive hover:text-destructive"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>حذف الحملة</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    هل أنت متأكد من حذف الحملة "{campaign.title_ar}"؟ لا يمكن التراجع عن هذا الإجراء.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>إلغاء</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={() => handleDelete(campaign.id)}
-                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                  >
-                    حذف
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
-        }
+        actions={[
+          {
+            type: 'edit',
+            label: 'تعديل',
+            onClick: () => handleEdit(campaign)
+          },
+          {
+            type: 'delete',
+            label: 'حذف',
+            onClick: () => {
+              if (confirm(`هل أنت متأكد من حذف الحملة "${campaign.title_ar}"؟`)) {
+                handleDelete(campaign.id);
+              }
+            }
+          }
+        ]}
+        onClick={() => handleEdit(campaign)}
       />
     ));
   };
