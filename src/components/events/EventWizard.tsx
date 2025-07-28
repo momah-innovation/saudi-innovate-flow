@@ -131,40 +131,40 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
 
   // Options
   const eventTypes = [
-    { value: "workshop", label: "Workshop" },
-    { value: "seminar", label: "Seminar" },
-    { value: "conference", label: "Conference" },
-    { value: "networking", label: "Networking Event" },
-    { value: "hackathon", label: "Hackathon" },
-    { value: "pitch_session", label: "Pitch Session" },
-    { value: "training", label: "Training Session" }
+    { value: "workshop", label: "ورشة عمل" },
+    { value: "seminar", label: "ندوة" },
+    { value: "conference", label: "مؤتمر" },
+    { value: "networking", label: "شبكات تواصل" },
+    { value: "hackathon", label: "هاكاثون" },
+    { value: "pitch_session", label: "جلسة عرض" },
+    { value: "training", label: "تدريب" }
   ];
 
   const formatOptions = [
-    { value: "in_person", label: "In Person" },
-    { value: "virtual", label: "Virtual" },
-    { value: "hybrid", label: "Hybrid" }
+    { value: "in_person", label: "حضوري" },
+    { value: "virtual", label: "افتراضي" },
+    { value: "hybrid", label: "مختلط" }
   ];
 
   const statusOptions = [
-    { value: "scheduled", label: "Scheduled" },
-    { value: "ongoing", label: "Ongoing" },
-    { value: "completed", label: "Completed" },
-    { value: "cancelled", label: "Cancelled" },
-    { value: "postponed", label: "Postponed" }
+    { value: "scheduled", label: "مجدول" },
+    { value: "ongoing", label: "جاري" },
+    { value: "completed", label: "مكتمل" },
+    { value: "cancelled", label: "ملغي" },
+    { value: "postponed", label: "مؤجل" }
   ];
 
   const visibilityOptions = [
-    { value: "public", label: "Public" },
-    { value: "private", label: "Private" },
-    { value: "internal", label: "Internal" }
+    { value: "public", label: "عام" },
+    { value: "private", label: "خاص" },
+    { value: "internal", label: "داخلي" }
   ];
 
   const categoryOptions = [
-    { value: "standalone", label: "Standalone Event" },
-    { value: "campaign_event", label: "Campaign Event" },
-    { value: "training", label: "Training" },
-    { value: "workshop", label: "Workshop" }
+    { value: "standalone", label: "حدث مستقل" },
+    { value: "campaign_event", label: "حدث حملة" },
+    { value: "training", label: "تدريب" },
+    { value: "workshop", label: "ورشة عمل" }
   ];
 
   useEffect(() => {
@@ -555,13 +555,13 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
               </div>
 
               <div>
-                <Label>Visibility</Label>
+                <Label>مستوى الرؤية</Label>
                 <Select
                   value={formData.event_visibility}
                   onValueChange={(value) => setFormData({ ...formData, event_visibility: value })}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select visibility" />
+                    <SelectValue placeholder="اختر مستوى الرؤية" />
                   </SelectTrigger>
                   <SelectContent>
                     {visibilityOptions.map((option) => (
@@ -574,13 +574,13 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
               </div>
 
               <div>
-                <Label>Category</Label>
+                <Label>الفئة</Label>
                 <Select
                   value={formData.event_category}
                   onValueChange={(value) => setFormData({ ...formData, event_category: value })}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select category" />
+                    <SelectValue placeholder="اختر الفئة" />
                   </SelectTrigger>
                   <SelectContent>
                     {categoryOptions.map((option) => (
@@ -613,7 +613,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                 )}
               </div>
               <div>
-                <Label htmlFor="start_time">Start Time</Label>
+                <Label htmlFor="start_time">وقت البداية</Label>
                 <Input
                   id="start_time"
                   type="time"
@@ -622,7 +622,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                 />
               </div>
               <div>
-                <Label htmlFor="end_time">End Time</Label>
+                <Label htmlFor="end_time">وقت النهاية</Label>
                 <Input
                   id="end_time"
                   type="time"
@@ -655,13 +655,13 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                 )}
               </div>
               <div>
-                <Label>Status</Label>
+                <Label>الحالة</Label>
                 <Select
                   value={formData.status}
                   onValueChange={(value) => setFormData({ ...formData, status: value })}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
+                    <SelectValue placeholder="اختر الحالة" />
                   </SelectTrigger>
                   <SelectContent>
                     {statusOptions.map((status) => (
@@ -708,18 +708,18 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="max_participants">Max Participants</Label>
+                <Label htmlFor="max_participants">الحد الأقصى للمشاركين</Label>
                 <Input
                   id="max_participants"
                   type="number"
                   min="1"
                   value={formData.max_participants}
                   onChange={(e) => setFormData({ ...formData, max_participants: e.target.value })}
-                  placeholder="Maximum participants"
+                  placeholder="الحد الأقصى للمشاركين"
                 />
               </div>
               <div>
-                <Label htmlFor="budget">Budget</Label>
+                <Label htmlFor="budget">الميزانية</Label>
                 <Input
                   id="budget"
                   type="number"
@@ -727,7 +727,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                   step="0.01"
                   value={formData.budget}
                   onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                  placeholder="Event budget"
+                  placeholder="ميزانية الحدث"
                 />
               </div>
             </div>
@@ -739,7 +739,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Campaign</Label>
+                <Label>الحملة</Label>
                 <Popover open={openCampaign} onOpenChange={setOpenCampaign}>
                   <PopoverTrigger asChild>
                     <Button
@@ -750,15 +750,15 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                     >
                       {formData.campaign_id
                         ? campaigns.find((campaign) => campaign.id === formData.campaign_id)?.title_ar
-                        : "Select campaign..."}
+                        : "اختر الحملة..."}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-full p-0">
                     <Command>
-                      <CommandInput placeholder="Search campaigns..." />
+                      <CommandInput placeholder="البحث في الحملات..." />
                       <CommandList>
-                        <CommandEmpty>No campaign found.</CommandEmpty>
+                        <CommandEmpty>لا توجد حملة.</CommandEmpty>
                         <CommandGroup>
                           <CommandItem
                             value=""
@@ -768,7 +768,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                             }}
                           >
                             <Check className="mr-2 h-4 w-4 opacity-0" />
-                            None
+                            لا شيء
                           </CommandItem>
                           {campaigns.map((campaign) => (
                             <CommandItem
@@ -795,7 +795,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
               </div>
 
               <div>
-                <Label>Sector</Label>
+                <Label>القطاع</Label>
                 <Popover open={openSector} onOpenChange={setOpenSector}>
                   <PopoverTrigger asChild>
                     <Button
@@ -806,15 +806,15 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                     >
                       {formData.sector_id
                         ? sectors.find((sector) => sector.id === formData.sector_id)?.name
-                        : "Select sector..."}
+                        : "اختر القطاع..."}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-full p-0">
                     <Command>
-                      <CommandInput placeholder="Search sectors..." />
+                      <CommandInput placeholder="البحث في القطاعات..." />
                       <CommandList>
-                        <CommandEmpty>No sector found.</CommandEmpty>
+                        <CommandEmpty>لا يوجد قطاع.</CommandEmpty>
                         <CommandGroup>
                           <CommandItem
                             value=""
@@ -824,7 +824,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                             }}
                           >
                             <Check className="mr-2 h-4 w-4 opacity-0" />
-                            None
+                            لا شيء
                           </CommandItem>
                           {sectors.map((sector) => (
                             <CommandItem
@@ -852,7 +852,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
             </div>
 
             <div>
-              <Label>Event Manager</Label>
+              <Label>مدير الحدث</Label>
               <Popover open={openEventManager} onOpenChange={setOpenEventManager}>
                 <PopoverTrigger asChild>
                   <Button
@@ -863,15 +863,15 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                   >
                     {formData.event_manager_id
                       ? eventManagers.find((manager) => manager.id === formData.event_manager_id)?.name
-                      : "Select event manager..."}
+                      : "اختر مدير الحدث..."}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-full p-0">
                   <Command>
-                    <CommandInput placeholder="Search managers..." />
+                    <CommandInput placeholder="البحث في المديرين..." />
                     <CommandList>
-                      <CommandEmpty>No manager found.</CommandEmpty>
+                      <CommandEmpty>لا يوجد مدير.</CommandEmpty>
                       <CommandGroup>
                         <CommandItem
                           value=""
@@ -881,7 +881,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                           }}
                         >
                           <Check className="mr-2 h-4 w-4 opacity-0" />
-                          None
+                          لا شيء
                         </CommandItem>
                         {eventManagers.map((manager) => (
                           <CommandItem
@@ -916,11 +916,11 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
             <div>
               <Label className="text-base font-medium mb-3 flex items-center gap-2">
                 <Target className="h-4 w-4" />
-                Related Challenges
+                التحديات ذات الصلة
               </Label>
               <div className="space-y-2">
                 <Input
-                  placeholder="Search challenges..."
+                  placeholder="البحث في التحديات..."
                   value={challengeSearch}
                   onChange={(e) => setChallengeSearch(e.target.value)}
                 />
@@ -972,11 +972,11 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
             <div>
               <Label className="text-base font-medium mb-3 flex items-center gap-2">
                 <Building className="h-4 w-4" />
-                Partner Organizations
+                المنظمات الشريكة
               </Label>
               <div className="space-y-2">
                 <Input
-                  placeholder="Search partners..."
+                  placeholder="البحث في الشركاء..."
                   value={partnerSearch}
                   onChange={(e) => setPartnerSearch(e.target.value)}
                 />
@@ -1028,11 +1028,11 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
             <div>
               <Label className="text-base font-medium mb-3 flex items-center gap-2">
                 <UserCheck className="h-4 w-4" />
-                Key Stakeholders
+                أصحاب المصلحة الرئيسيون
               </Label>
               <div className="space-y-2">
                 <Input
-                  placeholder="Search stakeholders..."
+                  placeholder="البحث في أصحاب المصلحة..."
                   value={stakeholderSearch}
                   onChange={(e) => setStakeholderSearch(e.target.value)}
                 />
@@ -1089,11 +1089,11 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
             <div>
               <Label className="text-base font-medium mb-3 flex items-center gap-2">
                 <HelpCircle className="h-4 w-4" />
-                Focus Questions
+                أسئلة التركيز
               </Label>
               <div className="space-y-2">
                 <Input
-                  placeholder="Search focus questions..."
+                  placeholder="البحث في أسئلة التركيز..."
                   value={focusQuestionSearch}
                   onChange={(e) => setFocusQuestionSearch(e.target.value)}
                 />
@@ -1145,48 +1145,54 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
             <div className="space-y-4">
               <Label className="text-base font-medium flex items-center gap-2">
                 <Settings className="h-4 w-4" />
-                Additional Settings
+                إعدادات إضافية
               </Label>
               
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center justify-between p-3 border rounded-lg">
+                <div className="space-y-1">
+                  <Label htmlFor="inherit_from_campaign" className="font-medium">وراثة الإعدادات من الحملة</Label>
+                  <p className="text-sm text-muted-foreground">استخدام إعدادات الحملة الأساسية لهذا الحدث</p>
+                </div>
                 <Switch
                   id="inherit_from_campaign"
                   checked={formData.inherit_from_campaign}
                   onCheckedChange={(checked) => setFormData({ ...formData, inherit_from_campaign: checked })}
                 />
-                <Label htmlFor="inherit_from_campaign">Inherit settings from campaign</Label>
               </div>
 
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center justify-between p-3 border rounded-lg">
+                <div className="space-y-1">
+                  <Label htmlFor="is_recurring" className="font-medium">حدث متكرر</Label>
+                  <p className="text-sm text-muted-foreground">تكرار هذا الحدث وفقاً لجدولة محددة</p>
+                </div>
                 <Switch
                   id="is_recurring"
                   checked={formData.is_recurring}
                   onCheckedChange={(checked) => setFormData({ ...formData, is_recurring: checked })}
                 />
-                <Label htmlFor="is_recurring">Recurring event</Label>
               </div>
 
               {formData.is_recurring && (
-                <div className="grid grid-cols-2 gap-4 ml-6">
+                <div className="grid grid-cols-2 gap-4 p-4 bg-muted/50 rounded-lg">
                   <div>
-                    <Label htmlFor="recurrence_pattern">Recurrence Pattern</Label>
+                    <Label htmlFor="recurrence_pattern">نمط التكرار</Label>
                     <Select
                       value={formData.recurrence_pattern}
                       onValueChange={(value) => setFormData({ ...formData, recurrence_pattern: value })}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select pattern" />
+                        <SelectValue placeholder="اختر النمط" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="daily">Daily</SelectItem>
-                        <SelectItem value="weekly">Weekly</SelectItem>
-                        <SelectItem value="monthly">Monthly</SelectItem>
-                        <SelectItem value="yearly">Yearly</SelectItem>
+                        <SelectItem value="daily">يومي</SelectItem>
+                        <SelectItem value="weekly">أسبوعي</SelectItem>
+                        <SelectItem value="monthly">شهري</SelectItem>
+                        <SelectItem value="yearly">سنوي</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="recurrence_end_date">Recurrence End Date</Label>
+                    <Label htmlFor="recurrence_end_date">تاريخ انتهاء التكرار</Label>
                     <Input
                       id="recurrence_end_date"
                       type="date"
