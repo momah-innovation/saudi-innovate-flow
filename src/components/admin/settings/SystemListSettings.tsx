@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Trash2, Plus, Edit3 } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Trash2, Plus, ChevronDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface SystemListSettingsProps {
@@ -156,81 +157,98 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
 
   return (
     <div className="space-y-6 rtl:text-right ltr:text-left">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {Object.entries(systemLists).map(([listKey, items]) => 
-          <Card key={listKey}>
-            <CardHeader className="rtl:text-right ltr:text-left">
-              <div className="flex items-center justify-between rtl:flex-row-reverse">
-                <div>
-                  <CardTitle className="text-lg">{listLabels[listKey as keyof typeof listLabels]}</CardTitle>
-                  <CardDescription>إدارة قائمة {listLabels[listKey as keyof typeof listLabels]}</CardDescription>
-                </div>
-                <Badge variant="outline">{items.length} عنصر</Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                {items.map((item, index) => (
-                  <div key={index} className="flex items-center justify-between p-2 bg-muted rounded-lg rtl:flex-row-reverse">
-                    <span className="flex-1 rtl:text-right ltr:text-left">{item}</span>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeItem(listKey, index)}
-                      className="text-destructive hover:text-destructive"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+      {/* Collapsible Lists Section */}
+      <Card>
+        <CardHeader className="rtl:text-right ltr:text-left">
+          <CardTitle>قوائم النظام</CardTitle>
+          <CardDescription>إدارة القوائم المستخدمة في النظام - اضغط على أي قائمة لتوسيعها</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Accordion type="multiple" className="w-full">
+            {Object.entries(systemLists).map(([listKey, items]) => (
+              <AccordionItem key={listKey} value={listKey} className="border-b">
+                <AccordionTrigger className="hover:no-underline">
+                  <div className="flex items-center justify-between w-full rtl:flex-row-reverse">
+                    <div className="flex items-center gap-3 rtl:flex-row-reverse">
+                      <span className="font-medium rtl:text-right ltr:text-left">
+                        {listLabels[listKey as keyof typeof listLabels]}
+                      </span>
+                      <Badge variant="secondary" className="text-xs">
+                        {items.length} عنصر
+                      </Badge>
+                    </div>
                   </div>
-                ))}
-              </div>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4">
+                  <div className="space-y-4">
+                    {/* Items List */}
+                    <div className="space-y-2 max-h-40 overflow-y-auto">
+                      {items.map((item, index) => (
+                        <div key={index} className="flex items-center justify-between p-2 bg-muted/50 rounded-md rtl:flex-row-reverse">
+                          <span className="flex-1 text-sm rtl:text-right ltr:text-left">{item}</span>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeItem(listKey, index)}
+                            className="text-destructive hover:text-destructive h-8 w-8 p-0"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
 
-              {editingList === listKey ? (
-                <div className="flex gap-2 rtl:flex-row-reverse">
-                  <Input
-                    value={newItem}
-                    onChange={(e) => setNewItem(e.target.value)}
-                    placeholder="أدخل عنصر جديد..."
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        addItem(listKey);
-                      } else if (e.key === 'Escape') {
-                        setEditingList(null);
-                        setNewItem("");
-                      }
-                    }}
-                    autoFocus
-                    className="rtl:text-right ltr:text-left"
-                  />
-                  <Button onClick={() => addItem(listKey)} size="sm">
-                    إضافة
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => {
-                      setEditingList(null);
-                      setNewItem("");
-                    }}
-                  >
-                    إلغاء
-                  </Button>
-                </div>
-              ) : (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setEditingList(listKey)}
-                  className="w-full"
-                >
-                  <Plus className="w-4 h-4 rtl:ml-2 ltr:mr-2" />
-                  إضافة عنصر جديد
-                </Button>
-              )}
-            </CardContent>
-          </Card>
-        )}
-      </div>
+                    {/* Add New Item */}
+                    {editingList === listKey ? (
+                      <div className="flex gap-2 rtl:flex-row-reverse">
+                        <Input
+                          value={newItem}
+                          onChange={(e) => setNewItem(e.target.value)}
+                          placeholder="أدخل عنصر جديد..."
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              addItem(listKey);
+                            } else if (e.key === 'Escape') {
+                              setEditingList(null);
+                              setNewItem("");
+                            }
+                          }}
+                          autoFocus
+                          className="rtl:text-right ltr:text-left text-sm"
+                          size={undefined}
+                        />
+                        <Button onClick={() => addItem(listKey)} size="sm">
+                          إضافة
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => {
+                            setEditingList(null);
+                            setNewItem("");
+                          }}
+                        >
+                          إلغاء
+                        </Button>
+                      </div>
+                    ) : (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setEditingList(listKey)}
+                        className="w-full h-8"
+                      >
+                        <Plus className="w-3 h-3 rtl:ml-2 ltr:mr-2" />
+                        إضافة عنصر جديد
+                      </Button>
+                    )}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader className="rtl:text-right ltr:text-left">
