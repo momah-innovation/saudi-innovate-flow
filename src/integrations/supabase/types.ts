@@ -2900,6 +2900,10 @@ export type Database = {
         }
         Returns: string
       }
+      auto_track_weekly_capacity: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       generate_invitation_token: {
         Args: Record<PropertyKey, never>
         Returns: string
