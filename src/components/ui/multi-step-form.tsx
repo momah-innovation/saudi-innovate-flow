@@ -105,9 +105,9 @@ export function MultiStepForm({
                     {index + 1}
                   </div>
                   <span className={`
-                    text-xs text-center leading-tight max-w-[80px]
+                    text-sm text-center leading-tight max-w-[100px] font-medium
                     ${index <= currentStep 
-                      ? 'text-primary font-medium' 
+                      ? 'text-foreground' 
                       : 'text-muted-foreground'
                     }
                   `}>
