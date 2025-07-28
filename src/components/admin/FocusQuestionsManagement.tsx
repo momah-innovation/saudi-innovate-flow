@@ -4,15 +4,11 @@ import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Search, Plus, Edit, Trash2, Eye } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { FocusQuestionWizard } from './FocusQuestionWizard';
 
 interface Challenge {
   id: string;
@@ -36,18 +32,10 @@ const FocusQuestionsManagement = () => {
   const { toast } = useToast();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState<FocusQuestion | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
-  
-  const [newQuestion, setNewQuestion] = useState<Partial<FocusQuestion>>({
-    question_text_ar: '',
-    question_type: 'open_ended',
-    is_sensitive: false,
-    order_sequence: 0,
-    challenge_id: ''
-  });
 
   useEffect(() => {
     fetchData();
@@ -89,73 +77,20 @@ const FocusQuestionsManagement = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    try {
-      if (!newQuestion.question_text_ar?.trim()) {
-        toast({
-          title: "خطأ",
-          description: "يرجى إدخال نص السؤال",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      if (editingQuestion) {
-        const { error } = await supabase
-          .from('focus_questions')
-          .update(newQuestion)
-          .eq('id', editingQuestion.id);
-
-        if (error) throw error;
-
-        toast({
-          title: "نجح",
-          description: "تم تحديث السؤال المحوري بنجاح",
-        });
-      } else {
-        const { error } = await supabase
-          .from('focus_questions')
-          .insert([newQuestion as any]);
-
-        if (error) throw error;
-
-        toast({
-          title: "نجح",
-          description: "تم إضافة السؤال المحوري بنجاح",
-        });
-      }
-
-      setIsDialogOpen(false);
-      resetForm();
-      fetchData();
-    } catch (error) {
-      console.error('Error saving focus question:', error);
-      toast({
-        title: "خطأ",
-        description: "فشل في حفظ السؤال المحوري",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const resetForm = () => {
-    setNewQuestion({
-      question_text_ar: '',
-      question_type: 'open_ended',
-      is_sensitive: false,
-      order_sequence: 0,
-      challenge_id: ''
-    });
-    setEditingQuestion(null);
-  };
-
   const handleEdit = (question: FocusQuestion) => {
     setEditingQuestion(question);
-    setNewQuestion(question);
-    setIsDialogOpen(true);
+    setIsWizardOpen(true);
+  };
+
+  const handleWizardSave = () => {
+    setIsWizardOpen(false);
+    setEditingQuestion(null);
+    fetchData();
   };
 
   const handleDelete = async (id: string) => {
+    if (!confirm('هل أنت متأكد من حذف هذا السؤال المحوري؟')) return;
+    
     try {
       const { error } = await supabase
         .from('focus_questions')
@@ -194,7 +129,7 @@ const FocusQuestionsManagement = () => {
               <h1 className="text-3xl font-bold">إدارة الأسئلة المحورية</h1>
               <p className="text-muted-foreground">إدارة الأسئلة المحورية للتحديات</p>
             </div>
-            <Button onClick={() => setIsDialogOpen(true)}>
+            <Button onClick={() => { setEditingQuestion(null); setIsWizardOpen(true); }}>
               <Plus className="h-4 w-4 mr-2" />
               إضافة سؤال محوري
             </Button>
@@ -249,97 +184,16 @@ const FocusQuestionsManagement = () => {
             ))}
           </div>
 
-          {/* Create/Edit Dialog */}
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogContent className="max-w-2xl">
-              <DialogHeader>
-                <DialogTitle>
-                  {editingQuestion ? 'تعديل السؤال المحوري' : 'إضافة سؤال محوري جديد'}
-                </DialogTitle>
-              </DialogHeader>
-              
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label>نص السؤال *</Label>
-                  <Textarea
-                    value={newQuestion.question_text_ar || ''}
-                    onChange={(e) => setNewQuestion({...newQuestion, question_text_ar: e.target.value})}
-                    placeholder="أدخل نص السؤال المحوري"
-                    rows={3}
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>نوع السؤال</Label>
-                    <Select 
-                      value={newQuestion.question_type || 'open_ended'} 
-                      onValueChange={(value) => setNewQuestion({...newQuestion, question_type: value})}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="open_ended">مفتوح</SelectItem>
-                        <SelectItem value="multiple_choice">متعدد الخيارات</SelectItem>
-                        <SelectItem value="yes_no">نعم/لا</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>التحدي المرتبط</Label>
-                    <Select 
-                      value={newQuestion.challenge_id || ''} 
-                      onValueChange={(value) => setNewQuestion({...newQuestion, challenge_id: value})}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="اختر التحدي" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {challenges.map((challenge) => (
-                          <SelectItem key={challenge.id} value={challenge.id}>
-                            {challenge.title_ar}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label>ترتيب السؤال</Label>
-                  <Input
-                    type="number"
-                    value={newQuestion.order_sequence || 0}
-                    onChange={(e) => setNewQuestion({...newQuestion, order_sequence: parseInt(e.target.value) || 0})}
-                    placeholder="ترتيب السؤال"
-                  />
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="is_sensitive"
-                    checked={newQuestion.is_sensitive || false}
-                    onCheckedChange={(checked) => setNewQuestion({...newQuestion, is_sensitive: !!checked})}
-                  />
-                  <Label htmlFor="is_sensitive">سؤال حساس</Label>
-                </div>
-
-                <div className="flex justify-end gap-2">
-                  <Button variant="outline" onClick={() => {
-                    setIsDialogOpen(false);
-                    resetForm();
-                  }}>
-                    إلغاء
-                  </Button>
-                  <Button onClick={handleSubmit}>
-                    {editingQuestion ? 'تحديث' : 'إضافة'}
-                  </Button>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
+          {/* Focus Question Wizard */}
+          <FocusQuestionWizard
+            isOpen={isWizardOpen}
+            onClose={() => {
+              setIsWizardOpen(false);
+              setEditingQuestion(null);
+            }}
+            question={editingQuestion}
+            onSave={handleWizardSave}
+          />
         </div>
       </div>
     </AppShell>

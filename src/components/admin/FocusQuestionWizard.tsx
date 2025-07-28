@@ -9,28 +9,36 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
 
-interface FocusQuestion {
+interface Challenge {
   id: string;
+  title_ar: string;
+  status: string;
+  sensitivity_level: string;
+}
+
+interface FocusQuestion {
+  id?: string;
   question_text_ar: string;
-  question_type?: string;
+  question_type: string;
   is_sensitive: boolean;
   order_sequence: number;
+  challenge_id?: string;
 }
 
 interface FocusQuestionWizardProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  challengeId: string;
-  question?: FocusQuestion;
-  onQuestionSaved: () => void;
+  isOpen: boolean;
+  onClose: () => void;
+  question?: FocusQuestion | null;
+  challengeId?: string;
+  onSave: () => void;
 }
 
-export function FocusQuestionWizard({ 
-  open, 
-  onOpenChange, 
-  challengeId,
+export function FocusQuestionWizard({
+  isOpen,
+  onClose,
   question,
-  onQuestionSaved 
+  challengeId,
+  onSave,
 }: FocusQuestionWizardProps) {
   const { toast } = useToast();
   const { t } = useTranslation();
@@ -40,9 +48,10 @@ export function FocusQuestionWizard({
     question_type: "open_ended",
     is_sensitive: false,
     order_sequence: 0,
+    challenge_id: challengeId || "",
   });
 
-  const isEditing = !!question;
+  const [challenges, setChallenges] = useState<Challenge[]>([]);
 
   // Question type options
   const questionTypes = [
@@ -54,12 +63,19 @@ export function FocusQuestionWizard({
   ];
 
   useEffect(() => {
+    if (isOpen) {
+      fetchChallenges();
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
     if (question) {
       setFormData({
         question_text_ar: question.question_text_ar || "",
         question_type: question.question_type || "open_ended",
         is_sensitive: question.is_sensitive || false,
         order_sequence: question.order_sequence || 0,
+        challenge_id: question.challenge_id || challengeId || "",
       });
     } else {
       setFormData({
@@ -67,9 +83,24 @@ export function FocusQuestionWizard({
         question_type: "open_ended",
         is_sensitive: false,
         order_sequence: 0,
+        challenge_id: challengeId || "",
       });
     }
-  }, [question, open]);
+  }, [question, challengeId, isOpen]);
+
+  const fetchChallenges = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('challenges')
+        .select('id, title_ar, status, sensitivity_level')
+        .order('title_ar');
+
+      if (error) throw error;
+      setChallenges(data || []);
+    } catch (error) {
+      console.error('Error fetching challenges:', error);
+    }
+  };
 
   const validateQuestionText = () => {
     if (!formData.question_text_ar.trim()) return false;
@@ -77,17 +108,24 @@ export function FocusQuestionWizard({
     return true;
   };
 
+  const validateQuestionDetails = () => {
+    if (!formData.question_type) return false;
+    if (formData.order_sequence < 0) return false;
+    return true;
+  };
+
   const handleSave = async () => {
     try {
       const questionData = {
-        challenge_id: challengeId,
         question_text_ar: formData.question_text_ar.trim(),
         question_type: formData.question_type,
         is_sensitive: formData.is_sensitive,
-        order_sequence: formData.order_sequence
+        order_sequence: formData.order_sequence,
+        challenge_id: formData.challenge_id || null,
       };
 
-      if (isEditing) {
+      if (question?.id) {
+        // Update existing question
         const { error } = await supabase
           .from('focus_questions')
           .update(questionData)
@@ -100,25 +138,26 @@ export function FocusQuestionWizard({
           description: "تم تحديث السؤال المحوري بنجاح",
         });
       } else {
+        // Create new question
         const { error } = await supabase
           .from('focus_questions')
-          .insert(questionData);
+          .insert([questionData]);
 
         if (error) throw error;
         
         toast({
-          title: "نجح الإنشاء", 
+          title: "نجح الإنشاء",
           description: "تم إنشاء السؤال المحوري بنجاح",
         });
       }
 
-      onQuestionSaved();
-      onOpenChange(false);
+      onSave();
+      onClose();
     } catch (error) {
-      console.error('Error saving focus question:', error);
+      console.error("Error saving focus question:", error);
       toast({
         title: "خطأ",
-        description: `فشل في ${isEditing ? 'تحديث' : 'إنشاء'} السؤال المحوري`,
+        description: "فشل في حفظ السؤال المحوري",
         variant: "destructive",
       });
     }
@@ -153,6 +192,7 @@ export function FocusQuestionWizard({
       id: "question-details",
       title: "تفاصيل السؤال",
       description: "حدد نوع السؤال وترتيبه",
+      validation: validateQuestionDetails,
       content: (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -191,6 +231,37 @@ export function FocusQuestionWizard({
       ),
     },
     {
+      id: "question-association",
+      title: "ربط السؤال",
+      description: "ربط السؤال بتحدي محدد (اختياري)",
+      content: (
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="challenge_id">التحدي المرتبط (اختياري)</Label>
+            <Select 
+              value={formData.challenge_id} 
+              onValueChange={(value) => setFormData({ ...formData, challenge_id: value })}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="اختر التحدي (اختياري)" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">بدون ربط بتحدي محدد</SelectItem>
+                {challenges.map((challenge) => (
+                  <SelectItem key={challenge.id} value={challenge.id}>
+                    {challenge.title_ar}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              يمكن ربط السؤال بتحدي محدد أو تركه عاماً لجميع التحديات
+            </p>
+          </div>
+        </div>
+      ),
+    },
+    {
       id: "question-settings",
       title: "إعدادات السؤال",
       description: "إعدادات الخصوصية والأمان",
@@ -216,8 +287,8 @@ export function FocusQuestionWizard({
 
   return (
     <MultiStepForm
-      isOpen={open}
-      onClose={() => onOpenChange(false)}
+      isOpen={isOpen}
+      onClose={onClose}
       title={question ? "تعديل السؤال المحوري" : "إضافة سؤال محوري جديد"}
       steps={steps}
       onComplete={handleSave}
