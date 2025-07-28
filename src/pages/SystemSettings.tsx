@@ -88,23 +88,23 @@ const SystemSettings = () => {
 
   return (
     <AppShell>
-      <div className="container mx-auto p-6 space-y-6">
+      <div className="container mx-auto p-6 space-y-6 rtl:text-right ltr:text-left">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
+        <div className="flex items-center justify-between rtl:flex-row-reverse">
+          <div className="rtl:text-right ltr:text-left">
             <h1 className="text-3xl font-bold">إعدادات النظام</h1>
             <p className="text-muted-foreground">إدارة شاملة لجميع إعدادات المنصة والنظام</p>
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={resetToDefaults} disabled={saving}>
-              <RotateCcw className="w-4 h-4 mr-2" />
+          <div className="flex gap-2 rtl:flex-row-reverse">
+            <Button variant="outline" onClick={resetToDefaults} disabled={saving} className="rtl:ml-2 ltr:mr-2">
+              <RotateCcw className="w-4 h-4 rtl:ml-2 ltr:mr-2" />
               إعادة تعيين
             </Button>
             <Button onClick={saveSettings} disabled={saving}>
               {saving ? (
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <Loader2 className="w-4 h-4 rtl:ml-2 ltr:mr-2 animate-spin" />
               ) : (
-                <Save className="w-4 h-4 mr-2" />
+                <Save className="w-4 h-4 rtl:ml-2 ltr:mr-2" />
               )}
               حفظ الإعدادات
             </Button>
@@ -112,7 +112,7 @@ const SystemSettings = () => {
         </div>
 
         {/* Settings Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6 rtl:text-right ltr:text-left">
           <TabsList className="grid w-full grid-cols-6 h-auto p-1">
             <TabsTrigger value="general" className="flex items-center gap-2 h-12 text-sm">
               <Settings className="w-4 h-4" />
