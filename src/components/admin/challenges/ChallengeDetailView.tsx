@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
-import { useRTLAware } from "@/hooks/useRTL";
+
 import { supabase } from "@/integrations/supabase/client";
 import { 
   Target, 
@@ -77,7 +77,7 @@ export function ChallengeDetailView({
 }: ChallengeDetailViewProps) {
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
-  const { getMarginClass, getTextAlignClass } = useRTLAware();
+  
   const [relatedData, setRelatedData] = useState({
     experts: [],
     partners: [],
@@ -228,8 +228,8 @@ export function ChallengeDetailView({
                 <Badge variant="outline">{challenge.sensitivity_level}</Badge>
               </div>
             </div>
-            <Button onClick={() => onEdit(challenge)} size="sm" className={getMarginClass('left', '2')}>
-              <Edit className={`w-4 h-4 ${getMarginClass('right', '2')}`} />
+            <Button onClick={() => onEdit(challenge)} size="sm">
+              <Edit className="w-4 h-4 mr-2" />
               تعديل
             </Button>
           </div>

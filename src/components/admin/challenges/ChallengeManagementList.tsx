@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
-import { useRTLAware } from "@/hooks/useRTL";
+
 import { 
   Target, 
   Calendar, 
@@ -71,7 +71,7 @@ export function ChallengeManagementList() {
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
-  const { getMarginClass, flexReverse } = useRTLAware();
+  
 
   useEffect(() => {
     fetchChallenges();
@@ -234,8 +234,8 @@ export function ChallengeManagementList() {
             <Button onClick={() => {
               setSelectedChallenge(null);
               setShowWizard(true);
-            }} className={`${getMarginClass('right', '2')}`}>
-              <Target className={`w-4 h-4 ${getMarginClass('right', '2')}`} />
+            }}>
+              <Target className="w-4 h-4 mr-2" />
               تحدي جديد
             </Button>
           </div>
