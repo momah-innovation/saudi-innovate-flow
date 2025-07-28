@@ -265,142 +265,6 @@ export function EventsManagement() {
     }
   };
 
-  const renderEventCard = (event: Event) => (
-    <Card key={event.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleView(event)}>
-      <CardHeader className="pb-3">
-        <div className="flex justify-between items-start">
-          <div className="flex-1">
-            <CardTitle className="text-lg">{event.title_ar}</CardTitle>
-            <div className="flex gap-2 mt-2">
-              <Badge className={getStatusColor(event.status || 'scheduled')}>
-                {getStatusLabel(event.status || 'scheduled')}
-              </Badge>
-              <Badge className={getFormatColor(event.format || 'in_person')}>
-                {getFormatLabel(event.format || 'in_person')}
-              </Badge>
-              {event.event_type && (
-                <Badge variant="outline">
-                  {event.event_type}
-                </Badge>
-              )}
-            </div>
-          </div>
-          <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
-            <Button variant="ghost" size="sm" onClick={() => handleView(event)} className="h-9 w-9 p-0">
-              <Eye className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="sm" onClick={() => handleEdit(event)} className="h-9 w-9 p-0">
-              <Edit className="h-4 w-4" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={() => {
-                if (confirm(`هل أنت متأكد من حذف "${event.title_ar}"؟`)) {
-                  handleDelete(event.id);
-                }
-              }} 
-              className="h-9 w-9 p-0 text-destructive hover:text-destructive"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-          <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-            <span>{format(new Date(event.event_date), 'PPP')}</span>
-          </div>
-          {event.start_time && (
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-muted-foreground" />
-              <span>{event.start_time} - {event.end_time}</span>
-            </div>
-          )}
-          {event.location && (
-            <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-muted-foreground" />
-              <span className="truncate">{event.location}</span>
-            </div>
-          )}
-          {event.max_participants && (
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-muted-foreground" />
-              <span>{event.registered_participants || 0}/{event.max_participants}</span>
-            </div>
-          )}
-        </div>
-        {event.description_ar && (
-          <p className="text-sm text-muted-foreground mt-3 line-clamp-2">
-            {event.description_ar}
-          </p>
-        )}
-      </CardContent>
-    </Card>
-  );
-
-  const renderListView = () => (
-    <div className="space-y-3">
-      {filteredEvents.map((event) => (
-        <Card key={event.id} className="p-4 cursor-pointer hover:shadow-md" onClick={() => handleView(event)}>
-          <div className="flex items-center justify-between">
-            <div className="flex-1 space-y-1">
-              <div className="flex items-center gap-3">
-                <h3 className="font-semibold">{event.title_ar}</h3>
-                <Badge className={getStatusColor(event.status || 'scheduled')}>
-                  {getStatusLabel(event.status || 'scheduled')}
-                </Badge>
-                <Badge className={getFormatColor(event.format || 'in_person')}>
-                  {getFormatLabel(event.format || 'in_person')}
-                </Badge>
-              </div>
-              <p className="text-sm text-muted-foreground line-clamp-1">{event.description_ar}</p>
-              <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  <Calendar className="w-3 h-3" />
-                  {format(new Date(event.event_date), 'PPP')}
-                </span>
-                {event.location && (
-                  <span className="flex items-center gap-1">
-                    <MapPin className="w-3 h-3" />
-                    {event.location}
-                  </span>
-                )}
-                {event.max_participants && (
-                  <span className="flex items-center gap-1">
-                    <Users className="w-3 h-3" />
-                    {event.registered_participants || 0}/{event.max_participants}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
-              <Button variant="outline" size="sm" onClick={() => handleView(event)}>
-                <Eye className="w-4 h-4" />
-              </Button>
-              <Button variant="outline" size="sm" onClick={() => handleEdit(event)}>
-                <Edit className="w-4 h-4" />
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => {
-                  if (confirm(`هل أنت متأكد من حذف "${event.title_ar}"؟`)) {
-                    handleDelete(event.id);
-                  }
-                }} 
-                className="text-destructive hover:text-destructive"
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-        </Card>
-      ))}
-    </div>
-  );
 
   const secondaryActions = (
     <>
@@ -487,11 +351,11 @@ export function EventsManagement() {
               badges={[
                 { 
                   label: getStatusLabel(event.status || 'scheduled'),
-                  className: getStatusColor(event.status || 'scheduled')
+                  variant: 'outline' as const
                 },
                 { 
                   label: getFormatLabel(event.format || 'in_person'),
-                  className: getFormatColor(event.format || 'in_person')
+                  variant: 'secondary' as const
                 },
                 ...(event.event_type ? [{ label: event.event_type, variant: 'outline' as const }] : [])
               ]}
@@ -501,26 +365,22 @@ export function EventsManagement() {
                 ...(event.location ? [{ icon: <MapPin className="h-3 w-3" />, label: "المكان", value: event.location }] : []),
                 ...(event.max_participants ? [{ icon: <Users className="h-3 w-3" />, label: "المشاركين", value: `${event.registered_participants || 0}/${event.max_participants}` }] : [])
               ]}
-              actions={[
-                { 
-                  type: 'view', 
-                  label: 'عرض',
-                  onClick: () => handleView(event)
-                },
-                { 
-                  type: 'edit', 
-                  label: 'تعديل',
-                  onClick: () => handleEdit(event)
-                },
-                { 
-                  type: 'delete',
-                  onClick: () => {
-                    if (confirm(`هل أنت متأكد من حذف "${event.title_ar}"؟`)) {
-                      handleDelete(event.id);
-                    }
-                  }
-                }
-              ]}
+               actions={[
+                 { 
+                   type: 'edit', 
+                   label: 'تعديل',
+                   onClick: () => handleEdit(event)
+                 },
+                 { 
+                   type: 'delete',
+                   label: 'حذف',
+                   onClick: () => {
+                     if (confirm(`هل أنت متأكد من حذف "${event.title_ar}"؟`)) {
+                       handleDelete(event.id);
+                     }
+                   }
+                 }
+               ]}
               viewMode={viewMode}
               onClick={() => handleView(event)}
             />
