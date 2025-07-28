@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import ProfileSetup from "./pages/ProfileSetup";
 import ChallengeDetails from "./pages/ChallengeDetails";
+import ChallengesManagementPage from "./pages/ChallengesManagement";
 import FocusQuestionsManagement from "./pages/FocusQuestionsManagement";
 import PartnersManagement from "./pages/PartnersManagement";
 import SectorsManagement from "./pages/SectorsManagement";
@@ -51,6 +52,14 @@ const App = () => (
               element={
                 <ProtectedRoute requireProfile>
                   <ChallengeDetails />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/challenges" 
+              element={
+                <ProtectedRoute requireProfile requiredRole="admin">
+                  <ChallengesManagementPage />
                 </ProtectedRoute>
               } 
             />
