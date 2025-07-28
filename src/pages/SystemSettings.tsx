@@ -21,12 +21,14 @@ import { NotificationSettings } from "@/components/admin/settings/NotificationSe
 import { IntegrationSettings } from "@/components/admin/settings/IntegrationSettings";
 import { SystemListSettings } from "@/components/admin/settings/SystemListSettings";
 import { useSettings } from "@/contexts/SettingsContext";
+import { useDirection } from "@/components/ui/direction-provider";
 
 const SystemSettings = () => {
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState("general");
   const settings = useSettings();
+  const { isRTL } = useDirection();
 
   const handleSettingChange = async (key: string, value: any) => {
     try {
@@ -88,23 +90,23 @@ const SystemSettings = () => {
 
   return (
     <AppShell>
-      <div className="container mx-auto p-6 space-y-6 rtl:text-right ltr:text-left">
+      <div className={`container mx-auto p-6 space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
         {/* Header */}
-        <div className="flex items-center justify-between rtl:flex-row-reverse">
-          <div className="rtl:text-right ltr:text-left">
+        <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={isRTL ? 'text-right' : 'text-left'}>
             <h1 className="text-3xl font-bold">إعدادات النظام</h1>
             <p className="text-muted-foreground">إدارة شاملة لجميع إعدادات المنصة والنظام</p>
           </div>
-          <div className="flex gap-2 rtl:flex-row-reverse">
-            <Button variant="outline" onClick={resetToDefaults} disabled={saving} className="rtl:ml-2 ltr:mr-2">
-              <RotateCcw className="w-4 h-4 rtl:ml-2 ltr:mr-2" />
+          <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <Button variant="outline" onClick={resetToDefaults} disabled={saving} className={isRTL ? 'ml-2' : 'mr-2'}>
+              <RotateCcw className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               إعادة تعيين
             </Button>
             <Button onClick={saveSettings} disabled={saving}>
               {saving ? (
-                <Loader2 className="w-4 h-4 rtl:ml-2 ltr:mr-2 animate-spin" />
+                <Loader2 className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'} animate-spin`} />
               ) : (
-                <Save className="w-4 h-4 rtl:ml-2 ltr:mr-2" />
+                <Save className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               )}
               حفظ الإعدادات
             </Button>
@@ -112,29 +114,29 @@ const SystemSettings = () => {
         </div>
 
         {/* Settings Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6 rtl:text-right ltr:text-left">
-          <TabsList className="grid w-full grid-cols-6 h-auto p-1 rtl:text-right ltr:text-left">
-            <TabsTrigger value="general" className="flex items-center gap-2 h-12 text-sm rtl:flex-row-reverse">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+          <TabsList className={`grid w-full grid-cols-6 h-auto p-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+            <TabsTrigger value="general" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Settings className="w-4 h-4" />
               <span className="hidden sm:inline">عام</span>
             </TabsTrigger>
-            <TabsTrigger value="challenges" className="flex items-center gap-2 h-12 text-sm rtl:flex-row-reverse">
+            <TabsTrigger value="challenges" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Target className="w-4 h-4" />
               <span className="hidden sm:inline">التحديات</span>
             </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center gap-2 h-12 text-sm rtl:flex-row-reverse">
+            <TabsTrigger value="security" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Shield className="w-4 h-4" />
               <span className="hidden sm:inline">الأمان</span>
             </TabsTrigger>
-            <TabsTrigger value="notifications" className="flex items-center gap-2 h-12 text-sm rtl:flex-row-reverse">
+            <TabsTrigger value="notifications" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Bell className="w-4 h-4" />
               <span className="hidden sm:inline">الإشعارات</span>
             </TabsTrigger>
-            <TabsTrigger value="integrations" className="flex items-center gap-2 h-12 text-sm rtl:flex-row-reverse">
+            <TabsTrigger value="integrations" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Database className="w-4 h-4" />
               <span className="hidden sm:inline">التكامل</span>
             </TabsTrigger>
-            <TabsTrigger value="lists" className="flex items-center gap-2 h-12 text-sm rtl:flex-row-reverse">
+            <TabsTrigger value="lists" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <List className="w-4 h-4" />
               <span className="hidden sm:inline">القوائم</span>
             </TabsTrigger>
