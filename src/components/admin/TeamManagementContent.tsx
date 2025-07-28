@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
@@ -1339,169 +1340,194 @@ export function TeamManagementContent({
           </DialogHeader>
           
           {selectedMember && (
-            <div className="space-y-6">
-              {/* Basic Information */}
-              <div className="grid gap-4 md:grid-cols-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm">{t('basicInfo')}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">{t('name')}:</span>
-                      <span className="font-medium">{selectedMember.profiles?.name || t('notSpecified')}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">{t('email')}:</span>
-                      <span className="font-medium">{selectedMember.profiles?.email || t('notSpecified')}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">{t('department')}:</span>
-                      <span className="font-medium">{selectedMember.profiles?.department || t('notSpecified')}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">{t('position')}:</span>
-                      <span className="font-medium">{selectedMember.profiles?.position || t('notSpecified')}</span>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm">{t('roleInTeam')}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">{t('role')}:</span>
-                      <Badge variant="default">{selectedMember.cic_role}</Badge>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">{t('joinDate')}:</span>
-                      <span className="font-medium">
-                        {new Date(selectedMember.created_at).toLocaleDateString('ar-SA')}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">{t('memberStatus')}:</span>
-                      <Badge variant="secondary">{t('active')}</Badge>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Specializations */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-sm">{t('specializations')}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ScrollArea className="h-[120px] w-full">
-                    <div className="flex flex-wrap gap-2 pr-4">
-                      {selectedMember.specialization?.length > 0 ? (
-                        selectedMember.specialization.map((spec) => (
-                          <Badge key={spec} variant="outline">{spec}</Badge>
-                        ))
-                      ) : (
-                        <span className="text-muted-foreground">{t('noDataAvailable')}</span>
-                      )}
-                    </div>
-                  </ScrollArea>
-                </CardContent>
-              </Card>
-
-              {/* Performance & Capacity */}
-              <div className="grid gap-4 md:grid-cols-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm">{t('performanceRating')}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center gap-4">
-                      <div className="text-2xl font-bold">
-                        {selectedMember.performance_rating.toFixed(1)}/5
-                      </div>
-                      <div className="flex-1">
-                        <div className="w-full bg-secondary rounded-full h-2">
-                          <div 
-                            className="h-2 rounded-full bg-primary"
-                            style={{ width: `${(selectedMember.performance_rating / 5) * 100}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm">{t('currentWorkload')}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>{t('currentLoad')}:</span>
-                        <span className="font-medium">
-                          {selectedMember.current_workload}/{selectedMember.max_concurrent_projects}
-                        </span>
-                      </div>
-                      <div className="w-full bg-secondary rounded-full h-2">
-                        <div 
-                          className={`h-2 rounded-full ${
-                            (selectedMember.current_workload / selectedMember.max_concurrent_projects) * 100 >= 90 
-                              ? 'bg-destructive' 
-                              : (selectedMember.current_workload / selectedMember.max_concurrent_projects) * 100 >= 75 
-                                ? 'bg-yellow-500' 
-                                : 'bg-primary'
-                          }`}
-                          style={{ 
-                            width: `${Math.min((selectedMember.current_workload / selectedMember.max_concurrent_projects) * 100, 100)}%` 
-                          }}
-                        />
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {Math.round((selectedMember.current_workload / selectedMember.max_concurrent_projects) * 100)}% {t('capacityUtilization')}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Current Assignments */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-sm">{t('currentAssignments')}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ScrollArea className="h-[300px] w-full">
-                    <div className="space-y-2 pr-4">
-                      {getAssignmentsForMember(selectedMember.user_id).length > 0 ? (
-                        getAssignmentsForMember(selectedMember.user_id).map((assignment) => {
-                          const TypeIcon = getTypeIcon(assignment.type);
-                          return (
-                            <div key={assignment.id} className="flex items-center gap-3 p-2 border rounded-md">
-                              <TypeIcon className="h-4 w-4 text-muted-foreground" />
-                              <div className="flex-1">
-                                <p className="font-medium text-sm">{assignment.title}</p>
-                                <p className="text-xs text-muted-foreground">
-                                  {assignment.type} • {assignment.status}
-                                </p>
-                              </div>
-                              <Badge variant="outline" className="text-xs">
-                                {assignment.status}
-                              </Badge>
+            <div className="space-y-6" dir={direction}>
+              <Accordion type="multiple" defaultValue={["basic", "assignments"]} className="w-full">
+                {/* Basic Information */}
+                <AccordionItem value="basic">
+                  <AccordionTrigger className="text-lg font-semibold">
+                    {t('basicInfo')}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <Card>
+                        <CardContent className="pt-6">
+                          <div className="space-y-3">
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">{t('name')}:</span>
+                              <span className="font-medium">{selectedMember.profiles?.name || t('notSpecified')}</span>
                             </div>
-                          );
-                        })
-                      ) : (
-                        <div className="text-center py-4">
-                          <Target className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-                          <p className="text-muted-foreground">{t('noActiveAssignments')}</p>
-                        </div>
-                      )}
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">{t('email')}:</span>
+                              <span className="font-medium">{selectedMember.profiles?.email || t('notSpecified')}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">{t('department')}:</span>
+                              <span className="font-medium">{selectedMember.profiles?.department || t('notSpecified')}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">{t('position')}:</span>
+                              <span className="font-medium">{selectedMember.profiles?.position || t('notSpecified')}</span>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card>
+                        <CardContent className="pt-6">
+                          <div className="space-y-3">
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">{t('role')}:</span>
+                              <Badge variant="default">{selectedMember.cic_role}</Badge>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">{t('joinDate')}:</span>
+                              <span className="font-medium">
+                                {new Date(selectedMember.created_at).toLocaleDateString()}
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">{t('status')}:</span>
+                              <Badge variant="secondary">{t('active')}</Badge>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
                     </div>
-                  </ScrollArea>
-                </CardContent>
-              </Card>
+                  </AccordionContent>
+                </AccordionItem>
+
+                {/* Specializations */}
+                <AccordionItem value="specializations">
+                  <AccordionTrigger className="text-lg font-semibold">
+                    {t('specializations')}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <Card>
+                      <CardContent className="pt-6">
+                        <ScrollArea className="h-[120px] w-full">
+                          <div className="flex flex-wrap gap-2 pr-4">
+                            {selectedMember.specialization?.length > 0 ? (
+                              selectedMember.specialization.map((spec) => (
+                                <Badge key={spec} variant="outline">{spec}</Badge>
+                              ))
+                            ) : (
+                              <span className="text-muted-foreground">{t('noDataAvailable')}</span>
+                            )}
+                          </div>
+                        </ScrollArea>
+                      </CardContent>
+                    </Card>
+                  </AccordionContent>
+                </AccordionItem>
+
+                {/* Performance & Capacity */}
+                <AccordionItem value="performance">
+                  <AccordionTrigger className="text-lg font-semibold">
+                    {t('performanceCapacity')}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-sm">{t('performanceRating')}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="flex items-center gap-4">
+                            <div className="text-2xl font-bold">
+                              {selectedMember.performance_rating.toFixed(1)}/5
+                            </div>
+                            <div className="flex-1">
+                              <div className="w-full bg-secondary rounded-full h-2">
+                                <div 
+                                  className="h-2 rounded-full bg-primary"
+                                  style={{ width: `${(selectedMember.performance_rating / 5) * 100}%` }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-sm">{t('currentWorkload')}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span>{t('currentLoad')}:</span>
+                              <span className="font-medium">
+                                {selectedMember.current_workload}/{selectedMember.max_concurrent_projects}
+                              </span>
+                            </div>
+                            <div className="w-full bg-secondary rounded-full h-2">
+                              <div 
+                                className={`h-2 rounded-full ${
+                                  (selectedMember.current_workload / selectedMember.max_concurrent_projects) * 100 >= 90 
+                                    ? 'bg-destructive' 
+                                    : (selectedMember.current_workload / selectedMember.max_concurrent_projects) * 100 >= 75 
+                                      ? 'bg-yellow-500' 
+                                      : 'bg-primary'
+                                }`}
+                                style={{ 
+                                  width: `${Math.min((selectedMember.current_workload / selectedMember.max_concurrent_projects) * 100, 100)}%` 
+                                }}
+                              />
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {Math.round((selectedMember.current_workload / selectedMember.max_concurrent_projects) * 100)}% {t('capacityUtilization')}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+
+                {/* Current Assignments */}
+                <AccordionItem value="assignments">
+                  <AccordionTrigger className="text-lg font-semibold">
+                    {t('currentAssignments')} ({getAssignmentsForMember(selectedMember.user_id).length})
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <Card>
+                      <CardContent className="pt-6">
+                        <ScrollArea className="h-[400px] w-full">
+                          <div className="space-y-3 pr-4">
+                            {getAssignmentsForMember(selectedMember.user_id).length > 0 ? (
+                              getAssignmentsForMember(selectedMember.user_id).map((assignment) => {
+                                const TypeIcon = getTypeIcon(assignment.type);
+                                return (
+                                  <div key={assignment.id} className="flex items-center gap-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                                    <TypeIcon className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                                    <div className="flex-1 min-w-0">
+                                      <p className="font-medium text-sm truncate">{assignment.title}</p>
+                                      <p className="text-xs text-muted-foreground">
+                                        {assignment.type} • {assignment.status}
+                                        {assignment.start_date && (
+                                          <> • {new Date(assignment.start_date).toLocaleDateString()}</>
+                                        )}
+                                      </p>
+                                    </div>
+                                    <Badge variant="outline" className="text-xs flex-shrink-0">
+                                      {assignment.status}
+                                    </Badge>
+                                  </div>
+                                );
+                              })
+                            ) : (
+                              <div className="text-center py-8">
+                                <Target className="h-12 w-12 mx-auto text-muted-foreground mb-3" />
+                                <p className="text-muted-foreground">{t('noActiveAssignments')}</p>
+                              </div>
+                            )}
+                          </div>
+                        </ScrollArea>
+                      </CardContent>
+                    </Card>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
 
               {/* Action Buttons */}
               <div className="flex justify-end gap-3 pt-4 border-t">
