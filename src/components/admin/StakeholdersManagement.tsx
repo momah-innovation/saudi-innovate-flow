@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Edit, Trash2, User, Mail, Phone, Building, Search, X, Eye, Download, Archive } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, User, Mail, Phone, Building, Search, X, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { StakeholderWizard } from "./StakeholderWizard";
-import { StandardPageLayout, ViewMode } from "@/components/layout/StandardPageLayout";
+import { PageLayout } from "@/components/layout/PageLayout";
 
 interface Stakeholder {
   id: string;
@@ -34,17 +34,13 @@ export function StakeholdersManagement() {
   const [viewingStakeholder, setViewingStakeholder] = useState<Stakeholder | null>(null);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<ViewMode>('cards');
+  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   
   // Search and filter states
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [influenceFilter, setInfluenceFilter] = useState("all");
   const [engagementFilter, setEngagementFilter] = useState("all");
-  
-  // Bulk selection states
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  
   const { toast } = useToast();
 
   // Arabic options from system settings
@@ -168,81 +164,6 @@ export function StakeholdersManagement() {
     }
   };
 
-  // Export functionality
-  const exportStakeholders = (selectedIds: string[]) => {
-    const dataToExport = stakeholders.filter(s => selectedIds.length === 0 || selectedIds.includes(s.id));
-    
-    const csvData = dataToExport.map(stakeholder => ({
-      'الاسم': stakeholder.name || '',
-      'المؤسسة': stakeholder.organization || '',
-      'المنصب': stakeholder.position || '',
-      'البريد الإلكتروني': stakeholder.email || '',
-      'الهاتف': stakeholder.phone || '',
-      'نوع صاحب المصلحة': stakeholder.stakeholder_type || '',
-      'مستوى التأثير': stakeholder.influence_level || '',
-      'مستوى الاهتمام': stakeholder.interest_level || '',
-      'حالة المشاركة': stakeholder.engagement_status || '',
-      'الملاحظات': stakeholder.notes || '',
-      'تاريخ الإنشاء': new Date(stakeholder.created_at).toLocaleDateString('ar-SA')
-    }));
-
-    const csvContent = [
-      Object.keys(csvData[0] || {}).join(','),
-      ...csvData.map(row => Object.values(row).map(val => `"${val}"`).join(','))
-    ].join('\n');
-
-    const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `stakeholders_${new Date().toISOString().split('T')[0]}.csv`;
-    link.click();
-    
-    toast({
-      title: "تم التصدير بنجاح",
-      description: `تم تصدير ${dataToExport.length} صاحب مصلحة`,
-    });
-  };
-
-  // Bulk actions
-  const bulkActions = [
-    {
-      id: 'export',
-      label: 'تصدير أصحاب المصلحة',
-      icon: <Download className="w-4 h-4" />,
-      onClick: exportStakeholders,
-      variant: 'outline' as const
-    },
-    {
-      id: 'archive',
-      label: 'أرشفة أصحاب المصلحة',
-      icon: <Archive className="w-4 h-4" />,
-      onClick: (ids: string[]) => {
-        toast({
-          title: "أرشفة أصحاب المصلحة",
-          description: "سيتم إضافة وظيفة الأرشفة قريباً",
-        });
-      },
-      variant: 'outline' as const
-    }
-  ];
-
-  // Bulk selection handlers
-  const handleSelectAll = (selected: boolean) => {
-    if (selected) {
-      setSelectedItems(filteredStakeholders.map(s => s.id));
-    } else {
-      setSelectedItems([]);
-    }
-  };
-
-  const handleSelectItem = (id: string, selected: boolean) => {
-    if (selected) {
-      setSelectedItems(prev => [...prev, id]);
-    } else {
-      setSelectedItems(prev => prev.filter(itemId => itemId !== id));
-    }
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -254,81 +175,93 @@ export function StakeholdersManagement() {
     );
   }
 
-  // Define filters for StandardPageLayout
-  const filters = [
-    {
-      id: 'type',
-      label: 'نوع صاحب المصلحة',
-      type: 'select' as const,
-      value: typeFilter,
-      onChange: setTypeFilter,
-      placeholder: "جميع الأنواع",
-      options: [
-        { value: "all", label: "جميع الأنواع" },
-        ...stakeholderTypes.map(type => ({ value: type, label: type }))
-      ]
-    },
-    {
-      id: 'influence',
-      label: 'مستوى التأثير',
-      type: 'select' as const,
-      value: influenceFilter,
-      onChange: setInfluenceFilter,
-      placeholder: "جميع مستويات التأثير",
-      options: [
-        { value: "all", label: "جميع مستويات التأثير" },
-        ...influenceLevels.map(level => ({ value: level, label: level }))
-      ]
-    },
-    {
-      id: 'engagement',
-      label: 'حالة المشاركة',
-      type: 'select' as const,
-      value: engagementFilter,
-      onChange: setEngagementFilter,
-      placeholder: "جميع حالات المشاركة",
-      options: [
-        { value: "all", label: "جميع حالات المشاركة" },
-        ...engagementStatuses.map(status => ({ value: status, label: status }))
-      ]
-    }
-  ];
+  // Create filters for PageLayout
+  const filters = (
+    <>
+      <div className="min-w-[140px]">
+        <Select value={typeFilter} onValueChange={setTypeFilter}>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder="جميع الأنواع" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">جميع الأنواع</SelectItem>
+            {stakeholderTypes.map((type) => (
+              <SelectItem key={type} value={type}>
+                {type}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="min-w-[140px]">
+        <Select value={influenceFilter} onValueChange={setInfluenceFilter}>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder="جميع مستويات التأثير" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">جميع مستويات التأثير</SelectItem>
+            {influenceLevels.map((level) => (
+              <SelectItem key={level} value={level}>
+                {level}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="min-w-[140px]">
+        <Select value={engagementFilter} onValueChange={setEngagementFilter}>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder="جميع حالات المشاركة" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">جميع حالات المشاركة</SelectItem>
+            {engagementStatuses.map((status) => (
+              <SelectItem key={status} value={status}>
+                {status}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </>
+  );
 
-  const emptyStateContent = (
-    <div className="text-center py-12">
-      <div className="text-6xl mb-4">👥</div>
-      <h3 className="text-lg font-semibold mb-2">لا توجد أصحاب مصلحة</h3>
-      <p className="text-muted-foreground mb-4">ابدأ بإضافة صاحب مصلحة جديد لبناء شبكة علاقاتك</p>
-      <Button onClick={() => { setEditingStakeholder(null); setIsWizardOpen(true); }}>
-        <Plus className="w-4 h-4 mr-2" />
-        إضافة صاحب مصلحة جديد
-      </Button>
-    </div>
+  const secondaryActions = (
+    <Button
+      variant="outline"
+      onClick={() => {
+        toast({
+          title: "تصدير البيانات",
+          description: "سيتم إضافة وظيفة التصدير قريباً",
+        });
+      }}
+    >
+      تصدير
+    </Button>
   );
 
   return (
     <>
-      <StandardPageLayout 
+      <PageLayout 
         title="إدارة أصحاب المصلحة"
         description="تتبع وإدارة علاقات أصحاب المصلحة ومستويات التأثير واستراتيجيات المشاركة"
         itemCount={filteredStakeholders.length}
-        addButton={{
+        primaryAction={{
           label: "إضافة صاحب مصلحة",
           onClick: () => { setEditingStakeholder(null); setIsWizardOpen(true); },
           icon: <Plus className="w-4 h-4" />
         }}
-        supportedLayouts={['cards', 'list', 'grid']}
-        defaultLayout={viewMode}
-        onLayoutChange={setViewMode}
-        searchTerm={searchTerm}
+        secondaryActions={secondaryActions}
+        showLayoutSelector={true}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+        showSearch={true}
+        searchValue={searchTerm}
         onSearchChange={setSearchTerm}
+        searchPlaceholder="البحث في أصحاب المصلحة..."
         filters={filters}
-        selectedItems={selectedItems}
-        onSelectAll={handleSelectAll}
-        onSelectItem={handleSelectItem}
-        bulkActions={bulkActions}
-        totalItems={filteredStakeholders.length}
-        emptyState={filteredStakeholders.length === 0 ? emptyStateContent : undefined}
+        spacing="md"
+        maxWidth="full"
       >
         <div className={
           viewMode === 'cards' ? 'grid gap-4 md:grid-cols-2 lg:grid-cols-3' :
@@ -506,7 +439,7 @@ export function StakeholdersManagement() {
           </Button>
         </div>
       )}
-      </StandardPageLayout>
+      </PageLayout>
 
       {/* Stakeholder Wizard */}
       <StakeholderWizard
