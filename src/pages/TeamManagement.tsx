@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 
 export default function TeamManagement() {
   const [activeTab, setActiveTab] = useState('members');
+  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
   
@@ -78,7 +79,9 @@ export default function TeamManagement() {
           icon: <UserPlus className="w-4 h-4" />
         }}
         secondaryActions={secondaryActions}
-        showLayoutSelector={false}
+        showLayoutSelector={activeTab === 'members'}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
         showSearch={true}
         searchValue={searchValue}
         onSearchChange={setSearchValue}
@@ -90,6 +93,7 @@ export default function TeamManagement() {
         <TeamManagementContent 
           activeTab={activeTab}
           onTabChange={setActiveTab}
+          viewMode={viewMode}
           searchTerm={searchValue}
           showAddDialog={showAddDialog}
           onAddDialogChange={setShowAddDialog}

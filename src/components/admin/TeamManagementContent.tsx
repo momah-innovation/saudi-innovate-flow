@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { ViewLayouts } from '@/components/ui/view-layouts';
+import { ManagementCard } from '@/components/ui/management-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -127,6 +129,7 @@ interface Assignment {
 interface TeamManagementContentProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  viewMode: 'cards' | 'list' | 'grid';
   searchTerm: string;
   showAddDialog: boolean;
   onAddDialogChange: (open: boolean) => void;
@@ -135,6 +138,7 @@ interface TeamManagementContentProps {
 export function TeamManagementContent({ 
   activeTab, 
   onTabChange, 
+  viewMode,
   searchTerm, 
   showAddDialog, 
   onAddDialogChange 
@@ -571,74 +575,67 @@ export function TeamManagementContent({
         </TabsList>
 
         <TabsContent value="members" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <ViewLayouts viewMode={viewMode}>
             {filteredTeamMembers.map((member) => {
               const memberAssignments = getAssignmentsForMember(member.user_id);
               const capacityPercentage = (member.current_workload / member.max_concurrent_projects) * 100;
               
+              const badges = [
+                {
+                  label: member.cic_role,
+                  variant: 'default' as const
+                },
+                {
+                  label: `${member.current_workload}/${member.max_concurrent_projects}`,
+                  variant: getCapacityColor(member.current_workload, member.max_concurrent_projects) as any
+                }
+              ];
+
+              const metadata = [
+                {
+                  icon: <Users className="w-4 h-4" />,
+                  label: 'القسم',
+                  value: member.profiles?.department || 'غير محدد'
+                },
+                {
+                  icon: <Target className="w-4 h-4" />,
+                  label: 'الأداء',
+                  value: `${member.performance_rating}/5`
+                },
+                {
+                  icon: <Calendar className="w-4 h-4" />,
+                  label: 'المهام',
+                  value: `${memberAssignments.length} مهمة`
+                }
+              ];
+
+              const actions = [
+                {
+                  type: 'edit' as const,
+                  label: 'تعديل',
+                  onClick: () => handleEditMember(member)
+                },
+                {
+                  type: 'delete' as const,
+                  label: 'حذف',
+                  onClick: () => handleRemoveMember(member.id)
+                }
+              ];
+
               return (
-                <Card key={member.id} className="hover:shadow-md transition-shadow">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle className="text-lg">{member.profiles?.name}</CardTitle>
-                        <CardDescription>{member.cic_role}</CardDescription>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleEditMember(member)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleRemoveMember(member.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span>سعة العمل</span>
-                        <span>{member.current_workload}/{member.max_concurrent_projects}</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                          className={`h-2 rounded-full transition-all ${
-                            capacityPercentage >= capacityWarningThreshold 
-                              ? 'bg-red-500' 
-                              : capacityPercentage >= 75 
-                                ? 'bg-yellow-500' 
-                                : 'bg-green-500'
-                          }`}
-                          style={{ width: `${Math.min(capacityPercentage, 100)}%` }}
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-wrap gap-1">
-                      {member.specialization?.map((spec) => (
-                        <Badge key={spec} variant="secondary" className="text-xs">
-                          {spec}
-                        </Badge>
-                      ))}
-                    </div>
-                    
-                    <div className="text-sm text-muted-foreground">
-                      <div>الأداء: {member.performance_rating}/5</div>
-                      <div>المهام الحالية: {memberAssignments.length}</div>
-                    </div>
-                  </CardContent>
-                </Card>
+                <ManagementCard
+                  key={member.id}
+                  id={member.id}
+                  title={member.profiles?.name || 'اسم غير محدد'}
+                  subtitle={member.profiles?.email || ''}
+                  badges={badges}
+                  metadata={metadata}
+                  actions={actions}
+                  viewMode={viewMode}
+                />
               );
             })}
-          </div>
+          </ViewLayouts>
         </TabsContent>
 
         <TabsContent value="assignments" className="space-y-4">
