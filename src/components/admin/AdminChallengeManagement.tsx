@@ -1,21 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, Plus, Edit, Trash2, Eye, Users, Target, Calendar, Settings } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { ChallengeWizard } from './ChallengeWizard';
-import { ChallengeSettings } from './ChallengeSettings';
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { StandardPageLayout } from "@/components/layout/StandardPageLayout";
-import { ViewLayouts } from "@/components/ui/view-layouts";
 import { ManagementCard } from "@/components/ui/management-card";
+import { ChallengeWizard } from "./ChallengeWizard";
+import { ChallengeSettings } from "./ChallengeSettings";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useTranslation";
+import { 
+  Target, 
+  Calendar, 
+  DollarSign, 
+  Users, 
+  Clock,
+  Eye,
+  Settings,
+  Lightbulb
+} from "lucide-react";
+import { format } from "date-fns";
 
 interface Challenge {
   id: string;
@@ -23,61 +28,53 @@ interface Challenge {
   description_ar: string;
   status: string;
   priority_level: string;
-  sensitivity_level: string;
   challenge_type: string;
-  start_date: string;
-  end_date: string;
-  estimated_budget: number;
-  actual_budget: number;
-  vision_2030_goal: string;
-  kpi_alignment: string;
-  collaboration_details: string;
-  internal_team_notes: string;
-  challenge_owner_id: string;
-  assigned_expert_id: string;
-  created_by: string;
-  partner_organization_id: string;
-  department_id: string;
-  deputy_id: string;
-  sector_id: string;
-  domain_id: string;
-  sub_domain_id: string;
-  service_id: string;
-}
-
-interface FocusQuestion {
-  id?: string;
-  question_text_ar: string;
-  question_type: string;
-  is_sensitive: boolean;
-  order_sequence: number;
+  start_date?: string;
+  end_date?: string;
+  estimated_budget?: number;
+  actual_budget?: number;
+  created_at: string;
+  updated_at: string;
+  sector_id?: string;
+  deputy_id?: string;
+  department_id?: string;
+  domain_id?: string;
+  service_id?: string;
+  vision_2030_goal?: string;
+  kpi_alignment?: string;
+  sensitivity_level: string;
+  collaboration_details?: string;
+  internal_team_notes?: string;
+  challenge_owner_id?: string;
+  assigned_expert_id?: string;
+  partner_organization_id?: string;
+  sub_domain_id?: string;
 }
 
 export function AdminChallengeManagement() {
-  const { toast } = useToast();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
-  const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
-  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [showWizard, setShowWizard] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
-  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchChallenges();
-    fetchFocusQuestions();
   }, []);
 
   const fetchChallenges = async () => {
     try {
+      setLoading(true);
       const { data, error } = await supabase
         .from('challenges')
         .select('*')
         .order('created_at', { ascending: false });
-
+      
       if (error) throw error;
       setChallenges(data || []);
     } catch (error) {
@@ -85,354 +82,289 @@ export function AdminChallengeManagement() {
       toast({
         title: "خطأ",
         description: "فشل في تحميل التحديات",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const fetchFocusQuestions = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('focus_questions')
-        .select('*')
-        .order('order_sequence');
-
-      if (error) throw error;
-      setFocusQuestions(data || []);
-    } catch (error) {
-      console.error('Error fetching focus questions:', error);
-    }
-  };
-
-  const handleDeleteChallenge = async (challengeId: string) => {
-    if (!confirm('هل أنت متأكد من حذف هذا التحدي؟ هذا الإجراء لا يمكن التراجع عنه.')) {
-      return;
-    }
-
-    setLoading(true);
-    try {
-      // حذف العلاقات المرتبطة أولاً
-      await Promise.all([
-        supabase.from('challenge_experts').delete().eq('challenge_id', challengeId),
-        supabase.from('challenge_partners').delete().eq('challenge_id', challengeId),
-        supabase.from('challenge_requirements').delete().eq('challenge_id', challengeId),
-        supabase.from('focus_questions').delete().eq('challenge_id', challengeId)
-      ]);
-
-      // حذف التحدي
-      const { error } = await supabase
-        .from('challenges')
-        .delete()
-        .eq('id', challengeId);
-
-      if (error) throw error;
-
-      toast({
-        title: "تم الحذف",
-        description: "تم حذف التحدي بنجاح",
-      });
-
-      fetchChallenges();
-    } catch (error) {
-      console.error('خطأ في حذف التحدي:', error);
-      toast({
-        title: "خطأ",
-        description: "فشل في حذف التحدي",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
     }
   };
 
+  const handleDelete = async (challengeId: string) => {
+    try {
+      const { error } = await supabase
+        .from('challenges')
+        .delete()
+        .eq('id', challengeId);
+      
+      if (error) throw error;
+      
+      setChallenges(prev => prev.filter(c => c.id !== challengeId));
+      toast({
+        title: "تم بنجاح",
+        description: "تم حذف التحدي بنجاح"
+      });
+    } catch (error) {
+      console.error('Error deleting challenge:', error);
+      toast({
+        title: "خطأ",
+        description: "فشل في حذف التحدي",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleEdit = (challenge: Challenge) => {
+    setSelectedChallenge(challenge);
+    setShowWizard(true);
+  };
+
+  const handleSettings = (challenge: Challenge) => {
+    setSelectedChallenge(challenge);
+    setShowSettings(true);
+  };
+
+  const handleView = (challenge: Challenge) => {
+    setSelectedChallenge(challenge);
+    setShowDetails(true);
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'draft': return 'secondary';
+      case 'active': return 'default';
+      case 'completed': return 'success';
+      case 'cancelled': return 'destructive';
+      case 'on_hold': return 'warning';
+      default: return 'secondary';
+    }
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high': return 'destructive';
+      case 'medium': return 'warning';
+      case 'low': return 'secondary';
+      default: return 'secondary';
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    const labels = {
+      draft: 'مسودة',
+      active: 'نشط',
+      completed: 'مكتمل',
+      cancelled: 'ملغي',
+      on_hold: 'معلق'
+    };
+    return labels[status as keyof typeof labels] || status;
+  };
+
+  const getPriorityLabel = (priority: string) => {
+    const labels = {
+      high: 'عالي',
+      medium: 'متوسط',
+      low: 'منخفض'
+    };
+    return labels[priority as keyof typeof labels] || priority;
+  };
+
   const filteredChallenges = challenges.filter(challenge => {
-    const matchesSearch = challenge.title_ar?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         challenge.description_ar?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = challenge.title_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         challenge.description_ar.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || challenge.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
-  const handleEditChallenge = (challenge: Challenge) => {
-    setSelectedChallenge(challenge);
-    setIsWizardOpen(true);
-  };
-
-  const handleOpenSettings = (challenge: Challenge) => {
-    setSelectedChallenge(challenge);
-    setIsSettingsOpen(true);
-  };
-
-  const handleViewChallenge = (challenge: Challenge) => {
-    setSelectedChallenge(challenge);
-    setIsViewDialogOpen(true);
-  };
-
-  const secondaryActions = (
-    <>
-      <Select>
-        <SelectTrigger className="w-32">
-          <SelectValue placeholder="تصدير" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="pdf">PDF</SelectItem>
-          <SelectItem value="excel">Excel</SelectItem>
-          <SelectItem value="csv">CSV</SelectItem>
-        </SelectContent>
-      </Select>
-      <Button variant="outline" className="gap-2">
-        <Users className="w-4 h-4" />
-        الإجراءات المجمعة
-      </Button>
-    </>
-  );
-
-  const handleLayoutChange = (layout: 'cards' | 'list' | 'grid') => {
-    setViewMode(layout);
-  };
-
-  const filterConfigs = [
+  const filters = [
     {
       id: 'status',
       label: 'الحالة',
       type: 'select' as const,
-      value: statusFilter,
-      onChange: setStatusFilter,
       options: [
-        { label: 'جميع الحالات', value: 'all' },
+        { label: 'الكل', value: 'all' },
         { label: 'مسودة', value: 'draft' },
-        { label: 'منشور', value: 'published' },
         { label: 'نشط', value: 'active' },
-        { label: 'مغلق', value: 'closed' },
-        { label: 'مؤرشف', value: 'archived' }
-      ]
+        { label: 'مكتمل', value: 'completed' },
+        { label: 'ملغي', value: 'cancelled' },
+        { label: 'معلق', value: 'on_hold' }
+      ],
+      value: statusFilter,
+      onChange: setStatusFilter
     }
   ];
 
   return (
     <>
-      <StandardPageLayout 
+      <StandardPageLayout
         title="إدارة التحديات"
-        description="إنشاء وإدارة التحديات والأسئلة المحورية"
+        description="إنشاء وإدارة التحديات الابتكارية"
         itemCount={filteredChallenges.length}
         addButton={{
-          label: "إنشاء تحدي جديد",
-          onClick: () => { setSelectedChallenge(null); setIsWizardOpen(true); },
-          icon: <Plus className="w-4 h-4" />
+          label: "تحدي جديد",
+          onClick: () => {
+            setSelectedChallenge(null);
+            setShowWizard(true);
+          },
+          icon: <Target className="w-4 h-4" />
         }}
-        headerActions={secondaryActions}
-        supportedLayouts={['cards', 'list', 'grid']}
-        defaultLayout={viewMode}
-        onLayoutChange={handleLayoutChange}
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        filters={filterConfigs}
+        filters={filters}
+        loading={loading}
+        emptyState={
+          <EmptyState
+            icon={<Target className="w-6 h-6 text-muted-foreground" />}
+            title="لا توجد تحديات"
+            description="ابدأ بإنشاء تحدي ابتكاري جديد لجذب الأفكار المبدعة"
+            action={{
+              label: "إنشاء تحدي جديد",
+              onClick: () => {
+                setSelectedChallenge(null);
+                setShowWizard(true);
+              }
+            }}
+          />
+        }
       >
-        <ViewLayouts viewMode={viewMode}>
-          {filteredChallenges.map((challenge) => (
-             <ManagementCard
-               key={challenge.id}
-               id={challenge.id}
-               title={challenge.title_ar}
-               description={challenge.description_ar}
-              badges={[
-                { 
-                  label: challenge.status === 'draft' ? 'مسودة' :
-                         challenge.status === 'published' ? 'منشور' :
-                         challenge.status === 'active' ? 'نشط' :
-                         challenge.status === 'closed' ? 'مغلق' : 
-                         challenge.status === 'archived' ? 'مؤرشف' : challenge.status,
-                  variant: challenge.status === 'published' ? 'default' : 'secondary'
-                },
-                { 
-                  label: challenge.priority_level === 'low' ? 'منخفض' :
-                         challenge.priority_level === 'medium' ? 'متوسط' :
-                         challenge.priority_level === 'high' ? 'عالي' :
-                         challenge.priority_level === 'urgent' ? 'عاجل' : challenge.priority_level,
-                  variant: 'outline' as const
-                },
-                { 
-                  label: challenge.sensitivity_level === 'normal' ? 'عادي' :
-                         challenge.sensitivity_level === 'sensitive' ? 'حساس' :
-                         challenge.sensitivity_level === 'confidential' ? 'سري' : challenge.sensitivity_level,
-                  variant: 'outline' as const
+        {filteredChallenges.map((challenge) => (
+          <ManagementCard
+            key={challenge.id}
+            id={challenge.id}
+            title={challenge.title_ar}
+            description={challenge.description_ar}
+            badges={[
+              { 
+                label: getStatusLabel(challenge.status),
+                variant: getStatusColor(challenge.status) as any
+              },
+              { 
+                label: getPriorityLabel(challenge.priority_level),
+                variant: getPriorityColor(challenge.priority_level) as any
+              },
+              ...(challenge.challenge_type ? [{ 
+                label: challenge.challenge_type, 
+                variant: 'outline' as const 
+              }] : [])
+            ]}
+            metadata={[
+              ...(challenge.start_date ? [{ 
+                icon: <Calendar className="h-4 w-4" />, 
+                label: "تاريخ البداية", 
+                value: format(new Date(challenge.start_date), 'PPP') 
+              }] : []),
+              ...(challenge.end_date ? [{ 
+                icon: <Clock className="h-4 w-4" />, 
+                label: "تاريخ النهاية", 
+                value: format(new Date(challenge.end_date), 'PPP') 
+              }] : []),
+              ...(challenge.estimated_budget ? [{ 
+                icon: <DollarSign className="h-4 w-4" />, 
+                label: "الميزانية المقدرة", 
+                value: `${challenge.estimated_budget.toLocaleString()} ريال` 
+              }] : []),
+              { 
+                icon: <Lightbulb className="h-4 w-4" />, 
+                label: "مستوى الحساسية", 
+                value: challenge.sensitivity_level 
+              }
+            ]}
+            actions={[
+              {
+                type: 'view',
+                label: 'عرض',
+                onClick: () => handleView(challenge)
+              },
+              {
+                type: 'edit',
+                label: 'تعديل',
+                onClick: () => handleEdit(challenge)
+              },
+              {
+                type: 'settings',
+                label: 'إعدادات',
+                onClick: () => handleSettings(challenge)
+              },
+              {
+                type: 'delete',
+                label: 'حذف',
+                onClick: () => {
+                  if (confirm(`هل أنت متأكد من حذف "${challenge.title_ar}"؟`)) {
+                    handleDelete(challenge.id);
+                  }
                 }
-              ]}
-              metadata={[
-                ...(challenge.start_date ? [{ 
-                  icon: <Calendar className="h-4 w-4" />, 
-                  label: "تاريخ البداية", 
-                  value: challenge.start_date 
-                }] : []),
-                ...(challenge.end_date ? [{ 
-                  icon: <Calendar className="h-4 w-4" />, 
-                  label: "تاريخ النهاية", 
-                  value: challenge.end_date 
-                }] : []),
-                ...(challenge.estimated_budget > 0 ? [{ 
-                  icon: <Target className="h-4 w-4" />, 
-                  label: "الميزانية المقدرة", 
-                  value: `${challenge.estimated_budget.toLocaleString()} ريال` 
-                }] : [])
-              ]}
-              actions={[
-                {
-                  type: 'edit',
-                  label: 'تعديل',
-                  onClick: () => handleEditChallenge(challenge)
-                },
-                {
-                  type: 'settings',
-                  label: 'الإعدادات',
-                  onClick: () => handleOpenSettings(challenge)
-                },
-                {
-                  type: 'delete',
-                  label: 'حذف',
-                  onClick: () => handleDeleteChallenge(challenge.id)
-                }
-               ]}
-               viewMode={viewMode}
-               onClick={() => handleViewChallenge(challenge)}
-            />
-          ))}
-        </ViewLayouts>
-
-        {filteredChallenges.length === 0 && (
-          <div className="text-center py-8">
-            <div className="text-muted-foreground mb-4">
-              {searchTerm || statusFilter !== 'all' ? 'لا توجد تحديات تطابق البحث' : 'لا توجد تحديات'}
-            </div>
-            <Button onClick={() => setIsWizardOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
-              إنشاء تحدي جديد
-            </Button>
-          </div>
-        )}
+              }
+            ]}
+            onClick={() => handleView(challenge)}
+          />
+        ))}
       </StandardPageLayout>
 
       <ChallengeWizard
-        isOpen={isWizardOpen}
+        isOpen={showWizard}
         onClose={() => {
-          setIsWizardOpen(false);
+          setShowWizard(false);
           setSelectedChallenge(null);
         }}
-        onSuccess={fetchChallenges}
-        challenge={selectedChallenge}
+        onSuccess={() => {
+          fetchChallenges();
+          setShowWizard(false);
+          setSelectedChallenge(null);
+        }}
+        challenge={selectedChallenge as any}
       />
 
       {selectedChallenge && (
         <ChallengeSettings
-          challenge={selectedChallenge}
-          isOpen={isSettingsOpen}
+          isOpen={showSettings}
           onClose={() => {
-            setIsSettingsOpen(false);
+            setShowSettings(false);
             setSelectedChallenge(null);
           }}
+          challenge={selectedChallenge}
           onUpdate={fetchChallenges}
         />
       )}
 
-      {/* View Challenge Dialog */}
-      <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
+      <Dialog open={showDetails} onOpenChange={setShowDetails}>
         <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>تفاصيل التحدي</DialogTitle>
+            <DialogTitle>{selectedChallenge?.title_ar}</DialogTitle>
           </DialogHeader>
-          
           {selectedChallenge && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold mb-2">{selectedChallenge.title_ar}</h3>
-                <p className="text-muted-foreground">{selectedChallenge.description_ar}</p>
+                <h4 className="font-semibold mb-2">الوصف</h4>
+                <p className="text-sm text-muted-foreground">{selectedChallenge.description_ar}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label className="text-sm font-medium">الحالة</Label>
-                  <Badge variant="outline" className="mt-1">
-                    {selectedChallenge.status === 'draft' ? 'مسودة' :
-                     selectedChallenge.status === 'published' ? 'منشور' :
-                     selectedChallenge.status === 'active' ? 'نشط' :
-                     selectedChallenge.status === 'closed' ? 'مغلق' : 
-                     selectedChallenge.status === 'archived' ? 'مؤرشف' : selectedChallenge.status}
+                  <h4 className="font-semibold mb-2">الحالة</h4>
+                  <Badge variant={getStatusColor(selectedChallenge.status) as any}>
+                    {getStatusLabel(selectedChallenge.status)}
                   </Badge>
                 </div>
                 <div>
-                  <Label className="text-sm font-medium">مستوى الأولوية</Label>
-                  <Badge variant="outline" className="mt-1">
-                    {selectedChallenge.priority_level === 'low' ? 'منخفض' :
-                     selectedChallenge.priority_level === 'medium' ? 'متوسط' :
-                     selectedChallenge.priority_level === 'high' ? 'عالي' :
-                     selectedChallenge.priority_level === 'urgent' ? 'عاجل' : selectedChallenge.priority_level}
+                  <h4 className="font-semibold mb-2">الأولوية</h4>
+                  <Badge variant={getPriorityColor(selectedChallenge.priority_level) as any}>
+                    {getPriorityLabel(selectedChallenge.priority_level)}
                   </Badge>
-                </div>
-                <div>
-                  <Label className="text-sm font-medium">مستوى السرية</Label>
-                  <Badge variant="outline" className="mt-1">
-                    {selectedChallenge.sensitivity_level === 'normal' ? 'عادي' :
-                     selectedChallenge.sensitivity_level === 'sensitive' ? 'حساس' :
-                     selectedChallenge.sensitivity_level === 'confidential' ? 'سري' : selectedChallenge.sensitivity_level}
-                  </Badge>
-                </div>
-                <div>
-                  <Label className="text-sm font-medium">نوع التحدي</Label>
-                  <p className="text-sm">{selectedChallenge.challenge_type || 'غير محدد'}</p>
                 </div>
               </div>
-
-              {(selectedChallenge.start_date || selectedChallenge.end_date) && (
-                <div className="grid grid-cols-2 gap-4">
-                  {selectedChallenge.start_date && (
-                    <div>
-                      <Label className="text-sm font-medium">تاريخ البداية</Label>
-                      <p className="text-sm">{selectedChallenge.start_date}</p>
-                    </div>
-                  )}
-                  {selectedChallenge.end_date && (
-                    <div>
-                      <Label className="text-sm font-medium">تاريخ النهاية</Label>
-                      <p className="text-sm">{selectedChallenge.end_date}</p>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {(selectedChallenge.estimated_budget > 0 || selectedChallenge.actual_budget > 0) && (
-                <div className="grid grid-cols-2 gap-4">
-                  {selectedChallenge.estimated_budget > 0 && (
-                    <div>
-                      <Label className="text-sm font-medium">الميزانية المقدرة</Label>
-                      <p className="text-sm">{selectedChallenge.estimated_budget.toLocaleString()} ريال</p>
-                    </div>
-                  )}
-                  {selectedChallenge.actual_budget > 0 && (
-                    <div>
-                      <Label className="text-sm font-medium">الميزانية الفعلية</Label>
-                      <p className="text-sm">{selectedChallenge.actual_budget.toLocaleString()} ريال</p>
-                    </div>
-                  )}
-                </div>
-              )}
 
               {selectedChallenge.vision_2030_goal && (
                 <div>
-                  <Label className="text-sm font-medium">هدف رؤية 2030</Label>
-                  <p className="text-sm mt-1">{selectedChallenge.vision_2030_goal}</p>
+                  <h4 className="font-semibold mb-2">هدف رؤية 2030</h4>
+                  <p className="text-sm text-muted-foreground">{selectedChallenge.vision_2030_goal}</p>
                 </div>
               )}
 
-              {selectedChallenge.kpi_alignment && (
+              {selectedChallenge.collaboration_details && (
                 <div>
-                  <Label className="text-sm font-medium">مؤشرات الأداء المرتبطة</Label>
-                  <p className="text-sm mt-1">{selectedChallenge.kpi_alignment}</p>
+                  <h4 className="font-semibold mb-2">تفاصيل التعاون</h4>
+                  <p className="text-sm text-muted-foreground">{selectedChallenge.collaboration_details}</p>
                 </div>
               )}
-
-              <div className="flex justify-end">
-                <Button variant="outline" onClick={() => setIsViewDialogOpen(false)}>
-                  إغلاق
-                </Button>
-              </div>
             </div>
           )}
         </DialogContent>
