@@ -43,11 +43,11 @@ export function StakeholdersManagement() {
   const [engagementFilter, setEngagementFilter] = useState("all");
   const { toast } = useToast();
 
-  // Hardcoded options for now
-  const stakeholderTypes = ["government", "private_sector", "academic", "ngo", "community", "international"];
-  const influenceLevels = ["high", "medium", "low"];
-  const interestLevels = ["high", "medium", "low"];
-  const engagementStatuses = ["active", "passive", "neutral", "resistant", "supporter"];
+  // Arabic options from system settings
+  const stakeholderTypes = ["حكومي", "خاص", "أكاديمي", "غير ربحي", "مجتمعي", "دولي"];
+  const influenceLevels = ["عالي", "متوسط", "منخفض"];
+  const interestLevels = ["عالي", "متوسط", "منخفض"];
+  const engagementStatuses = ["نشط", "غير نشط", "معلق", "محظور"];
 
   useEffect(() => {
     fetchStakeholders();
@@ -147,20 +147,19 @@ export function StakeholdersManagement() {
 
   const getInfluenceColor = (level: string) => {
     switch (level) {
-      case "high": return "bg-red-100 text-red-700";
-      case "medium": return "bg-yellow-100 text-yellow-700";
-      case "low": return "bg-green-100 text-green-700";
+      case "عالي": return "bg-red-100 text-red-700";
+      case "متوسط": return "bg-yellow-100 text-yellow-700";
+      case "منخفض": return "bg-green-100 text-green-700";
       default: return "bg-gray-100 text-gray-700";
     }
   };
 
   const getEngagementColor = (status: string) => {
     switch (status) {
-      case "supporter": return "bg-green-100 text-green-700";
-      case "active": return "bg-blue-100 text-blue-700";
-      case "neutral": return "bg-gray-100 text-gray-700";
-      case "passive": return "bg-yellow-100 text-yellow-700";
-      case "resistant": return "bg-red-100 text-red-700";
+      case "نشط": return "bg-green-100 text-green-700";
+      case "غير نشط": return "bg-blue-100 text-blue-700";
+      case "معلق": return "bg-yellow-100 text-yellow-700";
+      case "محظور": return "bg-red-100 text-red-700";
       default: return "bg-gray-100 text-gray-700";
     }
   };
@@ -188,7 +187,7 @@ export function StakeholdersManagement() {
             <SelectItem value="all">جميع الأنواع</SelectItem>
             {stakeholderTypes.map((type) => (
               <SelectItem key={type} value={type}>
-                {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                {type}
               </SelectItem>
             ))}
           </SelectContent>
@@ -203,7 +202,7 @@ export function StakeholdersManagement() {
             <SelectItem value="all">جميع مستويات التأثير</SelectItem>
             {influenceLevels.map((level) => (
               <SelectItem key={level} value={level}>
-                {level.charAt(0).toUpperCase() + level.slice(1)}
+                {level}
               </SelectItem>
             ))}
           </SelectContent>
@@ -218,7 +217,7 @@ export function StakeholdersManagement() {
             <SelectItem value="all">جميع حالات المشاركة</SelectItem>
             {engagementStatuses.map((status) => (
               <SelectItem key={status} value={status}>
-                {status.charAt(0).toUpperCase() + status.slice(1)}
+                {status}
               </SelectItem>
             ))}
           </SelectContent>
@@ -295,17 +294,15 @@ export function StakeholdersManagement() {
                         </div>
                       </div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <Badge variant="outline" className="text-xs">
-                          {stakeholder.stakeholder_type.split('_').map(word => 
-                            word.charAt(0).toUpperCase() + word.slice(1)
-                          ).join(' ')}
-                        </Badge>
-                        <Badge variant="outline" className={`text-xs ${getInfluenceColor(stakeholder.influence_level)}`}>
-                          {stakeholder.influence_level.charAt(0).toUpperCase() + stakeholder.influence_level.slice(1)}
-                        </Badge>
-                        <Badge variant="outline" className={`text-xs ${getEngagementColor(stakeholder.engagement_status)}`}>
-                          {stakeholder.engagement_status.charAt(0).toUpperCase() + stakeholder.engagement_status.slice(1)}
-                        </Badge>
+                         <Badge variant="outline" className="text-xs">
+                           {stakeholder.stakeholder_type}
+                         </Badge>
+                         <Badge variant="outline" className={`text-xs ${getInfluenceColor(stakeholder.influence_level)}`}>
+                           {stakeholder.influence_level}
+                         </Badge>
+                         <Badge variant="outline" className={`text-xs ${getEngagementColor(stakeholder.engagement_status)}`}>
+                           {stakeholder.engagement_status}
+                         </Badge>
                       </div>
                     </div>
                   </div>
@@ -368,19 +365,17 @@ export function StakeholdersManagement() {
                         </div>
                       )}
                     </div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <Badge variant="outline">
-                        {stakeholder.stakeholder_type.split('_').map(word => 
-                          word.charAt(0).toUpperCase() + word.slice(1)
-                        ).join(' ')}
-                      </Badge>
-                      <Badge variant="outline" className={getInfluenceColor(stakeholder.influence_level)}>
-                        {stakeholder.influence_level.charAt(0).toUpperCase() + stakeholder.influence_level.slice(1)}
-                      </Badge>
-                      <Badge variant="outline" className={getEngagementColor(stakeholder.engagement_status)}>
-                        {stakeholder.engagement_status.charAt(0).toUpperCase() + stakeholder.engagement_status.slice(1)}
-                      </Badge>
-                    </div>
+                     <div className="flex items-center gap-2 flex-wrap">
+                       <Badge variant="outline">
+                         {stakeholder.stakeholder_type}
+                       </Badge>
+                       <Badge variant="outline" className={getInfluenceColor(stakeholder.influence_level)}>
+                         {stakeholder.influence_level}
+                       </Badge>
+                       <Badge variant="outline" className={getEngagementColor(stakeholder.engagement_status)}>
+                         {stakeholder.engagement_status}
+                       </Badge>
+                     </div>
                   </div>
                 </div>
               </CardHeader>
@@ -470,13 +465,11 @@ export function StakeholdersManagement() {
                   <h3 className="text-xl font-semibold">{viewingStakeholder.name}</h3>
                   <p className="text-muted-foreground">{viewingStakeholder.position} - {viewingStakeholder.organization}</p>
                 </div>
-                <div className="flex gap-2">
-                  <Badge variant="outline">
-                    {viewingStakeholder.stakeholder_type.split('_').map(word => 
-                      word.charAt(0).toUpperCase() + word.slice(1)
-                    ).join(' ')}
-                  </Badge>
-                </div>
+                 <div className="flex gap-2">
+                   <Badge variant="outline">
+                     {viewingStakeholder.stakeholder_type}
+                   </Badge>
+                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -499,24 +492,24 @@ export function StakeholdersManagement() {
                 <div>
                   <h4 className="font-medium text-sm text-muted-foreground mb-2">مستويات التأثير والمشاركة</h4>
                   <div className="space-y-2">
-                    <div>
-                      <span className="text-sm font-medium">مستوى التأثير: </span>
-                      <Badge variant="outline" className={getInfluenceColor(viewingStakeholder.influence_level)}>
-                        {viewingStakeholder.influence_level.charAt(0).toUpperCase() + viewingStakeholder.influence_level.slice(1)}
-                      </Badge>
-                    </div>
-                    <div>
-                      <span className="text-sm font-medium">مستوى الاهتمام: </span>
-                      <Badge variant="outline">
-                        {viewingStakeholder.interest_level.charAt(0).toUpperCase() + viewingStakeholder.interest_level.slice(1)}
-                      </Badge>
-                    </div>
-                    <div>
-                      <span className="text-sm font-medium">حالة المشاركة: </span>
-                      <Badge variant="outline" className={getEngagementColor(viewingStakeholder.engagement_status)}>
-                        {viewingStakeholder.engagement_status.charAt(0).toUpperCase() + viewingStakeholder.engagement_status.slice(1)}
-                      </Badge>
-                    </div>
+                     <div>
+                       <span className="text-sm font-medium">مستوى التأثير: </span>
+                       <Badge variant="outline" className={getInfluenceColor(viewingStakeholder.influence_level)}>
+                         {viewingStakeholder.influence_level}
+                       </Badge>
+                     </div>
+                     <div>
+                       <span className="text-sm font-medium">مستوى الاهتمام: </span>
+                       <Badge variant="outline">
+                         {viewingStakeholder.interest_level}
+                       </Badge>
+                     </div>
+                     <div>
+                       <span className="text-sm font-medium">حالة المشاركة: </span>
+                       <Badge variant="outline" className={getEngagementColor(viewingStakeholder.engagement_status)}>
+                         {viewingStakeholder.engagement_status}
+                       </Badge>
+                     </div>
                   </div>
                 </div>
               </div>
