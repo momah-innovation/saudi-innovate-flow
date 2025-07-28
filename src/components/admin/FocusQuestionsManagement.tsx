@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
-import { AppShell } from "@/components/layout/AppShell";
+import { PageLayout } from "@/components/layout/PageLayout";
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { EmptyState } from '@/components/ui/empty-state';
 import { Input } from '@/components/ui/input';
-import { Search, Plus, Edit, Trash2, Eye } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/hooks/useTranslation';
 import { FocusQuestionWizard } from './FocusQuestionWizard';
+import { HelpCircle, Plus } from 'lucide-react';
 
 interface Challenge {
   id: string;
@@ -24,15 +25,15 @@ interface FocusQuestion {
   is_sensitive: boolean;
   order_sequence: number;
   challenge_id?: string;
-  challenges?: Challenge;
+  challenge?: Challenge;
 }
 
 const FocusQuestionsManagement = () => {
-  const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
+  const [showWizard, setShowWizard] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState<FocusQuestion | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
@@ -68,8 +69,8 @@ const FocusQuestionsManagement = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch data. Please try again.",
+        title: "خطأ",
+        description: "فشل في تحميل البيانات",
         variant: "destructive",
       });
     } finally {
@@ -79,11 +80,11 @@ const FocusQuestionsManagement = () => {
 
   const handleEdit = (question: FocusQuestion) => {
     setEditingQuestion(question);
-    setIsWizardOpen(true);
+    setShowWizard(true);
   };
 
   const handleWizardSave = () => {
-    setIsWizardOpen(false);
+    setShowWizard(false);
     setEditingQuestion(null);
     fetchData();
   };
@@ -117,86 +118,109 @@ const FocusQuestionsManagement = () => {
 
   const filteredQuestions = focusQuestions.filter(question =>
     question.question_text_ar?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    question.challenges?.title_ar?.toLowerCase().includes(searchTerm.toLowerCase())
+    question.challenge?.title_ar?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <AppShell>
-      <div className="p-6">
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">إدارة الأسئلة المحورية</h1>
-              <p className="text-muted-foreground">إدارة الأسئلة المحورية للتحديات</p>
-            </div>
-            <Button onClick={() => { setEditingQuestion(null); setIsWizardOpen(true); }}>
-              <Plus className="h-4 w-4 mr-2" />
-              إضافة سؤال محوري
-            </Button>
-          </div>
-
-          <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="البحث في الأسئلة المحورية..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-
-          <div className="grid gap-4">
-            {filteredQuestions.map((question) => (
-              <Card key={question.id}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-2 flex-1">
-                      <CardTitle className="text-lg">{question.question_text_ar}</CardTitle>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline">{question.question_type}</Badge>
-                        {question.is_sensitive && (
-                          <Badge variant="destructive">حساس</Badge>
-                        )}
-                        {question.challenges && (
-                          <Badge variant="secondary">{question.challenges.title_ar}</Badge>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(question)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleDelete(question.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
-
-          {/* Focus Question Wizard */}
-          <FocusQuestionWizard
-            isOpen={isWizardOpen}
-            onClose={() => {
-              setIsWizardOpen(false);
-              setEditingQuestion(null);
-            }}
-            question={editingQuestion}
-            onSave={handleWizardSave}
-          />
-        </div>
+    <PageLayout
+      title="إدارة الأسئلة المحورية"
+      description="إدارة الأسئلة المحورية للتحديات"
+      itemCount={filteredQuestions.length}
+      primaryAction={{
+        label: "إضافة سؤال محوري",
+        icon: <Plus className="w-4 h-4" />,
+        onClick: () => {
+          setEditingQuestion(null);
+          setShowWizard(true);
+        }
+      }}
+      className="space-y-6"
+    >
+      {/* Search Bar */}
+      <div className="mb-6">
+        <Input
+          type="text"
+          placeholder="البحث في الأسئلة..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="max-w-md"
+        />
       </div>
-    </AppShell>
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="animate-pulse bg-card rounded-lg h-48" />
+          ))}
+        </div>
+      ) : filteredQuestions.length === 0 ? (
+        <EmptyState
+          icon={<HelpCircle className="w-12 h-12 text-muted-foreground" />}
+          title="لا توجد أسئلة محورية"
+          description="ابدأ بإنشاء سؤال محوري جديد لتوجيه المبتكرين"
+          action={{
+            label: "إنشاء سؤال محوري",
+            onClick: () => {
+              setEditingQuestion(null);
+              setShowWizard(true);
+            }
+          }}
+        />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredQuestions.map((question) => (
+            <Card key={question.id} className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <CardTitle className="text-lg font-semibold line-clamp-2">
+                    {question.question_text_ar}
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline">{question.question_type}</Badge>
+                    {question.is_sensitive && (
+                      <Badge variant="destructive">حساس</Badge>
+                    )}
+                  </div>
+                  {question.challenge?.title_ar && (
+                    <p className="text-sm text-muted-foreground">
+                      التحدي: {question.challenge.title_ar}
+                    </p>
+                  )}
+                  <div className="flex justify-end gap-2 mt-4">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleEdit(question)}
+                    >
+                      تعديل
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleDelete(question.id)}
+                    >
+                      حذف
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {showWizard && (
+        <FocusQuestionWizard
+          isOpen={showWizard}
+          onClose={() => setShowWizard(false)}
+          question={editingQuestion}
+          onSave={handleWizardSave}
+        />
+      )}
+    </PageLayout>
   );
 };
 
