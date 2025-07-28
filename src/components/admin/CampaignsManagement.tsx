@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StandardPageLayout } from '@/components/layout/StandardPageLayout';
+import { ViewLayouts } from '@/components/ui/view-layouts';
 import { ManagementCard } from '@/components/ui/management-card';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Badge } from '@/components/ui/badge';
@@ -106,99 +106,70 @@ export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAdd
 
   return (
     <>
-      <StandardPageLayout
-        title="إدارة الحملات"
-        description="إدارة وتنظيم حملات الابتكار والتحديات"
-        itemCount={mockCampaigns.length}
-        addButton={{
-          label: "حملة جديدة",
-          onClick: () => onAddDialogChange(true),
-          icon: <Target className="w-4 h-4" />
-        }}
-        searchTerm={searchTerm}
-        onSearchChange={() => {}}
-        filters={[
-          {
-            id: 'status',
-            label: 'الحالة',
-            type: 'select' as const,
-            options: [
-              { label: 'الكل', value: 'all' },
-              { label: 'قيد التخطيط', value: 'planning' },
-              { label: 'نشط', value: 'active' },
-              { label: 'متوقف', value: 'paused' },
-              { label: 'مكتمل', value: 'completed' }
-            ],
-            value: 'all',
-            onChange: () => {}
-          }
-        ]}
-      >
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {mockCampaigns.map((campaign) => (
-            <ManagementCard
-              key={campaign.id}
-              id={campaign.id}
-              title={campaign.title_ar}
-              description={campaign.description_ar}
-              badges={[
-                {
-                  label: statusConfig[campaign.status as keyof typeof statusConfig]?.label,
-                  variant: statusConfig[campaign.status as keyof typeof statusConfig]?.variant
-                },
-                {
-                  label: campaign.sector,
-                  variant: 'secondary'
-                },
-                {
-                  label: priorityConfig[campaign.priority as keyof typeof priorityConfig]?.label,
-                  variant: priorityConfig[campaign.priority as keyof typeof priorityConfig]?.variant
-                }
-              ]}
-              metadata={[
-                {
-                  icon: <Calendar className="w-4 h-4" />,
-                  label: 'تاريخ البداية',
-                  value: new Date(campaign.start_date).toLocaleDateString('ar-SA')
-                },
-                {
-                  icon: <Users className="w-4 h-4" />,
-                  label: 'المشاركون',
-                  value: `${campaign.registered_participants}/${campaign.target_participants}`
-                },
-                {
-                  icon: <Target className="w-4 h-4" />,
-                  label: 'الأفكار',
-                  value: `${campaign.submitted_ideas}/${campaign.target_ideas}`
-                },
-                {
-                  icon: <DollarSign className="w-4 h-4" />,
-                  label: 'الميزانية',
-                  value: `${campaign.budget?.toLocaleString()} ريال`
-                }
-              ]}
-              actions={[
-                {
-                  type: 'view',
-                  label: 'عرض',
-                  onClick: () => handleView(campaign)
-                },
-                {
-                  type: 'edit',
-                  label: 'تعديل',
-                  onClick: () => handleEdit(campaign)
-                },
-                {
-                  type: 'delete',
-                  label: 'حذف',
-                  onClick: () => handleDelete(campaign)
-                }
-              ]}
-              onClick={() => handleView(campaign)}
-            />
-          ))}
-        </div>
-      </StandardPageLayout>
+      <ViewLayouts viewMode={viewMode}>
+        {mockCampaigns.map((campaign) => (
+          <ManagementCard
+            key={campaign.id}
+            id={campaign.id}
+            title={campaign.title_ar}
+            subtitle={campaign.description_ar}
+            badges={[
+              {
+                label: statusConfig[campaign.status as keyof typeof statusConfig]?.label,
+                variant: statusConfig[campaign.status as keyof typeof statusConfig]?.variant
+              },
+              {
+                label: campaign.sector,
+                variant: 'secondary' as const
+              },
+              {
+                label: priorityConfig[campaign.priority as keyof typeof priorityConfig]?.label,
+                variant: priorityConfig[campaign.priority as keyof typeof priorityConfig]?.variant
+              }
+            ]}
+            metadata={[
+              {
+                icon: <Calendar className="w-4 h-4" />,
+                label: 'تاريخ البداية',
+                value: new Date(campaign.start_date).toLocaleDateString('ar-SA')
+              },
+              {
+                icon: <Users className="w-4 h-4" />,
+                label: 'المشاركون',
+                value: `${campaign.registered_participants}/${campaign.target_participants}`
+              },
+              {
+                icon: <Target className="w-4 h-4" />,
+                label: 'الأفكار',
+                value: `${campaign.submitted_ideas}/${campaign.target_ideas}`
+              },
+              {
+                icon: <DollarSign className="w-4 h-4" />,
+                label: 'الميزانية',
+                value: `${campaign.budget?.toLocaleString()} ريال`
+              }
+            ]}
+            actions={[
+              {
+                type: 'view' as const,
+                label: 'عرض',
+                onClick: () => handleView(campaign)
+              },
+              {
+                type: 'edit' as const,
+                label: 'تعديل',
+                onClick: () => handleEdit(campaign)
+              },
+              {
+                type: 'delete' as const,
+                label: 'حذف',
+                onClick: () => handleDelete(campaign)
+              }
+            ]}
+            viewMode={viewMode}
+          />
+        ))}
+      </ViewLayouts>
 
       <CampaignWizard
         open={showAddDialog}

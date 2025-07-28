@@ -24,6 +24,7 @@ import EvaluationsManagementPage from "./pages/EvaluationsManagement";
 import CampaignsManagementPage from "./pages/CampaignsManagement";
 import EventsManagementPage from "./pages/EventsManagement";
 import StakeholdersManagementPage from "./pages/StakeholdersManagement";
+import TeamManagement from "./pages/TeamManagement";
 import RelationshipOverviewPage from "./pages/RelationshipOverview";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -140,6 +141,14 @@ const App = () => (
               element={
                 <ProtectedRoute requireProfile requiredRole="admin">
                   <CampaignsManagementPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/innovation-teams" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <TeamManagement />
                 </ProtectedRoute>
               } 
             />
