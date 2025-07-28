@@ -359,12 +359,12 @@ export function EventsManagement() {
                 },
                 ...(event.event_type ? [{ label: event.event_type, variant: 'outline' as const }] : [])
               ]}
-              metadata={[
-                { icon: <Calendar className="h-3 w-3" />, label: "التاريخ", value: format(new Date(event.event_date), 'PPP') },
-                ...(event.start_time ? [{ icon: <Clock className="h-3 w-3" />, label: "الوقت", value: `${event.start_time} - ${event.end_time}` }] : []),
-                ...(event.location ? [{ icon: <MapPin className="h-3 w-3" />, label: "المكان", value: event.location }] : []),
-                ...(event.max_participants ? [{ icon: <Users className="h-3 w-3" />, label: "المشاركين", value: `${event.registered_participants || 0}/${event.max_participants}` }] : [])
-              ]}
+               metadata={[
+                 { icon: <Calendar className="h-4 w-4" />, label: "التاريخ", value: format(new Date(event.event_date), 'PPP') },
+                 ...(event.start_time ? [{ icon: <Clock className="h-4 w-4" />, label: "الوقت", value: `${event.start_time} - ${event.end_time}` }] : []),
+                 ...(event.location ? [{ icon: <MapPin className="h-4 w-4" />, label: "المكان", value: event.location }] : []),
+                 ...(event.max_participants ? [{ icon: <Users className="h-4 w-4" />, label: "المشاركين", value: `${event.registered_participants || 0}/${event.max_participants}` }] : [])
+               ]}
                actions={[
                  { 
                    type: 'edit', 
