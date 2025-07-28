@@ -1607,32 +1607,47 @@ export type Database = {
       innovation_team_members: {
         Row: {
           cic_role: string
+          contact_email: string | null
           created_at: string | null
           current_workload: number | null
+          department: string | null
           id: string
+          join_date: string | null
           max_concurrent_projects: number | null
+          notes: string | null
           performance_rating: number | null
           specialization: string[] | null
+          status: string | null
           user_id: string | null
         }
         Insert: {
           cic_role: string
+          contact_email?: string | null
           created_at?: string | null
           current_workload?: number | null
+          department?: string | null
           id?: string
+          join_date?: string | null
           max_concurrent_projects?: number | null
+          notes?: string | null
           performance_rating?: number | null
           specialization?: string[] | null
+          status?: string | null
           user_id?: string | null
         }
         Update: {
           cic_role?: string
+          contact_email?: string | null
           created_at?: string | null
           current_workload?: number | null
+          department?: string | null
           id?: string
+          join_date?: string | null
           max_concurrent_projects?: number | null
+          notes?: string | null
           performance_rating?: number | null
           specialization?: string[] | null
+          status?: string | null
           user_id?: string | null
         }
         Relationships: []
