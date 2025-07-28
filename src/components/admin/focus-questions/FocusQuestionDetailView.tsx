@@ -198,21 +198,21 @@ export function FocusQuestionDetailView({
     children: React.ReactNode; 
   }) => (
     <Collapsible open={openSections[id]} onOpenChange={() => toggleSection(id)}>
-      <Card>
+      <Card dir={isRTL ? 'rtl' : 'ltr'}>
         <CollapsibleTrigger asChild>
           <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
-            <CardTitle className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <CardTitle className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
                 <Icon className="w-5 h-5" />
-                <span dir={isRTL ? 'rtl' : 'ltr'}>{title}</span>
+                <span>{title}</span>
                 {count !== undefined && (
-                  <Badge variant="secondary" className={isRTL ? 'mr-2' : 'ml-2'}>{count}</Badge>
+                  <Badge variant="secondary">{count}</Badge>
                 )}
               </div>
               {openSections[id] ? (
                 <ChevronDown className="w-4 h-4" />
               ) : (
-                <ChevronRight className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
+                <ChevronRight className="w-4 h-4" />
               )}
             </CardTitle>
           </CardHeader>
@@ -230,12 +230,12 @@ export function FocusQuestionDetailView({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] p-0">
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0" dir={isRTL ? 'rtl' : 'ltr'}>
         <DialogHeader className="p-6 pb-4">
-          <div className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className="flex items-start justify-between">
             <div className="space-y-2">
               <DialogTitle className="text-2xl font-bold" dir="rtl">{question.question_text_ar}</DialogTitle>
-              <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div className="flex items-center gap-2 flex-wrap">
                 <Badge variant="outline">{getTypeLabel(question.question_type)}</Badge>
                 {question.is_sensitive && (
                   <Badge variant="destructive">حساس</Badge>
@@ -247,14 +247,14 @@ export function FocusQuestionDetailView({
                 )}
               </div>
             </div>
-            <Button onClick={() => onEdit(question)} size="sm" className={isRTL ? 'mr-2' : 'ml-2'}>
-              <Edit className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              <span dir="rtl">تعديل</span>
+            <Button onClick={() => onEdit(question)} size="sm">
+              <Edit className="w-4 h-4 mr-2" />
+              تعديل
             </Button>
           </div>
         </DialogHeader>
 
-        <ScrollArea className="flex-1 px-6">
+        <ScrollArea className="flex-1 px-6" dir={isRTL ? 'rtl' : 'ltr'}>
           <div className="space-y-6 pb-6">
             
             {/* Analytics Overview */}
@@ -297,30 +297,30 @@ export function FocusQuestionDetailView({
               icon={HelpCircle}
             >
               <div className="space-y-4">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4" dir={isRTL ? 'rtl' : 'ltr'}>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div>
-                    <h4 className="font-semibold mb-1 text-sm" dir="rtl">نوع السؤال</h4>
-                    <p className="text-sm text-muted-foreground" dir="rtl">{getTypeLabel(question.question_type)}</p>
+                    <h4 className="font-semibold mb-1 text-sm">نوع السؤال</h4>
+                    <p className="text-sm text-muted-foreground">{getTypeLabel(question.question_type)}</p>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-1 text-sm" dir="rtl">ترتيب السؤال</h4>
-                    <p className={`text-sm flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <h4 className="font-semibold mb-1 text-sm">ترتيب السؤال</h4>
+                    <p className="text-sm flex items-center gap-1">
                       <Hash className="w-4 h-4" />
-                      <span dir="ltr">{question.order_sequence}</span>
+                      {question.order_sequence}
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-1 text-sm" dir="rtl">مستوى الحساسية</h4>
-                    <p className={`text-sm flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <h4 className="font-semibold mb-1 text-sm">مستوى الحساسية</h4>
+                    <p className="text-sm flex items-center gap-1">
                       <Shield className="w-4 h-4" />
-                      <span dir="rtl">{question.is_sensitive ? 'حساس' : 'عادي'}</span>
+                      {question.is_sensitive ? 'حساس' : 'عادي'}
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-1 text-sm" dir="rtl">تاريخ الإنشاء</h4>
-                    <p className={`text-sm flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <h4 className="font-semibold mb-1 text-sm">تاريخ الإنشاء</h4>
+                    <p className="text-sm flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      <span dir="ltr">{format(new Date(question.created_at), 'dd/MM/yyyy')}</span>
+                      {format(new Date(question.created_at), 'dd/MM/yyyy')}
                     </p>
                   </div>
                 </div>
