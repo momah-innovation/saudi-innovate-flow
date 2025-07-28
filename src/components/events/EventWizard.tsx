@@ -1246,49 +1246,37 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
             const hasError = stepErrors[step]?.length > 0;
 
             return (
-              <div key={step} className="flex flex-col items-center">
-                <div className="flex items-center">
-                  <div
-                    className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
-                      hasError
-                        ? "border-destructive bg-destructive text-destructive-foreground"
-                        : isCompleted
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : isActive
-                        ? "border-primary bg-background text-primary"
-                        : "border-muted-foreground bg-background text-muted-foreground"
-                    }`}
-                  >
-                    <Icon className="h-4 w-4" />
-                  </div>
-                  {step < totalSteps && (
-                    <div
-                      className={`w-12 h-0.5 ${
-                        isCompleted ? "bg-primary" : "bg-muted-foreground"
-                      }`}
-                    />
-                  )}
+              <div key={step} className="flex items-center">
+                <div
+                  className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                    hasError
+                      ? "bg-destructive text-destructive-foreground"
+                      : isCompleted || isActive
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
                 </div>
-                <span className={`
-                  text-sm text-center mt-2 font-medium max-w-[100px] leading-tight
-                  ${isActive || isCompleted 
-                    ? 'text-foreground' 
-                    : 'text-muted-foreground'
-                  }
-                `}>
-                  {stepTitles[i]}
-                </span>
+                <div className="ml-2 text-sm font-medium">{stepTitles[i]}</div>
+                {step < totalSteps && (
+                  <div
+                    className={`w-8 h-px mx-2 ${
+                      isCompleted ? "bg-primary" : "bg-muted"
+                    }`}
+                  />
+                )}
               </div>
             );
           })}
         </div>
 
-          <div className="mb-4">
-            <h3 className="text-lg font-medium">{stepTitles[currentStep - 1]}</h3>
-            <p className="text-sm text-muted-foreground">
-              الخطوة {currentStep} من {totalSteps}
-            </p>
-          </div>
+        <div className="mb-4">
+          <h3 className="text-lg font-medium">{stepTitles[currentStep - 1]}</h3>
+          <p className="text-sm text-muted-foreground">
+            الخطوة {currentStep} من {totalSteps}
+          </p>
+        </div>
 
         {renderStepContent()}
 
