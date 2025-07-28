@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { PageLayout } from "@/components/layout/PageLayout";
 import { ManagementCard } from "@/components/ui/management-card";
 import { ChallengeWizardV2 } from "./ChallengeWizardV2";
 import { ChallengeDetailView } from "./ChallengeDetailView";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
 import { 
@@ -18,9 +20,13 @@ import {
   Settings,
   Lightbulb,
   ChevronDown,
-  Filter
+  Filter,
+  LayoutGrid,
+  List,
+  Grid3x3
 } from "lucide-react";
 import { format } from "date-fns";
+import { ViewLayouts } from "@/components/ui/view-layouts";
 
 interface Challenge {
   id: string;
@@ -58,6 +64,7 @@ export function ChallengeManagementList() {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
   const [sensitivityFilter, setSensitivityFilter] = useState<string>("all");
+  const [currentLayout, setCurrentLayout] = useState<'cards' | 'list' | 'grid'>('cards');
   const [showWizard, setShowWizard] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
@@ -164,6 +171,20 @@ export function ChallengeManagementList() {
     return labels[priority as keyof typeof labels] || priority;
   };
 
+  // Load saved layout preference
+  useEffect(() => {
+    const savedLayout = localStorage.getItem('challenge-layout') as 'cards' | 'list' | 'grid';
+    if (savedLayout) {
+      setCurrentLayout(savedLayout);
+    }
+  }, []);
+
+  // Save layout preference
+  const handleLayoutChange = (layout: 'cards' | 'list' | 'grid') => {
+    setCurrentLayout(layout);
+    localStorage.setItem('challenge-layout', layout);
+  };
+
   const filteredChallenges = challenges.filter(challenge => {
     const matchesSearch = challenge.title_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          challenge.description_ar.toLowerCase().includes(searchTerm.toLowerCase());
@@ -173,68 +194,103 @@ export function ChallengeManagementList() {
     return matchesSearch && matchesStatus && matchesPriority && matchesSensitivity;
   });
 
-  const filters = [
-    {
-      id: 'status',
-      label: 'الحالة',
-      type: 'select' as const,
-      options: [
-        { label: 'الكل', value: 'all' },
-        { label: 'مسودة', value: 'draft' },
-        { label: 'نشط', value: 'active' },
-        { label: 'مكتمل', value: 'completed' },
-        { label: 'ملغي', value: 'cancelled' },
-        { label: 'معلق', value: 'on_hold' }
-      ],
-      value: statusFilter,
-      onChange: setStatusFilter
-    },
-    {
-      id: 'priority',
-      label: 'الأولوية',
-      type: 'select' as const,
-      options: [
-        { label: 'الكل', value: 'all' },
-        { label: 'عالي', value: 'high' },
-        { label: 'متوسط', value: 'medium' },
-        { label: 'منخفض', value: 'low' }
-      ],
-      value: priorityFilter,
-      onChange: setPriorityFilter
-    },
-    {
-      id: 'sensitivity',
-      label: 'مستوى الحساسية',
-      type: 'select' as const,
-      options: [
-        { label: 'الكل', value: 'all' },
-        { label: 'عادي', value: 'normal' },
-        { label: 'حساس', value: 'sensitive' },
-        { label: 'سري', value: 'confidential' }
-      ],
-      value: sensitivityFilter,
-      onChange: setSensitivityFilter
-    }
-  ];
-
   return (
     <>
-      <PageLayout
-        title="إدارة التحديات"
-        description="إنشاء وإدارة التحديات الابتكارية"
-        itemCount={filteredChallenges.length}
-        primaryAction={{
-          label: "تحدي جديد",
-          onClick: () => {
-            setSelectedChallenge(null);
-            setShowWizard(true);
-          },
-          icon: <Target className="w-4 h-4" />
-        }}
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        spacing="md"
-      >
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h2 className="text-2xl font-bold">إدارة التحديات</h2>
+            <p className="text-muted-foreground">إنشاء وإدارة التحديات الابتكارية ({filteredChallenges.length})</p>
+          </div>
+          <div className="flex items-center gap-2">
+            {/* Layout Toggle */}
+            <div className="flex items-center border rounded-lg p-1">
+              <button
+                onClick={() => handleLayoutChange('cards')}
+                className={`p-2 rounded ${currentLayout === 'cards' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
+                title="عرض البطاقات"
+              >
+                <LayoutGrid className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => handleLayoutChange('list')}
+                className={`p-2 rounded ${currentLayout === 'list' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
+                title="عرض القائمة"
+              >
+                <List className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => handleLayoutChange('grid')}
+                className={`p-2 rounded ${currentLayout === 'grid' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
+                title="عرض الشبكة"
+              >
+                <Grid3x3 className="w-4 h-4" />
+              </button>
+            </div>
+            
+            <Button onClick={() => {
+              setSelectedChallenge(null);
+              setShowWizard(true);
+            }}>
+              <Target className="w-4 h-4 mr-2" />
+              تحدي جديد
+            </Button>
+          </div>
+        </div>
+
+        {/* Search and Filters */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex-1">
+            <Input
+              placeholder="البحث في التحديات..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full"
+            />
+          </div>
+          <div className="flex gap-2">
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-32">
+                <SelectValue placeholder="الحالة" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">كل الحالات</SelectItem>
+                <SelectItem value="draft">مسودة</SelectItem>
+                <SelectItem value="active">نشط</SelectItem>
+                <SelectItem value="completed">مكتمل</SelectItem>
+                <SelectItem value="cancelled">ملغي</SelectItem>
+                <SelectItem value="on_hold">معلق</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Select value={priorityFilter} onValueChange={setPriorityFilter}>
+              <SelectTrigger className="w-32">
+                <SelectValue placeholder="الأولوية" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">كل الأولويات</SelectItem>
+                <SelectItem value="high">عالي</SelectItem>
+                <SelectItem value="medium">متوسط</SelectItem>
+                <SelectItem value="low">منخفض</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={sensitivityFilter} onValueChange={setSensitivityFilter}>
+              <SelectTrigger className="w-32">
+                <SelectValue placeholder="الحساسية" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">كل المستويات</SelectItem>
+                <SelectItem value="normal">عادي</SelectItem>
+                <SelectItem value="sensitive">حساس</SelectItem>
+                <SelectItem value="confidential">سري</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Content */}
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
@@ -255,13 +311,14 @@ export function ChallengeManagementList() {
             }}
           />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <ViewLayouts viewMode={currentLayout}>
             {filteredChallenges.map((challenge) => (
               <ManagementCard
                 key={challenge.id}
                 id={challenge.id}
                 title={challenge.title_ar}
                 description={challenge.description_ar}
+                viewMode={currentLayout}
                 badges={[
                   { 
                     label: getStatusLabel(challenge.status),
@@ -322,9 +379,9 @@ export function ChallengeManagementList() {
                 onClick={() => handleView(challenge)}
               />
             ))}
-          </div>
+          </ViewLayouts>
         )}
-      </PageLayout>
+      </div>
 
       <ChallengeWizardV2
         isOpen={showWizard}
