@@ -1,32 +1,21 @@
 import { CampaignsManagement } from "@/components/admin/CampaignsManagement";
 import { AppShell } from "@/components/layout/AppShell";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { useDirection } from "@/components/ui/direction-provider";
 import { useState } from "react";
 import { Plus, Users, Download } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
 export default function CampaignsManagementPage() {
-  const { isRTL, language } = useDirection();
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
   
-  const title = isRTL && language === 'ar' ? 'إدارة الحملات' : 'Campaign Management';
-  const description = isRTL && language === 'ar' 
-    ? 'إنشاء وإدارة حملات الابتكار' 
-    : 'Create and manage innovation campaigns';
-
-  const createNewLabel = isRTL && language === 'ar' ? 'إنشاء جديد' : 'Create New';
-  const bulkActionsLabel = isRTL && language === 'ar' ? 'الإجراءات المجمعة' : 'Bulk Actions';
-  const searchPlaceholder = isRTL && language === 'ar' ? 'بحث' : 'Search';
-
   const secondaryActions = (
     <>
       <Select>
         <SelectTrigger className="w-32">
-          <SelectValue placeholder="Export" />
+          <SelectValue placeholder="تصدير" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="pdf">PDF</SelectItem>
@@ -36,7 +25,7 @@ export default function CampaignsManagementPage() {
       </Select>
       <Button variant="outline" className="gap-2">
         <Users className="w-4 h-4" />
-        {bulkActionsLabel}
+        الإجراءات المجمعة
       </Button>
     </>
   );
@@ -46,26 +35,33 @@ export default function CampaignsManagementPage() {
       <div className="min-w-[120px]">
         <Select>
           <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder={isRTL && language === 'ar' ? 'تصفية حسب الحالة' : 'Filter by Status'} />
+            <SelectValue placeholder="تصفية حسب الحالة" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{isRTL && language === 'ar' ? 'جميع الحالات' : 'All Status'}</SelectItem>
-            <SelectItem value="planning">{isRTL && language === 'ar' ? 'تخطيط' : 'Planning'}</SelectItem>
-            <SelectItem value="active">{isRTL && language === 'ar' ? 'نشط' : 'Active'}</SelectItem>
-            <SelectItem value="completed">{isRTL && language === 'ar' ? 'مكتمل' : 'Completed'}</SelectItem>
+            <SelectItem value="all">جميع الحالات</SelectItem>
+            <SelectItem value="planning">تخطيط</SelectItem>
+            <SelectItem value="active">نشطة</SelectItem>
+            <SelectItem value="completed">مكتملة</SelectItem>
+            <SelectItem value="cancelled">ملغية</SelectItem>
+            <SelectItem value="archived">مؤرشفة</SelectItem>
           </SelectContent>
         </Select>
       </div>
       <div className="min-w-[120px]">
         <Select>
           <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder={isRTL && language === 'ar' ? 'تصفية حسب الموضوع' : 'Filter by Theme'} />
+            <SelectValue placeholder="تصفية حسب الموضوع" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{isRTL && language === 'ar' ? 'جميع المواضيع' : 'All Themes'}</SelectItem>
-            <SelectItem value="fintech">{isRTL && language === 'ar' ? 'التكنولوجيا المالية' : 'FinTech'}</SelectItem>
-            <SelectItem value="health">{isRTL && language === 'ar' ? 'الصحة' : 'Health'}</SelectItem>
-            <SelectItem value="education">{isRTL && language === 'ar' ? 'التعليم' : 'Education'}</SelectItem>
+            <SelectItem value="all">جميع المواضيع</SelectItem>
+            <SelectItem value="digital_transformation">التحول الرقمي</SelectItem>
+            <SelectItem value="sustainability">الاستدامة</SelectItem>
+            <SelectItem value="smart_cities">المدن الذكية</SelectItem>
+            <SelectItem value="healthcare">الرعاية الصحية</SelectItem>
+            <SelectItem value="education">التعليم</SelectItem>
+            <SelectItem value="fintech">التكنولوجيا المالية</SelectItem>
+            <SelectItem value="energy">الطاقة</SelectItem>
+            <SelectItem value="transportation">النقل</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -75,11 +71,11 @@ export default function CampaignsManagementPage() {
   return (
     <AppShell>
       <PageLayout 
-        title={title}
-        description={description}
+        title="إدارة الحملات"
+        description="إنشاء وإدارة حملات الابتكار"
         itemCount={6}
         primaryAction={{
-          label: createNewLabel,
+          label: "إنشاء حملة جديدة",
           onClick: () => setShowAddDialog(true),
           icon: <Plus className="w-4 h-4" />
         }}
@@ -90,7 +86,7 @@ export default function CampaignsManagementPage() {
         showSearch={true}
         searchValue={searchValue}
         onSearchChange={setSearchValue}
-        searchPlaceholder={searchPlaceholder}
+        searchPlaceholder="بحث في الحملات..."
         filters={filters}
         spacing="md"
         maxWidth="full"
