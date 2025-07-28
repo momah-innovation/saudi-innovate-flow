@@ -35,6 +35,7 @@ export function StakeholdersManagement() {
   const [viewingStakeholder, setViewingStakeholder] = useState<Stakeholder | null>(null);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   
   // Search and filter states
   const [searchTerm, setSearchTerm] = useState("");
@@ -255,6 +256,9 @@ export function StakeholdersManagement() {
           icon: <Plus className="w-4 h-4" />
         }}
         secondaryActions={secondaryActions}
+        showLayoutSelector={true}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
         showSearch={true}
         searchValue={searchTerm}
         onSearchChange={setSearchTerm}
