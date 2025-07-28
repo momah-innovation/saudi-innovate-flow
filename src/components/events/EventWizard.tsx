@@ -1246,27 +1246,38 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
             const hasError = stepErrors[step]?.length > 0;
 
             return (
-              <div key={step} className="flex items-center">
-                <div
-                  className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
-                    hasError
-                      ? "border-destructive bg-destructive text-destructive-foreground"
-                      : isCompleted
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : isActive
-                      ? "border-primary bg-background text-primary"
-                      : "border-muted-foreground bg-background text-muted-foreground"
-                  }`}
-                >
-                  <Icon className="h-4 w-4" />
-                </div>
-                {step < totalSteps && (
+              <div key={step} className="flex flex-col items-center">
+                <div className="flex items-center">
                   <div
-                    className={`w-12 h-0.5 ${
-                      isCompleted ? "bg-primary" : "bg-muted-foreground"
+                    className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
+                      hasError
+                        ? "border-destructive bg-destructive text-destructive-foreground"
+                        : isCompleted
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : isActive
+                        ? "border-primary bg-background text-primary"
+                        : "border-muted-foreground bg-background text-muted-foreground"
                     }`}
-                  />
-                )}
+                  >
+                    <Icon className="h-4 w-4" />
+                  </div>
+                  {step < totalSteps && (
+                    <div
+                      className={`w-12 h-0.5 ${
+                        isCompleted ? "bg-primary" : "bg-muted-foreground"
+                      }`}
+                    />
+                  )}
+                </div>
+                <span className={`
+                  text-sm text-center mt-2 font-medium max-w-[100px] leading-tight
+                  ${isActive || isCompleted 
+                    ? 'text-foreground' 
+                    : 'text-muted-foreground'
+                  }
+                `}>
+                  {stepTitles[i]}
+                </span>
               </div>
             );
           })}
