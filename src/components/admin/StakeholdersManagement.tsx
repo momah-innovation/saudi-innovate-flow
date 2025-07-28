@@ -1,260 +1,155 @@
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Edit, Trash2, User, Mail, Phone, Building, Search, X, Eye } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { StakeholderWizard } from "./StakeholderWizard";
-import { StandardPageLayout, ViewMode } from "@/components/layout/StandardPageLayout";
-import { ViewLayouts } from "@/components/ui/view-layouts";
-import { ManagementCard } from "@/components/ui/management-card";
+import { useState } from 'react';
+import { StandardPageLayout } from '@/components/layout/StandardPageLayout';
+import { ManagementCard } from '@/components/ui/management-card';
+import { useTranslation } from '@/hooks/useTranslation';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { StakeholderWizard } from './StakeholderWizard';
+import { 
+  User,
+  Mail,
+  Phone,
+  Building,
+  Target,
+  Activity
+} from 'lucide-react';
 
-interface Stakeholder {
-  id: string;
-  name: string;
-  organization: string;
-  position: string;
-  email: string;
-  phone?: string;
-  stakeholder_type: string;
-  influence_level: string;
-  interest_level: string;
-  engagement_status: string;
-  notes?: string;
-  created_at: string;
-  updated_at: string;
-}
+// Mock data - will be replaced with real data
+const mockStakeholders = [
+  {
+    id: '1',
+    name: 'د. أحمد محمد العبدالله',
+    organization: 'وزارة التقنية والابتكار',
+    position: 'مدير عام الابتكار',
+    email: 'ahmed.abdullah@tech.gov.sa',
+    phone: '+966501234567',
+    stakeholder_type: 'حكومي',
+    influence_level: 'عالي',
+    interest_level: 'عالي',
+    engagement_status: 'نشط',
+    notes: 'صاحب قرار رئيسي في مبادرات الابتكار الحكومي',
+    projects_count: 12,
+    last_interaction: '2024-03-01'
+  },
+  {
+    id: '2',
+    name: 'فاطمة علي الزهراني',
+    organization: 'شركة أرامكو السعودية',
+    position: 'رئيس قسم التطوير التقني',
+    email: 'fatima.alzahrani@aramco.com',
+    phone: '+966502345678',
+    stakeholder_type: 'خاص',
+    influence_level: 'عالي',
+    interest_level: 'متوسط',
+    engagement_status: 'نشط',
+    notes: 'مهتمة بمشاريع الطاقة المتجددة والتكنولوجيا النظيفة',
+    projects_count: 8,
+    last_interaction: '2024-02-25'
+  },
+  {
+    id: '3',
+    name: 'أ.د. محمد إبراهيم الأحمد',
+    organization: 'جامعة الملك سعود',
+    position: 'أستاذ الذكاء الاصطناعي',
+    email: 'm.alahmad@ksu.edu.sa',
+    phone: '+966503456789',
+    stakeholder_type: 'أكاديمي',
+    influence_level: 'متوسط',
+    interest_level: 'عالي',
+    engagement_status: 'نشط',
+    notes: 'خبير في الذكاء الاصطناعي وتطبيقاته في القطاع الحكومي',
+    projects_count: 15,
+    last_interaction: '2024-03-05'
+  },
+  {
+    id: '4',
+    name: 'نورا سعد المطيري',
+    organization: 'مؤسسة محمد بن راشد للابتكار',
+    position: 'مديرة البرامج',
+    email: 'nora.almutairi@mbrf.ae',
+    phone: '+971504567890',
+    stakeholder_type: 'غير ربحي',
+    influence_level: 'متوسط',
+    interest_level: 'عالي',
+    engagement_status: 'معلق',
+    notes: 'تنسق برامج الابتكار الإقليمية',
+    projects_count: 6,
+    last_interaction: '2024-01-15'
+  }
+];
+
+const typeConfig = {
+  'حكومي': { label: 'حكومي', variant: 'default' as const },
+  'خاص': { label: 'خاص', variant: 'secondary' as const },
+  'أكاديمي': { label: 'أكاديمي', variant: 'outline' as const },
+  'غير ربحي': { label: 'غير ربحي', variant: 'secondary' as const },
+  'مجتمعي': { label: 'مجتمعي', variant: 'outline' as const },
+  'دولي': { label: 'دولي', variant: 'default' as const }
+};
+
+const influenceConfig = {
+  'عالي': { label: 'عالي', variant: 'destructive' as const },
+  'متوسط': { label: 'متوسط', variant: 'default' as const },
+  'منخفض': { label: 'منخفض', variant: 'secondary' as const }
+};
+
+const engagementConfig = {
+  'نشط': { label: 'نشط', variant: 'default' as const },
+  'غير نشط': { label: 'غير نشط', variant: 'secondary' as const },
+  'معلق': { label: 'معلق', variant: 'outline' as const },
+  'محظور': { label: 'محظور', variant: 'destructive' as const }
+};
 
 export function StakeholdersManagement() {
-  const [stakeholders, setStakeholders] = useState<Stakeholder[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [editingStakeholder, setEditingStakeholder] = useState<Stakeholder | null>(null);
-  const [viewingStakeholder, setViewingStakeholder] = useState<Stakeholder | null>(null);
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
-  
-  const handleLayoutChange = (layout: ViewMode) => {
-    if (layout === 'cards' || layout === 'list' || layout === 'grid') {
-      setViewMode(layout);
-    }
-  };
-  
-  // Search and filter states
-  const [searchTerm, setSearchTerm] = useState("");
-  const [typeFilter, setTypeFilter] = useState("all");
-  const [influenceFilter, setInfluenceFilter] = useState("all");
-  const [engagementFilter, setEngagementFilter] = useState("all");
-  const { toast } = useToast();
+  const { language } = useTranslation();
+  const [showWizard, setShowWizard] = useState(false);
+  const [selectedStakeholder, setSelectedStakeholder] = useState<any>(null);
 
-  // Arabic options from system settings
-  const stakeholderTypes = ["حكومي", "خاص", "أكاديمي", "غير ربحي", "مجتمعي", "دولي"];
-  const influenceLevels = ["عالي", "متوسط", "منخفض"];
-  const interestLevels = ["عالي", "متوسط", "منخفض"];
-  const engagementStatuses = ["نشط", "غير نشط", "معلق", "محظور"];
-
-  useEffect(() => {
-    fetchStakeholders();
-  }, []);
-
-  const fetchStakeholders = async () => {
-    try {
-      setLoading(true);
-      
-      const { data, error } = await supabase
-        .from("stakeholders")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Error fetching stakeholders:", error);
-        toast({
-          title: "خطأ",
-          description: "فشل في جلب أصحاب المصلحة",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      setStakeholders(data || []);
-    } catch (error) {
-      console.error("Error fetching stakeholders:", error);
-      toast({
-        title: "خطأ",
-        description: "فشل في جلب أصحاب المصلحة",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
+  const handleEdit = (stakeholder: any) => {
+    setSelectedStakeholder(stakeholder);
+    setShowWizard(true);
   };
 
-  const handleEdit = (stakeholder: Stakeholder) => {
-    setEditingStakeholder(stakeholder);
-    setIsWizardOpen(true);
+  const handleView = (stakeholder: any) => {
+    console.log('View stakeholder:', stakeholder);
   };
 
-  const handleWizardSave = () => {
-    setIsWizardOpen(false);
-    setEditingStakeholder(null);
-    fetchStakeholders();
+  const handleDelete = (stakeholder: any) => {
+    console.log('Delete stakeholder:', stakeholder);
   };
-
-  const handleDelete = async (id: string) => {
-    if (!confirm("هل أنت متأكد من حذف صاحب المصلحة هذا؟")) return;
-
-    try {
-      const { error } = await supabase
-        .from("stakeholders")
-        .delete()
-        .eq("id", id);
-
-      if (error) throw error;
-      
-      toast({
-        title: "نجح",
-        description: "تم حذف صاحب المصلحة بنجاح",
-      });
-      
-      fetchStakeholders();
-    } catch (error) {
-      console.error("Error deleting stakeholder:", error);
-      toast({
-        title: "خطأ",
-        description: "فشل في حذف صاحب المصلحة",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const filteredStakeholders = stakeholders.filter((stakeholder) => {
-    const searchLower = searchTerm.toLowerCase();
-    const matchesSearch = 
-      (stakeholder.name && stakeholder.name.toLowerCase().includes(searchLower)) ||
-      (stakeholder.organization && stakeholder.organization.toLowerCase().includes(searchLower)) ||
-      (stakeholder.position && stakeholder.position.toLowerCase().includes(searchLower)) ||
-      (stakeholder.email && stakeholder.email.toLowerCase().includes(searchLower));
-    
-    const matchesType = typeFilter === "all" || stakeholder.stakeholder_type === typeFilter;
-    const matchesInfluence = influenceFilter === "all" || stakeholder.influence_level === influenceFilter;
-    const matchesEngagement = engagementFilter === "all" || stakeholder.engagement_status === engagementFilter;
-    
-    return matchesSearch && matchesType && matchesInfluence && matchesEngagement;
-  });
-
-  const clearFilters = () => {
-    setSearchTerm("");
-    setTypeFilter("all");
-    setInfluenceFilter("all");
-    setEngagementFilter("all");
-  };
-
-  const getInfluenceColor = (level: string) => {
-    switch (level) {
-      case "عالي": return "bg-red-100 text-red-700";
-      case "متوسط": return "bg-yellow-100 text-yellow-700";
-      case "منخفض": return "bg-green-100 text-green-700";
-      default: return "bg-gray-100 text-gray-700";
-    }
-  };
-
-  const getEngagementColor = (status: string) => {
-    switch (status) {
-      case "نشط": return "bg-green-100 text-green-700";
-      case "غير نشط": return "bg-blue-100 text-blue-700";
-      case "معلق": return "bg-yellow-100 text-yellow-700";
-      case "محظور": return "bg-red-100 text-red-700";
-      default: return "bg-gray-100 text-gray-700";
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto" />
-          <p className="text-sm text-muted-foreground">جاري تحميل أصحاب المصلحة...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Create filters for StandardPageLayout
-  const filters = [
-    {
-      id: 'type',
-      label: 'نوع أصحاب المصلحة',
-      type: 'select' as const,
-      value: typeFilter,
-      onChange: setTypeFilter,
-      options: [
-        { label: 'جميع الأنواع', value: 'all' },
-        ...stakeholderTypes.map(type => ({ label: type, value: type }))
-      ]
-    },
-    {
-      id: 'influence',
-      label: 'مستوى التأثير',
-      type: 'select' as const,
-      value: influenceFilter,
-      onChange: setInfluenceFilter,
-      options: [
-        { label: 'جميع مستويات التأثير', value: 'all' },
-        ...influenceLevels.map(level => ({ label: level, value: level }))
-      ]
-    },
-    {
-      id: 'engagement',
-      label: 'حالة المشاركة',
-      type: 'select' as const,
-      value: engagementFilter,
-      onChange: setEngagementFilter,
-      options: [
-        { label: 'جميع حالات المشاركة', value: 'all' },
-        ...engagementStatuses.map(status => ({ label: status, value: status }))
-      ]
-    }
-  ];
-
-  const secondaryActions = (
-    <Button
-      variant="outline"
-      onClick={() => {
-        toast({
-          title: "تصدير البيانات",
-          description: "سيتم إضافة وظيفة التصدير قريباً",
-        });
-      }}
-    >
-      تصدير
-    </Button>
-  );
 
   return (
     <>
-      <StandardPageLayout 
+      <StandardPageLayout
         title="إدارة أصحاب المصلحة"
-        description="تتبع وإدارة علاقات أصحاب المصلحة ومستويات التأثير واستراتيجيات المشاركة"
-        itemCount={filteredStakeholders.length}
+        description="إدارة وتنظيم علاقات أصحاب المصلحة ومستويات التأثير"
+        itemCount={mockStakeholders.length}
         addButton={{
-          label: "إضافة صاحب مصلحة",
-          onClick: () => { setEditingStakeholder(null); setIsWizardOpen(true); },
-          icon: <Plus className="w-4 h-4" />
+          label: "صاحب مصلحة جديد",
+          onClick: () => setShowWizard(true),
+          icon: <User className="w-4 h-4" />
         }}
-        headerActions={secondaryActions}
-        supportedLayouts={['cards', 'list', 'grid']}
-        defaultLayout={viewMode}
-        onLayoutChange={handleLayoutChange}
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        filters={filters}
+        searchTerm=""
+        onSearchChange={() => {}}
+        filters={[
+          {
+            id: 'stakeholder_type',
+            label: 'نوع الجهة',
+            type: 'select' as const,
+            options: [
+              { label: 'الكل', value: 'all' },
+              { label: 'حكومي', value: 'حكومي' },
+              { label: 'خاص', value: 'خاص' },
+              { label: 'أكاديمي', value: 'أكاديمي' },
+              { label: 'غير ربحي', value: 'غير ربحي' }
+            ],
+            value: 'all',
+            onChange: () => {}
+          }
+        ]}
       >
-        <ViewLayouts viewMode={viewMode}>
-          {filteredStakeholders.map((stakeholder) => (
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {mockStakeholders.map((stakeholder) => (
             <ManagementCard
               key={stakeholder.id}
               id={stakeholder.id}
@@ -262,153 +157,76 @@ export function StakeholdersManagement() {
               subtitle={`${stakeholder.position} - ${stakeholder.organization}`}
               description={stakeholder.notes}
               badges={[
-                { label: stakeholder.stakeholder_type, variant: 'outline' },
-                { 
-                  label: stakeholder.influence_level, 
-                  variant: 'outline',
-                  className: getInfluenceColor(stakeholder.influence_level)
+                {
+                  label: typeConfig[stakeholder.stakeholder_type as keyof typeof typeConfig]?.label,
+                  variant: typeConfig[stakeholder.stakeholder_type as keyof typeof typeConfig]?.variant
                 },
-                { 
-                  label: stakeholder.engagement_status, 
-                  variant: 'outline',
-                  className: getEngagementColor(stakeholder.engagement_status)
+                {
+                  label: `تأثير ${stakeholder.influence_level}`,
+                  variant: influenceConfig[stakeholder.influence_level as keyof typeof influenceConfig]?.variant
+                },
+                {
+                  label: engagementConfig[stakeholder.engagement_status as keyof typeof engagementConfig]?.label,
+                  variant: engagementConfig[stakeholder.engagement_status as keyof typeof engagementConfig]?.variant
                 }
               ]}
               metadata={[
-                { icon: <Mail className="h-3 w-3" />, label: "البريد", value: stakeholder.email },
-                ...(stakeholder.phone ? [{ icon: <Phone className="h-3 w-3" />, label: "الهاتف", value: stakeholder.phone }] : []),
-                { icon: <User className="h-3 w-3" />, label: "الاهتمام", value: stakeholder.interest_level }
+                {
+                  icon: <Mail className="w-4 h-4" />,
+                  label: 'البريد الإلكتروني',
+                  value: stakeholder.email
+                },
+                {
+                  icon: <Phone className="w-4 h-4" />,
+                  label: 'الهاتف',
+                  value: stakeholder.phone
+                },
+                {
+                  icon: <Target className="w-4 h-4" />,
+                  label: 'مستوى الاهتمام',
+                  value: stakeholder.interest_level
+                },
+                {
+                  icon: <Activity className="w-4 h-4" />,
+                  label: 'المشاريع',
+                  value: `${stakeholder.projects_count} مشروع`
+                }
               ]}
-               actions={[
-                 { 
-                   type: 'edit', 
-                   label: 'تعديل',
-                   onClick: () => handleEdit(stakeholder)
-                 },
-                 { 
-                   type: 'delete',
-                   label: 'حذف',
-                   onClick: () => handleDelete(stakeholder.id)
-                 }
-               ]}
-               viewMode={viewMode}
-               onClick={() => {
-                 setViewingStakeholder(stakeholder);
-                 setIsDetailOpen(true);
-               }}
+              actions={[
+                {
+                  type: 'view',
+                  label: 'عرض',
+                  onClick: () => handleView(stakeholder)
+                },
+                {
+                  type: 'edit',
+                  label: 'تعديل',
+                  onClick: () => handleEdit(stakeholder)
+                },
+                {
+                  type: 'delete',
+                  label: 'حذف',
+                  onClick: () => handleDelete(stakeholder)
+                }
+              ]}
+              onClick={() => handleView(stakeholder)}
             />
           ))}
-        </ViewLayouts>
-
-      {(filteredStakeholders.length === 0 && (searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all")) && (
-        <div className="text-center py-8">
-          <div className="text-muted-foreground mb-4">
-            لا توجد أصحاب مصلحة تطابق معايير البحث
-          </div>
-          <Button variant="outline" onClick={clearFilters}>
-            مسح جميع المرشحات
-          </Button>
         </div>
-      )}
-
-      {(stakeholders.length === 0 && !(searchTerm || typeFilter !== "all" || influenceFilter !== "all" || engagementFilter !== "all")) && (
-        <div className="text-center py-8">
-          <div className="text-muted-foreground mb-4">
-            لا توجد أصحاب مصلحة
-          </div>
-          <Button onClick={() => { setEditingStakeholder(null); setIsWizardOpen(true); }}>
-            <Plus className="h-4 w-4 mr-2" />
-            إضافة صاحب مصلحة جديد
-          </Button>
-        </div>
-      )}
       </StandardPageLayout>
 
-      {/* Stakeholder Wizard */}
       <StakeholderWizard
-        isOpen={isWizardOpen}
+        isOpen={showWizard}
         onClose={() => {
-          setIsWizardOpen(false);
-          setEditingStakeholder(null);
+          setShowWizard(false);
+          setSelectedStakeholder(null);
         }}
-        stakeholder={editingStakeholder}
-        onSave={handleWizardSave}
+        stakeholder={selectedStakeholder}
+        onSave={() => {
+          setShowWizard(false);
+          setSelectedStakeholder(null);
+        }}
       />
-
-      {/* Detail View Dialog */}
-      <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>تفاصيل صاحب المصلحة</DialogTitle>
-          </DialogHeader>
-          {viewingStakeholder && (
-            <div className="space-y-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="text-xl font-semibold">{viewingStakeholder.name}</h3>
-                  <p className="text-muted-foreground">{viewingStakeholder.position} - {viewingStakeholder.organization}</p>
-                </div>
-                 <div className="flex gap-2">
-                   <Badge variant="outline">
-                     {viewingStakeholder.stakeholder_type}
-                   </Badge>
-                 </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <h4 className="font-medium text-sm text-muted-foreground mb-2">معلومات الاتصال</h4>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">{viewingStakeholder.email}</span>
-                    </div>
-                    {viewingStakeholder.phone && (
-                      <div className="flex items-center gap-2">
-                        <Phone className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">{viewingStakeholder.phone}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="font-medium text-sm text-muted-foreground mb-2">مستويات التأثير والمشاركة</h4>
-                  <div className="space-y-2">
-                     <div>
-                       <span className="text-sm font-medium">مستوى التأثير: </span>
-                       <Badge variant="outline" className={getInfluenceColor(viewingStakeholder.influence_level)}>
-                         {viewingStakeholder.influence_level}
-                       </Badge>
-                     </div>
-                     <div>
-                       <span className="text-sm font-medium">مستوى الاهتمام: </span>
-                       <Badge variant="outline">
-                         {viewingStakeholder.interest_level}
-                       </Badge>
-                     </div>
-                     <div>
-                       <span className="text-sm font-medium">حالة المشاركة: </span>
-                       <Badge variant="outline" className={getEngagementColor(viewingStakeholder.engagement_status)}>
-                         {viewingStakeholder.engagement_status}
-                       </Badge>
-                     </div>
-                  </div>
-                </div>
-              </div>
-
-              {viewingStakeholder.notes && (
-                <div>
-                  <h4 className="font-medium text-sm text-muted-foreground mb-2">ملاحظات</h4>
-                  <p className="text-sm text-muted-foreground bg-muted p-3 rounded">{viewingStakeholder.notes}</p>
-                </div>
-              )}
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </>
   );
 }
-
-export default StakeholdersManagement;
