@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
@@ -57,14 +58,21 @@ export function FocusQuestionWizard({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
 
+  const { focusQuestionTypes } = useSystemLists();
+
   // Question type options
-  const questionTypes = [
-    { value: "open_ended", label: "سؤال مفتوح" },
-    { value: "multiple_choice", label: "متعدد الخيارات" },
-    { value: "yes_no", label: "نعم/لا" },
-    { value: "rating", label: "تقييم" },
-    { value: "ranking", label: "ترتيب" }
-  ];
+  const questionTypes = focusQuestionTypes.map(type => ({ 
+    value: type, 
+    label: type === 'general' ? 'عام' :
+           type === 'technical' ? 'تقني' :
+           type === 'business' ? 'أعمال' :
+           type === 'impact' ? 'تأثير' :
+           type === 'implementation' ? 'تنفيذ' :
+           type === 'social' ? 'اجتماعي' :
+           type === 'ethical' ? 'أخلاقي' :
+           type === 'medical' ? 'طبي' :
+           type === 'regulatory' ? 'تنظيمي' : type
+  }));
 
   useEffect(() => {
     if (isOpen) {

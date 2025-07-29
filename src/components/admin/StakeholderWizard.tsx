@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useTranslation";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { Building, User, Mail, Phone, Users, Target } from "lucide-react";
 
 interface Stakeholder {
@@ -53,15 +55,17 @@ export function StakeholderWizard({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const { partnerTypeOptions, generalStatusOptions } = useSystemLists();
+
   // Predefined options in Arabic
-  const stakeholderTypes = [
-    { value: "حكومي", label: "حكومي" },
-    { value: "قطاع_خاص", label: "قطاع خاص" },
-    { value: "أكاديمي", label: "أكاديمي" },
-    { value: "منظمة_غير_ربحية", label: "منظمة غير ربحية" },
-    { value: "مجتمعي", label: "مجتمعي" },
-    { value: "دولي", label: "دولي" },
-  ];
+  const stakeholderTypes = partnerTypeOptions.map(type => ({ 
+    value: type, 
+    label: type === 'government' ? 'حكومي' :
+           type === 'private' ? 'قطاع خاص' :
+           type === 'academic' ? 'أكاديمي' :
+           type === 'non_profit' ? 'منظمة غير ربحية' :
+           type === 'international' ? 'دولي' : type
+  }));
 
   const influenceLevels = [
     { value: "عالي", label: "عالي" },
@@ -75,13 +79,12 @@ export function StakeholderWizard({
     { value: "منخفض", label: "منخفض" },
   ];
 
-  const engagementStatuses = [
-    { value: "مؤيد", label: "مؤيد" },
-    { value: "نشط", label: "نشط" },
-    { value: "محايد", label: "محايد" },
-    { value: "سلبي", label: "سلبي" },
-    { value: "مقاوم", label: "مقاوم" },
-  ];
+  const engagementStatuses = generalStatusOptions.map(status => ({ 
+    value: status, 
+    label: status === 'active' ? 'نشط' :
+           status === 'inactive' ? 'غير نشط' :
+           status === 'pending' ? 'معلق' : status
+  }));
 
   useEffect(() => {
     if (stakeholder) {

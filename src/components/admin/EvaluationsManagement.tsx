@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Loader2, Eye, Edit, Filter, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import {
   Select,
   SelectContent,
@@ -64,8 +65,9 @@ export function EvaluationsManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
   const { t } = useTranslation();
+  const { expertRoleTypes } = useSystemLists();
 
-  const evaluatorTypes = ["expert", "internal", "external", "peer"];
+  const evaluatorTypes = expertRoleTypes;
 
   useEffect(() => {
     fetchEvaluations();

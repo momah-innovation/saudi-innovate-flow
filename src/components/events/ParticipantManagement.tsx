@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -47,14 +48,17 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
   const [selectedParticipants, setSelectedParticipants] = useState<string[]>([]);
   
   const { toast } = useToast();
+  const { generalStatusOptions } = useSystemLists();
 
-  const attendanceStatuses = [
-    { value: "registered", label: "Registered", color: "blue" },
-    { value: "confirmed", label: "Confirmed", color: "green" },
-    { value: "attended", label: "Attended", color: "emerald" },
-    { value: "no_show", label: "No Show", color: "red" },
-    { value: "cancelled", label: "Cancelled", color: "gray" }
-  ];
+  const attendanceStatuses = generalStatusOptions.map(status => ({
+    value: status,
+    label: status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' '),
+    color: status === 'active' ? 'green' :
+           status === 'inactive' ? 'gray' :
+           status === 'pending' ? 'blue' :
+           status === 'completed' ? 'emerald' :
+           status === 'cancelled' ? 'red' : 'blue'
+  }));
 
   useEffect(() => {
     fetchParticipants();
