@@ -1,20 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  Calendar, MapPin, Users, Clock, Search, Filter,
-  Eye, UserPlus, Building, Globe, ExternalLink
-} from 'lucide-react';
-import { PageLayout } from '@/components/layout/PageLayout';
-import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
+import { useState, useEffect } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
+import { PageLayout } from '@/components/layout/PageLayout';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { LayoutSelector } from '@/components/ui/layout-selector';
+import { ViewLayouts } from '@/components/ui/view-layouts';
+import { useToast } from '@/hooks/use-toast';
+import { useDirection } from '@/components/ui/direction-provider';
+import { EventCard } from '@/components/events/EventCard';
+import { EventDetailDialog } from '@/components/events/EventDetailDialog';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { Plus, Calendar, TrendingUp, MapPin } from 'lucide-react';
 
 interface Event {
   id: string;
@@ -36,61 +33,53 @@ interface Event {
   budget?: number;
   campaign_id?: string;
   challenge_id?: string;
+  sector_id?: string;
+  event_manager_id?: string;
+  is_recurring?: boolean;
+  recurrence_pattern?: string;
+  target_stakeholder_groups?: string[];
+  partner_organizations?: string[];
+  related_focus_questions?: string[];
+  event_visibility?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
-interface EventFilters {
-  format: string;
-  event_type: string;
-  event_category: string;
-  status: string;
-  date_range: string;
-}
-
-const EVENT_FORMATS = [
-  { value: 'all', label: 'All Formats' },
-  { value: 'virtual', label: 'Virtual' },
-  { value: 'in_person', label: 'In Person' },
-  { value: 'hybrid', label: 'Hybrid' }
-];
-
-const EVENT_TYPES = [
-  { value: 'all', label: 'All Types' },
-  { value: 'workshop', label: 'Workshop' },
-  { value: 'conference', label: 'Conference' },
-  { value: 'seminar', label: 'Seminar' },
-  { value: 'networking', label: 'Networking' },
-  { value: 'hackathon', label: 'Hackathon' },
-  { value: 'training', label: 'Training' }
-];
-
-const DATE_RANGES = [
-  { value: 'all', label: 'All Dates' },
-  { value: 'today', label: 'Today' },
-  { value: 'this_week', label: 'This Week' },
-  { value: 'this_month', label: 'This Month' },
-  { value: 'next_month', label: 'Next Month' }
-];
-
-export default function EventsBrowse() {
-  const { userProfile } = useAuth();
-  const navigate = useNavigate();
+const EventsBrowse = () => {
+  const { isRTL } = useDirection();
+  const { toast } = useToast();
+  const { user, userProfile } = useAuth();
   
+  // State management
   const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [activeTab, setActiveTab] = useState('upcoming');
+  const [loading, setLoading] = useState(true);
   
-  const [filters, setFilters] = useState<EventFilters>({
-    format: 'all',
-    event_type: 'all',
-    event_category: 'all',
-    status: 'all',
-    date_range: 'all'
-  });
+  // Basic filters
+  const [searchQuery, setSearchQuery] = useState('');
 
+  // Load events with real-time updates
   useEffect(() => {
     loadEvents();
-  }, [activeTab, filters]);
+    
+    // Set up real-time subscription for events and participants
+    const eventsSubscription = supabase
+      .channel('events-changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, () => {
+        loadEvents();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'event_participants' }, () => {
+        loadEvents();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(eventsSubscription);
+    };
+  }, [activeTab]);
 
   const loadEvents = async () => {
     try {
@@ -98,46 +87,70 @@ export default function EventsBrowse() {
       
       let query = supabase
         .from('events')
-        .select('*')
+        .select(`
+          *
+        `)
         .order('event_date', { ascending: true });
 
-      // Apply status filter based on active tab
+      // Apply tab-based filtering
+      const today = new Date().toISOString().split('T')[0];
+      
       if (activeTab === 'upcoming') {
-        query = query.gte('event_date', new Date().toISOString().split('T')[0]);
+        query = query.gte('event_date', today);
       } else if (activeTab === 'past') {
-        query = query.lt('event_date', new Date().toISOString().split('T')[0]);
+        query = query.lt('event_date', today);
+      } else if (activeTab === 'today') {
+        query = query.eq('event_date', today);
       }
 
-      // Apply filters
-      if (filters.format !== 'all') {
-        query = query.eq('format', filters.format);
-      }
-      if (filters.event_type !== 'all') {
-        query = query.eq('event_type', filters.event_type);
-      }
-      if (filters.event_category !== 'all') {
-        query = query.eq('event_category', filters.event_category);
-      }
-      if (filters.status !== 'all') {
-        query = query.eq('status', filters.status);
-      }
+      const { data: eventsData, error: eventsError } = await query;
 
-      const { data, error } = await query;
+      if (eventsError) throw eventsError;
 
-      if (error) throw error;
-      setEvents(data || []);
+      // Get participant counts for each event
+      const eventsWithCounts = await Promise.all(
+        (eventsData || []).map(async (event) => {
+          const { count, error: countError } = await supabase
+            .from('event_participants')
+            .select('*', { count: 'exact' })
+            .eq('event_id', event.id);
+
+          if (countError) {
+            console.error('Error getting participant count:', countError);
+            return { ...event, registered_participants: 0 };
+          }
+
+          return { ...event, registered_participants: count || 0 };
+        })
+      );
+
+      setEvents(eventsWithCounts);
       
     } catch (error) {
       console.error('Error loading events:', error);
-      toast.error('Error loading events');
+      toast({
+        title: isRTL ? 'خطأ في تحميل الفعاليات' : 'Error loading events',
+        description: isRTL ? 'حدث خطأ أثناء تحميل الفعاليات' : 'An error occurred while loading events',
+        variant: 'destructive'
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const registerForEvent = async (eventId: string) => {
-    if (!userProfile?.id) {
-      toast.error('Please log in to register for events');
+  // Event handlers
+  const handleViewDetails = (event: Event) => {
+    setSelectedEvent(event);
+    setDetailDialogOpen(true);
+  };
+
+  const registerForEvent = async (event: Event) => {
+    if (!user) {
+      toast({
+        title: isRTL ? 'يرجى تسجيل الدخول' : 'Please log in',
+        description: isRTL ? 'يجب تسجيل الدخول للتسجيل في الفعاليات' : 'You need to log in to register for events',
+        variant: 'destructive'
+      });
       return;
     }
 
@@ -145,261 +158,183 @@ export default function EventsBrowse() {
       const { error } = await supabase
         .from('event_participants')
         .insert({
-          event_id: eventId,
-          user_id: userProfile.id,
+          event_id: event.id,
+          user_id: user.id,
           registration_type: 'self_registered',
           attendance_status: 'registered'
         });
 
-      if (error) throw error;
-
-      toast.success('Successfully registered for event!');
-      loadEvents(); // Reload to update participant count
-      
-    } catch (error: any) {
-      if (error.code === '23505') {
-        toast.error('You are already registered for this event');
-      } else {
-        console.error('Error registering for event:', error);
-        toast.error('Error registering for event');
+      if (error) {
+        if (error.code === '23505') {
+          toast({
+            title: isRTL ? 'مسجل مسبقاً' : 'Already registered',
+            description: isRTL ? 'أنت مسجل في هذه الفعالية بالفعل' : 'You are already registered for this event',
+            variant: 'destructive'
+          });
+        } else {
+          throw error;
+        }
+        return;
       }
+
+      toast({
+        title: isRTL ? 'تم التسجيل بنجاح!' : 'Successfully Registered!',
+        description: isRTL ? `تم تسجيلك في فعالية "${event.title_ar}"` : `You have been registered for "${event.title_ar}"`,
+      });
+
+      // Reload events to update participant count
+      loadEvents();
+      
+    } catch (error) {
+      console.error('Error registering for event:', error);
+      toast({
+        title: isRTL ? 'خطأ في التسجيل' : 'Registration Error',
+        description: isRTL ? 'حدث خطأ أثناء التسجيل في الفعالية' : 'An error occurred while registering for the event',
+        variant: 'destructive'
+      });
     }
   };
 
-  const getEventStatus = (event: Event) => {
-    const eventDate = new Date(event.event_date);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    eventDate.setHours(0, 0, 0, 0);
+  // Filter events based on search
+  const getFilteredEvents = () => {
+    let filtered = [...events];
 
-    if (eventDate > today) return 'upcoming';
-    if (eventDate.getTime() === today.getTime()) return 'today';
-    return 'past';
-  };
-
-  const getStatusBadge = (event: Event) => {
-    const status = getEventStatus(event);
-    const isFullyBooked = event.max_participants && event.registered_participants >= event.max_participants;
-
-    if (status === 'today') return <Badge variant="default">Today</Badge>;
-    if (status === 'upcoming' && isFullyBooked) return <Badge variant="destructive">Fully Booked</Badge>;
-    if (status === 'upcoming') return <Badge variant="outline">Open for Registration</Badge>;
-    return <Badge variant="secondary">Past Event</Badge>;
-  };
-
-  const getFormatIcon = (format: string) => {
-    switch (format) {
-      case 'virtual': return <Globe className="w-4 h-4" />;
-      case 'in_person': return <MapPin className="w-4 h-4" />;
-      case 'hybrid': return <Building className="w-4 h-4" />;
-      default: return <Calendar className="w-4 h-4" />;
+    // Apply search filter
+    if (searchQuery) {
+      filtered = filtered.filter(event =>
+        event.title_ar.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (event.description_ar && event.description_ar.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
     }
+
+    return filtered;
   };
 
-  const filteredEvents = events.filter(event =>
-    event.title_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (event.description_ar && event.description_ar.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredEvents = getFilteredEvents();
+
+  // Render event cards
+  const renderEventCards = (events: Event[]) => (
+    <ViewLayouts viewMode={viewMode}>
+      {events.map((event) => (
+        <EventCard
+          key={event.id}
+          event={event}
+          onViewDetails={handleViewDetails}
+          onRegister={registerForEvent}
+          viewMode={viewMode}
+        />
+      ))}
+    </ViewLayouts>
   );
 
   return (
     <AppShell>
       <PageLayout
-        title="استكشاف الفعاليات"
-        description="اكتشف وسجل في أحدث الفعاليات والأنشطة الابتكارية"
-        showSearch={true}
-        searchValue={searchTerm}
-        onSearchChange={setSearchTerm}
-        searchPlaceholder="البحث في الفعاليات..."
-        filters={
-          <div className="flex flex-wrap gap-2 items-center">
-            <Select value={filters.format} onValueChange={(value) => setFilters(prev => ({ ...prev, format: value }))}>
-              <SelectTrigger className="w-40">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {EVENT_FORMATS.map(format => (
-                  <SelectItem key={format.value} value={format.value}>{format.label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={filters.event_type} onValueChange={(value) => setFilters(prev => ({ ...prev, event_type: value }))}>
-              <SelectTrigger className="w-40">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {EVENT_TYPES.map(type => (
-                  <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+        title={isRTL ? 'استكشاف الفعاليات' : 'Browse Events'}
+        description={isRTL ? 'اكتشف وسجل في أحدث الفعاليات والأنشطة الابتكارية' : 'Discover and register for the latest innovation events and activities'}
+        itemCount={filteredEvents.length}
+        primaryAction={{
+          label: isRTL ? 'فعالية جديدة' : 'New Event',
+          onClick: () => console.log('Create new event'),
+          icon: <Plus className="w-4 h-4" />
+        }}
+        secondaryActions={
+          <LayoutSelector
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+          />
         }
-        className="space-y-6"
+        showSearch={true}
+        searchValue={searchQuery}
+        onSearchChange={setSearchQuery}
+        searchPlaceholder={isRTL ? 'البحث في الفعاليات...' : 'Search events...'}
       >
+        <div className="space-y-6">
+          {/* Tabs Navigation */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="upcoming" className="animate-fade-in">
+                <Calendar className="w-4 h-4 mr-2" />
+                {isRTL ? 'القادمة' : 'Upcoming'}
+                {activeTab === 'upcoming' && (
+                  <span className="ml-2 bg-primary/20 text-primary px-2 py-0.5 rounded-full text-xs">
+                    {filteredEvents.filter(e => new Date(e.event_date) >= new Date()).length}
+                  </span>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="today" className="animate-fade-in">
+                <TrendingUp className="w-4 h-4 mr-2" />
+                {isRTL ? 'اليوم' : 'Today'}
+                {activeTab === 'today' && (
+                  <span className="ml-2 bg-green-100 text-green-800 px-2 py-0.5 rounded-full text-xs">
+                    {filteredEvents.filter(e => {
+                      const eventDate = new Date(e.event_date);
+                      const today = new Date();
+                      return eventDate.toDateString() === today.toDateString();
+                    }).length}
+                  </span>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="all" className="animate-fade-in">
+                {isRTL ? 'جميع الفعاليات' : 'All Events'}
+                {activeTab === 'all' && (
+                  <span className="ml-2 bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-xs">
+                    {filteredEvents.length}
+                  </span>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="past" className="animate-fade-in">
+                <MapPin className="w-4 h-4 mr-2" />
+                {isRTL ? 'السابقة' : 'Past'}
+                {activeTab === 'past' && (
+                  <span className="ml-2 bg-gray-100 text-gray-800 px-2 py-0.5 rounded-full text-xs">
+                    {filteredEvents.filter(e => new Date(e.event_date) < new Date()).length}
+                  </span>
+                )}
+              </TabsTrigger>
+            </TabsList>
 
-      {/* Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="upcoming" className="flex items-center gap-2">
-            <Calendar className="w-4 h-4" />
-            Upcoming Events
-          </TabsTrigger>
-          <TabsTrigger value="all" className="flex items-center gap-2">
-            <Filter className="w-4 h-4" />
-            All Events
-          </TabsTrigger>
-          <TabsTrigger value="past" className="flex items-center gap-2">
-            <Clock className="w-4 h-4" />
-            Past Events
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value={activeTab} className="space-y-4">
-          {loading ? (
-            <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-              <p className="mt-2 text-muted-foreground">Loading events...</p>
-            </div>
-          ) : filteredEvents.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredEvents.map((event) => (
-                <Card key={event.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div className="flex items-center gap-2">
-                        {getFormatIcon(event.format)}
-                        <Badge variant="outline" className="capitalize">
-                          {event.event_type}
-                        </Badge>
-                      </div>
-                      {getStatusBadge(event)}
-                    </div>
-                    <CardTitle className="text-lg">{event.title_ar}</CardTitle>
-                    <CardDescription className="line-clamp-2">
-                      {event.description_ar}
-                    </CardDescription>
-                  </CardHeader>
-                  
-                  <CardContent className="space-y-4">
-                    {/* Date and Time */}
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Calendar className="w-4 h-4" />
-                      <span>
-                        {new Date(event.event_date).toLocaleDateString('ar-SA')}
-                        {event.start_time && ` • ${event.start_time}`}
-                        {event.end_time && ` - ${event.end_time}`}
-                      </span>
-                    </div>
-
-                    {/* Location */}
-                    {event.location && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <MapPin className="w-4 h-4" />
-                        <span>{event.location}</span>
-                      </div>
-                    )}
-
-                    {/* Virtual Link */}
-                    {event.virtual_link && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Globe className="w-4 h-4" />
-                        <span>Virtual Event</span>
-                      </div>
-                    )}
-
-                    {/* Participants */}
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Users className="w-4 h-4" />
-                      <span>
-                        {event.registered_participants} registered
-                        {event.max_participants && ` / ${event.max_participants} max`}
-                      </span>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex gap-2 pt-2">
-                      <Button
-                        onClick={() => navigate(`/events/${event.id}`)}
-                        variant="outline"
-                        size="sm"
-                        className="flex-1"
-                      >
-                        <Eye className="w-4 h-4 mr-1" />
-                        View Details
-                      </Button>
-                      
-                      {getEventStatus(event) === 'upcoming' && (
-                        <Button
-                          onClick={() => registerForEvent(event.id)}
-                          size="sm"
-                          className="flex-1"
-                          disabled={event.max_participants && event.registered_participants >= event.max_participants}
-                        >
-                          <UserPlus className="w-4 h-4 mr-1" />
-                          {event.max_participants && event.registered_participants >= event.max_participants
-                            ? 'Full' 
-                            : 'Register'
-                          }
-                        </Button>
-                      )}
-
-                      {event.virtual_link && getEventStatus(event) === 'today' && (
-                        <Button
-                          onClick={() => window.open(event.virtual_link, '_blank')}
-                          size="sm"
-                          className="flex-1"
-                        >
-                          <ExternalLink className="w-4 h-4 mr-1" />
-                          Join
-                        </Button>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <Calendar className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-medium">No events found</h3>
-              <p className="text-muted-foreground mb-4">
-                {searchTerm 
-                  ? `No events match your search for "${searchTerm}"`
-                  : activeTab === 'upcoming' 
-                    ? 'No upcoming events at the moment' 
-                    : 'No events available'
-                }
-              </p>
-              {searchTerm && (
-                <Button variant="outline" onClick={() => setSearchTerm('')}>
-                  Clear Search
-                </Button>
+            <TabsContent value={activeTab} className="space-y-4">
+              {loading ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                  <p className="text-muted-foreground">{isRTL ? 'جاري تحميل الفعاليات...' : 'Loading events...'}</p>
+                </div>
+              ) : filteredEvents.length > 0 ? (
+                renderEventCards(filteredEvents)
+              ) : (
+                <div className="text-center py-12">
+                  <Calendar className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+                  <h3 className="text-lg font-medium mb-2">
+                    {isRTL ? 'لا توجد فعاليات' : 'No events found'}
+                  </h3>
+                  <p className="text-muted-foreground mb-4">
+                    {searchQuery ? 
+                      (isRTL ? `لا توجد فعاليات تطابق البحث "${searchQuery}"` : `No events match your search for "${searchQuery}"`) :
+                      (isRTL ? 'لا توجد فعاليات في الوقت الحالي' : 'No events available at the moment')
+                    }
+                  </p>
+                  {searchQuery && (
+                    <Button variant="outline" onClick={() => setSearchQuery('')}>
+                      {isRTL ? 'مسح البحث' : 'Clear Search'}
+                    </Button>
+                  )}
+                </div>
               )}
-            </div>
-          )}
-        </TabsContent>
-      </Tabs>
+            </TabsContent>
+          </Tabs>
+        </div>
 
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-3 flex-wrap">
-            <Button onClick={() => navigate('/event-registration')} variant="outline">
-              <UserPlus className="w-4 h-4 mr-2" />
-              View My Registrations
-            </Button>
-            <Button onClick={() => navigate('/dashboard')} variant="outline">
-              <Calendar className="w-4 h-4 mr-2" />
-              Back to Dashboard
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+        {/* Event Detail Dialog */}
+        <EventDetailDialog
+          event={selectedEvent}
+          open={detailDialogOpen}
+          onOpenChange={setDetailDialogOpen}
+          onRegister={registerForEvent}
+        />
       </PageLayout>
     </AppShell>
   );
-}
+};
+
+export default EventsBrowse;

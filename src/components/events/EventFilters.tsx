@@ -1,448 +1,309 @@
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { Label } from "@/components/ui/label";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { CalendarIcon, Filter, X, ChevronDown, ChevronUp } from "lucide-react";
-import { format } from "date-fns";
-import { useState } from "react";
-import { useSystemLists } from "@/hooks/useSystemLists";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Slider } from '@/components/ui/slider';
+import { Checkbox } from '@/components/ui/checkbox';
+import { 
+  Filter, 
+  Search, 
+  X, 
+  ChevronDown, 
+  Calendar as CalendarIcon,
+  MapPin,
+  Users,
+  Globe,
+  Building,
+  SlidersHorizontal,
+  Clock
+} from 'lucide-react';
+import { useDirection } from '@/components/ui/direction-provider';
+
+export interface EventFilterState {
+  search: string;
+  format: string;
+  eventType: string;
+  category: string;
+  status: string;
+  location: string;
+  capacityRange: [number, number];
+  features: string[];
+  sortBy: string;
+  sortOrder: 'asc' | 'desc';
+}
 
 interface EventFiltersProps {
-  searchTerm: string;
-  onSearchChange: (value: string) => void;
-  statusFilter: string;
-  onStatusChange: (value: string) => void;
-  formatFilter: string;
-  onFormatChange: (value: string) => void;
-  typeFilter: string;
-  onTypeChange: (value: string) => void;
-  categoryFilter: string;
-  onCategoryChange: (value: string) => void;
-  visibilityFilter: string;
-  onVisibilityChange: (value: string) => void;
-  dateFrom?: Date;
-  onDateFromChange: (date: Date | undefined) => void;
-  dateTo?: Date;
-  onDateToChange: (date: Date | undefined) => void;
-  selectedCampaign: string;
-  onCampaignChange: (value: string) => void;
-  selectedSector: string;
-  onSectorChange: (value: string) => void;
-  campaigns: any[];
-  sectors: any[];
+  filters: EventFilterState;
+  onFiltersChange: (filters: EventFilterState) => void;
   onClearFilters: () => void;
   activeFiltersCount: number;
 }
 
-export function EventFilters({
-  searchTerm,
-  onSearchChange,
-  statusFilter,
-  onStatusChange,
-  formatFilter,
-  onFormatChange,
-  typeFilter,
-  onTypeChange,
-  categoryFilter,
-  onCategoryChange,
-  visibilityFilter,
-  onVisibilityChange,
-  dateFrom,
-  onDateFromChange,
-  dateTo,
-  onDateToChange,
-  selectedCampaign,
-  onCampaignChange,
-  selectedSector,
-  onSectorChange,
-  campaigns,
-  sectors,
-  onClearFilters,
-  activeFiltersCount
-}: EventFiltersProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const { generalStatusOptions, eventTypes, eventFormats, eventCategories, eventVisibilityOptions } = useSystemLists();
-  const eventTypeOptions = [
-    { value: "all", label: "All Types" },
-    ...eventTypes.map(type => ({
-      value: type,
-      label: type === 'workshop' ? 'Workshop' :
-             type === 'seminar' ? 'Seminar' :
-             type === 'conference' ? 'Conference' :
-             type === 'networking' ? 'Networking Event' :
-             type === 'hackathon' ? 'Hackathon' :
-             type === 'pitch_session' ? 'Pitch Session' :
-             type === 'training' ? 'Training Session' : type
-    }))
-  ];
+export const EventFilters = ({ 
+  filters, 
+  onFiltersChange, 
+  onClearFilters, 
+  activeFiltersCount 
+}: EventFiltersProps) => {
+  const { isRTL } = useDirection();
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
+
+  const updateFilter = (key: keyof EventFilterState, value: any) => {
+    onFiltersChange({ ...filters, [key]: value });
+  };
+
+  const toggleFeature = (feature: string) => {
+    const newFeatures = filters.features.includes(feature)
+      ? filters.features.filter(f => f !== feature)
+      : [...filters.features, feature];
+    updateFilter('features', newFeatures);
+  };
 
   const formatOptions = [
-    { value: "all", label: "All Formats" },
-    ...eventFormats.map(format => ({
-      value: format,
-      label: format === 'in_person' ? 'In Person' :
-             format === 'virtual' ? 'Virtual' : 'Hybrid'
-    }))
+    { value: 'all', label: isRTL ? 'جميع الأشكال' : 'All Formats' },
+    { value: 'virtual', label: isRTL ? 'افتراضي' : 'Virtual' },
+    { value: 'in_person', label: isRTL ? 'حضوري' : 'In Person' },
+    { value: 'hybrid', label: isRTL ? 'مختلط' : 'Hybrid' }
   ];
 
-  // Status options from system lists
-  const statusOptions = [
-    { value: "all", label: "All Statuses" },
-    ...generalStatusOptions.map(status => ({ 
-      value: status, 
-      label: status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ')
-    }))
+  const eventTypeOptions = [
+    { value: 'all', label: isRTL ? 'جميع الأنواع' : 'All Types' },
+    { value: 'workshop', label: isRTL ? 'ورشة عمل' : 'Workshop' },
+    { value: 'conference', label: isRTL ? 'مؤتمر' : 'Conference' },
+    { value: 'seminar', label: isRTL ? 'ندوة' : 'Seminar' },
+    { value: 'networking', label: isRTL ? 'تواصل' : 'Networking' },
+    { value: 'hackathon', label: isRTL ? 'هاكاثون' : 'Hackathon' },
+    { value: 'training', label: isRTL ? 'تدريب' : 'Training' }
   ];
 
   const categoryOptions = [
-    { value: "all", label: "All Categories" },
-    ...eventCategories.map(category => ({
-      value: category,
-      label: category === 'standalone' ? 'Standalone Event' :
-             category === 'campaign_event' ? 'Campaign Event' :
-             category === 'training' ? 'Training' : 'Workshop'
-    }))
+    { value: 'all', label: isRTL ? 'جميع الفئات' : 'All Categories' },
+    { value: 'standalone', label: isRTL ? 'مستقل' : 'Standalone' },
+    { value: 'campaign', label: isRTL ? 'حملة' : 'Campaign' },
+    { value: 'challenge', label: isRTL ? 'تحدي' : 'Challenge' }
   ];
 
-  const visibilityOptions = [
-    { value: "all", label: "All Visibility" },
-    ...eventVisibilityOptions.map(visibility => ({
-      value: visibility,
-      label: visibility === 'public' ? 'Public' :
-             visibility === 'private' ? 'Private' : 'Internal'
-    }))
+  const statusOptions = [
+    { value: 'all', label: isRTL ? 'جميع الحالات' : 'All Status' },
+    { value: 'scheduled', label: isRTL ? 'مجدول' : 'Scheduled' },
+    { value: 'ongoing', label: isRTL ? 'جاري' : 'Ongoing' },
+    { value: 'completed', label: isRTL ? 'مكتمل' : 'Completed' },
+    { value: 'cancelled', label: isRTL ? 'ملغي' : 'Cancelled' }
+  ];
+
+  const sortOptions = [
+    { value: 'event_date', label: isRTL ? 'تاريخ الفعالية' : 'Event Date' },
+    { value: 'registered_participants', label: isRTL ? 'عدد المسجلين' : 'Participants' },
+    { value: 'created_at', label: isRTL ? 'تاريخ الإنشاء' : 'Created Date' },
+    { value: 'title_ar', label: isRTL ? 'العنوان' : 'Title' }
+  ];
+
+  const featureOptions = [
+    { value: 'virtual_link', label: isRTL ? 'رابط افتراضي' : 'Virtual Link' },
+    { value: 'recurring', label: isRTL ? 'متكرر' : 'Recurring' },
+    { value: 'free', label: isRTL ? 'مجاني' : 'Free' },
+    { value: 'open_registration', label: isRTL ? 'تسجيل مفتوح' : 'Open Registration' }
   ];
 
   return (
-    <div className="space-y-4">
-      {/* Always visible search bar */}
-      <div>
-        <Input
-          placeholder="Search events by title, description, location, type, manager..."
-          value={searchTerm}
-          onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full"
-        />
+    <div className="space-y-4 p-4 bg-muted/30 rounded-lg animate-fade-in">
+      {/* Search and Basic Filters */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          <Input
+            placeholder={isRTL ? 'البحث في الفعاليات...' : 'Search events...'}
+            value={filters.search}
+            onChange={(e) => updateFilter('search', e.target.value)}
+            className="pl-10"
+          />
+        </div>
+
+        <Select value={filters.format} onValueChange={(value) => updateFilter('format', value)}>
+          <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {formatOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Select value={filters.eventType} onValueChange={(value) => updateFilter('eventType', value)}>
+          <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {eventTypeOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Button
+          variant="outline"
+          onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
+          className="w-full sm:w-auto"
+        >
+          <SlidersHorizontal className="w-4 h-4 mr-2" />
+          {isRTL ? 'فلاتر متقدمة' : 'Advanced Filters'}
+          <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${isAdvancedOpen ? 'rotate-180' : ''}`} />
+        </Button>
       </div>
 
-      {/* Collapsible filters */}
-      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <Card>
-          <CollapsibleTrigger asChild>
-            <CardHeader className="pb-4 cursor-pointer hover:bg-muted/50 transition-colors">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Filter className="h-5 w-5" />
-                  Advanced Filters
-                  {activeFiltersCount > 0 && (
-                    <Badge variant="secondary" className="ml-2">
-                      {activeFiltersCount} active
-                    </Badge>
-                  )}
-                </CardTitle>
-                <div className="flex items-center gap-2">
-                  {activeFiltersCount > 0 && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onClearFilters();
-                      }}
-                      className="text-muted-foreground hover:text-foreground"
-                    >
-                      <X className="h-4 w-4 mr-1" />
-                      Clear All
-                    </Button>
-                  )}
-                  {isOpen ? (
-                    <ChevronUp className="h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
-                </div>
+      {/* Active Filters Display */}
+      {activeFiltersCount > 0 && (
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-sm text-muted-foreground">
+            {isRTL ? 'الفلاتر النشطة:' : 'Active filters:'}
+          </span>
+          <Badge variant="secondary" className="animate-scale-in">
+            {activeFiltersCount} {isRTL ? 'فلتر' : 'filters'}
+          </Badge>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClearFilters}
+            className="h-auto p-1 text-muted-foreground hover:text-foreground"
+          >
+            <X className="w-4 h-4" />
+            {isRTL ? 'مسح الكل' : 'Clear all'}
+          </Button>
+        </div>
+      )}
+
+      {/* Advanced Filters */}
+      <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>
+        <CollapsibleContent className="space-y-6 animate-accordion-down">
+          <Separator />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Category Filter */}
+            <div className="space-y-3">
+              <label className="text-sm font-medium flex items-center gap-2">
+                <CalendarIcon className="w-4 h-4" />
+                {isRTL ? 'فئة الفعالية' : 'Event Category'}
+              </label>
+              <Select value={filters.category} onValueChange={(value) => updateFilter('category', value)}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {categoryOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Status Filter */}
+            <div className="space-y-3">
+              <label className="text-sm font-medium flex items-center gap-2">
+                <Clock className="w-4 h-4" />
+                {isRTL ? 'حالة الفعالية' : 'Event Status'}
+              </label>
+              <Select value={filters.status} onValueChange={(value) => updateFilter('status', value)}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {statusOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Sort Options */}
+            <div className="space-y-3">
+              <label className="text-sm font-medium flex items-center gap-2">
+                <Filter className="w-4 h-4" />
+                {isRTL ? 'ترتيب حسب' : 'Sort by'}
+              </label>
+              <div className="flex gap-2">
+                <Select value={filters.sortBy} onValueChange={(value) => updateFilter('sortBy', value)}>
+                  <SelectTrigger className="flex-1">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {sortOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => updateFilter('sortOrder', filters.sortOrder === 'asc' ? 'desc' : 'asc')}
+                  className="px-3"
+                >
+                  {filters.sortOrder === 'asc' ? '↑' : '↓'}
+                </Button>
               </div>
-            </CardHeader>
-          </CollapsibleTrigger>
-          
-          <CollapsibleContent>
-            <CardContent className="space-y-4 pt-0">
-              {/* Quick Filters Row 1 */}
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <Label>Status</Label>
-                  <Select value={statusFilter} onValueChange={onStatusChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {statusOptions.map((status) => (
-                        <SelectItem key={status.value} value={status.value}>
-                          {status.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+            </div>
+          </div>
 
-                <div>
-                  <Label>Format</Label>
-                  <Select value={formatFilter} onValueChange={onFormatChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select format" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {formatOptions.map((format) => (
-                        <SelectItem key={format.value} value={format.value}>
-                          {format.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label>Type</Label>
-                  <Select value={typeFilter} onValueChange={onTypeChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {eventTypeOptions.map((type) => (
-                        <SelectItem key={type.value} value={type.value}>
-                          {type.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+          {/* Capacity Range Filter */}
+          <div className="space-y-3">
+            <label className="text-sm font-medium flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              {isRTL ? 'سعة المشاركين' : 'Participant Capacity'}
+            </label>
+            <div className="px-3">
+              <Slider
+                value={filters.capacityRange}
+                onValueChange={(value) => updateFilter('capacityRange', value)}
+                max={1000}
+                min={0}
+                step={10}
+                className="w-full"
+              />
+              <div className="flex justify-between text-sm text-muted-foreground mt-1">
+                <span>{filters.capacityRange[0]}</span>
+                <span>{filters.capacityRange[1]}</span>
               </div>
+            </div>
+          </div>
 
-              {/* Quick Filters Row 2 */}
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <Label>Category</Label>
-                  <Select value={categoryFilter} onValueChange={onCategoryChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categoryOptions.map((category) => (
-                        <SelectItem key={category.value} value={category.value}>
-                          {category.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+          {/* Special Features */}
+          <div className="space-y-3">
+            <label className="text-sm font-medium">
+              {isRTL ? 'ميزات خاصة' : 'Special Features'}
+            </label>
+            <div className="flex flex-wrap gap-3">
+              {featureOptions.map((feature) => (
+                <div key={feature.value} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={feature.value}
+                    checked={filters.features.includes(feature.value)}
+                    onCheckedChange={() => toggleFeature(feature.value)}
+                  />
+                  <label
+                    htmlFor={feature.value}
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                  >
+                    {feature.label}
+                  </label>
                 </div>
-
-                <div>
-                  <Label>Visibility</Label>
-                  <Select value={visibilityFilter} onValueChange={onVisibilityChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select visibility" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {visibilityOptions.map((visibility) => (
-                        <SelectItem key={visibility.value} value={visibility.value}>
-                          {visibility.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label>Campaign</Label>
-                  <Select value={selectedCampaign} onValueChange={onCampaignChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select campaign" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Campaigns</SelectItem>
-                      {campaigns.map((campaign) => (
-                        <SelectItem key={campaign.id} value={campaign.id}>
-                          {campaign.title}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              {/* Date Range and Sector */}
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <Label>From Date</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className="w-full justify-start text-left font-normal"
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {dateFrom ? format(dateFrom, "PPP") : "Pick a date"}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar
-                        mode="single"
-                        selected={dateFrom}
-                        onSelect={onDateFromChange}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-
-                <div>
-                  <Label>To Date</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className="w-full justify-start text-left font-normal"
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {dateTo ? format(dateTo, "PPP") : "Pick a date"}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar
-                        mode="single"
-                        selected={dateTo}
-                        onSelect={onDateToChange}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-
-                <div>
-                  <Label>Sector</Label>
-                  <Select value={selectedSector} onValueChange={onSectorChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select sector" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Sectors</SelectItem>
-                      {sectors.map((sector) => (
-                        <SelectItem key={sector.id} value={sector.id}>
-                          {sector.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              {/* Active Filters Display */}
-              {activeFiltersCount > 0 && (
-                <div className="border-t pt-4">
-                  <Label className="text-sm font-medium">Active Filters:</Label>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {searchTerm && (
-                      <Badge variant="outline" className="text-xs">
-                        Search: "{searchTerm}"
-                        <X 
-                          className="ml-1 h-3 w-3 cursor-pointer" 
-                          onClick={() => onSearchChange("")}
-                        />
-                      </Badge>
-                    )}
-                    {statusFilter !== "all" && (
-                      <Badge variant="outline" className="text-xs">
-                        Status: {statusOptions.find(s => s.value === statusFilter)?.label}
-                        <X 
-                          className="ml-1 h-3 w-3 cursor-pointer" 
-                          onClick={() => onStatusChange("all")}
-                        />
-                      </Badge>
-                    )}
-                    {formatFilter !== "all" && (
-                      <Badge variant="outline" className="text-xs">
-                        Format: {formatOptions.find(f => f.value === formatFilter)?.label}
-                        <X 
-                          className="ml-1 h-3 w-3 cursor-pointer" 
-                          onClick={() => onFormatChange("all")}
-                        />
-                      </Badge>
-                    )}
-                    {typeFilter !== "all" && (
-                      <Badge variant="outline" className="text-xs">
-                        Type: {eventTypeOptions.find(t => t.value === typeFilter)?.label}
-                        <X 
-                          className="ml-1 h-3 w-3 cursor-pointer" 
-                          onClick={() => onTypeChange("all")}
-                        />
-                      </Badge>
-                    )}
-                    {categoryFilter !== "all" && (
-                      <Badge variant="outline" className="text-xs">
-                        Category: {categoryOptions.find(c => c.value === categoryFilter)?.label}
-                        <X 
-                          className="ml-1 h-3 w-3 cursor-pointer" 
-                          onClick={() => onCategoryChange("all")}
-                        />
-                      </Badge>
-                    )}
-                    {visibilityFilter !== "all" && (
-                      <Badge variant="outline" className="text-xs">
-                        Visibility: {visibilityOptions.find(v => v.value === visibilityFilter)?.label}
-                        <X 
-                          className="ml-1 h-3 w-3 cursor-pointer" 
-                          onClick={() => onVisibilityChange("all")}
-                        />
-                      </Badge>
-                    )}
-                    {selectedCampaign !== "all" && (
-                      <Badge variant="outline" className="text-xs">
-                        Campaign: {campaigns.find(c => c.id === selectedCampaign)?.title}
-                        <X 
-                          className="ml-1 h-3 w-3 cursor-pointer" 
-                          onClick={() => onCampaignChange("all")}
-                        />
-                      </Badge>
-                    )}
-                    {selectedSector !== "all" && (
-                      <Badge variant="outline" className="text-xs">
-                        Sector: {sectors.find(s => s.id === selectedSector)?.name}
-                        <X 
-                          className="ml-1 h-3 w-3 cursor-pointer" 
-                          onClick={() => onSectorChange("all")}
-                        />
-                      </Badge>
-                    )}
-                    {dateFrom && (
-                      <Badge variant="outline" className="text-xs">
-                        From: {format(dateFrom, "MMM dd, yyyy")}
-                        <X 
-                          className="ml-1 h-3 w-3 cursor-pointer" 
-                          onClick={() => onDateFromChange(undefined)}
-                        />
-                      </Badge>
-                    )}
-                    {dateTo && (
-                      <Badge variant="outline" className="text-xs">
-                        To: {format(dateTo, "MMM dd, yyyy")}
-                        <X 
-                          className="ml-1 h-3 w-3 cursor-pointer" 
-                          onClick={() => onDateToChange(undefined)}
-                        />
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </CollapsibleContent>
-        </Card>
+              ))}
+            </div>
+          </div>
+        </CollapsibleContent>
       </Collapsible>
     </div>
   );
-}
+};

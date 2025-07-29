@@ -26,32 +26,35 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 
 interface Event {
-  id: number;
-  title: string;
-  title_en: string;
-  description: string;
-  description_en: string;
+  id: string;
+  title_ar: string;
+  description_ar: string;
+  event_date: string;
+  start_time: string;
+  end_time: string;
+  end_date?: string;
+  location?: string;
+  virtual_link?: string;
+  format: string;
+  event_type: string;
+  event_category: string;
   status: string;
-  startDate: string;
-  endDate: string;
-  location: string;
-  location_en: string;
-  capacity: number;
-  registered: number;
-  category: string;
-  category_en: string;
-  price: string;
-  type: string;
-  image?: string;
-  featured?: boolean;
-  online?: boolean;
-  organizer?: { name: string; avatar: string; role: string; };
-  speakers?: Array<{ name: string; avatar: string; role: string; bio: string; }>;
-  agenda?: Array<{ time: string; title: string; speaker?: string; }>;
-  requirements?: string[];
-  benefits?: string[];
-  resources?: Array<{ title: string; url: string; type: string; }>;
-  tags?: string[];
+  max_participants?: number;
+  registered_participants: number;
+  actual_participants: number;
+  budget?: number;
+  campaign_id?: string;
+  challenge_id?: string;
+  sector_id?: string;
+  event_manager_id?: string;
+  is_recurring?: boolean;
+  recurrence_pattern?: string;
+  target_stakeholder_groups?: string[];
+  partner_organizations?: string[];
+  related_focus_questions?: string[];
+  event_visibility?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 interface EventDetailDialogProps {
