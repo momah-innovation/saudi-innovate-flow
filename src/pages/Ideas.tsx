@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PageLayout } from '@/components/layout/PageLayout';
+import { AppShell } from '@/components/layout/AppShell';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Search, Plus, Filter, Eye, Edit, MessageSquare } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
+import { PageContainer, Section, ContentArea, PageHeader } from '@/components/ui';
 
 // Mock data for ideas
 const mockIdeas = [
@@ -75,10 +76,13 @@ export default function IdeasPage() {
   };
 
   return (
-    <PageLayout
-      title={isRTL ? "الأفكار" : "Ideas"}
-      description={isRTL ? "إدارة ومتابعة أفكارك المقدمة" : "Manage and track your submitted ideas"}
-    >
+    <AppShell>
+      <PageContainer>
+        <PageHeader 
+          title={isRTL ? "الأفكار" : "Ideas"}
+          description={isRTL ? "إدارة ومتابعة أفكارك المقدمة" : "Manage and track your submitted ideas"}
+        />
+        <ContentArea>
       <div className="space-y-6">
         {/* Search and Filters */}
         <div className={cn("flex flex-col sm:flex-row gap-4", isRTL && "flex-row-reverse")}>
@@ -177,6 +181,8 @@ export default function IdeasPage() {
           </div>
         )}
       </div>
-    </PageLayout>
+      </ContentArea>
+      </PageContainer>
+    </AppShell>
   );
 }

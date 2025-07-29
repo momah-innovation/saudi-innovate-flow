@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PageLayout } from '@/components/layout/PageLayout';
+import { AppShell } from '@/components/layout/AppShell';
 import { IdeasManagement } from '@/components/admin/IdeasManagement';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -11,10 +11,7 @@ export default function IdeasManagementPage() {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   return (
-    <PageLayout
-      title="Ideas Management"
-      description="Manage and track ideas from innovators"
-    >
+    <AppShell>
       <IdeasManagement
         viewMode={viewMode}
         searchTerm={searchTerm}
@@ -30,6 +27,6 @@ export default function IdeasManagementPage() {
           scoreRange: [0, 100] as [number, number]
         }}
       />
-    </PageLayout>
+    </AppShell>
   );
 }
