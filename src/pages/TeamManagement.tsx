@@ -9,7 +9,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 
 export default function TeamManagement() {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState('members');
+  const [activeTab, setActiveTab] = useState('teams');
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
@@ -72,22 +72,22 @@ export default function TeamManagement() {
   return (
     <AppShell>
       <PageLayout 
-        title={t('innovationTeamManagement')}
-        description={t('manageInnovationTeamMembers')}
+        title={t('innovationTeamsManagement')}
+        description={t('manageInnovationTeamsAndGroups')}
         itemCount={0} // This will be updated from the content component
         primaryAction={{
-          label: t('addTeamMember'),
+          label: t('addInnovationTeam'),
           onClick: () => setShowAddDialog(true),
           icon: <UserPlus className="w-4 h-4" />
         }}
         secondaryActions={secondaryActions}
-        showLayoutSelector={activeTab === 'members'}
+        showLayoutSelector={activeTab === 'teams'}
         viewMode={viewMode}
         onViewModeChange={setViewMode}
         showSearch={true}
         searchValue={searchValue}
         onSearchChange={setSearchValue}
-        searchPlaceholder={t('searchTeamMembers')}
+        searchPlaceholder={t('searchInnovationTeams')}
         filters={filters}
         spacing="md"
         maxWidth="full"

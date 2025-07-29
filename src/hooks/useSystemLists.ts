@@ -84,7 +84,8 @@ export const useSystemLists = (): SystemListsHook => {
     ],
     requestableUserRoles: [
       { value: 'evaluator', label: 'Evaluator', description: 'Evaluate challenge submissions and ideas' },
-      { value: 'domain_expert', label: 'Domain Expert', description: 'Subject matter expert in specific domains' }
+      { value: 'domain_expert', label: 'Domain Expert', description: 'Subject matter expert in specific domains' },
+      { value: 'team_leader', label: 'Team Leader', description: 'Lead innovation teams and coordinate projects' }
     ],
     teamRoleOptions: [
       'Innovation Manager',
