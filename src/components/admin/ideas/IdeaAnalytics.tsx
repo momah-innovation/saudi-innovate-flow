@@ -15,7 +15,7 @@ interface IdeaAnalyticsProps {
 }
 
 export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
-  const { generalStatusOptions, challengeTypes, experienceLevels } = useSystemLists();
+  const { generalStatusOptions, challengeTypes, experienceLevels, sectorTypes, tagCategories } = useSystemLists();
   
   // Mock data query - replace with actual API call
   const { data, isLoading, error } = useQuery({
@@ -35,8 +35,8 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
         challenge_id: `challenge-${Math.floor(Math.random() * 5) + 1}`,
         focus_question_id: Math.random() > 0.5 ? `fq-${Math.floor(Math.random() * 3) + 1}` : null,
         category: challengeTypes[Math.floor(Math.random() * challengeTypes.length)] || 'technology',
-        sector: ['health', 'education', 'transport', 'environment', 'economy'][Math.floor(Math.random() * 5)],
-        tags: ['innovation', 'digital', 'sustainability', 'efficiency'].slice(0, Math.floor(Math.random() * 4) + 1),
+        sector: sectorTypes[Math.floor(Math.random() * sectorTypes.length)] || 'health',
+        tags: tagCategories.slice(0, Math.floor(Math.random() * 4) + 1),
       }));
     },
   });

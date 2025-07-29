@@ -36,6 +36,11 @@ interface SystemListsHook {
   evaluatorTypes: string[];
   relationshipTypes: string[];
   organizationTypes: string[];
+  assignmentTypes: string[];
+  extendedStatusOptions: string[];
+  sectorTypes: string[];
+  tagCategories: string[];
+  sensitivityLevels: string[];
   loading: boolean;
 }
 
@@ -99,6 +104,11 @@ export const useSystemLists = (): SystemListsHook => {
     evaluatorTypes: ['lead_expert', 'evaluator', 'reviewer', 'subject_matter_expert', 'external_consultant'],
     relationshipTypes: ['direct', 'indirect', 'collaborative', 'competitive', 'supportive'],
     organizationTypes: ['operational', 'strategic', 'administrative', 'technical', 'support'],
+    assignmentTypes: ['campaign', 'event', 'project', 'content', 'analysis'],
+    extendedStatusOptions: ['planning', 'scheduled', 'ongoing', 'postponed', 'draft', 'published'],
+    sectorTypes: ['health', 'education', 'transport', 'environment', 'economy', 'technology', 'finance', 'defense', 'social'],
+    tagCategories: ['innovation', 'digital', 'sustainability', 'efficiency', 'technology', 'business', 'social', 'environmental'],
+    sensitivityLevels: ['normal', 'sensitive', 'confidential'],
     loading: true
   });
 
@@ -142,7 +152,12 @@ export const useSystemLists = (): SystemListsHook => {
             'attendance_status_options',
             'evaluator_types',
             'relationship_types',
-            'organization_types'
+            'organization_types',
+            'assignment_types',
+            'extended_status_options',
+            'sector_types',
+            'tag_categories',
+            'sensitivity_levels'
           ]);
         
         if (data) {
@@ -255,6 +270,21 @@ export const useSystemLists = (): SystemListsHook => {
                 break;
               case 'organization_types':
                 newSettings.organizationTypes = value;
+                break;
+              case 'assignment_types':
+                newSettings.assignmentTypes = value;
+                break;
+              case 'extended_status_options':
+                newSettings.extendedStatusOptions = value;
+                break;
+              case 'sector_types':
+                newSettings.sectorTypes = value;
+                break;
+              case 'tag_categories':
+                newSettings.tagCategories = value;
+                break;
+              case 'sensitivity_levels':
+                newSettings.sensitivityLevels = value;
                 break;
             }
           });

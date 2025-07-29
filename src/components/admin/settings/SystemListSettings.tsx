@@ -76,6 +76,15 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     relationshipTypes: settings.relationshipTypes || ['direct', 'indirect', 'collaborative', 'competitive', 'supportive'],
     organizationTypes: settings.organizationTypes || ['operational', 'strategic', 'administrative', 'technical', 'support'],
     
+    // Assignment and workflow lists (new)
+    assignmentTypes: settings.assignmentTypes || ['campaign', 'event', 'project', 'content', 'analysis'],
+    extendedStatusOptions: settings.extendedStatusOptions || ['planning', 'scheduled', 'ongoing', 'postponed', 'draft', 'published'],
+    
+    // Classification lists (new)
+    sectorTypes: settings.sectorTypes || ['health', 'education', 'transport', 'environment', 'economy', 'technology', 'finance', 'defense', 'social'],
+    tagCategories: settings.tagCategories || ['innovation', 'digital', 'sustainability', 'efficiency', 'technology', 'business', 'social', 'environmental'],
+    sensitivityLevels: settings.sensitivityLevels || ['normal', 'sensitive', 'confidential'],
+    
     // Language settings
     supportedLanguages: settings.supportedLanguages || [
       {code: 'en', label: 'English', nativeLabel: 'English'},
@@ -149,6 +158,15 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     // Relationship lists (new)
     relationshipTypes: 'أنواع العلاقات',
     organizationTypes: 'أنواع المنظمات',
+    
+    // Assignment and workflow lists (new)
+    assignmentTypes: 'أنواع التكليفات',
+    extendedStatusOptions: 'خيارات الحالة الموسعة',
+    
+    // Classification lists (new)
+    sectorTypes: 'أنواع القطاعات',
+    tagCategories: 'فئات العلامات',
+    sensitivityLevels: 'مستويات الحساسية',
     
     // Language settings
     supportedLanguages: 'اللغات المدعومة',

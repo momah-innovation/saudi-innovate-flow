@@ -158,7 +158,7 @@ export function TeamManagementContent({
   onAddDialogChange 
 }: TeamManagementContentProps) {
   const { toast } = useToast();
-  const { teamRoleOptions, teamSpecializationOptions } = useSystemLists();
+  const { teamRoleOptions, teamSpecializationOptions, assignmentTypes } = useSystemLists();
   const systemSettings = useSystemSettings();
   const { t, isRTL } = useTranslation();
   const { direction } = useDirection();
@@ -1008,7 +1008,7 @@ export function TeamManagementContent({
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {['campaign', 'event', 'project', 'content', 'analysis'].map((type) => {
+                  {assignmentTypes.map((type) => {
                     const count = assignments.filter(a => a.type === type).length;
                     const percentage = assignments.length > 0 ? (count / assignments.length) * 100 : 0;
                     const TypeIcon = getTypeIcon(type);

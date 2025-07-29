@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 
 import { 
@@ -52,6 +53,7 @@ export function FocusQuestionManagementList() {
   const [showWizard, setShowWizard] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<FocusQuestion | null>(null);
+  const { focusQuestionTypes, sensitivityLevels } = useSystemLists();
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
 
@@ -240,7 +242,7 @@ export function FocusQuestionManagementList() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">الكل</SelectItem>
-                {['normal', 'sensitive'].map(level => (
+                {sensitivityLevels.map(level => (
                   <SelectItem key={level} value={level}>
                     {level === 'normal' ? 'عادي' : 'حساس'}
                   </SelectItem>
