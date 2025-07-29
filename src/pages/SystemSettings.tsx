@@ -10,6 +10,17 @@ import {
   List,
   Target,
   Lightbulb,
+  ClipboardCheck,
+  Megaphone,
+  HelpCircle,
+  Calendar,
+  Users,
+  BarChart3,
+  TrendingUp,
+  FileText,
+  PieChart,
+  Building2,
+  UserCheck,
   Save,
   RotateCcw,
   Loader2
@@ -18,6 +29,16 @@ import { AppShell } from "@/components/layout/AppShell";
 import { GeneralSettings } from "@/components/admin/settings/GeneralSettings";
 import { ChallengeSettings } from "@/components/admin/settings/ChallengeSettings";
 import { IdeaSettings } from "@/components/admin/settings/IdeaSettings";
+import { EvaluationSettings } from "@/components/admin/settings/EvaluationSettings";
+import { CampaignSettings } from "@/components/admin/settings/CampaignSettings";
+import { FocusQuestionSettings } from "@/components/admin/settings/FocusQuestionSettings";
+import { EventSettings } from "@/components/admin/settings/EventSettings";
+import { StakeholderSettings } from "@/components/admin/settings/StakeholderSettings";
+import { TeamSettings } from "@/components/admin/settings/TeamSettings";
+import { AnalyticsSettings } from "@/components/admin/settings/AnalyticsSettings";
+import { PartnerSettings } from "@/components/admin/settings/PartnerSettings";
+import { OrganizationalSettings } from "@/components/admin/settings/OrganizationalSettings";
+import { UserManagementSettings } from "@/components/admin/settings/UserManagementSettings";
 import { SecuritySettings } from "@/components/admin/settings/SecuritySettings";
 import { NotificationSettings } from "@/components/admin/settings/NotificationSettings";
 import { IntegrationSettings } from "@/components/admin/settings/IntegrationSettings";
@@ -119,34 +140,74 @@ const SystemSettings = () => {
 
         {/* Settings Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
-          <TabsList className={`grid w-full grid-cols-7 h-auto p-1 ${isRTL ? 'text-right' : 'text-left'}`}>
-            <TabsTrigger value="general" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Settings className="w-4 h-4" />
-              <span className="hidden sm:inline">{t('general')}</span>
+          <TabsList className={`grid w-full grid-cols-8 lg:grid-cols-16 h-auto p-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+            <TabsTrigger value="general" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Settings className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">{t('general')}</span>
             </TabsTrigger>
-            <TabsTrigger value="challenges" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Target className="w-4 h-4" />
-              <span className="hidden sm:inline">{t('challenges')}</span>
+            <TabsTrigger value="challenges" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Target className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">التحديات</span>
             </TabsTrigger>
-            <TabsTrigger value="ideas" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Lightbulb className="w-4 h-4" />
-              <span className="hidden sm:inline">الأفكار</span>
+            <TabsTrigger value="ideas" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Lightbulb className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">الأفكار</span>
             </TabsTrigger>
-            <TabsTrigger value="security" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Shield className="w-4 h-4" />
-              <span className="hidden sm:inline">{t('security')}</span>
+            <TabsTrigger value="evaluations" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <ClipboardCheck className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">التقييمات</span>
             </TabsTrigger>
-            <TabsTrigger value="notifications" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Bell className="w-4 h-4" />
-              <span className="hidden sm:inline">{t('notifications')}</span>
+            <TabsTrigger value="campaigns" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Megaphone className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">الحملات</span>
             </TabsTrigger>
-            <TabsTrigger value="integrations" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Database className="w-4 h-4" />
-              <span className="hidden sm:inline">{t('integrations')}</span>
+            <TabsTrigger value="focus-questions" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <HelpCircle className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">الأسئلة المحورية</span>
             </TabsTrigger>
-            <TabsTrigger value="lists" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <List className="w-4 h-4" />
-              <span className="hidden sm:inline">{t('lists')}</span>
+            <TabsTrigger value="events" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Calendar className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">الفعاليات</span>
+            </TabsTrigger>
+            <TabsTrigger value="stakeholders" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Users className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">المعنيين</span>
+            </TabsTrigger>
+            <TabsTrigger value="teams" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <UserCheck className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">فرق الابتكار</span>
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <BarChart3 className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">التحليلات</span>
+            </TabsTrigger>
+            <TabsTrigger value="partners" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Building2 className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">الشركاء</span>
+            </TabsTrigger>
+            <TabsTrigger value="organizational" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <TrendingUp className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">الهيكل التنظيمي</span>
+            </TabsTrigger>
+            <TabsTrigger value="user-management" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Users className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">إدارة المستخدمين</span>
+            </TabsTrigger>
+            <TabsTrigger value="security" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Shield className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">{t('security')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="notifications" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Bell className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">{t('notifications')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="integrations" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Database className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">{t('integrations')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="lists" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <List className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">{t('lists')}</span>
             </TabsTrigger>
           </TabsList>
 
@@ -166,6 +227,76 @@ const SystemSettings = () => {
 
           <TabsContent value="ideas">
             <IdeaSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="evaluations">
+            <EvaluationSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="campaigns">
+            <CampaignSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="focus-questions">
+            <FocusQuestionSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="events">
+            <EventSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="stakeholders">
+            <StakeholderSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="teams">
+            <TeamSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <AnalyticsSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="partners">
+            <PartnerSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="organizational">
+            <OrganizationalSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="user-management">
+            <UserManagementSettings 
               settings={settings} 
               onSettingChange={handleSettingChange} 
             />
