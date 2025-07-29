@@ -63,6 +63,19 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     priorityLevels: settings.priorityLevels || ['low', 'medium', 'high', 'urgent'],
     ideaMaturityLevels: settings.ideaMaturityLevels || ['concept', 'prototype', 'pilot', 'scaling'],
     
+    // Campaign-related lists (new)
+    campaignThemeOptions: settings.campaignThemeOptions || ['digital_transformation', 'sustainability', 'smart_cities', 'healthcare', 'education', 'fintech', 'energy', 'transportation'],
+    
+    // Event attendance lists (new)
+    attendanceStatusOptions: settings.attendanceStatusOptions || ['registered', 'attended', 'absent', 'cancelled', 'confirmed'],
+    
+    // Evaluation lists (new)
+    evaluatorTypes: settings.evaluatorTypes || ['lead_expert', 'evaluator', 'reviewer', 'subject_matter_expert', 'external_consultant'],
+    
+    // Relationship lists (new)
+    relationshipTypes: settings.relationshipTypes || ['direct', 'indirect', 'collaborative', 'competitive', 'supportive'],
+    organizationTypes: settings.organizationTypes || ['operational', 'strategic', 'administrative', 'technical', 'support'],
+    
     // Language settings
     supportedLanguages: settings.supportedLanguages || [
       {code: 'en', label: 'English', nativeLabel: 'English'},
@@ -123,6 +136,19 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     ideaAssignmentTypes: 'أنواع تكليف الأفكار',
     priorityLevels: 'مستويات الأولوية',
     ideaMaturityLevels: 'مستويات نضج الأفكار',
+    
+    // Campaign-related lists (new)
+    campaignThemeOptions: 'خيارات موضوع الحملة',
+    
+    // Event attendance lists (new)
+    attendanceStatusOptions: 'خيارات حالة الحضور',
+    
+    // Evaluation lists (new)
+    evaluatorTypes: 'أنواع المقيمين',
+    
+    // Relationship lists (new)
+    relationshipTypes: 'أنواع العلاقات',
+    organizationTypes: 'أنواع المنظمات',
     
     // Language settings
     supportedLanguages: 'اللغات المدعومة',

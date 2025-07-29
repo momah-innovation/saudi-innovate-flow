@@ -363,7 +363,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
                       {priority === 'low' ? 'منخفض' : priority === 'medium' ? 'متوسط' : 'عالي'}
                     </SelectItem>
                   ))}
-                  <SelectItem value="urgent">عاجل</SelectItem>
+                  {/* No hardcoded urgent option - using priorityLevels from system lists */}
                 </SelectContent>
               </Select>
             </div>

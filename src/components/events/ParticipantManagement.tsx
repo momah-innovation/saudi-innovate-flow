@@ -50,13 +50,19 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
   const { toast } = useToast();
   const { generalStatusOptions } = useSystemLists();
 
-  const attendanceStatuses = generalStatusOptions.map(status => ({
+  const { attendanceStatusOptions } = useSystemLists();
+  
+  const attendanceStatuses = attendanceStatusOptions.map(status => ({
     value: status,
-    label: status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' '),
-    color: status === 'active' ? 'green' :
-           status === 'inactive' ? 'gray' :
-           status === 'pending' ? 'blue' :
-           status === 'completed' ? 'emerald' :
+    label: status === 'registered' ? 'مسجل' :
+           status === 'attended' ? 'حضر' :
+           status === 'absent' ? 'غائب' :
+           status === 'cancelled' ? 'ملغي' :
+           status === 'confirmed' ? 'مؤكد' : status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' '),
+    color: status === 'attended' ? 'green' :
+           status === 'registered' ? 'blue' :
+           status === 'confirmed' ? 'emerald' :
+           status === 'absent' ? 'gray' :
            status === 'cancelled' ? 'red' : 'blue'
   }));
 

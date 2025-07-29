@@ -31,6 +31,11 @@ interface SystemListsHook {
   ideaAssignmentTypes: string[];
   priorityLevels: string[];
   ideaMaturityLevels: string[];
+  campaignThemeOptions: string[];
+  attendanceStatusOptions: string[];
+  evaluatorTypes: string[];
+  relationshipTypes: string[];
+  organizationTypes: string[];
   loading: boolean;
 }
 
@@ -89,6 +94,11 @@ export const useSystemLists = (): SystemListsHook => {
     ideaAssignmentTypes: ['reviewer', 'evaluator', 'implementer', 'observer'],
     priorityLevels: ['low', 'medium', 'high', 'urgent'],
     ideaMaturityLevels: ['concept', 'prototype', 'pilot', 'scaling'],
+    campaignThemeOptions: ['digital_transformation', 'sustainability', 'smart_cities', 'healthcare', 'education', 'fintech', 'energy', 'transportation'],
+    attendanceStatusOptions: ['registered', 'attended', 'absent', 'cancelled', 'confirmed'],
+    evaluatorTypes: ['lead_expert', 'evaluator', 'reviewer', 'subject_matter_expert', 'external_consultant'],
+    relationshipTypes: ['direct', 'indirect', 'collaborative', 'competitive', 'supportive'],
+    organizationTypes: ['operational', 'strategic', 'administrative', 'technical', 'support'],
     loading: true
   });
 
@@ -127,7 +137,12 @@ export const useSystemLists = (): SystemListsHook => {
             'stakeholder_interest_levels',
             'idea_assignment_types',
             'priority_levels',
-            'idea_maturity_levels'
+            'idea_maturity_levels',
+            'campaign_theme_options',
+            'attendance_status_options',
+            'evaluator_types',
+            'relationship_types',
+            'organization_types'
           ]);
         
         if (data) {
@@ -225,6 +240,21 @@ export const useSystemLists = (): SystemListsHook => {
                 break;
               case 'idea_maturity_levels':
                 newSettings.ideaMaturityLevels = value;
+                break;
+              case 'campaign_theme_options':
+                newSettings.campaignThemeOptions = value;
+                break;
+              case 'attendance_status_options':
+                newSettings.attendanceStatusOptions = value;
+                break;
+              case 'evaluator_types':
+                newSettings.evaluatorTypes = value;
+                break;
+              case 'relationship_types':
+                newSettings.relationshipTypes = value;
+                break;
+              case 'organization_types':
+                newSettings.organizationTypes = value;
                 break;
             }
           });

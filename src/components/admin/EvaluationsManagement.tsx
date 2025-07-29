@@ -67,7 +67,7 @@ export function EvaluationsManagement() {
   const { t } = useTranslation();
   const { expertRoleTypes } = useSystemLists();
 
-  const evaluatorTypes = expertRoleTypes;
+  const { evaluatorTypes } = useSystemLists();
 
   useEffect(() => {
     fetchEvaluations();

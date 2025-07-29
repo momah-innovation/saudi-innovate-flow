@@ -11,7 +11,7 @@ export default function CampaignsManagementPage() {
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
-  const { generalStatusOptions } = useSystemLists();
+  const { generalStatusOptions, campaignThemeOptions } = useSystemLists();
   
   const secondaryActions = (
     <>
@@ -58,14 +58,18 @@ export default function CampaignsManagementPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">جميع المواضيع</SelectItem>
-            <SelectItem value="digital_transformation">التحول الرقمي</SelectItem>
-            <SelectItem value="sustainability">الاستدامة</SelectItem>
-            <SelectItem value="smart_cities">المدن الذكية</SelectItem>
-            <SelectItem value="healthcare">الرعاية الصحية</SelectItem>
-            <SelectItem value="education">التعليم</SelectItem>
-            <SelectItem value="fintech">التكنولوجيا المالية</SelectItem>
-            <SelectItem value="energy">الطاقة</SelectItem>
-            <SelectItem value="transportation">النقل</SelectItem>
+            {campaignThemeOptions.map(theme => (
+              <SelectItem key={theme} value={theme}>
+                {theme === 'digital_transformation' ? 'التحول الرقمي' :
+                 theme === 'sustainability' ? 'الاستدامة' :
+                 theme === 'smart_cities' ? 'المدن الذكية' :
+                 theme === 'healthcare' ? 'الرعاية الصحية' :
+                 theme === 'education' ? 'التعليم' :
+                 theme === 'fintech' ? 'التكنولوجيا المالية' :
+                 theme === 'energy' ? 'الطاقة' :
+                 theme === 'transportation' ? 'النقل' : theme}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
