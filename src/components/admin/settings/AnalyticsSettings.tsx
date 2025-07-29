@@ -42,9 +42,17 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="daily">يومي</SelectItem>
-                  <SelectItem value="weekly">أسبوعي</SelectItem>
-                  <SelectItem value="monthly">شهري</SelectItem>
+                  {settings.reportFrequencyOptions?.map(freq => (
+                    <SelectItem key={freq} value={freq}>
+                      {freq === 'daily' ? 'يومي' : freq === 'weekly' ? 'أسبوعي' : freq === 'monthly' ? 'شهري' : freq}
+                    </SelectItem>
+                  )) || (
+                    <>
+                      <SelectItem value="daily">يومي</SelectItem>
+                      <SelectItem value="weekly">أسبوعي</SelectItem>
+                      <SelectItem value="monthly">شهري</SelectItem>
+                    </>
+                  )}
                 </SelectContent>
               </Select>
             </div>

@@ -41,6 +41,18 @@ interface SystemListsHook {
   sectorTypes: string[];
   tagCategories: string[];
   sensitivityLevels: string[];
+  frequencyOptions: string[];
+  backupFrequencyOptions: string[];
+  reportFrequencyOptions: string[];
+  reminderFrequencyOptions: string[];
+  recurrencePatternOptions: string[];
+  questionTypeOptions: string[];
+  timeRangeOptions: string[];
+  roleRequestJustifications: string[];
+  uiLanguageOptions: string[];
+  stakeholderCategories: string[];
+  engagementLevels: string[];
+  chartColorPalette: string[];
   loading: boolean;
 }
 
@@ -109,6 +121,18 @@ export const useSystemLists = (): SystemListsHook => {
     sectorTypes: ['health', 'education', 'transport', 'environment', 'economy', 'technology', 'finance', 'defense', 'social'],
     tagCategories: ['innovation', 'digital', 'sustainability', 'efficiency', 'technology', 'business', 'social', 'environmental'],
     sensitivityLevels: ['normal', 'sensitive', 'confidential'],
+    frequencyOptions: ['hourly', 'daily', 'weekly', 'monthly', 'yearly'],
+    backupFrequencyOptions: ['hourly', 'daily', 'weekly', 'monthly'],
+    reportFrequencyOptions: ['daily', 'weekly', 'monthly'],
+    reminderFrequencyOptions: ['daily', 'weekly', 'monthly'],
+    recurrencePatternOptions: ['daily', 'weekly', 'monthly', 'yearly'],
+    questionTypeOptions: ['open_ended', 'multiple_choice', 'yes_no', 'rating', 'ranking'],
+    timeRangeOptions: ['all', 'last_30', 'last_90', 'last_year'],
+    roleRequestJustifications: ['domain_expertise', 'evaluation_experience', 'academic_background', 'industry_experience', 'certification', 'volunteer_contribution'],
+    uiLanguageOptions: ['en', 'ar'],
+    stakeholderCategories: ['government', 'private_sector', 'academic', 'civil_society', 'international', 'media', 'experts'],
+    engagementLevels: ['high', 'medium', 'low'],
+    chartColorPalette: ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1', '#ff7c7c', '#8dd9cc'],
     loading: true
   });
 
@@ -157,7 +181,19 @@ export const useSystemLists = (): SystemListsHook => {
             'extended_status_options',
             'sector_types',
             'tag_categories',
-            'sensitivity_levels'
+            'sensitivity_levels',
+            'frequency_options',
+            'backup_frequency_options',
+            'report_frequency_options',
+            'reminder_frequency_options',
+            'recurrence_pattern_options',
+            'question_type_options',
+            'time_range_options',
+            'role_request_justifications',
+            'ui_language_options',
+            'stakeholder_categories',
+            'engagement_levels',
+            'chart_color_palette'
           ]);
         
         if (data) {
@@ -285,6 +321,42 @@ export const useSystemLists = (): SystemListsHook => {
                 break;
               case 'sensitivity_levels':
                 newSettings.sensitivityLevels = value;
+                break;
+              case 'frequency_options':
+                newSettings.frequencyOptions = value;
+                break;
+              case 'backup_frequency_options':
+                newSettings.backupFrequencyOptions = value;
+                break;
+              case 'report_frequency_options':
+                newSettings.reportFrequencyOptions = value;
+                break;
+              case 'reminder_frequency_options':
+                newSettings.reminderFrequencyOptions = value;
+                break;
+              case 'recurrence_pattern_options':
+                newSettings.recurrencePatternOptions = value;
+                break;
+              case 'question_type_options':
+                newSettings.questionTypeOptions = value;
+                break;
+              case 'time_range_options':
+                newSettings.timeRangeOptions = value;
+                break;
+              case 'role_request_justifications':
+                newSettings.roleRequestJustifications = value;
+                break;
+              case 'ui_language_options':
+                newSettings.uiLanguageOptions = value;
+                break;
+              case 'stakeholder_categories':
+                newSettings.stakeholderCategories = value;
+                break;
+              case 'engagement_levels':
+                newSettings.engagementLevels = value;
+                break;
+              case 'chart_color_palette':
+                newSettings.chartColorPalette = value;
                 break;
             }
           });

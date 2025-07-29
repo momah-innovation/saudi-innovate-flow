@@ -197,10 +197,18 @@ export function IntegrationSettings({ settings, onSettingChange }: IntegrationSe
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="hourly">كل ساعة</SelectItem>
-                  <SelectItem value="daily">يومي</SelectItem>
-                  <SelectItem value="weekly">أسبوعي</SelectItem>
-                  <SelectItem value="monthly">شهري</SelectItem>
+                  {settings.backupFrequencyOptions?.map(freq => (
+                    <SelectItem key={freq} value={freq}>
+                      {freq === 'hourly' ? 'كل ساعة' : freq === 'daily' ? 'يومي' : freq === 'weekly' ? 'أسبوعي' : freq === 'monthly' ? 'شهري' : freq}
+                    </SelectItem>
+                  )) || (
+                    <>
+                      <SelectItem value="hourly">كل ساعة</SelectItem>
+                      <SelectItem value="daily">يومي</SelectItem>
+                      <SelectItem value="weekly">أسبوعي</SelectItem>
+                      <SelectItem value="monthly">شهري</SelectItem>
+                    </>
+                  )}
                 </SelectContent>
               </Select>
             </div>

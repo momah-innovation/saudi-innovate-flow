@@ -85,6 +85,20 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     tagCategories: settings.tagCategories || ['innovation', 'digital', 'sustainability', 'efficiency', 'technology', 'business', 'social', 'environmental'],
     sensitivityLevels: settings.sensitivityLevels || ['normal', 'sensitive', 'confidential'],
     
+    // Frequency and time options
+    frequencyOptions: settings.frequencyOptions || ['hourly', 'daily', 'weekly', 'monthly', 'yearly'],
+    backupFrequencyOptions: settings.backupFrequencyOptions || ['hourly', 'daily', 'weekly', 'monthly'],
+    reportFrequencyOptions: settings.reportFrequencyOptions || ['daily', 'weekly', 'monthly'],
+    reminderFrequencyOptions: settings.reminderFrequencyOptions || ['daily', 'weekly', 'monthly'],
+    recurrencePatternOptions: settings.recurrencePatternOptions || ['daily', 'weekly', 'monthly', 'yearly'],
+    questionTypeOptions: settings.questionTypeOptions || ['open_ended', 'multiple_choice', 'yes_no', 'rating', 'ranking'],
+    timeRangeOptions: settings.timeRangeOptions || ['all', 'last_30', 'last_90', 'last_year'],
+    roleRequestJustifications: settings.roleRequestJustifications || ['domain_expertise', 'evaluation_experience', 'academic_background', 'industry_experience', 'certification', 'volunteer_contribution'],
+    uiLanguageOptions: settings.uiLanguageOptions || ['en', 'ar'],
+    stakeholderCategories: settings.stakeholderCategories || ['government', 'private_sector', 'academic', 'civil_society', 'international', 'media', 'experts'],
+    engagementLevels: settings.engagementLevels || ['high', 'medium', 'low'],
+    chartColorPalette: settings.chartColorPalette || ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1', '#ff7c7c', '#8dd9cc'],
+    
     // Language settings
     supportedLanguages: settings.supportedLanguages || [
       {code: 'en', label: 'English', nativeLabel: 'English'},
@@ -167,6 +181,20 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     sectorTypes: 'أنواع القطاعات',
     tagCategories: 'فئات العلامات',
     sensitivityLevels: 'مستويات الحساسية',
+    
+    // Frequency and time options
+    frequencyOptions: 'خيارات التكرار',
+    backupFrequencyOptions: 'خيارات تكرار النسخ الاحتياطي',
+    reportFrequencyOptions: 'خيارات تكرار التقارير',
+    reminderFrequencyOptions: 'خيارات تكرار التذكيرات',
+    recurrencePatternOptions: 'خيارات نمط التكرار',
+    questionTypeOptions: 'خيارات نوع السؤال',
+    timeRangeOptions: 'خيارات النطاق الزمني',
+    roleRequestJustifications: 'مبررات طلب الدور',
+    uiLanguageOptions: 'خيارات لغة الواجهة',
+    stakeholderCategories: 'فئات أصحاب المصلحة',
+    engagementLevels: 'مستويات التفاعل',
+    chartColorPalette: 'لوحة ألوان الرسوم البيانية',
     
     // Language settings
     supportedLanguages: 'اللغات المدعومة',

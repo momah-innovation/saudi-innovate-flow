@@ -136,9 +136,17 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="daily">يومي</SelectItem>
-                  <SelectItem value="weekly">أسبوعي</SelectItem>
-                  <SelectItem value="monthly">شهري</SelectItem>
+                  {settings.reminderFrequencyOptions?.map(freq => (
+                    <SelectItem key={freq} value={freq}>
+                      {freq === 'daily' ? 'يومي' : freq === 'weekly' ? 'أسبوعي' : freq === 'monthly' ? 'شهري' : freq}
+                    </SelectItem>
+                  )) || (
+                    <>
+                      <SelectItem value="daily">يومي</SelectItem>
+                      <SelectItem value="weekly">أسبوعي</SelectItem>
+                      <SelectItem value="monthly">شهري</SelectItem>
+                    </>
+                  )}
                 </SelectContent>
               </Select>
             </div>

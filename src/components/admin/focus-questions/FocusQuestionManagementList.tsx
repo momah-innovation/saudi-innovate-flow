@@ -53,7 +53,7 @@ export function FocusQuestionManagementList() {
   const [showWizard, setShowWizard] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<FocusQuestion | null>(null);
-  const { focusQuestionTypes, sensitivityLevels } = useSystemLists();
+  const { focusQuestionTypes, sensitivityLevels, questionTypeOptions } = useSystemLists();
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
 
@@ -228,11 +228,15 @@ export function FocusQuestionManagementList() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">جميع الأنواع</SelectItem>
-                <SelectItem value="open_ended">سؤال مفتوح</SelectItem>
-                <SelectItem value="multiple_choice">متعدد الخيارات</SelectItem>
-                <SelectItem value="yes_no">نعم/لا</SelectItem>
-                <SelectItem value="rating">تقييم</SelectItem>
-                <SelectItem value="ranking">ترتيب</SelectItem>
+                {questionTypeOptions.map(type => (
+                  <SelectItem key={type} value={type}>
+                    {type === 'open_ended' ? 'سؤال مفتوح' : 
+                     type === 'multiple_choice' ? 'متعدد الخيارات' :
+                     type === 'yes_no' ? 'نعم/لا' :
+                     type === 'rating' ? 'تقييم' :
+                     type === 'ranking' ? 'ترتيب' : type}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             

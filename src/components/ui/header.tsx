@@ -25,7 +25,7 @@ export const Header = () => {
   const { uiInitialsMaxLength } = useSystemSettings();
   const { isRTL, language, setLanguage, toggleDirection } = useDirection();
   const { theme, setTheme } = useTheme();
-  const { supportedLanguages } = useSystemLists();
+  const { supportedLanguages, uiLanguageOptions } = useSystemLists();
   const navigate = useNavigate();
 
   const getUserDisplayName = () => {
@@ -54,7 +54,9 @@ export const Header = () => {
     navigate('/settings');
   };
 
-  const languageOptions = supportedLanguages.filter(lang => ['en', 'ar'].includes(lang.code));
+  const languageOptions = supportedLanguages.filter(lang => 
+    uiLanguageOptions ? uiLanguageOptions.includes(lang.code) : ['en', 'ar'].includes(lang.code)
+  );
 
   const toggleTheme = () => {
     setTheme({

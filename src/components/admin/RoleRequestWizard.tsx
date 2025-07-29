@@ -62,7 +62,7 @@ interface RoleRequestWizardProps {
 
 export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestSubmitted }: RoleRequestWizardProps) {
   const { user } = useAuth();
-  const { requestableUserRoles } = useSystemLists();
+  const { requestableUserRoles, roleRequestJustifications } = useSystemLists();
   const [selectedRole, setSelectedRole] = useState("");
   const [reason, setReason] = useState("");
   const [justification, setJustification] = useState("");
@@ -248,12 +248,16 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
                 <SelectValue placeholder="Select why you need this role..." />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="domain_expertise">I have specialized knowledge in specific domains/sectors</SelectItem>
-                <SelectItem value="evaluation_experience">I have experience evaluating innovations, ideas, or projects</SelectItem>
-                <SelectItem value="academic_background">I have relevant academic background or research experience</SelectItem>
-                <SelectItem value="industry_experience">I have relevant industry or professional experience</SelectItem>
-                <SelectItem value="certification">I hold relevant certifications or qualifications</SelectItem>
-                <SelectItem value="volunteer_contribution">I want to volunteer my expertise to help evaluate and guide innovations</SelectItem>
+                {roleRequestJustifications.map(justification => (
+                  <SelectItem key={justification} value={justification}>
+                    {justification === 'domain_expertise' ? 'I have specialized knowledge in specific domains/sectors' :
+                     justification === 'evaluation_experience' ? 'I have experience evaluating innovations, ideas, or projects' :
+                     justification === 'academic_background' ? 'I have relevant academic background or research experience' :
+                     justification === 'industry_experience' ? 'I have relevant industry or professional experience' :
+                     justification === 'certification' ? 'I hold relevant certifications or qualifications' :
+                     justification === 'volunteer_contribution' ? 'I want to volunteer my expertise to help evaluate and guide innovations' : justification}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>

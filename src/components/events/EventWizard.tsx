@@ -129,7 +129,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
   const [selectedChallenges, setSelectedChallenges] = useState<string[]>([]);
 
   const { toast } = useToast();
-  const { generalStatusOptions, eventTypes, eventFormats, eventCategories, eventVisibilityOptions } = useSystemLists();
+  const { generalStatusOptions, eventTypes, eventFormats, eventCategories, eventVisibilityOptions, recurrencePatternOptions } = useSystemLists();
 
   // Options from system lists
   const eventTypeOptions = eventTypes.map(type => ({
@@ -1189,10 +1189,11 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                         <SelectValue placeholder="اختر النمط" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="daily">يومي</SelectItem>
-                        <SelectItem value="weekly">أسبوعي</SelectItem>
-                        <SelectItem value="monthly">شهري</SelectItem>
-                        <SelectItem value="yearly">سنوي</SelectItem>
+                        {recurrencePatternOptions.map(pattern => (
+                          <SelectItem key={pattern} value={pattern}>
+                            {pattern === 'daily' ? 'يومي' : pattern === 'weekly' ? 'أسبوعي' : pattern === 'monthly' ? 'شهري' : pattern === 'yearly' ? 'سنوي' : pattern}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { 
   BarChart3, 
   TrendingUp, 
@@ -51,6 +52,7 @@ export function FocusQuestionAnalytics() {
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState("all");
   const { toast } = useToast();
+  const { timeRangeOptions } = useSystemLists();
 
   useEffect(() => {
     fetchAnalytics();
@@ -187,10 +189,11 @@ export function FocusQuestionAnalytics() {
             <SelectValue placeholder="اختر الفترة الزمنية" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">جميع الفترات</SelectItem>
-            <SelectItem value="last_30">آخر 30 يوم</SelectItem>
-            <SelectItem value="last_90">آخر 90 يوم</SelectItem>
-            <SelectItem value="last_year">آخر سنة</SelectItem>
+            {timeRangeOptions.map(range => (
+              <SelectItem key={range} value={range}>
+                {range === 'all' ? 'جميع الفترات' : range === 'last_30' ? 'آخر 30 يوم' : range === 'last_90' ? 'آخر 90 يوم' : range === 'last_year' ? 'آخر سنة' : range}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

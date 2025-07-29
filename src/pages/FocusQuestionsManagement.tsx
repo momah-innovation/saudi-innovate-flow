@@ -5,11 +5,13 @@ import { useState } from "react";
 import { Plus, HelpCircle, Download } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 const FocusQuestionsManagement = () => {
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const { questionTypeOptions } = useSystemLists();
   
   const secondaryActions = (
     <>
@@ -39,11 +41,15 @@ const FocusQuestionsManagement = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">جميع الأنواع</SelectItem>
-            <SelectItem value="open_ended">سؤال مفتوح</SelectItem>
-            <SelectItem value="multiple_choice">متعدد الخيارات</SelectItem>
-            <SelectItem value="yes_no">نعم/لا</SelectItem>
-            <SelectItem value="rating">تقييم</SelectItem>
-            <SelectItem value="ranking">ترتيب</SelectItem>
+            {questionTypeOptions.map(type => (
+              <SelectItem key={type} value={type}>
+                {type === 'open_ended' ? 'سؤال مفتوح' : 
+                 type === 'multiple_choice' ? 'متعدد الخيارات' :
+                 type === 'yes_no' ? 'نعم/لا' :
+                 type === 'rating' ? 'تقييم' :
+                 type === 'ranking' ? 'ترتيب' : type}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
