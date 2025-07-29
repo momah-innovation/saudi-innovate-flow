@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { InnovationTeamsContent } from '@/components/admin/InnovationTeamsContent';
+import { TeamManagementContent } from '@/components/admin/TeamManagementContent';
 import { UserPlus, Users } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -72,8 +72,8 @@ export default function TeamManagement() {
   return (
     <AppShell>
       <PageLayout 
-        title={t('generalTeamManagement')}
-        description={t('manageInnovationTeamsAndGroups')}
+        title={t('innovationTeamManagement')}
+        description={t('manageInnovationTeamMembers')}
         itemCount={0} // This will be updated from the content component
         primaryAction={{
           label: t('addTeamMember'),
@@ -92,7 +92,7 @@ export default function TeamManagement() {
         spacing="md"
         maxWidth="full"
       >
-        <InnovationTeamsContent 
+        <TeamManagementContent 
           activeTab={activeTab}
           onTabChange={setActiveTab}
           viewMode={viewMode}

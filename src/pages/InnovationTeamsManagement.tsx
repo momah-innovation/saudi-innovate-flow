@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { TeamManagementContent } from '@/components/admin/TeamManagementContent';
+import { InnovationTeamsContent } from '@/components/admin/InnovationTeamsContent';
 import { UserPlus, Users, Zap } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -89,7 +89,7 @@ export default function InnovationTeamsManagement() {
         spacing="md"
         maxWidth="full"
       >
-        <TeamManagementContent 
+        <InnovationTeamsContent 
           activeTab={activeTab}
           onTabChange={setActiveTab}
           viewMode={viewMode}
