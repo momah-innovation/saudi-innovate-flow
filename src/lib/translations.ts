@@ -335,7 +335,14 @@ export const translations = {
     capacityUtilization: 'استخدام السعة',
     role: 'الدور',
     roleInTeam: 'الدور في الفريق',
-    joinDate: 'تاريخ الانضمام'
+    joinDate: 'تاريخ الانضمام',
+    
+    // Multi-step form specific
+    step: 'خطوة',
+    of: 'من',
+    complete: 'إنهاء',
+    validating: 'جاري التحقق...',
+    skip: 'تخطي'
   },
   en: {
     // Common UI - English as secondary
@@ -665,7 +672,14 @@ export const translations = {
     task: 'Task',
     responsible: 'Responsible',
     totalTeamMembers: 'Total Team Members',
-    fromLastMonth: 'from last month'
+    fromLastMonth: 'from last month',
+    
+    // Multi-step form specific
+    step: 'Step',
+    of: 'of',
+    complete: 'Complete',
+    validating: 'Validating...',
+    skip: 'Skip'
   }
 };
 
