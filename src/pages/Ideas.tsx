@@ -30,7 +30,7 @@ interface Idea {
   innovators?: {
     id: string;
     user_id: string;
-    display_name?: string;
+    experience_level?: string;
   };
   challenges?: {
     id: string;
@@ -77,7 +77,7 @@ export default function IdeasPage() {
           innovators:innovator_id (
             id,
             user_id,
-            display_name
+            experience_level
           ),
           challenges:challenge_id (
             id,
