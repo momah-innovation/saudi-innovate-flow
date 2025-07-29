@@ -66,8 +66,8 @@ export function IdeaWizard({
     status: "submitted",
     maturity_level: "concept",
     innovator_id: "",
-    challenge_id: "",
-    focus_question_id: "",
+    challenge_id: "none",
+    focus_question_id: "none",
     solution_approach: "",
     implementation_plan: "",
     expected_impact: "",
@@ -112,8 +112,8 @@ export function IdeaWizard({
         status: idea.status || "submitted",
         maturity_level: idea.maturity_level || "concept",
         innovator_id: idea.innovator_id || "",
-        challenge_id: idea.challenge_id || "",
-        focus_question_id: idea.focus_question_id || "",
+        challenge_id: idea.challenge_id || "none",
+        focus_question_id: idea.focus_question_id || "none",
         solution_approach: idea.solution_approach || "",
         implementation_plan: idea.implementation_plan || "",
         expected_impact: idea.expected_impact || "",
@@ -126,8 +126,8 @@ export function IdeaWizard({
         status: "submitted",
         maturity_level: "concept",
         innovator_id: "",
-        challenge_id: "",
-        focus_question_id: "",
+        challenge_id: "none",
+        focus_question_id: "none",
         solution_approach: "",
         implementation_plan: "",
         expected_impact: "",
@@ -214,8 +214,8 @@ export function IdeaWizard({
         status: formData.status,
         maturity_level: formData.maturity_level,
         innovator_id: formData.innovator_id,
-        challenge_id: formData.challenge_id || null,
-        focus_question_id: formData.focus_question_id || null,
+        challenge_id: formData.challenge_id === "none" ? null : formData.challenge_id || null,
+        focus_question_id: formData.focus_question_id === "none" ? null : formData.focus_question_id || null,
         solution_approach: formData.solution_approach.trim() || null,
         implementation_plan: formData.implementation_plan.trim() || null,
         expected_impact: formData.expected_impact.trim() || null,
@@ -273,7 +273,7 @@ export function IdeaWizard({
 
   // Filter focus questions based on selected challenge
   const filteredFocusQuestions = focusQuestions.filter(fq => 
-    !formData.challenge_id || fq.challenge_id === formData.challenge_id || !fq.challenge_id
+    formData.challenge_id === "none" || !formData.challenge_id || fq.challenge_id === formData.challenge_id || !fq.challenge_id
   );
 
   const steps = [
@@ -445,14 +445,14 @@ export function IdeaWizard({
             <Select 
               value={formData.challenge_id} 
               onValueChange={(value) => {
-                setFormData({ ...formData, challenge_id: value, focus_question_id: "" });
+                setFormData({ ...formData, challenge_id: value, focus_question_id: "none" });
               }}
             >
               <SelectTrigger>
                 <SelectValue placeholder="اختر التحدي (اختياري)" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">بدون ربط بتحدي محدد</SelectItem>
+                <SelectItem value="none">بدون ربط بتحدي محدد</SelectItem>
                 {challenges.map((challenge) => (
                   <SelectItem key={challenge.id} value={challenge.id}>
                     {challenge.title_ar}
@@ -475,7 +475,7 @@ export function IdeaWizard({
                 <SelectValue placeholder="اختر السؤال المحوري (اختياري)" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">بدون ربط بسؤال محوري</SelectItem>
+                <SelectItem value="none">بدون ربط بسؤال محوري</SelectItem>
                 {filteredFocusQuestions.map((question) => (
                   <SelectItem key={question.id} value={question.id}>
                     {question.question_text_ar.substring(0, 100)}...
