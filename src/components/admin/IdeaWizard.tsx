@@ -22,6 +22,18 @@ interface FocusQuestion {
   challenge_id?: string;
 }
 
+interface Campaign {
+  id: string;
+  title_ar: string;
+  status: string;
+}
+
+interface Event {
+  id: string;
+  title_ar: string;
+  status: string;
+}
+
 interface Innovator {
   id: string;
   user_id: string;
@@ -66,8 +78,10 @@ export function IdeaWizard({
     status: "submitted",
     maturity_level: "concept",
     innovator_id: "",
-    challenge_id: "none",
-    focus_question_id: "none",
+    challenge_id: "",
+    focus_question_id: "",
+    campaign_id: "none",
+    event_id: "none",
     solution_approach: "",
     implementation_plan: "",
     expected_impact: "",
@@ -76,6 +90,8 @@ export function IdeaWizard({
 
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [innovators, setInnovators] = useState<Innovator[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -112,8 +128,10 @@ export function IdeaWizard({
         status: idea.status || "submitted",
         maturity_level: idea.maturity_level || "concept",
         innovator_id: idea.innovator_id || "",
-        challenge_id: idea.challenge_id || "none",
-        focus_question_id: idea.focus_question_id || "none",
+        challenge_id: idea.challenge_id || "",
+        focus_question_id: idea.focus_question_id || "",
+        campaign_id: "none",
+        event_id: "none",
         solution_approach: idea.solution_approach || "",
         implementation_plan: idea.implementation_plan || "",
         expected_impact: idea.expected_impact || "",
@@ -126,8 +144,10 @@ export function IdeaWizard({
         status: "submitted",
         maturity_level: "concept",
         innovator_id: "",
-        challenge_id: "none",
-        focus_question_id: "none",
+        challenge_id: "",
+        focus_question_id: "",
+        campaign_id: "none",
+        event_id: "none",
         solution_approach: "",
         implementation_plan: "",
         expected_impact: "",
@@ -138,7 +158,7 @@ export function IdeaWizard({
 
   const fetchData = async () => {
     try {
-      const [challengesRes, focusQuestionsRes, innovatorsRes] = await Promise.all([
+      const [challengesRes, focusQuestionsRes, campaignsRes, eventsRes, innovatorsRes] = await Promise.all([
         supabase
           .from('challenges')
           .select('id, title_ar, status')
@@ -148,6 +168,14 @@ export function IdeaWizard({
           .select('id, question_text_ar, challenge_id')
           .order('order_sequence'),
         supabase
+          .from('campaigns')
+          .select('id, title_ar, status')
+          .order('title_ar'),
+        supabase
+          .from('events')
+          .select('id, title_ar, status')
+          .order('title_ar'),
+        supabase
           .from('innovators')
           .select('id, user_id, innovation_score')
           .order('innovation_score', { ascending: false })
@@ -155,10 +183,14 @@ export function IdeaWizard({
 
       if (challengesRes.error) throw challengesRes.error;
       if (focusQuestionsRes.error) throw focusQuestionsRes.error;
+      if (campaignsRes.error) throw campaignsRes.error;
+      if (eventsRes.error) throw eventsRes.error;
       if (innovatorsRes.error) throw innovatorsRes.error;
 
       setChallenges(challengesRes.data || []);
       setFocusQuestions(focusQuestionsRes.data || []);
+      setCampaigns(campaignsRes.data || []);
+      setEvents(eventsRes.data || []);
       setInnovators(innovatorsRes.data || []);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -203,6 +235,21 @@ export function IdeaWizard({
     return Object.keys(newErrors).length === 0;
   };
 
+  const validateAssociations = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.challenge_id || formData.challenge_id.trim() === "") {
+      newErrors.challenge_id = "يجب اختيار التحدي المرتبط";
+    }
+    
+    if (!formData.focus_question_id || formData.focus_question_id.trim() === "") {
+      newErrors.focus_question_id = "يجب اختيار السؤال المحوري المرتبط";
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSave = async () => {
     setIsLoading(true);
     setErrors({});
@@ -214,8 +261,8 @@ export function IdeaWizard({
         status: formData.status,
         maturity_level: formData.maturity_level,
         innovator_id: formData.innovator_id,
-        challenge_id: formData.challenge_id === "none" ? null : formData.challenge_id || null,
-        focus_question_id: formData.focus_question_id === "none" ? null : formData.focus_question_id || null,
+        challenge_id: formData.challenge_id && formData.challenge_id.trim() !== "" ? formData.challenge_id : null,
+        focus_question_id: formData.focus_question_id && formData.focus_question_id.trim() !== "" ? formData.focus_question_id : null,
         solution_approach: formData.solution_approach.trim() || null,
         implementation_plan: formData.implementation_plan.trim() || null,
         expected_impact: formData.expected_impact.trim() || null,
@@ -273,7 +320,7 @@ export function IdeaWizard({
 
   // Filter focus questions based on selected challenge
   const filteredFocusQuestions = focusQuestions.filter(fq => 
-    formData.challenge_id === "none" || !formData.challenge_id || fq.challenge_id === formData.challenge_id || !fq.challenge_id
+    !formData.challenge_id || fq.challenge_id === formData.challenge_id || !fq.challenge_id
   );
 
   const steps = [
@@ -437,55 +484,130 @@ export function IdeaWizard({
     {
       id: "associations",
       title: "الربط والعلاقات",
-      description: "ربط الفكرة بالتحديات والأسئلة المحورية",
+      description: "ربط الفكرة بالتحديات والأسئلة المحورية والحملات والفعاليات",
+      validation: validateAssociations,
       content: (
         <div className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="challenge_id">التحدي المرتبط (اختياري)</Label>
-            <Select 
-              value={formData.challenge_id} 
-              onValueChange={(value) => {
-                setFormData({ ...formData, challenge_id: value, focus_question_id: "none" });
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="اختر التحدي (اختياري)" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">بدون ربط بتحدي محدد</SelectItem>
-                {challenges.map((challenge) => (
-                  <SelectItem key={challenge.id} value={challenge.id}>
-                    {challenge.title_ar}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <p className="text-sm text-muted-foreground">
-              يمكن ربط الفكرة بتحدي محدد أو تركها عامة
-            </p>
+          {/* Required Associations */}
+          <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
+            <h4 className="font-medium text-sm">الربط المطلوب *</h4>
+            
+            <div className="space-y-2">
+              <Label htmlFor="challenge_id">التحدي المرتبط *</Label>
+              <Select 
+                value={formData.challenge_id} 
+                onValueChange={(value) => {
+                  setFormData({ ...formData, challenge_id: value, focus_question_id: "" });
+                  if (errors.challenge_id) {
+                    setErrors({ ...errors, challenge_id: "" });
+                  }
+                }}
+              >
+                <SelectTrigger className={errors.challenge_id ? "border-destructive" : ""}>
+                  <SelectValue placeholder="اختر التحدي المرتبط" />
+                </SelectTrigger>
+                <SelectContent>
+                  {challenges.map((challenge) => (
+                    <SelectItem key={challenge.id} value={challenge.id}>
+                      {challenge.title_ar}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors.challenge_id ? (
+                <p className="text-sm text-destructive">{errors.challenge_id}</p>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  اختر التحدي الذي تهدف الفكرة إلى حله
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="focus_question_id">السؤال المحوري المرتبط *</Label>
+              <Select 
+                value={formData.focus_question_id} 
+                onValueChange={(value) => {
+                  setFormData({ ...formData, focus_question_id: value });
+                  if (errors.focus_question_id) {
+                    setErrors({ ...errors, focus_question_id: "" });
+                  }
+                }}
+                disabled={!formData.challenge_id}
+              >
+                <SelectTrigger className={errors.focus_question_id ? "border-destructive" : ""}>
+                  <SelectValue placeholder="اختر السؤال المحوري المرتبط" />
+                </SelectTrigger>
+                <SelectContent>
+                  {filteredFocusQuestions.map((question) => (
+                    <SelectItem key={question.id} value={question.id}>
+                      {question.question_text_ar.substring(0, 100)}...
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors.focus_question_id ? (
+                <p className="text-sm text-destructive">{errors.focus_question_id}</p>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  {!formData.challenge_id 
+                    ? 'اختر التحدي أولاً لعرض الأسئلة المحورية المرتبطة' 
+                    : 'اختر السؤال المحوري الذي تجيب عليه الفكرة'
+                  }
+                </p>
+              )}
+            </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="focus_question_id">السؤال المحوري المرتبط (اختياري)</Label>
-            <Select 
-              value={formData.focus_question_id} 
-              onValueChange={(value) => setFormData({ ...formData, focus_question_id: value })}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="اختر السؤال المحوري (اختياري)" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">بدون ربط بسؤال محوري</SelectItem>
-                {filteredFocusQuestions.map((question) => (
-                  <SelectItem key={question.id} value={question.id}>
-                    {question.question_text_ar.substring(0, 100)}...
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <p className="text-sm text-muted-foreground">
-              الأسئلة المحورية المتاحة {formData.challenge_id ? 'للتحدي المختار' : 'العامة'}
-            </p>
+          {/* Optional Associations */}
+          <div className="space-y-4 p-4 border rounded-lg">
+            <h4 className="font-medium text-sm">الربط الاختياري</h4>
+            
+            <div className="space-y-2">
+              <Label htmlFor="campaign_id">الحملة المرتبطة (اختياري)</Label>
+              <Select 
+                value={formData.campaign_id} 
+                onValueChange={(value) => setFormData({ ...formData, campaign_id: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="اختر الحملة (اختياري)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">بدون ربط بحملة محددة</SelectItem>
+                  {campaigns.map((campaign) => (
+                    <SelectItem key={campaign.id} value={campaign.id}>
+                      {campaign.title_ar}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-sm text-muted-foreground">
+                يمكن ربط الفكرة بحملة إبداعية محددة
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="event_id">الفعالية المرتبطة (اختياري)</Label>
+              <Select 
+                value={formData.event_id} 
+                onValueChange={(value) => setFormData({ ...formData, event_id: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="اختر الفعالية (اختياري)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">بدون ربط بفعالية محددة</SelectItem>
+                  {events.map((event) => (
+                    <SelectItem key={event.id} value={event.id}>
+                      {event.title_ar}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-sm text-muted-foreground">
+                يمكن ربط الفكرة بفعالية أو ورشة عمل محددة
+              </p>
+            </div>
           </div>
         </div>
       ),
