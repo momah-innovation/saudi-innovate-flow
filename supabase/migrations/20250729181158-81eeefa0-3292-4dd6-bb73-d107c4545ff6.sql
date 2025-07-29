@@ -1,0 +1,26 @@
+-- Final comprehensive seed data with correct ideas table structure
+
+-- Create realistic ideas with correct column names
+INSERT INTO ideas (id, title_ar, description_ar, solution_approach, implementation_plan, expected_impact, resource_requirements, feasibility_score, impact_score, innovation_score, alignment_score, overall_score, status, maturity_level, innovator_id, challenge_id, focus_question_id, created_at) VALUES 
+(gen_random_uuid(), 'تطبيق ذكي للخدمات الحكومية بالذكاء الاصطناعي', 'تطوير تطبيق محمول يستخدم الذكاء الاصطناعي لفهم استفسارات المواطنين وتوجيههم للخدمة المناسبة تلقائياً مع دعم معالجة اللغة الطبيعية باللغة العربية', 'استخدام نماذج الذكاء الاصطناعي المدربة على البيانات الحكومية مع واجهة محادثة ذكية', 'المرحلة الأولى: تطوير النموذج الأساسي، المرحلة الثانية: التكامل مع الأنظمة، المرحلة الثالثة: الإطلاق التجريبي', 'تحسين تجربة المواطن بنسبة 40% وتقليل وقت الحصول على الخدمات بنسبة 60%', 'فريق تطوير من 8 أشخاص، ميزانية 2.5 مليون ريال، مدة التطوير 12 شهر', 8, 9, 8, 9, 8.5, 'under_review', 'proof_of_concept', (SELECT id FROM innovators WHERE user_id = '8066cfaf-4a91-4985-922b-74f6a286c441'), (SELECT id FROM challenges WHERE title_ar = 'منصة الخدمات الحكومية الموحدة' LIMIT 1), (SELECT id FROM focus_questions LIMIT 1), '2024-03-15'),
+
+(gen_random_uuid(), 'نظام التشخيص بالصور الطبية المدعوم بالذكاء الاصطناعي', 'تطوير نظام متقدم لتحليل الصور الطبية (أشعة سينية، رنين مغناطيسي، أشعة مقطعية) باستخدام خوارزميات التعلم العميق للكشف المبكر عن الأمراض', 'استخدام شبكات التعلم العميق CNN المدربة على مجموعات بيانات طبية كبيرة مع تقنيات Transfer Learning', 'بناء قاعدة بيانات طبية، تدريب النماذج، اختبار الدقة، التكامل مع الأنظمة الطبية الحالية', 'تحسين دقة التشخيص بنسبة 25% وتقليل وقت التشخيص بنسبة 50%', 'فريق متخصص من 12 خبير، ميزانية 4.5 مليون ريال، شراكة مع 3 مستشفيات كبرى', 9, 10, 9, 10, 9.5, 'approved', 'prototype', (SELECT id FROM innovators WHERE user_id = 'fa80bed2-ed61-4c27-8941-f713cf050944'), (SELECT id FROM challenges WHERE title_ar = 'نظام الذكاء الاصطناعي للتشخيص الطبي' LIMIT 1), (SELECT id FROM focus_questions LIMIT 1 OFFSET 1), '2024-03-10'),
+
+(gen_random_uuid(), 'منصة التعلم التفاعلي بالواقع المعزز', 'تطوير منصة تعليمية تستخدم تقنيات الواقع المعزز لإنشاء تجارب تعليمية تفاعلية ثلاثية الأبعاد', 'دمج تقنيات AR مع المناهج التعليمية التقليدية لإنشاء بيئة تعلم متطورة', 'تصميم النماذج ثلاثية الأبعاد، تطوير التطبيق، اختبار المستخدمين، التطبيق التجريبي', 'زيادة التفاعل الطلابي بنسبة 60% وتحسين الفهم بنسبة 35%', 'فريق تقني من 6 أشخاص، ميزانية 1.8 مليون ريال، شراكة مع 5 مدارس', 7, 8, 9, 8, 8.0, 'draft', 'concept', (SELECT id FROM innovators WHERE user_id = '8066cfaf-4a91-4985-922b-74f6a286c441'), (SELECT id FROM challenges WHERE title_ar = 'منصة التعليم التفاعلي بالواقع الافتراضي' LIMIT 1), (SELECT id FROM focus_questions LIMIT 1 OFFSET 2), '2024-03-20'),
+
+(gen_random_uuid(), 'نظام إدارة المرور الذكي', 'تطوير نظام ذكي لإدارة حركة المرور في المدن باستخدام الذكاء الاصطناعي وأجهزة الاستشعار', 'استخدام كاميرات ذكية وأجهزة استشعار مع خوارزميات التعلم الآلي لتحليل حركة المرور', 'نشر الأجهزة، تطوير النظام، اختبار الأداء، التطبيق على نطاق واسع', 'تقليل الازدحام بنسبة 30% وتوفير الوقت والوقود للمواطنين', 'شبكة من 500 جهاز استشعار، فريق من 15 مهندس، ميزانية 8 مليون ريال', 8, 9, 7, 9, 8.25, 'submitted', 'pilot', (SELECT id FROM innovators WHERE user_id = 'fa80bed2-ed61-4c27-8941-f713cf050944'), (SELECT id FROM challenges WHERE title_ar = 'منظومة المدن الذكية المتكاملة' LIMIT 1), (SELECT id FROM focus_questions LIMIT 1 OFFSET 3), '2024-03-25');
+
+-- Create more comprehensive team members with additional roles
+INSERT INTO innovation_team_members (id, user_id, cic_role, specialization, current_workload, max_concurrent_projects, performance_rating, join_date, department, contact_email, status) VALUES 
+(gen_random_uuid(), gen_random_uuid(), 'Senior Data Scientist', ARRAY['Machine Learning', 'Data Analytics', 'AI Development', 'Statistical Modeling'], 70, 6, 88, '2024-02-10', 'Data Analytics', 'data.scientist@momah.gov.sa', 'active'),
+(gen_random_uuid(), gen_random_uuid(), 'Innovation Researcher', ARRAY['Market Research', 'Trend Analysis', 'Technology Scouting', 'Innovation Metrics'], 45, 4, 85, '2024-03-01', 'Research & Development', 'researcher@momah.gov.sa', 'active'),
+(gen_random_uuid(), gen_random_uuid(), 'Partnership Manager', ARRAY['Strategic Partnerships', 'Business Development', 'Stakeholder Management', 'Contract Negotiation'], 60, 5, 92, '2024-01-20', 'Strategic Partnerships', 'partnerships@momah.gov.sa', 'active'),
+(gen_random_uuid(), gen_random_uuid(), 'UX/UI Designer', ARRAY['User Experience Design', 'Interface Design', 'Prototyping', 'User Research'], 55, 5, 87, '2024-02-15', 'Digital Innovation', 'design@momah.gov.sa', 'active'),
+(gen_random_uuid(), gen_random_uuid(), 'Technical Architect', ARRAY['System Architecture', 'Cloud Solutions', 'Security', 'Integration Design'], 75, 7, 90, '2024-01-10', 'Technology Department', 'architect@momah.gov.sa', 'active');
+
+-- Assign user roles for comprehensive testing
+INSERT INTO user_roles (user_id, role, is_active) VALUES 
+('8066cfaf-4a91-4985-922b-74f6a286c441', 'admin', true),
+('fa80bed2-ed61-4c27-8941-f713cf050944', 'team_member', true),
+('8066cfaf-4a91-4985-922b-74f6a286c441', 'expert', true),
+('fa80bed2-ed61-4c27-8941-f713cf050944', 'innovator', true);
