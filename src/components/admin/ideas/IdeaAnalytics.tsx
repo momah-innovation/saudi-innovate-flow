@@ -6,6 +6,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { TrendingUp, TrendingDown, Users, Lightbulb, CheckCircle, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { isThisMonth, format, subMonths, isSameMonth } from "date-fns";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1'];
 
@@ -14,6 +15,8 @@ interface IdeaAnalyticsProps {
 }
 
 export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
+  const { generalStatusOptions, challengeTypes } = useSystemLists();
+  
   // Mock data query - replace with actual API call
   const { data, isLoading, error } = useQuery({
     queryKey: ['idea-analytics'],
@@ -23,7 +26,7 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
         id: `idea-${i + 1}`,
         title: `Idea ${i + 1}`,
         description: `Description for idea ${i + 1}`,
-        status: ['draft', 'submitted', 'under_review', 'approved', 'implemented', 'rejected'][Math.floor(Math.random() * 6)],
+        status: generalStatusOptions[Math.floor(Math.random() * generalStatusOptions.length)] || 'draft',
         score: Math.floor(Math.random() * 100),
         maturity_level: ['concept', 'prototype', 'pilot', 'scaling'][Math.floor(Math.random() * 4)],
         created_at: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString(),
@@ -31,7 +34,7 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
         submitter_id: `user-${Math.floor(Math.random() * 10) + 1}`,
         challenge_id: `challenge-${Math.floor(Math.random() * 5) + 1}`,
         focus_question_id: Math.random() > 0.5 ? `fq-${Math.floor(Math.random() * 3) + 1}` : null,
-        category: ['technology', 'process', 'service', 'product'][Math.floor(Math.random() * 4)],
+        category: challengeTypes[Math.floor(Math.random() * challengeTypes.length)] || 'technology',
         sector: ['health', 'education', 'transport', 'environment', 'economy'][Math.floor(Math.random() * 5)],
         tags: ['innovation', 'digital', 'sustainability', 'efficiency'].slice(0, Math.floor(Math.random() * 4) + 1),
       }));
