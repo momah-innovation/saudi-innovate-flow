@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Lightbulb, BarChart3 } from "lucide-react";
 import { IdeasManagementList } from "./ideas/IdeasManagementList";
 import { IdeaAnalytics } from "./ideas/IdeaAnalytics";
 import { IdeaWizard } from "./IdeaWizard";
+import { PageLayout } from "@/components/layout/PageLayout";
 import { useTranslation } from "@/hooks/useTranslation";
 
 interface Idea {
@@ -32,38 +34,26 @@ interface Idea {
   };
 }
 
-interface IdeasManagementProps {
-  viewMode: 'cards' | 'list' | 'grid';
-  searchTerm: string;
-  showAddDialog: boolean;
-  onAddDialogChange: (open: boolean) => void;
-  selectedItems: string[];
-  onSelectedItemsChange: (items: string[]) => void;
-  filters: {
-    status: string;
-    challenge: string;
-    innovator: string;
-    maturityLevel: string;
-    scoreRange: [number, number];
-  };
-}
-
-export function IdeasManagement({ 
-  viewMode, 
-  searchTerm, 
-  showAddDialog, 
-  onAddDialogChange,
-  selectedItems,
-  onSelectedItemsChange,
-  filters 
-}: IdeasManagementProps) {
+export function IdeasManagement() {
   const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState("ideas");
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
+  const [filters] = useState({
+    status: '',
+    challenge: '',
+    innovator: '',
+    maturityLevel: '',
+    scoreRange: [0, 10] as [number, number]
+  });
   const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
   const [showDetailView, setShowDetailView] = useState(false);
 
   const handleEdit = (idea: Idea) => {
     setSelectedIdea(idea);
-    onAddDialogChange(true);
+    setShowAddDialog(true);
   };
 
   const handleView = (idea: Idea) => {
@@ -77,19 +67,29 @@ export function IdeasManagement({
   };
 
   return (
-    <>
-      <Tabs defaultValue="list" className="w-full">
+    <PageLayout
+      title="إدارة الأفكار الابتكارية"
+      description="نظام شامل لإدارة وتحليل الأفكار الابتكارية"
+      className="space-y-6"
+    >
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="list">قائمة الأفكار</TabsTrigger>
-          <TabsTrigger value="analytics">التحليلات والإحصائيات</TabsTrigger>
+          <TabsTrigger value="ideas" className="flex items-center gap-2">
+            <Lightbulb className="w-4 h-4" />
+            الأفكار
+          </TabsTrigger>
+          <TabsTrigger value="analytics" className="flex items-center gap-2">
+            <BarChart3 className="w-4 h-4" />
+            التحليلات
+          </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="list" className="space-y-6">
+        <TabsContent value="ideas">
           <IdeasManagementList
             viewMode={viewMode}
             searchTerm={searchTerm}
             selectedItems={selectedItems}
-            onSelectedItemsChange={onSelectedItemsChange}
+            onSelectedItemsChange={setSelectedItems}
             filters={filters}
             onEdit={handleEdit}
             onView={handleView}
@@ -97,7 +97,7 @@ export function IdeasManagement({
           />
         </TabsContent>
         
-        <TabsContent value="analytics" className="space-y-6">
+        <TabsContent value="analytics">
           <IdeaAnalytics />
         </TabsContent>
       </Tabs>
@@ -105,16 +105,16 @@ export function IdeasManagement({
       <IdeaWizard
         isOpen={showAddDialog}
         onClose={() => {
-          onAddDialogChange(false);
+          setShowAddDialog(false);
           setSelectedIdea(null);
         }}
         onSave={() => {
           handleRefresh();
-          onAddDialogChange(false);
+          setShowAddDialog(false);
           setSelectedIdea(null);
         }}
         idea={selectedIdea}
       />
-    </>
+    </PageLayout>
   );
 }
