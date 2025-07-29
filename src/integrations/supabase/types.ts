@@ -1468,6 +1468,13 @@ export type Database = {
             referencedRelation: "focus_questions"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "ideas_innovator_id_fkey"
+            columns: ["innovator_id"]
+            isOneToOne: false
+            referencedRelation: "innovators"
+            referencedColumns: ["id"]
+          },
         ]
       }
       implementation_tracker: {

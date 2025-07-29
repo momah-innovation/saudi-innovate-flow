@@ -278,18 +278,12 @@ export function IdeaWizard({
     setErrors({});
     
     try {
-      // Find the selected innovator to get their user_id
-      const selectedInnovator = innovators.find(i => i.id === formData.innovator_id);
-      if (!selectedInnovator) {
-        throw new Error("المبتكر المحدد غير موجود");
-      }
-
       const ideaData = {
         title_ar: formData.title_ar.trim(),
         description_ar: formData.description_ar.trim(),
         status: formData.status,
         maturity_level: formData.maturity_level,
-        innovator_id: selectedInnovator.id, // Use innovator ID, not user_id
+        innovator_id: formData.innovator_id, // Now correctly references innovators.id
         challenge_id: formData.challenge_id && formData.challenge_id.trim() !== "" ? formData.challenge_id : null,
         focus_question_id: formData.focus_question_id && formData.focus_question_id.trim() !== "" ? formData.focus_question_id : null,
         solution_approach: formData.solution_approach.trim() || null,
