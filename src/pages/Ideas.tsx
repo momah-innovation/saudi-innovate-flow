@@ -5,13 +5,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Search, Plus, Filter, Eye, Edit, MessageSquare } from 'lucide-react';
+import { Search, Plus, Filter, Eye, Edit, MessageSquare, Lightbulb } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { PageContainer, Section, ContentArea, PageHeader } from '@/components/ui';
 import { supabase } from '@/integrations/supabase/client';
 import { useSystemLists } from '@/hooks/useSystemLists';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { EmptyState } from '@/components/ui/empty-state';
 
 interface Idea {
   id: string;
@@ -25,12 +27,27 @@ interface Idea {
   focus_question_id?: string;
   created_at: string;
   updated_at: string;
+  innovators?: {
+    id: string;
+    user_id: string;
+    display_name?: string;
+  };
+  challenges?: {
+    id: string;
+    title_ar: string;
+    status: string;
+  };
+  focus_questions?: {
+    id: string;
+    question_text_ar: string;
+  };
 }
 
 export default function IdeasPage() {
   const { t } = useTranslation();
   const { isRTL, language } = useDirection();
   const { toast } = useToast();
+  const { user } = useAuth();
   const { generalStatusOptions } = useSystemLists();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>('');
@@ -38,24 +55,49 @@ export default function IdeasPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchIdeas();
-  }, []);
+    if (user) {
+      fetchUserIdeas();
+    }
+  }, [user]);
 
-  const fetchIdeas = async () => {
+  const fetchUserIdeas = async () => {
+    if (!user) return;
+    
     try {
       setLoading(true);
+      
+      // The RLS policies will automatically filter to show only:
+      // 1. Ideas where the user is the innovator (owner)
+      // 2. Ideas where the user is part of the innovation team (if applicable)
+      // 3. Published ideas that are publicly viewable
       const { data, error } = await supabase
         .from('ideas')
-        .select('*')
+        .select(`
+          *,
+          innovators:innovator_id (
+            id,
+            user_id,
+            display_name
+          ),
+          challenges:challenge_id (
+            id,
+            title_ar,
+            status
+          ),
+          focus_questions:focus_question_id (
+            id,
+            question_text_ar
+          )
+        `)
         .order('created_at', { ascending: false });
       
       if (error) throw error;
-      setIdeas(data || []);
+      setIdeas((data as any) || []);
     } catch (error) {
-      console.error('Error fetching ideas:', error);
+      console.error('Error fetching user ideas:', error);
       toast({
         title: "خطأ",
-        description: "فشل في تحميل الأفكار",
+        description: "فشل في تحميل أفكارك",
         variant: "destructive"
       });
     } finally {
@@ -92,11 +134,29 @@ export default function IdeasPage() {
     }
   };
 
+  // Don't render if user is not authenticated
+  if (!user) {
+    return (
+      <AppShell>
+        <PageContainer>
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <p className="text-muted-foreground mb-4">يجب تسجيل الدخول لعرض أفكارك</p>
+              <Button onClick={() => window.location.href = '/auth'}>
+                تسجيل الدخول
+              </Button>
+            </div>
+          </div>
+        </PageContainer>
+      </AppShell>
+    );
+  }
+
   return (
     <AppShell>
       <PageContainer>
         <PageHeader 
-          title={isRTL ? "الأفكار" : "Ideas"}
+          title={isRTL ? "أفكاري" : "My Ideas"}
           description={isRTL ? "إدارة ومتابعة أفكارك المقدمة" : "Manage and track your submitted ideas"}
         />
         <ContentArea>
@@ -143,7 +203,7 @@ export default function IdeasPage() {
                     <div className={cn("flex-1", isRTL && "text-right")}>
                       <CardTitle className="text-lg">{idea.title_ar}</CardTitle>
                       <CardDescription className="mt-1">
-                        {idea.maturity_level || 'مفهوم'}
+                        {idea.challenges?.title_ar || idea.maturity_level || 'مفهوم'}
                       </CardDescription>
                     </div>
                     <Badge 
@@ -182,18 +242,19 @@ export default function IdeasPage() {
           </div>
         )}
 
-        {filteredIdeas.length === 0 && (
-          <div className={cn("text-center py-12", isRTL && "text-right")}>
-            <div className="text-muted-foreground">
-              {searchTerm ? 
-                (isRTL ? "لم يتم العثور على أفكار مطابقة" : "No ideas found matching your search") :
-                (isRTL ? "لم تقم بتقديم أي أفكار بعد" : "You haven't submitted any ideas yet")
+        {filteredIdeas.length === 0 && !loading && (
+          <EmptyState
+            icon={<Lightbulb className="w-12 h-12 text-muted-foreground" />}
+            title={searchTerm ? (isRTL ? "لم يتم العثور على أفكار مطابقة" : "No ideas found matching your search") : (isRTL ? "لم تقم بتقديم أي أفكار بعد" : "You haven't submitted any ideas yet")}
+            description={isRTL ? "ابدأ رحلتك في الابتكار بتقديم فكرتك الأولى" : "Start your innovation journey by submitting your first idea"}
+            action={{
+              label: isRTL ? "تقديم فكرة جديدة" : "Submit Your First Idea",
+              onClick: () => {
+                // Navigate to idea submission form
+                window.location.href = '/admin/ideas';
               }
-            </div>
-            <Button className="mt-4">
-              {isRTL ? "تقديم فكرة جديدة" : "Submit Your First Idea"}
-            </Button>
-          </div>
+            }}
+          />
         )}
       </div>
       </ContentArea>
