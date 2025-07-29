@@ -147,12 +147,30 @@ export function NavigationSidebar() {
       },
       { 
         id: 'innovation-teams', 
-        label: 'Innovation Teams', 
-        arabicLabel: 'فرق الابتكار',
+        label: 'Core Innovation Team', 
+        arabicLabel: 'فريق الابتكار الأساسي',
         icon: Zap, 
         path: '/innovation-teams',
         group: 'management',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'team-management', 
+        label: 'Team Management', 
+        arabicLabel: 'إدارة الفرق',
+        icon: Users, 
+        path: '/team-management',
+        group: 'management',
         roles: ['team', 'admin'] 
+      },
+      { 
+        id: 'team-workspace', 
+        label: 'Team Workspace', 
+        arabicLabel: 'مساحة عمل الفريق',
+        icon: Users, 
+        path: '/team-workspace',
+        group: 'workflow',
+        roles: ['team', 'admin', 'innovator', 'expert'] 
       },
     ];
 
