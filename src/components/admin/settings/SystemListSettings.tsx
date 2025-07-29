@@ -99,6 +99,15 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     engagementLevels: settings.engagementLevels || ['high', 'medium', 'low'],
     chartColorPalette: settings.chartColorPalette || ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1', '#ff7c7c', '#8dd9cc'],
     
+    // New UI and system lists
+    themeVariants: settings.themeVariants || ['modern', 'minimal', 'vibrant'],
+    themeColorSchemes: settings.themeColorSchemes || ['light', 'dark', 'auto'],
+    themeBorderRadiusOptions: settings.themeBorderRadiusOptions || ['none', 'sm', 'md', 'lg', 'xl'],
+    challengeFilterStatusOptions: settings.challengeFilterStatusOptions || ['all', 'draft', 'published', 'active', 'closed', 'archived'],
+    navigationMenuVisibilityRoles: settings.navigationMenuVisibilityRoles || ['admin', 'super_admin', 'team_member', 'evaluator', 'domain_expert'],
+    dataExportFormats: settings.dataExportFormats || ['csv', 'excel', 'pdf', 'json'],
+    chartVisualizationColors: settings.chartVisualizationColors || ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#06b6d4', '#84cc16'],
+    
     // Language settings
     supportedLanguages: settings.supportedLanguages || [
       {code: 'en', label: 'English', nativeLabel: 'English'},
@@ -195,6 +204,15 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     stakeholderCategories: 'فئات أصحاب المصلحة',
     engagementLevels: 'مستويات التفاعل',
     chartColorPalette: 'لوحة ألوان الرسوم البيانية',
+    
+    // New UI and system lists
+    themeVariants: 'متغيرات الواجهة',
+    themeColorSchemes: 'أنظمة ألوان الواجهة',
+    themeBorderRadiusOptions: 'خيارات دائرية الحواف',
+    challengeFilterStatusOptions: 'خيارات تصفية حالة التحديات',
+    navigationMenuVisibilityRoles: 'أدوار رؤية قائمة التنقل',
+    dataExportFormats: 'تنسيقات تصدير البيانات',
+    chartVisualizationColors: 'ألوان تصور الرسوم البيانية',
     
     // Language settings
     supportedLanguages: 'اللغات المدعومة',

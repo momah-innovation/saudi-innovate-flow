@@ -53,6 +53,13 @@ interface SystemListsHook {
   stakeholderCategories: string[];
   engagementLevels: string[];
   chartColorPalette: string[];
+  themeVariants: string[];
+  themeColorSchemes: string[];
+  themeBorderRadiusOptions: string[];
+  challengeFilterStatusOptions: string[];
+  navigationMenuVisibilityRoles: string[];
+  dataExportFormats: string[];
+  chartVisualizationColors: string[];
   loading: boolean;
 }
 
@@ -133,6 +140,13 @@ export const useSystemLists = (): SystemListsHook => {
     stakeholderCategories: ['government', 'private_sector', 'academic', 'civil_society', 'international', 'media', 'experts'],
     engagementLevels: ['high', 'medium', 'low'],
     chartColorPalette: ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1', '#ff7c7c', '#8dd9cc'],
+    themeVariants: ['modern', 'minimal', 'vibrant'],
+    themeColorSchemes: ['light', 'dark', 'auto'],
+    themeBorderRadiusOptions: ['none', 'sm', 'md', 'lg', 'xl'],
+    challengeFilterStatusOptions: ['all', 'draft', 'published', 'active', 'closed', 'archived'],
+    navigationMenuVisibilityRoles: ['admin', 'super_admin', 'team_member', 'evaluator', 'domain_expert'],
+    dataExportFormats: ['csv', 'excel', 'pdf', 'json'],
+    chartVisualizationColors: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#06b6d4', '#84cc16'],
     loading: true
   });
 
@@ -193,7 +207,14 @@ export const useSystemLists = (): SystemListsHook => {
             'ui_language_options',
             'stakeholder_categories',
             'engagement_levels',
-            'chart_color_palette'
+            'chart_color_palette',
+            'theme_variants',
+            'theme_color_schemes',
+            'theme_border_radius_options',
+            'challenge_filter_status_options',
+            'navigation_menu_visibility_roles',
+            'data_export_formats',
+            'chart_visualization_colors'
           ]);
         
         if (data) {
@@ -357,6 +378,27 @@ export const useSystemLists = (): SystemListsHook => {
                 break;
               case 'chart_color_palette':
                 newSettings.chartColorPalette = value;
+                break;
+              case 'theme_variants':
+                newSettings.themeVariants = value;
+                break;
+              case 'theme_color_schemes':
+                newSettings.themeColorSchemes = value;
+                break;
+              case 'theme_border_radius_options':
+                newSettings.themeBorderRadiusOptions = value;
+                break;
+              case 'challenge_filter_status_options':
+                newSettings.challengeFilterStatusOptions = value;
+                break;
+              case 'navigation_menu_visibility_roles':
+                newSettings.navigationMenuVisibilityRoles = value;
+                break;
+              case 'data_export_formats':
+                newSettings.dataExportFormats = value;
+                break;
+              case 'chart_visualization_colors':
+                newSettings.chartVisualizationColors = value;
                 break;
             }
           });
