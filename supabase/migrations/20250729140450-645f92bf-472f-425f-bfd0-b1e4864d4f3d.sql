@@ -1,0 +1,43 @@
+-- Add remaining hardcoded lists to system_settings table
+
+-- Frequency options
+INSERT INTO system_settings (setting_key, setting_value, setting_type, description) VALUES
+('frequency_options', '["hourly", "daily", "weekly", "monthly", "yearly"]', 'list', 'Available frequency options for various settings'),
+('backup_frequency_options', '["hourly", "daily", "weekly", "monthly"]', 'list', 'Backup frequency options'),
+('report_frequency_options', '["daily", "weekly", "monthly"]', 'list', 'Report frequency options'),
+('reminder_frequency_options', '["daily", "weekly", "monthly"]', 'list', 'Reminder frequency options'),
+('recurrence_pattern_options', '["daily", "weekly", "monthly", "yearly"]', 'list', 'Event recurrence pattern options');
+
+-- Question type options for focus questions  
+INSERT INTO system_settings (setting_key, setting_value, setting_type, description) VALUES
+('question_type_options', '["open_ended", "multiple_choice", "yes_no", "rating", "ranking"]', 'list', 'Question type options for focus questions');
+
+-- Time range options for analytics
+INSERT INTO system_settings (setting_key, setting_value, setting_type, description) VALUES
+('time_range_options', '["all", "last_30", "last_90", "last_year"]', 'list', 'Time range options for analytics and reports');
+
+-- Role request justification options
+INSERT INTO system_settings (setting_key, setting_value, setting_type, description) VALUES
+('role_request_justifications', '["domain_expertise", "evaluation_experience", "academic_background", "industry_experience", "certification", "volunteer_contribution"]', 'list', 'Justification options for role requests');
+
+-- Language options (limited for UI)
+INSERT INTO system_settings (setting_key, setting_value, setting_type, description) VALUES
+('ui_language_options', '["en", "ar"]', 'list', 'Available UI language options');
+
+-- Stakeholder categories and levels (if not already in)
+INSERT INTO system_settings (setting_key, setting_value, setting_type, description) VALUES
+('stakeholder_categories', '["government", "private_sector", "academic", "civil_society", "international", "media", "experts"]', 'list', 'Stakeholder category options'),
+('engagement_levels', '["high", "medium", "low"]', 'list', 'Engagement level options for stakeholders and partnerships');
+
+-- Chart and visualization colors (for analytics)
+INSERT INTO system_settings (setting_key, setting_value, setting_type, description) VALUES
+('chart_color_palette', '["#8884d8", "#82ca9d", "#ffc658", "#ff7300", "#8dd1e1", "#ff7c7c", "#8dd9cc"]', 'list', 'Color palette for charts and visualizations');
+
+-- Task and assignment priorities
+INSERT INTO system_settings (setting_key, setting_value, setting_type, description) VALUES
+('task_priorities', '["low", "medium", "high", "urgent"]', 'list', 'Task priority levels'),
+('assignment_priorities', '["low", "medium", "high", "urgent"]', 'list', 'Assignment priority levels');
+
+ON CONFLICT (setting_key) DO UPDATE SET
+  setting_value = EXCLUDED.setting_value,
+  description = EXCLUDED.description;
