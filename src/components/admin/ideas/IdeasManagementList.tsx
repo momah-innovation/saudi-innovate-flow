@@ -93,6 +93,16 @@ export function IdeasManagementList({
   const [localSearchTerm, setLocalSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [maturityFilter, setMaturityFilter] = useState<string>("all");
+  
+  // Sync with parent filters
+  useEffect(() => {
+    if (filters.status && filters.status !== '') {
+      setStatusFilter(filters.status);
+    }
+    if (filters.maturityLevel && filters.maturityLevel !== '') {
+      setMaturityFilter(filters.maturityLevel);
+    }
+  }, [filters]);
   const [currentLayout, setCurrentLayout] = useState<'cards' | 'list' | 'grid'>('cards');
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
