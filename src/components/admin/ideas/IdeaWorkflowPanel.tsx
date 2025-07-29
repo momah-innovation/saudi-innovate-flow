@@ -95,20 +95,23 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
     color: 'gray'
   }));
 
-  const assignmentTypes = [
-    { value: 'reviewer', label: 'مراجع' },
-    { value: 'evaluator', label: 'مقيم' },
-    { value: 'implementer', label: 'منفذ' },
-    { value: 'observer', label: 'مراقب' }
-  ];
+  const { ideaAssignmentTypes, priorityLevels } = useSystemLists();
+  
+  const assignmentTypes = ideaAssignmentTypes.map(type => ({ 
+    value: type, 
+    label: type === 'reviewer' ? 'مراجع' :
+           type === 'evaluator' ? 'مقيم' :
+           type === 'implementer' ? 'منفذ' :
+           type === 'observer' ? 'مراقب' : type
+  }));
 
   // Priorities from system lists
-  const priorities = assignmentStatusOptions.map(status => ({ 
-    value: status, 
-    label: status === 'low' ? 'منخفضة' :
-           status === 'medium' ? 'متوسطة' :
-           status === 'high' ? 'عالية' :
-           status === 'urgent' ? 'عاجلة' : status
+  const priorities = priorityLevels.map(level => ({ 
+    value: level, 
+    label: level === 'low' ? 'منخفضة' :
+           level === 'medium' ? 'متوسطة' :
+           level === 'high' ? 'عالية' :
+           level === 'urgent' ? 'عاجلة' : level
   }));
 
   useEffect(() => {

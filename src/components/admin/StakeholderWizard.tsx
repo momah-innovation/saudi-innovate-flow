@@ -67,17 +67,21 @@ export function StakeholderWizard({
            type === 'international' ? 'دولي' : type
   }));
 
-  const influenceLevels = [
-    { value: "عالي", label: "عالي" },
-    { value: "متوسط", label: "متوسط" },
-    { value: "منخفض", label: "منخفض" },
-  ];
+  const { stakeholderInfluenceLevels, stakeholderInterestLevels } = useSystemLists();
+  
+  const influenceLevels = stakeholderInfluenceLevels.map(level => ({ 
+    value: level, 
+    label: level === 'high' ? 'عالي' :
+           level === 'medium' ? 'متوسط' :
+           level === 'low' ? 'منخفض' : level
+  }));
 
-  const interestLevels = [
-    { value: "عالي", label: "عالي" },
-    { value: "متوسط", label: "متوسط" },
-    { value: "منخفض", label: "منخفض" },
-  ];
+  const interestLevels = stakeholderInterestLevels.map(level => ({ 
+    value: level, 
+    label: level === 'high' ? 'عالي' :
+           level === 'medium' ? 'متوسط' :
+           level === 'low' ? 'منخفض' : level
+  }));
 
   const engagementStatuses = generalStatusOptions.map(status => ({ 
     value: status, 

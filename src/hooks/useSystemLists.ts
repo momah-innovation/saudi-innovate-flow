@@ -26,6 +26,11 @@ interface SystemListsHook {
   eventCategories: string[];
   eventVisibilityOptions: string[];
   supportedLanguages: Array<{code: string; label: string; nativeLabel: string}>;
+  stakeholderInfluenceLevels: string[];
+  stakeholderInterestLevels: string[];
+  ideaAssignmentTypes: string[];
+  priorityLevels: string[];
+  ideaMaturityLevels: string[];
   loading: boolean;
 }
 
@@ -79,6 +84,11 @@ export const useSystemLists = (): SystemListsHook => {
       {code: 'he', label: 'Hebrew', nativeLabel: 'עברית'},
       {code: 'fa', label: 'Persian', nativeLabel: 'فارسی'}
     ],
+    stakeholderInfluenceLevels: ['high', 'medium', 'low'],
+    stakeholderInterestLevels: ['high', 'medium', 'low'],
+    ideaAssignmentTypes: ['reviewer', 'evaluator', 'implementer', 'observer'],
+    priorityLevels: ['low', 'medium', 'high', 'urgent'],
+    ideaMaturityLevels: ['concept', 'prototype', 'pilot', 'scaling'],
     loading: true
   });
 
@@ -112,7 +122,12 @@ export const useSystemLists = (): SystemListsHook => {
             'event_formats',
             'event_categories',
             'event_visibility_options',
-            'supported_languages'
+            'supported_languages',
+            'stakeholder_influence_levels',
+            'stakeholder_interest_levels',
+            'idea_assignment_types',
+            'priority_levels',
+            'idea_maturity_levels'
           ]);
         
         if (data) {
@@ -195,6 +210,21 @@ export const useSystemLists = (): SystemListsHook => {
                 break;
               case 'supported_languages':
                 newSettings.supportedLanguages = value;
+                break;
+              case 'stakeholder_influence_levels':
+                newSettings.stakeholderInfluenceLevels = value;
+                break;
+              case 'stakeholder_interest_levels':
+                newSettings.stakeholderInterestLevels = value;
+                break;
+              case 'idea_assignment_types':
+                newSettings.ideaAssignmentTypes = value;
+                break;
+              case 'priority_levels':
+                newSettings.priorityLevels = value;
+                break;
+              case 'idea_maturity_levels':
+                newSettings.ideaMaturityLevels = value;
                 break;
             }
           });

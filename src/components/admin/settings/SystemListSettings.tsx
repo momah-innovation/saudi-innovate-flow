@@ -54,6 +54,15 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     eventCategories: settings.eventCategories || ['حدث مستقل', 'حدث حملة', 'تدريب', 'ورشة عمل'],
     eventVisibilityOptions: settings.eventVisibilityOptions || ['عام', 'خاص', 'داخلي'],
     
+    // Stakeholder-related lists (new)
+    stakeholderInfluenceLevels: settings.stakeholderInfluenceLevels || ['عالي', 'متوسط', 'منخفض'],
+    stakeholderInterestLevels: settings.stakeholderInterestLevels || ['عالي', 'متوسط', 'منخفض'],
+    
+    // Idea-related lists (new)
+    ideaAssignmentTypes: settings.ideaAssignmentTypes || ['reviewer', 'evaluator', 'implementer', 'observer'],
+    priorityLevels: settings.priorityLevels || ['low', 'medium', 'high', 'urgent'],
+    ideaMaturityLevels: settings.ideaMaturityLevels || ['concept', 'prototype', 'pilot', 'scaling'],
+    
     // Language settings
     supportedLanguages: settings.supportedLanguages || [
       {code: 'en', label: 'English', nativeLabel: 'English'},
@@ -105,6 +114,15 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     eventFormats: 'تنسيقات الفعاليات',
     eventCategories: 'فئات الفعاليات',
     eventVisibilityOptions: 'خيارات رؤية الفعاليات',
+    
+    // Stakeholder-related lists (new)
+    stakeholderInfluenceLevels: 'مستويات تأثير أصحاب المصلحة',
+    stakeholderInterestLevels: 'مستويات اهتمام أصحاب المصلحة',
+    
+    // Idea-related lists (new)
+    ideaAssignmentTypes: 'أنواع تكليف الأفكار',
+    priorityLevels: 'مستويات الأولوية',
+    ideaMaturityLevels: 'مستويات نضج الأفكار',
     
     // Language settings
     supportedLanguages: 'اللغات المدعومة',

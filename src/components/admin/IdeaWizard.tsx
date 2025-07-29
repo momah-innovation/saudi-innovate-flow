@@ -116,12 +116,14 @@ export function IdeaWizard({
   }));
 
   // Maturity options from system lists
-  const maturityOptions = experienceLevels.map(level => ({ 
+  const { ideaMaturityLevels } = useSystemLists();
+  
+  const maturityOptions = ideaMaturityLevels.map(level => ({ 
     value: level, 
-    label: level === 'beginner' ? 'مفهوم' :
-           level === 'intermediate' ? 'نموذج أولي' :
-           level === 'advanced' ? 'تجريبي' :
-           level === 'expert' ? 'قابل للتوسع' : level
+    label: level === 'concept' ? 'مفهوم' :
+           level === 'prototype' ? 'نموذج أولي' :
+           level === 'pilot' ? 'تجريبي' :
+           level === 'scaling' ? 'قابل للتوسع' : level
   }));
 
   useEffect(() => {
