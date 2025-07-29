@@ -1,38 +1,11 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Lightbulb, BarChart3 } from "lucide-react";
-import { IdeasManagementList } from "./ideas/IdeasManagementList";
+import { IdeasManagementList, Idea } from "./ideas/IdeasManagementList";
 import { IdeaAnalytics } from "./ideas/IdeaAnalytics";
 import { IdeaWizard } from "./IdeaWizard";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useTranslation } from "@/hooks/useTranslation";
-
-interface Idea {
-  id: string;
-  title_ar: string;
-  description_ar: string;
-  status: string;
-  maturity_level: string;
-  overall_score: number;
-  innovator_id: string;
-  challenge_id?: string;
-  focus_question_id?: string;
-  created_at: string;
-  updated_at: string;
-  innovator?: {
-    user_id: string;
-    innovation_score: number;
-  };
-  challenge?: {
-    id: string;
-    title_ar: string;
-    status: string;
-  };
-  focus_question?: {
-    id: string;
-    question_text_ar: string;
-  };
-}
 
 export function IdeasManagement() {
   const { t } = useTranslation();

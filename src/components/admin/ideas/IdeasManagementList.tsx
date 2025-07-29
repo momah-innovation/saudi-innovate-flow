@@ -31,7 +31,7 @@ interface Idea {
   updated_at: string;
   innovator?: {
     user_id: string;
-    innovation_score: number;
+    display_name: string;
   };
   challenge?: {
     id: string;
@@ -43,6 +43,8 @@ interface Idea {
     question_text_ar: string;
   };
 }
+
+export type { Idea };
 
 interface IdeasManagementListProps {
   viewMode: 'cards' | 'list' | 'grid';
@@ -105,7 +107,7 @@ export function IdeasManagementList({
         .from('ideas')
         .select(`
           *,
-          innovators!innovator_id(user_id, innovation_score),
+          profiles!innovator_id(user_id, display_name),
           challenges!challenge_id(id, title_ar, status),
           focus_questions!focus_question_id(id, question_text_ar)
         `)
@@ -257,11 +259,11 @@ export function IdeasManagementList({
                 label: 'التحدي',
                 value: idea.challenge.title_ar
               }] : []),
-              {
-                icon: <User className="w-4 h-4" />,
-                label: 'المبتكر',
-                value: `نقاط الابتكار: ${idea.innovator?.innovation_score || 0}`
-              }
+               {
+                 icon: <User className="w-4 h-4" />,
+                 label: 'المبتكر',
+                 value: idea.innovator?.display_name || 'غير محدد'
+               }
             ]}
             actions={[
               {

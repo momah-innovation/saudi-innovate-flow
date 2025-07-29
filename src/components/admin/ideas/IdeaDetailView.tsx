@@ -45,7 +45,7 @@ interface Idea {
   updated_at: string;
   innovator?: {
     user_id: string;
-    innovation_score: number;
+    display_name: string;
   };
   challenge?: {
     id: string;
