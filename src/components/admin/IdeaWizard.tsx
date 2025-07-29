@@ -75,7 +75,7 @@ export function IdeaWizard({
   const [formData, setFormData] = useState({
     title_ar: "",
     description_ar: "",
-    status: "submitted",
+    status: "draft",
     maturity_level: "concept",
     innovator_id: "",
     challenge_id: "",
@@ -98,6 +98,7 @@ export function IdeaWizard({
 
   // Status options
   const statusOptions = [
+    { value: 'draft', label: 'مسودة' },
     { value: 'submitted', label: 'مُرسلة' },
     { value: 'under_review', label: 'قيد المراجعة' },
     { value: 'approved', label: 'موافق عليها' },
@@ -125,7 +126,7 @@ export function IdeaWizard({
       setFormData({
         title_ar: idea.title_ar || "",
         description_ar: idea.description_ar || "",
-        status: idea.status || "submitted",
+        status: idea.status || "draft",
         maturity_level: idea.maturity_level || "concept",
         innovator_id: idea.innovator_id || "",
         challenge_id: idea.challenge_id || "",
@@ -141,7 +142,7 @@ export function IdeaWizard({
       setFormData({
         title_ar: "",
         description_ar: "",
-        status: "submitted",
+        status: "draft",
         maturity_level: "concept",
         innovator_id: "",
         challenge_id: "",
@@ -238,12 +239,15 @@ export function IdeaWizard({
   const validateAssociations = () => {
     const newErrors: Record<string, string> = {};
     
-    if (!formData.challenge_id || formData.challenge_id.trim() === "") {
-      newErrors.challenge_id = "يجب اختيار التحدي المرتبط";
-    }
-    
-    if (!formData.focus_question_id || formData.focus_question_id.trim() === "") {
-      newErrors.focus_question_id = "يجب اختيار السؤال المحوري المرتبط";
+    // Only validate mandatory associations if status is not draft
+    if (formData.status !== 'draft') {
+      if (!formData.challenge_id || formData.challenge_id.trim() === "") {
+        newErrors.challenge_id = "يجب اختيار التحدي المرتبط عند تقديم الفكرة";
+      }
+      
+      if (!formData.focus_question_id || formData.focus_question_id.trim() === "") {
+        newErrors.focus_question_id = "يجب اختيار السؤال المحوري المرتبط عند تقديم الفكرة";
+      }
     }
     
     setErrors(newErrors);
@@ -488,9 +492,21 @@ export function IdeaWizard({
       validation: validateAssociations,
       content: (
         <div className="space-y-6">
+          {/* Status Information */}
+          {formData.status === 'draft' && (
+            <Alert>
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                هذه الفكرة محفوظة كمسودة. يمكنك حفظها بدون ربط إجباري بالتحديات، ولكن ستحتاج لربطها عند تقديمها رسمياً.
+              </AlertDescription>
+            </Alert>
+          )}
+          
           {/* Required Associations */}
           <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
-            <h4 className="font-medium text-sm">الربط المطلوب *</h4>
+            <h4 className="font-medium text-sm">
+              الربط المطلوب {formData.status === 'draft' ? '(عند التقديم)' : '*'}
+            </h4>
             
             <div className="space-y-2">
               <Label htmlFor="challenge_id">التحدي المرتبط *</Label>
