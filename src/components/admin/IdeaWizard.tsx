@@ -518,7 +518,6 @@ export function IdeaWizard({
                   setFormData({ 
                     ...formData, 
                     campaign_id: value,
-                    event_id: value !== "none" ? "none" : formData.event_id, // Reset event if campaign selected
                     challenge_id: "", // Reset challenge when campaign changes
                     focus_question_id: "" // Reset focus question
                   });
@@ -546,7 +545,6 @@ export function IdeaWizard({
                   setFormData({ 
                     ...formData, 
                     event_id: value,
-                    campaign_id: value !== "none" ? "none" : formData.campaign_id, // Reset campaign if event selected
                     challenge_id: "", // Reset challenge when event changes
                     focus_question_id: "" // Reset focus question
                   });
@@ -659,56 +657,6 @@ export function IdeaWizard({
             </div>
           </div>
 
-          {/* Optional Associations */}
-          <div className="space-y-4 p-4 border rounded-lg">
-            <h4 className="font-medium text-sm">الربط الاختياري</h4>
-            
-            <div className="space-y-2">
-              <Label htmlFor="campaign_id">الحملة المرتبطة (اختياري)</Label>
-              <Select 
-                value={formData.campaign_id} 
-                onValueChange={(value) => setFormData({ ...formData, campaign_id: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="اختر الحملة (اختياري)" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">بدون ربط بحملة محددة</SelectItem>
-                  {campaigns.map((campaign) => (
-                    <SelectItem key={campaign.id} value={campaign.id}>
-                      {campaign.title_ar}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <p className="text-sm text-muted-foreground">
-                يمكن ربط الفكرة بحملة إبداعية محددة
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="event_id">الفعالية المرتبطة (اختياري)</Label>
-              <Select 
-                value={formData.event_id} 
-                onValueChange={(value) => setFormData({ ...formData, event_id: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="اختر الفعالية (اختياري)" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">بدون ربط بفعالية محددة</SelectItem>
-                  {events.map((event) => (
-                    <SelectItem key={event.id} value={event.id}>
-                      {event.title_ar}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <p className="text-sm text-muted-foreground">
-                يمكن ربط الفكرة بفعالية أو ورشة عمل محددة
-              </p>
-            </div>
-          </div>
         </div>
       ),
     },
