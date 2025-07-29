@@ -33,6 +33,10 @@ import IdeasManagementPage from "./pages/IdeasManagement";
 import IdeasPage from "./pages/Ideas";
 import UserDashboard from "./pages/UserDashboard";
 import IdeaSubmissionWizard from "./pages/IdeaSubmissionWizard";
+import ExpertDashboard from "./pages/ExpertDashboard";
+import ExpertProfile from "./pages/ExpertProfile";
+import EventsBrowse from "./pages/EventsBrowse";
+import PublicStatistics from "./pages/PublicStatistics";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -255,6 +259,34 @@ const App = () => (
                   <IdeaSubmissionWizard />
                 </ProtectedRoute>
               } 
+            />
+            <Route 
+              path="/expert-dashboard" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <ExpertDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/expert-profile" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <ExpertProfile />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/events" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <EventsBrowse />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/statistics" 
+              element={<PublicStatistics />} 
             />
             <Route path="/" element={<LandingPage />} />
             {/* Legacy dashboard route pointing to Index */}
