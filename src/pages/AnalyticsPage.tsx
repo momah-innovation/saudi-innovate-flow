@@ -165,6 +165,12 @@ const AnalyticsPage = () => {
       <PageLayout
         title={isRTL ? 'التحليلات' : 'Analytics'}
         description={isRTL ? 'تحليلات شاملة للأداء والاتجاهات والمؤشرات الرئيسية' : 'Comprehensive analytics for performance, trends, and key metrics'}
+        secondaryActions={
+          <Button>
+            <Download className="h-4 w-4 mr-2" />
+            {isRTL ? 'تصدير التقرير' : 'Export Report'}
+          </Button>
+        }
       >
         <div className="space-y-6">
           {/* Overview Metrics */}

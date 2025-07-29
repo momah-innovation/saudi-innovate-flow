@@ -267,7 +267,7 @@ const TrendsPage = () => {
       <PageLayout
         title={isRTL ? 'الاتجاهات والرؤى' : 'Trends & Insights'}
         description={isRTL ? 'تحليل الاتجاهات الناشئة والرؤى الاستراتيجية للمنصة' : 'Analysis of emerging trends and strategic insights for the platform'}
-        actions={
+        secondaryActions={
           <div className="flex gap-2">
             <Button variant="outline">
               <Share className="h-4 w-4 mr-2" />

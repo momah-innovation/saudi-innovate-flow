@@ -195,7 +195,7 @@ const SystemAnalyticsPage = () => {
       <PageLayout
         title={isRTL ? 'تحليلات النظام' : 'System Analytics'}
         description={isRTL ? 'مراقبة أداء النظام والخوادم والأمان' : 'Monitor system performance, servers, and security'}
-        actions={
+        secondaryActions={
           <div className="flex gap-2">
             <Button variant="outline">
               <RefreshCw className="h-4 w-4 mr-2" />

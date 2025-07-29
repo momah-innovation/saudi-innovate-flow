@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { SearchAndFilters } from '@/components/ui/search-and-filters';
+import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -63,7 +63,8 @@ const mockEvaluations = [
 
 const EvaluationsPage = () => {
   const { isRTL } = useDirection();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
 
@@ -227,13 +228,14 @@ const EvaluationsPage = () => {
         description={isRTL ? 'إدارة ومراجعة تقييمات المشاريع والمساهمات' : 'Manage and review project and contribution evaluations'}
       >
         <div className="space-y-6">
-          <SearchAndFilters
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            searchPlaceholder={isRTL ? 'البحث في التقييمات...' : 'Search evaluations...'}
-            filterOptions={filterOptions}
-            onFilterChange={handleFilterChange}
-          />
+          <div className="flex gap-4 mb-4">
+            <Input
+              placeholder={isRTL ? 'البحث في التقييمات...' : 'Search evaluations...'}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="max-w-sm"
+            />
+          </div>
 
           <Tabs defaultValue="assigned" className="w-full">
             <TabsList className="grid w-full grid-cols-4">

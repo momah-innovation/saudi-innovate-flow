@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { SearchAndFilters } from '@/components/ui/search-and-filters';
+import { Input } from '@/components/ui/input';
 import { 
   FileText, Download, Calendar, Users, 
   BarChart3, TrendingUp, Target, Award,
@@ -123,7 +123,8 @@ const mockReportTemplates = [
 
 const ReportsPage = () => {
   const { isRTL } = useDirection();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [typeFilter, setTypeFilter] = useState('all');
   const [categoryFilter, setCategoryFilter] = useState('all');
 
@@ -310,7 +311,7 @@ const ReportsPage = () => {
       <PageLayout
         title={isRTL ? 'التقارير' : 'Reports'}
         description={isRTL ? 'إدارة وتصدير التقارير والتحليلات المتنوعة' : 'Manage and export various reports and analytics'}
-        actions={
+        secondaryActions={
           <div className="flex gap-2">
             <Button variant="outline">
               <Filter className="h-4 w-4 mr-2" />
@@ -324,13 +325,14 @@ const ReportsPage = () => {
         }
       >
         <div className="space-y-6">
-          <SearchAndFilters
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            searchPlaceholder={isRTL ? 'البحث في التقارير...' : 'Search reports...'}
-            filterOptions={filterOptions}
-            onFilterChange={handleFilterChange}
-          />
+          <div className="flex gap-4 mb-4">
+            <Input
+              placeholder={isRTL ? 'البحث في التقارير...' : 'Search reports...'}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="max-w-sm"
+            />
+          </div>
 
           <Tabs defaultValue="published" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
