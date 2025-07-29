@@ -15,6 +15,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { AppShell } from '@/components/layout/AppShell';
 
 interface IdeaFormData {
   title_ar: string;
@@ -339,11 +340,13 @@ export default function IdeaSubmissionWizard() {
   const progress = (currentStep / STEPS.length) * 100;
 
   return (
-    <PageLayout
-      title="Submit New Idea"
-      description="Share your innovative ideas through our step-by-step submission process"
-      className="max-w-4xl mx-auto"
-    >
+    <AppShell>
+      <PageLayout
+        title="معالج تقديم الفكرة"
+        description="شاركنا فكرتك الابتكارية خطوة بخطوة"
+        maxWidth="lg"
+        className="space-y-6"
+      >
       <div className="space-y-6">
         {/* Progress Bar */}
         <div className="space-y-2">
@@ -430,6 +433,7 @@ export default function IdeaSubmissionWizard() {
           </div>
         </div>
       </div>
-    </PageLayout>
+      </PageLayout>
+    </AppShell>
   );
 }

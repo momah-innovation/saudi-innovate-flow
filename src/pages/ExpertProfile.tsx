@@ -17,6 +17,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { AppShell } from '@/components/layout/AppShell';
 
 interface ExpertProfile {
   id?: string;
@@ -199,11 +200,13 @@ export default function ExpertProfile() {
   }
 
   return (
-    <PageLayout
-      title="Expert Profile"
-      description="Manage your expert profile and areas of expertise"
-      className="max-w-4xl mx-auto space-y-6"
-    >
+    <AppShell>
+      <PageLayout
+        title="ملف الخبير الشخصي"
+        description="إدارة معلومات الخبير ومجالات التخصص"
+        maxWidth="xl"
+        className="space-y-6"
+      >
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-3">
           <User className="w-6 h-6" />
@@ -478,6 +481,7 @@ export default function ExpertProfile() {
           </Card>
         </div>
       </div>
-    </PageLayout>
+      </PageLayout>
+    </AppShell>
   );
 }

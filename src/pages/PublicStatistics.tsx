@@ -10,6 +10,7 @@ import {
 import { PageLayout } from '@/components/layout/PageLayout';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { AppShell } from '@/components/layout/AppShell';
 
 interface PublicStats {
   totalIdeas: number;
@@ -133,11 +134,12 @@ export default function PublicStatistics() {
   }
 
   return (
-    <PageLayout
-      title="Public Statistics"
-      description="Explore the impact and growth of our innovation platform"
-      className="space-y-6"
-    >
+    <AppShell>
+      <PageLayout
+        title="إحصائيات المنصة"
+        description="نظرة شاملة على أداء ونشاط منصة الابتكار"
+        className="space-y-6"
+      >
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="overview" className="flex items-center gap-2">
@@ -458,6 +460,7 @@ export default function PublicStatistics() {
           </Card>
         </TabsContent>
       </Tabs>
-    </PageLayout>
+      </PageLayout>
+    </AppShell>
   );
 }

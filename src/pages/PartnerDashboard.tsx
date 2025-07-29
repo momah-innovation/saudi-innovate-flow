@@ -14,6 +14,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { AppShell } from '@/components/layout/AppShell';
 
 interface PartnerStats {
   activeChallenges: number;
@@ -198,11 +199,12 @@ export default function PartnerDashboard() {
   };
 
   return (
-    <PageLayout
-      title="Partner Dashboard"
-      description="Manage your partnership opportunities and collaborations"
-      className="space-y-6"
-    >
+    <AppShell>
+      <PageLayout
+        title="لوحة قيادة الشريك"
+        description="أهلاً بك في نظام إدارة الشراكات والتعاون"
+        className="space-y-6"
+      >
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview" className="flex items-center gap-2">
@@ -441,6 +443,7 @@ export default function PartnerDashboard() {
           </Card>
         </TabsContent>
       </Tabs>
-    </PageLayout>
+      </PageLayout>
+    </AppShell>
   );
 }

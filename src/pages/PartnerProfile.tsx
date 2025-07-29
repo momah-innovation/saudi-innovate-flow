@@ -16,6 +16,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { AppShell } from '@/components/layout/AppShell';
 
 interface PartnerProfile {
   id?: string;
@@ -294,11 +295,13 @@ export default function PartnerProfile() {
   }
 
   return (
-    <PageLayout
-      title="Partner Profile"
-      description="Manage your organization's partnership profile and collaboration preferences"
-      className="max-w-6xl mx-auto space-y-6"
-    >
+    <AppShell>
+      <PageLayout
+        title="ملف المؤسسة الشريكة"
+        description="إدارة معلومات المؤسسة ومجالات الشراكة"
+        maxWidth="xl"
+        className="space-y-6"
+      >
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-3">
           <Building className="w-6 h-6" />
@@ -612,6 +615,7 @@ export default function PartnerProfile() {
           </Card>
         </div>
       </div>
-    </PageLayout>
+      </PageLayout>
+    </AppShell>
   );
 }

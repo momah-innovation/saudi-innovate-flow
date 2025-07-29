@@ -14,6 +14,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { AppShell } from '@/components/layout/AppShell';
 
 interface Event {
   id: string;
@@ -201,49 +202,41 @@ export default function EventsBrowse() {
   );
 
   return (
-    <PageLayout
-      title="Browse Events"
-      description="Discover and register for innovation events, workshops, and conferences"
-      className="space-y-6"
-    >
-      {/* Search and Filters */}
-      <div className="flex flex-col lg:flex-row gap-4">
-        <div className="flex-1">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-            <Input
-              placeholder="Search events..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-        </div>
-        
-        <div className="flex gap-2 flex-wrap">
-          <Select value={filters.format} onValueChange={(value) => setFilters(prev => ({ ...prev, format: value }))}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {EVENT_FORMATS.map(format => (
-                <SelectItem key={format.value} value={format.value}>{format.label}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+    <AppShell>
+      <PageLayout
+        title="استكشاف الفعاليات"
+        description="اكتشف وسجل في أحدث الفعاليات والأنشطة الابتكارية"
+        showSearch={true}
+        searchValue={searchTerm}
+        onSearchChange={setSearchTerm}
+        searchPlaceholder="البحث في الفعاليات..."
+        filters={
+          <div className="flex flex-wrap gap-2 items-center">
+            <Select value={filters.format} onValueChange={(value) => setFilters(prev => ({ ...prev, format: value }))}>
+              <SelectTrigger className="w-40">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {EVENT_FORMATS.map(format => (
+                  <SelectItem key={format.value} value={format.value}>{format.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-          <Select value={filters.event_type} onValueChange={(value) => setFilters(prev => ({ ...prev, event_type: value }))}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {EVENT_TYPES.map(type => (
-                <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+            <Select value={filters.event_type} onValueChange={(value) => setFilters(prev => ({ ...prev, event_type: value }))}>
+              <SelectTrigger className="w-40">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {EVENT_TYPES.map(type => (
+                  <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        }
+        className="space-y-6"
+      >
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -406,6 +399,7 @@ export default function EventsBrowse() {
           </div>
         </CardContent>
       </Card>
-    </PageLayout>
+      </PageLayout>
+    </AppShell>
   );
 }

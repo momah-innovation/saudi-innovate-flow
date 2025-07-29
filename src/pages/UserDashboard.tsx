@@ -14,6 +14,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { AppShell } from '@/components/layout/AppShell';
 
 interface DashboardStats {
   totalIdeas: number;
@@ -139,11 +140,12 @@ export default function UserDashboard() {
   };
 
   return (
-    <PageLayout
-      title="My Dashboard"
-      description="Personal overview of your innovation journey"
-      className="space-y-6"
-    >
+    <AppShell>
+      <PageLayout
+        title="لوحة القيادة - المبتكر"
+        description={`أهلاً بك ${userProfile?.display_name || 'المبتكر'}! إليك نظرة عامة على أنشطتك`}
+        className="space-y-6"
+      >
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview" className="flex items-center gap-2">
@@ -352,6 +354,7 @@ export default function UserDashboard() {
           </Card>
         </TabsContent>
       </Tabs>
-    </PageLayout>
+      </PageLayout>
+    </AppShell>
   );
 }

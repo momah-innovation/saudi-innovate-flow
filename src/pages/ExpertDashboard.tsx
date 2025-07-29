@@ -14,6 +14,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { AppShell } from '@/components/layout/AppShell';
 
 interface ExpertStats {
   assignedChallenges: number;
@@ -154,11 +155,12 @@ export default function ExpertDashboard() {
   };
 
   return (
-    <PageLayout
-      title="Expert Dashboard"
-      description="Manage your expert evaluations and assignments"
-      className="space-y-6"
-    >
+    <AppShell>
+      <PageLayout
+        title="لوحة القيادة - الخبير"
+        description="أهلاً بك في نظام إدارة الخبراء والتقييمات"
+        className="space-y-6"
+      >
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview" className="flex items-center gap-2">
@@ -391,6 +393,7 @@ export default function ExpertDashboard() {
           </Card>
         </TabsContent>
       </Tabs>
-    </PageLayout>
+      </PageLayout>
+    </AppShell>
   );
 }
