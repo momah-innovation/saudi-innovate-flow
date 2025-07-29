@@ -10,6 +10,12 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { BulkActionsPanel } from "./BulkActionsPanel";
+import { IdeaCommentsPanel } from "./IdeaCommentsPanel";
+import { IdeaWorkflowPanel } from "./IdeaWorkflowPanel";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { 
   Lightbulb, 
@@ -93,6 +99,13 @@ export function IdeasManagementList({
   const [localSearchTerm, setLocalSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [maturityFilter, setMaturityFilter] = useState<string>("all");
+  
+  // New state for advanced features
+  const [showCommentsPanel, setShowCommentsPanel] = useState(false);
+  const [showWorkflowPanel, setShowWorkflowPanel] = useState(false);
+  const [selectedIdeaForPanel, setSelectedIdeaForPanel] = useState<string>("");
+  const [selectMode, setSelectMode] = useState(false);
+  const [localSelectedItems, setLocalSelectedItems] = useState<string[]>([]);
   
   // Sync with parent filters
   useEffect(() => {
@@ -285,6 +298,13 @@ export function IdeasManagementList({
           </div>
         </div>
 
+        {/* Bulk Actions Panel */}
+        <BulkActionsPanel
+          selectedItems={localSelectedItems}
+          onItemsUpdate={fetchIdeas}
+          onClearSelection={() => setLocalSelectedItems([])}
+        />
+
         {/* Content */}
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -335,26 +355,45 @@ export function IdeasManagementList({
                    value: new Date(idea.created_at).toLocaleDateString('ar-SA')
                  }
                 ]}
-                actions={[
-                  {
-                    type: 'view',
-                    label: 'عرض',
-                    onClick: () => {
-                      setSelectedIdea(idea);
-                      setShowDetailView(true);
-                    },
-                    icon: <Eye className="w-4 h-4" />
-                  },
-                  {
-                    type: 'edit',
-                    label: 'تعديل',
-                    onClick: () => {
-                      setSelectedIdea(idea);
-                      setShowWizard(true);
-                    },
-                    icon: <Settings className="w-4 h-4" />
-                  }
-                ]}
+                 actions={[
+                   {
+                     type: 'view',
+                     label: 'عرض',
+                     onClick: () => {
+                       setSelectedIdea(idea);
+                       setShowDetailView(true);
+                     },
+                     icon: <Eye className="w-4 h-4" />
+                   },
+                   {
+                     type: 'edit',
+                     label: 'تعديل',
+                     onClick: () => {
+                       setSelectedIdea(idea);
+                       setShowWizard(true);
+                     },
+                     icon: <Settings className="w-4 h-4" />
+                   },
+                   {
+                     type: 'custom',
+                     label: 'التعليقات',
+                     onClick: () => {
+                       setSelectedIdeaForPanel(idea.id);
+                       setShowCommentsPanel(true);
+                     },
+                     icon: <Users className="w-4 h-4" />
+                   },
+                   {
+                     type: 'custom',
+                     label: 'سير العمل',
+                     onClick: () => {
+                       setSelectedIdea(idea);
+                       setSelectedIdeaForPanel(idea.id);
+                       setShowWorkflowPanel(true);
+                     },
+                     icon: <TrendingUp className="w-4 h-4" />
+                   }
+                 ]}
               />
             ))}
           </div>
@@ -391,6 +430,37 @@ export function IdeasManagementList({
         }}
         onRefresh={fetchIdeas}
       />
+
+      {/* Comments Panel Dialog */}
+      <Dialog open={showCommentsPanel} onOpenChange={setShowCommentsPanel}>
+        <DialogContent className="max-w-4xl max-h-[90vh]">
+          <DialogHeader>
+            <DialogTitle>تعليقات الفكرة</DialogTitle>
+          </DialogHeader>
+          <IdeaCommentsPanel
+            ideaId={selectedIdeaForPanel}
+            isOpen={showCommentsPanel}
+            onClose={() => setShowCommentsPanel(false)}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* Workflow Panel Dialog */}
+      <Dialog open={showWorkflowPanel} onOpenChange={setShowWorkflowPanel}>
+        <DialogContent className="max-w-6xl max-h-[90vh]">
+          <DialogHeader>
+            <DialogTitle>إدارة سير عمل الفكرة</DialogTitle>
+          </DialogHeader>
+          <IdeaWorkflowPanel
+            ideaId={selectedIdeaForPanel}
+            currentStatus={selectedIdea?.status || ''}
+            onStatusChange={() => {
+              fetchIdeas();
+              onRefresh();
+            }}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
