@@ -24,7 +24,8 @@ export function OrganizationalSettings({ settings, onSettingChange }: Organizati
               <Input
                 id="maxHierarchyLevels"
                 type="number"
-                defaultValue="5"
+                value={settings.orgMaxHierarchyLevels || 5}
+                onChange={(e) => onSettingChange('orgMaxHierarchyLevels', parseInt(e.target.value))}
                 min="2"
                 max="10"
                 className="rtl:text-right ltr:text-left"
@@ -36,7 +37,8 @@ export function OrganizationalSettings({ settings, onSettingChange }: Organizati
               <Input
                 id="maxSectors"
                 type="number"
-                defaultValue="20"
+                value={settings.orgMaxSectors || 20}
+                onChange={(e) => onSettingChange('orgMaxSectors', parseInt(e.target.value))}
                 min="1"
                 max="100"
                 className="rtl:text-right ltr:text-left"
@@ -49,7 +51,10 @@ export function OrganizationalSettings({ settings, onSettingChange }: Organizati
               <Label className="text-base">تحديث تلقائي للهيكل</Label>
               <p className="text-sm text-muted-foreground">تحديث الهيكل التنظيمي تلقائياً عند تغيير البيانات</p>
             </div>
-            <Switch defaultChecked />
+            <Switch 
+              checked={settings.orgAutoUpdateStructure !== false}
+              onCheckedChange={(checked) => onSettingChange('orgAutoUpdateStructure', checked)}
+            />
           </div>
         </CardContent>
       </Card>

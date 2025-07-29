@@ -121,6 +121,57 @@ interface AllSystemSettings {
   // UI Settings
   uiInitialsMaxLength: number;
 
+  // Additional platform service settings
+  // Evaluation settings
+  evaluationScale: string;
+  evaluationRequiredFields: number;
+  evaluationRequireComments: boolean;
+
+  // Campaign settings
+  campaignDefaultDuration: number;
+  campaignMaxBudget: number;
+  campaignRequireApproval: boolean;
+
+  // Focus Question settings
+  focusQuestionMaxPerChallenge: number;
+  focusQuestionRequireDescription: boolean;
+  focusQuestionAutoSequence: boolean;
+
+  // Event settings
+  eventMaxParticipants: number;
+  eventRequireRegistration: boolean;
+  eventAllowWaitlist: boolean;
+
+  // Stakeholder settings
+  stakeholderMaxPerOrganization: number;
+  stakeholderRequireVerification: boolean;
+  stakeholderAutoCategorize: boolean;
+
+  // Team settings
+  teamMaxMembers: number;
+  teamRequireLead: boolean;
+  teamAutoWorkloadBalance: boolean;
+
+  // Analytics settings
+  analyticsDataRetention: number;
+  analyticsReportFrequency: string;
+  analyticsRealtimeUpdates: boolean;
+
+  // Partner settings
+  partnerMaxPerProject: number;
+  partnerRequireContract: boolean;
+  partnerAutoOnboarding: boolean;
+
+  // Organizational settings
+  orgMaxHierarchyLevels: number;
+  orgMaxSectors: number;
+  orgAutoUpdateStructure: boolean;
+
+  // User Management settings
+  userMaxRolesPerUser: number;
+  userRequireApproval: boolean;
+  userAutoDeactivateInactive: boolean;
+
   // Loading and error states
   loading: boolean;
   error: string | null;
@@ -258,6 +309,39 @@ const defaultSettings: AllSystemSettings = {
   allowCustomValues: true,
   sortListsAlphabetically: false,
   uiInitialsMaxLength: 2,
+
+  // Additional platform service defaults
+  evaluationScale: "10",
+  evaluationRequiredFields: 5,
+  evaluationRequireComments: true,
+  campaignDefaultDuration: 30,
+  campaignMaxBudget: 1000000,
+  campaignRequireApproval: true,
+  focusQuestionMaxPerChallenge: 10,
+  focusQuestionRequireDescription: true,
+  focusQuestionAutoSequence: true,
+  eventMaxParticipants: 500,
+  eventRequireRegistration: true,
+  eventAllowWaitlist: true,
+  stakeholderMaxPerOrganization: 100,
+  stakeholderRequireVerification: true,
+  stakeholderAutoCategorize: false,
+  teamMaxMembers: 20,
+  teamRequireLead: true,
+  teamAutoWorkloadBalance: true,
+  analyticsDataRetention: 365,
+  analyticsReportFrequency: "weekly",
+  analyticsRealtimeUpdates: true,
+  partnerMaxPerProject: 5,
+  partnerRequireContract: true,
+  partnerAutoOnboarding: false,
+  orgMaxHierarchyLevels: 5,
+  orgMaxSectors: 20,
+  orgAutoUpdateStructure: true,
+  userMaxRolesPerUser: 3,
+  userRequireApproval: true,
+  userAutoDeactivateInactive: false,
+
   loading: true,
   error: null,
 };

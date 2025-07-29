@@ -21,7 +21,10 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
             <div className="space-y-2">
               <Label htmlFor="evalScale">مقياس التقييم</Label>
-              <Select defaultValue="10">
+              <Select 
+                value={settings.evaluationScale || "10"} 
+                onValueChange={(value) => onSettingChange('evaluationScale', value)}
+              >
                 <SelectTrigger className="rtl:text-right ltr:text-left">
                   <SelectValue />
                 </SelectTrigger>
@@ -38,7 +41,8 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
               <Input
                 id="evalRequiredFields"
                 type="number"
-                defaultValue="5"
+                value={settings.evaluationRequiredFields || 5}
+                onChange={(e) => onSettingChange('evaluationRequiredFields', parseInt(e.target.value))}
                 min="1"
                 max="10"
                 className="rtl:text-right ltr:text-left"
@@ -51,7 +55,10 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
               <Label className="text-base">إجبار التعليقات</Label>
               <p className="text-sm text-muted-foreground">مطالبة المقيمين بكتابة تعليقات</p>
             </div>
-            <Switch defaultChecked />
+            <Switch 
+              checked={settings.evaluationRequireComments !== false}
+              onCheckedChange={(checked) => onSettingChange('evaluationRequireComments', checked)}
+            />
           </div>
         </CardContent>
       </Card>

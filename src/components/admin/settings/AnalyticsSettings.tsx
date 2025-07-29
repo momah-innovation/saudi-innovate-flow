@@ -24,7 +24,8 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
               <Input
                 id="dataRetention"
                 type="number"
-                defaultValue="365"
+                value={settings.analyticsDataRetention || 365}
+                onChange={(e) => onSettingChange('analyticsDataRetention', parseInt(e.target.value))}
                 min="30"
                 max="3650"
                 className="rtl:text-right ltr:text-left"
@@ -33,7 +34,10 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
             
             <div className="space-y-2">
               <Label htmlFor="reportFrequency">تكرار التقارير</Label>
-              <Select defaultValue="weekly">
+              <Select 
+                value={settings.analyticsReportFrequency || "weekly"}
+                onValueChange={(value) => onSettingChange('analyticsReportFrequency', value)}
+              >
                 <SelectTrigger className="rtl:text-right ltr:text-left">
                   <SelectValue />
                 </SelectTrigger>
@@ -51,7 +55,10 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
               <Label className="text-base">التحليل في الوقت الفعلي</Label>
               <p className="text-sm text-muted-foreground">تحديث البيانات التحليلية في الوقت الفعلي</p>
             </div>
-            <Switch defaultChecked />
+            <Switch 
+              checked={settings.analyticsRealtimeUpdates !== false}
+              onCheckedChange={(checked) => onSettingChange('analyticsRealtimeUpdates', checked)}
+            />
           </div>
         </CardContent>
       </Card>
