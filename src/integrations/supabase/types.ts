@@ -1324,6 +1324,289 @@ export type Database = {
           },
         ]
       }
+      idea_analytics: {
+        Row: {
+          created_at: string | null
+          id: string
+          idea_id: string
+          metric_data: Json | null
+          metric_name: string
+          metric_value: number | null
+          recorded_by: string | null
+          recorded_date: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          idea_id: string
+          metric_data?: Json | null
+          metric_name: string
+          metric_value?: number | null
+          recorded_by?: string | null
+          recorded_date?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          idea_id?: string
+          metric_data?: Json | null
+          metric_name?: string
+          metric_value?: number | null
+          recorded_by?: string | null
+          recorded_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_analytics_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      idea_approval_workflows: {
+        Row: {
+          approval_level: number
+          approver_id: string
+          created_at: string | null
+          decision_date: string | null
+          decision_reason: string | null
+          delegation_to: string | null
+          id: string
+          idea_id: string
+          is_required: boolean | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          approval_level: number
+          approver_id: string
+          created_at?: string | null
+          decision_date?: string | null
+          decision_reason?: string | null
+          delegation_to?: string | null
+          id?: string
+          idea_id: string
+          is_required?: boolean | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          approval_level?: number
+          approver_id?: string
+          created_at?: string | null
+          decision_date?: string | null
+          decision_reason?: string | null
+          delegation_to?: string | null
+          id?: string
+          idea_id?: string
+          is_required?: boolean | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_approval_workflows_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      idea_assignments: {
+        Row: {
+          assigned_by: string
+          assigned_to: string
+          assignment_type: string
+          completed_at: string | null
+          created_at: string | null
+          due_date: string | null
+          id: string
+          idea_id: string
+          notes: string | null
+          priority: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_by: string
+          assigned_to: string
+          assignment_type: string
+          completed_at?: string | null
+          created_at?: string | null
+          due_date?: string | null
+          id?: string
+          idea_id: string
+          notes?: string | null
+          priority?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_by?: string
+          assigned_to?: string
+          assignment_type?: string
+          completed_at?: string | null
+          created_at?: string | null
+          due_date?: string | null
+          id?: string
+          idea_id?: string
+          notes?: string | null
+          priority?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_assignments_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      idea_attachments: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          file_name: string
+          file_path: string
+          file_size: number | null
+          file_type: string | null
+          id: string
+          idea_id: string
+          is_public: boolean | null
+          uploaded_by: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          file_name: string
+          file_path: string
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          idea_id: string
+          is_public?: boolean | null
+          uploaded_by: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          file_name?: string
+          file_path?: string
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          idea_id?: string
+          is_public?: boolean | null
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_attachments_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      idea_collaboration_teams: {
+        Row: {
+          added_by: string
+          id: string
+          idea_id: string
+          joined_at: string | null
+          member_id: string
+          permissions: Json | null
+          role: string
+          status: string | null
+        }
+        Insert: {
+          added_by: string
+          id?: string
+          idea_id: string
+          joined_at?: string | null
+          member_id: string
+          permissions?: Json | null
+          role: string
+          status?: string | null
+        }
+        Update: {
+          added_by?: string
+          id?: string
+          idea_id?: string
+          joined_at?: string | null
+          member_id?: string
+          permissions?: Json | null
+          role?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_collaboration_teams_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      idea_comments: {
+        Row: {
+          author_id: string
+          comment_type: string | null
+          content: string
+          created_at: string | null
+          id: string
+          idea_id: string
+          is_internal: boolean | null
+          parent_comment_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          author_id: string
+          comment_type?: string | null
+          content: string
+          created_at?: string | null
+          id?: string
+          idea_id: string
+          is_internal?: boolean | null
+          parent_comment_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          author_id?: string
+          comment_type?: string | null
+          content?: string
+          created_at?: string | null
+          id?: string
+          idea_id?: string
+          is_internal?: boolean | null
+          parent_comment_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_comments_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "idea_comments_parent_comment_id_fkey"
+            columns: ["parent_comment_id"]
+            isOneToOne: false
+            referencedRelation: "idea_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       idea_evaluations: {
         Row: {
           created_at: string | null
@@ -1382,6 +1665,251 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "idea_evaluations_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      idea_lifecycle_milestones: {
+        Row: {
+          achieved_by: string | null
+          achieved_date: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          idea_id: string
+          is_required: boolean | null
+          milestone_type: string
+          order_sequence: number | null
+          status: string | null
+          target_date: string | null
+          title: string
+        }
+        Insert: {
+          achieved_by?: string | null
+          achieved_date?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          idea_id: string
+          is_required?: boolean | null
+          milestone_type: string
+          order_sequence?: number | null
+          status?: string | null
+          target_date?: string | null
+          title: string
+        }
+        Update: {
+          achieved_by?: string | null
+          achieved_date?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          idea_id?: string
+          is_required?: boolean | null
+          milestone_type?: string
+          order_sequence?: number | null
+          status?: string | null
+          target_date?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_lifecycle_milestones_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      idea_notifications: {
+        Row: {
+          created_at: string | null
+          data: Json | null
+          id: string
+          idea_id: string
+          is_read: boolean | null
+          message: string
+          notification_type: string
+          recipient_id: string
+          sender_id: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          data?: Json | null
+          id?: string
+          idea_id: string
+          is_read?: boolean | null
+          message: string
+          notification_type: string
+          recipient_id: string
+          sender_id?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          data?: Json | null
+          id?: string
+          idea_id?: string
+          is_read?: boolean | null
+          message?: string
+          notification_type?: string
+          recipient_id?: string
+          sender_id?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_notifications_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      idea_tag_links: {
+        Row: {
+          added_by: string
+          created_at: string | null
+          id: string
+          idea_id: string
+          tag_id: string
+        }
+        Insert: {
+          added_by: string
+          created_at?: string | null
+          id?: string
+          idea_id: string
+          tag_id: string
+        }
+        Update: {
+          added_by?: string
+          created_at?: string | null
+          id?: string
+          idea_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_tag_links_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "idea_tag_links_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "idea_tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      idea_tags: {
+        Row: {
+          category: string | null
+          color: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          category?: string | null
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          category?: string | null
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      idea_versions: {
+        Row: {
+          changed_by: string
+          changes_summary: string | null
+          created_at: string | null
+          field_changes: Json | null
+          id: string
+          idea_id: string
+          version_number: number
+        }
+        Insert: {
+          changed_by: string
+          changes_summary?: string | null
+          created_at?: string | null
+          field_changes?: Json | null
+          id?: string
+          idea_id: string
+          version_number: number
+        }
+        Update: {
+          changed_by?: string
+          changes_summary?: string | null
+          created_at?: string | null
+          field_changes?: Json | null
+          id?: string
+          idea_id?: string
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_versions_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      idea_workflow_states: {
+        Row: {
+          created_at: string | null
+          from_status: string | null
+          id: string
+          idea_id: string
+          metadata: Json | null
+          reason: string | null
+          to_status: string
+          triggered_by: string
+        }
+        Insert: {
+          created_at?: string | null
+          from_status?: string | null
+          id?: string
+          idea_id: string
+          metadata?: Json | null
+          reason?: string | null
+          to_status: string
+          triggered_by: string
+        }
+        Update: {
+          created_at?: string | null
+          from_status?: string | null
+          id?: string
+          idea_id?: string
+          metadata?: Json | null
+          reason?: string | null
+          to_status?: string
+          triggered_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_workflow_states_idea_id_fkey"
             columns: ["idea_id"]
             isOneToOne: false
             referencedRelation: "ideas"
@@ -2911,6 +3439,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      calculate_idea_analytics: {
+        Args: { p_idea_id: string }
+        Returns: undefined
+      }
       generate_invitation_token: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -2922,6 +3454,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      send_idea_workflow_notifications: {
+        Args: { p_idea_id: string; p_from_status: string; p_to_status: string }
+        Returns: undefined
+      }
       send_notification: {
         Args: {
           target_user_id: string
@@ -2931,6 +3467,10 @@ export type Database = {
           notification_metadata?: Json
         }
         Returns: string
+      }
+      trigger_idea_workflow_change: {
+        Args: { p_idea_id: string; p_to_status: string; p_reason?: string }
+        Returns: boolean
       }
       update_weekly_capacity: {
         Args: Record<PropertyKey, never>
