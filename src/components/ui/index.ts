@@ -120,6 +120,8 @@ export * from './toggle';
 export * from './toggle-group';
 export * from './tooltip';
 export { useToast, toast } from './use-toast';
+export * from './profile-card';
+export * from './profile-detail-dialog';
 
 // Type definitions for theming
 export type ThemeVariant = 'default' | 'modern' | 'minimal' | 'vibrant';

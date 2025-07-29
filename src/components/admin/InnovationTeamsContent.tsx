@@ -15,12 +15,8 @@ import {
 } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { TeamMemberWizard } from './TeamMemberWizard';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { ProfileCard, ProfileCardAction, ProfileCardData } from '@/components/ui/profile-card';
+import { ProfileDetailDialog } from '@/components/ui/profile-detail-dialog';
 
 interface InnovationTeamsContentProps {
   activeTab: string;
@@ -44,6 +40,8 @@ export function InnovationTeamsContent({
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [editingMember, setEditingMember] = useState<any>(null);
+  const [selectedMember, setSelectedMember] = useState<any>(null);
+  const [showDetailDialog, setShowDetailDialog] = useState(false);
   const [coreTeamData, setCoreTeamData] = useState({
     members: [],
     metrics: {
@@ -164,98 +162,51 @@ export function InnovationTeamsContent({
     }
   };
 
-  const renderMemberCard = (member: any) => (
-    <Card key={member.id} className="relative">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <Avatar className="h-12 w-12">
-              <AvatarImage src={member.profiles?.profile_image_url} />
-              <AvatarFallback>
-                {member.profiles?.name?.charAt(0) || member.profiles?.name_ar?.charAt(0) || 'U'}
-              </AvatarFallback>
-            </Avatar>
-            <div>
-              <CardTitle className="text-base flex items-center gap-2">
-                {member.profiles?.name || member.profiles?.name_ar || 'مستخدم غير معروف'}
-              </CardTitle>
-              <CardDescription className="text-sm">
-                {member.profiles?.email || member.contact_email || 'غير محدد'}
-              </CardDescription>
-            </div>
-          </div>
-          
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm">
-                <MoreVertical className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleEditMember(member)}>
-                <Edit className="h-4 w-4 mr-2" />
-                {t('edit')}
-              </DropdownMenuItem>
-              <DropdownMenuItem 
-                className="text-destructive"
-                onClick={() => handleRemoveMember(member.id)}
-              >
-                <UserX className="h-4 w-4 mr-2" />
-                {t('remove')}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </CardHeader>
-      
-      <CardContent className="space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium">{t('role')}</span>
-          <Badge variant="outline">{member.cic_role || 'غير محدد'}</Badge>
-        </div>
-        
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium">{t('specialization')}</span>
-          <Badge variant="secondary" className="text-xs">
-            {Array.isArray(member.specialization) ? member.specialization.join(', ') : (member.specialization || 'غير محدد')}
-          </Badge>
-        </div>
-        
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-sm">
-            <span>{t('currentWorkload')}</span>
-            <span>{member.current_workload || 0}%</span>
-          </div>
-          <Progress value={member.current_workload || 0} className="h-2" />
-        </div>
-        
-        <div className="flex items-center justify-between text-sm">
-          <span>{t('activeAssignments')}</span>
-          <span className="flex items-center gap-1">
-            <Target className="h-3 w-3" />
-            {member.team_assignments?.filter((a: any) => a.status === 'active')?.length || 0}
-          </span>
-        </div>
-        
-        <div className="flex items-center justify-between text-sm">
-          <span>{t('department')}</span>
-          <span>{member.profiles?.department || member.department || 'غير محدد'}</span>
-        </div>
-        
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium">{t('status')}</span>
-          <Badge variant={member.status === 'active' ? 'default' : 'secondary'}>
-            {member.status === 'active' ? (
-              <CheckCircle className="h-3 w-3 mr-1" />
-            ) : (
-              <AlertTriangle className="h-3 w-3 mr-1" />
-            )}
-            {member.status === 'active' ? t('active') : t('inactive')}
-          </Badge>
-        </div>
-      </CardContent>
-    </Card>
-  );
+  const handleViewMember = (member: any) => {
+    setSelectedMember(member);
+    setShowDetailDialog(true);
+  };
+
+  const renderMemberCard = (member: any) => {
+    const cardData: ProfileCardData = {
+      id: member.id,
+      name: member.profiles?.name,
+      name_ar: member.profiles?.name_ar,
+      email: member.profiles?.email || member.contact_email,
+      profile_image_url: member.profiles?.profile_image_url,
+      role: member.cic_role,
+      department: member.profiles?.department || member.department,
+      position: member.profiles?.position,
+      specialization: member.specialization,
+      current_workload: member.current_workload,
+      status: member.status,
+      activeAssignments: member.team_assignments?.filter((a: any) => a.status === 'active')?.length || 0,
+      ...member // Include any additional fields
+    };
+
+    const actions: ProfileCardAction[] = [
+      {
+        label: t('edit'),
+        icon: <Edit className="h-4 w-4 mr-2" />,
+        onClick: () => handleEditMember(member)
+      },
+      {
+        label: t('remove'),
+        icon: <UserX className="h-4 w-4 mr-2" />,
+        onClick: () => handleRemoveMember(member.id),
+        variant: 'destructive'
+      }
+    ];
+
+    return (
+      <ProfileCard
+        key={member.id}
+        data={cardData}
+        actions={actions}
+        onClick={() => handleViewMember(member)}
+      />
+    );
+  };
 
   const renderOverview = () => (
     <div className="space-y-6">
@@ -410,6 +361,27 @@ export function InnovationTeamsContent({
           fetchCoreTeamData();
           setEditingMember(null);
         }}
+      />
+
+      {/* Profile Detail Dialog */}
+      <ProfileDetailDialog
+        open={showDetailDialog}
+        onOpenChange={setShowDetailDialog}
+        data={selectedMember ? {
+          id: selectedMember.id,
+          name: selectedMember.profiles?.name,
+          name_ar: selectedMember.profiles?.name_ar,
+          email: selectedMember.profiles?.email || selectedMember.contact_email,
+          profile_image_url: selectedMember.profiles?.profile_image_url,
+          role: selectedMember.cic_role,
+          department: selectedMember.profiles?.department || selectedMember.department,
+          position: selectedMember.profiles?.position,
+          specialization: selectedMember.specialization,
+          current_workload: selectedMember.current_workload,
+          status: selectedMember.status,
+          activeAssignments: selectedMember.team_assignments?.filter((a: any) => a.status === 'active')?.length || 0,
+          ...selectedMember
+        } : null}
       />
     </div>
   );
