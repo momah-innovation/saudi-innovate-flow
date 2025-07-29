@@ -29,6 +29,7 @@ import {
   ChevronsUpDown,
   Check
 } from "lucide-react";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 interface CampaignData {
   id?: string;
@@ -72,6 +73,7 @@ export function CampaignWizard({
   onSuccess 
 }: CampaignWizardProps) {
   const { toast } = useToast();
+  const { generalStatusOptions } = useSystemLists();
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -467,9 +469,11 @@ export function CampaignWizard({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="planning">تخطيط</SelectItem>
-                    <SelectItem value="active">نشطة</SelectItem>
-                    <SelectItem value="completed">مكتملة</SelectItem>
-                    <SelectItem value="cancelled">ملغية</SelectItem>
+                    {generalStatusOptions.filter(status => ['active', 'completed', 'cancelled'].includes(status)).map(status => (
+                      <SelectItem key={status} value={status}>
+                        {status === 'active' ? 'نشطة' : status === 'completed' ? 'مكتملة' : 'ملغية'}
+                      </SelectItem>
+                    ))}
                     <SelectItem value="archived">مؤرشفة</SelectItem>
                   </SelectContent>
                 </Select>

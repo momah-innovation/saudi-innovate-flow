@@ -12,6 +12,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { UserInvitationWizard } from "@/components/admin/UserInvitationWizard";
 import { RoleRequestWizard } from "@/components/admin/RoleRequestWizard";
 import { ExpertProfileDialog } from "@/components/admin/ExpertProfileDialog";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 const UserManagement = () => {
   const { t, language, isRTL } = useTranslation();
@@ -21,6 +22,7 @@ const UserManagement = () => {
   const [showRoleDialog, setShowRoleDialog] = useState(false);
   const [showExpertDialog, setShowExpertDialog] = useState(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
+  const { userStatusOptions } = useSystemLists();
 
   // Mock data for demonstration
   const users = [
@@ -176,9 +178,11 @@ const UserManagement = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">{t("allStatus")}</SelectItem>
-            <SelectItem value="active">{t("active")}</SelectItem>
-            <SelectItem value="inactive">{t("inactive")}</SelectItem>
-            <SelectItem value="pending">{t("pending")}</SelectItem>
+            {userStatusOptions.filter(status => ['active', 'inactive', 'pending'].includes(status)).map(status => (
+              <SelectItem key={status} value={status}>
+                {status === 'active' ? t("active") : status === 'inactive' ? t("inactive") : t("pending")}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { ViewLayouts } from "@/components/ui/view-layouts";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 interface Challenge {
   id: string;
@@ -71,6 +72,7 @@ export function ChallengeManagementList() {
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
+  const { challengeStatusOptions, challengePriorityLevels } = useSystemLists();
   
 
   useEffect(() => {
@@ -258,10 +260,13 @@ export function ChallengeManagementList() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">كل الحالات</SelectItem>
-                <SelectItem value="draft">مسودة</SelectItem>
-                <SelectItem value="active">نشط</SelectItem>
-                <SelectItem value="completed">مكتمل</SelectItem>
-                <SelectItem value="cancelled">ملغي</SelectItem>
+                {challengeStatusOptions.map(status => (
+                  <SelectItem key={status} value={status}>
+                    {status === 'draft' ? 'مسودة' : status === 'active' ? 'نشط' : status === 'completed' ? 'مكتمل' : 
+                     status === 'cancelled' ? 'ملغي' : status === 'published' ? 'منشور' : status === 'closed' ? 'مغلق' : 
+                     status === 'archived' ? 'مؤرشف' : status}
+                  </SelectItem>
+                ))}
                 <SelectItem value="on_hold">معلق</SelectItem>
               </SelectContent>
             </Select>
@@ -272,9 +277,11 @@ export function ChallengeManagementList() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">كل الأولويات</SelectItem>
-                <SelectItem value="high">عالي</SelectItem>
-                <SelectItem value="medium">متوسط</SelectItem>
-                <SelectItem value="low">منخفض</SelectItem>
+                {challengePriorityLevels.map(priority => (
+                  <SelectItem key={priority} value={priority}>
+                    {priority === 'high' ? 'عالي' : priority === 'medium' ? 'متوسط' : 'منخفض'}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
 

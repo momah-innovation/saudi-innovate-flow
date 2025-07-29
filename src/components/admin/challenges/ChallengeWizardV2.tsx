@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 interface Challenge {
   id?: string;
@@ -63,6 +64,7 @@ interface SystemLists {
 
 export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: ChallengeWizardV2Props) {
   const { toast } = useToast();
+  const { challengeStatusOptions, challengePriorityLevels } = useSystemLists();
   const [loading, setLoading] = useState(false);
   const [systemLists, setSystemLists] = useState<SystemLists>({
     departments: [],
@@ -387,11 +389,12 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder="اختر حالة التحدي" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="draft">مسودة</SelectItem>
-                      <SelectItem value="published">منشور</SelectItem>
-                      <SelectItem value="active">نشط</SelectItem>
-                      <SelectItem value="closed">مغلق</SelectItem>
-                      <SelectItem value="archived">مؤرشف</SelectItem>
+                      {challengeStatusOptions.map(status => (
+                        <SelectItem key={status} value={status}>
+                          {status === 'draft' ? 'مسودة' : status === 'published' ? 'منشور' : status === 'active' ? 'نشط' : 
+                           status === 'closed' ? 'مغلق' : status === 'archived' ? 'مؤرشف' : status === 'completed' ? 'مكتمل' : status}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -403,9 +406,11 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                       <SelectValue placeholder="اختر مستوى الأولوية" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="low">منخفض</SelectItem>
-                      <SelectItem value="medium">متوسط</SelectItem>
-                      <SelectItem value="high">عالي</SelectItem>
+                      {challengePriorityLevels.map(priority => (
+                        <SelectItem key={priority} value={priority}>
+                          {priority === 'low' ? 'منخفض' : priority === 'medium' ? 'متوسط' : 'عالي'}
+                        </SelectItem>
+                      ))}
                       <SelectItem value="urgent">عاجل</SelectItem>
                     </SelectContent>
                   </Select>

@@ -5,11 +5,13 @@ import { useState } from "react";
 import { Plus, Users, Download } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 export default function EventsManagementPage() {
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const { generalStatusOptions } = useSystemLists();
   
   const secondaryActions = (
     <>
@@ -41,8 +43,11 @@ export default function EventsManagementPage() {
             <SelectItem value="all">جميع الحالات</SelectItem>
             <SelectItem value="scheduled">مجدول</SelectItem>
             <SelectItem value="ongoing">جاري</SelectItem>
-            <SelectItem value="completed">مكتمل</SelectItem>
-            <SelectItem value="cancelled">ملغي</SelectItem>
+            {generalStatusOptions.filter(status => ['completed', 'cancelled'].includes(status)).map(status => (
+              <SelectItem key={status} value={status}>
+                {status === 'completed' ? 'مكتمل' : 'ملغي'}
+              </SelectItem>
+            ))}
             <SelectItem value="postponed">مؤجل</SelectItem>
           </SelectContent>
         </Select>

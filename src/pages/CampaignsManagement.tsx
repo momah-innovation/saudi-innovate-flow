@@ -5,11 +5,13 @@ import { useState } from "react";
 import { Plus, Users, Download } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 export default function CampaignsManagementPage() {
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const { generalStatusOptions } = useSystemLists();
   
   const secondaryActions = (
     <>
@@ -40,9 +42,11 @@ export default function CampaignsManagementPage() {
           <SelectContent>
             <SelectItem value="all">جميع الحالات</SelectItem>
             <SelectItem value="planning">تخطيط</SelectItem>
-            <SelectItem value="active">نشطة</SelectItem>
-            <SelectItem value="completed">مكتملة</SelectItem>
-            <SelectItem value="cancelled">ملغية</SelectItem>
+            {generalStatusOptions.filter(status => ['active', 'completed', 'cancelled'].includes(status)).map(status => (
+              <SelectItem key={status} value={status}>
+                {status === 'active' ? 'نشطة' : status === 'completed' ? 'مكتملة' : 'ملغية'}
+              </SelectItem>
+            ))}
             <SelectItem value="archived">مؤرشفة</SelectItem>
           </SelectContent>
         </Select>
