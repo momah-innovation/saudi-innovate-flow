@@ -39,6 +39,10 @@ interface Innovator {
   user_id: string;
   innovation_score: number;
   display_name?: string;
+  profiles?: {
+    name: string;
+    name_ar?: string;
+  };
 }
 
 interface Idea {
@@ -160,7 +164,7 @@ export function IdeaWizard({
 
   const fetchData = async () => {
     try {
-      const [challengesRes, focusQuestionsRes, campaignsRes, eventsRes, innovatorsRes] = await Promise.all([
+      const [challengesRes, focusQuestionsRes, campaignsRes, eventsRes, innovatorsRes, profilesRes] = await Promise.all([
         supabase
           .from('challenges')
           .select('id, title_ar, status')
@@ -180,7 +184,10 @@ export function IdeaWizard({
         supabase
           .from('innovators')
           .select('id, user_id, innovation_score')
-          .order('innovation_score', { ascending: false })
+          .order('innovation_score', { ascending: false }),
+        supabase
+          .from('profiles')
+          .select('id, name, name_ar')
       ]);
 
       if (challengesRes.error) throw challengesRes.error;
@@ -188,17 +195,22 @@ export function IdeaWizard({
       if (campaignsRes.error) throw campaignsRes.error;
       if (eventsRes.error) throw eventsRes.error;
       if (innovatorsRes.error) throw innovatorsRes.error;
+      if (profilesRes.error) throw profilesRes.error;
 
       setChallenges(challengesRes.data || []);
       setFocusQuestions(focusQuestionsRes.data || []);
       setCampaigns(campaignsRes.data || []);
       setEvents(eventsRes.data || []);
       
-      // Add display names for innovators
-      const enrichedInnovators = (innovatorsRes.data || []).map(innovator => ({
-        ...innovator,
-        display_name: `مبتكر ${innovator.user_id.slice(0, 8)}`
-      }));
+      // Map profiles to innovators
+      const profilesMap = new Map((profilesRes.data || []).map(p => [p.id, p]));
+      const enrichedInnovators = (innovatorsRes.data || []).map(innovator => {
+        const profile = profilesMap.get(innovator.user_id);
+        return {
+          ...innovator,
+          display_name: profile?.name_ar || profile?.name || `مبتكر ${innovator.user_id.slice(0, 8)}`
+        };
+      });
       setInnovators(enrichedInnovators);
     } catch (error) {
       console.error('Error fetching data:', error);
