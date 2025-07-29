@@ -54,6 +54,14 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     eventCategories: settings.eventCategories || ['حدث مستقل', 'حدث حملة', 'تدريب', 'ورشة عمل'],
     eventVisibilityOptions: settings.eventVisibilityOptions || ['عام', 'خاص', 'داخلي'],
     
+    // Language settings
+    supportedLanguages: settings.supportedLanguages || [
+      {code: 'en', label: 'English', nativeLabel: 'English'},
+      {code: 'ar', label: 'Arabic', nativeLabel: 'العربية'},
+      {code: 'he', label: 'Hebrew', nativeLabel: 'עברית'},
+      {code: 'fa', label: 'Persian', nativeLabel: 'فارسی'}
+    ],
+    
     // Stakeholder-related lists
     stakeholderTypeOptions: settings.stakeholderTypeOptions || ['حكومي', 'خاص', 'أكاديمي', 'غير ربحي', 'دولي'],
     stakeholderStatusOptions: settings.stakeholderStatusOptions || ['نشط', 'غير نشط', 'معلق', 'محظور'],
@@ -97,6 +105,9 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     eventFormats: 'تنسيقات الفعاليات',
     eventCategories: 'فئات الفعاليات',
     eventVisibilityOptions: 'خيارات رؤية الفعاليات',
+    
+    // Language settings
+    supportedLanguages: 'اللغات المدعومة',
     
     // Stakeholder-related lists
     stakeholderTypeOptions: 'أنواع أصحاب المصلحة',

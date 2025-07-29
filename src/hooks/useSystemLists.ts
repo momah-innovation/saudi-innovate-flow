@@ -25,6 +25,7 @@ interface SystemListsHook {
   eventFormats: string[];
   eventCategories: string[];
   eventVisibilityOptions: string[];
+  supportedLanguages: Array<{code: string; label: string; nativeLabel: string}>;
   loading: boolean;
 }
 
@@ -72,6 +73,12 @@ export const useSystemLists = (): SystemListsHook => {
     eventFormats: ['in_person', 'virtual', 'hybrid'],
     eventCategories: ['standalone', 'campaign_event', 'training', 'workshop'],
     eventVisibilityOptions: ['public', 'private', 'internal'],
+    supportedLanguages: [
+      {code: 'en', label: 'English', nativeLabel: 'English'},
+      {code: 'ar', label: 'Arabic', nativeLabel: 'العربية'},
+      {code: 'he', label: 'Hebrew', nativeLabel: 'עברית'},
+      {code: 'fa', label: 'Persian', nativeLabel: 'فارسی'}
+    ],
     loading: true
   });
 
@@ -104,7 +111,8 @@ export const useSystemLists = (): SystemListsHook => {
             'event_types',
             'event_formats',
             'event_categories',
-            'event_visibility_options'
+            'event_visibility_options',
+            'supported_languages'
           ]);
         
         if (data) {
@@ -184,6 +192,9 @@ export const useSystemLists = (): SystemListsHook => {
                 break;
               case 'event_visibility_options':
                 newSettings.eventVisibilityOptions = value;
+                break;
+              case 'supported_languages':
+                newSettings.supportedLanguages = value;
                 break;
             }
           });
