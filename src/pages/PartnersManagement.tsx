@@ -6,12 +6,14 @@ import { useState } from "react";
 import { Plus, Users, Download } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 export default function PartnersManagementPage() {
   const { isRTL, language } = useDirection();
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const { partnerStatusOptions } = useSystemLists();
   
   const title = isRTL && language === 'ar' ? 'إدارة الشركاء' : 'Partners Management';
   const description = isRTL && language === 'ar' 
@@ -50,9 +52,13 @@ export default function PartnersManagementPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">{isRTL && language === 'ar' ? 'جميع الحالات' : 'All Status'}</SelectItem>
-            <SelectItem value="active">{isRTL && language === 'ar' ? 'نشط' : 'Active'}</SelectItem>
-            <SelectItem value="inactive">{isRTL && language === 'ar' ? 'غير نشط' : 'Inactive'}</SelectItem>
-            <SelectItem value="pending">{isRTL && language === 'ar' ? 'في الانتظار' : 'Pending'}</SelectItem>
+            {partnerStatusOptions.filter(status => ['active', 'inactive', 'pending'].includes(status)).map(status => (
+              <SelectItem key={status} value={status}>
+                {status === 'active' ? (isRTL && language === 'ar' ? 'نشط' : 'Active') :
+                 status === 'inactive' ? (isRTL && language === 'ar' ? 'غير نشط' : 'Inactive') :
+                 (isRTL && language === 'ar' ? 'في الانتظار' : 'Pending')}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

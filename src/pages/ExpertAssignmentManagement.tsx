@@ -6,12 +6,14 @@ import { useState } from "react";
 import { Plus, Users, Download } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 export default function ExpertAssignmentManagementPage() {
   const { isRTL, language } = useDirection();
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const { assignmentStatusOptions } = useSystemLists();
   
   const title = isRTL && language === 'ar' ? 'إدارة مهام الخبراء' : 'Expert Assignment Management';
   const description = isRTL && language === 'ar' 
@@ -50,9 +52,13 @@ export default function ExpertAssignmentManagementPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">{isRTL && language === 'ar' ? 'جميع الحالات' : 'All Status'}</SelectItem>
-            <SelectItem value="active">{isRTL && language === 'ar' ? 'نشط' : 'Active'}</SelectItem>
-            <SelectItem value="pending">{isRTL && language === 'ar' ? 'في الانتظار' : 'Pending'}</SelectItem>
-            <SelectItem value="completed">{isRTL && language === 'ar' ? 'مكتمل' : 'Completed'}</SelectItem>
+            {assignmentStatusOptions.filter(status => ['active', 'pending', 'completed'].includes(status)).map(status => (
+              <SelectItem key={status} value={status}>
+                {status === 'active' ? (isRTL && language === 'ar' ? 'نشط' : 'Active') :
+                 status === 'pending' ? (isRTL && language === 'ar' ? 'في الانتظار' : 'Pending') :
+                 (isRTL && language === 'ar' ? 'مكتمل' : 'Completed')}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

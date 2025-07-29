@@ -54,8 +54,11 @@ const FocusQuestionsManagement = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">جميع المستويات</SelectItem>
-            <SelectItem value="normal">عادي</SelectItem>
-            <SelectItem value="sensitive">حساس</SelectItem>
+            {['normal', 'sensitive'].map(level => (
+              <SelectItem key={level} value={level}>
+                {level === 'normal' ? 'عادي' : 'حساس'}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

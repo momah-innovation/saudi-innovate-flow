@@ -64,7 +64,7 @@ interface SystemLists {
 
 export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: ChallengeWizardV2Props) {
   const { toast } = useToast();
-  const { challengeStatusOptions, challengePriorityLevels } = useSystemLists();
+  const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels, challengeTypes } = useSystemLists();
   const [loading, setLoading] = useState(false);
   const [systemLists, setSystemLists] = useState<SystemLists>({
     departments: [],
@@ -362,11 +362,12 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                     <SelectValue placeholder="اختر نوع التحدي" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="technical">تقني</SelectItem>
-                    <SelectItem value="innovation">إبتكاري</SelectItem>
-                    <SelectItem value="operational">تشغيلي</SelectItem>
-                    <SelectItem value="strategic">استراتيجي</SelectItem>
-                    <SelectItem value="digital">رقمي</SelectItem>
+                    {challengeTypes.map(type => (
+                      <SelectItem key={type} value={type}>
+                        {type === 'technology' ? 'تقني' : type === 'sustainability' ? 'استدامة' : type === 'healthcare' ? 'رعاية صحية' : 
+                         type === 'education' ? 'تعليم' : type === 'governance' ? 'حوكمة' : type}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -424,9 +425,11 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                     <SelectValue placeholder="اختر مستوى السرية" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="normal">عادي - وصول عام</SelectItem>
-                    <SelectItem value="sensitive">حساس - أعضاء الفريق فقط</SelectItem>
-                    <SelectItem value="confidential">سري - المدراء فقط</SelectItem>
+                    {challengeSensitivityLevels.map(level => (
+                      <SelectItem key={level} value={level}>
+                        {level === 'normal' ? 'عادي - وصول عام' : level === 'sensitive' ? 'حساس - أعضاء الفريق فقط' : 'سري - المدراء فقط'}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>

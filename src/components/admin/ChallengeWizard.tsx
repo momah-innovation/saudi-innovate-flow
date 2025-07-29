@@ -64,7 +64,7 @@ interface SystemLists {
 
 export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: ChallengeWizardProps) {
   const { toast } = useToast();
-  const { challengeStatusOptions, challengePriorityLevels } = useSystemLists();
+  const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels } = useSystemLists();
   const form = useForm<Challenge>();
   const [loading, setLoading] = useState(false);
   const [systemLists, setSystemLists] = useState<SystemLists>({
@@ -377,9 +377,11 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
                   <SelectValue placeholder="اختر مستوى السرية" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="normal">عادي - وصول عام</SelectItem>
-                  <SelectItem value="sensitive">حساس - أعضاء الفريق فقط</SelectItem>
-                  <SelectItem value="confidential">سري - المدراء فقط</SelectItem>
+                  {challengeSensitivityLevels.map(level => (
+                    <SelectItem key={level} value={level}>
+                      {level === 'normal' ? 'عادي - وصول عام' : level === 'sensitive' ? 'حساس - أعضاء الفريق فقط' : 'سري - المدراء فقط'}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

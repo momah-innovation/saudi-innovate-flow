@@ -72,7 +72,7 @@ export function ChallengeManagementList() {
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
-  const { challengeStatusOptions, challengePriorityLevels } = useSystemLists();
+  const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels } = useSystemLists();
   
 
   useEffect(() => {
@@ -291,9 +291,11 @@ export function ChallengeManagementList() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">كل المستويات</SelectItem>
-                <SelectItem value="normal">عادي</SelectItem>
-                <SelectItem value="sensitive">حساس</SelectItem>
-                <SelectItem value="confidential">سري</SelectItem>
+                {challengeSensitivityLevels.map(level => (
+                  <SelectItem key={level} value={level}>
+                    {level === 'normal' ? 'عادي' : level === 'sensitive' ? 'حساس' : 'سري'}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>

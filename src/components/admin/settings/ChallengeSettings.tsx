@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 interface ChallengeSettingsProps {
   settings: any;
@@ -10,6 +11,7 @@ interface ChallengeSettingsProps {
 }
 
 export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettingsProps) {
+  const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels } = useSystemLists();
   return (
     <div className="space-y-6 rtl:text-right ltr:text-left">
       <Card>
@@ -29,9 +31,12 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="draft">مسودة</SelectItem>
-                  <SelectItem value="published">منشور</SelectItem>
-                  <SelectItem value="active">نشط</SelectItem>
+                  {challengeStatusOptions.map(status => (
+                    <SelectItem key={status} value={status}>
+                      {status === 'draft' ? 'مسودة' : status === 'published' ? 'منشور' : status === 'active' ? 'نشط' : 
+                       status === 'closed' ? 'مغلق' : status === 'archived' ? 'مؤرشف' : status === 'completed' ? 'مكتمل' : status}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -46,9 +51,11 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="low">منخفض</SelectItem>
-                  <SelectItem value="medium">متوسط</SelectItem>
-                  <SelectItem value="high">عالي</SelectItem>
+                  {challengePriorityLevels.map(priority => (
+                    <SelectItem key={priority} value={priority}>
+                      {priority === 'low' ? 'منخفض' : priority === 'medium' ? 'متوسط' : 'عالي'}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -63,9 +70,11 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="normal">عادي</SelectItem>
-                  <SelectItem value="sensitive">حساس</SelectItem>
-                  <SelectItem value="confidential">سري</SelectItem>
+                  {challengeSensitivityLevels.map(level => (
+                    <SelectItem key={level} value={level}>
+                      {level === 'normal' ? 'عادي' : level === 'sensitive' ? 'حساس' : 'سري'}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

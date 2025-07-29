@@ -240,8 +240,11 @@ export function FocusQuestionManagementList() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">الكل</SelectItem>
-                <SelectItem value="normal">عادي</SelectItem>
-                <SelectItem value="sensitive">حساس</SelectItem>
+                {['normal', 'sensitive'].map(level => (
+                  <SelectItem key={level} value={level}>
+                    {level === 'normal' ? 'عادي' : 'حساس'}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>

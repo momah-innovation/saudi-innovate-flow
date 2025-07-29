@@ -3,7 +3,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { ManagementCard } from "@/components/ui/management-card";
 import { IdeaWizard } from "../IdeaWizard";
 import { IdeaDetailView } from "./IdeaDetailView";
-import { EmptyState } from "@/components/ui/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,6 +32,9 @@ import {
   Grid3x3,
   User
 } from "lucide-react";
+import { ViewLayouts } from "@/components/ui/view-layouts";
+import { EmptyState } from "@/components/ui/empty-state";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { format } from "date-fns";
 
 interface Idea {
@@ -119,6 +121,7 @@ export function IdeasManagementList({
   const [currentLayout, setCurrentLayout] = useState<'cards' | 'list' | 'grid'>('cards');
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
+  const { generalStatusOptions } = useSystemLists();
 
   useEffect(() => {
     fetchIdeas();
@@ -275,11 +278,12 @@ export function IdeasManagementList({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">كل الحالات</SelectItem>
-                <SelectItem value="draft">مسودة</SelectItem>
-                <SelectItem value="submitted">مقدم</SelectItem>
-                <SelectItem value="under_review">قيد المراجعة</SelectItem>
-                <SelectItem value="approved">موافق عليه</SelectItem>
-                <SelectItem value="rejected">مرفوض</SelectItem>
+                {generalStatusOptions.filter(status => ['draft', 'submitted', 'under_review', 'approved', 'rejected'].includes(status)).map(status => (
+                  <SelectItem key={status} value={status}>
+                    {status === 'draft' ? 'مسودة' : status === 'submitted' ? 'مقدم' : status === 'under_review' ? 'قيد المراجعة' : 
+                     status === 'approved' ? 'موافق عليه' : 'مرفوض'}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             
