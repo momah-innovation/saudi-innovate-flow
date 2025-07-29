@@ -62,37 +62,58 @@ export function InnovationTeamsContent({
     try {
       setLoading(true);
 
-      // Fetch core innovation team members
-      const { data: members, error } = await supabase
+      // Fetch core innovation team members - first get team members
+      const { data: members, error: membersError } = await supabase
         .from('innovation_team_members')
-        .select(`
-          *,
-          profiles!user_id (
-            id,
-            display_name,
-            avatar_url,
-            email
-          ),
-          team_assignments (
-            id,
-            assignment_type,
-            status,
-            workload_percentage
-          )
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (membersError) throw membersError;
+
+      // Then fetch profiles for each member
+      let enrichedMembers = [];
+      if (members && members.length > 0) {
+        const userIds = members.map(member => member.user_id);
+        const { data: profiles, error: profilesError } = await supabase
+          .from('profiles')
+          .select('id, name, name_ar, email, profile_image_url, department, position')
+          .in('id', userIds);
+
+        if (profilesError) {
+          console.warn('Error fetching profiles:', profilesError);
+          // Continue without profiles if they fail to load
+        }
+
+        // Fetch team assignments
+        const { data: assignments, error: assignmentsError } = await supabase
+          .from('team_assignments')
+          .select('*')
+          .in('team_member_id', members.map(m => m.id));
+
+        if (assignmentsError) {
+          console.warn('Error fetching assignments:', assignmentsError);
+        }
+
+        // Enrich members with profile data and assignments
+        enrichedMembers = members.map(member => ({
+          ...member,
+          profiles: profiles?.find(profile => profile.id === member.user_id) || {
+            name: 'مستخدم غير معروف',
+            email: member.contact_email || 'غير محدد'
+          },
+          team_assignments: assignments?.filter(a => a.team_member_id === member.id) || []
+        }));
+      }
 
       // Calculate metrics
-      const totalMembers = members?.length || 0;
-      const activeMembers = members?.filter(m => m.status === 'active')?.length || 0;
-      const totalWorkload = members?.reduce((sum, m) => sum + (m.current_workload || 0), 0) || 0;
+      const totalMembers = enrichedMembers?.length || 0;
+      const activeMembers = enrichedMembers?.filter(m => m.status === 'active')?.length || 0;
+      const totalWorkload = enrichedMembers?.reduce((sum, m) => sum + (m.current_workload || 0), 0) || 0;
       const avgWorkload = totalMembers > 0 ? Math.round(totalWorkload / totalMembers) : 0;
-      const totalAssignments = members?.reduce((sum, m) => sum + (m.team_assignments?.length || 0), 0) || 0;
+      const totalAssignments = enrichedMembers?.reduce((sum, m) => sum + (m.team_assignments?.length || 0), 0) || 0;
 
       setCoreTeamData({
-        members: members || [],
+        members: enrichedMembers || [],
         metrics: {
           totalMembers,
           activeMembers,
@@ -149,18 +170,17 @@ export function InnovationTeamsContent({
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12">
-              <AvatarImage src={member.profiles?.avatar_url} />
+              <AvatarImage src={member.profiles?.profile_image_url} />
               <AvatarFallback>
-                {member.profiles?.display_name?.charAt(0) || 'U'}
+                {member.profiles?.name?.charAt(0) || member.profiles?.name_ar?.charAt(0) || 'U'}
               </AvatarFallback>
             </Avatar>
             <div>
               <CardTitle className="text-base flex items-center gap-2">
-                {member.profiles?.display_name || 'مستخدم'}
-                {member.is_lead && <Crown className="h-4 w-4 text-yellow-500" />}
+                {member.profiles?.name || member.profiles?.name_ar || 'مستخدم غير معروف'}
               </CardTitle>
               <CardDescription className="text-sm">
-                {member.profiles?.email}
+                {member.profiles?.email || member.contact_email || 'غير محدد'}
               </CardDescription>
             </div>
           </div>
@@ -191,13 +211,13 @@ export function InnovationTeamsContent({
       <CardContent className="space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium">{t('role')}</span>
-          <Badge variant="outline">{member.role}</Badge>
+          <Badge variant="outline">{member.cic_role || 'غير محدد'}</Badge>
         </div>
         
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium">{t('specialization')}</span>
           <Badge variant="secondary" className="text-xs">
-            {member.specialization}
+            {Array.isArray(member.specialization) ? member.specialization.join(', ') : (member.specialization || 'غير محدد')}
           </Badge>
         </div>
         
@@ -217,6 +237,11 @@ export function InnovationTeamsContent({
           </span>
         </div>
         
+        <div className="flex items-center justify-between text-sm">
+          <span>{t('department')}</span>
+          <span>{member.profiles?.department || member.department || 'غير محدد'}</span>
+        </div>
+        
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium">{t('status')}</span>
           <Badge variant={member.status === 'active' ? 'default' : 'secondary'}>
@@ -225,7 +250,7 @@ export function InnovationTeamsContent({
             ) : (
               <AlertTriangle className="h-3 w-3 mr-1" />
             )}
-            {member.status}
+            {member.status === 'active' ? t('active') : t('inactive')}
           </Badge>
         </div>
       </CardContent>
@@ -297,9 +322,12 @@ export function InnovationTeamsContent({
             {coreTeamData.members
               .filter((member: any) => 
                 !searchTerm || 
-                member.profiles?.display_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                member.role?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                member.specialization?.toLowerCase().includes(searchTerm.toLowerCase())
+                member.profiles?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                member.profiles?.name_ar?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                member.cic_role?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (Array.isArray(member.specialization) ? 
+                  member.specialization.some((spec: string) => spec.toLowerCase().includes(searchTerm.toLowerCase())) :
+                  member.specialization?.toLowerCase().includes(searchTerm.toLowerCase()))
               )
               .map(renderMemberCard)}
           </div>
