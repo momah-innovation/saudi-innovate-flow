@@ -15,8 +15,8 @@ import {
 } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { TeamMemberWizard } from './TeamMemberWizard';
-import { ProfileCard, ProfileCardAction, ProfileCardData } from '@/components/ui/profile-card';
-import { ProfileDetailDialog } from '@/components/ui/profile-detail-dialog';
+import { CoreTeamCard, CoreTeamMemberData, CoreTeamCardAction } from '@/components/ui/core-team-card';
+import { CoreTeamDetailDialog } from '@/components/ui/core-team-detail-dialog';
 
 interface InnovationTeamsContentProps {
   activeTab: string;
@@ -168,23 +168,55 @@ export function InnovationTeamsContent({
   };
 
   const renderMemberCard = (member: any) => {
-    const cardData: ProfileCardData = {
+    const cardData: CoreTeamMemberData = {
       id: member.id,
       name: member.profiles?.name,
       name_ar: member.profiles?.name_ar,
       email: member.profiles?.email || member.contact_email,
       profile_image_url: member.profiles?.profile_image_url,
-      role: member.cic_role,
+      role: member.profiles?.role,
+      cic_role: member.cic_role,
       department: member.profiles?.department || member.department,
       position: member.profiles?.position,
       specialization: member.specialization,
+      bio: member.bio,
+      location: member.location,
+      
+      // Performance & Workload
       current_workload: member.current_workload,
+      capacity: member.capacity,
+      efficiency_rating: member.efficiency_rating,
+      performance_score: member.performance_score,
+      
+      // Status & Availability
       status: member.status,
+      availability_status: member.availability_status,
+      
+      // Assignments & Projects
       activeAssignments: member.team_assignments?.filter((a: any) => a.status === 'active')?.length || 0,
+      completedAssignments: member.team_assignments?.filter((a: any) => a.status === 'completed')?.length || 0,
+      
+      // Skills & Experience
+      skills: member.skills,
+      certifications: member.certifications,
+      experience_years: member.experience_years,
+      
+      // Innovation Metrics
+      ideas_submitted: member.ideas_submitted,
+      ideas_approved: member.ideas_approved,
+      innovation_score: member.innovation_score,
+      collaboration_score: member.collaboration_score,
+      
+      // Timeline
+      join_date: member.join_date,
+      last_active: member.last_active,
+      created_at: member.created_at,
+      updated_at: member.updated_at,
+      
       ...member // Include any additional fields
     };
 
-    const actions: ProfileCardAction[] = [
+    const actions: CoreTeamCardAction[] = [
       {
         label: t('edit'),
         icon: <Edit className="h-4 w-4 mr-2" />,
@@ -199,11 +231,16 @@ export function InnovationTeamsContent({
     ];
 
     return (
-      <ProfileCard
+      <CoreTeamCard
         key={member.id}
         data={cardData}
         actions={actions}
         onClick={() => handleViewMember(member)}
+        variant={viewMode === 'list' ? 'compact' : 'default'}
+        showMetrics={true}
+        showStatus={true}
+        showWorkload={true}
+        showAssignments={true}
       />
     );
   };
@@ -363,8 +400,8 @@ export function InnovationTeamsContent({
         }}
       />
 
-      {/* Profile Detail Dialog */}
-      <ProfileDetailDialog
+      {/* Core Team Detail Dialog */}
+      <CoreTeamDetailDialog
         open={showDetailDialog}
         onOpenChange={setShowDetailDialog}
         data={selectedMember ? {
@@ -373,15 +410,51 @@ export function InnovationTeamsContent({
           name_ar: selectedMember.profiles?.name_ar,
           email: selectedMember.profiles?.email || selectedMember.contact_email,
           profile_image_url: selectedMember.profiles?.profile_image_url,
-          role: selectedMember.cic_role,
+          role: selectedMember.profiles?.role,
+          cic_role: selectedMember.cic_role,
           department: selectedMember.profiles?.department || selectedMember.department,
           position: selectedMember.profiles?.position,
           specialization: selectedMember.specialization,
+          bio: selectedMember.bio,
+          location: selectedMember.location,
+          
+          // Performance & Workload
           current_workload: selectedMember.current_workload,
+          capacity: selectedMember.capacity,
+          efficiency_rating: selectedMember.efficiency_rating,
+          performance_score: selectedMember.performance_score,
+          
+          // Status & Availability
           status: selectedMember.status,
+          availability_status: selectedMember.availability_status,
+          
+          // Assignments & Projects
           activeAssignments: selectedMember.team_assignments?.filter((a: any) => a.status === 'active')?.length || 0,
+          completedAssignments: selectedMember.team_assignments?.filter((a: any) => a.status === 'completed')?.length || 0,
+          
+          // Skills & Experience
+          skills: selectedMember.skills,
+          certifications: selectedMember.certifications,
+          experience_years: selectedMember.experience_years,
+          
+          // Innovation Metrics
+          ideas_submitted: selectedMember.ideas_submitted,
+          ideas_approved: selectedMember.ideas_approved,
+          innovation_score: selectedMember.innovation_score,
+          collaboration_score: selectedMember.collaboration_score,
+          
+          // Timeline
+          join_date: selectedMember.join_date,
+          last_active: selectedMember.last_active,
+          created_at: selectedMember.created_at,
+          updated_at: selectedMember.updated_at,
+          
           ...selectedMember
         } : null}
+        onEdit={() => {
+          setShowDetailDialog(false);
+          handleEditMember(selectedMember);
+        }}
       />
     </div>
   );
