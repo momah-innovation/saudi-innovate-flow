@@ -322,13 +322,12 @@ const ChallengesBrowse = () => {
         title={isRTL ? 'استكشاف التحديات' : 'Browse Challenges'}
         description={isRTL ? 'اكتشف التحديات المثيرة وشارك في حلها' : 'Discover exciting challenges and participate in solving them'}
         itemCount={tabFilteredChallenges.length}
-        primaryAction={
-          <Button className="animate-pulse">
-            <Plus className="w-4 h-4 mr-2" />
-            {isRTL ? 'تحدي جديد' : 'New Challenge'}
-          </Button>
-        }
-        headerContent={
+        primaryAction={{
+          label: isRTL ? 'تحدي جديد' : 'New Challenge',
+          onClick: () => console.log('Create new challenge'),
+          icon: <Plus className="w-4 h-4" />
+        }}
+        secondaryActions={
           <LayoutSelector
             viewMode={viewMode}
             onViewModeChange={setViewMode}
