@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,70 +9,87 @@ import { Search, Plus, Filter, Eye, Edit, MessageSquare } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { PageContainer, Section, ContentArea, PageHeader } from '@/components/ui';
+import { supabase } from '@/integrations/supabase/client';
+import { useSystemLists } from '@/hooks/useSystemLists';
+import { useToast } from '@/hooks/use-toast';
 
-// Mock data for ideas
-const mockIdeas = [
-  {
-    id: '1',
-    title: 'Smart City Traffic Management',
-    description: 'AI-powered traffic optimization system for reducing congestion',
-    status: 'submitted',
-    category: 'Smart Cities',
-    submittedAt: '2024-01-15',
-    evaluations: 3,
-    score: 8.5
-  },
-  {
-    id: '2', 
-    title: 'Renewable Energy Storage',
-    description: 'Innovative battery technology for solar energy storage',
-    status: 'under_review',
-    category: 'Energy',
-    submittedAt: '2024-01-20',
-    evaluations: 1,
-    score: 7.2
-  },
-  {
-    id: '3',
-    title: 'Digital Health Platform',
-    description: 'Telemedicine platform for remote patient monitoring',
-    status: 'approved',
-    category: 'Healthcare',
-    submittedAt: '2024-01-25',
-    evaluations: 5,
-    score: 9.1
-  }
-];
-
-const statusColors = {
-  submitted: 'bg-blue-100 text-blue-800',
-  under_review: 'bg-yellow-100 text-yellow-800',
-  approved: 'bg-green-100 text-green-800',
-  rejected: 'bg-red-100 text-red-800'
-};
-
-const statusLabels = {
-  submitted: { en: 'Submitted', ar: 'مقدم' },
-  under_review: { en: 'Under Review', ar: 'قيد المراجعة' },
-  approved: { en: 'Approved', ar: 'موافق عليه' },
-  rejected: { en: 'Rejected', ar: 'مرفوض' }
-};
+interface Idea {
+  id: string;
+  title_ar: string;
+  description_ar: string;
+  status: string;
+  maturity_level?: string;
+  overall_score?: number;
+  innovator_id: string;
+  challenge_id?: string;
+  focus_question_id?: string;
+  created_at: string;
+  updated_at: string;
+}
 
 export default function IdeasPage() {
   const { t } = useTranslation();
   const { isRTL, language } = useDirection();
+  const { toast } = useToast();
+  const { generalStatusOptions } = useSystemLists();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>('');
+  const [ideas, setIdeas] = useState<Idea[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredIdeas = mockIdeas.filter(idea => {
-    const matchesSearch = idea.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         idea.description.toLowerCase().includes(searchTerm.toLowerCase());
+  useEffect(() => {
+    fetchIdeas();
+  }, []);
+
+  const fetchIdeas = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('ideas')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      setIdeas(data || []);
+    } catch (error) {
+      console.error('Error fetching ideas:', error);
+      toast({
+        title: "خطأ",
+        description: "فشل في تحميل الأفكار",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredIdeas = ideas.filter(idea => {
+    const matchesSearch = idea.title_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         idea.description_ar.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = !selectedStatus || idea.status === selectedStatus;
     return matchesSearch && matchesStatus;
   });
 
-  const getStatusLabel = (status: keyof typeof statusLabels) => {
-    return statusLabels[status][language as 'en' | 'ar'] || statusLabels[status].en;
+  const getStatusLabel = (status: string) => {
+    const labels = {
+      draft: 'مسودة',
+      submitted: 'مقدم',
+      under_review: 'قيد المراجعة',
+      approved: 'موافق عليه',
+      rejected: 'مرفوض'
+    };
+    return labels[status as keyof typeof labels] || status;
+  };
+
+  const getStatusVariant = (status: string): 'default' | 'secondary' | 'destructive' | 'outline' => {
+    switch (status) {
+      case 'draft': return 'secondary';
+      case 'submitted': return 'default';
+      case 'under_review': return 'outline';
+      case 'approved': return 'default';
+      case 'rejected': return 'destructive';
+      default: return 'secondary';
+    }
   };
 
   return (
@@ -111,61 +128,59 @@ export default function IdeasPage() {
         </div>
 
         {/* Ideas Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredIdeas.map((idea) => (
-            <Card key={idea.id} className="hover:shadow-md transition-shadow">
-              <CardHeader>
-                <div className={cn("flex items-start justify-between", isRTL && "flex-row-reverse")}>
-                  <div className={cn("flex-1", isRTL && "text-right")}>
-                    <CardTitle className="text-lg">{idea.title}</CardTitle>
-                    <CardDescription className="mt-1">
-                      {idea.category}
-                    </CardDescription>
+        {loading ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="animate-pulse bg-card rounded-lg h-64" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {filteredIdeas.map((idea) => (
+              <Card key={idea.id} className="hover:shadow-md transition-shadow">
+                <CardHeader>
+                  <div className={cn("flex items-start justify-between", isRTL && "flex-row-reverse")}>
+                    <div className={cn("flex-1", isRTL && "text-right")}>
+                      <CardTitle className="text-lg">{idea.title_ar}</CardTitle>
+                      <CardDescription className="mt-1">
+                        {idea.maturity_level || 'مفهوم'}
+                      </CardDescription>
+                    </div>
+                    <Badge 
+                      variant={getStatusVariant(idea.status)}
+                      className={isRTL ? "mr-2" : "ml-2"}
+                    >
+                      {getStatusLabel(idea.status)}
+                    </Badge>
                   </div>
-                  <Badge 
-                    className={cn(
-                      statusColors[idea.status as keyof typeof statusColors],
-                      isRTL && "mr-2"
-                    )}
-                  >
-                    {getStatusLabel(idea.status as keyof typeof statusLabels)}
-                  </Badge>
-                </div>
-              </CardHeader>
-              
-              <CardContent>
-                <p className={cn("text-sm text-muted-foreground mb-4", isRTL && "text-right")}>
-                  {idea.description}
-                </p>
+                </CardHeader>
                 
-                <div className={cn("flex items-center justify-between text-sm text-muted-foreground mb-4",
-                  isRTL && "flex-row-reverse")}>
-                  <span>{isRTL ? "تاريخ التقديم:" : "Submitted:"} {idea.submittedAt}</span>
-                  <span>{isRTL ? "النتيجة:" : "Score:"} {idea.score}/10</span>
-                </div>
-                
-                <div className={cn("flex items-center justify-between text-sm mb-4",
-                  isRTL && "flex-row-reverse")}>
-                  <div className={cn("flex items-center gap-1", isRTL && "flex-row-reverse")}>
-                    <MessageSquare className="h-4 w-4" />
-                    <span>{idea.evaluations} {isRTL ? "تقييم" : "evaluations"}</span>
+                <CardContent>
+                  <p className={cn("text-sm text-muted-foreground mb-4", isRTL && "text-right")}>
+                    {idea.description_ar}
+                  </p>
+                  
+                  <div className={cn("flex items-center justify-between text-sm text-muted-foreground mb-4",
+                    isRTL && "flex-row-reverse")}>
+                    <span>{isRTL ? "تاريخ التقديم:" : "Submitted:"} {new Date(idea.created_at).toLocaleDateString('ar-SA')}</span>
+                    <span>{isRTL ? "النتيجة:" : "Score:"} {idea.overall_score || 0}/10</span>
                   </div>
-                </div>
-                
-                <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
-                  <Button variant="outline" size="sm" className={cn("flex-1", isRTL && "flex-row-reverse")}>
-                    <Eye className="h-4 w-4" />
-                    {isRTL ? "عرض" : "View"}
-                  </Button>
-                  <Button variant="outline" size="sm" className={cn("flex-1", isRTL && "flex-row-reverse")}>
-                    <Edit className="h-4 w-4" />
-                    {isRTL ? "تعديل" : "Edit"}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                  
+                  <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
+                    <Button variant="outline" size="sm" className={cn("flex-1", isRTL && "flex-row-reverse")}>
+                      <Eye className="h-4 w-4" />
+                      {isRTL ? "عرض" : "View"}
+                    </Button>
+                    <Button variant="outline" size="sm" className={cn("flex-1", isRTL && "flex-row-reverse")}>
+                      <Edit className="h-4 w-4" />
+                      {isRTL ? "تعديل" : "Edit"}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
 
         {filteredIdeas.length === 0 && (
           <div className={cn("text-center py-12", isRTL && "text-right")}>
