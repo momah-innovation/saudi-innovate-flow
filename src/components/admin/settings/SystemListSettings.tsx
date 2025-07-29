@@ -19,25 +19,79 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
   const [newItem, setNewItem] = useState("");
 
   const systemLists = {
-    challengeTypes: settings.challengeTypes || ['تحدي تقني', 'تحدي إبداعي', 'تحدي تشغيلي', 'تحدي استراتيجي'],
-    ideaCategories: settings.ideaCategories || ['تطوير منتج', 'تحسين عملية', 'حل مشكلة', 'ابتكار تقني'],
-    evaluationCriteria: settings.evaluationCriteria || ['الجدوى التقنية', 'الأثر المتوقع', 'التكلفة', 'سهولة التنفيذ', 'الابتكار'],
-    themes: settings.themes || ['التكنولوجيا المالية', 'الصحة', 'التعليم', 'البيئة'],
-    roles: settings.roles || ['مبتكر', 'خبير', 'منسق فريق', 'مدير', 'مدير عام'],
-    statusOptions: settings.statusOptions || ['مسودة', 'منشور', 'نشط', 'مكتمل', 'ملغي'],
-    priorityLevels: settings.priorityLevels || ['منخفض', 'متوسط', 'عالي', 'عاجل'],
-    sensitivityLevels: settings.sensitivityLevels || ['عادي', 'حساس', 'سري', 'سري للغاية']
+    // Challenge-related lists
+    challengePriorityLevels: settings.challengePriorityLevels || ['منخفض', 'متوسط', 'عالي'],
+    challengeSensitivityLevels: settings.challengeSensitivityLevels || ['عادي', 'حساس', 'سري'],
+    challengeTypes: settings.challengeTypes || ['تقنية', 'استدامة', 'صحة', 'تعليم', 'حوكمة'],
+    challengeStatusOptions: settings.challengeStatusOptions || ['مسودة', 'منشور', 'نشط', 'مغلق', 'مؤرشف', 'مكتمل'],
+    
+    // Partner-related lists
+    partnerStatusOptions: settings.partnerStatusOptions || ['نشط', 'غير نشط', 'معلق', 'محظور'],
+    partnerTypeOptions: settings.partnerTypeOptions || ['حكومي', 'خاص', 'أكاديمي', 'غير ربحي', 'دولي'],
+    partnershipTypeOptions: settings.partnershipTypeOptions || ['متعاون', 'راعي', 'شريك تقني', 'شريك استراتيجي', 'شريك تنفيذ'],
+    
+    // Expert-related lists
+    expertStatusOptions: settings.expertStatusOptions || ['نشط', 'غير نشط', 'متاح', 'مشغول', 'غير متاح'],
+    assignmentStatusOptions: settings.assignmentStatusOptions || ['نشط', 'غير نشط', 'معلق', 'مكتمل', 'ملغي'],
+    expertRoleTypes: settings.expertRoleTypes || ['خبير رئيسي', 'مقيم', 'مراجع', 'خبير موضوع', 'مستشار خارجي'],
+    experienceLevels: settings.experienceLevels || ['مبتدئ', 'متوسط', 'متقدم', 'خبير'],
+    
+    // User & Role-related lists
+    roleRequestStatusOptions: settings.roleRequestStatusOptions || ['معلق', 'موافق عليه', 'مرفوض', 'مسحوب'],
+    userStatusOptions: settings.userStatusOptions || ['نشط', 'غير نشط', 'محظور', 'معلق', 'ملغي'],
+    generalStatusOptions: settings.generalStatusOptions || ['نشط', 'غير نشط', 'معلق', 'مكتمل', 'ملغي', 'مسودة', 'منشور', 'مؤرشف'],
+    
+    // Team-related lists
+    teamRoleOptions: settings.teamRoleOptions || ['مدير الابتكار', 'محلل البيانات', 'منشئ المحتوى', 'مدير المشروع', 'محلل الأبحاث'],
+    teamSpecializationOptions: settings.teamSpecializationOptions || ['استراتيجية وتخطيط الابتكار', 'إدارة وتنفيذ المشاريع', 'البحث وتحليل السوق', 'إشراك أصحاب المصلحة', 'إدارة التغيير'],
+    
+    // Focus Question-related lists
+    focusQuestionTypes: settings.focusQuestionTypes || ['عام', 'تقني', 'تجاري', 'تأثير', 'تنفيذ', 'اجتماعي', 'أخلاقي', 'طبي', 'تنظيمي'],
+    
+    // Stakeholder-related lists
+    stakeholderTypeOptions: settings.stakeholderTypeOptions || ['حكومي', 'خاص', 'أكاديمي', 'غير ربحي', 'دولي'],
+    stakeholderStatusOptions: settings.stakeholderStatusOptions || ['نشط', 'غير نشط', 'معلق', 'محظور'],
+    stakeholderRoleOptions: settings.stakeholderRoleOptions || ['شريك استراتيجي', 'مطور', 'مقدم خدمات', 'مستشار', 'مطبق'],
+    influenceLevelOptions: settings.influenceLevelOptions || ['عالي', 'متوسط', 'منخفض'],
+    engagementLevelOptions: settings.engagementLevelOptions || ['عالي', 'متوسط', 'منخفض', 'معدوم']
   };
 
   const listLabels = {
+    // Challenge-related lists
+    challengePriorityLevels: 'مستويات أولوية التحديات',
+    challengeSensitivityLevels: 'مستويات حساسية التحديات',
     challengeTypes: 'أنواع التحديات',
-    ideaCategories: 'فئات الأفكار',
-    evaluationCriteria: 'معايير التقييم',
-    themes: 'المواضيع',
-    roles: 'الأدوار',
-    statusOptions: 'خيارات الحالة',
-    priorityLevels: 'مستويات الأولوية',
-    sensitivityLevels: 'مستويات الحساسية'
+    challengeStatusOptions: 'خيارات حالة التحديات',
+    
+    // Partner-related lists
+    partnerStatusOptions: 'خيارات حالة الشركاء',
+    partnerTypeOptions: 'أنواع الشركاء',
+    partnershipTypeOptions: 'أنواع الشراكات',
+    
+    // Expert-related lists
+    expertStatusOptions: 'خيارات حالة الخبراء',
+    assignmentStatusOptions: 'خيارات حالة المهام',
+    expertRoleTypes: 'أنواع أدوار الخبراء',
+    experienceLevels: 'مستويات الخبرة',
+    
+    // User & Role-related lists
+    roleRequestStatusOptions: 'خيارات حالة طلبات الأدوار',
+    userStatusOptions: 'خيارات حالة المستخدمين',
+    generalStatusOptions: 'خيارات الحالة العامة',
+    
+    // Team-related lists
+    teamRoleOptions: 'أدوار فريق الابتكار',
+    teamSpecializationOptions: 'تخصصات فريق الابتكار',
+    
+    // Focus Question-related lists
+    focusQuestionTypes: 'أنواع الأسئلة المحورية',
+    
+    // Stakeholder-related lists
+    stakeholderTypeOptions: 'أنواع أصحاب المصلحة',
+    stakeholderStatusOptions: 'خيارات حالة أصحاب المصلحة',
+    stakeholderRoleOptions: 'أدوار أصحاب المصلحة',
+    influenceLevelOptions: 'مستويات التأثير',
+    engagementLevelOptions: 'مستويات المشاركة'
   };
 
   const addItem = (listKey: string) => {
