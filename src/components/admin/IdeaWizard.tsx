@@ -208,7 +208,7 @@ export function IdeaWizard({
         const profile = profilesMap.get(innovator.user_id);
         return {
           ...innovator,
-          display_name: profile?.name_ar || profile?.name || `مبتكر ${innovator.user_id.slice(0, 8)}`
+          display_name: profile?.name_ar || profile?.name || `مبتكر ${innovator.user_id?.slice(0, 8) || 'غير محدد'}`
         };
       });
       setInnovators(enrichedInnovators);
