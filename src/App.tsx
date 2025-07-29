@@ -27,6 +27,8 @@ import EventsManagementPage from "./pages/EventsManagement";
 import StakeholdersManagementPage from "./pages/StakeholdersManagement";
 import TeamManagement from "./pages/TeamManagement";
 import RelationshipOverviewPage from "./pages/RelationshipOverview";
+import IdeasManagementPage from "./pages/IdeasManagement";
+import IdeasPage from "./pages/Ideas";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -171,12 +173,28 @@ const App = () => (
               } 
             />
             <Route 
+              path="/ideas" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <IdeasPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/ideas" 
+              element={
+                <ProtectedRoute requireProfile requiredRole="admin">
+                  <IdeasManagementPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
               path="/admin/relationships" 
               element={
                 <ProtectedRoute requireProfile requiredRole="admin">
                   <RelationshipOverviewPage />
                 </ProtectedRoute>
-              } 
+              }
             />
             <Route 
               path="/profile/:userId" 
