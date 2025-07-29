@@ -15,7 +15,7 @@ interface IdeaAnalyticsProps {
 }
 
 export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
-  const { generalStatusOptions, challengeTypes } = useSystemLists();
+  const { generalStatusOptions, challengeTypes, experienceLevels } = useSystemLists();
   
   // Mock data query - replace with actual API call
   const { data, isLoading, error } = useQuery({
@@ -28,7 +28,7 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
         description: `Description for idea ${i + 1}`,
         status: generalStatusOptions[Math.floor(Math.random() * generalStatusOptions.length)] || 'draft',
         score: Math.floor(Math.random() * 100),
-        maturity_level: ['concept', 'prototype', 'pilot', 'scaling'][Math.floor(Math.random() * 4)],
+        maturity_level: experienceLevels[Math.floor(Math.random() * experienceLevels.length)] || 'beginner',
         created_at: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString(),
         updated_at: new Date().toISOString(),
         submitter_id: `user-${Math.floor(Math.random() * 10) + 1}`,
