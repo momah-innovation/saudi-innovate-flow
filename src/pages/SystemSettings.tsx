@@ -9,6 +9,7 @@ import {
   Database,
   List,
   Target,
+  Lightbulb,
   Save,
   RotateCcw,
   Loader2
@@ -16,6 +17,7 @@ import {
 import { AppShell } from "@/components/layout/AppShell";
 import { GeneralSettings } from "@/components/admin/settings/GeneralSettings";
 import { ChallengeSettings } from "@/components/admin/settings/ChallengeSettings";
+import { IdeaSettings } from "@/components/admin/settings/IdeaSettings";
 import { SecuritySettings } from "@/components/admin/settings/SecuritySettings";
 import { NotificationSettings } from "@/components/admin/settings/NotificationSettings";
 import { IntegrationSettings } from "@/components/admin/settings/IntegrationSettings";
@@ -117,7 +119,7 @@ const SystemSettings = () => {
 
         {/* Settings Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
-          <TabsList className={`grid w-full grid-cols-6 h-auto p-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+          <TabsList className={`grid w-full grid-cols-7 h-auto p-1 ${isRTL ? 'text-right' : 'text-left'}`}>
             <TabsTrigger value="general" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Settings className="w-4 h-4" />
               <span className="hidden sm:inline">{t('general')}</span>
@@ -125,6 +127,10 @@ const SystemSettings = () => {
             <TabsTrigger value="challenges" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Target className="w-4 h-4" />
               <span className="hidden sm:inline">{t('challenges')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="ideas" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Lightbulb className="w-4 h-4" />
+              <span className="hidden sm:inline">الأفكار</span>
             </TabsTrigger>
             <TabsTrigger value="security" className={`flex items-center gap-2 h-12 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Shield className="w-4 h-4" />
@@ -153,6 +159,13 @@ const SystemSettings = () => {
 
           <TabsContent value="challenges">
             <ChallengeSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="ideas">
+            <IdeaSettings 
               settings={settings} 
               onSettingChange={handleSettingChange} 
             />

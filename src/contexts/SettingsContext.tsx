@@ -26,6 +26,47 @@ interface AllSystemSettings {
   enableComments: boolean;
   enableRatings: boolean;
 
+  // Idea Settings
+  idea_max_title_length: number;
+  idea_max_description_length: number;
+  idea_min_description_length: number;
+  idea_allow_anonymous_submissions: boolean;
+  idea_auto_save_drafts: boolean;
+  idea_draft_expiry_days: number;
+  idea_default_status: string;
+  idea_auto_approve_submissions: boolean;
+  idea_require_focus_question: boolean;
+  idea_workflow_notifications_enabled: boolean;
+  idea_assignment_due_date_days: number;
+  idea_evaluation_scale_max: number;
+  idea_evaluation_require_comments: boolean;
+  idea_evaluation_multiple_allowed: boolean;
+  idea_evaluation_criteria_weights: Record<string, number>;
+  idea_collaboration_enabled: boolean;
+  idea_max_collaborators: number;
+  idea_collaboration_invite_expiry_hours: number;
+  idea_version_tracking_enabled: boolean;
+  idea_comments_enabled: boolean;
+  idea_comments_moderation_enabled: boolean;
+  idea_comments_max_length: number;
+  idea_comments_allow_replies: boolean;
+  idea_comments_public_by_default: boolean;
+  idea_attachments_enabled: boolean;
+  idea_max_attachments_per_idea: number;
+  idea_max_attachment_size_mb: number;
+  idea_allowed_attachment_types: string[];
+  idea_analytics_enabled: boolean;
+  idea_analytics_retention_days: number;
+  idea_public_analytics_enabled: boolean;
+  idea_lifecycle_milestones_enabled: boolean;
+  idea_milestone_notifications_enabled: boolean;
+  idea_implementation_tracking_enabled: boolean;
+  idea_items_per_page: number;
+  idea_default_view_mode: string;
+  idea_show_preview_on_hover: boolean;
+  idea_enable_advanced_filters: boolean;
+  idea_sort_default: string;
+
   // Security Settings
   sessionTimeout: number;
   maxLoginAttempts: number;
@@ -125,6 +166,54 @@ const defaultSettings: AllSystemSettings = {
   enableCollaboration: true,
   enableComments: true,
   enableRatings: true,
+  
+  // Idea Settings
+  idea_max_title_length: 200,
+  idea_max_description_length: 5000,
+  idea_min_description_length: 50,
+  idea_allow_anonymous_submissions: false,
+  idea_auto_save_drafts: true,
+  idea_draft_expiry_days: 30,
+  idea_default_status: 'draft',
+  idea_auto_approve_submissions: false,
+  idea_require_focus_question: true,
+  idea_workflow_notifications_enabled: true,
+  idea_assignment_due_date_days: 7,
+  idea_evaluation_scale_max: 10,
+  idea_evaluation_require_comments: false,
+  idea_evaluation_multiple_allowed: true,
+  idea_evaluation_criteria_weights: {
+    technical_feasibility: 20,
+    financial_viability: 20,
+    market_potential: 20,
+    strategic_alignment: 20,
+    innovation_level: 20
+  },
+  idea_collaboration_enabled: true,
+  idea_max_collaborators: 5,
+  idea_collaboration_invite_expiry_hours: 48,
+  idea_version_tracking_enabled: true,
+  idea_comments_enabled: true,
+  idea_comments_moderation_enabled: false,
+  idea_comments_max_length: 1000,
+  idea_comments_allow_replies: true,
+  idea_comments_public_by_default: true,
+  idea_attachments_enabled: true,
+  idea_max_attachments_per_idea: 10,
+  idea_max_attachment_size_mb: 25,
+  idea_allowed_attachment_types: ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'jpg', 'jpeg', 'png', 'gif'],
+  idea_analytics_enabled: true,
+  idea_analytics_retention_days: 365,
+  idea_public_analytics_enabled: false,
+  idea_lifecycle_milestones_enabled: true,
+  idea_milestone_notifications_enabled: true,
+  idea_implementation_tracking_enabled: true,
+  idea_items_per_page: 12,
+  idea_default_view_mode: 'cards',
+  idea_show_preview_on_hover: true,
+  idea_enable_advanced_filters: true,
+  idea_sort_default: 'created_at_desc',
+
   sessionTimeout: 60,
   maxLoginAttempts: 5,
   enableDataEncryption: true,
