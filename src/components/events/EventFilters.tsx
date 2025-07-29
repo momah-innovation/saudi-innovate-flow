@@ -66,24 +66,28 @@ export function EventFilters({
   activeFiltersCount
 }: EventFiltersProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { generalStatusOptions } = useSystemLists();
-  
-  const eventTypes = [
+  const { generalStatusOptions, eventTypes, eventFormats, eventCategories, eventVisibilityOptions } = useSystemLists();
+  const eventTypeOptions = [
     { value: "all", label: "All Types" },
-    { value: "workshop", label: "Workshop" },
-    { value: "seminar", label: "Seminar" },
-    { value: "conference", label: "Conference" },
-    { value: "networking", label: "Networking Event" },
-    { value: "hackathon", label: "Hackathon" },
-    { value: "pitch_session", label: "Pitch Session" },
-    { value: "training", label: "Training Session" }
+    ...eventTypes.map(type => ({
+      value: type,
+      label: type === 'workshop' ? 'Workshop' :
+             type === 'seminar' ? 'Seminar' :
+             type === 'conference' ? 'Conference' :
+             type === 'networking' ? 'Networking Event' :
+             type === 'hackathon' ? 'Hackathon' :
+             type === 'pitch_session' ? 'Pitch Session' :
+             type === 'training' ? 'Training Session' : type
+    }))
   ];
 
   const formatOptions = [
     { value: "all", label: "All Formats" },
-    { value: "in_person", label: "In Person" },
-    { value: "virtual", label: "Virtual" },
-    { value: "hybrid", label: "Hybrid" }
+    ...eventFormats.map(format => ({
+      value: format,
+      label: format === 'in_person' ? 'In Person' :
+             format === 'virtual' ? 'Virtual' : 'Hybrid'
+    }))
   ];
 
   // Status options from system lists
@@ -97,17 +101,21 @@ export function EventFilters({
 
   const categoryOptions = [
     { value: "all", label: "All Categories" },
-    { value: "standalone", label: "Standalone Event" },
-    { value: "campaign_event", label: "Campaign Event" },
-    { value: "training", label: "Training" },
-    { value: "workshop", label: "Workshop" }
+    ...eventCategories.map(category => ({
+      value: category,
+      label: category === 'standalone' ? 'Standalone Event' :
+             category === 'campaign_event' ? 'Campaign Event' :
+             category === 'training' ? 'Training' : 'Workshop'
+    }))
   ];
 
   const visibilityOptions = [
     { value: "all", label: "All Visibility" },
-    { value: "public", label: "Public" },
-    { value: "private", label: "Private" },
-    { value: "internal", label: "Internal" }
+    ...eventVisibilityOptions.map(visibility => ({
+      value: visibility,
+      label: visibility === 'public' ? 'Public' :
+             visibility === 'private' ? 'Private' : 'Internal'
+    }))
   ];
 
   return (
@@ -205,7 +213,7 @@ export function EventFilters({
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
-                      {eventTypes.map((type) => (
+                      {eventTypeOptions.map((type) => (
                         <SelectItem key={type.value} value={type.value}>
                           {type.label}
                         </SelectItem>
@@ -367,7 +375,7 @@ export function EventFilters({
                     )}
                     {typeFilter !== "all" && (
                       <Badge variant="outline" className="text-xs">
-                        Type: {eventTypes.find(t => t.value === typeFilter)?.label}
+                        Type: {eventTypeOptions.find(t => t.value === typeFilter)?.label}
                         <X 
                           className="ml-1 h-3 w-3 cursor-pointer" 
                           onClick={() => onTypeChange("all")}

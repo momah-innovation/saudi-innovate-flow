@@ -129,24 +129,25 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
   const [selectedChallenges, setSelectedChallenges] = useState<string[]>([]);
 
   const { toast } = useToast();
-  const { generalStatusOptions } = useSystemLists();
+  const { generalStatusOptions, eventTypes, eventFormats, eventCategories, eventVisibilityOptions } = useSystemLists();
 
-  // Options
-  const eventTypes = [
-    { value: "workshop", label: "ورشة عمل" },
-    { value: "seminar", label: "ندوة" },
-    { value: "conference", label: "مؤتمر" },
-    { value: "networking", label: "شبكات تواصل" },
-    { value: "hackathon", label: "هاكاثون" },
-    { value: "pitch_session", label: "جلسة عرض" },
-    { value: "training", label: "تدريب" }
-  ];
+  // Options from system lists
+  const eventTypeOptions = eventTypes.map(type => ({
+    value: type,
+    label: type === 'workshop' ? 'ورشة عمل' : 
+           type === 'seminar' ? 'ندوة' :
+           type === 'conference' ? 'مؤتمر' :
+           type === 'networking' ? 'شبكات تواصل' :
+           type === 'hackathon' ? 'هاكاثون' :
+           type === 'pitch_session' ? 'جلسة عرض' : 
+           type === 'training' ? 'تدريب' : type
+  }));
 
-  const formatOptions = [
-    { value: "in_person", label: "حضوري" },
-    { value: "virtual", label: "افتراضي" },
-    { value: "hybrid", label: "مختلط" }
-  ];
+  const formatOptions = eventFormats.map(format => ({
+    value: format,
+    label: format === 'in_person' ? 'حضوري' :
+           format === 'virtual' ? 'افتراضي' : 'مختلط'
+  }));
 
   // Status options from system lists
   const statusOptions = generalStatusOptions.map(status => ({ 
@@ -158,18 +159,18 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
            status === 'postponed' ? 'مؤجل' : status
   }));
 
-  const visibilityOptions = [
-    { value: "public", label: "عام" },
-    { value: "private", label: "خاص" },
-    { value: "internal", label: "داخلي" }
-  ];
+  const visibilityOptions = eventVisibilityOptions.map(visibility => ({
+    value: visibility,
+    label: visibility === 'public' ? 'عام' :
+           visibility === 'private' ? 'خاص' : 'داخلي'
+  }));
 
-  const categoryOptions = [
-    { value: "standalone", label: "حدث مستقل" },
-    { value: "campaign_event", label: "حدث حملة" },
-    { value: "training", label: "تدريب" },
-    { value: "workshop", label: "ورشة عمل" }
-  ];
+  const categoryOptions = eventCategories.map(category => ({
+    value: category,
+    label: category === 'standalone' ? 'حدث مستقل' :
+           category === 'campaign_event' ? 'حدث حملة' :
+           category === 'training' ? 'تدريب' : 'ورشة عمل'
+  }));
 
   useEffect(() => {
     if (isOpen) {
@@ -546,7 +547,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                     <SelectValue placeholder="اختر النوع" />
                   </SelectTrigger>
                   <SelectContent>
-                    {eventTypes.map((type) => (
+                    {eventTypeOptions.map((type) => (
                       <SelectItem key={type.value} value={type.value}>
                         {type.label}
                       </SelectItem>

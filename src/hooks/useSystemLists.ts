@@ -21,6 +21,10 @@ interface SystemListsHook {
   focusQuestionTypes: string[];
   experienceLevels: string[];
   expertRoleTypes: string[];
+  eventTypes: string[];
+  eventFormats: string[];
+  eventCategories: string[];
+  eventVisibilityOptions: string[];
   loading: boolean;
 }
 
@@ -64,6 +68,10 @@ export const useSystemLists = (): SystemListsHook => {
     focusQuestionTypes: ['general', 'technical', 'business', 'impact', 'implementation', 'social', 'ethical', 'medical', 'regulatory'],
     experienceLevels: ['beginner', 'intermediate', 'advanced', 'expert'],
     expertRoleTypes: ['lead_expert', 'evaluator', 'reviewer', 'subject_matter_expert', 'external_consultant'],
+    eventTypes: ['workshop', 'seminar', 'conference', 'networking', 'hackathon', 'pitch_session', 'training'],
+    eventFormats: ['in_person', 'virtual', 'hybrid'],
+    eventCategories: ['standalone', 'campaign_event', 'training', 'workshop'],
+    eventVisibilityOptions: ['public', 'private', 'internal'],
     loading: true
   });
 
@@ -92,7 +100,11 @@ export const useSystemLists = (): SystemListsHook => {
             'team_specialization_options',
             'focus_question_types',
             'experience_levels',
-            'expert_role_types'
+            'expert_role_types',
+            'event_types',
+            'event_formats',
+            'event_categories',
+            'event_visibility_options'
           ]);
         
         if (data) {
@@ -160,6 +172,18 @@ export const useSystemLists = (): SystemListsHook => {
                 break;
               case 'expert_role_types':
                 newSettings.expertRoleTypes = value;
+                break;
+              case 'event_types':
+                newSettings.eventTypes = value;
+                break;
+              case 'event_formats':
+                newSettings.eventFormats = value;
+                break;
+              case 'event_categories':
+                newSettings.eventCategories = value;
+                break;
+              case 'event_visibility_options':
+                newSettings.eventVisibilityOptions = value;
                 break;
             }
           });

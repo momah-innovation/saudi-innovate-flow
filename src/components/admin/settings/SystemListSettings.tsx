@@ -48,6 +48,12 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     // Focus Question-related lists
     focusQuestionTypes: settings.focusQuestionTypes || ['عام', 'تقني', 'تجاري', 'تأثير', 'تنفيذ', 'اجتماعي', 'أخلاقي', 'طبي', 'تنظيمي'],
     
+    // Event-related lists
+    eventTypes: settings.eventTypes || ['ورشة عمل', 'ندوة', 'مؤتمر', 'شبكات تواصل', 'هاكاثون', 'جلسة عرض', 'تدريب'],
+    eventFormats: settings.eventFormats || ['حضوري', 'افتراضي', 'مختلط'],
+    eventCategories: settings.eventCategories || ['حدث مستقل', 'حدث حملة', 'تدريب', 'ورشة عمل'],
+    eventVisibilityOptions: settings.eventVisibilityOptions || ['عام', 'خاص', 'داخلي'],
+    
     // Stakeholder-related lists
     stakeholderTypeOptions: settings.stakeholderTypeOptions || ['حكومي', 'خاص', 'أكاديمي', 'غير ربحي', 'دولي'],
     stakeholderStatusOptions: settings.stakeholderStatusOptions || ['نشط', 'غير نشط', 'معلق', 'محظور'],
@@ -85,6 +91,12 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     
     // Focus Question-related lists
     focusQuestionTypes: 'أنواع الأسئلة المحورية',
+    
+    // Event-related lists
+    eventTypes: 'أنواع الفعاليات',
+    eventFormats: 'تنسيقات الفعاليات',
+    eventCategories: 'فئات الفعاليات',
+    eventVisibilityOptions: 'خيارات رؤية الفعاليات',
     
     // Stakeholder-related lists
     stakeholderTypeOptions: 'أنواع أصحاب المصلحة',
