@@ -58,13 +58,13 @@ export function NavigationSidebar() {
       },
       { 
         id: 'ideas', 
-        label: 'My Ideas', 
-        arabicLabel: 'أفكاري',
+        label: 'Ideas', 
+        arabicLabel: 'الأفكار',
         icon: Lightbulb, 
         path: '/ideas',
         badge: 3,
         group: 'workflow',
-        roles: ['innovator'] 
+        roles: ['innovator', 'expert', 'all'] 
       },
       { 
         id: 'evaluations', 
@@ -128,9 +128,9 @@ export function NavigationSidebar() {
         roles: ['team', 'admin'] 
       },
       { 
-        id: 'ideas-admin', 
-        label: 'Ideas', 
-        arabicLabel: 'الأفكار',
+        id: 'ideas-management', 
+        label: 'Ideas Management', 
+        arabicLabel: 'إدارة الأفكار',
         icon: Lightbulb, 
         path: '/admin/ideas',
         group: 'management',
