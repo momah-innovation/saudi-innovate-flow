@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
@@ -76,6 +77,7 @@ export function IdeaWizard({
 }: IdeaWizardProps) {
   const { toast } = useToast();
   const { t } = useTranslation();
+  const { generalStatusOptions, experienceLevels } = useSystemLists();
   
   const [formData, setFormData] = useState({
     title_ar: "",
@@ -101,24 +103,26 @@ export function IdeaWizard({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  // Status options
-  const statusOptions = [
-    { value: 'draft', label: 'مسودة' },
-    { value: 'submitted', label: 'مُرسلة' },
-    { value: 'under_review', label: 'قيد المراجعة' },
-    { value: 'approved', label: 'موافق عليها' },
-    { value: 'rejected', label: 'مرفوضة' },
-    { value: 'in_development', label: 'قيد التطوير' },
-    { value: 'implemented', label: 'منفذة' }
-  ];
+  // Status options from system lists
+  const statusOptions = generalStatusOptions.map(status => ({ 
+    value: status, 
+    label: status === 'draft' ? 'مسودة' :
+           status === 'submitted' ? 'مُرسلة' :
+           status === 'under_review' ? 'قيد المراجعة' :
+           status === 'approved' ? 'موافق عليها' :
+           status === 'rejected' ? 'مرفوضة' :
+           status === 'in_development' ? 'قيد التطوير' :
+           status === 'implemented' ? 'منفذة' : status
+  }));
 
-  // Maturity options
-  const maturityOptions = [
-    { value: 'concept', label: 'مفهوم' },
-    { value: 'prototype', label: 'نموذج أولي' },
-    { value: 'pilot', label: 'تجريبي' },
-    { value: 'scaled', label: 'قابل للتوسع' }
-  ];
+  // Maturity options from system lists
+  const maturityOptions = experienceLevels.map(level => ({ 
+    value: level, 
+    label: level === 'beginner' ? 'مفهوم' :
+           level === 'intermediate' ? 'نموذج أولي' :
+           level === 'advanced' ? 'تجريبي' :
+           level === 'expert' ? 'قابل للتوسع' : level
+  }));
 
   useEffect(() => {
     if (isOpen) {

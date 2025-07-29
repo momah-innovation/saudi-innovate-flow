@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   GitBranch, 
@@ -63,6 +64,7 @@ interface IdeaWorkflowPanelProps {
 export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: IdeaWorkflowPanelProps) {
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
+  const { generalStatusOptions, assignmentStatusOptions } = useSystemLists();
   
   const [workflowStates, setWorkflowStates] = useState<WorkflowState[]>([]);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
@@ -79,15 +81,19 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("workflow");
 
-  const statusOptions = [
-    { value: 'draft', label: 'مسودة', icon: <Clock className="w-4 h-4" />, color: 'gray' },
-    { value: 'submitted', label: 'مُرسلة', icon: <ArrowRight className="w-4 h-4" />, color: 'blue' },
-    { value: 'under_review', label: 'قيد المراجعة', icon: <Activity className="w-4 h-4" />, color: 'yellow' },
-    { value: 'approved', label: 'موافق عليها', icon: <CheckCircle className="w-4 h-4" />, color: 'green' },
-    { value: 'rejected', label: 'مرفوضة', icon: <XCircle className="w-4 h-4" />, color: 'red' },
-    { value: 'in_development', label: 'قيد التطوير', icon: <Target className="w-4 h-4" />, color: 'purple' },
-    { value: 'implemented', label: 'منفذة', icon: <CheckCircle className="w-4 h-4" />, color: 'green' }
-  ];
+  // Status options from system lists
+  const statusOptions = generalStatusOptions.map(status => ({ 
+    value: status, 
+    label: status === 'draft' ? 'مسودة' :
+           status === 'submitted' ? 'مُرسلة' :
+           status === 'under_review' ? 'قيد المراجعة' :
+           status === 'approved' ? 'موافق عليها' :
+           status === 'rejected' ? 'مرفوضة' :
+           status === 'in_development' ? 'قيد التطوير' :
+           status === 'implemented' ? 'منفذة' : status,
+    icon: <Clock className="w-4 h-4" />,
+    color: 'gray'
+  }));
 
   const assignmentTypes = [
     { value: 'reviewer', label: 'مراجع' },
@@ -96,12 +102,14 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
     { value: 'observer', label: 'مراقب' }
   ];
 
-  const priorities = [
-    { value: 'low', label: 'منخفضة' },
-    { value: 'medium', label: 'متوسطة' },
-    { value: 'high', label: 'عالية' },
-    { value: 'urgent', label: 'عاجلة' }
-  ];
+  // Priorities from system lists
+  const priorities = assignmentStatusOptions.map(status => ({ 
+    value: status, 
+    label: status === 'low' ? 'منخفضة' :
+           status === 'medium' ? 'متوسطة' :
+           status === 'high' ? 'عالية' :
+           status === 'urgent' ? 'عاجلة' : status
+  }));
 
   useEffect(() => {
     if (ideaId) {

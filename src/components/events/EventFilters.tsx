@@ -10,6 +10,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { CalendarIcon, Filter, X, ChevronDown, ChevronUp } from "lucide-react";
 import { format } from "date-fns";
 import { useState } from "react";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 interface EventFiltersProps {
   searchTerm: string;
@@ -65,6 +66,7 @@ export function EventFilters({
   activeFiltersCount
 }: EventFiltersProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { generalStatusOptions } = useSystemLists();
   
   const eventTypes = [
     { value: "all", label: "All Types" },
@@ -84,13 +86,13 @@ export function EventFilters({
     { value: "hybrid", label: "Hybrid" }
   ];
 
+  // Status options from system lists
   const statusOptions = [
     { value: "all", label: "All Statuses" },
-    { value: "scheduled", label: "Scheduled" },
-    { value: "ongoing", label: "Ongoing" },
-    { value: "completed", label: "Completed" },
-    { value: "cancelled", label: "Cancelled" },
-    { value: "postponed", label: "Postponed" }
+    ...generalStatusOptions.map(status => ({ 
+      value: status, 
+      label: status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ')
+    }))
   ];
 
   const categoryOptions = [

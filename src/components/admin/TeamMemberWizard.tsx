@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { 
   Users, 
   User,
@@ -63,6 +64,7 @@ export function TeamMemberWizard({
 }: TeamMemberWizardProps) {
   const { toast } = useToast();
   const { t } = useTranslation();
+  const { teamRoleOptions, teamSpecializationOptions } = useSystemLists();
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -87,27 +89,7 @@ export function TeamMemberWizard({
     performanceRatingStep: 0.5
   });
 
-  const roleOptions = [
-    "مدير الابتكار",
-    "أخصائي ابتكار أول",
-    "أخصائي ابتكار",
-    "محلل ابتكار",
-    "منسق ابتكار",
-    "باحث ابتكار"
-  ];
-
-  const specializationOptions = [
-    "تطوير المنتجات",
-    "التكنولوجيا المالية",
-    "الذكاء الاصطناعي",
-    "البيانات والتحليلات",
-    "تجربة المستخدم",
-    "إدارة المشاريع",
-    "التسويق الرقمي",
-    "الأمن السيبراني",
-    "البحث والتطوير",
-    "الاستراتيجية"
-  ];
+  // Use system lists for role and specialization options
 
   // Fetch data when dialog opens
   useEffect(() => {
@@ -458,7 +440,7 @@ export function TeamMemberWizard({
                   <SelectValue placeholder="اختر الدور" />
                 </SelectTrigger>
                 <SelectContent>
-                  {roleOptions.map((role) => (
+                  {teamRoleOptions.map((role) => (
                     <SelectItem key={role} value={role}>{role}</SelectItem>
                   ))}
                 </SelectContent>
@@ -468,7 +450,7 @@ export function TeamMemberWizard({
             <div className="space-y-2">
               <Label>التخصصات (يمكن اختيار أكثر من تخصص)</Label>
               <div className="flex flex-wrap gap-2">
-                {specializationOptions.map((spec) => (
+                {teamSpecializationOptions.map((spec) => (
                   <Badge
                     key={spec}
                     variant={formData.specialization.includes(spec) ? 'default' : 'outline'}

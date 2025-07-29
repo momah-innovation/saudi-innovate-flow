@@ -11,6 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { 
   Check,
   ChevronsUpDown,
@@ -128,6 +129,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
   const [selectedChallenges, setSelectedChallenges] = useState<string[]>([]);
 
   const { toast } = useToast();
+  const { generalStatusOptions } = useSystemLists();
 
   // Options
   const eventTypes = [
@@ -146,13 +148,15 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
     { value: "hybrid", label: "مختلط" }
   ];
 
-  const statusOptions = [
-    { value: "scheduled", label: "مجدول" },
-    { value: "ongoing", label: "جاري" },
-    { value: "completed", label: "مكتمل" },
-    { value: "cancelled", label: "ملغي" },
-    { value: "postponed", label: "مؤجل" }
-  ];
+  // Status options from system lists
+  const statusOptions = generalStatusOptions.map(status => ({ 
+    value: status, 
+    label: status === 'scheduled' ? 'مجدول' :
+           status === 'ongoing' ? 'جاري' :
+           status === 'completed' ? 'مكتمل' :
+           status === 'cancelled' ? 'ملغي' :
+           status === 'postponed' ? 'مؤجل' : status
+  }));
 
   const visibilityOptions = [
     { value: "public", label: "عام" },

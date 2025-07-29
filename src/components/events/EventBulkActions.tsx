@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
@@ -47,6 +48,7 @@ export function EventBulkActions({
   onRefresh 
 }: EventBulkActionsProps) {
   const { t } = useTranslation();
+  const { generalStatusOptions } = useSystemLists();
   const [isLoading, setIsLoading] = useState(false);
   const [bulkAction, setBulkAction] = useState("");
   const [newStatus, setNewStatus] = useState("");
@@ -57,13 +59,11 @@ export function EventBulkActions({
   const allSelected = events.length > 0 && selectedEvents.length === events.length;
   const someSelected = selectedEvents.length > 0 && selectedEvents.length < events.length;
 
-  const statusOptions = [
-    { value: "scheduled", label: "Scheduled" },
-    { value: "ongoing", label: "Ongoing" },
-    { value: "completed", label: "Completed" },
-    { value: "cancelled", label: "Cancelled" },
-    { value: "postponed", label: "Postponed" }
-  ];
+  // Status options from system lists
+  const statusOptions = generalStatusOptions.map(status => ({ 
+    value: status, 
+    label: status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ')
+  }));
 
   const handleSelectAll = () => {
     if (allSelected) {

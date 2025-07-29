@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { Trash2, FileEdit, Tag, Users, Archive, AlertTriangle } from "lucide-react";
 
@@ -17,6 +18,7 @@ interface BulkActionsPanelProps {
 export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelection }: BulkActionsPanelProps) {
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
+  const { generalStatusOptions } = useSystemLists();
   
   const [showStatusDialog, setShowStatusDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -32,16 +34,17 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
   const [availableTags, setAvailableTags] = useState<any[]>([]);
   const [teamMembers, setTeamMembers] = useState<any[]>([]);
 
-  // Status options
-  const statusOptions = [
-    { value: 'draft', label: 'مسودة' },
-    { value: 'submitted', label: 'مُرسلة' },
-    { value: 'under_review', label: 'قيد المراجعة' },
-    { value: 'approved', label: 'موافق عليها' },
-    { value: 'rejected', label: 'مرفوضة' },
-    { value: 'in_development', label: 'قيد التطوير' },
-    { value: 'implemented', label: 'منفذة' }
-  ];
+  // Status options from system lists
+  const statusOptions = generalStatusOptions.map(status => ({ 
+    value: status, 
+    label: status === 'draft' ? 'مسودة' :
+           status === 'submitted' ? 'مُرسلة' :
+           status === 'under_review' ? 'قيد المراجعة' :
+           status === 'approved' ? 'موافق عليها' :
+           status === 'rejected' ? 'مرفوضة' :
+           status === 'in_development' ? 'قيد التطوير' :
+           status === 'implemented' ? 'منفذة' : status
+  }));
 
   const handleBulkStatusChange = async () => {
     if (!newStatus || selectedItems.length === 0) return;
