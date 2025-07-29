@@ -41,6 +41,15 @@ import PartnerDashboard from "./pages/PartnerDashboard";
 import PartnerProfile from "./pages/PartnerProfile";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import ChallengesBrowse from "./pages/ChallengesBrowse";
+import EvaluationsPage from "./pages/EvaluationsPage";
+import EventRegistration from "./pages/EventRegistration";
+import StakeholderDashboard from "./pages/StakeholderDashboard";
+import AnalyticsPage from "./pages/AnalyticsPage";
+import TrendsPage from "./pages/TrendsPage";
+import ReportsPage from "./pages/ReportsPage";
+import SystemAnalyticsPage from "./pages/SystemAnalyticsPage";
+import HelpPage from "./pages/HelpPage";
 
 const queryClient = new QueryClient();
 
@@ -307,6 +316,16 @@ const App = () => (
               } 
             />
             <Route path="/" element={<LandingPage />} />
+            {/* Missing pages routes */}
+            <Route path="/challenges" element={<ChallengesBrowse />} />
+            <Route path="/evaluations" element={<EvaluationsPage />} />
+            <Route path="/event-registration" element={<EventRegistration />} />
+            <Route path="/stakeholder-dashboard" element={<StakeholderDashboard />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/trends" element={<TrendsPage />} />
+            <Route path="/reports" element={<ReportsPage />} />
+            <Route path="/admin/system-analytics" element={<SystemAnalyticsPage />} />
+            <Route path="/help" element={<HelpPage />} />
             {/* Legacy dashboard route pointing to Index */}
             <Route 
               path="/admin/dashboard" 
