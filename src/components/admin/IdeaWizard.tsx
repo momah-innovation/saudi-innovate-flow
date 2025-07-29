@@ -38,6 +38,7 @@ interface Innovator {
   id: string;
   user_id: string;
   innovation_score: number;
+  display_name?: string;
 }
 
 interface Idea {
@@ -192,7 +193,13 @@ export function IdeaWizard({
       setFocusQuestions(focusQuestionsRes.data || []);
       setCampaigns(campaignsRes.data || []);
       setEvents(eventsRes.data || []);
-      setInnovators(innovatorsRes.data || []);
+      
+      // Add display names for innovators
+      const enrichedInnovators = (innovatorsRes.data || []).map(innovator => ({
+        ...innovator,
+        display_name: `مبتكر ${innovator.user_id.slice(0, 8)}`
+      }));
+      setInnovators(enrichedInnovators);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -327,6 +334,9 @@ export function IdeaWizard({
     !formData.challenge_id || fq.challenge_id === formData.challenge_id || !fq.challenge_id
   );
 
+  // Filter challenges based on selected campaign/event
+  const filteredChallenges = challenges; // For now, show all challenges until linking tables are implemented
+
   const steps = [
     {
       id: "basic-info",
@@ -406,11 +416,11 @@ export function IdeaWizard({
                 <SelectValue placeholder="اختر المبتكر" />
               </SelectTrigger>
               <SelectContent>
-                {innovators.map((innovator) => (
-                  <SelectItem key={innovator.id} value={innovator.id}>
-                    المبتكر {innovator.user_id} (نقاط: {innovator.innovation_score})
-                  </SelectItem>
-                ))}
+                 {innovators.map((innovator) => (
+                   <SelectItem key={innovator.id} value={innovator.id}>
+                     {innovator.display_name} (نقاط: {innovator.innovation_score})
+                   </SelectItem>
+                 ))}
               </SelectContent>
             </Select>
             {errors.innovator_id && (
@@ -486,9 +496,83 @@ export function IdeaWizard({
       ),
     },
     {
-      id: "associations",
-      title: "الربط والعلاقات",
-      description: "ربط الفكرة بالتحديات والأسئلة المحورية والحملات والفعاليات",
+      id: "campaigns-events",
+      title: "الحملات والفعاليات",
+      description: "ربط الفكرة بالحملات والفعاليات (اختياري)",
+      validation: () => true, // Always valid as optional
+      content: (
+        <div className="space-y-6">
+          <Alert>
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              ربط الفكرة بالحملات والفعاليات اختياري. إذا تم اختيار حملة أو فعالية، ستتم تصفية التحديات المتاحة في الخطوة التالية.
+            </AlertDescription>
+          </Alert>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="campaign_id">الحملة</Label>
+              <Select 
+                value={formData.campaign_id} 
+                onValueChange={(value) => {
+                  setFormData({ 
+                    ...formData, 
+                    campaign_id: value,
+                    event_id: value !== "none" ? "none" : formData.event_id, // Reset event if campaign selected
+                    challenge_id: "", // Reset challenge when campaign changes
+                    focus_question_id: "" // Reset focus question
+                  });
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="اختر الحملة" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">بدون حملة</SelectItem>
+                  {campaigns.map((campaign) => (
+                    <SelectItem key={campaign.id} value={campaign.id}>
+                      {campaign.title_ar} ({campaign.status})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="event_id">الفعالية</Label>
+              <Select 
+                value={formData.event_id} 
+                onValueChange={(value) => {
+                  setFormData({ 
+                    ...formData, 
+                    event_id: value,
+                    campaign_id: value !== "none" ? "none" : formData.campaign_id, // Reset campaign if event selected
+                    challenge_id: "", // Reset challenge when event changes
+                    focus_question_id: "" // Reset focus question
+                  });
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="اختر الفعالية" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">بدون فعالية</SelectItem>
+                  {events.map((event) => (
+                    <SelectItem key={event.id} value={event.id}>
+                      {event.title_ar} ({event.status})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "challenges-questions",
+      title: "التحديات والأسئلة المحورية",
+      description: "ربط الفكرة بالتحديات والأسئلة المحورية",
       validation: validateAssociations,
       content: (
         <div className="space-y-6">
@@ -522,13 +606,13 @@ export function IdeaWizard({
                 <SelectTrigger className={errors.challenge_id ? "border-destructive" : ""}>
                   <SelectValue placeholder="اختر التحدي المرتبط" />
                 </SelectTrigger>
-                <SelectContent>
-                  {challenges.map((challenge) => (
-                    <SelectItem key={challenge.id} value={challenge.id}>
-                      {challenge.title_ar}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
+                 <SelectContent>
+                   {filteredChallenges.map((challenge) => (
+                     <SelectItem key={challenge.id} value={challenge.id}>
+                       {challenge.title_ar}
+                     </SelectItem>
+                   ))}
+                 </SelectContent>
               </Select>
               {errors.challenge_id ? (
                 <p className="text-sm text-destructive">{errors.challenge_id}</p>
