@@ -37,6 +37,8 @@ import ExpertDashboard from "./pages/ExpertDashboard";
 import ExpertProfile from "./pages/ExpertProfile";
 import EventsBrowse from "./pages/EventsBrowse";
 import PublicStatistics from "./pages/PublicStatistics";
+import PartnerDashboard from "./pages/PartnerDashboard";
+import PartnerProfile from "./pages/PartnerProfile";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -287,6 +289,22 @@ const App = () => (
             <Route 
               path="/statistics" 
               element={<PublicStatistics />} 
+            />
+            <Route 
+              path="/partner-dashboard" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <PartnerDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/partner-profile" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <PartnerProfile />
+                </ProtectedRoute>
+              } 
             />
             <Route path="/" element={<LandingPage />} />
             {/* Legacy dashboard route pointing to Index */}
