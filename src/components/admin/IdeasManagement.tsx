@@ -15,10 +15,10 @@ export function IdeasManagement() {
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [filters] = useState({
-    status: '',
-    challenge: '',
-    innovator: '',
-    maturityLevel: '',
+    status: 'all',
+    challenge: 'all',
+    innovator: 'all',
+    maturityLevel: 'all',
     scoreRange: [0, 10] as [number, number]
   });
   const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
