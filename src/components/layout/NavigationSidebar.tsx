@@ -3,7 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Home, Target, Lightbulb, Users, Calendar, TrendingUp,
   FileText, Settings, PieChart, Briefcase, Award, Zap,
-  Shield, BookOpen, BarChart3, UserCheck, Network
+  Shield, BookOpen, BarChart3, UserCheck, Network, Search,
+  PlusCircle, Star, HelpCircle, Globe, Edit
 } from 'lucide-react';
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent,
@@ -45,21 +46,92 @@ export function NavigationSidebar() {
       },
     ];
 
-    const workflowItems = [
+    const discoverItems = [
       { 
-        id: 'challenges', 
-        label: 'Challenges', 
-        arabicLabel: 'التحديات',
-        icon: Target, 
+        id: 'challenges-browse', 
+        label: 'Browse Challenges', 
+        arabicLabel: 'استكشاف التحديات',
+        icon: Search, 
         path: '/challenges',
         badge: 12,
+        group: 'discover',
+        roles: ['all'] 
+      },
+      { 
+        id: 'events-browse', 
+        label: 'Browse Events', 
+        arabicLabel: 'استكشاف الفعاليات',
+        icon: Calendar, 
+        path: '/events',
+        badge: 2,
+        group: 'discover',
+        roles: ['all'] 
+      },
+      { 
+        id: 'public-statistics', 
+        label: 'Public Statistics', 
+        arabicLabel: 'الإحصائيات العامة',
+        icon: BarChart3, 
+        path: '/statistics',
+        group: 'discover',
+        roles: ['all'] 
+      },
+    ];
+
+    const workflowItems = [
+      // User Dashboards
+      { 
+        id: 'user-dashboard', 
+        label: 'My Dashboard', 
+        arabicLabel: 'لوحة التحكم الشخصية',
+        icon: Home, 
+        path: '/dashboard',
+        group: 'workflow',
+        roles: ['innovator', 'partner', 'stakeholder'] 
+      },
+      { 
+        id: 'expert-dashboard', 
+        label: 'Expert Dashboard', 
+        arabicLabel: 'لوحة تحكم الخبير',
+        icon: Star, 
+        path: '/expert-dashboard',
+        badge: 8,
+        group: 'workflow',
+        roles: ['expert'] 
+      },
+      { 
+        id: 'partner-dashboard', 
+        label: 'Partner Dashboard', 
+        arabicLabel: 'لوحة تحكم الشريك',
+        icon: Briefcase, 
+        path: '/partner-dashboard',
+        group: 'workflow',
+        roles: ['partner'] 
+      },
+      { 
+        id: 'stakeholder-dashboard', 
+        label: 'Stakeholder Dashboard', 
+        arabicLabel: 'لوحة تحكم المعني',
+        icon: Users, 
+        path: '/stakeholder-dashboard',
+        group: 'workflow',
+        roles: ['stakeholder'] 
+      },
+      
+      // Core workflow items
+      { 
+        id: 'idea-submission', 
+        label: 'Submit Idea', 
+        arabicLabel: 'إرسال فكرة',
+        icon: PlusCircle, 
+        path: '/submit-idea',
         group: 'workflow',
         roles: ['innovator', 'all'] 
       },
       { 
         id: 'ideas', 
-        label: 'Ideas', 
-        arabicLabel: 'الأفكار',
+        label: 'My Ideas', 
+        arabicLabel: 'أفكاري',
         icon: Lightbulb, 
         path: '/ideas',
         badge: 3,
@@ -71,19 +143,51 @@ export function NavigationSidebar() {
         label: 'Evaluations', 
         arabicLabel: 'التقييمات',
         icon: UserCheck, 
-        path: '/admin/evaluations',
+        path: '/evaluations',
         badge: 8,
         group: 'workflow',
         roles: ['expert', 'team', 'admin'] 
       },
+      
+      // Profile management
       { 
-        id: 'expertise', 
-        label: 'Expertise Profile', 
-        arabicLabel: 'ملف الخبرة',
-        icon: BookOpen, 
-        path: '/expertise',
+        id: 'expert-profile', 
+        label: 'Expert Profile', 
+        arabicLabel: 'ملف الخبير',
+        icon: Edit, 
+        path: '/expert-profile',
         group: 'workflow',
         roles: ['expert'] 
+      },
+      { 
+        id: 'partner-profile', 
+        label: 'Partner Profile', 
+        arabicLabel: 'ملف الشريك',
+        icon: Edit, 
+        path: '/partner-profile',
+        group: 'workflow',
+        roles: ['partner'] 
+      },
+      
+      // Event participation
+      { 
+        id: 'event-registration', 
+        label: 'Event Registration', 
+        arabicLabel: 'تسجيل الفعاليات',
+        icon: Award, 
+        path: '/event-registration',
+        group: 'workflow',
+        roles: ['all'] 
+      },
+      
+      { 
+        id: 'team-workspace', 
+        label: 'Team Workspace', 
+        arabicLabel: 'مساحة عمل الفريق',
+        icon: Users, 
+        path: '/team-workspace',
+        group: 'workflow',
+        roles: ['team', 'admin', 'innovator', 'expert'] 
       },
     ];
 
@@ -162,15 +266,6 @@ export function NavigationSidebar() {
         path: '/team-management',
         group: 'management',
         roles: ['team', 'admin'] 
-      },
-      { 
-        id: 'team-workspace', 
-        label: 'Team Workspace', 
-        arabicLabel: 'مساحة عمل الفريق',
-        icon: Users, 
-        path: '/team-workspace',
-        group: 'workflow',
-        roles: ['team', 'admin', 'innovator', 'expert'] 
       },
     ];
 
@@ -289,9 +384,18 @@ export function NavigationSidebar() {
         group: 'settings',
         roles: ['all'] 
       },
+      { 
+        id: 'help', 
+        label: 'Help & Documentation', 
+        arabicLabel: 'المساعدة والوثائق',
+        icon: HelpCircle, 
+        path: '/help',
+        group: 'settings',
+        roles: ['all'] 
+      },
     ];
 
-    return [...baseItems, ...workflowItems, ...managementItems, ...analyticsItems, ...adminItems, ...settingsItems];
+    return [...baseItems, ...discoverItems, ...workflowItems, ...managementItems, ...analyticsItems, ...adminItems, ...settingsItems];
   }, []);
 
   // Check if user can see a menu item - same logic as AppSidebar
@@ -305,6 +409,8 @@ export function NavigationSidebar() {
     const userRoles = [];
     if (userProfile?.innovator_profile) userRoles.push('innovator');
     if (userProfile?.expert_profile) userRoles.push('expert');
+    if (userProfile?.partner_profile) userRoles.push('partner');
+    if (userProfile?.stakeholder_profile) userRoles.push('stakeholder');
     if (hasRole('admin')) userRoles.push('admin');
     if (hasRole('super_admin')) userRoles.push('admin'); // super_admin should see admin items
     if (hasRole('team_member')) userRoles.push('team');
@@ -317,6 +423,7 @@ export function NavigationSidebar() {
     const filtered = menuItems.filter(canAccessItem);
     return {
       main: filtered.filter(item => item.group === 'main'),
+      discover: filtered.filter(item => item.group === 'discover'),
       workflow: filtered.filter(item => item.group === 'workflow'),
       management: filtered.filter(item => item.group === 'management'),
       analytics: filtered.filter(item => item.group === 'analytics'),
@@ -343,6 +450,7 @@ export function NavigationSidebar() {
   // Get localized group label
   const getGroupLabel = (key: string) => {
     const labels = {
+      discover: isRTL ? 'استكشاف' : 'Discover',
       workflow: isRTL ? 'سير العمل' : 'Workflow',
       management: isRTL ? 'الإدارة' : 'Management',
       analytics: isRTL ? 'التحليلات' : 'Analytics',
@@ -418,6 +526,7 @@ export function NavigationSidebar() {
     >
       <SidebarContent className={cn(isRTL && "text-right")}>
         {renderGroup(visibleItems.main)}
+        {renderGroup(visibleItems.discover, 'discover')}
         {renderGroup(visibleItems.workflow, 'workflow')}
         {renderGroup(visibleItems.management, 'management')}
         {renderGroup(visibleItems.analytics, 'analytics')}
