@@ -2153,6 +2153,7 @@ export type Database = {
           performance_rating: number | null
           specialization: string[] | null
           status: string | null
+          team_id: string | null
           user_id: string | null
         }
         Insert: {
@@ -2168,6 +2169,7 @@ export type Database = {
           performance_rating?: number | null
           specialization?: string[] | null
           status?: string | null
+          team_id?: string | null
           user_id?: string | null
         }
         Update: {
@@ -2183,9 +2185,68 @@ export type Database = {
           performance_rating?: number | null
           specialization?: string[] | null
           status?: string | null
+          team_id?: string | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "innovation_team_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "innovation_teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      innovation_teams: {
+        Row: {
+          created_at: string | null
+          department: string | null
+          description: string | null
+          focus_area: string | null
+          id: string
+          max_members: number | null
+          name: string
+          name_ar: string | null
+          status: string | null
+          team_lead_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          department?: string | null
+          description?: string | null
+          focus_area?: string | null
+          id?: string
+          max_members?: number | null
+          name: string
+          name_ar?: string | null
+          status?: string | null
+          team_lead_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          department?: string | null
+          description?: string | null
+          focus_area?: string | null
+          id?: string
+          max_members?: number | null
+          name?: string
+          name_ar?: string | null
+          status?: string | null
+          team_lead_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "innovation_teams_team_lead_id_fkey"
+            columns: ["team_lead_id"]
+            isOneToOne: false
+            referencedRelation: "innovation_team_members"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       innovators: {
         Row: {
