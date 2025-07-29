@@ -31,6 +31,8 @@ import TeamWorkspace from "./pages/TeamWorkspace";
 import RelationshipOverviewPage from "./pages/RelationshipOverview";
 import IdeasManagementPage from "./pages/IdeasManagement";
 import IdeasPage from "./pages/Ideas";
+import UserDashboard from "./pages/UserDashboard";
+import IdeaSubmissionWizard from "./pages/IdeaSubmissionWizard";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -242,11 +244,28 @@ const App = () => (
               path="/dashboard" 
               element={
                 <ProtectedRoute requireProfile>
-                  <Index />
+                  <UserDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/submit-idea" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <IdeaSubmissionWizard />
                 </ProtectedRoute>
               } 
             />
             <Route path="/" element={<LandingPage />} />
+            {/* Legacy dashboard route pointing to Index */}
+            <Route 
+              path="/admin/dashboard" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <Index />
+                </ProtectedRoute>
+              } 
+            />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
