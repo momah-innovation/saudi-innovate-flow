@@ -28,6 +28,7 @@ export { DetailView } from './detail-view';
 // Data Components
 export { DataTable, badgeRenderer, dateRenderer, truncateRenderer } from './data-table';
 export { DataCard, UserCard, ProjectCard } from './data-card';
+export { ProfileCard } from './profile-card';
 
 // Form Components
 export { FormLayout, FormField, FormFieldGroup } from './form-layout';
