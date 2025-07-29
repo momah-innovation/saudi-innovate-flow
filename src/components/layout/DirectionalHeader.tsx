@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useTheme } from '@/components/ui/theme-provider';
 import { Badge } from '@/components/ui/badge';
+import { useSystemLists } from '@/hooks/useSystemLists';
 
 interface DirectionalHeaderProps {
   title?: string;
@@ -32,13 +33,9 @@ export function DirectionalHeader({
 }: DirectionalHeaderProps) {
   const { isRTL, language, setLanguage, toggleDirection } = useDirection();
   const { theme, setTheme } = useTheme();
+  const { supportedLanguages } = useSystemLists();
 
-  const languageOptions = [
-    { code: 'en', label: 'English', nativeLabel: 'English' },
-    { code: 'ar', label: 'Arabic', nativeLabel: 'العربية' },
-    { code: 'he', label: 'Hebrew', nativeLabel: 'עברית' },
-    { code: 'fa', label: 'Persian', nativeLabel: 'فارسی' },
-  ];
+  const languageOptions = supportedLanguages;
 
   const toggleTheme = () => {
     setTheme({

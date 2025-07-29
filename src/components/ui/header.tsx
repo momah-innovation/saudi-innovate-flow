@@ -18,12 +18,14 @@ import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
 import { Heading1 } from "@/components/ui";
 import { useDirection, directionUtils } from "@/components/ui";
 import { useTheme } from "@/components/ui/theme-provider";
+import { useSystemLists } from "@/hooks/useSystemLists";
 
 export const Header = () => {
   const { user, userProfile, signOut, hasRole } = useAuth();
   const { uiInitialsMaxLength } = useSystemSettings();
   const { isRTL, language, setLanguage, toggleDirection } = useDirection();
   const { theme, setTheme } = useTheme();
+  const { supportedLanguages } = useSystemLists();
   const navigate = useNavigate();
 
   const getUserDisplayName = () => {
@@ -52,10 +54,7 @@ export const Header = () => {
     navigate('/settings');
   };
 
-  const languageOptions = [
-    { code: 'en', label: 'English', nativeLabel: 'English' },
-    { code: 'ar', label: 'Arabic', nativeLabel: 'العربية' },
-  ];
+  const languageOptions = supportedLanguages.filter(lang => ['en', 'ar'].includes(lang.code));
 
   const toggleTheme = () => {
     setTheme({
