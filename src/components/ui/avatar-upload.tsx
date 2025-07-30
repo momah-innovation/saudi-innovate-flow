@@ -49,10 +49,15 @@ export function AvatarUpload({
         .from('avatars')
         .getPublicUrl(fileName);
 
-      // Update profile with new avatar URL
+      // Update profile with new avatar URL and metadata
       const { error: updateError } = await supabase
         .from('profiles')
-        .update({ profile_image_url: publicUrl })
+        .update({ 
+          profile_image_url: publicUrl,
+          avatar_file_size: file.size,
+          avatar_mime_type: file.type,
+          avatar_uploaded_at: new Date().toISOString()
+        })
         .eq('id', userId);
 
       if (updateError) throw updateError;
@@ -91,10 +96,14 @@ export function AvatarUpload({
     try {
       setUploading(true);
 
-      // Update profile to remove avatar URL
+      // Update profile to remove avatar URL and metadata
       const { error } = await supabase
         .from('profiles')
-        .update({ profile_image_url: null })
+        .update({ 
+          profile_image_url: null,
+          avatar_file_size: null,
+          avatar_mime_type: null
+        })
         .eq('id', userId);
 
       if (error) throw error;

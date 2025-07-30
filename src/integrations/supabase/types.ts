@@ -3124,6 +3124,10 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_file_size: number | null
+          avatar_mime_type: string | null
+          avatar_uploaded_at: string | null
+          avatar_version: number | null
           bio: string | null
           created_at: string | null
           department: string | null
@@ -3139,6 +3143,10 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          avatar_file_size?: number | null
+          avatar_mime_type?: string | null
+          avatar_uploaded_at?: string | null
+          avatar_version?: number | null
           bio?: string | null
           created_at?: string | null
           department?: string | null
@@ -3154,6 +3162,10 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          avatar_file_size?: number | null
+          avatar_mime_type?: string | null
+          avatar_uploaded_at?: string | null
+          avatar_version?: number | null
           bio?: string | null
           created_at?: string | null
           department?: string | null
