@@ -8,7 +8,10 @@ import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { ChallengeCard } from '@/components/challenges/ChallengeCard';
+import { EnhancedChallengeCard } from '@/components/challenges/EnhancedChallengeCard';
+import { ChallengesHero } from '@/components/challenges/ChallengesHero';
 import { ChallengeDetailDialog } from '@/components/challenges/ChallengeDetailDialog';
+import { EnhancedChallengeDetailDialog } from '@/components/challenges/EnhancedChallengeDetailDialog';
 import { ChallengeFilters, FilterState } from '@/components/challenges/ChallengeFilters';
 import { ChallengeListView } from '@/components/challenges/ChallengeListView';
 import { ChallengeSubmissionDialog } from '@/components/challenges/ChallengeSubmissionDialog';
@@ -18,7 +21,7 @@ import { CreateChallengeDialog } from '@/components/challenges/CreateChallengeDi
 import { useChallengeDefaults } from '@/hooks/useChallengeDefaults';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Plus, Send, MessageSquare, Users, Eye } from 'lucide-react';
+import { Plus, Send, MessageSquare, Users, Eye, BookmarkIcon } from 'lucide-react';
 
 const mockChallenges = [
   {
@@ -322,6 +325,15 @@ const ChallengesBrowse = () => {
     }
   };
 
+  const handleBookmark = async (challenge: any) => {
+    toast({
+      title: isRTL ? 'تم الحفظ' : 'Bookmarked',
+      description: isRTL ? 
+        `تم حفظ تحدي "${challenge.title_ar}" في قائمة المفضلة` : 
+        `Challenge "${challenge.title_ar}" saved to bookmarks`,
+    });
+  };
+
   const handleSort = (field: string) => {
     setFilters(prev => ({
       ...prev,
@@ -358,15 +370,22 @@ const ChallengesBrowse = () => {
     return count;
   };
 
-  // Render challenge cards
+  // Calculate statistics for hero
+  const totalChallenges = challenges.length;
+  const activeChallenges = challenges.filter(c => c.status === 'active').length;
+  const totalParticipants = challenges.reduce((sum, c) => sum + (c.participants || 0), 0);
+  const totalPrizes = challenges.reduce((sum, c) => sum + (c.estimated_budget || 0), 0);
+
+  // Render enhanced challenge cards
   const renderChallengeCards = (challenges: any[]) => (
     <ViewLayouts viewMode={viewMode}>
       {challenges.map((challenge) => (
-        <ChallengeCard
+        <EnhancedChallengeCard
           key={challenge.id}
           challenge={challenge}
           onViewDetails={handleViewDetails}
           onParticipate={handleParticipate}
+          onBookmark={handleBookmark}
           viewMode={viewMode}
         />
       ))}
@@ -387,9 +406,17 @@ const ChallengesBrowse = () => {
 
   return (
     <AppShell>
+      {/* Enhanced Hero Section */}
+      <ChallengesHero 
+        totalChallenges={totalChallenges}
+        activeChallenges={activeChallenges}
+        totalParticipants={totalParticipants}
+        totalPrizes={totalPrizes}
+      />
+      
       <PageLayout
-        title={isRTL ? 'استكشاف التحديات' : 'Browse Challenges'}
-        description={isRTL ? 'اكتشف التحديات المثيرة وشارك في حلها' : 'Discover exciting challenges and participate in solving them'}
+        title={isRTL ? 'التحديات المتاحة' : 'Available Challenges'}
+        description={isRTL ? 'تصفح واختر التحديات التي تناسب مهاراتك واهتماماتك' : 'Browse and select challenges that match your skills and interests'}
         itemCount={tabFilteredChallenges.length}
         primaryAction={{
           label: isRTL ? 'تحدي جديد' : 'New Challenge',
@@ -404,7 +431,7 @@ const ChallengesBrowse = () => {
             />
             <Button size="sm" variant="outline" onClick={() => handleSubmitToChallenge(selectedChallenge)}>
               <Send className="w-4 h-4 mr-2" />
-              مشاركة
+              {isRTL ? 'مشاركة' : 'Submit'}
             </Button>
           </div>
         }
@@ -482,12 +509,14 @@ const ChallengesBrowse = () => {
           </Tabs>
         </div>
 
-        {/* Challenge Detail Dialog */}
-        <ChallengeDetailDialog
+        {/* Enhanced Challenge Detail Dialog */}
+        <EnhancedChallengeDetailDialog
           challenge={selectedChallenge}
           open={detailDialogOpen}
           onOpenChange={setDetailDialogOpen}
           onParticipate={handleParticipate}
+          onSubmit={handleSubmitToChallenge}
+          onViewComments={handleViewComments}
         />
 
         {/* Challenge Submission Dialog */}
