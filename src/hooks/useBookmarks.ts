@@ -45,7 +45,7 @@ export function useBookmarks() {
           user_id,
           created_at,
           challenge_id,
-          challenges(*)
+          challenges!fk_challenge_bookmarks_challenge_id(*)
         `)
         .eq('user_id', user.id);
 
@@ -68,7 +68,7 @@ export function useBookmarks() {
           user_id,
           created_at,
           event_id,
-          events(*)
+          events!fk_event_bookmarks_event_id(*)
         `)
         .eq('user_id', user.id);
 
@@ -93,7 +93,7 @@ export function useBookmarks() {
           notes,
           priority,
           idea_id,
-          ideas(*)
+          ideas!fk_idea_bookmarks_idea_id(*)
         `)
         .eq('user_id', user.id);
 
@@ -118,7 +118,7 @@ export function useBookmarks() {
           notes,
           priority,
           focus_question_id,
-          focus_questions(*)
+          focus_questions!fk_focus_question_bookmarks_focus_question_id(*)
         `)
         .eq('user_id', user.id);
 
@@ -143,7 +143,7 @@ export function useBookmarks() {
           notes,
           priority,
           campaign_id,
-          campaigns(*)
+          campaigns!fk_campaign_bookmarks_campaign_id(*)
         `)
         .eq('user_id', user.id);
 
@@ -168,7 +168,7 @@ export function useBookmarks() {
           notes,
           priority,
           sector_id,
-          sectors(*)
+          sectors!fk_sector_bookmarks_sector_id(*)
         `)
         .eq('user_id', user.id);
 
@@ -193,7 +193,7 @@ export function useBookmarks() {
           notes,
           priority,
           stakeholder_id,
-          stakeholders(*)
+          stakeholders!fk_stakeholder_bookmarks_stakeholder_id(*)
         `)
         .eq('user_id', user.id);
 
@@ -241,7 +241,8 @@ export function useBookmarks() {
           created_at,
           notes,
           priority,
-          partner_id
+          partner_id,
+          partners!fk_partner_bookmarks_partner_id(*)
         `)
         .eq('user_id', user.id);
 
