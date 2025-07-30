@@ -3,86 +3,71 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 
-interface EventInteractions {
+export interface EventInteractions {
   isBookmarked: boolean;
   isLiked: boolean;
   isRegistered: boolean;
-  stats: {
-    likes_count: number;
-    bookmarks_count: number;
-    participants_count: number;
-    feedback_count: number;
-    average_rating: number;
-  };
+  likes_count: number;
+  bookmarks_count: number;
+  participants_count: number;
+  feedback_count: number;
+  average_rating: number;
 }
 
-export const useEventInteractions = (eventId: string | null) => {
+export function useEventInteractions(eventId: string | null) {
   const { user } = useAuth();
   const { toast } = useToast();
-  
-  const [interactions, setInteractions] = useState<EventInteractions>({
-    isBookmarked: false,
-    isLiked: false,
-    isRegistered: false,
-    stats: {
-      likes_count: 0,
-      bookmarks_count: 0,
-      participants_count: 0,
-      feedback_count: 0,
-      average_rating: 0
-    }
-  });
-  
+  const [interactions, setInteractions] = useState<EventInteractions | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Load event interactions and stats
   useEffect(() => {
     if (eventId && user) {
       loadEventInteractions();
-      loadEventStats();
-    } else if (eventId) {
-      // Load only stats for non-authenticated users
       loadEventStats();
     }
   }, [eventId, user]);
 
   const loadEventInteractions = async () => {
-    if (!user || !eventId) return;
+    if (!eventId || !user) return;
 
     try {
       setLoading(true);
 
-      // Check if user is registered
-      const { data: registration } = await supabase
+      // Check user registration
+      const { data: registrationData } = await supabase
         .from('event_participants')
-        .select('*')
+        .select('id')
         .eq('event_id', eventId)
         .eq('user_id', user.id)
-        .maybeSingle();
+        .single();
 
-      // Check if event is bookmarked
-      const { data: bookmark } = await supabase
+      // Check user bookmark
+      const { data: bookmarkData } = await supabase
         .from('event_bookmarks')
-        .select('*')
+        .select('id')
         .eq('event_id', eventId)
         .eq('user_id', user.id)
-        .maybeSingle();
+        .single();
 
-      // Check if event is liked
-      const { data: like } = await supabase
+      // Check user like
+      const { data: likeData } = await supabase
         .from('event_likes')
-        .select('*')
+        .select('id')
         .eq('event_id', eventId)
         .eq('user_id', user.id)
-        .maybeSingle();
+        .single();
 
       setInteractions(prev => ({
         ...prev,
-        isRegistered: !!registration,
-        isBookmarked: !!bookmark,
-        isLiked: !!like
+        isRegistered: !!registrationData,
+        isBookmarked: !!bookmarkData,
+        isLiked: !!likeData,
+        likes_count: prev?.likes_count || 0,
+        bookmarks_count: prev?.bookmarks_count || 0,
+        participants_count: prev?.participants_count || 0,
+        feedback_count: prev?.feedback_count || 0,
+        average_rating: prev?.average_rating || 0
       }));
-
     } catch (error) {
       console.error('Error loading event interactions:', error);
     } finally {
@@ -94,187 +79,193 @@ export const useEventInteractions = (eventId: string | null) => {
     if (!eventId) return;
 
     try {
-      const { data, error } = await supabase.rpc('get_event_stats', {
-        event_uuid: eventId
-      });
+      // Use the RPC function to get event stats
+      const { data: stats, error } = await supabase
+        .rpc('get_event_stats', { event_uuid: eventId });
 
       if (error) throw error;
 
-      // Parse the JSON response and ensure it matches our expected structure
-      const statsData = (typeof data === 'object' && data !== null && !Array.isArray(data)) ? data as Record<string, any> : {};
-      const parsedStats = {
-        likes_count: Number(statsData['likes_count'] || 0),
-        bookmarks_count: Number(statsData['bookmarks_count'] || 0),
-        participants_count: Number(statsData['participants_count'] || 0),
-        feedback_count: Number(statsData['feedback_count'] || 0),
-        average_rating: Number(statsData['average_rating'] || 0)
-      };
-
-      setInteractions(prev => ({
-        ...prev,
-        stats: parsedStats
-      }));
-
+      if (stats && typeof stats === 'object') {
+        const eventStats = stats as any;
+        setInteractions(prev => ({
+          ...prev,
+          likes_count: eventStats.likes_count || 0,
+          bookmarks_count: eventStats.bookmarks_count || 0,
+          participants_count: eventStats.participants_count || 0,
+          feedback_count: eventStats.feedback_count || 0,
+          average_rating: eventStats.average_rating || 0,
+          isRegistered: prev?.isRegistered || false,
+          isBookmarked: prev?.isBookmarked || false,
+          isLiked: prev?.isLiked || false
+        }));
+      }
     } catch (error) {
       console.error('Error loading event stats:', error);
     }
   };
 
   const toggleBookmark = async () => {
-    if (!user || !eventId) {
-      toast({
-        title: 'Authentication Required',
-        description: 'Please log in to bookmark events',
-        variant: 'destructive'
-      });
-      return;
-    }
+    if (!eventId || !user || loading) return;
 
     try {
-      if (interactions.isBookmarked) {
-        await supabase
+      setLoading(true);
+
+      if (interactions?.isBookmarked) {
+        // Remove bookmark
+        const { error } = await supabase
           .from('event_bookmarks')
           .delete()
           .eq('event_id', eventId)
           .eq('user_id', user.id);
-        
-        setInteractions(prev => ({
+
+        if (error) throw error;
+
+        setInteractions(prev => prev ? {
           ...prev,
           isBookmarked: false,
-          stats: {
-            ...prev.stats,
-            bookmarks_count: Math.max(0, prev.stats.bookmarks_count - 1)
-          }
-        }));
+          bookmarks_count: Math.max(0, prev.bookmarks_count - 1)
+        } : null);
+
+        toast({
+          title: 'تم إلغاء الحفظ',
+          description: 'تم إزالة الفعالية من المحفوظات'
+        });
       } else {
-        await supabase
+        // Add bookmark
+        const { error } = await supabase
           .from('event_bookmarks')
-          .insert({ event_id: eventId, user_id: user.id });
-        
-        setInteractions(prev => ({
+          .insert({
+            event_id: eventId,
+            user_id: user.id
+          });
+
+        if (error) throw error;
+
+        setInteractions(prev => prev ? {
           ...prev,
           isBookmarked: true,
-          stats: {
-            ...prev.stats,
-            bookmarks_count: prev.stats.bookmarks_count + 1
-          }
-        }));
+          bookmarks_count: prev.bookmarks_count + 1
+        } : null);
+
+        toast({
+          title: 'تم الحفظ',
+          description: 'تم حفظ الفعالية في المحفوظات'
+        });
       }
     } catch (error) {
       console.error('Error toggling bookmark:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to update bookmark',
+        title: 'خطأ',
+        description: 'حدث خطأ أثناء حفظ الفعالية',
         variant: 'destructive'
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   const toggleLike = async () => {
-    if (!user || !eventId) {
-      toast({
-        title: 'Authentication Required',
-        description: 'Please log in to like events',
-        variant: 'destructive'
-      });
-      return;
-    }
+    if (!eventId || !user || loading) return;
 
     try {
-      if (interactions.isLiked) {
-        await supabase
+      setLoading(true);
+
+      if (interactions?.isLiked) {
+        // Remove like
+        const { error } = await supabase
           .from('event_likes')
           .delete()
           .eq('event_id', eventId)
           .eq('user_id', user.id);
-        
-        setInteractions(prev => ({
+
+        if (error) throw error;
+
+        setInteractions(prev => prev ? {
           ...prev,
           isLiked: false,
-          stats: {
-            ...prev.stats,
-            likes_count: Math.max(0, prev.stats.likes_count - 1)
-          }
-        }));
+          likes_count: Math.max(0, prev.likes_count - 1)
+        } : null);
       } else {
-        await supabase
+        // Add like
+        const { error } = await supabase
           .from('event_likes')
-          .insert({ event_id: eventId, user_id: user.id });
-        
-        setInteractions(prev => ({
+          .insert({
+            event_id: eventId,
+            user_id: user.id
+          });
+
+        if (error) throw error;
+
+        setInteractions(prev => prev ? {
           ...prev,
           isLiked: true,
-          stats: {
-            ...prev.stats,
-            likes_count: prev.stats.likes_count + 1
-          }
-        }));
+          likes_count: prev.likes_count + 1
+        } : null);
       }
     } catch (error) {
       console.error('Error toggling like:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to update like',
+        title: 'خطأ',
+        description: 'حدث خطأ أثناء الإعجاب بالفعالية',
         variant: 'destructive'
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   const registerForEvent = async () => {
-    if (!user || !eventId) {
-      toast({
-        title: 'Authentication Required',
-        description: 'Please log in to register for events',
-        variant: 'destructive'
-      });
-      return;
-    }
+    if (!eventId || !user || loading) return;
 
     try {
+      setLoading(true);
+
       const { error } = await supabase
         .from('event_participants')
         .insert({
           event_id: eventId,
           user_id: user.id,
-          registration_type: 'self_registered',
-          attendance_status: 'registered'
+          attendance_status: 'registered',
+          registration_type: 'self_registered'
         });
 
       if (error) {
-        if (error.code === '23505') {
+        if (error.code === '23505') { // Unique constraint violation
           toast({
-            title: 'Already Registered',
-            description: 'You are already registered for this event',
+            title: 'مسجل مسبقاً',
+            description: 'أنت مسجل في هذه الفعالية بالفعل',
             variant: 'destructive'
           });
-        } else {
-          throw error;
+          return;
         }
-        return;
+        throw error;
       }
 
-      setInteractions(prev => ({
+      setInteractions(prev => prev ? {
         ...prev,
         isRegistered: true,
-        stats: {
-          ...prev.stats,
-          participants_count: prev.stats.participants_count + 1
-        }
-      }));
+        participants_count: prev.participants_count + 1
+      } : null);
 
       toast({
-        title: 'Successfully Registered!',
-        description: 'You have been registered for this event'
+        title: 'تم التسجيل بنجاح',
+        description: 'تم تسجيلك في الفعالية بنجاح'
       });
-
     } catch (error) {
       console.error('Error registering for event:', error);
       toast({
-        title: 'Registration Error',
-        description: 'An error occurred while registering for the event',
+        title: 'خطأ في التسجيل',
+        description: 'حدث خطأ أثناء التسجيل في الفعالية',
         variant: 'destructive'
       });
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const refetch = () => {
+    loadEventInteractions();
+    loadEventStats();
   };
 
   return {
@@ -283,9 +274,6 @@ export const useEventInteractions = (eventId: string | null) => {
     toggleBookmark,
     toggleLike,
     registerForEvent,
-    refetch: () => {
-      loadEventInteractions();
-      loadEventStats();
-    }
+    refetch
   };
-};
+}

@@ -1,61 +1,72 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
-interface EventPartner {
+export interface EventPartner {
   id: string;
   name: string;
-  name_ar: string;
-  partner_type: string;
   logo_url?: string;
-  contact_person?: string;
-  email?: string;
+  partner_type: string;
+  contact_email?: string;
+  contact_phone?: string;
+  partnership_status: string;
 }
 
-interface EventStakeholder {
+export interface EventStakeholder {
   id: string;
-  name?: string;
   organization: string;
-  position?: string;
+  position: string;
+  contact_person: string;
+  contact_email?: string;
   stakeholder_type: string;
-  engagement_status: string;
-  invitation_status: string;
-  attendance_status: string;
+  involvement_level: string;
+  status: string;
 }
 
-interface RelatedChallenge {
+export interface RelatedChallenge {
   id: string;
   title_ar: string;
   description_ar: string;
   status: string;
   priority_level: string;
+  start_date?: string;
+  end_date?: string;
 }
 
-interface RelatedFocusQuestion {
+export interface RelatedFocusQuestion {
   id: string;
-  question_text_ar: string;
+  question_ar: string;
   question_type: string;
-  is_sensitive: boolean;
-}
-
-interface EventParticipant {
-  id: string;
-  user_id: string;
-  registration_date: string;
-  attendance_status: string;
-  check_in_time?: string;
-  check_out_time?: string;
-  registration_type: string;
-  notes?: string;
-}
-
-interface CampaignInfo {
-  id: string;
-  title_ar: string;
-  description_ar?: string;
+  priority: string;
   status: string;
 }
 
-export const useEventDetails = (eventId: string | null) => {
+export interface EventParticipant {
+  id: string;
+  user_id: string;
+  event_id: string;
+  registration_date: string;
+  attendance_status: string;
+  registration_type: string;
+  notes?: string;
+  user?: {
+    id: string;
+    email?: string;
+    profile_image_url?: string;
+    full_name?: string;
+  };
+}
+
+export interface CampaignInfo {
+  id: string;
+  title_ar: string;
+  description_ar: string;
+  status: string;
+  start_date: string;
+  end_date: string;
+  budget?: number;
+}
+
+export function useEventDetails(eventId: string | null) {
   const [partners, setPartners] = useState<EventPartner[]>([]);
   const [stakeholders, setStakeholders] = useState<EventStakeholder[]>([]);
   const [relatedChallenges, setRelatedChallenges] = useState<RelatedChallenge[]>([]);
@@ -73,8 +84,8 @@ export const useEventDetails = (eventId: string | null) => {
   const loadEventDetails = async () => {
     if (!eventId) return;
     
-    setLoading(true);
     try {
+      setLoading(true);
       await Promise.all([
         loadPartners(),
         loadStakeholders(),
@@ -91,139 +102,149 @@ export const useEventDetails = (eventId: string | null) => {
   };
 
   const loadPartners = async () => {
-    if (!eventId) return;
-
     try {
       const { data, error } = await supabase
         .from('event_partner_links')
         .select(`
           partner_id,
-          partners!inner (
+          partners (
             id,
             name,
-            name_ar,
-            partner_type,
             logo_url,
-            contact_person,
-            email
+            partner_type
           )
         `)
         .eq('event_id', eventId);
 
       if (error) throw error;
 
-      const partnerData = data?.map(link => link.partners) || [];
-      setPartners(partnerData as EventPartner[]);
+      const partnersData = data?.map(link => ({
+        id: link.partners?.id || '',
+        name: link.partners?.name || '',
+        logo_url: link.partners?.logo_url,
+        partner_type: link.partners?.partner_type || '',
+        contact_email: '',
+        contact_phone: '',
+        partnership_status: 'active'
+      })) || [];
+
+      setPartners(partnersData);
     } catch (error) {
       console.error('Error loading partners:', error);
+      setPartners([]);
     }
   };
 
   const loadStakeholders = async () => {
-    if (!eventId) return;
-
     try {
       const { data, error } = await supabase
         .from('event_stakeholder_links')
         .select(`
           stakeholder_id,
-          stakeholders!inner (
+          stakeholders (
             id,
-            name,
             organization,
-            position,
-            stakeholder_type,
-            engagement_status,
-            email,
-            phone
+            stakeholder_type
           )
         `)
         .eq('event_id', eventId);
 
       if (error) throw error;
 
-      const stakeholderData = data?.map(link => ({
-        id: link.stakeholders.id,
-        name: link.stakeholders.name,
-        organization: link.stakeholders.organization || '',
-        position: link.stakeholders.position || '',
-        stakeholder_type: link.stakeholders.stakeholder_type || 'organization',
-        engagement_status: link.stakeholders.engagement_status || 'active',
-        invitation_status: 'sent',
-        attendance_status: 'pending'
+      const stakeholdersData = data?.map(link => ({
+        id: link.stakeholders?.id || '',
+        organization: link.stakeholders?.organization || '',
+        position: '',
+        contact_person: '',
+        contact_email: '',
+        stakeholder_type: link.stakeholders?.stakeholder_type || '',
+        involvement_level: '',
+        status: 'active'
       })) || [];
-      
-      setStakeholders(stakeholderData as EventStakeholder[]);
+
+      setStakeholders(stakeholdersData);
     } catch (error) {
       console.error('Error loading stakeholders:', error);
+      setStakeholders([]);
     }
   };
 
   const loadRelatedChallenges = async () => {
-    if (!eventId) return;
-
     try {
-      // For now, return empty array until challenges foreign key is confirmed
+      // Simplified - just return empty for now since tables may not be linked
       setRelatedChallenges([]);
     } catch (error) {
       console.error('Error loading related challenges:', error);
+      setRelatedChallenges([]);
     }
   };
 
   const loadFocusQuestions = async () => {
-    if (!eventId) return;
-
     try {
-      // For now, return empty array until focus_questions foreign key is confirmed
+      // Simplified - just return empty for now since tables may not be linked  
       setFocusQuestions([]);
     } catch (error) {
       console.error('Error loading focus questions:', error);
+      setFocusQuestions([]);
     }
   };
 
   const loadParticipants = async () => {
-    if (!eventId) return;
-
     try {
       const { data, error } = await supabase
         .from('event_participants')
-        .select('*')
-        .eq('event_id', eventId)
-        .order('registration_date', { ascending: false });
+        .select(`
+          id,
+          user_id,
+          event_id,
+          registration_date,
+          attendance_status,
+          registration_type,
+          notes
+        `)
+        .eq('event_id', eventId);
 
       if (error) throw error;
 
       setParticipants(data || []);
     } catch (error) {
       console.error('Error loading participants:', error);
+      setParticipants([]);
     }
   };
 
   const loadCampaignInfo = async () => {
-    if (!eventId) return;
-
     try {
-      // First get the event to check if it has a campaign_id
+      // First get the event's campaign_id
       const { data: eventData, error: eventError } = await supabase
         .from('events')
         .select('campaign_id')
         .eq('id', eventId)
         .single();
 
-      if (eventError || !eventData?.campaign_id) return;
+      if (eventError || !eventData?.campaign_id) {
+        setCampaignInfo(null);
+        return;
+      }
 
-      const { data, error } = await supabase
+      // Then get the campaign details
+      const { data: campaignData, error: campaignError } = await supabase
         .from('campaigns')
-        .select('id, title_ar, description_ar, status')
+        .select('id, title_ar, description_ar, status, start_date, end_date, budget')
         .eq('id', eventData.campaign_id)
         .single();
 
-      if (error) throw error;
+      if (campaignError) throw campaignError;
 
-      setCampaignInfo(data);
+      setCampaignInfo(campaignData);
     } catch (error) {
       console.error('Error loading campaign info:', error);
+      setCampaignInfo(null);
     }
+  };
+
+  const refetch = () => {
+    loadEventDetails();
   };
 
   return {
@@ -234,6 +255,6 @@ export const useEventDetails = (eventId: string | null) => {
     participants,
     campaignInfo,
     loading,
-    refetch: loadEventDetails
+    refetch
   };
-};
+}

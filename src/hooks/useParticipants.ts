@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 export interface EventParticipant {
   id: string;
@@ -8,47 +8,61 @@ export interface EventParticipant {
   user_id: string;
   registration_date: string;
   attendance_status: string;
+  registration_type: string;
+  notes?: string;
   check_in_time?: string;
   check_out_time?: string;
-  notes?: string;
-  registration_type: string;
-  created_at: string;
-  updated_at: string;
-  profiles?: {
-    name: string;
-    email: string;
-    position?: string;
-    department?: string;
+  user?: {
+    id: string;
+    email?: string;
+    profile_image_url?: string;
+    full_name?: string;
   };
 }
 
-export function useParticipants(eventId?: string) {
+export function useParticipants(eventId: string | null) {
+  const { toast } = useToast();
   const [participants, setParticipants] = useState<EventParticipant[]>([]);
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
+
+  useEffect(() => {
+    if (eventId) {
+      fetchParticipants();
+    }
+  }, [eventId]);
 
   const fetchParticipants = async (id?: string) => {
-    if (!id && !eventId) return;
-    
+    const targetEventId = id || eventId;
+    if (!targetEventId) return;
+
     try {
       setLoading(true);
+      
       const { data, error } = await supabase
         .from('event_participants')
         .select(`
-          *,
-          profiles!inner(name, email, position, department)
+          id,
+          event_id,
+          user_id,
+          registration_date,
+          attendance_status,
+          registration_type,
+          notes,
+          check_in_time,
+          check_out_time
         `)
-        .eq('event_id', id || eventId)
+        .eq('event_id', targetEventId)
         .order('registration_date', { ascending: false });
 
       if (error) throw error;
-      setParticipants((data as any) || []);
+
+      setParticipants(data || []);
     } catch (error) {
       console.error('Error fetching participants:', error);
       toast({
-        title: "Error",
-        description: "Failed to load participants",
-        variant: "destructive",
+        title: 'خطأ في تحميل المشاركين',
+        description: 'حدث خطأ أثناء تحميل قائمة المشاركين',
+        variant: 'destructive'
       });
     } finally {
       setLoading(false);
@@ -57,63 +71,72 @@ export function useParticipants(eventId?: string) {
 
   const updateParticipantStatus = async (participantId: string, newStatus: string) => {
     try {
-      const updateData: any = {
-        attendance_status: newStatus,
-        updated_at: new Date().toISOString()
-      };
-
-      if (newStatus === 'attended') {
-        updateData.check_in_time = new Date().toISOString();
+      const updates: any = { attendance_status: newStatus };
+      
+      // Add timestamps based on status
+      if (newStatus === 'checked_in') {
+        updates.check_in_time = new Date().toISOString();
+      } else if (newStatus === 'checked_out') {
+        updates.check_out_time = new Date().toISOString();
       }
 
       const { error } = await supabase
         .from('event_participants')
-        .update(updateData)
+        .update(updates)
         .eq('id', participantId);
 
       if (error) throw error;
 
+      // Update local state
+      setParticipants(prev => 
+        prev.map(p => 
+          p.id === participantId 
+            ? { ...p, ...updates }
+            : p
+        )
+      );
+
       toast({
-        title: "Success",
-        description: "Participant status updated",
+        title: 'تم تحديث الحالة',
+        description: 'تم تحديث حالة المشارك بنجاح'
       });
-      
-      await fetchParticipants();
     } catch (error) {
       console.error('Error updating participant status:', error);
       toast({
-        title: "Error",
-        description: "Failed to update participant status",
-        variant: "destructive",
+        title: 'خطأ في التحديث',
+        description: 'حدث خطأ أثناء تحديث حالة المشارك',
+        variant: 'destructive'
       });
     }
   };
 
   const registerParticipant = async (userId: string, targetEventId: string) => {
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('event_participants')
         .insert({
           event_id: targetEventId,
           user_id: userId,
           attendance_status: 'registered',
-          registration_type: 'self_registered'
-        });
+          registration_type: 'admin_registered'
+        })
+        .select()
+        .single();
 
       if (error) throw error;
 
-      toast({
-        title: "Success",
-        description: "Successfully registered for the event!",
-      });
+      setParticipants(prev => [data, ...prev]);
 
-      await fetchParticipants(targetEventId);
-    } catch (error) {
-      console.error('Error registering for event:', error);
       toast({
-        title: "Error",
-        description: "Failed to register for event",
-        variant: "destructive",
+        title: 'تم التسجيل بنجاح',
+        description: 'تم تسجيل المشارك في الفعالية'
+      });
+    } catch (error) {
+      console.error('Error registering participant:', error);
+      toast({
+        title: 'خطأ في التسجيل',
+        description: 'حدث خطأ أثناء تسجيل المشارك',
+        variant: 'destructive'
       });
     }
   };
@@ -127,27 +150,21 @@ export function useParticipants(eventId?: string) {
 
       if (error) throw error;
 
-      toast({
-        title: "Success",
-        description: "Registration cancelled successfully",
-      });
+      setParticipants(prev => prev.filter(p => p.id !== participantId));
 
-      await fetchParticipants(targetEventId);
-    } catch (error) {
-      console.error('Error cancelling registration:', error);
       toast({
-        title: "Error",
-        description: "Failed to cancel registration",
-        variant: "destructive",
+        title: 'تم إلغاء التسجيل',
+        description: 'تم إلغاء تسجيل المشارك من الفعالية'
+      });
+    } catch (error) {
+      console.error('Error canceling registration:', error);
+      toast({
+        title: 'خطأ في الإلغاء',
+        description: 'حدث خطأ أثناء إلغاء التسجيل',
+        variant: 'destructive'
       });
     }
   };
-
-  useEffect(() => {
-    if (eventId) {
-      fetchParticipants();
-    }
-  }, [eventId]);
 
   return {
     participants,
