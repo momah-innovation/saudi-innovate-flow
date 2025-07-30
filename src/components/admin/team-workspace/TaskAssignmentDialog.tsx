@@ -244,7 +244,7 @@ export function TaskAssignmentDialog({
                     <SelectItem key={member.id} value={member.id}>
                       <div className="flex items-center gap-2">
                         <Avatar className="h-6 w-6">
-                          <AvatarImage src={member.profiles?.avatar_url} />
+                          <AvatarImage src={member.profiles?.profile_image_url} />
                           <AvatarFallback className="text-xs">
                             {member.profiles?.display_name?.charAt(0) || 'U'}
                           </AvatarFallback>
@@ -263,7 +263,7 @@ export function TaskAssignmentDialog({
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3 mb-4">
                     <Avatar className="h-12 w-12">
-                      <AvatarImage src={selectedMemberData.profiles?.avatar_url} />
+                      <AvatarImage src={selectedMemberData.profiles?.profile_image_url} />
                       <AvatarFallback>
                         {selectedMemberData.profiles?.display_name?.charAt(0) || 'U'}
                       </AvatarFallback>

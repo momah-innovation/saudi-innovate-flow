@@ -175,7 +175,7 @@ export function CreateProjectDialog({ open, onOpenChange, teamMembers }: CreateP
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-10 w-10">
-                    <AvatarImage src={member.profiles?.avatar_url} />
+                    <AvatarImage src={member.profiles?.profile_image_url} />
                     <AvatarFallback>
                       {member.profiles?.display_name?.charAt(0) || 'U'}
                     </AvatarFallback>
@@ -272,7 +272,7 @@ export function CreateProjectDialog({ open, onOpenChange, teamMembers }: CreateP
               return (
                 <div key={memberId} className="flex items-center gap-2 p-2 border rounded-lg">
                   <Avatar className="h-6 w-6">
-                    <AvatarImage src={member?.profiles?.avatar_url} />
+                    <AvatarImage src={member?.profiles?.profile_image_url} />
                     <AvatarFallback className="text-xs">
                       {member?.profiles?.display_name?.charAt(0) || 'U'}
                     </AvatarFallback>

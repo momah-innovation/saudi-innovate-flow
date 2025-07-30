@@ -29,7 +29,7 @@ interface Challenge {
   prize: string;
   difficulty: string;
   trending?: boolean;
-  experts?: Array<{ name: string; avatar: string; }>;
+  experts?: Array<{ name: string; profile_image_url: string; }>;
 }
 
 interface ChallengeListViewProps {
@@ -161,7 +161,7 @@ export const ChallengeListView = ({
                     <div className="flex -space-x-1">
                       {challenge.experts.slice(0, 3).map((expert, index) => (
                         <Avatar key={index} className="w-5 h-5 border border-background">
-                          <AvatarImage src={expert.avatar} alt={expert.name} />
+                          <AvatarImage src={expert.profile_image_url} alt={expert.name} />
                           <AvatarFallback className="text-xs">{expert.name[0]}</AvatarFallback>
                         </Avatar>
                       ))}

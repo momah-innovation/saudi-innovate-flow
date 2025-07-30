@@ -27,7 +27,7 @@ interface Challenge {
   estimated_budget?: number;
   priority_level?: string;
   image_url?: string;
-  experts?: Array<{ name: string; avatar: string; }>;
+  experts?: Array<{ name: string; profile_image_url: string; }>;
 }
 
 interface EnhancedChallengeDetailDialogProps {
@@ -261,7 +261,7 @@ export const EnhancedChallengeDetailDialog = ({
                   {challenge.experts.map((expert, index) => (
                     <div key={index} className="flex items-center gap-4 p-4 border rounded-lg hover:shadow-sm transition-shadow bg-card">
                       <Avatar className="w-14 h-14 ring-2 ring-primary/10">
-                        <AvatarImage src={expert.avatar} alt={expert.name} />
+                        <AvatarImage src={expert.profile_image_url} alt={expert.name} />
                         <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
                           {expert.name[0]}
                         </AvatarFallback>

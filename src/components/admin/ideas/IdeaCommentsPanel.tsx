@@ -23,7 +23,7 @@ interface Comment {
   author?: {
     name: string;
     email: string;
-    avatar_url?: string;
+    profile_image_url?: string;
   };
   replies?: Comment[];
 }
@@ -59,7 +59,7 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
         .from('idea_comments')
         .select(`
           *,
-          author:profiles(name, email, avatar_url)
+          author:profiles(name, email, profile_image_url)
         `)
         .eq('idea_id', ideaId)
         .order('created_at', { ascending: true });
@@ -191,7 +191,7 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
     <div key={comment.id} className={`${level > 0 ? 'mr-6 border-r pr-4' : ''} mb-4`}>
       <div className="flex items-start gap-3">
         <Avatar className="w-8 h-8">
-          <AvatarImage src={comment.author?.avatar_url} />
+          <AvatarImage src={comment.author?.profile_image_url} />
           <AvatarFallback>
             {comment.author?.name?.charAt(0) || 'م'}
           </AvatarFallback>

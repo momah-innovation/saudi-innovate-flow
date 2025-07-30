@@ -22,7 +22,7 @@ interface Challenge {
   image_url?: string;
   trending?: boolean;
   featured?: boolean;
-  experts?: Array<{ name: string; avatar: string; }>;
+  experts?: Array<{ name: string; profile_image_url: string; }>;
 }
 
 interface ChallengeCardProps {
@@ -200,7 +200,7 @@ export const ChallengeCard = ({ challenge, onViewDetails, onParticipate, viewMod
             <div className="flex -space-x-2">
               {challenge.experts.slice(0, 3).map((expert, index) => (
                 <Avatar key={index} className="w-6 h-6 border-2 border-background">
-                  <AvatarImage src={expert.avatar} alt={expert.name} />
+                  <AvatarImage src={expert.profile_image_url} alt={expert.name} />
                   <AvatarFallback className="text-xs">{expert.name[0]}</AvatarFallback>
                 </Avatar>
               ))}

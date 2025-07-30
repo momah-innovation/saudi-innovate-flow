@@ -39,7 +39,7 @@ interface Challenge {
   image?: string;
   trending?: boolean;
   featured?: boolean;
-  experts?: Array<{ name: string; avatar: string; role: string; }>;
+  experts?: Array<{ name: string; profile_image_url: string; role: string; }>;
   requirements?: string[];
   timeline?: Array<{ phase: string; date: string; }>;
   criteria?: string[];
@@ -206,7 +206,7 @@ export const ChallengeDetailDialog = ({ challenge, open, onOpenChange, onPartici
                   {challenge.experts.map((expert, index) => (
                     <div key={index} className="flex items-center gap-2 bg-muted/50 rounded-lg p-2">
                       <Avatar className="w-8 h-8">
-                        <AvatarImage src={expert.avatar} alt={expert.name} />
+                        <AvatarImage src={expert.profile_image_url} alt={expert.name} />
                         <AvatarFallback>{expert.name[0]}</AvatarFallback>
                       </Avatar>
                       <div>

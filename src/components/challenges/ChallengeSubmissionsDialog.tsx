@@ -119,7 +119,7 @@ export function ChallengeSubmissionsDialog({
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <Avatar className="h-10 w-10">
-              <AvatarImage src={submission.profiles?.avatar_url} />
+              <AvatarImage src={submission.profiles?.profile_image_url} />
               <AvatarFallback>
                 {submission.profiles?.display_name?.charAt(0) || 'U'}
               </AvatarFallback>

@@ -217,7 +217,7 @@ export function ChallengeCommentsDialog({
     <div key={comment.id} className={`space-y-3 ${isReply ? 'ml-8 pl-4 border-l-2 border-muted' : ''}`}>
       <div className="flex gap-3">
         <Avatar className="h-8 w-8">
-          <AvatarImage src={comment.profiles?.avatar_url} />
+          <AvatarImage src={comment.profiles?.profile_image_url} />
           <AvatarFallback>
             {comment.profiles?.display_name?.charAt(0) || 'U'}
           </AvatarFallback>

@@ -386,7 +386,7 @@ export function MeetingSchedulerDialog({ open, onOpenChange, teamMembers }: Meet
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-8 w-8">
-                          <AvatarImage src={member.profiles?.avatar_url} />
+                          <AvatarImage src={member.profiles?.profile_image_url} />
                           <AvatarFallback>
                             {member.profiles?.display_name?.charAt(0) || 'U'}
                           </AvatarFallback>

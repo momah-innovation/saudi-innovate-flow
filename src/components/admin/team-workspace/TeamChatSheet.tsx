@@ -42,21 +42,21 @@ export function TeamChatSheet({ open, onOpenChange, teamMembers }: TeamChatSheet
       {
         id: '1',
         content: 'مرحباً بالجميع! كيف يسير العمل على المشروع الجديد؟',
-        sender: { id: '1', name: 'أحمد محمد', avatar: null, role: 'قائد فريق' },
+        sender: { id: '1', name: 'أحمد محمد', profile_image_url: null, role: 'قائد فريق' },
         timestamp: new Date(Date.now() - 3600000),
         type: 'text'
       },
       {
         id: '2',
         content: 'العمل يسير بشكل جيد، سأرفع التقرير اليومي قريباً',
-        sender: { id: '2', name: 'سارة أحمد', avatar: null, role: 'مطورة' },
+        sender: { id: '2', name: 'سارة أحمد', profile_image_url: null, role: 'مطورة' },
         timestamp: new Date(Date.now() - 3000000),
         type: 'text'
       },
       {
         id: '3',
         content: 'رائع! هل تحتاجون أي مساعدة في التصميم؟',
-        sender: { id: '3', name: 'محمد علي', avatar: null, role: 'مصمم UI/UX' },
+        sender: { id: '3', name: 'محمد علي', profile_image_url: null, role: 'مصمم UI/UX' },
         timestamp: new Date(Date.now() - 1800000),
         type: 'text'
       }
@@ -82,7 +82,7 @@ export function TeamChatSheet({ open, onOpenChange, teamMembers }: TeamChatSheet
       sender: {
         id: user?.id || '',
         name: 'أنت',
-        avatar: null,
+        profile_image_url: null,
         role: 'العضو الحالي'
       },
       timestamp: new Date(),
@@ -169,7 +169,7 @@ export function TeamChatSheet({ open, onOpenChange, teamMembers }: TeamChatSheet
                     <div key={member.id} className="flex items-center gap-2">
                       <div className="relative">
                         <Avatar className="h-6 w-6">
-                          <AvatarImage src={member.profiles?.avatar_url} />
+                          <AvatarImage src={member.profiles?.profile_image_url} />
                           <AvatarFallback className="text-xs">
                             {member.profiles?.display_name?.charAt(0) || 'U'}
                           </AvatarFallback>
@@ -226,7 +226,7 @@ export function TeamChatSheet({ open, onOpenChange, teamMembers }: TeamChatSheet
                     <div key={msg.id} className={`flex gap-3 ${isCurrentUser ? 'flex-row-reverse' : ''}`}>
                       {showAvatar && !isCurrentUser && (
                         <Avatar className="h-8 w-8">
-                          <AvatarImage src={msg.sender.avatar} />
+                          <AvatarImage src={msg.sender.profile_image_url} />
                           <AvatarFallback>
                             {msg.sender.name.charAt(0)}
                           </AvatarFallback>

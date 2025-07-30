@@ -118,7 +118,7 @@ export function TeamWorkspaceContent({
           profiles!user_id(
             id,
             display_name,
-            avatar_url
+            profile_image_url
           )
         `)
         .eq('status', 'active');
@@ -255,7 +255,7 @@ export function TeamWorkspaceContent({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <Avatar className="h-12 w-12">
-              <AvatarImage src={member?.profiles?.avatar_url} />
+              <AvatarImage src={member?.profiles?.profile_image_url} />
               <AvatarFallback>
                 {member?.profiles?.display_name?.charAt(0) || 'U'}
               </AvatarFallback>
@@ -579,7 +579,7 @@ export function TeamWorkspaceContent({
                 onClick={() => setSelectedMember(member)}
               >
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={member.profiles?.avatar_url} />
+                  <AvatarImage src={member.profiles?.profile_image_url} />
                   <AvatarFallback>
                     {member.profiles?.display_name?.charAt(0) || 'U'}
                   </AvatarFallback>
@@ -797,7 +797,7 @@ export function TeamWorkspaceContent({
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <Avatar className="h-14 w-14">
-                    <AvatarImage src={member.profiles?.avatar_url} />
+                    <AvatarImage src={member.profiles?.profile_image_url} />
                     <AvatarFallback className="text-lg">
                       {member.profiles?.display_name?.charAt(0) || 'U'}
                     </AvatarFallback>
