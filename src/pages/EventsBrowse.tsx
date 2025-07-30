@@ -8,7 +8,7 @@ import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { EnhancedEventCard } from '@/components/events/EnhancedEventCard';
-import { EnhancedEventDetailDialog } from '@/components/events/EnhancedEventDetailDialog';
+import { ComprehensiveEventDialog } from '@/components/events/ComprehensiveEventDialog';
 import { EventsHero } from '@/components/events/EventsHero';
 import { EventAdvancedFilters } from '@/components/events/EventAdvancedFilters';
 import { supabase } from '@/integrations/supabase/client';
@@ -121,7 +121,7 @@ const EventsBrowse = () => {
 
       if (eventsError) throw eventsError;
 
-      // Get participant counts for each event
+      // Get participant counts for each event and add default images
       const eventsWithCounts = await Promise.all(
         (eventsData || []).map(async (event) => {
           const { count, error: countError } = await supabase
@@ -131,10 +131,18 @@ const EventsBrowse = () => {
 
           if (countError) {
             console.error('Error getting participant count:', countError);
-            return { ...event, registered_participants: 0 };
+            return { 
+              ...event, 
+              registered_participants: 0,
+              image_url: event.image_url || '/event-images/innovation.jpg'
+            };
           }
 
-          return { ...event, registered_participants: count || 0 };
+          return { 
+            ...event, 
+            registered_participants: count || 0,
+            image_url: event.image_url || getDefaultEventImage(event.event_type)
+          };
         })
       );
 
@@ -150,6 +158,22 @@ const EventsBrowse = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Helper function to get default event images
+  const getDefaultEventImage = (eventType: string) => {
+    const imageMap: { [key: string]: string } = {
+      'conference': '/event-images/tech-conference.jpg',
+      'workshop': '/event-images/innovation-workshop.jpg',
+      'summit': '/event-images/digital-summit.jpg',
+      'expo': '/event-images/tech-expo.jpg',
+      'hackathon': '/event-images/innovation-lightbulb.jpg',
+      'forum': '/event-images/smart-city.jpg',
+      'seminar': '/event-images/tech-conference.jpg',
+      'training': '/event-images/innovation-workshop.jpg',
+      'default': '/event-images/innovation.jpg'
+    };
+    return imageMap[eventType] || imageMap.default;
   };
 
   // Event handlers
@@ -357,7 +381,7 @@ const EventsBrowse = () => {
         </div>
 
         {/* Enhanced Event Detail Dialog */}
-        <EnhancedEventDetailDialog
+        <ComprehensiveEventDialog
           event={selectedEvent}
           open={detailDialogOpen}
           onOpenChange={setDetailDialogOpen}

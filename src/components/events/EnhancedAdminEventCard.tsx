@@ -37,6 +37,7 @@ interface Event {
   location?: string;
   format: string;
   event_type: string;
+  event_category?: string;
   status: string;
   max_participants?: number;
   registered_participants: number;
@@ -44,6 +45,8 @@ interface Event {
   budget?: number;
   image_url?: string;
   event_manager_id?: string;
+  event_visibility?: string;
+  virtual_link?: string;
 }
 
 interface EnhancedAdminEventCardProps {

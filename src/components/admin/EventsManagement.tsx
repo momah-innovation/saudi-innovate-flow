@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ManagementCard } from '@/components/ui/management-card';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useTranslation } from '@/hooks/useTranslation';
 import { EventWizard } from '@/components/events/EventWizard';
+import { ComprehensiveEventWizard } from '@/components/events/ComprehensiveEventWizard';
 import { AdminEventsHero } from '@/components/events/AdminEventsHero';
 import { EnhancedAdminEventCard } from '@/components/events/EnhancedAdminEventCard';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Calendar, 
   Clock,
@@ -12,84 +15,6 @@ import {
   Users,
   Monitor
 } from 'lucide-react';
-
-// Mock data - will be replaced with real data
-const mockEvents = [
-  {
-    id: '1',
-    title_ar: 'ورشة الابتكار الرقمي',
-    description_ar: 'ورشة عمل لتطوير الحلول الرقمية المبتكرة',
-    event_type: 'workshop',
-    event_date: '2024-03-15',
-    start_time: '09:00',
-    end_time: '17:00',
-    location: 'مركز الابتكار - الرياض',
-    format: 'in_person',
-    status: 'scheduled',
-    max_participants: 50,
-    registered_participants: 32,
-    actual_participants: 0,
-    budget: 15000,
-    manager: 'أحمد محمد'
-  },
-  {
-    id: '2',
-    title_ar: 'مؤتمر التكنولوجيا المالية',
-    description_ar: 'مؤتمر متخصص في تقنيات التكنولوجيا المالية والدفع الرقمي',
-    event_type: 'conference',
-    event_date: '2024-03-20',
-    start_time: '08:30',
-    end_time: '18:00',
-    location: 'فندق الريتز كارلتون',
-    virtual_link: 'https://zoom.us/j/123456789',
-    format: 'hybrid',
-    status: 'ongoing',
-    max_participants: 200,
-    registered_participants: 156,
-    actual_participants: 145,
-    budget: 75000,
-    manager: 'فاطمة علي'
-  },
-  {
-    id: '3',
-    title_ar: 'دورة تدريبية في الذكاء الاصطناعي',
-    description_ar: 'دورة تدريبية شاملة في أساسيات الذكاء الاصطناعي وتطبيقاته',
-    event_type: 'training',
-    event_date: '2024-02-28',
-    start_time: '10:00',
-    end_time: '16:00',
-    virtual_link: 'https://teams.microsoft.com/meet/123',
-    format: 'virtual',
-    status: 'completed',
-    max_participants: 100,
-    registered_participants: 98,
-    actual_participants: 89,
-    budget: 25000,
-    manager: 'محمد الأحمد'
-  }
-];
-
-const statusConfig = {
-  scheduled: { label: 'مجدول', variant: 'default' as const },
-  ongoing: { label: 'جاري', variant: 'secondary' as const },
-  completed: { label: 'مكتمل', variant: 'outline' as const },
-  cancelled: { label: 'ملغي', variant: 'destructive' as const },
-  postponed: { label: 'مؤجل', variant: 'secondary' as const }
-};
-
-const formatConfig = {
-  in_person: { label: 'حضوري', variant: 'default' as const, icon: MapPin },
-  virtual: { label: 'افتراضي', variant: 'secondary' as const, icon: Monitor },
-  hybrid: { label: 'مختلط', variant: 'outline' as const, icon: Users }
-};
-
-const typeConfig = {
-  workshop: { label: 'ورشة عمل', variant: 'default' as const },
-  conference: { label: 'مؤتمر', variant: 'secondary' as const },
-  seminar: { label: 'ندوة', variant: 'outline' as const },
-  training: { label: 'تدريب', variant: 'default' as const },
-  networking: { label: 'شبكات تواصل', variant: 'secondary' as const }
-};
 
 interface EventsManagementProps {
   viewMode: 'cards' | 'list' | 'grid';
@@ -100,7 +25,69 @@ interface EventsManagementProps {
 
 export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: EventsManagementProps) {
   const { language } = useTranslation();
+  const { toast } = useToast();
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Load events from Supabase
+  useEffect(() => {
+    loadEvents();
+  }, []);
+
+  const loadEvents = async () => {
+    try {
+      setLoading(true);
+      const { data: eventsData, error } = await supabase
+        .from('events')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      // Get participant counts for each event
+      const eventsWithCounts = await Promise.all(
+        (eventsData || []).map(async (event) => {
+          const { count, error: countError } = await supabase
+            .from('event_participants')
+            .select('*', { count: 'exact' })
+            .eq('event_id', event.id);
+
+          return {
+            ...event,
+            registered_participants: count || 0,
+            image_url: event.image_url || getDefaultEventImage(event.event_type)
+          };
+        })
+      );
+
+      setEvents(eventsWithCounts);
+    } catch (error) {
+      console.error('Error loading events:', error);
+      toast({
+        title: 'خطأ في تحميل الفعاليات',
+        description: 'حدث خطأ أثناء تحميل الفعاليات',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getDefaultEventImage = (eventType: string) => {
+    const imageMap: { [key: string]: string } = {
+      'conference': '/event-images/tech-conference.jpg',
+      'workshop': '/event-images/innovation-workshop.jpg',
+      'summit': '/event-images/digital-summit.jpg',
+      'expo': '/event-images/tech-expo.jpg',
+      'hackathon': '/event-images/innovation-lightbulb.jpg',
+      'forum': '/event-images/smart-city.jpg',
+      'seminar': '/event-images/tech-conference.jpg',
+      'training': '/event-images/innovation-workshop.jpg',
+      'default': '/event-images/innovation.jpg'
+    };
+    return imageMap[eventType] || imageMap.default;
+  };
 
   const handleEdit = (event: any) => {
     setSelectedEvent(event);
@@ -109,19 +96,70 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
 
   const handleView = (event: any) => {
     console.log('View event:', event);
+    // You can implement a detailed view dialog here
   };
 
-  const handleDelete = (event: any) => {
-    console.log('Delete event:', event);
+  const handleDelete = async (event: any) => {
+    try {
+      const { error } = await supabase
+        .from('events')
+        .delete()
+        .eq('id', event.id);
+
+      if (error) throw error;
+
+      toast({
+        title: 'تم حذف الفعالية بنجاح',
+        description: `تم حذف فعالية "${event.title_ar}" بنجاح`,
+      });
+
+      loadEvents(); // Reload events
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      toast({
+        title: 'خطأ في حذف الفعالية',
+        variant: 'destructive'
+      });
+    }
   };
+
+  const handleStatusChange = async (event: any, newStatus: string) => {
+    try {
+      const { error } = await supabase
+        .from('events')
+        .update({ status: newStatus })
+        .eq('id', event.id);
+
+      if (error) throw error;
+
+      toast({
+        title: 'تم تحديث حالة الفعالية',
+        description: `تم تغيير حالة الفعالية إلى ${newStatus}`,
+      });
+
+      loadEvents(); // Reload events
+    } catch (error) {
+      console.error('Error updating event status:', error);
+      toast({
+        title: 'خطأ في تحديث الحالة',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  // Filter events based on search term
+  const filteredEvents = events.filter(event =>
+    event.title_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    event.description_ar.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Calculate metrics for hero
-  const totalEvents = mockEvents.length;
-  const activeEvents = mockEvents.filter(e => e.status === 'ongoing').length;
-  const totalParticipants = mockEvents.reduce((sum, e) => sum + e.registered_participants, 0);
-  const totalRevenue = mockEvents.reduce((sum, e) => sum + (e.budget || 0), 0);
-  const upcomingEvents = mockEvents.filter(e => e.status === 'scheduled').length;
-  const completedEvents = mockEvents.filter(e => e.status === 'completed').length;
+  const totalEvents = events.length;
+  const activeEvents = events.filter(e => e.status === 'جاري').length;
+  const totalParticipants = events.reduce((sum, e) => sum + (e.registered_participants || 0), 0);
+  const totalRevenue = events.reduce((sum, e) => sum + (e.budget || 0), 0);
+  const upcomingEvents = events.filter(e => e.status === 'مجدول').length;
+  const completedEvents = events.filter(e => e.status === 'مكتمل').length;
 
   return (
     <>
@@ -136,30 +174,47 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
       />
 
       <ViewLayouts viewMode={viewMode}>
-        {mockEvents.map((event) => (
-          <EnhancedAdminEventCard
-            key={event.id}
-            event={{
-              ...event,
-              event_category: 'standalone',
-              event_visibility: 'public'
-            }}
-            viewMode={viewMode}
-            onEdit={handleEdit}
-            onView={handleView}
-            onDelete={handleDelete}
-          />
-        ))}
+        {loading ? [
+          <div key="loading" className="text-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">جاري تحميل الفعاليات...</p>
+          </div>
+        ] : filteredEvents.length > 0 ? 
+          filteredEvents.map((event) => (
+            <EnhancedAdminEventCard
+              key={event.id}
+              event={{
+                ...event,
+                event_category: event.event_category || 'standalone',
+                event_visibility: event.event_visibility || 'public'
+              }}
+              viewMode={viewMode}
+              onEdit={handleEdit}
+              onView={handleView}
+              onDelete={handleDelete}
+              onStatusChange={handleStatusChange}
+            />
+          )) : [
+          <div key="empty" className="text-center py-12">
+            <Calendar className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+            <p className="text-lg font-medium mb-2">لا توجد فعاليات</p>
+            <p className="text-muted-foreground">لا توجد فعاليات تطابق البحث الحالي</p>
+          </div>
+        ]}
       </ViewLayouts>
 
-      <EventWizard
+      <ComprehensiveEventWizard
         isOpen={showAddDialog}
         onClose={() => {
           onAddDialogChange(false);
           setSelectedEvent(null);
         }}
         event={selectedEvent}
-        onSave={() => onAddDialogChange(false)}
+        onSave={(eventData) => {
+          console.log('Event saved:', eventData);
+          loadEvents(); // Reload events after save
+          onAddDialogChange(false);
+        }}
       />
     </>
   );
