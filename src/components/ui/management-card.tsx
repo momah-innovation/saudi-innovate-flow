@@ -215,7 +215,7 @@ export function ManagementCard({
         )}
         
         {interactionButtons && (
-          <div onClick={(e) => e.stopPropagation()}>
+          <div onClick={(e) => e.stopPropagation()} className="relative z-10">
             {interactionButtons}
           </div>
         )}
