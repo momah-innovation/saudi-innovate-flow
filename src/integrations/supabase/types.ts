@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      bookmark_collections: {
+        Row: {
+          color: string | null
+          created_at: string | null
+          description_ar: string | null
+          description_en: string | null
+          icon: string | null
+          id: string
+          is_public: boolean | null
+          name_ar: string
+          name_en: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string | null
+          description_ar?: string | null
+          description_en?: string | null
+          icon?: string | null
+          id?: string
+          is_public?: boolean | null
+          name_ar: string
+          name_en: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string | null
+          description_ar?: string | null
+          description_en?: string | null
+          icon?: string | null
+          id?: string
+          is_public?: boolean | null
+          name_ar?: string
+          name_en?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       campaign_bookmarks: {
         Row: {
           campaign_id: string | null
@@ -1050,6 +1092,38 @@ export type Database = {
           },
         ]
       }
+      collection_items: {
+        Row: {
+          added_at: string | null
+          bookmark_id: string
+          bookmark_type: string
+          collection_id: string
+          id: string
+        }
+        Insert: {
+          added_at?: string | null
+          bookmark_id: string
+          bookmark_type: string
+          collection_id: string
+          id?: string
+        }
+        Update: {
+          added_at?: string | null
+          bookmark_id?: string
+          bookmark_type?: string
+          collection_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collection_items_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "bookmark_collections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       departments: {
         Row: {
           budget_allocation: number | null
@@ -2077,40 +2151,32 @@ export type Database = {
       focus_question_bookmarks: {
         Row: {
           created_at: string | null
-          focus_question_id: string | null
+          focus_question_id: string
           id: string
           notes: string | null
           priority: string | null
           reminder_date: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           created_at?: string | null
-          focus_question_id?: string | null
+          focus_question_id: string
           id?: string
           notes?: string | null
           priority?: string | null
           reminder_date?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           created_at?: string | null
-          focus_question_id?: string | null
+          focus_question_id?: string
           id?: string
           notes?: string | null
           priority?: string | null
           reminder_date?: string | null
-          user_id?: string | null
+          user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "focus_question_bookmarks_focus_question_id_fkey"
-            columns: ["focus_question_id"]
-            isOneToOne: false
-            referencedRelation: "focus_questions"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       focus_questions: {
         Row: {
@@ -3720,6 +3786,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      partner_bookmarks: {
+        Row: {
+          created_at: string | null
+          id: string
+          notes: string | null
+          partner_id: string
+          priority: string | null
+          reminder_date: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          partner_id: string
+          priority?: string | null
+          reminder_date?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          partner_id?: string
+          priority?: string | null
+          reminder_date?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       partners: {
         Row: {

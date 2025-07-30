@@ -122,10 +122,7 @@ export function useBookmarks() {
         `)
         .eq('user_id', user.id);
 
-      if (error) {
-        console.warn('Focus question bookmarks table may not exist yet:', error);
-        return;
-      }
+      if (error) throw error;
       setFocusQuestionBookmarks(data || []);
     } catch (error) {
       console.error('Error fetching focus question bookmarks:', error);
@@ -224,13 +221,34 @@ export function useBookmarks() {
         `)
         .eq('user_id', user.id);
 
-      if (error) {
-        console.warn('Expert bookmarks table may not exist yet:', error);
-        return;
-      }
+      if (error) throw error;
       setExpertBookmarks(data || []);
     } catch (error) {
       console.error('Error fetching expert bookmarks:', error);
+    }
+  };
+
+  const fetchPartnerBookmarks = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('partner_bookmarks')
+        .select(`
+          id,
+          user_id,
+          created_at,
+          notes,
+          priority,
+          partner_id
+        `)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      setPartnerBookmarks(data || []);
+    } catch (error) {
+      console.error('Error fetching partner bookmarks:', error);
     }
   };
 
@@ -241,7 +259,6 @@ export function useBookmarks() {
         .select(`
           id,
           user_id,
-          role,
           status,
           specialization,
           department,
@@ -258,35 +275,20 @@ export function useBookmarks() {
   };
 
   const fetchCollections = async () => {
-    // Use placeholder collections since the table doesn't exist yet
-    setCollections([
-      {
-        id: '1',
-        user_id: 'current-user',
-        name_ar: 'مجموعة المفضلة',
-        name_en: 'Favorites',
-        description_ar: 'العناصر المفضلة والمهمة',
-        description_en: 'Favorite and important items',
-        color: '#EF4444',
-        icon: 'heart',
-        is_public: false,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      },
-      {
-        id: '2',
-        user_id: 'current-user',
-        name_ar: 'للمراجعة لاحقاً',
-        name_en: 'Review Later',
-        description_ar: 'عناصر للمراجعة في وقت لاحق',
-        description_en: 'Items to review later',
-        color: '#F59E0B',
-        icon: 'clock',
-        is_public: false,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      }
-    ]);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('bookmark_collections')
+        .select('*')
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      setCollections(data || []);
+    } catch (error) {
+      console.error('Error fetching collections:', error);
+    }
   };
 
   const fetchAllBookmarks = async () => {
@@ -300,6 +302,7 @@ export function useBookmarks() {
       fetchSectorBookmarks(),
       fetchStakeholderBookmarks(),
       fetchExpertBookmarks(),
+      fetchPartnerBookmarks(),
       fetchPublicTeams(),
       fetchCollections()
     ]);
