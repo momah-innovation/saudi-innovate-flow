@@ -169,8 +169,11 @@ export default function IdeaSubmissionWizard() {
     try {
       setAutoSaving(true);
       
+      // Filter out fields that don't exist in the database
+      const { collaboration_open, tags, estimated_timeline, innovation_level, ...dbFields } = formData;
+      
       const ideaData = {
-        ...formData,
+        ...dbFields,
         innovator_id: userProfile.id,
         challenge_id: formData.challenge_id || null,
         focus_question_id: formData.focus_question_id || null,
@@ -179,7 +182,12 @@ export default function IdeaSubmissionWizard() {
       };
 
       if (draftId) {
-        await supabase.from('ideas').update(ideaData).eq('id', draftId);
+        const { error } = await supabase
+          .from('ideas')
+          .update(ideaData)
+          .eq('id', draftId);
+        
+        if (error) throw error;
       } else {
         const { data, error } = await supabase
           .from('ideas')
@@ -188,12 +196,13 @@ export default function IdeaSubmissionWizard() {
           .single();
         
         if (error) throw error;
-        setDraftId(data.id);
+        if (data) setDraftId(data.id);
       }
       
       toast.success(isRTL ? 'تم حفظ المسودة تلقائياً' : 'Draft auto-saved', { duration: 2000 });
     } catch (error) {
       console.error('Auto-save error:', error);
+      // Don't show error toast for auto-save failures to avoid spam
     } finally {
       setAutoSaving(false);
     }
@@ -218,6 +227,7 @@ export default function IdeaSubmissionWizard() {
         implementation_plan: data.implementation_plan || '',
         expected_impact: data.expected_impact || '',
         resource_requirements: data.resource_requirements || '',
+        // These fields are form-only, not stored in database
         tags: [],
         collaboration_open: false,
         estimated_timeline: '',
@@ -290,8 +300,11 @@ export default function IdeaSubmissionWizard() {
     try {
       setLoading(true);
       
+      // Filter out fields that don't exist in the database
+      const { collaboration_open, tags, estimated_timeline, innovation_level, ...dbFields } = formData;
+      
       const ideaData = {
-        ...formData,
+        ...dbFields,
         innovator_id: userProfile.id,
         challenge_id: formData.challenge_id || null,
         focus_question_id: formData.focus_question_id || null,
