@@ -30,7 +30,7 @@ const ChallengesBrowse = () => {
   const { isRTL } = useDirection();
   const { toast } = useToast();
   const { ui } = useChallengeDefaults();
-  const { user } = useAuth();
+  const { user, hasRole } = useAuth();
   
   // Use enhanced challenges data hook
   const { challenges, loading, stats, refetch } = useChallengesData();
@@ -244,21 +244,48 @@ const ChallengesBrowse = () => {
     }
 
     try {
-      const { error } = await supabase
+      // Check if already bookmarked
+      const { data: existingBookmark } = await supabase
         .from('challenge_bookmarks')
-        .insert({
-          challenge_id: challenge.id,
-          user_id: user.id,
+        .select('id')
+        .eq('challenge_id', challenge.id)
+        .eq('user_id', user.id)
+        .single();
+
+      if (existingBookmark) {
+        // Remove bookmark
+        const { error } = await supabase
+          .from('challenge_bookmarks')
+          .delete()
+          .eq('challenge_id', challenge.id)
+          .eq('user_id', user.id);
+
+        if (error) throw error;
+
+        toast({
+          title: isRTL ? 'تم إلغاء الحفظ' : 'Bookmark Removed',
+          description: isRTL ? 
+            `تم إلغاء حفظ تحدي "${challenge.title_ar}"` : 
+            `Removed "${challenge.title_ar}" from bookmarks`,
         });
+      } else {
+        // Add bookmark
+        const { error } = await supabase
+          .from('challenge_bookmarks')
+          .insert({
+            challenge_id: challenge.id,
+            user_id: user.id,
+          });
 
-      if (error) throw error;
+        if (error) throw error;
 
-      toast({
-        title: isRTL ? 'تم الحفظ' : 'Bookmarked',
-        description: isRTL ? 
-          `تم حفظ تحدي "${challenge.title_ar}" في قائمة المفضلة` : 
-          `Challenge "${challenge.title_ar}" saved to bookmarks`,
-      });
+        toast({
+          title: isRTL ? 'تم الحفظ' : 'Bookmarked',
+          description: isRTL ? 
+            `تم حفظ تحدي "${challenge.title_ar}" في قائمة المفضلة` : 
+            `Challenge "${challenge.title_ar}" saved to bookmarks`,
+        });
+      }
     } catch (error) {
       console.error('Bookmark error:', error);
       toast({
@@ -350,21 +377,17 @@ const ChallengesBrowse = () => {
         title={isRTL ? 'التحديات المتاحة' : 'Available Challenges'}
         description={isRTL ? 'تصفح واختر التحديات التي تناسب مهاراتك واهتماماتك' : 'Browse and select challenges that match your skills and interests'}
         itemCount={tabFilteredChallenges.length}
-        primaryAction={{
+        primaryAction={user && (hasRole('admin') || hasRole('super_admin')) ? {
           label: isRTL ? 'تحدي جديد' : 'New Challenge',
           onClick: () => setCreateChallengeOpen(true),
           icon: <Plus className="w-4 h-4" />
-        }}
+        } : undefined}
         secondaryActions={
           <div className="flex gap-2">
             <LayoutSelector
               viewMode={viewMode}
               onViewModeChange={setViewMode}
             />
-            <Button size="sm" variant="outline" onClick={() => handleSubmitToChallenge(selectedChallenge)}>
-              <Send className="w-4 h-4 mr-2" />
-              {isRTL ? 'مشاركة' : 'Submit'}
-            </Button>
           </div>
         }
       >
@@ -472,12 +495,14 @@ const ChallengesBrowse = () => {
           onOpenChange={setSubmissionsDialogOpen}
         />
 
-        {/* Create Challenge Dialog */}
-        <CreateChallengeDialog
-          open={createChallengeOpen}
-          onOpenChange={setCreateChallengeOpen}
-          onChallengeCreated={refetch}
-        />
+        {/* Create Challenge Dialog - Only for Admins */}
+        {user && (hasRole('admin') || hasRole('super_admin')) && (
+          <CreateChallengeDialog
+            open={createChallengeOpen}
+            onOpenChange={setCreateChallengeOpen}
+            onChallengeCreated={refetch}
+          />
+        )}
       </PageLayout>
     </AppShell>
   );

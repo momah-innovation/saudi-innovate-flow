@@ -366,17 +366,7 @@ export function ChallengeCommentsDialog({
             onChange={(e) => setNewComment(e.target.value)}
             rows={3}
           />
-          <div className="flex justify-between">
-            <div className="flex gap-2">
-              <Button size="sm" variant="outline">
-                <Heart className="h-4 w-4 mr-2" />
-                إعجاب
-              </Button>
-              <Button size="sm" variant="outline">
-                <Flag className="h-4 w-4 mr-2" />
-                إبلاغ
-              </Button>
-            </div>
+          <div className="flex justify-end">
             <Button 
               onClick={handleAddComment}
               disabled={!newComment.trim()}
