@@ -856,6 +856,245 @@ export type Database = {
           },
         ]
       }
+      evaluation_criteria: {
+        Row: {
+          category: string
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          description_ar: string | null
+          id: string
+          is_active: boolean | null
+          is_required: boolean | null
+          max_score: number | null
+          min_score: number | null
+          name: string
+          name_ar: string | null
+          scoring_guide: string | null
+          scoring_guide_ar: string | null
+          updated_at: string | null
+          weight: number
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          description_ar?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_required?: boolean | null
+          max_score?: number | null
+          min_score?: number | null
+          name: string
+          name_ar?: string | null
+          scoring_guide?: string | null
+          scoring_guide_ar?: string | null
+          updated_at?: string | null
+          weight?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          description_ar?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_required?: boolean | null
+          max_score?: number | null
+          min_score?: number | null
+          name?: string
+          name_ar?: string | null
+          scoring_guide?: string | null
+          scoring_guide_ar?: string | null
+          updated_at?: string | null
+          weight?: number
+        }
+        Relationships: []
+      }
+      evaluation_rules: {
+        Row: {
+          action_type: string
+          action_value: string | null
+          condition_type: string
+          condition_value: number
+          created_at: string | null
+          created_by: string | null
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          name: string
+          name_ar: string | null
+          priority: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          action_type: string
+          action_value?: string | null
+          condition_type: string
+          condition_value: number
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          name: string
+          name_ar?: string | null
+          priority?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          action_type?: string
+          action_value?: string | null
+          condition_type?: string
+          condition_value?: number
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          name?: string
+          name_ar?: string | null
+          priority?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      evaluation_scorecards: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          criteria_scores: Json | null
+          evaluation_notes: string | null
+          final_score: number | null
+          id: string
+          name: string
+          name_ar: string | null
+          recommendation: string | null
+          template_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          criteria_scores?: Json | null
+          evaluation_notes?: string | null
+          final_score?: number | null
+          id?: string
+          name: string
+          name_ar?: string | null
+          recommendation?: string | null
+          template_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          criteria_scores?: Json | null
+          evaluation_notes?: string | null
+          final_score?: number | null
+          id?: string
+          name?: string
+          name_ar?: string | null
+          recommendation?: string | null
+          template_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evaluation_scorecards_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "evaluation_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      evaluation_system_settings: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          is_system: boolean | null
+          setting_key: string
+          setting_value: Json
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_system?: boolean | null
+          setting_key: string
+          setting_value: Json
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_system?: boolean | null
+          setting_key?: string
+          setting_value?: Json
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      evaluation_templates: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          criteria_config: Json | null
+          description: string | null
+          description_ar: string | null
+          evaluation_type: string
+          id: string
+          is_active: boolean | null
+          is_default: boolean | null
+          name: string
+          name_ar: string | null
+          scoring_method: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          criteria_config?: Json | null
+          description?: string | null
+          description_ar?: string | null
+          evaluation_type: string
+          id?: string
+          is_active?: boolean | null
+          is_default?: boolean | null
+          name: string
+          name_ar?: string | null
+          scoring_method?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          criteria_config?: Json | null
+          description?: string | null
+          description_ar?: string | null
+          evaluation_type?: string
+          id?: string
+          is_active?: boolean | null
+          is_default?: boolean | null
+          name?: string
+          name_ar?: string | null
+          scoring_method?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       event_challenge_links: {
         Row: {
           challenge_id: string
@@ -3334,6 +3573,48 @@ export type Database = {
             columns: ["team_member_id"]
             isOneToOne: false
             referencedRelation: "innovation_team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      template_criteria: {
+        Row: {
+          created_at: string | null
+          criteria_id: string | null
+          id: string
+          is_required_override: boolean | null
+          template_id: string | null
+          weight_override: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          criteria_id?: string | null
+          id?: string
+          is_required_override?: boolean | null
+          template_id?: string | null
+          weight_override?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          criteria_id?: string | null
+          id?: string
+          is_required_override?: boolean | null
+          template_id?: string | null
+          weight_override?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "template_criteria_criteria_id_fkey"
+            columns: ["criteria_id"]
+            isOneToOne: false
+            referencedRelation: "evaluation_criteria"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "template_criteria_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "evaluation_templates"
             referencedColumns: ["id"]
           },
         ]
