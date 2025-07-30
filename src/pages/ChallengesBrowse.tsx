@@ -199,23 +199,24 @@ const ChallengesBrowse = () => {
 
     // Apply prize range filter
     filtered = filtered.filter(challenge => {
-      const prizeValue = parseInt(challenge.prize.replace(/[^\d]/g, ''));
-      return prizeValue >= filters.prizeRange[0] && prizeValue <= filters.prizeRange[1];
+      const budgetValue = challenge.estimated_budget || 0;
+      return budgetValue >= filters.prizeRange[0] && budgetValue <= filters.prizeRange[1];
     });
 
-    // Apply participant range filter
-    filtered = filtered.filter(challenge => 
-      challenge.participants >= filters.participantRange[0] && 
-      challenge.participants <= filters.participantRange[1]
-    );
+    // Apply participant range filter - use 0 as default since we don't have participants count yet
+    filtered = filtered.filter(challenge => {
+      const participantCount = challenge.participants || 0;
+      return participantCount >= filters.participantRange[0] && participantCount <= filters.participantRange[1];
+    });
 
     // Apply feature filters
     if (filters.features.includes('trending')) {
-      filtered = filtered.filter(challenge => challenge.trending);
+      filtered = filtered.filter(challenge => challenge.trending || challenge.priority_level === 'عالي');
     }
     if (filters.features.includes('ending-soon')) {
       filtered = filtered.filter(challenge => {
-        const deadline = new Date(challenge.deadline);
+        if (!challenge.end_date) return false;
+        const deadline = new Date(challenge.end_date);
         const now = new Date();
         const daysLeft = Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
         return daysLeft <= 7 && daysLeft > 0;
@@ -228,24 +229,24 @@ const ChallengesBrowse = () => {
       
       switch (filters.sortBy) {
         case 'participants':
-          aValue = a.participants;
-          bValue = b.participants;
+          aValue = a.participants || 0;
+          bValue = b.participants || 0;
           break;
         case 'submissions':
-          aValue = a.submissions;
-          bValue = b.submissions;
+          aValue = a.submissions || 0;
+          bValue = b.submissions || 0;
           break;
         case 'prize':
-          aValue = parseInt(a.prize.replace(/[^\d]/g, ''));
-          bValue = parseInt(b.prize.replace(/[^\d]/g, ''));
+          aValue = a.estimated_budget || 0;
+          bValue = b.estimated_budget || 0;
           break;
         case 'deadline':
-          aValue = new Date(a.deadline).getTime();
-          bValue = new Date(b.deadline).getTime();
+          aValue = a.end_date ? new Date(a.end_date).getTime() : 0;
+          bValue = b.end_date ? new Date(b.end_date).getTime() : 0;
           break;
         default:
-          aValue = isRTL ? a.title : a.title_en;
-          bValue = isRTL ? b.title : b.title_en;
+          aValue = a.title_ar || '';
+          bValue = b.title_ar || '';
       }
 
       if (filters.sortOrder === 'asc') {
@@ -263,9 +264,9 @@ const ChallengesBrowse = () => {
       case 'active':
         return challenges.filter(c => c.status === 'active');
       case 'upcoming':
-        return challenges.filter(c => c.status === 'upcoming');
+        return challenges.filter(c => c.status === 'planning');
       case 'trending':
-        return challenges.filter(c => c.trending || c.participants > 200);
+        return challenges.filter(c => c.priority_level === 'عالي' || (c.participants || 0) > 50);
       default:
         return challenges;
     }
