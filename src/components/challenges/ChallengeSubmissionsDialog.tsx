@@ -85,8 +85,17 @@ export function ChallengeSubmissionsDialog({
   };
 
   const handleBookmarkSubmission = async (submissionId: string) => {
+    if (!user) {
+      toast({
+        title: "يرجى تسجيل الدخول",
+        description: "يجب تسجيل الدخول لحفظ المشاركات",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      // This would implement bookmarking logic
+      // TODO: Implement actual bookmarking logic with Supabase
       toast({
         title: "تم الحفظ",
         description: "تم حفظ المشاركة في مفضلتك",

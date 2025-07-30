@@ -9,6 +9,7 @@ interface EventsHeroProps {
   todayEvents: number;
   onCreateEvent: () => void;
   onShowFilters: () => void;
+  canCreateEvent?: boolean;
 }
 
 export const EventsHero = ({
@@ -16,7 +17,8 @@ export const EventsHero = ({
   upcomingEvents,
   todayEvents,
   onCreateEvent,
-  onShowFilters
+  onShowFilters,
+  canCreateEvent = true
 }: EventsHeroProps) => {
   const { isRTL } = useDirection();
 
@@ -111,10 +113,12 @@ export const EventsHero = ({
 
           {/* Right Actions */}
           <div className="flex flex-col sm:flex-row gap-3 lg:flex-col">
-            <Button onClick={onCreateEvent} className="gap-2">
-              <Plus className="w-4 h-4" />
-              {isRTL ? 'فعالية جديدة' : 'New Event'}
-            </Button>
+            {canCreateEvent && (
+              <Button onClick={onCreateEvent} className="gap-2">
+                <Plus className="w-4 h-4" />
+                {isRTL ? 'فعالية جديدة' : 'New Event'}
+              </Button>
+            )}
             <Button variant="outline" onClick={onShowFilters} className="gap-2">
               <Filter className="w-4 h-4" />
               {isRTL ? 'الفلاتر' : 'Filters'}

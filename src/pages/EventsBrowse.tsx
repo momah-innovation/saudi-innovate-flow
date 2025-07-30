@@ -50,7 +50,7 @@ interface Event {
 const EventsBrowse = () => {
   const { isRTL } = useDirection();
   const { toast } = useToast();
-  const { user, userProfile } = useAuth();
+  const { user, userProfile, hasRole } = useAuth();
   
   // State management
   const [events, setEvents] = useState<Event[]>([]);
@@ -279,11 +279,11 @@ const EventsBrowse = () => {
         title={isRTL ? 'استكشاف الفعاليات' : 'Browse Events'}
         description={isRTL ? 'اكتشف وسجل في أحدث الفعاليات والأنشطة الابتكارية' : 'Discover and register for the latest innovation events and activities'}
         itemCount={filteredEvents.length}
-        primaryAction={{
+        primaryAction={user && (hasRole('admin') || hasRole('super_admin') || hasRole('innovation_team_member')) ? {
           label: isRTL ? 'فعالية جديدة' : 'New Event',
           onClick: () => console.log('Create new event'),
           icon: <Plus className="w-4 h-4" />
-        }}
+        } : undefined}
         secondaryActions={
           <LayoutSelector
             viewMode={viewMode}
@@ -300,8 +300,11 @@ const EventsBrowse = () => {
           totalEvents={events.length}
           upcomingEvents={upcomingCount}
           todayEvents={todayCount}
-          onCreateEvent={() => console.log('Create event')}
+          onCreateEvent={user && (hasRole('admin') || hasRole('super_admin') || hasRole('innovation_team_member')) ? 
+            () => console.log('Create event') : 
+            () => {}}
           onShowFilters={() => setShowAdvancedFilters(true)}
+          canCreateEvent={user && (hasRole('admin') || hasRole('super_admin') || hasRole('innovation_team_member'))}
         />
 
         <div className="space-y-6">
