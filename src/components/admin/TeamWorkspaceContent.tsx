@@ -23,6 +23,11 @@ import {
   PieChart, LineChart
 } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
+import { CreateProjectDialog } from './team-workspace/CreateProjectDialog';
+import { InviteMemberDialog } from './team-workspace/InviteMemberDialog';
+import { TaskAssignmentDialog } from './team-workspace/TaskAssignmentDialog';
+import { TeamChatSheet } from './team-workspace/TeamChatSheet';
+import { MeetingSchedulerDialog } from './team-workspace/MeetingSchedulerDialog';
 
 interface TeamWorkspaceContentProps {
   activeView: string;
@@ -44,6 +49,11 @@ export function TeamWorkspaceContent({
   const [selectedMember, setSelectedMember] = useState<any>(null);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [showQuickActions, setShowQuickActions] = useState(false);
+  const [showCreateProject, setShowCreateProject] = useState(false);
+  const [showInviteMember, setShowInviteMember] = useState(false);
+  const [showTaskAssignment, setShowTaskAssignment] = useState(false);
+  const [showTeamChat, setShowTeamChat] = useState(false);
+  const [showMeetingScheduler, setShowMeetingScheduler] = useState(false);
   const [activityFeed, setActivityFeed] = useState<any[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newTaskAssignee, setNewTaskAssignee] = useState('');
@@ -217,15 +227,15 @@ export function TeamWorkspaceContent({
           <Separator />
 
           <div className="grid grid-cols-2 gap-3">
-            <Button variant="outline" className="h-20 flex-col gap-2">
+            <Button variant="outline" className="h-20 flex-col gap-2" onClick={() => setShowCreateProject(true)}>
               <FolderPlus className="h-6 w-6" />
               مشروع جديد
             </Button>
-            <Button variant="outline" className="h-20 flex-col gap-2">
+            <Button variant="outline" className="h-20 flex-col gap-2" onClick={() => setShowMeetingScheduler(true)}>
               <CalendarIcon className="h-6 w-6" />
               جدولة اجتماع
             </Button>
-            <Button variant="outline" className="h-20 flex-col gap-2">
+            <Button variant="outline" className="h-20 flex-col gap-2" onClick={() => setShowTeamChat(true)}>
               <MessageSquare className="h-6 w-6" />
               مناقشة فريق
             </Button>
@@ -597,6 +607,11 @@ export function TeamWorkspaceContent({
       </div>
 
       <QuickActionsPanel />
+      <CreateProjectDialog open={showCreateProject} onOpenChange={setShowCreateProject} teamMembers={teamData.teamMembers} />
+      <InviteMemberDialog open={showInviteMember} onOpenChange={setShowInviteMember} />
+      <TaskAssignmentDialog open={showTaskAssignment} onOpenChange={setShowTaskAssignment} teamMembers={teamData.teamMembers} selectedMember={selectedMember} />
+      <TeamChatSheet open={showTeamChat} onOpenChange={setShowTeamChat} teamMembers={teamData.teamMembers} />
+      <MeetingSchedulerDialog open={showMeetingScheduler} onOpenChange={setShowMeetingScheduler} teamMembers={teamData.teamMembers} />
       {selectedMember && <MemberDetailDialog member={selectedMember} />}
     </div>
   );

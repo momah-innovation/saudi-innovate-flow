@@ -1,0 +1,351 @@
+import { useState } from 'react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Progress } from '@/components/ui/progress';
+import { Calendar, Clock, User, Target, Flag, CheckCircle } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+
+interface TaskAssignmentDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  teamMembers: any[];
+  selectedMember?: any;
+}
+
+export function TaskAssignmentDialog({ 
+  open, 
+  onOpenChange, 
+  teamMembers, 
+  selectedMember 
+}: TaskAssignmentDialogProps) {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    assigneeId: selectedMember?.id || '',
+    priority: 'medium',
+    deadline: '',
+    estimatedHours: '',
+    projectId: '',
+    tags: [] as string[],
+    attachments: [] as File[]
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleCreateTask = async () => {
+    try {
+      const assignee = teamMembers.find(m => m.id === formData.assigneeId);
+      toast({
+        title: "تم إنشاء المهمة بنجاح",
+        description: `تم تكليف ${assignee?.profiles?.display_name} بمهمة: ${formData.title}`,
+      });
+      onOpenChange(false);
+      // Reset form
+      setFormData({
+        title: '',
+        description: '',
+        assigneeId: '',
+        priority: 'medium',
+        deadline: '',
+        estimatedHours: '',
+        projectId: '',
+        tags: [],
+        attachments: []
+      });
+    } catch (error) {
+      toast({
+        title: "خطأ",
+        description: "فشل في إنشاء المهمة",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const getSelectedMember = () => teamMembers.find(m => m.id === formData.assigneeId);
+  const selectedMemberData = getSelectedMember();
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'urgent': return 'bg-red-500';
+      case 'high': return 'bg-orange-500';
+      case 'medium': return 'bg-yellow-500';
+      case 'low': return 'bg-green-500';
+      default: return 'bg-gray-500';
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Target className="h-5 w-5" />
+            تكليف مهمة جديدة
+          </DialogTitle>
+          <DialogDescription>
+            قم بإنشاء وتكليف مهمة جديدة لأحد أعضاء الفريق
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Task Details Form */}
+          <div className="lg:col-span-2 space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="title">عنوان المهمة *</Label>
+              <Input
+                id="title"
+                placeholder="أدخل عنوان المهمة"
+                value={formData.title}
+                onChange={(e) => handleInputChange('title', e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="description">وصف المهمة</Label>
+              <Textarea
+                id="description"
+                placeholder="اكتب وصفاً مفصلاً للمهمة والمتطلبات..."
+                value={formData.description}
+                onChange={(e) => handleInputChange('description', e.target.value)}
+                rows={4}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>الأولوية</Label>
+                <Select value={formData.priority} onValueChange={(value) => handleInputChange('priority', value)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border shadow-lg z-50">
+                    <SelectItem value="low">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-green-500" />
+                        منخفضة
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="medium">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-yellow-500" />
+                        متوسطة
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="high">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-orange-500" />
+                        عالية
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="urgent">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-red-500" />
+                        عاجلة
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="estimatedHours">الوقت المقدر (ساعات)</Label>
+                <Input
+                  id="estimatedHours"
+                  type="number"
+                  placeholder="عدد الساعات"
+                  value={formData.estimatedHours}
+                  onChange={(e) => handleInputChange('estimatedHours', e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="deadline">الموعد النهائي</Label>
+                <Input
+                  id="deadline"
+                  type="datetime-local"
+                  value={formData.deadline}
+                  onChange={(e) => handleInputChange('deadline', e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>المشروع المرتبط</Label>
+                <Select value={formData.projectId} onValueChange={(value) => handleInputChange('projectId', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="اختر مشروع (اختياري)" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border shadow-lg z-50">
+                    <SelectItem value="project1">مشروع تطوير التطبيق</SelectItem>
+                    <SelectItem value="project2">مشروع تحليل البيانات</SelectItem>
+                    <SelectItem value="project3">مشروع تحسين العمليات</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Task Preview */}
+            <Card className="bg-muted/50">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <CheckCircle className="h-4 w-4" />
+                  <span className="font-medium">معاينة المهمة</span>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className={`w-3 h-3 rounded-full ${getPriorityColor(formData.priority)}`} />
+                    <span className="font-medium">{formData.title || 'عنوان المهمة'}</span>
+                  </div>
+                  {formData.description && (
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {formData.description}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    {formData.deadline && (
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {new Date(formData.deadline).toLocaleDateString('ar-SA')}
+                      </div>
+                    )}
+                    {formData.estimatedHours && (
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        {formData.estimatedHours} ساعة
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Assignee Selection */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>تكليف إلى *</Label>
+              <Select value={formData.assigneeId} onValueChange={(value) => handleInputChange('assigneeId', value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="اختر عضو الفريق" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border shadow-lg z-50">
+                  {teamMembers.map((member) => (
+                    <SelectItem key={member.id} value={member.id}>
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-6 w-6">
+                          <AvatarImage src={member.profiles?.avatar_url} />
+                          <AvatarFallback className="text-xs">
+                            {member.profiles?.display_name?.charAt(0) || 'U'}
+                          </AvatarFallback>
+                        </Avatar>
+                        {member.profiles?.display_name || 'مستخدم'}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Selected Member Info */}
+            {selectedMemberData && (
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Avatar className="h-12 w-12">
+                      <AvatarImage src={selectedMemberData.profiles?.avatar_url} />
+                      <AvatarFallback>
+                        {selectedMemberData.profiles?.display_name?.charAt(0) || 'U'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-medium">{selectedMemberData.profiles?.display_name}</p>
+                      <p className="text-sm text-muted-foreground">{selectedMemberData.role}</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span>السعة الحالية</span>
+                        <span className={
+                          (selectedMemberData.current_workload || 0) > 80 ? 'text-red-500' :
+                          (selectedMemberData.current_workload || 0) > 60 ? 'text-yellow-500' : 'text-green-500'
+                        }>
+                          {selectedMemberData.current_workload || 65}%
+                        </span>
+                      </div>
+                      <Progress 
+                        value={selectedMemberData.current_workload || 65} 
+                        className="h-2"
+                      />
+                    </div>
+
+                    <div>
+                      <Badge variant="outline" className="text-xs">
+                        {selectedMemberData.specialization}
+                      </Badge>
+                    </div>
+
+                    <div className="text-sm space-y-1">
+                      <div className="flex justify-between">
+                        <span>المهام النشطة:</span>
+                        <span className="font-medium">8</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>معدل الإنجاز:</span>
+                        <span className="font-medium text-green-600">92%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>التقييم:</span>
+                        <span className="font-medium">4.8/5</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Workload Warning */}
+            {selectedMemberData && (selectedMemberData.current_workload || 65) > 80 && (
+              <Card className="border-yellow-200 bg-yellow-50">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 text-yellow-700">
+                    <Flag className="h-4 w-4" />
+                    <span className="text-sm font-medium">تنبيه عبء العمل</span>
+                  </div>
+                  <p className="text-sm text-yellow-600 mt-1">
+                    هذا العضو لديه عبء عمل عالي حالياً. قد يؤثر ذلك على الأداء.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
+
+        <div className="flex justify-between">
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            إلغاء
+          </Button>
+          <Button 
+            onClick={handleCreateTask}
+            disabled={!formData.title || !formData.assigneeId}
+          >
+            <Target className="h-4 w-4 mr-2" />
+            إنشاء المهمة
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
