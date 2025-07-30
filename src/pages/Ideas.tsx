@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,7 +11,7 @@ import { Progress } from '@/components/ui/progress';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { LayoutSelector } from '@/components/ui/layout-selector';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useToast } from '@/hooks/use-toast';
@@ -23,7 +24,7 @@ import {
   Users, Building, Bookmark, Share2, Download, RefreshCw,
   BarChart3, Search, ThumbsUp, ThumbsDown, AlertCircle,
   Calendar, MapPin, User, Edit, Flag, ExternalLink,
-  Sparkles, Award, Zap, FileText, Globe
+  Sparkles, Award, Zap, FileText, Globe, Trash2
 } from 'lucide-react';
 
 interface Idea {
@@ -64,6 +65,22 @@ interface Idea {
   };
 }
 
+interface DraftIdea {
+  id: string;
+  title_ar: string;
+  description_ar: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  challenge_id?: string;
+  focus_question_id?: string;
+}
+
+interface Challenge {
+  id: string;
+  title_ar: string;
+}
+
 interface IdeaComment {
   id: string;
   content: string;
@@ -80,14 +97,17 @@ export default function IdeasPage() {
   const { isRTL } = useDirection();
   const { toast } = useToast();
   const { user, userProfile } = useAuth();
+  const navigate = useNavigate();
   
   // State management
   const [ideas, setIdeas] = useState<Idea[]>([]);
+  const [drafts, setDrafts] = useState<DraftIdea[]>([]);
+  const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [commentDialogOpen, setCommentDialogOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
-  const [activeTab, setActiveTab] = useState('all');
+  const [activeTab, setActiveTab] = useState('published');
   const [loading, setLoading] = useState(true);
   
   // Filter states
@@ -104,22 +124,31 @@ export default function IdeasPage() {
   const [featuredIdeas, setFeaturedIdeas] = useState<string[]>([]);
 
   useEffect(() => {
-    loadIdeas();
+    if (activeTab === 'published') {
+      loadIdeas();
+    } else if (activeTab === 'drafts') {
+      fetchDrafts();
+    }
     loadBookmarks();
     loadFeaturedIdeas();
+    fetchChallenges();
     
     // Set up real-time subscription
     const subscription = supabase
       .channel('ideas-changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'ideas' }, () => {
-        loadIdeas();
+        if (activeTab === 'published') {
+          loadIdeas();
+        } else if (activeTab === 'drafts') {
+          fetchDrafts();
+        }
       })
       .subscribe();
 
     return () => {
       supabase.removeChannel(subscription);
     };
-  }, [activeTab, statusFilter, maturityFilter, sectorFilter, sortBy]);
+  }, [activeTab, statusFilter, maturityFilter, sectorFilter, sortBy, userProfile]);
 
   const loadIdeas = async () => {
     try {
@@ -143,23 +172,6 @@ export default function IdeasPage() {
         .neq('status', 'draft');
 
       // Apply filters
-      if (activeTab !== 'all') {
-        if (activeTab === 'my_ideas') {
-          // Show user's own ideas
-          const { data: innovatorData } = await supabase
-            .from('innovators')
-            .select('id')
-            .eq('user_id', user?.id)
-            .single();
-          
-          if (innovatorData) {
-            query = query.eq('innovator_id', innovatorData.id);
-          }
-        } else {
-          query = query.eq('status', activeTab);
-        }
-      }
-      
       if (statusFilter !== 'all') {
         query = query.eq('status', statusFilter);
       }
@@ -198,6 +210,90 @@ export default function IdeasPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchDrafts = async () => {
+    if (!userProfile) return;
+
+    try {
+      setLoading(true);
+      
+      // Ensure innovator exists first
+      const { data: innovatorId, error: innovatorError } = await supabase.rpc('ensure_innovator_exists', {
+        user_uuid: userProfile.id
+      });
+      
+      if (innovatorError) throw innovatorError;
+
+      const { data, error } = await supabase
+        .from('ideas')
+        .select('*')
+        .eq('innovator_id', innovatorId)
+        .eq('status', 'draft')
+        .order('updated_at', { ascending: false });
+
+      if (error) throw error;
+      setDrafts(data || []);
+    } catch (error) {
+      console.error('Error fetching drafts:', error);
+      toast({
+        title: isRTL ? 'فشل في تحميل المسودات' : 'Failed to load drafts',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchChallenges = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('challenges')
+        .select('id, title_ar')
+        .eq('status', 'active');
+
+      if (error) throw error;
+      setChallenges(data || []);
+    } catch (error) {
+      console.error('Error fetching challenges:', error);
+    }
+  };
+
+  const deleteDraft = async (draftId: string) => {
+    try {
+      const { error } = await supabase
+        .from('ideas')
+        .delete()
+        .eq('id', draftId);
+
+      if (error) throw error;
+
+      setDrafts(drafts.filter(draft => draft.id !== draftId));
+      toast({
+        title: isRTL ? 'تم حذف المسودة بنجاح' : 'Draft deleted successfully'
+      });
+    } catch (error) {
+      console.error('Error deleting draft:', error);
+      toast({
+        title: isRTL ? 'فشل في حذف المسودة' : 'Failed to delete draft',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const editDraft = (draftId: string) => {
+    navigate(`/submit-idea?draft=${draftId}`);
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   const loadBookmarks = async () => {
@@ -480,15 +576,102 @@ export default function IdeasPage() {
     </Card>
   );
 
+  const renderDraftCard = (draft: DraftIdea) => {
+    const challenge = challenges.find(c => c.id === draft.challenge_id);
+    
+    return (
+      <Card key={draft.id} className="group hover:shadow-lg transition-all duration-300 border-l-4 border-l-primary/30">
+        <CardHeader className="pb-3">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
+                {draft.title_ar || (isRTL ? 'فكرة بدون عنوان' : 'Untitled Idea')}
+              </CardTitle>
+              <div className="flex items-center gap-2 mt-2">
+                <Badge variant="secondary" className="text-xs">
+                  <FileText className="w-3 h-3 mr-1" />
+                  {isRTL ? 'مسودة' : 'Draft'}
+                </Badge>
+                {challenge && (
+                  <Badge variant="outline" className="text-xs">
+                    {challenge.title_ar}
+                  </Badge>
+                )}
+              </div>
+            </div>
+          </div>
+        </CardHeader>
+        
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground line-clamp-3">
+            {draft.description_ar || (isRTL ? 'لا يوجد وصف' : 'No description')}
+          </p>
+          
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <Clock className="w-3 h-3" />
+            <span>{isRTL ? 'آخر تحديث:' : 'Last updated:'} {formatDate(draft.updated_at)}</span>
+          </div>
+          
+          <div className="flex items-center gap-2 pt-2">
+            <Button
+              size="sm"
+              onClick={() => editDraft(draft.id)}
+              className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+            >
+              <Edit className="w-3 h-3 mr-1" />
+              {isRTL ? 'متابعة التحرير' : 'Continue Editing'}
+            </Button>
+            
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="text-destructive hover:text-destructive-foreground hover:bg-destructive"
+                >
+                  <Trash2 className="w-3 h-3" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    {isRTL ? 'حذف المسودة' : 'Delete Draft'}
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {isRTL ? 
+                      'هل أنت متأكد من حذف هذه المسودة؟ لا يمكن التراجع عن هذا الإجراء.' :
+                      'Are you sure you want to delete this draft? This action cannot be undone.'
+                    }
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>
+                    {isRTL ? 'إلغاء' : 'Cancel'}
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => deleteDraft(draft.id)}
+                    className="bg-destructive hover:bg-destructive/90"
+                  >
+                    {isRTL ? 'حذف' : 'Delete'}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
+
   return (
     <AppShell>
       <PageLayout
         title={isRTL ? 'الأفكار الابتكارية' : 'Innovation Ideas'}
         description={isRTL ? 'اكتشف واستكشف أحدث الأفكار الابتكارية' : 'Discover and explore the latest innovative ideas'}
-        itemCount={filteredIdeas.length}
+        itemCount={activeTab === 'published' ? filteredIdeas.length : drafts.length}
         primaryAction={{
           label: isRTL ? 'فكرة جديدة' : 'New Idea',
-          onClick: () => window.location.href = '/submit-idea',
+          onClick: () => navigate('/submit-idea'),
           icon: <Plus className="w-4 h-4" />
         }}
         secondaryActions={
@@ -497,7 +680,13 @@ export default function IdeasPage() {
               viewMode={viewMode}
               onViewModeChange={setViewMode}
             />
-            <Button variant="outline" size="sm" onClick={loadIdeas}>
+            <Button variant="outline" size="sm" onClick={() => {
+              if (activeTab === 'published') {
+                loadIdeas();
+              } else {
+                fetchDrafts();
+              }
+            }}>
               <RefreshCw className="w-4 h-4" />
             </Button>
           </div>
@@ -508,82 +697,68 @@ export default function IdeasPage() {
         searchPlaceholder={isRTL ? 'البحث في الأفكار...' : 'Search ideas...'}
       >
         <div className="space-y-6">
-          {/* Enhanced Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-gradient-to-r from-muted/50 to-muted/30 rounded-lg border">
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder={isRTL ? 'الحالة' : 'Status'} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{isRTL ? 'جميع الحالات' : 'All Status'}</SelectItem>
-                <SelectItem value="pending">{isRTL ? 'في الانتظار' : 'Pending'}</SelectItem>
-                <SelectItem value="under_review">{isRTL ? 'قيد المراجعة' : 'Under Review'}</SelectItem>
-                <SelectItem value="approved">{isRTL ? 'موافق عليها' : 'Approved'}</SelectItem>
-                <SelectItem value="implemented">{isRTL ? 'منفذة' : 'Implemented'}</SelectItem>
-              </SelectContent>
-            </Select>
+          {activeTab === 'published' && (
+            /* Enhanced Filters */
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-gradient-to-r from-muted/50 to-muted/30 rounded-lg border">
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder={isRTL ? 'الحالة' : 'Status'} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{isRTL ? 'جميع الحالات' : 'All Status'}</SelectItem>
+                  <SelectItem value="pending">{isRTL ? 'في الانتظار' : 'Pending'}</SelectItem>
+                  <SelectItem value="under_review">{isRTL ? 'قيد المراجعة' : 'Under Review'}</SelectItem>
+                  <SelectItem value="approved">{isRTL ? 'موافق عليها' : 'Approved'}</SelectItem>
+                  <SelectItem value="implemented">{isRTL ? 'منفذة' : 'Implemented'}</SelectItem>
+                </SelectContent>
+              </Select>
 
-            <Select value={maturityFilter} onValueChange={setMaturityFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder={isRTL ? 'مستوى النضج' : 'Maturity'} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{isRTL ? 'جميع المستويات' : 'All Levels'}</SelectItem>
-                <SelectItem value="concept">{isRTL ? 'مفهوم' : 'Concept'}</SelectItem>
-                <SelectItem value="prototype">{isRTL ? 'نموذج أولي' : 'Prototype'}</SelectItem>
-                <SelectItem value="mvp">{isRTL ? 'منتج قابل للتطبيق' : 'MVP'}</SelectItem>
-                <SelectItem value="pilot">{isRTL ? 'تجريبي' : 'Pilot'}</SelectItem>
-              </SelectContent>
-            </Select>
+              <Select value={maturityFilter} onValueChange={setMaturityFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder={isRTL ? 'مستوى النضج' : 'Maturity'} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{isRTL ? 'جميع المستويات' : 'All Levels'}</SelectItem>
+                  <SelectItem value="concept">{isRTL ? 'مفهوم' : 'Concept'}</SelectItem>
+                  <SelectItem value="prototype">{isRTL ? 'نموذج أولي' : 'Prototype'}</SelectItem>
+                  <SelectItem value="mvp">{isRTL ? 'منتج قابل للتطبيق' : 'MVP'}</SelectItem>
+                  <SelectItem value="pilot">{isRTL ? 'تجريبي' : 'Pilot'}</SelectItem>
+                </SelectContent>
+              </Select>
 
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger>
-                <SelectValue placeholder={isRTL ? 'ترتيب حسب' : 'Sort by'} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="newest">{isRTL ? 'الأحدث' : 'Newest'}</SelectItem>
-                <SelectItem value="oldest">{isRTL ? 'الأقدم' : 'Oldest'}</SelectItem>
-                <SelectItem value="highest_score">{isRTL ? 'أعلى نتيجة' : 'Highest Score'}</SelectItem>
-                <SelectItem value="most_popular">{isRTL ? 'الأكثر شعبية' : 'Most Popular'}</SelectItem>
-              </SelectContent>
-            </Select>
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger>
+                  <SelectValue placeholder={isRTL ? 'ترتيب حسب' : 'Sort by'} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="newest">{isRTL ? 'الأحدث' : 'Newest'}</SelectItem>
+                  <SelectItem value="oldest">{isRTL ? 'الأقدم' : 'Oldest'}</SelectItem>
+                  <SelectItem value="highest_score">{isRTL ? 'أعلى نتيجة' : 'Highest Score'}</SelectItem>
+                  <SelectItem value="most_popular">{isRTL ? 'الأكثر شعبية' : 'Most Popular'}</SelectItem>
+                </SelectContent>
+              </Select>
 
-            <Button variant="outline" className="gap-2">
-              <Download className="w-4 h-4" />
-              {isRTL ? 'تصدير' : 'Export'}
-            </Button>
-          </div>
+              <Button variant="outline" className="gap-2">
+                <Download className="w-4 h-4" />
+                {isRTL ? 'تصدير' : 'Export'}
+              </Button>
+            </div>
+          )}
 
-          {/* Enhanced Tabs Navigation */}
+          {/* Tabs Navigation */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-6">
-              <TabsTrigger value="all" className="animate-fade-in gap-2">
-                <Globe className="w-4 h-4" />
-                {isRTL ? 'الكل' : 'All'}
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="published" className="flex items-center gap-2">
+                <Lightbulb className="w-4 h-4" />
+                {isRTL ? 'الأفكار المنشورة' : 'Published Ideas'}
               </TabsTrigger>
-              <TabsTrigger value="my_ideas" className="animate-fade-in gap-2">
-                <User className="w-4 h-4" />
-                {isRTL ? 'أفكاري' : 'My Ideas'}
-              </TabsTrigger>
-              <TabsTrigger value="pending" className="animate-fade-in gap-2">
-                <Clock className="w-4 h-4" />
-                {isRTL ? 'في الانتظار' : 'Pending'}
-              </TabsTrigger>
-              <TabsTrigger value="under_review" className="animate-fade-in gap-2">
-                <Eye className="w-4 h-4" />
-                {isRTL ? 'قيد المراجعة' : 'Under Review'}
-              </TabsTrigger>
-              <TabsTrigger value="approved" className="animate-fade-in gap-2">
-                <CheckCircle className="w-4 h-4" />
-                {isRTL ? 'موافق عليها' : 'Approved'}
-              </TabsTrigger>
-              <TabsTrigger value="implemented" className="animate-fade-in gap-2">
-                <Trophy className="w-4 h-4" />
-                {isRTL ? 'منفذة' : 'Implemented'}
+              <TabsTrigger value="drafts" className="flex items-center gap-2">
+                <FileText className="w-4 h-4" />
+                {isRTL ? 'المسودات' : 'Drafts'}
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value={activeTab} className="space-y-4">
+            <TabsContent value="published" className="space-y-4">
               {loading ? (
                 <div className="text-center py-12">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
@@ -605,11 +780,46 @@ export default function IdeasPage() {
                       (isRTL ? 'لا توجد أفكار في الوقت الحالي' : 'No ideas available at the moment')
                     }
                   </p>
-                  <Button onClick={() => window.location.href = '/submit-idea'} className="gap-2">
+                  <Button onClick={() => navigate('/submit-idea')} className="gap-2">
                     <Plus className="w-4 h-4" />
                     {isRTL ? 'تقديم فكرة جديدة' : 'Submit New Idea'}
                   </Button>
                 </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="drafts" className="space-y-4">
+              {loading ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                  <p className="text-muted-foreground">{isRTL ? 'جاري تحميل المسودات...' : 'Loading drafts...'}</p>
+                </div>
+              ) : drafts.length > 0 ? (
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {drafts.map(renderDraftCard)}
+                </div>
+              ) : (
+                <Card className="text-center py-12">
+                  <CardContent>
+                    <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">
+                      {isRTL ? 'لا توجد مسودات' : 'No Drafts Found'}
+                    </h3>
+                    <p className="text-muted-foreground mb-6">
+                      {isRTL ? 
+                        'لم تقم بحفظ أي مسودات بعد. ابدأ بإنشاء فكرة جديدة!' :
+                        'You haven\'t saved any drafts yet. Start by creating a new idea!'
+                      }
+                    </p>
+                    <Button 
+                      onClick={() => navigate('/submit-idea')}
+                      className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      {isRTL ? 'إنشاء فكرة جديدة' : 'Create New Idea'}
+                    </Button>
+                  </CardContent>
+                </Card>
               )}
             </TabsContent>
           </Tabs>
