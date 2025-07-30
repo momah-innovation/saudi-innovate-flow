@@ -92,6 +92,13 @@ export type Database = {
             referencedRelation: "campaigns"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_campaign_bookmarks_campaign_id"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
         ]
       }
       campaign_challenge_links: {
@@ -437,7 +444,15 @@ export type Database = {
           id?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_challenge_bookmarks_challenge_id"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       challenge_comments: {
         Row: {
@@ -1513,6 +1528,13 @@ export type Database = {
             referencedRelation: "events"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_event_bookmarks_event_id"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
         ]
       }
       event_challenge_links: {
@@ -2176,7 +2198,15 @@ export type Database = {
           reminder_date?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_focus_question_bookmarks_focus_question_id"
+            columns: ["focus_question_id"]
+            isOneToOne: false
+            referencedRelation: "focus_questions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       focus_questions: {
         Row: {
@@ -2429,7 +2459,15 @@ export type Database = {
           idea_id?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_idea_bookmarks_idea_id"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       idea_collaboration_teams: {
         Row: {
@@ -3815,7 +3853,15 @@ export type Database = {
           reminder_date?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_partner_bookmarks_partner_id"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       partners: {
         Row: {
@@ -4150,6 +4196,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "fk_sector_bookmarks_sector_id"
+            columns: ["sector_id"]
+            isOneToOne: false
+            referencedRelation: "sectors"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "sector_bookmarks_sector_id_fkey"
             columns: ["sector_id"]
             isOneToOne: false
@@ -4264,6 +4317,13 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_stakeholder_bookmarks_stakeholder_id"
+            columns: ["stakeholder_id"]
+            isOneToOne: false
+            referencedRelation: "stakeholders"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "stakeholder_bookmarks_stakeholder_id_fkey"
             columns: ["stakeholder_id"]
