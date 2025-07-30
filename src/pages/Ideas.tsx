@@ -14,6 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { LayoutSelector } from '@/components/ui/layout-selector';
 import { ViewLayouts } from '@/components/ui/view-layouts';
+import { MetricCard } from '@/components/ui/metric-card';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
@@ -24,7 +25,8 @@ import {
   Users, Building, Bookmark, Share2, Download, RefreshCw,
   BarChart3, Search, ThumbsUp, ThumbsDown, AlertCircle,
   Calendar, MapPin, User, Edit, Flag, ExternalLink,
-  Sparkles, Award, Zap, FileText, Globe, Trash2
+  Sparkles, Award, Zap, FileText, Globe, Trash2,
+  Flame, BookOpen, Palette, Settings, Hash, TrendingDown
 } from 'lucide-react';
 
 interface Idea {
@@ -45,6 +47,11 @@ interface Idea {
   innovation_score: number;
   alignment_score: number;
   overall_score: number;
+  image_url?: string;
+  featured?: boolean;
+  view_count: number;
+  like_count: number;
+  comment_count: number;
   created_at: string;
   updated_at: string;
   innovators?: {
@@ -93,6 +100,24 @@ interface IdeaComment {
   };
 }
 
+interface IdeaTemplate {
+  id: string;
+  name: string;
+  name_ar: string;
+  description: string;
+  description_ar: string;
+  template_data: any;
+  category: string;
+}
+
+interface PersonalMetrics {
+  totalIdeas: number;
+  totalViews: number;
+  totalComments: number;
+  successRate: number;
+  trendingIdeas: number;
+}
+
 export default function IdeasPage() {
   const { isRTL } = useDirection();
   const { toast } = useToast();
@@ -103,12 +128,23 @@ export default function IdeasPage() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [drafts, setDrafts] = useState<DraftIdea[]>([]);
   const [challenges, setChallenges] = useState<Challenge[]>([]);
+  const [templates, setTemplates] = useState<IdeaTemplate[]>([]);
   const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [commentDialogOpen, setCommentDialogOpen] = useState(false);
+  const [templateDialogOpen, setTemplateDialogOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [activeTab, setActiveTab] = useState('published');
   const [loading, setLoading] = useState(true);
+  
+  // Personal metrics
+  const [personalMetrics, setPersonalMetrics] = useState<PersonalMetrics>({
+    totalIdeas: 0,
+    totalViews: 0,
+    totalComments: 0,
+    successRate: 0,
+    trendingIdeas: 0
+  });
   
   // Filter states
   const [searchQuery, setSearchQuery] = useState('');
@@ -121,6 +157,7 @@ export default function IdeasPage() {
   const [comments, setComments] = useState<IdeaComment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [bookmarkedIdeas, setBookmarkedIdeas] = useState<string[]>([]);
+  const [likedIdeas, setLikedIdeas] = useState<string[]>([]);
   const [featuredIdeas, setFeaturedIdeas] = useState<string[]>([]);
 
   useEffect(() => {
@@ -128,10 +165,14 @@ export default function IdeasPage() {
       loadIdeas();
     } else if (activeTab === 'drafts') {
       fetchDrafts();
+    } else if (activeTab === 'analytics') {
+      loadPersonalMetrics();
     }
     loadBookmarks();
+    loadLikes();
     loadFeaturedIdeas();
     fetchChallenges();
+    loadTemplates();
     
     // Set up real-time subscription
     const subscription = supabase
@@ -190,7 +231,10 @@ export default function IdeasPage() {
           query = query.order('overall_score', { ascending: false });
           break;
         case 'most_popular':
-          query = query.order('created_at', { ascending: false }); // Placeholder
+          query = query.order('like_count', { ascending: false });
+          break;
+        case 'trending':
+          query = query.order('view_count', { ascending: false });
           break;
       }
 
@@ -258,6 +302,62 @@ export default function IdeasPage() {
     }
   };
 
+  const loadTemplates = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('idea_templates')
+        .select('*')
+        .eq('is_active', true)
+        .order('name');
+
+      if (error) throw error;
+      setTemplates(data || []);
+    } catch (error) {
+      console.error('Error loading templates:', error);
+    }
+  };
+
+  const loadPersonalMetrics = async () => {
+    if (!userProfile) return;
+
+    try {
+      setLoading(true);
+      
+      // Get innovator ID
+      const { data: innovatorId } = await supabase.rpc('ensure_innovator_exists', {
+        user_uuid: userProfile.id
+      });
+
+      if (!innovatorId) return;
+
+      // Get user's ideas
+      const { data: userIdeas } = await supabase
+        .from('ideas')
+        .select('id, view_count, like_count, comment_count, status')
+        .eq('innovator_id', innovatorId);
+
+      if (userIdeas) {
+        const totalViews = userIdeas.reduce((sum, idea) => sum + (idea.view_count || 0), 0);
+        const totalComments = userIdeas.reduce((sum, idea) => sum + (idea.comment_count || 0), 0);
+        const implementedIdeas = userIdeas.filter(idea => idea.status === 'implemented').length;
+        const successRate = userIdeas.length > 0 ? (implementedIdeas / userIdeas.length) * 100 : 0;
+        const trendingIdeas = userIdeas.filter(idea => (idea.view_count || 0) > 100).length;
+
+        setPersonalMetrics({
+          totalIdeas: userIdeas.length,
+          totalViews,
+          totalComments,
+          successRate,
+          trendingIdeas
+        });
+      }
+    } catch (error) {
+      console.error('Error loading personal metrics:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const deleteDraft = async (draftId: string) => {
     try {
       const { error } = await supabase
@@ -284,6 +384,11 @@ export default function IdeasPage() {
     navigate(`/submit-idea?draft=${draftId}`);
   };
 
+  const createFromTemplate = (template: IdeaTemplate) => {
+    navigate(`/submit-idea?template=${template.id}`);
+    setTemplateDialogOpen(false);
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', {
@@ -299,17 +404,43 @@ export default function IdeasPage() {
     if (!user) return;
     
     try {
-      // Placeholder for bookmarks - would need to create bookmarks table
-      setBookmarkedIdeas([]);
+      const { data, error } = await supabase
+        .from('idea_bookmarks')
+        .select('idea_id')
+        .eq('user_id', user.id);
+      
+      if (error) throw error;
+      setBookmarkedIdeas(data?.map(bookmark => bookmark.idea_id) || []);
     } catch (error) {
       console.error('Error loading bookmarks:', error);
     }
   };
 
+  const loadLikes = async () => {
+    if (!user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('idea_likes')
+        .select('idea_id')
+        .eq('user_id', user.id);
+      
+      if (error) throw error;
+      setLikedIdeas(data?.map(like => like.idea_id) || []);
+    } catch (error) {
+      console.error('Error loading likes:', error);
+    }
+  };
+
   const loadFeaturedIdeas = async () => {
     try {
-      // Placeholder for featured ideas logic
-      setFeaturedIdeas([]);
+      const { data, error } = await supabase
+        .from('ideas')
+        .select('id')
+        .eq('featured', true);
+        
+      if (error) throw error;
+      setFeaturedIdeas(data?.map(idea => idea.id) || []);
     } catch (error) {
       console.error('Error loading featured ideas:', error);
     }
@@ -318,6 +449,12 @@ export default function IdeasPage() {
   const handleViewDetails = async (idea: Idea) => {
     setSelectedIdea(idea);
     setDetailDialogOpen(true);
+    
+    // Increment view count
+    await supabase
+      .from('ideas')
+      .update({ view_count: (idea.view_count || 0) + 1 })
+      .eq('id', idea.id);
     
     // Load comments for this idea
     await loadIdeaComments(idea.id);
@@ -356,12 +493,19 @@ export default function IdeasPage() {
 
       if (error) throw error;
 
+      // Update comment count
+      await supabase
+        .from('ideas')
+        .update({ comment_count: (selectedIdea.comment_count || 0) + 1 })
+        .eq('id', selectedIdea.id);
+
       toast({
         title: isRTL ? 'تم إضافة التعليق' : 'Comment added',
         description: isRTL ? 'تم إضافة تعليقك بنجاح' : 'Your comment has been added successfully'
       });
 
       setNewComment('');
+      setCommentDialogOpen(false);
       await loadIdeaComments(selectedIdea.id);
     } catch (error) {
       console.error('Error adding comment:', error);
@@ -375,20 +519,70 @@ export default function IdeasPage() {
   const toggleBookmark = async (ideaId: string) => {
     if (!user) return;
     
-    // Placeholder for bookmark functionality
-    const isBookmarked = bookmarkedIdeas.includes(ideaId);
-    
-    if (isBookmarked) {
-      setBookmarkedIdeas(prev => prev.filter(id => id !== ideaId));
-    } else {
-      setBookmarkedIdeas(prev => [...prev, ideaId]);
+    try {
+      const isBookmarked = bookmarkedIdeas.includes(ideaId);
+      
+      if (isBookmarked) {
+        await supabase
+          .from('idea_bookmarks')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('idea_id', ideaId);
+        setBookmarkedIdeas(prev => prev.filter(id => id !== ideaId));
+      } else {
+        await supabase
+          .from('idea_bookmarks')
+          .insert({ user_id: user.id, idea_id: ideaId });
+        setBookmarkedIdeas(prev => [...prev, ideaId]);
+      }
+      
+      toast({
+        title: isBookmarked ? 
+          (isRTL ? 'تم إلغاء الإشارة المرجعية' : 'Bookmark removed') :
+          (isRTL ? 'تم حفظ الإشارة المرجعية' : 'Bookmark saved')
+      });
+    } catch (error) {
+      console.error('Error toggling bookmark:', error);
     }
+  };
+
+  const toggleLike = async (idea: Idea) => {
+    if (!user) return;
     
-    toast({
-      title: isBookmarked ? 
-        (isRTL ? 'تم إلغاء الإشارة المرجعية' : 'Bookmark removed') :
-        (isRTL ? 'تم حفظ الإشارة المرجعية' : 'Bookmark saved')
-    });
+    try {
+      const isLiked = likedIdeas.includes(idea.id);
+      
+      if (isLiked) {
+        await supabase
+          .from('idea_likes')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('idea_id', idea.id);
+        setLikedIdeas(prev => prev.filter(id => id !== idea.id));
+        
+        // Update like count
+        await supabase
+          .from('ideas')
+          .update({ like_count: Math.max(0, (idea.like_count || 0) - 1) })
+          .eq('id', idea.id);
+      } else {
+        await supabase
+          .from('idea_likes')
+          .insert({ user_id: user.id, idea_id: idea.id });
+        setLikedIdeas(prev => [...prev, idea.id]);
+        
+        // Update like count
+        await supabase
+          .from('ideas')
+          .update({ like_count: (idea.like_count || 0) + 1 })
+          .eq('id', idea.id);
+      }
+      
+      // Refresh ideas to show updated counts
+      loadIdeas();
+    } catch (error) {
+      console.error('Error toggling like:', error);
+    }
   };
 
   // Filter ideas based on search
@@ -442,7 +636,33 @@ export default function IdeasPage() {
   };
 
   const renderIdeaCard = (idea: Idea) => (
-    <Card key={idea.id} className="hover:shadow-lg transition-all duration-300 hover-scale animate-fade-in group cursor-pointer">
+    <Card key={idea.id} className="hover:shadow-lg transition-all duration-300 hover-scale animate-fade-in group cursor-pointer overflow-hidden">
+      {/* Idea Image */}
+      {idea.image_url && (
+        <div className="relative h-48 w-full overflow-hidden">
+          <img 
+            src={idea.image_url} 
+            alt={idea.title_ar}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className="absolute top-4 right-4 flex gap-2">
+            {featuredIdeas.includes(idea.id) && (
+              <Badge className="bg-yellow-500 text-white border-0">
+                <Star className="w-3 h-3 mr-1" />
+                {isRTL ? 'مميزة' : 'Featured'}
+              </Badge>
+            )}
+            {idea.view_count > 100 && (
+              <Badge className="bg-red-500 text-white border-0">
+                <Flame className="w-3 h-3 mr-1" />
+                {isRTL ? 'رائجة' : 'Trending'}
+              </Badge>
+            )}
+          </div>
+        </div>
+      )}
+      
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
@@ -454,12 +674,6 @@ export default function IdeasPage() {
                 {getMaturityIcon(idea.maturity_level)}
                 {idea.maturity_level}
               </Badge>
-              {featuredIdeas.includes(idea.id) && (
-                <Badge variant="secondary" className="gap-1 bg-yellow-100 text-yellow-800">
-                  <Star className="w-3 h-3" />
-                  {isRTL ? 'مميزة' : 'Featured'}
-                </Badge>
-              )}
             </div>
             
             <CardTitle className="text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors">
@@ -528,16 +742,21 @@ export default function IdeasPage() {
           </div>
         )}
 
-        {/* Meta information */}
+        {/* Engagement stats */}
         <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-          <div className="flex items-center gap-2">
-            <Avatar className="w-6 h-6">
-               <AvatarImage src={idea.profile?.profile_image_url} />
-               <AvatarFallback>
-                 {(isRTL ? idea.profile?.name_ar : idea.profile?.name)?.charAt(0) || 'U'}
-               </AvatarFallback>
-             </Avatar>
-             <span>{isRTL ? idea.profile?.name_ar : idea.profile?.name || 'Anonymous'}</span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1">
+              <Eye className="w-4 h-4" />
+              <span>{idea.view_count || 0}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <ThumbsUp className="w-4 h-4" />
+              <span>{idea.like_count || 0}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <MessageSquare className="w-4 h-4" />
+              <span>{idea.comment_count || 0}</span>
+            </div>
           </div>
           
           <div className="flex items-center gap-1">
@@ -549,13 +768,30 @@ export default function IdeasPage() {
         {/* Action buttons */}
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="gap-1">
-              <ThumbsUp className="w-4 h-4" />
-              <span className="text-xs">12</span>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className={`gap-1 ${likedIdeas.includes(idea.id) ? 'text-red-500 border-red-200' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleLike(idea);
+              }}
+            >
+              <Heart className={`w-4 h-4 ${likedIdeas.includes(idea.id) ? 'fill-current' : ''}`} />
+              <span className="text-xs">{idea.like_count || 0}</span>
             </Button>
-            <Button variant="outline" size="sm" className="gap-1">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="gap-1"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedIdea(idea);
+                setCommentDialogOpen(true);
+              }}
+            >
               <MessageSquare className="w-4 h-4" />
-              <span className="text-xs">5</span>
+              <span className="text-xs">{idea.comment_count || 0}</span>
             </Button>
           </div>
           
@@ -675,6 +911,15 @@ export default function IdeasPage() {
         }}
         secondaryActions={
           <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setTemplateDialogOpen(true)}
+              className="gap-2"
+            >
+              <Palette className="w-4 h-4" />
+              {isRTL ? 'القوالب' : 'Templates'}
+            </Button>
             <LayoutSelector
               viewMode={viewMode}
               onViewModeChange={setViewMode}
@@ -682,8 +927,10 @@ export default function IdeasPage() {
             <Button variant="outline" size="sm" onClick={() => {
               if (activeTab === 'published') {
                 loadIdeas();
-              } else {
+              } else if (activeTab === 'drafts') {
                 fetchDrafts();
+              } else if (activeTab === 'analytics') {
+                loadPersonalMetrics();
               }
             }}>
               <RefreshCw className="w-4 h-4" />
@@ -696,9 +943,55 @@ export default function IdeasPage() {
         searchPlaceholder={isRTL ? 'البحث في الأفكار...' : 'Search ideas...'}
       >
         <div className="space-y-6">
+          {/* Personal Dashboard */}
+          {activeTab === 'analytics' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <MetricCard
+                title={isRTL ? 'أفكاري' : 'My Ideas'}
+                value={personalMetrics.totalIdeas}
+                trend={{
+                  value: 12,
+                  label: isRTL ? 'هذا الشهر' : 'this month',
+                  direction: 'up'
+                }}
+                icon={<Lightbulb className="w-5 h-5" />}
+              />
+              <MetricCard
+                title={isRTL ? 'إجمالي المشاهدات' : 'Total Views'}
+                value={personalMetrics.totalViews}
+                trend={{
+                  value: 24,
+                  label: isRTL ? 'هذا الشهر' : 'this month',
+                  direction: 'up'
+                }}
+                icon={<Eye className="w-5 h-5" />}
+              />
+              <MetricCard
+                title={isRTL ? 'التعليقات المستلمة' : 'Comments Received'}
+                value={personalMetrics.totalComments}
+                trend={{
+                  value: 8,
+                  label: isRTL ? 'هذا الشهر' : 'this month',
+                  direction: 'up'
+                }}
+                icon={<MessageSquare className="w-5 h-5" />}
+              />
+              <MetricCard
+                title={isRTL ? 'معدل النجاح' : 'Success Rate'}
+                value={`${personalMetrics.successRate.toFixed(1)}%`}
+                trend={{
+                  value: personalMetrics.successRate > 50 ? 5 : -3,
+                  label: isRTL ? 'هذا الشهر' : 'this month',
+                  direction: personalMetrics.successRate > 50 ? 'up' : 'down'
+                }}
+                icon={<Trophy className="w-5 h-5" />}
+              />
+            </div>
+          )}
+
+          {/* Enhanced Filters */}
           {activeTab === 'published' && (
-            /* Enhanced Filters */
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-gradient-to-r from-muted/50 to-muted/30 rounded-lg border">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 p-4 bg-gradient-to-r from-muted/50 to-muted/30 rounded-lg border">
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger>
                   <SelectValue placeholder={isRTL ? 'الحالة' : 'Status'} />
@@ -734,6 +1027,7 @@ export default function IdeasPage() {
                   <SelectItem value="oldest">{isRTL ? 'الأقدم' : 'Oldest'}</SelectItem>
                   <SelectItem value="highest_score">{isRTL ? 'أعلى نتيجة' : 'Highest Score'}</SelectItem>
                   <SelectItem value="most_popular">{isRTL ? 'الأكثر شعبية' : 'Most Popular'}</SelectItem>
+                  <SelectItem value="trending">{isRTL ? 'الأكثر مشاهدة' : 'Trending'}</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -741,12 +1035,17 @@ export default function IdeasPage() {
                 <Download className="w-4 h-4" />
                 {isRTL ? 'تصدير' : 'Export'}
               </Button>
+
+              <Button variant="outline" className="gap-2">
+                <Settings className="w-4 h-4" />
+                {isRTL ? 'المزيد' : 'More'}
+              </Button>
             </div>
           )}
 
           {/* Tabs Navigation */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="published" className="flex items-center gap-2">
                 <Lightbulb className="w-4 h-4" />
                 {isRTL ? 'الأفكار المنشورة' : 'Published Ideas'}
@@ -754,6 +1053,10 @@ export default function IdeasPage() {
               <TabsTrigger value="drafts" className="flex items-center gap-2">
                 <FileText className="w-4 h-4" />
                 {isRTL ? 'المسودات' : 'Drafts'}
+              </TabsTrigger>
+              <TabsTrigger value="analytics" className="flex items-center gap-2">
+                <BarChart3 className="w-4 h-4" />
+                {isRTL ? 'التحليلات' : 'Analytics'}
               </TabsTrigger>
             </TabsList>
 
@@ -769,7 +1072,11 @@ export default function IdeasPage() {
                 </ViewLayouts>
               ) : (
                 <div className="text-center py-12">
-                  <Lightbulb className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+                  <img 
+                    src="/idea-images/innovation-lightbulb.jpg" 
+                    alt="Innovation" 
+                    className="w-32 h-32 mx-auto mb-4 rounded-lg object-cover opacity-50" 
+                  />
                   <h3 className="text-lg font-medium mb-2">
                     {isRTL ? 'لا توجد أفكار' : 'No ideas found'}
                   </h3>
@@ -821,8 +1128,74 @@ export default function IdeasPage() {
                 </Card>
               )}
             </TabsContent>
+
+            <TabsContent value="analytics" className="space-y-4">
+              {loading ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                  <p className="text-muted-foreground">{isRTL ? 'جاري تحميل التحليلات...' : 'Loading analytics...'}</p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* Personal performance overview */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <BarChart3 className="w-5 h-5" />
+                        {isRTL ? 'نظرة عامة على الأداء' : 'Performance Overview'}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">{personalMetrics.totalIdeas}</div>
+                          <div className="text-sm text-muted-foreground">{isRTL ? 'أفكاري' : 'Ideas Published'}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-green-600">{personalMetrics.totalViews}</div>
+                          <div className="text-sm text-muted-foreground">{isRTL ? 'مشاهدات' : 'Views'}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-blue-600">{personalMetrics.totalComments}</div>
+                          <div className="text-sm text-muted-foreground">{isRTL ? 'تعليقات' : 'Comments'}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-purple-600">{personalMetrics.trendingIdeas}</div>
+                          <div className="text-sm text-muted-foreground">{isRTL ? 'أفكاري رائجة' : 'Trending Ideas'}</div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+            </TabsContent>
           </Tabs>
         </div>
+
+        {/* Templates Dialog */}
+        <Dialog open={templateDialogOpen} onOpenChange={setTemplateDialogOpen}>
+          <DialogContent className="max-w-4xl">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Palette className="w-5 h-5" />
+                {isRTL ? 'قوالب الأفكار' : 'Idea Templates'}
+              </DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-4 md:grid-cols-2">
+              {templates.map((template) => (
+                <Card key={template.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => createFromTemplate(template)}>
+                  <CardHeader>
+                    <CardTitle className="text-lg">{isRTL ? template.name_ar : template.name}</CardTitle>
+                    <CardDescription>{isRTL ? template.description_ar : template.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Badge variant="outline">{template.category}</Badge>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </DialogContent>
+        </Dialog>
 
         {/* Enhanced Idea Detail Dialog */}
         <Dialog open={detailDialogOpen} onOpenChange={setDetailDialogOpen}>

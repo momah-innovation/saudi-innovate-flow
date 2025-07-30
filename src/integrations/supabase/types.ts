@@ -2238,6 +2238,27 @@ export type Database = {
           },
         ]
       }
+      idea_bookmarks: {
+        Row: {
+          created_at: string
+          id: string
+          idea_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          idea_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          idea_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       idea_collaboration_teams: {
         Row: {
           added_by: string
@@ -2604,6 +2625,48 @@ export type Database = {
         }
         Relationships: []
       }
+      idea_templates: {
+        Row: {
+          category: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          description_ar: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          name_ar: string | null
+          template_data: Json
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          description_ar?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          name_ar?: string | null
+          template_data?: Json
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          description_ar?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          name_ar?: string | null
+          template_data?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       idea_versions: {
         Row: {
           changed_by: string
@@ -2688,18 +2751,22 @@ export type Database = {
           alignment_score: number | null
           challenge_id: string | null
           collaboration_open: boolean | null
+          comment_count: number | null
           created_at: string | null
           description_ar: string
           estimated_timeline: string | null
           expected_impact: string | null
           feasibility_score: number | null
+          featured: boolean | null
           focus_question_id: string | null
           id: string
+          image_url: string | null
           impact_score: number | null
           implementation_plan: string | null
           innovation_level: string | null
           innovation_score: number | null
           innovator_id: string
+          like_count: number | null
           maturity_level: string | null
           overall_score: number | null
           resource_requirements: string | null
@@ -2708,23 +2775,28 @@ export type Database = {
           tags: string[] | null
           title_ar: string
           updated_at: string | null
+          view_count: number | null
         }
         Insert: {
           alignment_score?: number | null
           challenge_id?: string | null
           collaboration_open?: boolean | null
+          comment_count?: number | null
           created_at?: string | null
           description_ar: string
           estimated_timeline?: string | null
           expected_impact?: string | null
           feasibility_score?: number | null
+          featured?: boolean | null
           focus_question_id?: string | null
           id?: string
+          image_url?: string | null
           impact_score?: number | null
           implementation_plan?: string | null
           innovation_level?: string | null
           innovation_score?: number | null
           innovator_id: string
+          like_count?: number | null
           maturity_level?: string | null
           overall_score?: number | null
           resource_requirements?: string | null
@@ -2733,23 +2805,28 @@ export type Database = {
           tags?: string[] | null
           title_ar: string
           updated_at?: string | null
+          view_count?: number | null
         }
         Update: {
           alignment_score?: number | null
           challenge_id?: string | null
           collaboration_open?: boolean | null
+          comment_count?: number | null
           created_at?: string | null
           description_ar?: string
           estimated_timeline?: string | null
           expected_impact?: string | null
           feasibility_score?: number | null
+          featured?: boolean | null
           focus_question_id?: string | null
           id?: string
+          image_url?: string | null
           impact_score?: number | null
           implementation_plan?: string | null
           innovation_level?: string | null
           innovation_score?: number | null
           innovator_id?: string
+          like_count?: number | null
           maturity_level?: string | null
           overall_score?: number | null
           resource_requirements?: string | null
@@ -2758,6 +2835,7 @@ export type Database = {
           tags?: string[] | null
           title_ar?: string
           updated_at?: string | null
+          view_count?: number | null
         }
         Relationships: [
           {
