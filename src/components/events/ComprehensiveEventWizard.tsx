@@ -68,6 +68,28 @@ interface EventFormData {
   campaign_id?: string;
   challenge_id?: string;
   sector_id?: string;
+  // New participant fields
+  registration_type?: string;
+  registration_fee?: number;
+  requires_approval?: boolean;
+  allow_waitlist?: boolean;
+  participant_requirements?: string;
+  selection_criteria?: string;
+  // New resource fields
+  live_stream_url?: string;
+  recording_url?: string;
+  additional_links?: string;
+  // New settings fields
+  email_reminders?: boolean;
+  sms_notifications?: boolean;
+  auto_confirmation?: boolean;
+  reminder_schedule?: string;
+  enable_feedback?: boolean;
+  enable_qr_checkin?: boolean;
+  enable_networking?: boolean;
+  record_sessions?: boolean;
+  event_language?: string;
+  timezone?: string;
 }
 
 interface ComprehensiveEventWizardProps {
@@ -93,6 +115,19 @@ const initialFormData: EventFormData = {
   partner_organizations: [],
   related_focus_questions: [],
   inherit_from_campaign: false
+};
+
+// Helper function to get Arabic stakeholder type names
+const getStakeholderTypeArabic = (type: string) => {
+  const types: { [key: string]: string } = {
+    'government': 'حكومي',
+    'private': 'خاص',
+    'academic': 'أكاديمي',
+    'civil_society': 'المجتمع المدني',
+    'international': 'دولي',
+    'media': 'إعلامي'
+  };
+  return types[type] || type;
 };
 
 export const ComprehensiveEventWizard = ({
@@ -811,42 +846,384 @@ export const ComprehensiveEventWizard = ({
           {/* Continue with other tabs... */}
           {/* For now, showing placeholders for the remaining tabs */}
           <TabsContent value="participants" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>{isRTL ? 'إدارة المشاركين' : 'Participant Management'}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  {isRTL ? 'سيتم تنفيذ إدارة المشاركين قريباً' : 'Participant management coming soon'}
-                </p>
-              </CardContent>
-            </Card>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Participant Configuration */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="w-5 h-5" />
+                    {isRTL ? 'إعدادات المشاركين' : 'Participant Settings'}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <Label>{isRTL ? 'الحد الأقصى للمشاركين' : 'Maximum Participants'}</Label>
+                    <Input
+                      type="number"
+                      value={formData.max_participants || ''}
+                      onChange={(e) => handleInputChange('max_participants', parseInt(e.target.value) || null)}
+                      placeholder={isRTL ? 'غير محدود' : 'Unlimited'}
+                    />
+                  </div>
+
+                  <div>
+                    <Label>{isRTL ? 'نوع التسجيل' : 'Registration Type'}</Label>
+                    <Select value={formData.registration_type || 'open'} onValueChange={(value) => handleInputChange('registration_type', value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="open">{isRTL ? 'مفتوح للجميع' : 'Open to All'}</SelectItem>
+                        <SelectItem value="invite_only">{isRTL ? 'بدعوة فقط' : 'Invite Only'}</SelectItem>
+                        <SelectItem value="approval_required">{isRTL ? 'يتطلب موافقة' : 'Approval Required'}</SelectItem>
+                        <SelectItem value="paid">{isRTL ? 'مدفوع' : 'Paid'}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label>{isRTL ? 'رسوم التسجيل (ر.س)' : 'Registration Fee (SAR)'}</Label>
+                    <Input
+                      type="number"
+                      value={formData.registration_fee || ''}
+                      onChange={(e) => handleInputChange('registration_fee', parseFloat(e.target.value) || 0)}
+                      placeholder="0"
+                    />
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="requires_approval"
+                      checked={formData.requires_approval || false}
+                      onCheckedChange={(checked) => handleInputChange('requires_approval', checked)}
+                    />
+                    <Label htmlFor="requires_approval">
+                      {isRTL ? 'يتطلب موافقة المنظم' : 'Requires Organizer Approval'}
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="allow_waitlist"
+                      checked={formData.allow_waitlist || false}
+                      onCheckedChange={(checked) => handleInputChange('allow_waitlist', checked)}
+                    />
+                    <Label htmlFor="allow_waitlist">
+                      {isRTL ? 'السماح بقائمة الانتظار' : 'Allow Waitlist'}
+                    </Label>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Target Stakeholder Groups */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="w-5 h-5" />
+                    {isRTL ? 'المجموعات المستهدفة' : 'Target Groups'}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <Label>{isRTL ? 'أصحاب المصلحة المستهدفون' : 'Target Stakeholders'}</Label>
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      {['government', 'private', 'academic', 'civil_society', 'international', 'media'].map((type) => (
+                        <div key={type} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`stakeholder_${type}`}
+                            checked={formData.target_stakeholder_groups?.includes(type) || false}
+                            onCheckedChange={(checked) => {
+                              const current = formData.target_stakeholder_groups || [];
+                              const updated = checked 
+                                ? [...current, type]
+                                : current.filter(t => t !== type);
+                              handleInputChange('target_stakeholder_groups', updated);
+                            }}
+                          />
+                          <Label htmlFor={`stakeholder_${type}`} className="text-sm">
+                            {isRTL ? getStakeholderTypeArabic(type) : type.replace('_', ' ').toUpperCase()}
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label>{isRTL ? 'متطلبات خاصة للمشاركين' : 'Special Requirements'}</Label>
+                    <Textarea
+                      value={formData.participant_requirements || ''}
+                      onChange={(e) => handleInputChange('participant_requirements', e.target.value)}
+                      placeholder={isRTL ? 'أي متطلبات خاصة للمشاركة...' : 'Any special requirements for participation...'}
+                      rows={3}
+                    />
+                  </div>
+
+                  <div>
+                    <Label>{isRTL ? 'معايير الاختيار' : 'Selection Criteria'}</Label>
+                    <Textarea
+                      value={formData.selection_criteria || ''}
+                      onChange={(e) => handleInputChange('selection_criteria', e.target.value)}
+                      placeholder={isRTL ? 'معايير اختيار المشاركين...' : 'Criteria for selecting participants...'}
+                      rows={3}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           <TabsContent value="resources" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>{isRTL ? 'موارد الفعالية' : 'Event Resources'}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  {isRTL ? 'سيتم تنفيذ إدارة الموارد قريباً' : 'Resource management coming soon'}
-                </p>
-              </CardContent>
-            </Card>
+            <div className="space-y-6">
+              {/* Resource Management */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="w-5 h-5" />
+                    {isRTL ? 'موارد الفعالية' : 'Event Resources'}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <Label>{isRTL ? 'رفع الملفات' : 'Upload Files'}</Label>
+                    <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6">
+                      <div className="flex flex-col items-center gap-2">
+                        <Upload className="w-8 h-8 text-muted-foreground" />
+                        <div className="text-center">
+                          <p className="text-sm font-medium">
+                            {isRTL ? 'اسحب الملفات هنا أو انقر للاختيار' : 'Drag files here or click to select'}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {isRTL ? 'PDF, DOC, PPT, صور، فيديوهات (حتى 50MB)' : 'PDF, DOC, PPT, Images, Videos (up to 50MB)'}
+                          </p>
+                        </div>
+                        <Button variant="outline" size="sm">
+                          <Plus className="w-4 h-4 mr-2" />
+                          {isRTL ? 'اختر الملفات' : 'Choose Files'}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label>{isRTL ? 'مواد تحضيرية' : 'Pre-event Materials'}</Label>
+                      <div className="mt-2 space-y-2">
+                        <div className="flex items-center justify-between p-2 border rounded">
+                          <div className="flex items-center gap-2">
+                            <FileText className="w-4 h-4" />
+                            <span className="text-sm">{isRTL ? 'دليل المشارك' : 'Participant Guide'}</span>
+                          </div>
+                          <Button variant="ghost" size="sm">
+                            <Plus className="w-4 h-4" />
+                          </Button>
+                        </div>
+                        <div className="flex items-center justify-between p-2 border rounded">
+                          <div className="flex items-center gap-2">
+                            <FileText className="w-4 h-4" />
+                            <span className="text-sm">{isRTL ? 'جدول الأعمال' : 'Agenda'}</span>
+                          </div>
+                          <Button variant="ghost" size="sm">
+                            <Plus className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label>{isRTL ? 'مواد الفعالية' : 'Event Materials'}</Label>
+                      <div className="mt-2 space-y-2">
+                        <div className="flex items-center justify-between p-2 border rounded">
+                          <div className="flex items-center gap-2">
+                            <Video className="w-4 h-4" />
+                            <span className="text-sm">{isRTL ? 'تسجيلات الفعالية' : 'Event Recordings'}</span>
+                          </div>
+                          <Button variant="ghost" size="sm">
+                            <Plus className="w-4 h-4" />
+                          </Button>
+                        </div>
+                        <div className="flex items-center justify-between p-2 border rounded">
+                          <div className="flex items-center gap-2">
+                            <FileText className="w-4 h-4" />
+                            <span className="text-sm">{isRTL ? 'العروض التقديمية' : 'Presentations'}</span>
+                          </div>
+                          <Button variant="ghost" size="sm">
+                            <Plus className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>{isRTL ? 'روابط مفيدة' : 'Useful Links'}</Label>
+                    <div className="space-y-2">
+                      <Input
+                        placeholder={isRTL ? 'رابط البث المباشر' : 'Live stream link'}
+                        value={formData.live_stream_url || ''}
+                        onChange={(e) => handleInputChange('live_stream_url', e.target.value)}
+                      />
+                      <Input
+                        placeholder={isRTL ? 'رابط التسجيل' : 'Recording link'}
+                        value={formData.recording_url || ''}
+                        onChange={(e) => handleInputChange('recording_url', e.target.value)}
+                      />
+                      <Input
+                        placeholder={isRTL ? 'روابط إضافية' : 'Additional links'}
+                        value={formData.additional_links || ''}
+                        onChange={(e) => handleInputChange('additional_links', e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>{isRTL ? 'إعدادات متقدمة' : 'Advanced Settings'}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  {isRTL ? 'سيتم تنفيذ الإعدادات المتقدمة قريباً' : 'Advanced settings coming soon'}
-                </p>
-              </CardContent>
-            </Card>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Notification Settings */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Settings className="w-5 h-5" />
+                    {isRTL ? 'إعدادات الإشعارات' : 'Notification Settings'}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="email_reminders"
+                      checked={formData.email_reminders || false}
+                      onCheckedChange={(checked) => handleInputChange('email_reminders', checked)}
+                    />
+                    <Label htmlFor="email_reminders">
+                      {isRTL ? 'إرسال تذكيرات بالبريد الإلكتروني' : 'Send email reminders'}
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="sms_notifications"
+                      checked={formData.sms_notifications || false}
+                      onCheckedChange={(checked) => handleInputChange('sms_notifications', checked)}
+                    />
+                    <Label htmlFor="sms_notifications">
+                      {isRTL ? 'إرسال إشعارات SMS' : 'Send SMS notifications'}
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="auto_confirmation"
+                      checked={formData.auto_confirmation || false}
+                      onCheckedChange={(checked) => handleInputChange('auto_confirmation', checked)}
+                    />
+                    <Label htmlFor="auto_confirmation">
+                      {isRTL ? 'تأكيد تلقائي للتسجيل' : 'Auto-confirm registrations'}
+                    </Label>
+                  </div>
+
+                  <div>
+                    <Label>{isRTL ? 'تذكير قبل الفعالية بـ' : 'Remind before event'}</Label>
+                    <Select value={formData.reminder_schedule || '24h'} onValueChange={(value) => handleInputChange('reminder_schedule', value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1h">{isRTL ? 'ساعة واحدة' : '1 hour'}</SelectItem>
+                        <SelectItem value="24h">{isRTL ? 'يوم واحد' : '1 day'}</SelectItem>
+                        <SelectItem value="48h">{isRTL ? 'يومين' : '2 days'}</SelectItem>
+                        <SelectItem value="1w">{isRTL ? 'أسبوع' : '1 week'}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Advanced Settings */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Settings className="w-5 h-5" />
+                    {isRTL ? 'إعدادات متقدمة' : 'Advanced Settings'}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="enable_feedback"
+                      checked={formData.enable_feedback || false}
+                      onCheckedChange={(checked) => handleInputChange('enable_feedback', checked)}
+                    />
+                    <Label htmlFor="enable_feedback">
+                      {isRTL ? 'تفعيل نظام التقييم' : 'Enable feedback system'}
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="enable_qr_checkin"
+                      checked={formData.enable_qr_checkin || false}
+                      onCheckedChange={(checked) => handleInputChange('enable_qr_checkin', checked)}
+                    />
+                    <Label htmlFor="enable_qr_checkin">
+                      {isRTL ? 'تفعيل تسجيل الدخول بـ QR' : 'Enable QR check-in'}
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="enable_networking"
+                      checked={formData.enable_networking || false}
+                      onCheckedChange={(checked) => handleInputChange('enable_networking', checked)}
+                    />
+                    <Label htmlFor="enable_networking">
+                      {isRTL ? 'تفعيل منصة التواصل' : 'Enable networking platform'}
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="record_sessions"
+                      checked={formData.record_sessions || false}
+                      onCheckedChange={(checked) => handleInputChange('record_sessions', checked)}
+                    />
+                    <Label htmlFor="record_sessions">
+                      {isRTL ? 'تسجيل الجلسات' : 'Record sessions'}
+                    </Label>
+                  </div>
+
+                  <div>
+                    <Label>{isRTL ? 'لغة الفعالية' : 'Event Language'}</Label>
+                    <Select value={formData.event_language || 'ar'} onValueChange={(value) => handleInputChange('event_language', value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="ar">{isRTL ? 'العربية' : 'Arabic'}</SelectItem>
+                        <SelectItem value="en">{isRTL ? 'الإنجليزية' : 'English'}</SelectItem>
+                        <SelectItem value="both">{isRTL ? 'ثنائية اللغة' : 'Bilingual'}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label>{isRTL ? 'منطقة زمنية' : 'Timezone'}</Label>
+                    <Select value={formData.timezone || 'Asia/Riyadh'} onValueChange={(value) => handleInputChange('timezone', value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Asia/Riyadh">{isRTL ? 'الرياض' : 'Riyadh'}</SelectItem>
+                        <SelectItem value="UTC">{isRTL ? 'التوقيت العالمي' : 'UTC'}</SelectItem>
+                        <SelectItem value="America/New_York">{isRTL ? 'نيويورك' : 'New York'}</SelectItem>
+                        <SelectItem value="Europe/London">{isRTL ? 'لندن' : 'London'}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
 
