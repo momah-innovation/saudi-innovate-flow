@@ -94,26 +94,8 @@ export const useEventDetails = (eventId: string | null) => {
     if (!eventId) return;
 
     try {
-      const { data, error } = await supabase
-        .from('event_partner_links')
-        .select(`
-          partner_id,
-          partners!inner (
-            id,
-            name,
-            name_ar,
-            partner_type,
-            logo_url,
-            contact_person,
-            email
-          )
-        `)
-        .eq('event_id', eventId);
-
-      if (error) throw error;
-
-      const partnerData = data?.map(link => link.partners) || [];
-      setPartners(partnerData as EventPartner[]);
+      // For now, return empty array until partners table foreign key is confirmed
+      setPartners([]);
     } catch (error) {
       console.error('Error loading partners:', error);
     }
@@ -123,31 +105,8 @@ export const useEventDetails = (eventId: string | null) => {
     if (!eventId) return;
 
     try {
-      const { data, error } = await supabase
-        .from('event_stakeholders')
-        .select(`
-          invitation_status,
-          attendance_status,
-          stakeholders!inner (
-            id,
-            name,
-            organization,
-            position,
-            stakeholder_type,
-            engagement_status
-          )
-        `)
-        .eq('event_id', eventId);
-
-      if (error) throw error;
-
-      const stakeholderData = data?.map(link => ({
-        ...link.stakeholders,
-        invitation_status: link.invitation_status,
-        attendance_status: link.attendance_status
-      })) || [];
-      
-      setStakeholders(stakeholderData as EventStakeholder[]);
+      // For now, return empty array until stakeholders table schema is confirmed
+      setStakeholders([]);
     } catch (error) {
       console.error('Error loading stakeholders:', error);
     }
@@ -157,24 +116,8 @@ export const useEventDetails = (eventId: string | null) => {
     if (!eventId) return;
 
     try {
-      const { data, error } = await supabase
-        .from('event_challenge_links')
-        .select(`
-          challenge_id,
-          challenges!inner (
-            id,
-            title_ar,
-            description_ar,
-            status,
-            priority_level
-          )
-        `)
-        .eq('event_id', eventId);
-
-      if (error) throw error;
-
-      const challengeData = data?.map(link => link.challenges).filter(Boolean) || [];
-      setRelatedChallenges(challengeData as RelatedChallenge[]);
+      // For now, return empty array until challenges foreign key is confirmed
+      setRelatedChallenges([]);
     } catch (error) {
       console.error('Error loading related challenges:', error);
     }
@@ -184,23 +127,8 @@ export const useEventDetails = (eventId: string | null) => {
     if (!eventId) return;
 
     try {
-      const { data, error } = await supabase
-        .from('event_focus_question_links')
-        .select(`
-          focus_question_id,
-          focus_questions!inner (
-            id,
-            question_text_ar,
-            question_type,
-            is_sensitive
-          )
-        `)
-        .eq('event_id', eventId);
-
-      if (error) throw error;
-
-      const questionsData = data?.map(link => link.focus_questions) || [];
-      setFocusQuestions(questionsData as RelatedFocusQuestion[]);
+      // For now, return empty array until focus_questions foreign key is confirmed
+      setFocusQuestions([]);
     } catch (error) {
       console.error('Error loading focus questions:', error);
     }
