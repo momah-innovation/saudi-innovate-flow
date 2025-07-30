@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -189,8 +189,10 @@ export default function IdeaSubmissionWizard() {
   };
 
   const autoSave = async () => {
-    if (!userProfile?.id || autoSaving) return;
-    
+    if (!userProfile?.id || autoSaving || (!formData.title_ar.trim() && !formData.description_ar.trim())) {
+      return;
+    }
+
     try {
       setAutoSaving(true);
       
@@ -265,8 +267,20 @@ export default function IdeaSubmissionWizard() {
     }
   };
 
-  const handleInputChange = (field: keyof IdeaFormData, value: string | boolean | string[]) => {
+  const debounceRef = useRef<NodeJS.Timeout>();
+
+  const handleInputChange = async (field: keyof IdeaFormData, value: string | boolean | string[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Debounced auto-save on significant content changes
+    if (field === 'title_ar' || field === 'description_ar' || field === 'solution_approach' || field === 'implementation_plan') {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(() => {
+        if (value && typeof value === 'string' && value.trim()) {
+          autoSave();
+        }
+      }, 2000); // Auto-save 2 seconds after stopping typing
+    }
   };
 
   const addTag = () => {
@@ -300,15 +314,23 @@ export default function IdeaSubmissionWizard() {
     }
   };
 
-  const nextStep = () => {
+  const nextStep = async () => {
     if (validateStep(currentStep)) {
+      // Auto-save when moving to next step
+      if (formData.title_ar.trim() || formData.description_ar.trim()) {
+        await autoSave();
+      }
       setCurrentStep(prev => Math.min(prev + 1, STEPS.length));
     } else {
       toast.error(isRTL ? 'يرجى ملء جميع الحقول المطلوبة قبل المتابعة' : 'Please fill in all required fields before proceeding');
     }
   };
 
-  const prevStep = () => {
+  const prevStep = async () => {
+    // Auto-save when moving to previous step
+    if (formData.title_ar.trim() || formData.description_ar.trim()) {
+      await autoSave();
+    }
     setCurrentStep(prev => Math.max(prev - 1, 1));
   };
 
