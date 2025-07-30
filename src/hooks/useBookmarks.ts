@@ -2,12 +2,34 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
-export type BookmarkType = 'challenge' | 'event' | 'idea';
+export type BookmarkType = 'challenge' | 'event' | 'idea' | 'focus_question' | 'campaign' | 'sector' | 'stakeholder' | 'expert' | 'partner';
+
+interface Collection {
+  id: string;
+  user_id: string;
+  name_ar: string;
+  name_en: string;
+  description_ar?: string;
+  description_en?: string;
+  color: string;
+  icon: string;
+  is_public: boolean;
+  created_at: string;
+  updated_at: string;
+}
 
 export function useBookmarks() {
   const [challengeBookmarks, setChallengeBookmarks] = useState<any[]>([]);
   const [eventBookmarks, setEventBookmarks] = useState<any[]>([]);
   const [ideaBookmarks, setIdeaBookmarks] = useState<any[]>([]);
+  const [focusQuestionBookmarks, setFocusQuestionBookmarks] = useState<any[]>([]);
+  const [campaignBookmarks, setCampaignBookmarks] = useState<any[]>([]);
+  const [sectorBookmarks, setSectorBookmarks] = useState<any[]>([]);
+  const [stakeholderBookmarks, setStakeholderBookmarks] = useState<any[]>([]);
+  const [expertBookmarks, setExpertBookmarks] = useState<any[]>([]);
+  const [partnerBookmarks, setPartnerBookmarks] = useState<any[]>([]);
+  const [publicTeams, setPublicTeams] = useState<any[]>([]);
+  const [collections, setCollections] = useState<Collection[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -82,12 +104,198 @@ export function useBookmarks() {
     }
   };
 
+  const fetchFocusQuestionBookmarks = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('focus_question_bookmarks')
+        .select(`
+          id,
+          user_id,
+          created_at,
+          notes,
+          priority,
+          focus_question_id,
+          focus_questions(*)
+        `)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      setFocusQuestionBookmarks(data || []);
+    } catch (error) {
+      console.error('Error fetching focus question bookmarks:', error);
+    }
+  };
+
+  const fetchCampaignBookmarks = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('campaign_bookmarks')
+        .select(`
+          id,
+          user_id,
+          created_at,
+          notes,
+          priority,
+          campaign_id,
+          campaigns(*)
+        `)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      setCampaignBookmarks(data || []);
+    } catch (error) {
+      console.error('Error fetching campaign bookmarks:', error);
+    }
+  };
+
+  const fetchSectorBookmarks = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('sector_bookmarks')
+        .select(`
+          id,
+          user_id,
+          created_at,
+          notes,
+          priority,
+          sector_id,
+          sectors(*)
+        `)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      setSectorBookmarks(data || []);
+    } catch (error) {
+      console.error('Error fetching sector bookmarks:', error);
+    }
+  };
+
+  const fetchStakeholderBookmarks = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('stakeholder_bookmarks')
+        .select(`
+          id,
+          user_id,
+          created_at,
+          notes,
+          priority,
+          stakeholder_id,
+          stakeholders(*)
+        `)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      setStakeholderBookmarks(data || []);
+    } catch (error) {
+      console.error('Error fetching stakeholder bookmarks:', error);
+    }
+  };
+
+  const fetchExpertBookmarks = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('expert_bookmarks')
+        .select(`
+          id,
+          user_id,
+          created_at,
+          notes,
+          priority,
+          expert_id
+        `)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      setExpertBookmarks(data || []);
+    } catch (error) {
+      console.error('Error fetching expert bookmarks:', error);
+    }
+  };
+
+  const fetchPublicTeams = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('innovation_team_members')
+        .select(`
+          id,
+          user_id,
+          role,
+          status,
+          specialization,
+          department,
+          innovation_teams:team_id(*)
+        `)
+        .eq('status', 'active')
+        .limit(20);
+
+      if (error) throw error;
+      setPublicTeams(data || []);
+    } catch (error) {
+      console.error('Error fetching public teams:', error);
+    }
+  };
+
+  const fetchCollections = async () => {
+    // Placeholder collections for now
+    setCollections([
+      {
+        id: '1',
+        user_id: 'current-user',
+        name_ar: 'مجموعة المفضلة',
+        name_en: 'Favorites',
+        description_ar: 'العناصر المفضلة والمهمة',
+        description_en: 'Favorite and important items',
+        color: '#EF4444',
+        icon: 'heart',
+        is_public: false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: '2',
+        user_id: 'current-user',
+        name_ar: 'للمراجعة لاحقاً',
+        name_en: 'Review Later',
+        description_ar: 'عناصر للمراجعة في وقت لاحق',
+        description_en: 'Items to review later',
+        color: '#F59E0B',
+        icon: 'clock',
+        is_public: false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }
+    ]);
+  };
+
   const fetchAllBookmarks = async () => {
     setLoading(true);
     await Promise.all([
       fetchChallengeBookmarks(),
       fetchEventBookmarks(),
-      fetchIdeaBookmarks()
+      fetchIdeaBookmarks(),
+      fetchFocusQuestionBookmarks(),
+      fetchCampaignBookmarks(),
+      fetchSectorBookmarks(),
+      fetchStakeholderBookmarks(),
+      fetchExpertBookmarks(),
+      fetchPublicTeams(),
+      fetchCollections()
     ]);
     setLoading(false);
   };
@@ -325,6 +533,14 @@ export function useBookmarks() {
     challengeBookmarks,
     eventBookmarks,
     ideaBookmarks,
+    focusQuestionBookmarks,
+    campaignBookmarks,
+    sectorBookmarks,
+    stakeholderBookmarks,
+    expertBookmarks,
+    partnerBookmarks,
+    publicTeams,
+    collections,
     loading,
     addBookmark,
     removeBookmark,
