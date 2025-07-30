@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { AppShell } from '@/components/layout/AppShell';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSettings } from '@/contexts/SettingsContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useDirection } from '@/components/ui/direction-provider';
@@ -79,6 +80,12 @@ export default function IdeaSubmissionWizard() {
   const navigate = useNavigate();
   const { isRTL } = useDirection();
   
+  // Predefined tags state
+  const [predefinedTags, setPredefinedTags] = useState<string[]>([
+    'الذكاء الاصطناعي', 'البيانات الضخمة', 'إنترنت الأشياء', 'البلوك تشين', 
+    'الأمن السيبراني', 'التحول الرقمي', 'التطبيقات المحمولة', 'الحوسبة السحابية'
+  ]);
+  
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [autoSaving, setAutoSaving] = useState(false);
@@ -109,6 +116,7 @@ export default function IdeaSubmissionWizard() {
   useEffect(() => {
     loadChallengesAndQuestions();
     loadDrafts();
+    loadPredefinedTags();
     
     // Auto-save functionality
     const autoSaveInterval = setInterval(() => {
@@ -119,6 +127,23 @@ export default function IdeaSubmissionWizard() {
 
     return () => clearInterval(autoSaveInterval);
   }, []);
+
+  const loadPredefinedTags = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_value')
+        .eq('setting_key', 'idea_predefined_tags')
+        .single();
+
+      if (data && !error && data.setting_value) {
+        const tags = JSON.parse(data.setting_value as string);
+        setPredefinedTags(Array.isArray(tags) ? tags : []);
+      }
+    } catch (error) {
+      console.error('Error loading predefined tags:', error);
+    }
+  };
 
   useEffect(() => {
     if (formData.challenge_id) {
@@ -416,33 +441,72 @@ export default function IdeaSubmissionWizard() {
                 {isRTL ? 'العلامات' : 'Tags'} 
                 <span className="text-muted-foreground text-sm">({isRTL ? 'اختياري' : 'Optional'})</span>
               </Label>
-              <div className="flex gap-2 mt-1">
+              
+              {/* Predefined Tags */}
+              <div className="mt-2">
+                <p className="text-sm text-muted-foreground mb-2">
+                  {isRTL ? 'اختر من العلامات المحددة مسبقاً:' : 'Select from predefined tags:'}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {predefinedTags.map((tag) => (
+                    <Badge
+                      key={tag}
+                      variant={formData.tags.includes(tag) ? "default" : "outline"}
+                      className="cursor-pointer hover:bg-primary/10 transition-colors"
+                      onClick={() => {
+                        if (formData.tags.includes(tag)) {
+                          removeTag(tag);
+                        } else {
+                          setFormData(prev => ({ ...prev, tags: [...prev.tags, tag] }));
+                        }
+                      }}
+                    >
+                      {tag}
+                      {formData.tags.includes(tag) && (
+                        <X className="w-3 h-3 ml-1" />
+                      )}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* Custom Tag Input */}
+              <div className="flex gap-2">
                 <Input
                   value={newTag}
                   onChange={(e) => setNewTag(e.target.value)}
-                  placeholder={isRTL ? 'أضف علامة...' : 'Add a tag...'}
+                  placeholder={isRTL ? 'أضف علامة مخصصة...' : 'Add custom tag...'}
                   onKeyPress={(e) => e.key === 'Enter' && addTag()}
                 />
                 <Button type="button" onClick={addTag} size="sm">
                   <Plus className="w-4 h-4" />
                 </Button>
               </div>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {formData.tags.map((tag, index) => (
-                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
-                    {tag}
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="h-auto p-0 w-4 h-4"
-                      onClick={() => removeTag(tag)}
-                    >
-                      <X className="w-3 h-3" />
-                    </Button>
-                  </Badge>
-                ))}
-              </div>
+              
+              {/* Selected Tags */}
+              {formData.tags.length > 0 && (
+                <div className="mt-3">
+                  <p className="text-sm text-muted-foreground mb-2">
+                    {isRTL ? 'العلامات المختارة:' : 'Selected tags:'}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {formData.tags.map((tag, index) => (
+                      <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                        {tag}
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="h-auto p-0 w-4 h-4"
+                          onClick={() => removeTag(tag)}
+                        >
+                          <X className="w-3 h-3" />
+                        </Button>
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         );

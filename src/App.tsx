@@ -33,6 +33,7 @@ import IdeasManagementPage from "./pages/IdeasManagement";
 import IdeasPage from "./pages/Ideas";
 import UserDashboard from "./pages/UserDashboard";
 import IdeaSubmissionWizard from "./pages/IdeaSubmissionWizard";
+import IdeaDrafts from "./pages/IdeaDrafts";
 import ExpertDashboard from "./pages/ExpertDashboard";
 import ExpertProfile from "./pages/ExpertProfile";
 import EventsBrowse from "./pages/EventsBrowse";
@@ -270,6 +271,14 @@ const App = () => (
               element={
                 <ProtectedRoute requireProfile>
                   <IdeaSubmissionWizard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/drafts" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <IdeaDrafts />
                 </ProtectedRoute>
               } 
             />

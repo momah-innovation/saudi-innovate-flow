@@ -129,6 +129,15 @@ export function NavigationSidebar() {
         roles: ['innovator', 'all'] 
       },
       { 
+        id: 'idea-drafts', 
+        label: 'Drafts', 
+        arabicLabel: 'المسودات',
+        icon: FileText, 
+        path: '/drafts',
+        group: 'workflow',
+        roles: ['innovator', 'all'] 
+      },
+      { 
         id: 'ideas', 
         label: 'My Ideas', 
         arabicLabel: 'أفكاري',
