@@ -198,18 +198,18 @@ export const EnhancedChallengeCard = ({
 
         {/* Expert Avatars - Enhanced */}
         {challenge.experts && challenge.experts.length > 0 && (
-          <div className="flex items-center gap-2 mt-3">
-            <span className="text-xs text-muted-foreground">{isRTL ? 'الخبراء:' : 'Experts:'}</span>
+          <div className="flex items-center justify-between mt-3 p-2 bg-muted/30 rounded-lg">
+            <span className="text-sm font-medium text-foreground">{isRTL ? 'الخبراء المرشدون:' : 'Expert Mentors:'}</span>
             <div className="flex -space-x-2">
-              {challenge.experts.slice(0, 3).map((expert, index) => (
-                <Avatar key={index} className="w-7 h-7 border-2 border-background hover:scale-110 transition-transform">
+              {challenge.experts.slice(0, 4).map((expert, index) => (
+                <Avatar key={index} className="w-8 h-8 border-2 border-background hover:scale-110 transition-transform cursor-pointer" title={expert.name}>
                   <AvatarImage src={expert.avatar} alt={expert.name} />
-                  <AvatarFallback className="text-xs bg-primary text-white">{expert.name[0]}</AvatarFallback>
+                  <AvatarFallback className="text-xs bg-primary text-primary-foreground font-semibold">{expert.name[0]}</AvatarFallback>
                 </Avatar>
               ))}
-              {challenge.experts.length > 3 && (
-                <div className="w-7 h-7 bg-muted rounded-full border-2 border-background flex items-center justify-center">
-                  <span className="text-xs font-medium">+{challenge.experts.length - 3}</span>
+              {challenge.experts.length > 4 && (
+                <div className="w-8 h-8 bg-muted rounded-full border-2 border-background flex items-center justify-center hover:bg-muted/80 transition-colors">
+                  <span className="text-xs font-medium">+{challenge.experts.length - 4}</span>
                 </div>
               )}
             </div>

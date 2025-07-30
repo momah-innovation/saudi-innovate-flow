@@ -248,25 +248,45 @@ export const EnhancedChallengeDetailDialog = ({
           </TabsContent>
 
           <TabsContent value="experts" className="mt-6">
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">{isRTL ? 'الخبراء المرشدون' : 'Expert Mentors'}</h3>
+            <div className="space-y-6">
+              <div className="flex items-center gap-2">
+                <h3 className="text-lg font-semibold">{isRTL ? 'الخبراء المرشدون' : 'Expert Mentors'}</h3>
+                <Badge variant="outline" className="text-xs">
+                  {challenge.experts?.length || 0} {isRTL ? 'خبير' : 'experts'}
+                </Badge>
+              </div>
+              
               {challenge.experts && challenge.experts.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {challenge.experts.map((expert, index) => (
-                    <div key={index} className="flex items-center gap-4 p-4 border rounded-lg">
-                      <Avatar className="w-12 h-12">
+                    <div key={index} className="flex items-center gap-4 p-4 border rounded-lg hover:shadow-sm transition-shadow bg-card">
+                      <Avatar className="w-14 h-14 ring-2 ring-primary/10">
                         <AvatarImage src={expert.avatar} alt={expert.name} />
-                        <AvatarFallback>{expert.name[0]}</AvatarFallback>
+                        <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
+                          {expert.name[0]}
+                        </AvatarFallback>
                       </Avatar>
-                      <div>
-                        <h4 className="font-semibold">{expert.name}</h4>
-                        <p className="text-sm text-muted-foreground">{isRTL ? 'خبير في المجال' : 'Domain Expert'}</p>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-foreground">{expert.name}</h4>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {isRTL ? 'خبير استشاري' : 'Expert Consultant'}
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="secondary" className="text-xs">
+                            {isRTL ? 'متاح للاستشارة' : 'Available'}
+                          </Badge>
+                        </div>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-muted-foreground">{isRTL ? 'سيتم تحديد الخبراء قريباً' : 'Experts will be assigned soon'}</p>
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Users className="w-8 h-8 text-muted-foreground" />
+                  </div>
+                  <p className="text-muted-foreground">{isRTL ? 'سيتم تحديد الخبراء قريباً' : 'Experts will be assigned soon'}</p>
+                </div>
               )}
             </div>
           </TabsContent>
