@@ -2512,14 +2512,17 @@ export type Database = {
         Row: {
           alignment_score: number | null
           challenge_id: string | null
+          collaboration_open: boolean | null
           created_at: string | null
           description_ar: string
+          estimated_timeline: string | null
           expected_impact: string | null
           feasibility_score: number | null
           focus_question_id: string | null
           id: string
           impact_score: number | null
           implementation_plan: string | null
+          innovation_level: string | null
           innovation_score: number | null
           innovator_id: string
           maturity_level: string | null
@@ -2527,20 +2530,24 @@ export type Database = {
           resource_requirements: string | null
           solution_approach: string | null
           status: string | null
+          tags: string[] | null
           title_ar: string
           updated_at: string | null
         }
         Insert: {
           alignment_score?: number | null
           challenge_id?: string | null
+          collaboration_open?: boolean | null
           created_at?: string | null
           description_ar: string
+          estimated_timeline?: string | null
           expected_impact?: string | null
           feasibility_score?: number | null
           focus_question_id?: string | null
           id?: string
           impact_score?: number | null
           implementation_plan?: string | null
+          innovation_level?: string | null
           innovation_score?: number | null
           innovator_id: string
           maturity_level?: string | null
@@ -2548,20 +2555,24 @@ export type Database = {
           resource_requirements?: string | null
           solution_approach?: string | null
           status?: string | null
+          tags?: string[] | null
           title_ar: string
           updated_at?: string | null
         }
         Update: {
           alignment_score?: number | null
           challenge_id?: string | null
+          collaboration_open?: boolean | null
           created_at?: string | null
           description_ar?: string
+          estimated_timeline?: string | null
           expected_impact?: string | null
           feasibility_score?: number | null
           focus_question_id?: string | null
           id?: string
           impact_score?: number | null
           implementation_plan?: string | null
+          innovation_level?: string | null
           innovation_score?: number | null
           innovator_id?: string
           maturity_level?: string | null
@@ -2569,6 +2580,7 @@ export type Database = {
           resource_requirements?: string | null
           solution_approach?: string | null
           status?: string | null
+          tags?: string[] | null
           title_ar?: string
           updated_at?: string | null
         }

@@ -169,11 +169,8 @@ export default function IdeaSubmissionWizard() {
     try {
       setAutoSaving(true);
       
-      // Filter out fields that don't exist in the database
-      const { collaboration_open, tags, estimated_timeline, innovation_level, ...dbFields } = formData;
-      
       const ideaData = {
-        ...dbFields,
+        ...formData,
         innovator_id: userProfile.id,
         challenge_id: formData.challenge_id || null,
         focus_question_id: formData.focus_question_id || null,
@@ -227,11 +224,10 @@ export default function IdeaSubmissionWizard() {
         implementation_plan: data.implementation_plan || '',
         expected_impact: data.expected_impact || '',
         resource_requirements: data.resource_requirements || '',
-        // These fields are form-only, not stored in database
-        tags: [],
-        collaboration_open: false,
-        estimated_timeline: '',
-        innovation_level: 'incremental'
+        tags: data.tags || [],
+        collaboration_open: data.collaboration_open || false,
+        estimated_timeline: data.estimated_timeline || '',
+        innovation_level: data.innovation_level || 'incremental'
       });
       
       setDraftId(id);
@@ -300,11 +296,8 @@ export default function IdeaSubmissionWizard() {
     try {
       setLoading(true);
       
-      // Filter out fields that don't exist in the database
-      const { collaboration_open, tags, estimated_timeline, innovation_level, ...dbFields } = formData;
-      
       const ideaData = {
-        ...dbFields,
+        ...formData,
         innovator_id: userProfile.id,
         challenge_id: formData.challenge_id || null,
         focus_question_id: formData.focus_question_id || null,
