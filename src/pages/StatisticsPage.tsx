@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
+import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -66,6 +67,29 @@ const COLORS = ['hsl(var(--primary))', 'hsl(var(--secondary))', 'hsl(var(--accen
 export default function StatisticsPage() {
   const { isRTL } = useDirection();
   const { t } = useTranslation();
+  const { hasRole } = useAuth();
+
+  // Check if user has admin or super_admin role
+  if (!hasRole('admin') && !hasRole('super_admin')) {
+    return (
+      <AppShell>
+        <PageLayout 
+          title={isRTL ? 'الوصول مرفوض' : 'Access Denied'} 
+          description={isRTL ? 'ليس لديك صلاحية للوصول إلى هذه الصفحة' : 'You do not have permission to access this page'}
+        >
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="text-6xl mb-4">🔒</div>
+            <h2 className="text-2xl font-bold mb-2">
+              {isRTL ? 'الوصول مرفوض' : 'Access Denied'}
+            </h2>
+            <p className="text-muted-foreground mb-4">
+              {isRTL ? 'هذه الصفحة متاحة للإداريين فقط' : 'This page is only available to administrators'}
+            </p>
+          </div>
+        </PageLayout>
+      </AppShell>
+    );
+  }
   
   const [stats, setStats] = useState<PlatformStats>({
     totalIdeas: 0,
