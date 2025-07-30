@@ -4288,6 +4288,14 @@ export type Database = {
         Args: { p_idea_id: string }
         Returns: undefined
       }
+      can_view_event: {
+        Args: {
+          event_id: string
+          event_visibility: string
+          event_status: string
+        }
+        Returns: boolean
+      }
       ensure_innovator_exists: {
         Args: { user_uuid: string }
         Returns: string
