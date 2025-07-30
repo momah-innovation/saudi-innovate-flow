@@ -36,6 +36,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useEventInteractions } from '@/hooks/useEventInteractions';
+import { useEventDetails } from '@/hooks/useEventDetails';
+import { PartnersStakeholdersTab } from './tabs/PartnersStakeholdersTab';
+import { RelatedItemsTab } from './tabs/RelatedItemsTab';
+import { AttendeesTab } from './tabs/AttendeesTab';
 
 interface Event {
   id: string;
@@ -104,6 +108,16 @@ export const EnhancedEventDetailDialog = ({
 
   // Use the new event interactions hook
   const { interactions, toggleBookmark, toggleLike } = useEventInteractions(event?.id || null);
+  
+  // Use the new event details hook
+  const { 
+    partners, 
+    stakeholders, 
+    relatedChallenges, 
+    focusQuestions, 
+    participants, 
+    campaignInfo 
+  } = useEventDetails(event?.id || null);
 
   // Load event data and user interactions
   useEffect(() => {
@@ -381,9 +395,12 @@ export const EnhancedEventDetailDialog = ({
 
         {/* Detailed Information Tabs */}
         <Tabs defaultValue="details" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="details">{isRTL ? 'التفاصيل' : 'Details'}</TabsTrigger>
             <TabsTrigger value="registration">{isRTL ? 'التسجيل' : 'Registration'}</TabsTrigger>
+            <TabsTrigger value="attendees">{isRTL ? 'الحضور' : 'Attendees'}</TabsTrigger>
+            <TabsTrigger value="partners">{isRTL ? 'الشركاء' : 'Partners'}</TabsTrigger>
+            <TabsTrigger value="related">{isRTL ? 'مرتبط' : 'Related'}</TabsTrigger>
             <TabsTrigger value="feedback">{isRTL ? 'التقييمات' : 'Feedback'}</TabsTrigger>
             <TabsTrigger value="resources">{isRTL ? 'الموارد' : 'Resources'}</TabsTrigger>
           </TabsList>
@@ -515,6 +532,28 @@ export const EnhancedEventDetailDialog = ({
                 </Button>
               </div>
             </div>
+          </TabsContent>
+
+          <TabsContent value="attendees" className="space-y-4">
+            <AttendeesTab 
+              participants={participants}
+              maxParticipants={event.max_participants}
+            />
+          </TabsContent>
+
+          <TabsContent value="partners" className="space-y-4">
+            <PartnersStakeholdersTab 
+              partners={partners}
+              stakeholders={stakeholders}
+            />
+          </TabsContent>
+
+          <TabsContent value="related" className="space-y-4">
+            <RelatedItemsTab 
+              relatedChallenges={relatedChallenges}
+              focusQuestions={focusQuestions}
+              campaignInfo={campaignInfo}
+            />
           </TabsContent>
 
           <TabsContent value="feedback" className="space-y-4">
