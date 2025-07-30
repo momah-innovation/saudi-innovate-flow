@@ -14,6 +14,44 @@ export type Database = {
   }
   public: {
     Tables: {
+      campaign_bookmarks: {
+        Row: {
+          campaign_id: string | null
+          created_at: string | null
+          id: string
+          notes: string | null
+          priority: string | null
+          reminder_date: string | null
+          user_id: string | null
+        }
+        Insert: {
+          campaign_id?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          campaign_id?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_bookmarks_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       campaign_challenge_links: {
         Row: {
           campaign_id: string
@@ -1967,6 +2005,36 @@ export type Database = {
           },
         ]
       }
+      expert_bookmarks: {
+        Row: {
+          created_at: string | null
+          expert_id: string | null
+          id: string
+          notes: string | null
+          priority: string | null
+          reminder_date: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          expert_id?: string | null
+          id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          expert_id?: string | null
+          id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       experts: {
         Row: {
           availability_status: string | null
@@ -2005,6 +2073,44 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      focus_question_bookmarks: {
+        Row: {
+          created_at: string | null
+          focus_question_id: string | null
+          id: string
+          notes: string | null
+          priority: string | null
+          reminder_date: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          focus_question_id?: string | null
+          id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          focus_question_id?: string | null
+          id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "focus_question_bookmarks_focus_question_id_fkey"
+            columns: ["focus_question_id"]
+            isOneToOne: false
+            referencedRelation: "focus_questions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       focus_questions: {
         Row: {
@@ -3918,6 +4024,44 @@ export type Database = {
         }
         Relationships: []
       }
+      sector_bookmarks: {
+        Row: {
+          created_at: string | null
+          id: string
+          notes: string | null
+          priority: string | null
+          reminder_date: string | null
+          sector_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
+          sector_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
+          sector_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sector_bookmarks_sector_id_fkey"
+            columns: ["sector_id"]
+            isOneToOne: false
+            referencedRelation: "sectors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sectors: {
         Row: {
           created_at: string | null
@@ -3991,6 +4135,44 @@ export type Database = {
             columns: ["sub_domain_id"]
             isOneToOne: false
             referencedRelation: "sub_domains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stakeholder_bookmarks: {
+        Row: {
+          created_at: string | null
+          id: string
+          notes: string | null
+          priority: string | null
+          reminder_date: string | null
+          stakeholder_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
+          stakeholder_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
+          stakeholder_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stakeholder_bookmarks_stakeholder_id_fkey"
+            columns: ["stakeholder_id"]
+            isOneToOne: false
+            referencedRelation: "stakeholders"
             referencedColumns: ["id"]
           },
         ]
