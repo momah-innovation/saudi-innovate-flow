@@ -57,55 +57,61 @@ const SavedItemsPage = () => {
         .from('challenge_bookmarks')
         .select(`
           created_at,
-          challenges!inner(
-            id,
-            title_ar,
-            description_ar,
-            status,
-            end_date
-          )
+          challenge_id
         `)
         .eq('user_id', user?.id);
+
+      const challengeIds = challengeBookmarks?.map(b => b.challenge_id) || [];
+      const { data: challenges } = challengeIds.length > 0 ? await supabase
+        .from('challenges')
+        .select('id, title_ar, description_ar, status, end_date')
+        .in('id', challengeIds) : { data: [] };
 
       // Load bookmarked events
       const { data: eventBookmarks } = await supabase
         .from('event_bookmarks')
         .select(`
           created_at,
-          events!inner(
-            id,
-            title_ar,
-            description_ar,
-            status,
-            event_date
-          )
+          event_id
         `)
         .eq('user_id', user?.id);
 
+      const eventIds = eventBookmarks?.map(b => b.event_id) || [];
+      const { data: events } = eventIds.length > 0 ? await supabase
+        .from('events')
+        .select('id, title_ar, description_ar, status, event_date')
+        .in('id', eventIds) : { data: [] };
+
       // Transform challenges data
-      const challenges = (challengeBookmarks || []).map(item => ({
-        id: item.challenges.id,
-        type: 'challenge' as const,
-        title: item.challenges.title_ar,
-        description: item.challenges.description_ar,
-        date: item.challenges.end_date || '',
-        status: item.challenges.status,
-        bookmarked_at: item.created_at
-      }));
+      const challengeData = (challengeBookmarks || []).map(bookmark => {
+        const challenge = challenges?.find(c => c.id === bookmark.challenge_id);
+        return challenge ? {
+          id: challenge.id,
+          type: 'challenge' as const,
+          title: challenge.title_ar,
+          description: challenge.description_ar,
+          date: challenge.end_date || '',
+          status: challenge.status,
+          bookmarked_at: bookmark.created_at
+        } : null;
+      }).filter(Boolean);
 
       // Transform events data
-      const events = (eventBookmarks || []).map(item => ({
-        id: item.events.id,
-        type: 'event' as const,
-        title: item.events.title_ar,
-        description: item.events.description_ar,
-        date: item.events.event_date,
-        status: item.events.status,
-        bookmarked_at: item.created_at
-      }));
+      const eventData = (eventBookmarks || []).map(bookmark => {
+        const event = events?.find(e => e.id === bookmark.event_id);
+        return event ? {
+          id: event.id,
+          type: 'event' as const,
+          title: event.title_ar,
+          description: event.description_ar,
+          date: event.event_date,
+          status: event.status,
+          bookmarked_at: bookmark.created_at
+        } : null;
+      }).filter(Boolean);
 
-      setBookmarkedChallenges(challenges);
-      setBookmarkedEvents(events);
+      setBookmarkedChallenges(challengeData as BookmarkedItem[]);
+      setBookmarkedEvents(eventData as BookmarkedItem[]);
       
     } catch (error) {
       console.error('Error loading bookmarks:', error);

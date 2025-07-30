@@ -41,11 +41,11 @@ export const InteractionButtons = ({
         const tableName = itemType === 'challenge' ? 'challenge_bookmarks' : 'event_bookmarks';
         
         const { data: bookmark } = await supabase
-          .from(tableName)
+          .from(tableName as any)
           .select('id')
           .eq(`${itemType}_id`, itemId)
           .eq('user_id', user.id)
-          .single();
+          .maybeSingle();
           
         setBookmarked(!!bookmark);
         
@@ -110,7 +110,7 @@ export const InteractionButtons = ({
       if (bookmarked) {
         // Remove bookmark
         await supabase
-          .from(tableName)
+          .from(tableName as any)
           .delete()
           .eq(columnName, itemId)
           .eq('user_id', user.id);
@@ -126,9 +126,11 @@ export const InteractionButtons = ({
           ? { challenge_id: itemId, user_id: user.id }
           : { event_id: itemId, user_id: user.id };
           
-        await supabase
-          .from(tableName)
+        const { error } = await supabase
+          .from(tableName as any)
           .insert(insertData);
+          
+        if (error) throw error;
         
         setBookmarked(true);
         toast({
