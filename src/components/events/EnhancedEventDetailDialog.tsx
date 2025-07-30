@@ -102,8 +102,6 @@ export const EnhancedEventDetailDialog = ({
   const [feedbackText, setFeedbackText] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
 
-  if (!event) return null;
-
   // Load event data and user interactions
   useEffect(() => {
     if (event && user) {
@@ -111,6 +109,9 @@ export const EnhancedEventDetailDialog = ({
       loadEventFeedback();
     }
   }, [event, user]);
+
+  // Early return after all hooks are called
+  if (!event) return null;
 
   const loadEventInteractions = async () => {
     if (!user) return;
