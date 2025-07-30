@@ -35,6 +35,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useEventInteractions } from '@/hooks/useEventInteractions';
 
 interface Event {
   id: string;
@@ -95,49 +96,43 @@ export const EnhancedEventDetailDialog = ({
   const { user } = useAuth();
   const { toast } = useToast();
   
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const [feedback, setFeedback] = useState<EventFeedback[]>([]);
   const [userFeedback, setUserFeedback] = useState<EventFeedback | null>(null);
   const [rating, setRating] = useState(0);
   const [feedbackText, setFeedbackText] = useState('');
-  const [isRegistered, setIsRegistered] = useState(false);
+  const [resources, setResources] = useState<any[]>([]);
+
+  // Use the new event interactions hook
+  const { interactions, toggleBookmark, toggleLike } = useEventInteractions(event?.id || null);
 
   // Load event data and user interactions
   useEffect(() => {
     if (event && user) {
-      loadEventInteractions();
       loadEventFeedback();
+      loadEventResources();
+    } else if (event) {
+      loadEventResources();
     }
   }, [event, user]);
 
   // Early return after all hooks are called
   if (!event) return null;
 
-  const loadEventInteractions = async () => {
-    if (!user) return;
+  const loadEventResources = async () => {
+    if (!event?.id) return;
 
     try {
-      // Check if user is registered
-      const { data: registration } = await supabase
-        .from('event_participants')
+      const { data, error } = await supabase
+        .from('event_resources')
         .select('*')
         .eq('event_id', event.id)
-        .eq('user_id', user.id)
-        .single();
+        .eq('is_public', true)
+        .order('display_order', { ascending: true });
 
-      setIsRegistered(!!registration);
-
-      // Check if event is bookmarked
-      const { data: bookmark } = await supabase
-        .from('event_bookmarks')
-        .select('*')
-        .eq('event_id', event.id)
-        .eq('user_id', user.id)
-        .single();
-
-      setIsBookmarked(!!bookmark);
+      if (error) throw error;
+      setResources(data || []);
     } catch (error) {
-      console.error('Error loading event interactions:', error);
+      console.error('Error loading event resources:', error);
     }
   };
 
@@ -162,28 +157,6 @@ export const EnhancedEventDetailDialog = ({
       }
     } catch (error) {
       console.error('Error loading feedback:', error);
-    }
-  };
-
-  const handleBookmark = async () => {
-    if (!user) return;
-
-    try {
-      if (isBookmarked) {
-        await supabase
-          .from('event_bookmarks')
-          .delete()
-          .eq('event_id', event.id)
-          .eq('user_id', user.id);
-        setIsBookmarked(false);
-      } else {
-        await supabase
-          .from('event_bookmarks')
-          .insert({ event_id: event.id, user_id: user.id });
-        setIsBookmarked(true);
-      }
-    } catch (error) {
-      console.error('Error toggling bookmark:', error);
     }
   };
 
@@ -313,9 +286,9 @@ export const EnhancedEventDetailDialog = ({
                 variant="secondary" 
                 size="sm" 
                 className="bg-white/80 hover:bg-white"
-                onClick={handleBookmark}
+                onClick={toggleBookmark}
               >
-                <BookmarkIcon className={`w-4 h-4 ${isBookmarked ? 'fill-current text-primary' : ''}`} />
+                <BookmarkIcon className={`w-4 h-4 ${interactions.isBookmarked ? 'fill-current text-primary' : ''}`} />
               </Button>
               <Button variant="secondary" size="sm" className="bg-white/80 hover:bg-white">
                 <Share2 className="w-4 h-4" />
@@ -513,7 +486,7 @@ export const EnhancedEventDetailDialog = ({
                   </div>
                 )}
 
-                {isRegistered && (
+                {interactions.isRegistered && (
                   <div className="mb-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
                     <div className="flex items-center gap-2 text-green-800 dark:text-green-200">
                       <CheckCircle className="w-5 h-5" />
@@ -527,9 +500,9 @@ export const EnhancedEventDetailDialog = ({
                 <Button 
                   onClick={() => onRegister(event)} 
                   className="w-full"
-                  disabled={isEventFull || event.status === 'completed' || event.status === 'cancelled' || isRegistered}
+                  disabled={isEventFull || event.status === 'completed' || event.status === 'cancelled' || interactions.isRegistered}
                 >
-                  {isRegistered ?
+                  {interactions.isRegistered ?
                     (isRTL ? 'مسجل بالفعل' : 'Already Registered') :
                     isEventFull ? 
                     (isRTL ? 'الفعالية ممتلئة' : 'Event Full') :
@@ -649,37 +622,51 @@ export const EnhancedEventDetailDialog = ({
               </h4>
               
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-4 border rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <FileText className="w-5 h-5 text-muted-foreground" />
-                    <div>
-                      <div className="font-medium">{isRTL ? 'أجندة الفعالية' : 'Event Agenda'}</div>
-                      <div className="text-sm text-muted-foreground">PDF • 2.3 MB</div>
+                {resources.length > 0 ? (
+                  resources.map((resource) => (
+                    <div key={resource.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        {resource.resource_type === 'video' ? (
+                          <Video className="w-5 h-5 text-muted-foreground" />
+                        ) : resource.resource_type === 'document' ? (
+                          <FileText className="w-5 h-5 text-muted-foreground" />
+                        ) : (
+                          <FileText className="w-5 h-5 text-muted-foreground" />
+                        )}
+                        <div>
+                          <div className="font-medium">{resource.title}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {resource.file_format?.toUpperCase()} 
+                            {resource.file_size_mb && ` • ${resource.file_size_mb} MB`}
+                          </div>
+                        </div>
+                      </div>
+                      {resource.availability_status === 'available' && resource.file_url ? (
+                        <Button variant="outline" size="sm" asChild>
+                          <a href={resource.file_url} target="_blank" rel="noopener noreferrer">
+                            <Download className="w-4 h-4 mr-2" />
+                            {isRTL ? 'تحميل' : 'Download'}
+                          </a>
+                        </Button>
+                      ) : (
+                        <Button variant="outline" size="sm" disabled>
+                          {resource.resource_type === 'video' && <Video className="w-4 h-4 mr-2" />}
+                          {resource.resource_type !== 'video' && <Download className="w-4 h-4 mr-2" />}
+                          {resource.availability_status === 'coming_soon' ? 
+                            (isRTL ? 'قريباً' : 'Coming Soon') :
+                            resource.availability_status === 'unavailable' ?
+                            (isRTL ? 'غير متاح' : 'Unavailable') :
+                            (isRTL ? 'تحميل' : 'Download')
+                          }
+                        </Button>
+                      )}
                     </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    {isRTL ? 'لا توجد موارد متاحة لهذه الفعالية' : 'No resources available for this event'}
                   </div>
-                  <Button variant="outline" size="sm">
-                    <Download className="w-4 h-4 mr-2" />
-                    {isRTL ? 'تحميل' : 'Download'}
-                  </Button>
-                </div>
-                
-                <div className="flex items-center justify-between p-4 border rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Video className="w-5 h-5 text-muted-foreground" />
-                    <div>
-                      <div className="font-medium">{isRTL ? 'تسجيل الفعالية' : 'Event Recording'}</div>
-                      <div className="text-sm text-muted-foreground">{isRTL ? 'متاح بعد انتهاء الفعالية' : 'Available after event ends'}</div>
-                    </div>
-                  </div>
-                  <Button variant="outline" size="sm" disabled>
-                    <Video className="w-4 h-4 mr-2" />
-                    {isRTL ? 'قريباً' : 'Coming Soon'}
-                  </Button>
-                </div>
-                
-                <div className="text-center py-8 text-muted-foreground">
-                  {isRTL ? 'المزيد من الموارد ستتوفر قريباً' : 'More resources will be available soon'}
-                </div>
+                )}
               </div>
             </div>
           </TabsContent>
