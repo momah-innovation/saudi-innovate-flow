@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -122,6 +122,10 @@ export const EnhancedChallengeDetailDialog = ({
               <DialogTitle className="text-2xl font-bold text-white mb-2">
                 {isRTL ? challenge.title_ar : challenge.title_en || challenge.title_ar}
               </DialogTitle>
+              
+              <DialogDescription className="text-white/80 mb-2">
+                {isRTL ? 'تفاصيل التحدي والمشاركة' : 'Challenge details and participation'}
+              </DialogDescription>
               
               <div className="flex items-center gap-4 text-white/90">
                 <div className="flex items-center gap-1">
