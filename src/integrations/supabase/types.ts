@@ -2183,6 +2183,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "fk_idea_comments_author_id"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "idea_comments_idea_id_fkey"
             columns: ["idea_id"]
             isOneToOne: false
