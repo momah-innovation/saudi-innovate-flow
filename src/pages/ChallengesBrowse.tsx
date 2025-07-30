@@ -155,7 +155,7 @@ const ChallengesBrowse = () => {
         .from('challenges')
         .select(`
           *,
-          sectors(name_ar, name),
+          sectors!challenges_sector_id_fkey(name_ar, name),
           deputies(name_ar, name),
           departments(name_ar, name)
         `)
