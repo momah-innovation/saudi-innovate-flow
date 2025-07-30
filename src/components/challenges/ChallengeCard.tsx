@@ -6,20 +6,20 @@ import { CalendarIcon, Target, Users, Award, Star, Eye, BookmarkIcon, TrendingUp
 import { useDirection } from '@/components/ui/direction-provider';
 
 interface Challenge {
-  id: number;
-  title: string;
-  title_en: string;
-  description: string;
-  description_en: string;
+  id: string;
+  title_ar: string;
+  title_en?: string;
+  description_ar: string;
+  description_en?: string;
   status: string;
-  deadline: string;
-  participants: number;
-  submissions: number;
-  category: string;
-  category_en: string;
-  prize: string;
-  difficulty: string;
-  image?: string;
+  end_date?: string;
+  start_date?: string;
+  participants?: number;
+  submissions?: number;
+  challenge_type?: string;
+  estimated_budget?: number;
+  priority_level?: string;
+  image_url?: string;
   trending?: boolean;
   featured?: boolean;
   experts?: Array<{ name: string; avatar: string; }>;
@@ -77,9 +77,9 @@ export const ChallengeCard = ({ challenge, onViewDetails, onParticipate, viewMod
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold truncate">
-                      {isRTL ? challenge.title : challenge.title_en}
-                    </h3>
+                     <h3 className="text-lg font-semibold truncate">
+                       {isRTL ? challenge.title_ar : challenge.title_en || challenge.title_ar}
+                     </h3>
                     {challenge.trending && (
                       <Badge variant="outline" className="text-orange-600 border-orange-200">
                         <TrendingUp className="w-3 h-3 mr-1" />
@@ -87,9 +87,9 @@ export const ChallengeCard = ({ challenge, onViewDetails, onParticipate, viewMod
                       </Badge>
                     )}
                   </div>
-                  <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-                    {isRTL ? challenge.description : challenge.description_en}
-                  </p>
+                   <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                     {isRTL ? challenge.description_ar : challenge.description_en || challenge.description_ar}
+                   </p>
                   
                   {/* Quick Stats */}
                   <div className="flex items-center gap-6 text-sm text-muted-foreground">
@@ -101,14 +101,14 @@ export const ChallengeCard = ({ challenge, onViewDetails, onParticipate, viewMod
                       <Target className="w-4 h-4" />
                       <span>{challenge.submissions}</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <CalendarIcon className="w-4 h-4" />
-                      <span>{challenge.deadline}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Award className="w-4 h-4" />
-                      <span>{challenge.prize}</span>
-                    </div>
+                     <div className="flex items-center gap-1">
+                       <CalendarIcon className="w-4 h-4" />
+                       <span>{challenge.end_date || 'N/A'}</span>
+                     </div>
+                     <div className="flex items-center gap-1">
+                       <Award className="w-4 h-4" />
+                       <span>{challenge.estimated_budget ? `${challenge.estimated_budget} ريال` : 'N/A'}</span>
+                     </div>
                   </div>
                 </div>
                 
@@ -118,9 +118,9 @@ export const ChallengeCard = ({ challenge, onViewDetails, onParticipate, viewMod
                     <Badge className={getStatusColor(challenge.status)}>
                       {getStatusText(challenge.status)}
                     </Badge>
-                    <Badge className={getDifficultyColor(challenge.difficulty)}>
-                      {challenge.difficulty}
-                    </Badge>
+                     <Badge className={getDifficultyColor(challenge.priority_level || 'متوسط')}>
+                       {challenge.priority_level || 'متوسط'}
+                     </Badge>
                   </div>
                   
                   <div className="flex gap-2">
@@ -147,8 +147,8 @@ export const ChallengeCard = ({ challenge, onViewDetails, onParticipate, viewMod
     <Card className="hover:shadow-lg transition-all duration-300 hover-scale animate-fade-in group">
       {/* Challenge Image */}
       <div className="relative h-48 bg-gradient-to-br from-primary/20 to-primary/5 rounded-t-lg">
-        {challenge.image ? (
-          <img src={challenge.image} alt={challenge.title} className="w-full h-full object-cover rounded-t-lg" />
+        {challenge.image_url ? (
+          <img src={challenge.image_url} alt={challenge.title_ar} className="w-full h-full object-cover rounded-t-lg" />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <Target className="w-16 h-16 text-primary" />
@@ -181,16 +181,16 @@ export const ChallengeCard = ({ challenge, onViewDetails, onParticipate, viewMod
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start gap-4">
           <div className="flex-1 min-w-0">
-            <CardTitle className="text-lg mb-2 line-clamp-2">
-              {isRTL ? challenge.title : challenge.title_en}
-            </CardTitle>
-            <CardDescription className="text-sm line-clamp-3">
-              {isRTL ? challenge.description : challenge.description_en}
-            </CardDescription>
-          </div>
-          <Badge className={getDifficultyColor(challenge.difficulty)}>
-            {challenge.difficulty}
-          </Badge>
+             <CardTitle className="text-lg mb-2 line-clamp-2">
+               {isRTL ? challenge.title_ar : challenge.title_en || challenge.title_ar}
+             </CardTitle>
+             <CardDescription className="text-sm line-clamp-3">
+               {isRTL ? challenge.description_ar : challenge.description_en || challenge.description_ar}
+             </CardDescription>
+           </div>
+           <Badge className={getDifficultyColor(challenge.priority_level || 'متوسط')}>
+             {challenge.priority_level || 'متوسط'}
+           </Badge>
         </div>
 
         {/* Expert Avatars */}
@@ -216,10 +216,10 @@ export const ChallengeCard = ({ challenge, onViewDetails, onParticipate, viewMod
 
       <CardContent className="pt-0">
         <div className="grid grid-cols-2 gap-4 mb-4 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <CalendarIcon className="h-4 w-4" />
-            <span className="truncate">{challenge.deadline}</span>
-          </div>
+           <div className="flex items-center gap-2">
+             <CalendarIcon className="h-4 w-4" />
+             <span className="truncate">{challenge.end_date || 'N/A'}</span>
+           </div>
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4" />
             <span>{challenge.participants} {isRTL ? 'مشارك' : 'participants'}</span>
@@ -228,16 +228,16 @@ export const ChallengeCard = ({ challenge, onViewDetails, onParticipate, viewMod
             <Target className="h-4 w-4" />
             <span>{challenge.submissions} {isRTL ? 'مساهمة' : 'submissions'}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Award className="h-4 w-4" />
-            <span className="truncate">{challenge.prize}</span>
-          </div>
+           <div className="flex items-center gap-2">
+             <Award className="h-4 w-4" />
+             <span className="truncate">{challenge.estimated_budget ? `${challenge.estimated_budget} ريال` : 'N/A'}</span>
+           </div>
         </div>
 
         <div className="flex justify-between items-center">
-          <Badge variant="outline" className="truncate">
-            {isRTL ? challenge.category : challenge.category_en}
-          </Badge>
+           <Badge variant="outline" className="truncate">
+             {challenge.challenge_type || 'تحدي'}
+           </Badge>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={() => onViewDetails(challenge)}>
               <Eye className="h-4 w-4 mr-2" />

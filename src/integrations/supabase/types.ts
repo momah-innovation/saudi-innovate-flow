@@ -782,6 +782,7 @@ export type Database = {
           end_date: string | null
           estimated_budget: number | null
           id: string
+          image_url: string | null
           internal_team_notes: string | null
           kpi_alignment: string | null
           partner_organization_id: string | null
@@ -811,6 +812,7 @@ export type Database = {
           end_date?: string | null
           estimated_budget?: number | null
           id?: string
+          image_url?: string | null
           internal_team_notes?: string | null
           kpi_alignment?: string | null
           partner_organization_id?: string | null
@@ -840,6 +842,7 @@ export type Database = {
           end_date?: string | null
           estimated_budget?: number | null
           id?: string
+          image_url?: string | null
           internal_team_notes?: string | null
           kpi_alignment?: string | null
           partner_organization_id?: string | null

@@ -153,7 +153,13 @@ const ChallengesBrowse = () => {
       setLoading(true);
       const { data, error } = await supabase
         .from('challenges')
-        .select('*')
+        .select(`
+          *,
+          sectors(name_ar, name),
+          deputies(name_ar, name),
+          departments(name_ar, name)
+        `)
+        .eq('status', 'active')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
