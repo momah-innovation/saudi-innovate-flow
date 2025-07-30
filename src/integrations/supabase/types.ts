@@ -1320,6 +1320,35 @@ export type Database = {
         }
         Relationships: []
       }
+      event_bookmarks: {
+        Row: {
+          created_at: string | null
+          event_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          event_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_bookmarks_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_challenge_links: {
         Row: {
           challenge_id: string
@@ -1340,6 +1369,47 @@ export type Database = {
           id?: string
         }
         Relationships: []
+      }
+      event_feedback: {
+        Row: {
+          created_at: string | null
+          event_id: string
+          feedback_text: string | null
+          id: string
+          rating: number | null
+          updated_at: string | null
+          user_id: string
+          would_recommend: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_id: string
+          feedback_text?: string | null
+          id?: string
+          rating?: number | null
+          updated_at?: string | null
+          user_id: string
+          would_recommend?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string
+          feedback_text?: string | null
+          id?: string
+          rating?: number | null
+          updated_at?: string | null
+          user_id?: string
+          would_recommend?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_feedback_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       event_focus_question_links: {
         Row: {
@@ -1583,6 +1653,7 @@ export type Database = {
           event_visibility: string | null
           format: string | null
           id: string
+          image_url: string | null
           inherit_from_campaign: boolean | null
           is_recurring: boolean | null
           location: string | null
@@ -1615,6 +1686,7 @@ export type Database = {
           event_visibility?: string | null
           format?: string | null
           id?: string
+          image_url?: string | null
           inherit_from_campaign?: boolean | null
           is_recurring?: boolean | null
           location?: string | null
@@ -1647,6 +1719,7 @@ export type Database = {
           event_visibility?: string | null
           format?: string | null
           id?: string
+          image_url?: string | null
           inherit_from_campaign?: boolean | null
           is_recurring?: boolean | null
           location?: string | null

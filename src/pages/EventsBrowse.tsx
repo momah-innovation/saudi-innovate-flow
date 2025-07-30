@@ -7,8 +7,10 @@ import { LayoutSelector } from '@/components/ui/layout-selector';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
-import { EventCard } from '@/components/events/EventCard';
-import { EventDetailDialog } from '@/components/events/EventDetailDialog';
+import { EnhancedEventCard } from '@/components/events/EnhancedEventCard';
+import { EnhancedEventDetailDialog } from '@/components/events/EnhancedEventDetailDialog';
+import { EventsHero } from '@/components/events/EventsHero';
+import { EventAdvancedFilters } from '@/components/events/EventAdvancedFilters';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Plus, Calendar, TrendingUp, MapPin } from 'lucide-react';
@@ -57,9 +59,21 @@ const EventsBrowse = () => {
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [activeTab, setActiveTab] = useState('upcoming');
   const [loading, setLoading] = useState(true);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   
   // Basic filters
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // Advanced filters
+  const [filters, setFilters] = useState({
+    eventTypes: [],
+    formats: [],
+    status: [],
+    dateRange: {},
+    location: '',
+    priceRange: '',
+    capacity: ''
+  });
 
   // Load events with real-time updates
   useEffect(() => {
@@ -212,11 +226,19 @@ const EventsBrowse = () => {
 
   const filteredEvents = getFilteredEvents();
 
+  // Calculate stats for hero
+  const upcomingCount = events.filter(e => new Date(e.event_date) >= new Date()).length;
+  const todayCount = events.filter(e => {
+    const eventDate = new Date(e.event_date);
+    const today = new Date();
+    return eventDate.toDateString() === today.toDateString();
+  }).length;
+
   // Render event cards
   const renderEventCards = (events: Event[]) => (
     <ViewLayouts viewMode={viewMode}>
       {events.map((event) => (
-        <EventCard
+        <EnhancedEventCard
           key={event.id}
           event={event}
           onViewDetails={handleViewDetails}
@@ -249,6 +271,15 @@ const EventsBrowse = () => {
         onSearchChange={setSearchQuery}
         searchPlaceholder={isRTL ? 'البحث في الفعاليات...' : 'Search events...'}
       >
+        {/* Enhanced Hero Section */}
+        <EventsHero
+          totalEvents={events.length}
+          upcomingEvents={upcomingCount}
+          todayEvents={todayCount}
+          onCreateEvent={() => console.log('Create event')}
+          onShowFilters={() => setShowAdvancedFilters(true)}
+        />
+
         <div className="space-y-6">
           {/* Tabs Navigation */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -325,12 +356,29 @@ const EventsBrowse = () => {
           </Tabs>
         </div>
 
-        {/* Event Detail Dialog */}
-        <EventDetailDialog
+        {/* Enhanced Event Detail Dialog */}
+        <EnhancedEventDetailDialog
           event={selectedEvent}
           open={detailDialogOpen}
           onOpenChange={setDetailDialogOpen}
           onRegister={registerForEvent}
+        />
+
+        {/* Advanced Filters */}
+        <EventAdvancedFilters
+          open={showAdvancedFilters}
+          onOpenChange={setShowAdvancedFilters}
+          filters={filters}
+          onFiltersChange={setFilters}
+          onClearFilters={() => setFilters({
+            eventTypes: [],
+            formats: [],
+            status: [],
+            dateRange: {},
+            location: '',
+            priceRange: '',
+            capacity: ''
+          })}
         />
       </PageLayout>
     </AppShell>
