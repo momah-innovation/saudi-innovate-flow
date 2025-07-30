@@ -3,6 +3,7 @@ import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { LayoutSelector } from '@/components/ui/layout-selector';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useToast } from '@/hooks/use-toast';
@@ -19,9 +20,10 @@ import { ChallengeCommentsDialog } from '@/components/challenges/ChallengeCommen
 import { ChallengeSubmissionsDialog } from '@/components/challenges/ChallengeSubmissionsDialog';
 import { CreateChallengeDialog } from '@/components/challenges/CreateChallengeDialog';
 import { useChallengeDefaults } from '@/hooks/useChallengeDefaults';
+import { useChallengesData } from '@/hooks/useChallengesData';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Plus, Send, MessageSquare, Users, Eye, BookmarkIcon } from 'lucide-react';
+import { Plus, Send, MessageSquare, Users, Eye, BookmarkIcon, TrendingUp, Clock, Calendar } from 'lucide-react';
 
 const mockChallenges = [
   {
@@ -121,9 +123,10 @@ const ChallengesBrowse = () => {
   const { ui } = useChallengeDefaults();
   const { user } = useAuth();
   
+  // Use enhanced challenges data hook
+  const { challenges, loading, stats, refetch } = useChallengesData();
+  
   // State management
-  const [challenges, setChallenges] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedChallenge, setSelectedChallenge] = useState<any>(null);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [submissionDialogOpen, setSubmissionDialogOpen] = useState(false);
@@ -147,55 +150,15 @@ const ChallengesBrowse = () => {
     sortOrder: 'desc'
   });
 
-  useEffect(() => {
-    fetchChallenges();
-  }, []);
-
-  const fetchChallenges = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('challenges')
-        .select(`
-          *,
-          challenge_participants(count),
-          challenge_submissions(count)
-        `)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      
-      // Process the data to include participant and submission counts
-      const processedData = (data || []).map(challenge => ({
-        ...challenge,
-        participants: challenge.challenge_participants?.[0]?.count || 0,
-        submissions: challenge.challenge_submissions?.[0]?.count || 0,
-        // Add mock experts data for now
-        experts: [
-          { name: 'د. أحمد محمد', avatar: '/placeholder.svg', role: 'خبير التقنية' },
-          { name: 'م. فاطمة علي', avatar: '/placeholder.svg', role: 'مهندسة البرمجيات' }
-        ]
-      }));
-      
-      setChallenges(processedData);
-    } catch (error) {
-      console.error('Error fetching challenges:', error);
-      // Fallback to mock data if database fails
-      setChallenges(mockChallenges);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   // Filter and search logic
   const getFilteredChallenges = () => {
-    let filtered = [...(challenges.length > 0 ? challenges : mockChallenges)];
+    let filtered = [...challenges];
 
     // Apply search filter
     if (filters.search) {
       filtered = filtered.filter(challenge =>
-        (isRTL ? challenge.title : challenge.title_en).toLowerCase().includes(filters.search.toLowerCase()) ||
-        (isRTL ? challenge.description : challenge.description_en).toLowerCase().includes(filters.search.toLowerCase())
+        (isRTL ? challenge.title_ar : challenge.title_en || challenge.title_ar).toLowerCase().includes(filters.search.toLowerCase()) ||
+        (isRTL ? challenge.description_ar : challenge.description_en || challenge.description_ar).toLowerCase().includes(filters.search.toLowerCase())
       );
     }
 
@@ -207,7 +170,7 @@ const ChallengesBrowse = () => {
     // Apply category filter
     if (filters.category !== 'all') {
       filtered = filtered.filter(challenge => {
-        const categoryKey = isRTL ? challenge.category : challenge.category_en;
+        const categoryKey = isRTL ? challenge.category : challenge.category_en || challenge.category;
         return categoryKey.toLowerCase().includes(filters.category.toLowerCase());
       });
     }
@@ -223,7 +186,7 @@ const ChallengesBrowse = () => {
       return budgetValue >= filters.prizeRange[0] && budgetValue <= filters.prizeRange[1];
     });
 
-    // Apply participant range filter - use 0 as default since we don't have participants count yet
+    // Apply participant range filter
     filtered = filtered.filter(challenge => {
       const participantCount = challenge.participants || 0;
       return participantCount >= filters.participantRange[0] && participantCount <= filters.participantRange[1];
@@ -346,7 +309,7 @@ const ChallengesBrowse = () => {
       });
       
       // Refresh challenges to update participant count
-      fetchChallenges();
+      refetch();
     } catch (error) {
       console.error('Participation error:', error);
       toast({
@@ -429,11 +392,7 @@ const ChallengesBrowse = () => {
     return count;
   };
 
-  // Calculate statistics for hero
-  const totalChallenges = challenges.length;
-  const activeChallenges = challenges.filter(c => c.status === 'active').length;
-  const totalParticipants = challenges.reduce((sum, c) => sum + (c.participants || 0), 0);
-  const totalPrizes = challenges.reduce((sum, c) => sum + (c.estimated_budget || 0), 0);
+  // Use stats from the hook
 
   // Render enhanced challenge cards
   const renderChallengeCards = (challenges: any[]) => (
@@ -467,10 +426,10 @@ const ChallengesBrowse = () => {
     <AppShell>
       {/* Enhanced Hero Section */}
       <ChallengesHero 
-        totalChallenges={totalChallenges}
-        activeChallenges={activeChallenges}
-        totalParticipants={totalParticipants}
-        totalPrizes={totalPrizes}
+        totalChallenges={stats.totalChallenges}
+        activeChallenges={stats.activeChallenges}
+        totalParticipants={stats.totalParticipants}
+        totalPrizes={stats.totalPrizes}
       />
       
       <PageLayout
@@ -603,7 +562,7 @@ const ChallengesBrowse = () => {
         <CreateChallengeDialog
           open={createChallengeOpen}
           onOpenChange={setCreateChallengeOpen}
-          onChallengeCreated={fetchChallenges}
+          onChallengeCreated={refetch}
         />
       </PageLayout>
     </AppShell>
