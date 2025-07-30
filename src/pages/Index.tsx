@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
+import { EnhancedDashboardOverview } from "@/components/dashboard/EnhancedDashboardOverview";
 import { InnovatorDashboard } from "@/components/dashboard/InnovatorDashboard";
 import { AdminChallengeManagement } from "@/components/admin/AdminChallengeManagement";
 import { AppShell } from "@/components/layout/AppShell";
@@ -98,7 +98,7 @@ const Index = () => {
 
     switch (activeTab) {
       case "dashboard":
-        return <DashboardOverview />;
+        return <EnhancedDashboardOverview />;
       case "challenges":
         return <InnovatorDashboard />;
       case "ideas":
@@ -192,7 +192,7 @@ const Index = () => {
           <div>Settings content placeholder</div>
         );
       default:
-        return <DashboardOverview />;
+        return <EnhancedDashboardOverview />;
     }
   };
 
