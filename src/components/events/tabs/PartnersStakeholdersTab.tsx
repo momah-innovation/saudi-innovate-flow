@@ -1,197 +1,167 @@
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { useDirection } from '@/components/ui/direction-provider';
-import { Building2, Users, Mail, Phone, ExternalLink } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-
-interface EventPartner {
-  id: string;
-  name: string;
-  name_ar: string;
-  partner_type: string;
-  logo_url?: string;
-  contact_person?: string;
-  email?: string;
-}
-
-interface EventStakeholder {
-  id: string;
-  name?: string;
-  organization: string;
-  position?: string;
-  stakeholder_type: string;
-  engagement_status: string;
-  invitation_status: string;
-  attendance_status: string;
-}
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EventPartner, EventStakeholder } from "@/hooks/useEventDetails";
 
 interface PartnersStakeholdersTabProps {
   partners: EventPartner[];
   stakeholders: EventStakeholder[];
 }
 
-export const PartnersStakeholdersTab = ({ 
-  partners, 
-  stakeholders 
-}: PartnersStakeholdersTabProps) => {
-  const { isRTL } = useDirection();
-
+export const PartnersStakeholdersTab = ({ partners, stakeholders }: PartnersStakeholdersTabProps) => {
   const getPartnerTypeColor = (type: string) => {
     switch (type) {
-      case 'corporate': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'academic': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
-      case 'government': return 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/20 dark:text-purple-400';
-      case 'non_profit': return 'bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/20 dark:text-orange-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'strategic': return 'bg-blue-100 text-blue-800';
+      case 'financial': return 'bg-green-100 text-green-800';
+      case 'technology': return 'bg-purple-100 text-purple-800';
+      case 'academic': return 'bg-yellow-100 text-yellow-800';
+      case 'government': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStakeholderTypeColor = (type: string) => {
     switch (type) {
-      case 'خاص': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'أكاديمي': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
-      case 'حكومي': return 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/20 dark:text-purple-400';
-      case 'غير ربحي': return 'bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/20 dark:text-orange-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'government': return 'bg-red-100 text-red-800';
+      case 'private': return 'bg-blue-100 text-blue-800';
+      case 'academic': return 'bg-yellow-100 text-yellow-800';
+      case 'civil_society': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'confirmed':
-      case 'نشط': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
-      case 'pending': 
-      case 'متوقع': return 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400';
-      case 'declined':
-      case 'غير نشط': return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'active': return 'bg-green-100 text-green-800';
+      case 'pending': return 'bg-yellow-100 text-yellow-800';
+      case 'inactive': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" dir="rtl">
       {/* Partners Section */}
       <div>
-        <h4 className="font-semibold mb-4 flex items-center gap-2">
-          <Building2 className="w-4 h-4" />
-          {isRTL ? 'الشركاء' : 'Partners'}
-          {partners.length > 0 && (
-            <Badge variant="secondary" className="ml-2">
-              {partners.length}
-            </Badge>
-          )}
-        </h4>
-        
+        <h3 className="text-lg font-semibold mb-4">الشركاء</h3>
         {partners.length > 0 ? (
           <div className="grid gap-4">
             {partners.map((partner) => (
-              <div key={partner.id} className="p-4 border rounded-lg hover:shadow-sm transition-shadow">
-                <div className="flex items-start gap-4">
-                  <Avatar className="w-12 h-12">
-                    <AvatarImage src={partner.logo_url} alt={partner.name} />
-                    <AvatarFallback>
-                      <Building2 className="w-6 h-6" />
-                    </AvatarFallback>
-                  </Avatar>
-                  
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <h5 className="font-medium text-foreground">
-                          {isRTL ? partner.name_ar : partner.name}
-                        </h5>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge className={getPartnerTypeColor(partner.partner_type)}>
-                            {partner.partner_type}
-                          </Badge>
-                        </div>
-                      </div>
+              <Card key={partner.id}>
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-3">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src={partner.logo_url} alt={partner.name} />
+                      <AvatarFallback>
+                        {partner.name.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <div className="text-base font-medium">{partner.name}</div>
+                      {partner.name_ar && (
+                        <div className="text-sm text-muted-foreground">{partner.name_ar}</div>
+                      )}
                     </div>
-                    
-                    {partner.contact_person && (
-                      <div className="mt-2 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <Users className="w-3 h-3" />
-                          {partner.contact_person}
-                        </div>
+                    <div className="flex gap-2">
+                      <Badge className={getPartnerTypeColor(partner.partner_type)}>
+                        {partner.partner_type}
+                      </Badge>
+                      <Badge className={getStatusColor(partner.partnership_status)}>
+                        {partner.partnership_status}
+                      </Badge>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    {partner.contact_email && (
+                      <div>
+                        <span className="font-medium">الإيميل:</span>
+                        <div className="text-muted-foreground">{partner.contact_email}</div>
                       </div>
                     )}
-                    
-                    {partner.email && (
-                      <div className="mt-1 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <Mail className="w-3 h-3" />
-                          {partner.email}
-                        </div>
+                    {partner.contact_phone && (
+                      <div>
+                        <span className="font-medium">الهاتف:</span>
+                        <div className="text-muted-foreground">{partner.contact_phone}</div>
                       </div>
                     )}
                   </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         ) : (
           <div className="text-center py-8 text-muted-foreground">
-            {isRTL ? 'لا يوجد شركاء لهذه الفعالية' : 'No partners for this event'}
+            لا توجد شراكات مسجلة لهذه الفعالية
           </div>
         )}
       </div>
 
       {/* Stakeholders Section */}
       <div>
-        <h4 className="font-semibold mb-4 flex items-center gap-2">
-          <Users className="w-4 h-4" />
-          {isRTL ? 'أصحاب المصلحة' : 'Stakeholders'}
-          {stakeholders.length > 0 && (
-            <Badge variant="secondary" className="ml-2">
-              {stakeholders.length}
-            </Badge>
-          )}
-        </h4>
-        
+        <h3 className="text-lg font-semibold mb-4">أصحاب المصلحة</h3>
         {stakeholders.length > 0 ? (
           <div className="grid gap-4">
             {stakeholders.map((stakeholder) => (
-              <div key={stakeholder.id} className="p-4 border rounded-lg hover:shadow-sm transition-shadow">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <h5 className="font-medium text-foreground">
-                          {stakeholder.name || stakeholder.organization}
-                        </h5>
-                        {stakeholder.name && (
-                          <p className="text-sm text-muted-foreground mt-1">
-                            {stakeholder.organization}
-                          </p>
-                        )}
-                        {stakeholder.position && (
-                          <p className="text-xs text-muted-foreground">
-                            {stakeholder.position}
-                          </p>
-                        )}
-                      </div>
+              <Card key={stakeholder.id}>
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-3">
+                    <Avatar className="h-10 w-10">
+                      <AvatarFallback>
+                        {stakeholder.organization.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <div className="text-base font-medium">{stakeholder.organization}</div>
+                      <div className="text-sm text-muted-foreground">{stakeholder.contact_person}</div>
                     </div>
-                    
-                    <div className="flex items-center gap-2 mt-3 flex-wrap">
+                    <div className="flex gap-2">
                       <Badge className={getStakeholderTypeColor(stakeholder.stakeholder_type)}>
                         {stakeholder.stakeholder_type}
                       </Badge>
-                      <Badge className={getStatusColor(stakeholder.invitation_status)} variant="outline">
-                        {isRTL ? 'الدعوة: ' : 'Invite: '}{stakeholder.invitation_status}
-                      </Badge>
-                      <Badge className={getStatusColor(stakeholder.attendance_status)} variant="outline">
-                        {isRTL ? 'الحضور: ' : 'Attendance: '}{stakeholder.attendance_status}
+                      <Badge className={getStatusColor(stakeholder.status)}>
+                        {stakeholder.status}
                       </Badge>
                     </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="font-medium">المنصب:</span>
+                      <div className="text-muted-foreground">{stakeholder.position}</div>
+                    </div>
+                    {stakeholder.contact_email && (
+                      <div>
+                        <span className="font-medium">الإيميل:</span>
+                        <div className="text-muted-foreground">{stakeholder.contact_email}</div>
+                      </div>
+                    )}
+                    <div>
+                      <span className="font-medium">مستوى المشاركة:</span>
+                      <div className="text-muted-foreground">{stakeholder.involvement_level}</div>
+                    </div>
+                    <div>
+                      <span className="font-medium">حالة المشاركة:</span>
+                      <div className="text-muted-foreground">{stakeholder.engagement_status}</div>
+                    </div>
+                    <div>
+                      <span className="font-medium">حالة الدعوة:</span>
+                      <div className="text-muted-foreground">{stakeholder.invitation_status}</div>
+                    </div>
+                    <div>
+                      <span className="font-medium">حالة الحضور:</span>
+                      <div className="text-muted-foreground">{stakeholder.attendance_status}</div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         ) : (
           <div className="text-center py-8 text-muted-foreground">
-            {isRTL ? 'لا يوجد أصحاب مصلحة لهذه الفعالية' : 'No stakeholders for this event'}
+            لا توجد أصحاب مصلحة مسجلين لهذه الفعالية
           </div>
         )}
       </div>

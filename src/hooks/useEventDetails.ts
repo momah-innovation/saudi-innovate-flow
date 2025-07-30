@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 export interface EventPartner {
   id: string;
   name: string;
+  name_ar?: string;
   logo_url?: string;
   partner_type: string;
   contact_email?: string;
@@ -20,6 +21,9 @@ export interface EventStakeholder {
   stakeholder_type: string;
   involvement_level: string;
   status: string;
+  engagement_status: string;
+  invitation_status: string;
+  attendance_status: string;
 }
 
 export interface RelatedChallenge {
@@ -35,9 +39,11 @@ export interface RelatedChallenge {
 export interface RelatedFocusQuestion {
   id: string;
   question_ar: string;
+  question_text_ar: string;
   question_type: string;
   priority: string;
   status: string;
+  is_sensitive: boolean;
 }
 
 export interface EventParticipant {
@@ -121,6 +127,7 @@ export function useEventDetails(eventId: string | null) {
       const partnersData = data?.map(link => ({
         id: link.partners?.id || '',
         name: link.partners?.name || '',
+        name_ar: link.partners?.name || '',
         logo_url: link.partners?.logo_url,
         partner_type: link.partners?.partner_type || '',
         contact_email: '',
@@ -159,7 +166,10 @@ export function useEventDetails(eventId: string | null) {
         contact_email: '',
         stakeholder_type: link.stakeholders?.stakeholder_type || '',
         involvement_level: '',
-        status: 'active'
+        status: 'active',
+        engagement_status: 'engaged',
+        invitation_status: 'invited',
+        attendance_status: 'confirmed'
       })) || [];
 
       setStakeholders(stakeholdersData);

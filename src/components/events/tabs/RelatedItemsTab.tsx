@@ -1,29 +1,6 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { useDirection } from '@/components/ui/direction-provider';
-import { Target, HelpCircle, ExternalLink, AlertTriangle } from 'lucide-react';
-
-interface RelatedChallenge {
-  id: string;
-  title_ar: string;
-  description_ar: string;
-  status: string;
-  priority_level: string;
-}
-
-interface RelatedFocusQuestion {
-  id: string;
-  question_text_ar: string;
-  question_type: string;
-  is_sensitive: boolean;
-}
-
-interface CampaignInfo {
-  id: string;
-  title_ar: string;
-  description_ar?: string;
-  status: string;
-}
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RelatedChallenge, RelatedFocusQuestion, CampaignInfo } from "@/hooks/useEventDetails";
 
 interface RelatedItemsTabProps {
   relatedChallenges: RelatedChallenge[];
@@ -31,175 +8,161 @@ interface RelatedItemsTabProps {
   campaignInfo: CampaignInfo | null;
 }
 
-export const RelatedItemsTab = ({ 
-  relatedChallenges, 
-  focusQuestions,
-  campaignInfo 
-}: RelatedItemsTabProps) => {
-  const { isRTL } = useDirection();
-
+export const RelatedItemsTab = ({ relatedChallenges, focusQuestions, campaignInfo }: RelatedItemsTabProps) => {
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active':
-      case 'نشط': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
-      case 'draft':
-      case 'مسودة': return 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400';
-      case 'completed':
-      case 'مكتمل': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'cancelled':
-      case 'ملغي': return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'active': return 'bg-green-100 text-green-800';
+      case 'draft': return 'bg-yellow-100 text-yellow-800';
+      case 'completed': return 'bg-blue-100 text-blue-800';
+      case 'cancelled': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'عالي':
-      case 'high': return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400';
-      case 'متوسط':
-      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400';
-      case 'منخفض':
-      case 'low': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'high': return 'bg-red-100 text-red-800';
+      case 'medium': return 'bg-yellow-100 text-yellow-800';
+      case 'low': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getQuestionTypeColor = (type: string) => {
     switch (type) {
-      case 'technical': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'strategic': return 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/20 dark:text-purple-400';
-      case 'operational': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
-      case 'financial': return 'bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/20 dark:text-orange-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'strategic': return 'bg-purple-100 text-purple-800';
+      case 'operational': return 'bg-blue-100 text-blue-800';
+      case 'technical': return 'bg-orange-100 text-orange-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" dir="rtl">
       {/* Campaign Info Section */}
       {campaignInfo && (
         <div>
-          <h4 className="font-semibold mb-4 flex items-center gap-2">
-            <Target className="w-4 h-4" />
-            {isRTL ? 'الحملة المرتبطة' : 'Related Campaign'}
-          </h4>
-          
-          <div className="p-4 border rounded-lg bg-gradient-to-r from-primary/5 to-primary/10">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1 min-w-0">
-                <h5 className="font-medium text-foreground mb-2">
-                  {campaignInfo.title_ar}
-                </h5>
-                {campaignInfo.description_ar && (
-                  <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                    {campaignInfo.description_ar}
-                  </p>
-                )}
+          <h3 className="text-lg font-semibold mb-4">معلومات الحملة</h3>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <span>{campaignInfo.title_ar}</span>
                 <Badge className={getStatusColor(campaignInfo.status)}>
                   {campaignInfo.status}
                 </Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <p className="text-muted-foreground">{campaignInfo.description_ar}</p>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="font-medium">تاريخ البداية:</span>
+                    <div className="text-muted-foreground">{campaignInfo.start_date}</div>
+                  </div>
+                  <div>
+                    <span className="font-medium">تاريخ النهاية:</span>
+                    <div className="text-muted-foreground">{campaignInfo.end_date}</div>
+                  </div>
+                  {campaignInfo.budget && (
+                    <div>
+                      <span className="font-medium">الميزانية:</span>
+                      <div className="text-muted-foreground">{campaignInfo.budget.toLocaleString()} ريال</div>
+                    </div>
+                  )}
+                </div>
               </div>
-              <Button variant="outline" size="sm">
-                <ExternalLink className="w-4 h-4 mr-2" />
-                {isRTL ? 'عرض الحملة' : 'View Campaign'}
-              </Button>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       )}
 
       {/* Related Challenges Section */}
       <div>
-        <h4 className="font-semibold mb-4 flex items-center gap-2">
-          <Target className="w-4 h-4" />
-          {isRTL ? 'التحديات المرتبطة' : 'Related Challenges'}
-          {relatedChallenges.length > 0 && (
-            <Badge variant="secondary" className="ml-2">
-              {relatedChallenges.length}
-            </Badge>
-          )}
-        </h4>
-        
+        <h3 className="text-lg font-semibold mb-4">التحديات المرتبطة</h3>
         {relatedChallenges.length > 0 ? (
           <div className="grid gap-4">
             {relatedChallenges.map((challenge) => (
-              <div key={challenge.id} className="p-4 border rounded-lg hover:shadow-sm transition-shadow">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <h5 className="font-medium text-foreground mb-2">
-                      {challenge.title_ar}
-                    </h5>
-                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                      {challenge.description_ar}
-                    </p>
-                    <div className="flex items-center gap-2 flex-wrap">
+              <Card key={challenge.id}>
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center justify-between">
+                    <span className="text-base">{challenge.title_ar}</span>
+                    <div className="flex gap-2">
+                      <Badge className={getPriorityColor(challenge.priority_level)}>
+                        {challenge.priority_level}
+                      </Badge>
                       <Badge className={getStatusColor(challenge.status)}>
                         {challenge.status}
                       </Badge>
-                      <Badge className={getPriorityColor(challenge.priority_level)} variant="outline">
-                        {isRTL ? 'أولوية: ' : 'Priority: '}{challenge.priority_level}
-                      </Badge>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <p className="text-sm text-muted-foreground">{challenge.description_ar}</p>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      {challenge.start_date && (
+                        <div>
+                          <span className="font-medium">تاريخ البداية:</span>
+                          <div className="text-muted-foreground">{challenge.start_date}</div>
+                        </div>
+                      )}
+                      {challenge.end_date && (
+                        <div>
+                          <span className="font-medium">تاريخ النهاية:</span>
+                          <div className="text-muted-foreground">{challenge.end_date}</div>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <Button variant="outline" size="sm">
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    {isRTL ? 'عرض' : 'View'}
-                  </Button>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         ) : (
           <div className="text-center py-8 text-muted-foreground">
-            {isRTL ? 'لا توجد تحديات مرتبطة بهذه الفعالية' : 'No related challenges for this event'}
+            لا توجد تحديات مرتبطة بهذه الفعالية
           </div>
         )}
       </div>
 
       {/* Focus Questions Section */}
       <div>
-        <h4 className="font-semibold mb-4 flex items-center gap-2">
-          <HelpCircle className="w-4 h-4" />
-          {isRTL ? 'الأسئلة المحورية' : 'Focus Questions'}
-          {focusQuestions.length > 0 && (
-            <Badge variant="secondary" className="ml-2">
-              {focusQuestions.length}
-            </Badge>
-          )}
-        </h4>
-        
+        <h3 className="text-lg font-semibold mb-4">الأسئلة المحورية</h3>
         {focusQuestions.length > 0 ? (
           <div className="grid gap-4">
             {focusQuestions.map((question) => (
-              <div key={question.id} className="p-4 border rounded-lg hover:shadow-sm transition-shadow">
-                <div className="flex items-start gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start gap-2 mb-3">
-                      {question.is_sensitive && (
-                        <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-                      )}
-                      <p className="text-sm text-foreground leading-relaxed">
-                        {question.question_text_ar}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2 flex-wrap">
+              <Card key={question.id}>
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center justify-between">
+                    <span className="text-base">{question.question_ar}</span>
+                    <div className="flex gap-2">
                       <Badge className={getQuestionTypeColor(question.question_type)}>
                         {question.question_type}
                       </Badge>
+                      <Badge className={getPriorityColor(question.priority)}>
+                        {question.priority}
+                      </Badge>
+                      <Badge className={getStatusColor(question.status)}>
+                        {question.status}
+                      </Badge>
                       {question.is_sensitive && (
-                        <Badge variant="outline" className="text-amber-600 border-amber-300">
-                          {isRTL ? 'حساس' : 'Sensitive'}
-                        </Badge>
+                        <Badge variant="destructive">حساس</Badge>
                       )}
                     </div>
-                  </div>
-                </div>
-              </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {question.question_text_ar && (
+                    <p className="text-sm text-muted-foreground">{question.question_text_ar}</p>
+                  )}
+                </CardContent>
+              </Card>
             ))}
           </div>
         ) : (
           <div className="text-center py-8 text-muted-foreground">
-            {isRTL ? 'لا توجد أسئلة محورية لهذه الفعالية' : 'No focus questions for this event'}
+            لا توجد أسئلة محورية مرتبطة بهذه الفعالية
           </div>
         )}
       </div>
