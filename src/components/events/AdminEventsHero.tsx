@@ -1,0 +1,179 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Calendar, 
+  TrendingUp, 
+  Users, 
+  DollarSign,
+  MapPin,
+  Clock,
+  AlertCircle,
+  CheckCircle2
+} from 'lucide-react';
+import { useDirection } from '@/components/ui/direction-provider';
+
+interface AdminEventsHeroProps {
+  totalEvents: number;
+  activeEvents: number;
+  totalParticipants: number;
+  totalRevenue: number;
+  upcomingEvents: number;
+  completedEvents: number;
+}
+
+export const AdminEventsHero = ({
+  totalEvents,
+  activeEvents,
+  totalParticipants,
+  totalRevenue,
+  upcomingEvents,
+  completedEvents
+}: AdminEventsHeroProps) => {
+  const { isRTL } = useDirection();
+
+  const metrics = [
+    {
+      title: isRTL ? 'إجمالي الفعاليات' : 'Total Events',
+      value: totalEvents,
+      icon: Calendar,
+      trend: isRTL ? '+12% من الشهر الماضي' : '+12% from last month',
+      color: 'bg-blue-500',
+      bgColor: 'bg-blue-50 dark:bg-blue-900/20',
+      textColor: 'text-blue-600 dark:text-blue-400'
+    },
+    {
+      title: isRTL ? 'الفعاليات النشطة' : 'Active Events',
+      value: activeEvents,
+      icon: TrendingUp,
+      trend: isRTL ? `${activeEvents} جارية الآن` : `${activeEvents} ongoing now`,
+      color: 'bg-green-500',
+      bgColor: 'bg-green-50 dark:bg-green-900/20',
+      textColor: 'text-green-600 dark:text-green-400'
+    },
+    {
+      title: isRTL ? 'إجمالي المشاركين' : 'Total Participants',
+      value: totalParticipants.toLocaleString(),
+      icon: Users,
+      trend: isRTL ? '+8% معدل التسجيل' : '+8% registration rate',
+      color: 'bg-purple-500',
+      bgColor: 'bg-purple-50 dark:bg-purple-900/20',
+      textColor: 'text-purple-600 dark:text-purple-400'
+    },
+    {
+      title: isRTL ? 'الإيرادات' : 'Revenue',
+      value: `${totalRevenue.toLocaleString()} ${isRTL ? 'ر.س' : 'SAR'}`,
+      icon: DollarSign,
+      trend: isRTL ? '+15% من الشهر الماضي' : '+15% from last month',
+      color: 'bg-emerald-500',
+      bgColor: 'bg-emerald-50 dark:bg-emerald-900/20',
+      textColor: 'text-emerald-600 dark:text-emerald-400'
+    }
+  ];
+
+  const quickStats = [
+    {
+      label: isRTL ? 'القادمة' : 'Upcoming',
+      value: upcomingEvents,
+      icon: Clock,
+      color: 'text-orange-600'
+    },
+    {
+      label: isRTL ? 'مكتملة' : 'Completed',
+      value: completedEvents,
+      icon: CheckCircle2,
+      color: 'text-green-600'
+    },
+    {
+      label: isRTL ? 'المواقع' : 'Venues',
+      value: 8,
+      icon: MapPin,
+      color: 'text-blue-600'
+    },
+    {
+      label: isRTL ? 'تحتاج انتباه' : 'Need Attention',
+      value: 3,
+      icon: AlertCircle,
+      color: 'text-red-600'
+    }
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Main Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {metrics.map((metric, index) => {
+          const IconComponent = metric.icon;
+          return (
+            <Card key={index} className="hover:shadow-md transition-all duration-300 hover-scale">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-muted-foreground mb-1">
+                      {metric.title}
+                    </p>
+                    <p className="text-2xl font-bold text-foreground mb-1">
+                      {metric.value}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {metric.trend}
+                    </p>
+                  </div>
+                  <div className={`p-3 rounded-lg ${metric.bgColor}`}>
+                    <IconComponent className={`w-6 h-6 ${metric.textColor}`} />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      {/* Quick Stats */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="w-5 h-5" />
+            {isRTL ? 'إحصائيات سريعة' : 'Quick Stats'}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {quickStats.map((stat, index) => {
+              const IconComponent = stat.icon;
+              return (
+                <div key={index} className="text-center p-4 bg-muted/30 rounded-lg">
+                  <IconComponent className={`w-8 h-8 mx-auto mb-2 ${stat.color}`} />
+                  <div className="text-2xl font-bold text-foreground">{stat.value}</div>
+                  <div className="text-sm text-muted-foreground">{stat.label}</div>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Event Status Distribution */}
+      <Card>
+        <CardHeader>
+          <CardTitle>{isRTL ? 'توزيع حالة الفعاليات' : 'Event Status Distribution'}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-3">
+            <Badge variant="default" className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+              {isRTL ? 'مجدولة' : 'Scheduled'} ({upcomingEvents})
+            </Badge>
+            <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
+              {isRTL ? 'جارية' : 'Ongoing'} ({activeEvents})
+            </Badge>
+            <Badge variant="outline" className="bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400">
+              {isRTL ? 'مكتملة' : 'Completed'} ({completedEvents})
+            </Badge>
+            <Badge variant="destructive" className="bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400">
+              {isRTL ? 'ملغية' : 'Cancelled'} (0)
+            </Badge>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};

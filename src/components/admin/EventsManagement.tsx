@@ -3,6 +3,8 @@ import { ManagementCard } from '@/components/ui/management-card';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useTranslation } from '@/hooks/useTranslation';
 import { EventWizard } from '@/components/events/EventWizard';
+import { AdminEventsHero } from '@/components/events/AdminEventsHero';
+import { EnhancedAdminEventCard } from '@/components/events/EnhancedAdminEventCard';
 import { 
   Calendar, 
   Clock,
@@ -113,70 +115,39 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
     console.log('Delete event:', event);
   };
 
+  // Calculate metrics for hero
+  const totalEvents = mockEvents.length;
+  const activeEvents = mockEvents.filter(e => e.status === 'ongoing').length;
+  const totalParticipants = mockEvents.reduce((sum, e) => sum + e.registered_participants, 0);
+  const totalRevenue = mockEvents.reduce((sum, e) => sum + (e.budget || 0), 0);
+  const upcomingEvents = mockEvents.filter(e => e.status === 'scheduled').length;
+  const completedEvents = mockEvents.filter(e => e.status === 'completed').length;
+
   return (
     <>
+      {/* Enhanced Hero Dashboard */}
+      <AdminEventsHero 
+        totalEvents={totalEvents}
+        activeEvents={activeEvents}
+        totalParticipants={totalParticipants}
+        totalRevenue={totalRevenue}
+        upcomingEvents={upcomingEvents}
+        completedEvents={completedEvents}
+      />
+
       <ViewLayouts viewMode={viewMode}>
         {mockEvents.map((event) => (
-          <ManagementCard
+          <EnhancedAdminEventCard
             key={event.id}
-            id={event.id}
-            title={event.title_ar}
-            description={event.description_ar}
+            event={{
+              ...event,
+              event_category: 'standalone',
+              event_visibility: 'public'
+            }}
             viewMode={viewMode}
-            badges={[
-              {
-                label: statusConfig[event.status as keyof typeof statusConfig]?.label,
-                variant: statusConfig[event.status as keyof typeof statusConfig]?.variant
-              },
-              {
-                label: typeConfig[event.event_type as keyof typeof typeConfig]?.label || event.event_type,
-                variant: typeConfig[event.event_type as keyof typeof typeConfig]?.variant || 'default'
-              },
-              {
-                label: formatConfig[event.format as keyof typeof formatConfig]?.label,
-                variant: formatConfig[event.format as keyof typeof formatConfig]?.variant
-              }
-            ]}
-            metadata={[
-              {
-                icon: <Calendar className="w-4 h-4" />,
-                label: 'التاريخ',
-                value: new Date(event.event_date).toLocaleDateString('ar-SA')
-              },
-              {
-                icon: <Clock className="w-4 h-4" />,
-                label: 'الوقت',
-                value: `${event.start_time} - ${event.end_time}`
-              },
-              {
-                icon: <MapPin className="w-4 h-4" />,
-                label: 'المكان',
-                value: event.format === 'virtual' ? 'افتراضي' : event.location
-              },
-              {
-                icon: <Users className="w-4 h-4" />,
-                label: 'المشاركون',
-                value: `${event.registered_participants}/${event.max_participants}`
-              }
-            ]}
-            actions={[
-              {
-                type: 'view',
-                label: 'عرض',
-                onClick: () => handleView(event)
-              },
-              {
-                type: 'edit',
-                label: 'تعديل',
-                onClick: () => handleEdit(event)
-              },
-              {
-                type: 'delete',
-                label: 'حذف',
-                onClick: () => handleDelete(event)
-              }
-            ]}
-            onClick={() => handleView(event)}
+            onEdit={handleEdit}
+            onView={handleView}
+            onDelete={handleDelete}
           />
         ))}
       </ViewLayouts>
