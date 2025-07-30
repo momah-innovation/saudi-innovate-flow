@@ -4,6 +4,7 @@ import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useTranslation } from '@/hooks/useTranslation';
 import { EventWizard } from '@/components/events/EventWizard';
 import { ComprehensiveEventWizard } from '@/components/events/ComprehensiveEventWizard';
+import { ComprehensiveEventDialog } from '@/components/events/ComprehensiveEventDialog';
 import { AdminEventsHero } from '@/components/events/AdminEventsHero';
 import { EnhancedAdminEventCard } from '@/components/events/EnhancedAdminEventCard';
 import { supabase } from '@/integrations/supabase/client';
@@ -27,6 +28,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
   const { language } = useTranslation();
   const { toast } = useToast();
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [viewEvent, setViewEvent] = useState<any>(null);
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -95,8 +97,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
   };
 
   const handleView = (event: any) => {
-    console.log('View event:', event);
-    // You can implement a detailed view dialog here
+    setViewEvent(event);
   };
 
   const handleDelete = async (event: any) => {
@@ -215,6 +216,14 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
           loadEvents(); // Reload events after save
           onAddDialogChange(false);
         }}
+      />
+
+      {/* View Event Dialog */}
+      <ComprehensiveEventDialog
+        event={viewEvent}
+        open={!!viewEvent}
+        onOpenChange={(open) => !open && setViewEvent(null)}
+        isAdmin={true}
       />
     </>
   );
