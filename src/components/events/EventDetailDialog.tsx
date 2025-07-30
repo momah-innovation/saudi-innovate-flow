@@ -24,6 +24,13 @@ import {
   Info
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useAuth } from '@/contexts/AuthContext';
+import { useEventDetails } from '@/hooks/useEventDetails';
+import { useEventInteractions } from '@/hooks/useEventInteractions';
+import { AttendeesTab } from './tabs/AttendeesTab';
+import { PartnersStakeholdersTab } from './tabs/PartnersStakeholdersTab';
+import { RelatedItemsTab } from './tabs/RelatedItemsTab';
+import { EventResourcesTab } from './tabs/EventResourcesTab';
 
 interface Event {
   id: string;
@@ -66,6 +73,19 @@ interface EventDetailDialogProps {
 
 export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: EventDetailDialogProps) => {
   const { isRTL } = useDirection();
+  const { user, hasRole } = useAuth();
+
+  // Use comprehensive hooks for data
+  const { 
+    partners, 
+    stakeholders, 
+    relatedChallenges, 
+    focusQuestions, 
+    participants, 
+    campaignInfo 
+  } = useEventDetails(event?.id || null);
+
+  const { interactions } = useEventInteractions(event?.id || null);
 
   if (!event) return null;
 
@@ -220,11 +240,47 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
 
         {/* Detailed Information Tabs */}
         <Tabs defaultValue="details" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="details">{isRTL ? 'التفاصيل' : 'Details'}</TabsTrigger>
-            <TabsTrigger value="registration">{isRTL ? 'التسجيل' : 'Registration'}</TabsTrigger>
-            <TabsTrigger value="resources">{isRTL ? 'الموارد' : 'Resources'}</TabsTrigger>
-          </TabsList>
+          {(() => {
+            // Define tab visibility based on roles and permissions
+            const canViewAttendees = hasRole('admin') || hasRole('super_admin') || hasRole('event_manager') || 
+              (event?.event_manager_id === user?.id);
+            const canViewPartners = hasRole('admin') || hasRole('super_admin') || hasRole('event_manager') || 
+              hasRole('partner') || (event?.event_manager_id === user?.id);
+            const canViewRelated = hasRole('admin') || hasRole('super_admin') || hasRole('expert') || 
+              hasRole('event_manager') || hasRole('innovator');
+            const canViewResources = interactions?.isRegistered || hasRole('admin') || hasRole('super_admin') || 
+              hasRole('event_manager') || (event?.event_manager_id === user?.id);
+
+            // Calculate grid columns based on visible tabs
+            const baseTabs = 2; // details + registration
+            const optionalTabs = [canViewAttendees, canViewPartners, canViewRelated, true, canViewResources].filter(Boolean).length;
+            const totalTabs = baseTabs + optionalTabs;
+            
+            const gridClass = totalTabs <= 3 ? 'grid-cols-3' : 
+                             totalTabs <= 4 ? 'grid-cols-4' : 
+                             totalTabs <= 5 ? 'grid-cols-5' : 
+                             totalTabs <= 6 ? 'grid-cols-6' : 'grid-cols-7';
+            
+            return (
+              <TabsList className={`grid w-full ${gridClass}`}>
+                <TabsTrigger value="details">{isRTL ? 'التفاصيل' : 'Details'}</TabsTrigger>
+                <TabsTrigger value="registration">{isRTL ? 'التسجيل' : 'Registration'}</TabsTrigger>
+                {canViewAttendees && (
+                  <TabsTrigger value="attendees">{isRTL ? 'الحضور' : 'Attendees'}</TabsTrigger>
+                )}
+                {canViewPartners && (
+                  <TabsTrigger value="partners">{isRTL ? 'الشركاء' : 'Partners'}</TabsTrigger>
+                )}
+                {canViewRelated && (
+                  <TabsTrigger value="related">{isRTL ? 'مرتبط' : 'Related'}</TabsTrigger>
+                )}
+                <TabsTrigger value="feedback">{isRTL ? 'التقييمات' : 'Feedback'}</TabsTrigger>
+                {canViewResources && (
+                  <TabsTrigger value="resources">{isRTL ? 'الموارد' : 'Resources'}</TabsTrigger>
+                )}
+              </TabsList>
+            );
+          })()}
 
           <TabsContent value="details" className="space-y-4">
             <div className="grid gap-4">
@@ -294,17 +350,62 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
             </div>
           </TabsContent>
 
-          <TabsContent value="resources" className="space-y-4">
+          {/* Attendees Tab */}
+          {(hasRole('admin') || hasRole('super_admin') || hasRole('event_manager') || (event?.event_manager_id === user?.id)) && (
+            <TabsContent value="attendees" className="space-y-4">
+              <AttendeesTab 
+                participants={participants}
+                maxParticipants={event.max_participants}
+                loading={false}
+                onUpdateStatus={async () => {}}
+                onCancelRegistration={async () => {}}
+              />
+            </TabsContent>
+          )}
+
+          {/* Partners & Stakeholders Tab */}
+          {(hasRole('admin') || hasRole('super_admin') || hasRole('event_manager') || hasRole('partner') || (event?.event_manager_id === user?.id)) && (
+            <TabsContent value="partners" className="space-y-4">
+              <PartnersStakeholdersTab 
+                partners={partners}
+                stakeholders={stakeholders}
+              />
+            </TabsContent>
+          )}
+
+          {/* Related Items Tab */}
+          {(hasRole('admin') || hasRole('super_admin') || hasRole('expert') || hasRole('event_manager') || hasRole('innovator')) && (
+            <TabsContent value="related" className="space-y-4">
+              <RelatedItemsTab 
+                relatedChallenges={relatedChallenges}
+                focusQuestions={focusQuestions}
+                campaignInfo={campaignInfo}
+              />
+            </TabsContent>
+          )}
+
+          {/* Feedback Tab */}
+          <TabsContent value="feedback" className="space-y-4">
             <div>
               <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <FileText className="w-4 h-4" />
-                {isRTL ? 'الموارد والمراجع' : 'Resources & Materials'}
+                <Star className="w-4 h-4" />
+                {isRTL ? 'التقييمات والمراجعات' : 'Ratings & Reviews'}
               </h4>
               <div className="text-center py-8 text-muted-foreground">
-                {isRTL ? 'ستتوفر الموارد قريباً' : 'Resources will be available soon'}
+                {isRTL ? 'لا توجد تقييمات بعد' : 'No reviews yet'}
               </div>
             </div>
           </TabsContent>
+
+          {/* Resources Tab */}
+          {(interactions?.isRegistered || hasRole('admin') || hasRole('super_admin') || hasRole('event_manager') || (event?.event_manager_id === user?.id)) && (
+            <TabsContent value="resources" className="space-y-4">
+              <EventResourcesTab 
+                eventId={event.id}
+                resources={[]}
+              />
+            </TabsContent>
+          )}
         </Tabs>
       </DialogContent>
     </Dialog>
