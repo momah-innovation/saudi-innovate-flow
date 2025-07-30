@@ -59,7 +59,7 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
         .from('idea_comments')
         .select(`
           *,
-          author:profiles(name, email, profile_image_url)
+          profiles!author_id(name, name_ar, profile_image_url)
         `)
         .eq('idea_id', ideaId)
         .order('created_at', { ascending: true });
