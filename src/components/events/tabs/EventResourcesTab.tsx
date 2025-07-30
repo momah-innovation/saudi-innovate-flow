@@ -40,14 +40,14 @@ interface EventResource {
 
 interface EventResourcesTabProps {
   eventId: string;
-  resources: EventResource[];
+  resources?: EventResource[];
   isAdmin?: boolean;
   onResourcesUpdate?: () => void;
 }
 
 export const EventResourcesTab = ({ 
   eventId, 
-  resources, 
+  resources = [], 
   isAdmin = false,
   onResourcesUpdate
 }: EventResourcesTabProps) => {

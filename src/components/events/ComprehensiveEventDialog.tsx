@@ -35,6 +35,10 @@ import { useEventInteractions } from '@/hooks/useEventInteractions';
 import { useParticipants } from '@/hooks/useParticipants';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { AttendeesTab } from './tabs/AttendeesTab';
+import { PartnersStakeholdersTab } from './tabs/PartnersStakeholdersTab';
+import { RelatedItemsTab } from './tabs/RelatedItemsTab';
+import { EventResourcesTab } from './tabs/EventResourcesTab';
 
 interface Event {
   id: string;
@@ -479,8 +483,45 @@ export const ComprehensiveEventDialog = ({
             </Card>
           </TabsContent>
 
-          {/* Additional tabs with role-based visibility */}
-          {/* ... other tabs content will be implemented based on the hooks data ... */}
+          {/* Attendees Tab */}
+          {canShowParticipants && (
+            <TabsContent value="attendees">
+              <AttendeesTab 
+                participants={allParticipants}
+                loading={participantsLoading}
+                onUpdateStatus={updateParticipantStatus}
+                onCancelRegistration={cancelRegistration}
+              />
+            </TabsContent>
+          )}
+
+          {/* Partners & Stakeholders Tab */}
+          {canShowPartners && (
+            <TabsContent value="partners">
+              <PartnersStakeholdersTab 
+                partners={partners}
+                stakeholders={stakeholders}
+              />
+            </TabsContent>
+          )}
+
+          {/* Related Items Tab */}
+          {canShowRelated && (
+            <TabsContent value="related">
+              <RelatedItemsTab 
+                relatedChallenges={relatedChallenges}
+                focusQuestions={focusQuestions}
+                campaignInfo={campaignInfo}
+              />
+            </TabsContent>
+          )}
+
+          {/* Resources Tab */}
+          {canShowResources && (
+            <TabsContent value="resources">
+              <EventResourcesTab eventId={event.id} resources={[]} />
+            </TabsContent>
+          )}
         </Tabs>
       </DialogContent>
     </Dialog>

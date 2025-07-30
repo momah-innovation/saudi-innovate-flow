@@ -17,6 +17,9 @@ interface EventParticipant {
 interface AttendeesTabProps {
   participants: EventParticipant[];
   maxParticipants?: number;
+  loading?: boolean;
+  onUpdateStatus?: (participantId: string, newStatus: string) => Promise<void>;
+  onCancelRegistration?: (participantId: string, targetEventId: string) => Promise<void>;
 }
 
 export const AttendeesTab = ({ 

@@ -40,6 +40,7 @@ import { useEventDetails } from '@/hooks/useEventDetails';
 import { PartnersStakeholdersTab } from './tabs/PartnersStakeholdersTab';
 import { RelatedItemsTab } from './tabs/RelatedItemsTab';
 import { AttendeesTab } from './tabs/AttendeesTab';
+import { EventResourcesTab } from './tabs/EventResourcesTab';
 
 interface Event {
   id: string;
@@ -693,60 +694,10 @@ export const EnhancedEventDetailDialog = ({
 
           {(interactions.isRegistered || hasRole('admin') || hasRole('super_admin') || hasRole('event_manager') || (event?.event_manager_id === user?.id)) && (
             <TabsContent value="resources" className="space-y-4">
-              <div>
-                <h4 className="font-semibold mb-4 flex items-center gap-2">
-                  <FileText className="w-4 h-4" />
-                  {isRTL ? 'الموارد والمواد' : 'Resources & Materials'}
-                </h4>
-                
-                <div className="space-y-3">
-                  {resources.length > 0 ? (
-                    resources.map((resource) => (
-                      <div key={resource.id} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div className="flex items-center gap-3">
-                          {resource.resource_type === 'video' ? (
-                            <Video className="w-5 h-5 text-muted-foreground" />
-                          ) : resource.resource_type === 'document' ? (
-                            <FileText className="w-5 h-5 text-muted-foreground" />
-                          ) : (
-                            <FileText className="w-5 h-5 text-muted-foreground" />
-                          )}
-                          <div>
-                            <div className="font-medium">{resource.title}</div>
-                            <div className="text-sm text-muted-foreground">
-                              {resource.file_format?.toUpperCase()} 
-                              {resource.file_size_mb && ` • ${resource.file_size_mb} MB`}
-                            </div>
-                          </div>
-                        </div>
-                        {resource.availability_status === 'available' && resource.file_url ? (
-                          <Button variant="outline" size="sm" asChild>
-                            <a href={resource.file_url} target="_blank" rel="noopener noreferrer">
-                              <Download className="w-4 h-4 mr-2" />
-                              {isRTL ? 'تحميل' : 'Download'}
-                            </a>
-                          </Button>
-                        ) : (
-                          <Button variant="outline" size="sm" disabled>
-                            {resource.resource_type === 'video' && <Video className="w-4 h-4 mr-2" />}
-                            {resource.resource_type !== 'video' && <Download className="w-4 h-4 mr-2" />}
-                            {resource.availability_status === 'coming_soon' ? 
-                              (isRTL ? 'قريباً' : 'Coming Soon') :
-                              resource.availability_status === 'unavailable' ?
-                              (isRTL ? 'غير متاح' : 'Unavailable') :
-                              (isRTL ? 'تحميل' : 'Download')
-                            }
-                          </Button>
-                        )}
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-center py-8 text-muted-foreground">
-                      {isRTL ? 'لا توجد موارد متاحة لهذه الفعالية' : 'No resources available for this event'}
-                    </div>
-                  )}
-                </div>
-              </div>
+              <EventResourcesTab 
+                eventId={event.id}
+                resources={resources}
+              />
             </TabsContent>
           )}
         </Tabs>
