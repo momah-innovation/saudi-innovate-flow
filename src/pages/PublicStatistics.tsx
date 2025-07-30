@@ -148,7 +148,6 @@ export default function PublicStatistics() {
 
       // Apply department/sector filters
       if (selectedDepartments.length > 0) {
-        ideasQuery = ideasQuery.in('department_id', selectedDepartments);
         challengesQuery = challengesQuery.in('department_id', selectedDepartments);
       }
 
