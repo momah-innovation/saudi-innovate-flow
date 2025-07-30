@@ -196,9 +196,16 @@ export default function IdeaSubmissionWizard() {
     try {
       setAutoSaving(true);
       
+      // Ensure innovator exists first
+      const { data: innovatorId, error: innovatorError } = await supabase.rpc('ensure_innovator_exists', {
+        user_uuid: userProfile.id
+      });
+      
+      if (innovatorError) throw innovatorError;
+
       const ideaData = {
         ...formData,
-        innovator_id: userProfile.id,
+        innovator_id: innovatorId,
         challenge_id: formData.challenge_id || null,
         focus_question_id: formData.focus_question_id || null,
         status: 'draft',
@@ -264,6 +271,13 @@ export default function IdeaSubmissionWizard() {
     } catch (error) {
       console.error('Error loading draft:', error);
       toast.error(isRTL ? 'خطأ في تحميل المسودة' : 'Error loading draft');
+    }
+  };
+
+  const manualSave = async () => {
+    await autoSave();
+    if (!autoSaving) {
+      toast.success(isRTL ? 'تم حفظ المسودة يدوياً' : 'Draft saved manually');
     }
   };
 
@@ -343,9 +357,16 @@ export default function IdeaSubmissionWizard() {
     try {
       setLoading(true);
       
+      // Ensure innovator exists first
+      const { data: innovatorId, error: innovatorError } = await supabase.rpc('ensure_innovator_exists', {
+        user_uuid: userProfile.id
+      });
+      
+      if (innovatorError) throw innovatorError;
+      
       const ideaData = {
         ...formData,
-        innovator_id: userProfile.id,
+        innovator_id: innovatorId,
         challenge_id: formData.challenge_id || null,
         focus_question_id: formData.focus_question_id || null,
         status: 'pending',
@@ -946,14 +967,25 @@ export default function IdeaSubmissionWizard() {
                   {isRTL ? 'السابق' : 'Previous'}
                 </Button>
 
-                <div className="flex gap-3">
-                  <Button
-                    variant="outline"
-                    onClick={() => navigate('/dashboard')}
-                    className="px-6 py-3"
-                  >
-                    {isRTL ? 'إلغاء' : 'Cancel'}
-                  </Button>
+                 <div className="flex gap-3">
+                   {/* Manual Save Button */}
+                   <Button
+                     variant="outline"
+                     onClick={manualSave}
+                     disabled={autoSaving || (!formData.title_ar.trim() && !formData.description_ar.trim())}
+                     className="flex items-center gap-2 px-6 py-3"
+                   >
+                     <Save className={`w-4 h-4 ${autoSaving ? 'animate-pulse' : ''}`} />
+                     {isRTL ? 'حفظ مسودة' : 'Save Draft'}
+                   </Button>
+                   
+                   <Button
+                     variant="outline"
+                     onClick={() => navigate('/dashboard')}
+                     className="px-6 py-3"
+                   >
+                     {isRTL ? 'إلغاء' : 'Cancel'}
+                   </Button>
                   
                   {currentStep < STEPS.length ? (
                     <Button

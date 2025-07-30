@@ -47,18 +47,17 @@ export default function IdeaDrafts() {
     if (!userProfile) return;
 
     try {
-      const { data: innovatorData } = await supabase
-        .from('innovators')
-        .select('id')
-        .eq('user_id', userProfile.id)
-        .single();
-
-      if (!innovatorData) return;
+      // Ensure innovator exists first
+      const { data: innovatorId, error: innovatorError } = await supabase.rpc('ensure_innovator_exists', {
+        user_uuid: userProfile.id
+      });
+      
+      if (innovatorError) throw innovatorError;
 
       const { data, error } = await supabase
         .from('ideas')
         .select('*')
-        .eq('innovator_id', innovatorData.id)
+        .eq('innovator_id', innovatorId)
         .eq('status', 'draft')
         .order('updated_at', { ascending: false });
 

@@ -4170,6 +4170,10 @@ export type Database = {
         Args: { p_idea_id: string }
         Returns: undefined
       }
+      ensure_innovator_exists: {
+        Args: { user_uuid: string }
+        Returns: string
+      }
       generate_invitation_token: {
         Args: Record<PropertyKey, never>
         Returns: string
