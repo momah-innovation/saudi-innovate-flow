@@ -15,6 +15,9 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { LayoutSelector } from '@/components/ui/layout-selector';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { MetricCard } from '@/components/ui/metric-card';
+import { IdeaDetailDialog } from '@/components/ideas/IdeaDetailDialog';
+import { IdeaTemplatesDialog } from '@/components/ideas/IdeaTemplatesDialog';
+import { IdeaFiltersDialog } from '@/components/ideas/IdeaFiltersDialog';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
@@ -131,8 +134,8 @@ export default function IdeasPage() {
   const [templates, setTemplates] = useState<IdeaTemplate[]>([]);
   const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
-  const [commentDialogOpen, setCommentDialogOpen] = useState(false);
   const [templateDialogOpen, setTemplateDialogOpen] = useState(false);
+  const [filtersDialogOpen, setFiltersDialogOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [activeTab, setActiveTab] = useState('published');
   const [loading, setLoading] = useState(true);
@@ -159,6 +162,16 @@ export default function IdeasPage() {
   const [bookmarkedIdeas, setBookmarkedIdeas] = useState<string[]>([]);
   const [likedIdeas, setLikedIdeas] = useState<string[]>([]);
   const [featuredIdeas, setFeaturedIdeas] = useState<string[]>([]);
+  const [filterState, setFilterState] = useState({
+    status: [],
+    maturity: [],
+    sectors: [],
+    challenges: [],
+    scoreRange: [0, 10] as [number, number],
+    dateRange: 'all',
+    featured: false,
+    trending: false
+  });
 
   useEffect(() => {
     if (activeTab === 'published') {
@@ -505,7 +518,6 @@ export default function IdeasPage() {
       });
 
       setNewComment('');
-      setCommentDialogOpen(false);
       await loadIdeaComments(selectedIdea.id);
     } catch (error) {
       console.error('Error adding comment:', error);
@@ -786,8 +798,7 @@ export default function IdeasPage() {
               className="gap-1"
               onClick={(e) => {
                 e.stopPropagation();
-                setSelectedIdea(idea);
-                setCommentDialogOpen(true);
+                handleViewDetails(idea);
               }}
             >
               <MessageSquare className="w-4 h-4" />
@@ -1172,30 +1183,29 @@ export default function IdeasPage() {
           </Tabs>
         </div>
 
-        {/* Templates Dialog */}
-        <Dialog open={templateDialogOpen} onOpenChange={setTemplateDialogOpen}>
-          <DialogContent className="max-w-4xl">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <Palette className="w-5 h-5" />
-                {isRTL ? 'قوالب الأفكار' : 'Idea Templates'}
-              </DialogTitle>
-            </DialogHeader>
-            <div className="grid gap-4 md:grid-cols-2">
-              {templates.map((template) => (
-                <Card key={template.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => createFromTemplate(template)}>
-                  <CardHeader>
-                    <CardTitle className="text-lg">{isRTL ? template.name_ar : template.name}</CardTitle>
-                    <CardDescription>{isRTL ? template.description_ar : template.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Badge variant="outline">{template.category}</Badge>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </DialogContent>
-        </Dialog>
+        {/* Enhanced Dialogs */}
+        <IdeaDetailDialog
+          idea={selectedIdea}
+          isOpen={detailDialogOpen}
+          onOpenChange={setDetailDialogOpen}
+          onLike={toggleLike}
+          onBookmark={toggleBookmark}
+          isLiked={selectedIdea ? likedIdeas.includes(selectedIdea.id) : false}
+          isBookmarked={selectedIdea ? bookmarkedIdeas.includes(selectedIdea.id) : false}
+        />
+
+        <IdeaTemplatesDialog
+          isOpen={templateDialogOpen}
+          onOpenChange={setTemplateDialogOpen}
+          onSelectTemplate={createFromTemplate}
+        />
+
+        <IdeaFiltersDialog
+          isOpen={filtersDialogOpen}
+          onOpenChange={setFiltersDialogOpen}
+          filters={filterState}
+          onApplyFilters={setFilterState}
+        />
 
         {/* Enhanced Idea Detail Dialog */}
         <Dialog open={detailDialogOpen} onOpenChange={setDetailDialogOpen}>
@@ -1365,7 +1375,7 @@ export default function IdeasPage() {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={() => setCommentDialogOpen(true)}
+                        onClick={() => setDetailDialogOpen(false)}
                         className="gap-2"
                       >
                         <Plus className="w-4 h-4" />
@@ -1404,35 +1414,6 @@ export default function IdeasPage() {
           </DialogContent>
         </Dialog>
 
-        {/* Comment Dialog */}
-        <Dialog open={commentDialogOpen} onOpenChange={setCommentDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <MessageSquare className="w-5 h-5" />
-                {isRTL ? 'إضافة تعليق' : 'Add Comment'}
-              </DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <Textarea
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder={isRTL ? 'اكتب تعليقك هنا...' : 'Write your comment here...'}
-                rows={4}
-                className="resize-none"
-              />
-              <div className="flex justify-end gap-2">
-                <Button variant="outline" onClick={() => setCommentDialogOpen(false)}>
-                  {isRTL ? 'إلغاء' : 'Cancel'}
-                </Button>
-                <Button onClick={handleAddComment} disabled={!newComment.trim()} className="gap-2">
-                  <MessageSquare className="w-4 h-4" />
-                  {isRTL ? 'إضافة تعليق' : 'Add Comment'}
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
       </PageLayout>
     </AppShell>
   );
