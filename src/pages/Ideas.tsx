@@ -50,8 +50,9 @@ interface Idea {
     id: string;
     user_id: string;
     profiles?: {
-      full_name: string;
-      avatar_url?: string;
+      name: string;
+      name_ar: string;
+      profile_image_url?: string;
     };
   };
   challenges?: {
@@ -69,8 +70,9 @@ interface IdeaComment {
   author_id: string;
   created_at: string;
   profiles?: {
-    full_name: string;
-    avatar_url?: string;
+    name: string;
+    name_ar: string;
+    profile_image_url?: string;
   };
 }
 
@@ -130,7 +132,7 @@ export default function IdeasPage() {
           innovators!ideas_innovator_id_fkey(
             id,
             user_id,
-            profiles!innovators_user_id_fkey(full_name, avatar_url)
+            profiles!innovators_user_id_fkey(name, name_ar, profile_image_url)
           ),
           challenges!ideas_challenge_id_fkey(
             title_ar,
@@ -232,7 +234,7 @@ export default function IdeasPage() {
         .from('idea_comments')
         .select(`
           *,
-          profiles!idea_comments_author_id_fkey(full_name, avatar_url)
+          profiles!idea_comments_author_id_fkey(name, name_ar, profile_image_url)
         `)
         .eq('idea_id', ideaId)
         .order('created_at', { ascending: false });
@@ -435,12 +437,12 @@ export default function IdeasPage() {
         <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
           <div className="flex items-center gap-2">
             <Avatar className="w-6 h-6">
-              <AvatarImage src={idea.innovators?.profiles?.avatar_url} />
-              <AvatarFallback>
-                {idea.innovators?.profiles?.full_name?.charAt(0) || 'U'}
-              </AvatarFallback>
-            </Avatar>
-            <span>{idea.innovators?.profiles?.full_name || 'Anonymous'}</span>
+               <AvatarImage src={idea.innovators?.profiles?.profile_image_url} />
+               <AvatarFallback>
+                 {(isRTL ? idea.innovators?.profiles?.name_ar : idea.innovators?.profiles?.name)?.charAt(0) || 'U'}
+               </AvatarFallback>
+             </Avatar>
+             <span>{isRTL ? idea.innovators?.profiles?.name_ar : idea.innovators?.profiles?.name || 'Anonymous'}</span>
           </div>
           
           <div className="flex items-center gap-1">
@@ -743,15 +745,15 @@ export default function IdeasPage() {
                       <div className="bg-gradient-to-br from-muted/50 to-muted/30 p-4 rounded-lg border">
                         <div className="flex items-center gap-3 mb-4">
                           <Avatar className="w-12 h-12">
-                            <AvatarImage src={selectedIdea.innovators?.profiles?.avatar_url} />
-                            <AvatarFallback className="text-lg">
-                              {selectedIdea.innovators?.profiles?.full_name?.charAt(0) || 'U'}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="font-medium text-lg">
-                              {selectedIdea.innovators?.profiles?.full_name || 'Anonymous'}
-                            </p>
+                             <AvatarImage src={selectedIdea.innovators?.profiles?.profile_image_url} />
+                             <AvatarFallback className="text-lg">
+                               {(isRTL ? selectedIdea.innovators?.profiles?.name_ar : selectedIdea.innovators?.profiles?.name)?.charAt(0) || 'U'}
+                             </AvatarFallback>
+                           </Avatar>
+                           <div>
+                             <p className="font-medium text-lg">
+                               {isRTL ? selectedIdea.innovators?.profiles?.name_ar : selectedIdea.innovators?.profiles?.name || 'Anonymous'}
+                             </p>
                             <p className="text-sm text-muted-foreground">
                               {isRTL ? 'مبتكر' : 'Innovator'}
                             </p>
@@ -793,12 +795,12 @@ export default function IdeasPage() {
                       {comments.length > 0 ? comments.map((comment) => (
                         <div key={comment.id} className="flex gap-3 p-4 bg-muted/50 rounded-lg border-l-4 border-primary/20">
                           <Avatar className="w-8 h-8">
-                            <AvatarImage src={comment.profiles?.avatar_url} />
-                            <AvatarFallback>{comment.profiles?.full_name?.charAt(0) || 'U'}</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="font-medium text-sm">{comment.profiles?.full_name || 'Anonymous'}</span>
+                             <AvatarImage src={comment.profiles?.profile_image_url} />
+                             <AvatarFallback>{(isRTL ? comment.profiles?.name_ar : comment.profiles?.name)?.charAt(0) || 'U'}</AvatarFallback>
+                           </Avatar>
+                           <div className="flex-1">
+                             <div className="flex items-center gap-2 mb-1">
+                               <span className="font-medium text-sm">{isRTL ? comment.profiles?.name_ar : comment.profiles?.name || 'Anonymous'}</span>
                               <span className="text-xs text-muted-foreground">
                                 {new Date(comment.created_at).toLocaleDateString()}
                               </span>
