@@ -231,6 +231,9 @@ export const ComprehensiveEventWizard = ({
       // Save event
       const eventData = {
         ...formData,
+        // Convert "none" values back to null for database
+        challenge_id: formData.challenge_id === 'none' ? null : formData.challenge_id,
+        sector_id: formData.sector_id === 'none' ? null : formData.sector_id,
         event_manager_id: user?.id,
         registered_participants: event?.registered_participants || 0,
         actual_participants: event?.actual_participants || 0
@@ -606,7 +609,7 @@ export const ComprehensiveEventWizard = ({
                         <SelectValue placeholder={isRTL ? 'اختر تحدي (اختياري)' : 'Select Challenge (Optional)'} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">{isRTL ? 'لا يوجد' : 'None'}</SelectItem>
+                        <SelectItem value="none">{isRTL ? 'لا يوجد' : 'None'}</SelectItem>
                         {availableChallenges.map((challenge) => (
                           <SelectItem key={challenge.id} value={challenge.id}>
                             {challenge.title_ar}
@@ -623,7 +626,7 @@ export const ComprehensiveEventWizard = ({
                         <SelectValue placeholder={isRTL ? 'اختر قطاع (اختياري)' : 'Select Sector (Optional)'} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">{isRTL ? 'لا يوجد' : 'None'}</SelectItem>
+                        <SelectItem value="none">{isRTL ? 'لا يوجد' : 'None'}</SelectItem>
                         {availableSectors.map((sector) => (
                           <SelectItem key={sector.id} value={sector.id}>
                             {sector.name_ar || sector.name}
