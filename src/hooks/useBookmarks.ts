@@ -122,7 +122,10 @@ export function useBookmarks() {
         `)
         .eq('user_id', user.id);
 
-      if (error) throw error;
+      if (error) {
+        console.warn('Focus question bookmarks table may not exist yet:', error);
+        return;
+      }
       setFocusQuestionBookmarks(data || []);
     } catch (error) {
       console.error('Error fetching focus question bookmarks:', error);
@@ -221,7 +224,10 @@ export function useBookmarks() {
         `)
         .eq('user_id', user.id);
 
-      if (error) throw error;
+      if (error) {
+        console.warn('Expert bookmarks table may not exist yet:', error);
+        return;
+      }
       setExpertBookmarks(data || []);
     } catch (error) {
       console.error('Error fetching expert bookmarks:', error);
@@ -252,7 +258,7 @@ export function useBookmarks() {
   };
 
   const fetchCollections = async () => {
-    // Placeholder collections for now
+    // Use placeholder collections since the table doesn't exist yet
     setCollections([
       {
         id: '1',
