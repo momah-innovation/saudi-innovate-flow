@@ -50,6 +50,7 @@ import TrendsPage from "./pages/TrendsPage";
 import ReportsPage from "./pages/ReportsPage";
 import SystemAnalyticsPage from "./pages/SystemAnalyticsPage";
 import HelpPage from "./pages/HelpPage";
+import EvaluationManagement from "./pages/EvaluationManagement";
 
 const queryClient = new QueryClient();
 
@@ -325,6 +326,14 @@ const App = () => (
             <Route path="/trends" element={<TrendsPage />} />
             <Route path="/reports" element={<ReportsPage />} />
             <Route path="/admin/system-analytics" element={<SystemAnalyticsPage />} />
+            <Route 
+              path="/admin/evaluation-management" 
+              element={
+                <ProtectedRoute requireProfile requiredRole="admin">
+                  <EvaluationManagement />
+                </ProtectedRoute>
+              } 
+            />
             <Route path="/help" element={<HelpPage />} />
             {/* Legacy dashboard route pointing to Index */}
             <Route 

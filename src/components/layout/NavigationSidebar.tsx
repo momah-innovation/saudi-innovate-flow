@@ -241,6 +241,15 @@ export function NavigationSidebar() {
         roles: ['team', 'admin'] 
       },
       { 
+        id: 'evaluations-management', 
+        label: 'Evaluation System', 
+        arabicLabel: 'نظام التقييم',
+        icon: FileText, 
+        path: '/admin/evaluation-management',
+        group: 'management',
+        roles: ['admin'] 
+      },
+      { 
         id: 'stakeholders', 
         label: 'Stakeholders', 
         arabicLabel: 'المعنيين',
