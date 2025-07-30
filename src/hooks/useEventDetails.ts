@@ -94,8 +94,26 @@ export const useEventDetails = (eventId: string | null) => {
     if (!eventId) return;
 
     try {
-      // For now, return empty array until partners table foreign key is confirmed
-      setPartners([]);
+      const { data, error } = await supabase
+        .from('event_partner_links')
+        .select(`
+          partner_id,
+          partners!inner (
+            id,
+            name,
+            name_ar,
+            partner_type,
+            logo_url,
+            contact_person,
+            email
+          )
+        `)
+        .eq('event_id', eventId);
+
+      if (error) throw error;
+
+      const partnerData = data?.map(link => link.partners) || [];
+      setPartners(partnerData as EventPartner[]);
     } catch (error) {
       console.error('Error loading partners:', error);
     }
@@ -105,8 +123,37 @@ export const useEventDetails = (eventId: string | null) => {
     if (!eventId) return;
 
     try {
-      // For now, return empty array until stakeholders table schema is confirmed
-      setStakeholders([]);
+      const { data, error } = await supabase
+        .from('event_stakeholder_links')
+        .select(`
+          stakeholder_id,
+          stakeholders!inner (
+            id,
+            name,
+            organization,
+            position,
+            stakeholder_type,
+            engagement_status,
+            email,
+            phone
+          )
+        `)
+        .eq('event_id', eventId);
+
+      if (error) throw error;
+
+      const stakeholderData = data?.map(link => ({
+        id: link.stakeholders.id,
+        name: link.stakeholders.name,
+        organization: link.stakeholders.organization || '',
+        position: link.stakeholders.position || '',
+        stakeholder_type: link.stakeholders.stakeholder_type || 'organization',
+        engagement_status: link.stakeholders.engagement_status || 'active',
+        invitation_status: 'sent',
+        attendance_status: 'pending'
+      })) || [];
+      
+      setStakeholders(stakeholderData as EventStakeholder[]);
     } catch (error) {
       console.error('Error loading stakeholders:', error);
     }
