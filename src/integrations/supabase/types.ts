@@ -1768,15 +1768,23 @@ export type Database = {
       events: {
         Row: {
           actual_participants: number | null
+          additional_links: string | null
+          allow_waitlist: boolean | null
+          auto_confirmation: boolean | null
           budget: number | null
           campaign_id: string | null
           challenge_id: string | null
           created_at: string | null
           description_ar: string | null
+          email_reminders: boolean | null
+          enable_feedback: boolean | null
+          enable_networking: boolean | null
+          enable_qr_checkin: boolean | null
           end_date: string | null
           end_time: string | null
           event_category: string | null
           event_date: string
+          event_language: string | null
           event_manager_id: string | null
           event_type: string | null
           event_visibility: string | null
@@ -1785,31 +1793,50 @@ export type Database = {
           image_url: string | null
           inherit_from_campaign: boolean | null
           is_recurring: boolean | null
+          live_stream_url: string | null
           location: string | null
           max_participants: number | null
+          participant_requirements: string | null
           partner_organizations: string[] | null
+          record_sessions: boolean | null
+          recording_url: string | null
           recurrence_end_date: string | null
           recurrence_pattern: string | null
           registered_participants: number | null
+          registration_fee: number | null
+          registration_type: string | null
           related_focus_questions: string[] | null
+          reminder_schedule: string | null
+          requires_approval: boolean | null
           sector_id: string | null
+          selection_criteria: string | null
+          sms_notifications: boolean | null
           start_time: string | null
           status: string | null
           target_stakeholder_groups: string[] | null
+          timezone: string | null
           title_ar: string
           virtual_link: string | null
         }
         Insert: {
           actual_participants?: number | null
+          additional_links?: string | null
+          allow_waitlist?: boolean | null
+          auto_confirmation?: boolean | null
           budget?: number | null
           campaign_id?: string | null
           challenge_id?: string | null
           created_at?: string | null
           description_ar?: string | null
+          email_reminders?: boolean | null
+          enable_feedback?: boolean | null
+          enable_networking?: boolean | null
+          enable_qr_checkin?: boolean | null
           end_date?: string | null
           end_time?: string | null
           event_category?: string | null
           event_date: string
+          event_language?: string | null
           event_manager_id?: string | null
           event_type?: string | null
           event_visibility?: string | null
@@ -1818,31 +1845,50 @@ export type Database = {
           image_url?: string | null
           inherit_from_campaign?: boolean | null
           is_recurring?: boolean | null
+          live_stream_url?: string | null
           location?: string | null
           max_participants?: number | null
+          participant_requirements?: string | null
           partner_organizations?: string[] | null
+          record_sessions?: boolean | null
+          recording_url?: string | null
           recurrence_end_date?: string | null
           recurrence_pattern?: string | null
           registered_participants?: number | null
+          registration_fee?: number | null
+          registration_type?: string | null
           related_focus_questions?: string[] | null
+          reminder_schedule?: string | null
+          requires_approval?: boolean | null
           sector_id?: string | null
+          selection_criteria?: string | null
+          sms_notifications?: boolean | null
           start_time?: string | null
           status?: string | null
           target_stakeholder_groups?: string[] | null
+          timezone?: string | null
           title_ar: string
           virtual_link?: string | null
         }
         Update: {
           actual_participants?: number | null
+          additional_links?: string | null
+          allow_waitlist?: boolean | null
+          auto_confirmation?: boolean | null
           budget?: number | null
           campaign_id?: string | null
           challenge_id?: string | null
           created_at?: string | null
           description_ar?: string | null
+          email_reminders?: boolean | null
+          enable_feedback?: boolean | null
+          enable_networking?: boolean | null
+          enable_qr_checkin?: boolean | null
           end_date?: string | null
           end_time?: string | null
           event_category?: string | null
           event_date?: string
+          event_language?: string | null
           event_manager_id?: string | null
           event_type?: string | null
           event_visibility?: string | null
@@ -1851,17 +1897,28 @@ export type Database = {
           image_url?: string | null
           inherit_from_campaign?: boolean | null
           is_recurring?: boolean | null
+          live_stream_url?: string | null
           location?: string | null
           max_participants?: number | null
+          participant_requirements?: string | null
           partner_organizations?: string[] | null
+          record_sessions?: boolean | null
+          recording_url?: string | null
           recurrence_end_date?: string | null
           recurrence_pattern?: string | null
           registered_participants?: number | null
+          registration_fee?: number | null
+          registration_type?: string | null
           related_focus_questions?: string[] | null
+          reminder_schedule?: string | null
+          requires_approval?: boolean | null
           sector_id?: string | null
+          selection_criteria?: string | null
+          sms_notifications?: boolean | null
           start_time?: string | null
           status?: string | null
           target_stakeholder_groups?: string[] | null
+          timezone?: string | null
           title_ar?: string
           virtual_link?: string | null
         }
