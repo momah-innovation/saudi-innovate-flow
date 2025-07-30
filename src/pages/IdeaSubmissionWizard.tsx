@@ -738,131 +738,163 @@ export default function IdeaSubmissionWizard() {
 
   return (
     <AppShell>
-      <div className="max-w-4xl mx-auto p-6 space-y-6">
-        {/* Header */}
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold flex items-center justify-center gap-2">
-            <Sparkles className="w-8 h-8 text-primary" />
-            {isRTL ? 'معالج تقديم الفكرة الابتكارية' : 'Innovation Idea Submission Wizard'}
-          </h1>
-          <p className="text-muted-foreground">
-            {isRTL ? 'شاركنا فكرتك الابتكارية خطوة بخطوة' : 'Share your innovative idea step by step'}
-          </p>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-sm font-medium">
-              {isRTL ? `الخطوة ${currentStep} من ${STEPS.length}` : `Step ${currentStep} of ${STEPS.length}`}
-            </span>
-            <div className="flex items-center gap-2">
-              {autoSaving && (
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Save className="w-3 h-3 animate-pulse" />
-                  {isRTL ? 'جاري الحفظ...' : 'Auto-saving...'}
-                </div>
-              )}
-              <span className="text-sm text-muted-foreground">
-                {Math.round(progress)}% {isRTL ? 'مكتمل' : 'Complete'}
-              </span>
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+        <div className="max-w-4xl mx-auto p-6 space-y-6">
+          {/* Hero Header with Animation */}
+          <div className="text-center space-y-4 py-8">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-secondary mb-4 animate-pulse">
+              <Sparkles className="w-10 h-10 text-white" />
             </div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              {isRTL ? 'معالج تقديم الفكرة الابتكارية' : 'Innovation Idea Submission Wizard'}
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              {isRTL ? 'شاركنا فكرتك الابتكارية خطوة بخطوة وساعد في بناء مستقبل أفضل' : 'Share your innovative idea step by step and help build a better future'}
+            </p>
           </div>
-          <Progress value={progress} className="w-full" />
-        </div>
 
-        {/* Steps Indicator */}
-        <div className="flex justify-between items-center overflow-x-auto pb-2">
-          {STEPS.map((step) => {
-            const StepIcon = step.icon;
-            const isActive = currentStep === step.id;
-            const isCompleted = currentStep > step.id;
-            
-            return (
-              <div key={step.id} className="flex flex-col items-center space-y-2 min-w-[120px]">
-                <div className={`
-                  w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all
-                  ${isActive ? 'bg-primary text-primary-foreground border-primary shadow-lg scale-110' : 
-                    isCompleted ? 'bg-primary/10 text-primary border-primary' : 
-                    'bg-muted text-muted-foreground border-muted'}
-                `}>
-                  <StepIcon className="w-6 h-6" />
+          {/* Enhanced Progress Section */}
+          <Card className="bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20">
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-lg font-semibold">
+                    {isRTL ? `الخطوة ${currentStep} من ${STEPS.length}` : `Step ${currentStep} of ${STEPS.length}`}
+                  </span>
+                  <div className="flex items-center gap-3">
+                    {autoSaving && (
+                      <div className="flex items-center gap-2 text-sm text-primary bg-primary/10 px-3 py-1 rounded-full">
+                        <Save className="w-4 h-4 animate-pulse" />
+                        {isRTL ? 'جاري الحفظ...' : 'Auto-saving...'}
+                      </div>
+                    )}
+                    <div className="text-sm font-medium text-primary">
+                      {Math.round(progress)}% {isRTL ? 'مكتمل' : 'Complete'}
+                    </div>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <span className={`text-sm font-medium block ${isActive ? 'text-primary' : 'text-muted-foreground'}`}>
-                    {isRTL ? step.title : step.titleEn}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {step.description}
-                  </span>
+                <div className="relative">
+                  <Progress value={progress} className="w-full h-3 bg-muted" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-20 rounded-full" 
+                       style={{ width: `${progress}%` }} />
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </CardContent>
+          </Card>
 
-        {/* Main Content */}
-        <Card className="border-2">
-          <CardHeader className="pb-4">
-            <CardTitle className="flex items-center gap-2">
-              {React.createElement(STEPS[currentStep - 1].icon, { className: "w-6 h-6 text-primary" })}
-              {isRTL ? STEPS[currentStep - 1].title : STEPS[currentStep - 1].titleEn}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            {renderStepContent()}
-          </CardContent>
-        </Card>
-
-        {/* Navigation Buttons */}
-        <div className="flex justify-between items-center">
-          <Button
-            variant="outline"
-            onClick={prevStep}
-            disabled={currentStep === 1}
-            className="flex items-center gap-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            {isRTL ? 'السابق' : 'Previous'}
-          </Button>
-
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              onClick={() => navigate('/dashboard')}
-            >
-              {isRTL ? 'إلغاء' : 'Cancel'}
-            </Button>
-            
-            {currentStep < STEPS.length ? (
-              <Button
-                onClick={nextStep}
-                disabled={!validateStep(currentStep)}
-                className="flex items-center gap-2"
-              >
-                {isRTL ? 'التالي' : 'Next'}
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            ) : (
-              <Button
-                onClick={submitIdea}
-                disabled={loading || !validateStep(currentStep)}
-                className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80"
-              >
-                {loading ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    {isRTL ? 'جاري الإرسال...' : 'Submitting...'}
-                  </>
-                ) : (
-                  <>
-                    <Rocket className="w-4 h-4" />
-                    {isRTL ? 'إرسال الفكرة' : 'Submit Idea'}
-                  </>
-                )}
-              </Button>
-            )}
+          {/* Enhanced Steps Indicator with Animations */}
+          <div className="grid grid-cols-5 gap-4 p-6 bg-card rounded-xl border shadow-sm">
+            {STEPS.map((step) => {
+              const StepIcon = step.icon;
+              const isActive = currentStep === step.id;
+              const isCompleted = currentStep > step.id;
+              
+              return (
+                <div key={step.id} className="flex flex-col items-center space-y-3 group cursor-pointer">
+                  <div className={`
+                    relative w-16 h-16 rounded-full flex items-center justify-center border-2 transition-all duration-300 transform
+                    ${isActive ? 'bg-gradient-to-br from-primary to-secondary text-white border-primary shadow-lg scale-110 animate-pulse' : 
+                      isCompleted ? 'bg-gradient-to-br from-green-400 to-green-600 text-white border-green-500 shadow-md' : 
+                      'bg-muted text-muted-foreground border-muted group-hover:border-primary/50 group-hover:scale-105'}
+                  `}>
+                    {isCompleted ? (
+                      <Check className="w-8 h-8" />
+                    ) : (
+                      <StepIcon className="w-8 h-8" />
+                    )}
+                    {isActive && (
+                      <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping" />
+                    )}
+                  </div>
+                  <div className="text-center space-y-1">
+                    <span className={`text-sm font-semibold block transition-colors ${
+                      isActive ? 'text-primary' : isCompleted ? 'text-green-600' : 'text-muted-foreground'
+                    }`}>
+                      {isRTL ? step.title : step.titleEn}
+                    </span>
+                    <span className="text-xs text-muted-foreground leading-tight">
+                      {step.description}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
+
+          {/* Enhanced Main Content Card */}
+          <Card className="border-2 shadow-xl bg-gradient-to-br from-card to-card/50 backdrop-blur-sm">
+            <CardHeader className="pb-6 border-b bg-gradient-to-r from-primary/5 to-secondary/5">
+              <CardTitle className="flex items-center gap-3 text-2xl">
+                {React.createElement(STEPS[currentStep - 1].icon, { 
+                  className: "w-8 h-8 text-primary" 
+                })}
+                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  {isRTL ? STEPS[currentStep - 1].title : STEPS[currentStep - 1].titleEn}
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-8 pb-8">
+              <div className="animate-fade-in">
+                {renderStepContent()}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Enhanced Navigation with Better Styling */}
+          <Card className="border bg-gradient-to-r from-card to-muted/20">
+            <CardContent className="p-6">
+              <div className="flex justify-between items-center">
+                <Button
+                  variant="outline"
+                  onClick={prevStep}
+                  disabled={currentStep === 1}
+                  className="flex items-center gap-2 px-6 py-3 disabled:opacity-50"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                  {isRTL ? 'السابق' : 'Previous'}
+                </Button>
+
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate('/dashboard')}
+                    className="px-6 py-3"
+                  >
+                    {isRTL ? 'إلغاء' : 'Cancel'}
+                  </Button>
+                  
+                  {currentStep < STEPS.length ? (
+                    <Button
+                      onClick={nextStep}
+                      disabled={!validateStep(currentStep)}
+                      className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 disabled:opacity-50"
+                    >
+                      {isRTL ? 'التالي' : 'Next'}
+                      <ArrowRight className="w-5 h-5" />
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={submitIdea}
+                      disabled={loading || !validateStep(currentStep)}
+                      className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 shadow-lg"
+                    >
+                      {loading ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          {isRTL ? 'جاري الإرسال...' : 'Submitting...'}
+                        </>
+                      ) : (
+                        <>
+                          <Rocket className="w-5 h-5" />
+                          {isRTL ? 'إرسال الفكرة' : 'Submit Idea'}
+                        </>
+                      )}
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </AppShell>
