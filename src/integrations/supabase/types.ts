@@ -1501,6 +1501,27 @@ export type Database = {
           },
         ]
       }
+      event_likes: {
+        Row: {
+          created_at: string | null
+          event_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          event_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       event_participant_notifications: {
         Row: {
           created_at: string
@@ -1611,6 +1632,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      event_resources: {
+        Row: {
+          availability_status: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          display_order: number | null
+          download_count: number | null
+          event_id: string
+          file_format: string | null
+          file_size_mb: number | null
+          file_url: string | null
+          id: string
+          is_public: boolean | null
+          resource_type: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          availability_status?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          display_order?: number | null
+          download_count?: number | null
+          event_id: string
+          file_format?: string | null
+          file_size_mb?: number | null
+          file_url?: string | null
+          id?: string
+          is_public?: boolean | null
+          resource_type: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          availability_status?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          display_order?: number | null
+          download_count?: number | null
+          event_id?: string
+          file_format?: string | null
+          file_size_mb?: number | null
+          file_url?: string | null
+          id?: string
+          is_public?: boolean | null
+          resource_type?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       event_stakeholder_links: {
         Row: {
@@ -4220,6 +4295,10 @@ export type Database = {
       generate_invitation_token: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      get_event_stats: {
+        Args: { event_uuid: string }
+        Returns: Json
       }
       has_role: {
         Args: {
