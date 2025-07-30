@@ -24,7 +24,10 @@ interface AttendeesTabProps {
 
 export const AttendeesTab = ({ 
   participants,
-  maxParticipants 
+  maxParticipants,
+  loading = false,
+  onUpdateStatus,
+  onCancelRegistration 
 }: AttendeesTabProps) => {
   const { isRTL } = useDirection();
 

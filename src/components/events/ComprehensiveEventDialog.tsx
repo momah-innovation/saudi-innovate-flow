@@ -233,7 +233,7 @@ export const ComprehensiveEventDialog = ({
                     disabled={interactionsLoading}
                   >
                     <Heart className={`w-4 h-4 ${interactions?.isLiked ? 'fill-current text-red-500' : ''}`} />
-                    <span className="ml-1">0</span>
+                    <span className="ml-1">{interactions?.likes_count || 0}</span>
                   </Button>
                   <Button variant="ghost" size="sm">
                     <Share2 className="w-4 h-4" />
@@ -378,7 +378,7 @@ export const ComprehensiveEventDialog = ({
                 <CardContent>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
-                      <div className="text-2xl font-bold text-foreground">{event.registered_participants}</div>
+                      <div className="text-2xl font-bold text-foreground">{interactions?.participants_count || event.registered_participants}</div>
                       <div className="text-xs text-muted-foreground">{isRTL ? 'مسجل' : 'Registered'}</div>
                     </div>
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
@@ -386,11 +386,11 @@ export const ComprehensiveEventDialog = ({
                       <div className="text-xs text-muted-foreground">{isRTL ? 'حضر' : 'Attended'}</div>
                     </div>
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
-                      <div className="text-2xl font-bold text-foreground">0</div>
+                      <div className="text-2xl font-bold text-foreground">{interactions?.likes_count || 0}</div>
                       <div className="text-xs text-muted-foreground">{isRTL ? 'إعجاب' : 'Likes'}</div>
                     </div>
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
-                      <div className="text-2xl font-bold text-foreground">0</div>
+                      <div className="text-2xl font-bold text-foreground">{interactions?.feedback_count || 0}</div>
                       <div className="text-xs text-muted-foreground">{isRTL ? 'تقييم' : 'Reviews'}</div>
                     </div>
                   </div>

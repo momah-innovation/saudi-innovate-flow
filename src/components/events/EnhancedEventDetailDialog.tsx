@@ -572,6 +572,9 @@ export const EnhancedEventDetailDialog = ({
               <AttendeesTab 
                 participants={participants}
                 maxParticipants={event.max_participants}
+                loading={false}
+                onUpdateStatus={async () => {}}
+                onCancelRegistration={async () => {}}
               />
             </TabsContent>
           )}
