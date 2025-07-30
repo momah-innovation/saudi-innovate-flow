@@ -57,14 +57,26 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
     try {
       const { data, error } = await supabase
         .from('idea_comments')
-        .select(`
-          *,
-          profiles!author_id(name, name_ar, profile_image_url)
-        `)
+        .select('*')
         .eq('idea_id', ideaId)
         .order('created_at', { ascending: true });
 
       if (error) throw error;
+
+      // Fetch profiles separately
+      const authorIds = [...new Set(data.map(comment => comment.author_id))];
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, name, name_ar, profile_image_url')
+        .in('id', authorIds);
+
+      if (profilesError) throw profilesError;
+
+      // Create a map of profiles
+      const profileMap = new Map();
+      profiles.forEach(profile => {
+        profileMap.set(profile.id, profile);
+      });
 
       // Organize comments into tree structure
       const commentMap = new Map();
@@ -72,9 +84,10 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
 
       // First pass: create all comments
       data.forEach((comment: any) => {
+        const profile = profileMap.get(comment.author_id);
         const formattedComment: Comment = {
           ...comment,
-          author: comment.author?.[0] || { name: 'مستخدم', email: '' },
+          author: profile || { name: 'مستخدم غير معروف', email: '' },
           replies: []
         };
         commentMap.set(comment.id, formattedComment);
