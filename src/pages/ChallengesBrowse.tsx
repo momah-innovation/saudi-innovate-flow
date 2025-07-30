@@ -44,6 +44,10 @@ const ChallengesBrowse = () => {
   const [createChallengeOpen, setCreateChallengeOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>(ui.defaultViewMode as any || 'cards');
   const [activeTab, setActiveTab] = useState('all');
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  
+  // Basic search - events style
+  const [searchQuery, setSearchQuery] = useState('');
   
   // Advanced filters state
   const [filters, setFilters] = useState<FilterState>({
@@ -333,13 +337,14 @@ const ChallengesBrowse = () => {
 
   return (
     <AppShell>
-      {/* Enhanced Hero Section */}
-      <ChallengesHero 
-        totalChallenges={stats.totalChallenges}
-        activeChallenges={stats.activeChallenges}
-        totalParticipants={stats.totalParticipants}
-        totalPrizes={stats.totalPrizes}
-      />
+        {/* Enhanced Hero Section - Events Style */}
+        <ChallengesHero 
+          totalChallenges={stats.totalChallenges}
+          activeChallenges={stats.activeChallenges}
+          totalParticipants={stats.totalParticipants}
+          onCreateChallenge={() => setCreateChallengeOpen(true)}
+          onShowFilters={() => setShowAdvancedFilters(true)}
+        />
       
       <PageLayout
         title={isRTL ? 'التحديات المتاحة' : 'Available Challenges'}
