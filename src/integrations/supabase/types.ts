@@ -2796,6 +2796,7 @@ export type Database = {
           description: string | null
           focus_area: string | null
           id: string
+          logo_url: string | null
           max_members: number | null
           name: string
           name_ar: string | null
@@ -2809,6 +2810,7 @@ export type Database = {
           description?: string | null
           focus_area?: string | null
           id?: string
+          logo_url?: string | null
           max_members?: number | null
           name: string
           name_ar?: string | null
@@ -2822,6 +2824,7 @@ export type Database = {
           description?: string | null
           focus_area?: string | null
           id?: string
+          logo_url?: string | null
           max_members?: number | null
           name?: string
           name_ar?: string | null
@@ -3078,6 +3081,7 @@ export type Database = {
           email: string | null
           funding_capacity: number | null
           id: string
+          logo_url: string | null
           name: string
           name_ar: string | null
           partner_type: string | null
@@ -3093,6 +3097,7 @@ export type Database = {
           email?: string | null
           funding_capacity?: number | null
           id?: string
+          logo_url?: string | null
           name: string
           name_ar?: string | null
           partner_type?: string | null
@@ -3108,6 +3113,7 @@ export type Database = {
           email?: string | null
           funding_capacity?: number | null
           id?: string
+          logo_url?: string | null
           name?: string
           name_ar?: string | null
           partner_type?: string | null
@@ -3361,6 +3367,7 @@ export type Database = {
           created_at: string | null
           description: string | null
           id: string
+          image_url: string | null
           name: string
           name_ar: string | null
           updated_at: string | null
@@ -3370,6 +3377,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: string
+          image_url?: string | null
           name: string
           name_ar?: string | null
           updated_at?: string | null
@@ -3379,6 +3387,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: string
+          image_url?: string | null
           name?: string
           name_ar?: string | null
           updated_at?: string | null
