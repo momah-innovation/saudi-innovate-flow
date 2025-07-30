@@ -130,11 +130,13 @@ const SavedItemsPage = () => {
       const tableName = type === 'challenge' ? 'challenge_bookmarks' : 'event_bookmarks';
       const columnName = `${type}_id`;
 
-      await supabase
-        .from(tableName)
+      const { error } = await supabase
+        .from(tableName as any)
         .delete()
         .eq(columnName, itemId)
         .eq('user_id', user?.id);
+
+      if (error) throw error;
 
       // Update local state
       if (type === 'challenge') {

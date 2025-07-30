@@ -4,7 +4,7 @@ import {
   Home, Target, Lightbulb, Users, Calendar, TrendingUp,
   FileText, Settings, PieChart, Briefcase, Award, Zap,
   Shield, BookOpen, BarChart3, UserCheck, Network, Search,
-  PlusCircle, Star, HelpCircle, Globe, Edit
+  PlusCircle, Star, HelpCircle, Globe, Edit, Bookmark
 } from 'lucide-react';
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent,
@@ -137,6 +137,15 @@ export function NavigationSidebar() {
         badge: 3,
         group: 'workflow',
         roles: ['innovator', 'expert', 'all'] 
+      },
+      { 
+        id: 'saved-items', 
+        label: 'Saved Items', 
+        arabicLabel: 'العناصر المحفوظة',
+        icon: Bookmark, 
+        path: '/saved',
+        group: 'workflow',
+        roles: ['all'] 
       },
       { 
         id: 'evaluations', 

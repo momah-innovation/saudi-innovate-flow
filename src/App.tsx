@@ -36,7 +36,7 @@ import IdeaSubmissionWizard from "./pages/IdeaSubmissionWizard";
 import ExpertDashboard from "./pages/ExpertDashboard";
 import ExpertProfile from "./pages/ExpertProfile";
 import EventsBrowse from "./pages/EventsBrowse";
-import PublicStatistics from "./pages/PublicStatistics";
+import StatisticsPage from "./pages/StatisticsPage";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import PartnerProfile from "./pages/PartnerProfile";
 import Settings from "./pages/Settings";
@@ -50,6 +50,7 @@ import TrendsPage from "./pages/TrendsPage";
 import ReportsPage from "./pages/ReportsPage";
 import SystemAnalyticsPage from "./pages/SystemAnalyticsPage";
 import HelpPage from "./pages/HelpPage";
+import SavedItemsPage from "./pages/SavedItems";
 import EvaluationManagement from "./pages/EvaluationManagement";
 
 const queryClient = new QueryClient();
@@ -298,7 +299,7 @@ const App = () => (
             />
             <Route 
               path="/statistics" 
-              element={<PublicStatistics />} 
+              element={<StatisticsPage />} 
             />
             <Route 
               path="/partner-dashboard" 
@@ -331,6 +332,14 @@ const App = () => (
               element={
                 <ProtectedRoute requireProfile requiredRole="admin">
                   <EvaluationManagement />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/saved" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <SavedItemsPage />
                 </ProtectedRoute>
               } 
             />
