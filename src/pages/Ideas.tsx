@@ -329,7 +329,7 @@ export default function IdeasPage() {
         .from('idea_comments')
         .select(`
           *,
-          profiles!idea_comments_author_id_fkey(name, name_ar, profile_image_url)
+          profiles(name, name_ar, profile_image_url)
         `)
         .eq('idea_id', ideaId)
         .order('created_at', { ascending: false });
