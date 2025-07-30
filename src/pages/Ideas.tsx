@@ -716,7 +716,7 @@ export default function IdeasPage() {
         </div>
       </CardHeader>
 
-      <CardContent className="pt-0" onClick={() => handleViewDetails(idea)}>
+      <CardContent className="pt-0">
         {/* Score indicators */}
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
@@ -1184,15 +1184,18 @@ export default function IdeasPage() {
         </div>
 
         {/* Enhanced Dialogs */}
-        <IdeaDetailDialog
-          idea={selectedIdea}
-          isOpen={detailDialogOpen}
-          onOpenChange={setDetailDialogOpen}
-          onLike={toggleLike}
-          onBookmark={toggleBookmark}
-          isLiked={selectedIdea ? likedIdeas.includes(selectedIdea.id) : false}
-          isBookmarked={selectedIdea ? bookmarkedIdeas.includes(selectedIdea.id) : false}
-        />
+          <IdeaDetailDialog 
+            idea={selectedIdea}
+            isOpen={detailDialogOpen}
+            onOpenChange={(open) => {
+              setDetailDialogOpen(open);
+              if (!open) setSelectedIdea(null);
+            }}
+            onLike={toggleLike}
+            onBookmark={toggleBookmark}
+            isLiked={selectedIdea ? likedIdeas.includes(selectedIdea.id) : false}
+            isBookmarked={selectedIdea ? bookmarkedIdeas.includes(selectedIdea.id) : false}
+          />
 
         <IdeaTemplatesDialog
           isOpen={templateDialogOpen}
