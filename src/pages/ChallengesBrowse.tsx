@@ -156,11 +156,28 @@ const ChallengesBrowse = () => {
       setLoading(true);
       const { data, error } = await supabase
         .from('challenges')
-        .select('*')
+        .select(`
+          *,
+          challenge_participants(count),
+          challenge_submissions(count)
+        `)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setChallenges(data || []);
+      
+      // Process the data to include participant and submission counts
+      const processedData = (data || []).map(challenge => ({
+        ...challenge,
+        participants: challenge.challenge_participants?.[0]?.count || 0,
+        submissions: challenge.challenge_submissions?.[0]?.count || 0,
+        // Add mock experts data for now
+        experts: [
+          { name: 'د. أحمد محمد', avatar: '/placeholder.svg', role: 'خبير التقنية' },
+          { name: 'م. فاطمة علي', avatar: '/placeholder.svg', role: 'مهندسة البرمجيات' }
+        ]
+      }));
+      
+      setChallenges(processedData);
     } catch (error) {
       console.error('Error fetching challenges:', error);
       // Fallback to mock data if database fails
@@ -300,38 +317,80 @@ const ChallengesBrowse = () => {
   };
 
   const handleParticipate = async (challenge: any) => {
+    if (!user) {
+      toast({
+        title: isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in',
+        description: isRTL ? 'يجب تسجيل الدخول للمشاركة في التحديات' : 'You need to sign in to participate in challenges',
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       // Register participation
-      await supabase
+      const { error } = await supabase
         .from('challenge_participants')
         .insert({
           challenge_id: challenge.id,
-          user_id: user?.id,
+          user_id: user.id,
           participation_type: 'individual'
         });
+
+      if (error) throw error;
 
       toast({
         title: isRTL ? 'تم التسجيل بنجاح' : 'Successfully Registered',
         description: isRTL ? 
           `تم تسجيلك في تحدي "${challenge.title_ar}"` : 
-          `You have been registered for "${challenge.title_en}"`,
+          `You have been registered for "${challenge.title_ar}"`,
       });
+      
+      // Refresh challenges to update participant count
+      fetchChallenges();
     } catch (error) {
+      console.error('Participation error:', error);
       toast({
-        title: "خطأ",
-        description: "فشل في التسجيل",
+        title: isRTL ? 'خطأ' : 'Error',
+        description: isRTL ? 'فشل في التسجيل' : 'Failed to register',
         variant: "destructive",
       });
     }
   };
 
   const handleBookmark = async (challenge: any) => {
-    toast({
-      title: isRTL ? 'تم الحفظ' : 'Bookmarked',
-      description: isRTL ? 
-        `تم حفظ تحدي "${challenge.title_ar}" في قائمة المفضلة` : 
-        `Challenge "${challenge.title_ar}" saved to bookmarks`,
-    });
+    if (!user) {
+      toast({
+        title: isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in',
+        description: isRTL ? 'يجب تسجيل الدخول لحفظ التحديات' : 'You need to sign in to bookmark challenges',
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('challenge_bookmarks')
+        .insert({
+          challenge_id: challenge.id,
+          user_id: user.id,
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: isRTL ? 'تم الحفظ' : 'Bookmarked',
+        description: isRTL ? 
+          `تم حفظ تحدي "${challenge.title_ar}" في قائمة المفضلة` : 
+          `Challenge "${challenge.title_ar}" saved to bookmarks`,
+      });
+    } catch (error) {
+      console.error('Bookmark error:', error);
+      toast({
+        title: isRTL ? 'خطأ' : 'Error',
+        description: isRTL ? 'فشل في حفظ التحدي' : 'Failed to bookmark challenge',
+        variant: "destructive",
+      });
+    }
   };
 
   const handleSort = (field: string) => {
