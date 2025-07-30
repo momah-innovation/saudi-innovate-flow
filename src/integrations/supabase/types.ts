@@ -2512,6 +2512,48 @@ export type Database = {
           },
         ]
       }
+      idea_metrics: {
+        Row: {
+          comments_count: number | null
+          downloads_count: number | null
+          engagement_rate: number | null
+          id: string
+          idea_id: string
+          implementation_progress: number | null
+          likes_count: number | null
+          metric_date: string
+          shares_count: number | null
+          views_count: number | null
+          virality_score: number | null
+        }
+        Insert: {
+          comments_count?: number | null
+          downloads_count?: number | null
+          engagement_rate?: number | null
+          id?: string
+          idea_id: string
+          implementation_progress?: number | null
+          likes_count?: number | null
+          metric_date: string
+          shares_count?: number | null
+          views_count?: number | null
+          virality_score?: number | null
+        }
+        Update: {
+          comments_count?: number | null
+          downloads_count?: number | null
+          engagement_rate?: number | null
+          id?: string
+          idea_id?: string
+          implementation_progress?: number | null
+          likes_count?: number | null
+          metric_date?: string
+          shares_count?: number | null
+          views_count?: number | null
+          virality_score?: number | null
+        }
+        Relationships: []
+      }
       idea_notifications: {
         Row: {
           created_at: string | null
@@ -2558,6 +2600,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      idea_recommendations: {
+        Row: {
+          confidence_score: number | null
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          interaction_type: string | null
+          is_clicked: boolean | null
+          is_viewed: boolean | null
+          reasoning: string | null
+          recommendation_type: string
+          recommended_idea_id: string
+          user_id: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          interaction_type?: string | null
+          is_clicked?: boolean | null
+          is_viewed?: boolean | null
+          reasoning?: string | null
+          recommendation_type: string
+          recommended_idea_id: string
+          user_id: string
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          interaction_type?: string | null
+          is_clicked?: boolean | null
+          is_viewed?: boolean | null
+          reasoning?: string | null
+          recommendation_type?: string
+          recommended_idea_id?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       idea_tag_links: {
         Row: {
@@ -2938,6 +3022,93 @@ export type Database = {
           },
         ]
       }
+      innovation_challenges_enhanced: {
+        Row: {
+          base_challenge_id: string | null
+          collaboration_encouraged: boolean | null
+          created_at: string | null
+          difficulty_level: string | null
+          estimated_hours: number | null
+          id: string
+          innovation_method: string | null
+          mentorship_available: boolean | null
+          required_skills: Json | null
+          resource_links: Json | null
+          reward_points: number | null
+          success_criteria: Json | null
+        }
+        Insert: {
+          base_challenge_id?: string | null
+          collaboration_encouraged?: boolean | null
+          created_at?: string | null
+          difficulty_level?: string | null
+          estimated_hours?: number | null
+          id?: string
+          innovation_method?: string | null
+          mentorship_available?: boolean | null
+          required_skills?: Json | null
+          resource_links?: Json | null
+          reward_points?: number | null
+          success_criteria?: Json | null
+        }
+        Update: {
+          base_challenge_id?: string | null
+          collaboration_encouraged?: boolean | null
+          created_at?: string | null
+          difficulty_level?: string | null
+          estimated_hours?: number | null
+          id?: string
+          innovation_method?: string | null
+          mentorship_available?: boolean | null
+          required_skills?: Json | null
+          resource_links?: Json | null
+          reward_points?: number | null
+          success_criteria?: Json | null
+        }
+        Relationships: []
+      }
+      innovation_leaderboard: {
+        Row: {
+          engagement_score: number | null
+          id: string
+          ideas_implemented: number | null
+          ideas_submitted: number | null
+          period_end: string
+          period_start: string
+          period_type: string
+          rank_position: number | null
+          total_points: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          engagement_score?: number | null
+          id?: string
+          ideas_implemented?: number | null
+          ideas_submitted?: number | null
+          period_end: string
+          period_start: string
+          period_type?: string
+          rank_position?: number | null
+          total_points?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          engagement_score?: number | null
+          id?: string
+          ideas_implemented?: number | null
+          ideas_submitted?: number | null
+          period_end?: string
+          period_start?: string
+          period_type?: string
+          rank_position?: number | null
+          total_points?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       innovation_maturity_index: {
         Row: {
           assessed_by: string | null
@@ -2992,6 +3163,114 @@ export type Database = {
           scope_id?: string | null
           strategy_maturity?: number | null
           technology_maturity?: number | null
+        }
+        Relationships: []
+      }
+      innovation_profiles: {
+        Row: {
+          achievement_badges: Json | null
+          bio: string | null
+          collaboration_preferences: Json | null
+          created_at: string | null
+          expertise_areas: Json | null
+          id: string
+          innovation_journey: Json | null
+          innovation_score: number | null
+          level_tier: string | null
+          mentorship_status: string | null
+          skills_tags: Json | null
+          total_points: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          achievement_badges?: Json | null
+          bio?: string | null
+          collaboration_preferences?: Json | null
+          created_at?: string | null
+          expertise_areas?: Json | null
+          id?: string
+          innovation_journey?: Json | null
+          innovation_score?: number | null
+          level_tier?: string | null
+          mentorship_status?: string | null
+          skills_tags?: Json | null
+          total_points?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          achievement_badges?: Json | null
+          bio?: string | null
+          collaboration_preferences?: Json | null
+          created_at?: string | null
+          expertise_areas?: Json | null
+          id?: string
+          innovation_journey?: Json | null
+          innovation_score?: number | null
+          level_tier?: string | null
+          mentorship_status?: string | null
+          skills_tags?: Json | null
+          total_points?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      innovation_success_stories: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          detailed_story: string | null
+          featured_image_url: string | null
+          id: string
+          idea_id: string
+          impact_areas: Json | null
+          implementation_timeline: Json | null
+          media_urls: Json | null
+          published_at: string | null
+          roi_metrics: Json | null
+          status: string | null
+          summary: string
+          testimonials: Json | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          detailed_story?: string | null
+          featured_image_url?: string | null
+          id?: string
+          idea_id: string
+          impact_areas?: Json | null
+          implementation_timeline?: Json | null
+          media_urls?: Json | null
+          published_at?: string | null
+          roi_metrics?: Json | null
+          status?: string | null
+          summary: string
+          testimonials?: Json | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          detailed_story?: string | null
+          featured_image_url?: string | null
+          id?: string
+          idea_id?: string
+          impact_areas?: Json | null
+          implementation_timeline?: Json | null
+          media_urls?: Json | null
+          published_at?: string | null
+          roi_metrics?: Json | null
+          status?: string | null
+          summary?: string
+          testimonials?: Json | null
+          title?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -4317,6 +4596,48 @@ export type Database = {
           title?: string
           title_ar?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      user_achievements: {
+        Row: {
+          achievement_level: string
+          achievement_type: string
+          description: string | null
+          earned_at: string | null
+          icon_name: string | null
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          points_earned: number | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          achievement_level?: string
+          achievement_type: string
+          description?: string | null
+          earned_at?: string | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          points_earned?: number | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          achievement_level?: string
+          achievement_type?: string
+          description?: string | null
+          earned_at?: string | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          points_earned?: number | null
+          title?: string
+          user_id?: string
         }
         Relationships: []
       }
