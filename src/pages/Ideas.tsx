@@ -50,11 +50,6 @@ interface Idea {
   innovators?: {
     id: string;
     user_id: string;
-    profiles?: {
-      name: string;
-      name_ar: string;
-      profile_image_url?: string;
-    };
   };
   challenges?: {
     title_ar: string;
@@ -62,6 +57,11 @@ interface Idea {
     sectors?: {
       name_ar: string;
     };
+  };
+  profile?: {
+    name: string;
+    name_ar: string;
+    profile_image_url?: string;
   };
 }
 
@@ -160,8 +160,7 @@ export default function IdeasPage() {
           *,
           innovators!ideas_innovator_id_fkey(
             id,
-            user_id,
-            profiles!innovators_user_id_fkey(name, name_ar, profile_image_url)
+            user_id
           ),
           challenges!ideas_challenge_id_fkey(
             title_ar,
@@ -533,12 +532,12 @@ export default function IdeasPage() {
         <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
           <div className="flex items-center gap-2">
             <Avatar className="w-6 h-6">
-               <AvatarImage src={idea.innovators?.profiles?.profile_image_url} />
+               <AvatarImage src={idea.profile?.profile_image_url} />
                <AvatarFallback>
-                 {(isRTL ? idea.innovators?.profiles?.name_ar : idea.innovators?.profiles?.name)?.charAt(0) || 'U'}
+                 {(isRTL ? idea.profile?.name_ar : idea.profile?.name)?.charAt(0) || 'U'}
                </AvatarFallback>
              </Avatar>
-             <span>{isRTL ? idea.innovators?.profiles?.name_ar : idea.innovators?.profiles?.name || 'Anonymous'}</span>
+             <span>{isRTL ? idea.profile?.name_ar : idea.profile?.name || 'Anonymous'}</span>
           </div>
           
           <div className="flex items-center gap-1">
@@ -955,14 +954,14 @@ export default function IdeasPage() {
                       <div className="bg-gradient-to-br from-muted/50 to-muted/30 p-4 rounded-lg border">
                         <div className="flex items-center gap-3 mb-4">
                           <Avatar className="w-12 h-12">
-                             <AvatarImage src={selectedIdea.innovators?.profiles?.profile_image_url} />
+                             <AvatarImage src={selectedIdea.profile?.profile_image_url} />
                              <AvatarFallback className="text-lg">
-                               {(isRTL ? selectedIdea.innovators?.profiles?.name_ar : selectedIdea.innovators?.profiles?.name)?.charAt(0) || 'U'}
+                               {(isRTL ? selectedIdea.profile?.name_ar : selectedIdea.profile?.name)?.charAt(0) || 'U'}
                              </AvatarFallback>
                            </Avatar>
                            <div>
                              <p className="font-medium text-lg">
-                               {isRTL ? selectedIdea.innovators?.profiles?.name_ar : selectedIdea.innovators?.profiles?.name || 'Anonymous'}
+                               {isRTL ? selectedIdea.profile?.name_ar : selectedIdea.profile?.name || 'Anonymous'}
                              </p>
                             <p className="text-sm text-muted-foreground">
                               {isRTL ? 'مبتكر' : 'Innovator'}
