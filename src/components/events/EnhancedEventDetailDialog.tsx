@@ -97,7 +97,7 @@ export const EnhancedEventDetailDialog = ({
   onRegister 
 }: EnhancedEventDetailDialogProps) => {
   const { isRTL } = useDirection();
-  const { user } = useAuth();
+  const { user, hasRole } = useAuth();
   const { toast } = useToast();
   
   const [feedback, setFeedback] = useState<EventFeedback[]>([]);
@@ -395,15 +395,47 @@ export const EnhancedEventDetailDialog = ({
 
         {/* Detailed Information Tabs */}
         <Tabs defaultValue="details" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-7">
-            <TabsTrigger value="details">{isRTL ? 'التفاصيل' : 'Details'}</TabsTrigger>
-            <TabsTrigger value="registration">{isRTL ? 'التسجيل' : 'Registration'}</TabsTrigger>
-            <TabsTrigger value="attendees">{isRTL ? 'الحضور' : 'Attendees'}</TabsTrigger>
-            <TabsTrigger value="partners">{isRTL ? 'الشركاء' : 'Partners'}</TabsTrigger>
-            <TabsTrigger value="related">{isRTL ? 'مرتبط' : 'Related'}</TabsTrigger>
-            <TabsTrigger value="feedback">{isRTL ? 'التقييمات' : 'Feedback'}</TabsTrigger>
-            <TabsTrigger value="resources">{isRTL ? 'الموارد' : 'Resources'}</TabsTrigger>
-          </TabsList>
+          {(() => {
+            // Define tab visibility based on roles and permissions
+            const canViewAttendees = hasRole('admin') || hasRole('super_admin') || hasRole('event_manager') || 
+              (event?.event_manager_id === user?.id);
+            const canViewPartners = hasRole('admin') || hasRole('super_admin') || hasRole('event_manager') || 
+              hasRole('partner') || (event?.event_manager_id === user?.id);
+            const canViewRelated = hasRole('admin') || hasRole('super_admin') || hasRole('expert') || 
+              hasRole('event_manager') || hasRole('innovator');
+            const canViewResources = interactions.isRegistered || hasRole('admin') || hasRole('super_admin') || 
+              hasRole('event_manager') || (event?.event_manager_id === user?.id);
+
+            // Calculate grid columns based on visible tabs
+            const baseTabs = 2; // details + registration
+            const optionalTabs = [canViewAttendees, canViewPartners, canViewRelated, true, canViewResources].filter(Boolean).length;
+            const totalTabs = baseTabs + optionalTabs;
+            
+            const gridClass = totalTabs <= 3 ? 'grid-cols-3' : 
+                             totalTabs <= 4 ? 'grid-cols-4' : 
+                             totalTabs <= 5 ? 'grid-cols-5' : 
+                             totalTabs <= 6 ? 'grid-cols-6' : 'grid-cols-7';
+            
+            return (
+              <TabsList className={`grid w-full ${gridClass}`}>
+                <TabsTrigger value="details">{isRTL ? 'التفاصيل' : 'Details'}</TabsTrigger>
+                <TabsTrigger value="registration">{isRTL ? 'التسجيل' : 'Registration'}</TabsTrigger>
+                {canViewAttendees && (
+                  <TabsTrigger value="attendees">{isRTL ? 'الحضور' : 'Attendees'}</TabsTrigger>
+                )}
+                {canViewPartners && (
+                  <TabsTrigger value="partners">{isRTL ? 'الشركاء' : 'Partners'}</TabsTrigger>
+                )}
+                {canViewRelated && (
+                  <TabsTrigger value="related">{isRTL ? 'مرتبط' : 'Related'}</TabsTrigger>
+                )}
+                <TabsTrigger value="feedback">{isRTL ? 'التقييمات' : 'Feedback'}</TabsTrigger>
+                {canViewResources && (
+                  <TabsTrigger value="resources">{isRTL ? 'الموارد' : 'Resources'}</TabsTrigger>
+                )}
+              </TabsList>
+            );
+          })()}
 
           <TabsContent value="details" className="space-y-4">
             <div className="grid gap-6">
@@ -534,27 +566,33 @@ export const EnhancedEventDetailDialog = ({
             </div>
           </TabsContent>
 
-          <TabsContent value="attendees" className="space-y-4">
-            <AttendeesTab 
-              participants={participants}
-              maxParticipants={event.max_participants}
-            />
-          </TabsContent>
+          {(hasRole('admin') || hasRole('super_admin') || hasRole('event_manager') || (event?.event_manager_id === user?.id)) && (
+            <TabsContent value="attendees" className="space-y-4">
+              <AttendeesTab 
+                participants={participants}
+                maxParticipants={event.max_participants}
+              />
+            </TabsContent>
+          )}
 
-          <TabsContent value="partners" className="space-y-4">
-            <PartnersStakeholdersTab 
-              partners={partners}
-              stakeholders={stakeholders}
-            />
-          </TabsContent>
+          {(hasRole('admin') || hasRole('super_admin') || hasRole('event_manager') || hasRole('partner') || (event?.event_manager_id === user?.id)) && (
+            <TabsContent value="partners" className="space-y-4">
+              <PartnersStakeholdersTab 
+                partners={partners}
+                stakeholders={stakeholders}
+              />
+            </TabsContent>
+          )}
 
-          <TabsContent value="related" className="space-y-4">
-            <RelatedItemsTab 
-              relatedChallenges={relatedChallenges}
-              focusQuestions={focusQuestions}
-              campaignInfo={campaignInfo}
-            />
-          </TabsContent>
+          {(hasRole('admin') || hasRole('super_admin') || hasRole('expert') || hasRole('event_manager') || hasRole('innovator')) && (
+            <TabsContent value="related" className="space-y-4">
+              <RelatedItemsTab 
+                relatedChallenges={relatedChallenges}
+                focusQuestions={focusQuestions}
+                campaignInfo={campaignInfo}
+              />
+            </TabsContent>
+          )}
 
           <TabsContent value="feedback" className="space-y-4">
             <div className="space-y-6">
@@ -653,62 +691,64 @@ export const EnhancedEventDetailDialog = ({
             </div>
           </TabsContent>
 
-          <TabsContent value="resources" className="space-y-4">
-            <div>
-              <h4 className="font-semibold mb-4 flex items-center gap-2">
-                <FileText className="w-4 h-4" />
-                {isRTL ? 'الموارد والمواد' : 'Resources & Materials'}
-              </h4>
-              
-              <div className="space-y-3">
-                {resources.length > 0 ? (
-                  resources.map((resource) => (
-                    <div key={resource.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex items-center gap-3">
-                        {resource.resource_type === 'video' ? (
-                          <Video className="w-5 h-5 text-muted-foreground" />
-                        ) : resource.resource_type === 'document' ? (
-                          <FileText className="w-5 h-5 text-muted-foreground" />
-                        ) : (
-                          <FileText className="w-5 h-5 text-muted-foreground" />
-                        )}
-                        <div>
-                          <div className="font-medium">{resource.title}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {resource.file_format?.toUpperCase()} 
-                            {resource.file_size_mb && ` • ${resource.file_size_mb} MB`}
+          {(interactions.isRegistered || hasRole('admin') || hasRole('super_admin') || hasRole('event_manager') || (event?.event_manager_id === user?.id)) && (
+            <TabsContent value="resources" className="space-y-4">
+              <div>
+                <h4 className="font-semibold mb-4 flex items-center gap-2">
+                  <FileText className="w-4 h-4" />
+                  {isRTL ? 'الموارد والمواد' : 'Resources & Materials'}
+                </h4>
+                
+                <div className="space-y-3">
+                  {resources.length > 0 ? (
+                    resources.map((resource) => (
+                      <div key={resource.id} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div className="flex items-center gap-3">
+                          {resource.resource_type === 'video' ? (
+                            <Video className="w-5 h-5 text-muted-foreground" />
+                          ) : resource.resource_type === 'document' ? (
+                            <FileText className="w-5 h-5 text-muted-foreground" />
+                          ) : (
+                            <FileText className="w-5 h-5 text-muted-foreground" />
+                          )}
+                          <div>
+                            <div className="font-medium">{resource.title}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {resource.file_format?.toUpperCase()} 
+                              {resource.file_size_mb && ` • ${resource.file_size_mb} MB`}
+                            </div>
                           </div>
                         </div>
+                        {resource.availability_status === 'available' && resource.file_url ? (
+                          <Button variant="outline" size="sm" asChild>
+                            <a href={resource.file_url} target="_blank" rel="noopener noreferrer">
+                              <Download className="w-4 h-4 mr-2" />
+                              {isRTL ? 'تحميل' : 'Download'}
+                            </a>
+                          </Button>
+                        ) : (
+                          <Button variant="outline" size="sm" disabled>
+                            {resource.resource_type === 'video' && <Video className="w-4 h-4 mr-2" />}
+                            {resource.resource_type !== 'video' && <Download className="w-4 h-4 mr-2" />}
+                            {resource.availability_status === 'coming_soon' ? 
+                              (isRTL ? 'قريباً' : 'Coming Soon') :
+                              resource.availability_status === 'unavailable' ?
+                              (isRTL ? 'غير متاح' : 'Unavailable') :
+                              (isRTL ? 'تحميل' : 'Download')
+                            }
+                          </Button>
+                        )}
                       </div>
-                      {resource.availability_status === 'available' && resource.file_url ? (
-                        <Button variant="outline" size="sm" asChild>
-                          <a href={resource.file_url} target="_blank" rel="noopener noreferrer">
-                            <Download className="w-4 h-4 mr-2" />
-                            {isRTL ? 'تحميل' : 'Download'}
-                          </a>
-                        </Button>
-                      ) : (
-                        <Button variant="outline" size="sm" disabled>
-                          {resource.resource_type === 'video' && <Video className="w-4 h-4 mr-2" />}
-                          {resource.resource_type !== 'video' && <Download className="w-4 h-4 mr-2" />}
-                          {resource.availability_status === 'coming_soon' ? 
-                            (isRTL ? 'قريباً' : 'Coming Soon') :
-                            resource.availability_status === 'unavailable' ?
-                            (isRTL ? 'غير متاح' : 'Unavailable') :
-                            (isRTL ? 'تحميل' : 'Download')
-                          }
-                        </Button>
-                      )}
+                    ))
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      {isRTL ? 'لا توجد موارد متاحة لهذه الفعالية' : 'No resources available for this event'}
                     </div>
-                  ))
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    {isRTL ? 'لا توجد موارد متاحة لهذه الفعالية' : 'No resources available for this event'}
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
-          </TabsContent>
+            </TabsContent>
+          )}
         </Tabs>
       </DialogContent>
     </Dialog>
