@@ -338,6 +338,60 @@ export type Database = {
           },
         ]
       }
+      challenge_comments: {
+        Row: {
+          challenge_id: string
+          content: string
+          created_at: string | null
+          id: string
+          is_expert_comment: boolean | null
+          is_pinned: boolean | null
+          likes_count: number | null
+          parent_comment_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          challenge_id: string
+          content: string
+          created_at?: string | null
+          id?: string
+          is_expert_comment?: boolean | null
+          is_pinned?: boolean | null
+          likes_count?: number | null
+          parent_comment_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          challenge_id?: string
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_expert_comment?: boolean | null
+          is_pinned?: boolean | null
+          likes_count?: number | null
+          parent_comment_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_comments_parent_comment_id_fkey"
+            columns: ["parent_comment_id"]
+            isOneToOne: false
+            referencedRelation: "challenge_comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_challenge_comments_challenge"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       challenge_experts: {
         Row: {
           assignment_date: string | null
@@ -382,6 +436,100 @@ export type Database = {
             columns: ["expert_id"]
             isOneToOne: false
             referencedRelation: "experts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_notifications: {
+        Row: {
+          action_url: string | null
+          challenge_id: string
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          message: string
+          metadata: Json | null
+          notification_type: string
+          recipient_id: string
+          sender_id: string | null
+          title: string
+        }
+        Insert: {
+          action_url?: string | null
+          challenge_id: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message: string
+          metadata?: Json | null
+          notification_type: string
+          recipient_id: string
+          sender_id?: string | null
+          title: string
+        }
+        Update: {
+          action_url?: string | null
+          challenge_id?: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          metadata?: Json | null
+          notification_type?: string
+          recipient_id?: string
+          sender_id?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_challenge_notifications_challenge"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_participants: {
+        Row: {
+          challenge_id: string
+          created_at: string | null
+          id: string
+          notifications_enabled: boolean | null
+          participation_type: string | null
+          registration_date: string | null
+          status: string | null
+          team_name: string | null
+          user_id: string
+        }
+        Insert: {
+          challenge_id: string
+          created_at?: string | null
+          id?: string
+          notifications_enabled?: boolean | null
+          participation_type?: string | null
+          registration_date?: string | null
+          status?: string | null
+          team_name?: string | null
+          user_id: string
+        }
+        Update: {
+          challenge_id?: string
+          created_at?: string | null
+          id?: string
+          notifications_enabled?: boolean | null
+          participation_type?: string | null
+          registration_date?: string | null
+          status?: string | null
+          team_name?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_challenge_participants_challenge"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
             referencedColumns: ["id"]
           },
         ]
@@ -537,6 +685,80 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "challenge_scorecards_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_submissions: {
+        Row: {
+          attachment_urls: string[] | null
+          business_model: string | null
+          challenge_id: string
+          created_at: string | null
+          description_ar: string
+          expected_impact: string | null
+          id: string
+          implementation_plan: string | null
+          is_public: boolean | null
+          review_notes: string | null
+          score: number | null
+          solution_approach: string | null
+          status: string | null
+          submission_date: string | null
+          submitted_by: string
+          team_members: Json | null
+          technical_details: Json | null
+          title_ar: string
+          updated_at: string | null
+        }
+        Insert: {
+          attachment_urls?: string[] | null
+          business_model?: string | null
+          challenge_id: string
+          created_at?: string | null
+          description_ar: string
+          expected_impact?: string | null
+          id?: string
+          implementation_plan?: string | null
+          is_public?: boolean | null
+          review_notes?: string | null
+          score?: number | null
+          solution_approach?: string | null
+          status?: string | null
+          submission_date?: string | null
+          submitted_by: string
+          team_members?: Json | null
+          technical_details?: Json | null
+          title_ar: string
+          updated_at?: string | null
+        }
+        Update: {
+          attachment_urls?: string[] | null
+          business_model?: string | null
+          challenge_id?: string
+          created_at?: string | null
+          description_ar?: string
+          expected_impact?: string | null
+          id?: string
+          implementation_plan?: string | null
+          is_public?: boolean | null
+          review_notes?: string | null
+          score?: number | null
+          solution_approach?: string | null
+          status?: string | null
+          submission_date?: string | null
+          submitted_by?: string
+          team_members?: Json | null
+          technical_details?: Json | null
+          title_ar?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_challenge_submissions_challenge"
             columns: ["challenge_id"]
             isOneToOne: false
             referencedRelation: "challenges"
@@ -3795,6 +4017,18 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
         }
         Returns: boolean
+      }
+      send_challenge_notification: {
+        Args: {
+          p_challenge_id: string
+          p_recipient_id: string
+          p_notification_type: string
+          p_title: string
+          p_message: string
+          p_action_url?: string
+          p_metadata?: Json
+        }
+        Returns: string
       }
       send_idea_workflow_notifications: {
         Args: { p_idea_id: string; p_from_status: string; p_to_status: string }

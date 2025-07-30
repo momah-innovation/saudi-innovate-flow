@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -11,8 +11,14 @@ import { ChallengeCard } from '@/components/challenges/ChallengeCard';
 import { ChallengeDetailDialog } from '@/components/challenges/ChallengeDetailDialog';
 import { ChallengeFilters, FilterState } from '@/components/challenges/ChallengeFilters';
 import { ChallengeListView } from '@/components/challenges/ChallengeListView';
+import { ChallengeSubmissionDialog } from '@/components/challenges/ChallengeSubmissionDialog';
+import { ChallengeCommentsDialog } from '@/components/challenges/ChallengeCommentsDialog';
+import { ChallengeSubmissionsDialog } from '@/components/challenges/ChallengeSubmissionsDialog';
+import { CreateChallengeDialog } from '@/components/challenges/CreateChallengeDialog';
 import { useChallengeDefaults } from '@/hooks/useChallengeDefaults';
-import { Plus } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { Plus, Send, MessageSquare, Users, Eye } from 'lucide-react';
 
 const mockChallenges = [
   {
@@ -110,10 +116,17 @@ const ChallengesBrowse = () => {
   const { isRTL } = useDirection();
   const { toast } = useToast();
   const { ui } = useChallengeDefaults();
+  const { user } = useAuth();
   
   // State management
+  const [challenges, setChallenges] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedChallenge, setSelectedChallenge] = useState<any>(null);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  const [submissionDialogOpen, setSubmissionDialogOpen] = useState(false);
+  const [commentsDialogOpen, setCommentsDialogOpen] = useState(false);
+  const [submissionsDialogOpen, setSubmissionsDialogOpen] = useState(false);
+  const [createChallengeOpen, setCreateChallengeOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>(ui.defaultViewMode as any || 'cards');
   const [activeTab, setActiveTab] = useState('all');
   
@@ -131,9 +144,32 @@ const ChallengesBrowse = () => {
     sortOrder: 'desc'
   });
 
+  useEffect(() => {
+    fetchChallenges();
+  }, []);
+
+  const fetchChallenges = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('challenges')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setChallenges(data || []);
+    } catch (error) {
+      console.error('Error fetching challenges:', error);
+      // Fallback to mock data if database fails
+      setChallenges(mockChallenges);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Filter and search logic
   const getFilteredChallenges = () => {
-    let filtered = [...mockChallenges];
+    let filtered = [...(challenges.length > 0 ? challenges : mockChallenges)];
 
     // Apply search filter
     if (filters.search) {
@@ -244,13 +280,45 @@ const ChallengesBrowse = () => {
     setDetailDialogOpen(true);
   };
 
-  const handleParticipate = (challenge: any) => {
-    toast({
-      title: isRTL ? 'تم التسجيل بنجاح' : 'Successfully Registered',
-      description: isRTL ? 
-        `تم تسجيلك في تحدي "${challenge.title}"` : 
-        `You have been registered for "${challenge.title_en}"`,
-    });
+  const handleSubmitToChallenge = (challenge: any) => {
+    setSelectedChallenge(challenge);
+    setSubmissionDialogOpen(true);
+  };
+
+  const handleViewComments = (challenge: any) => {
+    setSelectedChallenge(challenge);
+    setCommentsDialogOpen(true);
+  };
+
+  const handleViewSubmissions = (challenge: any) => {
+    setSelectedChallenge(challenge);
+    setSubmissionsDialogOpen(true);
+  };
+
+  const handleParticipate = async (challenge: any) => {
+    try {
+      // Register participation
+      await supabase
+        .from('challenge_participants')
+        .insert({
+          challenge_id: challenge.id,
+          user_id: user?.id,
+          participation_type: 'individual'
+        });
+
+      toast({
+        title: isRTL ? 'تم التسجيل بنجاح' : 'Successfully Registered',
+        description: isRTL ? 
+          `تم تسجيلك في تحدي "${challenge.title_ar}"` : 
+          `You have been registered for "${challenge.title_en}"`,
+      });
+    } catch (error) {
+      toast({
+        title: "خطأ",
+        description: "فشل في التسجيل",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleSort = (field: string) => {
@@ -324,14 +392,20 @@ const ChallengesBrowse = () => {
         itemCount={tabFilteredChallenges.length}
         primaryAction={{
           label: isRTL ? 'تحدي جديد' : 'New Challenge',
-          onClick: () => console.log('Create new challenge'),
+          onClick: () => setCreateChallengeOpen(true),
           icon: <Plus className="w-4 h-4" />
         }}
         secondaryActions={
-          <LayoutSelector
-            viewMode={viewMode}
-            onViewModeChange={setViewMode}
-          />
+          <div className="flex gap-2">
+            <LayoutSelector
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+            />
+            <Button size="sm" variant="outline" onClick={() => handleSubmitToChallenge(selectedChallenge)}>
+              <Send className="w-4 h-4 mr-2" />
+              مشاركة
+            </Button>
+          </div>
         }
       >
         <div className="space-y-6">
@@ -413,6 +487,34 @@ const ChallengesBrowse = () => {
           open={detailDialogOpen}
           onOpenChange={setDetailDialogOpen}
           onParticipate={handleParticipate}
+        />
+
+        {/* Challenge Submission Dialog */}
+        <ChallengeSubmissionDialog
+          challenge={selectedChallenge}
+          open={submissionDialogOpen}
+          onOpenChange={setSubmissionDialogOpen}
+        />
+
+        {/* Challenge Comments Dialog */}
+        <ChallengeCommentsDialog
+          challenge={selectedChallenge}
+          open={commentsDialogOpen}
+          onOpenChange={setCommentsDialogOpen}
+        />
+
+        {/* Challenge Submissions Dialog */}
+        <ChallengeSubmissionsDialog
+          challenge={selectedChallenge}
+          open={submissionsDialogOpen}
+          onOpenChange={setSubmissionsDialogOpen}
+        />
+
+        {/* Create Challenge Dialog */}
+        <CreateChallengeDialog
+          open={createChallengeOpen}
+          onOpenChange={setCreateChallengeOpen}
+          onChallengeCreated={fetchChallenges}
         />
       </PageLayout>
     </AppShell>
