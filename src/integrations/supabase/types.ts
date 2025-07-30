@@ -338,6 +338,27 @@ export type Database = {
           },
         ]
       }
+      challenge_bookmarks: {
+        Row: {
+          challenge_id: string
+          created_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          challenge_id: string
+          created_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          challenge_id?: string
+          created_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       challenge_comments: {
         Row: {
           challenge_id: string
@@ -439,6 +460,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      challenge_feedback: {
+        Row: {
+          challenge_id: string
+          created_at: string | null
+          feedback_text: string | null
+          id: string
+          rating: number | null
+          updated_at: string | null
+          user_id: string
+          would_recommend: boolean | null
+        }
+        Insert: {
+          challenge_id: string
+          created_at?: string | null
+          feedback_text?: string | null
+          id?: string
+          rating?: number | null
+          updated_at?: string | null
+          user_id: string
+          would_recommend?: boolean | null
+        }
+        Update: {
+          challenge_id?: string
+          created_at?: string | null
+          feedback_text?: string | null
+          id?: string
+          rating?: number | null
+          updated_at?: string | null
+          user_id?: string
+          would_recommend?: boolean | null
+        }
+        Relationships: []
       }
       challenge_notifications: {
         Row: {
