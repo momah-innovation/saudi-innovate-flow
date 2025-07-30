@@ -15,6 +15,7 @@ import { IdeaWorkflowPanel } from "./IdeaWorkflowPanel";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { InteractionButtons } from "@/components/ui/interaction-buttons";
 
 import { 
   Lightbulb, 
@@ -358,8 +359,20 @@ export function IdeasManagementList({
                    label: 'تاريخ الإنشاء',
                    value: new Date(idea.created_at).toLocaleDateString('ar-SA')
                  }
-                ]}
-                 actions={[
+                 ]}
+                 interactionButtons={
+                   <InteractionButtons
+                     itemId={idea.id}
+                     itemType="idea"
+                     title={idea.title_ar}
+                     onComment={() => {
+                       setSelectedIdeaForPanel(idea.id);
+                       setShowCommentsPanel(true);
+                     }}
+                     className="mb-2"
+                   />
+                 }
+                  actions={[
                    {
                      type: 'view',
                      label: 'عرض',

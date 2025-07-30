@@ -9,7 +9,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 
 interface InteractionButtonsProps {
   itemId: string;
-  itemType: 'challenge' | 'event';
+  itemType: 'challenge' | 'event' | 'idea';
   title: string;
   onComment?: () => void;
   className?: string;
@@ -29,6 +29,7 @@ export const InteractionButtons = ({
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
+  const [commentsCount, setCommentsCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
   // Check if user has liked/bookmarked this item
@@ -37,20 +38,40 @@ export const InteractionButtons = ({
     
     const checkInteractions = async () => {
       try {
-        // Check likes (we'll need to create a likes table)
-        const tableName = itemType === 'challenge' ? 'challenge_bookmarks' : 'event_bookmarks';
-        
-        const { data: bookmark } = await supabase
-          .from(tableName as any)
-          .select('id')
-          .eq(`${itemType}_id`, itemId)
-          .eq('user_id', user.id)
-          .maybeSingle();
+        if (itemType === 'idea') {
+          // Check idea likes
+          const { data: likesData } = await supabase
+            .from('idea_likes')
+            .select('*')
+            .eq('idea_id', itemId);
+
+          setLikesCount(likesData?.length || 0);
+          setLiked(likesData?.some(like => like.user_id === user.id) || false);
+
+          // Check idea comments count
+          const { data: commentsData } = await supabase
+            .from('idea_comments')
+            .select('id')
+            .eq('idea_id', itemId);
+
+          setCommentsCount(commentsData?.length || 0);
+
+        } else {
+          // Check bookmarks for challenges/events
+          const tableName = itemType === 'challenge' ? 'challenge_bookmarks' : 'event_bookmarks';
           
-        setBookmarked(!!bookmark);
-        
-        // Get total likes count (placeholder for now)
-        setLikesCount(Math.floor(Math.random() * 50) + 5);
+          const { data: bookmark } = await supabase
+            .from(tableName as any)
+            .select('id')
+            .eq(`${itemType}_id`, itemId)
+            .eq('user_id', user.id)
+            .maybeSingle();
+            
+          setBookmarked(!!bookmark);
+          
+          // Get placeholder likes count for challenges/events
+          setLikesCount(Math.floor(Math.random() * 50) + 5);
+        }
         
       } catch (error) {
         console.error('Error checking interactions:', error);
@@ -72,9 +93,38 @@ export const InteractionButtons = ({
 
     setLoading(true);
     try {
-      // Toggle like (we'll implement this when we have a likes table)
-      setLiked(!liked);
-      setLikesCount(prev => liked ? prev - 1 : prev + 1);
+      if (itemType === 'idea') {
+        if (liked) {
+          // Remove like
+          const { error } = await supabase
+            .from('idea_likes')
+            .delete()
+            .eq('idea_id', itemId)
+            .eq('user_id', user.id);
+
+          if (error) throw error;
+          
+          setLiked(false);
+          setLikesCount(prev => prev - 1);
+        } else {
+          // Add like
+          const { error } = await supabase
+            .from('idea_likes')
+            .insert({
+              idea_id: itemId,
+              user_id: user.id
+            });
+
+          if (error) throw error;
+          
+          setLiked(true);
+          setLikesCount(prev => prev + 1);
+        }
+      } else {
+        // For challenges/events, use placeholder logic for now
+        setLiked(!liked);
+        setLikesCount(prev => liked ? prev - 1 : prev + 1);
+      }
       
       toast({
         title: liked ? (isRTL ? 'تم إلغاء الإعجاب' : 'Unliked') : (isRTL ? 'أعجبني' : 'Liked'),
@@ -202,7 +252,7 @@ export const InteractionButtons = ({
       </Button>
 
       {/* Comment Button */}
-      {onComment && (
+      {(onComment || itemType === 'idea') && (
         <Button
           variant="ghost"
           size="sm"
@@ -210,6 +260,7 @@ export const InteractionButtons = ({
           className="flex items-center gap-1 text-muted-foreground hover:text-primary"
         >
           <MessageCircle className="w-4 h-4" />
+          {commentsCount > 0 && <span className="text-xs">{commentsCount}</span>}
         </Button>
       )}
 

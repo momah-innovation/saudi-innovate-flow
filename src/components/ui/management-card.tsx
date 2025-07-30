@@ -37,6 +37,7 @@ interface ManagementCardProps {
   onClick?: () => void;
   className?: string;
   viewMode?: 'cards' | 'list' | 'grid';
+  interactionButtons?: ReactNode;
 }
 
 const defaultIcons = {
@@ -56,7 +57,8 @@ export function ManagementCard({
   actions,
   onClick,
   className = "",
-  viewMode = 'cards'
+  viewMode = 'cards',
+  interactionButtons
 }: ManagementCardProps) {
   
   const renderActions = (compact = false) => {
@@ -209,6 +211,12 @@ export function ManagementCard({
                 </div>
               </div>
             ))}
+          </div>
+        )}
+        
+        {interactionButtons && (
+          <div onClick={(e) => e.stopPropagation()}>
+            {interactionButtons}
           </div>
         )}
         
