@@ -66,25 +66,6 @@ export const GeographicAnalytics = ({ opportunityId }: GeographicAnalyticsProps)
     }
   };
 
-  const generateSampleGeoData = (): GeographicData[] => {
-    const countries = [
-      { name: isRTL ? 'السعودية' : 'Saudi Arabia', code: 'SA', views: 450 },
-      { name: isRTL ? 'الإمارات' : 'UAE', code: 'AE', views: 320 },
-      { name: isRTL ? 'مصر' : 'Egypt', code: 'EG', views: 280 },
-      { name: isRTL ? 'الأردن' : 'Jordan', code: 'JO', views: 150 },
-      { name: isRTL ? 'الكويت' : 'Kuwait', code: 'KW', views: 120 }
-    ];
-    
-    const total = countries.reduce((sum, country) => sum + country.views, 0);
-    
-    return countries.map(country => ({
-      country_name: country.name,
-      country_code: country.code,
-      view_count: country.views,
-      percentage: Math.round((country.views / total) * 100)
-    }));
-  };
-
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
   const flagEmoji = (countryCode: string) => {

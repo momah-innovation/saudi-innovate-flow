@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { ManagementCard } from '@/components/ui/management-card';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CampaignWizard } from './CampaignWizard';
+import { supabase } from '@/integrations/supabase/client';
 import { 
   Calendar, 
   Users, 
@@ -12,60 +13,6 @@ import {
   DollarSign
 } from 'lucide-react';
 
-// Mock data - will be replaced with real data
-const mockCampaigns = [
-  {
-    id: '1',
-    title_ar: 'حملة الابتكار الرقمي',
-    description_ar: 'حملة لتطوير الحلول الرقمية المبتكرة في القطاع الحكومي',
-    status: 'active',
-    start_date: '2024-02-01',
-    end_date: '2024-06-30',
-    target_participants: 500,
-    registered_participants: 243,
-    target_ideas: 100,
-    submitted_ideas: 67,
-    budget: 150000,
-    sector: 'التكنولوجيا',
-    priority: 'high',
-    completion: 65,
-    manager: 'أحمد محمد'
-  },
-  {
-    id: '2',
-    title_ar: 'حملة الاستدامة البيئية',
-    description_ar: 'حملة لتطوير حلول مبتكرة للحفاظ على البيئة والاستدامة',
-    status: 'planning',
-    start_date: '2024-03-15',
-    end_date: '2024-08-15',
-    target_participants: 300,
-    registered_participants: 0,
-    target_ideas: 50,
-    submitted_ideas: 0,
-    budget: 120000,
-    sector: 'البيئة',
-    priority: 'medium',
-    completion: 0,
-    manager: 'فاطمة علي'
-  },
-  {
-    id: '3',
-    title_ar: 'حملة التعليم الذكي',
-    description_ar: 'حملة لتطوير حلول تعليمية ذكية ومبتكرة',
-    status: 'completed',
-    start_date: '2023-09-01',
-    end_date: '2024-01-31',
-    target_participants: 400,
-    registered_participants: 387,
-    target_ideas: 80,
-    submitted_ideas: 92,
-    budget: 200000,
-    sector: 'التعليم',
-    priority: 'high',
-    completion: 100,
-    manager: 'محمد الأحمد'
-  }
-];
 
 const statusConfig = {
   planning: { label: 'قيد التخطيط', variant: 'secondary' as const },
@@ -90,6 +37,30 @@ interface CampaignsManagementProps {
 export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: CampaignsManagementProps) {
   const { language } = useTranslation();
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
+  const [campaigns, setCampaigns] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadCampaigns();
+  }, []);
+
+  const loadCampaigns = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('campaigns')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setCampaigns(data || []);
+    } catch (error) {
+      console.error('Error loading campaigns:', error);
+      setCampaigns([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleEdit = (campaign: any) => {
     setSelectedCampaign(campaign);
@@ -107,7 +78,7 @@ export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAdd
   return (
     <>
       <ViewLayouts viewMode={viewMode}>
-        {mockCampaigns.map((campaign) => (
+        {campaigns.map((campaign) => (
           <ManagementCard
             key={campaign.id}
             id={campaign.id}

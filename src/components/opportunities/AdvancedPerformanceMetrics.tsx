@@ -81,10 +81,10 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
           .eq('opportunity_id', opportunityId)
       ]);
 
-      const analytics = analyticsData.data;
-      const sessions = viewSessionsData.data || [];
-      const journeys = journeyData.data || [];
-      const applications = applicationsData.data || [];
+      const analytics = analyticsData?.data;
+      const sessions = viewSessionsData?.data || [];
+      const journeys = journeyData?.data || [];
+      const applications = applicationsData?.data || [];
 
       // Calculate real metrics
       const totalViews = analytics?.view_count || 0;
