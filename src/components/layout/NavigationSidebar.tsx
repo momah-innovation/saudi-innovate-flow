@@ -271,6 +271,15 @@ export function NavigationSidebar() {
         roles: ['admin'] 
       },
       { 
+        id: 'opportunities-management', 
+        label: 'Partnership Opportunities', 
+        arabicLabel: 'إدارة فرص الشراكة',
+        icon: Briefcase, 
+        path: '/admin/opportunities',
+        group: 'management',
+        roles: ['admin'] 
+      },
+      { 
         id: 'stakeholders', 
         label: 'Stakeholders', 
         arabicLabel: 'المعنيين',

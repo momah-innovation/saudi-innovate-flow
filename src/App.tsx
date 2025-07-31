@@ -54,6 +54,7 @@ import HelpPage from "./pages/HelpPage";
 import SavedItemsPage from "./pages/SavedItems";
 import EvaluationManagement from "./pages/EvaluationManagement";
 import Opportunities from "./pages/Opportunities";
+import OpportunitiesManagement from "./pages/OpportunitiesManagement";
 
 const queryClient = new QueryClient();
 
@@ -360,7 +361,15 @@ const App = () => (
                    <Opportunities />
                  </ProtectedRoute>
                } 
-             />
+              />
+              <Route 
+                path="/admin/opportunities" 
+                element={
+                  <ProtectedRoute requireProfile requiredRole="admin">
+                    <OpportunitiesManagement />
+                  </ProtectedRoute>
+                } 
+              />
              <Route path="/help" element={<HelpPage />} />
             {/* Legacy dashboard route pointing to Index */}
             <Route 
