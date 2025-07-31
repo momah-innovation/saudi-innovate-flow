@@ -57,7 +57,8 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
         supabase
           .from('opportunity_comments')
           .select('created_at')
-          .eq('opportunity_id', opportunityId),
+          .eq('opportunity_id', opportunityId)
+          .eq('is_public', true),
         supabase
           .from('opportunity_bookmarks')
           .select('created_at')

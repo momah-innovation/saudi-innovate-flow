@@ -45,6 +45,8 @@ interface AnalyticsData {
   totalLikes: number;
   totalApplications: number;
   totalShares: number;
+  totalBookmarks: number;
+  totalComments: number;
   conversionRate: number;
   viewsData: Array<{ date: string; views: number; applications: number }>;
   applicationSourceData: Array<{ source: string; count: number; percentage: number }>;
@@ -101,7 +103,7 @@ export const OpportunityAnalyticsDialog = ({
     setLoading(true);
     try {
       // Load real analytics data from multiple sources
-      const [opportunityData, applicationsData, analyticsData, likesData, sharesData] = await Promise.all([
+      const [opportunityData, applicationsData, analyticsData, likesData, sharesData, bookmarksData, commentsData] = await Promise.all([
         supabase
           .from('partnership_opportunities')
           .select('*')
@@ -123,7 +125,16 @@ export const OpportunityAnalyticsDialog = ({
         supabase
           .from('opportunity_shares')
           .select('created_at, platform')
+          .eq('opportunity_id', opportunityId),
+        supabase
+          .from('opportunity_bookmarks')
+          .select('created_at')
+          .eq('opportunity_id', opportunityId),
+        supabase
+          .from('opportunity_comments')
+          .select('created_at')
           .eq('opportunity_id', opportunityId)
+          .eq('is_public', true)
       ]);
 
       // Get real analytics summary
@@ -135,6 +146,8 @@ export const OpportunityAnalyticsDialog = ({
       const applications = applicationsData.data || [];
       const likes = likesData.data || [];
       const shares = sharesData.data || [];
+      const bookmarks = bookmarksData.data || [];
+      const comments = commentsData.data || [];
       const summary = summaryData?.[0];
 
       // Calculate real metrics
@@ -143,10 +156,12 @@ export const OpportunityAnalyticsDialog = ({
         totalLikes: likes.length,
         totalApplications: applications.length,
         totalShares: shares.length,
+        totalBookmarks: bookmarks.length,
+        totalComments: comments.length,
         conversionRate: summary?.conversion_rate || 0,
         viewsData: generateViewsDataFromReal(applications),
         applicationSourceData: generateApplicationSourceData(applications),
-        timelineData: generateTimelineFromReal(applications, likes, shares),
+        timelineData: generateTimelineFromReal(applications, likes, shares, bookmarks, comments),
         engagementMetrics: {
           avgTimeOnPage: 180, // Will implement real tracking later
           bounceRate: Math.max(0, 100 - (summary?.engagement_rate || 25)),
@@ -163,6 +178,8 @@ export const OpportunityAnalyticsDialog = ({
         totalLikes: 0,
         totalApplications: 0,
         totalShares: 0,
+        totalBookmarks: 0,
+        totalComments: 0,
         conversionRate: 0,
         viewsData: [],
         applicationSourceData: [],
@@ -228,7 +245,7 @@ export const OpportunityAnalyticsDialog = ({
     return sources.filter(s => s.count > 0);
   };
 
-  const generateTimelineFromReal = (applications: any[], likes: any[], shares: any[]) => {
+  const generateTimelineFromReal = (applications: any[], likes: any[], shares: any[], bookmarks: any[], comments: any[]) => {
     const timeline = new Map();
     
     // Initialize last 7 days
@@ -240,7 +257,7 @@ export const OpportunityAnalyticsDialog = ({
     }
     
     // Count all activities
-    [...applications, ...likes, ...shares].forEach(item => {
+    [...applications, ...likes, ...shares, ...bookmarks, ...comments].forEach(item => {
       const dateStr = new Date(item.created_at).toISOString().split('T')[0];
       if (timeline.has(dateStr)) {
         timeline.get(dateStr).count++;
