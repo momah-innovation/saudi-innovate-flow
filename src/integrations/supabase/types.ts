@@ -4217,6 +4217,41 @@ export type Database = {
         }
         Relationships: []
       }
+      opportunity_shares: {
+        Row: {
+          id: string
+          metadata: Json | null
+          opportunity_id: string
+          share_type: string | null
+          shared_at: string
+          user_id: string | null
+        }
+        Insert: {
+          id?: string
+          metadata?: Json | null
+          opportunity_id: string
+          share_type?: string | null
+          shared_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          id?: string
+          metadata?: Json | null
+          opportunity_id?: string
+          share_type?: string | null
+          shared_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_shares_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "partnership_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       opportunity_status: {
         Row: {
           challenge_id: string | null
