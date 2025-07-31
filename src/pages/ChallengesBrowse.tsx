@@ -18,6 +18,9 @@ import { ChallengeRecommendations } from '@/components/challenges/ChallengeRecom
 import { ChallengeDetailDialog } from '@/components/challenges/ChallengeDetailDialog';
 import { EnhancedChallengeDetailDialog } from '@/components/challenges/EnhancedChallengeDetailDialog';
 import { ChallengeFilters, FilterState } from '@/components/challenges/ChallengeFilters';
+import { EnhancedChallengeFilters } from '@/components/challenges/EnhancedChallengeFilters';
+import { ChallengeSkeleton, ChallengeLoadingState, ChallengeEmptyState } from '@/components/challenges/ChallengeSkeletons';
+import { EnhancedSubmissionDialog } from '@/components/challenges/EnhancedSubmissionDialog';
 import { ChallengeListView } from '@/components/challenges/ChallengeListView';
 import { ChallengeSubmissionDialog } from '@/components/challenges/ChallengeSubmissionDialog';
 import { ChallengeCommentsDialog } from '@/components/challenges/ChallengeCommentsDialog';
@@ -27,7 +30,7 @@ import { useChallengeDefaults } from '@/hooks/useChallengeDefaults';
 import { useChallengesData } from '@/hooks/useChallengesData';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Plus, Send, MessageSquare, Users, Eye, BookmarkIcon, TrendingUp, Clock, Calendar } from 'lucide-react';
+import { Plus, Send, MessageSquare, Users, Eye, BookmarkIcon, TrendingUp, Clock, Calendar, Target } from 'lucide-react';
 
 
 const ChallengesBrowse = () => {
@@ -409,12 +412,13 @@ const ChallengesBrowse = () => {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Main Content */}
             <div className="lg:col-span-3 space-y-6">
-              {/* Advanced Filters */}
-              <ChallengeFilters
+              {/* Enhanced Filters with Animations */}
+              <EnhancedChallengeFilters
                 filters={filters}
                 onFiltersChange={setFilters}
                 onClearFilters={handleClearFilters}
                 activeFiltersCount={getActiveFiltersCount()}
+                className="animate-fade-in"
               />
             </div>
             
@@ -469,28 +473,61 @@ const ChallengesBrowse = () => {
             </TabsList>
 
             <TabsContent value="all" className="space-y-4">
-              {viewMode === 'list' ? renderChallengeList(filteredChallenges) : renderChallengeCards(filteredChallenges)}
+              {loading ? (
+                <ChallengeSkeleton viewMode={viewMode} count={6} className="animate-fade-in" />
+              ) : tabFilteredChallenges.length === 0 ? (
+                <ChallengeEmptyState
+                  title={isRTL ? 'لا توجد تحديات' : 'No challenges found'}
+                  description={isRTL ? 'جرب تعديل الفلاتر أو البحث' : 'Try adjusting your filters or search terms'}
+                  icon={Target}
+                  actionLabel={isRTL ? 'مسح الفلاتر' : 'Clear Filters'}
+                  onAction={handleClearFilters}
+                  className="animate-fade-in"
+                />
+              ) : (
+                <div className="animate-fade-in">
+                  {viewMode === 'list' ? renderChallengeList(filteredChallenges) : renderChallengeCards(filteredChallenges)}
+                </div>
+              )}
             </TabsContent>
 
             <TabsContent value="active" className="space-y-4">
-              {viewMode === 'list' ? 
-                renderChallengeList(filteredChallenges.filter(c => c.status === 'active')) : 
-                renderChallengeCards(filteredChallenges.filter(c => c.status === 'active'))
-              }
+              {loading ? (
+                <ChallengeSkeleton viewMode={viewMode} count={4} />
+              ) : (
+                <div className="animate-fade-in">
+                  {viewMode === 'list' ? 
+                    renderChallengeList(filteredChallenges.filter(c => c.status === 'active')) : 
+                    renderChallengeCards(filteredChallenges.filter(c => c.status === 'active'))
+                  }
+                </div>
+              )}
             </TabsContent>
 
             <TabsContent value="upcoming" className="space-y-4">
-              {viewMode === 'list' ? 
-                renderChallengeList(filteredChallenges.filter(c => c.status === 'upcoming')) : 
-                renderChallengeCards(filteredChallenges.filter(c => c.status === 'upcoming'))
-              }
+              {loading ? (
+                <ChallengeSkeleton viewMode={viewMode} count={4} />
+              ) : (
+                <div className="animate-fade-in">
+                  {viewMode === 'list' ? 
+                    renderChallengeList(filteredChallenges.filter(c => c.status === 'upcoming')) : 
+                    renderChallengeCards(filteredChallenges.filter(c => c.status === 'upcoming'))
+                  }
+                </div>
+              )}
             </TabsContent>
 
             <TabsContent value="trending" className="space-y-4">
-              {viewMode === 'list' ? 
-                renderChallengeList(filteredChallenges.filter(c => c.trending || c.participants > 200)) : 
-                renderChallengeCards(filteredChallenges.filter(c => c.trending || c.participants > 200))
-              }
+              {loading ? (
+                <ChallengeSkeleton viewMode={viewMode} count={4} />
+              ) : (
+                <div className="animate-fade-in">
+                  {viewMode === 'list' ? 
+                    renderChallengeList(filteredChallenges.filter(c => c.trending || c.participants > 200)) : 
+                    renderChallengeCards(filteredChallenges.filter(c => c.trending || c.participants > 200))
+                  }
+                </div>
+              )}
             </TabsContent>
           </Tabs>
         </div>
@@ -505,11 +542,12 @@ const ChallengesBrowse = () => {
           onViewComments={handleViewComments}
         />
 
-        {/* Challenge Submission Dialog */}
-        <ChallengeSubmissionDialog
+        {/* Enhanced Submission Dialog */}
+        <EnhancedSubmissionDialog
           challenge={selectedChallenge}
           open={submissionDialogOpen}
           onOpenChange={setSubmissionDialogOpen}
+          onSubmissionComplete={refetch}
         />
 
         {/* Challenge Comments Dialog */}
