@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { LayoutSelector } from '@/components/ui/layout-selector';
 import { ViewLayouts } from '@/components/ui/view-layouts';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { ChallengeCard } from '@/components/challenges/ChallengeCard';
@@ -21,6 +22,10 @@ import { ChallengeFilters, FilterState } from '@/components/challenges/Challenge
 import { EnhancedChallengeFilters } from '@/components/challenges/EnhancedChallengeFilters';
 import { ChallengeSkeleton, ChallengeLoadingState, ChallengeEmptyState } from '@/components/challenges/ChallengeSkeletons';
 import { EnhancedSubmissionDialog } from '@/components/challenges/EnhancedSubmissionDialog';
+import { ChallengeNotificationCenter } from '@/components/challenges/ChallengeNotificationCenter';
+import { ChallengeTemplatesDialog } from '@/components/challenges/ChallengeTemplatesDialog';
+import { ChallengeAnalyticsDashboard } from '@/components/challenges/ChallengeAnalyticsDashboard';
+import { ChallengeCollaborationHub } from '@/components/challenges/ChallengeCollaborationHub';
 import { ChallengeListView } from '@/components/challenges/ChallengeListView';
 import { ChallengeSubmissionDialog } from '@/components/challenges/ChallengeSubmissionDialog';
 import { ChallengeCommentsDialog } from '@/components/challenges/ChallengeCommentsDialog';
@@ -28,9 +33,10 @@ import { ChallengeSubmissionsDialog } from '@/components/challenges/ChallengeSub
 import { CreateChallengeDialog } from '@/components/challenges/CreateChallengeDialog';
 import { useChallengeDefaults } from '@/hooks/useChallengeDefaults';
 import { useChallengesData } from '@/hooks/useChallengesData';
+import { useRealTimeChallenges } from '@/hooks/useRealTimeChallenges';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Plus, Send, MessageSquare, Users, Eye, BookmarkIcon, TrendingUp, Clock, Calendar, Target } from 'lucide-react';
+import { Plus, Send, MessageSquare, Users, Eye, BookmarkIcon, TrendingUp, Clock, Calendar, Target, FileText, BarChart3 } from 'lucide-react';
 
 
 const ChallengesBrowse = () => {
@@ -49,9 +55,23 @@ const ChallengesBrowse = () => {
   const [commentsDialogOpen, setCommentsDialogOpen] = useState(false);
   const [submissionsDialogOpen, setSubmissionsDialogOpen] = useState(false);
   const [createChallengeOpen, setCreateChallengeOpen] = useState(false);
+  const [templatesDialogOpen, setTemplatesDialogOpen] = useState(false);
+  const [analyticsDialogOpen, setAnalyticsDialogOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>(ui.defaultViewMode as any || 'cards');
   const [activeTab, setActiveTab] = useState('all');
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  
+  // Real-time updates
+  const { isConnected } = useRealTimeChallenges({
+    onChallengeUpdate: (update) => {
+      console.log('Challenge update:', update);
+      refetch();
+    },
+    onParticipantUpdate: (challengeId, count) => {
+      console.log('Participant update:', challengeId, count);
+      refetch();
+    }
+  });
   
   // Basic search - events style
   const [searchQuery, setSearchQuery] = useState('');
@@ -400,6 +420,23 @@ const ChallengesBrowse = () => {
         } : undefined}
         secondaryActions={
           <div className="flex gap-2">
+            <ChallengeNotificationCenter />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setTemplatesDialogOpen(true)}
+            >
+              <FileText className="w-4 h-4 mr-2" />
+              {isRTL ? 'القوالب' : 'Templates'}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setAnalyticsDialogOpen(true)}
+            >
+              <BarChart3 className="w-4 h-4 mr-2" />
+              {isRTL ? 'الإحصائيات' : 'Analytics'}
+            </Button>
             <LayoutSelector
               viewMode={viewMode}
               onViewModeChange={(mode) => mode !== 'calendar' && setViewMode(mode)}
@@ -563,6 +600,28 @@ const ChallengesBrowse = () => {
           open={submissionsDialogOpen}
           onOpenChange={setSubmissionsDialogOpen}
         />
+
+        {/* Templates Dialog */}
+        <ChallengeTemplatesDialog
+          open={templatesDialogOpen}
+          onOpenChange={setTemplatesDialogOpen}
+          onTemplateSelect={(template) => {
+            setCreateChallengeOpen(true);
+          }}
+        />
+
+        {/* Analytics Dashboard Dialog */}
+        <Dialog open={analyticsDialogOpen} onOpenChange={setAnalyticsDialogOpen}>
+          <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <BarChart3 className="w-5 h-5" />
+                {isRTL ? 'لوحة إحصائيات التحديات' : 'Challenge Analytics Dashboard'}
+              </DialogTitle>
+            </DialogHeader>
+            <ChallengeAnalyticsDashboard />
+          </DialogContent>
+        </Dialog>
 
         {/* Create Challenge Dialog - Only for Admins */}
         {user && (hasRole('admin') || hasRole('super_admin')) && (
