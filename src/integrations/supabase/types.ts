@@ -4051,6 +4051,7 @@ export type Database = {
       opportunity_applications: {
         Row: {
           applicant_id: string
+          application_source: string | null
           application_type: string | null
           attachment_urls: string[] | null
           contact_email: string | null
@@ -4075,6 +4076,7 @@ export type Database = {
         }
         Insert: {
           applicant_id: string
+          application_source?: string | null
           application_type?: string | null
           attachment_urls?: string[] | null
           contact_email?: string | null
@@ -4099,6 +4101,7 @@ export type Database = {
         }
         Update: {
           applicant_id?: string
+          application_source?: string | null
           application_type?: string | null
           attachment_urls?: string[] | null
           contact_email?: string | null
@@ -4416,7 +4419,7 @@ export type Database = {
             foreignKeyName: "opportunity_live_presence_opportunity_id_fkey"
             columns: ["opportunity_id"]
             isOneToOne: false
-            referencedRelation: "partnership_opportunities"
+            referencedRelation: "opportunities"
             referencedColumns: ["id"]
           },
         ]
@@ -4601,7 +4604,7 @@ export type Database = {
             foreignKeyName: "opportunity_user_journeys_opportunity_id_fkey"
             columns: ["opportunity_id"]
             isOneToOne: false
-            referencedRelation: "partnership_opportunities"
+            referencedRelation: "opportunities"
             referencedColumns: ["id"]
           },
         ]
