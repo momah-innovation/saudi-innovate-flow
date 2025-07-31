@@ -120,7 +120,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
         .gte('created_at', getDateRangeStart(timeRange));
 
       // Process the data
-      const processedAnalytics = processAnalyticsData({
+      const processedAnalytics = await processAnalyticsData({
         opportunities: opportunities || [],
         analyticsData: analyticsData || [],
         applications: applications || [],
@@ -152,7 +152,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
     }
   };
 
-  const processAnalyticsData = (data: any): AnalyticsSummary => {
+  const processAnalyticsData = async (data: any): Promise<AnalyticsSummary> => {
     const { opportunities, analyticsData, applications, viewSessions, likes, shares, bookmarks } = data;
 
     // Calculate totals
@@ -186,31 +186,43 @@ export const ComprehensiveAnalyticsDashboard = () => {
     // Engagement trend (last 30 days)
     const engagementTrend = generateEngagementTrend(applications, likes, shares, viewSessions);
 
-    // Geographic data (simulated for now)
-    const geographicData = [
-      { country: isRTL ? 'المملكة العربية السعودية' : 'Saudi Arabia', views: Math.floor(totalViews * 0.6), applications: Math.floor(totalApplications * 0.6) },
-      { country: isRTL ? 'الإمارات العربية المتحدة' : 'UAE', views: Math.floor(totalViews * 0.2), applications: Math.floor(totalApplications * 0.2) },
-      { country: isRTL ? 'الكويت' : 'Kuwait', views: Math.floor(totalViews * 0.1), applications: Math.floor(totalApplications * 0.1) },
-      { country: isRTL ? 'قطر' : 'Qatar', views: Math.floor(totalViews * 0.05), applications: Math.floor(totalApplications * 0.05) },
-      { country: isRTL ? 'البحرين' : 'Bahrain', views: Math.floor(totalViews * 0.05), applications: Math.floor(totalApplications * 0.05) }
-    ];
+    // Geographic data from real Supabase table
+    const { data: geoDataResult } = await supabase
+      .from('opportunity_geographic_analytics')
+      .select('country_name, country_code, view_count')
+      .order('view_count', { ascending: false })
+      .limit(5);
 
-    // Traffic sources (based on shares platforms and direct)
+    const geographicData = (geoDataResult || []).map(item => ({
+      country: item.country_name,
+      views: item.view_count,
+      applications: Math.floor(item.view_count * 0.1) // Estimate applications from views
+    }));
+
+    // Traffic sources from real shares data and application sources
     const platformShares = shares.reduce((acc: any, share: any) => {
       acc[share.platform] = (acc[share.platform] || 0) + 1;
       return acc;
     }, {});
 
+    const applicationSources = applications.reduce((acc: any, app: any) => {
+      const source = app.application_source || 'direct';
+      acc[source] = (acc[source] || 0) + 1;
+      return acc;
+    }, {});
+
     const trafficSources = [
-      { source: isRTL ? 'مباشر' : 'Direct', count: Math.floor(totalViews * 0.4), percentage: 40 },
-      { source: isRTL ? 'لينكد إن' : 'LinkedIn', count: platformShares.linkedin || 0, percentage: 0 },
-      { source: isRTL ? 'تويتر' : 'Twitter', count: platformShares.twitter || 0, percentage: 0 },
-      { source: isRTL ? 'فيسبوك' : 'Facebook', count: platformShares.facebook || 0, percentage: 0 },
-      { source: isRTL ? 'واتساب' : 'WhatsApp', count: platformShares.whatsapp || 0, percentage: 0 }
-    ].map(source => ({
-      ...source,
-      percentage: totalViews > 0 ? Math.round((source.count / totalViews) * 100) : 0
-    }));
+      { source: isRTL ? 'مباشر' : 'Direct', count: applicationSources.direct || 0 },
+      { source: isRTL ? 'لينكد إن' : 'LinkedIn', count: platformShares.linkedin || 0 },
+      { source: isRTL ? 'تويتر' : 'Twitter', count: platformShares.twitter || 0 },
+      { source: isRTL ? 'فيسبوك' : 'Facebook', count: platformShares.facebook || 0 },
+      { source: isRTL ? 'واتساب' : 'WhatsApp', count: platformShares.whatsapp || 0 }
+    ]
+      .map(source => ({
+        ...source,
+        percentage: totalViews > 0 ? Math.round((source.count / totalViews) * 100) : 0
+      }))
+      .filter(source => source.count > 0);
 
     return {
       totalOpportunities: opportunities.length,

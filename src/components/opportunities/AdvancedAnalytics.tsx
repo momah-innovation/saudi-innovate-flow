@@ -152,22 +152,34 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
         : 0;
     }
 
-    // Calculate average time per step
+    // Calculate real average time per step from journey data
     steps.forEach((step, index) => {
-      step.time = 30 + (index * 45); // Estimated time in seconds
+      const stepJourneys = journeys.filter(j => j.step_data?.step_name === step.step);
+      const avgTime = stepJourneys.length > 0 
+        ? stepJourneys.reduce((sum, j) => sum + (j.time_from_previous_ms || 0), 0) / stepJourneys.length / 1000
+        : 30 + (index * 15); // Fallback estimated time
+      step.time = Math.round(avgTime);
     });
 
     return steps;
   };
 
   const generateBehaviorPatterns = (journeys: any[], sessions: any[]) => {
-    return [
-      { action: isRTL ? 'التمرير السريع' : 'Quick Scroll', frequency: 45, impact: 'high' },
-      { action: isRTL ? 'قراءة التفاصيل' : 'Detail Reading', frequency: 78, impact: 'medium' },
-      { action: isRTL ? 'مشاركة الرابط' : 'Link Sharing', frequency: 23, impact: 'high' },
-      { action: isRTL ? 'حفظ الفرصة' : 'Bookmark Opportunity', frequency: 34, impact: 'medium' },
-      { action: isRTL ? 'زيارة متعددة' : 'Multiple Visits', frequency: 12, impact: 'high' }
-    ];
+    // Calculate real behavior patterns from journey data
+    const actionCounts: Record<string, number> = journeys.reduce((acc, journey) => {
+      const stepData = journey.step_data || {};
+      const action = stepData.step_name || 'unknown';
+      acc[action] = (acc[action] || 0) + 1;
+      return acc;
+    }, {});
+
+    const totalActions = Object.values(actionCounts).reduce((sum: number, count: number) => sum + count, 0);
+    
+    return Object.entries(actionCounts).map(([action, count]) => ({
+      action: action.replace('_', ' ').charAt(0).toUpperCase() + action.slice(1),
+      frequency: totalActions > 0 ? Math.round((count / totalActions) * 100) : 0,
+      impact: count > (totalActions * 0.1) ? 'high' : 'medium'
+    })).slice(0, 5);
   };
 
   const generatePredictiveMetrics = (analytics: any, journeys: any[], sessions: any[]) => {
