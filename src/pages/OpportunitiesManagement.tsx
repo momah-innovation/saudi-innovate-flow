@@ -15,6 +15,8 @@ import { EditOpportunityDialog } from '@/components/opportunities/EditOpportunit
 import { DeleteOpportunityDialog } from '@/components/opportunities/DeleteOpportunityDialog';
 import { OpportunityDetailsDialog } from '@/components/opportunities/OpportunityDetailsDialog';
 import { OpportunityAnalyticsDialog } from '@/components/opportunities/OpportunityAnalyticsDialog';
+import { ShareOpportunityButton } from '@/components/opportunities/ShareOpportunityButton';
+import { BookmarkOpportunityButton } from '@/components/opportunities/BookmarkOpportunityButton';
 
 interface Opportunity {
   id: string;
@@ -335,6 +337,19 @@ export default function OpportunitiesManagement() {
                         </div>
                         
                         <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+                          <ShareOpportunityButton
+                            opportunityId={opportunity.id}
+                            opportunityTitle={getDynamicText(opportunity.title_ar, opportunity.title_en)}
+                            opportunityDescription={getDynamicText(opportunity.description_ar, opportunity.description_en)}
+                            variant="outline"
+                            size="sm"
+                          />
+                          <BookmarkOpportunityButton
+                            opportunityId={opportunity.id}
+                            variant="outline"
+                            size="sm"
+                            showText={false}
+                          />
                           <Button 
                             variant="outline" 
                             size="sm"

@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useTranslation } from '@/hooks/useTranslation';
+import { ShareOpportunityButton } from './ShareOpportunityButton';
+import { BookmarkOpportunityButton } from './BookmarkOpportunityButton';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   Building2, 
@@ -76,11 +78,12 @@ export const OpportunityDetailsDialog = ({
 
   const trackView = async () => {
     try {
+      const { data: user } = await supabase.auth.getUser();
       await supabase.functions.invoke('track-opportunity-analytics', {
         body: {
           opportunityId,
           action: 'view',
-          userId: supabase.auth.getUser().then(u => u.data.user?.id),
+          userId: user.user?.id,
           metadata: { source: 'details_dialog' }
         }
       });
@@ -232,9 +235,19 @@ export const OpportunityDetailsDialog = ({
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm">
-                    <Share2 className="w-4 h-4" />
-                  </Button>
+                  <ShareOpportunityButton
+                    opportunityId={opportunity.id}
+                    opportunityTitle={isRTL ? opportunity.title_ar : (opportunity.title_en || opportunity.title_ar)}
+                    opportunityDescription={isRTL ? opportunity.description_ar : (opportunity.description_en || opportunity.description_ar)}
+                    variant="outline"
+                    size="sm"
+                  />
+                  <BookmarkOpportunityButton
+                    opportunityId={opportunity.id}
+                    variant="outline"
+                    size="sm"
+                    showText={false}
+                  />
                 </div>
               </div>
             </CardHeader>

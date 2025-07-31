@@ -4266,25 +4266,31 @@ export type Database = {
       }
       opportunity_shares: {
         Row: {
+          created_at: string | null
           id: string
           metadata: Json | null
           opportunity_id: string
+          platform: string | null
           share_type: string | null
           shared_at: string
           user_id: string | null
         }
         Insert: {
+          created_at?: string | null
           id?: string
           metadata?: Json | null
           opportunity_id: string
+          platform?: string | null
           share_type?: string | null
           shared_at?: string
           user_id?: string | null
         }
         Update: {
+          created_at?: string | null
           id?: string
           metadata?: Json | null
           opportunity_id?: string
+          platform?: string | null
           share_type?: string | null
           shared_at?: string
           user_id?: string | null
