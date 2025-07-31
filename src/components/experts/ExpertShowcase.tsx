@@ -215,7 +215,7 @@ export const ExpertShowcase = ({
                 <div>
                   <div className="font-medium text-sm">{category}</div>
                   <div className="text-xs text-muted-foreground">
-                    {Math.floor(Math.random() * 5) + 1} {isRTL ? 'خبراء' : 'experts'}
+                    {experts.length} {isRTL ? 'خبراء' : 'experts'}
                   </div>
                 </div>
               </Button>

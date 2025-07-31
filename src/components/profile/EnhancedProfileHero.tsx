@@ -206,7 +206,7 @@ export const EnhancedProfileHero = ({
                   
                   <div>
                     <div className="text-2xl font-bold text-white mb-1">
-                      {Math.floor(Math.random() * 50) + 10}
+                      0
                     </div>
                     <div className="text-sm text-white/70">
                       {isRTL ? 'أفكار مقدمة' : 'Ideas Submitted'}
@@ -215,7 +215,7 @@ export const EnhancedProfileHero = ({
                   
                   <div>
                     <div className="text-2xl font-bold text-white mb-1">
-                      {Math.floor(Math.random() * 1000) + 100}
+                      0
                     </div>
                     <div className="text-sm text-white/70">
                       {isRTL ? 'نقاط الابتكار' : 'Innovation Points'}

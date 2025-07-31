@@ -139,7 +139,7 @@ export function OpportunityDetailDialog({
                 <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
                   <Users className="w-4 h-4 text-muted-foreground" />
                   <span className="text-lg font-semibold">
-                    {Math.floor(Math.random() * 500) + 100}+
+                    0
                   </span>
                 </div>
               </CardContent>
@@ -153,7 +153,7 @@ export function OpportunityDetailDialog({
                 <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
                   <Calendar className="w-4 h-4 text-muted-foreground" />
                   <span className="text-lg font-semibold">
-                    {Math.floor(Math.random() * 12) + 3} {t('months')}
+                    0 {t('months')}
                   </span>
                 </div>
               </CardContent>

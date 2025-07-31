@@ -141,8 +141,8 @@ export const EnhancedDashboardOverview = () => {
       innovationMaturity,
       totalEvents: eventsRes.count || 0,
       totalPartners: partnersRes.count || 0,
-      avgRating: 4.2 + Math.random() * 0.6, // Simulated
-      successRate: Math.min(85 + Math.random() * 10, 100) // Simulated
+      avgRating: 0,
+      successRate: 0
     });
   };
 

@@ -142,11 +142,18 @@ export default function Opportunities() {
             .select('*', { count: 'exact', head: true })
             .eq('opportunity_id', opp.id);
 
+          // Get analytics data
+          const { data: analyticsData } = await supabase
+            .from('opportunity_analytics')
+            .select('view_count')
+            .eq('opportunity_id', opp.id)
+            .single();
+
           return {
             ...opp,
             applications_count: applicationsCount || 0,
             likes_count: likesCount || 0,
-            views_count: Math.floor(Math.random() * 100) + 10, // Mock for now
+            views_count: analyticsData?.view_count || 0,
             requirements: opp.requirements as string || null,
             benefits: opp.benefits as string || null,
             category: { name_ar: opp.opportunity_type, name: opp.opportunity_type, name_en: opp.opportunity_type, color: '#3B82F6' }

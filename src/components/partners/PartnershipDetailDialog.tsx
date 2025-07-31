@@ -139,7 +139,7 @@ export function PartnershipDetailDialog({
               </CardHeader>
               <CardContent>
                 <div className={`text-2xl font-bold ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {Math.floor(Math.random() * 50) + 10}
+                  0
                 </div>
               </CardContent>
             </Card>
@@ -152,7 +152,7 @@ export function PartnershipDetailDialog({
                 <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
                   <Users className="w-4 h-4 text-muted-foreground" />
                   <span className="text-2xl font-bold">
-                    {Math.floor(Math.random() * 200) + 50}
+                    0
                   </span>
                 </div>
               </CardContent>
@@ -164,7 +164,7 @@ export function PartnershipDetailDialog({
               </CardHeader>
               <CardContent>
                 <div className={`text-2xl font-bold text-green-600 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {Math.floor(Math.random() * 30) + 70}%
+                  0%
                 </div>
               </CardContent>
             </Card>
