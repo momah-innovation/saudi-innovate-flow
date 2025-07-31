@@ -162,7 +162,7 @@ export const OpportunityDetailsDialog = ({
         .from('opportunities')
         .select('*')
         .eq('id', opportunityId)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 

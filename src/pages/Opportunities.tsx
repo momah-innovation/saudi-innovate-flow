@@ -118,9 +118,9 @@ export default function Opportunities() {
     try {
       setLoading(true);
       
-      // First get the opportunities without relationships
+      // Get the opportunities from the main table
       const { data: opportunitiesData, error } = await supabase
-        .from('partnership_opportunities')
+        .from('opportunities')
         .select('*')
         .order('deadline', { ascending: true });
 
@@ -164,13 +164,13 @@ export default function Opportunities() {
             .single();
 
           // Manually attach sector and department data
-          const sectors = sectorsData.data?.find(sector => sector.id === opp.sector_id) || null;
-          const departments = departmentsData.data?.find(dept => dept.id === opp.department_id) || null;
+          const sector = sectorsData.data?.find(sector => sector.id === opp.sector_id) || null;
+          const department = departmentsData.data?.find(dept => dept.id === opp.department_id) || null;
 
           return {
             ...opp,
-            sectors,
-            departments,
+            sector,
+            department,
             applications_count: applicationsCount || 0,
             likes_count: likesCount || 0,
             views_count: analyticsData?.view_count || 0,
