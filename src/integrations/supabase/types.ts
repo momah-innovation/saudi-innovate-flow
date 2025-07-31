@@ -4983,6 +4983,33 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limits: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          request_count: number | null
+          user_id: string
+          window_start: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          request_count?: number | null
+          user_id: string
+          window_start?: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          request_count?: number | null
+          user_id?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
       role_approval_requests: {
         Row: {
           approver_id: string | null
@@ -5478,6 +5505,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      suspicious_activities: {
+        Row: {
+          activity_type: string
+          auto_detected: boolean | null
+          created_at: string
+          description: string
+          id: string
+          ip_address: unknown | null
+          request_details: Json | null
+          resolution_notes: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          activity_type: string
+          auto_detected?: boolean | null
+          created_at?: string
+          description: string
+          id?: string
+          ip_address?: unknown | null
+          request_details?: Json | null
+          resolution_notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          activity_type?: string
+          auto_detected?: boolean | null
+          created_at?: string
+          description?: string
+          id?: string
+          ip_address?: unknown | null
+          request_details?: Json | null
+          resolution_notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       system_settings: {
         Row: {
@@ -6251,6 +6329,29 @@ export type Database = {
           event_status: string
         }
         Returns: boolean
+      }
+      check_rate_limit: {
+        Args: {
+          p_user_id: string
+          p_action: string
+          p_window_minutes?: number
+          p_max_requests?: number
+        }
+        Returns: number
+      }
+      cleanup_expired_security_data: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      detect_suspicious_activity: {
+        Args: {
+          p_user_id: string
+          p_activity_type: string
+          p_description: string
+          p_severity?: string
+          p_request_details?: Json
+        }
+        Returns: string
       }
       ensure_innovator_exists: {
         Args: { user_uuid: string }
