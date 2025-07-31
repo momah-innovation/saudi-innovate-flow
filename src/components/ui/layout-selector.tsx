@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { LayoutGrid, List, Grid } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 
-type ViewMode = 'cards' | 'list' | 'grid';
+type ViewMode = 'cards' | 'list' | 'grid' | 'calendar';
 
 interface LayoutSelectorProps {
   viewMode: ViewMode;

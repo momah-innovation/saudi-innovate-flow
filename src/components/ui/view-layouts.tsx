@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 interface ViewLayoutsProps {
-  viewMode: 'cards' | 'list' | 'grid';
+  viewMode: 'cards' | 'list' | 'grid' | 'calendar';
   children: ReactNode[];
   listRenderer?: (items: ReactNode[]) => ReactNode;
 }

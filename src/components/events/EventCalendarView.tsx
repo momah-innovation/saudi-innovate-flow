@@ -17,17 +17,38 @@ import { cn } from '@/lib/utils';
 interface CalendarEvent {
   id: string;
   title_ar: string;
+  description_ar: string;
   event_date: string;
   start_time: string;
-  event_type: string;
-  registered_participants: number;
+  end_time: string;
+  end_date?: string;
   location?: string;
+  virtual_link?: string;
   format: string;
+  event_type: string;
+  event_category: string;
+  status: string;
+  max_participants?: number;
+  registered_participants: number;
+  actual_participants: number;
+  budget?: number;
+  campaign_id?: string;
+  challenge_id?: string;
+  sector_id?: string;
+  event_manager_id?: string;
+  is_recurring?: boolean;
+  recurrence_pattern?: string;
+  target_stakeholder_groups?: string[];
+  partner_organizations?: string[];
+  related_focus_questions?: string[];
+  event_visibility?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 interface EventCalendarViewProps {
-  events: CalendarEvent[];
-  onEventSelect: (event: CalendarEvent) => void;
+  events: any[];
+  onEventSelect: (event: any) => void;
   loading?: boolean;
   className?: string;
 }
