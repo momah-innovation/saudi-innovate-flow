@@ -105,10 +105,10 @@ export const OpportunityAnalyticsDialog = ({
       // Load real analytics data from multiple sources
       const [opportunityData, applicationsData, analyticsData, likesData, sharesData, bookmarksData, commentsData] = await Promise.all([
         supabase
-          .from('partnership_opportunities')
+          .from('opportunities')
           .select('*')
           .eq('id', opportunityId)
-          .single(),
+          .maybeSingle(),
         supabase
           .from('opportunity_applications')
           .select('created_at, status')
@@ -267,26 +267,6 @@ export const OpportunityAnalyticsDialog = ({
     return Array.from(timeline.values());
   };
 
-  const generateMockSourceData = () => [
-    { source: isRTL ? 'البحث المباشر' : 'Direct Search', count: 45, percentage: 35 },
-    { source: isRTL ? 'وسائل التواصل' : 'Social Media', count: 32, percentage: 25 },
-    { source: isRTL ? 'الإحالات' : 'Referrals', count: 28, percentage: 22 },
-    { source: isRTL ? 'البريد الإلكتروني' : 'Email', count: 23, percentage: 18 }
-  ];
-
-  const generateMockTimelineData = () => {
-    const data = [];
-    for (let i = 7; i >= 0; i--) {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
-      data.push({
-        date: date.toISOString().split('T')[0],
-        action: isRTL ? 'مشاهدات' : 'Views',
-        count: Math.floor(Math.random() * 20) + 5
-      });
-    }
-    return data;
-  };
 
   const formatDuration = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
