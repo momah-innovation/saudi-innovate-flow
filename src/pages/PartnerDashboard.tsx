@@ -83,8 +83,43 @@ export default function PartnerDashboard() {
         .single();
 
       if (!partnerProfile) {
-        // No partner profile found, redirect to profile setup
-        navigate('/partner-profile');
+        // No partner profile found, show demo data for admin/testing
+        console.log('No partner profile found, using demo data');
+        
+        // Set demo stats for testing
+        setStats({
+          activeChallenges: 5,
+          supportedIdeas: 32,
+          totalInvestment: 750000,
+          eventsSponsored: 8,
+          collaborations: 13,
+          successfulProjects: 4
+        });
+        
+        // Demo partnerships
+        setPartnerships([
+          {
+            id: 'demo-1',
+            title: 'AI Innovation Challenge Partnership',
+            type: 'challenge' as const,
+            status: 'active',
+            start_date: '2024-01-15',
+            end_date: '2024-08-30',
+            contribution: 250000,
+            description: 'Supporting AI-driven healthcare solutions'
+          },
+          {
+            id: 'demo-2',
+            title: 'Smart City Campaign',
+            type: 'campaign' as const,
+            status: 'active', 
+            start_date: '2024-03-01',
+            contribution: 500000,
+            description: 'Urban innovation and sustainability initiative'
+          }
+        ]);
+        
+        setLoading(false);
         return;
       }
 
