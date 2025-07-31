@@ -68,8 +68,8 @@ export default function OpportunitiesManagement() {
       const processedData = data?.map(opp => ({
         ...opp,
         applications_count: Array.isArray(opp.opportunity_applications) ? opp.opportunity_applications.length : 0,
-        views_count: 0, // Will be implemented with proper analytics
-        likes_count: 0  // Will be implemented with proper analytics
+        views_count: opp.opportunity_analytics?.view_count || 0,
+        likes_count: opp.opportunity_analytics?.like_count || 0
       })) || [];
 
       setOpportunities(processedData);

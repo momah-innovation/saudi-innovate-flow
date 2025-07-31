@@ -28,10 +28,10 @@ interface CreateOpportunityDialogProps {
 }
 
 interface OpportunityFormData {
-  title: string;
   title_ar: string;
-  description: string;
+  title_en?: string;
   description_ar: string;
+  description_en?: string;
   opportunity_type: string;
   status: string;
   priority_level: string;
@@ -148,17 +148,17 @@ export const CreateOpportunityDialog = ({
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="title" className={isRTL ? 'text-right' : 'text-left'}>
+                <Label htmlFor="title_en" className={isRTL ? 'text-right' : 'text-left'}>
                   {isRTL ? 'العنوان (بالإنجليزية)' : 'Title (English)'}
                 </Label>
                 <Input
-                  id="title"
-                  {...register('title', { required: 'Title is required' })}
+                  id="title_en"
+                  {...register('title_en')}
                   className={isRTL ? 'text-right' : 'text-left'}
                   placeholder={isRTL ? 'أدخل العنوان بالإنجليزية' : 'Enter title in English'}
                 />
-                {errors.title && (
-                  <p className="text-sm text-destructive">{errors.title.message}</p>
+                {errors.title_en && (
+                  <p className="text-sm text-destructive">{errors.title_en.message}</p>
                 )}
               </div>
 
@@ -180,18 +180,18 @@ export const CreateOpportunityDialog = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="description" className={isRTL ? 'text-right' : 'text-left'}>
+                <Label htmlFor="description_en" className={isRTL ? 'text-right' : 'text-left'}>
                   {isRTL ? 'الوصف (بالإنجليزية)' : 'Description (English)'}
                 </Label>
                 <Textarea
-                  id="description"
-                  {...register('description', { required: 'Description is required' })}
+                  id="description_en"
+                  {...register('description_en')}
                   className={isRTL ? 'text-right' : 'text-left'}
                   placeholder={isRTL ? 'أدخل الوصف بالإنجليزية' : 'Enter description in English'}
                   rows={4}
                 />
-                {errors.description && (
-                  <p className="text-sm text-destructive">{errors.description.message}</p>
+                {errors.description_en && (
+                  <p className="text-sm text-destructive">{errors.description_en.message}</p>
                 )}
               </div>
 
