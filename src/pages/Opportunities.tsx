@@ -54,6 +54,7 @@ interface OpportunityItem {
   contact_person?: string;
   contact_email?: string;
   location?: string;
+  image_url?: string;
   requirements?: string | null;
   benefits?: string | null;
   sector?: { name_ar: string; name: string };
