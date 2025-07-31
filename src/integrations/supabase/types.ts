@@ -4200,22 +4200,7 @@ export type Database = {
           reminder_date?: string | null
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "fk_opportunity_bookmarks_opportunity_id"
-            columns: ["opportunity_id"]
-            isOneToOne: false
-            referencedRelation: "partnership_opportunities"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunity_bookmarks_opportunity_id_fkey"
-            columns: ["opportunity_id"]
-            isOneToOne: false
-            referencedRelation: "opportunities"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       opportunity_categories: {
         Row: {
