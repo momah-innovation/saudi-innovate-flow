@@ -83,7 +83,7 @@ export default function OpportunitiesManagement() {
 
         return {
           ...opp,
-          opportunity_type: opp.type || 'project',
+          opportunity_type: opp.opportunity_type || 'project',
           applications_count: analyticsData?.application_count || 0,
           views_count: analyticsData?.view_count || 0,
           likes_count: analyticsData?.like_count || 0

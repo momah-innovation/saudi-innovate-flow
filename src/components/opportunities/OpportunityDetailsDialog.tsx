@@ -180,7 +180,7 @@ export const OpportunityDetailsDialog = ({
 
       const processedData: OpportunityDetails = {
         ...data,
-        opportunity_type: data.type || 'project',
+        opportunity_type: data.opportunity_type || 'project',
         priority_level: 'medium',
         contact_person: 'Contact Person',
         contact_email: 'contact@example.com',

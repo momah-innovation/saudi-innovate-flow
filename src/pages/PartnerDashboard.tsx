@@ -123,19 +123,20 @@ export default function PartnerDashboard() {
       }
 
       // Load user's applications
-      const { data: applicationsData } = await supabase
+      const { data: applicationsData, error: applicationsError } = await supabase
         .from('partnership_applications')
         .select(`
           *,
-          partnership_opportunities(title_ar, opportunity_type)
+          opportunities(title_ar, opportunity_type)
         `)
         .eq('applicant_user_id', userProfile?.id)
         .order('submitted_at', { ascending: false });
 
       console.log('Applications loaded:', applicationsData);
+      console.log('Applications error:', applicationsError);
       
       // Transform the applications data to match our interface
-      const transformedApplications: ApplicationItem[] = (applicationsData || []).map(app => ({
+      const transformedApplications: ApplicationItem[] = (applicationsData || []).map((app: any) => ({
         id: app.id,
         company_name: app.company_name,
         contact_person: app.contact_person,
@@ -144,7 +145,7 @@ export default function PartnerDashboard() {
         status: app.status as 'pending' | 'under_review' | 'approved' | 'rejected',
         submitted_at: app.submitted_at,
         reviewer_notes: app.reviewer_notes,
-        partnership_opportunities: app.partnership_opportunities
+        partnership_opportunities: (app.opportunities && !applicationsError && typeof app.opportunities === 'object' && app.opportunities.title_ar) ? app.opportunities : undefined
       }));
       
       setApplications(transformedApplications);

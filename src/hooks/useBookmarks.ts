@@ -268,7 +268,7 @@ export function useBookmarks() {
           notes,
           priority,
           opportunity_id,
-          partnership_opportunities!fk_opportunity_bookmarks_opportunity_id(*)
+          opportunities!fk_opportunity_bookmarks_opportunity_id(*)
         `)
         .eq('user_id', user.id);
 
