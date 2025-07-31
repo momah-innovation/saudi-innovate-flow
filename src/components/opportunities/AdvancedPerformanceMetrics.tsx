@@ -336,9 +336,10 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
                 <p className="text-2xl font-bold">{metrics.clickThroughRate.toFixed(1)}%</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'نسبة النقر' : 'Click-through Rate'}</p>
                 <div className="flex items-center gap-1 mt-1">
-                  {getTrendIcon(metrics.trends.views.direction)({ 
-                    className: `w-3 h-3 ${getTrendColor(metrics.trends.views.direction)}` 
-                  })}
+                  {(() => {
+                    const TrendIcon = getTrendIcon(metrics.trends.views.direction);
+                    return <TrendIcon className={`w-3 h-3 ${getTrendColor(metrics.trends.views.direction)}`} />;
+                  })()}
                   <span className={`text-xs ${getTrendColor(metrics.trends.views.direction)}`}>
                     {metrics.trends.views.change > 0 ? '+' : ''}{metrics.trends.views.change}%
                   </span>
@@ -357,9 +358,10 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
                 <p className="text-2xl font-bold">{metrics.engagementRate.toFixed(1)}%</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'معدل التفاعل' : 'Engagement Rate'}</p>
                 <div className="flex items-center gap-1 mt-1">
-                  {getTrendIcon(metrics.trends.engagement.direction)({ 
-                    className: `w-3 h-3 ${getTrendColor(metrics.trends.engagement.direction)}` 
-                  })}
+                  {(() => {
+                    const TrendIcon = getTrendIcon(metrics.trends.engagement.direction);
+                    return <TrendIcon className={`w-3 h-3 ${getTrendColor(metrics.trends.engagement.direction)}`} />;
+                  })()}
                   <span className={`text-xs ${getTrendColor(metrics.trends.engagement.direction)}`}>
                     {metrics.trends.engagement.change > 0 ? '+' : ''}{metrics.trends.engagement.change}%
                   </span>
