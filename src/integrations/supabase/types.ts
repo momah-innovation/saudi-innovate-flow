@@ -6214,6 +6214,10 @@ export type Database = {
       }
     }
     Functions: {
+      approve_role_request: {
+        Args: { request_id: string; approve: boolean; reviewer_notes?: string }
+        Returns: Json
+      }
       assign_role_with_justification: {
         Args: {
           target_user_id: string
@@ -6222,6 +6226,15 @@ export type Database = {
           expires_at?: string
         }
         Returns: string
+      }
+      assign_role_with_validation: {
+        Args: {
+          target_user_id: string
+          target_role: Database["public"]["Enums"]["app_role"]
+          justification?: string
+          expires_at?: string
+        }
+        Returns: Json
       }
       auto_track_weekly_capacity: {
         Args: Record<PropertyKey, never>
@@ -6273,9 +6286,27 @@ export type Database = {
         Args: { p_opportunity_id: string }
         Returns: undefined
       }
+      log_security_event: {
+        Args: {
+          action_type: string
+          resource_type?: string
+          resource_id?: string
+          details?: Json
+          risk_level?: string
+        }
+        Returns: string
+      }
       refresh_opportunity_analytics: {
         Args: { p_opportunity_id: string }
         Returns: undefined
+      }
+      revoke_role_with_validation: {
+        Args: {
+          target_user_id: string
+          target_role: Database["public"]["Enums"]["app_role"]
+          reason?: string
+        }
+        Returns: Json
       }
       send_challenge_notification: {
         Args: {

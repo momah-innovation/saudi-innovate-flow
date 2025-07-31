@@ -22,10 +22,66 @@ serve(async (req) => {
   }
 
   try {
+    // Get JWT token from Authorization header
+    const authHeader = req.headers.get('Authorization')
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return new Response(
+        JSON.stringify({ error: 'Missing or invalid authorization header' }),
+        { 
+          status: 401, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
+
+    const jwt = authHeader.replace('Bearer ', '')
+    
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
+
+    // Verify the JWT token
+    const { data: { user }, error: authError } = await supabase.auth.getUser(jwt)
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid or expired token' }),
+        { 
+          status: 401, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
+
+    // Rate limiting: Check if user has made too many requests recently
+    const rateLimitCheck = await supabase.rpc('check_rate_limit', {
+      p_user_id: user.id,
+      p_action: 'analytics_tracking',
+      p_window_minutes: 1,
+      p_max_requests: 100
+    })
+
+    if (rateLimitCheck.data && rateLimitCheck.data > 100) {
+      // Log security event for rate limit exceeded
+      await supabase.rpc('log_security_event', {
+        action_type: 'RATE_LIMIT_EXCEEDED',
+        resource_type: 'analytics_tracking',
+        details: {
+          user_id: user.id,
+          request_count: rateLimitCheck.data,
+          ip_address: req.headers.get('x-forwarded-for') || 'unknown'
+        },
+        risk_level: 'medium'
+      })
+
+      return new Response(
+        JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }),
+        { 
+          status: 429, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
 
     const { opportunityId, action, userId, sessionId, timeSpent, metadata }: TrackRequest = await req.json()
 
