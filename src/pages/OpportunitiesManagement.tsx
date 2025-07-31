@@ -15,7 +15,8 @@ import { EditOpportunityDialog } from '@/components/opportunities/EditOpportunit
 import { DeleteOpportunityDialog } from '@/components/opportunities/DeleteOpportunityDialog';
 import { OpportunityDetailsDialog } from '@/components/opportunities/OpportunityDetailsDialog';
 import { OpportunityAnalyticsDialog } from '@/components/opportunities/OpportunityAnalyticsDialog';
-import { ShareOpportunityButton } from '@/components/opportunities/ShareOpportunityButton';
+import { LikeOpportunityButton } from '@/components/opportunities/LikeOpportunityButton';
+import { ShareOpportunityDialog } from '@/components/opportunities/ShareOpportunityDialog';
 import { BookmarkOpportunityButton } from '@/components/opportunities/BookmarkOpportunityButton';
 
 interface Opportunity {
@@ -337,13 +338,20 @@ export default function OpportunitiesManagement() {
                         </div>
                         
                         <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                          <ShareOpportunityButton
+                          <LikeOpportunityButton
+                            opportunityId={opportunity.id}
+                            variant="ghost"
+                            size="sm"
+                            showCount={false}
+                          />
+                          <ShareOpportunityDialog
                             opportunityId={opportunity.id}
                             opportunityTitle={getDynamicText(opportunity.title_ar, opportunity.title_en)}
-                            opportunityDescription={getDynamicText(opportunity.description_ar, opportunity.description_en)}
-                            variant="outline"
-                            size="sm"
-                          />
+                          >
+                            <Button variant="outline" size="sm">
+                              <MessageSquare className="w-4 h-4" />
+                            </Button>
+                          </ShareOpportunityDialog>
                           <BookmarkOpportunityButton
                             opportunityId={opportunity.id}
                             variant="outline"

@@ -10,8 +10,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { EnhancedOpportunitiesHero } from '@/components/opportunities/EnhancedOpportunitiesHero';
-import { EnhancedOpportunityCard } from '@/components/opportunities/EnhancedOpportunityCard';
-import { EnhancedOpportunityDetailDialog } from '@/components/opportunities/EnhancedOpportunityDetailDialog';
+import { OpportunityCard } from '@/components/opportunities/OpportunityCard';
+import { OpportunityDetailsDialog } from '@/components/opportunities/OpportunityDetailsDialog';
 import { OpportunityApplicationDialog } from '@/components/opportunities/OpportunityApplicationDialog';
 import { EnhancedOpportunityFilters, OpportunityFilterState } from '@/components/opportunities/EnhancedOpportunityFilters';
 import { TrendingOpportunitiesWidget } from '@/components/opportunities/TrendingOpportunitiesWidget';
@@ -370,13 +370,12 @@ export default function Opportunities() {
   const renderOpportunityCards = (opportunities: OpportunityItem[]) => (
     <ViewLayouts viewMode={viewMode}>
       {opportunities.map((opportunity) => (
-        <EnhancedOpportunityCard
+        <OpportunityCard
           key={opportunity.id}
           opportunity={opportunity}
-          onViewDetails={handleViewDetails}
-          onApply={handleApply}
-          onBookmark={handleBookmark}
-          viewMode={viewMode}
+          onView={handleViewDetails}
+          onEdit={() => {}}
+          showActions={true}
         />
       ))}
     </ViewLayouts>
@@ -514,12 +513,10 @@ export default function Opportunities() {
         </div>
 
         {/* Dialogs */}
-        <EnhancedOpportunityDetailDialog
-          opportunity={selectedOpportunity}
+        <OpportunityDetailsDialog
+          opportunityId={selectedOpportunity?.id || ''}
           open={detailDialogOpen}
           onOpenChange={setDetailDialogOpen}
-          onApply={handleApply}
-          onBookmark={handleBookmark}
         />
 
         <OpportunityApplicationDialog

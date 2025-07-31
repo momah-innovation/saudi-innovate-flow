@@ -6,10 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useTranslation } from '@/hooks/useTranslation';
-import { ShareOpportunityButton } from './ShareOpportunityButton';
+import { ShareOpportunityDialog } from './ShareOpportunityDialog';
 import { BookmarkOpportunityButton } from './BookmarkOpportunityButton';
+import { LikeOpportunityButton } from './LikeOpportunityButton';
 import { supabase } from '@/integrations/supabase/client';
 import { useRealTimeAnalytics } from '@/hooks/useRealTimeAnalytics';
+import { useViewTracking } from '@/hooks/useViewTracking';
 import { 
   Building2, 
   DollarSign, 
@@ -77,6 +79,12 @@ export const OpportunityDetailsDialog = ({
       return id;
     })()
   );
+
+  // View tracking and analytics hooks
+  const { trackCustomEvent } = useViewTracking({
+    opportunityId,
+    enabled: open && !!opportunityId
+  });
 
   // Real-time analytics hook
   const { analytics } = useRealTimeAnalytics({
@@ -289,13 +297,21 @@ export const OpportunityDetailsDialog = ({
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <ShareOpportunityButton
+                  <LikeOpportunityButton
                     opportunityId={opportunity.id}
-                    opportunityTitle={isRTL ? opportunity.title_ar : (opportunity.title_en || opportunity.title_ar)}
-                    opportunityDescription={isRTL ? opportunity.description_ar : (opportunity.description_en || opportunity.description_ar)}
+                    showCount={true}
                     variant="outline"
                     size="sm"
                   />
+                  <ShareOpportunityDialog
+                    opportunityId={opportunity.id}
+                    opportunityTitle={isRTL ? opportunity.title_ar : (opportunity.title_en || opportunity.title_ar)}
+                  >
+                    <Button variant="outline" size="sm">
+                      <Share2 className="w-4 h-4 mr-1" />
+                      {isRTL ? 'مشاركة' : 'Share'}
+                    </Button>
+                  </ShareOpportunityDialog>
                   <BookmarkOpportunityButton
                     opportunityId={opportunity.id}
                     variant="outline"

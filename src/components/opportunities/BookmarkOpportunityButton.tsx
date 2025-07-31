@@ -75,6 +75,18 @@ export const BookmarkOpportunityButton = ({
         if (error) throw error;
 
         setIsBookmarked(false);
+        
+        // Track analytics
+        await supabase.functions.invoke('track-opportunity-analytics', {
+          body: {
+            opportunityId,
+            action: 'unbookmark',
+            userId: user.user.id,
+            sessionId: sessionStorage.getItem('opportunity-session'),
+            metadata: { timestamp: new Date().toISOString() }
+          }
+        });
+
         toast({
           title: isRTL ? 'تم إلغاء الإشارة المرجعية' : 'Bookmark Removed',
           description: isRTL ? 'تم إزالة الفرصة من الإشارات المرجعية' : 'Opportunity removed from bookmarks',
@@ -91,6 +103,18 @@ export const BookmarkOpportunityButton = ({
         if (error) throw error;
 
         setIsBookmarked(true);
+        
+        // Track analytics
+        await supabase.functions.invoke('track-opportunity-analytics', {
+          body: {
+            opportunityId,
+            action: 'bookmark',
+            userId: user.user.id,
+            sessionId: sessionStorage.getItem('opportunity-session'),
+            metadata: { timestamp: new Date().toISOString() }
+          }
+        });
+
         toast({
           title: isRTL ? 'تم حفظ الإشارة المرجعية' : 'Bookmarked',
           description: isRTL ? 'تم حفظ الفرصة في الإشارات المرجعية' : 'Opportunity saved to bookmarks',
