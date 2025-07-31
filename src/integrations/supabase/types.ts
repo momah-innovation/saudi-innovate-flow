@@ -3946,6 +3946,69 @@ export type Database = {
         }
         Relationships: []
       }
+      opportunities: {
+        Row: {
+          budget_max: number | null
+          budget_min: number | null
+          created_at: string | null
+          created_by: string | null
+          deadline: string | null
+          description_ar: string
+          description_en: string | null
+          id: string
+          location: string | null
+          qualifications: string | null
+          requirements: string | null
+          sector: string | null
+          status: string | null
+          tags: string[] | null
+          title_ar: string
+          title_en: string | null
+          type: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          budget_max?: number | null
+          budget_min?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          deadline?: string | null
+          description_ar: string
+          description_en?: string | null
+          id?: string
+          location?: string | null
+          qualifications?: string | null
+          requirements?: string | null
+          sector?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title_ar: string
+          title_en?: string | null
+          type?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          budget_max?: number | null
+          budget_min?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          deadline?: string | null
+          description_ar?: string
+          description_en?: string | null
+          id?: string
+          location?: string | null
+          qualifications?: string | null
+          requirements?: string | null
+          sector?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title_ar?: string
+          title_en?: string | null
+          type?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       opportunity_analytics: {
         Row: {
           application_count: number
