@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/useTranslation';
 import { supabase } from '@/integrations/supabase/client';
 import { Plus, Search, Edit, Trash2, Eye, Calendar, Target, Users, Building, DollarSign, MessageSquare, BarChart3, Clock, Filter } from 'lucide-react';
+import { CreateOpportunityDialog } from '@/components/opportunities/CreateOpportunityDialog';
 
 interface Opportunity {
   id: string;
@@ -39,6 +40,7 @@ export default function OpportunitiesManagement() {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [selectedTab, setSelectedTab] = useState('opportunities');
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
 
   useEffect(() => {
     loadOpportunities();
@@ -134,7 +136,10 @@ export default function OpportunitiesManagement() {
               {t('managePartnershipOpportunities')}
             </p>
           </div>
-          <Button className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+          <Button 
+            className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}
+            onClick={() => setShowCreateDialog(true)}
+          >
             <Plus className="w-4 h-4" />
             {t('createOpportunity')}
           </Button>
@@ -345,6 +350,16 @@ export default function OpportunitiesManagement() {
             )}
           </CardContent>
         </Card>
+
+        {/* Create Opportunity Dialog */}
+        <CreateOpportunityDialog
+          open={showCreateDialog}
+          onOpenChange={setShowCreateDialog}
+          onSuccess={() => {
+            loadOpportunities();
+            setShowCreateDialog(false);
+          }}
+        />
       </div>
     </AdminLayout>
   );
