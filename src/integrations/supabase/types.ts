@@ -1510,6 +1510,30 @@ export type Database = {
         }
         Relationships: []
       }
+      event_attendee_interests: {
+        Row: {
+          event_type: string
+          id: string
+          interest_score: number | null
+          last_interaction: string | null
+          user_id: string
+        }
+        Insert: {
+          event_type: string
+          id?: string
+          interest_score?: number | null
+          last_interaction?: string | null
+          user_id: string
+        }
+        Update: {
+          event_type?: string
+          id?: string
+          interest_score?: number | null
+          last_interaction?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       event_bookmarks: {
         Row: {
           created_at: string | null
@@ -1785,6 +1809,41 @@ export type Database = {
           },
         ]
       }
+      event_recommendations: {
+        Row: {
+          created_at: string | null
+          event_id: string
+          id: string
+          reason: string | null
+          recommendation_score: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          event_id: string
+          id?: string
+          reason?: string | null
+          recommendation_score?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string
+          id?: string
+          reason?: string | null
+          recommendation_score?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_event_recommendations_event_id"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_resources: {
         Row: {
           availability_status: string | null
@@ -1838,6 +1897,47 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      event_reviews: {
+        Row: {
+          created_at: string | null
+          event_id: string
+          helpful_count: number | null
+          id: string
+          rating: number
+          review_text: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          event_id: string
+          helpful_count?: number | null
+          id?: string
+          rating: number
+          review_text?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string
+          helpful_count?: number | null
+          id?: string
+          rating?: number
+          review_text?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_event_reviews_event_id"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       event_stakeholder_links: {
         Row: {
@@ -1913,6 +2013,44 @@ export type Database = {
             columns: ["stakeholder_id"]
             isOneToOne: false
             referencedRelation: "stakeholders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_waitlist: {
+        Row: {
+          event_id: string
+          expires_at: string | null
+          id: string
+          joined_at: string | null
+          notification_sent: boolean | null
+          position_in_queue: number | null
+          user_id: string
+        }
+        Insert: {
+          event_id: string
+          expires_at?: string | null
+          id?: string
+          joined_at?: string | null
+          notification_sent?: boolean | null
+          position_in_queue?: number | null
+          user_id: string
+        }
+        Update: {
+          event_id?: string
+          expires_at?: string | null
+          id?: string
+          joined_at?: string | null
+          notification_sent?: boolean | null
+          position_in_queue?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_event_waitlist_event_id"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
             referencedColumns: ["id"]
           },
         ]

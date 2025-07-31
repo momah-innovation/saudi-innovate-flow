@@ -11,9 +11,14 @@ import { EnhancedEventCard } from '@/components/events/EnhancedEventCard';
 import { ComprehensiveEventDialog } from '@/components/events/ComprehensiveEventDialog';
 import { EventsHero } from '@/components/events/EventsHero';
 import { EventAdvancedFilters } from '@/components/events/EventAdvancedFilters';
+import { EventRecommendations } from '@/components/events/EventRecommendations';
+import { EventCalendarView } from '@/components/events/EventCalendarView';
+import { EventWaitlistDialog } from '@/components/events/EventWaitlistDialog';
+import { EventReviewsDialog } from '@/components/events/EventReviewsDialog';
+import { EventSocialShare } from '@/components/events/EventSocialShare';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Plus, Calendar, TrendingUp, MapPin } from 'lucide-react';
+import { Plus, Calendar, TrendingUp, MapPin, Grid, List, CalendarDays } from 'lucide-react';
 
 interface Event {
   id: string;
@@ -56,10 +61,14 @@ const EventsBrowse = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
+  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid' | 'calendar'>('cards');
   const [activeTab, setActiveTab] = useState('upcoming');
   const [loading, setLoading] = useState(true);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [showWaitlistDialog, setShowWaitlistDialog] = useState(false);
+  const [showReviewsDialog, setShowReviewsDialog] = useState(false);
+  const [waitlistEvent, setWaitlistEvent] = useState<Event | null>(null);
+  const [reviewsEvent, setReviewsEvent] = useState<Event | null>(null);
   
   // Basic filters
   const [searchQuery, setSearchQuery] = useState('');
@@ -285,10 +294,19 @@ const EventsBrowse = () => {
           icon: <Plus className="w-4 h-4" />
         } : undefined}
         secondaryActions={
-          <LayoutSelector
-            viewMode={viewMode}
-            onViewModeChange={setViewMode}
-          />
+          <div className="flex gap-2">
+            <LayoutSelector
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+            />
+            <Button
+              variant={viewMode === 'calendar' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setViewMode('calendar')}
+            >
+              <CalendarDays className="w-4 h-4" />
+            </Button>
+          </div>
         }
         showSearch={true}
         searchValue={searchQuery}
@@ -307,8 +325,33 @@ const EventsBrowse = () => {
           canCreateEvent={user && (hasRole('admin') || hasRole('super_admin') || hasRole('innovation_team_member'))}
         />
 
+        {/* Personalized Recommendations */}
+        {user && activeTab === 'upcoming' && viewMode !== 'calendar' && (
+          <EventRecommendations 
+            onEventSelect={(eventId) => {
+              const event = events.find(e => e.id === eventId);
+              if (event) {
+                setSelectedEvent(event);
+                setDetailDialogOpen(true);
+              }
+            }}
+            className="mb-8"
+          />
+        )}
+
         <div className="space-y-6">
-          {/* Tabs Navigation */}
+          {/* Calendar View */}
+          {viewMode === 'calendar' ? (
+            <EventCalendarView
+              events={filteredEvents}
+              onEventSelect={(event) => {
+                setSelectedEvent(event);
+                setDetailDialogOpen(true);
+              }}
+              loading={loading}
+            />
+          ) : (
+            /* Tabs Navigation */
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="upcoming" className="animate-fade-in">
@@ -381,6 +424,7 @@ const EventsBrowse = () => {
               )}
             </TabsContent>
           </Tabs>
+          )}
         </div>
 
         {/* Enhanced Event Detail Dialog */}
@@ -391,7 +435,22 @@ const EventsBrowse = () => {
           onRegister={registerForEvent}
         />
 
-        {/* Advanced Filters */}
+        {/* Waitlist Dialog */}
+        <EventWaitlistDialog
+          event={waitlistEvent}
+          open={showWaitlistDialog}
+          onOpenChange={setShowWaitlistDialog}
+          onSuccess={() => {
+            loadEvents(); // Refresh events after joining waitlist
+          }}
+        />
+
+        {/* Reviews Dialog */}
+        <EventReviewsDialog
+          event={reviewsEvent}
+          open={showReviewsDialog}
+          onOpenChange={setShowReviewsDialog}
+        />
         <EventAdvancedFilters
           open={showAdvancedFilters}
           onOpenChange={setShowAdvancedFilters}
