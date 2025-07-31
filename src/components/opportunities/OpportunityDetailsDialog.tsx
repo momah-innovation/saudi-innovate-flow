@@ -52,6 +52,7 @@ interface OpportunityDetails {
   contact_person: string;
   contact_email: string;
   contact_phone?: string;
+  image_url?: string;
   requirements: any;
   benefits: any;
   created_at: string;
@@ -277,8 +278,19 @@ export const OpportunityDetailsDialog = ({
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Header Section */}
+          {/* Header Section with Image */}
           <Card>
+            {/* Image Section */}
+            {opportunity.image_url && (
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src={opportunity.image_url} 
+                  alt={isRTL ? opportunity.title_ar : (opportunity.title_en || opportunity.title_ar)}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              </div>
+            )}
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div className="space-y-2">

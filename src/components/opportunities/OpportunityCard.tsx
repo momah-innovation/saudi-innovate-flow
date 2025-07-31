@@ -31,6 +31,7 @@ interface OpportunityCardProps {
     budget_max?: number;
     deadline: string;
     location?: string;
+    image_url?: string;
     created_at: string;
   };
   onView?: (opportunity: any) => void;
@@ -89,6 +90,26 @@ export const OpportunityCard = ({
 
   return (
     <Card className="hover:shadow-lg transition-shadow duration-200">
+      {/* Image Section */}
+      {opportunity.image_url && (
+        <div className="relative h-48 overflow-hidden">
+          <img 
+            src={opportunity.image_url} 
+            alt={isRTL ? opportunity.title_ar : (opportunity.title_en || opportunity.title_ar)}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          <div className="absolute top-3 right-3">
+            <Badge className={getStatusColor(opportunity.status)}>
+              {isRTL ? 
+                (opportunity.status === 'open' ? 'مفتوح' : 
+                 opportunity.status === 'closed' ? 'مغلق' : 'متوقف') :
+                opportunity.status
+              }
+            </Badge>
+          </div>
+        </div>
+      )}
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="space-y-2 flex-1">
@@ -96,13 +117,15 @@ export const OpportunityCard = ({
               {isRTL ? opportunity.title_ar : (opportunity.title_en || opportunity.title_ar)}
             </CardTitle>
             <div className="flex gap-2 flex-wrap">
-              <Badge className={getStatusColor(opportunity.status)}>
-                {isRTL ? 
-                  (opportunity.status === 'open' ? 'مفتوح' : 
-                   opportunity.status === 'closed' ? 'مغلق' : 'متوقف') :
-                  opportunity.status
-                }
-              </Badge>
+              {!opportunity.image_url && (
+                <Badge className={getStatusColor(opportunity.status)}>
+                  {isRTL ? 
+                    (opportunity.status === 'open' ? 'مفتوح' : 
+                     opportunity.status === 'closed' ? 'مغلق' : 'متوقف') :
+                    opportunity.status
+                  }
+                </Badge>
+              )}
               <Badge className={getPriorityColor(opportunity.priority_level)}>
                 {isRTL ? 
                   (opportunity.priority_level === 'high' ? 'عالي' : 
