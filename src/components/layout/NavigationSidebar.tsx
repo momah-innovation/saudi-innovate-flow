@@ -95,7 +95,7 @@ export function NavigationSidebar() {
         icon: Target, 
         path: '/opportunities',
         group: 'partners',
-        roles: ['partner', 'admin', 'all'] 
+        roles: ['all'] 
       },
       { 
         id: 'partner-profile', 
@@ -109,14 +109,14 @@ export function NavigationSidebar() {
     ];
 
     const workflowItems = [
-      // User Dashboards
+      // User Dashboards - grouped by role
       { 
         id: 'user-dashboard', 
         label: 'My Dashboard', 
         arabicLabel: 'لوحة التحكم الشخصية',
         icon: Home, 
         path: '/dashboard',
-        group: 'workflow',
+        group: 'personal',
         roles: ['innovator', 'stakeholder'] 
       },
       { 
@@ -126,7 +126,7 @@ export function NavigationSidebar() {
         icon: Star, 
         path: '/expert-dashboard',
         badge: 8,
-        group: 'workflow',
+        group: 'personal',
         roles: ['expert', 'admin'] 
       },
       { 
@@ -135,7 +135,7 @@ export function NavigationSidebar() {
         arabicLabel: 'لوحة تحكم المعني',
         icon: Users, 
         path: '/stakeholder-dashboard',
-        group: 'workflow',
+        group: 'personal',
         roles: ['stakeholder', 'admin'] 
       },
       
@@ -170,14 +170,14 @@ export function NavigationSidebar() {
         roles: ['expert', 'team', 'admin'] 
       },
       
-      // Profile management
+      // Profile management - moved to personal group
       { 
         id: 'user-profile', 
         label: 'My Profile', 
         arabicLabel: 'ملفي الشخصي',
         icon: Edit, 
         path: '/profile',
-        group: 'workflow',
+        group: 'personal',
         roles: ['all'] 
       },
       { 
@@ -186,7 +186,7 @@ export function NavigationSidebar() {
         arabicLabel: 'ملف الخبير',
         icon: Edit, 
         path: '/expert-profile',
-        group: 'workflow',
+        group: 'personal',
         roles: ['expert'] 
       },
       
@@ -454,6 +454,7 @@ export function NavigationSidebar() {
     return {
       main: filtered.filter(item => item.group === 'main'),
       discover: filtered.filter(item => item.group === 'discover'),
+      personal: filtered.filter(item => item.group === 'personal'),
       partners: filtered.filter(item => item.group === 'partners'),
       workflow: filtered.filter(item => item.group === 'workflow'),
       management: filtered.filter(item => item.group === 'management'),
@@ -482,11 +483,13 @@ export function NavigationSidebar() {
   const getGroupLabel = (key: string) => {
     const labels = {
       discover: isRTL ? 'استكشاف' : 'Discover',
+      personal: isRTL ? 'الحساب الشخصي' : 'Personal',
       partners: isRTL ? 'الشراكات' : 'Partnerships',
       workflow: isRTL ? 'سير العمل' : 'Workflow',
       management: isRTL ? 'الإدارة' : 'Management',
       analytics: isRTL ? 'التحليلات' : 'Analytics',
       admin: isRTL ? 'الإدارة العامة' : 'Administration',
+      settings: isRTL ? 'الإعدادات' : 'Settings',
     };
     return labels[key as keyof typeof labels];
   };
@@ -559,12 +562,13 @@ export function NavigationSidebar() {
       <SidebarContent className={cn(isRTL && "text-right")}>
         {renderGroup(visibleItems.main)}
         {renderGroup(visibleItems.discover, 'discover')}
+        {renderGroup(visibleItems.personal, 'personal')}
         {renderGroup(visibleItems.partners, 'partners')}
         {renderGroup(visibleItems.workflow, 'workflow')}
         {renderGroup(visibleItems.management, 'management')}
         {renderGroup(visibleItems.analytics, 'analytics')}
         {renderGroup(visibleItems.admin, 'admin')}
-        {renderGroup(visibleItems.settings)}
+        {renderGroup(visibleItems.settings, 'settings')}
       </SidebarContent>
     </Sidebar>
   );

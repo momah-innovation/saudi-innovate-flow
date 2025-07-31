@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
-export type BookmarkType = 'challenge' | 'event' | 'idea' | 'focus_question' | 'campaign' | 'sector' | 'stakeholder' | 'expert' | 'partner';
+export type BookmarkType = 'challenge' | 'event' | 'idea' | 'focus_question' | 'campaign' | 'sector' | 'stakeholder' | 'expert' | 'partner' | 'opportunity';
 
 interface Collection {
   id: string;
@@ -28,6 +28,7 @@ export function useBookmarks() {
   const [stakeholderBookmarks, setStakeholderBookmarks] = useState<any[]>([]);
   const [expertBookmarks, setExpertBookmarks] = useState<any[]>([]);
   const [partnerBookmarks, setPartnerBookmarks] = useState<any[]>([]);
+  const [opportunityBookmarks, setOpportunityBookmarks] = useState<any[]>([]);
   const [publicTeams, setPublicTeams] = useState<any[]>([]);
   const [collections, setCollections] = useState<Collection[]>([]);
   const [loading, setLoading] = useState(true);
@@ -253,6 +254,31 @@ export function useBookmarks() {
     }
   };
 
+  const fetchOpportunityBookmarks = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('opportunity_bookmarks')
+        .select(`
+          id,
+          user_id,
+          created_at,
+          notes,
+          priority,
+          opportunity_id,
+          partnership_opportunities!fk_opportunity_bookmarks_opportunity_id(*)
+        `)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      setOpportunityBookmarks(data || []);
+    } catch (error) {
+      console.error('Error fetching opportunity bookmarks:', error);
+    }
+  };
+
   const fetchPublicTeams = async () => {
     try {
       const { data, error } = await supabase
@@ -304,6 +330,7 @@ export function useBookmarks() {
       fetchStakeholderBookmarks(),
       fetchExpertBookmarks(),
       fetchPartnerBookmarks(),
+      fetchOpportunityBookmarks(),
       fetchPublicTeams(),
       fetchCollections()
     ]);
@@ -331,6 +358,14 @@ export function useBookmarks() {
           tableName = 'idea_bookmarks';
           fieldName = 'idea_id';
           break;
+        case 'opportunity':
+          tableName = 'opportunity_bookmarks';
+          fieldName = 'opportunity_id';
+          break;
+        case 'partner':
+          tableName = 'partner_bookmarks';
+          fieldName = 'partner_id';
+          break;
         default:
           return false;
       }
@@ -344,14 +379,7 @@ export function useBookmarks() {
       if (notes) insertData.notes = notes;
       if (priority) insertData.priority = priority || 'medium';
 
-      let error;
-      if (type === 'challenge') {
-        ({ error } = await supabase.from('challenge_bookmarks').insert(insertData));
-      } else if (type === 'event') {
-        ({ error } = await supabase.from('event_bookmarks').insert(insertData));
-      } else if (type === 'idea') {
-        ({ error } = await supabase.from('idea_bookmarks').insert(insertData));
-      }
+      const { error } = await supabase.from(tableName as any).insert(insertData);
 
       if (error) {
         if (error.code === '23505') {
@@ -397,18 +425,17 @@ export function useBookmarks() {
         case 'idea':
           tableName = 'idea_bookmarks';
           break;
+        case 'opportunity':
+          tableName = 'opportunity_bookmarks';
+          break;
+        case 'partner':
+          tableName = 'partner_bookmarks';
+          break;
         default:
           return false;
       }
 
-      let error;
-      if (type === 'challenge') {
-        ({ error } = await supabase.from('challenge_bookmarks').delete().eq('id', bookmarkId));
-      } else if (type === 'event') {
-        ({ error } = await supabase.from('event_bookmarks').delete().eq('id', bookmarkId));
-      } else if (type === 'idea') {
-        ({ error } = await supabase.from('idea_bookmarks').delete().eq('id', bookmarkId));
-      }
+      const { error } = await supabase.from(tableName as any).delete().eq('id', bookmarkId);
 
       if (error) throw error;
 
@@ -458,6 +485,10 @@ export function useBookmarks() {
         return eventBookmarks.some(b => b.event_id === itemId);
       case 'idea':
         return ideaBookmarks.some(b => b.idea_id === itemId);
+      case 'opportunity':
+        return opportunityBookmarks.some(b => b.opportunity_id === itemId);
+      case 'partner':
+        return partnerBookmarks.some(b => b.partner_id === itemId);
       default:
         return false;
     }
@@ -474,6 +505,12 @@ export function useBookmarks() {
         break;
       case 'idea':
         bookmark = ideaBookmarks.find(b => b.idea_id === itemId);
+        break;
+      case 'opportunity':
+        bookmark = opportunityBookmarks.find(b => b.opportunity_id === itemId);
+        break;
+      case 'partner':
+        bookmark = partnerBookmarks.find(b => b.partner_id === itemId);
         break;
       default:
         return null;
@@ -532,9 +569,9 @@ export function useBookmarks() {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(challengeChannel);
-      supabase.removeChannel(eventChannel);
-      supabase.removeChannel(ideaChannel);
+      challengeChannel.unsubscribe();
+      eventChannel.unsubscribe();
+      ideaChannel.unsubscribe();
     };
   }, []);
 
@@ -548,6 +585,7 @@ export function useBookmarks() {
     stakeholderBookmarks,
     expertBookmarks,
     partnerBookmarks,
+    opportunityBookmarks,
     publicTeams,
     collections,
     loading,

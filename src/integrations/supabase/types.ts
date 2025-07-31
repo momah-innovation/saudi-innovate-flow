@@ -3946,6 +3946,44 @@ export type Database = {
         }
         Relationships: []
       }
+      opportunity_bookmarks: {
+        Row: {
+          created_at: string | null
+          id: string
+          notes: string | null
+          opportunity_id: string
+          priority: string | null
+          reminder_date: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          opportunity_id: string
+          priority?: string | null
+          reminder_date?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          opportunity_id?: string
+          priority?: string | null
+          reminder_date?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_bookmarks_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "partnership_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       opportunity_status: {
         Row: {
           challenge_id: string | null

@@ -20,7 +20,7 @@ import {
   Search, Filter, Plus, FolderPlus, Eye, Share2, Download, Star,
   Lightbulb, Building, FileText, Clock, Bell, ChevronRight, Grid, List,
   MessageSquare, HelpCircle, Zap, UserCheck, MoreHorizontal, Move, Copy,
-  X, Archive, Tag, CheckSquare, Square
+  X, Archive, Tag, CheckSquare, Square, Briefcase, Network
 } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
@@ -42,6 +42,10 @@ const SavedItemsPage = () => {
     removeBookmark,
     isBookmarked 
   } = useBookmarks();
+  
+  // Add state for partner-related bookmarks
+  const [opportunityBookmarks, setOpportunityBookmarks] = useState([]);
+  const [loadingOpportunities, setLoadingOpportunities] = useState(false);
   const { isRTL } = useDirection();
   const { t } = useTranslation();
   
@@ -106,6 +110,7 @@ const SavedItemsPage = () => {
       case 'campaign': return <Zap className="w-5 h-5" />;
       case 'team': return <Users className="w-5 h-5" />;
       case 'partner': return <Building className="w-5 h-5" />;
+      case 'opportunity': return <Briefcase className="w-5 h-5" />;
       case 'expert': return <UserCheck className="w-5 h-5" />;
       case 'sector': return <Award className="w-5 h-5" />;
       case 'stakeholder': return <Users className="w-5 h-5" />;
@@ -144,6 +149,7 @@ const SavedItemsPage = () => {
       stakeholder: '/saved-images/stakeholders.jpg',
       team: '/saved-images/collections-grid.jpg',
       partner: '/partner-logos/corporate-partner.jpg',
+      opportunity: '/partner-images/partnership-opportunities.jpg',
       sector: '/sector-images/digital-transformation.jpg'
     };
 
@@ -388,7 +394,7 @@ const SavedItemsPage = () => {
       <PageLayout>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-primary">{challengeBookmarks.length}</div>
@@ -405,6 +411,12 @@ const SavedItemsPage = () => {
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-primary">{ideaBookmarks.length}</div>
               <div className="text-sm text-muted-foreground">{isRTL ? 'الأفكار' : 'Ideas'}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4 text-center">
+              <div className="text-2xl font-bold text-primary">{opportunityBookmarks.length + partnerBookmarks.length}</div>
+              <div className="text-sm text-muted-foreground">{isRTL ? 'الشراكات' : 'Partnerships'}</div>
             </CardContent>
           </Card>
           <Card>
@@ -514,7 +526,7 @@ const SavedItemsPage = () => {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
+          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-10">
             <TabsTrigger value="challenges" className="flex items-center gap-1">
               <Target className="w-3 h-3" />
               <span className="hidden sm:inline">{isRTL ? 'التحديات' : 'Challenges'}</span>
@@ -539,6 +551,16 @@ const SavedItemsPage = () => {
               <Zap className="w-3 h-3" />
               <span className="hidden sm:inline">{isRTL ? 'الحملات' : 'Campaigns'}</span>
               <Badge variant="secondary" className="ml-1">{campaignBookmarks.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="opportunities" className="flex items-center gap-1">
+              <Briefcase className="w-3 h-3" />
+              <span className="hidden sm:inline">{isRTL ? 'الفرص' : 'Opportunities'}</span>
+              <Badge variant="secondary" className="ml-1">{opportunityBookmarks.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="partners" className="flex items-center gap-1">
+              <Building className="w-3 h-3" />
+              <span className="hidden sm:inline">{isRTL ? 'الشركاء' : 'Partners'}</span>
+              <Badge variant="secondary" className="ml-1">{partnerBookmarks.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="teams" className="flex items-center gap-1">
               <Users className="w-3 h-3" />
@@ -604,6 +626,26 @@ const SavedItemsPage = () => {
               <Zap className="w-8 h-8 text-muted-foreground" />,
               isRTL ? 'لا توجد حملات محفوظة' : 'No saved campaigns',
               isRTL ? 'احفظ الحملات التي تتابعها' : 'Save campaigns you follow'
+            )}
+          </TabsContent>
+
+          <TabsContent value="opportunities" className="mt-6">
+            {renderTabContent(
+              opportunityBookmarks,
+              (bookmark) => renderGenericCard(bookmark, 'opportunity', 'partnership_opportunities'),
+              <Briefcase className="w-8 h-8 text-muted-foreground" />,
+              isRTL ? 'لا توجد فرص شراكة محفوظة' : 'No saved partnership opportunities',
+              isRTL ? 'احفظ فرص الشراكة المثيرة للاهتمام' : 'Save interesting partnership opportunities'
+            )}
+          </TabsContent>
+
+          <TabsContent value="partners" className="mt-6">
+            {renderTabContent(
+              partnerBookmarks,
+              (bookmark) => renderGenericCard(bookmark, 'partner', 'partners'),
+              <Building className="w-8 h-8 text-muted-foreground" />,
+              isRTL ? 'لا توجد شركاء محفوظون' : 'No saved partners',
+              isRTL ? 'احفظ ملفات الشركاء المهمين' : 'Save important partner profiles'
             )}
           </TabsContent>
 
