@@ -117,19 +117,32 @@ export default function Opportunities() {
     try {
       setLoading(true);
       
-      const { data, error } = await supabase
+      // First get the opportunities without relationships
+      const { data: opportunitiesData, error } = await supabase
         .from('partnership_opportunities')
-        .select(`
-          *,
-          sectors(name_ar, name),
-          departments(name_ar, name)
-        `)
+        .select('*')
         .order('deadline', { ascending: true });
 
       if (error) throw error;
 
+      // Get sector and department data separately if we have opportunities
+      let sectorsData = { data: [] };
+      let departmentsData = { data: [] };
+      
+      if (opportunitiesData && opportunitiesData.length > 0) {
+        const sectorIds = [...new Set(opportunitiesData.map(opp => opp.sector_id).filter(Boolean))];
+        const departmentIds = [...new Set(opportunitiesData.map(opp => opp.department_id).filter(Boolean))];
+        
+        if (sectorIds.length > 0) {
+          sectorsData = await supabase.from('sectors').select('id, name_ar, name').in('id', sectorIds);
+        }
+        if (departmentIds.length > 0) {
+          departmentsData = await supabase.from('departments').select('id, name_ar, name').in('id', departmentIds);
+        }
+      }
+
       const opportunitiesWithCounts = await Promise.all(
-        (data || []).map(async (opp) => {
+        (opportunitiesData || []).map(async (opp) => {
           // Get application count
           const { count: applicationsCount } = await supabase
             .from('opportunity_applications')
@@ -149,8 +162,14 @@ export default function Opportunities() {
             .eq('opportunity_id', opp.id)
             .single();
 
+          // Manually attach sector and department data
+          const sectors = sectorsData.data?.find(sector => sector.id === opp.sector_id) || null;
+          const departments = departmentsData.data?.find(dept => dept.id === opp.department_id) || null;
+
           return {
             ...opp,
+            sectors,
+            departments,
             applications_count: applicationsCount || 0,
             likes_count: likesCount || 0,
             views_count: analyticsData?.view_count || 0,

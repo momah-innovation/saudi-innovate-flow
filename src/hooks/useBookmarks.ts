@@ -267,13 +267,30 @@ export function useBookmarks() {
           created_at,
           notes,
           priority,
-          opportunity_id,
-          opportunities!fk_opportunity_bookmarks_opportunity_id(*)
+          opportunity_id
         `)
         .eq('user_id', user.id);
 
       if (error) throw error;
-      setOpportunityBookmarks(data || []);
+      
+      // If we have bookmarks, fetch the opportunity details separately
+      if (data && data.length > 0) {
+        const opportunityIds = data.map(bookmark => bookmark.opportunity_id);
+        const { data: opportunities } = await supabase
+          .from('opportunities')
+          .select('*')
+          .in('id', opportunityIds);
+        
+        // Combine bookmark data with opportunity details
+        const bookmarksWithOpportunities = data.map(bookmark => ({
+          ...bookmark,
+          opportunities: opportunities?.find(opp => opp.id === bookmark.opportunity_id)
+        }));
+        
+        setOpportunityBookmarks(bookmarksWithOpportunities);
+      } else {
+        setOpportunityBookmarks(data || []);
+      }
     } catch (error) {
       console.error('Error fetching opportunity bookmarks:', error);
     }
