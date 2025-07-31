@@ -61,7 +61,7 @@ export const EnhancedChallengeDetailDialog = ({
         .select('id')
         .eq('challenge_id', challenge.id)
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
       
       setIsParticipating(!!data);
     } catch (error) {
@@ -78,7 +78,7 @@ export const EnhancedChallengeDetailDialog = ({
         .select('id')
         .eq('challenge_id', challenge.id)
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
       
       setIsBookmarked(!!data);
     } catch (error) {

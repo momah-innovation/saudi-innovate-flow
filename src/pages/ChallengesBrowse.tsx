@@ -584,7 +584,21 @@ const ChallengesBrowse = () => {
           onOpenChange={setDetailDialogOpen}
           onParticipate={handleParticipate}
           onSubmit={handleSubmitToChallenge}
-          onViewComments={handleViewComments}
+          onBookmark={handleBookmark}
+        />
+
+        {/* Expert Assignment Wizard */}
+        <ExpertAssignmentWizard
+          challenge={selectedChallenge}
+          open={expertAssignmentOpen}
+          onOpenChange={setExpertAssignmentOpen}
+          onAssignmentComplete={() => {
+            refetch();
+            toast({
+              title: isRTL ? 'تم التعيين بنجاح' : 'Assignment Successful',
+              description: isRTL ? 'تم تعيين الخبراء للتحدي بنجاح' : 'Experts have been successfully assigned to the challenge',
+            });
+          }}
         />
 
         {/* Enhanced Submission Dialog */}

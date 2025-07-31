@@ -22,7 +22,6 @@ interface Expert {
   id: string;
   user_id: string;
   specialization: string;
-  expertise_level: string;
   profiles: {
     display_name: string;
     profile_image_url?: string;
@@ -60,23 +59,25 @@ export const ExpertAssignmentWizard = ({
     try {
       const { data, error } = await supabase
         .from('innovation_team_members')
-        .select(`
-          id,
-          user_id,
-          specialization,
-          expertise_level,
-          profiles:user_id (
-            display_name,
-            profile_image_url
-          )
-        `)
-        .eq('status', 'active')
-        .eq('role', 'expert');
+        .select('id, user_id, specialization')
+        .eq('status', 'active');
 
       if (error) throw error;
-      setExperts(data || []);
+
+      // Create experts with mock profiles for now
+      const expertsWithProfiles = (data || []).map(expert => ({
+        ...expert,
+        specialization: Array.isArray(expert.specialization) ? expert.specialization[0] : expert.specialization,
+        profiles: {
+          display_name: `Expert ${expert.id.slice(0, 8)}`,
+          profile_image_url: ''
+        }
+      }));
+
+      setExperts(expertsWithProfiles);
     } catch (error) {
       console.error('Error loading experts:', error);
+      setExperts([]);
     }
   };
 
@@ -215,7 +216,7 @@ export const ExpertAssignmentWizard = ({
                           </p>
 
                           <Badge variant="outline">
-                            {expert.expertise_level}
+                            {isRTL ? 'عضو فريق' : 'Team Member'}
                           </Badge>
                         </div>
                       </div>
