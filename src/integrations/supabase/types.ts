@@ -3952,8 +3952,10 @@ export type Database = {
           bookmark_count: number
           created_at: string
           id: string
+          last_updated: string | null
           like_count: number
           opportunity_id: string
+          share_count: number | null
           updated_at: string
           view_count: number
         }
@@ -3962,8 +3964,10 @@ export type Database = {
           bookmark_count?: number
           created_at?: string
           id?: string
+          last_updated?: string | null
           like_count?: number
           opportunity_id: string
+          share_count?: number | null
           updated_at?: string
           view_count?: number
         }
@@ -3972,8 +3976,10 @@ export type Database = {
           bookmark_count?: number
           created_at?: string
           id?: string
+          last_updated?: string | null
           like_count?: number
           opportunity_id?: string
+          share_count?: number | null
           updated_at?: string
           view_count?: number
         }
@@ -4063,6 +4069,47 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "fk_opportunity_applications_opportunity_id"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "partnership_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      opportunity_audit_log: {
+        Row: {
+          action_type: string
+          change_reason: string | null
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_values: Json | null
+          old_values: Json | null
+          opportunity_id: string
+        }
+        Insert: {
+          action_type: string
+          change_reason?: string | null
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_values?: Json | null
+          old_values?: Json | null
+          opportunity_id: string
+        }
+        Update: {
+          action_type?: string
+          change_reason?: string | null
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_values?: Json | null
+          old_values?: Json | null
+          opportunity_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_audit_log_opportunity_id_fkey"
             columns: ["opportunity_id"]
             isOneToOne: false
             referencedRelation: "partnership_opportunities"
