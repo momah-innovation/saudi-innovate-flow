@@ -1,0 +1,390 @@
+import { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { useDirection } from '@/components/ui/direction-provider';
+import { useTranslation } from '@/hooks/useTranslation';
+import { supabase } from '@/integrations/supabase/client';
+import { 
+  Building2, 
+  DollarSign, 
+  Calendar,
+  MapPin,
+  Users,
+  Target,
+  CheckCircle,
+  Clock,
+  Mail,
+  Phone,
+  FileText,
+  TrendingUp,
+  Eye,
+  MessageSquare,
+  Share2
+} from 'lucide-react';
+
+interface OpportunityDetailsDialogProps {
+  opportunityId: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+interface OpportunityDetails {
+  id: string;
+  title_ar: string;
+  title_en?: string;
+  description_ar: string;
+  description_en?: string;
+  opportunity_type: string;
+  status: string;
+  priority_level: string;
+  budget_min?: number;
+  budget_max?: number;
+  deadline: string;
+  location: string;
+  contact_person: string;
+  contact_email: string;
+  contact_phone?: string;
+  requirements: any;
+  benefits: any;
+  created_at: string;
+  updated_at: string;
+  applications_count?: number;
+  views_count?: number;
+  likes_count?: number;
+}
+
+export const OpportunityDetailsDialog = ({
+  opportunityId,
+  open,
+  onOpenChange
+}: OpportunityDetailsDialogProps) => {
+  const { isRTL } = useDirection();
+  const { t } = useTranslation();
+  const [opportunity, setOpportunity] = useState<OpportunityDetails | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (open && opportunityId) {
+      loadOpportunityDetails();
+    }
+  }, [open, opportunityId]);
+
+  const loadOpportunityDetails = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('partnership_opportunities')
+        .select(`
+          *,
+          opportunity_applications!left(count),
+          opportunity_analytics!left(view_count, like_count)
+        `)
+        .eq('id', opportunityId)
+        .single();
+
+      if (error) throw error;
+
+      const processedData: OpportunityDetails = {
+        ...data,
+        applications_count: Array.isArray(data.opportunity_applications) ? data.opportunity_applications.length : 0,
+        views_count: data.opportunity_analytics?.view_count || 0,
+        likes_count: data.opportunity_analytics?.like_count || 0
+      };
+
+      setOpportunity(processedData);
+    } catch (error) {
+      console.error('Error loading opportunity details:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'open':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'closed':
+        return 'bg-red-100 text-red-800 border-red-200';
+      case 'paused':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high':
+        return 'bg-red-100 text-red-800 border-red-200';
+      case 'medium':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'low':
+        return 'bg-green-100 text-green-800 border-green-200';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
+  const formatBudget = (min?: number, max?: number) => {
+    if (!min && !max) return isRTL ? 'غير محدد' : 'Not specified';
+    if (min && max) return `${min.toLocaleString()} - ${max.toLocaleString()} ${isRTL ? 'ريال' : 'SAR'}`;
+    if (min) return `${isRTL ? 'من' : 'From'} ${min.toLocaleString()} ${isRTL ? 'ريال' : 'SAR'}`;
+    if (max) return `${isRTL ? 'حتى' : 'Up to'} ${max.toLocaleString()} ${isRTL ? 'ريال' : 'SAR'}`;
+    return isRTL ? 'غير محدد' : 'Not specified';
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  if (loading) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-4xl">
+          <div className="flex items-center justify-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  if (!opportunity) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-4xl">
+          <div className="text-center py-8">
+            <p className="text-muted-foreground">
+              {isRTL ? 'لم يتم العثور على الفرصة' : 'Opportunity not found'}
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader className={isRTL ? 'text-right' : 'text-left'}>
+          <DialogTitle className="flex items-center gap-2">
+            <Building2 className="w-5 h-5 text-primary" />
+            {isRTL ? 'تفاصيل الفرصة' : 'Opportunity Details'}
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-6">
+          {/* Header Section */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-start justify-between">
+                <div className="space-y-2">
+                  <CardTitle className="text-xl">
+                    {isRTL ? opportunity.title_ar : (opportunity.title_en || opportunity.title_ar)}
+                  </CardTitle>
+                  <div className="flex gap-2 flex-wrap">
+                    <Badge className={getStatusColor(opportunity.status)}>
+                      {isRTL ? 
+                        (opportunity.status === 'open' ? 'مفتوح' : 
+                         opportunity.status === 'closed' ? 'مغلق' : 'متوقف') :
+                        opportunity.status
+                      }
+                    </Badge>
+                    <Badge className={getPriorityColor(opportunity.priority_level)}>
+                      {isRTL ? 
+                        (opportunity.priority_level === 'high' ? 'عالي' : 
+                         opportunity.priority_level === 'medium' ? 'متوسط' : 'منخفض') :
+                        opportunity.priority_level
+                      } {isRTL ? 'الأولوية' : 'Priority'}
+                    </Badge>
+                    <Badge variant="outline">
+                      {isRTL ? 
+                        (opportunity.opportunity_type === 'funding' ? 'تمويل' :
+                         opportunity.opportunity_type === 'collaboration' ? 'تعاون' :
+                         opportunity.opportunity_type === 'sponsorship' ? 'رعاية' : 'بحث') :
+                        opportunity.opportunity_type
+                      }
+                    </Badge>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm">
+                    <Share2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                {isRTL ? opportunity.description_ar : (opportunity.description_en || opportunity.description_ar)}
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Statistics */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-2">
+                  <Users className="w-5 h-5 text-blue-500" />
+                  <div>
+                    <p className="text-2xl font-bold">{opportunity.applications_count}</p>
+                    <p className="text-sm text-muted-foreground">{isRTL ? 'طلبات' : 'Applications'}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-2">
+                  <Eye className="w-5 h-5 text-green-500" />
+                  <div>
+                    <p className="text-2xl font-bold">{opportunity.views_count}</p>
+                    <p className="text-sm text-muted-foreground">{isRTL ? 'مشاهدات' : 'Views'}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5 text-red-500" />
+                  <div>
+                    <p className="text-2xl font-bold">{opportunity.likes_count}</p>
+                    <p className="text-sm text-muted-foreground">{isRTL ? 'إعجابات' : 'Likes'}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Key Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="w-5 h-5" />
+                {isRTL ? 'المعلومات الأساسية' : 'Key Information'}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="w-4 h-4 text-green-600" />
+                    <span className="font-medium">{isRTL ? 'الميزانية:' : 'Budget:'}</span>
+                  </div>
+                  <p className="text-muted-foreground ml-6">
+                    {formatBudget(opportunity.budget_min, opportunity.budget_max)}
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-blue-600" />
+                    <span className="font-medium">{isRTL ? 'الموعد النهائي:' : 'Deadline:'}</span>
+                  </div>
+                  <p className="text-muted-foreground ml-6">
+                    {formatDate(opportunity.deadline)}
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-red-600" />
+                    <span className="font-medium">{isRTL ? 'الموقع:' : 'Location:'}</span>
+                  </div>
+                  <p className="text-muted-foreground ml-6">
+                    {opportunity.location || (isRTL ? 'غير محدد' : 'Not specified')}
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-orange-600" />
+                    <span className="font-medium">{isRTL ? 'تاريخ النشر:' : 'Published:'}</span>
+                  </div>
+                  <p className="text-muted-foreground ml-6">
+                    {formatDate(opportunity.created_at)}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Contact Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="w-5 h-5" />
+                {isRTL ? 'معلومات التواصل' : 'Contact Information'}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Users className="w-4 h-4 text-blue-600" />
+                    <span className="font-medium">{isRTL ? 'الشخص المسؤول:' : 'Contact Person:'}</span>
+                  </div>
+                  <p className="text-muted-foreground ml-6">{opportunity.contact_person}</p>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-green-600" />
+                    <span className="font-medium">{isRTL ? 'البريد الإلكتروني:' : 'Email:'}</span>
+                  </div>
+                  <p className="text-muted-foreground ml-6">
+                    <a href={`mailto:${opportunity.contact_email}`} className="hover:underline">
+                      {opportunity.contact_email}
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Requirements and Benefits */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="w-5 h-5" />
+                  {isRTL ? 'المتطلبات' : 'Requirements'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground whitespace-pre-wrap">
+                  {typeof opportunity.requirements === 'string' ? opportunity.requirements : 
+                   JSON.stringify(opportunity.requirements) || (isRTL ? 'لا توجد متطلبات محددة' : 'No specific requirements')}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5" />
+                  {isRTL ? 'الفوائد' : 'Benefits'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground whitespace-pre-wrap">
+                  {typeof opportunity.benefits === 'string' ? opportunity.benefits : 
+                   JSON.stringify(opportunity.benefits) || (isRTL ? 'لا توجد فوائد محددة' : 'No specific benefits')}
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};

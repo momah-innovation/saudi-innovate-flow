@@ -11,6 +11,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { Plus, Search, Edit, Trash2, Eye, Calendar, Target, Users, Building, DollarSign, MessageSquare, BarChart3, Clock, Filter } from 'lucide-react';
 import { CreateOpportunityDialog } from '@/components/opportunities/CreateOpportunityDialog';
 import { ApplicationsManagementDialog } from '@/components/opportunities/ApplicationsManagementDialog';
+import { EditOpportunityDialog } from '@/components/opportunities/EditOpportunityDialog';
+import { DeleteOpportunityDialog } from '@/components/opportunities/DeleteOpportunityDialog';
+import { OpportunityDetailsDialog } from '@/components/opportunities/OpportunityDetailsDialog';
 
 interface Opportunity {
   id: string;
@@ -43,6 +46,10 @@ export default function OpportunitiesManagement() {
   const [selectedTab, setSelectedTab] = useState('opportunities');
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showApplicationsDialog, setShowApplicationsDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity | null>(null);
   const [selectedOpportunityForApplications, setSelectedOpportunityForApplications] = useState<Opportunity | null>(null);
 
   useEffect(() => {
@@ -342,8 +349,8 @@ export default function OpportunitiesManagement() {
                             size="sm" 
                             title={isRTL ? 'عرض' : 'View'}
                             onClick={() => {
-                              // TODO: Navigate to opportunity details page
-                              window.open(`/opportunities/${opportunity.id}`, '_blank');
+                              setSelectedOpportunity(opportunity);
+                              setShowDetailsDialog(true);
                             }}
                           >
                             <Eye className="w-4 h-4" />
@@ -353,8 +360,8 @@ export default function OpportunitiesManagement() {
                             size="sm" 
                             title={isRTL ? 'تعديل' : 'Edit'}
                             onClick={() => {
-                              // TODO: Open edit opportunity dialog
-                              console.log('Edit functionality not yet implemented:', opportunity.id);
+                              setSelectedOpportunity(opportunity);
+                              setShowEditDialog(true);
                             }}
                           >
                             <Edit className="w-4 h-4" />
@@ -375,10 +382,8 @@ export default function OpportunitiesManagement() {
                             size="sm" 
                             title={isRTL ? 'حذف' : 'Delete'}
                             onClick={() => {
-                              if (confirm(isRTL ? 'هل أنت متأكد من حذف هذه الفرصة؟' : 'Are you sure you want to delete this opportunity?')) {
-                                // TODO: Implement delete functionality
-                                console.log('Delete functionality not yet implemented:', opportunity.id);
-                              }
+                              setSelectedOpportunity(opportunity);
+                              setShowDeleteDialog(true);
                             }}
                           >
                             <Trash2 className="w-4 h-4" />
@@ -416,6 +421,43 @@ export default function OpportunitiesManagement() {
             opportunityTitle={getDynamicText(selectedOpportunityForApplications.title_ar, selectedOpportunityForApplications.title_en)}
             open={showApplicationsDialog}
             onOpenChange={setShowApplicationsDialog}
+          />
+        )}
+
+        {/* Edit Opportunity Dialog */}
+        {selectedOpportunity && (
+          <EditOpportunityDialog
+            opportunity={selectedOpportunity}
+            open={showEditDialog}
+            onOpenChange={setShowEditDialog}
+            onSuccess={() => {
+              loadOpportunities();
+              setShowEditDialog(false);
+              setSelectedOpportunity(null);
+            }}
+          />
+        )}
+
+        {/* Delete Opportunity Dialog */}
+        {selectedOpportunity && (
+          <DeleteOpportunityDialog
+            opportunity={selectedOpportunity}
+            open={showDeleteDialog}
+            onOpenChange={setShowDeleteDialog}
+            onSuccess={() => {
+              loadOpportunities();
+              setShowDeleteDialog(false);
+              setSelectedOpportunity(null);
+            }}
+          />
+        )}
+
+        {/* Opportunity Details Dialog */}
+        {selectedOpportunity && (
+          <OpportunityDetailsDialog
+            opportunityId={selectedOpportunity.id}
+            open={showDetailsDialog}
+            onOpenChange={setShowDetailsDialog}
           />
         )}
       </div>
