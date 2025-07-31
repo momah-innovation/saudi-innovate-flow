@@ -342,8 +342,8 @@ export default function OpportunitiesManagement() {
                             size="sm" 
                             title={isRTL ? 'عرض' : 'View'}
                             onClick={() => {
-                              console.log('View opportunity:', opportunity.id);
-                              // TODO: Implement view opportunity details
+                              // TODO: Navigate to opportunity details page
+                              window.open(`/opportunities/${opportunity.id}`, '_blank');
                             }}
                           >
                             <Eye className="w-4 h-4" />
@@ -353,8 +353,8 @@ export default function OpportunitiesManagement() {
                             size="sm" 
                             title={isRTL ? 'تعديل' : 'Edit'}
                             onClick={() => {
-                              console.log('Edit opportunity:', opportunity.id);
-                              // TODO: Implement edit opportunity
+                              // TODO: Open edit opportunity dialog
+                              console.log('Edit functionality not yet implemented:', opportunity.id);
                             }}
                           >
                             <Edit className="w-4 h-4" />
@@ -364,8 +364,8 @@ export default function OpportunitiesManagement() {
                             size="sm" 
                             title={isRTL ? 'الإحصائيات' : 'Analytics'}
                             onClick={() => {
-                              console.log('View analytics for opportunity:', opportunity.id);
-                              // TODO: Implement analytics view
+                              // TODO: Navigate to analytics page
+                              window.open(`/admin/opportunities/${opportunity.id}/analytics`, '_blank');
                             }}
                           >
                             <BarChart3 className="w-4 h-4" />
@@ -375,8 +375,10 @@ export default function OpportunitiesManagement() {
                             size="sm" 
                             title={isRTL ? 'حذف' : 'Delete'}
                             onClick={() => {
-                              console.log('Delete opportunity:', opportunity.id);
-                              // TODO: Implement delete confirmation
+                              if (confirm(isRTL ? 'هل أنت متأكد من حذف هذه الفرصة؟' : 'Are you sure you want to delete this opportunity?')) {
+                                // TODO: Implement delete functionality
+                                console.log('Delete functionality not yet implemented:', opportunity.id);
+                              }
                             }}
                           >
                             <Trash2 className="w-4 h-4" />
