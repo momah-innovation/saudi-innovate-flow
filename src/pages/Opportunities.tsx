@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { 
-  Search, Filter, Calendar, DollarSign, Building, 
-  Target, Clock, Users, Eye, Plus, MapPin
-} from 'lucide-react';
-import { PageLayout } from '@/components/layout/PageLayout';
 import { AppShell } from '@/components/layout/AppShell';
-import { useTranslation } from '@/hooks/useTranslation';
+import { PageLayout } from '@/components/layout/PageLayout';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { LayoutSelector } from '@/components/ui/layout-selector';
+import { ViewLayouts } from '@/components/ui/view-layouts';
+import { useToast } from '@/hooks/use-toast';
+import { useDirection } from '@/components/ui/direction-provider';
+import { EnhancedOpportunitiesHero } from '@/components/opportunities/EnhancedOpportunitiesHero';
+import { EnhancedOpportunityCard } from '@/components/opportunities/EnhancedOpportunityCard';
+import { EnhancedOpportunityDetailDialog } from '@/components/opportunities/EnhancedOpportunityDetailDialog';
+import { OpportunityApplicationDialog } from '@/components/opportunities/OpportunityApplicationDialog';
+import { EnhancedOpportunityFilters, OpportunityFilterState } from '@/components/opportunities/EnhancedOpportunityFilters';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { toast } from 'sonner';
-import { OpportunityDetailDialog } from '@/components/partners/OpportunityDetailDialog';
+import { Plus, Send, MessageSquare, Users, Eye, BookmarkIcon, TrendingUp, Clock, Calendar, Target, FileText, BarChart3 } from 'lucide-react';
 
 interface OpportunityItem {
   id: string;

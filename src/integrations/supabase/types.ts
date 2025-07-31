@@ -3946,6 +3946,108 @@ export type Database = {
         }
         Relationships: []
       }
+      opportunity_analytics: {
+        Row: {
+          id: string
+          metric_name: string
+          metric_value: number
+          opportunity_id: string
+          recorded_at: string | null
+          recorded_by: string | null
+        }
+        Insert: {
+          id?: string
+          metric_name: string
+          metric_value: number
+          opportunity_id: string
+          recorded_at?: string | null
+          recorded_by?: string | null
+        }
+        Update: {
+          id?: string
+          metric_name?: string
+          metric_value?: number
+          opportunity_id?: string
+          recorded_at?: string | null
+          recorded_by?: string | null
+        }
+        Relationships: []
+      }
+      opportunity_applications: {
+        Row: {
+          applicant_id: string
+          application_type: string | null
+          attachment_urls: string[] | null
+          contact_email: string | null
+          contact_person: string | null
+          contact_phone: string | null
+          created_at: string | null
+          expected_budget: number | null
+          follow_up_date: string | null
+          id: string
+          opportunity_id: string
+          organization_name: string | null
+          priority: string | null
+          proposal_summary: string | null
+          relevant_experience: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          reviewer_notes: string | null
+          status: string | null
+          team_size: number | null
+          timeline_months: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          applicant_id: string
+          application_type?: string | null
+          attachment_urls?: string[] | null
+          contact_email?: string | null
+          contact_person?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          expected_budget?: number | null
+          follow_up_date?: string | null
+          id?: string
+          opportunity_id: string
+          organization_name?: string | null
+          priority?: string | null
+          proposal_summary?: string | null
+          relevant_experience?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          status?: string | null
+          team_size?: number | null
+          timeline_months?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          applicant_id?: string
+          application_type?: string | null
+          attachment_urls?: string[] | null
+          contact_email?: string | null
+          contact_person?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          expected_budget?: number | null
+          follow_up_date?: string | null
+          id?: string
+          opportunity_id?: string
+          organization_name?: string | null
+          priority?: string | null
+          proposal_summary?: string | null
+          relevant_experience?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          status?: string | null
+          team_size?: number | null
+          timeline_months?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       opportunity_bookmarks: {
         Row: {
           created_at: string | null
@@ -3983,6 +4085,108 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      opportunity_categories: {
+        Row: {
+          color: string | null
+          created_at: string | null
+          description_ar: string | null
+          description_en: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name_ar: string
+          name_en: string | null
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string | null
+          description_ar?: string | null
+          description_en?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name_ar: string
+          name_en?: string | null
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          color?: string | null
+          created_at?: string | null
+          description_ar?: string | null
+          description_en?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name_ar?: string
+          name_en?: string | null
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      opportunity_comments: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          is_pinned: boolean | null
+          is_public: boolean | null
+          likes_count: number | null
+          opportunity_id: string
+          parent_comment_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          is_pinned?: boolean | null
+          is_public?: boolean | null
+          likes_count?: number | null
+          opportunity_id: string
+          parent_comment_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_pinned?: boolean | null
+          is_public?: boolean | null
+          likes_count?: number | null
+          opportunity_id?: string
+          parent_comment_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      opportunity_likes: {
+        Row: {
+          created_at: string | null
+          id: string
+          opportunity_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          opportunity_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          opportunity_id?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       opportunity_status: {
         Row: {
@@ -4247,6 +4451,7 @@ export type Database = {
           benefits: Json | null
           budget_max: number | null
           budget_min: number | null
+          category_id: string | null
           contact_email: string | null
           contact_person: string | null
           created_at: string | null
@@ -4256,18 +4461,26 @@ export type Database = {
           description_ar: string
           description_en: string | null
           id: string
+          image_url: string | null
+          location: string | null
+          manager_id: string | null
           opportunity_type: string
+          priority_level: string | null
           requirements: Json | null
           sector_id: string | null
           status: string
+          success_metrics: string | null
+          target_audience: Json | null
           title_ar: string
           title_en: string | null
           updated_at: string | null
+          visibility: string | null
         }
         Insert: {
           benefits?: Json | null
           budget_max?: number | null
           budget_min?: number | null
+          category_id?: string | null
           contact_email?: string | null
           contact_person?: string | null
           created_at?: string | null
@@ -4277,18 +4490,26 @@ export type Database = {
           description_ar: string
           description_en?: string | null
           id?: string
+          image_url?: string | null
+          location?: string | null
+          manager_id?: string | null
           opportunity_type?: string
+          priority_level?: string | null
           requirements?: Json | null
           sector_id?: string | null
           status?: string
+          success_metrics?: string | null
+          target_audience?: Json | null
           title_ar: string
           title_en?: string | null
           updated_at?: string | null
+          visibility?: string | null
         }
         Update: {
           benefits?: Json | null
           budget_max?: number | null
           budget_min?: number | null
+          category_id?: string | null
           contact_email?: string | null
           contact_person?: string | null
           created_at?: string | null
@@ -4298,13 +4519,20 @@ export type Database = {
           description_ar?: string
           description_en?: string | null
           id?: string
+          image_url?: string | null
+          location?: string | null
+          manager_id?: string | null
           opportunity_type?: string
+          priority_level?: string | null
           requirements?: Json | null
           sector_id?: string | null
           status?: string
+          success_metrics?: string | null
+          target_audience?: Json | null
           title_ar?: string
           title_en?: string | null
           updated_at?: string | null
+          visibility?: string | null
         }
         Relationships: [
           {
