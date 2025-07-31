@@ -72,7 +72,10 @@ export const BookmarkOpportunityButton = ({
           .eq('opportunity_id', opportunityId)
           .eq('user_id', user.user.id);
 
-        if (error) throw error;
+        if (error) {
+          console.error('Error removing bookmark:', error);
+          throw error;
+        }
 
         setIsBookmarked(false);
         
@@ -100,7 +103,10 @@ export const BookmarkOpportunityButton = ({
             user_id: user.user.id
           });
 
-        if (error) throw error;
+        if (error) {
+          console.error('Error adding bookmark:', error);
+          throw error;
+        }
 
         setIsBookmarked(true);
         
