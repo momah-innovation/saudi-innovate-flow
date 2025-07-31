@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { EventRegistrationHero } from '@/components/events/EventRegistrationHero';
+import { EnhancedEventRegistrationHero } from '@/components/events/EnhancedEventRegistrationHero';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -938,6 +939,22 @@ const EventRegistration = () => {
 
   return (
     <AppShell>
+      <EnhancedEventRegistrationHero 
+        totalRegistrations={mockRegistrations.length}
+        upcomingEvents={upcomingEvents.length}
+        totalParticipants={mockRegistrations.reduce((sum, reg) => sum + reg.registered, 0)}
+        completedEvents={pastEvents.length}
+        onShowFilters={() => setShowFilters(!showFilters)}
+        canRegister={true}
+        featuredEvent={mockRegistrations.length > 0 ? {
+          id: mockRegistrations[0].id.toString(),
+          title: isRTL ? mockRegistrations[0].eventTitle : mockRegistrations[0].eventTitle_en,
+          date: mockRegistrations[0].date,
+          participants: mockRegistrations[0].registered,
+          capacity: mockRegistrations[0].capacity,
+          location: isRTL ? mockRegistrations[0].location : mockRegistrations[0].location_en
+        } : undefined}
+      />
       <PageLayout
         title={isRTL ? 'تسجيل الفعاليات' : 'Event Registration'}
         description={isRTL ? 'إدارة تسجيلاتك في الفعاليات والمؤتمرات' : 'Manage your event and conference registrations'}
