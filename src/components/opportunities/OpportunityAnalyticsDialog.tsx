@@ -104,7 +104,7 @@ export const OpportunityAnalyticsDialog = ({
     setLoading(true);
     try {
       // Load real analytics data from multiple sources
-      const [opportunityData, applicationsData, analyticsData, likesData, sharesData, bookmarksData, commentsData] = await Promise.all([
+      const [opportunityData, applicationsData, analyticsData, likesData, sharesData, bookmarksData, commentsData, journeyData, viewsHistoryData] = await Promise.all([
         supabase
           .from('opportunities')
           .select('*')
@@ -112,7 +112,7 @@ export const OpportunityAnalyticsDialog = ({
           .maybeSingle(),
         supabase
           .from('opportunity_applications')
-          .select('created_at, status')
+          .select('created_at, status, application_source')
           .eq('opportunity_id', opportunityId),
         supabase
           .from('opportunity_analytics')
@@ -135,7 +135,21 @@ export const OpportunityAnalyticsDialog = ({
           .from('opportunity_comments')
           .select('created_at')
           .eq('opportunity_id', opportunityId)
-          .eq('is_public', true)
+          .eq('is_public', true),
+        // Get user journey data for engagement metrics
+        supabase
+          .from('opportunity_user_journeys')
+          .select('step_timestamp, time_from_previous_ms, step_data')
+          .eq('opportunity_id', opportunityId)
+          .gte('step_timestamp', dateRange.start.toISOString())
+          .lte('step_timestamp', dateRange.end.toISOString()),
+        // Get historical views data
+        supabase
+          .from('opportunity_analytics')
+          .select('view_count, last_updated')
+          .eq('opportunity_id', opportunityId)
+          .order('last_updated', { ascending: false })
+          .limit(30)
       ]);
 
       // Get real analytics summary
@@ -149,13 +163,18 @@ export const OpportunityAnalyticsDialog = ({
       const shares = sharesData.data || [];
       const bookmarks = bookmarksData.data || [];
       const comments = commentsData.data || [];
+      const journey = journeyData.data || [];
+      const viewsHistory = viewsHistoryData.data || [];
       const summary = summaryData?.[0];
 
+      // Calculate engagement metrics from real journey data
+      const engagementMetrics = calculateEngagementMetrics(journey);
+      
       // Calculate trends based on recent activity
-      const recentTrends = calculateTrends(applications, likes, shares, bookmarks);
+      const recentTrends = calculateTrends(applications, likes, shares, bookmarks, analytics, viewsHistory);
       setTrends(recentTrends);
 
-      // Calculate real metrics with proper trend calculation
+      // Calculate real metrics
       const realAnalytics: AnalyticsData = {
         totalViews: analytics?.view_count || 0,
         totalLikes: likes.length,
@@ -164,14 +183,10 @@ export const OpportunityAnalyticsDialog = ({
         totalBookmarks: bookmarks.length,
         totalComments: comments.length,
         conversionRate: summary?.conversion_rate || 0,
-        viewsData: generateViewsDataFromReal(applications),
+        viewsData: generateViewsDataFromReal(applications, viewsHistory),
         applicationSourceData: generateApplicationSourceData(applications),
         timelineData: generateTimelineFromReal(applications, likes, shares, bookmarks, comments),
-        engagementMetrics: {
-          avgTimeOnPage: Math.round(Math.random() * 120) + 60, // Will implement real tracking later
-          bounceRate: Math.max(0, 100 - (summary?.engagement_rate || 25)),
-          returnVisitors: Math.round(Math.random() * 20) + 5 // Will implement real tracking later
-        }
+        engagementMetrics
       };
 
       setAnalytics(realAnalytics);
@@ -201,8 +216,7 @@ export const OpportunityAnalyticsDialog = ({
     }
   };
 
-  const generateViewsDataFromReal = (applications: any[]) => {
-    const data = [];
+  const generateViewsDataFromReal = (applications: any[], viewsHistory: any[]) => {
     const last30Days = new Map();
     
     // Initialize last 30 days with zero counts
@@ -218,36 +232,52 @@ export const OpportunityAnalyticsDialog = ({
       const dateStr = new Date(app.created_at).toISOString().split('T')[0];
       if (last30Days.has(dateStr)) {
         last30Days.get(dateStr).applications++;
-        // Estimate views based on applications (rough 10:1 ratio)
-        last30Days.get(dateStr).views += 10;
       }
+    });
+    
+    // Use real views data if available, otherwise estimate based on current total
+    const currentViews = viewsHistory.length > 0 ? viewsHistory[0].view_count : 0;
+    const dailyViewsEstimate = Math.max(1, Math.floor(currentViews / 30));
+    
+    Array.from(last30Days.keys()).forEach(dateStr => {
+      const dayData = last30Days.get(dateStr);
+      // Distribute views more realistically based on application activity
+      const baseViews = dailyViewsEstimate;
+      const applicationBoost = dayData.applications * 5; // 5 additional views per application
+      dayData.views = baseViews + applicationBoost;
     });
     
     return Array.from(last30Days.values());
   };
 
   const generateApplicationSourceData = (applications: any[]) => {
-    const sources = [
-      { source: isRTL ? 'البحث المباشر' : 'Direct Search', count: 0, percentage: 0 },
-      { source: isRTL ? 'وسائل التواصل' : 'Social Media', count: 0, percentage: 0 },
-      { source: isRTL ? 'الإحالات' : 'Referrals', count: 0, percentage: 0 },
-      { source: isRTL ? 'البريد الإلكتروني' : 'Email', count: 0, percentage: 0 }
-    ];
-    
+    const sourceCounts = new Map();
     const total = applications.length;
-    if (total === 0) return sources;
     
-    // Distribute applications across sources (simulated for now)
-    sources[0].count = Math.floor(total * 0.4);
-    sources[1].count = Math.floor(total * 0.25);
-    sources[2].count = Math.floor(total * 0.2);
-    sources[3].count = total - sources[0].count - sources[1].count - sources[2].count;
+    if (total === 0) return [];
     
-    sources.forEach(source => {
-      source.percentage = Math.round((source.count / total) * 100);
+    // Count real application sources
+    applications.forEach(app => {
+      const source = app.application_source || 'direct';
+      sourceCounts.set(source, (sourceCounts.get(source) || 0) + 1);
     });
     
-    return sources.filter(s => s.count > 0);
+    // Convert to array with proper labels
+    const sourceLabels = {
+      direct: isRTL ? 'البحث المباشر' : 'Direct Search',
+      social: isRTL ? 'وسائل التواصل' : 'Social Media',
+      referral: isRTL ? 'الإحالات' : 'Referrals',
+      email: isRTL ? 'البريد الإلكتروني' : 'Email',
+      other: isRTL ? 'أخرى' : 'Other'
+    };
+    
+    const sources = Array.from(sourceCounts.entries()).map(([key, count]) => ({
+      source: sourceLabels[key] || (isRTL ? 'أخرى' : 'Other'),
+      count,
+      percentage: Math.round((count / total) * 100)
+    }));
+    
+    return sources.sort((a, b) => b.count - a.count);
   };
 
   const generateTimelineFromReal = (applications: any[], likes: any[], shares: any[], bookmarks: any[], comments: any[]) => {
@@ -272,7 +302,56 @@ export const OpportunityAnalyticsDialog = ({
     return Array.from(timeline.values());
   };
 
-  const calculateTrends = (applications: any[], likes: any[], shares: any[], bookmarks: any[]) => {
+  const calculateEngagementMetrics = (journey: any[]) => {
+    if (journey.length === 0) {
+      return {
+        avgTimeOnPage: 0,
+        bounceRate: 0,
+        returnVisitors: 0
+      };
+    }
+
+    // Calculate average time on page from journey data
+    const timeSpentData = journey
+      .filter(j => j.time_from_previous_ms > 0)
+      .map(j => j.time_from_previous_ms / 1000); // Convert to seconds
+    
+    const avgTimeOnPage = timeSpentData.length > 0 
+      ? Math.round(timeSpentData.reduce((sum, time) => sum + time, 0) / timeSpentData.length)
+      : 0;
+
+    // Calculate bounce rate (sessions with only one step)
+    const sessionMap = new Map();
+    journey.forEach(j => {
+      const sessionId = j.session_id;
+      sessionMap.set(sessionId, (sessionMap.get(sessionId) || 0) + 1);
+    });
+    
+    const totalSessions = sessionMap.size;
+    const bounceSessions = Array.from(sessionMap.values()).filter(count => count === 1).length;
+    const bounceRate = totalSessions > 0 ? Math.round((bounceSessions / totalSessions) * 100) : 0;
+
+    // Calculate return visitors (users with multiple sessions)
+    const userSessions = new Map();
+    journey.forEach(j => {
+      const userId = j.user_id;
+      if (userId) {
+        const sessions = userSessions.get(userId) || new Set();
+        sessions.add(j.session_id);
+        userSessions.set(userId, sessions);
+      }
+    });
+    
+    const returnVisitors = Array.from(userSessions.values()).filter(sessions => sessions.size > 1).length;
+
+    return {
+      avgTimeOnPage,
+      bounceRate,
+      returnVisitors
+    };
+  };
+
+  const calculateTrends = (applications: any[], likes: any[], shares: any[], bookmarks: any[], analytics: any, viewsHistory: any[]) => {
     const now = new Date();
     const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
     const prevWeek = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
@@ -309,8 +388,29 @@ export const OpportunityAnalyticsDialog = ({
       return Math.round(((recent - prev) / prev) * 100);
     };
 
+    // Calculate views trend from historical data
+    const recentViews = viewsHistory.filter(v => new Date(v.last_updated) > lastWeek);
+    const prevViews = viewsHistory.filter(v => {
+      const date = new Date(v.last_updated);
+      return date > prevWeek && date <= lastWeek;
+    });
+    
+    const viewsTrend = calculatePercentage(
+      recentViews.reduce((sum, v) => sum + (v.view_count || 0), 0),
+      prevViews.reduce((sum, v) => sum + (v.view_count || 0), 0)
+    );
+
+    // Calculate conversion trend
+    const recentConversion = recentCounts.applications > 0 && recentViews.length > 0 
+      ? (recentCounts.applications / recentViews.reduce((sum, v) => sum + (v.view_count || 0), 0)) * 100 
+      : 0;
+    const prevConversion = prevCounts.applications > 0 && prevViews.length > 0 
+      ? (prevCounts.applications / prevViews.reduce((sum, v) => sum + (v.view_count || 0), 0)) * 100 
+      : 0;
+    const conversionTrend = calculatePercentage(recentConversion, prevConversion);
+
     return {
-      views: { value: Math.round(Math.random() * 30) - 15, isPositive: Math.random() > 0.5 },
+      views: { value: viewsTrend, isPositive: viewsTrend >= 0 },
       applications: { 
         value: calculatePercentage(recentCounts.applications, prevCounts.applications), 
         isPositive: recentCounts.applications >= prevCounts.applications 
@@ -319,7 +419,7 @@ export const OpportunityAnalyticsDialog = ({
         value: calculatePercentage(recentCounts.likes, prevCounts.likes), 
         isPositive: recentCounts.likes >= prevCounts.likes 
       },
-      conversion: { value: Math.round(Math.random() * 10) - 5, isPositive: Math.random() > 0.5 },
+      conversion: { value: conversionTrend, isPositive: conversionTrend >= 0 },
     };
   };
 
