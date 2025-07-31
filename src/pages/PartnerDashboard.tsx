@@ -51,6 +51,21 @@ interface OpportunityItem {
   status: string;
 }
 
+interface ApplicationItem {
+  id: string;
+  company_name: string;
+  contact_person: string;
+  contact_email?: string;
+  proposed_contribution: number;
+  status: 'pending' | 'under_review' | 'approved' | 'rejected';
+  submitted_at: string;
+  reviewer_notes?: string;
+  partnership_opportunities?: {
+    title_ar: string;
+    opportunity_type: string;
+  };
+}
+
 export default function PartnerDashboard() {
   const { userProfile } = useAuth();
   const { t, isRTL } = useTranslation();
@@ -68,9 +83,10 @@ export default function PartnerDashboard() {
   
   const [partnerships, setPartnerships] = useState<Partnership[]>([]);
   const [opportunities, setOpportunities] = useState<OpportunityItem[]>([]);
+  const [applications, setApplications] = useState<ApplicationItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedPartnership, setSelectedPartnership] = useState<Partnership | null>(null);
-  const [selectedOpportunity, setSelectedOpportunity] = useState<OpportunityItem | null>(null);
+  const [selectedOpportunity, setSelectedOpportunity] = useState<any>(null);
   const [showPartnershipDialog, setShowPartnershipDialog] = useState(false);
   const [showOpportunityDialog, setShowOpportunityDialog] = useState(false);
 
@@ -107,7 +123,7 @@ export default function PartnerDashboard() {
       }
 
       // Load user's applications
-      const { data: applications } = await supabase
+      const { data: applicationsData } = await supabase
         .from('partnership_applications')
         .select(`
           *,
@@ -115,6 +131,23 @@ export default function PartnerDashboard() {
         `)
         .eq('applicant_user_id', userProfile?.id)
         .order('submitted_at', { ascending: false });
+
+      console.log('Applications loaded:', applicationsData);
+      
+      // Transform the applications data to match our interface
+      const transformedApplications: ApplicationItem[] = (applicationsData || []).map(app => ({
+        id: app.id,
+        company_name: app.company_name,
+        contact_person: app.contact_person,
+        contact_email: app.contact_email,
+        proposed_contribution: app.proposed_contribution,
+        status: app.status as 'pending' | 'under_review' | 'approved' | 'rejected',
+        submitted_at: app.submitted_at,
+        reviewer_notes: app.reviewer_notes,
+        partnership_opportunities: app.partnership_opportunities
+      }));
+      
+      setApplications(transformedApplications);
 
       // For partnerships tab - get existing challenge/campaign partnerships
       const [
@@ -170,7 +203,7 @@ export default function PartnerDashboard() {
 
       setStats({
         activeChallenges,
-        supportedIdeas: applications?.length || 0,
+        supportedIdeas: transformedApplications?.length || 0,
         totalInvestment,
         eventsSponsored: 0, // TODO: Add event partnerships when available
         collaborations: activeChallenges + activeCampaigns,
@@ -527,7 +560,12 @@ export default function PartnerDashboard() {
                         variant="outline" 
                         className={isRTL ? 'flex-row-reverse' : 'flex-row'}
                         onClick={() => {
-                          setSelectedOpportunity(opportunity);
+                          setSelectedOpportunity({
+                            ...opportunity,
+                            title_ar: opportunity.title,
+                            description_ar: opportunity.description,
+                            opportunity_type: opportunity.type
+                          });
                           setShowOpportunityDialog(true);
                         }}
                       >
@@ -544,9 +582,11 @@ export default function PartnerDashboard() {
 
         <TabsContent value="applications" className="space-y-4">
           <PartnershipApplicationsTable 
+            applications={applications}
+            loading={loading}
             onViewApplication={(application) => {
               // Handle view application - could open a detail dialog
-              toast.info(`Viewing application: ${application.opportunity_title}`);
+              toast.info(`Viewing application for: ${application.partnership_opportunities?.title_ar || application.company_name}`);
             }}
           />
         </TabsContent>

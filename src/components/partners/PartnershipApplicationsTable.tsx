@@ -19,22 +19,28 @@ import { useTranslation } from '@/hooks/useTranslation';
 
 interface Application {
   id: string;
-  opportunity_title: string;
-  opportunity_type: string;
-  submitted_date: string;
-  status: 'pending' | 'under_review' | 'approved' | 'rejected';
-  contribution_amount: number;
+  company_name: string;
   contact_person: string;
-  review_notes?: string;
+  contact_email?: string;
+  proposed_contribution: number;
+  status: 'pending' | 'under_review' | 'approved' | 'rejected';
+  submitted_at: string;
+  reviewer_notes?: string;
+  partnership_opportunities?: {
+    title_ar: string;
+    opportunity_type: string;
+  };
 }
 
 interface PartnershipApplicationsTableProps {
   applications?: Application[];
+  loading?: boolean;
   onViewApplication?: (application: Application) => void;
 }
 
 export function PartnershipApplicationsTable({
   applications = [],
+  loading = false,
   onViewApplication
 }: PartnershipApplicationsTableProps) {
   const { t, isRTL } = useTranslation();
@@ -45,49 +51,40 @@ export function PartnershipApplicationsTable({
   const demoApplications: Application[] = [
     {
       id: '1',
-      opportunity_title: 'Healthcare Innovation Challenge',
-      opportunity_type: 'Challenge Sponsorship',
-      submitted_date: '2024-01-15',
+      company_name: 'شركة التقنيات المتقدمة',
+      contact_person: 'د. أحمد الراشد',
+      contact_email: 'ahmed@techcorp.sa',
+      proposed_contribution: 500000,
       status: 'approved',
-      contribution_amount: 500000,
-      contact_person: 'Ahmed Al-Rashid',
-      review_notes: 'Excellent proposal with strong technical merit'
+      submitted_at: '2024-01-15T10:00:00Z',
+      reviewer_notes: 'Excellent proposal with strong technical merit',
+      partnership_opportunities: {
+        title_ar: 'تحدي الابتكار الصحي',
+        opportunity_type: 'Challenge Sponsorship'
+      }
     },
     {
       id: '2',
-      opportunity_title: 'EdTech Summit 2024',
-      opportunity_type: 'Event Partnership',
-      submitted_date: '2024-01-20',
+      company_name: 'مجموعة التعليم الرقمي',
+      contact_person: 'د. سارة محمد',
+      contact_email: 'sara@edtech.sa',
+      proposed_contribution: 300000,
       status: 'under_review',
-      contribution_amount: 300000,
-      contact_person: 'Sara Mohammed',
-    },
-    {
-      id: '3',
-      opportunity_title: 'Green Innovation Campaign',
-      opportunity_type: 'Campaign Partnership',
-      submitted_date: '2024-01-25',
-      status: 'pending',
-      contribution_amount: 1000000,
-      contact_person: 'Omar Hassan',
-    },
-    {
-      id: '4',
-      opportunity_title: 'AI Research Initiative',
-      opportunity_type: 'Research Partnership',
-      submitted_date: '2024-01-10',
-      status: 'rejected',
-      contribution_amount: 750000,
-      contact_person: 'Fatima Al-Zahra',
-      review_notes: 'Budget requirements not aligned with current priorities'
+      submitted_at: '2024-01-20T14:00:00Z',
+      partnership_opportunities: {
+        title_ar: 'قمة التعليم التقني 2024',
+        opportunity_type: 'Event Partnership'
+      }
     }
   ];
 
   const displayApplications = applications.length > 0 ? applications : demoApplications;
 
   const filteredApplications = displayApplications.filter(app => {
-    const matchesSearch = app.opportunity_title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         app.contact_person.toLowerCase().includes(searchTerm.toLowerCase());
+    const opportunityTitle = app.partnership_opportunities?.title_ar || '';
+    const matchesSearch = opportunityTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         app.contact_person.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         app.company_name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || app.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -163,24 +160,38 @@ export function PartnershipApplicationsTable({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredApplications.map((application) => (
+              {loading ? (
+                // Loading skeleton rows
+                Array.from({length: 3}).map((_, index) => (
+                  <TableRow key={`loading-${index}`}>
+                    <TableCell colSpan={7}>
+                      <div className="animate-pulse flex space-x-4">
+                        <div className="flex-1 space-y-2">
+                          <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                          <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                        </div>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : filteredApplications.map((application) => (
                 <TableRow key={application.id}>
                   <TableCell className={isRTL ? 'text-right' : 'text-left'}>
                     <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                      <span className="text-lg">{getTypeIcon(application.opportunity_type)}</span>
+                      <span className="text-lg">{getTypeIcon(application.partnership_opportunities?.opportunity_type || 'Partnership')}</span>
                       <div>
-                        <div className="font-medium">{application.opportunity_title}</div>
-                        <div className="text-sm text-muted-foreground">{application.opportunity_type}</div>
+                        <div className="font-medium">{application.partnership_opportunities?.title_ar || application.company_name}</div>
+                        <div className="text-sm text-muted-foreground">{application.partnership_opportunities?.opportunity_type || 'Partnership'}</div>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell className={isRTL ? 'text-right' : 'text-left'}>
-                    <Badge variant="outline">{application.opportunity_type}</Badge>
+                    <Badge variant="outline">{application.partnership_opportunities?.opportunity_type || 'Partnership'}</Badge>
                   </TableCell>
                   <TableCell className={isRTL ? 'text-right' : 'text-left'}>
                     <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
                       <Calendar className="w-4 h-4 text-muted-foreground" />
-                      {new Date(application.submitted_date).toLocaleDateString()}
+                      {new Date(application.submitted_at).toLocaleDateString()}
                     </div>
                   </TableCell>
                   <TableCell className={isRTL ? 'text-right' : 'text-left'}>
@@ -191,7 +202,7 @@ export function PartnershipApplicationsTable({
                   <TableCell className={isRTL ? 'text-right' : 'text-left'}>
                     <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
                       <DollarSign className="w-4 h-4 text-muted-foreground" />
-                      {application.contribution_amount.toLocaleString()} {t('currency')}
+                      {application.proposed_contribution.toLocaleString()} {t('currency')}
                     </div>
                   </TableCell>
                   <TableCell className={isRTL ? 'text-right' : 'text-left'}>
