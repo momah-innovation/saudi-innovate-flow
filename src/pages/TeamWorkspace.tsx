@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { TeamWorkspaceContent } from '@/components/admin/TeamWorkspaceContent';
+import { EnhancedTeamWorkspaceHero } from '@/components/team-workspace/EnhancedTeamWorkspaceHero';
 import { Users, UserPlus, Calendar, Target } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -64,6 +65,14 @@ export default function TeamWorkspace() {
 
   return (
     <AppShell>
+      <EnhancedTeamWorkspaceHero 
+        totalTeams={5}
+        activeProjects={8}
+        teamMembers={12}
+        completedTasks={45}
+        onJoinTeam={() => console.log('Join team')}
+        onShowFilters={() => console.log('Show filters')}
+      />
       <PageLayout 
         title={t('teamWorkspace')}
         description={t('collaborativeWorkspaceForTeams')}

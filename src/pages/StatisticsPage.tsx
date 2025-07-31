@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { useAuth } from '@/contexts/AuthContext';
+import { EnhancedStatisticsHero } from '@/components/statistics/EnhancedStatisticsHero';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -437,8 +438,19 @@ export default function StatisticsPage() {
     );
   }
 
+  const [showFilters, setShowFilters] = useState(false);
+
   return (
     <AppShell>
+      <EnhancedStatisticsHero 
+        totalIdeas={stats.totalIdeas}
+        totalChallenges={stats.totalChallenges}
+        totalEvents={stats.totalEvents}
+        totalUsers={stats.activeInnovators}
+        onShowFilters={() => setShowFilters(!showFilters)}
+        onExportData={handleExport}
+        isAdmin={true}
+      />
       <PageLayout
         title={isRTL ? 'إحصائيات المنصة' : 'Platform Analytics'}
         description={isRTL ? 'نظرة شاملة على أداء ونشاط منصة الابتكار' : 'Comprehensive overview of innovation platform performance and activity'}

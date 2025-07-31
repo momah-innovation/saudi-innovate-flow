@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
+import { EventRegistrationHero } from '@/components/events/EventRegistrationHero';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

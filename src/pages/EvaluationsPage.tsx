@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
+import { EnhancedEvaluationHero } from '@/components/evaluation/EnhancedEvaluationHero';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -408,6 +409,14 @@ const EvaluationsPage = () => {
 
   return (
     <AppShell>
+      <EnhancedEvaluationHero 
+        totalEvaluations={evaluations.length}
+        pendingEvaluations={evaluations.filter(e => getStatusFromScore(getOverallScore(e)) === 'pending').length}
+        completedEvaluations={evaluations.filter(e => getStatusFromScore(getOverallScore(e)) === 'completed').length}
+        averageScore={evaluations.length > 0 ? Math.round(evaluations.reduce((sum, e) => sum + getOverallScore(e), 0) / evaluations.length * 10) / 10 : 0}
+        onCreateEvaluation={() => console.log('Create evaluation')}
+        onShowFilters={() => console.log('Show filters')}
+      />
       <PageLayout
         title={isRTL ? 'التقييمات' : 'Evaluations'}
         description={isRTL ? 'إدارة ومراجعة تقييمات الأفكار والمشاريع' : 'Manage and review idea and project evaluations'}

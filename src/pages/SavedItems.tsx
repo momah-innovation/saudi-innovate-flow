@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
+import { EnhancedSavedHero } from '@/components/saved/EnhancedSavedHero';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -376,25 +377,15 @@ const SavedItemsPage = () => {
 
   return (
     <AppShell>
+      <EnhancedSavedHero 
+        totalBookmarks={challengeBookmarks.length + eventBookmarks.length + ideaBookmarks.length}
+        totalCollections={collections.length}
+        totalTags={8}
+        recentActivity={5}
+        onCreateCollection={() => setShowNewCollectionDialog(true)}
+        onShowFilters={() => console.log('Show filters')}
+      />
       <PageLayout>
-        {/* Hero Section */}
-        <div className="relative mb-8 rounded-xl overflow-hidden">
-          <img 
-            src="/saved-images/bookmarks-hero.jpg"
-            alt="Saved Items"
-            className="w-full h-64 object-cover"
-          />
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-            <div className="text-center text-white">
-              <h1 className="text-4xl font-bold mb-4">
-                {isRTL ? 'العناصر المحفوظة' : 'Saved Items'}
-              </h1>
-              <p className="text-xl opacity-90">
-                {isRTL ? 'إدارة وتنظيم المحتوى المحفوظ' : 'Manage and organize your saved content'}
-              </p>
-            </div>
-          </div>
-        </div>
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
