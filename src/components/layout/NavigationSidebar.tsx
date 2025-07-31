@@ -115,7 +115,7 @@ export function NavigationSidebar() {
         icon: Users, 
         path: '/stakeholder-dashboard',
         group: 'workflow',
-        roles: ['stakeholder'] 
+        roles: ['stakeholder', 'admin'] 
       },
       
       // Core workflow items
