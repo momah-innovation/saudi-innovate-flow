@@ -4983,6 +4983,48 @@ export type Database = {
         }
         Relationships: []
       }
+      role_approval_requests: {
+        Row: {
+          approver_id: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          justification: string | null
+          requested_role: Database["public"]["Enums"]["app_role"]
+          requester_id: string
+          reviewed_at: string | null
+          reviewer_notes: string | null
+          status: string | null
+          target_user_id: string
+        }
+        Insert: {
+          approver_id?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          justification?: string | null
+          requested_role: Database["public"]["Enums"]["app_role"]
+          requester_id: string
+          reviewed_at?: string | null
+          reviewer_notes?: string | null
+          status?: string | null
+          target_user_id: string
+        }
+        Update: {
+          approver_id?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          justification?: string | null
+          requested_role?: Database["public"]["Enums"]["app_role"]
+          requester_id?: string
+          reviewed_at?: string | null
+          reviewer_notes?: string | null
+          status?: string | null
+          target_user_id?: string
+        }
+        Relationships: []
+      }
       role_assignments: {
         Row: {
           assigned_to_id: string | null
@@ -5070,6 +5112,9 @@ export type Database = {
           created_at: string
           hierarchy_level: Database["public"]["Enums"]["role_hierarchy_level"]
           id: string
+          requires_approval_for:
+            | Database["public"]["Enums"]["app_role"][]
+            | null
           role: Database["public"]["Enums"]["app_role"]
         }
         Insert: {
@@ -5077,6 +5122,9 @@ export type Database = {
           created_at?: string
           hierarchy_level: Database["public"]["Enums"]["role_hierarchy_level"]
           id?: string
+          requires_approval_for?:
+            | Database["public"]["Enums"]["app_role"][]
+            | null
           role: Database["public"]["Enums"]["app_role"]
         }
         Update: {
@@ -5084,6 +5132,9 @@ export type Database = {
           created_at?: string
           hierarchy_level?: Database["public"]["Enums"]["role_hierarchy_level"]
           id?: string
+          requires_approval_for?:
+            | Database["public"]["Enums"]["app_role"][]
+            | null
           role?: Database["public"]["Enums"]["app_role"]
         }
         Relationships: []
@@ -5211,6 +5262,45 @@ export type Database = {
           name_ar?: string | null
           updated_at?: string | null
           vision_2030_alignment?: string | null
+        }
+        Relationships: []
+      }
+      security_audit_log: {
+        Row: {
+          action_type: string
+          created_at: string
+          details: Json | null
+          id: string
+          ip_address: unknown | null
+          resource_id: string | null
+          resource_type: string | null
+          risk_level: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          ip_address?: unknown | null
+          resource_id?: string | null
+          resource_type?: string | null
+          risk_level?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          ip_address?: unknown | null
+          resource_id?: string | null
+          resource_type?: string | null
+          risk_level?: string | null
+          user_agent?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
