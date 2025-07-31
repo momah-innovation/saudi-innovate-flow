@@ -78,6 +78,36 @@ export function NavigationSidebar() {
       },
     ];
 
+    const partnerItems = [
+      { 
+        id: 'partner-dashboard', 
+        label: 'Partner Dashboard', 
+        arabicLabel: 'لوحة تحكم الشريك',
+        icon: Briefcase, 
+        path: '/partner-dashboard',
+        group: 'partners',
+        roles: ['partner', 'admin'] 
+      },
+      { 
+        id: 'opportunities', 
+        label: 'Partnership Opportunities', 
+        arabicLabel: 'فرص الشراكة',
+        icon: Target, 
+        path: '/opportunities',
+        group: 'partners',
+        roles: ['partner', 'admin', 'all'] 
+      },
+      { 
+        id: 'partner-profile', 
+        label: 'Partner Profile', 
+        arabicLabel: 'ملف الشريك',
+        icon: Edit, 
+        path: '/partner-profile',
+        group: 'partners',
+        roles: ['partner', 'admin'] 
+      },
+    ];
+
     const workflowItems = [
       // User Dashboards
       { 
@@ -87,7 +117,7 @@ export function NavigationSidebar() {
         icon: Home, 
         path: '/dashboard',
         group: 'workflow',
-        roles: ['innovator', 'partner', 'stakeholder'] 
+        roles: ['innovator', 'stakeholder'] 
       },
       { 
         id: 'expert-dashboard', 
@@ -98,15 +128,6 @@ export function NavigationSidebar() {
         badge: 8,
         group: 'workflow',
         roles: ['expert', 'admin'] 
-      },
-      { 
-        id: 'partner-dashboard', 
-        label: 'Partner Dashboard', 
-        arabicLabel: 'لوحة تحكم الشريك',
-        icon: Briefcase, 
-        path: '/partner-dashboard',
-        group: 'workflow',
-        roles: ['partner', 'admin'] 
       },
       { 
         id: 'stakeholder-dashboard', 
@@ -167,15 +188,6 @@ export function NavigationSidebar() {
         path: '/expert-profile',
         group: 'workflow',
         roles: ['expert'] 
-      },
-      { 
-        id: 'partner-profile', 
-        label: 'Partner Profile', 
-        arabicLabel: 'ملف الشريك',
-        icon: Edit, 
-        path: '/partner-profile',
-        group: 'workflow',
-        roles: ['partner', 'admin'] 
       },
       
       // Event participation
@@ -413,7 +425,7 @@ export function NavigationSidebar() {
       },
     ];
 
-    return [...baseItems, ...discoverItems, ...workflowItems, ...managementItems, ...analyticsItems, ...adminItems, ...settingsItems];
+    return [...baseItems, ...discoverItems, ...partnerItems, ...workflowItems, ...managementItems, ...analyticsItems, ...adminItems, ...settingsItems];
   }, []);
 
   // Check if user can see a menu item - same logic as AppSidebar
@@ -442,6 +454,7 @@ export function NavigationSidebar() {
     return {
       main: filtered.filter(item => item.group === 'main'),
       discover: filtered.filter(item => item.group === 'discover'),
+      partners: filtered.filter(item => item.group === 'partners'),
       workflow: filtered.filter(item => item.group === 'workflow'),
       management: filtered.filter(item => item.group === 'management'),
       analytics: filtered.filter(item => item.group === 'analytics'),
@@ -469,6 +482,7 @@ export function NavigationSidebar() {
   const getGroupLabel = (key: string) => {
     const labels = {
       discover: isRTL ? 'استكشاف' : 'Discover',
+      partners: isRTL ? 'الشراكات' : 'Partnerships',
       workflow: isRTL ? 'سير العمل' : 'Workflow',
       management: isRTL ? 'الإدارة' : 'Management',
       analytics: isRTL ? 'التحليلات' : 'Analytics',
@@ -545,6 +559,7 @@ export function NavigationSidebar() {
       <SidebarContent className={cn(isRTL && "text-right")}>
         {renderGroup(visibleItems.main)}
         {renderGroup(visibleItems.discover, 'discover')}
+        {renderGroup(visibleItems.partners, 'partners')}
         {renderGroup(visibleItems.workflow, 'workflow')}
         {renderGroup(visibleItems.management, 'management')}
         {renderGroup(visibleItems.analytics, 'analytics')}

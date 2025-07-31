@@ -456,7 +456,15 @@ export default function PartnerDashboard() {
                       </div>
                       <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                         {getPartnershipStatusBadge(partnership.status)}
-                        <Button size="sm" variant="outline" className={isRTL ? 'flex-row-reverse' : 'flex-row'}>
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className={isRTL ? 'flex-row-reverse' : 'flex-row'}
+                          onClick={() => {
+                            setSelectedPartnership(partnership);
+                            setShowPartnershipDialog(true);
+                          }}
+                        >
                           <Eye className={`w-4 h-4 ${isRTL ? 'ml-1' : 'mr-1'}`} />
                           {t('viewDetails')}
                         </Button>
@@ -514,7 +522,15 @@ export default function PartnerDashboard() {
                       <Button size="sm">
                         {t('expressInterest')}
                       </Button>
-                      <Button size="sm" variant="outline" className={isRTL ? 'flex-row-reverse' : 'flex-row'}>
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className={isRTL ? 'flex-row-reverse' : 'flex-row'}
+                        onClick={() => {
+                          setSelectedOpportunity(opportunity);
+                          setShowOpportunityDialog(true);
+                        }}
+                      >
                         <Eye className={`w-4 h-4 ${isRTL ? 'ml-1' : 'mr-1'}`} />
                         {t('viewDetails')}
                       </Button>
@@ -525,8 +541,31 @@ export default function PartnerDashboard() {
             </CardContent>
           </Card>
         </TabsContent>
+
+        <TabsContent value="applications" className="space-y-4">
+          <PartnershipApplicationsTable 
+            onViewApplication={(application) => {
+              // Handle view application - could open a detail dialog
+              toast.info(`Viewing application: ${application.opportunity_title}`);
+            }}
+          />
+        </TabsContent>
       </Tabs>
       </PageLayout>
+
+      {/* Partnership Detail Dialog */}
+      <PartnershipDetailDialog
+        partnership={selectedPartnership}
+        open={showPartnershipDialog}
+        onOpenChange={setShowPartnershipDialog}
+      />
+
+      {/* Opportunity Detail Dialog */}
+      <OpportunityDetailDialog
+        opportunity={selectedOpportunity}
+        open={showOpportunityDialog}
+        onOpenChange={setShowOpportunityDialog}
+      />
     </AppShell>
   );
 }
