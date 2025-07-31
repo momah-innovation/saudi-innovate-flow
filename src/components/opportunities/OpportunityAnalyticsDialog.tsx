@@ -11,6 +11,9 @@ import { OpportunityLivePresence } from './OpportunityLivePresence';
 import { GeographicAnalytics } from './GeographicAnalytics';
 import { AdvancedPerformanceMetrics } from './AdvancedPerformanceMetrics';
 import { TimeRangeFilter } from './TimeRangeFilter';
+import { EngagementAnalytics } from './EngagementAnalytics';
+import { ApplicationsAnalytics } from './ApplicationsAnalytics';
+import { AdvancedAnalytics } from './AdvancedAnalytics';
 import { useUserJourneyTracker } from '@/hooks/useUserJourneyTracker';
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -447,116 +450,11 @@ export const OpportunityAnalyticsDialog = ({
           </TabsContent>
 
           <TabsContent value="engagement" className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Engagement Metrics */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>{isRTL ? 'مقاييس التفاعل' : 'Engagement Metrics'}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium">{isRTL ? 'متوسط الوقت المقضي' : 'Avg. Time on Page'}</span>
-                      <span className="text-sm text-muted-foreground">
-                        {formatDuration(analytics.engagementMetrics.avgTimeOnPage)}
-                      </span>
-                    </div>
-                    <Progress value={(analytics.engagementMetrics.avgTimeOnPage / 300) * 100} />
-                  </div>
-                  
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium">{isRTL ? 'معدل الارتداد' : 'Bounce Rate'}</span>
-                      <span className="text-sm text-muted-foreground">
-                        {analytics.engagementMetrics.bounceRate}%
-                      </span>
-                    </div>
-                    <Progress value={analytics.engagementMetrics.bounceRate} />
-                  </div>
-                  
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium">{isRTL ? 'الزوار العائدون' : 'Return Visitors'}</span>
-                      <span className="text-sm text-muted-foreground">
-                        {analytics.engagementMetrics.returnVisitors}%
-                      </span>
-                    </div>
-                    <Progress value={analytics.engagementMetrics.returnVisitors} />
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Application Sources */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>{isRTL ? 'مصادر الطلبات' : 'Application Sources'}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ResponsiveContainer width="100%" height={200}>
-                    <PieChart>
-                      <Pie
-                        data={analytics.applicationSourceData}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={({ name, percentage }) => `${name}: ${percentage}%`}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="count"
-                      >
-                        {analytics.applicationSourceData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </CardContent>
-              </Card>
-            </div>
+            <EngagementAnalytics opportunityId={opportunityId} analytics={analytics} />
           </TabsContent>
 
           <TabsContent value="applications" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>{isRTL ? 'تحليل الطلبات' : 'Applications Analysis'}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-green-600">{analytics.totalApplications}</p>
-                    <p className="text-sm text-muted-foreground">{isRTL ? 'إجمالي الطلبات' : 'Total Applications'}</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-blue-600">
-                      {Math.floor(analytics.totalApplications * 0.7)}
-                    </p>
-                    <p className="text-sm text-muted-foreground">{isRTL ? 'قيد المراجعة' : 'Under Review'}</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-orange-600">
-                      {Math.floor(analytics.totalApplications * 0.3)}
-                    </p>
-                    <p className="text-sm text-muted-foreground">{isRTL ? 'مقبولة' : 'Approved'}</p>
-                  </div>
-                </div>
-                
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={analytics.viewsData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar 
-                      dataKey="applications" 
-                      fill="#82ca9d" 
-                      name={isRTL ? 'الطلبات اليومية' : 'Daily Applications'}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+            <ApplicationsAnalytics opportunityId={opportunityId} analytics={analytics} />
           </TabsContent>
 
           {/* Geographic Analytics Tab */}
@@ -570,27 +468,7 @@ export const OpportunityAnalyticsDialog = ({
 
           {/* Advanced Analytics Tab */}
           <TabsContent value="advanced" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>{isRTL ? 'التحليل المتقدم' : 'Advanced Analytics'}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="text-center py-8">
-                    <BarChart3 className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-medium mb-2">
-                      {isRTL ? 'التحليل المتقدم قيد التطوير' : 'Advanced Analytics Coming Soon'}
-                    </h3>
-                    <p className="text-muted-foreground max-w-md mx-auto">
-                      {isRTL 
-                        ? 'ميزات متقدمة مثل التحليل التنبؤي، تتبع رحلة المستخدم المفصل، والذكاء الاصطناعي قريباً'
-                        : 'Advanced features like predictive analytics, detailed user journey tracking, and AI insights coming soon'
-                      }
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <AdvancedAnalytics opportunityId={opportunityId} analytics={analytics} />
           </TabsContent>
         </Tabs>
       </DialogContent>
