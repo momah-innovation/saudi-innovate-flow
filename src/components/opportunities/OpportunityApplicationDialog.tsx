@@ -72,7 +72,7 @@ export const OpportunityApplicationDialog = ({
     if (attachments.length === 0) return [];
 
     const uploadPromises = attachments.map(async (file) => {
-      const fileName = `${Date.now()}-${file.name}`;
+      const fileName = `${user?.id}/${Date.now()}-${file.name}`;
       const { data, error } = await supabase.storage
         .from('opportunity-attachments')
         .upload(fileName, file);

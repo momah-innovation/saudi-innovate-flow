@@ -10,6 +10,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { supabase } from '@/integrations/supabase/client';
 import { Plus, Search, Edit, Trash2, Eye, Calendar, Target, Users, Building, DollarSign, MessageSquare, BarChart3, Clock, Filter } from 'lucide-react';
 import { CreateOpportunityDialog } from '@/components/opportunities/CreateOpportunityDialog';
+import { ApplicationsManagementDialog } from '@/components/opportunities/ApplicationsManagementDialog';
 
 interface Opportunity {
   id: string;
@@ -41,6 +42,8 @@ export default function OpportunitiesManagement() {
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [selectedTab, setSelectedTab] = useState('opportunities');
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showApplicationsDialog, setShowApplicationsDialog] = useState(false);
+  const [selectedOpportunityForApplications, setSelectedOpportunityForApplications] = useState<Opportunity | null>(null);
 
   useEffect(() => {
     loadOpportunities();
@@ -323,16 +326,27 @@ export default function OpportunitiesManagement() {
                         </div>
                         
                         <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                          <Button variant="outline" size="sm">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => {
+                              setSelectedOpportunityForApplications(opportunity);
+                              setShowApplicationsDialog(true);
+                            }}
+                            title={isRTL ? 'إدارة الطلبات' : 'Manage Applications'}
+                          >
+                            <Users className="w-4 h-4" />
+                          </Button>
+                          <Button variant="outline" size="sm" title={isRTL ? 'عرض' : 'View'}>
                             <Eye className="w-4 h-4" />
                           </Button>
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" size="sm" title={isRTL ? 'تعديل' : 'Edit'}>
                             <Edit className="w-4 h-4" />
                           </Button>
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" size="sm" title={isRTL ? 'الإحصائيات' : 'Analytics'}>
                             <BarChart3 className="w-4 h-4" />
                           </Button>
-                          <Button variant="destructive" size="sm">
+                          <Button variant="destructive" size="sm" title={isRTL ? 'حذف' : 'Delete'}>
                             <Trash2 className="w-4 h-4" />
                           </Button>
                         </div>
@@ -360,6 +374,16 @@ export default function OpportunitiesManagement() {
             setShowCreateDialog(false);
           }}
         />
+
+        {/* Applications Management Dialog */}
+        {selectedOpportunityForApplications && (
+          <ApplicationsManagementDialog
+            opportunityId={selectedOpportunityForApplications.id}
+            opportunityTitle={getDynamicText(selectedOpportunityForApplications.title_ar, selectedOpportunityForApplications.title_en)}
+            open={showApplicationsDialog}
+            onOpenChange={setShowApplicationsDialog}
+          />
+        )}
       </div>
     </AdminLayout>
   );
