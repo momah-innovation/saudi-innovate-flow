@@ -3948,34 +3948,40 @@ export type Database = {
       }
       opportunity_analytics: {
         Row: {
+          application_count: number
+          bookmark_count: number
+          created_at: string
           id: string
-          metric_name: string
-          metric_value: number
+          like_count: number
           opportunity_id: string
-          recorded_at: string | null
-          recorded_by: string | null
+          updated_at: string
+          view_count: number
         }
         Insert: {
+          application_count?: number
+          bookmark_count?: number
+          created_at?: string
           id?: string
-          metric_name: string
-          metric_value: number
+          like_count?: number
           opportunity_id: string
-          recorded_at?: string | null
-          recorded_by?: string | null
+          updated_at?: string
+          view_count?: number
         }
         Update: {
+          application_count?: number
+          bookmark_count?: number
+          created_at?: string
           id?: string
-          metric_name?: string
-          metric_value?: number
+          like_count?: number
           opportunity_id?: string
-          recorded_at?: string | null
-          recorded_by?: string | null
+          updated_at?: string
+          view_count?: number
         }
         Relationships: [
           {
             foreignKeyName: "fk_opportunity_analytics_opportunity_id"
             columns: ["opportunity_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "partnership_opportunities"
             referencedColumns: ["id"]
           },
