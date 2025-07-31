@@ -487,7 +487,23 @@ export const translations = {
       statusPending: "في انتظار",
       statusApproved: "موافق عليه",
       statusRejected: "مرفوض",
-      contactForDetails: "اتصل للتفاصيل"
+      contactForDetails: "اتصل للتفاصيل",
+      searchOpportunities: "البحث في الفرص...",
+       searchAndFilter: "البحث والتصفية",
+       clearFilters: "مسح المرشحات",
+       applyNow: "تقدم الآن",
+       noOpportunitiesFound: "لا توجد فرص",
+       adjustFiltersOrCheckLater: "جرب تعديل المرشحات أو تحقق لاحقاً للفرص الجديدة",
+       upTo: "حتى",
+       expired: "منتهية الصلاحية",
+       today: "اليوم",
+       tomorrow: "غداً",
+       daysLeft: "أيام متبقية",
+        sponsorship: "رعاية",
+        research: "بحث",
+        errorLoadingData: "خطأ في تحميل البيانات",
+        noDescription: "لا يوجد وصف",
+        budgetRange: "نطاق الميزانية"
    },
   en: {
     // Common UI - English as secondary
@@ -919,7 +935,23 @@ export const translations = {
       statusPending: "Pending",
       statusApproved: "Approved",
       statusRejected: "Rejected",
-      contactForDetails: "Contact for details"
+      contactForDetails: "Contact for details",
+      searchOpportunities: "Search opportunities...",
+       searchAndFilter: "Search & Filter",
+       clearFilters: "Clear Filters",
+       applyNow: "Apply Now",
+       noOpportunitiesFound: "No opportunities found",
+       adjustFiltersOrCheckLater: "Try adjusting your filters or check back later for new opportunities",
+       upTo: "Up to",
+       expired: "Expired",
+       today: "Today",
+       tomorrow: "Tomorrow",
+       daysLeft: "days left",
+        sponsorship: "Sponsorship",
+        research: "Research",
+        errorLoadingData: "Error loading data",
+        noDescription: "No description available",
+        budgetRange: "Budget Range"
    }
 };
 

@@ -22,10 +22,11 @@ import { toast } from 'sonner';
 
 interface OpportunityItem {
   id: string;
-  title: string;
-  type: string;
-  description: string;
-  budget_range: string;
+  title_ar?: string;
+  title_en?: string;
+  description_ar?: string;
+  description_en?: string;
+  opportunity_type?: string;
   deadline: string;
   status: string;
 }
@@ -73,10 +74,10 @@ export function OpportunityDetailDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={`max-w-4xl max-h-[90vh] overflow-y-auto ${isRTL ? 'text-right' : 'text-left'}`}>
         <DialogHeader>
-          <DialogTitle className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-            <Target className="w-5 h-5" />
-            {opportunity.title}
-          </DialogTitle>
+        <DialogTitle className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+          <Target className="w-5 h-5" />
+          {opportunity.title_ar || opportunity.title_en || 'Partnership Opportunity'}
+        </DialogTitle>
           <DialogDescription className={isRTL ? 'text-right' : 'text-left'}>
             {t('partnershipOpportunityDetails')}
           </DialogDescription>
@@ -88,7 +89,7 @@ export function OpportunityDetailDialog({
             <Badge className={getStatusColor(opportunity.status)}>
               {t(`status${opportunity.status.charAt(0).toUpperCase() + opportunity.status.slice(1)}`)}
             </Badge>
-            <Badge variant="outline">{opportunity.type}</Badge>
+            <Badge variant="outline">{opportunity.opportunity_type || 'Partnership'}</Badge>
           </div>
 
           {/* Key Information */}
@@ -112,7 +113,7 @@ export function OpportunityDetailDialog({
               <CardContent>
                 <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
                   <DollarSign className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm font-medium">{opportunity.budget_range}</span>
+                  <span className="text-sm font-medium">{t('contactForDetails')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -124,7 +125,7 @@ export function OpportunityDetailDialog({
           <div>
             <h4 className={`font-medium mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>{t('opportunityDescription')}</h4>
             <p className={`text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
-              {opportunity.description}
+              {opportunity.description_ar || opportunity.description_en || t('noDescription')}
             </p>
           </div>
 
