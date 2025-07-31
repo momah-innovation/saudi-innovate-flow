@@ -12,18 +12,25 @@ interface OpportunityTemplatesDialogProps {
 export const OpportunityTemplatesDialog = ({ open, onOpenChange }: OpportunityTemplatesDialogProps) => {
   const { isRTL } = useDirection();
 
+  // Note: In a real implementation, this would fetch from Supabase
   const templates = [
     {
       id: 1,
       name: isRTL ? 'قالب طلب الشراكة' : 'Partnership Request Template',
       description: isRTL ? 'قالب موحد لطلبات الشراكة' : 'Standard template for partnership requests',
-      downloads: 234
+      downloads: 0 // Would be fetched from database
     },
     {
       id: 2,
       name: isRTL ? 'قالب العرض التقني' : 'Technical Proposal Template',
       description: isRTL ? 'قالب للعروض التقنية المفصلة' : 'Template for detailed technical proposals',
-      downloads: 156
+      downloads: 0 // Would be fetched from database
+    },
+    {
+      id: 3,
+      name: isRTL ? 'قالب دراسة الجدوى' : 'Feasibility Study Template',
+      description: isRTL ? 'قالب لدراسات الجدوى المفصلة' : 'Template for detailed feasibility studies',
+      downloads: 0 // Would be fetched from database
     }
   ];
 
