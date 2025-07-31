@@ -18,6 +18,10 @@ import { MetricCard } from '@/components/ui/metric-card';
 import { IdeaDetailDialog } from '@/components/ideas/IdeaDetailDialog';
 import { IdeaTemplatesDialog } from '@/components/ideas/IdeaTemplatesDialog';
 import { IdeaFiltersDialog } from '@/components/ideas/IdeaFiltersDialog';
+import { TrendingIdeasWidget } from '@/components/ideas/TrendingIdeasWidget';
+import { IdeaAnalyticsDashboard } from '@/components/ideas/IdeaAnalyticsDashboard';
+import { IdeaNotificationCenter } from '@/components/ideas/IdeaNotificationCenter';
+import { useRealTimeIdeas } from '@/hooks/useRealTimeIdeas';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
@@ -29,7 +33,8 @@ import {
   BarChart3, Search, ThumbsUp, ThumbsDown, AlertCircle,
   Calendar, MapPin, User, Edit, Flag, ExternalLink,
   Sparkles, Award, Zap, FileText, Globe, Trash2,
-  Flame, BookOpen, Palette, Settings, Hash, TrendingDown
+  Flame, BookOpen, Palette, Settings, Hash, TrendingDown,
+  Bell
 } from 'lucide-react';
 
 interface Idea {
@@ -127,6 +132,9 @@ export default function IdeasPage() {
   const { user, userProfile } = useAuth();
   const navigate = useNavigate();
   
+  // Real-time ideas hook
+  const { ideas: realtimeIdeas, loading: ideasLoading, refreshIdeas } = useRealTimeIdeas();
+  
   // State management
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [drafts, setDrafts] = useState<DraftIdea[]>([]);
@@ -174,35 +182,22 @@ export default function IdeasPage() {
   });
 
   useEffect(() => {
+    // Use real-time ideas for published tab
     if (activeTab === 'published') {
-      loadIdeas();
+      setIdeas(realtimeIdeas);
+      setLoading(ideasLoading);
     } else if (activeTab === 'drafts') {
       fetchDrafts();
     } else if (activeTab === 'analytics') {
       loadPersonalMetrics();
     }
+    
     loadBookmarks();
     loadLikes();
     loadFeaturedIdeas();
     fetchChallenges();
     loadTemplates();
-    
-    // Set up real-time subscription
-    const subscription = supabase
-      .channel('ideas-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'ideas' }, () => {
-        if (activeTab === 'published') {
-          loadIdeas();
-        } else if (activeTab === 'drafts') {
-          fetchDrafts();
-        }
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(subscription);
-    };
-  }, [activeTab, statusFilter, maturityFilter, sectorFilter, sortBy, userProfile]);
+  }, [activeTab, realtimeIdeas, ideasLoading, statusFilter, maturityFilter, sectorFilter, sortBy, userProfile]);
 
   const loadIdeas = async () => {
     try {
