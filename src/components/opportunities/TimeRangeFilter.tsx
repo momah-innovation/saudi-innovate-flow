@@ -147,37 +147,39 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
                 {isRTL ? 'تاريخ مخصص' : 'Custom Range'}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
+            <PopoverContent className="w-80 p-0" align="start">
               <div className="p-3 space-y-3">
                 <div className="text-sm font-medium">
                   {isRTL ? 'اختر الفترة' : 'Select Date Range'}
                 </div>
                 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-3">
                   <div>
-                    <label className="text-xs text-muted-foreground">
+                    <label className="text-xs text-muted-foreground block mb-1">
                       {isRTL ? 'من تاريخ' : 'Start Date'}
                     </label>
                     <Calendar
                       mode="single"
                       selected={customStart}
                       onSelect={setCustomStart}
-                      className="rounded-md border"
+                      className="p-3 pointer-events-auto rounded-md border w-full"
                     />
                   </div>
                   
-                  <div>
-                    <label className="text-xs text-muted-foreground">
-                      {isRTL ? 'إلى تاريخ' : 'End Date'}
-                    </label>
-                    <Calendar
-                      mode="single"
-                      selected={customEnd}
-                      onSelect={setCustomEnd}
-                      className="rounded-md border"
-                      disabled={(date) => customStart ? date < customStart : false}
-                    />
-                  </div>
+                  {customStart && (
+                    <div>
+                      <label className="text-xs text-muted-foreground block mb-1">
+                        {isRTL ? 'إلى تاريخ' : 'End Date'}
+                      </label>
+                      <Calendar
+                        mode="single"
+                        selected={customEnd}
+                        onSelect={setCustomEnd}
+                        className="p-3 pointer-events-auto rounded-md border w-full"
+                        disabled={(date) => date < customStart}
+                      />
+                    </div>
+                  )}
                 </div>
                 
                 <div className="flex gap-2">
