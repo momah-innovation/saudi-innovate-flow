@@ -139,65 +139,69 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
           </SelectContent>
         </Select>
 
-        {/* Custom Date Range Popover */}
-        <Popover open={showCustomCalendar} onOpenChange={setShowCustomCalendar}>
-          <PopoverTrigger asChild>
-            <div /> {/* Hidden trigger since it's handled by Select */}
-          </PopoverTrigger>
-          <PopoverContent className="w-80 p-0" align="start">
-            <div className="p-4 space-y-4">
-              <div className="text-sm font-medium border-b pb-2">
-                {isRTL ? 'اختر الفترة المخصصة' : 'Select Custom Date Range'}
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-xs text-muted-foreground block mb-2">
-                    {isRTL ? 'من تاريخ' : 'Start Date'}
-                  </label>
-                  <Calendar
-                    mode="single"
-                    selected={customStart}
-                    onSelect={setCustomStart}
-                    className="p-0 pointer-events-auto"
-                  />
+        {/* Custom Date Range Popover - Only render when needed */}
+        {showCustomCalendar && (
+          <Popover open={showCustomCalendar} onOpenChange={setShowCustomCalendar}>
+            <PopoverTrigger asChild>
+              <Button variant="ghost" className="sr-only">
+                Hidden Trigger
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80 p-0" align="start">
+              <div className="p-4 space-y-4">
+                <div className="text-sm font-medium border-b pb-2">
+                  {isRTL ? 'اختر الفترة المخصصة' : 'Select Custom Date Range'}
                 </div>
                 
-                <div>
-                  <label className="text-xs text-muted-foreground block mb-2">
-                    {isRTL ? 'إلى تاريخ' : 'End Date'}
-                  </label>
-                  <Calendar
-                    mode="single"
-                    selected={customEnd}
-                    onSelect={setCustomEnd}
-                    className="p-0 pointer-events-auto"
-                    disabled={(date) => !customStart || date < customStart}
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs text-muted-foreground block mb-2">
+                      {isRTL ? 'من تاريخ' : 'Start Date'}
+                    </label>
+                    <Calendar
+                      mode="single"
+                      selected={customStart}
+                      onSelect={setCustomStart}
+                      className="p-0 pointer-events-auto"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="text-xs text-muted-foreground block mb-2">
+                      {isRTL ? 'إلى تاريخ' : 'End Date'}
+                    </label>
+                    <Calendar
+                      mode="single"
+                      selected={customEnd}
+                      onSelect={setCustomEnd}
+                      className="p-0 pointer-events-auto"
+                      disabled={(date) => !customStart || date < customStart}
+                    />
+                  </div>
+                </div>
+                
+                <div className="flex gap-2 pt-2 border-t">
+                  <Button 
+                    size="sm" 
+                    onClick={handleCustomDateSelect}
+                    disabled={!customStart || !customEnd}
+                    className="flex-1"
+                  >
+                    {isRTL ? 'تطبيق' : 'Apply'}
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    onClick={() => setShowCustomCalendar(false)}
+                    className="flex-1"
+                  >
+                    {isRTL ? 'إلغاء' : 'Cancel'}
+                  </Button>
                 </div>
               </div>
-              
-              <div className="flex gap-2 pt-2 border-t">
-                <Button 
-                  size="sm" 
-                  onClick={handleCustomDateSelect}
-                  disabled={!customStart || !customEnd}
-                  className="flex-1"
-                >
-                  {isRTL ? 'تطبيق' : 'Apply'}
-                </Button>
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  onClick={() => setShowCustomCalendar(false)}
-                  className="flex-1"
-                >
-                  {isRTL ? 'إلغاء' : 'Cancel'}
-                </Button>
-              </div>
-            </div>
-          </PopoverContent>
-        </Popover>
+            </PopoverContent>
+          </Popover>
+        )}
 
         {/* Reset Button */}
         <Button 
