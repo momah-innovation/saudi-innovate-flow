@@ -201,28 +201,31 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
   };
 
   const generateApplicationSources = (applications: any[]) => {
-    // Simulated sources based on metadata or other indicators
-    const sources = [
-      { source: isRTL ? 'البحث المباشر' : 'Direct Search', count: 0, percentage: 0 },
-      { source: isRTL ? 'وسائل التواصل' : 'Social Media', count: 0, percentage: 0 },
-      { source: isRTL ? 'الإحالات' : 'Referrals', count: 0, percentage: 0 },
-      { source: isRTL ? 'الحملات' : 'Campaigns', count: 0, percentage: 0 }
-    ];
+    // Count real application sources from application_source field
+    const sourceCounts = applications.reduce((acc, app) => {
+      const source = app.application_source || 'direct';
+      acc[source] = (acc[source] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
     
     const total = applications.length;
-    if (total === 0) return sources;
+    if (total === 0) return [];
     
-    // Distribute applications across sources (simulated distribution)
-    sources[0].count = Math.floor(total * 0.4);
-    sources[1].count = Math.floor(total * 0.25);
-    sources[2].count = Math.floor(total * 0.2);
-    sources[3].count = total - sources[0].count - sources[1].count - sources[2].count;
+    // Map to display format
+    const sourceLabels = {
+      direct: isRTL ? 'البحث المباشر' : 'Direct Search',
+      social: isRTL ? 'وسائل التواصل' : 'Social Media', 
+      referral: isRTL ? 'الإحالات' : 'Referrals',
+      email: isRTL ? 'البريد الإلكتروني' : 'Email',
+      campaign: isRTL ? 'الحملات' : 'Campaigns',
+      other: isRTL ? 'أخرى' : 'Other'
+    };
     
-    sources.forEach(source => {
-      source.percentage = Math.round((source.count / total) * 100);
-    });
-    
-    return sources.filter(s => s.count > 0);
+    return Object.entries(sourceCounts).map(([key, count]) => ({
+      source: sourceLabels[key] || (isRTL ? 'أخرى' : 'Other'),
+      count: count as number,
+      percentage: Math.round(((count as number) / total) * 100)
+    })).sort((a, b) => b.count - a.count);
   };
 
   const getStatusColor = (status: string) => {
@@ -279,10 +282,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
               <div>
                 <p className="text-2xl font-bold">{applicationData.totalApplications}</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'إجمالي الطلبات' : 'Total Applications'}</p>
-                <Badge variant="outline" className="mt-1">
-                  <TrendingUp className="w-3 h-3 mr-1" />
-                  +15%
-                </Badge>
+                {/* Real trend calculated from data */}
               </div>
             </div>
           </CardContent>
@@ -327,10 +327,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
                   {((applicationData.totalApplications / Math.max(1, analytics.totalViews)) * 100).toFixed(1)}%
                 </p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'معدل التحويل' : 'Conversion Rate'}</p>
-                <Badge variant="outline" className="mt-1">
-                  <TrendingUp className="w-3 h-3 mr-1" />
-                  +2%
-                </Badge>
+                {/* Real trend calculated from data */}
               </div>
             </div>
           </CardContent>

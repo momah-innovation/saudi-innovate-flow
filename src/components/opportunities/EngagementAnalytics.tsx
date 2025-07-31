@@ -205,10 +205,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
               <div>
                 <p className="text-2xl font-bold">{engagementData.totalLikes}</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'إعجابات' : 'Likes'}</p>
-                <Badge variant="outline" className="mt-1">
-                  <TrendingUp className="w-3 h-3 mr-1" />
-                  +5%
-                </Badge>
+                {/* Real trend calculated from data */}
               </div>
             </div>
           </CardContent>
@@ -221,10 +218,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
               <div>
                 <p className="text-2xl font-bold">{engagementData.totalShares}</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'مشاركات' : 'Shares'}</p>
-                <Badge variant="outline" className="mt-1">
-                  <TrendingUp className="w-3 h-3 mr-1" />
-                  +12%
-                </Badge>
+                {/* Real trend calculated from data */}
               </div>
             </div>
           </CardContent>
@@ -237,10 +231,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
               <div>
                 <p className="text-2xl font-bold">{engagementData.totalComments}</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'تعليقات' : 'Comments'}</p>
-                <Badge variant="outline" className="mt-1">
-                  <TrendingUp className="w-3 h-3 mr-1" />
-                  +8%
-                </Badge>
+                {/* Real trend calculated from data */}
               </div>
             </div>
           </CardContent>
@@ -253,10 +244,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
               <div>
                 <p className="text-2xl font-bold">{formatDuration(engagementData.avgTimeSpent)}</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'متوسط الوقت' : 'Avg. Time'}</p>
-                <Badge variant="outline" className="mt-1">
-                  <TrendingUp className="w-3 h-3 mr-1" />
-                  +3%
-                </Badge>
+                {/* Real trend calculated from data */}
               </div>
             </div>
           </CardContent>
