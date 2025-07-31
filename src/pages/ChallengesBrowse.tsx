@@ -10,6 +10,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { ChallengeCard } from '@/components/challenges/ChallengeCard';
 import { EnhancedChallengeCard } from '@/components/challenges/EnhancedChallengeCard';
+import { SuperChallengeCard } from '@/components/challenges/SuperChallengeCard';
+import { TrendingChallengesWidget } from '@/components/challenges/TrendingChallengesWidget';
 import { ChallengesHero } from '@/components/challenges/ChallengesHero';
 import { ChallengeDetailDialog } from '@/components/challenges/ChallengeDetailDialog';
 import { EnhancedChallengeDetailDialog } from '@/components/challenges/EnhancedChallengeDetailDialog';
@@ -338,7 +340,7 @@ const ChallengesBrowse = () => {
   const renderChallengeCards = (challenges: any[]) => (
     <ViewLayouts viewMode={viewMode}>
       {challenges.map((challenge) => (
-        <EnhancedChallengeCard
+        <SuperChallengeCard
           key={challenge.id}
           challenge={challenge}
           onViewDetails={handleViewDetails}
@@ -392,13 +394,24 @@ const ChallengesBrowse = () => {
         }
       >
         <div className="space-y-6">
-          {/* Advanced Filters */}
-          <ChallengeFilters
-            filters={filters}
-            onFiltersChange={setFilters}
-            onClearFilters={handleClearFilters}
-            activeFiltersCount={getActiveFiltersCount()}
-          />
+          {/* Trending Challenges Widget */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              {/* Advanced Filters */}
+              <ChallengeFilters
+                filters={filters}
+                onFiltersChange={setFilters}
+                onClearFilters={handleClearFilters}
+                activeFiltersCount={getActiveFiltersCount()}
+              />
+            </div>
+            <div className="lg:col-span-1">
+              <TrendingChallengesWidget
+                onChallengeSelect={handleViewDetails}
+                className="sticky top-4"
+              />
+            </div>
+          </div>
 
           {/* Tabs Navigation */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
