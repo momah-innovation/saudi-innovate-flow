@@ -72,7 +72,7 @@ export const EnhancedOpportunitiesHero = ({
     <div className="relative overflow-hidden">
       {/* Background with animated gradients */}
       <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600">
-        <div className="absolute inset-0 bg-[url('/api/placeholder/1920/600')] opacity-10 bg-cover bg-center" />
+        <div className="absolute inset-0 bg-[url('/opportunity-images/hero-background.jpg')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
       </div>
 
