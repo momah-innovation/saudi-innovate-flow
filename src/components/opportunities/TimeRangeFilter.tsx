@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { CalendarIcon, Filter, RotateCcw } from 'lucide-react';
+import { CalendarIcon, Clock, ChevronDown, RotateCcw } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { format, subDays, subWeeks, subMonths, startOfDay, endOfDay } from 'date-fns';
+import { format, subDays, subMonths, startOfDay, endOfDay } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 interface TimeRangeFilterProps {
   onDateRangeChange: (startDate: Date, endDate: Date) => void;
@@ -64,6 +65,11 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
     setSelectedRange(rangeKey);
     setShowCustomCalendar(false);
     
+    if (rangeKey === 'custom') {
+      setShowCustomCalendar(true);
+      return;
+    }
+    
     const preset = presetRanges.find(r => `${r.days}d` === rangeKey);
     if (preset) {
       const { start, end } = preset.getValue();
@@ -100,124 +106,118 @@ export const TimeRangeFilter = ({ onDateRangeChange, className }: TimeRangeFilte
   };
 
   return (
-    <Card className={className}>
-      <CardHeader className="pb-3">
-        <CardTitle className="text-sm flex items-center gap-2">
-          <Filter className="w-4 h-4" />
-          {isRTL ? 'فترة التحليل' : 'Analysis Period'}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Current Selection Display */}
-        <div className="flex items-center justify-between">
-          <Badge variant="outline" className="flex items-center gap-1">
-            <CalendarIcon className="w-3 h-3" />
-            {getSelectedRangeLabel()}
-          </Badge>
-          <Button variant="ghost" size="sm" onClick={handleReset}>
-            <RotateCcw className="w-3 h-3" />
-          </Button>
-        </div>
+    <div className={cn("flex items-center gap-3", className)}>
+      {/* Period Label with Icon */}
+      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+        <Clock className="w-4 h-4" />
+        <span>{isRTL ? 'فترة التحليل' : 'Analysis Period'}</span>
+      </div>
 
-        {/* Preset Range Buttons */}
-        <div className="grid grid-cols-2 gap-2">
-          {presetRanges.map((range) => (
-            <Button
-              key={range.days}
-              variant={selectedRange === `${range.days}d` ? 'default' : 'outline'}
-              size="sm"
-              className="text-xs h-8"
-              onClick={() => handlePresetSelect(`${range.days}d`)}
-            >
-              {isRTL ? range.labelAr : range.label}
-            </Button>
-          ))}
-        </div>
-
-        {/* Custom Date Range */}
-        <div className="border-t pt-3">
-          <Popover open={showCustomCalendar} onOpenChange={setShowCustomCalendar}>
-            <PopoverTrigger asChild>
-              <Button 
-                variant={selectedRange === 'custom' ? 'default' : 'outline'} 
-                size="sm" 
-                className="w-full"
-              >
-                <CalendarIcon className="w-3 h-3 mr-2" />
+      {/* Main Period Selector */}
+      <div className="flex items-center gap-2">
+        <Select value={selectedRange} onValueChange={handlePresetSelect}>
+          <SelectTrigger className="w-40 h-9">
+            <SelectValue>
+              <div className="flex items-center gap-2">
+                <CalendarIcon className="w-4 h-4" />
+                <span className="text-sm">{getSelectedRangeLabel()}</span>
+              </div>
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            {presetRanges.map((range) => (
+              <SelectItem key={range.days} value={`${range.days}d`}>
+                {isRTL ? range.labelAr : range.label}
+              </SelectItem>
+            ))}
+            <SelectItem value="custom">
+              <div className="flex items-center gap-2">
+                <CalendarIcon className="w-4 h-4" />
                 {isRTL ? 'تاريخ مخصص' : 'Custom Range'}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-80 p-0" align="start">
-              <div className="p-3 space-y-3">
-                <div className="text-sm font-medium">
-                  {isRTL ? 'اختر الفترة' : 'Select Date Range'}
+              </div>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+
+        {/* Custom Date Range Popover */}
+        <Popover open={showCustomCalendar} onOpenChange={setShowCustomCalendar}>
+          <PopoverTrigger asChild>
+            <div /> {/* Hidden trigger since it's handled by Select */}
+          </PopoverTrigger>
+          <PopoverContent className="w-80 p-0" align="start">
+            <div className="p-4 space-y-4">
+              <div className="text-sm font-medium border-b pb-2">
+                {isRTL ? 'اختر الفترة المخصصة' : 'Select Custom Date Range'}
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs text-muted-foreground block mb-2">
+                    {isRTL ? 'من تاريخ' : 'Start Date'}
+                  </label>
+                  <Calendar
+                    mode="single"
+                    selected={customStart}
+                    onSelect={setCustomStart}
+                    className="p-0 pointer-events-auto"
+                  />
                 </div>
                 
-                <div className="space-y-3">
-                  <div>
-                    <label className="text-xs text-muted-foreground block mb-1">
-                      {isRTL ? 'من تاريخ' : 'Start Date'}
-                    </label>
-                    <Calendar
-                      mode="single"
-                      selected={customStart}
-                      onSelect={setCustomStart}
-                      className="p-3 pointer-events-auto rounded-md border w-full"
-                    />
-                  </div>
-                  
-                  {customStart && (
-                    <div>
-                      <label className="text-xs text-muted-foreground block mb-1">
-                        {isRTL ? 'إلى تاريخ' : 'End Date'}
-                      </label>
-                      <Calendar
-                        mode="single"
-                        selected={customEnd}
-                        onSelect={setCustomEnd}
-                        className="p-3 pointer-events-auto rounded-md border w-full"
-                        disabled={(date) => date < customStart}
-                      />
-                    </div>
-                  )}
-                </div>
-                
-                <div className="flex gap-2">
-                  <Button 
-                    size="sm" 
-                    onClick={handleCustomDateSelect}
-                    disabled={!customStart || !customEnd}
-                    className="flex-1"
-                  >
-                    {isRTL ? 'تطبيق' : 'Apply'}
-                  </Button>
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    onClick={() => setShowCustomCalendar(false)}
-                    className="flex-1"
-                  >
-                    {isRTL ? 'إلغاء' : 'Cancel'}
-                  </Button>
+                <div>
+                  <label className="text-xs text-muted-foreground block mb-2">
+                    {isRTL ? 'إلى تاريخ' : 'End Date'}
+                  </label>
+                  <Calendar
+                    mode="single"
+                    selected={customEnd}
+                    onSelect={setCustomEnd}
+                    className="p-0 pointer-events-auto"
+                    disabled={(date) => !customStart || date < customStart}
+                  />
                 </div>
               </div>
-            </PopoverContent>
-          </Popover>
-        </div>
+              
+              <div className="flex gap-2 pt-2 border-t">
+                <Button 
+                  size="sm" 
+                  onClick={handleCustomDateSelect}
+                  disabled={!customStart || !customEnd}
+                  className="flex-1"
+                >
+                  {isRTL ? 'تطبيق' : 'Apply'}
+                </Button>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  onClick={() => setShowCustomCalendar(false)}
+                  className="flex-1"
+                >
+                  {isRTL ? 'إلغاء' : 'Cancel'}
+                </Button>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
 
-        {/* Quick Stats */}
-        <div className="border-t pt-3 text-xs text-muted-foreground">
-          <div className="flex justify-between">
-            <span>{isRTL ? 'الفترة المحددة:' : 'Selected period:'}</span>
-            <span>
-              {selectedRange === 'custom' && customStart && customEnd 
-                ? `${Math.ceil((customEnd.getTime() - customStart.getTime()) / (1000 * 60 * 60 * 24))} ${isRTL ? 'يوم' : 'days'}`
-                : presetRanges.find(r => `${r.days}d` === selectedRange)?.days + (isRTL ? ' يوم' : ' days')
-              }
-            </span>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+        {/* Reset Button */}
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={handleReset}
+          className="h-9 px-2"
+          title={isRTL ? 'إعادة تعيين' : 'Reset'}
+        >
+          <RotateCcw className="w-4 h-4" />
+        </Button>
+      </div>
+
+      {/* Selected Period Info */}
+      <Badge variant="secondary" className="text-xs">
+        {selectedRange === 'custom' && customStart && customEnd 
+          ? `${Math.ceil((customEnd.getTime() - customStart.getTime()) / (1000 * 60 * 60 * 24))} ${isRTL ? 'يوم' : 'days'}`
+          : presetRanges.find(r => `${r.days}d` === selectedRange)?.days + (isRTL ? ' يوم' : ' days')
+        }
+      </Badge>
+    </div>
   );
 };
