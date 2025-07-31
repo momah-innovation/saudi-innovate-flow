@@ -7,6 +7,11 @@ import { Progress } from '@/components/ui/progress';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useTranslation } from '@/hooks/useTranslation';
 import { AnalyticsExportDialog } from './AnalyticsExportDialog';
+import { OpportunityLivePresence } from './OpportunityLivePresence';
+import { GeographicAnalytics } from './GeographicAnalytics';
+import { AdvancedPerformanceMetrics } from './AdvancedPerformanceMetrics';
+import { TimeRangeFilter } from './TimeRangeFilter';
+import { useUserJourneyTracker } from '@/hooks/useUserJourneyTracker';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   BarChart3, 
@@ -59,12 +64,35 @@ export const OpportunityAnalyticsDialog = ({
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
+  const [dateRange, setDateRange] = useState({
+    start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
+    end: new Date()
+  });
+  const [sessionId] = useState(() => 
+    sessionStorage.getItem('opportunity-session') || crypto.randomUUID()
+  );
+
+  // Journey tracking
+  const { trackSectionView } = useUserJourneyTracker({
+    opportunityId,
+    sessionId
+  });
 
   useEffect(() => {
     if (open && opportunityId) {
       loadAnalytics();
+      trackSectionView('analytics_dialog', 'Analytics Dialog Opened');
     }
-  }, [open, opportunityId]);
+  }, [open, opportunityId, dateRange]);
+
+  const handleDateRangeChange = (start: Date, end: Date) => {
+    setDateRange({ start, end });
+  };
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    trackSectionView(tab, `Analytics Tab: ${tab}`);
+  };
 
   const loadAnalytics = async () => {
     setLoading(true);
@@ -282,6 +310,7 @@ export const OpportunityAnalyticsDialog = ({
             <div className="flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-primary" />
               <DialogTitle>{isRTL ? 'إحصائيات الفرصة' : 'Opportunity Analytics'}</DialogTitle>
+              <OpportunityLivePresence opportunityId={opportunityId} />
             </div>
             <AnalyticsExportDialog
               opportunityId={opportunityId}
@@ -291,12 +320,24 @@ export const OpportunityAnalyticsDialog = ({
           <p className="text-sm text-muted-foreground">{opportunityTitle}</p>
         </DialogHeader>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-          <TabsList className="grid w-full grid-cols-4">
+        {/* Time Range Filter */}
+        <div className="flex gap-4">
+          <div className="flex-1">
+            <TimeRangeFilter 
+              onDateRangeChange={handleDateRangeChange}
+              className="w-full max-w-sm"
+            />
+          </div>
+        </div>
+
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">{isRTL ? 'نظرة عامة' : 'Overview'}</TabsTrigger>
             <TabsTrigger value="engagement">{isRTL ? 'التفاعل' : 'Engagement'}</TabsTrigger>
             <TabsTrigger value="applications">{isRTL ? 'الطلبات' : 'Applications'}</TabsTrigger>
+            <TabsTrigger value="geographic">{isRTL ? 'جغرافي' : 'Geographic'}</TabsTrigger>
             <TabsTrigger value="performance">{isRTL ? 'الأداء' : 'Performance'}</TabsTrigger>
+            <TabsTrigger value="advanced">{isRTL ? 'متقدم' : 'Advanced'}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">
@@ -518,40 +559,34 @@ export const OpportunityAnalyticsDialog = ({
             </Card>
           </TabsContent>
 
+          {/* Geographic Analytics Tab */}
+          <TabsContent value="geographic" className="space-y-4">
+            <GeographicAnalytics opportunityId={opportunityId} />
+          </TabsContent>
+
           <TabsContent value="performance" className="space-y-4">
+            <AdvancedPerformanceMetrics opportunityId={opportunityId} />
+          </TabsContent>
+
+          {/* Advanced Analytics Tab */}
+          <TabsContent value="advanced" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>{isRTL ? 'تقرير الأداء' : 'Performance Report'}</CardTitle>
+                <CardTitle>{isRTL ? 'التحليل المتقدم' : 'Advanced Analytics'}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="font-medium mb-3">{isRTL ? 'المقاييس الرئيسية' : 'Key Metrics'}</h4>
-                      <div className="space-y-3">
-                        <div className="flex justify-between">
-                          <span>{isRTL ? 'نسبة النقر' : 'Click-through Rate'}</span>
-                          <span className="font-medium">3.2%</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>{isRTL ? 'معدل المشاركة' : 'Engagement Rate'}</span>
-                          <span className="font-medium">15.8%</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>{isRTL ? 'نقاط الجودة' : 'Quality Score'}</span>
-                          <span className="font-medium">8.5/10</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium mb-3">{isRTL ? 'التوصيات' : 'Recommendations'}</h4>
-                      <div className="space-y-2 text-sm text-muted-foreground">
-                        <p>• {isRTL ? 'تحسين العنوان لزيادة النقرات' : 'Optimize title for better click-through rate'}</p>
-                        <p>• {isRTL ? 'إضافة المزيد من الصور الجذابة' : 'Add more engaging visuals'}</p>
-                        <p>• {isRTL ? 'تبسيط عملية التطبيق' : 'Simplify application process'}</p>
-                      </div>
-                    </div>
+                  <div className="text-center py-8">
+                    <BarChart3 className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-medium mb-2">
+                      {isRTL ? 'التحليل المتقدم قيد التطوير' : 'Advanced Analytics Coming Soon'}
+                    </h3>
+                    <p className="text-muted-foreground max-w-md mx-auto">
+                      {isRTL 
+                        ? 'ميزات متقدمة مثل التحليل التنبؤي، تتبع رحلة المستخدم المفصل، والذكاء الاصطناعي قريباً'
+                        : 'Advanced features like predictive analytics, detailed user journey tracking, and AI insights coming soon'
+                      }
+                    </p>
                   </div>
                 </div>
               </CardContent>

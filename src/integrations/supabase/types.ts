@@ -4243,6 +4243,65 @@ export type Database = {
         }
         Relationships: []
       }
+      opportunity_geographic_analytics: {
+        Row: {
+          city: string | null
+          country_code: string | null
+          country_name: string | null
+          created_at: string
+          first_view_at: string
+          id: string
+          ip_address: unknown | null
+          last_view_at: string
+          opportunity_id: string
+          region: string | null
+          session_id: string
+          updated_at: string
+          user_id: string | null
+          view_count: number
+        }
+        Insert: {
+          city?: string | null
+          country_code?: string | null
+          country_name?: string | null
+          created_at?: string
+          first_view_at?: string
+          id?: string
+          ip_address?: unknown | null
+          last_view_at?: string
+          opportunity_id: string
+          region?: string | null
+          session_id: string
+          updated_at?: string
+          user_id?: string | null
+          view_count?: number
+        }
+        Update: {
+          city?: string | null
+          country_code?: string | null
+          country_name?: string | null
+          created_at?: string
+          first_view_at?: string
+          id?: string
+          ip_address?: unknown | null
+          last_view_at?: string
+          opportunity_id?: string
+          region?: string | null
+          session_id?: string
+          updated_at?: string
+          user_id?: string | null
+          view_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_geographic_analytics_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "partnership_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       opportunity_likes: {
         Row: {
           created_at: string | null
@@ -4263,6 +4322,56 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      opportunity_live_presence: {
+        Row: {
+          created_at: string
+          current_section: string | null
+          id: string
+          is_active: boolean
+          last_seen: string
+          opportunity_id: string
+          session_id: string
+          user_agent: string | null
+          user_avatar: string | null
+          user_id: string | null
+          user_name: string | null
+        }
+        Insert: {
+          created_at?: string
+          current_section?: string | null
+          id?: string
+          is_active?: boolean
+          last_seen?: string
+          opportunity_id: string
+          session_id: string
+          user_agent?: string | null
+          user_avatar?: string | null
+          user_id?: string | null
+          user_name?: string | null
+        }
+        Update: {
+          created_at?: string
+          current_section?: string | null
+          id?: string
+          is_active?: boolean
+          last_seen?: string
+          opportunity_id?: string
+          session_id?: string
+          user_agent?: string | null
+          user_avatar?: string | null
+          user_id?: string | null
+          user_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_live_presence_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "partnership_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       opportunity_shares: {
         Row: {
@@ -4345,6 +4454,56 @@ export type Database = {
             columns: ["challenge_id"]
             isOneToOne: false
             referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      opportunity_user_journeys: {
+        Row: {
+          created_at: string
+          id: string
+          journey_step: string
+          opportunity_id: string
+          page_url: string | null
+          previous_step: string | null
+          session_id: string
+          step_data: Json | null
+          step_timestamp: string
+          time_from_previous_ms: number | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          journey_step: string
+          opportunity_id: string
+          page_url?: string | null
+          previous_step?: string | null
+          session_id: string
+          step_data?: Json | null
+          step_timestamp?: string
+          time_from_previous_ms?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          journey_step?: string
+          opportunity_id?: string
+          page_url?: string | null
+          previous_step?: string | null
+          session_id?: string
+          step_data?: Json | null
+          step_timestamp?: string
+          time_from_previous_ms?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_user_journeys_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "partnership_opportunities"
             referencedColumns: ["id"]
           },
         ]
