@@ -337,16 +337,48 @@ export default function OpportunitiesManagement() {
                           >
                             <Users className="w-4 h-4" />
                           </Button>
-                          <Button variant="outline" size="sm" title={isRTL ? 'عرض' : 'View'}>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            title={isRTL ? 'عرض' : 'View'}
+                            onClick={() => {
+                              console.log('View opportunity:', opportunity.id);
+                              // TODO: Implement view opportunity details
+                            }}
+                          >
                             <Eye className="w-4 h-4" />
                           </Button>
-                          <Button variant="outline" size="sm" title={isRTL ? 'تعديل' : 'Edit'}>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            title={isRTL ? 'تعديل' : 'Edit'}
+                            onClick={() => {
+                              console.log('Edit opportunity:', opportunity.id);
+                              // TODO: Implement edit opportunity
+                            }}
+                          >
                             <Edit className="w-4 h-4" />
                           </Button>
-                          <Button variant="outline" size="sm" title={isRTL ? 'الإحصائيات' : 'Analytics'}>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            title={isRTL ? 'الإحصائيات' : 'Analytics'}
+                            onClick={() => {
+                              console.log('View analytics for opportunity:', opportunity.id);
+                              // TODO: Implement analytics view
+                            }}
+                          >
                             <BarChart3 className="w-4 h-4" />
                           </Button>
-                          <Button variant="destructive" size="sm" title={isRTL ? 'حذف' : 'Delete'}>
+                          <Button 
+                            variant="destructive" 
+                            size="sm" 
+                            title={isRTL ? 'حذف' : 'Delete'}
+                            onClick={() => {
+                              console.log('Delete opportunity:', opportunity.id);
+                              // TODO: Implement delete confirmation
+                            }}
+                          >
                             <Trash2 className="w-4 h-4" />
                           </Button>
                         </div>
