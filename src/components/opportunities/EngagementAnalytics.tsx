@@ -75,8 +75,18 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
       const bookmarks = bookmarksData.data || [];
       const sessions = viewSessionsData.data || [];
 
-      // Calculate average time spent (simulated)
-      const avgTimeSpent = sessions.length > 0 ? 180 + Math.random() * 120 : 180;
+      // Calculate real average time spent from sessions
+      const avgTimeSpent = sessions.length > 0 
+        ? sessions.reduce((sum, session) => sum + (session.time_spent_seconds || 0), 0) / sessions.length
+        : 0;
+
+      // Calculate real bounce rate from sessions (time_spent < 30 seconds is considered bounce)
+      const bouncedSessions = sessions.filter(session => (session.time_spent_seconds || 0) < 30).length;
+      const bounceRate = sessions.length > 0 ? (bouncedSessions / sessions.length) * 100 : 0;
+
+      // Calculate real return visitors from sessions with multiple views
+      const returningVisitors = sessions.filter(session => (session.view_count || 1) > 1).length;
+      const returnVisitorsRate = sessions.length > 0 ? (returningVisitors / sessions.length) * 100 : 0;
 
       // Generate engagement trend data
       const engagementTrend = generateEngagementTrend(likes, shares, comments, bookmarks);
@@ -92,9 +102,9 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
         totalShares: shares.length,
         totalComments: comments.length,
         totalBookmarks: bookmarks.length,
-        avgTimeSpent,
-        bounceRate: Math.max(0, 100 - Math.min(50, likes.length + shares.length + comments.length)),
-        returnVisitors: Math.min(30, Math.round((bookmarks.length / Math.max(1, likes.length)) * 100)),
+        avgTimeSpent: Math.round(avgTimeSpent),
+        bounceRate: Math.round(bounceRate),
+        returnVisitors: Math.round(returnVisitorsRate),
         engagementTrend,
         platformShares,
         hourlyEngagement

@@ -49,10 +49,10 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
 
   const loadApplicationData = async () => {
     try {
-      // Get applications with detailed status information
+      // Get applications with detailed status information from real opportunity_applications table
       const { data: applications, error } = await supabase
         .from('opportunity_applications')
-        .select('id, created_at')
+        .select('id, created_at, status')
         .eq('opportunity_id', opportunityId)
         .order('created_at', { ascending: false });
 
@@ -60,20 +60,31 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
 
       const apps = applications || [];
 
-      // Calculate status counts (simulated since schema differs)
-      const statusCounts = {
-        pending: Math.floor(apps.length * 0.4),
-        submitted: apps.length,
-        approved: Math.floor(apps.length * 0.3),
-        rejected: Math.floor(apps.length * 0.1)
+      // Calculate real status counts from the data
+      const statusCounts = apps.reduce((acc, app) => {
+        const status = app.status || 'pending';
+        acc[status] = (acc[status] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+
+      // Ensure all common statuses exist
+      const allStatusCounts = {
+        pending: statusCounts.pending || 0,
+        submitted: statusCounts.submitted || 0,
+        approved: statusCounts.approved || 0,
+        rejected: statusCounts.rejected || 0,
+        in_review: statusCounts.in_review || 0,
+        ...statusCounts // Include any other statuses
       };
 
-      // Generate status breakdown
-      const statusBreakdown = Object.entries(statusCounts).map(([status, count]) => ({
-        status: status.charAt(0).toUpperCase() + status.slice(1),
-        count: count as number,
-        percentage: Math.round(((count as number) / apps.length) * 100)
-      }));
+      // Generate status breakdown from real data
+      const statusBreakdown = Object.entries(allStatusCounts)
+        .filter(([_, count]) => count > 0) // Only show statuses with actual applications
+        .map(([status, count]) => ({
+          status: status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' '),
+          count: count as number,
+          percentage: apps.length > 0 ? Math.round(((count as number) / apps.length) * 100) : 0
+        }));
 
       // Generate applications over time
       const applicationsOverTime = generateApplicationsOverTime(apps);
@@ -92,10 +103,10 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
 
       setApplicationData({
         totalApplications: apps.length,
-        pendingApplications: (statusCounts as any).pending || 0,
-        approvedApplications: (statusCounts as any).approved || 0,
-        rejectedApplications: (statusCounts as any).rejected || 0,
-        inReviewApplications: (statusCounts as any).in_review || 0,
+        pendingApplications: allStatusCounts.pending || 0,
+        approvedApplications: allStatusCounts.approved || 0,
+        rejectedApplications: allStatusCounts.rejected || 0,
+        inReviewApplications: allStatusCounts.in_review || 0,
         applicationsOverTime,
         statusBreakdown,
         dailyApplications,

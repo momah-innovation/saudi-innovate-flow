@@ -52,17 +52,15 @@ export const GeographicAnalytics = ({ opportunityId }: GeographicAnalyticsProps)
         
         setGeoData(processedData);
       } else {
-        // Generate sample data if no real data exists
-        const sampleData = generateSampleGeoData();
-        setGeoData(sampleData);
-        setTotalViews(sampleData.reduce((sum, item) => sum + item.view_count, 0));
+        // No data yet - set empty state
+        setGeoData([]);
+        setTotalViews(0);
       }
     } catch (error) {
       console.error('Error loading geographic data:', error);
-      // Fallback to sample data
-      const sampleData = generateSampleGeoData();
-      setGeoData(sampleData);
-      setTotalViews(sampleData.reduce((sum, item) => sum + item.view_count, 0));
+      // Set empty state on error
+      setGeoData([]);
+      setTotalViews(0);
     } finally {
       setLoading(false);
     }
