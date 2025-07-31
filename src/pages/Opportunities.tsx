@@ -22,6 +22,7 @@ import { OpportunityAnalyticsDashboard } from '@/components/opportunities/Opport
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useBookmarks } from '@/hooks/useBookmarks';
+import { downloadOpportunityImages } from '@/utils/downloadOpportunityImages';
 import { 
   Plus, 
   Send, 
@@ -76,6 +77,7 @@ export default function Opportunities() {
   // State management
   const [opportunities, setOpportunities] = useState<OpportunityItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [downloadingImages, setDownloadingImages] = useState(false);
   const [selectedOpportunity, setSelectedOpportunity] = useState<OpportunityItem | null>(null);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [applicationDialogOpen, setApplicationDialogOpen] = useState(false);
@@ -393,6 +395,33 @@ export default function Opportunities() {
     return count;
   };
 
+  const handleDownloadImages = async () => {
+    setDownloadingImages(true);
+    try {
+      const result = await downloadOpportunityImages();
+      
+      if (result.success) {
+        toast({
+          title: isRTL ? 'تم تحميل الصور بنجاح' : 'Images downloaded successfully',
+          description: isRTL ? `تم معالجة ${result.results?.length || 0} فرصة` : `Processed ${result.results?.length || 0} opportunities`,
+        });
+        // Reload opportunities to show the new images
+        await loadOpportunities();
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error) {
+      console.error('Error downloading images:', error);
+      toast({
+        title: isRTL ? 'خطأ في تحميل الصور' : 'Error downloading images',
+        description: isRTL ? 'فشل في تحميل الصور' : 'Failed to download images',
+        variant: "destructive",
+      });
+    } finally {
+      setDownloadingImages(false);
+    }
+  };
+
   // Render opportunity cards
   const renderOpportunityCards = (opportunities: OpportunityItem[]) => (
     <ViewLayouts viewMode={viewMode}>
@@ -438,6 +467,15 @@ export default function Opportunities() {
         secondaryActions={
           <div className="flex gap-2">
             <OpportunityNotificationCenter />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleDownloadImages}
+              disabled={downloadingImages}
+            >
+              <FileText className="w-4 h-4 mr-2" />
+              {downloadingImages ? (isRTL ? 'جارٍ التحميل...' : 'Downloading...') : (isRTL ? 'تحميل الصور' : 'Download Images')}
+            </Button>
             <Button
               variant="outline"
               size="sm"
