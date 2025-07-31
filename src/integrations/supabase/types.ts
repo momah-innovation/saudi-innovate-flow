@@ -430,18 +430,27 @@ export type Database = {
           challenge_id: string
           created_at: string | null
           id: string
+          notes: string | null
+          priority: string | null
+          reminder_date: string | null
           user_id: string
         }
         Insert: {
           challenge_id: string
           created_at?: string | null
           id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
           user_id: string
         }
         Update: {
           challenge_id?: string
           created_at?: string | null
           id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
           user_id?: string
         }
         Relationships: [
@@ -1506,18 +1515,27 @@ export type Database = {
           created_at: string | null
           event_id: string
           id: string
+          notes: string | null
+          priority: string | null
+          reminder_date: string | null
           user_id: string
         }
         Insert: {
           created_at?: string | null
           event_id: string
           id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
           user_id: string
         }
         Update: {
           created_at?: string | null
           event_id?: string
           id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
           user_id?: string
         }
         Relationships: [
@@ -2445,18 +2463,27 @@ export type Database = {
           created_at: string
           id: string
           idea_id: string
+          notes: string | null
+          priority: string | null
+          reminder_date: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
           idea_id: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
           user_id: string
         }
         Update: {
           created_at?: string
           id?: string
           idea_id?: string
+          notes?: string | null
+          priority?: string | null
+          reminder_date?: string | null
           user_id?: string
         }
         Relationships: [

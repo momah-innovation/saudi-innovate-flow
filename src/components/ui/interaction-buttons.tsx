@@ -39,14 +39,14 @@ export const InteractionButtons = ({
     const checkInteractions = async () => {
       try {
         if (itemType === 'idea') {
-          // Check idea likes
+          // Check idea likes - use existing table for now
           const { data: likesData } = await supabase
             .from('idea_likes')
             .select('*')
             .eq('idea_id', itemId);
 
           setLikesCount(likesData?.length || 0);
-          setLiked(likesData?.some(like => like.user_id === user.id) || false);
+          setLiked(likesData?.some((like: any) => like.user_id === user.id) || false);
 
           // Check idea comments count
           const { data: commentsData } = await supabase
@@ -57,7 +57,9 @@ export const InteractionButtons = ({
           setCommentsCount(commentsData?.length || 0);
 
         } else {
-          // Check bookmarks for challenges/events
+          // For challenges/events, get placeholder likes count and check bookmarks
+          setLikesCount(Math.floor(Math.random() * 50) + 5);
+          
           const tableName = itemType === 'challenge' ? 'challenge_bookmarks' : 'event_bookmarks';
           
           const { data: bookmark } = await supabase
@@ -68,9 +70,6 @@ export const InteractionButtons = ({
             .maybeSingle();
             
           setBookmarked(!!bookmark);
-          
-          // Get placeholder likes count for challenges/events
-          setLikesCount(Math.floor(Math.random() * 50) + 5);
         }
         
       } catch (error) {

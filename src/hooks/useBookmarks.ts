@@ -90,6 +90,8 @@ export function useBookmarks() {
           id,
           user_id,
           created_at,
+          notes,
+          priority,
           idea_id,
           ideas!fk_idea_bookmarks_idea_id(*)
         `)
@@ -338,11 +340,9 @@ export function useBookmarks() {
         [fieldName]: itemId
       };
 
-      // Only add notes/priority for types that support them
-      if (type !== 'idea' && type !== 'challenge' && type !== 'event') {
-        if (notes) insertData.notes = notes;
-        if (priority) insertData.priority = priority || 'medium';
-      }
+      // Add notes and priority for all bookmark types now that they support them
+      if (notes) insertData.notes = notes;
+      if (priority) insertData.priority = priority || 'medium';
 
       let error;
       if (type === 'challenge') {
