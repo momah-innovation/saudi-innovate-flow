@@ -97,7 +97,7 @@ export function NavigationSidebar() {
         path: '/expert-dashboard',
         badge: 8,
         group: 'workflow',
-        roles: ['expert'] 
+        roles: ['expert', 'admin'] 
       },
       { 
         id: 'partner-dashboard', 
