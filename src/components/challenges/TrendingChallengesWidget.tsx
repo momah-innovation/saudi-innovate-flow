@@ -30,11 +30,13 @@ interface TrendingChallenge {
 
 interface TrendingChallengesWidgetProps {
   onChallengeSelect?: (challengeId: string) => void;
+  onChallengeClick?: (challenge: any) => void;
   className?: string;
 }
 
 export const TrendingChallengesWidget = ({ 
   onChallengeSelect, 
+  onChallengeClick,
   className = "" 
 }: TrendingChallengesWidgetProps) => {
   const { isRTL } = useDirection();
@@ -177,7 +179,10 @@ export const TrendingChallengesWidget = ({
               <div 
                 key={challenge.id}
                 className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-muted/30 to-muted/10 hover:from-muted/50 hover:to-muted/20 transition-all cursor-pointer group border border-muted/50 hover:border-primary/20"
-                onClick={() => onChallengeSelect?.(challenge.id)}
+                onClick={() => {
+                  onChallengeSelect?.(challenge.id);
+                  onChallengeClick?.(challenge);
+                }}
               >
                 <div className="flex-shrink-0">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-sm font-bold shadow-lg">

@@ -27,6 +27,7 @@ import { ChallengeTemplatesDialog } from '@/components/challenges/ChallengeTempl
 import { ChallengeAnalyticsDashboard } from '@/components/challenges/ChallengeAnalyticsDashboard';
 import { ChallengeCollaborationHub } from '@/components/challenges/ChallengeCollaborationHub';
 import { ChallengeListView } from '@/components/challenges/ChallengeListView';
+import { ExpertAssignmentWizard } from '@/components/challenges/ExpertAssignmentWizard';
 import { ChallengeSubmissionDialog } from '@/components/challenges/ChallengeSubmissionDialog';
 import { ChallengeCommentsDialog } from '@/components/challenges/ChallengeCommentsDialog';
 import { ChallengeSubmissionsDialog } from '@/components/challenges/ChallengeSubmissionsDialog';
@@ -72,6 +73,9 @@ const ChallengesBrowse = () => {
       refetch();
     }
   });
+
+  // Enhanced dialog states
+  const [expertAssignmentOpen, setExpertAssignmentOpen] = useState(false);
   
   // Basic search - events style
   const [searchQuery, setSearchQuery] = useState('');
@@ -462,7 +466,11 @@ const ChallengesBrowse = () => {
             {/* Sidebar with Recommendations */}
             <div className="lg:col-span-1 space-y-6">
               <TrendingChallengesWidget
-                onChallengeSelect={handleViewDetails}
+                onChallengeClick={handleViewDetails}
+                onChallengeSelect={(challengeId) => {
+                  const challenge = challenges.find(c => c.id === challengeId);
+                  if (challenge) handleViewDetails(challenge);
+                }}
                 className="sticky top-4"
               />
               <ChallengeRecommendations

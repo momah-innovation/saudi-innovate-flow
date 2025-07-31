@@ -1,273 +1,254 @@
-import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import { Loader2, UserPlus } from "lucide-react";
-import { useSystemLists } from "@/hooks/useSystemLists";
+import { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { useDirection } from '@/components/ui/direction-provider';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import {
+  Users,
+  Search,
+  Star,
+  CheckCircle,
+  Send
+} from 'lucide-react';
 
 interface Expert {
   id: string;
   user_id: string;
-  expertise_areas: string[];
-  expert_level: string;
-  profiles?: {
-    name: string;
-    email: string;
-  } | null;
+  specialization: string;
+  expertise_level: string;
+  profiles: {
+    display_name: string;
+    profile_image_url?: string;
+  };
 }
 
 interface ExpertAssignmentWizardProps {
+  challenge: any;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  challengeId: string;
-  onAssignmentComplete: () => void;
+  onAssignmentComplete?: () => void;
 }
 
-export function ExpertAssignmentWizard({ 
-  open, 
-  onOpenChange, 
-  challengeId,
-  onAssignmentComplete 
-}: ExpertAssignmentWizardProps) {
-  const [experts, setExperts] = useState<Expert[]>([]);
-  const [selectedExpertId, setSelectedExpertId] = useState<string>("");
-  const [roleType, setRoleType] = useState<string>("evaluator");
-  const [notes, setNotes] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [fetchingExperts, setFetchingExperts] = useState(true);
+export const ExpertAssignmentWizard = ({
+  challenge,
+  open,
+  onOpenChange,
+  onAssignmentComplete
+}: ExpertAssignmentWizardProps) => {
+  const { isRTL } = useDirection();
+  const { toast } = useToast();
   
-  const systemSettings = useSystemLists();
+  const [experts, setExperts] = useState<Expert[]>([]);
+  const [selectedExperts, setSelectedExperts] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (open) {
-      fetchAvailableExperts();
+      loadExperts();
     }
-  }, [open, challengeId]);
+  }, [open]);
 
-  const fetchAvailableExperts = async () => {
+  const loadExperts = async () => {
     try {
-      setFetchingExperts(true);
-      
-      // Get all experts
-      const { data: allExperts, error: expertsError } = await supabase
-        .from('experts')
-        .select('id, user_id, expertise_areas, expert_level');
+      const { data, error } = await supabase
+        .from('innovation_team_members')
+        .select(`
+          id,
+          user_id,
+          specialization,
+          expertise_level,
+          profiles:user_id (
+            display_name,
+            profile_image_url
+          )
+        `)
+        .eq('status', 'active')
+        .eq('role', 'expert');
 
-      if (expertsError) throw expertsError;
-
-      // Get already assigned experts for this challenge
-      const { data: assignedExperts, error: assignedError } = await supabase
-        .from('challenge_experts')
-        .select('expert_id')
-        .eq('challenge_id', challengeId)
-        .eq('status', 'active');
-
-      if (assignedError) throw assignedError;
-
-      const assignedExpertIds = assignedExperts?.map(ae => ae.expert_id) || [];
-      
-      // Filter out already assigned experts
-      const availableExpertIds = (allExperts || [])
-        .filter(expert => !assignedExpertIds.includes(expert.id))
-        .map(expert => expert.user_id);
-
-      if (availableExpertIds.length === 0) {
-        setExperts([]);
-        return;
-      }
-
-      // Get profiles for available experts
-      const { data: profiles, error: profilesError } = await supabase
-        .from('profiles')
-        .select('id, name, email')
-        .in('id', availableExpertIds);
-
-      if (profilesError) throw profilesError;
-
-      // Combine experts with their profiles
-      const expertsWithProfiles = (allExperts || [])
-        .filter(expert => !assignedExpertIds.includes(expert.id))
-        .map(expert => {
-          const profile = (profiles || []).find(p => p.id === expert.user_id);
-          return {
-            id: expert.id,
-            user_id: expert.user_id,
-            expertise_areas: expert.expertise_areas || [],
-            expert_level: expert.expert_level || '',
-            profiles: profile ? {
-              name: profile.name,
-              email: profile.email
-            } : null
-          };
-        });
-
-      setExperts(expertsWithProfiles);
+      if (error) throw error;
+      setExperts(data || []);
     } catch (error) {
-      console.error('Error fetching experts:', error);
-      toast.error('Failed to load available experts');
-    } finally {
-      setFetchingExperts(false);
+      console.error('Error loading experts:', error);
     }
   };
 
-  const handleAssignExpert = async () => {
-    if (!selectedExpertId) {
-      toast.error('Please select an expert');
+  const handleExpertSelection = (expertId: string) => {
+    setSelectedExperts(prev => {
+      const isSelected = prev.includes(expertId);
+      return isSelected ? prev.filter(id => id !== expertId) : [...prev, expertId];
+    });
+  };
+
+  const handleAssignExperts = async () => {
+    if (selectedExperts.length === 0) {
+      toast({
+        title: isRTL ? 'خطأ' : 'Error',
+        description: isRTL ? 'يرجى اختيار خبير واحد على الأقل' : 'Please select at least one expert',
+        variant: 'destructive',
+      });
       return;
     }
 
+    setLoading(true);
+
     try {
-      setLoading(true);
+      const assignments = selectedExperts.map(expertId => {
+        const expert = experts.find(e => e.id === expertId);
+        return {
+          challenge_id: challenge.id,
+          expert_id: expert?.user_id,
+          role_type: 'evaluator',
+          status: 'active'
+        };
+      });
 
-      // First check if this expert already has an inactive assignment for this challenge and role
-      const { data: existingAssignment, error: checkError } = await supabase
+      const { error } = await supabase
         .from('challenge_experts')
-        .select('id')
-        .eq('challenge_id', challengeId)
-        .eq('expert_id', selectedExpertId)
-        .eq('role_type', roleType)
-        .eq('status', 'inactive')
-        .maybeSingle();
+        .insert(assignments);
 
-      if (checkError) throw checkError;
+      if (error) throw error;
 
-      if (existingAssignment) {
-        // Reactivate the existing assignment
-        const { error: updateError } = await supabase
-          .from('challenge_experts')
-          .update({
-            status: 'active',
-            notes: notes.trim() || null,
-            assignment_date: new Date().toISOString()
-          })
-          .eq('id', existingAssignment.id);
+      toast({
+        title: isRTL ? 'تم التعيين بنجاح' : 'Assignment Successful',
+        description: isRTL ? 
+          `تم تعيين ${selectedExperts.length} خبير للتحدي` : 
+          `Successfully assigned ${selectedExperts.length} expert(s) to the challenge`,
+      });
 
-        if (updateError) throw updateError;
-      } else {
-        // Create a new assignment
-        const { error: insertError } = await supabase
-          .from('challenge_experts')
-          .insert({
-            challenge_id: challengeId,
-            expert_id: selectedExpertId,
-            role_type: roleType,
-            notes: notes.trim() || null,
-            status: 'active'
-          });
-
-        if (insertError) throw insertError;
-      }
-
-      toast.success('Expert assigned successfully');
-      onAssignmentComplete();
+      onAssignmentComplete?.();
       onOpenChange(false);
-      
-      // Reset form
-      setSelectedExpertId("");
-      setRoleType("evaluator");
-      setNotes("");
+      setSelectedExperts([]);
     } catch (error) {
-      console.error('Error assigning expert:', error);
-      toast.error('Failed to assign expert');
+      console.error('Error assigning experts:', error);
+      toast({
+        title: isRTL ? 'خطأ' : 'Error',
+        description: isRTL ? 'فشل في تعيين الخبراء' : 'Failed to assign experts',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
   };
 
+  const filteredExperts = experts.filter(expert =>
+    expert.profiles.display_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    expert.specialization?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (!challenge) return null;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <UserPlus className="h-5 w-5" />
-            Assign Expert to Challenge
+            <Users className="w-5 h-5" />
+            {isRTL ? 'تعيين خبراء للتحدي' : 'Assign Experts to Challenge'}
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4">
-          {fetchingExperts ? (
-            <div className="flex items-center justify-center py-8">
-              <Loader2 className="h-6 w-6 animate-spin" />
-              <span className="ml-2">Loading available experts...</span>
+        <div className="flex-1 overflow-y-auto space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold mb-4">
+              {isRTL ? 'اختيار الخبراء' : 'Select Experts'}
+            </h3>
+
+            {/* Search */}
+            <div className="relative mb-4">
+              <Search className="w-4 h-4 absolute left-3 top-3 text-muted-foreground" />
+              <Input
+                placeholder={isRTL ? 'البحث في الخبراء...' : 'Search experts...'}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
             </div>
-          ) : experts.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              No available experts found. All experts may already be assigned to this challenge.
-            </div>
-          ) : (
-            <>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Select Expert</label>
-                <Select value={selectedExpertId} onValueChange={setSelectedExpertId}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Choose an expert..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {experts.map((expert) => (
-                      <SelectItem key={expert.id} value={expert.id}>
-                        <div className="flex flex-col">
-                          <span className="font-medium">
-                            {expert.profiles?.name || 'Unknown'}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            {expert.expert_level} • {expert.expertise_areas.join(', ')}
-                          </span>
+
+            {/* Selected Experts Summary */}
+            {selectedExperts.length > 0 && (
+              <div className="mb-4 p-3 bg-primary/10 border border-primary/20 rounded-lg">
+                <p className="text-sm font-medium">
+                  {isRTL ? `تم اختيار ${selectedExperts.length} خبير` : `${selectedExperts.length} expert(s) selected`}
+                </p>
+              </div>
+            )}
+
+            {/* Experts Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
+              {filteredExperts.map(expert => {
+                const isSelected = selectedExperts.includes(expert.id);
+                return (
+                  <Card 
+                    key={expert.id} 
+                    className={`cursor-pointer transition-all duration-200 ${
+                      isSelected ? 'border-primary bg-primary/5' : 'hover:border-primary/50'
+                    }`}
+                    onClick={() => handleExpertSelection(expert.id)}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-3">
+                        <Avatar className="w-10 h-10">
+                          <AvatarImage src={expert.profiles.profile_image_url} />
+                          <AvatarFallback>
+                            {expert.profiles.display_name?.charAt(0) || 'E'}
+                          </AvatarFallback>
+                        </Avatar>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-1">
+                            <h4 className="font-medium truncate">
+                              {expert.profiles.display_name || (isRTL ? 'خبير' : 'Expert')}
+                            </h4>
+                            {isSelected && <CheckCircle className="w-4 h-4 text-primary" />}
+                          </div>
+
+                          <p className="text-sm text-muted-foreground mb-2">
+                            {expert.specialization || (isRTL ? 'تخصص عام' : 'General Expertise')}
+                          </p>
+
+                          <Badge variant="outline">
+                            {expert.expertise_level}
+                          </Badge>
                         </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Role Type</label>
-                <Select value={roleType} onValueChange={setRoleType}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {systemSettings.expertRoleTypes.map((role) => (
-                      <SelectItem key={role} value={role}>
-                        {role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Notes (Optional)</label>
-                <Textarea
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Add any specific instructions or notes for this assignment..."
-                  className="min-h-[80px]"
-                />
-              </div>
-
-              <div className="flex justify-end gap-3 pt-4">
-                <Button
-                  variant="outline"
-                  onClick={() => onOpenChange(false)}
-                  disabled={loading}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handleAssignExpert}
-                  disabled={loading || !selectedExpertId}
-                >
-                  {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                  Assign Expert
-                </Button>
-              </div>
-            </>
-          )}
+          <div className="flex justify-end gap-3 pt-4 border-t">
+            <Button variant="outline" onClick={() => onOpenChange(false)}>
+              {isRTL ? 'إلغاء' : 'Cancel'}
+            </Button>
+            <Button 
+              onClick={handleAssignExperts}
+              disabled={loading || selectedExperts.length === 0}
+            >
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                  {isRTL ? 'جاري التعيين...' : 'Assigning...'}
+                </div>
+              ) : (
+                <>
+                  <Send className="w-4 h-4 mr-2" />
+                  {isRTL ? 'تعيين الخبراء' : 'Assign Experts'}
+                </>
+              )}
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
   );
-}
+};
