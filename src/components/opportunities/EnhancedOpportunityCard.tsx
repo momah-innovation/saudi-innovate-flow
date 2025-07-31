@@ -19,9 +19,9 @@ interface OpportunityData {
   description_en?: string;
   opportunity_type: string;
   status: string;
-  deadline?: string;
+  deadline: string;
   created_at?: string;
-  applications?: number;
+  applications_count?: number;
   budget_min?: number;
   budget_max?: number;
   priority_level?: string;
@@ -30,9 +30,13 @@ interface OpportunityData {
   featured?: boolean;
   location?: string;
   contact_person?: string;
-  category?: { name_ar: string; name_en: string; color: string; };
+  category?: { name_ar: string; name: string; name_en?: string; color?: string; };
   sector?: { name_ar: string; name: string; };
   department?: { name_ar: string; name: string; };
+  likes_count?: number;
+  views_count?: number;
+  requirements?: string | null;
+  benefits?: string | null;
 }
 
 interface EnhancedOpportunityCardProps {
@@ -191,7 +195,7 @@ export const EnhancedOpportunityCard = ({
               style={{ borderColor: opportunity.category.color }}
             >
               <TypeIcon className="w-3 h-3 mr-1" style={{ color: opportunity.category.color }} />
-              {isRTL ? opportunity.category.name_ar : opportunity.category.name_en}
+              {isRTL ? opportunity.category.name_ar : opportunity.category.name_en || opportunity.category.name}
             </Badge>
           </div>
         )}
@@ -245,7 +249,7 @@ export const EnhancedOpportunityCard = ({
           <div className="flex items-center gap-2 p-2 bg-muted/50 rounded-lg">
             <Users className="h-4 w-4 text-primary" />
             <div>
-              <div className="text-sm font-medium">{opportunity.applications || 0}</div>
+              <div className="text-sm font-medium">{opportunity.applications_count || 0}</div>
               <div className="text-xs text-muted-foreground">{isRTL ? 'طلب' : 'applications'}</div>
             </div>
           </div>

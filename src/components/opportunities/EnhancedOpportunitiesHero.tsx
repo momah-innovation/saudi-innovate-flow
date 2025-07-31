@@ -29,11 +29,12 @@ interface EnhancedOpportunitiesHeroProps {
   activeOpportunities: number;
   totalApplications: number;
   totalBudget?: number;
-  onCreateOpportunity: () => void;
+  onCreateOpportunity?: () => void;
   onShowFilters: () => void;
   featuredOpportunity?: {
     id: string;
     title_ar: string;
+    title_en?: string;
     applications: number;
     budget: number;
     daysLeft: number;

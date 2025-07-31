@@ -1,20 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
+import { LayoutSelector } from '@/components/ui/layout-selector';
+import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useDirection } from '@/components/ui/direction-provider';
 import { EnhancedOpportunitiesHero } from '@/components/opportunities/EnhancedOpportunitiesHero';
 import { EnhancedOpportunityCard } from '@/components/opportunities/EnhancedOpportunityCard';
 import { EnhancedOpportunityDetailDialog } from '@/components/opportunities/EnhancedOpportunityDetailDialog';
 import { OpportunityApplicationDialog } from '@/components/opportunities/OpportunityApplicationDialog';
 import { EnhancedOpportunityFilters, OpportunityFilterState } from '@/components/opportunities/EnhancedOpportunityFilters';
+import { TrendingOpportunitiesWidget } from '@/components/opportunities/TrendingOpportunitiesWidget';
+import { OpportunityRecommendations } from '@/components/opportunities/OpportunityRecommendations';
+import { OpportunityNotificationCenter } from '@/components/opportunities/OpportunityNotificationCenter';
+import { OpportunityTemplatesDialog } from '@/components/opportunities/OpportunityTemplatesDialog';
+import { OpportunityAnalyticsDashboard } from '@/components/opportunities/OpportunityAnalyticsDashboard';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Plus, Send, MessageSquare, Users, Eye, BookmarkIcon, TrendingUp, Clock, Calendar, Target, FileText, BarChart3, DollarSign, Building, Search, Filter, MapPin } from 'lucide-react';
+import { useBookmarks } from '@/hooks/useBookmarks';
+import { 
+  Plus, 
+  Send, 
+  MessageSquare, 
+  Users, 
+  Eye, 
+  BookmarkIcon, 
+  TrendingUp, 
+  Clock, 
+  Calendar, 
+  Target, 
+  FileText, 
+  BarChart3,
+  Filter,
+  Briefcase
+} from 'lucide-react';
 
 interface OpportunityItem {
   id: string;
@@ -27,33 +50,68 @@ interface OpportunityItem {
   budget_max?: number;
   deadline: string;
   status: string;
+  priority_level?: string;
   contact_person?: string;
   contact_email?: string;
+  location?: string;
+  requirements?: string | null;
+  benefits?: string | null;
   sector?: { name_ar: string; name: string };
   department?: { name_ar: string; name: string };
+  category?: { name_ar: string; name: string; name_en?: string; color?: string };
+  created_at: string;
+  applications_count?: number;
+  views_count?: number;
+  likes_count?: number;
 }
 
 export default function Opportunities() {
   const { t, isRTL, getDynamicText } = useTranslation();
-  const { userProfile } = useAuth();
+  const { user, hasRole } = useAuth();
+  const { isRTL: direction } = useDirection();
   const { toast } = useToast();
+  const { addBookmark, removeBookmark, isBookmarked, getBookmarkId } = useBookmarks();
   
+  // State management
   const [opportunities, setOpportunities] = useState<OpportunityItem[]>([]);
-  const [filteredOpportunities, setFilteredOpportunities] = useState<OpportunityItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [typeFilter, setTypeFilter] = useState<string>('all');
   const [selectedOpportunity, setSelectedOpportunity] = useState<OpportunityItem | null>(null);
-  const [showDetailDialog, setShowDetailDialog] = useState(false);
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  const [applicationDialogOpen, setApplicationDialogOpen] = useState(false);
+  const [templatesDialogOpen, setTemplatesDialogOpen] = useState(false);
+  const [analyticsDialogOpen, setAnalyticsDialogOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
+  const [activeTab, setActiveTab] = useState('all');
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+
+  // Enhanced filters state - following challenges pattern
+  const [filters, setFilters] = useState<OpportunityFilterState>({
+    search: '',
+    status: 'all',
+    type: 'all',
+    priority: 'all',
+    category: 'all',
+    sector: 'all',
+    department: 'all',
+    budgetRange: [0, 10000000],
+    location: '',
+    deadline: 'all',
+    features: [],
+    sortBy: 'deadline',
+    sortOrder: 'asc'
+  });
+
+  // Stats for hero
+  const [stats, setStats] = useState({
+    totalOpportunities: 0,
+    activeOpportunities: 0,
+    totalApplications: 0,
+    totalBudget: 0
+  });
 
   useEffect(() => {
     loadOpportunities();
   }, []);
-
-  useEffect(() => {
-    filterOpportunities();
-  }, [opportunities, searchTerm, statusFilter, typeFilter]);
 
   const loadOpportunities = async () => {
     try {
@@ -70,7 +128,47 @@ export default function Opportunities() {
 
       if (error) throw error;
 
-      setOpportunities(data || []);
+      const opportunitiesWithCounts = await Promise.all(
+        (data || []).map(async (opp) => {
+          // Get application count
+          const { count: applicationsCount } = await supabase
+            .from('opportunity_applications')
+            .select('*', { count: 'exact', head: true })
+            .eq('opportunity_id', opp.id);
+
+          // Get likes count
+          const { count: likesCount } = await supabase
+            .from('opportunity_likes')
+            .select('*', { count: 'exact', head: true })
+            .eq('opportunity_id', opp.id);
+
+          return {
+            ...opp,
+            applications_count: applicationsCount || 0,
+            likes_count: likesCount || 0,
+            views_count: Math.floor(Math.random() * 100) + 10, // Mock for now
+            requirements: opp.requirements as string || null,
+            benefits: opp.benefits as string || null,
+            category: { name_ar: opp.opportunity_type, name: opp.opportunity_type, name_en: opp.opportunity_type, color: '#3B82F6' }
+          };
+        })
+      );
+
+      setOpportunities(opportunitiesWithCounts);
+
+      // Calculate stats
+      const totalOpps = opportunitiesWithCounts.length;
+      const activeOpps = opportunitiesWithCounts.filter(o => o.status === 'open').length;
+      const totalApps = opportunitiesWithCounts.reduce((sum, o) => sum + (o.applications_count || 0), 0);
+      const totalBudget = opportunitiesWithCounts.reduce((sum, o) => sum + (o.budget_max || o.budget_min || 0), 0);
+
+      setStats({
+        totalOpportunities: totalOpps,
+        activeOpportunities: activeOpps,
+        totalApplications: totalApps,
+        totalBudget: totalBudget
+      });
+
     } catch (error) {
       console.error('Error loading opportunities:', error);
       toast({
@@ -83,283 +181,366 @@ export default function Opportunities() {
     }
   };
 
-  const filterOpportunities = () => {
-    let filtered = opportunities;
+  // Filter and search logic - following challenges pattern
+  const getFilteredOpportunities = () => {
+    let filtered = [...opportunities];
 
-    // Search filter
-    if (searchTerm) {
-      filtered = filtered.filter(opp => 
-        opp.title_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (opp.title_en && opp.title_en.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        opp.description_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (opp.description_en && opp.description_en.toLowerCase().includes(searchTerm.toLowerCase()))
+    // Apply search filter
+    if (filters.search) {
+      filtered = filtered.filter(opp =>
+        (isRTL ? opp.title_ar : opp.title_en || opp.title_ar).toLowerCase().includes(filters.search.toLowerCase()) ||
+        (isRTL ? opp.description_ar : opp.description_en || opp.description_ar).toLowerCase().includes(filters.search.toLowerCase())
       );
     }
 
-    // Status filter
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(opp => opp.status === statusFilter);
+    // Apply status filter
+    if (filters.status !== 'all') {
+      filtered = filtered.filter(opp => opp.status === filters.status);
     }
 
-    // Type filter
-    if (typeFilter !== 'all') {
-      filtered = filtered.filter(opp => opp.opportunity_type === typeFilter);
+    // Apply type filter
+    if (filters.type !== 'all') {
+      filtered = filtered.filter(opp => opp.opportunity_type === filters.type);
     }
 
-    setFilteredOpportunities(filtered);
+    // Apply priority filter
+    if (filters.priority !== 'all') {
+      filtered = filtered.filter(opp => opp.priority_level === filters.priority);
+    }
+
+    // Apply budget range filter
+    filtered = filtered.filter(opp => {
+      const maxBudget = opp.budget_max || opp.budget_min || 0;
+      return maxBudget >= filters.budgetRange[0] && maxBudget <= filters.budgetRange[1];
+    });
+
+    // Apply feature filters
+    if (filters.features.includes('trending')) {
+      filtered = filtered.filter(opp => opp.priority_level === 'high' || (opp.applications_count || 0) > 10);
+    }
+    if (filters.features.includes('ending-soon')) {
+      filtered = filtered.filter(opp => {
+        const deadline = new Date(opp.deadline);
+        const now = new Date();
+        const daysLeft = Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+        return daysLeft <= 7 && daysLeft > 0;
+      });
+    }
+    if (filters.features.includes('high-budget')) {
+      filtered = filtered.filter(opp => (opp.budget_max || opp.budget_min || 0) > 1000000);
+    }
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      let aValue, bValue;
+      
+      switch (filters.sortBy) {
+        case 'applications':
+          aValue = a.applications_count || 0;
+          bValue = b.applications_count || 0;
+          break;
+        case 'likes':
+          aValue = a.likes_count || 0;
+          bValue = b.likes_count || 0;
+          break;
+        case 'budget':
+          aValue = a.budget_max || a.budget_min || 0;
+          bValue = b.budget_max || b.budget_min || 0;
+          break;
+        case 'deadline':
+          aValue = new Date(a.deadline).getTime();
+          bValue = new Date(b.deadline).getTime();
+          break;
+        default:
+          aValue = a.title_ar || '';
+          bValue = b.title_ar || '';
+      }
+
+      if (filters.sortOrder === 'asc') {
+        return aValue > bValue ? 1 : -1;
+      } else {
+        return aValue < bValue ? 1 : -1;
+      }
+    });
+
+    return filtered;
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'open': return 'bg-green-100 text-green-800';
-      case 'closed': return 'bg-red-100 text-red-800';
-      case 'review': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+  const getTabFilteredOpportunities = (opportunities: OpportunityItem[]) => {
+    switch (activeTab) {
+      case 'active':
+        return opportunities.filter(o => o.status === 'open');
+      case 'upcoming':
+        return opportunities.filter(o => new Date(o.deadline) > new Date());
+      case 'trending':
+        return opportunities.filter(o => o.priority_level === 'high' || (o.applications_count || 0) > 10);
+      default:
+        return opportunities;
     }
   };
 
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'sponsorship': return <DollarSign className="w-4 h-4" />;
-      case 'collaboration': return <Users className="w-4 h-4" />;
-      case 'research': return <Target className="w-4 h-4" />;
-      default: return <Building className="w-4 h-4" />;
+  const filteredOpportunities = getFilteredOpportunities();
+  const tabFilteredOpportunities = getTabFilteredOpportunities(filteredOpportunities);
+
+  // Event handlers
+  const handleViewDetails = (opportunity: OpportunityItem) => {
+    setSelectedOpportunity(opportunity);
+    setDetailDialogOpen(true);
+  };
+
+  const handleApply = (opportunity: OpportunityItem) => {
+    setSelectedOpportunity(opportunity);
+    setApplicationDialogOpen(true);
+  };
+
+  const handleBookmark = async (opportunity: OpportunityItem) => {
+    if (!user) {
+      toast({
+        title: isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in',
+        description: isRTL ? 'يجب تسجيل الدخول لحفظ الفرص' : 'You need to sign in to bookmark opportunities',
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const bookmarked = isBookmarked('opportunity', opportunity.id);
+      
+      if (bookmarked) {
+        const bookmarkId = getBookmarkId('opportunity', opportunity.id);
+        if (bookmarkId) {
+          await removeBookmark(bookmarkId, 'opportunity');
+          toast({
+            title: isRTL ? 'تم إلغاء الحفظ' : 'Bookmark Removed',
+            description: isRTL ? 'تم إلغاء حفظ الفرصة' : 'Opportunity removed from bookmarks',
+          });
+        }
+      } else {
+        await addBookmark('opportunity', opportunity.id);
+        toast({
+          title: isRTL ? 'تم الحفظ' : 'Bookmarked',
+          description: isRTL ? 'تم حفظ الفرصة في المفضلة' : 'Opportunity saved to bookmarks',
+        });
+      }
+    } catch (error) {
+      console.error('Bookmark error:', error);
+      toast({
+        title: isRTL ? 'خطأ' : 'Error',
+        description: isRTL ? 'فشل في حفظ الفرصة' : 'Failed to bookmark opportunity',
+        variant: "destructive",
+      });
     }
   };
 
-  const formatBudgetRange = (min?: number, max?: number) => {
-    if (!min && !max) return t('contactForDetails');
-    if (!max) return `${min?.toLocaleString()} ${t('currency')}+`;
-    if (!min) return `${t('upTo')} ${max?.toLocaleString()} ${t('currency')}`;
-    return `${min?.toLocaleString()} - ${max?.toLocaleString()} ${t('currency')}`;
+  const handleClearFilters = () => {
+    setFilters({
+      search: '',
+      status: 'all',
+      type: 'all',
+      priority: 'all',
+      category: 'all',
+      sector: 'all',
+      department: 'all',
+      budgetRange: [0, 10000000],
+      location: '',
+      deadline: 'all',
+      features: [],
+      sortBy: 'deadline',
+      sortOrder: 'asc'
+    });
   };
 
-  const formatDeadline = (deadline: string) => {
-    const date = new Date(deadline);
-    const now = new Date();
-    const diffTime = date.getTime() - now.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays < 0) return t('expired');
-    if (diffDays === 0) return t('today');
-    if (diffDays === 1) return t('tomorrow');
-    if (diffDays <= 7) return `${diffDays} ${t('daysLeft')}`;
-    return date.toLocaleDateString();
+  const getActiveFiltersCount = () => {
+    let count = 0;
+    if (filters.search) count++;
+    if (filters.status !== 'all') count++;
+    if (filters.type !== 'all') count++;
+    if (filters.priority !== 'all') count++;
+    if (filters.category !== 'all') count++;
+    if (filters.sector !== 'all') count++;
+    if (filters.department !== 'all') count++;
+    if (filters.location) count++;
+    if (filters.deadline !== 'all') count++;
+    if (filters.features.length > 0) count += filters.features.length;
+    if (filters.budgetRange[0] > 0 || filters.budgetRange[1] < 10000000) count++;
+    return count;
   };
 
-  const opportunityTypes = [
-    { value: 'sponsorship', label: t('sponsorship') },
-    { value: 'collaboration', label: t('collaboration') },
-    { value: 'research', label: t('research') },
-    { value: 'innovation', label: t('innovation') }
-  ];
+  // Render opportunity cards
+  const renderOpportunityCards = (opportunities: OpportunityItem[]) => (
+    <ViewLayouts viewMode={viewMode}>
+      {opportunities.map((opportunity) => (
+        <EnhancedOpportunityCard
+          key={opportunity.id}
+          opportunity={opportunity}
+          onViewDetails={handleViewDetails}
+          onApply={handleApply}
+          onBookmark={handleBookmark}
+          viewMode={viewMode}
+        />
+      ))}
+    </ViewLayouts>
+  );
+
+  const featuredOpportunity = opportunities.length > 0 ? {
+    id: opportunities[0].id,
+    title_ar: opportunities[0].title_ar,
+    title_en: opportunities[0].title_en,
+    applications: opportunities[0].applications_count || 0,
+    budget: opportunities[0].budget_max || opportunities[0].budget_min || 0,
+    daysLeft: Math.ceil((new Date(opportunities[0].deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)),
+    image: '/opportunity-images/opportunities-hero.jpg'
+  } : undefined;
 
   return (
     <AppShell>
+      {/* Enhanced Hero Section */}
+      <EnhancedOpportunitiesHero 
+        totalOpportunities={stats.totalOpportunities}
+        activeOpportunities={stats.activeOpportunities}
+        totalApplications={stats.totalApplications}
+        totalBudget={stats.totalBudget}
+        onCreateOpportunity={() => {}} // Only for admins
+        onShowFilters={() => setShowAdvancedFilters(true)}
+        featuredOpportunity={featuredOpportunity}
+      />
+      
       <PageLayout
-        title={t('partnershipOpportunities')}
-        description={t('collaborationOpportunitiesDesc')}
-        itemCount={filteredOpportunities.length}
-        className="space-y-6"
+        title={isRTL ? 'فرص الشراكة المتاحة' : 'Available Partnership Opportunities'}
+        description={isRTL ? 'تصفح واختر فرص الشراكة التي تناسب أهدافك' : 'Browse and select partnership opportunities that match your goals'}
+        itemCount={tabFilteredOpportunities.length}
+        secondaryActions={
+          <div className="flex gap-2">
+            <OpportunityNotificationCenter />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setTemplatesDialogOpen(true)}
+            >
+              <FileText className="w-4 h-4 mr-2" />
+              {isRTL ? 'القوالب' : 'Templates'}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setAnalyticsDialogOpen(true)}
+            >
+              <BarChart3 className="w-4 h-4 mr-2" />
+              {isRTL ? 'الإحصائيات' : 'Analytics'}
+            </Button>
+            <LayoutSelector
+              viewMode={viewMode}
+              onViewModeChange={(mode) => mode !== 'calendar' && setViewMode(mode)}
+            />
+          </div>
+        }
       >
-        {/* Filters Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle className={isRTL ? 'text-right' : 'text-left'}>{t('searchAndFilter')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className={`grid grid-cols-1 md:grid-cols-4 gap-4 ${isRTL ? 'rtl' : 'ltr'}`}>
-              {/* Search */}
-              <div className="relative">
-                <Search className={`absolute top-3 w-4 h-4 text-muted-foreground ${isRTL ? 'right-3' : 'left-3'}`} />
-                <Input
-                  placeholder={t('searchOpportunities')}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className={isRTL ? 'pr-10 text-right' : 'pl-10 text-left'}
-                />
-              </div>
+        <div className="space-y-6">
+          {/* Enhanced Layout with Recommendations */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            {/* Main Content */}
+            <div className="lg:col-span-3 space-y-6">
+              {/* Enhanced Filters with Animations */}
+              <EnhancedOpportunityFilters
+                filters={filters}
+                onFiltersChange={setFilters}
+                onClearFilters={handleClearFilters}
+                activeFiltersCount={getActiveFiltersCount()}
+                className="animate-fade-in"
+              />
 
-              {/* Status Filter */}
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className={`px-3 py-2 border rounded-md ${isRTL ? 'text-right' : 'text-left'}`}
-              >
-                <option value="all">{t('allStatuses')}</option>
-                <option value="open">{t('open')}</option>
-                <option value="closed">{t('closed')}</option>
-                <option value="review">{t('underReview')}</option>
-              </select>
-
-              {/* Type Filter */}
-              <select
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className={`px-3 py-2 border rounded-md ${isRTL ? 'text-right' : 'text-left'}`}
-              >
-                <option value="all">{t('allTypes')}</option>
-                {opportunityTypes.map(type => (
-                  <option key={type.value} value={type.value}>{type.label}</option>
-                ))}
-              </select>
-
-              {/* Clear Filters */}
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setSearchTerm('');
-                  setStatusFilter('all');
-                  setTypeFilter('all');
-                }}
-                className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}
-              >
-                <Filter className="w-4 h-4" />
-                {t('clearFilters')}
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Opportunities Grid */}
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map(i => (
-              <Card key={i} className="animate-pulse">
-                <CardHeader>
-                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                  <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="h-3 bg-gray-200 rounded"></div>
-                    <div className="h-3 bg-gray-200 rounded w-4/5"></div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : filteredOpportunities.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredOpportunities.map((opportunity) => (
-              <Card key={opportunity.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                    <div className="flex-1">
-                      <CardTitle className={`text-lg ${isRTL ? 'text-right' : 'text-left'}`}>
-                        {getDynamicText(opportunity.title_ar, opportunity.title_en)}
-                      </CardTitle>
-                      <div className={`flex items-center gap-2 mt-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                        {getTypeIcon(opportunity.opportunity_type)}
-                        <Badge variant="outline" className="text-xs">
-                          {t(opportunity.opportunity_type)}
-                        </Badge>
-                      </div>
-                    </div>
-                    <Badge className={getStatusColor(opportunity.status)}>
-                      {t(opportunity.status)}
+              {/* Enhanced Tabs with Counters */}
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className={`grid w-full grid-cols-4 ${isRTL ? 'rtl' : 'ltr'}`}>
+                  <TabsTrigger value="all" className="relative">
+                    {isRTL ? 'الكل' : 'All'}
+                    <Badge variant="secondary" className="ml-2 text-xs">
+                      {filteredOpportunities.length}
                     </Badge>
-                  </div>
-                </CardHeader>
-                
-                <CardContent className="space-y-4">
-                  <p className={`text-sm text-muted-foreground line-clamp-3 ${isRTL ? 'text-right' : 'text-left'}`}>
-                    {getDynamicText(opportunity.description_ar, opportunity.description_en)}
-                  </p>
+                  </TabsTrigger>
+                  <TabsTrigger value="active" className="relative">
+                    {isRTL ? 'نشط' : 'Active'}
+                    <Badge variant="secondary" className="ml-2 text-xs">
+                      {filteredOpportunities.filter(o => o.status === 'open').length}
+                    </Badge>
+                  </TabsTrigger>
+                  <TabsTrigger value="upcoming" className="relative">
+                    {isRTL ? 'قادم' : 'Upcoming'}
+                    <Badge variant="secondary" className="ml-2 text-xs">
+                      {filteredOpportunities.filter(o => new Date(o.deadline) > new Date()).length}
+                    </Badge>
+                  </TabsTrigger>
+                  <TabsTrigger value="trending" className="relative">
+                    <TrendingUp className="w-4 h-4 mr-1" />
+                    {isRTL ? 'رائج' : 'Trending'}
+                    <Badge variant="secondary" className="ml-2 text-xs">
+                      {filteredOpportunities.filter(o => o.priority_level === 'high' || (o.applications_count || 0) > 10).length}
+                    </Badge>
+                  </TabsTrigger>
+                </TabsList>
 
-                  {/* Budget */}
-                  <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                    <DollarSign className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">
-                      {formatBudgetRange(opportunity.budget_min, opportunity.budget_max)}
-                    </span>
-                  </div>
-
-                  {/* Deadline */}
-                  <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                    <Clock className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-sm">
-                      {t('deadline')}: {formatDeadline(opportunity.deadline)}
-                    </span>
-                  </div>
-
-                  {/* Organization */}
-                  {(opportunity.sector || opportunity.department) && (
-                    <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                      <MapPin className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm">
-                        {opportunity.sector && getDynamicText(opportunity.sector.name_ar, opportunity.sector.name)}
-                        {opportunity.sector && opportunity.department && ' - '}
-                        {opportunity.department && getDynamicText(opportunity.department.name_ar, opportunity.department.name)}
-                      </span>
+                <TabsContent value={activeTab} className="space-y-6 animate-fade-in">
+                  {loading ? (
+                    <div className="space-y-4">
+                      {Array.from({ length: 6 }).map((_, i) => (
+                        <div key={i} className="animate-pulse">
+                          <div className="h-48 bg-gray-200 rounded-lg" />
+                        </div>
+                      ))}
+                    </div>
+                  ) : tabFilteredOpportunities.length > 0 ? (
+                    renderOpportunityCards(tabFilteredOpportunities)
+                  ) : (
+                    <div className="text-center py-12">
+                      <Target className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold mb-2">
+                        {isRTL ? 'لا توجد فرص متاحة' : 'No opportunities found'}
+                      </h3>
+                      <p className="text-muted-foreground">
+                        {isRTL ? 'جرب تعديل المرشحات أو تحقق لاحقاً' : 'Try adjusting your filters or check back later'}
+                      </p>
                     </div>
                   )}
+                </TabsContent>
+              </Tabs>
+            </div>
 
-                  {/* Contact */}
-                  {opportunity.contact_person && (
-                    <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                      <Users className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm">{opportunity.contact_person}</span>
-                    </div>
-                  )}
-
-                  {/* Action Buttons */}
-                  <div className={`flex gap-2 pt-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                    <Button
-                      onClick={() => {
-                        setSelectedOpportunity({
-                          id: opportunity.id,
-                          title_ar: opportunity.title_ar,
-                          title_en: opportunity.title_en,
-                          description_ar: opportunity.description_ar,
-                          description_en: opportunity.description_en,
-                          opportunity_type: opportunity.opportunity_type,
-                          deadline: opportunity.deadline,
-                          status: opportunity.status
-                        });
-                        setShowDetailDialog(true);
-                      }}
-                      variant="outline"
-                      size="sm"
-                      className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}
-                    >
-                      <Eye className="w-4 h-4" />
-                      {t('viewDetails')}
-                    </Button>
-                    
-                    {opportunity.status === 'open' && (
-                      <Button
-                        size="sm"
-                        className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}
-                      >
-                        <Plus className="w-4 h-4" />
-                        {t('applyNow')}
-                      </Button>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+            {/* Sidebar with Widgets */}
+            <div className="space-y-6">
+              <TrendingOpportunitiesWidget opportunities={opportunities.slice(0, 5)} />
+              <OpportunityRecommendations opportunities={opportunities.slice(0, 3)} />
+            </div>
           </div>
-        ) : (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <Target className="w-12 h-12 text-muted-foreground mb-4" />
-              <h3 className={`text-lg font-medium mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-                {t('noOpportunitiesFound')}
-              </h3>
-              <p className={`text-muted-foreground text-center ${isRTL ? 'text-right' : 'text-left'}`}>
-                {t('adjustFiltersOrCheckLater')}
-              </p>
-            </CardContent>
-          </Card>
-        )}
+        </div>
 
-        {/* Detail Dialog */}
+        {/* Dialogs */}
         <EnhancedOpportunityDetailDialog
           opportunity={selectedOpportunity}
-          open={showDetailDialog}
-          onOpenChange={setShowDetailDialog}
+          open={detailDialogOpen}
+          onOpenChange={setDetailDialogOpen}
+          onApply={handleApply}
+          onBookmark={handleBookmark}
+        />
+
+        <OpportunityApplicationDialog
+          opportunity={selectedOpportunity}
+          open={applicationDialogOpen}
+          onOpenChange={setApplicationDialogOpen}
+          onSuccess={() => {
+            setApplicationDialogOpen(false);
+            loadOpportunities(); // Refresh to update application counts
+          }}
+        />
+
+        <OpportunityTemplatesDialog
+          open={templatesDialogOpen}
+          onOpenChange={setTemplatesDialogOpen}
+        />
+
+        <OpportunityAnalyticsDashboard
+          open={analyticsDialogOpen}
+          onOpenChange={setAnalyticsDialogOpen}
+          opportunities={opportunities}
         />
       </PageLayout>
     </AppShell>
