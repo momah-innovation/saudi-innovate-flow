@@ -20,6 +20,7 @@ import {
   Building
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useTranslation } from '@/hooks/useTranslation';
 import { cn } from '@/lib/utils';
 
 interface PartnerDashboardHeroProps {
@@ -43,13 +44,14 @@ export const EnhancedPartnerDashboardHero = ({
   onShowOpportunities
 }: PartnerDashboardHeroProps) => {
   const { isRTL } = useDirection();
+  const { t } = useTranslation();
   const [currentStat, setCurrentStat] = useState(0);
 
   const partnerStats = [
-    { icon: Handshake, value: stats.activePartnerships, label: isRTL ? 'شراكة نشطة' : 'active partnerships', color: 'text-blue-400' },
-    { icon: Target, value: stats.supportedProjects, label: isRTL ? 'مشروع مدعوم' : 'supported projects', color: 'text-green-400' },
-    { icon: Award, value: `${Math.floor(stats.totalInvestment / 1000)}K`, label: isRTL ? 'ر.س استثمار' : 'SAR invested', color: 'text-purple-400' },
-    { icon: Trophy, value: `${stats.partnershipScore}%`, label: isRTL ? 'نتيجة الشراكة' : 'partnership score', color: 'text-yellow-400' }
+    { icon: Handshake, value: stats.activePartnerships, label: t('activePartnerships'), color: 'text-blue-400' },
+    { icon: Target, value: stats.supportedProjects, label: t('supportedProjects'), color: 'text-green-400' },
+    { icon: Award, value: `${Math.floor(stats.totalInvestment / 1000)}K`, label: t('sarInvested'), color: 'text-purple-400' },
+    { icon: Trophy, value: `${stats.partnershipScore}%`, label: t('partnershipScore'), color: 'text-yellow-400' }
   ];
 
   useEffect(() => {
@@ -75,39 +77,30 @@ export const EnhancedPartnerDashboardHero = ({
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className={cn("grid lg:grid-cols-2 gap-12 items-center", isRTL && "lg:grid-cols-2")}>
           {/* Enhanced Content Section */}
           <div className="space-y-8">
             {/* Header with animation */}
             <div className="space-y-6">
-              <div className="flex items-center gap-3">
+              <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
                 <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
                   <Sparkles className="w-6 h-6 text-yellow-300" />
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
-                  <Star className="w-3 h-3 mr-1" />
-                  {isRTL ? 'لوحة تحكم الشريك' : 'Partner Dashboard'}
+                  <Star className={cn("w-3 h-3", isRTL ? "ml-1" : "mr-1")} />
+                  {t('partnerDashboard')}
                 </Badge>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                  {isRTL ? (
-                    <>
-                      أهلاً بك في <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">منصة الشراكات</span>
-                    </>
-                  ) : (
-                    <>
-                      Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Partnership</span> Hub
-                    </>
-                  )}
+                <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight", isRTL && "text-right")}>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">
+                    {t('partnerDashboardWelcome')}
+                  </span>
                 </h1>
                 
-                <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
-                  {isRTL 
-                    ? 'اكتشف فرص الشراكة الجديدة وادعم المشاريع المبتكرة التي تساهم في تحقيق رؤية 2030'
-                    : 'Discover new partnership opportunities and support innovative projects that contribute to Vision 2030'
-                  }
+                <p className={cn("text-xl text-white/80 max-w-2xl leading-relaxed", isRTL && "text-right")}>
+                  {t('partnerDashboardDescription')}
                 </p>
               </div>
             </div>
@@ -137,14 +130,14 @@ export const EnhancedPartnerDashboardHero = ({
             </div>
 
             {/* Enhanced Action Buttons */}
-            <div className="flex flex-wrap gap-4">
+            <div className={cn("flex flex-wrap gap-4", isRTL && "flex-row-reverse")}>
               <Button
                 onClick={onCreatePartnership}
                 size="lg"
                 className="bg-gradient-to-r from-orange-400 to-red-500 text-white hover:from-orange-500 hover:to-red-600 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
-                <Plus className="w-5 h-5 mr-2" />
-                {isRTL ? 'إنشاء شراكة جديدة' : 'Create New Partnership'}
+                <Plus className={cn("w-5 h-5", isRTL ? "ml-2" : "mr-2")} />
+                {t('createNewPartnership')}
               </Button>
               
               <Button
@@ -153,8 +146,8 @@ export const EnhancedPartnerDashboardHero = ({
                 size="lg"
                 className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
               >
-                <Filter className="w-5 h-5 mr-2" />
-                {isRTL ? 'استكشاف الفرص' : 'Explore Opportunities'}
+                <Filter className={cn("w-5 h-5", isRTL ? "ml-2" : "mr-2")} />
+                {t('exploreOpportunities')}
               </Button>
 
               <Button
@@ -163,8 +156,8 @@ export const EnhancedPartnerDashboardHero = ({
                 size="lg"
                 className="text-white hover:bg-white/10"
               >
-                <Target className="w-5 h-5 mr-2" />
-                {isRTL ? 'تصفح التحديات' : 'Browse Challenges'}
+                <Target className={cn("w-5 h-5", isRTL ? "ml-2" : "mr-2")} />
+                {t('browseChallenges')}
               </Button>
             </div>
           </div>
@@ -175,7 +168,7 @@ export const EnhancedPartnerDashboardHero = ({
               <CardContent className="p-6 space-y-6">
                 <div className="text-center">
                   <h3 className="text-xl font-bold text-white mb-2">
-                    {isRTL ? 'تقييم الشراكة' : 'Partnership Rating'}
+                    {t('partnershipRating')}
                   </h3>
                   <div className="text-3xl font-bold text-yellow-300 mb-4">
                     {stats.partnershipScore}%
@@ -187,16 +180,16 @@ export const EnhancedPartnerDashboardHero = ({
                 </div>
 
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-white/80">{isRTL ? 'شراكات نشطة' : 'Active Partnerships'}</span>
+                  <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
+                    <span className="text-white/80">{t('activePartnerships')}</span>
                     <span className="text-white font-semibold">{stats.activePartnerships}</span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-white/80">{isRTL ? 'مشاريع مدعومة' : 'Supported Projects'}</span>
+                  <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
+                    <span className="text-white/80">{t('supportedProjects')}</span>
                     <span className="text-white font-semibold">{stats.supportedProjects}</span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-white/80">{isRTL ? 'إجمالي الاستثمار' : 'Total Investment'}</span>
+                  <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
+                    <span className="text-white/80">{t('totalInvestment')}</span>
                     <span className="text-white font-semibold">{Math.floor(stats.totalInvestment / 1000)}K SAR</span>
                   </div>
                 </div>
@@ -205,8 +198,8 @@ export const EnhancedPartnerDashboardHero = ({
                   onClick={() => onNavigate('/partner-profile')}
                   className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white"
                 >
-                  {isRTL ? 'عرض الملف الشخصي' : 'View Profile'}
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                  {t('viewProfile')}
+                  <ArrowRight className={cn("w-4 h-4", isRTL ? "mr-2" : "ml-2")} />
                 </Button>
               </CardContent>
             </Card>
@@ -220,10 +213,10 @@ export const EnhancedPartnerDashboardHero = ({
                 <CardContent className="p-4 text-center">
                   <Calendar className="w-8 h-8 text-blue-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
-                    {isRTL ? 'الفعاليات' : 'Events'}
+                    {t('events')}
                   </div>
                   <div className="text-xs text-white/70">
-                    {isRTL ? '5 فعاليات قادمة' : '5 upcoming'}
+                    {t('upcomingEvents', { count: '5' })}
                   </div>
                 </CardContent>
               </Card>
@@ -235,10 +228,10 @@ export const EnhancedPartnerDashboardHero = ({
                 <CardContent className="p-4 text-center">
                   <Building className="w-8 h-8 text-green-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
-                    {isRTL ? 'المشاريع' : 'Projects'}
+                    {t('projects')}
                   </div>
                   <div className="text-xs text-white/70">
-                    {isRTL ? '12 مشروع' : '12 projects'}
+                    {t('totalProjects', { count: '12' })}
                   </div>
                 </CardContent>
               </Card>

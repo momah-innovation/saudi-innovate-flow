@@ -405,9 +405,25 @@ export const translations = {
     step: 'خطوة',
     of: 'من',
     complete: 'إنهاء',
-    validating: 'جاري التحقق...',
-    skip: 'تخطي'
-  },
+     validating: 'جاري التحقق...',
+     skip: 'تخطي',
+     
+     // Partner Dashboard specific
+     partnerDashboard: 'لوحة تحكم الشريك',
+     partnerDashboardWelcome: 'أهلاً بك في منصة الشراكات',
+     partnerDashboardDescription: 'اكتشف فرص الشراكة الجديدة وادعم المشاريع المبتكرة التي تساهم في تحقيق رؤية 2030',
+     activePartnerships: 'شراكات نشطة',
+     supportedProjects: 'مشاريع مدعومة',
+     sarInvested: 'ر.س استثمار',
+     partnershipScore: 'نتيجة الشراكة',
+     partnershipRating: 'تقييم الشراكة',
+     totalInvestment: 'إجمالي الاستثمار',
+     createNewPartnership: 'إنشاء شراكة جديدة',
+     exploreOpportunities: 'استكشاف الفرص',
+     browseChallenges: 'تصفح التحديات',
+     upcomingEvents: '{{count}} فعاليات قادمة',
+     totalProjects: '{{count}} مشروع'
+   },
   en: {
     // Common UI - English as secondary
     search: 'Search',
@@ -756,9 +772,25 @@ export const translations = {
     step: 'Step',
     of: 'of',
     complete: 'Complete',
-    validating: 'Validating...',
-    skip: 'Skip'
-  }
+     validating: 'Validating...',
+     skip: 'Skip',
+     
+     // Partner Dashboard specific
+     partnerDashboard: 'Partner Dashboard',
+     partnerDashboardWelcome: 'Welcome to Partnership Hub',
+     partnerDashboardDescription: 'Discover new partnership opportunities and support innovative projects that contribute to Vision 2030',
+     activePartnerships: 'Active Partnerships',
+     supportedProjects: 'Supported Projects',
+     sarInvested: 'SAR Invested',
+     partnershipScore: 'Partnership Score',
+     partnershipRating: 'Partnership Rating',
+     totalInvestment: 'Total Investment',
+     createNewPartnership: 'Create New Partnership',
+     exploreOpportunities: 'Explore Opportunities',
+     browseChallenges: 'Browse Challenges',
+     upcomingEvents: '{{count}} upcoming events',
+     totalProjects: '{{count}} projects'
+   }
 };
 
 export function interpolate(text: string, params: Record<string, string | number>): string {
