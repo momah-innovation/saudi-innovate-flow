@@ -69,8 +69,25 @@ export const OpportunityDetailsDialog = ({
   useEffect(() => {
     if (open && opportunityId) {
       loadOpportunityDetails();
+      // Track view analytics
+      trackView();
     }
   }, [open, opportunityId]);
+
+  const trackView = async () => {
+    try {
+      await supabase.functions.invoke('track-opportunity-analytics', {
+        body: {
+          opportunityId,
+          action: 'view',
+          userId: supabase.auth.getUser().then(u => u.data.user?.id),
+          metadata: { source: 'details_dialog' }
+        }
+      });
+    } catch (error) {
+      console.error('Failed to track view:', error);
+    }
+  };
 
   const loadOpportunityDetails = async () => {
     setLoading(true);

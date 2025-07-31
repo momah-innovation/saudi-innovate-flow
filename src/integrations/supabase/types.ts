@@ -5768,12 +5768,31 @@ export type Database = {
         Args: { event_uuid: string }
         Returns: Json
       }
+      get_opportunity_analytics_summary: {
+        Args: { p_opportunity_id: string }
+        Returns: {
+          total_views: number
+          total_likes: number
+          total_applications: number
+          total_shares: number
+          engagement_rate: number
+          conversion_rate: number
+        }[]
+      }
       has_role: {
         Args: {
           _user_id: string
           _role: Database["public"]["Enums"]["app_role"]
         }
         Returns: boolean
+      }
+      increment_opportunity_views: {
+        Args: { p_opportunity_id: string }
+        Returns: undefined
+      }
+      refresh_opportunity_analytics: {
+        Args: { p_opportunity_id: string }
+        Returns: undefined
       }
       send_challenge_notification: {
         Args: {
