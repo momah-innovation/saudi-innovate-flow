@@ -4079,6 +4079,212 @@ export type Database = {
         }
         Relationships: []
       }
+      partnership_analytics: {
+        Row: {
+          created_at: string | null
+          id: string
+          measurement_date: string | null
+          metadata: Json | null
+          metric_name: string
+          metric_value: number
+          partner_id: string | null
+          partnership_id: string
+          partnership_type: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          measurement_date?: string | null
+          metadata?: Json | null
+          metric_name: string
+          metric_value: number
+          partner_id?: string | null
+          partnership_id: string
+          partnership_type: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          measurement_date?: string | null
+          metadata?: Json | null
+          metric_name?: string
+          metric_value?: number
+          partner_id?: string | null
+          partnership_id?: string
+          partnership_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partnership_analytics_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partnership_applications: {
+        Row: {
+          applicant_user_id: string
+          company_background: string | null
+          company_name: string
+          contact_email: string
+          contact_person: string
+          contact_phone: string | null
+          created_at: string | null
+          id: string
+          opportunity_id: string | null
+          partner_id: string | null
+          proposal_summary: string
+          proposed_contribution: number | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          reviewer_notes: string | null
+          status: string
+          submitted_at: string | null
+          supporting_documents: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          applicant_user_id: string
+          company_background?: string | null
+          company_name: string
+          contact_email: string
+          contact_person: string
+          contact_phone?: string | null
+          created_at?: string | null
+          id?: string
+          opportunity_id?: string | null
+          partner_id?: string | null
+          proposal_summary: string
+          proposed_contribution?: number | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          status?: string
+          submitted_at?: string | null
+          supporting_documents?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          applicant_user_id?: string
+          company_background?: string | null
+          company_name?: string
+          contact_email?: string
+          contact_person?: string
+          contact_phone?: string | null
+          created_at?: string | null
+          id?: string
+          opportunity_id?: string | null
+          partner_id?: string | null
+          proposal_summary?: string
+          proposed_contribution?: number | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          status?: string
+          submitted_at?: string | null
+          supporting_documents?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partnership_applications_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "partnership_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "partnership_applications_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partnership_opportunities: {
+        Row: {
+          benefits: Json | null
+          budget_max: number | null
+          budget_min: number | null
+          contact_email: string | null
+          contact_person: string | null
+          created_at: string | null
+          created_by: string | null
+          deadline: string | null
+          department_id: string | null
+          description_ar: string
+          description_en: string | null
+          id: string
+          opportunity_type: string
+          requirements: Json | null
+          sector_id: string | null
+          status: string
+          title_ar: string
+          title_en: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          benefits?: Json | null
+          budget_max?: number | null
+          budget_min?: number | null
+          contact_email?: string | null
+          contact_person?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          deadline?: string | null
+          department_id?: string | null
+          description_ar: string
+          description_en?: string | null
+          id?: string
+          opportunity_type?: string
+          requirements?: Json | null
+          sector_id?: string | null
+          status?: string
+          title_ar: string
+          title_en?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          benefits?: Json | null
+          budget_max?: number | null
+          budget_min?: number | null
+          contact_email?: string | null
+          contact_person?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          deadline?: string | null
+          department_id?: string | null
+          description_ar?: string
+          description_en?: string | null
+          id?: string
+          opportunity_type?: string
+          requirements?: Json | null
+          sector_id?: string | null
+          status?: string
+          title_ar?: string
+          title_en?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partnership_opportunities_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "partnership_opportunities_sector_id_fkey"
+            columns: ["sector_id"]
+            isOneToOne: false
+            referencedRelation: "sectors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_file_size: number | null

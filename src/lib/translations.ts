@@ -486,7 +486,8 @@ export const translations = {
       statusUnderreview: "قيد المراجعة",
       statusPending: "في انتظار",
       statusApproved: "موافق عليه",
-      statusRejected: "مرفوض"
+      statusRejected: "مرفوض",
+      contactForDetails: "اتصل للتفاصيل"
    },
   en: {
     // Common UI - English as secondary
@@ -917,7 +918,8 @@ export const translations = {
       statusUnderreview: "Under Review",
       statusPending: "Pending",
       statusApproved: "Approved",
-      statusRejected: "Rejected"
+      statusRejected: "Rejected",
+      contactForDetails: "Contact for details"
    }
 };
 

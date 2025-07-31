@@ -84,84 +84,58 @@ export default function PartnerDashboard() {
     try {
       setLoading(true);
       
-      // Load partner-specific data
-      const { data: partnerProfile } = await supabase
-        .from('partners')
+      // Load partnership opportunities
+      const { data: opportunities } = await supabase
+        .from('partnership_opportunities')
         .select('*')
-        .eq('email', userProfile?.email)
-        .single();
+        .eq('status', 'open')
+        .order('deadline', { ascending: true });
 
-      if (!partnerProfile) {
-        // No partner profile found, show demo data for admin/testing
-        console.log('No partner profile found, using demo data');
-        
-        // Set demo stats for testing
-        setStats({
-          activeChallenges: 5,
-          supportedIdeas: 32,
-          totalInvestment: 750000,
-          eventsSponsored: 8,
-          collaborations: 13,
-          successfulProjects: 4
-        });
-        
-        // Demo partnerships
-        setPartnerships([
-          {
-            id: 'demo-1',
-            title: 'AI Innovation Challenge Partnership',
-            type: 'challenge' as const,
-            status: 'active',
-            start_date: '2024-01-15',
-            end_date: '2024-08-30',
-            contribution: 250000,
-            description: 'Supporting AI-driven healthcare solutions'
-          },
-          {
-            id: 'demo-2',
-            title: 'Smart City Campaign',
-            type: 'campaign' as const,
-            status: 'active', 
-            start_date: '2024-03-01',
-            contribution: 500000,
-            description: 'Urban innovation and sustainability initiative'
-          }
-        ]);
-        
-        setLoading(false);
-        return;
+      if (opportunities) {
+        const formattedOpportunities = opportunities.map(opp => ({
+          id: opp.id,
+          title: opp.title_ar,
+          type: opp.opportunity_type,
+          description: opp.description_ar,
+          budget_range: opp.budget_min && opp.budget_max ? 
+            `${opp.budget_min.toLocaleString()} - ${opp.budget_max.toLocaleString()} ${t('currency')}` : 
+            t('contactForDetails'),
+          deadline: opp.deadline,
+          status: opp.status
+        }));
+        setOpportunities(formattedOpportunities);
       }
 
-      // Load partnership data
+      // Load user's applications
+      const { data: applications } = await supabase
+        .from('partnership_applications')
+        .select(`
+          *,
+          partnership_opportunities(title_ar, opportunity_type)
+        `)
+        .eq('applicant_user_id', userProfile?.id)
+        .order('submitted_at', { ascending: false });
+
+      // For partnerships tab - get existing challenge/campaign partnerships
       const [
         challengePartnerships,
-        eventPartnerships,
         campaignPartnerships
       ] = await Promise.all([
-        supabase.from('challenge_partners').select('*').eq('partner_id', partnerProfile.id),
-        supabase.from('event_partner_links').select('*').eq('partner_id', partnerProfile.id),
-        supabase.from('campaign_partners').select('*').eq('partner_id', partnerProfile.id)
+        supabase.from('challenge_partners').select(`
+          *,
+          challenges(title_ar, status)
+        `).eq('partner_id', userProfile?.id || ''),
+        supabase.from('campaign_partners').select(`
+          *,
+          campaigns(title_ar, status)
+        `).eq('partner_id', userProfile?.id || '')
       ]);
 
-      // Calculate stats
-      const activeChallenges = challengePartnerships.data?.filter(p => p.status === 'active')?.length || 0;
-      const eventsSponsored = eventPartnerships.data?.length || 0;
-      const totalInvestment = campaignPartnerships.data?.reduce((sum, p) => sum + (p.contribution_amount || 0), 0) || 0;
-
-      setStats({
-        activeChallenges,
-        supportedIdeas: Math.floor(Math.random() * 50) + 20, // Placeholder
-        totalInvestment,
-        eventsSponsored,
-        collaborations: activeChallenges + eventsSponsored,
-        successfulProjects: Math.floor(activeChallenges * 0.7) // Placeholder success rate
-      });
-
-      // Create partnerships list
+      // Create partnerships list from existing data
       const partnershipsList: Partnership[] = [
         ...(challengePartnerships.data || []).map(p => ({
           id: p.id,
-          title: 'Innovation Challenge Partnership',
+          title: p.challenges?.title_ar || 'Challenge Partnership',
           type: 'challenge' as const,
           status: p.status,
           start_date: p.partnership_start_date || p.created_at,
@@ -171,7 +145,7 @@ export default function PartnerDashboard() {
         })),
         ...(campaignPartnerships.data || []).map(p => ({
           id: p.id,
-          title: 'Campaign Partnership',
+          title: p.campaigns?.title_ar || 'Campaign Partnership',
           type: 'campaign' as const,
           status: p.partnership_status,
           start_date: p.created_at,
@@ -183,7 +157,61 @@ export default function PartnerDashboard() {
 
       setPartnerships(partnershipsList);
 
-      // Mock opportunities data
+      // Calculate stats from real data
+      const activeChallenges = challengePartnerships.data?.filter(p => p.status === 'active')?.length || 0;
+      const activeCampaigns = campaignPartnerships.data?.filter(p => p.partnership_status === 'active')?.length || 0;
+      const totalInvestment = [
+        ...(challengePartnerships.data || []),
+        ...(campaignPartnerships.data || [])
+      ].reduce((sum, p) => {
+        const amount = 'funding_amount' in p ? p.funding_amount : ('contribution_amount' in p ? p.contribution_amount : 0);
+        return sum + (amount || 0);
+      }, 0);
+
+      setStats({
+        activeChallenges,
+        supportedIdeas: applications?.length || 0,
+        totalInvestment,
+        eventsSponsored: 0, // TODO: Add event partnerships when available
+        collaborations: activeChallenges + activeCampaigns,
+        successfulProjects: Math.floor((activeChallenges + activeCampaigns) * 0.7)
+      });
+      
+    } catch (error) {
+      console.error('Error loading partner data:', error);
+      
+      // Fallback to demo data on error
+      setStats({
+        activeChallenges: 5,
+        supportedIdeas: 32,
+        totalInvestment: 750000,
+        eventsSponsored: 8,
+        collaborations: 13,
+        successfulProjects: 4
+      });
+      
+      setPartnerships([
+        {
+          id: 'demo-1',
+          title: 'AI Innovation Challenge Partnership',
+          type: 'challenge' as const,
+          status: 'active',
+          start_date: '2024-01-15',
+          end_date: '2024-08-30',
+          contribution: 250000,
+          description: 'Supporting AI-driven healthcare solutions'
+        },
+        {
+          id: 'demo-2',
+          title: 'Smart City Campaign',
+          type: 'campaign' as const,
+          status: 'active', 
+          start_date: '2024-03-01',
+          contribution: 500000,
+          description: 'Urban innovation and sustainability initiative'
+        }
+      ]);
+
       setOpportunities([
         {
           id: '1',
@@ -202,21 +230,10 @@ export default function PartnerDashboard() {
           budget_range: '200,000 - 400,000 SAR',
           deadline: '2024-08-15',
           status: 'open'
-        },
-        {
-          id: '3',
-          title: 'Green Innovation Campaign',
-          type: 'Campaign Partnership',
-          description: 'Support sustainable innovation initiatives',
-          budget_range: '1,000,000 - 2,000,000 SAR',
-          deadline: '2024-10-31',
-          status: 'open'
         }
       ]);
-      
-    } catch (error) {
-      console.error('Error loading partner data:', error);
-      toast.error('Error loading partner dashboard data');
+
+      toast.error('Error loading partner data, showing demo content');
     } finally {
       setLoading(false);
     }
