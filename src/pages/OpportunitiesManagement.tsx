@@ -14,6 +14,7 @@ import { ApplicationsManagementDialog } from '@/components/opportunities/Applica
 import { EditOpportunityDialog } from '@/components/opportunities/EditOpportunityDialog';
 import { DeleteOpportunityDialog } from '@/components/opportunities/DeleteOpportunityDialog';
 import { OpportunityDetailsDialog } from '@/components/opportunities/OpportunityDetailsDialog';
+import { OpportunityAnalyticsDialog } from '@/components/opportunities/OpportunityAnalyticsDialog';
 
 interface Opportunity {
   id: string;
@@ -49,6 +50,7 @@ export default function OpportunitiesManagement() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [showAnalyticsDialog, setShowAnalyticsDialog] = useState(false);
   const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity | null>(null);
   const [selectedOpportunityForApplications, setSelectedOpportunityForApplications] = useState<Opportunity | null>(null);
 
@@ -371,8 +373,8 @@ export default function OpportunitiesManagement() {
                             size="sm" 
                             title={isRTL ? 'الإحصائيات' : 'Analytics'}
                             onClick={() => {
-                              // TODO: Navigate to analytics page
-                              window.open(`/admin/opportunities/${opportunity.id}/analytics`, '_blank');
+                              setSelectedOpportunity(opportunity);
+                              setShowAnalyticsDialog(true);
                             }}
                           >
                             <BarChart3 className="w-4 h-4" />
@@ -458,6 +460,16 @@ export default function OpportunitiesManagement() {
             opportunityId={selectedOpportunity.id}
             open={showDetailsDialog}
             onOpenChange={setShowDetailsDialog}
+          />
+        )}
+
+        {/* Opportunity Analytics Dialog */}
+        {selectedOpportunity && (
+          <OpportunityAnalyticsDialog
+            opportunityId={selectedOpportunity.id}
+            opportunityTitle={getDynamicText(selectedOpportunity.title_ar, selectedOpportunity.title_en)}
+            open={showAnalyticsDialog}
+            onOpenChange={setShowAnalyticsDialog}
           />
         )}
       </div>
