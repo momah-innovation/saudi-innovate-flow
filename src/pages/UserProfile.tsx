@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AppShell } from "@/components/layout/AppShell";
 import { useNavigate } from "react-router-dom";
 import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
+import { EnhancedProfileHero } from '@/components/profile/EnhancedProfileHero';
 
 interface ProfileForm {
   name: string;
@@ -32,6 +33,7 @@ const UserProfile = () => {
   const { user, userProfile, refreshProfile } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [form, setForm] = useState<ProfileForm>({
     name: '',
     name_ar: '',
@@ -66,8 +68,15 @@ const UserProfile = () => {
     setForm(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleToggleEdit = () => {
+    if (isEditing) {
+      handleSubmit();
+    } else {
+      setIsEditing(true);
+    }
+  };
+
+  const handleSubmit = async () => {
     setLoading(true);
 
     try {
@@ -92,6 +101,7 @@ const UserProfile = () => {
       if (error) throw error;
 
       await refreshProfile();
+      setIsEditing(false);
       
       toast({
         title: "تم التحديث بنجاح",
@@ -115,13 +125,15 @@ const UserProfile = () => {
 
   return (
     <AppShell>
+      <EnhancedProfileHero
+        userProfile={userProfile}
+        isEditing={isEditing}
+        onToggleEdit={handleToggleEdit}
+        onNavigate={navigate}
+      />
+      
       <div className="container mx-auto p-6 space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">الملف الشخصي</h1>
-          <p className="text-muted-foreground">إدارة معلومات ملفك الشخصي</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-6">
           {/* Profile Picture Section */}
           <Card>
             <CardHeader>
@@ -163,6 +175,7 @@ const UserProfile = () => {
                     value={form.name_ar}
                     onChange={(e) => handleInputChange('name_ar', e.target.value)}
                     placeholder="أدخل اسمك بالعربية"
+                    disabled={!isEditing}
                     required
                   />
                 </div>
@@ -173,6 +186,7 @@ const UserProfile = () => {
                     value={form.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     placeholder="Enter your name in English"
+                    disabled={!isEditing}
                   />
                 </div>
               </div>
@@ -198,6 +212,7 @@ const UserProfile = () => {
                     value={form.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     placeholder="أدخل رقم هاتفك"
+                    disabled={!isEditing}
                   />
                 </div>
               </div>
@@ -284,13 +299,7 @@ const UserProfile = () => {
             </CardContent>
           </Card>
 
-          {/* Save Button */}
-          <div className="flex justify-end">
-            <Button type="submit" disabled={loading}>
-              {loading ? "جاري الحفظ..." : "حفظ التغييرات"}
-            </Button>
-          </div>
-        </form>
+        </div>
       </div>
     </AppShell>
   );

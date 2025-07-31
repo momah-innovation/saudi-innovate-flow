@@ -15,6 +15,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { AppShell } from '@/components/layout/AppShell';
+import { EnhancedPartnerDashboardHero } from '@/components/partners/EnhancedPartnerDashboardHero';
 
 interface PartnerStats {
   activeChallenges: number;
@@ -200,6 +201,23 @@ export default function PartnerDashboard() {
 
   return (
     <AppShell>
+      <EnhancedPartnerDashboardHero
+        userProfile={userProfile}
+        stats={{
+          activePartnerships: partnerships.length,
+          supportedProjects: stats.supportedIdeas,
+          totalInvestment: stats.totalInvestment,
+          partnershipScore: Math.floor(Math.random() * 30) + 70
+        }}
+        onNavigate={navigate}
+        onCreatePartnership={() => {
+          navigate('/partner-profile');
+        }}
+        onShowOpportunities={() => {
+          // Switch to opportunities tab
+        }}
+      />
+      
       <PageLayout
         title="لوحة قيادة الشريك"
         description="أهلاً بك في نظام إدارة الشراكات والتعاون"

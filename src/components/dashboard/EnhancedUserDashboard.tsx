@@ -18,6 +18,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { AppShell } from '@/components/layout/AppShell';
+import { EnhancedDashboardHero } from './EnhancedDashboardHero';
 
 interface DashboardStats {
   totalIdeas: number;
@@ -295,6 +296,17 @@ export default function EnhancedUserDashboard() {
 
   return (
     <AppShell>
+      <EnhancedDashboardHero
+        userProfile={userProfile}
+        stats={{
+          totalIdeas: stats.totalIdeas,
+          activeChallenges: stats.challengesParticipated,
+          totalPoints: stats.totalRewards,
+          innovationScore: stats.innovationScore
+        }}
+        onNavigate={navigate}
+      />
+      
       <PageLayout
         title={currentLanguage === 'ar' ? 'لوحة القيادة - المبتكر' : 'Innovator Dashboard'}
         description={`${currentLanguage === 'ar' ? 'أهلاً بك' : 'Welcome'} ${userProfile?.display_name || (currentLanguage === 'ar' ? 'المبتكر' : 'Innovator')}! ${currentLanguage === 'ar' ? 'إليك نظرة عامة على أنشطتك' : 'Here\'s an overview of your activities'}`}

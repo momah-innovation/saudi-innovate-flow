@@ -17,6 +17,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { AppShell } from '@/components/layout/AppShell';
+import { EnhancedPartnerProfileHero } from '@/components/partners/EnhancedPartnerProfileHero';
 
 interface PartnerProfile {
   id?: string;
@@ -296,6 +297,19 @@ export default function PartnerProfile() {
 
   return (
     <AppShell>
+      <EnhancedPartnerProfileHero
+        partnerProfile={profile}
+        isEditing={isEditing}
+        onToggleEdit={() => {
+          if (isEditing) {
+            saveProfile();
+          } else {
+            setIsEditing(true);
+          }
+        }}
+        onNavigate={navigate}
+      />
+      
       <PageLayout
         title="ملف المؤسسة الشريكة"
         description="إدارة معلومات المؤسسة ومجالات الشراكة"

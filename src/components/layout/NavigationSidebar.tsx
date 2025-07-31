@@ -106,7 +106,7 @@ export function NavigationSidebar() {
         icon: Briefcase, 
         path: '/partner-dashboard',
         group: 'workflow',
-        roles: ['partner'] 
+        roles: ['partner', 'admin'] 
       },
       { 
         id: 'stakeholder-dashboard', 
@@ -151,6 +151,15 @@ export function NavigationSidebar() {
       
       // Profile management
       { 
+        id: 'user-profile', 
+        label: 'My Profile', 
+        arabicLabel: 'ملفي الشخصي',
+        icon: Edit, 
+        path: '/profile',
+        group: 'workflow',
+        roles: ['all'] 
+      },
+      { 
         id: 'expert-profile', 
         label: 'Expert Profile', 
         arabicLabel: 'ملف الخبير',
@@ -166,7 +175,7 @@ export function NavigationSidebar() {
         icon: Edit, 
         path: '/partner-profile',
         group: 'workflow',
-        roles: ['partner'] 
+        roles: ['partner', 'admin'] 
       },
       
       // Event participation
