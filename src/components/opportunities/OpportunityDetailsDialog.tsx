@@ -284,7 +284,10 @@ export const OpportunityDetailsDialog = ({
             {opportunity.image_url && (
               <div className="relative h-64 overflow-hidden">
                 <img 
-                  src={opportunity.image_url} 
+                  src={opportunity.image_url.startsWith('http') 
+                    ? opportunity.image_url 
+                    : `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public${opportunity.image_url}`
+                  } 
                   alt={isRTL ? opportunity.title_ar : (opportunity.title_en || opportunity.title_ar)}
                   className="w-full h-full object-cover"
                 />
