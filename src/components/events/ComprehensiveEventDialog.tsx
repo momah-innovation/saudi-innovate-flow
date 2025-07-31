@@ -39,6 +39,8 @@ import { AttendeesTab } from './tabs/AttendeesTab';
 import { PartnersStakeholdersTab } from './tabs/PartnersStakeholdersTab';
 import { RelatedItemsTab } from './tabs/RelatedItemsTab';
 import { EventResourcesTab } from './tabs/EventResourcesTab';
+import { InteractionButtons } from '@/components/ui/interaction-buttons';
+import { EventSocialShare } from './EventSocialShare';
 
 interface Event {
   id: string;
@@ -235,9 +237,14 @@ export const ComprehensiveEventDialog = ({
                     <Heart className={`w-4 h-4 ${interactions?.isLiked ? 'fill-current text-red-500' : ''}`} />
                     <span className="ml-1">{interactions?.likes_count || 0}</span>
                   </Button>
-                  <Button variant="ghost" size="sm">
-                    <Share2 className="w-4 h-4" />
-                  </Button>
+                  <EventSocialShare 
+                    event={event}
+                    trigger={
+                      <Button variant="ghost" size="sm">
+                        <Share2 className="w-4 h-4" />
+                      </Button>
+                    }
+                  />
                 </div>
               </div>
 

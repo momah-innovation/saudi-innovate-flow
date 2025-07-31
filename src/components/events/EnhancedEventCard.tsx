@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useState } from 'react';
+import { InteractionButtons } from '@/components/ui/interaction-buttons';
 
 interface Event {
   id: string;
@@ -343,6 +344,16 @@ export const EnhancedEventCard = ({
             </div>
             <div className="text-xs text-muted-foreground">{isRTL ? 'السعر' : 'price'}</div>
           </div>
+        </div>
+
+        {/* Social Interactions */}
+        <div className="mb-4">
+          <InteractionButtons 
+            itemId={event.id}
+            itemType="event"
+            title={event.title_ar}
+            className="justify-center"
+          />
         </div>
 
         {/* Action Buttons */}
