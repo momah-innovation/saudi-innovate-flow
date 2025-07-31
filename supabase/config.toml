@@ -1,1 +1,7 @@
 project_id = "jxpbiljkoibvqxzdkgod"
+
+[functions.send-opportunity-notification]
+verify_jwt = false
+
+[functions.track-opportunity-analytics]
+verify_jwt = false

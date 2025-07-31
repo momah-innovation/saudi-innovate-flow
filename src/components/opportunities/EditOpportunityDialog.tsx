@@ -113,6 +113,30 @@ export const EditOpportunityDialog = ({
 
       if (error) throw error;
 
+      // Send notification email if status changed
+      if (opportunity.status !== data.status) {
+        try {
+          await supabase.functions.invoke('send-opportunity-notification', {
+            body: {
+              to: data.contact_email,
+              subject: isRTL ? 'تحديث حالة الفرصة' : 'Opportunity Status Update',
+              html: `
+                <div dir="${isRTL ? 'rtl' : 'ltr'}">
+                  <h2>${isRTL ? 'تحديث حالة الفرصة' : 'Opportunity Status Update'}</h2>
+                  <p>${isRTL ? 'تم تحديث حالة فرصة' : 'The status of opportunity'} "${data.title_ar}" ${isRTL ? 'إلى' : 'has been updated to'}: <strong>${data.status}</strong></p>
+                  <p>${isRTL ? 'يمكنكم مراجعة التفاصيل في لوحة التحكم.' : 'You can review the details in the dashboard.'}</p>
+                </div>
+              `,
+              opportunityId: opportunity.id,
+              notificationType: 'status_update'
+            }
+          });
+        } catch (emailError) {
+          console.error('Email notification failed:', emailError);
+          // Don't fail the update if email fails
+        }
+      }
+
       toast({
         title: isRTL ? 'تم التحديث بنجاح' : 'Updated Successfully',
         description: isRTL ? 'تم تحديث الفرصة بنجاح' : 'Opportunity updated successfully',
