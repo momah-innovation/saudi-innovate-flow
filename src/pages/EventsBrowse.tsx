@@ -16,6 +16,10 @@ import { EventCalendarView } from '@/components/events/EventCalendarView';
 import { EventWaitlistDialog } from '@/components/events/EventWaitlistDialog';
 import { EventReviewsDialog } from '@/components/events/EventReviewsDialog';
 import { EventSocialShare } from '@/components/events/EventSocialShare';
+import { EnhancedEventsHero } from '@/components/events/EnhancedEventsHero';
+import { EventNotificationCenter } from '@/components/events/EventNotificationCenter';
+import { EventAnalyticsDashboard } from '@/components/events/EventAnalyticsDashboard';
+import { TrendingEventsWidget } from '@/components/events/TrendingEventsWidget';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Plus, Calendar, TrendingUp, MapPin, Grid, List, CalendarDays } from 'lucide-react';
@@ -50,6 +54,7 @@ interface Event {
   event_visibility?: string;
   created_at?: string;
   updated_at?: string;
+  image_url?: string;
 }
 
 const EventsBrowse = () => {
@@ -301,6 +306,15 @@ const EventsBrowse = () => {
         } : undefined}
         secondaryActions={
           <div className="flex gap-2">
+            <EventNotificationCenter />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => console.log('Show analytics')}
+            >
+              <TrendingUp className="w-4 h-4 mr-2" />
+              {isRTL ? 'الإحصائيات' : 'Analytics'}
+            </Button>
             <LayoutSelector
               viewMode={viewMode}
               onViewModeChange={setViewMode}
@@ -320,7 +334,7 @@ const EventsBrowse = () => {
         searchPlaceholder={isRTL ? 'البحث في الفعاليات...' : 'Search events...'}
       >
         {/* Enhanced Hero Section */}
-        <EventsHero
+        <EnhancedEventsHero
           totalEvents={events.length}
           upcomingEvents={upcomingCount}
           todayEvents={todayCount}
@@ -329,7 +343,30 @@ const EventsBrowse = () => {
             () => {}}
           onShowFilters={() => setShowAdvancedFilters(true)}
           canCreateEvent={user && (hasRole('admin') || hasRole('super_admin') || hasRole('innovation_team_member'))}
+          featuredEvent={events.length > 0 ? {
+            id: events[0].id,
+            title_ar: events[0].title_ar,
+            participants: events[0].registered_participants || 0,
+            date: events[0].event_date,
+            image: events[0].image_url
+          } : undefined}
         />
+
+        {/* Trending Events Widget */}
+        {viewMode !== 'calendar' && (
+          <div className="mb-8">
+            <TrendingEventsWidget
+              onEventSelect={(eventId) => {
+                const event = events.find(e => e.id === eventId);
+                if (event) {
+                  setSelectedEvent(event);
+                  setDetailDialogOpen(true);
+                }
+              }}
+              className="mb-6"
+            />
+          </div>
+        )}
 
         {/* Personalized Recommendations */}
         {user && activeTab === 'upcoming' && viewMode !== 'calendar' && (
