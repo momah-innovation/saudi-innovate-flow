@@ -386,7 +386,7 @@ const ChallengesBrowse = () => {
           <div className="flex gap-2">
             <LayoutSelector
               viewMode={viewMode}
-              onViewModeChange={setViewMode}
+              onViewModeChange={(mode) => mode !== 'calendar' && setViewMode(mode)}
             />
           </div>
         }

@@ -268,19 +268,25 @@ const EventsBrowse = () => {
   }).length;
 
   // Render event cards
-  const renderEventCards = (events: Event[]) => (
-    <ViewLayouts viewMode={viewMode}>
-      {events.map((event) => (
-        <EnhancedEventCard
-          key={event.id}
-          event={event}
-          onViewDetails={handleViewDetails}
-          onRegister={registerForEvent}
-          viewMode={viewMode}
-        />
-      ))}
-    </ViewLayouts>
-  );
+  const renderEventCards = (events: Event[]) => {
+    if (viewMode === 'calendar') {
+      return null; // Calendar view is handled separately
+    }
+    
+    return (
+      <ViewLayouts viewMode={viewMode}>
+        {events.map((event) => (
+          <EnhancedEventCard
+            key={event.id}
+            event={event}
+            onViewDetails={handleViewDetails}
+            onRegister={registerForEvent}
+            viewMode={viewMode}
+          />
+        ))}
+      </ViewLayouts>
+    );
+  };
 
   return (
     <AppShell>

@@ -933,7 +933,7 @@ export default function IdeasPage() {
             </Button>
             <LayoutSelector
               viewMode={viewMode}
-              onViewModeChange={setViewMode}
+              onViewModeChange={(mode) => mode !== 'calendar' && setViewMode(mode)}
             />
             <Button variant="outline" size="sm" onClick={() => {
               if (activeTab === 'published') {
