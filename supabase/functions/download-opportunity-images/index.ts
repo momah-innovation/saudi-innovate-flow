@@ -74,15 +74,13 @@ Deno.serve(async (req) => {
 
         console.log(`Uploaded image for opportunity ${opportunity.id}:`, uploadData.path)
 
-        // Get the public URL
-        const { data: { publicUrl } } = supabase.storage
-          .from('opportunity-images')
-          .getPublicUrl(fileName)
+        // Use relative path instead of full URL for better portability
+        const relativePath = `/opportunity-images/${fileName}`
 
         // Update the opportunity record
         const { error: updateError } = await supabase
           .from('opportunities')
-          .update({ image_url: publicUrl })
+          .update({ image_url: relativePath })
           .eq('id', opportunity.id)
 
         if (updateError) {
@@ -90,12 +88,12 @@ Deno.serve(async (req) => {
           throw updateError
         }
 
-        console.log(`Updated opportunity ${opportunity.id} with image URL: ${publicUrl}`)
+        console.log(`Updated opportunity ${opportunity.id} with image path: ${relativePath}`)
         
         results.push({
           id: opportunity.id,
           title: opportunity.title_ar,
-          imageUrl: publicUrl,
+          imageUrl: relativePath,
           success: true
         })
 
