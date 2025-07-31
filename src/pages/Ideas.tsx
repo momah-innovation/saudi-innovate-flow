@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppShell } from '@/components/layout/AppShell';
 import { PageLayout } from '@/components/layout/PageLayout';
+import { EnhancedIdeasHero } from '@/components/ideas/EnhancedIdeasHero';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -906,6 +907,23 @@ export default function IdeasPage() {
 
   return (
     <AppShell>
+      <EnhancedIdeasHero 
+        totalIdeas={personalMetrics.totalIdeas}
+        publishedIdeas={ideas.filter(idea => idea.status === 'published').length}
+        totalViews={personalMetrics.totalViews}
+        totalLikes={personalMetrics.totalViews * 0.1}
+        onCreateIdea={() => navigate('/submit-idea')}
+        onShowFilters={() => setFiltersDialogOpen(true)}
+        canCreateIdea={!!user}
+        featuredIdea={ideas.length > 0 ? {
+          id: ideas[0].id,
+          title_ar: ideas[0].title_ar,
+          views: ideas[0].view_count || 0,
+          likes: ideas[0].like_count || 0,
+          innovator: ideas[0].profile?.name_ar || 'مبدع مجهول',
+          image: ideas[0].image_url
+        } : undefined}
+      />
       <PageLayout
         title={isRTL ? 'الأفكار الابتكارية' : 'Innovation Ideas'}
         description={isRTL ? 'اكتشف واستكشف أحدث الأفكار الابتكارية' : 'Discover and explore the latest innovative ideas'}
