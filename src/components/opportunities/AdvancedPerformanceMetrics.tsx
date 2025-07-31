@@ -121,11 +121,34 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
         clickThroughRate
       });
 
-      // Calculate real trends from historical data (placeholder for now - needs historical data implementation)
+      // Calculate trends from historical data by comparing with previous periods
+      const calculateTrendFromHistory = (current: number, historical: any[], field: string) => {
+        if (historical.length < 2) return { change: 0, direction: 'stable' as const };
+        
+        const previousValue = historical[historical.length - 2]?.[field] || 0;
+        const change = current > 0 && previousValue > 0 
+          ? Math.round(((current - previousValue) / previousValue) * 100)
+          : 0;
+        
+        return {
+          change: Math.abs(change),
+          direction: change > 5 ? 'up' as const : change < -5 ? 'down' as const : 'stable' as const
+        };
+      };
+      
       const trends = {
-        views: { value: totalViews, change: 0, direction: 'stable' as const },
-        engagement: { value: engagementRate, change: 0, direction: 'stable' as const },
-        conversion: { value: conversionRate, change: 0, direction: 'stable' as const }
+        views: { 
+          value: totalViews, 
+          ...calculateTrendFromHistory(totalViews, sessions, 'page_views')
+        },
+        engagement: { 
+          value: engagementRate, 
+          ...calculateTrendFromHistory(engagementRate, sessions, 'engagement_score')
+        },
+        conversion: { 
+          value: conversionRate, 
+          ...calculateTrendFromHistory(conversionRate, applications, 'conversion_rate')
+        }
       };
 
       const performanceData: PerformanceMetrics = {

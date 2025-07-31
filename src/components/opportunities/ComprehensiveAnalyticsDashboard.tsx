@@ -211,13 +211,30 @@ export const ComprehensiveAnalyticsDashboard = () => {
       return acc;
     }, {});
 
-    const trafficSources = [
-      { source: isRTL ? 'مباشر' : 'Direct', count: applicationSources.direct || 0 },
-      { source: isRTL ? 'لينكد إن' : 'LinkedIn', count: platformShares.linkedin || 0 },
-      { source: isRTL ? 'تويتر' : 'Twitter', count: platformShares.twitter || 0 },
-      { source: isRTL ? 'فيسبوك' : 'Facebook', count: platformShares.facebook || 0 },
-      { source: isRTL ? 'واتساب' : 'WhatsApp', count: platformShares.whatsapp || 0 }
-    ]
+    // Get real traffic sources from applications and view sessions
+    const trafficSourcesFromData = applications.reduce((acc: any, app: any) => {
+      const source = app.application_source || 'direct';
+      acc[source] = (acc[source] || 0) + 1;
+      return acc;
+    }, {});
+    
+    const sessionSources = viewSessions.reduce((acc: any, session: any) => {
+      const source = session.referrer_domain || 'direct';
+      acc[source] = (acc[source] || 0) + 1;
+      return acc;
+    }, {});
+    
+    // Combine all unique sources
+    const allSources = new Set([
+      ...Object.keys(trafficSourcesFromData),
+      ...Object.keys(sessionSources),
+      ...Object.keys(platformShares)
+    ]);
+    
+    const trafficSources = Array.from(allSources).map(source => ({
+      source: source === 'direct' ? (isRTL ? 'مباشر' : 'Direct') : source,
+      count: (trafficSourcesFromData[source] || 0) + (sessionSources[source] || 0) + (platformShares[source] || 0)
+    })).filter(item => item.count > 0)
       .map(source => ({
         ...source,
         percentage: totalViews > 0 ? Math.round((source.count / totalViews) * 100) : 0
