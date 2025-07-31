@@ -13,6 +13,8 @@ import { EnhancedChallengeCard } from '@/components/challenges/EnhancedChallenge
 import { SuperChallengeCard } from '@/components/challenges/SuperChallengeCard';
 import { TrendingChallengesWidget } from '@/components/challenges/TrendingChallengesWidget';
 import { ChallengesHero } from '@/components/challenges/ChallengesHero';
+import { EnhancedChallengesHero } from '@/components/challenges/EnhancedChallengesHero';
+import { ChallengeRecommendations } from '@/components/challenges/ChallengeRecommendations';
 import { ChallengeDetailDialog } from '@/components/challenges/ChallengeDetailDialog';
 import { EnhancedChallengeDetailDialog } from '@/components/challenges/EnhancedChallengeDetailDialog';
 import { ChallengeFilters, FilterState } from '@/components/challenges/ChallengeFilters';
@@ -366,13 +368,22 @@ const ChallengesBrowse = () => {
 
   return (
     <AppShell>
-        {/* Enhanced Hero Section - Events Style */}
-        <ChallengesHero 
+        {/* Enhanced Hero Section */}
+        <EnhancedChallengesHero 
           totalChallenges={stats.totalChallenges}
           activeChallenges={stats.activeChallenges}
           totalParticipants={stats.totalParticipants}
+          totalPrizes={stats.totalPrizes}
           onCreateChallenge={() => setCreateChallengeOpen(true)}
           onShowFilters={() => setShowAdvancedFilters(true)}
+          featuredChallenge={challenges.length > 0 ? {
+            id: challenges[0].id,
+            title_ar: challenges[0].title_ar,
+            participants: challenges[0].participants || 0,
+            prize: challenges[0].estimated_budget || 0,
+            daysLeft: challenges[0].end_date ? Math.ceil((new Date(challenges[0].end_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : 0,
+            image: challenges[0].image_url
+          } : undefined}
         />
       
       <PageLayout
@@ -394,9 +405,10 @@ const ChallengesBrowse = () => {
         }
       >
         <div className="space-y-6">
-          {/* Trending Challenges Widget */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
+          {/* Enhanced Layout with Recommendations */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            {/* Main Content */}
+            <div className="lg:col-span-3 space-y-6">
               {/* Advanced Filters */}
               <ChallengeFilters
                 filters={filters}
@@ -405,8 +417,14 @@ const ChallengesBrowse = () => {
                 activeFiltersCount={getActiveFiltersCount()}
               />
             </div>
-            <div className="lg:col-span-1">
+            
+            {/* Sidebar with Recommendations */}
+            <div className="lg:col-span-1 space-y-6">
               <TrendingChallengesWidget
+                onChallengeSelect={handleViewDetails}
+                className="sticky top-4"
+              />
+              <ChallengeRecommendations
                 onChallengeSelect={handleViewDetails}
                 className="sticky top-4"
               />
