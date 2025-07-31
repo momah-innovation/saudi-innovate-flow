@@ -3971,7 +3971,15 @@ export type Database = {
           recorded_at?: string | null
           recorded_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_opportunity_analytics_opportunity_id"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "partnership_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       opportunity_applications: {
         Row: {
