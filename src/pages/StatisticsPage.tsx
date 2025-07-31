@@ -116,6 +116,7 @@ export default function StatisticsPage() {
   const [categoryStats, setCategoryStats] = useState<CategoryStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [detailDialog, setDetailDialog] = useState<DetailDialogData>({ type: null, data: null });
+  const [showFilters, setShowFilters] = useState(false);
   
   // Filter states
   const [timeRange, setTimeRange] = useState('all');
@@ -440,8 +441,6 @@ export default function StatisticsPage() {
       </AppShell>
     );
   }
-
-  const [showFilters, setShowFilters] = useState(false);
 
   return (
     <AppShell>
