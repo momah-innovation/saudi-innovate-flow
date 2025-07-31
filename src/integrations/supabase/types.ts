@@ -4046,7 +4046,15 @@ export type Database = {
           timeline_months?: number | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_opportunity_applications_opportunity_id"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "partnership_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       opportunity_bookmarks: {
         Row: {
