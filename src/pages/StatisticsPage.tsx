@@ -11,6 +11,8 @@ import { Progress } from '@/components/ui/progress';
 import { MetricCard } from '@/components/ui/metric-card';
 import { StatisticsFilters } from '@/components/statistics/StatisticsFilters';
 import { StatisticsDetailDialog } from '@/components/statistics/StatisticsDetailDialog';
+import { StatisticsAnalyticsDashboard } from '@/components/statistics/StatisticsAnalyticsDashboard';
+import { TrendingStatisticsWidget } from '@/components/statistics/TrendingStatisticsWidget';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area } from 'recharts';
 import { supabase } from '@/integrations/supabase/client';
