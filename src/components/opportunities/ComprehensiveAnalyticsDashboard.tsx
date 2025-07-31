@@ -196,7 +196,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
     const geographicData = (geoDataResult || []).map(item => ({
       country: item.country_name,
       views: item.view_count,
-      applications: Math.floor(item.view_count * 0.1) // Estimate applications from views
+      applications: 0 // Will be calculated from real application data if geo data is available
     }));
 
     // Traffic sources from real shares data and application sources
@@ -314,10 +314,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
               <div>
                 <p className="text-2xl font-bold">{analytics.totalViews.toLocaleString()}</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'إجمالي المشاهدات' : 'Total Views'}</p>
-                <Badge variant="outline" className="mt-1">
-                  <TrendingUp className="w-3 h-3 mr-1" />
-                  +15%
-                </Badge>
+                {/* Real trend would be calculated from historical data */}
               </div>
             </div>
           </CardContent>
@@ -330,10 +327,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
               <div>
                 <p className="text-2xl font-bold">{analytics.totalApplications}</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'إجمالي الطلبات' : 'Total Applications'}</p>
-                <Badge variant="outline" className="mt-1">
-                  <TrendingUp className="w-3 h-3 mr-1" />
-                  +12%
-                </Badge>
+                {/* Real trend would be calculated from historical data */}
               </div>
             </div>
           </CardContent>
@@ -346,10 +340,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
               <div>
                 <p className="text-2xl font-bold">{analytics.avgConversionRate.toFixed(1)}%</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'معدل التحويل' : 'Conversion Rate'}</p>
-                <Badge variant="outline" className="mt-1">
-                  <TrendingUp className="w-3 h-3 mr-1" />
-                  +3%
-                </Badge>
+                {/* Real trend would be calculated from historical data */}
               </div>
             </div>
           </CardContent>
@@ -362,10 +353,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
               <div>
                 <p className="text-2xl font-bold">{analytics.avgEngagementRate.toFixed(1)}%</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'معدل التفاعل' : 'Engagement Rate'}</p>
-                <Badge variant="outline" className="mt-1">
-                  <TrendingUp className="w-3 h-3 mr-1" />
-                  +8%
-                </Badge>
+                {/* Real trend would be calculated from historical data */}
               </div>
             </div>
           </CardContent>

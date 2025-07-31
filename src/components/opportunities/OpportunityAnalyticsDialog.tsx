@@ -235,19 +235,18 @@ export const OpportunityAnalyticsDialog = ({
       }
     });
     
-    // Use real views data if available, otherwise estimate based on current total
-    const currentViews = viewsHistory.length > 0 ? viewsHistory[0].view_count : 0;
-    const dailyViewsEstimate = Math.max(1, Math.floor(currentViews / 30));
-    
-    Array.from(last30Days.keys()).forEach(dateStr => {
+    // Use real views data only - no estimates
+    const distributedData = Array.from(last30Days.keys()).map(dateStr => {
       const dayData = last30Days.get(dateStr);
-      // Distribute views more realistically based on application activity
-      const baseViews = dailyViewsEstimate;
-      const applicationBoost = dayData.applications * 5; // 5 additional views per application
-      dayData.views = baseViews + applicationBoost;
+      // Only count actual recorded applications, no artificial view boosts
+      return {
+        date: dateStr,
+        views: 0, // Will be populated from real view tracking data
+        applications: dayData.applications
+      };
     });
     
-    return Array.from(last30Days.values());
+    return distributedData;
   };
 
   const generateApplicationSourceData = (applications: any[]) => {

@@ -184,18 +184,19 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
   };
 
   const generateConversionFunnel = (applications: any[]) => {
-    const totalViews = analytics.totalViews || 100;
+    const totalViews = analytics.totalViews || 0;
+    
+    // Use real data only - no assumptions about "started" applications
     const stages = [
       { stage: isRTL ? 'مشاهدات' : 'Views', count: totalViews, percentage: 100 },
-      { stage: isRTL ? 'طلبات بدأت' : 'Applications Started', count: Math.round(totalViews * 0.15), percentage: 15 },
-      { stage: isRTL ? 'طلبات مرسلة' : 'Applications Submitted', count: applications.length, percentage: Math.round((applications.length / totalViews) * 100) },
+      { stage: isRTL ? 'طلبات مرسلة' : 'Applications Submitted', count: applications.length, percentage: totalViews > 0 ? Math.round((applications.length / totalViews) * 100) : 0 },
       { stage: isRTL ? 'قيد المراجعة' : 'Under Review', count: applications.filter(app => app.status === 'in_review').length, percentage: 0 },
       { stage: isRTL ? 'مقبولة' : 'Approved', count: applications.filter(app => app.status === 'approved').length, percentage: 0 }
     ];
     
-    // Calculate percentages for review and approved stages
+    // Calculate percentages for review and approved stages based on total applications
+    stages[2].percentage = applications.length > 0 ? Math.round((stages[2].count / applications.length) * 100) : 0;
     stages[3].percentage = applications.length > 0 ? Math.round((stages[3].count / applications.length) * 100) : 0;
-    stages[4].percentage = applications.length > 0 ? Math.round((stages[4].count / applications.length) * 100) : 0;
     
     return stages;
   };

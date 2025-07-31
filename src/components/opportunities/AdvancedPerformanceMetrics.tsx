@@ -121,11 +121,11 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
         clickThroughRate
       });
 
-      // Calculate trends (simplified - would need historical data for real trends)
+      // Calculate real trends from historical data (placeholder for now - needs historical data implementation)
       const trends = {
-        views: { value: totalViews, change: 12, direction: 'up' as const },
-        engagement: { value: engagementRate, change: 8, direction: 'up' as const },
-        conversion: { value: conversionRate, change: -3, direction: 'down' as const }
+        views: { value: totalViews, change: 0, direction: 'stable' as const },
+        engagement: { value: engagementRate, change: 0, direction: 'stable' as const },
+        conversion: { value: conversionRate, change: 0, direction: 'stable' as const }
       };
 
       const performanceData: PerformanceMetrics = {
@@ -137,8 +137,8 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
         qualityScore,
         totalInteractions,
         uniqueVisitors,
-        returningVisitors: Math.floor(uniqueVisitors * 0.25), // Estimate
-        peakViewingHours: ['14:00', '16:00', '20:00'], // Would be calculated from real data
+        returningVisitors: sessions.filter(s => s.view_count && s.view_count > 1).length,
+        peakViewingHours: calculatePeakHours(sessions),
         recommendations,
         trends
       };
@@ -151,6 +151,19 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
     } finally {
       setLoading(false);
     }
+  };
+
+  const calculatePeakHours = (sessions: any[]) => {
+    const hourCounts = sessions.reduce((acc, session) => {
+      const hour = new Date(session.created_at).getHours();
+      acc[hour] = (acc[hour] || 0) + 1;
+      return acc;
+    }, {} as Record<number, number>);
+    
+    return Object.entries(hourCounts)
+      .sort(([, a], [, b]) => (b as number) - (a as number))
+      .slice(0, 3)
+      .map(([hour]) => `${hour.toString().padStart(2, '0')}:00`);
   };
 
   const calculateQualityScore = (metrics: {
@@ -217,25 +230,23 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
   };
 
   const generateFallbackMetrics = (): PerformanceMetrics => ({
-    clickThroughRate: 3.2,
-    engagementRate: 15.8,
-    conversionRate: 2.4,
-    averageTimeSpent: 145,
-    bounceRate: 45,
-    qualityScore: 7.5,
-    totalInteractions: 89,
-    uniqueVisitors: 234,
-    returningVisitors: 67,
-    peakViewingHours: ['14:00', '16:00', '20:00'],
+    clickThroughRate: 0,
+    engagementRate: 0,
+    conversionRate: 0,
+    averageTimeSpent: 0,
+    bounceRate: 0,
+    qualityScore: 0,
+    totalInteractions: 0,
+    uniqueVisitors: 0,
+    returningVisitors: 0,
+    peakViewingHours: [],
     recommendations: [
-      isRTL ? 'تحسين العنوان لزيادة النقرات' : 'Optimize title for better click-through rate',
-      isRTL ? 'إضافة المزيد من الصور الجذابة' : 'Add more engaging visuals',
-      isRTL ? 'تبسيط عملية التطبيق' : 'Simplify application process'
+      isRTL ? 'لا توجد بيانات كافية للتحليل' : 'Not enough data for analysis'
     ],
     trends: {
-      views: { value: 1247, change: 12, direction: 'up' },
-      engagement: { value: 15.8, change: 8, direction: 'up' },
-      conversion: { value: 2.4, change: -3, direction: 'down' }
+      views: { value: 0, change: 0, direction: 'stable' },
+      engagement: { value: 0, change: 0, direction: 'stable' },
+      conversion: { value: 0, change: 0, direction: 'stable' }
     }
   });
 

@@ -138,12 +138,12 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
       return acc;
     }, {});
 
-    // Map journey data to steps
-    steps[0].users = stepCounts.page_visit || analytics.totalViews || 100;
-    steps[1].users = stepCounts.details_view || Math.floor(steps[0].users * 0.7);
-    steps[2].users = stepCounts.requirements_view || Math.floor(steps[1].users * 0.6);
-    steps[3].users = stepCounts.application_start || Math.floor(steps[2].users * 0.4);
-    steps[4].users = analytics.totalApplications || Math.floor(steps[3].users * 0.8);
+    // Map journey data to steps - use real data only
+    steps[0].users = stepCounts.page_visit || analytics.totalViews || 0;
+    steps[1].users = stepCounts.details_view || 0;
+    steps[2].users = stepCounts.requirements_view || 0;
+    steps[3].users = stepCounts.application_start || 0;
+    steps[4].users = analytics.totalApplications || 0;
 
     // Calculate dropoff rates
     for (let i = 1; i < steps.length; i++) {
@@ -187,11 +187,30 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
     const currentViews = analytics.totalViews || 0;
     const conversionRate = currentViews > 0 ? (currentApplications / currentViews) * 100 : 0;
     
+    // Calculate trend from historical data instead of arbitrary growth prediction
+    const recentActivity = journeys.filter(j => {
+      const date = new Date(j.step_timestamp);
+      const lastWeek = new Date();
+      lastWeek.setDate(lastWeek.getDate() - 7);
+      return date > lastWeek;
+    }).length;
+    
+    const olderActivity = journeys.filter(j => {
+      const date = new Date(j.step_timestamp);
+      const twoWeeksAgo = new Date();
+      const oneWeekAgo = new Date();
+      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+      return date > twoWeeksAgo && date <= oneWeekAgo;
+    }).length;
+    
+    const growthRate = olderActivity > 0 ? ((recentActivity - olderActivity) / olderActivity) * 100 : 0;
+    
     return {
-      expectedApplications: Math.round(currentApplications * 1.2), // 20% growth prediction
-      conversionTrend: conversionRate > 5 ? 'increasing' : conversionRate > 2 ? 'stable' : 'declining',
-      qualityScore: Math.min(95, 60 + (conversionRate * 5)), // Quality score based on conversion
-      riskLevel: conversionRate < 2 ? 'high' : conversionRate < 5 ? 'medium' : 'low'
+      expectedApplications: currentApplications + Math.round(currentApplications * (growthRate / 100)),
+      conversionTrend: growthRate > 10 ? 'increasing' : growthRate > -10 ? 'stable' : 'declining',
+      qualityScore: Math.min(100, Math.max(0, conversionRate * 10)), // Real quality based on conversion
+      riskLevel: conversionRate < 1 ? 'high' : conversionRate < 3 ? 'medium' : 'low'
     };
   };
 
