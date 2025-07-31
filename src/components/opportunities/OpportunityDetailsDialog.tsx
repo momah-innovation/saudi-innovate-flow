@@ -9,6 +9,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { ShareOpportunityButton } from './ShareOpportunityButton';
 import { BookmarkOpportunityButton } from './BookmarkOpportunityButton';
 import { supabase } from '@/integrations/supabase/client';
+import { useRealTimeAnalytics } from '@/hooks/useRealTimeAnalytics';
 import { 
   Building2, 
   DollarSign, 
@@ -67,14 +68,48 @@ export const OpportunityDetailsDialog = ({
   const { t } = useTranslation();
   const [opportunity, setOpportunity] = useState<OpportunityDetails | null>(null);
   const [loading, setLoading] = useState(false);
+  const [viewStartTime, setViewStartTime] = useState<number>(Date.now());
+  const [sessionId] = useState<string>(() => 
+    sessionStorage.getItem('opportunity-session') || 
+    (() => {
+      const id = crypto.randomUUID();
+      sessionStorage.setItem('opportunity-session', id);
+      return id;
+    })()
+  );
+
+  // Real-time analytics hook
+  const { analytics } = useRealTimeAnalytics({
+    opportunityId,
+    onAnalyticsUpdate: (newAnalytics) => {
+      if (opportunity) {
+        setOpportunity(prev => prev ? {
+          ...prev,
+          views_count: newAnalytics.view_count || prev.views_count,
+          likes_count: newAnalytics.like_count || prev.likes_count,
+          applications_count: newAnalytics.application_count || prev.applications_count
+        } : null);
+      }
+    }
+  });
 
   useEffect(() => {
     if (open && opportunityId) {
+      setViewStartTime(Date.now());
       loadOpportunityDetails();
-      // Track view analytics
       trackView();
     }
   }, [open, opportunityId]);
+
+  // Track time spent when dialog closes
+  useEffect(() => {
+    if (!open && opportunityId && viewStartTime) {
+      const timeSpent = Math.floor((Date.now() - viewStartTime) / 1000);
+      if (timeSpent > 5) { // Only track if user spent more than 5 seconds
+        trackViewTimeSpent(timeSpent);
+      }
+    }
+  }, [open]);
 
   const trackView = async () => {
     try {
@@ -84,11 +119,30 @@ export const OpportunityDetailsDialog = ({
           opportunityId,
           action: 'view',
           userId: user.user?.id,
+          sessionId,
           metadata: { source: 'details_dialog' }
         }
       });
     } catch (error) {
       console.error('Failed to track view:', error);
+    }
+  };
+
+  const trackViewTimeSpent = async (timeSpent: number) => {
+    try {
+      const { data: user } = await supabase.auth.getUser();
+      await supabase.functions.invoke('track-opportunity-analytics', {
+        body: {
+          opportunityId,
+          action: 'view',
+          userId: user.user?.id,
+          sessionId,
+          timeSpent,
+          metadata: { source: 'details_dialog', action: 'time_spent' }
+        }
+      });
+    } catch (error) {
+      console.error('Failed to track time spent:', error);
     }
   };
 

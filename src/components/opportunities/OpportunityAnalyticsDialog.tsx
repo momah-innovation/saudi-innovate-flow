@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useTranslation } from '@/hooks/useTranslation';
+import { AnalyticsExportDialog } from './AnalyticsExportDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   BarChart3, 
@@ -277,10 +278,16 @@ export const OpportunityAnalyticsDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className={isRTL ? 'text-right' : 'text-left'}>
-          <DialogTitle className="flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-primary" />
-            {isRTL ? 'إحصائيات الفرصة' : 'Opportunity Analytics'}
-          </DialogTitle>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-primary" />
+              <DialogTitle>{isRTL ? 'إحصائيات الفرصة' : 'Opportunity Analytics'}</DialogTitle>
+            </div>
+            <AnalyticsExportDialog
+              opportunityId={opportunityId}
+              opportunityTitle={opportunityTitle}
+            />
+          </div>
           <p className="text-sm text-muted-foreground">{opportunityTitle}</p>
         </DialogHeader>
 

@@ -4349,6 +4349,65 @@ export type Database = {
           },
         ]
       }
+      opportunity_view_sessions: {
+        Row: {
+          created_at: string
+          first_view_at: string
+          id: string
+          ip_address: unknown | null
+          last_view_at: string
+          opportunity_id: string
+          referrer: string | null
+          session_id: string
+          source: string | null
+          time_spent_seconds: number | null
+          updated_at: string
+          user_agent: string | null
+          user_id: string | null
+          view_count: number
+        }
+        Insert: {
+          created_at?: string
+          first_view_at?: string
+          id?: string
+          ip_address?: unknown | null
+          last_view_at?: string
+          opportunity_id: string
+          referrer?: string | null
+          session_id: string
+          source?: string | null
+          time_spent_seconds?: number | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+          view_count?: number
+        }
+        Update: {
+          created_at?: string
+          first_view_at?: string
+          id?: string
+          ip_address?: unknown | null
+          last_view_at?: string
+          opportunity_id?: string
+          referrer?: string | null
+          session_id?: string
+          source?: string | null
+          time_spent_seconds?: number | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+          view_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_view_sessions_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "partnership_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       partner_bookmarks: {
         Row: {
           created_at: string | null
