@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { 
   Briefcase, Users, Target, Calendar, TrendingUp, 
-  DollarSign, Award, Eye, Edit, Plus, Building
+  DollarSign, Award, Eye, Edit, Plus, Building, FileText
 } from 'lucide-react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { useAuth } from '@/contexts/AuthContext';
@@ -17,6 +17,9 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { AppShell } from '@/components/layout/AppShell';
 import { EnhancedPartnerDashboardHero } from '@/components/partners/EnhancedPartnerDashboardHero';
+import { PartnershipDetailDialog } from '@/components/partners/PartnershipDetailDialog';
+import { OpportunityDetailDialog } from '@/components/partners/OpportunityDetailDialog';
+import { PartnershipApplicationsTable } from '@/components/partners/PartnershipApplicationsTable';
 
 interface PartnerStats {
   activeChallenges: number;
@@ -66,6 +69,10 @@ export default function PartnerDashboard() {
   const [partnerships, setPartnerships] = useState<Partnership[]>([]);
   const [opportunities, setOpportunities] = useState<OpportunityItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedPartnership, setSelectedPartnership] = useState<Partnership | null>(null);
+  const [selectedOpportunity, setSelectedOpportunity] = useState<OpportunityItem | null>(null);
+  const [showPartnershipDialog, setShowPartnershipDialog] = useState(false);
+  const [showOpportunityDialog, setShowOpportunityDialog] = useState(false);
 
   useEffect(() => {
     if (userProfile?.id) {
@@ -261,7 +268,7 @@ export default function PartnerDashboard() {
         className="space-y-6"
       >
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className={`grid w-full grid-cols-3 ${isRTL ? 'rtl' : 'ltr'}`}>
+        <TabsList className={`grid w-full grid-cols-4 ${isRTL ? 'rtl' : 'ltr'}`}>
           <TabsTrigger value="overview" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
             <TrendingUp className="w-4 h-4" />
             {t('overview')}
@@ -273,6 +280,10 @@ export default function PartnerDashboard() {
           <TabsTrigger value="opportunities" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
             <Plus className="w-4 h-4" />
             {t('newOpportunities')}
+          </TabsTrigger>
+          <TabsTrigger value="applications" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+            <FileText className="w-4 h-4" />
+            {t('myApplications')}
           </TabsTrigger>
         </TabsList>
 
