@@ -66,23 +66,29 @@ export default function OpportunitiesManagement() {
       setLoading(true);
       
       const { data, error } = await supabase
-        .from('partnership_opportunities')
-        .select(`
-          *,
-          opportunity_applications!left(count),
-          opportunity_analytics!left(view_count, like_count)
-        `)
+        .from('opportunities')
+        .select('*')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
 
       // Process the data to include aggregated counts
-      const processedData = data?.map(opp => ({
-        ...opp,
-        applications_count: Array.isArray(opp.opportunity_applications) ? opp.opportunity_applications.length : 0,
-        views_count: opp.opportunity_analytics?.view_count || 0,
-        likes_count: opp.opportunity_analytics?.like_count || 0
-      })) || [];
+      const processedData = await Promise.all((data || []).map(async (opp) => {
+        // Get analytics data
+        const { data: analyticsData } = await supabase
+          .from('opportunity_analytics')
+          .select('view_count, like_count, application_count')
+          .eq('opportunity_id', opp.id)
+          .single();
+
+        return {
+          ...opp,
+          opportunity_type: opp.type || 'project',
+          applications_count: analyticsData?.application_count || 0,
+          views_count: analyticsData?.view_count || 0,
+          likes_count: analyticsData?.like_count || 0
+        };
+      }));
 
       setOpportunities(processedData);
     } catch (error) {

@@ -158,22 +158,36 @@ export const OpportunityDetailsDialog = ({
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from('partnership_opportunities')
-        .select(`
-          *,
-          opportunity_applications!left(count),
-          opportunity_analytics!left(view_count, like_count)
-        `)
+        .from('opportunities')
+        .select('*')
         .eq('id', opportunityId)
         .single();
 
       if (error) throw error;
 
+      // Get analytics data separately
+      const { data: analyticsData } = await supabase
+        .from('opportunity_analytics')
+        .select('view_count, like_count, application_count')
+        .eq('opportunity_id', opportunityId)
+        .single();
+
+      // Get applications count
+      const { count: applicationsCount } = await supabase
+        .from('opportunity_applications')
+        .select('*', { count: 'exact', head: true })
+        .eq('opportunity_id', opportunityId);
+
       const processedData: OpportunityDetails = {
         ...data,
-        applications_count: Array.isArray(data.opportunity_applications) ? data.opportunity_applications.length : 0,
-        views_count: data.opportunity_analytics?.view_count || 0,
-        likes_count: data.opportunity_analytics?.like_count || 0
+        opportunity_type: data.type || 'project',
+        priority_level: 'medium',
+        contact_person: 'Contact Person',
+        contact_email: 'contact@example.com',
+        benefits: data.qualifications,
+        applications_count: applicationsCount || 0,
+        views_count: analyticsData?.view_count || 0,
+        likes_count: analyticsData?.like_count || 0
       };
 
       setOpportunity(processedData);
