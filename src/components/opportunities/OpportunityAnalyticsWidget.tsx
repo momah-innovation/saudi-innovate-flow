@@ -83,7 +83,7 @@ export const OpportunityAnalyticsWidget = ({
           .maybeSingle(),
         supabase
           .from('opportunity_applications')
-          .select('id')
+          .select('id, created_at')
           .eq('opportunity_id', opportunityId),
         supabase
           .from('opportunity_likes')
@@ -103,9 +103,20 @@ export const OpportunityAnalyticsWidget = ({
 
       const conversionRate = viewsCount > 0 ? (applicationsCount / viewsCount) * 100 : 0;
       
-      // Calculate trend (simplified)
-      const trend: 'up' | 'down' | 'neutral' = Math.random() > 0.5 ? 'up' : 'down';
-      const trendPercentage = Math.floor(Math.random() * 20) + 1;
+      // Calculate real trend based on recent activity vs previous period
+      const now = new Date();
+      const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      
+      // Count recent applications
+      const recentApps = applicationsData.data?.filter(app => 
+        new Date(app.created_at) > lastWeek
+      ).length || 0;
+      
+      // Calculate trend
+      const trend: 'up' | 'down' | 'neutral' = recentApps > (applicationsCount / 2) ? 'up' : 
+                                                recentApps === 0 ? 'neutral' : 'down';
+      const trendPercentage = applicationsCount > 0 ? 
+        Math.round((recentApps / Math.max(1, applicationsCount - recentApps)) * 100) : 0;
 
       const summaryData: AnalyticsSummary = {
         views: viewsCount,

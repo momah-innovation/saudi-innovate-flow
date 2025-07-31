@@ -186,11 +186,20 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
   const generatePerformanceMetrics = (sessions: any[], presence: any[]) => {
     const avgTimeSpent = sessions.length > 0 
       ? sessions.reduce((sum, s) => sum + (s.time_spent || 0), 0) / sessions.length
-      : 180;
+      : 0;
+
+    // Calculate real bounce rate from sessions (< 30 seconds is bounce)
+    const shortSessions = sessions.filter(s => (s.time_spent || 0) < 30).length;
+    const bounceRate = sessions.length > 0 ? (shortSessions / sessions.length) * 100 : 0;
+
+    // Calculate average load time from session data if available
+    const avgLoadTime = sessions.length > 0 && sessions.some(s => s.load_time)
+      ? sessions.reduce((sum, s) => sum + (s.load_time || 0), 0) / sessions.length
+      : 1.5; // Default reasonable load time
 
     return {
-      loadTime: 1.2 + Math.random() * 0.8, // Simulated load time
-      bounceRate: Math.max(20, 60 - (sessions.length * 2)), // Lower bounce with more sessions
+      loadTime: avgLoadTime,
+      bounceRate,
       sessionDuration: avgTimeSpent,
       pageViews: sessions.length + presence.length
     };

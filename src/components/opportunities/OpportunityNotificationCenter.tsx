@@ -40,42 +40,32 @@ export const OpportunityNotificationCenter = () => {
     
     setLoading(true);
     try {
-      // For now, we'll create mock notifications since we don't have a notifications table
-      const mockNotifications: Notification[] = [
-        {
-          id: '1',
-          title: isRTL ? 'طلب جديد' : 'New Application',
-          message: isRTL ? 'تم تقديم طلب جديد للفرصة "شراكة التقنية"' : 'A new application has been submitted for "Tech Partnership"',
-          type: 'application',
-          is_read: false,
-          created_at: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 minutes ago
-        },
-        {
-          id: '2',
-          title: isRTL ? 'تحديث حالة الطلب' : 'Application Status Update',
-          message: isRTL ? 'تم قبول طلبك لفرصة "البحث والتطوير"' : 'Your application for "Research & Development" has been approved',
-          type: 'status_update',
-          is_read: false,
-          created_at: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
-        },
-        {
-          id: '3',
-          title: isRTL ? 'موعد نهائي قريب' : 'Deadline Approaching',
-          message: isRTL ? 'ينتهي موعد التقديم لفرصة "الابتكار المالي" خلال 3 أيام' : 'The deadline for "Financial Innovation" opportunity ends in 3 days',
-          type: 'deadline',
-          is_read: true,
-          created_at: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
-        },
-      ];
-      
-      setNotifications(mockNotifications);
+      // Load real notifications from Supabase
+      const { data: opportunityNotifications, error } = await supabase
+        .from('opportunity_notifications')
+        .select('*')
+        .eq('recipient_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (error) throw error;
+
+      // Transform Supabase notifications to our format
+      const transformedNotifications: Notification[] = (opportunityNotifications || []).map(notif => ({
+        id: notif.id,
+        title: notif.title,
+        message: notif.message,
+        type: notif.notification_type as 'application' | 'status_update' | 'deadline' | 'general',
+        is_read: notif.is_read,
+        created_at: notif.created_at,
+      }));
+
+      setNotifications(transformedNotifications);
     } catch (error) {
       console.error('Error loading notifications:', error);
-      toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في تحميل الإشعارات' : 'Failed to load notifications',
-        variant: 'destructive',
-      });
+      
+      // Fallback to empty array if no notifications table exists yet
+      setNotifications([]);
     } finally {
       setLoading(false);
     }
