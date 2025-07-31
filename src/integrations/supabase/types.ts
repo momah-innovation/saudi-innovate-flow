@@ -4212,7 +4212,7 @@ export type Database = {
             foreignKeyName: "opportunity_bookmarks_opportunity_id_fkey"
             columns: ["opportunity_id"]
             isOneToOne: false
-            referencedRelation: "partnership_opportunities"
+            referencedRelation: "opportunities"
             referencedColumns: ["id"]
           },
         ]
