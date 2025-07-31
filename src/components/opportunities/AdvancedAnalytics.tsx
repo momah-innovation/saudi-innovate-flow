@@ -263,7 +263,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
       
       return [
         { category: isRTL ? 'العمر' : 'Age', value: mostCommonAge, percentage: agePercentage },
-        { category: isRTL ? 'الخبرة' : 'Experience', value: '2-5 years', percentage: Math.round(Math.random() * 20 + 30) },
+        { category: isRTL ? 'الخبرة' : 'Experience', value: '2-5 years', percentage: Math.round(sessions.filter(s => s.metadata?.experience_years?.includes('2-5')).length / sessions.length * 100) || 0 },
         { category: isRTL ? 'التعليم' : 'Education', value: 'Bachelor+', percentage: Math.round(sessions.filter(s => s.metadata?.education === 'bachelor_plus').length / sessions.length * 100) || 0 },
         { category: isRTL ? 'الموقع' : 'Location', value: 'Urban', percentage: Math.round(sessions.filter(s => s.metadata?.location_type === 'urban').length / sessions.length * 100) || 0 }
       ];
@@ -298,7 +298,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
     
     return {
       position: estimatedPosition,
-      similarOpportunities: Math.floor(totalViews / 50) + 5, // Estimate based on view activity
+      similarOpportunities: Math.max(1, Math.floor(totalViews / 50)), // Estimate based on view activity
       marketShare: totalApplications > 0 ? Math.min(25, (totalApplications / 10) * 2.5) : 0,
       uniqueValue: Math.min(100, Math.max(50, performanceScore / 10))
     };
