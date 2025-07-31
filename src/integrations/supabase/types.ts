@@ -4046,15 +4046,7 @@ export type Database = {
           updated_at?: string
           view_count?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: "fk_opportunity_analytics_opportunity_id"
-            columns: ["opportunity_id"]
-            isOneToOne: true
-            referencedRelation: "partnership_opportunities"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       opportunity_applications: {
         Row: {
