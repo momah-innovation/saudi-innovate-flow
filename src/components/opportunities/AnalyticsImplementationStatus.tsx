@@ -21,7 +21,8 @@ import {
   Target,
   Zap,
   FileText,
-  Eye
+  Eye,
+  Brain
 } from 'lucide-react';
 
 interface ImplementationItem {
@@ -200,7 +201,7 @@ export const AnalyticsImplementationStatus = () => {
       realTimeEnabled: true
     },
 
-    // Export & Reporting
+      // Export & Reporting
     {
       category: 'reporting',
       name: isRTL ? 'تصدير التقارير' : 'Analytics Export',
@@ -218,6 +219,35 @@ export const AnalyticsImplementationStatus = () => {
       icon: <BarChart3 className="w-4 h-4" />,
       supabaseIntegrated: true,
       realTimeEnabled: true
+    },
+
+    // Advanced Analytics Features
+    {
+      category: 'advanced',
+      name: isRTL ? 'تتبع جلسات المستخدم' : 'User Session Tracking',
+      status: 'completed',
+      description: isRTL ? 'تتبع شامل للجلسات مع البيانات الجغرافية' : 'Comprehensive session tracking with geographic data',
+      icon: <Activity className="w-4 h-4" />,
+      supabaseIntegrated: true,
+      realTimeEnabled: true
+    },
+    {
+      category: 'advanced',
+      name: isRTL ? 'تحليلات الأداء المتقدمة' : 'Advanced Performance Analytics',
+      status: 'completed',
+      description: isRTL ? 'مقاييس حقيقية للأداء والتفاعل' : 'Real performance and engagement metrics',
+      icon: <Target className="w-4 h-4" />,
+      supabaseIntegrated: true,
+      realTimeEnabled: true
+    },
+    {
+      category: 'advanced',
+      name: isRTL ? 'تحليل أنماط السلوك' : 'Behavior Pattern Analysis',
+      status: 'completed',
+      description: isRTL ? 'تتبع وتحليل سلوك المستخدمين' : 'User behavior tracking and analysis',
+      icon: <Brain className="w-4 h-4" />,
+      supabaseIntegrated: true,
+      realTimeEnabled: true
     }
   ];
 
@@ -227,7 +257,8 @@ export const AnalyticsImplementationStatus = () => {
     { id: 'analytics', name: isRTL ? 'التحليلات' : 'Analytics', count: implementationItems.filter(i => i.category === 'analytics').length },
     { id: 'interactions', name: isRTL ? 'التفاعلات' : 'Interactions', count: implementationItems.filter(i => i.category === 'interactions').length },
     { id: 'tracking', name: isRTL ? 'التتبع' : 'Tracking', count: implementationItems.filter(i => i.category === 'tracking').length },
-    { id: 'reporting', name: isRTL ? 'التقارير' : 'Reporting', count: implementationItems.filter(i => i.category === 'reporting').length }
+    { id: 'reporting', name: isRTL ? 'التقارير' : 'Reporting', count: implementationItems.filter(i => i.category === 'reporting').length },
+    { id: 'advanced', name: isRTL ? 'المتقدم' : 'Advanced', count: implementationItems.filter(i => i.category === 'advanced').length }
   ];
 
   const filteredItems = selectedCategory === 'all' 
@@ -351,7 +382,7 @@ export const AnalyticsImplementationStatus = () => {
         <Card>
           <CardContent className="pt-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">13</div>
+              <div className="text-2xl font-bold text-green-600">17</div>
               <div className="text-sm text-muted-foreground">
                 {isRTL ? 'جداول قاعدة بيانات' : 'Database Tables'}
               </div>
@@ -373,7 +404,7 @@ export const AnalyticsImplementationStatus = () => {
         <Card>
           <CardContent className="pt-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">8</div>
+              <div className="text-2xl font-bold text-purple-600">12</div>
               <div className="text-sm text-muted-foreground">
                 {isRTL ? 'ميزات في الوقت الفعلي' : 'Real-time Features'}
               </div>

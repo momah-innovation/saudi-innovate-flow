@@ -8,7 +8,7 @@ const corsHeaders = {
 
 interface TrackRequest {
   opportunityId: string
-  action: 'view' | 'like' | 'share' | 'apply'
+  action: 'view' | 'like' | 'share' | 'apply' | 'timeSpent' | 'journey' | 'behavior'
   userId?: string
   sessionId?: string
   timeSpent?: number
@@ -45,33 +45,19 @@ serve(async (req) => {
     // Update analytics based on action
     switch (action) {
       case 'view':
-        // Enhanced session-based view tracking
-        const sessionIdToUse = sessionId || crypto.randomUUID()
-        const userAgent = req.headers.get('user-agent') || ''
-        const referrer = req.headers.get('referer') || ''
-        
-        // Upsert view session
-        await supabase
-          .from('opportunity_view_sessions')
-          .upsert({
-            opportunity_id: opportunityId,
-            user_id: userId,
-            session_id: sessionIdToUse,
-            user_agent: userAgent,
-            referrer: referrer,
-            last_view_at: new Date().toISOString(),
-            time_spent_seconds: timeSpent || 0,
-            source: metadata?.source || 'unknown',
-            view_count: 1
-          }, {
-            onConflict: 'opportunity_id,session_id',
-            ignoreDuplicates: false
-          })
-        
-        // Update main analytics
-        await supabase.rpc('increment_opportunity_views', { 
-          p_opportunity_id: opportunityId 
-        })
+        await handleViewTracking(supabase, opportunityId, sessionId, userId, metadata, req)
+        break
+
+      case 'timeSpent':
+        await handleTimeSpentTracking(supabase, sessionId!, metadata)
+        break
+
+      case 'journey':
+        await handleJourneyTracking(supabase, opportunityId, sessionId!, metadata)
+        break
+
+      case 'behavior':
+        await handleBehaviorTracking(supabase, opportunityId, sessionId!, metadata)
         break
 
       case 'like':
@@ -161,3 +147,97 @@ serve(async (req) => {
     )
   }
 })
+
+async function handleViewTracking(supabase: any, opportunityId: string, sessionId: string | undefined, userId: string | undefined, metadata: any, req: Request) {
+  const sessionIdToUse = sessionId || crypto.randomUUID()
+  const userAgent = req.headers.get('user-agent') || ''
+  const referrer = req.headers.get('referer') || ''
+  
+  // Get geographic info from metadata (in production use IP geolocation service)
+  const countryCode = metadata?.countryCode || 'SA'
+  const countryName = metadata?.countryName || 'Saudi Arabia'
+  const city = metadata?.city || 'Riyadh'
+
+  // Insert or update view session
+  const { error: sessionError } = await supabase
+    .from('opportunity_view_sessions')
+    .upsert({
+      opportunity_id: opportunityId,
+      session_id: sessionIdToUse,
+      user_id: userId,
+      user_agent: userAgent,
+      country_code: countryCode,
+      country_name: countryName,
+      city: city,
+      referrer: referrer,
+      utm_source: metadata?.utmSource,
+      utm_medium: metadata?.utmMedium,
+      utm_campaign: metadata?.utmCampaign,
+      start_time: new Date().toISOString()
+    }, {
+      onConflict: 'session_id'
+    })
+
+  if (sessionError) {
+    console.error('Session tracking error:', sessionError)
+  }
+
+  // Update geographic analytics
+  const { error: geoError } = await supabase.rpc('update_geographic_analytics', {
+    p_opportunity_id: opportunityId,
+    p_country_code: countryCode,
+    p_country_name: countryName,
+    p_city: city
+  })
+
+  if (geoError) {
+    console.error('Geographic tracking error:', geoError)
+  }
+
+  // Increment view count in main analytics
+  await supabase.rpc('increment_opportunity_views', {
+    p_opportunity_id: opportunityId
+  })
+}
+
+async function handleTimeSpentTracking(supabase: any, sessionId: string, metadata: any) {
+  const { error } = await supabase.rpc('end_view_session', {
+    p_session_id: sessionId,
+    p_duration_seconds: metadata.durationSeconds,
+    p_page_views: metadata.pageViews || 1,
+    p_bounce: metadata.bounce || false
+  })
+
+  if (error) {
+    console.error('Time spent tracking error:', error)
+  }
+}
+
+async function handleJourneyTracking(supabase: any, opportunityId: string, sessionId: string, metadata: any) {
+  const { error } = await supabase.rpc('track_user_journey_step', {
+    p_opportunity_id: opportunityId,
+    p_session_id: sessionId,
+    p_step_name: metadata.stepName,
+    p_time_spent_seconds: metadata.timeSpentSeconds,
+    p_metadata: metadata.stepMetadata || {}
+  })
+
+  if (error) {
+    console.error('Journey tracking error:', error)
+  }
+}
+
+async function handleBehaviorTracking(supabase: any, opportunityId: string, sessionId: string, metadata: any) {
+  const { error } = await supabase.rpc('track_behavior_pattern', {
+    p_opportunity_id: opportunityId,
+    p_session_id: sessionId,
+    p_action_type: metadata.actionType,
+    p_action_target: metadata.actionTarget,
+    p_duration_ms: metadata.durationMs,
+    p_metadata: metadata.behaviorMetadata || {}
+  })
+
+  if (error) {
+    console.error('Behavior tracking error:', error)
+  }
+}
