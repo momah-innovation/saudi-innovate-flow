@@ -18,6 +18,7 @@ import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell, 
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useTranslation } from '@/hooks/useTranslation';
+import { StatisticsNotificationCenter } from '@/components/statistics/StatisticsNotificationCenter';
 import { 
   BarChart3, TrendingUp, Users, Lightbulb, Target, 
   Calendar, Award, Building, Globe, Star, PieChart as PieChartIcon,
