@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { 
   FileCheck, 
   Clock, 
@@ -32,18 +33,19 @@ export function AdminEvaluationsHero({
   activeEvaluators,
   evaluationRate
 }: AdminEvaluationsHeroProps) {
+  const { t } = useTranslation();
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       {/* Total Evaluations */}
       <Card className="gradient-border hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Evaluations</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('total_evaluations')}</CardTitle>
           <FileCheck className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-primary">{totalEvaluations}</div>
           <p className="text-xs text-muted-foreground">
-            +12% from last month
+            {t('from_last_month', { percentage: 12 })}
           </p>
         </CardContent>
       </Card>
@@ -51,13 +53,13 @@ export function AdminEvaluationsHero({
       {/* Pending Evaluations */}
       <Card className="hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Pending Reviews</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('pending_reviews')}</CardTitle>
           <Clock className="h-4 w-4 text-orange-500" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-orange-600">{pendingEvaluations}</div>
           <p className="text-xs text-muted-foreground">
-            Awaiting expert review
+            {t('awaiting_expert_review')}
           </p>
         </CardContent>
       </Card>
@@ -65,13 +67,13 @@ export function AdminEvaluationsHero({
       {/* Average Score */}
       <Card className="hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Average Score</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('average_score')}</CardTitle>
           <Star className="h-4 w-4 text-yellow-500" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-green-600">{averageScore}/10</div>
           <p className="text-xs text-muted-foreground">
-            Quality benchmark
+            {t('quality_benchmark')}
           </p>
         </CardContent>
       </Card>
@@ -79,13 +81,13 @@ export function AdminEvaluationsHero({
       {/* Active Evaluators */}
       <Card className="hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Active Evaluators</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('active_evaluators')}</CardTitle>
           <Users className="h-4 w-4 text-blue-500" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-blue-600">{activeEvaluators}</div>
           <p className="text-xs text-muted-foreground">
-            Expert reviewers
+            {t('expert_reviewers')}
           </p>
         </CardContent>
       </Card>
@@ -95,7 +97,7 @@ export function AdminEvaluationsHero({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
-            Evaluation Performance
+            {t('evaluation_performance')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -104,14 +106,14 @@ export function AdminEvaluationsHero({
               <div className="text-xl font-bold text-green-600">{completedEvaluations}</div>
               <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                 <CheckCircle className="h-3 w-3" />
-                Completed
+                {t('completed')}
               </div>
             </div>
             <div className="text-center">
               <div className="text-xl font-bold text-purple-600">{topPerformingIdeas}</div>
               <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                 <Star className="h-3 w-3" />
-                Top Rated (8+)
+                {t('top_rated_8_plus')}
               </div>
             </div>
           </div>
@@ -123,7 +125,7 @@ export function AdminEvaluationsHero({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Timer className="h-5 w-5 text-orange-500" />
-            Review Status
+            {t('review_status')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -132,13 +134,13 @@ export function AdminEvaluationsHero({
               <div className="text-xl font-bold text-red-600">{criticalReviews}</div>
               <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                 <AlertCircle className="h-3 w-3" />
-                Critical Issues
+                {t('critical_issues')}
               </div>
             </div>
             <div className="text-center">
               <div className="text-xl font-bold text-blue-600">{evaluationRate}%</div>
               <div className="text-sm text-muted-foreground">
-                Completion Rate
+                {t('completion_rate')}
               </div>
             </div>
           </div>

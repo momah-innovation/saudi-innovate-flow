@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { toast } from 'sonner';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 // Avatar mapping for the existing users
 const AVATAR_MAPPING = [
@@ -28,6 +29,7 @@ interface BulkAvatarUploaderProps {
 }
 
 export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
+  const { t } = useTranslation();
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [results, setResults] = useState<{
@@ -93,15 +95,18 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
       });
 
       if (failedUploads.length === 0) {
-        toast.success('All avatars updated successfully!');
+        toast.success(t('all_avatars_updated_successfully'));
       } else {
-        toast.warning(`${successfulUploads.length} avatars updated, ${failedUploads.length} failed`);
+        toast.warning(t('avatars_update_partial_success', { 
+          success: successfulUploads.length, 
+          failed: failedUploads.length 
+        }));
       }
 
       onComplete?.();
     } catch (error) {
       console.error('Bulk upload error:', error);
-      toast.error('Failed to upload avatars');
+      toast.error(t('failed_to_upload_avatars'));
     } finally {
       setUploading(false);
     }
@@ -112,10 +117,10 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Users className="h-5 w-5" />
-          Bulk Avatar Upload
+          {t('bulk_avatar_upload')}
         </CardTitle>
         <CardDescription>
-          Upload avatar images for all existing users from the public folder
+          {t('bulk_avatar_upload_description')}
         </CardDescription>
       </CardHeader>
       
@@ -123,14 +128,16 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            This will update avatar URLs for {AVATAR_MAPPING.reduce((total, mapping) => total + mapping.userNames.length, 0)} users 
-            using {AVATAR_MAPPING.length} professional avatar images.
+            {t('bulk_avatar_update_warning', { 
+              userCount: AVATAR_MAPPING.reduce((total, mapping) => total + mapping.userNames.length, 0),
+              imageCount: AVATAR_MAPPING.length 
+            })}
           </AlertDescription>
         </Alert>
 
         {!uploading && results.total === 0 && (
           <div className="space-y-4">
-            <h3 className="font-medium">Avatar Assignments:</h3>
+            <h3 className="font-medium">{t('avatar_assignments')}:</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-60 overflow-y-auto">
               {AVATAR_MAPPING.map((mapping, index) => (
                 <div key={index} className="p-3 border rounded-lg">
@@ -150,7 +157,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
           <div className="space-y-4">
             <Progress value={progress} className="w-full" />
             <p className="text-sm text-center text-muted-foreground">
-              Uploading avatars... {Math.round(progress)}%
+              {t('uploading_avatars_progress', { progress: Math.round(progress) })}
             </p>
           </div>
         )}
@@ -161,12 +168,12 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
               <div className="text-center p-4 bg-green-50 rounded-lg">
                 <CheckCircle className="h-8 w-8 text-green-600 mx-auto mb-2" />
                 <p className="font-medium text-green-900">{results.success.length}</p>
-                <p className="text-sm text-green-700">Successful</p>
+                <p className="text-sm text-green-700">{t('successful')}</p>
               </div>
               <div className="text-center p-4 bg-red-50 rounded-lg">
                 <AlertCircle className="h-8 w-8 text-red-600 mx-auto mb-2" />
                 <p className="font-medium text-red-900">{results.failed.length}</p>
-                <p className="text-sm text-red-700">Failed</p>
+                <p className="text-sm text-red-700">{t('failed')}</p>
               </div>
             </div>
 
@@ -174,7 +181,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
               <Alert>
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
-                  <strong>Failed uploads:</strong>
+                  <strong>{t('failed_uploads')}:</strong>
                   <ul className="mt-2 list-disc list-inside text-sm">
                     {results.failed.map((item, index) => (
                       <li key={index}>{item}</li>
@@ -193,15 +200,13 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
           size="lg"
         >
           <Upload className="h-4 w-4 mr-2" />
-          {uploading ? 'Uploading Avatars...' : 'Start Bulk Upload'}
+          {uploading ? t('uploading_avatars') : t('start_bulk_upload')}
         </Button>
 
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription className="text-xs">
-            <strong>Note:</strong> Make sure you have manually uploaded the avatar images from 
-            your public/avatars/ folder to the Supabase 'avatars' storage bucket first. 
-            This tool will update the database references to point to those images.
+            <strong>{t('note')}:</strong> {t('avatar_upload_note')}
           </AlertDescription>
         </Alert>
       </CardContent>

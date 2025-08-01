@@ -66,7 +66,7 @@ export function AdminDashboardHero({
             <div className="text-xl font-bold">{systemHealth}</div>
           </div>
           <p className="text-xs text-muted-foreground">
-            {uptime}% uptime this month
+            {t('uptime_this_month', { uptime })}
           </p>
           <div className="mt-2">
             <Progress value={uptime} className="h-2" />
@@ -77,13 +77,13 @@ export function AdminDashboardHero({
       {/* Storage Usage */}
       <Card className="gradient-border hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Storage Usage</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('storage_usage')}</CardTitle>
           <Database className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{storageUsed} GB</div>
           <p className="text-xs text-muted-foreground">
-            {activePolicies} active policies
+            {t('active_policies_count', { count: activePolicies })}
           </p>
           <div className="mt-2">
             <Progress value={25} className="h-2" />
@@ -94,7 +94,7 @@ export function AdminDashboardHero({
       {/* Security Status */}
       <Card className="gradient-border hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Security Status</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('security_status')}</CardTitle>
           <Shield className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
@@ -105,15 +105,15 @@ export function AdminDashboardHero({
               <CheckCircle className="h-5 w-5 text-green-500" />
             )}
             <div className="text-xl font-bold">
-              {securityAlerts > 0 ? `${securityAlerts} Alerts` : 'Secure'}
+              {securityAlerts > 0 ? t('alerts_count', { count: securityAlerts }) : t('secure')}
             </div>
           </div>
           <p className="text-xs text-muted-foreground">
-            {pendingUpdates} pending updates
+            {t('pending_updates_count', { count: pendingUpdates })}
           </p>
           {securityAlerts > 0 && (
             <Badge variant="destructive" className="mt-2">
-              Action Required
+              {t('action_required')}
             </Badge>
           )}
         </CardContent>
