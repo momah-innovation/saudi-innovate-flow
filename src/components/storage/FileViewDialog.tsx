@@ -75,6 +75,126 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
     return '📁'
   }
 
+  const getFileUrl = () => {
+    if (file.is_public) {
+      const { data } = supabase.storage.from(file.bucket_id).getPublicUrl(file.name)
+      return data.publicUrl
+    }
+    return null
+  }
+
+  const isImage = () => {
+    const extension = file.name.split('.').pop()?.toLowerCase()
+    return ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(extension || '')
+  }
+
+  const isPdf = () => {
+    const extension = file.name.split('.').pop()?.toLowerCase()
+    return extension === 'pdf'
+  }
+
+  const isVideo = () => {
+    const extension = file.name.split('.').pop()?.toLowerCase()
+    return ['mp4', 'avi', 'mov', 'webm'].includes(extension || '')
+  }
+
+  const isAudio = () => {
+    const extension = file.name.split('.').pop()?.toLowerCase()
+    return ['mp3', 'wav', 'ogg', 'm4a'].includes(extension || '')
+  }
+
+  const renderFilePreview = () => {
+    const fileUrl = getFileUrl()
+    
+    if (!fileUrl) {
+      return (
+        <div className="bg-muted/50 border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
+          <FileIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+          <p className="text-sm text-muted-foreground">
+            Preview not available for private files
+          </p>
+        </div>
+      )
+    }
+
+    if (isImage()) {
+      return (
+        <div className="bg-muted/50 border-2 border-dashed border-muted-foreground/25 rounded-lg p-4 text-center">
+          <img 
+            src={fileUrl} 
+            alt={file.name}
+            className="max-w-full max-h-96 mx-auto rounded-lg object-contain"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement
+              target.style.display = 'none'
+              target.nextElementSibling?.classList.remove('hidden')
+            }}
+          />
+          <div className="hidden">
+            <FileIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+            <p className="text-sm text-muted-foreground">Failed to load image</p>
+          </div>
+        </div>
+      )
+    }
+
+    if (isPdf()) {
+      return (
+        <div className="bg-muted/50 border-2 border-dashed border-muted-foreground/25 rounded-lg p-4 text-center">
+          <iframe
+            src={fileUrl}
+            className="w-full h-96 rounded border-0"
+            title={`PDF Preview: ${file.name}`}
+          />
+        </div>
+      )
+    }
+
+    if (isVideo()) {
+      return (
+        <div className="bg-muted/50 border-2 border-dashed border-muted-foreground/25 rounded-lg p-4 text-center">
+          <video 
+            controls 
+            className="max-w-full max-h-96 mx-auto rounded-lg"
+            preload="metadata"
+          >
+            <source src={fileUrl} type={file.metadata?.mimetype || ''} />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      )
+    }
+
+    if (isAudio()) {
+      return (
+        <div className="bg-muted/50 border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
+          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span className="text-2xl">🎵</span>
+          </div>
+          <audio controls className="w-full max-w-md mx-auto">
+            <source src={fileUrl} type={file.metadata?.mimetype || ''} />
+            Your browser does not support the audio tag.
+          </audio>
+        </div>
+      )
+    }
+
+    return (
+      <div className="bg-muted/50 border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
+        <FileIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+        <p className="text-sm text-muted-foreground mb-2">
+          Preview not available for this file type
+        </p>
+        <Button variant="outline" size="sm" onClick={() => {
+          window.open(fileUrl, '_blank')
+        }}>
+          <ExternalLink className="w-4 h-4 mr-2" />
+          Open in new tab
+        </Button>
+      </div>
+    )
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
@@ -90,12 +210,7 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
 
         <div className="space-y-6">
           {/* File Preview */}
-          <div className="bg-muted/50 border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
-            <FileIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <p className="text-sm text-muted-foreground">
-              File preview not available
-            </p>
-          </div>
+          {renderFilePreview()}
 
           {/* File Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
