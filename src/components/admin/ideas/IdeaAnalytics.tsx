@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MetricCard } from "@/components/ui/metric-card";
 import { ChartContainer } from "@/components/ui/chart";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts";
 import { TrendingUp, TrendingDown, Users, Lightbulb, CheckCircle, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { isThisMonth, format, subMonths, isSameMonth } from "date-fns";
@@ -179,25 +178,20 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
             <CardDescription>Ideas by current status</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={statusDistribution}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ status, percentage }) => `${status}: ${percentage.toFixed(1)}%`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="count"
-                >
-                  {statusDistribution.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+            <div className="space-y-3">
+              {statusDistribution.map((item, index) => (
+                <div key={item.status} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div 
+                      className="w-3 h-3 rounded" 
+                      style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                    />
+                    <span className="text-sm capitalize">{item.status}</span>
+                  </div>
+                  <Badge variant="outline">{item.percentage.toFixed(1)}%</Badge>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
 
@@ -208,15 +202,14 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
             <CardDescription>Ideas by score ranges</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={scoreDistribution}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="range" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="count" fill="#8884d8" />
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="space-y-3">
+              {scoreDistribution.map((item, index) => (
+                <div key={item.range} className="flex items-center justify-between">
+                  <span className="text-sm">{item.range}</span>
+                  <Badge variant="secondary">{item.count} ideas</Badge>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -230,16 +223,17 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
             <CardDescription>Ideas submitted and implemented over time</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={monthlyData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Line type="monotone" dataKey="ideas" stroke="#8884d8" name="Submitted" />
-                <Line type="monotone" dataKey="implemented" stroke="#82ca9d" name="Implemented" />
-              </LineChart>
-            </ResponsiveContainer>
+            <div className="space-y-3">
+              {monthlyData.slice(-6).map((item, index) => (
+                <div key={item.month} className="flex items-center justify-between">
+                  <span className="text-sm">{item.month}</span>
+                  <div className="flex gap-2">
+                    <Badge variant="outline">{item.ideas} submitted</Badge>
+                    <Badge variant="secondary">{item.implemented} implemented</Badge>
+                  </div>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
 
@@ -250,15 +244,14 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
             <CardDescription>Ideas by category</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={categoryData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="category" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="count" fill="#ffc658" />
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="space-y-3">
+              {categoryData.map((item, index) => (
+                <div key={item.category} className="flex items-center justify-between">
+                  <span className="text-sm capitalize">{item.category}</span>
+                  <Badge variant="outline">{item.count} ideas</Badge>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>
