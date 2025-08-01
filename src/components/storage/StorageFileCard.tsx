@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Files, Eye, Download, Trash2, FileImage, FileText, Video, Music, MoreVertical } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { useTranslation } from '@/hooks/useAppTranslation'
 
 interface StorageFile {
   name: string
@@ -24,6 +25,7 @@ interface StorageFileCardProps {
 }
 
 export function StorageFileCard({ file, onView, onDownload, onDelete }: StorageFileCardProps) {
+  const { t } = useTranslation()
   const getFileIcon = (mimetype?: string) => {
     if (!mimetype) return Files
     
@@ -36,7 +38,7 @@ export function StorageFileCard({ file, onView, onDownload, onDelete }: StorageF
   }
 
   const formatSize = (size?: number) => {
-    if (!size) return 'غير معروف'
+    if (!size) return t('unknown')
     if (size < 1024) return `${size} B`
     if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`
     return `${(size / (1024 * 1024)).toFixed(1)} MB`
@@ -66,15 +68,15 @@ export function StorageFileCard({ file, onView, onDownload, onDelete }: StorageF
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => onView(file)}>
                 <Eye className="w-4 h-4 mr-2" />
-                عرض
+                {t('view')}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onDownload(file)}>
                 <Download className="w-4 h-4 mr-2" />
-                تحميل
+                {t('download')}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onDelete(file)} className="text-destructive">
                 <Trash2 className="w-4 h-4 mr-2" />
-                حذف
+                {t('delete')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -87,7 +89,7 @@ export function StorageFileCard({ file, onView, onDownload, onDelete }: StorageF
           
           <div className="flex items-center gap-2">
             <Badge variant={file.is_public ? "default" : "secondary"} className="text-xs px-2 py-0.5">
-              {file.is_public ? 'عام' : 'خاص'}
+              {file.is_public ? t('public') : t('private')}
             </Badge>
             <span className="text-xs text-muted-foreground font-medium">
               {formatSize(file.metadata?.size)}
@@ -97,16 +99,16 @@ export function StorageFileCard({ file, onView, onDownload, onDelete }: StorageF
         
         <div className="space-y-1.5 text-xs text-muted-foreground">
           <div className="flex justify-between items-center">
-            <span className="font-medium">الحاوية</span>
+            <span className="font-medium">{t('bucket')}</span>
             <span className="truncate ml-2 bg-muted/50 px-2 py-0.5 rounded text-xs font-mono">
               {file.bucket_id}
             </span>
           </div>
           {file.metadata?.mimetype && (
             <div className="flex justify-between items-center">
-              <span className="font-medium">النوع</span>
+              <span className="font-medium">{t('type')}</span>
               <span className="truncate ml-2 text-xs">
-                {file.metadata.mimetype.split('/')[1]?.toUpperCase() || 'غير محدد'}
+                {file.metadata.mimetype.split('/')[1]?.toUpperCase() || t('unspecified')}
               </span>
             </div>
           )}
@@ -115,11 +117,11 @@ export function StorageFileCard({ file, onView, onDownload, onDelete }: StorageF
         <div className="flex gap-1.5 mt-4">
           <Button variant="outline" onClick={() => onView(file)} className="flex-1 h-8 text-xs">
             <Eye className="w-3.5 h-3.5 mr-1.5" />
-            عرض
+            {t('view')}
           </Button>
           <Button variant="outline" onClick={() => onDownload(file)} className="flex-1 h-8 text-xs">
             <Download className="w-3.5 h-3.5 mr-1.5" />
-            تحميل
+            {t('download')}
           </Button>
         </div>
       </CardContent>

@@ -693,7 +693,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
                     <div>
                       <span className="text-muted-foreground">Auto Cleanup:</span>
                       <p className="font-medium">
-                        {config.autoCleanup ? `${config.cleanupDays} days` : 'Disabled'}
+                        {config.autoCleanup ? `${config.cleanupDays} ${t('days')}` : t('disabled')}
                       </p>
                     </div>
                   </div>
