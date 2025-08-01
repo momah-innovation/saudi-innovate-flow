@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ManagementCard } from '@/components/ui/management-card';
 import { ViewLayouts } from '@/components/ui/view-layouts';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { EventWizard } from '@/components/events/EventWizard';
 import { ComprehensiveEventWizard } from '@/components/events/ComprehensiveEventWizard';
 import { ComprehensiveEventDialog } from '@/components/events/ComprehensiveEventDialog';

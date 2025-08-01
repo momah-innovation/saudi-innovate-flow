@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation } from "@/hooks/useAppTranslation";
 
 interface PageHeaderProps {
   title: string;

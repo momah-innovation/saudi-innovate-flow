@@ -1,6 +1,6 @@
 import { AppShell } from "@/components/layout/AppShell";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation } from "@/hooks/useAppTranslation";
 import { useState } from "react";
 import { UserPlus, Users, Download, Search, MoreHorizontal, Settings, Mail } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";

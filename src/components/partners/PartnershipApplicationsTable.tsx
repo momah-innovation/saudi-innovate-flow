@@ -15,7 +15,7 @@ import {
   Eye, Filter, Download, Calendar, 
   Search, DollarSign, Building
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface Application {
   id: string;

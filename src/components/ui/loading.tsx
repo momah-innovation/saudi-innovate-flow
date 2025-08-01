@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation } from "@/hooks/useAppTranslation";
 
 // Loading Spinner
 interface LoadingSpinnerProps {

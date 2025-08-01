@@ -9,7 +9,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Eye, EyeOff, ArrowLeft, Home } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 const Auth = () => {
   // Force light mode for auth page

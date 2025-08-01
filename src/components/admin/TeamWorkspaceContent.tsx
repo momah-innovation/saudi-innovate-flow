@@ -22,7 +22,7 @@ import {
   Eye, Edit3, Archive, Star, Heart, ThumbsUp, ArrowRight, ExternalLink,
   PieChart, LineChart
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { CreateProjectDialog } from './team-workspace/CreateProjectDialog';
 import { InviteMemberDialog } from './team-workspace/InviteMemberDialog';
 import { TaskAssignmentDialog } from './team-workspace/TaskAssignmentDialog';

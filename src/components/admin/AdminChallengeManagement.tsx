@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation } from "@/hooks/useAppTranslation";
 import { 
   Target, 
   Calendar, 

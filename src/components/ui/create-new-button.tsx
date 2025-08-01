@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation } from "@/hooks/useAppTranslation";
 
 interface CreateNewButtonProps {
   onClick: () => void;

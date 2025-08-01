@@ -5,7 +5,7 @@ import { DetailView } from '@/components/ui/detail-view';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, Calendar, DollarSign, Users, Target, AlertTriangle, Clock } from 'lucide-react';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { useToast } from '@/hooks/use-toast';
 
 interface Assignment {

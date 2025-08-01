@@ -45,7 +45,7 @@ import { IntegrationSettings } from "@/components/admin/settings/IntegrationSett
 import { SystemListSettings } from "@/components/admin/settings/SystemListSettings";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useDirection } from "@/components/ui/direction-provider";
-import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation } from "@/hooks/useAppTranslation";
 
 const SystemSettings = () => {
   const { toast } = useToast();

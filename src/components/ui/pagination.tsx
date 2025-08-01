@@ -1,6 +1,6 @@
 import * as React from "react"
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
-import { useTranslation } from "@/hooks/useTranslation"
+import { useTranslation } from "@/hooks/useAppTranslation"
 
 import { cn } from "@/lib/utils"
 import { ButtonProps, buttonVariants } from "@/components/ui/button"

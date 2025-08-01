@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { useAuth } from '@/contexts/AuthContext';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';

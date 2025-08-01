@@ -17,7 +17,7 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area } from 'recharts';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { StatisticsNotificationCenter } from '@/components/statistics/StatisticsNotificationCenter';
 import { 
   BarChart3, TrendingUp, Users, Lightbulb, Target, 

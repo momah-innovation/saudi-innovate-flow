@@ -6,7 +6,7 @@ import { FocusQuestionDetailView } from "./focus-questions/FocusQuestionDetailVi
 import { EmptyState } from "@/components/ui/empty-state";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation } from "@/hooks/useAppTranslation";
 
 import { 
   HelpCircle, 

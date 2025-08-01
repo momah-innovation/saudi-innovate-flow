@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle, AlertCircle, Info, AlertTriangle, Loader2 } from "lucide-react";
-import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation } from "@/hooks/useAppTranslation";
 
 type StateType = 'loading' | 'success' | 'error' | 'warning' | 'info';
 

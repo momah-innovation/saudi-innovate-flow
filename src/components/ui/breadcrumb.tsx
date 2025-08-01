@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { ChevronRight, MoreHorizontal } from "lucide-react"
-import { useTranslation } from "@/hooks/useTranslation"
+import { useTranslation } from "@/hooks/useAppTranslation"
 
 import { cn } from "@/lib/utils"
 

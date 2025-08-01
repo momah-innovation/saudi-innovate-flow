@@ -7,7 +7,7 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { FocusQuestionWizard } from './FocusQuestionWizard';
 import { HelpCircle, Plus } from 'lucide-react';
 

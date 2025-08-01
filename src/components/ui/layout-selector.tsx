@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { LayoutGrid, List, Grid } from "lucide-react";
-import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation } from "@/hooks/useAppTranslation";
 
 type ViewMode = 'cards' | 'list' | 'grid' | 'calendar';
 

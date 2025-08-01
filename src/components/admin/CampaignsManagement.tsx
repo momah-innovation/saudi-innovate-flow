@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { ManagementCard } from '@/components/ui/management-card';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CampaignWizard } from './CampaignWizard';

@@ -11,7 +11,7 @@ import {
   Users,
   Settings
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface StoragePoliciesHeroProps {
   totalBuckets: number;

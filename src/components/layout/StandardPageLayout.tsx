@@ -8,7 +8,7 @@ import { CompactSearchAndFilters } from "@/components/ui/compact-search-filters"
 import { BulkActions } from "@/components/ui/bulk-actions";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation } from "@/hooks/useAppTranslation";
 
 export type ViewMode = 'cards' | 'list' | 'grid' | 'calendar' | 'gantt' | 'timeline';
 export type FilterConfig = {

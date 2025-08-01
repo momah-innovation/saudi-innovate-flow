@@ -14,7 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, Clock, Shield, Bell, Users, Archive, Settings as SettingsIcon } from "lucide-react";
-import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation } from "@/hooks/useAppTranslation";
 
 interface Challenge {
   id: string;

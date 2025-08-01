@@ -12,7 +12,7 @@ import {
   Edit, MoreVertical, UserX, Crown,
   Clock, CheckCircle, AlertTriangle, Plus
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import {
   DropdownMenu,
   DropdownMenuContent,

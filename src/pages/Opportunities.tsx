@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { LayoutSelector } from '@/components/ui/layout-selector';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useToast } from '@/hooks/use-toast';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { EnhancedOpportunitiesHero } from '@/components/opportunities/EnhancedOpportunitiesHero';
 import { OpportunityCard } from '@/components/opportunities/OpportunityCard';

@@ -5,7 +5,7 @@ import { InnovationTeamsContent } from '@/components/admin/InnovationTeamsConten
 import { UserPlus, Users, Zap } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 export default function InnovationTeamsManagement() {
   const { t } = useTranslation();

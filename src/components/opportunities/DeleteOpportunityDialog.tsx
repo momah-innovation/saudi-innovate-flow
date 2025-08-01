@@ -12,7 +12,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { Trash2, AlertTriangle } from 'lucide-react';
 
 interface DeleteOpportunityDialogProps {

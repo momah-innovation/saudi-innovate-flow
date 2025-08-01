@@ -5,7 +5,7 @@ import { IdeasManagementList, Idea } from "./ideas/IdeasManagementList";
 import { IdeaAnalytics } from "./ideas/IdeaAnalytics";
 import { IdeaWizard } from "./IdeaWizard";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation } from "@/hooks/useAppTranslation";
 
 export function IdeasManagement() {
   const { t } = useTranslation();

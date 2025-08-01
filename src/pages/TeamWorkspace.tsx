@@ -6,7 +6,7 @@ import { EnhancedTeamWorkspaceHero } from '@/components/team-workspace/EnhancedT
 import { Users, UserPlus, Calendar, Target } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 export default function TeamWorkspace() {
   const { t } = useTranslation();

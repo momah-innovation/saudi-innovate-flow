@@ -20,7 +20,7 @@ import {
   Building
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { cn } from '@/lib/utils';
 
 interface PartnerDashboardHeroProps {
@@ -216,7 +216,7 @@ export const EnhancedPartnerDashboardHero = ({
                     {t('events')}
                   </div>
                   <div className="text-xs text-white/70">
-                    {t('upcomingEvents', { count: '5' })}
+                    {t('upcomingEvents')}
                   </div>
                 </CardContent>
               </Card>
@@ -231,7 +231,7 @@ export const EnhancedPartnerDashboardHero = ({
                     {t('projects')}
                   </div>
                   <div className="text-xs text-white/70">
-                    {t('totalProjects', { count: '12' })}
+                    {t('totalProjects')}
                   </div>
                 </CardContent>
               </Card>
