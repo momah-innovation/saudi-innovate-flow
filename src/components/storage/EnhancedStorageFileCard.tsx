@@ -45,9 +45,9 @@ export function EnhancedStorageFileCard({
   const [imageError, setImageError] = useState(false);
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return `0 ${t('bytes')}`;
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = [t('bytes'), t('kb'), t('mb'), t('gb')];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
@@ -167,7 +167,7 @@ export function EnhancedStorageFileCard({
           <div className="flex items-center gap-4 text-xs text-muted-foreground">
             <div className="flex items-center gap-1">
               <HardDrive className="w-3 h-3" />
-              {file.metadata?.size ? formatFileSize(file.metadata.size) : 'Unknown'}
+              {file.metadata?.size ? formatFileSize(file.metadata.size) : t('unknown')}
             </div>
             {file.updated_at && (
               <div className="flex items-center gap-1">

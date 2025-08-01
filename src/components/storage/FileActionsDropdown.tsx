@@ -54,13 +54,13 @@ export function FileActionsDropdown({
       const { data } = supabase.storage.from(file.bucket_id).getPublicUrl(file.name);
       await navigator.clipboard.writeText(data.publicUrl);
       toast({
-        title: "URL Copied",
-        description: "File URL copied to clipboard"
+        title: t('url_copied'),
+        description: t('file_url_copied')
       });
     } else {
       toast({
-        title: "Cannot Copy URL",
-        description: "This file is private and doesn't have a public URL",
+        title: t('cannot_copy_url'),
+        description: t('private_file_no_url'),
         variant: "destructive"
       });
     }
@@ -76,9 +76,9 @@ export function FileActionsDropdown({
   };
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return `0 ${t('bytes')}`;
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = [t('bytes'), t('kb'), t('mb'), t('gb')];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
@@ -107,24 +107,24 @@ export function FileActionsDropdown({
 
         <DropdownMenuItem onClick={() => { onView(file); setIsOpen(false); }}>
           <Eye className="w-4 h-4 mr-2" />
-          View Details
+          {t('view_details')}
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={() => { onDownload(file); setIsOpen(false); }}>
           <Download className="w-4 h-4 mr-2" />
-          Download
+          {t('download')}
         </DropdownMenuItem>
 
         {file.is_public && (
           <>
             <DropdownMenuItem onClick={handleCopyUrl}>
               <Copy className="w-4 h-4 mr-2" />
-              Copy URL
+              {t('copy_url')}
             </DropdownMenuItem>
 
             <DropdownMenuItem onClick={handleOpenInNewTab}>
               <ExternalLink className="w-4 h-4 mr-2" />
-              Open in New Tab
+              {t('open_in_new_tab')}
             </DropdownMenuItem>
           </>
         )}
@@ -134,28 +134,28 @@ export function FileActionsDropdown({
         {onMove && (
           <DropdownMenuItem onClick={() => { onMove(file); setIsOpen(false); }}>
             <Move className="w-4 h-4 mr-2" />
-            Move File
+            {t('move_file')}
           </DropdownMenuItem>
         )}
 
         {onRename && (
           <DropdownMenuItem onClick={() => { onRename(file); setIsOpen(false); }}>
             <Edit3 className="w-4 h-4 mr-2" />
-            Rename
+            {t('rename')}
           </DropdownMenuItem>
         )}
 
         {onShare && (
           <DropdownMenuItem onClick={() => { onShare(file); setIsOpen(false); }}>
             <Share2 className="w-4 h-4 mr-2" />
-            Share
+            {t('share')}
           </DropdownMenuItem>
         )}
 
         {onShowInfo && (
           <DropdownMenuItem onClick={() => { onShowInfo(file); setIsOpen(false); }}>
             <Info className="w-4 h-4 mr-2" />
-            Properties
+            {t('properties')}
           </DropdownMenuItem>
         )}
 
@@ -166,7 +166,7 @@ export function FileActionsDropdown({
           className="text-destructive focus:text-destructive"
         >
           <Trash2 className="w-4 h-4 mr-2" />
-          Delete
+          {t('delete')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
