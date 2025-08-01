@@ -9,6 +9,28 @@
   "security": "Security",
   "relationships": "Relationships",
   "evaluations": "Evaluations",
+  "storage": {
+    "title": "Storage Management",
+    "description": "Monitor and manage file storage across all buckets",
+    "upload_files": "Upload Files",
+    "storage_usage": "Storage Usage",
+    "of_x_used": "of {total} used",
+    "capacity": "capacity",
+    "files": "Files",
+    "buckets": "Buckets",
+    "analytics": "Analytics",
+    "files_found": "files found",
+    "search_files": "Search files..."
+  },
+  "units": {
+    "mb": "MB",
+    "gb": "GB",
+    "tb": "TB"
+  },
+  "common": {
+    "refresh": "Refresh",
+    "error": "Error"
+  },
   "overview": "Overview",
   "system_administration": "System Administration",
   "management_tools": "Management Tools",
