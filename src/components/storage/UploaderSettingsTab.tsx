@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { ConfigurationDialog } from './ConfigurationDialog'
 import { useToast } from '@/hooks/use-toast'
+import { useSystemHealth } from '@/hooks/useSystemHealth'
 import { supabase } from '@/integrations/supabase/client'
 import { 
   Settings, 
@@ -21,7 +22,8 @@ import {
   CheckCircle,
   Plus,
   Trash2,
-  Save
+  Save,
+  RefreshCw
 } from 'lucide-react'
 
 interface UploaderConfig {
@@ -53,6 +55,7 @@ interface UploaderSettingsTabProps {
 
 export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
   const { toast } = useToast()
+  const healthData = useSystemHealth()
   const [configs, setConfigs] = useState<UploaderConfig[]>([])
   const [allBuckets, setAllBuckets] = useState<any[]>([])
   const [globalSettings, setGlobalSettings] = useState<GlobalSettings>({
@@ -628,35 +631,107 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
       {/* System Health */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Shield className="w-5 h-5" />
-            System Health & Security
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Shield className="w-5 h-5" />
+              System Health & Security
+            </CardTitle>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={healthData.refreshHealth}
+              disabled={healthData.isLoading}
+            >
+              <RefreshCw className={`w-4 h-4 mr-2 ${healthData.isLoading ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
+          {healthData.error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+              <p className="text-sm text-red-600">{healthData.error}</p>
+            </div>
+          )}
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Security Status */}
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <CheckCircle className="w-8 h-8 text-green-600" />
+              <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 ${
+                healthData.security.highRiskEvents > 5 ? 'bg-red-100' :
+                healthData.security.highRiskEvents > 2 ? 'bg-yellow-100' : 'bg-green-100'
+              }`}>
+                {healthData.security.highRiskEvents > 5 ? (
+                  <AlertTriangle className="w-8 h-8 text-red-600" />
+                ) : healthData.security.highRiskEvents > 2 ? (
+                  <AlertTriangle className="w-8 h-8 text-yellow-600" />
+                ) : (
+                  <CheckCircle className="w-8 h-8 text-green-600" />
+                )}
               </div>
               <h4 className="font-medium">Security Status</h4>
-              <p className="text-sm text-muted-foreground">All configurations secured</p>
+              <p className="text-sm text-muted-foreground">
+                {healthData.security.totalSecurityEvents} events (7 days)
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {healthData.security.highRiskEvents} high-risk events
+              </p>
+              {healthData.security.suspiciousActivities > 0 && (
+                <p className="text-xs text-red-600">
+                  {healthData.security.suspiciousActivities} suspicious activities
+                </p>
+              )}
             </div>
 
+            {/* Storage Health */}
             <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <HardDrive className="w-8 h-8 text-blue-600" />
+              <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 ${
+                healthData.storage.healthStatus === 'critical' ? 'bg-red-100' :
+                healthData.storage.healthStatus === 'warning' ? 'bg-yellow-100' : 'bg-blue-100'
+              }`}>
+                <HardDrive className={`w-8 h-8 ${
+                  healthData.storage.healthStatus === 'critical' ? 'text-red-600' :
+                  healthData.storage.healthStatus === 'warning' ? 'text-yellow-600' : 'text-blue-600'
+                }`} />
               </div>
               <h4 className="font-medium">Storage Health</h4>
-              <p className="text-sm text-muted-foreground">Optimal performance</p>
+              <p className="text-sm text-muted-foreground">
+                {healthData.storage.totalBuckets} buckets, {healthData.storage.totalFiles.toLocaleString()} files
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {healthData.formatBytes(healthData.storage.totalSize)} total size
+              </p>
+              <Badge variant={
+                healthData.storage.healthStatus === 'critical' ? 'destructive' :
+                healthData.storage.healthStatus === 'warning' ? 'secondary' : 'default'
+              } className="mt-1">
+                {healthData.storage.healthStatus}
+              </Badge>
             </div>
 
+            {/* Cleanup Status */}
             <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Clock className="w-8 h-8 text-purple-600" />
+              <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 ${
+                healthData.cleanup.autoCleanupEnabled ? 'bg-purple-100' : 'bg-gray-100'
+              }`}>
+                <Clock className={`w-8 h-8 ${
+                  healthData.cleanup.autoCleanupEnabled ? 'text-purple-600' : 'text-gray-600'
+                }`} />
               </div>
               <h4 className="font-medium">Cleanup Status</h4>
-              <p className="text-sm text-muted-foreground">Last run: 2 hours ago</p>
+              <p className="text-sm text-muted-foreground">
+                {healthData.cleanup.autoCleanupEnabled ? 'Auto-cleanup enabled' : 'Manual cleanup only'}
+              </p>
+              {healthData.cleanup.lastCleanupRun && (
+                <p className="text-xs text-muted-foreground">
+                  Last run: {new Date(healthData.cleanup.lastCleanupRun).toLocaleDateString()}
+                </p>
+              )}
+              {healthData.cleanup.nextScheduledCleanup && (
+                <p className="text-xs text-green-600">
+                  Next: {new Date(healthData.cleanup.nextScheduledCleanup).toLocaleDateString()}
+                </p>
+              )}
             </div>
           </div>
         </CardContent>
