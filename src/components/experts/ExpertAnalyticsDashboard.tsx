@@ -164,18 +164,10 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
               </TabsList>
               
               <TabsContent value="evaluations" className="mt-4">
-                <ChartContainer config={{
-                  evaluations: { label: isRTL ? 'التقييمات' : 'Evaluations', color: 'hsl(var(--chart-1))' }
-                }} className="h-[200px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={evaluationTrends}>
-                      <XAxis dataKey="month" />
-                      <YAxis />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                      <Bar dataKey="evaluations" fill="hsl(var(--chart-1))" radius={4} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
+                {/* Chart components temporarily disabled */}
+                <div className="h-[200px] flex items-center justify-center bg-muted/10 rounded-lg">
+                  <p className="text-muted-foreground">Chart visualization temporarily unavailable</p>
+                </div>
               </TabsContent>
               
               <TabsContent value="scores" className="mt-4">
