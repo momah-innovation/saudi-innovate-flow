@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PageContainer } from '@/components/layout/PageContainer';
+import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/ui/page-header';
 import { AdminDashboardHero } from '@/components/admin/AdminDashboardHero';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -133,19 +133,19 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <PageContainer>
+      <PageLayout>
         <div className="min-h-[400px] flex items-center justify-center">
           <div className="text-center space-y-4">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
             <p className="text-sm text-muted-foreground">Loading dashboard...</p>
           </div>
         </div>
-      </PageContainer>
+      </PageLayout>
     );
   }
 
   return (
-    <PageContainer>
+    <PageLayout>
       <PageHeader
         title="Admin Dashboard"
         description="System administration and management tools"
@@ -197,7 +197,18 @@ export default function AdminDashboard() {
                       <p className="text-sm text-muted-foreground mt-2">
                         {card.description}
                       </p>
-                      <Button variant="outline" size="sm" className="mt-3 w-full">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="mt-3 w-full"
+                        onClick={() => {
+                          if (card.title === "Storage Management") {
+                            setActivityDialogOpen(true);
+                          } else if (card.title === "System Settings") {
+                            setHealthDialogOpen(true);
+                          }
+                        }}
+                      >
                         <Eye className="w-3 h-3 mr-2" />
                         View Details
                       </Button>
@@ -297,6 +308,6 @@ export default function AdminDashboard() {
         isOpen={healthDialogOpen}
         onClose={() => setHealthDialogOpen(false)}
       />
-    </PageContainer>
+    </PageLayout>
   );
 }

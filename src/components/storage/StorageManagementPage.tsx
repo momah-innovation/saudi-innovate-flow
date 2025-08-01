@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { PageContainer } from '@/components/layout/PageContainer';
+import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/ui/page-header';
 import { StorageHero } from './StorageHero';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -174,19 +174,19 @@ export function StorageManagementPage() {
 
   if (loading) {
     return (
-      <PageContainer>
+      <PageLayout>
         <div className="min-h-[400px] flex items-center justify-center">
           <div className="text-center space-y-4">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
             <p className="text-sm text-muted-foreground">Loading storage data...</p>
           </div>
         </div>
-      </PageContainer>
+      </PageLayout>
     );
   }
 
   return (
-    <PageContainer>
+    <PageLayout>
       <PageHeader
         title="Storage Management"
         description="Monitor and manage file storage across all buckets"
@@ -395,6 +395,6 @@ export function StorageManagementPage() {
           </div>
         </DialogContent>
       </Dialog>
-    </PageContainer>
+    </PageLayout>
   );
 }

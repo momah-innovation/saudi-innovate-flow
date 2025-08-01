@@ -1,18 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 import { 
   Users, 
-  TrendingUp, 
-  Database,
-  Shield,
-  BarChart3,
   Activity,
-  AlertCircle,
-  CheckCircle2,
-  HardDrive,
-  Settings
+  Shield,
+  Server,
+  Database,
+  TrendingUp,
+  AlertTriangle,
+  CheckCircle
 } from 'lucide-react';
-import { useDirection } from '@/components/ui/direction-provider';
 
 interface AdminDashboardHeroProps {
   totalUsers: number;
@@ -25,7 +23,7 @@ interface AdminDashboardHeroProps {
   systemHealth: string;
 }
 
-export const AdminDashboardHero = ({
+export function AdminDashboardHero({
   totalUsers,
   activeUsers,
   storageUsed,
@@ -34,152 +32,90 @@ export const AdminDashboardHero = ({
   securityAlerts,
   pendingUpdates,
   systemHealth
-}: AdminDashboardHeroProps) => {
-  const { isRTL } = useDirection();
-
-  const metrics = [
-    {
-      title: isRTL ? 'إجمالي المستخدمين' : 'Total Users',
-      value: totalUsers.toLocaleString(),
-      icon: Users,
-      trend: isRTL ? '+12% من الشهر الماضي' : '+12% from last month',
-      color: 'bg-blue-500',
-      bgColor: 'bg-blue-50 dark:bg-blue-900/20',
-      textColor: 'text-blue-600 dark:text-blue-400'
-    },
-    {
-      title: isRTL ? 'المستخدمون النشطون' : 'Active Users',
-      value: activeUsers.toLocaleString(),
-      icon: TrendingUp,
-      trend: isRTL ? `${activeUsers} متصل الآن` : `${activeUsers} online now`,
-      color: 'bg-green-500',
-      bgColor: 'bg-green-50 dark:bg-green-900/20',
-      textColor: 'text-green-600 dark:text-green-400'
-    },
-    {
-      title: isRTL ? 'استخدام التخزين' : 'Storage Used',
-      value: `${storageUsed.toFixed(1)} GB`,
-      icon: Database,
-      trend: isRTL ? '+5% هذا الأسبوع' : '+5% this week',
-      color: 'bg-purple-500',
-      bgColor: 'bg-purple-50 dark:bg-purple-900/20',
-      textColor: 'text-purple-600 dark:text-purple-400'
-    },
-    {
-      title: isRTL ? 'وقت التشغيل' : 'System Uptime',
-      value: `${uptime.toFixed(1)}%`,
-      icon: Activity,
-      trend: isRTL ? 'متاح 24/7' : '24/7 available',
-      color: 'bg-emerald-500',
-      bgColor: 'bg-emerald-50 dark:bg-emerald-900/20',
-      textColor: 'text-emerald-600 dark:text-emerald-400'
-    }
-  ];
-
-  const quickStats = [
-    {
-      label: isRTL ? 'السياسات النشطة' : 'Active Policies',
-      value: activePolicies,
-      icon: Shield,
-      color: 'text-blue-600'
-    },
-    {
-      label: isRTL ? 'تنبيهات الأمان' : 'Security Alerts',
-      value: securityAlerts,
-      icon: AlertCircle,
-      color: securityAlerts > 0 ? 'text-red-600' : 'text-green-600'
-    },
-    {
-      label: isRTL ? 'التحديثات المعلقة' : 'Pending Updates',
-      value: pendingUpdates,
-      icon: Settings,
-      color: pendingUpdates > 0 ? 'text-orange-600' : 'text-green-600'
-    },
-    {
-      label: isRTL ? 'حالة النظام' : 'System Health',
-      value: systemHealth,
-      icon: CheckCircle2,
-      color: systemHealth === 'Healthy' ? 'text-green-600' : 'text-red-600'
-    }
-  ];
-
+}: AdminDashboardHeroProps) {
   return (
-    <div className="space-y-6">
-      {/* Main Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {metrics.map((metric, index) => {
-          const IconComponent = metric.icon;
-          return (
-            <Card key={index} className="hover:shadow-md transition-all duration-300 hover-scale">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-muted-foreground mb-1">
-                      {metric.title}
-                    </p>
-                    <p className="text-2xl font-bold text-foreground mb-1">
-                      {metric.value}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {metric.trend}
-                    </p>
-                  </div>
-                  <div className={`p-3 rounded-lg ${metric.bgColor}`}>
-                    <IconComponent className={`w-6 h-6 ${metric.textColor}`} />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
-
-      {/* Quick Stats */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="w-5 h-5" />
-            {isRTL ? 'إحصائيات سريعة' : 'Quick Stats'}
-          </CardTitle>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      {/* Total Users */}
+      <Card className="gradient-border hover-scale">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+          <Users className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {quickStats.map((stat, index) => {
-              const IconComponent = stat.icon;
-              return (
-                <div key={index} className="text-center p-4 bg-muted/30 rounded-lg">
-                  <IconComponent className={`w-8 h-8 mx-auto mb-2 ${stat.color}`} />
-                  <div className="text-2xl font-bold text-foreground">{stat.value}</div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
-                </div>
-              );
-            })}
+          <div className="text-2xl font-bold">{totalUsers.toLocaleString()}</div>
+          <p className="text-xs text-muted-foreground">
+            {activeUsers} active users
+          </p>
+          <div className="mt-2">
+            <Progress value={(activeUsers / totalUsers) * 100} className="h-2" />
           </div>
         </CardContent>
       </Card>
 
-      {/* System Status Distribution */}
-      <Card>
-        <CardHeader>
-          <CardTitle>{isRTL ? 'حالة مكونات النظام' : 'System Components Status'}</CardTitle>
+      {/* System Health */}
+      <Card className="gradient-border hover-scale">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">System Health</CardTitle>
+          <Server className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
-          <div className="flex flex-wrap gap-3">
-            <Badge variant="default" className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-              {isRTL ? 'قاعدة البيانات: متصلة' : 'Database: Online'}
-            </Badge>
-            <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-              {isRTL ? 'التخزين: صحي' : 'Storage: Healthy'}
-            </Badge>
-            <Badge variant="outline" className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-              {isRTL ? 'واجهة البرمجة: نشطة' : 'API: Active'}
-            </Badge>
-            <Badge variant="default" className="bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
-              {isRTL ? 'الأمان: مراقب' : 'Security: Monitoring'}
-            </Badge>
+          <div className="flex items-center gap-2 mb-2">
+            <CheckCircle className="h-5 w-5 text-green-500" />
+            <div className="text-xl font-bold">{systemHealth}</div>
           </div>
+          <p className="text-xs text-muted-foreground">
+            {uptime}% uptime this month
+          </p>
+          <div className="mt-2">
+            <Progress value={uptime} className="h-2" />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Storage Usage */}
+      <Card className="gradient-border hover-scale">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Storage Usage</CardTitle>
+          <Database className="h-4 w-4 text-primary" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{storageUsed} GB</div>
+          <p className="text-xs text-muted-foreground">
+            {activePolicies} active policies
+          </p>
+          <div className="mt-2">
+            <Progress value={25} className="h-2" />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Security Status */}
+      <Card className="gradient-border hover-scale">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Security Status</CardTitle>
+          <Shield className="h-4 w-4 text-primary" />
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-2 mb-2">
+            {securityAlerts > 0 ? (
+              <AlertTriangle className="h-5 w-5 text-orange-500" />
+            ) : (
+              <CheckCircle className="h-5 w-5 text-green-500" />
+            )}
+            <div className="text-xl font-bold">
+              {securityAlerts > 0 ? `${securityAlerts} Alerts` : 'Secure'}
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            {pendingUpdates} pending updates
+          </p>
+          {securityAlerts > 0 && (
+            <Badge variant="destructive" className="mt-2">
+              Action Required
+            </Badge>
+          )}
         </CardContent>
       </Card>
     </div>
   );
-};
+}
