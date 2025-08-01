@@ -166,7 +166,7 @@
   "gb": "جيجابايت",
   "tb": "تيرابايت",
   "storage_usage": "استخدام التخزين",
-  "of_x_used": "من {total} مستخدم",
+  "of_x_used": "مستخدم من {total}",
   "capacity": "السعة",
   "recent_uploads_count": "{count} تحميلات حديثة",
   "monthly_growth": "+12% هذا الشهر",

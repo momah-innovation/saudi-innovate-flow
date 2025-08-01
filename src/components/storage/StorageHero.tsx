@@ -36,23 +36,12 @@ export function StorageHero({
 }: StorageHeroProps) {
   const { t, language } = useTranslation();
   
-  // Debug logging
-  console.log('StorageHero - Current language:', language);
-  console.log('StorageHero - Translation test:', t('storage.title'));
-  
   const formatBytes = (bytes: number) => {
-    console.log('formatBytes called with:', bytes);
-    console.log('Current language in formatBytes:', language);
-    console.log('Testing units translation - mb:', t('units.mb'));
-    console.log('Testing units translation - bytes:', t('units.bytes'));
-    
     if (bytes === 0) return `0 ${t('units.bytes')}`;
     const k = 1024;
     const sizes = [t('units.bytes'), t('units.kb'), t('units.mb'), t('units.gb'), t('units.tb')];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    const result = parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    console.log('formatBytes result:', result);
-    return result;
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
   const usagePercentage = (usedSpace / totalSpace) * 100;

@@ -27,9 +27,9 @@ interface StorageStatsCardsProps {
 export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
   const { t } = useTranslation();
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return `0 ${t('bytes')}`;
+    if (bytes === 0) return `0 ${t('units.bytes')}`;
     const k = 1024;
-    const sizes = [t('bytes'), t('kb'), t('mb'), t('gb'), t('tb')];
+    const sizes = [t('units.bytes'), t('units.kb'), t('units.mb'), t('units.gb'), t('units.tb')];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
@@ -78,7 +78,7 @@ export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
       {/* Storage Usage */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">{t('storage_usage')}</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('storage.storage_usage')}</CardTitle>
           <HardDrive className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -86,11 +86,11 @@ export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
             {formatFileSize(stats.usedSpace)}
           </div>
           <p className="text-xs text-muted-foreground mb-2">
-            {t('of_x_used', { total: formatFileSize(stats.totalSpace) })}
+            {t('storage.of_x_used', { total: formatFileSize(stats.totalSpace) })}
           </p>
           <Progress value={usagePercentage} className="h-2" />
           <p className="text-xs text-muted-foreground mt-1">
-            {usagePercentage.toFixed(1)}% {t('used')}
+            {usagePercentage.toFixed(1)}% {t('storage.capacity')}
           </p>
         </CardContent>
       </Card>
@@ -98,7 +98,7 @@ export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
       {/* Total Files */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">{t('total_files')}</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('storage.files')}</CardTitle>
           <Files className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
