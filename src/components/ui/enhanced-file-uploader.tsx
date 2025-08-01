@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useState, useId, useCallback } from 'react'
-import { FileUploader, FileUploadConfig } from '@/components/ui/file-uploader'
+import { FileUploadConfig } from '@/hooks/useFileUploader'
 import { UploadedFile, useFileUploader } from '@/hooks/useFileUploader'
 import { FormControl, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { cn } from '@/lib/utils'
