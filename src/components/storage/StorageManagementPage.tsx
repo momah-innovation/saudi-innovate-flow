@@ -819,7 +819,7 @@ export function StorageManagementPage() {
                     <SelectItem value="public">Public Only</SelectItem>
                     <SelectItem value="private">Private Only</SelectItem>
                     <SelectItem value="empty">Empty Buckets</SelectItem>
-                    <SelectItem value="large">Large Buckets (>100MB)</SelectItem>
+                    <SelectItem value="large">Large Buckets (&gt;100MB)</SelectItem>
                   </SelectContent>
                 </Select>
 
