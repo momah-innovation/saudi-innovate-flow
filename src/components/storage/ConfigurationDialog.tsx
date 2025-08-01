@@ -68,12 +68,31 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
     const loadBuckets = async () => {
       try {
         console.log('Loading buckets for configuration dialog...');
-        const { data: buckets, error } = await supabase.storage.listBuckets()
-        console.log('Configuration dialog buckets:', { buckets, error });
         
-        if (error) {
-          console.error('Error loading buckets for config:', error);
-          return;
+        // Try database function first, fallback to storage API
+        let buckets: any[] = [];
+        
+        try {
+          const { data: dbBuckets, error: dbError } = await supabase
+            .rpc('get_storage_buckets_info');
+          console.log('Config dialog database response:', { dbBuckets, dbError });
+          
+          if (dbError) {
+            console.log('Database function failed for config, trying storage API...');
+            const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
+            buckets = storageB || [];
+          } else {
+            // Convert database response to storage API format
+            buckets = dbBuckets?.map(bucket => ({
+              id: bucket.bucket_id,
+              name: bucket.bucket_name,
+              public: bucket.public
+            })) || [];
+          }
+        } catch (error) {
+          console.error('Both methods failed for config:', error);
+          const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
+          buckets = storageB || [];
         }
         
         if (buckets) {

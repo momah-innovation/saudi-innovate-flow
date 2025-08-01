@@ -41,16 +41,39 @@ export const useStorageAnalytics = () => {
   const getAllBucketAnalytics = useCallback(async (): Promise<StorageAnalytics[]> => {
     try {
       console.log('Loading bucket analytics...');
-      // Get all buckets
-      const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets()
-      console.log('Analytics buckets response:', { buckets, bucketsError });
       
-      if (bucketsError) {
-        console.error('Analytics buckets error:', bucketsError);
-        throw bucketsError;
+      // Try database function first, fallback to storage API
+      let buckets: any[] = [];
+      
+      try {
+        const { data: dbBuckets, error: dbError } = await supabase
+          .rpc('get_storage_buckets_info');
+        console.log('Analytics database response:', { dbBuckets, dbError });
+        
+        if (dbError) {
+          console.log('Database function failed for analytics, trying storage API...');
+          const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
+          buckets = storageB || [];
+          console.log('Analytics storage API response:', { buckets: storageB, error: storageE });
+        } else {
+          // Convert database response to storage API format
+          buckets = dbBuckets?.map(bucket => ({
+            id: bucket.bucket_id,
+            name: bucket.bucket_name,
+            public: bucket.public,
+            created_at: bucket.created_at
+          })) || [];
+        }
+      } catch (error) {
+        console.error('Both methods failed for analytics:', error);
+        const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
+        buckets = storageB || [];
       }
       
-      if (!buckets) return []
+      if (!buckets || buckets.length === 0) {
+        console.log('No buckets found for analytics');
+        return []
+      }
 
       const analytics: StorageAnalytics[] = []
 

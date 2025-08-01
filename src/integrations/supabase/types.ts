@@ -6427,6 +6427,17 @@ export type Database = {
           conversion_rate: number
         }[]
       }
+      get_storage_buckets_info: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          bucket_id: string
+          bucket_name: string
+          public: boolean
+          created_at: string
+          file_count: number
+          total_size: number
+        }[]
+      }
       has_role: {
         Args: {
           _user_id: string
