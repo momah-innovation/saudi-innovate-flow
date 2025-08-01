@@ -58,6 +58,8 @@ import Opportunities from "./pages/Opportunities";
 import OpportunitiesManagement from "./pages/OpportunitiesManagement";
 import { StorageManagementPage } from "./components/storage/StorageManagementPage";
 import { StoragePoliciesPage } from "./components/storage/StoragePoliciesPage";
+import AdminRelationships from "./pages/AdminRelationships";
+import AdminEvaluations from "./pages/AdminEvaluations";
 
 const queryClient = new QueryClient();
 
@@ -388,17 +390,33 @@ const App = () => (
                      <StoragePoliciesPage />
                    </ProtectedRoute>
                  } 
-                />
-             <Route path="/help" element={<HelpPage />} />
-             {/* Admin Dashboard route */}
-             <Route 
-               path="/admin/dashboard" 
-               element={
-                 <ProtectedRoute requireProfile requiredRole="admin">
-                   <AdminDashboard />
-                 </ProtectedRoute>
-               } 
-             />
+                 />
+                <Route 
+                  path="/admin/relationships" 
+                  element={
+                    <ProtectedRoute requireProfile requiredRole="admin">
+                      <AdminRelationships />
+                    </ProtectedRoute>
+                  } 
+                 />
+                <Route 
+                  path="/admin/evaluations" 
+                  element={
+                    <ProtectedRoute requireProfile requiredRole="admin">
+                      <AdminEvaluations />
+                    </ProtectedRoute>
+                  } 
+                 />
+              <Route path="/help" element={<HelpPage />} />
+              {/* Admin Dashboard route */}
+              <Route 
+                path="/admin/dashboard" 
+                element={
+                  <ProtectedRoute requireProfile requiredRole="admin">
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                } 
+              />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
