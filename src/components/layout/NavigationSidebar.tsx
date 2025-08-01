@@ -4,7 +4,8 @@ import {
   Home, Target, Lightbulb, Users, Calendar, TrendingUp,
   FileText, Settings, PieChart, Briefcase, Award, Zap,
   Shield, BookOpen, BarChart3, UserCheck, Network, Search,
-  PlusCircle, Star, HelpCircle, Globe, Edit, Bookmark
+  PlusCircle, Star, HelpCircle, Globe, Edit, Bookmark,
+  Database, HardDrive
 } from 'lucide-react';
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent,
@@ -402,15 +403,33 @@ export function NavigationSidebar() {
         group: 'admin',
         roles: ['admin'] 
       },
-      { 
-        id: 'system-documentation', 
-        label: 'System Documentation', 
-        arabicLabel: 'وثائق النظام',
-        icon: BookOpen, 
-        path: '/admin/system-documentation',
-        group: 'admin',
-        roles: ['all'] 
-      },
+       { 
+         id: 'system-documentation', 
+         label: 'System Documentation', 
+         arabicLabel: 'وثائق النظام',
+         icon: BookOpen, 
+         path: '/admin/system-documentation',
+         group: 'admin',
+         roles: ['all'] 
+       },
+       { 
+         id: 'storage-management', 
+         label: 'Storage Management', 
+         arabicLabel: 'إدارة التخزين',
+         icon: Database, 
+         path: '/admin/storage',
+         group: 'admin',
+         roles: ['admin'] 
+       },
+       { 
+         id: 'storage-policies', 
+         label: 'Storage Policies', 
+         arabicLabel: 'سياسات التخزين',
+         icon: HardDrive, 
+         path: '/admin/storage/policies',
+         group: 'admin',
+         roles: ['admin'] 
+       },
     ];
 
     const settingsItems = [
