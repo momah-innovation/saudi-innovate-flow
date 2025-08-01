@@ -4,10 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Loader2, Eye, Edit, Filter, Search } from "lucide-react";
+import { Loader2, Eye, Edit, Filter, Search, FileCheck, Star } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { AdminEvaluationsHero } from "@/components/admin/AdminEvaluationsHero";
+import { ViewLayouts } from "@/components/ui/view-layouts";
+import { EnhancedEvaluationCard } from "@/components/evaluations/EnhancedEvaluationCard";
 import {
   Select,
   SelectContent,
@@ -54,7 +57,19 @@ interface Profile {
   email: string;
 }
 
-export function EvaluationsManagement() {
+interface EvaluationsManagementProps {
+  viewMode?: 'cards' | 'list' | 'grid';
+  searchTerm?: string;
+  showAddDialog?: boolean;
+  onAddDialogChange?: (open: boolean) => void;
+}
+
+export function EvaluationsManagement({ 
+  viewMode = 'cards',
+  searchTerm: externalSearchTerm = '',
+  showAddDialog = false,
+  onAddDialogChange
+}: EvaluationsManagementProps) {
   const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
   const [ideas, setIdeas] = useState<{ [key: string]: Idea }>({});
   const [profiles, setProfiles] = useState<{ [key: string]: Profile }>({});
@@ -153,13 +168,26 @@ export function EvaluationsManagement() {
     return "bg-red-100 text-red-700";
   };
 
+  const currentSearchTerm = externalSearchTerm || searchTerm;
+  
   const filteredEvaluations = evaluations.filter(evaluation => {
     const matchesType = filterType === "all" || evaluation.evaluator_type === filterType;
-    const matchesSearch = searchTerm === "" || 
-      ideas[evaluation.idea_id]?.title_ar?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      profiles[evaluation.evaluator_id]?.name?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = currentSearchTerm === "" || 
+      ideas[evaluation.idea_id]?.title_ar?.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+      profiles[evaluation.evaluator_id]?.name?.toLowerCase().includes(currentSearchTerm.toLowerCase());
     return matchesType && matchesSearch;
   });
+
+  // Calculate metrics for hero
+  const totalEvaluations = evaluations.length;
+  const pendingEvaluations = evaluations.filter(e => !e.evaluation_date).length;
+  const completedEvaluations = evaluations.filter(e => e.evaluation_date).length;
+  const averageScore = evaluations.length > 0 ? 
+    Number((evaluations.reduce((sum, e) => sum + Number(getOverallScore(e)), 0) / evaluations.length).toFixed(1)) : 0;
+  const topPerformingIdeas = evaluations.filter(e => Number(getOverallScore(e)) >= 8).length;
+  const criticalReviews = evaluations.filter(e => Number(getOverallScore(e)) < 5).length;
+  const activeEvaluators = Object.keys(profiles).length;
+  const evaluationRate = evaluations.length > 0 ? Math.round((completedEvaluations / totalEvaluations) * 100) : 0;
 
   const handleViewEvaluation = (evaluation: Evaluation) => {
     setSelectedEvaluation(evaluation);
@@ -178,128 +206,51 @@ export function EvaluationsManagement() {
   }
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-bold">Evaluations Management</h1>
-          <p className="text-muted-foreground">Manage and review idea evaluations</p>
-        </div>
-        
-        <div className="flex items-center gap-2">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-            <Input
-              placeholder="Search evaluations..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9 w-64"
-            />
+    <>
+      {/* Enhanced Hero Dashboard */}
+      <AdminEvaluationsHero 
+        totalEvaluations={totalEvaluations}
+        pendingEvaluations={pendingEvaluations}
+        completedEvaluations={completedEvaluations}
+        averageScore={averageScore}
+        topPerformingIdeas={topPerformingIdeas}
+        criticalReviews={criticalReviews}
+        activeEvaluators={activeEvaluators}
+        evaluationRate={evaluationRate}
+      />
+
+      <ViewLayouts viewMode={viewMode}>
+        {loading ? [
+          <div key="loading" className="text-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading evaluations...</p>
           </div>
-          <Filter className="h-4 w-4" />
-          <Select value={filterType} onValueChange={setFilterType}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              {evaluatorTypes.map((type) => (
-                <SelectItem key={type} value={type}>
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      <div className="grid gap-6">
-        {filteredEvaluations.map((evaluation) => (
-          <Card key={evaluation.id}>
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div className="space-y-2">
-                  <CardTitle className="text-lg">
-                    {ideas[evaluation.idea_id]?.title_ar || t('unknownIdea')}
-                  </CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary">
-                      {evaluation.evaluator_type}
-                    </Badge>
-                    <span className="text-sm text-muted-foreground">
-                      by {profiles[evaluation.evaluator_id]?.name || t('unknownEvaluator')}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Badge className={getScoreColor(Number(getOverallScore(evaluation)))}>
-                    Overall: {getOverallScore(evaluation)}
-                  </Badge>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleViewEvaluation(evaluation)}
-                  >
-                    <Eye className="h-4 w-4 mr-1" />
-                    View
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-3 md:grid-cols-6 gap-4 mb-4">
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground">Technical</div>
-                  <Badge className={getScoreColor(evaluation.technical_feasibility)} variant="secondary">
-                    {evaluation.technical_feasibility || "N/A"}
-                  </Badge>
-                </div>
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground">Financial</div>
-                  <Badge className={getScoreColor(evaluation.financial_viability)} variant="secondary">
-                    {evaluation.financial_viability || "N/A"}
-                  </Badge>
-                </div>
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground">Market</div>
-                  <Badge className={getScoreColor(evaluation.market_potential)} variant="secondary">
-                    {evaluation.market_potential || "N/A"}
-                  </Badge>
-                </div>
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground">Strategic</div>
-                  <Badge className={getScoreColor(evaluation.strategic_alignment)} variant="secondary">
-                    {evaluation.strategic_alignment || "N/A"}
-                  </Badge>
-                </div>
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground">Innovation</div>
-                  <Badge className={getScoreColor(evaluation.innovation_level)} variant="secondary">
-                    {evaluation.innovation_level || "N/A"}
-                  </Badge>
-                </div>
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground">Complexity</div>
-                  <Badge className={getScoreColor(evaluation.implementation_complexity)} variant="secondary">
-                    {evaluation.implementation_complexity || "N/A"}
-                  </Badge>
-                </div>
-              </div>
-              
-              <div className="text-sm text-muted-foreground">
-                Evaluated on {new Date(evaluation.evaluation_date || evaluation.created_at).toLocaleDateString()}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-
-        {filteredEvaluations.length === 0 && (
-          <Card>
-            <CardContent className="text-center py-8">
-              <p className="text-muted-foreground">No evaluations found</p>
-            </CardContent>
-          </Card>
-        )}
-      </div>
+        ] : filteredEvaluations.length > 0 ? 
+          filteredEvaluations.map((evaluation) => (
+            <EnhancedEvaluationCard
+              key={evaluation.id}
+              evaluation={{
+                ...evaluation,
+                idea_title: ideas[evaluation.idea_id]?.title_ar || 'Unknown Idea',
+                evaluator_name: profiles[evaluation.evaluator_id]?.name || 'Unknown Evaluator',
+                overall_score: Number(getOverallScore(evaluation))
+              }}
+              viewMode={viewMode}
+              onView={(evalData) => {
+                const originalEval = evaluations.find(e => e.id === evalData.id);
+                if (originalEval) handleViewEvaluation(originalEval);
+              }}
+              onEdit={(evalData) => console.log('Edit evaluation:', evalData)}
+              onDelete={(evalData) => console.log('Delete evaluation:', evalData)}
+            />
+          )) : [
+          <div key="empty" className="text-center py-12">
+            <FileCheck className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+            <p className="text-lg font-medium mb-2">No Evaluations Found</p>
+            <p className="text-muted-foreground">No evaluations match the current search criteria</p>
+          </div>
+        ]}
+      </ViewLayouts>
 
       {/* View Evaluation Dialog */}
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
@@ -376,6 +327,6 @@ export function EvaluationsManagement() {
           )}
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }
