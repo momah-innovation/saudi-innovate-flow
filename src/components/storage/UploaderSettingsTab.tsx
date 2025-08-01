@@ -37,6 +37,7 @@ interface UploaderConfig {
   enabled: boolean
   autoCleanup: boolean
   cleanupDays: number
+  bucketExists?: boolean // Add validation flag
 }
 
 interface GlobalSettings {
@@ -164,9 +165,21 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
       })
       setGlobalSettings(prev => ({ ...prev, ...settings }))
 
-      // Process upload configurations
+      // Process upload configurations and validate bucket existence
+      const bucketIds = buckets.map(b => b.id)
       const uploadConfigs: UploaderConfig[] = configData?.map(item => {
         const config = typeof item.setting_value === 'object' && item.setting_value ? item.setting_value as any : {}
+        const bucketExists = bucketIds.includes(config.bucket)
+        
+        // Log orphaned configurations
+        if (!bucketExists) {
+          console.warn(`Configuration for missing bucket detected:`, {
+            uploadType: item.setting_key,
+            bucket: config.bucket,
+            configId: item.id
+          })
+        }
+        
         return {
           id: item.id,
           uploadType: item.setting_key,
@@ -177,7 +190,8 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
           maxFiles: Number(config.maxFiles) || 1,
           enabled: Boolean(config.enabled),
           autoCleanup: Boolean(config.autoCleanup),
-          cleanupDays: Number(config.cleanupDays) || 0
+          cleanupDays: Number(config.cleanupDays) || 0,
+          bucketExists // Add validation flag
         }
       }) || []
 
@@ -347,7 +361,44 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
     }
   }
 
+  const cleanupOrphanedConfigs = async () => {
+    const orphanedConfigs = configs.filter(config => !config.bucketExists)
+    
+    if (orphanedConfigs.length === 0) {
+      toast({
+        title: "No Cleanup Needed",
+        description: "All configurations have valid storage buckets"
+      })
+      return
+    }
+
+    try {
+      for (const config of orphanedConfigs) {
+        await supabase
+          .from('uploader_settings')
+          .delete()
+          .eq('id', config.id)
+      }
+
+      toast({
+        title: "Cleanup Complete",
+        description: `Removed ${orphanedConfigs.length} orphaned configuration(s)`
+      })
+      
+      loadUploaderSettings() // Refresh
+    } catch (error) {
+      toast({
+        title: "Cleanup Failed",
+        description: "Failed to remove orphaned configurations",
+        variant: 'destructive'
+      })
+    }
+  }
+
   const getStatusIcon = (config: UploaderConfig) => {
+    if (!config.bucketExists) {
+      return <AlertTriangle className="w-4 h-4 text-red-500" />
+    }
     if (!config.enabled) {
       return <AlertTriangle className="w-4 h-4 text-yellow-500" />
     }
@@ -365,7 +416,8 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
       maxFiles: 5,
       enabled: true,
       autoCleanup: false,
-      cleanupDays: 7
+      cleanupDays: 7,
+      bucketExists: true
     })
   }
 
@@ -483,18 +535,47 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
             <CardTitle className="flex items-center gap-2">
               <Upload className="w-5 h-5" />
               Upload Configurations
+              {configs.filter(c => !c.bucketExists).length > 0 && (
+                <Badge variant="destructive" className="ml-2">
+                  {configs.filter(c => !c.bucketExists).length} orphaned
+                </Badge>
+              )}
             </CardTitle>
-            <Button variant="outline" onClick={() => setNewConfigOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
-              Add Configuration
-            </Button>
+            <div className="flex gap-2">
+              {configs.filter(c => !c.bucketExists).length > 0 && (
+                <Button variant="destructive" size="sm" onClick={cleanupOrphanedConfigs}>
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Cleanup Orphaned
+                </Button>
+              )}
+              <Button variant="outline" onClick={() => setNewConfigOpen(true)}>
+                <Plus className="w-4 h-4 mr-2" />
+                Add Configuration
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {configs.map((config, index) => (
-              <Card key={config.uploadType} className="border-l-4 border-l-primary/20">
+              <Card key={config.uploadType} className={`border-l-4 ${
+                !config.bucketExists 
+                  ? 'border-l-red-500 bg-red-50 dark:bg-red-950/20' 
+                  : 'border-l-primary/20'
+              }`}>
                 <CardContent className="p-4">
+                  {!config.bucketExists && (
+                    <div className="mb-3 p-2 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-md">
+                      <div className="flex items-center gap-2 text-red-700 dark:text-red-300">
+                        <AlertTriangle className="w-4 h-4" />
+                        <span className="text-sm font-medium">Missing Storage Bucket</span>
+                      </div>
+                      <p className="text-xs text-red-600 dark:text-red-400 mt-1">
+                        The bucket "{config.bucket}" no longer exists in storage. This configuration should be removed.
+                      </p>
+                    </div>
+                  )}
+                  
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
                       {getStatusIcon(config)}
@@ -506,10 +587,19 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant={config.enabled ? 'default' : 'secondary'}>
-                        {config.enabled ? 'Active' : 'Disabled'}
+                      <Badge variant={
+                        !config.bucketExists ? 'destructive' :
+                        config.enabled ? 'default' : 'secondary'
+                      }>
+                        {!config.bucketExists ? 'Missing Bucket' :
+                         config.enabled ? 'Active' : 'Disabled'}
                       </Badge>
-                      <Button variant="ghost" size="sm" onClick={() => setEditingConfig(config)}>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => setEditingConfig(config)}
+                        disabled={!config.bucketExists}
+                      >
                         <Settings className="w-4 h-4" />
                       </Button>
                     </div>
