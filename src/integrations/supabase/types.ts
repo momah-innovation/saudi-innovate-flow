@@ -5468,6 +5468,33 @@ export type Database = {
         }
         Relationships: []
       }
+      storage_quotas: {
+        Row: {
+          bucket_name: string
+          created_at: string | null
+          created_by: string | null
+          id: string
+          quota_bytes: number
+          updated_at: string | null
+        }
+        Insert: {
+          bucket_name: string
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          quota_bytes: number
+          updated_at?: string | null
+        }
+        Update: {
+          bucket_name?: string
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          quota_bytes?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       sub_domains: {
         Row: {
           created_at: string | null
@@ -6431,6 +6458,10 @@ export type Database = {
         Args: { bucket_filter?: string; include_file_urls?: boolean }
         Returns: Json
       }
+      find_duplicate_files: {
+        Args: { bucket_filter?: string; min_file_size?: number }
+        Returns: Json
+      }
       generate_invitation_token: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -6505,6 +6536,10 @@ export type Database = {
         }
         Returns: string
       }
+      manage_storage_quotas: {
+        Args: { bucket_name: string; quota_bytes?: number; action?: string }
+        Returns: Json
+      }
       migrate_files_between_buckets: {
         Args: {
           source_bucket: string
@@ -6518,6 +6553,16 @@ export type Database = {
       refresh_opportunity_analytics: {
         Args: { p_opportunity_id: string }
         Returns: undefined
+      }
+      restore_from_archive: {
+        Args: {
+          archive_bucket: string
+          target_bucket?: string
+          file_pattern?: string
+          restore_original_paths?: boolean
+          dry_run?: boolean
+        }
+        Returns: Json
       }
       revoke_role_with_validation: {
         Args: {
