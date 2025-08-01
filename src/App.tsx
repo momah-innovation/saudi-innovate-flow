@@ -55,6 +55,8 @@ import SavedItemsPage from "./pages/SavedItems";
 import EvaluationManagement from "./pages/EvaluationManagement";
 import Opportunities from "./pages/Opportunities";
 import OpportunitiesManagement from "./pages/OpportunitiesManagement";
+import { StorageManagementPage } from "./components/storage/StorageManagementPage";
+import { StoragePoliciesPage } from "./components/storage/StoragePoliciesPage";
 
 const queryClient = new QueryClient();
 
@@ -369,7 +371,23 @@ const App = () => (
                     <OpportunitiesManagement />
                   </ProtectedRoute>
                 } 
-              />
+               />
+              <Route 
+                path="/admin/storage" 
+                element={
+                  <ProtectedRoute requireProfile requiredRole="admin">
+                    <StorageManagementPage />
+                  </ProtectedRoute>
+                } 
+               />
+               <Route 
+                 path="/admin/storage/policies" 
+                 element={
+                   <ProtectedRoute requireProfile requiredRole="admin">
+                     <StoragePoliciesPage />
+                   </ProtectedRoute>
+                 } 
+                />
              <Route path="/help" element={<HelpPage />} />
             {/* Legacy dashboard route pointing to Index */}
             <Route 
