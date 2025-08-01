@@ -25,7 +25,7 @@ interface StorageFileTableProps {
 }
 
 export function StorageFileTable({ files, onView, onDownload, onDelete }: StorageFileTableProps) {
-  const { t } = useTranslation()
+  const { t, isRTL } = useTranslation()
   const getFileIcon = (mimetype?: string) => {
     if (!mimetype) return Files
     
@@ -56,7 +56,7 @@ export function StorageFileTable({ files, onView, onDownload, onDelete }: Storag
             <TableHead>{t('type')}</TableHead>
             <TableHead>{t('visibility')}</TableHead>
             <TableHead>{t('created_date')}</TableHead>
-            <TableHead className="text-right">{t('actions')}</TableHead>
+            <TableHead className={isRTL ? "text-left" : "text-right"}>{t('actions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

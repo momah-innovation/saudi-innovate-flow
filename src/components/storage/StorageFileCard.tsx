@@ -25,7 +25,7 @@ interface StorageFileCardProps {
 }
 
 export function StorageFileCard({ file, onView, onDownload, onDelete }: StorageFileCardProps) {
-  const { t } = useTranslation()
+  const { t, isRTL } = useTranslation()
   const getFileIcon = (mimetype?: string) => {
     if (!mimetype) return Files
     
@@ -47,6 +47,7 @@ export function StorageFileCard({ file, onView, onDownload, onDelete }: StorageF
   const FileIcon = getFileIcon(file.metadata?.mimetype)
 
   return (
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
     <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-[1.02] hover:border-primary/20 bg-gradient-to-br from-background to-muted/30">
       <CardContent className="p-4">
         <div className="flex items-start justify-between mb-3">
@@ -126,5 +127,6 @@ export function StorageFileCard({ file, onView, onDownload, onDelete }: StorageF
         </div>
       </CardContent>
     </Card>
+    </div>
   )
 }

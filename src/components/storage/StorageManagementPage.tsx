@@ -51,7 +51,7 @@ import { useTranslation } from '@/hooks/useAppTranslation';
 
 export function StorageManagementPage() {
   const { toast } = useToast();
-  const { t, language } = useTranslation();
+  const { t, language, isRTL } = useTranslation();
   
   // Debug logging
   console.log('StorageManagementPage - Current language:', language);
@@ -643,6 +643,7 @@ export function StorageManagementPage() {
   }
 
   return (
+    <div dir={isRTL ? 'rtl' : 'ltr'}>
     <PageLayout>
       <PageHeader
         title={t('storage.title')}
@@ -1008,5 +1009,6 @@ export function StorageManagementPage() {
         </AlertDialogContent>
       </AlertDialog>
     </PageLayout>
+    </div>
   );
 }

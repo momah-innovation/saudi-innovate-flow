@@ -38,7 +38,7 @@ interface AdvancedAnalytics {
 }
 
 export const AdvancedStorageManagement = () => {
-  const { t } = useTranslation()
+  const { t, isRTL } = useTranslation()
   const { toast } = useToast()
   const { 
     getAdvancedAnalytics, 
@@ -155,6 +155,7 @@ export const AdvancedStorageManagement = () => {
   }
 
   return (
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
     <div className="space-y-6">
       {/* Analytics Overview */}
       <Card>
@@ -400,12 +401,12 @@ export const AdvancedStorageManagement = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left p-2">{t('bucket')}</th>
-                    <th className="text-left p-2">{t('type')}</th>
-                    <th className="text-right p-2">{t('files')}</th>
-                    <th className="text-right p-2">{t('size')}</th>
-                    <th className="text-right p-2">{t('avg_file_size')}</th>
-                    <th className="text-left p-2">{t('oldest_file')}</th>
+                    <th className={isRTL ? "text-right p-2" : "text-left p-2"}>{t('bucket')}</th>
+                    <th className={isRTL ? "text-right p-2" : "text-left p-2"}>{t('type')}</th>
+                    <th className={isRTL ? "text-left p-2" : "text-right p-2"}>{t('files')}</th>
+                    <th className={isRTL ? "text-left p-2" : "text-right p-2"}>{t('size')}</th>
+                    <th className={isRTL ? "text-left p-2" : "text-right p-2"}>{t('avg_file_size')}</th>
+                    <th className={isRTL ? "text-right p-2" : "text-left p-2"}>{t('oldest_file')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -419,9 +420,9 @@ export const AdvancedStorageManagement = () => {
                           {bucket.is_public ? t('public') : t('private')}
                         </span>
                       </td>
-                      <td className="p-2 text-right">{bucket.file_count.toLocaleString()}</td>
-                      <td className="p-2 text-right">{formatBytes(bucket.total_size)}</td>
-                      <td className="p-2 text-right">{formatBytes(bucket.avg_file_size)}</td>
+                      <td className={`p-2 ${isRTL ? 'text-left' : 'text-right'}`}>{bucket.file_count.toLocaleString()}</td>
+                      <td className={`p-2 ${isRTL ? 'text-left' : 'text-right'}`}>{formatBytes(bucket.total_size)}</td>
+                      <td className={`p-2 ${isRTL ? 'text-left' : 'text-right'}`}>{formatBytes(bucket.avg_file_size)}</td>
                        <td className="p-2">
                          {bucket.oldest_file ? new Date(bucket.oldest_file).toLocaleDateString(t('date_locale')) : '-'}
                        </td>
@@ -433,6 +434,7 @@ export const AdvancedStorageManagement = () => {
           </CardContent>
         </Card>
       )}
+    </div>
     </div>
   )
 }

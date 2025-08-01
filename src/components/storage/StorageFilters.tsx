@@ -57,7 +57,7 @@ export function StorageFilters({
   onClearFilters,
   activeFilterCount
 }: StorageFiltersProps) {
-  const { t } = useTranslation();
+  const { t, isRTL } = useTranslation();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const fileTypeOptions = [
@@ -91,6 +91,7 @@ export function StorageFilters({
   ];
 
   return (
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
     <div className="flex flex-wrap items-center gap-3">
       {/* Sort Controls */}
       <div className="flex items-center gap-2">
@@ -315,6 +316,7 @@ export function StorageFilters({
           )}
         </div>
       )}
+    </div>
     </div>
   );
 }

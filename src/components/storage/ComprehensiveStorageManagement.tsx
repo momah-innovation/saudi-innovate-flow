@@ -56,7 +56,7 @@ interface QuotaInfo {
 
 export const ComprehensiveStorageManagement = () => {
   const { toast } = useToast()
-  const { t } = useTranslation()
+  const { t, isRTL } = useTranslation()
   const { 
     getAllBucketAnalytics,
     exportStorageMetadata,
@@ -288,6 +288,7 @@ export const ComprehensiveStorageManagement = () => {
   }
 
   return (
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
     <div className="space-y-6">
       <Card>
         <CardHeader>
@@ -703,19 +704,19 @@ export const ComprehensiveStorageManagement = () => {
                             <table className="w-full">
                               <thead>
                                 <tr className="border-b">
-                                  <th className="text-left p-2">{t('filename')}</th>
-                                  <th className="text-right p-2">{t('size')}</th>
-                                  <th className="text-right p-2">{t('count')}</th>
-                                  <th className="text-right p-2">{t('savings')}</th>
+                                  <th className={isRTL ? "text-right p-2" : "text-left p-2"}>{t('filename')}</th>
+                                  <th className={isRTL ? "text-left p-2" : "text-right p-2"}>{t('size')}</th>
+                                  <th className={isRTL ? "text-left p-2" : "text-right p-2"}>{t('count')}</th>
+                                  <th className={isRTL ? "text-left p-2" : "text-right p-2"}>{t('savings')}</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 {duplicateResults.duplicates.slice(0, 10).map((dup: DuplicateFile, index: number) => (
                                   <tr key={index} className="border-b">
                                     <td className="p-2 font-medium">{dup.filename}</td>
-                                    <td className="p-2 text-right">{formatBytes(dup.file_size)}</td>
-                                    <td className="p-2 text-right">{dup.duplicate_count}</td>
-                                    <td className="p-2 text-right text-green-600">{formatBytes(dup.potential_savings)}</td>
+                                    <td className={`p-2 ${isRTL ? 'text-left' : 'text-right'}`}>{formatBytes(dup.file_size)}</td>
+                                    <td className={`p-2 ${isRTL ? 'text-left' : 'text-right'}`}>{dup.duplicate_count}</td>
+                                    <td className={`p-2 ${isRTL ? 'text-left' : 'text-right'} text-green-600`}>{formatBytes(dup.potential_savings)}</td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -931,6 +932,7 @@ export const ComprehensiveStorageManagement = () => {
           </Tabs>
         </CardContent>
       </Card>
+    </div>
     </div>
   )
 }
