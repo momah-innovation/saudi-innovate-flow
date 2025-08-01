@@ -80,31 +80,46 @@ export const useStorageAnalytics = () => {
       const analytics: StorageAnalytics[] = []
 
       for (const bucket of buckets) {
-        const stats = await getBucketStats(bucket.id)
-        console.log(`Stats for bucket ${bucket.id}:`, stats);
-        
-        if (stats) {
-          // Use realistic storage limits - 1GB per bucket for public, 5GB for private
-          const bucketLimit = bucket.public ? (1024 * 1024 * 1024) : (5 * 1024 * 1024 * 1024)
-          const usagePercentage = (stats.total_size / bucketLimit) * 100
-          const healthStatus = 
-            usagePercentage > 90 ? 'critical' :
-            usagePercentage > 70 ? 'warning' : 'healthy'
-
-          console.log(`Bucket ${bucket.id} analytics:`, {
-            totalSize: stats.total_size,
-            bucketLimit,
-            usagePercentage,
-            healthStatus
-          });
-
-          analytics.push({
-            bucketName: bucket.id,
-            stats,
-            healthStatus,
-            usagePercentage: Math.min(usagePercentage, 100) // Cap at 100%
-          })
+        // Always add the bucket to analytics, even if stats fail
+        let stats = null;
+        try {
+          stats = await getBucketStats(bucket.id);
+          console.log(`Stats for bucket ${bucket.id}:`, stats);
+        } catch (error) {
+          console.error(`Failed to get stats for bucket ${bucket.id}:`, error);
         }
+        
+        // If stats failed, create default empty stats
+        if (!stats) {
+          stats = {
+            total_files: 0,
+            total_size: 0,
+            avg_file_size: 0,
+            oldest_file: null,
+            newest_file: null
+          };
+        }
+        
+        // Use realistic storage limits - 1GB per bucket for public, 5GB for private
+        const bucketLimit = bucket.public ? (1024 * 1024 * 1024) : (5 * 1024 * 1024 * 1024)
+        const usagePercentage = stats.total_size > 0 ? (stats.total_size / bucketLimit) * 100 : 0
+        const healthStatus = 
+          usagePercentage > 90 ? 'critical' :
+          usagePercentage > 70 ? 'warning' : 'healthy'
+
+        console.log(`Bucket ${bucket.id} analytics:`, {
+          totalSize: stats.total_size,
+          bucketLimit,
+          usagePercentage,
+          healthStatus
+        });
+
+        analytics.push({
+          bucketName: bucket.id,
+          stats,
+          healthStatus,
+          usagePercentage: Math.min(usagePercentage, 100) // Cap at 100%
+        })
       }
 
       return analytics
