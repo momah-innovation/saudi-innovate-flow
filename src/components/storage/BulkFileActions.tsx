@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface BulkFileActionsProps {
   selectedFiles: any[];
@@ -44,6 +45,7 @@ export function BulkFileActions({
   buckets,
   allFiles
 }: BulkFileActionsProps) {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showMoveDialog, setShowMoveDialog] = useState(false);
@@ -79,13 +81,13 @@ export function BulkFileActions({
       }
       
       toast({
-        title: "Download Started",
-        description: `Downloading ${selectedFiles.length} files`
+        title: t('download_started'),
+        description: t('downloading_files_count', { count: selectedFiles.length })
       });
     } catch (error) {
       toast({
-        title: "Download Failed",
-        description: "Failed to download files",
+        title: t('download_failed'),
+        description: t('failed_to_download_files'),
         variant: 'destructive'
       });
     } finally {
@@ -103,16 +105,16 @@ export function BulkFileActions({
       await Promise.all(deletePromises);
       
       toast({
-        title: "Files Deleted",
-        description: `Successfully deleted ${selectedFiles.length} files`
+        title: t('files_deleted'),
+        description: t('successfully_deleted_files_count', { count: selectedFiles.length })
       });
       
       onSelectionChange([]);
       onFilesUpdated();
     } catch (error) {
       toast({
-        title: "Delete Failed",
-        description: "Failed to delete files",
+        title: t('delete_failed'),
+        description: t('failed_to_delete_files'),
         variant: 'destructive'
       });
     } finally {
@@ -153,16 +155,19 @@ export function BulkFileActions({
       }
       
       toast({
-        title: "Files Moved",
-        description: `Successfully moved ${selectedFiles.length} files to ${targetBucket}`
+        title: t('files_moved'),
+        description: t('successfully_moved_files_to_bucket', { 
+          count: selectedFiles.length, 
+          bucket: targetBucket 
+        })
       });
       
       onSelectionChange([]);
       onFilesUpdated();
     } catch (error) {
       toast({
-        title: "Move Failed",
-        description: "Failed to move files",
+        title: t('move_failed'),
+        description: t('failed_to_move_files'),
         variant: 'destructive'
       });
     } finally {
@@ -188,7 +193,7 @@ export function BulkFileActions({
           ) : (
             <Square className="w-4 h-4" />
           )}
-          {isAllSelected ? 'Deselect All' : `Select All (${allFiles.length})`}
+          {isAllSelected ? t('deselect_all') : t('select_all_count', { count: allFiles.length })}
         </Button>
       </div>
     );
@@ -198,7 +203,7 @@ export function BulkFileActions({
     <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg border">
       <div className="flex items-center gap-2 flex-1">
         <Badge variant="secondary" className="px-2 py-1">
-          {selectedFiles.length} selected
+          {t('files_selected', { count: selectedFiles.length })}
         </Badge>
         
         <Button
@@ -220,7 +225,7 @@ export function BulkFileActions({
           className="flex items-center gap-2"
         >
           <Download className="w-4 h-4" />
-          Download
+          {t('download')}
         </Button>
 
         <Button
@@ -231,7 +236,7 @@ export function BulkFileActions({
           className="flex items-center gap-2"
         >
           <Move className="w-4 h-4" />
-          Move
+          {t('move')}
         </Button>
 
         <Button
@@ -242,7 +247,7 @@ export function BulkFileActions({
           className="flex items-center gap-2"
         >
           <Trash2 className="w-4 h-4" />
-          Delete
+          {t('delete')}
         </Button>
       </div>
 
@@ -250,19 +255,18 @@ export function BulkFileActions({
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent className="bg-background">
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Files</AlertDialogTitle>
+            <AlertDialogTitle>{t('delete_files')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete {selectedFiles.length} selected files? 
-              This action cannot be undone.
+              {t('confirm_delete_files_count', { count: selectedFiles.length })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleBulkDelete}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Delete Files
+              {t('delete_files')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -272,17 +276,17 @@ export function BulkFileActions({
       <AlertDialog open={showMoveDialog} onOpenChange={setShowMoveDialog}>
         <AlertDialogContent className="bg-background">
           <AlertDialogHeader>
-            <AlertDialogTitle>Move Files</AlertDialogTitle>
+            <AlertDialogTitle>{t('move_files')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Select the destination bucket for {selectedFiles.length} selected files.
+              {t('select_destination_bucket_files', { count: selectedFiles.length })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           
           <div className="py-4">
-            <label className="text-sm font-medium mb-2 block">Destination Bucket</label>
+            <label className="text-sm font-medium mb-2 block">{t('destination_bucket')}</label>
             <Select value={targetBucket} onValueChange={setTargetBucket}>
               <SelectTrigger>
-                <SelectValue placeholder="Select a bucket" />
+                <SelectValue placeholder={t('select_bucket')} />
               </SelectTrigger>
               <SelectContent className="bg-background border shadow-lg z-50">
                 {buckets.map((bucket) => (
@@ -295,12 +299,12 @@ export function BulkFileActions({
           </div>
 
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleBulkMove}
               disabled={!targetBucket}
             >
-              Move Files
+              {t('move_files')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

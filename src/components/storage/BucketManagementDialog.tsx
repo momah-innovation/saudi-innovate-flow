@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator'
 import { AlertTriangle, Database, Globe, Lock, Settings, Shield, Trash2 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
+import { useTranslation } from '@/hooks/useAppTranslation'
 
 interface BucketManagementDialogProps {
   bucket: any | null
@@ -18,6 +19,7 @@ interface BucketManagementDialogProps {
 }
 
 export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }: BucketManagementDialogProps) {
+  const { t } = useTranslation()
   const { toast } = useToast()
   const [isUpdating, setIsUpdating] = useState(false)
   const [corsEnabled, setCorsEnabled] = useState(true)
@@ -31,14 +33,14 @@ export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }
       // Note: Supabase doesn't allow direct bucket updates via client
       // This would typically require admin API calls
       toast({
-        title: "Settings Updated",
-        description: "Bucket settings have been updated successfully"
+        title: t('settings_updated'),
+        description: t('bucket_settings_updated_successfully')
       })
       onRefresh()
     } catch (error) {
       toast({
-        title: "Update Failed",
-        description: "Failed to update bucket settings",
+        title: t('update_failed'),
+        description: t('failed_to_update_bucket_settings'),
         variant: 'destructive'
       })
     } finally {
@@ -47,7 +49,7 @@ export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }
   }
 
   const handleDeleteBucket = async () => {
-    if (!confirm(`Are you sure you want to delete bucket "${bucket.id}"? This action cannot be undone.`)) {
+    if (!confirm(t('confirm_bucket_deletion', { bucketId: bucket.id }))) {
       return
     }
 
@@ -56,16 +58,16 @@ export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }
       const { error } = await supabase.storage.deleteBucket(bucket.id)
       if (!error) {
         toast({
-          title: "Bucket Deleted",
-          description: `Bucket "${bucket.id}" has been deleted`
+          title: t('bucket_deleted'),
+          description: t('bucket_deleted_successfully', { bucketId: bucket.id })
         })
         onOpenChange(false)
         onRefresh()
       }
     } catch (error) {
       toast({
-        title: "Delete Failed",
-        description: "Failed to delete bucket. Make sure it's empty first.",
+        title: t('delete_failed'),
+        description: t('failed_to_delete_bucket_empty_first'),
         variant: 'destructive'
       })
     }
@@ -77,10 +79,10 @@ export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <Database className="w-5 h-5" />
-            Manage Bucket: {bucket.name}
+            {t('manage_bucket_title', { bucketName: bucket.name })}
           </DialogTitle>
           <DialogDescription>
-            Configure bucket settings and manage access policies
+            {t('configure_bucket_settings_policies')}
           </DialogDescription>
         </DialogHeader>
 
@@ -89,23 +91,23 @@ export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-muted/50 rounded-lg">
             <div className="space-y-2">
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Bucket ID</label>
+                <label className="text-sm font-medium text-muted-foreground">{t('bucket_id')}</label>
                 <p className="font-mono text-sm">{bucket.id}</p>
               </div>
               
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Visibility</label>
+                <label className="text-sm font-medium text-muted-foreground">{t('visibility')}</label>
                 <div className="flex items-center gap-2">
                   <Badge variant={bucket.public ? "default" : "secondary"}>
                     {bucket.public ? (
                       <>
                         <Globe className="w-3 h-3 mr-1" />
-                        Public
+                        {t('public')}
                       </>
                     ) : (
                       <>
                         <Lock className="w-3 h-3 mr-1" />
-                        Private
+                        {t('private')}
                       </>
                     )}
                   </Badge>
@@ -115,16 +117,16 @@ export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }
 
             <div className="space-y-2">
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Created</label>
+                <label className="text-sm font-medium text-muted-foreground">{t('created')}</label>
                 <p className="text-sm">
-                  {bucket.created_at ? new Date(bucket.created_at).toLocaleDateString() : "Unknown"}
+                  {bucket.created_at ? new Date(bucket.created_at).toLocaleDateString() : t('unknown')}
                 </p>
               </div>
               
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Updated</label>
+                <label className="text-sm font-medium text-muted-foreground">{t('updated')}</label>
                 <p className="text-sm">
-                  {bucket.updated_at ? new Date(bucket.updated_at).toLocaleDateString() : "Unknown"}
+                  {bucket.updated_at ? new Date(bucket.updated_at).toLocaleDateString() : t('unknown')}
                 </p>
               </div>
             </div>
@@ -136,14 +138,14 @@ export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Shield className="w-4 h-4" />
-              <h3 className="font-medium">Security Settings</h3>
+              <h3 className="font-medium">{t('security_settings')}</h3>
             </div>
 
             <div className="space-y-4 pl-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="cors-enabled">Enable CORS</Label>
-                  <p className="text-sm text-muted-foreground">Allow cross-origin requests</p>
+                  <Label htmlFor="cors-enabled">{t('enable_cors')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('allow_cross_origin_requests')}</p>
                 </div>
                 <Switch
                   id="cors-enabled"
@@ -153,7 +155,7 @@ export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="file-size-limit">File Size Limit (MB)</Label>
+                <Label htmlFor="file-size-limit">{t('file_size_limit_mb')}</Label>
                 <Input
                   id="file-size-limit"
                   type="number"
@@ -173,13 +175,12 @@ export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Settings className="w-4 h-4" />
-              <h3 className="font-medium">Access Policies</h3>
+              <h3 className="font-medium">{t('access_policies')}</h3>
             </div>
 
             <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
               <p className="text-sm text-blue-800 dark:text-blue-200">
-                Access policies are managed through Row Level Security (RLS) policies in your Supabase dashboard.
-                Visit the Storage section in your Supabase project to configure detailed access rules.
+                {t('access_policies_managed_rls')}
               </p>
             </div>
           </div>
@@ -192,15 +193,15 @@ export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }
               className="flex items-center gap-2"
             >
               <Trash2 className="w-4 h-4" />
-              Delete Bucket
+              {t('delete_bucket')}
             </Button>
 
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                Cancel
+                {t('cancel')}
               </Button>
               <Button onClick={handleUpdateBucket} disabled={isUpdating}>
-                {isUpdating ? "Updating..." : "Save Changes"}
+                {isUpdating ? t('updating') : t('save_changes')}
               </Button>
             </div>
           </div>
@@ -211,10 +212,10 @@ export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }
               <AlertTriangle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
               <div className="text-sm">
                 <p className="font-medium text-yellow-800 dark:text-yellow-200 mb-1">
-                  Important Notice
+                  {t('important_notice')}
                 </p>
                 <p className="text-yellow-700 dark:text-yellow-300">
-                  Some bucket settings require admin privileges and may need to be configured through the Supabase dashboard or API.
+                  {t('bucket_settings_admin_notice')}
                 </p>
               </div>
             </div>
