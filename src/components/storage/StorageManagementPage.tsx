@@ -41,7 +41,8 @@ import {
   Shield,
   HardDrive,
   Search,
-  Filter
+  Filter,
+  X
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -96,6 +97,12 @@ export function StorageManagementPage() {
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
   const [showBulkActions, setShowBulkActions] = useState(false);
   const [activeTab, setActiveTab] = useState("files");
+
+  // Bucket filtering state
+  const [bucketSearchTerm, setBucketSearchTerm] = useState('');
+  const [bucketFilter, setBucketFilter] = useState('all');
+  const [bucketSortBy, setBucketSortBy] = useState('name-asc');
+
   useEffect(() => {
     loadStorageData();
   }, []);
@@ -513,6 +520,82 @@ export function StorageManagementPage() {
     return filtered;
   }, [files, searchTerm, filters, sortBy]);
 
+  // Bucket filtering and sorting logic
+  const filteredAndSortedBuckets = useMemo(() => {
+    let filtered = buckets.filter(bucket => {
+      // Search filter
+      if (bucketSearchTerm && !bucket.id.toLowerCase().includes(bucketSearchTerm.toLowerCase())) {
+        return false;
+      }
+
+      // Type filter
+      if (bucketFilter && bucketFilter !== 'all') {
+        switch (bucketFilter) {
+          case 'public':
+            if (!bucket.public) return false;
+            break;
+          case 'private':
+            if (bucket.public) return false;
+            break;
+          case 'empty':
+            // Count files in this bucket
+            const bucketFiles = files.filter(file => file.bucket_id === bucket.id);
+            if (bucketFiles.length > 0) return false;
+            break;
+          case 'large':
+            // Calculate bucket size
+            const bucketSize = files
+              .filter(file => file.bucket_id === bucket.id)
+              .reduce((total, file) => total + (file.metadata?.size || 0), 0);
+            if (bucketSize <= 100 * 1024 * 1024) return false; // 100MB
+            break;
+        }
+      }
+
+      return true;
+    });
+
+    // Sort buckets
+    filtered.sort((a, b) => {
+      let aValue, bValue;
+
+      switch (bucketSortBy) {
+        case 'name-asc':
+          return a.id.localeCompare(b.id);
+        case 'name-desc':
+          return b.id.localeCompare(a.id);
+        case 'created-newest':
+          aValue = new Date(a.created_at || 0).getTime();
+          bValue = new Date(b.created_at || 0).getTime();
+          return bValue - aValue;
+        case 'created-oldest':
+          aValue = new Date(a.created_at || 0).getTime();
+          bValue = new Date(b.created_at || 0).getTime();
+          return aValue - bValue;
+        case 'size-largest':
+          aValue = files.filter(f => f.bucket_id === a.id).reduce((total, f) => total + (f.metadata?.size || 0), 0);
+          bValue = files.filter(f => f.bucket_id === b.id).reduce((total, f) => total + (f.metadata?.size || 0), 0);
+          return bValue - aValue;
+        case 'size-smallest':
+          aValue = files.filter(f => f.bucket_id === a.id).reduce((total, f) => total + (f.metadata?.size || 0), 0);
+          bValue = files.filter(f => f.bucket_id === b.id).reduce((total, f) => total + (f.metadata?.size || 0), 0);
+          return aValue - bValue;
+        case 'files-most':
+          aValue = files.filter(f => f.bucket_id === a.id).length;
+          bValue = files.filter(f => f.bucket_id === b.id).length;
+          return bValue - aValue;
+        case 'files-least':
+          aValue = files.filter(f => f.bucket_id === a.id).length;
+          bValue = files.filter(f => f.bucket_id === b.id).length;
+          return aValue - bValue;
+        default:
+          return 0;
+      }
+    });
+
+    return filtered;
+  }, [buckets, files, bucketSearchTerm, bucketFilter, bucketSortBy]);
+
   const getActiveFilterCount = (): number => {
     return Object.values(filters).filter(value => value !== 'all').length;
   };
@@ -696,23 +779,89 @@ export function StorageManagementPage() {
           </TabsContent>
 
           <TabsContent value="buckets" className="space-y-6">
-            {/* Header with layout toggle */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div>
-                <h3 className="text-lg font-semibold">{t('storage.buckets')}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {buckets.length} {t('storage.buckets_found')}
-                </p>
+            {/* Header with layout toggle and controls */}
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <h3 className="text-lg font-semibold">{t('storage.buckets')}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {filteredAndSortedBuckets.length} of {buckets.length} {t('storage.buckets_found')}
+                  </p>
+                </div>
+                <LayoutToggle
+                  currentLayout={bucketsLayout}
+                  onLayoutChange={setBucketsLayout}
+                />
               </div>
-              <LayoutToggle
-                currentLayout={bucketsLayout}
-                onLayoutChange={setBucketsLayout}
-              />
+
+              {/* Search, Filter, and Sort Controls */}
+              <div className="flex flex-col lg:flex-row gap-4 p-4 bg-muted/50 rounded-lg">
+                {/* Search */}
+                <div className="flex-1">
+                  <div className="relative">
+                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search buckets by name..."
+                      value={bucketSearchTerm}
+                      onChange={(e) => setBucketSearchTerm(e.target.value)}
+                      className="pl-8"
+                    />
+                  </div>
+                </div>
+
+                {/* Filter by Type */}
+                <Select value={bucketFilter} onValueChange={setBucketFilter}>
+                  <SelectTrigger className="w-full lg:w-[200px]">
+                    <SelectValue placeholder="Filter by type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Buckets</SelectItem>
+                    <SelectItem value="public">Public Only</SelectItem>
+                    <SelectItem value="private">Private Only</SelectItem>
+                    <SelectItem value="empty">Empty Buckets</SelectItem>
+                    <SelectItem value="large">Large Buckets (>100MB)</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                {/* Sort Options */}
+                <Select value={bucketSortBy} onValueChange={setBucketSortBy}>
+                  <SelectTrigger className="w-full lg:w-[200px]">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="name-asc">Name A-Z</SelectItem>
+                    <SelectItem value="name-desc">Name Z-A</SelectItem>
+                    <SelectItem value="created-newest">Newest First</SelectItem>
+                    <SelectItem value="created-oldest">Oldest First</SelectItem>
+                    <SelectItem value="size-largest">Largest First</SelectItem>
+                    <SelectItem value="size-smallest">Smallest First</SelectItem>
+                    <SelectItem value="files-most">Most Files</SelectItem>
+                    <SelectItem value="files-least">Least Files</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                {/* Clear Filters */}
+                {(bucketSearchTerm || bucketFilter !== 'all' || bucketSortBy !== 'name-asc') && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setBucketSearchTerm('')
+                      setBucketFilter('all')
+                      setBucketSortBy('name-asc')
+                    }}
+                    className="flex items-center gap-2"
+                  >
+                    <X className="h-4 w-4" />
+                    Clear
+                  </Button>
+                )}
+              </div>
             </div>
 
             {/* Buckets Display */}
             <ViewLayouts viewMode={bucketsLayout}>
-              {buckets.map((bucket) => (
+              {filteredAndSortedBuckets.map((bucket) => (
                 <StorageBucketCard
                   key={bucket.id}
                   bucket={bucket}
@@ -722,6 +871,17 @@ export function StorageManagementPage() {
                 />
               ))}
             </ViewLayouts>
+
+            {/* Empty State */}
+            {filteredAndSortedBuckets.length === 0 && buckets.length > 0 && (
+              <div className="text-center py-12">
+                <Search className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                <h3 className="text-lg font-medium mb-2">No buckets found</h3>
+                <p className="text-muted-foreground">
+                  Try adjusting your search or filter criteria.
+                </p>
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
