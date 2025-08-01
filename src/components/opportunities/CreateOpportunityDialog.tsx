@@ -1,28 +1,62 @@
-import { useState, useRef } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useForm } from 'react-hook-form';
-import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 import { useDirection } from '@/components/ui/direction-provider';
-import { 
-  Plus, 
-  Building2, 
-  DollarSign, 
-  Calendar,
+import { supabase } from '@/integrations/supabase/client';
+import { useForm } from 'react-hook-form';
+import { OpportunityImageSelector } from '@/components/opportunities/OpportunityImageSelector';
+import { UploadedFile } from '@/hooks/useFileUploader';
+import {
+  Plus,
+  CalendarDays,
   MapPin,
   Users,
   Target,
   AlertCircle,
-  Upload,
-  X,
-  Image
+  X
 } from 'lucide-react';
+
+interface UnsplashImage {
+  id: string
+  urls: {
+    raw: string
+    full: string
+    regular: string
+    small: string
+    thumb: string
+  }
+  alt_description: string | null
+  description: string | null
+  user: {
+    name: string
+    username: string
+    profile_image: {
+      small: string
+    }
+  }
+  width: number
+  height: number
+  color: string
+  likes: number
+  attribution: {
+    photographer: string
+    photographer_username: string
+    source: string
+    source_url: string
+    photographer_url: string
+  }
+}
 
 interface CreateOpportunityDialogProps {
   open: boolean;
@@ -58,9 +92,7 @@ export const CreateOpportunityDialog = ({
   const { toast } = useToast();
   const { isRTL } = useDirection();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [uploadingImage, setUploadingImage] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<OpportunityFormData>({
     defaultValues: {
@@ -70,67 +102,22 @@ export const CreateOpportunityDialog = ({
     }
   });
 
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'يرجى اختيار ملف صورة' : 'Please select an image file',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    // Validate file size (5MB limit)
-    if (file.size > 5 * 1024 * 1024) {
-      toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'حجم الملف يجب أن يكون أقل من 5 ميجابايت' : 'File size must be less than 5MB',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    setUploadingImage(true);
-    try {
-      const fileName = `opportunity-${Date.now()}.${file.name.split('.').pop()}`;
-      
-      const { data, error } = await supabase.storage
-        .from('opportunity-images')
-        .upload(fileName, file, {
-          cacheControl: '3600',
-          upsert: false
-        });
-
-      if (error) throw error;
-
-      const relativePath = `/opportunity-images/${fileName}`;
-      setImageUrl(relativePath);
-      
+  const handleFileUpload = (files: UploadedFile[]) => {
+    if (files.length > 0) {
+      setImageUrl(files[0].url);
       toast({
         title: isRTL ? 'نجح' : 'Success',
         description: isRTL ? 'تم رفع الصورة بنجاح' : 'Image uploaded successfully',
       });
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في رفع الصورة' : 'Failed to upload image',
-        variant: 'destructive',
-      });
-    } finally {
-      setUploadingImage(false);
     }
   };
 
-  const removeImage = () => {
-    setImageUrl('');
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+  const handleUnsplashSelect = (image: UnsplashImage) => {
+    setImageUrl(image.urls.regular);
+    toast({
+      title: isRTL ? 'نجح' : 'Success',
+      description: isRTL ? 'تم اختيار الصورة من Unsplash' : 'Image selected from Unsplash',
+    });
   };
 
   const onSubmit = async (data: OpportunityFormData) => {
@@ -165,6 +152,7 @@ export const CreateOpportunityDialog = ({
       });
 
       reset();
+      setImageUrl('');
       onOpenChange(false);
       onSuccess?.();
     } catch (error: any) {
@@ -477,7 +465,7 @@ export const CreateOpportunityDialog = ({
             </div>
           </div>
 
-          {/* Image Upload */}
+          {/* Image Selection */}
           <div className="space-y-4">
             <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
               {isRTL ? 'صورة الفرصة' : 'Opportunity Image'}
@@ -487,7 +475,7 @@ export const CreateOpportunityDialog = ({
               {imageUrl ? (
                 <div className="relative">
                   <img 
-                    src={`https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public${imageUrl}`}
+                    src={imageUrl.startsWith('http') ? imageUrl : `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public${imageUrl}`}
                     alt="Opportunity preview"
                     className="w-full h-48 object-cover rounded-lg border"
                   />
@@ -496,52 +484,20 @@ export const CreateOpportunityDialog = ({
                     variant="destructive"
                     size="sm"
                     className="absolute top-2 right-2"
-                    onClick={removeImage}
+                    onClick={() => setImageUrl('')}
                   >
                     <X className="w-4 h-4" />
                   </Button>
                 </div>
               ) : (
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
-                  <div className="text-center">
-                    <Image className="mx-auto h-12 w-12 text-gray-400" />
-                    <div className="mt-4">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={uploadingImage}
-                        className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
-                      >
-                        {uploadingImage ? (
-                          <>
-                            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                            {isRTL ? 'جاري الرفع...' : 'Uploading...'}
-                          </>
-                        ) : (
-                          <>
-                            <Upload className="w-4 h-4" />
-                            {isRTL ? 'رفع صورة' : 'Upload Image'}
-                          </>
-                        )}
-                      </Button>
-                      <p className="mt-2 text-sm text-gray-500">
-                        {isRTL ? 'PNG أو JPG أو JPEG (حد أقصى 5 ميجابايت)' : 'PNG, JPG, or JPEG (max 5MB)'}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <OpportunityImageSelector
+                  onFileUpload={handleFileUpload}
+                  onUnsplashSelect={handleUnsplashSelect}
+                  className="w-full"
+                />
               )}
             </div>
           </div>
-        
 
           {/* Submit Buttons */}
           <div className={`flex gap-3 pt-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
