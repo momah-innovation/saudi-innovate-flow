@@ -202,8 +202,8 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
     } catch (error) {
       console.error('Error loading uploader settings:', error)
       toast({
-        title: 'Error',
-        description: 'Failed to load uploader settings',
+        title: t('error'),
+        description: t('failed_to_load'),
         variant: 'destructive'
       })
     } finally {
@@ -276,13 +276,13 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
     try {
       await updateUploadConfig(config.id, updates)
       toast({
-        title: 'Configuration Updated',
-        description: 'Upload configuration has been saved successfully'
+        title: t('configuration_updated'),
+        description: t('upload_configuration_updated')
       })
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to update configuration',
+        title: t('error'),
+        description: t('failed_to_save_configuration'),
         variant: 'destructive'
       })
     }
@@ -301,13 +301,13 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
       ])
 
       toast({
-        title: 'Settings Saved',
-        description: 'Global uploader settings have been updated successfully'
+        title: t('settings_saved'),
+        description: t('global_uploader_settings_updated')
       })
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to save settings',
+        title: t('error'),
+        description: t('failed_to_save'),
         variant: 'destructive'
       })
     }
@@ -505,13 +505,13 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Settings className="w-5 h-5" />
-            Global Uploader Settings
+            {t('global_uploader_settings')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="auto-cleanup">Auto Cleanup</Label>
+              <Label htmlFor="auto-cleanup">{t('auto_cleanup')}</Label>
               <div className="flex items-center space-x-2">
                 <Switch
                   id="auto-cleanup"
@@ -521,13 +521,13 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
                   }
                 />
                 <span className="text-sm text-muted-foreground">
-                  {globalSettings.autoCleanupEnabled ? 'Enabled' : 'Disabled'}
+                  {globalSettings.autoCleanupEnabled ? t('enabled') : t('disabled')}
                 </span>
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="cleanup-days">Default Cleanup Days</Label>
+              <Label htmlFor="cleanup-days">{t('default_cleanup_days')}</Label>
               <Input
                 id="cleanup-days"
                 type="number"
@@ -539,7 +539,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="max-uploads">Max Concurrent Uploads</Label>
+              <Label htmlFor="max-uploads">{t('max_concurrent_uploads')}</Label>
               <Input
                 id="max-uploads"
                 type="number"
@@ -551,7 +551,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="chunk-size">Chunk Size (MB)</Label>
+              <Label htmlFor="chunk-size">{t('chunk_size_mb')}</Label>
               <Input
                 id="chunk-size"
                 type="number"
@@ -563,7 +563,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="retry-attempts">Retry Attempts</Label>
+              <Label htmlFor="retry-attempts">{t('retry_attempts')}</Label>
               <Input
                 id="retry-attempts"
                 type="number"
@@ -575,7 +575,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="compression">Image Compression</Label>
+              <Label htmlFor="compression">{t('image_compression')}</Label>
               <div className="flex items-center space-x-2">
                 <Switch
                   id="compression"
@@ -585,7 +585,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
                   }
                 />
                 <span className="text-sm text-muted-foreground">
-                  {globalSettings.compressionEnabled ? 'Enabled' : 'Disabled'}
+                  {globalSettings.compressionEnabled ? t('enabled') : t('disabled')}
                 </span>
               </div>
             </div>
@@ -594,7 +594,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
           <div className="pt-4 border-t">
             <Button onClick={handleSaveSettings} className="w-full md:w-auto">
               <Save className="w-4 h-4 mr-2" />
-              Save Global Settings
+              {t('save_global_settings')}
             </Button>
           </div>
         </CardContent>
@@ -606,10 +606,10 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2">
               <Upload className="w-5 h-5" />
-              Upload Configurations
+              {t('upload_configurations')}
               {configs.filter(c => !c.bucketExists).length > 0 && (
                 <Badge variant="destructive" className="ml-2">
-                  {configs.filter(c => !c.bucketExists).length} orphaned
+                  {configs.filter(c => !c.bucketExists).length} {t('orphaned')}
                 </Badge>
               )}
             </CardTitle>
@@ -617,12 +617,12 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
               {configs.filter(c => !c.bucketExists).length > 0 && (
                 <Button variant="destructive" size="sm" onClick={cleanupOrphanedConfigs}>
                   <Trash2 className="w-4 h-4 mr-2" />
-                  Cleanup Orphaned
+                  {t('cleanup_orphaned')}
                 </Button>
               )}
               <Button variant="outline" onClick={() => setNewConfigOpen(true)}>
                 <Plus className="w-4 h-4 mr-2" />
-                Add Configuration
+                {t('add_configuration')}
               </Button>
             </div>
           </div>
@@ -640,10 +640,10 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
                     <div className="mb-3 p-2 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-md">
                       <div className="flex items-center gap-2 text-red-700 dark:text-red-300">
                         <AlertTriangle className="w-4 h-4" />
-                        <span className="text-sm font-medium">Missing Storage Bucket</span>
+                        <span className="text-sm font-medium">{t('missing_storage_bucket')}</span>
                       </div>
                       <p className="text-xs text-red-600 dark:text-red-400 mt-1">
-                        The bucket "{config.bucket}" no longer exists in storage. This configuration should be removed.
+                        {t('bucket_no_longer_exists', { bucket: config.bucket })}
                       </p>
                     </div>
                   )}
@@ -663,8 +663,8 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
                         !config.bucketExists ? 'destructive' :
                         config.enabled ? 'default' : 'secondary'
                       }>
-                        {!config.bucketExists ? 'Missing Bucket' :
-                         config.enabled ? 'Active' : 'Disabled'}
+                         {!config.bucketExists ? t('missing_bucket') :
+                          config.enabled ? t('active') : t('disabled')}
                       </Badge>
                       <Button 
                         variant="ghost" 
@@ -679,16 +679,16 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
 
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                     <div>
-                      <span className="text-muted-foreground">Max Size:</span>
+                      <span className="text-muted-foreground">{t('max_size')}:</span>
                       <p className="font-medium">{formatBytes(config.maxSizeBytes)}</p>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Max Files:</span>
+                      <span className="text-muted-foreground">{t('max_files')}:</span>
                       <p className="font-medium">{config.maxFiles}</p>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">File Types:</span>
-                      <p className="font-medium">{config.allowedTypes.length} types</p>
+                       <span className="text-muted-foreground">{t('file_types')}:</span>
+                       <p className="font-medium">{config.allowedTypes.length} {t('types')}</p>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Auto Cleanup:</span>
