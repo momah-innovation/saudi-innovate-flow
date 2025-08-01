@@ -7,23 +7,20 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import { OpportunityImageSelector } from '@/components/opportunities/OpportunityImageSelector';
 import { UploadedFile } from '@/hooks/useFileUploader';
 import {
   Plus,
-  CalendarDays,
-  MapPin,
-  Users,
-  Target,
-  AlertCircle,
   X
 } from 'lucide-react';
 
@@ -64,24 +61,26 @@ interface CreateOpportunityDialogProps {
   onSuccess?: () => void;
 }
 
-interface OpportunityFormData {
-  title_ar: string;
-  title_en?: string;
-  description_ar: string;
-  description_en?: string;
-  opportunity_type: string;
-  status: string;
-  priority_level: string;
-  budget_min?: number;
-  budget_max?: number;
-  deadline: string;
-  location: string;
-  contact_person: string;
-  contact_email: string;
-  requirements: string;
-  benefits: string;
-  image_url?: string;
-}
+// Form validation schema
+const formSchema = z.object({
+  title_ar: z.string().min(1, 'Arabic title is required'),
+  title_en: z.string().optional(),
+  description_ar: z.string().min(1, 'Arabic description is required'),
+  description_en: z.string().optional(),
+  opportunity_type: z.string().min(1, 'Opportunity type is required'),
+  status: z.string().min(1, 'Status is required'),
+  priority_level: z.string().min(1, 'Priority level is required'),
+  budget_min: z.coerce.number().optional(),
+  budget_max: z.coerce.number().optional(),
+  deadline: z.string().min(1, 'Deadline is required'),
+  location: z.string().optional(),
+  contact_person: z.string().min(1, 'Contact person is required'),
+  contact_email: z.string().email('Valid email is required'),
+  requirements: z.string().optional(),
+  benefits: z.string().optional(),
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 export const CreateOpportunityDialog = ({
   open,
@@ -94,7 +93,8 @@ export const CreateOpportunityDialog = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>('');
 
-  const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<OpportunityFormData>({
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       status: 'open',
       priority_level: 'medium',
@@ -120,7 +120,7 @@ export const CreateOpportunityDialog = ({
     });
   };
 
-  const onSubmit = async (data: OpportunityFormData) => {
+  const onSubmit = async (data: FormData) => {
     if (!user) {
       toast({
         title: isRTL ? 'خطأ' : 'Error',
@@ -136,10 +136,23 @@ export const CreateOpportunityDialog = ({
       const { error } = await supabase
         .from('opportunities')
         .insert({
-          ...data,
+          title_ar: data.title_ar,
+          title_en: data.title_en || null,
+          description_ar: data.description_ar,
+          description_en: data.description_en || null,
+          opportunity_type: data.opportunity_type,
+          status: data.status,
+          priority_level: data.priority_level,
+          budget_min: data.budget_min || null,
+          budget_max: data.budget_max || null,
+          deadline: data.deadline,
+          location: data.location || null,
+          contact_person: data.contact_person,
+          contact_email: data.contact_email,
+          requirements: data.requirements || null,
+          benefits: data.benefits || null,
           image_url: imageUrl || null,
           created_by: user.id,
-          deadline: new Date(data.deadline).toISOString().split('T')[0],
         });
 
       if (error) {
@@ -151,7 +164,7 @@ export const CreateOpportunityDialog = ({
         description: isRTL ? 'تم إنشاء الفرصة بنجاح' : 'Opportunity created successfully',
       });
 
-      reset();
+      form.reset();
       setImageUrl('');
       onOpenChange(false);
       onSuccess?.();
@@ -198,332 +211,436 @@ export const CreateOpportunityDialog = ({
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Basic Information */}
-          <div className="space-y-4">
-            <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
-              {isRTL ? 'المعلومات الأساسية' : 'Basic Information'}
-            </h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="title_en" className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'العنوان (بالإنجليزية)' : 'Title (English)'}
-                </Label>
-                <Input
-                  id="title_en"
-                  {...register('title_en')}
-                  className={isRTL ? 'text-right' : 'text-left'}
-                  placeholder={isRTL ? 'أدخل العنوان بالإنجليزية' : 'Enter title in English'}
-                />
-                {errors.title_en && (
-                  <p className="text-sm text-destructive">{errors.title_en.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="title_ar" className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'العنوان (بالعربية)' : 'Title (Arabic)'}
-                </Label>
-                <Input
-                  id="title_ar"
-                  {...register('title_ar', { required: 'Arabic title is required' })}
-                  className="text-right"
-                  placeholder="أدخل العنوان بالعربية"
-                />
-                {errors.title_ar && (
-                  <p className="text-sm text-destructive">{errors.title_ar.message}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="description_en" className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'الوصف (بالإنجليزية)' : 'Description (English)'}
-                </Label>
-                <Textarea
-                  id="description_en"
-                  {...register('description_en')}
-                  className={isRTL ? 'text-right' : 'text-left'}
-                  placeholder={isRTL ? 'أدخل الوصف بالإنجليزية' : 'Enter description in English'}
-                  rows={4}
-                />
-                {errors.description_en && (
-                  <p className="text-sm text-destructive">{errors.description_en.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="description_ar" className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'الوصف (بالعربية)' : 'Description (Arabic)'}
-                </Label>
-                <Textarea
-                  id="description_ar"
-                  {...register('description_ar', { required: 'Arabic description is required' })}
-                  className="text-right"
-                  placeholder="أدخل الوصف بالعربية"
-                  rows={4}
-                />
-                {errors.description_ar && (
-                  <p className="text-sm text-destructive">{errors.description_ar.message}</p>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Opportunity Details */}
-          <div className="space-y-4">
-            <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
-              {isRTL ? 'تفاصيل الفرصة' : 'Opportunity Details'}
-            </h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'نوع الفرصة' : 'Opportunity Type'}
-                </Label>
-                <Select {...register('opportunity_type')}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={isRTL ? 'اختر النوع' : 'Select type'} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {opportunityTypes.map((type) => (
-                      <SelectItem key={type.value} value={type.value}>
-                        {type.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'الحالة' : 'Status'}
-                </Label>
-                <Select {...register('status')}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={isRTL ? 'اختر الحالة' : 'Select status'} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {statusOptions.map((status) => (
-                      <SelectItem key={status.value} value={status.value}>
-                        {status.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'مستوى الأولوية' : 'Priority Level'}
-                </Label>
-                <Select {...register('priority_level')}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={isRTL ? 'اختر الأولوية' : 'Select priority'} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {priorityOptions.map((priority) => (
-                      <SelectItem key={priority.value} value={priority.value}>
-                        {priority.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="budget_min" className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'الحد الأدنى للميزانية (ريال)' : 'Minimum Budget (SAR)'}
-                </Label>
-                <Input
-                  id="budget_min"
-                  type="number"
-                  {...register('budget_min')}
-                  className={isRTL ? 'text-right' : 'text-left'}
-                  placeholder={isRTL ? 'الحد الأدنى' : 'Minimum amount'}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="budget_max" className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'الحد الأقصى للميزانية (ريال)' : 'Maximum Budget (SAR)'}
-                </Label>
-                <Input
-                  id="budget_max"
-                  type="number"
-                  {...register('budget_max')}
-                  className={isRTL ? 'text-right' : 'text-left'}
-                  placeholder={isRTL ? 'الحد الأقصى' : 'Maximum amount'}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="deadline" className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'الموعد النهائي' : 'Deadline'}
-                </Label>
-                <Input
-                  id="deadline"
-                  type="date"
-                  {...register('deadline', { required: 'Deadline is required' })}
-                  className={isRTL ? 'text-right' : 'text-left'}
-                />
-                {errors.deadline && (
-                  <p className="text-sm text-destructive">{errors.deadline.message}</p>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Information */}
-          <div className="space-y-4">
-            <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
-              {isRTL ? 'معلومات الاتصال' : 'Contact Information'}
-            </h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="contact_person" className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'الشخص المسؤول' : 'Contact Person'}
-                </Label>
-                <Input
-                  id="contact_person"
-                  {...register('contact_person', { required: 'Contact person is required' })}
-                  className={isRTL ? 'text-right' : 'text-left'}
-                  placeholder={isRTL ? 'اسم الشخص المسؤول' : 'Contact person name'}
-                />
-                {errors.contact_person && (
-                  <p className="text-sm text-destructive">{errors.contact_person.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="contact_email" className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'البريد الإلكتروني' : 'Contact Email'}
-                </Label>
-                <Input
-                  id="contact_email"
-                  type="email"
-                  {...register('contact_email', { required: 'Email is required' })}
-                  className={isRTL ? 'text-right' : 'text-left'}
-                  placeholder={isRTL ? 'البريد الإلكتروني' : 'Email address'}
-                />
-                {errors.contact_email && (
-                  <p className="text-sm text-destructive">{errors.contact_email.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="location" className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'الموقع' : 'Location'}
-                </Label>
-                <Input
-                  id="location"
-                  {...register('location')}
-                  className={isRTL ? 'text-right' : 'text-left'}
-                  placeholder={isRTL ? 'الرياض، المملكة العربية السعودية' : 'Riyadh, Saudi Arabia'}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Additional Details */}
-          <div className="space-y-4">
-            <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
-              {isRTL ? 'تفاصيل إضافية' : 'Additional Details'}
-            </h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="requirements" className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'المتطلبات' : 'Requirements'}
-                </Label>
-                <Textarea
-                  id="requirements"
-                  {...register('requirements')}
-                  className={isRTL ? 'text-right' : 'text-left'}
-                  placeholder={isRTL ? 'اذكر المتطلبات والشروط...' : 'List requirements and conditions...'}
-                  rows={3}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="benefits" className={isRTL ? 'text-right' : 'text-left'}>
-                  {isRTL ? 'الفوائد والمميزات' : 'Benefits'}
-                </Label>
-                <Textarea
-                  id="benefits"
-                  {...register('benefits')}
-                  className={isRTL ? 'text-right' : 'text-left'}
-                  placeholder={isRTL ? 'اذكر الفوائد والمميزات...' : 'List benefits and advantages...'}
-                  rows={3}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Image Selection */}
-          <div className="space-y-4">
-            <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
-              {isRTL ? 'صورة الفرصة' : 'Opportunity Image'}
-            </h3>
-            
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* Basic Information */}
             <div className="space-y-4">
-              {imageUrl ? (
-                <div className="relative">
-                  <img 
-                    src={imageUrl.startsWith('http') ? imageUrl : `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public${imageUrl}`}
-                    alt="Opportunity preview"
-                    className="w-full h-48 object-cover rounded-lg border"
-                  />
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="sm"
-                    className="absolute top-2 right-2"
-                    onClick={() => setImageUrl('')}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
-              ) : (
-                <OpportunityImageSelector
-                  onFileUpload={handleFileUpload}
-                  onUnsplashSelect={handleUnsplashSelect}
-                  className="w-full"
+              <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
+                {isRTL ? 'المعلومات الأساسية' : 'Basic Information'}
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="title_en"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'العنوان (بالإنجليزية)' : 'Title (English)'}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          className={isRTL ? 'text-right' : 'text-left'}
+                          placeholder={isRTL ? 'أدخل العنوان بالإنجليزية' : 'Enter title in English'}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              )}
-            </div>
-          </div>
 
-          {/* Submit Buttons */}
-          <div className={`flex gap-3 pt-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-              disabled={isSubmitting}
-            >
-              {isRTL ? 'إلغاء' : 'Cancel'}
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                  {isRTL ? 'جاري الإنشاء...' : 'Creating...'}
-                </>
-              ) : (
-                <>
-                  <Plus className="w-4 h-4 mr-2" />
-                  {isRTL ? 'إنشاء الفرصة' : 'Create Opportunity'}
-                </>
-              )}
-            </Button>
-          </div>
-        </form>
+                <FormField
+                  control={form.control}
+                  name="title_ar"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'العنوان (بالعربية)' : 'Title (Arabic)'}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          className="text-right"
+                          placeholder="أدخل العنوان بالعربية"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="description_en"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'الوصف (بالإنجليزية)' : 'Description (English)'}
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          className={isRTL ? 'text-right' : 'text-left'}
+                          placeholder={isRTL ? 'أدخل الوصف بالإنجليزية' : 'Enter description in English'}
+                          rows={4}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="description_ar"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'الوصف (بالعربية)' : 'Description (Arabic)'}
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          className="text-right"
+                          placeholder="أدخل الوصف بالعربية"
+                          rows={4}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            {/* Opportunity Details */}
+            <div className="space-y-4">
+              <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
+                {isRTL ? 'تفاصيل الفرصة' : 'Opportunity Details'}
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <FormField
+                  control={form.control}
+                  name="opportunity_type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'نوع الفرصة' : 'Opportunity Type'}
+                      </FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={isRTL ? 'اختر النوع' : 'Select type'} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {opportunityTypes.map((type) => (
+                            <SelectItem key={type.value} value={type.value}>
+                              {type.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="status"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'الحالة' : 'Status'}
+                      </FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={isRTL ? 'اختر الحالة' : 'Select status'} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {statusOptions.map((status) => (
+                            <SelectItem key={status.value} value={status.value}>
+                              {status.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="priority_level"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'مستوى الأولوية' : 'Priority Level'}
+                      </FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={isRTL ? 'اختر الأولوية' : 'Select priority'} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {priorityOptions.map((priority) => (
+                            <SelectItem key={priority.value} value={priority.value}>
+                              {priority.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <FormField
+                  control={form.control}
+                  name="budget_min"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'الحد الأدنى للميزانية (ريال)' : 'Minimum Budget (SAR)'}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="number"
+                          className={isRTL ? 'text-right' : 'text-left'}
+                          placeholder={isRTL ? 'الحد الأدنى' : 'Minimum amount'}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="budget_max"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'الحد الأقصى للميزانية (ريال)' : 'Maximum Budget (SAR)'}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="number"
+                          className={isRTL ? 'text-right' : 'text-left'}
+                          placeholder={isRTL ? 'الحد الأقصى' : 'Maximum amount'}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="deadline"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'الموعد النهائي' : 'Deadline'}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="date"
+                          className={isRTL ? 'text-right' : 'text-left'}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            {/* Contact Information */}
+            <div className="space-y-4">
+              <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
+                {isRTL ? 'معلومات الاتصال' : 'Contact Information'}
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <FormField
+                  control={form.control}
+                  name="contact_person"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'الشخص المسؤول' : 'Contact Person'}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          className={isRTL ? 'text-right' : 'text-left'}
+                          placeholder={isRTL ? 'اسم الشخص المسؤول' : 'Contact person name'}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="contact_email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'البريد الإلكتروني' : 'Contact Email'}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="email"
+                          className={isRTL ? 'text-right' : 'text-left'}
+                          placeholder={isRTL ? 'البريد الإلكتروني' : 'Email address'}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'الموقع' : 'Location'}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          className={isRTL ? 'text-right' : 'text-left'}
+                          placeholder={isRTL ? 'الرياض، المملكة العربية السعودية' : 'Riyadh, Saudi Arabia'}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            {/* Additional Details */}
+            <div className="space-y-4">
+              <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
+                {isRTL ? 'تفاصيل إضافية' : 'Additional Details'}
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="requirements"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'المتطلبات' : 'Requirements'}
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          className={isRTL ? 'text-right' : 'text-left'}
+                          placeholder={isRTL ? 'اذكر المتطلبات والشروط...' : 'List requirements and conditions...'}
+                          rows={3}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="benefits"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'الفوائد والمميزات' : 'Benefits'}
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          className={isRTL ? 'text-right' : 'text-left'}
+                          placeholder={isRTL ? 'اذكر الفوائد والمميزات...' : 'List benefits and advantages...'}
+                          rows={3}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            {/* Image Selection */}
+            <div className="space-y-4">
+              <h3 className={`text-lg font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
+                {isRTL ? 'صورة الفرصة' : 'Opportunity Image'}
+              </h3>
+              
+              <div className="space-y-4">
+                {imageUrl ? (
+                  <div className="relative">
+                    <img 
+                      src={imageUrl.startsWith('http') ? imageUrl : `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public${imageUrl}`}
+                      alt="Opportunity preview"
+                      className="w-full h-48 object-cover rounded-lg border"
+                    />
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      className="absolute top-2 right-2"
+                      onClick={() => setImageUrl('')}
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <OpportunityImageSelector
+                    onFileUpload={handleFileUpload}
+                    onUnsplashSelect={handleUnsplashSelect}
+                    className="w-full"
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Submit Buttons */}
+            <div className={`flex gap-3 pt-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={isSubmitting}
+              >
+                {isRTL ? 'إلغاء' : 'Cancel'}
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    {isRTL ? 'جاري الإنشاء...' : 'Creating...'}
+                  </>
+                ) : (
+                  <>
+                    <Plus className="w-4 h-4 mr-2" />
+                    {isRTL ? 'إنشاء الفرصة' : 'Create Opportunity'}
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
