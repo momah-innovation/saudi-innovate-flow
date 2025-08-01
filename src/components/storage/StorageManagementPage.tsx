@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/ui/page-header';
 import { StorageHero } from './StorageHero';
+import { StorageAnalyticsTab } from './StorageAnalyticsTab';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -317,46 +318,7 @@ export function StorageManagementPage() {
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>{t('storage_usage_trend')}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-primary">
-                        {((storageStats.usedSpace / storageStats.totalSpace) * 100).toFixed(1)}%
-                      </div>
-                      <div className="text-sm text-muted-foreground">{t('storage_used')}</div>
-                    </div>
-                    <Progress value={(storageStats.usedSpace / storageStats.totalSpace) * 100} className="h-3" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>{t('file_distribution')}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span>{t('public_files')}</span>
-                      <span className="font-semibold">{storageStats.publicFiles}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>{t('private_files')}</span>
-                      <span className="font-semibold">{storageStats.privateFiles}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>{t('total_buckets')}</span>
-                      <span className="font-semibold">{storageStats.buckets}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <StorageAnalyticsTab />
           </TabsContent>
         </Tabs>
       </div>

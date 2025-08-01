@@ -195,15 +195,17 @@ export const useFileUploader = () => {
 
   const cleanupTemporaryFiles = useCallback(async (tempSessionId: string): Promise<void> => {
     try {
-      const { data: files } = await supabase.storage
-        .from('opportunity-images')
-        .list(`temp/${tempSessionId}`)
+      const { data, error } = await supabase.functions.invoke('cleanup-temp-files', {
+        body: { tempSessionId }
+      })
 
-      if (files && files.length > 0) {
-        const filePaths = files.map(f => `temp/${tempSessionId}/${f.name}`)
-        await supabase.storage
-          .from('opportunity-images')
-          .remove(filePaths)
+      if (error) {
+        console.error('Cleanup edge function error:', error)
+        return
+      }
+
+      if (data?.success) {
+        console.log(`Cleanup completed: ${data.cleanedFiles} files removed`)
       }
     } catch (error) {
       console.error('Cleanup error:', error)

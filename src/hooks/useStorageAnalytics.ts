@@ -1,0 +1,130 @@
+import { useCallback } from 'react'
+import { supabase } from '@/integrations/supabase/client'
+import { useToast } from '@/hooks/use-toast'
+
+export interface BucketStats {
+  total_files: number
+  total_size: number
+  avg_file_size: number
+  oldest_file: string | null
+  newest_file: string | null
+}
+
+export interface StorageAnalytics {
+  bucketName: string
+  stats: BucketStats
+  healthStatus: 'healthy' | 'warning' | 'critical'
+  usagePercentage: number
+}
+
+export const useStorageAnalytics = () => {
+  const { toast } = useToast()
+
+  const getBucketStats = useCallback(async (bucketName: string): Promise<BucketStats | null> => {
+    try {
+      const { data, error } = await supabase.rpc('get_bucket_stats', {
+        bucket_name: bucketName
+      })
+
+      if (error) {
+        console.error('Error getting bucket stats:', error)
+        return null
+      }
+
+      return Array.isArray(data) && data.length > 0 ? data[0] as BucketStats : null
+    } catch (error) {
+      console.error('Bucket stats error:', error)
+      return null
+    }
+  }, [])
+
+  const getAllBucketAnalytics = useCallback(async (): Promise<StorageAnalytics[]> => {
+    try {
+      // Get all buckets
+      const { data: buckets } = await supabase.storage.listBuckets()
+      if (!buckets) return []
+
+      const analytics: StorageAnalytics[] = []
+
+      for (const bucket of buckets) {
+        const stats = await getBucketStats(bucket.id)
+        if (stats) {
+          const usagePercentage = (stats.total_size / (100 * 1024 * 1024)) * 100 // Assume 100MB limit
+          const healthStatus = 
+            usagePercentage > 90 ? 'critical' :
+            usagePercentage > 70 ? 'warning' : 'healthy'
+
+          analytics.push({
+            bucketName: bucket.id,
+            stats,
+            healthStatus,
+            usagePercentage
+          })
+        }
+      }
+
+      return analytics
+    } catch (error) {
+      console.error('Analytics error:', error)
+      toast({
+        title: 'Analytics Error',
+        description: 'Failed to load storage analytics',
+        variant: 'destructive'
+      })
+      return []
+    }
+  }, [getBucketStats, toast])
+
+  const performAdminCleanup = useCallback(async (): Promise<boolean> => {
+    try {
+      const { data, error } = await supabase.rpc('admin_cleanup_temp_files')
+
+      if (error) {
+        console.error('Admin cleanup error:', error)
+        toast({
+          title: 'Cleanup Failed',
+          description: 'Failed to perform admin cleanup',
+          variant: 'destructive'
+        })
+        return false
+      }
+
+      toast({
+        title: 'Cleanup Successful',
+        description: 'System-wide temporary file cleanup completed'
+      })
+      return true
+    } catch (error) {
+      console.error('Admin cleanup error:', error)
+      toast({
+        title: 'Cleanup Failed',
+        description: 'An error occurred during cleanup',
+        variant: 'destructive'
+      })
+      return false
+    }
+  }, [toast])
+
+  const cleanupOldTempFiles = useCallback(async (): Promise<boolean> => {
+    try {
+      const { data, error } = await supabase.rpc('cleanup_old_temp_files')
+
+      if (error) {
+        console.error('Temp files cleanup error:', error)
+        return false
+      }
+
+      return true
+    } catch (error) {
+      console.error('Temp files cleanup error:', error)
+      return false
+    }
+  }, [])
+
+  return {
+    getBucketStats,
+    getAllBucketAnalytics,
+    performAdminCleanup,
+    cleanupOldTempFiles
+  }
+}
