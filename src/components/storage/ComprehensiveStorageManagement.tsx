@@ -134,9 +134,9 @@ export const ComprehensiveStorageManagement = () => {
   }
 
   const formatBytes = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
+    if (bytes === 0) return `0 ${t('bytes')}`
     const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+    const sizes = [t('bytes'), t('kb'), t('mb'), t('gb'), t('tb')]
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
@@ -676,37 +676,37 @@ export const ComprehensiveStorageManagement = () => {
                     ) : (
                       <Search className="h-4 w-4 mr-2" />
                     )}
-                    Analyze Duplicates
+                    {t('analyze_duplicates')}
                   </Button>
 
                   {duplicateResults && (
                     <div className="mt-6 space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="space-y-2">
-                          <p className="text-sm font-medium">Duplicate Groups</p>
+                          <p className="text-sm font-medium">{t('duplicate_groups')}</p>
                           <p className="text-2xl font-bold">{duplicateResults.total_duplicate_groups}</p>
                         </div>
                         <div className="space-y-2">
-                          <p className="text-sm font-medium">Duplicate Files</p>
+                          <p className="text-sm font-medium">{t('duplicate_files')}</p>
                           <p className="text-2xl font-bold">{duplicateResults.total_duplicate_files}</p>
                         </div>
                         <div className="space-y-2">
-                          <p className="text-sm font-medium">Potential Savings</p>
+                          <p className="text-sm font-medium">{t('potential_savings')}</p>
                           <p className="text-2xl font-bold text-green-600">{formatBytes(duplicateResults.potential_savings_bytes)}</p>
                         </div>
                       </div>
 
                       {duplicateResults.duplicates && duplicateResults.duplicates.length > 0 && (
                         <div className="space-y-2">
-                          <h4 className="font-medium">Top Duplicate Files</h4>
+                          <h4 className="font-medium">{t('top_duplicate_files')}</h4>
                           <div className="overflow-x-auto">
                             <table className="w-full">
                               <thead>
                                 <tr className="border-b">
-                                  <th className="text-left p-2">Filename</th>
-                                  <th className="text-right p-2">Size</th>
-                                  <th className="text-right p-2">Count</th>
-                                  <th className="text-right p-2">Savings</th>
+                                  <th className="text-left p-2">{t('filename')}</th>
+                                  <th className="text-right p-2">{t('size')}</th>
+                                  <th className="text-right p-2">{t('count')}</th>
+                                  <th className="text-right p-2">{t('savings')}</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -735,22 +735,22 @@ export const ComprehensiveStorageManagement = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <HardDrive className="h-5 w-5" />
-                    Storage Quotas & Monitoring
+                    {t('storage_quotas_monitoring')}
                   </CardTitle>
                   <CardDescription>
-                    Set and monitor storage quotas for individual buckets
+                    {t('set_monitor_storage_quotas')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="quotaBucket">Bucket</Label>
+                      <Label htmlFor="quotaBucket">{t('bucket')}</Label>
                       <Select 
                         value={quotaSettings.bucketName} 
                         onValueChange={(value) => setQuotaSettings(prev => ({ ...prev, bucketName: value }))}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select bucket" />
+                          <SelectValue placeholder={t('select_bucket')} />
                         </SelectTrigger>
                         <SelectContent>
                           {buckets.map(bucket => (
@@ -760,7 +760,7 @@ export const ComprehensiveStorageManagement = () => {
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="quotaAction">Action</Label>
+                      <Label htmlFor="quotaAction">{t('action')}</Label>
                       <Select 
                         value={quotaSettings.action} 
                         onValueChange={(value: 'check' | 'set' | 'remove') => setQuotaSettings(prev => ({ ...prev, action: value }))}
@@ -769,15 +769,15 @@ export const ComprehensiveStorageManagement = () => {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="check">Check Quota</SelectItem>
-                          <SelectItem value="set">Set Quota</SelectItem>
-                          <SelectItem value="remove">Remove Quota</SelectItem>
+                          <SelectItem value="check">{t('check_quota')}</SelectItem>
+                          <SelectItem value="set">{t('set_quota')}</SelectItem>
+                          <SelectItem value="remove">{t('remove_quota')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     {quotaSettings.action === 'set' && (
                       <div className="space-y-2">
-                        <Label htmlFor="quotaBytes">Quota (MB)</Label>
+                        <Label htmlFor="quotaBytes">{t('quota_mb')}</Label>
                         <Input
                           id="quotaBytes"
                           type="number"
@@ -787,7 +787,7 @@ export const ComprehensiveStorageManagement = () => {
                             quotaBytes: (parseInt(e.target.value) || 0) * 1024 * 1024 
                           }))}
                           min="1"
-                          placeholder="Size in MB"
+                          placeholder={t('size_in_mb')}
                         />
                       </div>
                     )}
@@ -799,13 +799,13 @@ export const ComprehensiveStorageManagement = () => {
                     ) : (
                       <Settings className="h-4 w-4 mr-2" />
                     )}
-                    {quotaSettings.action === 'check' ? 'Check Quota' : 
-                     quotaSettings.action === 'set' ? 'Set Quota' : 'Remove Quota'}
+                    {quotaSettings.action === 'check' ? t('check_quota') : 
+                     quotaSettings.action === 'set' ? t('set_quota') : t('remove_quota')}
                   </Button>
 
                   {quotaResults.length > 0 && (
                     <div className="mt-6 space-y-4">
-                      <h4 className="font-medium">Quota Status Overview</h4>
+                      <h4 className="font-medium">{t('quota_status_overview')}</h4>
                       <div className="space-y-3">
                         {quotaResults.map((quota) => (
                           <div key={quota.bucket_name} className="border rounded p-4 space-y-2">
@@ -820,7 +820,7 @@ export const ComprehensiveStorageManagement = () => {
                                   <CheckCircle className="h-4 w-4 text-green-500" />
                                 )}
                                 <span className="text-sm">
-                                  {quota.has_quota ? `${quota.usage_percentage.toFixed(1)}%` : 'No quota'}
+                                  {quota.has_quota ? `${quota.usage_percentage.toFixed(1)}%` : t('no_quota')}
                                 </span>
                               </div>
                             </div>
@@ -849,20 +849,20 @@ export const ComprehensiveStorageManagement = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Archive className="h-5 w-5" />
-                      Archive Management
-                    </CardTitle>
-                    <CardDescription>
-                      Archive old files to free up space
-                    </CardDescription>
+                    {t('archive_management')}
+                  </CardTitle>
+                  <CardDescription>
+                    {t('archive_old_files_to_free_space')}
+                  </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div className="grid grid-cols-1 gap-4">
                         <div className="space-y-2">
-                          <Label>Source Bucket</Label>
+                          <Label>{t('source_bucket')}</Label>
                           <Select>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select bucket" />
+                              <SelectValue placeholder={t('select_bucket')} />
                             </SelectTrigger>
                             <SelectContent>
                               {buckets.map(bucket => (
@@ -872,13 +872,13 @@ export const ComprehensiveStorageManagement = () => {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <Label>Days Old</Label>
+                          <Label>{t('days_old')}</Label>
                           <Input type="number" defaultValue="365" min="1" />
                         </div>
                       </div>
                       <Button className="w-full" disabled={isProcessing}>
                         <Archive className="h-4 w-4 mr-2" />
-                        Archive Files
+                        {t('archive_files')}
                       </Button>
                     </div>
                   </CardContent>
@@ -888,41 +888,41 @@ export const ComprehensiveStorageManagement = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <FileX className="h-5 w-5" />
-                      Bulk Cleanup
-                    </CardTitle>
-                    <CardDescription>
-                      Clean up files by pattern
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-1 gap-4">
-                        <div className="space-y-2">
-                          <Label>Bucket</Label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select bucket" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {buckets.map(bucket => (
-                                <SelectItem key={bucket} value={bucket}>{bucket}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Pattern</Label>
-                          <Input defaultValue="%temp%" placeholder="File pattern" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Older than (days)</Label>
-                          <Input type="number" defaultValue="7" min="1" />
-                        </div>
+                    {t('bulk_cleanup')}
+                  </CardTitle>
+                  <CardDescription>
+                    {t('clean_up_files_by_pattern')}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 gap-4">
+                      <div className="space-y-2">
+                        <Label>{t('bucket')}</Label>
+                        <Select>
+                          <SelectTrigger>
+                            <SelectValue placeholder={t('select_bucket')} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {buckets.map(bucket => (
+                              <SelectItem key={bucket} value={bucket}>{bucket}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
-                      <Button className="w-full" variant="destructive" disabled={isProcessing}>
-                        <FileX className="h-4 w-4 mr-2" />
-                        Cleanup Files
-                      </Button>
+                      <div className="space-y-2">
+                        <Label>{t('pattern')}</Label>
+                        <Input defaultValue="%temp%" placeholder={t('file_pattern')} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>{t('older_than_days')}</Label>
+                        <Input type="number" defaultValue="7" min="1" />
+                      </div>
+                    </div>
+                    <Button className="w-full" variant="destructive" disabled={isProcessing}>
+                      <FileX className="h-4 w-4 mr-2" />
+                      {t('cleanup_files')}
+                    </Button>
                     </div>
                   </CardContent>
                 </Card>
