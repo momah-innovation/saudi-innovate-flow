@@ -289,7 +289,7 @@ export function StorageFilters({
           )}
           {filters.visibility && filters.visibility !== 'all' && (
             <Badge variant="secondary" className="text-xs">
-              {filters.visibility === 'public' ? 'Public' : 'Private'}
+              {filters.visibility === 'public' ? t('public') : t('private')}
               <X 
                 className="w-3 h-3 ml-1 cursor-pointer" 
                 onClick={() => onFiltersChange({ ...filters, visibility: 'all' })}

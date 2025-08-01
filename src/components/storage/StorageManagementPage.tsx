@@ -925,7 +925,7 @@ export function StorageManagementPage() {
                 <SelectContent>
                   {buckets.map((bucket) => (
                     <SelectItem key={bucket.id} value={bucket.id}>
-                      {bucket.name} ({bucket.public ? 'Public' : 'Private'})
+                      {bucket.name} ({bucket.public ? t('public') : t('private')})
                     </SelectItem>
                   ))}
                 </SelectContent>

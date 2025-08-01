@@ -779,7 +779,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
                         <div>
                           <h4 className="font-medium text-sm">{bucket.id}</h4>
                           <p className="text-xs text-muted-foreground">
-                            {bucket.public ? 'Public' : 'Private'} bucket
+                            {bucket.public ? t('public') : t('private')} {t('bucket_label')}
                           </p>
                         </div>
                       </div>
