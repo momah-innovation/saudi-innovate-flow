@@ -147,6 +147,16 @@ const translations = {
     'manage_bucket': 'إدارة المجموعة',
     'bucket': 'المجموعة',
     'unknown': 'غير معروف',
+    
+    // Storage Hero specific
+    'storage_usage': 'استخدام التخزين',
+    'of_x_used': 'من {total} مستخدم',
+    'capacity': 'السعة',
+    'recent_uploads_count': '{count} تحميلات حديثة',
+    'monthly_growth': '+12% هذا الشهر',
+    'active_storage_buckets': 'حاويات التخزين النشطة',
+    'all_operational': 'جميعها تعمل',
+    'storage_buckets': 'حاويات التخزين',
 
     // Partners & Organizations
     'partners': 'الشركاء',
@@ -510,6 +520,16 @@ const translations = {
     'manage_bucket': 'Manage Bucket',
     'bucket': 'Bucket',
     'unknown': 'Unknown',
+    
+    // Storage Hero specific
+    'storage_usage': 'Storage Usage',
+    'of_x_used': 'of {total} used',
+    'capacity': 'capacity',
+    'recent_uploads_count': '{count} recent uploads',
+    'monthly_growth': '+12% this month',
+    'active_storage_buckets': 'Active storage buckets',
+    'all_operational': 'All operational',
+    'storage_buckets': 'Storage Buckets',
 
     // Partners & Organizations
     'partners': 'Partners',
