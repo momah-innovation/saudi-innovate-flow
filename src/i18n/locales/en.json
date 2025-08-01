@@ -31,7 +31,9 @@
   },
   "common": {
     "refresh": "Refresh",
-    "error": "Error"
+    "error": "Error",
+    "advanced": "Advanced",
+    "settings": "Settings"
   },
   "overview": "Overview",
   "system_administration": "System Administration",
@@ -170,6 +172,9 @@
   "active_storage_buckets": "Active storage buckets",
   "all_operational": "All operational",
   "storage_buckets": "Storage Buckets",
+  "recent_activity": "Recent Activity",
+  "files_uploaded_last_7_days": "Files uploaded in last 7 days",
+  "active_uploads": "Active uploads",
   "partners": "Partners",
   "organizations": "Organizations",
   "sectors": "Sectors",
@@ -770,5 +775,9 @@
   "quota_status_overview": "Quota Status Overview",
   "bucket_quota": "Bucket Quota",
   "used_quota": "Used Quota",
-  "available_quota": "Available Quota"
+  "available_quota": "Available Quota",
+  "select_files": "Select Files",
+  "exit_selection": "Exit Selection",
+  "docs": "Docs",
+  "others": "Others"
 }

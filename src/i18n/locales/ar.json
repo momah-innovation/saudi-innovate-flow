@@ -31,7 +31,9 @@
   },
   "common": {
     "refresh": "تحديث",
-    "error": "خطأ"
+    "error": "خطأ",
+    "advanced": "متقدم",
+    "settings": "الإعدادات"
   },
   "overview": "نظرة عامة",
   "system_administration": "إدارة النظام",
@@ -170,6 +172,12 @@
   "active_storage_buckets": "حاويات التخزين النشطة",
   "all_operational": "جميعها تعمل",
   "storage_buckets": "حاويات التخزين",
+  "recent_activity": "النشاط الحديث",
+  "files_uploaded_last_7_days": "الملفات المرفوعة في آخر 7 أيام",
+  "active_uploads": "الرفعات النشطة",
+  "select_files": "اختر الملفات",
+  "of_100_gb_used": "من 100 جيجابايت مستخدم",
+  "public_private_files": "{public} عام، {private} خاص",
   "partners": "الشركاء",
   "organizations": "المنظمات",
   "sectors": "القطاعات",
@@ -721,5 +729,9 @@
   "quota_status_overview": "نظرة عامة على حالة الحصة",
   "bucket_quota": "حصة الحاوية",
   "used_quota": "الحصة المستخدمة",
-  "available_quota": "الحصة المتاحة"
+  "available_quota": "الحصة المتاحة",
+  "select_files": "اختر الملفات",
+  "exit_selection": "إنهاء التحديد",
+  "docs": "المستندات",
+  "others": "أخرى"
 }

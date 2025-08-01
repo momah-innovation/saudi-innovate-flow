@@ -671,8 +671,8 @@ export function StorageManagementPage() {
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="files">{t('storage.files')}</TabsTrigger>
             <TabsTrigger value="buckets">{t('storage.buckets')}</TabsTrigger>
-            <TabsTrigger value="management">Advanced</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="management">{t('common.advanced')}</TabsTrigger>
+            <TabsTrigger value="settings">{t('common.settings')}</TabsTrigger>
             <TabsTrigger value="analytics">{t('storage.analytics')}</TabsTrigger>
           </TabsList>
 
@@ -695,7 +695,7 @@ export function StorageManagementPage() {
                   onClick={() => setShowBulkActions(!showBulkActions)}
                   className={showBulkActions ? 'bg-primary text-primary-foreground' : ''}
                 >
-                  {showBulkActions ? 'Exit Selection' : 'Select Files'}
+                  {showBulkActions ? 'Exit Selection' : t('select_files')}
                 </Button>
                 <LayoutToggle
                   currentLayout={filesLayout}
