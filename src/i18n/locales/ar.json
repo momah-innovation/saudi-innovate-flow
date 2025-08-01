@@ -1018,5 +1018,7 @@
   "days": "أيام",
   "date_locale": "ar-SA",
   "archived_files_private": "الملفات-المؤرشفة-خاصة",
-  "temp_pattern": "%temp%"
+  "temp_pattern": "%temp%",
+  "bucket_name_examples": "مثال: صور-الفرص، صور-المستخدمين",
+  "search_buckets_placeholder": "البحث في الدلاء بالاسم..."
 }

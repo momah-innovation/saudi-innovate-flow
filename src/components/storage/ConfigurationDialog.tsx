@@ -228,7 +228,7 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
                 id="uploadType"
                 value={formData.uploadType}
                 onChange={(e) => setFormData(prev => ({ ...prev, uploadType: e.target.value }))}
-                placeholder="e.g., opportunity-images, user-avatars"
+                placeholder={t('bucket_name_examples')}
                 required
               />
             </div>
