@@ -6,25 +6,13 @@ import { Progress } from '@/components/ui/progress'
 import { useStorageAnalytics, StorageAnalytics } from '@/hooks/useStorageAnalytics'
 import { useToast } from '@/hooks/use-toast'
 import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell
-} from 'recharts'
-import { 
   TrendingUp, 
-  TrendingDown, 
   AlertTriangle, 
   CheckCircle, 
   RefreshCw,
   Trash2,
-  HardDrive
+  HardDrive,
+  BarChart3
 } from 'lucide-react'
 
 interface StorageAnalyticsTabProps {
@@ -60,7 +48,6 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
     try {
       const success = await performAdminCleanup()
       if (success) {
-        // Reload analytics after cleanup
         await loadAnalytics()
       }
     } finally {
@@ -76,15 +63,6 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
 
-  const getHealthColor = (status: string) => {
-    switch (status) {
-      case 'healthy': return 'text-green-600'
-      case 'warning': return 'text-yellow-600'
-      case 'critical': return 'text-red-600'
-      default: return 'text-gray-600'
-    }
-  }
-
   const getHealthIcon = (status: string) => {
     switch (status) {
       case 'healthy': return <CheckCircle className="w-4 h-4 text-green-500" />
@@ -93,20 +71,6 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
       default: return <HardDrive className="w-4 h-4 text-gray-500" />
     }
   }
-
-  // Prepare chart data
-  const chartData = analytics.map(item => ({
-    name: item.bucketName.replace(/-/g, ' '),
-    size: item.stats.total_size,
-    files: item.stats.total_files,
-    usage: item.usagePercentage
-  }))
-
-  const healthData = [
-    { name: 'Healthy', value: analytics.filter(a => a.healthStatus === 'healthy').length, color: '#10b981' },
-    { name: 'Warning', value: analytics.filter(a => a.healthStatus === 'warning').length, color: '#f59e0b' },
-    { name: 'Critical', value: analytics.filter(a => a.healthStatus === 'critical').length, color: '#ef4444' }
-  ]
 
   if (loading) {
     return (
@@ -166,54 +130,50 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
         </CardContent>
       </Card>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Storage Usage Chart */}
+      {/* Health Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Storage Usage by Bucket</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <CheckCircle className="w-5 h-5 text-green-500" />
+              Healthy Buckets
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip formatter={(value, name) => [
-                  name === 'size' ? formatBytes(value as number) : value,
-                  name === 'size' ? 'Size' : 'Files'
-                ]} />
-                <Bar dataKey="size" fill="hsl(var(--primary))" />
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="text-3xl font-bold text-green-600">
+              {analytics.filter(a => a.healthStatus === 'healthy').length}
+            </div>
+            <p className="text-sm text-muted-foreground">Operating normally</p>
           </CardContent>
         </Card>
 
-        {/* Health Status Pie Chart */}
         <Card>
           <CardHeader>
-            <CardTitle>Bucket Health Status</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-yellow-500" />
+              Warning Buckets
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={healthData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, value }) => `${name}: ${value}`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {healthData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+            <div className="text-3xl font-bold text-yellow-600">
+              {analytics.filter(a => a.healthStatus === 'warning').length}
+            </div>
+            <p className="text-sm text-muted-foreground">Approaching limits</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-red-500" />
+              Critical Buckets
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-red-600">
+              {analytics.filter(a => a.healthStatus === 'critical').length}
+            </div>
+            <p className="text-sm text-muted-foreground">Need attention</p>
           </CardContent>
         </Card>
       </div>
@@ -221,7 +181,10 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
       {/* Detailed Bucket Analytics */}
       <Card>
         <CardHeader>
-          <CardTitle>Bucket Details</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <BarChart3 className="w-5 h-5" />
+            Bucket Details
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -248,7 +211,7 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
                     <span>Usage</span>
                     <span>{item.usagePercentage.toFixed(1)}%</span>
                   </div>
-                  <Progress value={item.usagePercentage} className="h-2" />
+                  <Progress value={Math.min(item.usagePercentage, 100)} className="h-2" />
                 </div>
 
                 {item.stats.oldest_file && item.stats.newest_file && (
