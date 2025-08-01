@@ -421,6 +421,75 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
     })
   }
 
+  const autoConfigureBucket = async (bucket: any) => {
+    try {
+      // Smart defaults based on bucket name patterns
+      const bucketName = bucket.id.toLowerCase()
+      let allowedTypes: string[] = []
+      let maxSizeBytes = 5242880 // 5MB default
+      let maxFiles = 5
+      let path = ''
+
+      // Determine file types and settings based on bucket name
+      if (bucketName.includes('image') || bucketName.includes('avatar') || bucketName.includes('logo')) {
+        allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
+        maxSizeBytes = 3145728 // 3MB for images
+        maxFiles = bucketName.includes('avatar') ? 1 : 10
+        path = bucketName.includes('avatar') ? 'profiles' : 'images'
+      } else if (bucketName.includes('document') || bucketName.includes('contract')) {
+        allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+        maxSizeBytes = 20971520 // 20MB for documents
+        maxFiles = 10
+        path = 'documents'
+      } else if (bucketName.includes('video') || bucketName.includes('recording')) {
+        allowedTypes = ['video/mp4', 'video/webm']
+        maxSizeBytes = 104857600 // 100MB for videos
+        maxFiles = 5
+        path = 'videos'
+      } else if (bucketName.includes('audio')) {
+        allowedTypes = ['audio/mp3', 'audio/wav', 'audio/mpeg']
+        maxSizeBytes = 52428800 // 50MB for audio
+        maxFiles = 10
+        path = 'audio'
+      } else if (bucketName.includes('attachment') || bucketName.includes('resource')) {
+        allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+        maxSizeBytes = 20971520 // 20MB for mixed content
+        maxFiles = 20
+        path = 'files'
+      } else {
+        // Generic defaults
+        allowedTypes = ['image/jpeg', 'image/png', 'application/pdf']
+        path = 'uploads'
+      }
+
+      const settingValue = {
+        uploadType: bucketName.replace(/-/g, '_'),
+        bucket: bucket.id,
+        path: path,
+        maxSizeBytes: maxSizeBytes,
+        allowedTypes: allowedTypes,
+        maxFiles: maxFiles,
+        enabled: true,
+        autoCleanup: !bucket.public, // Enable auto-cleanup for private buckets
+        cleanupDays: 30
+      }
+
+      await supabase
+        .from('uploader_settings')
+        .insert({
+          setting_type: 'upload_config',
+          setting_key: bucketName.replace(/-/g, '_'),
+          setting_value: settingValue,
+          is_active: true
+        })
+
+      console.log(`Auto-configured bucket: ${bucket.id}`, settingValue)
+    } catch (error) {
+      console.error(`Failed to auto-configure bucket ${bucket.id}:`, error)
+      throw error
+    }
+  }
+
   // Get unconfigured buckets
   const unconfiguredBuckets = allBuckets.filter(bucket => 
     !configs.some(config => config.bucket === bucket.id)
@@ -666,12 +735,31 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
 
       {/* Unconfigured Buckets */}
       {unconfiguredBuckets.length > 0 && (
-        <Card>
+        <Card className="border-l-4 border-l-blue-500">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <HardDrive className="w-5 h-5" />
-              Available Buckets ({unconfiguredBuckets.length} unconfigured)
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <HardDrive className="w-5 h-5" />
+                New Storage Buckets ({unconfiguredBuckets.length} unconfigured)
+                <Badge variant="secondary" className="ml-2">
+                  Action Required
+                </Badge>
+              </CardTitle>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={async () => {
+                  // Auto-configure all unconfigured buckets with smart defaults
+                  for (const bucket of unconfiguredBuckets) {
+                    await autoConfigureBucket(bucket)
+                  }
+                  loadUploaderSettings()
+                }}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Auto-Configure All
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground mb-4">
