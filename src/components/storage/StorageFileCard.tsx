@@ -1,7 +1,8 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Files, Eye, Download, Trash2, FileImage, FileText, Video, Music } from 'lucide-react'
+import { Files, Eye, Download, Trash2, FileImage, FileText, Video, Music, MoreVertical } from 'lucide-react'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
 interface StorageFile {
   name: string
@@ -44,53 +45,81 @@ export function StorageFileCard({ file, onView, onDownload, onDelete }: StorageF
   const FileIcon = getFileIcon(file.metadata?.mimetype)
 
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 hover-scale">
-      <CardContent className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
-            <FileIcon className="w-6 h-6 text-muted-foreground" />
+    <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-[1.02] hover:border-primary/20 bg-gradient-to-br from-background to-muted/30">
+      <CardContent className="p-4">
+        <div className="flex items-start justify-between mb-3">
+          <div className="relative">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center shadow-sm">
+              <FileIcon className="w-6 h-6 text-primary" />
+            </div>
+            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-background shadow-sm flex items-center justify-center">
+              <div className={`w-2 h-2 rounded-full ${file.is_public ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+            </div>
           </div>
-          <Badge variant={file.is_public ? "default" : "secondary"}>
-            {file.is_public ? 'عام' : 'خاص'}
-          </Badge>
+          
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                <MoreVertical className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => onView(file)}>
+                <Eye className="w-4 h-4 mr-2" />
+                عرض
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onDownload(file)}>
+                <Download className="w-4 h-4 mr-2" />
+                تحميل
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onDelete(file)} className="text-destructive">
+                <Trash2 className="w-4 h-4 mr-2" />
+                حذف
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
-        <h3 className="font-semibold text-foreground mb-2 line-clamp-2" title={file.name}>
-          {file.name}
-        </h3>
-        
-        <div className="space-y-2 text-sm text-muted-foreground mb-4">
-          <div className="flex justify-between">
-            <span>الحاوية</span>
-            <span className="truncate ml-2">{file.bucket_id}</span>
+        <div className="space-y-2 mb-3">
+          <h3 className="font-semibold text-foreground text-sm line-clamp-2 leading-tight" title={file.name}>
+            {file.name}
+          </h3>
+          
+          <div className="flex items-center gap-2">
+            <Badge variant={file.is_public ? "default" : "secondary"} className="text-xs px-2 py-0.5">
+              {file.is_public ? 'عام' : 'خاص'}
+            </Badge>
+            <span className="text-xs text-muted-foreground font-medium">
+              {formatSize(file.metadata?.size)}
+            </span>
           </div>
-          <div className="flex justify-between">
-            <span>الحجم</span>
-            <span>{formatSize(file.metadata?.size)}</span>
+        </div>
+        
+        <div className="space-y-1.5 text-xs text-muted-foreground">
+          <div className="flex justify-between items-center">
+            <span className="font-medium">الحاوية</span>
+            <span className="truncate ml-2 bg-muted/50 px-2 py-0.5 rounded text-xs font-mono">
+              {file.bucket_id}
+            </span>
           </div>
           {file.metadata?.mimetype && (
-            <div className="flex justify-between">
-              <span>النوع</span>
-              <span className="truncate ml-2">{file.metadata.mimetype}</span>
+            <div className="flex justify-between items-center">
+              <span className="font-medium">النوع</span>
+              <span className="truncate ml-2 text-xs">
+                {file.metadata.mimetype.split('/')[1]?.toUpperCase() || 'غير محدد'}
+              </span>
             </div>
           )}
         </div>
 
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={() => onView(file)} className="flex-1">
-            <Eye className="w-4 h-4 mr-2" />
+        <div className="flex gap-1.5 mt-4">
+          <Button variant="outline" onClick={() => onView(file)} className="flex-1 h-8 text-xs">
+            <Eye className="w-3.5 h-3.5 mr-1.5" />
             عرض
           </Button>
-          <Button onClick={() => onDownload(file)} className="flex-1">
-            <Download className="w-4 h-4 mr-2" />
+          <Button variant="outline" onClick={() => onDownload(file)} className="flex-1 h-8 text-xs">
+            <Download className="w-3.5 h-3.5 mr-1.5" />
             تحميل
-          </Button>
-          <Button 
-            variant="destructive" 
-            size="sm"
-            onClick={() => onDelete(file)}
-          >
-            <Trash2 className="w-4 h-4" />
           </Button>
         </div>
       </CardContent>

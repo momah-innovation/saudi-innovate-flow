@@ -180,7 +180,38 @@ export function StorageManagementPage() {
     }
   };
 
-  const handleFileView = (file: any) => {
+  const getFileUrl = (file: any): string => {
+    if (!file) return '';
+    
+    const bucketName = file.bucket_id;
+    const fileName = file.name;
+    
+    if (file.is_public) {
+      return `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public/${bucketName}/${fileName}`;
+    } else {
+      // For private files, we'll need to generate a signed URL
+      return '';
+    }
+  };
+
+  const handleFileView = async (file: any) => {
+    // Generate signed URL for private files
+    if (!file.is_public) {
+      try {
+        const { data, error } = await supabase.storage
+          .from(file.bucket_id)
+          .createSignedUrl(file.name, 3600); // 1 hour expiry
+        
+        if (data) {
+          file.signedUrl = data.signedUrl;
+        }
+      } catch (error) {
+        console.error('Error generating signed URL:', error);
+      }
+    } else {
+      file.publicUrl = getFileUrl(file);
+    }
+    
     setSelectedFile(file);
     setShowFileViewDialog(true);
   };
