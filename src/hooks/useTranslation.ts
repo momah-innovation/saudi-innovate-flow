@@ -149,6 +149,13 @@ const translations = {
     'unknown': 'غير معروف',
     'id': 'المعرف',
     
+    // File size units
+    'bytes': 'بايت',
+    'kb': 'كيلوبايت',
+    'mb': 'ميجابايت', 
+    'gb': 'جيجابايت',
+    'tb': 'تيرابايت',
+    
     // Storage Hero specific
     'storage_usage': 'استخدام التخزين',
     'of_x_used': 'من {total} مستخدم',
@@ -522,6 +529,13 @@ const translations = {
     'bucket': 'Bucket',
     'unknown': 'Unknown',
     'id': 'ID',
+    
+    // File size units  
+    'bytes': 'Bytes',
+    'kb': 'KB',
+    'mb': 'MB',
+    'gb': 'GB', 
+    'tb': 'TB',
     
     // Storage Hero specific
     'storage_usage': 'Storage Usage',

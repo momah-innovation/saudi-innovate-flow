@@ -258,9 +258,9 @@ export function StorageManagementPage() {
                         <span>{t('bucket')}</span>
                         <span>{file.bucket_id}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span>{t('file_size')}</span>
-                        <span>{file.metadata?.size ? `${(file.metadata.size / 1024).toFixed(1)} KB` : t('unknown')}</span>
+                       <div className="flex justify-between">
+                         <span>{t('file_size')}</span>
+                         <span>{file.metadata?.size ? `${(file.metadata.size / 1024).toFixed(1)} ${t('kb')}` : t('unknown')}</span>
                       </div>
                     </div>
 
