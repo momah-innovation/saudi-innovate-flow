@@ -80,11 +80,11 @@ export function StorageManagementPage() {
 
   // Filter and sort state
   const [filters, setFilters] = useState<FilterOptions>({
-    fileType: '',
-    bucket: '',
-    visibility: '',
-    sizeRange: '',
-    dateRange: ''
+    fileType: 'all',
+    bucket: 'all',
+    visibility: 'all',
+    sizeRange: 'all',
+    dateRange: 'all'
   });
 
   const [sortBy, setSortBy] = useState<SortOptions>({
@@ -459,30 +459,30 @@ export function StorageManagementPage() {
       }
 
       // File type filter
-      if (filters.fileType && getFileType(file.name) !== filters.fileType) {
+      if (filters.fileType && filters.fileType !== 'all' && getFileType(file.name) !== filters.fileType) {
         return false;
       }
 
       // Bucket filter
-      if (filters.bucket && file.bucket_id !== filters.bucket) {
+      if (filters.bucket && filters.bucket !== 'all' && file.bucket_id !== filters.bucket) {
         return false;
       }
 
       // Visibility filter
-      if (filters.visibility) {
+      if (filters.visibility && filters.visibility !== 'all') {
         const isPublic = file.is_public;
         if (filters.visibility === 'public' && !isPublic) return false;
         if (filters.visibility === 'private' && isPublic) return false;
       }
 
       // Size filter
-      if (filters.sizeRange && file.metadata?.size) {
+      if (filters.sizeRange && filters.sizeRange !== 'all' && file.metadata?.size) {
         const sizeCategory = getFileSizeCategory(file.metadata.size);
         if (sizeCategory !== filters.sizeRange) return false;
       }
 
       // Date filter
-      if (filters.dateRange && file.created_at) {
+      if (filters.dateRange && filters.dateRange !== 'all' && file.created_at) {
         if (!isWithinDateRange(file.created_at, filters.dateRange)) return false;
       }
 
@@ -523,16 +523,16 @@ export function StorageManagementPage() {
   }, [files, searchTerm, filters, sortBy]);
 
   const getActiveFilterCount = (): number => {
-    return Object.values(filters).filter(value => value !== '').length;
+    return Object.values(filters).filter(value => value !== 'all').length;
   };
 
   const handleClearFilters = () => {
     setFilters({
-      fileType: '',
-      bucket: '',
-      visibility: '',
-      sizeRange: '',
-      dateRange: ''
+      fileType: 'all',
+      bucket: 'all',
+      visibility: 'all',
+      sizeRange: 'all',
+      dateRange: 'all'
     });
   };
 

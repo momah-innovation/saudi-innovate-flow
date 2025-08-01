@@ -59,7 +59,7 @@ export function StorageFilters({
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const fileTypeOptions = [
-    { value: '', label: 'All Types', icon: File },
+    { value: 'all', label: 'All Types', icon: File },
     { value: 'image', label: 'Images', icon: FileImage },
     { value: 'document', label: 'Documents', icon: FileText },
     { value: 'video', label: 'Videos', icon: FileVideo },
@@ -67,14 +67,14 @@ export function StorageFilters({
   ];
 
   const sizeRangeOptions = [
-    { value: '', label: 'Any Size' },
+    { value: 'all', label: 'Any Size' },
     { value: 'small', label: 'Small (< 1MB)' },
     { value: 'medium', label: 'Medium (1-10MB)' },
     { value: 'large', label: 'Large (> 10MB)' },
   ];
 
   const dateRangeOptions = [
-    { value: '', label: 'Any Date' },
+    { value: 'all', label: 'Any Date' },
     { value: 'today', label: 'Today' },
     { value: 'week', label: 'This Week' },
     { value: 'month', label: 'This Month' },
@@ -192,7 +192,7 @@ export function StorageFilters({
                   <SelectValue placeholder="All buckets" />
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
-                  <SelectItem value="">All Buckets</SelectItem>
+                  <SelectItem value="all">All Buckets</SelectItem>
                   {buckets.map((bucket) => (
                     <SelectItem key={bucket.id} value={bucket.id}>
                       {bucket.name || bucket.id}
@@ -213,7 +213,7 @@ export function StorageFilters({
                   <SelectValue placeholder="All files" />
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
-                  <SelectItem value="">All Files</SelectItem>
+                  <SelectItem value="all">All Files</SelectItem>
                   <SelectItem value="public">Public Only</SelectItem>
                   <SelectItem value="private">Private Only</SelectItem>
                 </SelectContent>
@@ -266,48 +266,48 @@ export function StorageFilters({
       {/* Active Filter Tags */}
       {activeFilterCount > 0 && (
         <div className="flex flex-wrap gap-1">
-          {filters.fileType && (
+          {filters.fileType && filters.fileType !== 'all' && (
             <Badge variant="secondary" className="text-xs">
               Type: {fileTypeOptions.find(o => o.value === filters.fileType)?.label}
               <X 
                 className="w-3 h-3 ml-1 cursor-pointer" 
-                onClick={() => onFiltersChange({ ...filters, fileType: '' })}
+                onClick={() => onFiltersChange({ ...filters, fileType: 'all' })}
               />
             </Badge>
           )}
-          {filters.bucket && (
+          {filters.bucket && filters.bucket !== 'all' && (
             <Badge variant="secondary" className="text-xs">
               Bucket: {buckets.find(b => b.id === filters.bucket)?.name || filters.bucket}
               <X 
                 className="w-3 h-3 ml-1 cursor-pointer" 
-                onClick={() => onFiltersChange({ ...filters, bucket: '' })}
+                onClick={() => onFiltersChange({ ...filters, bucket: 'all' })}
               />
             </Badge>
           )}
-          {filters.visibility && (
+          {filters.visibility && filters.visibility !== 'all' && (
             <Badge variant="secondary" className="text-xs">
               {filters.visibility === 'public' ? 'Public' : 'Private'}
               <X 
                 className="w-3 h-3 ml-1 cursor-pointer" 
-                onClick={() => onFiltersChange({ ...filters, visibility: '' })}
+                onClick={() => onFiltersChange({ ...filters, visibility: 'all' })}
               />
             </Badge>
           )}
-          {filters.sizeRange && (
+          {filters.sizeRange && filters.sizeRange !== 'all' && (
             <Badge variant="secondary" className="text-xs">
               {sizeRangeOptions.find(o => o.value === filters.sizeRange)?.label}
               <X 
                 className="w-3 h-3 ml-1 cursor-pointer" 
-                onClick={() => onFiltersChange({ ...filters, sizeRange: '' })}
+                onClick={() => onFiltersChange({ ...filters, sizeRange: 'all' })}
               />
             </Badge>
           )}
-          {filters.dateRange && (
+          {filters.dateRange && filters.dateRange !== 'all' && (
             <Badge variant="secondary" className="text-xs">
               {dateRangeOptions.find(o => o.value === filters.dateRange)?.label}
               <X 
                 className="w-3 h-3 ml-1 cursor-pointer" 
-                onClick={() => onFiltersChange({ ...filters, dateRange: '' })}
+                onClick={() => onFiltersChange({ ...filters, dateRange: 'all' })}
               />
             </Badge>
           )}
