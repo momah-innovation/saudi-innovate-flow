@@ -16,3 +16,6 @@ verify_jwt = false
 
 [functions.migrate-storage-buckets]
 verify_jwt = true
+
+[functions.comprehensive-storage-migration]
+verify_jwt = true
