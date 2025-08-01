@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Eye, Download, Trash2, FileImage, FileText, Video, Music, Files } from 'lucide-react'
 import { format } from 'date-fns'
+import { useTranslation } from '@/hooks/useAppTranslation'
 
 interface StorageFile {
   name: string
@@ -24,6 +25,7 @@ interface StorageFileTableProps {
 }
 
 export function StorageFileTable({ files, onView, onDownload, onDelete }: StorageFileTableProps) {
+  const { t } = useTranslation()
   const getFileIcon = (mimetype?: string) => {
     if (!mimetype) return Files
     
@@ -36,7 +38,7 @@ export function StorageFileTable({ files, onView, onDownload, onDelete }: Storag
   }
 
   const formatSize = (size?: number) => {
-    if (!size) return 'غير معروف'
+    if (!size) return t('unknown')
     if (size < 1024) return `${size} B`
     if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`
     return `${(size / (1024 * 1024)).toFixed(1)} MB`
@@ -48,13 +50,13 @@ export function StorageFileTable({ files, onView, onDownload, onDelete }: Storag
         <TableHeader>
           <TableRow>
             <TableHead className="w-12"></TableHead>
-            <TableHead>اسم الملف</TableHead>
-            <TableHead>الحاوية</TableHead>
-            <TableHead>الحجم</TableHead>
-            <TableHead>النوع</TableHead>
-            <TableHead>الرؤية</TableHead>
-            <TableHead>تاريخ الإنشاء</TableHead>
-            <TableHead className="text-right">الإجراءات</TableHead>
+            <TableHead>{t('file_name')}</TableHead>
+            <TableHead>{t('bucket')}</TableHead>
+            <TableHead>{t('size')}</TableHead>
+            <TableHead>{t('type')}</TableHead>
+            <TableHead>{t('visibility')}</TableHead>
+            <TableHead>{t('created_date')}</TableHead>
+            <TableHead className="text-right">{t('actions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -71,15 +73,15 @@ export function StorageFileTable({ files, onView, onDownload, onDelete }: Storag
                 <TableCell>{file.bucket_id}</TableCell>
                 <TableCell>{formatSize(file.metadata?.size)}</TableCell>
                 <TableCell className="max-w-xs truncate" title={file.metadata?.mimetype}>
-                  {file.metadata?.mimetype || 'غير محدد'}
+                  {file.metadata?.mimetype || t('unspecified')}
                 </TableCell>
                 <TableCell>
                   <Badge variant={file.is_public ? "default" : "secondary"}>
-                    {file.is_public ? 'عام' : 'خاص'}
+                    {file.is_public ? t('public') : t('private')}
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  {file.created_at ? format(new Date(file.created_at), 'yyyy-MM-dd') : 'غير محدد'}
+                  {file.created_at ? format(new Date(file.created_at), 'yyyy-MM-dd') : t('unspecified')}
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-1">

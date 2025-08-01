@@ -1076,5 +1076,6 @@
   "no_access_policies_warning": "This bucket has no access policies defined. Files may not be accessible to users.",
   "buckets_no_policies_warning": "have no access policies. Users may not be able to access files in these buckets.",
   "unspecified": "Unspecified",
-  "disabled": "Disabled"
+  "disabled": "Disabled",
+  "file_name": "File Name"
 }
