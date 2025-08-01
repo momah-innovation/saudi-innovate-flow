@@ -28,9 +28,11 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export function StorageManagementPage() {
   const { toast } = useToast();
+  const { t, isRTL } = useTranslation();
   const [selectedBucket, setSelectedBucket] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [buckets, setBuckets] = useState<any[]>([]);
@@ -108,8 +110,8 @@ export function StorageManagementPage() {
     } catch (error) {
       console.error('Error loading storage data:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to load storage data',
+        title: t('error'),
+        description: t('failed_to_load'),
         variant: 'destructive'
       });
     } finally {
@@ -119,8 +121,8 @@ export function StorageManagementPage() {
 
   const handleFileView = (file: any) => {
     toast({
-      title: 'File Details',
-      description: `Viewing ${file.name}`
+      title: t('view_file_details'),
+      description: t('viewing_file', { filename: file.name })
     });
   };
 
@@ -136,14 +138,14 @@ export function StorageManagementPage() {
         URL.revokeObjectURL(url);
         
         toast({
-          title: 'Download Started',
-          description: `Downloading ${file.name}`
+          title: t('download_started'),
+          description: t('downloading_file', { filename: file.name })
         });
       }
     } catch (error) {
       toast({
-        title: 'Download Failed',
-        description: 'Failed to download file',
+        title: t('download_failed'),
+        description: t('failed_to_download'),
         variant: 'destructive'
       });
     }
@@ -154,15 +156,15 @@ export function StorageManagementPage() {
       const { error } = await supabase.storage.from(file.bucket_id).remove([file.name]);
       if (!error) {
         toast({
-          title: 'File Deleted',
-          description: `${file.name} has been deleted`
+          title: t('file_deleted'),
+          description: t('file_deleted_successfully', { filename: file.name })
         });
         loadStorageData(); // Refresh data
       }
     } catch (error) {
       toast({
-        title: 'Delete Failed',
-        description: 'Failed to delete file',
+        title: t('delete_failed'),
+        description: t('failed_to_delete'),
         variant: 'destructive'
       });
     }
@@ -178,7 +180,7 @@ export function StorageManagementPage() {
         <div className="min-h-[400px] flex items-center justify-center">
           <div className="text-center space-y-4">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-            <p className="text-sm text-muted-foreground">Loading storage data...</p>
+            <p className="text-sm text-muted-foreground">{t('loading')}</p>
           </div>
         </div>
       </PageLayout>
@@ -188,10 +190,10 @@ export function StorageManagementPage() {
   return (
     <PageLayout>
       <PageHeader
-        title="Storage Management"
-        description="Monitor and manage file storage across all buckets"
+        title={t('storage_management')}
+        description={t('monitor_manage_storage')}
         actionButton={{
-          label: "Upload Files",
+          label: t('upload_files'),
           icon: <Upload className="w-4 h-4" />,
           onClick: () => setShowUploadDialog(true)
         }}
@@ -212,9 +214,9 @@ export function StorageManagementPage() {
 
         <Tabs defaultValue="files" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="files">Files</TabsTrigger>
-            <TabsTrigger value="buckets">Buckets</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="files">{t('files')}</TabsTrigger>
+            <TabsTrigger value="buckets">{t('buckets')}</TabsTrigger>
+            <TabsTrigger value="analytics">{t('analytics')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="files" className="space-y-6">
@@ -222,7 +224,7 @@ export function StorageManagementPage() {
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
-                  placeholder="Search files..."
+                  placeholder={t('search_files')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -230,7 +232,7 @@ export function StorageManagementPage() {
               </div>
               <Button onClick={() => loadStorageData()}>
                 <RefreshCw className="w-4 h-4 mr-2" />
-                Refresh
+                {t('refresh')}
               </Button>
             </div>
 
@@ -243,7 +245,7 @@ export function StorageManagementPage() {
                         <Files className="w-6 h-6 text-muted-foreground" />
                       </div>
                       <Badge variant={file.is_public ? "default" : "secondary"}>
-                        {file.is_public ? "Public" : "Private"}
+                        {file.is_public ? t('public') : t('private')}
                       </Badge>
                     </div>
 
@@ -253,23 +255,23 @@ export function StorageManagementPage() {
                     
                     <div className="space-y-2 text-sm text-muted-foreground mb-4">
                       <div className="flex justify-between">
-                        <span>Bucket</span>
+                        <span>{t('bucket')}</span>
                         <span>{file.bucket_id}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span>Size</span>
-                        <span>{file.metadata?.size ? `${(file.metadata.size / 1024).toFixed(1)} KB` : 'Unknown'}</span>
+                        <span>{t('file_size')}</span>
+                        <span>{file.metadata?.size ? `${(file.metadata.size / 1024).toFixed(1)} KB` : t('unknown')}</span>
                       </div>
                     </div>
 
                     <div className="flex gap-2">
                       <Button variant="outline" onClick={() => handleFileView(file)} className="flex-1">
                         <Eye className="w-4 h-4 mr-2" />
-                        View
+                        {t('view')}
                       </Button>
                       <Button onClick={() => handleFileDownload(file)} className="flex-1">
                         <Download className="w-4 h-4 mr-2" />
-                        Download
+                        {t('download')}
                       </Button>
                     </div>
                   </CardContent>
@@ -289,7 +291,7 @@ export function StorageManagementPage() {
                         {bucket.name}
                       </CardTitle>
                       <Badge variant={bucket.public ? "default" : "secondary"}>
-                        {bucket.public ? "Public" : "Private"}
+                        {bucket.public ? t('public') : t('private')}
                       </Badge>
                     </div>
                   </CardHeader>
@@ -300,12 +302,12 @@ export function StorageManagementPage() {
                         <span className="font-mono">{bucket.id}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span>Created</span>
-                        <span>{bucket.created_at ? new Date(bucket.created_at).toLocaleDateString() : 'Unknown'}</span>
+                        <span>{t('created_at')}</span>
+                        <span>{bucket.created_at ? new Date(bucket.created_at).toLocaleDateString() : t('unknown')}</span>
                       </div>
                       <Button variant="outline" className="w-full">
                         <Settings className="w-4 h-4 mr-2" />
-                        Manage Bucket
+                        {t('manage_bucket')}
                       </Button>
                     </div>
                   </CardContent>
@@ -318,7 +320,7 @@ export function StorageManagementPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Storage Usage Trend</CardTitle>
+                  <CardTitle>{t('storage_usage_trend')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -326,7 +328,7 @@ export function StorageManagementPage() {
                       <div className="text-3xl font-bold text-primary">
                         {((storageStats.usedSpace / storageStats.totalSpace) * 100).toFixed(1)}%
                       </div>
-                      <div className="text-sm text-muted-foreground">Storage Used</div>
+                      <div className="text-sm text-muted-foreground">{t('storage_used')}</div>
                     </div>
                     <Progress value={(storageStats.usedSpace / storageStats.totalSpace) * 100} className="h-3" />
                   </div>
@@ -335,20 +337,20 @@ export function StorageManagementPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>File Distribution</CardTitle>
+                  <CardTitle>{t('file_distribution')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <span>Public Files</span>
+                      <span>{t('public_files')}</span>
                       <span className="font-semibold">{storageStats.publicFiles}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Private Files</span>
+                      <span>{t('private_files')}</span>
                       <span className="font-semibold">{storageStats.privateFiles}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Total Buckets</span>
+                      <span>{t('total_buckets')}</span>
                       <span className="font-semibold">{storageStats.buckets}</span>
                     </div>
                   </div>
@@ -363,33 +365,33 @@ export function StorageManagementPage() {
       <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Upload Files</DialogTitle>
+            <DialogTitle>{t('upload_files')}</DialogTitle>
             <DialogDescription>
-              Select files to upload to storage buckets
+              {t('select_files_to_upload')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="bucket-select">Select Bucket</Label>
-              <Input id="bucket-select" placeholder="Choose bucket..." className="mt-2" />
+              <Label htmlFor="bucket-select">{t('select_bucket')}</Label>
+              <Input id="bucket-select" placeholder={t('choose_bucket')} className="mt-2" />
             </div>
             <div>
-              <Label htmlFor="file-upload">Choose Files</Label>
+              <Label htmlFor="file-upload">{t('choose_files')}</Label>
               <Input id="file-upload" type="file" multiple className="mt-2" />
             </div>
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setShowUploadDialog(false)}>
-                Cancel
+                {t('cancel')}
               </Button>
               <Button onClick={() => {
                 toast({
-                  title: 'Upload Started',
-                  description: 'Files are being uploaded'
+                  title: t('upload_started'),
+                  description: t('files_being_uploaded')
                 });
                 setShowUploadDialog(false);
               }}>
                 <Upload className="w-4 h-4 mr-2" />
-                Upload
+                {t('upload')}
               </Button>
             </div>
           </div>
