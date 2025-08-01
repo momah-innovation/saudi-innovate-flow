@@ -332,8 +332,10 @@ export function StorageManagementPage() {
   };
 
   const handleBucketManagement = (bucket: any) => {
+    console.log('handleBucketManagement called with bucket:', bucket);
     setSelectedBucketForManagement(bucket);
     setShowBucketManagementDialog(true);
+    console.log('Dialog state updated:', { bucket, showDialog: true });
   };
 
   const handleFileUpload = async (files: FileList | null) => {
