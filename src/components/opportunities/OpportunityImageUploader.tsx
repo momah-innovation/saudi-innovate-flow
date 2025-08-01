@@ -17,7 +17,7 @@ export const OpportunityImageUploader: React.FC<OpportunityImageUploaderProps> =
   className
 }) => {
   const { getUploadConfig } = useUploaderSettings()
-  const baseConfig = getUploadConfig('OPPORTUNITY_IMAGES')
+  const baseConfig = getUploadConfig('OPPORTUNITY_IMAGES') // Use database key format
   
   const config = baseConfig ? createUploadConfig(
     baseConfig,

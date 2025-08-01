@@ -44,7 +44,7 @@ export const useFileUploader = () => {
 
   // Helper function to resolve configuration with database settings
   const resolveUploadConfig = useCallback((config: FileUploadConfig): FileUploadConfig => {
-    // Try to get database configuration first
+    // Try to get database configuration first - use the uploadType directly
     const dbConfig = getUploadConfig(config.uploadType)
     
     // Fallback to hardcoded config if database config not found
