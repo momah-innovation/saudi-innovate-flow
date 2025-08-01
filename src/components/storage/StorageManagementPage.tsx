@@ -695,7 +695,7 @@ export function StorageManagementPage() {
                   onClick={() => setShowBulkActions(!showBulkActions)}
                   className={showBulkActions ? 'bg-primary text-primary-foreground' : ''}
                 >
-                  {showBulkActions ? 'Exit Selection' : t('select_files')}
+                  {showBulkActions ? t('exit_selection') : t('select_files')}
                 </Button>
                 <LayoutToggle
                   currentLayout={filesLayout}
@@ -750,8 +750,8 @@ export function StorageManagementPage() {
                 <h3 className="text-lg font-semibold mb-2">No files found</h3>
                 <p className="text-muted-foreground mb-4">
                   {searchTerm || getActiveFilterCount() > 0 
-                    ? 'Try adjusting your search or filters' 
-                    : 'Upload some files to get started'}
+                    ? t('adjust_search_filters')
+                    : t('upload_files_to_start')}
                 </p>
                 {!searchTerm && getActiveFilterCount() === 0 && (
                   <Button onClick={() => setShowUploadDialog(true)}>
@@ -833,7 +833,7 @@ export function StorageManagementPage() {
                 {/* Sort Options */}
                 <Select value={bucketSortBy} onValueChange={setBucketSortBy}>
                   <SelectTrigger className="w-full lg:w-[200px]">
-                    <SelectValue placeholder="Sort by" />
+                    <SelectValue placeholder={t('sort_by')} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="name-asc">Name A-Z</SelectItem>

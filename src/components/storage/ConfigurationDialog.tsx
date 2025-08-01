@@ -33,17 +33,17 @@ interface ConfigurationDialogProps {
   onSave: (config: UploaderConfig) => void
 }
 
-const commonFileTypes = [
-  { value: 'image/jpeg', label: 'JPEG Images' },
-  { value: 'image/png', label: 'PNG Images' },
-  { value: 'image/webp', label: 'WebP Images' },
-  { value: 'application/pdf', label: 'PDF Documents' },
-  { value: 'application/msword', label: 'Word Documents' },
-  { value: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', label: 'Word (DOCX)' },
-  { value: 'video/mp4', label: 'MP4 Videos' },
-  { value: 'audio/mp3', label: 'MP3 Audio' },
-  { value: 'application/zip', label: 'ZIP Archives' },
-  { value: 'text/plain', label: 'Text Files' }
+const getCommonFileTypes = (t: any) => [
+  { value: 'image/jpeg', label: t('jpeg_images') },
+  { value: 'image/png', label: t('png_images') },
+  { value: 'image/webp', label: t('webp_images') },
+  { value: 'application/pdf', label: t('pdf_documents') },
+  { value: 'application/msword', label: t('word_documents') },
+  { value: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', label: t('word_docx') },
+  { value: 'video/mp4', label: t('mp4_videos') },
+  { value: 'audio/mp3', label: t('mp3_audio') },
+  { value: 'application/zip', label: t('zip_archives') },
+  { value: 'text/plain', label: t('text_files') }
 ]
 
 export function ConfigurationDialog({ config, open, onOpenChange, onSave }: ConfigurationDialogProps) {
@@ -331,7 +331,7 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
                   <SelectValue placeholder={t('add_file_type')} />
                 </SelectTrigger>
                 <SelectContent>
-                  {commonFileTypes.map((type) => (
+                  {getCommonFileTypes(t).map((type) => (
                     <SelectItem 
                       key={type.value} 
                       value={type.value}

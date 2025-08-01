@@ -69,25 +69,25 @@ export function StorageFilters({
   ];
 
   const sizeRangeOptions = [
-    { value: 'all', label: 'Any Size' },
-    { value: 'small', label: 'Small (< 1MB)' },
-    { value: 'medium', label: 'Medium (1-10MB)' },
-    { value: 'large', label: 'Large (> 10MB)' },
+    { value: 'all', label: t('any_size') },
+    { value: 'small', label: t('small_1mb') },
+    { value: 'medium', label: t('medium_1_10mb') },
+    { value: 'large', label: t('large_10mb') },
   ];
 
   const dateRangeOptions = [
-    { value: 'all', label: 'Any Date' },
-    { value: 'today', label: 'Today' },
-    { value: 'week', label: 'This Week' },
-    { value: 'month', label: 'This Month' },
-    { value: 'year', label: 'This Year' },
+    { value: 'all', label: t('any_date') },
+    { value: 'today', label: t('today') },
+    { value: 'week', label: t('this_week') },
+    { value: 'month', label: t('this_month') },
+    { value: 'year', label: t('this_year') },
   ];
 
   const sortOptions = [
-    { value: 'name', label: 'Name' },
-    { value: 'size', label: 'Size' },
-    { value: 'date', label: 'Date Modified' },
-    { value: 'type', label: 'File Type' },
+    { value: 'name', label: t('name') },
+    { value: 'size', label: t('size') },
+    { value: 'date', label: t('date_modified') },
+    { value: 'type', label: t('file_type') },
   ];
 
   return (
@@ -99,7 +99,7 @@ export function StorageFilters({
           onValueChange={(field) => onSortChange({ ...sortBy, field: field as any })}
         >
           <SelectTrigger className="w-32">
-            <SelectValue placeholder="Sort by" />
+            <SelectValue placeholder={t('sort_by')} />
           </SelectTrigger>
           <SelectContent className="bg-background border shadow-lg z-50">
             {sortOptions.map((option) => (
@@ -120,7 +120,7 @@ export function StorageFilters({
           className="px-2"
         >
           <ArrowUpDown className="w-4 h-4" />
-          {sortBy.direction === 'asc' ? 'A-Z' : 'Z-A'}
+          {sortBy.direction === 'asc' ? t('a_z') : t('z_a')}
         </Button>
       </div>
 
@@ -129,7 +129,7 @@ export function StorageFilters({
         <PopoverTrigger asChild>
           <Button variant="outline" size="sm" className="relative">
             <Filter className="w-4 h-4 mr-2" />
-            Filters
+            {t('filters')}
             {activeFilterCount > 0 && (
               <Badge 
                 variant="destructive" 
@@ -143,7 +143,7 @@ export function StorageFilters({
         <PopoverContent className="w-80 bg-background border shadow-lg z-50" align="start">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h4 className="font-medium">Filters</h4>
+              <h4 className="font-medium">{t('filters')}</h4>
               {activeFilterCount > 0 && (
                 <Button 
                   variant="ghost" 
@@ -152,20 +152,20 @@ export function StorageFilters({
                   className="text-xs"
                 >
                   <X className="w-3 h-3 mr-1" />
-                  Clear All
+                  {t('clear_all')}
                 </Button>
               )}
             </div>
 
             {/* File Type Filter */}
             <div>
-              <label className="text-sm font-medium mb-2 block">File Type</label>
+              <label className="text-sm font-medium mb-2 block">{t('file_type')}</label>
               <Select
                 value={filters.fileType}
                 onValueChange={(value) => onFiltersChange({ ...filters, fileType: value })}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="All types" />
+                  <SelectValue placeholder={t('all_types')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
                   {fileTypeOptions.map((option) => {
@@ -185,16 +185,16 @@ export function StorageFilters({
 
             {/* Bucket Filter */}
             <div>
-              <label className="text-sm font-medium mb-2 block">Bucket</label>
+              <label className="text-sm font-medium mb-2 block">{t('bucket')}</label>
               <Select
                 value={filters.bucket}
                 onValueChange={(value) => onFiltersChange({ ...filters, bucket: value })}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="All buckets" />
+                  <SelectValue placeholder={t('all_buckets')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
-                  <SelectItem value="all">All Buckets</SelectItem>
+                  <SelectItem value="all">{t('all_buckets')}</SelectItem>
                   {buckets.map((bucket) => (
                     <SelectItem key={bucket.id} value={bucket.id}>
                       {bucket.name || bucket.id}
@@ -206,7 +206,7 @@ export function StorageFilters({
 
             {/* Visibility Filter */}
             <div>
-              <label className="text-sm font-medium mb-2 block">Visibility</label>
+              <label className="text-sm font-medium mb-2 block">{t('visibility')}</label>
               <Select
                 value={filters.visibility}
                 onValueChange={(value) => onFiltersChange({ ...filters, visibility: value })}
@@ -230,7 +230,7 @@ export function StorageFilters({
                 onValueChange={(value) => onFiltersChange({ ...filters, sizeRange: value })}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Any size" />
+                  <SelectValue placeholder={t('any_size')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
                   {sizeRangeOptions.map((option) => (
@@ -244,13 +244,13 @@ export function StorageFilters({
 
             {/* Date Filter */}
             <div>
-              <label className="text-sm font-medium mb-2 block">Date Added</label>
+              <label className="text-sm font-medium mb-2 block">{t('date_added')}</label>
               <Select
                 value={filters.dateRange}
                 onValueChange={(value) => onFiltersChange({ ...filters, dateRange: value })}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Any date" />
+                  <SelectValue placeholder={t('any_date')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
                   {dateRangeOptions.map((option) => (

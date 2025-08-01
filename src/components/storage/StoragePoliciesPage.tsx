@@ -124,8 +124,8 @@ export const StoragePoliciesPage: React.FC = () => {
     } catch (error) {
       console.error('Error loading storage policies:', error)
       toast({
-        title: 'Error loading policies',
-        description: 'Failed to fetch storage policy information',
+        title: t('error_loading_policies'),
+        description: t('failed_to_fetch_storage_policy'),
         variant: 'destructive'
       })
     } finally {
