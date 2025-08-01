@@ -331,6 +331,22 @@ export function StorageManagementPage() {
     }
   };
 
+  const handleBucketView = (bucket: any) => {
+    console.log('handleBucketView called with bucket:', bucket);
+    // Set the bucket filter to show only files from this bucket
+    setFilters(prev => ({ ...prev, bucket: bucket.id }));
+    // Switch to files tab to show the filtered results
+    const tabsList = document.querySelector('[role="tablist"]');
+    const filesTab = tabsList?.querySelector('[value="files"]') as HTMLElement;
+    if (filesTab) {
+      filesTab.click();
+    }
+    toast({
+      title: "Viewing Bucket Files",
+      description: `Showing files from bucket: ${bucket.name}`
+    });
+  };
+
   const handleBucketManagement = (bucket: any) => {
     console.log('handleBucketManagement called with bucket:', bucket);
     setSelectedBucketForManagement(bucket);
@@ -686,7 +702,7 @@ export function StorageManagementPage() {
                 <StorageBucketCard
                   key={bucket.id}
                   bucket={bucket}
-                  onView={() => {}} // TODO: Implement bucket view
+                  onView={handleBucketView}
                   onSettings={handleBucketManagement}
                   onDelete={() => {}} // TODO: Implement bucket delete
                 />
