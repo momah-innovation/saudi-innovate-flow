@@ -1066,5 +1066,6 @@
   "archived_files_private": "archived-files-private",
   "temp_pattern": "%temp%",
   "bucket_name_examples": "e.g., opportunity-images, user-avatars",
-  "search_buckets_placeholder": "Search buckets by name..."
+  "search_buckets_placeholder": "Search buckets by name...",
+  "created_date": "Created Date"
 }

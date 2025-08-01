@@ -119,14 +119,14 @@ export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }
               <div>
                 <label className="text-sm font-medium text-muted-foreground">{t('created')}</label>
                 <p className="text-sm">
-                  {bucket.created_at ? new Date(bucket.created_at).toLocaleDateString() : t('unknown')}
+                  {bucket.created_at ? new Date(bucket.created_at).toLocaleDateString(t('date_locale')) : t('unknown')}
                 </p>
               </div>
               
               <div>
                 <label className="text-sm font-medium text-muted-foreground">{t('updated')}</label>
                 <p className="text-sm">
-                  {bucket.updated_at ? new Date(bucket.updated_at).toLocaleDateString() : t('unknown')}
+                  {bucket.updated_at ? new Date(bucket.updated_at).toLocaleDateString(t('date_locale')) : t('unknown')}
                 </p>
               </div>
             </div>

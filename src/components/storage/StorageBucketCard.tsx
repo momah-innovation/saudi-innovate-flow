@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Database, Eye, Settings, Trash2, MoreVertical, FolderOpen } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { format } from 'date-fns'
+import { useTranslation } from '@/hooks/useAppTranslation'
 
 interface StorageBucket {
   id: string
@@ -22,6 +23,7 @@ interface StorageBucketCardProps {
 }
 
 export function StorageBucketCard({ bucket, onView, onSettings, onDelete }: StorageBucketCardProps) {
+  const { t } = useTranslation()
   const formatSize = (size?: number) => {
     if (!size) return '0 B'
     if (size < 1024) return `${size} B`
@@ -52,15 +54,15 @@ export function StorageBucketCard({ bucket, onView, onSettings, onDelete }: Stor
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => onView(bucket)}>
                 <Eye className="w-4 h-4 mr-2" />
-                عرض
+                {t('view')}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onSettings(bucket)}>
                 <Settings className="w-4 h-4 mr-2" />
-                إعدادات
+                {t('settings')}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onDelete(bucket)} className="text-destructive">
                 <Trash2 className="w-4 h-4 mr-2" />
-                حذف
+                {t('delete')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -73,29 +75,29 @@ export function StorageBucketCard({ bucket, onView, onSettings, onDelete }: Stor
           
           <div className="flex items-center gap-2">
             <Badge variant={bucket.public ? "default" : "secondary"} className="text-xs px-2 py-0.5">
-              {bucket.public ? 'عام' : 'خاص'}
+              {bucket.public ? t('public') : t('private')}
             </Badge>
             <span className="text-xs text-muted-foreground font-medium">
-              {bucket.file_count?.toLocaleString() || '0'} ملف
+              {bucket.file_count?.toLocaleString() || '0'} {t('files')}
             </span>
           </div>
         </div>
         
         <div className="space-y-1.5 text-xs text-muted-foreground mb-4">
           <div className="flex justify-between items-center">
-            <span className="font-medium">المعرف</span>
+            <span className="font-medium">{t('id')}</span>
             <span className="truncate ml-2 bg-muted/50 px-2 py-0.5 rounded text-xs font-mono">
               {bucket.id}
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="font-medium">الحجم</span>
+            <span className="font-medium">{t('size')}</span>
             <span className="font-medium text-foreground">
               {formatSize(bucket.total_size)}
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="font-medium">تاريخ الإنشاء</span>
+            <span className="font-medium">{t('created_date')}</span>
             <span>
               {format(new Date(bucket.created_at), 'yyyy-MM-dd')}
             </span>
@@ -105,11 +107,11 @@ export function StorageBucketCard({ bucket, onView, onSettings, onDelete }: Stor
         <div className="flex gap-1.5">
           <Button variant="outline" onClick={() => onView(bucket)} className="flex-1 h-8 text-xs">
             <Eye className="w-3.5 h-3.5 mr-1.5" />
-            عرض
+            {t('view')}
           </Button>
           <Button variant="outline" onClick={() => onSettings(bucket)} className="flex-1 h-8 text-xs">
             <Settings className="w-3.5 h-3.5 mr-1.5" />
-            إعدادات
+            {t('settings')}
           </Button>
         </div>
       </CardContent>

@@ -422,9 +422,9 @@ export const AdvancedStorageManagement = () => {
                       <td className="p-2 text-right">{bucket.file_count.toLocaleString()}</td>
                       <td className="p-2 text-right">{formatBytes(bucket.total_size)}</td>
                       <td className="p-2 text-right">{formatBytes(bucket.avg_file_size)}</td>
-                      <td className="p-2">
-                        {bucket.oldest_file ? new Date(bucket.oldest_file).toLocaleDateString() : '-'}
-                      </td>
+                       <td className="p-2">
+                         {bucket.oldest_file ? new Date(bucket.oldest_file).toLocaleDateString(t('date_locale')) : '-'}
+                       </td>
                     </tr>
                   ))}
                 </tbody>
