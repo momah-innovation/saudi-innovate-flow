@@ -14,7 +14,7 @@ import {
   Activity,
   MousePointer
 } from 'lucide-react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
+// Chart components removed
 
 interface EngagementAnalyticsProps {
   opportunityId: string;

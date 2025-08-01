@@ -16,7 +16,7 @@ import {
   BarChart3,
   Filter
 } from 'lucide-react';
-import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+// Chart components removed
 
 interface ApplicationsAnalyticsProps {
   opportunityId: string;

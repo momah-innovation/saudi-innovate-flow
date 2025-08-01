@@ -20,7 +20,7 @@ import {
   BookOpen,
   Zap
 } from 'lucide-react';
-import { LineChart, Line, AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+// Chart components removed
 
 interface AnalyticsSummary {
   totalOpportunities: number;

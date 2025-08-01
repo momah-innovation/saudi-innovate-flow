@@ -17,7 +17,7 @@ import {
   Activity,
   Zap
 } from 'lucide-react';
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, PieChart, Pie, Cell, LineChart, Line, Area, AreaChart } from 'recharts';
+// Chart components removed
 
 interface EventAnalyticsData {
   totalEvents: number;

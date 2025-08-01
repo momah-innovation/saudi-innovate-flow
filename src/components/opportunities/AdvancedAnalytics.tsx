@@ -19,7 +19,7 @@ import {
   Activity,
   Gauge
 } from 'lucide-react';
-import { LineChart, Line, AreaChart, Area, BarChart, Bar, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+// Chart components removed
 
 interface AdvancedAnalyticsProps {
   opportunityId: string;
