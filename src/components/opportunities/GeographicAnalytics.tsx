@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { Globe, MapPin, TrendingUp } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis } from 'recharts';
+
 
 interface GeographicAnalyticsProps {
   opportunityId: string;
@@ -107,28 +107,34 @@ export const GeographicAnalytics = ({ opportunityId }: GeographicAnalyticsProps)
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
-              <Pie
-                data={geoData}
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                dataKey="view_count"
-                label={({ country_name, percentage }) => `${country_name}: ${percentage}%`}
-              >
-                {geoData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip 
-                formatter={(value: any, name: any) => [
-                  `${value} ${isRTL ? 'مشاهدة' : 'views'}`,
-                  isRTL ? 'المشاهدات' : 'Views'
-                ]}
-              />
-            </PieChart>
-          </ResponsiveContainer>
+          <div className="space-y-4">
+            {geoData.slice(0, 5).map((country, index) => (
+              <div key={country.country_code} className="flex items-center gap-3">
+                <div 
+                  className="w-4 h-4 rounded" 
+                  style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                />
+                <div className="flex-1">
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="flex items-center gap-2">
+                      <span>{flagEmoji(country.country_code)}</span>
+                      {country.country_name}
+                    </span>
+                    <span>{country.percentage}%</span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div 
+                      className="h-2 rounded-full transition-all duration-300"
+                      style={{ 
+                        width: `${country.percentage}%`,
+                        backgroundColor: COLORS[index % COLORS.length]
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </CardContent>
       </Card>
 

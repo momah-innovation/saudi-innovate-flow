@@ -3,6 +3,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/ui/page-header';
 import { StorageHero } from './StorageHero';
 import { StorageAnalyticsTab } from './StorageAnalyticsTab';
+import { UploaderSettingsTab } from './UploaderSettingsTab';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -214,9 +215,10 @@ export function StorageManagementPage() {
         />
 
         <Tabs defaultValue="files" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="files">{t('storage.files')}</TabsTrigger>
             <TabsTrigger value="buckets">{t('storage.buckets')}</TabsTrigger>
+            <TabsTrigger value="settings">Uploader Settings</TabsTrigger>
             <TabsTrigger value="analytics">{t('storage.analytics')}</TabsTrigger>
           </TabsList>
 
@@ -315,6 +317,10 @@ export function StorageManagementPage() {
                 </Card>
               ))}
             </div>
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-6">
+            <UploaderSettingsTab />
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">
