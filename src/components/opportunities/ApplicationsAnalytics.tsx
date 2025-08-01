@@ -16,7 +16,7 @@ import {
   BarChart3,
   Filter
 } from 'lucide-react';
-// Chart components removed
+import { ChartPlaceholder } from '@/components/common/ChartPlaceholder'
 
 interface ApplicationsAnalyticsProps {
   opportunityId: string;
@@ -345,27 +345,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={applicationData.applicationsOverTime}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar 
-                  dataKey="applications" 
-                  fill="#3B82F6" 
-                  name={isRTL ? 'طلبات يومية' : 'Daily Applications'}
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="cumulative" 
-                  stroke="#10B981" 
-                  strokeWidth={2}
-                  name={isRTL ? 'التراكمي' : 'Cumulative'}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+             <ChartPlaceholder title="Applications Over Time" height={300} />
           </CardContent>
         </Card>
 
@@ -378,25 +358,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={applicationData.statusBreakdown}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ status, percentage }) => `${status}: ${percentage}%`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="count"
-                >
-                  {applicationData.statusBreakdown.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+             <ChartPlaceholder title="Application Status Distribution" height={300} />
           </CardContent>
         </Card>
 

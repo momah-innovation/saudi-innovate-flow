@@ -19,7 +19,7 @@ import {
   Activity,
   Gauge
 } from 'lucide-react';
-// Chart components removed
+import { ChartPlaceholder } from '@/components/common/ChartPlaceholder'
 
 interface AdvancedAnalyticsProps {
   opportunityId: string;

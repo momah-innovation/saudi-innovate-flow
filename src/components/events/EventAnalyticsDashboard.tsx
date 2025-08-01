@@ -17,7 +17,7 @@ import {
   Activity,
   Zap
 } from 'lucide-react';
-// Chart components removed
+import { ChartPlaceholder } from '@/components/common/ChartPlaceholder'
 
 interface EventAnalyticsData {
   totalEvents: number;
@@ -291,16 +291,7 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
                     <CardTitle className="text-base">{isRTL ? 'الاتجاهات الشهرية' : 'Monthly Trends'}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ResponsiveContainer width="100%" height={300}>
-                      <BarChart data={analyticsData.monthlyTrends}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" />
-                        <YAxis />
-                        <Tooltip />
-                        <Bar dataKey="events" fill="#3b82f6" name={isRTL ? 'الفعاليات' : 'Events'} />
-                        <Bar dataKey="registrations" fill="#10b981" name={isRTL ? 'التسجيلات' : 'Registrations'} />
-                      </BarChart>
-                    </ResponsiveContainer>
+                    <ChartPlaceholder title={isRTL ? "الاتجاهات الشهرية" : "Monthly Trends"} height={300} />
                   </CardContent>
                 </Card>
 
