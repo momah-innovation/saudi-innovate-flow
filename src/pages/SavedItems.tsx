@@ -142,12 +142,12 @@ const SavedItemsPage = () => {
     const imageMap = {
       challenge: data.image_url,
       event: data.image_url,
-      idea: '/saved-images/saved-ideas.jpg',
-      focus_question: '/saved-images/focus-questions.jpg',
-      campaign: '/saved-images/campaigns.jpg',
-      expert: '/saved-images/experts.jpg',
-      stakeholder: '/saved-images/stakeholders.jpg',
-      team: '/saved-images/collections-grid.jpg',
+      idea: '/ideas-images-public/saved/saved-ideas.jpg',
+      focus_question: '/ideas-images-public/saved/focus-questions.jpg',
+      campaign: '/campaigns-images-public/saved/campaigns.jpg',
+      expert: '/partners-logos-public/experts/experts.jpg',
+      stakeholder: '/partners-logos-public/stakeholders/stakeholders.jpg',
+      team: '/ideas-images-public/saved/collections-grid.jpg',
       partner: '/partner-logos/corporate-partner.jpg',
       opportunity: '/partner-images/partnership-opportunities.jpg',
       sector: '/sector-images/digital-transformation.jpg'

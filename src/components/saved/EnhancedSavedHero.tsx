@@ -58,7 +58,7 @@ export const EnhancedSavedHero = ({
     <div className="relative overflow-hidden">
       {/* Background with animated gradients */}
       <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600">
-        <div className="absolute inset-0 bg-[url('/saved-images/bookmarks-hero.jpg')] opacity-10 bg-cover bg-center" />
+        <div className="absolute inset-0 bg-[url('/ideas-images-public/saved/bookmarks-hero.jpg')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
       </div>
 
@@ -170,7 +170,7 @@ export const EnhancedSavedHero = ({
                 {/* Collections Grid */}
                 <div className="relative h-48 overflow-hidden rounded-t-lg">
                   <img 
-                    src="/saved-images/collections-grid.jpg" 
+                    src="/ideas-images-public/saved/collections-grid.jpg" 
                     alt="Collections Grid"
                     className="w-full h-full object-cover"
                   />

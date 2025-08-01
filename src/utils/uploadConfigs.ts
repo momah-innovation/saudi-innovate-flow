@@ -200,6 +200,49 @@ export const UPLOAD_CONFIGS = {
     maxSizeBytes: 100 * 1024 * 1024, // 100MB
     allowedTypes: ['*/*'] as string[], // Allow all types for temp
     acceptString: '*/*'
+  },
+
+  // Team uploads  
+  TEAM_LOGOS: {
+    uploadType: 'team-logos-public',
+    maxFiles: 1,
+    maxSizeBytes: 5 * 1024 * 1024, // 5MB
+    allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'] as string[],
+    acceptString: 'image/jpeg,image/png,image/webp,image/svg+xml'
+  },
+
+  TEAM_DOCUMENTS: {
+    uploadType: 'team-documents-private',
+    maxFiles: 50,
+    maxSizeBytes: 50 * 1024 * 1024, // 50MB
+    allowedTypes: [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'text/plain',
+      'text/csv'
+    ] as string[],
+    acceptString: '.pdf,.doc,.docx,.xls,.xlsx,.txt,.csv'
+  },
+
+  TEAM_ATTACHMENTS: {
+    uploadType: 'team-attachments-private',
+    maxFiles: 100,
+    maxSizeBytes: 100 * 1024 * 1024, // 100MB
+    allowedTypes: [
+      'application/pdf',
+      'application/zip',
+      'application/x-rar-compressed',
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'image/gif',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ] as string[],
+    acceptString: '.pdf,.zip,.rar,.jpg,.jpeg,.png,.webp,.gif,.doc,.docx'
   }
 } as const
 
