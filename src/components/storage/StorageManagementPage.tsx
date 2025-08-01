@@ -6,6 +6,11 @@ import { StorageAnalyticsTab } from './StorageAnalyticsTab';
 import { UploaderSettingsTab } from './UploaderSettingsTab';
 import { FileViewDialog } from './FileViewDialog';
 import { BucketManagementDialog } from './BucketManagementDialog';
+import { LayoutToggle, LayoutType } from '@/components/ui/layout-toggle';
+import { StorageFileCard } from './StorageFileCard';
+import { StorageFileTable } from './StorageFileTable';
+import { StorageBucketCard } from './StorageBucketCard';
+import { ViewLayouts } from '@/components/ui/view-layouts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -29,7 +34,8 @@ import {
   Plus,
   Shield,
   HardDrive,
-  Search
+  Search,
+  Filter
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -51,6 +57,8 @@ export function StorageManagementPage() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [fileToDelete, setFileToDelete] = useState<any | null>(null);
   const [selectedUploadBucket, setSelectedUploadBucket] = useState<string>('');
+  const [filesLayout, setFilesLayout] = useState<LayoutType>('cards');
+  const [bucketsLayout, setBucketsLayout] = useState<LayoutType>('cards');
   const [storageStats, setStorageStats] = useState({
     totalFiles: 0,
     totalSize: 0,
@@ -322,7 +330,22 @@ export function StorageManagementPage() {
           </TabsList>
 
           <TabsContent value="files" className="space-y-6">
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+            {/* Header with layout toggle */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div>
+                <h3 className="text-lg font-semibold">{t('storage.files')}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {filteredFiles.length} {t('storage.files_found')}
+                </p>
+              </div>
+              <LayoutToggle
+                currentLayout={filesLayout}
+                onLayoutChange={setFilesLayout}
+              />
+            </div>
+
+            {/* Search and Actions */}
+            <div className="flex flex-col sm:flex-row gap-4">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
@@ -338,91 +361,56 @@ export function StorageManagementPage() {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredFiles.map((file) => (
-                <Card key={`${file.bucket_id}-${file.name}`} className="hover:shadow-lg transition-all duration-300 hover-scale">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
-                        <Files className="w-6 h-6 text-muted-foreground" />
-                      </div>
-                      <Badge variant={file.is_public ? "default" : "secondary"}>
-                        {file.is_public ? t('public') : t('private')}
-                      </Badge>
-                    </div>
-
-                    <h3 className="font-semibold text-foreground mb-2 line-clamp-2">
-                      {file.name}
-                    </h3>
-                    
-                    <div className="space-y-2 text-sm text-muted-foreground mb-4">
-                      <div className="flex justify-between">
-                        <span>{t('bucket')}</span>
-                        <span>{file.bucket_id}</span>
-                      </div>
-                       <div className="flex justify-between">
-                         <span>{t('file_size')}</span>
-                         <span>{file.metadata?.size ? `${(file.metadata.size / 1024).toFixed(1)} ${t('kb')}` : t('unknown')}</span>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-2">
-                      <Button variant="outline" onClick={() => handleFileView(file)} className="flex-1">
-                        <Eye className="w-4 h-4 mr-2" />
-                        {t('view')}
-                      </Button>
-                      <Button onClick={() => handleFileDownload(file)} className="flex-1">
-                        <Download className="w-4 h-4 mr-2" />
-                        {t('download')}
-                      </Button>
-                      <Button 
-                        variant="destructive" 
-                        size="sm"
-                        onClick={() => handleFileDelete(file)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            {/* Files Display */}
+            {filesLayout === 'table' ? (
+              <StorageFileTable
+                files={filteredFiles}
+                onView={handleFileView}
+                onDownload={handleFileDownload}
+                onDelete={handleFileDelete}
+              />
+            ) : (
+              <ViewLayouts viewMode={filesLayout}>
+                {filteredFiles.map((file) => (
+                  <StorageFileCard
+                    key={`${file.bucket_id}-${file.name}`}
+                    file={file}
+                    onView={handleFileView}
+                    onDownload={handleFileDownload}
+                    onDelete={handleFileDelete}
+                  />
+                ))}
+              </ViewLayouts>
+            )}
           </TabsContent>
 
           <TabsContent value="buckets" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {buckets.map((bucket) => (
-                <Card key={bucket.id} className="hover:shadow-lg transition-all duration-300 hover-scale">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="flex items-center gap-2">
-                        <Database className="w-5 h-5" />
-                        {bucket.name}
-                      </CardTitle>
-                      <Badge variant={bucket.public ? "default" : "secondary"}>
-                        {bucket.public ? t('public') : t('private')}
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                       <div className="flex justify-between text-sm">
-                         <span>{t('id')}</span>
-                         <span className="font-mono">{bucket.id}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span>{t('created_at')}</span>
-                        <span>{bucket.created_at ? new Date(bucket.created_at).toLocaleDateString() : t('unknown')}</span>
-                      </div>
-                      <Button variant="outline" className="w-full" onClick={() => handleBucketManagement(bucket)}>
-                        <Settings className="w-4 h-4 mr-2" />
-                        {t('manage_bucket')}
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+            {/* Header with layout toggle */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div>
+                <h3 className="text-lg font-semibold">{t('storage.buckets')}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {buckets.length} {t('storage.buckets_found')}
+                </p>
+              </div>
+              <LayoutToggle
+                currentLayout={bucketsLayout}
+                onLayoutChange={setBucketsLayout}
+              />
             </div>
+
+            {/* Buckets Display */}
+            <ViewLayouts viewMode={bucketsLayout}>
+              {buckets.map((bucket) => (
+                <StorageBucketCard
+                  key={bucket.id}
+                  bucket={bucket}
+                  onView={() => {}} // TODO: Implement bucket view
+                  onSettings={handleBucketManagement}
+                  onDelete={() => {}} // TODO: Implement bucket delete
+                />
+              ))}
+            </ViewLayouts>
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
