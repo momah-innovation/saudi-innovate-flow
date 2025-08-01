@@ -8,6 +8,7 @@ import { Switch } from '@/components/ui/switch'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
+import { supabase } from '@/integrations/supabase/client'
 import { 
   Settings, 
   Upload, 
@@ -23,6 +24,7 @@ import {
 } from 'lucide-react'
 
 interface UploaderConfig {
+  id: string
   uploadType: string
   bucket: string
   path: string
@@ -34,6 +36,16 @@ interface UploaderConfig {
   cleanupDays: number
 }
 
+interface GlobalSettings {
+  autoCleanupEnabled: boolean
+  defaultCleanupDays: number
+  maxConcurrentUploads: number
+  chunkSize: number
+  retryAttempts: number
+  compressionEnabled: boolean
+  thumbnailGeneration: boolean
+}
+
 interface UploaderSettingsTabProps {
   className?: string
 }
@@ -41,71 +53,150 @@ interface UploaderSettingsTabProps {
 export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
   const { toast } = useToast()
   const [configs, setConfigs] = useState<UploaderConfig[]>([])
-  const [globalSettings, setGlobalSettings] = useState({
+  const [globalSettings, setGlobalSettings] = useState<GlobalSettings>({
     autoCleanupEnabled: true,
     defaultCleanupDays: 7,
     maxConcurrentUploads: 3,
-    chunkSize: 1024 * 1024, // 1MB
+    chunkSize: 1024 * 1024,
     retryAttempts: 3,
     compressionEnabled: true,
     thumbnailGeneration: true
   })
+  const [loading, setLoading] = useState(true)
   const [newConfigOpen, setNewConfigOpen] = useState(false)
   const [editingConfig, setEditingConfig] = useState<UploaderConfig | null>(null)
 
   useEffect(() => {
-    loadUploaderConfigs()
+    loadUploaderSettings()
   }, [])
 
-  const loadUploaderConfigs = () => {
-    // Load from secure-upload edge function configurations
-    const defaultConfigs: UploaderConfig[] = [
-      {
-        uploadType: 'opportunity-images',
-        bucket: 'opportunity-images',
-        path: 'opportunity-images',
-        maxSizeBytes: 5 * 1024 * 1024,
-        allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
-        maxFiles: 1,
-        enabled: true,
-        autoCleanup: true,
-        cleanupDays: 7
-      },
-      {
-        uploadType: 'user-avatars',
-        bucket: 'avatars',
-        path: 'profiles',
-        maxSizeBytes: 2 * 1024 * 1024,
-        allowedTypes: ['image/jpeg', 'image/png', 'image/webp'],
-        maxFiles: 1,
-        enabled: true,
-        autoCleanup: false,
-        cleanupDays: 0
-      },
-      {
-        uploadType: 'challenge-documents',
-        bucket: 'challenge-attachments',
-        path: 'documents',
-        maxSizeBytes: 20 * 1024 * 1024,
-        allowedTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
-        maxFiles: 10,
-        enabled: true,
-        autoCleanup: true,
-        cleanupDays: 30
-      },
-      {
-        uploadType: 'event-resources',
-        bucket: 'event-resources',
-        path: 'resources',
-        maxSizeBytes: 50 * 1024 * 1024,
-        allowedTypes: ['application/pdf', 'image/jpeg', 'image/png', 'video/mp4', 'audio/mpeg'],
-        maxFiles: 20,
-        enabled: true,
-        autoCleanup: true,
-        cleanupDays: 90
+  const loadUploaderSettings = async () => {
+    try {
+      setLoading(true)
+      
+      // Load global settings
+      const { data: globalData, error: globalError } = await supabase
+        .from('uploader_settings')
+        .select('*')
+        .eq('setting_type', 'global')
+        .eq('is_active', true)
+
+      if (globalError) throw globalError
+
+      // Load upload configurations
+      const { data: configData, error: configError } = await supabase
+        .from('uploader_settings')
+        .select('*')
+        .eq('setting_type', 'upload_config')
+        .eq('is_active', true)
+
+      if (configError) throw configError
+
+      // Process global settings
+      const settings: Partial<GlobalSettings> = {}
+      globalData?.forEach(item => {
+        const value = item.setting_value?.value
+        switch (item.setting_key) {
+          case 'auto_cleanup_enabled':
+            settings.autoCleanupEnabled = value
+            break
+          case 'default_cleanup_days':
+            settings.defaultCleanupDays = value
+            break
+          case 'max_concurrent_uploads':
+            settings.maxConcurrentUploads = value
+            break
+          case 'chunk_size_mb':
+            settings.chunkSize = value * 1024 * 1024
+            break
+          case 'retry_attempts':
+            settings.retryAttempts = value
+            break
+          case 'compression_enabled':
+            settings.compressionEnabled = value
+            break
+          case 'thumbnail_generation':
+            settings.thumbnailGeneration = value
+            break
+        }
+      })
+      setGlobalSettings(prev => ({ ...prev, ...settings }))
+
+      // Process upload configurations
+      const uploadConfigs: UploaderConfig[] = configData?.map(item => ({
+        id: item.id,
+        uploadType: item.setting_key,
+        bucket: item.setting_value.bucket || '',
+        path: item.setting_value.path || '',
+        maxSizeBytes: item.setting_value.maxSizeBytes || 0,
+        allowedTypes: item.setting_value.allowedTypes || [],
+        maxFiles: item.setting_value.maxFiles || 1,
+        enabled: item.setting_value.enabled || false,
+        autoCleanup: item.setting_value.autoCleanup || false,
+        cleanupDays: item.setting_value.cleanupDays || 0
+      })) || []
+
+      setConfigs(uploadConfigs)
+    } catch (error) {
+      console.error('Error loading uploader settings:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to load uploader settings',
+        variant: 'destructive'
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const updateGlobalSetting = async (key: string, value: any) => {
+    try {
+      const { error } = await supabase
+        .from('uploader_settings')
+        .update({ 
+          setting_value: { value, description: `Updated ${key}` },
+          updated_at: new Date().toISOString()
+        })
+        .eq('setting_type', 'global')
+        .eq('setting_key', key)
+
+      if (error) throw error
+    } catch (error) {
+      console.error('Error updating global setting:', error)
+      throw error
+    }
+  }
+
+  const updateUploadConfig = async (configId: string, updates: Partial<UploaderConfig>) => {
+    try {
+      const config = configs.find(c => c.id === configId)
+      if (!config) return
+
+      const updatedValue = {
+        ...config,
+        ...updates,
+        uploadType: config.uploadType,
+        bucket: updates.bucket || config.bucket,
+        path: updates.path || config.path
       }
-    ]
-    setConfigs(defaultConfigs)
+
+      const { error } = await supabase
+        .from('uploader_settings')
+        .update({ 
+          setting_value: updatedValue,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', configId)
+
+      if (error) throw error
+
+      setConfigs(prev => prev.map(c => 
+        c.id === configId ? { ...c, ...updates } : c
+      ))
+    } catch (error) {
+      console.error('Error updating upload config:', error)
+      throw error
+    }
   }
 
   const formatBytes = (bytes: number) => {
@@ -116,17 +207,48 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
 
-  const handleConfigUpdate = (configIndex: number, updates: Partial<UploaderConfig>) => {
-    setConfigs(prev => prev.map((config, index) => 
-      index === configIndex ? { ...config, ...updates } : config
-    ))
+  const handleConfigUpdate = async (configIndex: number, updates: Partial<UploaderConfig>) => {
+    const config = configs[configIndex]
+    if (!config) return
+
+    try {
+      await updateUploadConfig(config.id, updates)
+      toast({
+        title: 'Configuration Updated',
+        description: 'Upload configuration has been saved successfully'
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to update configuration',
+        variant: 'destructive'
+      })
+    }
   }
 
-  const handleSaveSettings = () => {
-    toast({
-      title: 'Settings Saved',
-      description: 'Uploader configuration has been updated successfully'
-    })
+  const handleSaveSettings = async () => {
+    try {
+      await Promise.all([
+        updateGlobalSetting('auto_cleanup_enabled', globalSettings.autoCleanupEnabled),
+        updateGlobalSetting('default_cleanup_days', globalSettings.defaultCleanupDays),
+        updateGlobalSetting('max_concurrent_uploads', globalSettings.maxConcurrentUploads),
+        updateGlobalSetting('chunk_size_mb', globalSettings.chunkSize / (1024 * 1024)),
+        updateGlobalSetting('retry_attempts', globalSettings.retryAttempts),
+        updateGlobalSetting('compression_enabled', globalSettings.compressionEnabled),
+        updateGlobalSetting('thumbnail_generation', globalSettings.thumbnailGeneration)
+      ])
+
+      toast({
+        title: 'Settings Saved',
+        description: 'Global uploader settings have been updated successfully'
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to save settings',
+        variant: 'destructive'
+      })
+    }
   }
 
   const getStatusIcon = (config: UploaderConfig) => {
