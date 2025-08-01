@@ -13,3 +13,6 @@ verify_jwt = true
 
 [functions.unsplash-images]
 verify_jwt = false
+
+[functions.migrate-storage-buckets]
+verify_jwt = true
