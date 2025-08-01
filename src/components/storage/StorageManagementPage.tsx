@@ -11,6 +11,9 @@ import { LayoutToggle, LayoutType } from '@/components/ui/layout-toggle';
 import { StorageFileCard } from './StorageFileCard';
 import { StorageFileTable } from './StorageFileTable';
 import { StorageBucketCard } from './StorageBucketCard';
+import { EnhancedStorageFileCard } from './EnhancedStorageFileCard';
+import { BulkFileActions } from './BulkFileActions';
+import { StorageStatsCards } from './StorageStatsCards';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -21,6 +24,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   Database, 
@@ -85,6 +89,9 @@ export function StorageManagementPage() {
     direction: 'asc'
   });
 
+  // Bulk selection state
+  const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
+  const [showBulkActions, setShowBulkActions] = useState(false);
   useEffect(() => {
     loadStorageData();
   }, []);
@@ -488,6 +495,19 @@ export function StorageManagementPage() {
     });
   };
 
+  // Bulk file selection handlers
+  const handleFileSelection = (file: any, selected: boolean) => {
+    if (selected) {
+      setSelectedFiles(prev => [...prev, file]);
+    } else {
+      setSelectedFiles(prev => prev.filter(f => f !== file));
+    }
+  };
+
+  const handleBulkSelectionChange = (files: any[]) => {
+    setSelectedFiles(files);
+  };
+
   if (loading) {
     return (
       <PageLayout>
@@ -535,6 +555,9 @@ export function StorageManagementPage() {
           </TabsList>
 
           <TabsContent value="files" className="space-y-6">
+            {/* Enhanced Stats Cards */}
+            <StorageStatsCards stats={storageStats} files={filteredAndSortedFiles} />
+
             {/* Header with layout toggle */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
@@ -543,10 +566,20 @@ export function StorageManagementPage() {
                   {filteredAndSortedFiles.length} {t('storage.files_found')}
                 </p>
               </div>
-              <LayoutToggle
-                currentLayout={filesLayout}
-                onLayoutChange={setFilesLayout}
-              />
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowBulkActions(!showBulkActions)}
+                  className={showBulkActions ? 'bg-primary text-primary-foreground' : ''}
+                >
+                  {showBulkActions ? 'Exit Selection' : 'Select Files'}
+                </Button>
+                <LayoutToggle
+                  currentLayout={filesLayout}
+                  onLayoutChange={setFilesLayout}
+                />
+              </div>
             </div>
 
             {/* Search and Actions */}
@@ -577,8 +610,35 @@ export function StorageManagementPage() {
               activeFilterCount={getActiveFilterCount()}
             />
 
+            {/* Bulk Actions */}
+            {showBulkActions && (
+              <BulkFileActions
+                selectedFiles={selectedFiles}
+                onSelectionChange={handleBulkSelectionChange}
+                onFilesUpdated={loadStorageData}
+                buckets={buckets}
+                allFiles={filteredAndSortedFiles}
+              />
+            )}
+
             {/* Files Display */}
-            {filesLayout === 'table' ? (
+            {filteredAndSortedFiles.length === 0 ? (
+              <div className="text-center py-12">
+                <Files className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No files found</h3>
+                <p className="text-muted-foreground mb-4">
+                  {searchTerm || getActiveFilterCount() > 0 
+                    ? 'Try adjusting your search or filters' 
+                    : 'Upload some files to get started'}
+                </p>
+                {!searchTerm && getActiveFilterCount() === 0 && (
+                  <Button onClick={() => setShowUploadDialog(true)}>
+                    <Upload className="w-4 h-4 mr-2" />
+                    Upload Files
+                  </Button>
+                )}
+              </div>
+            ) : filesLayout === 'table' ? (
               <StorageFileTable
                 files={filteredAndSortedFiles}
                 onView={handleFileView}
@@ -588,12 +648,15 @@ export function StorageManagementPage() {
             ) : (
               <ViewLayouts viewMode={filesLayout}>
                 {filteredAndSortedFiles.map((file) => (
-                  <StorageFileCard
+                  <EnhancedStorageFileCard
                     key={`${file.bucket_id}-${file.name}`}
                     file={file}
                     onView={handleFileView}
                     onDownload={handleFileDownload}
                     onDelete={handleFileDelete}
+                    isSelected={selectedFiles.some(f => f.name === file.name && f.bucket_id === file.bucket_id)}
+                    onSelectionChange={handleFileSelection}
+                    showSelection={showBulkActions}
                   />
                 ))}
               </ViewLayouts>
