@@ -439,6 +439,24 @@ export function NavigationSidebar() {
          group: 'admin',
          roles: ['admin'] 
        },
+       { 
+         id: 'admin-relationships', 
+         label: 'Relationships', 
+         arabicLabel: 'العلاقات',
+         icon: Network, 
+         path: '/admin/relationships',
+         group: 'admin',
+         roles: ['admin'] 
+       },
+       { 
+         id: 'admin-evaluations', 
+         label: 'Evaluations', 
+         arabicLabel: 'التقييمات',
+         icon: UserCheck, 
+         path: '/admin/evaluations',
+         group: 'admin',
+         roles: ['admin'] 
+       },
     ];
 
     const settingsItems = [
