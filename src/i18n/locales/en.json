@@ -369,8 +369,6 @@
   "secure": "Secure",
   "pending_updates_count": "{count} pending updates",
   "action_required": "Action Required",
-  
-  // Storage Management
   "storage_management": "Storage Management",
   "total_files": "Total Files",
   "total_size": "Total Size",
@@ -403,8 +401,6 @@
   "continue_question": "Are you sure you want to continue?",
   "cleaning": "Cleaning...",
   "yes_perform_cleanup": "Yes, Perform Cleanup",
-  
-  // Comprehensive Storage Management
   "comprehensive_storage_management": "Comprehensive Storage Management",
   "complete_storage_operations": "Complete storage operations including export, migration, backup, recovery, and optimization",
   "export_migration": "Export & Migration",

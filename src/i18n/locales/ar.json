@@ -337,8 +337,6 @@
   "resource_not_found": "المورد غير موجود",
   "operation_failed": "فشلت العملية",
   "operation_successful": "نجحت العملية",
-  
-  // Storage Management
   "storage_management": "إدارة التخزين",
   "total_files": "إجمالي الملفات",
   "total_size": "الحجم الإجمالي",
@@ -371,8 +369,6 @@
   "continue_question": "هل أنت متأكد من أنك تريد المتابعة؟",
   "cleaning": "جاري التنظيف...",
   "yes_perform_cleanup": "نعم، قم بالتنظيف",
-  
-  // Comprehensive Storage Management
   "comprehensive_storage_management": "إدارة التخزين الشاملة",
   "complete_storage_operations": "عمليات تخزين كاملة تشمل التصدير والترحيل والنسخ الاحتياطي والاستعادة والتحسين",
   "export_migration": "التصدير والترحيل",
