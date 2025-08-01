@@ -60,6 +60,7 @@ import { StorageManagementPage } from "./components/storage/StorageManagementPag
 import { StoragePoliciesPage } from "./components/storage/StoragePoliciesPage";
 import AdminRelationships from "./pages/AdminRelationships";
 import AdminEvaluations from "./pages/AdminEvaluations";
+import { AppShell } from "@/components/layout/AppShell";
 
 const queryClient = new QueryClient();
 
@@ -375,48 +376,58 @@ const App = () => (
                   </ProtectedRoute>
                 } 
                />
-              <Route 
-                path="/admin/storage" 
-                element={
-                  <ProtectedRoute requireProfile requiredRole="admin">
-                    <StorageManagementPage />
-                  </ProtectedRoute>
-                } 
-               />
                <Route 
-                 path="/admin/storage/policies" 
+                 path="/admin/storage" 
                  element={
                    <ProtectedRoute requireProfile requiredRole="admin">
-                     <StoragePoliciesPage />
+                     <AppShell>
+                       <StorageManagementPage />
+                     </AppShell>
                    </ProtectedRoute>
                  } 
-                 />
+                />
                 <Route 
-                  path="/admin/relationships" 
+                  path="/admin/storage/policies" 
                   element={
                     <ProtectedRoute requireProfile requiredRole="admin">
-                      <AdminRelationships />
+                      <AppShell>
+                        <StoragePoliciesPage />
+                      </AppShell>
                     </ProtectedRoute>
                   } 
-                 />
-                <Route 
-                  path="/admin/evaluations" 
-                  element={
-                    <ProtectedRoute requireProfile requiredRole="admin">
-                      <AdminEvaluations />
-                    </ProtectedRoute>
-                  } 
-                 />
-              <Route path="/help" element={<HelpPage />} />
-              {/* Admin Dashboard route */}
-              <Route 
-                path="/admin/dashboard" 
-                element={
-                  <ProtectedRoute requireProfile requiredRole="admin">
-                    <AdminDashboard />
-                  </ProtectedRoute>
-                } 
-              />
+                  />
+                 <Route 
+                   path="/admin/relationships" 
+                   element={
+                     <ProtectedRoute requireProfile requiredRole="admin">
+                       <AppShell>
+                         <AdminRelationships />
+                       </AppShell>
+                     </ProtectedRoute>
+                   } 
+                  />
+                 <Route 
+                   path="/admin/evaluations" 
+                   element={
+                     <ProtectedRoute requireProfile requiredRole="admin">
+                       <AppShell>
+                         <AdminEvaluations />
+                       </AppShell>
+                     </ProtectedRoute>
+                   } 
+                  />
+               <Route path="/help" element={<HelpPage />} />
+               {/* Admin Dashboard route */}
+               <Route 
+                 path="/admin/dashboard" 
+                 element={
+                   <ProtectedRoute requireProfile requiredRole="admin">
+                     <AppShell>
+                       <AdminDashboard />
+                     </AppShell>
+                   </ProtectedRoute>
+                 } 
+               />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
