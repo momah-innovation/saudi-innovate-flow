@@ -30,12 +30,13 @@ interface GlobalSettings {
   thumbnailGeneration: boolean
 }
 
-// Fallback upload configurations
+// Fallback upload configurations aligned with actual buckets and policies
 const FALLBACK_UPLOAD_CONFIGS: Record<string, UploadConfig> = {
-  'opportunity-images': {
-    uploadType: 'opportunity-images',
-    bucket: 'opportunity-images',
-    path: 'opportunity-images',
+  // Opportunities uploads
+  'opportunities-images-public': {
+    uploadType: 'opportunities-images-public',
+    bucket: 'opportunities-images-public',
+    path: 'images',
     maxSizeBytes: 5 * 1024 * 1024,
     allowedTypes: ['image/jpeg', 'image/png', 'image/webp'],
     maxFiles: 3,
@@ -43,20 +44,33 @@ const FALLBACK_UPLOAD_CONFIGS: Record<string, UploadConfig> = {
     autoCleanup: false,
     cleanupDays: 0
   },
-  'user-avatars': {
-    uploadType: 'user-avatars',
-    bucket: 'avatars',
-    path: 'profiles',
-    maxSizeBytes: 2 * 1024 * 1024,
-    allowedTypes: ['image/jpeg', 'image/png', 'image/webp'],
-    maxFiles: 1,
+  'opportunities-documents-private': {
+    uploadType: 'opportunities-documents-private',
+    bucket: 'opportunities-documents-private',
+    path: 'documents',
+    maxSizeBytes: 25 * 1024 * 1024,
+    allowedTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'],
+    maxFiles: 10,
     enabled: true,
     autoCleanup: false,
     cleanupDays: 0
   },
-  'challenge-images': {
-    uploadType: 'challenge-images',
-    bucket: 'challenge-attachments',
+  'opportunities-attachments-private': {
+    uploadType: 'opportunities-attachments-private',
+    bucket: 'opportunities-attachments-private',
+    path: 'attachments',
+    maxSizeBytes: 50 * 1024 * 1024,
+    allowedTypes: ['application/pdf', 'application/zip', 'application/x-zip-compressed', 'image/jpeg', 'image/png'],
+    maxFiles: 5,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+
+  // Challenges uploads
+  'challenges-images-public': {
+    uploadType: 'challenges-images-public',
+    bucket: 'challenges-images-public',
     path: 'images',
     maxSizeBytes: 8 * 1024 * 1024,
     allowedTypes: ['image/jpeg', 'image/png', 'image/webp'],
@@ -65,16 +79,193 @@ const FALLBACK_UPLOAD_CONFIGS: Record<string, UploadConfig> = {
     autoCleanup: false,
     cleanupDays: 0
   },
-  'event-resources': {
-    uploadType: 'event-resources',
-    bucket: 'event-resources',
+  'challenges-documents-private': {
+    uploadType: 'challenges-documents-private',
+    bucket: 'challenges-documents-private',
+    path: 'documents',
+    maxSizeBytes: 30 * 1024 * 1024,
+    allowedTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'],
+    maxFiles: 15,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+  'challenges-attachments-private': {
+    uploadType: 'challenges-attachments-private',
+    bucket: 'challenges-attachments-private',
+    path: 'attachments',
+    maxSizeBytes: 100 * 1024 * 1024,
+    allowedTypes: ['application/pdf', 'application/zip', 'application/x-zip-compressed', 'video/mp4', 'audio/mpeg'],
+    maxFiles: 8,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+
+  // Ideas uploads
+  'ideas-images-public': {
+    uploadType: 'ideas-images-public',
+    bucket: 'ideas-images-public',
+    path: 'images',
+    maxSizeBytes: 10 * 1024 * 1024,
+    allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
+    maxFiles: 5,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+  'ideas-documents-private': {
+    uploadType: 'ideas-documents-private',
+    bucket: 'ideas-documents-private',
+    path: 'documents',
+    maxSizeBytes: 20 * 1024 * 1024,
+    allowedTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+    maxFiles: 12,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+  'ideas-attachments-private': {
+    uploadType: 'ideas-attachments-private',
+    bucket: 'ideas-attachments-private',
+    path: 'attachments',
+    maxSizeBytes: 75 * 1024 * 1024,
+    allowedTypes: ['application/pdf', 'application/zip', 'video/mp4', 'image/jpeg', 'image/png'],
+    maxFiles: 6,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+
+  // Campaigns uploads
+  'campaigns-images-public': {
+    uploadType: 'campaigns-images-public',
+    bucket: 'campaigns-images-public',
+    path: 'images',
+    maxSizeBytes: 12 * 1024 * 1024,
+    allowedTypes: ['image/jpeg', 'image/png', 'image/webp'],
+    maxFiles: 4,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+  'campaigns-materials-public': {
+    uploadType: 'campaigns-materials-public',
+    bucket: 'campaigns-materials-public',
+    path: 'materials',
+    maxSizeBytes: 50 * 1024 * 1024,
+    allowedTypes: ['application/pdf', 'image/jpeg', 'image/png', 'video/mp4', 'audio/mpeg', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'],
+    maxFiles: 20,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+  'campaigns-documents-private': {
+    uploadType: 'campaigns-documents-private',
+    bucket: 'campaigns-documents-private',
+    path: 'documents',
+    maxSizeBytes: 25 * 1024 * 1024,
+    allowedTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+    maxFiles: 10,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+
+  // Events uploads
+  'events-images-public': {
+    uploadType: 'events-images-public',
+    bucket: 'events-images-public',
+    path: 'images',
+    maxSizeBytes: 8 * 1024 * 1024,
+    allowedTypes: ['image/jpeg', 'image/png', 'image/webp'],
+    maxFiles: 3,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+  'events-resources-public': {
+    uploadType: 'events-resources-public',
+    bucket: 'events-resources-public',
     path: 'resources',
     maxSizeBytes: 100 * 1024 * 1024,
-    allowedTypes: ['application/pdf', 'image/jpeg', 'image/png', 'video/mp4'],
+    allowedTypes: ['application/pdf', 'image/jpeg', 'image/png', 'video/mp4', 'audio/mpeg', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/zip'],
     maxFiles: 25,
     enabled: true,
     autoCleanup: false,
     cleanupDays: 0
+  },
+  'events-recordings-private': {
+    uploadType: 'events-recordings-private',
+    bucket: 'events-recordings-private',
+    path: 'recordings',
+    maxSizeBytes: 500 * 1024 * 1024, // 500MB for recordings
+    allowedTypes: ['video/mp4', 'audio/mpeg', 'video/webm'],
+    maxFiles: 5,
+    enabled: true,
+    autoCleanup: true,
+    cleanupDays: 30
+  },
+
+  // User uploads
+  'user-avatars-public': {
+    uploadType: 'user-avatars-public',
+    bucket: 'user-avatars-public',
+    path: 'avatars',
+    maxSizeBytes: 3 * 1024 * 1024,
+    allowedTypes: ['image/jpeg', 'image/png', 'image/webp'],
+    maxFiles: 1,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+  'user-documents-private': {
+    uploadType: 'user-documents-private',
+    bucket: 'user-documents-private',
+    path: 'documents',
+    maxSizeBytes: 25 * 1024 * 1024,
+    allowedTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+    maxFiles: 10,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+
+  // Partners uploads
+  'partners-logos-public': {
+    uploadType: 'partners-logos-public',
+    bucket: 'partners-logos-public',
+    path: 'logos',
+    maxSizeBytes: 5 * 1024 * 1024,
+    allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'],
+    maxFiles: 1,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+  'partners-documents-private': {
+    uploadType: 'partners-documents-private',
+    bucket: 'partners-documents-private',
+    path: 'documents',
+    maxSizeBytes: 50 * 1024 * 1024,
+    allowedTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+    maxFiles: 15,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+
+  // Temporary uploads
+  'temp-uploads-private': {
+    uploadType: 'temp-uploads-private',
+    bucket: 'temp-uploads-private',
+    path: 'temp',
+    maxSizeBytes: 100 * 1024 * 1024,
+    allowedTypes: ['*/*'], // Allow all types for temp uploads
+    maxFiles: 50,
+    enabled: true,
+    autoCleanup: true,
+    cleanupDays: 7
   }
 }
 

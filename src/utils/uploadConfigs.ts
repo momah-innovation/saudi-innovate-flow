@@ -159,7 +159,7 @@ export const UPLOAD_CONFIGS = {
 
   // Partner uploads
   PARTNER_LOGOS: {
-    uploadType: 'partner-images',
+    uploadType: 'partners-logos-public',
     maxFiles: 1,
     maxSizeBytes: 5 * 1024 * 1024, // 5MB
     allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'] as string[],
@@ -168,7 +168,7 @@ export const UPLOAD_CONFIGS = {
 
   // Event uploads
   EVENT_RESOURCES: {
-    uploadType: 'event-resources',
+    uploadType: 'events-resources-public',
     maxFiles: 25,
     maxSizeBytes: 100 * 1024 * 1024, // 100MB per file
     allowedTypes: [
@@ -182,6 +182,24 @@ export const UPLOAD_CONFIGS = {
       'application/zip'
     ] as string[],
     acceptString: '.pdf,.jpg,.jpeg,.png,.mp4,.mp3,.ppt,.pptx,.zip'
+  },
+
+  // Add missing event images config
+  EVENT_IMAGES: {
+    uploadType: 'events-images-public',
+    maxFiles: 3,
+    maxSizeBytes: 8 * 1024 * 1024, // 8MB
+    allowedTypes: ['image/jpeg', 'image/png', 'image/webp'] as string[],
+    acceptString: 'image/jpeg,image/png,image/webp'
+  },
+
+  // Add temp uploads config
+  TEMP_UPLOADS: {
+    uploadType: 'temp-uploads-private',
+    maxFiles: 50,
+    maxSizeBytes: 100 * 1024 * 1024, // 100MB
+    allowedTypes: ['*/*'] as string[], // Allow all types for temp
+    acceptString: '*/*'
   }
 } as const
 
