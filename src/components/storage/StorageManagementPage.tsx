@@ -183,11 +183,9 @@ export function StorageManagementPage() {
   const getFileUrl = (file: any): string => {
     if (!file) return '';
     
-    const bucketName = file.bucket_id;
-    const fileName = file.name;
-    
     if (file.is_public) {
-      return `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public/${bucketName}/${fileName}`;
+      const { data } = supabase.storage.from(file.bucket_id).getPublicUrl(file.name);
+      return data.publicUrl;
     } else {
       // For private files, we'll need to generate a signed URL
       return '';
@@ -195,21 +193,22 @@ export function StorageManagementPage() {
   };
 
   const handleFileView = async (file: any) => {
-    // Generate signed URL for private files
+    // Generate signed URL for private files or public URL for public files
     if (!file.is_public) {
       try {
         const { data, error } = await supabase.storage
           .from(file.bucket_id)
           .createSignedUrl(file.name, 3600); // 1 hour expiry
         
-        if (data) {
+        if (data && !error) {
           file.signedUrl = data.signedUrl;
         }
       } catch (error) {
         console.error('Error generating signed URL:', error);
       }
     } else {
-      file.publicUrl = getFileUrl(file);
+      const { data } = supabase.storage.from(file.bucket_id).getPublicUrl(file.name);
+      file.publicUrl = data.publicUrl;
     }
     
     setSelectedFile(file);
