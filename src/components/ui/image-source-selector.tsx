@@ -97,9 +97,9 @@ export function ImageSourceSelector({
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="unsplash" className="flex-1 overflow-auto">
+          <TabsContent value="unsplash" className="flex-1 overflow-hidden">
             <Card className="h-full">
-              <CardContent className="p-4 h-full">
+              <CardContent className="p-4 h-full overflow-hidden">
                 <UnsplashImageBrowser
                   onImageSelect={handleUnsplashSelect}
                   maxSelection={allowMultiple ? 10 : 1}
