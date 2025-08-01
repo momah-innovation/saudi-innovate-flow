@@ -21,10 +21,14 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { SystemActivityDialog } from '@/components/dialogs/SystemActivityDialog';
+import { SystemHealthDialog } from '@/components/dialogs/SystemHealthDialog';
 
 export default function AdminDashboard() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
+  const [activityDialogOpen, setActivityDialogOpen] = useState(false);
+  const [healthDialogOpen, setHealthDialogOpen] = useState(false);
   const [dashboardData, setDashboardData] = useState({
     totalUsers: 1234,
     activeUsers: 156,
@@ -283,6 +287,16 @@ export default function AdminDashboard() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* System Dialogs */}
+      <SystemActivityDialog 
+        isOpen={activityDialogOpen}
+        onClose={() => setActivityDialogOpen(false)}
+      />
+      <SystemHealthDialog 
+        isOpen={healthDialogOpen}
+        onClose={() => setHealthDialogOpen(false)}
+      />
     </PageContainer>
   );
 }
