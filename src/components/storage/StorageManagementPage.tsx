@@ -70,9 +70,18 @@ export function StorageManagementPage() {
     try {
       setLoading(true);
       
+      console.log('Loading storage data...');
       // Load buckets
-      const { data: bucketsData } = await supabase.storage.listBuckets();
+      const { data: bucketsData, error: bucketsError } = await supabase.storage.listBuckets();
+      console.log('Buckets response:', { bucketsData, bucketsError });
+      
+      if (bucketsError) {
+        console.error('Error loading buckets:', bucketsError);
+        throw bucketsError;
+      }
+      
       if (bucketsData) {
+        console.log('Setting buckets:', bucketsData);
         setBuckets(bucketsData);
         setStorageStats(prev => ({ ...prev, buckets: bucketsData.length }));
       }
@@ -84,7 +93,15 @@ export function StorageManagementPage() {
       let privateCount = 0;
 
       for (const bucket of bucketsData || []) {
-        const { data: files } = await supabase.storage.from(bucket.id).list();
+        console.log(`Loading files from bucket: ${bucket.id}`);
+        const { data: files, error: filesError } = await supabase.storage.from(bucket.id).list();
+        console.log(`Files from ${bucket.id}:`, { files, filesError });
+        
+        if (filesError) {
+          console.error(`Error loading files from bucket ${bucket.id}:`, filesError);
+          continue; // Skip this bucket and continue with others
+        }
+        
         if (files) {
           const filesWithBucket = files.map(file => ({
             ...file,

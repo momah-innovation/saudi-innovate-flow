@@ -40,25 +40,44 @@ export const useStorageAnalytics = () => {
 
   const getAllBucketAnalytics = useCallback(async (): Promise<StorageAnalytics[]> => {
     try {
+      console.log('Loading bucket analytics...');
       // Get all buckets
-      const { data: buckets } = await supabase.storage.listBuckets()
+      const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets()
+      console.log('Analytics buckets response:', { buckets, bucketsError });
+      
+      if (bucketsError) {
+        console.error('Analytics buckets error:', bucketsError);
+        throw bucketsError;
+      }
+      
       if (!buckets) return []
 
       const analytics: StorageAnalytics[] = []
 
       for (const bucket of buckets) {
         const stats = await getBucketStats(bucket.id)
+        console.log(`Stats for bucket ${bucket.id}:`, stats);
+        
         if (stats) {
-          const usagePercentage = (stats.total_size / (100 * 1024 * 1024)) * 100 // Assume 100MB limit
+          // Use realistic storage limits - 1GB per bucket for public, 5GB for private
+          const bucketLimit = bucket.public ? (1024 * 1024 * 1024) : (5 * 1024 * 1024 * 1024)
+          const usagePercentage = (stats.total_size / bucketLimit) * 100
           const healthStatus = 
             usagePercentage > 90 ? 'critical' :
             usagePercentage > 70 ? 'warning' : 'healthy'
+
+          console.log(`Bucket ${bucket.id} analytics:`, {
+            totalSize: stats.total_size,
+            bucketLimit,
+            usagePercentage,
+            healthStatus
+          });
 
           analytics.push({
             bucketName: bucket.id,
             stats,
             healthStatus,
-            usagePercentage
+            usagePercentage: Math.min(usagePercentage, 100) // Cap at 100%
           })
         }
       }

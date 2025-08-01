@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Plus, Upload, X } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
+import { supabase } from '@/integrations/supabase/client'
 
 interface UploaderConfig {
   id: string
@@ -44,38 +45,10 @@ const commonFileTypes = [
   { value: 'text/plain', label: 'Text Files' }
 ]
 
-const predefinedBuckets = [
-  'avatars',
-  'campaign-images-public',
-  'campaigns-materials',
-  'challenge-attachments',
-  'challenges-attachments-private',
-  'challenges-documents-private',
-  'challenges-images-public',
-  'dashboard-images',
-  'event-resources',
-  'idea-images',
-  'ideas-attachments-private',
-  'ideas-documents-private',
-  'ideas-images-public',
-  'opportunities-attachments-private',
-  'opportunities-documents-private',
-  'opportunities-images-public',
-  'opportunity-attachments',
-  'opportunity-images',
-  'partner-images',
-  'partner-logos',
-  'saved-images',
-  'sector-images',
-  'team-logos',
-  'temp-uploads-private',
-  'user-avatars-public',
-  'user-documents-private'
-]
-
 export function ConfigurationDialog({ config, open, onOpenChange, onSave }: ConfigurationDialogProps) {
   const { toast } = useToast()
   const isEditing = Boolean(config)
+  const [availableBuckets, setAvailableBuckets] = useState<string[]>([])
   
   const [formData, setFormData] = useState<UploaderConfig>(() => ({
     id: config?.id || '',
@@ -89,6 +62,34 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
     autoCleanup: config?.autoCleanup || false,
     cleanupDays: config?.cleanupDays || 7
   }))
+
+  // Load available buckets from Supabase
+  useEffect(() => {
+    const loadBuckets = async () => {
+      try {
+        console.log('Loading buckets for configuration dialog...');
+        const { data: buckets, error } = await supabase.storage.listBuckets()
+        console.log('Configuration dialog buckets:', { buckets, error });
+        
+        if (error) {
+          console.error('Error loading buckets for config:', error);
+          return;
+        }
+        
+        if (buckets) {
+          const bucketNames = buckets.map(bucket => bucket.id).sort()
+          console.log('Available buckets for config:', bucketNames);
+          setAvailableBuckets(bucketNames)
+        }
+      } catch (error) {
+        console.error('Failed to load buckets:', error)
+      }
+    }
+    
+    if (open) {
+      loadBuckets()
+    }
+  }, [open])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -181,7 +182,7 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
                   <SelectValue placeholder="Select bucket" />
                 </SelectTrigger>
                 <SelectContent>
-                  {predefinedBuckets.map((bucket) => (
+                  {availableBuckets.map((bucket) => (
                     <SelectItem key={bucket} value={bucket}>
                       {bucket}
                     </SelectItem>

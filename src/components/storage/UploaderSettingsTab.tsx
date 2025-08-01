@@ -74,6 +74,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
   const loadUploaderSettings = async () => {
     try {
       setLoading(true)
+      console.log('Loading uploader settings...');
       
       // Load global settings
       const { data: globalData, error: globalError } = await supabase
@@ -82,6 +83,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
         .eq('setting_type', 'global')
         .eq('is_active', true)
 
+      console.log('Global settings response:', { globalData, globalError });
       if (globalError) throw globalError
 
       // Load upload configurations
@@ -90,6 +92,8 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
         .select('*')
         .eq('setting_type', 'upload_config')
         .eq('is_active', true)
+
+      console.log('Config settings response:', { configData, configError });
 
       if (configError) throw configError
 
