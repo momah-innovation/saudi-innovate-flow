@@ -54,6 +54,7 @@ interface UploaderSettingsTabProps {
 export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
   const { toast } = useToast()
   const [configs, setConfigs] = useState<UploaderConfig[]>([])
+  const [allBuckets, setAllBuckets] = useState<any[]>([])
   const [globalSettings, setGlobalSettings] = useState<GlobalSettings>({
     autoCleanupEnabled: true,
     defaultCleanupDays: 7,
@@ -75,6 +76,37 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
     try {
       setLoading(true)
       console.log('Loading uploader settings...');
+      
+      // Load all available buckets first
+      let buckets: any[] = [];
+      try {
+        const { data: dbBuckets, error: dbError } = await supabase
+          .rpc('get_basic_storage_info');
+        console.log('Uploader settings database response:', { dbBuckets, dbError });
+        
+        if (dbError) {
+          console.log('Database function failed for uploader settings, trying storage API...');
+          const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
+          buckets = storageB || [];
+          console.log('Uploader storage API response:', { buckets: storageB, error: storageE });
+        } else {
+          // Convert database response to storage API format
+          buckets = dbBuckets?.map(bucket => ({
+            id: bucket.bucket_id,
+            name: bucket.bucket_name,
+            public: bucket.public,
+            created_at: bucket.created_at
+          })) || [];
+          console.log('Uploader using database buckets:', buckets);
+        }
+      } catch (error) {
+        console.error('Both methods failed for uploader settings:', error);
+        const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
+        buckets = storageB || [];
+        console.log('Uploader final fallback:', { buckets, error: storageE });
+      }
+      
+      setAllBuckets(buckets);
       
       // Load global settings
       const { data: globalData, error: globalError } = await supabase
@@ -319,6 +351,26 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
     return <CheckCircle className="w-4 h-4 text-green-500" />
   }
 
+  const createConfigForBucket = (bucketName: string) => {
+    setEditingConfig({
+      id: '',
+      uploadType: bucketName.replace(/-/g, '_'),
+      bucket: bucketName,
+      path: '/',
+      maxSizeBytes: 5242880, // 5MB default
+      allowedTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+      maxFiles: 5,
+      enabled: true,
+      autoCleanup: false,
+      cleanupDays: 7
+    })
+  }
+
+  // Get unconfigured buckets
+  const unconfiguredBuckets = allBuckets.filter(bucket => 
+    !configs.some(config => config.bucket === bucket.id)
+  )
+
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Global Settings */}
@@ -518,6 +570,60 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
           </div>
         </CardContent>
       </Card>
+
+      {/* Unconfigured Buckets */}
+      {unconfiguredBuckets.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HardDrive className="w-5 h-5" />
+              Available Buckets ({unconfiguredBuckets.length} unconfigured)
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground mb-4">
+              These storage buckets are available but don't have upload configurations yet. 
+              Click "Configure" to set up file upload rules for each bucket.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {unconfiguredBuckets.map((bucket) => (
+                <Card key={bucket.id} className="border-l-4 border-l-orange-200">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle className="w-4 h-4 text-orange-500" />
+                        <div>
+                          <h4 className="font-medium text-sm">{bucket.id}</h4>
+                          <p className="text-xs text-muted-foreground">
+                            {bucket.public ? 'Public' : 'Private'} bucket
+                          </p>
+                        </div>
+                      </div>
+                      <Badge variant="outline" className="text-xs">
+                        No Config
+                      </Badge>
+                    </div>
+                    
+                    <div className="text-xs text-muted-foreground mb-3">
+                      Created: {new Date(bucket.created_at).toLocaleDateString()}
+                    </div>
+                    
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full"
+                      onClick={() => createConfigForBucket(bucket.id)}
+                    >
+                      <Plus className="w-3 h-3 mr-1" />
+                      Configure
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* System Health */}
       <Card>
