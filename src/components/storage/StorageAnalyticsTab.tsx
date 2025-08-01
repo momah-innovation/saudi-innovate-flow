@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { useStorageAnalytics, StorageAnalytics } from '@/hooks/useStorageAnalytics'
 import { useToast } from '@/hooks/use-toast'
@@ -181,7 +182,7 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
         </Card>
       </div>
 
-      {/* Detailed Bucket Analytics */}
+      {/* Detailed Bucket Analytics - Table Layout */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -190,45 +191,98 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {analytics.map((item) => (
-              <div key={item.bucketName} className="border rounded-lg p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    {getHealthIcon(item.healthStatus)}
-                    <div>
-                      <h4 className="font-medium">{item.bucketName}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {item.stats.total_files} files • {formatBytes(item.stats.total_size)}
-                      </p>
-                    </div>
-                  </div>
-                  <Badge variant={item.healthStatus === 'healthy' ? 'default' : 
-                                 item.healthStatus === 'warning' ? 'secondary' : 'destructive'}>
-                    {item.healthStatus}
-                  </Badge>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Usage</span>
-                    <span>{item.usagePercentage.toFixed(1)}%</span>
-                  </div>
-                  <Progress value={Math.min(item.usagePercentage, 100)} className="h-2" />
-                </div>
-
-                {item.stats.oldest_file && item.stats.newest_file && (
-                  <div className="grid grid-cols-2 gap-4 mt-3 text-xs text-muted-foreground">
-                    <div>
-                      <span className="font-medium">Oldest:</span> {new Date(item.stats.oldest_file).toLocaleDateString()}
-                    </div>
-                    <div>
-                      <span className="font-medium">Newest:</span> {new Date(item.stats.newest_file).toLocaleDateString()}
-                    </div>
-                  </div>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[40px]">Status</TableHead>
+                  <TableHead>Bucket Name</TableHead>
+                  <TableHead className="text-center">Files</TableHead>
+                  <TableHead className="text-center">Size</TableHead>
+                  <TableHead className="text-center">Usage</TableHead>
+                  <TableHead className="text-center">Oldest File</TableHead>
+                  <TableHead className="text-center">Newest File</TableHead>
+                  <TableHead className="text-center">Health</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {analytics.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                      No bucket data available
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  analytics.map((item) => (
+                    <TableRow key={item.bucketName} className="hover:bg-muted/50">
+                      <TableCell>
+                        {getHealthIcon(item.healthStatus)}
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium">{item.bucketName}</div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className="font-mono text-sm">
+                          {item.stats.total_files.toLocaleString()}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className="font-mono text-sm">
+                          {formatBytes(item.stats.total_size)}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className="flex flex-col items-center gap-1">
+                          <div className="text-sm font-medium">
+                            {item.usagePercentage.toFixed(1)}%
+                          </div>
+                          <Progress 
+                            value={Math.min(item.usagePercentage, 100)} 
+                            className="h-1.5 w-16"
+                          />
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className="text-xs text-muted-foreground">
+                          {item.stats.oldest_file 
+                            ? new Date(item.stats.oldest_file).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                              })
+                            : 'N/A'
+                          }
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className="text-xs text-muted-foreground">
+                          {item.stats.newest_file 
+                            ? new Date(item.stats.newest_file).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                              })
+                            : 'N/A'
+                          }
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <Badge 
+                          variant={
+                            item.healthStatus === 'healthy' ? 'default' : 
+                            item.healthStatus === 'warning' ? 'secondary' : 
+                            'destructive'
+                          }
+                          className="text-xs"
+                        >
+                          {item.healthStatus}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))
                 )}
-              </div>
-            ))}
+              </TableBody>
+            </Table>
           </div>
         </CardContent>
       </Card>
