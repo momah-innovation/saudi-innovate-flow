@@ -249,9 +249,9 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
                 </SelectTrigger>
                 <SelectContent>
                   {availableBuckets.length === 0 ? (
-                    <SelectItem value="" disabled>
-                      No buckets available
-                    </SelectItem>
+                     <SelectItem value="no-buckets" disabled>
+                       No buckets available
+                     </SelectItem>
                   ) : (
                     availableBuckets.map((bucket) => (
                       <SelectItem key={bucket} value={bucket}>

@@ -73,7 +73,7 @@ export const ComprehensiveStorageManagement = () => {
 
   // Export & Migration state
   const [exportSettings, setExportSettings] = useState({
-    bucketFilter: '',
+    bucketFilter: 'all',
     includeUrls: false
   })
 
@@ -103,7 +103,7 @@ export const ComprehensiveStorageManagement = () => {
   // Optimization state
   const [duplicateResults, setDuplicateResults] = useState<any>(null)
   const [optimizationSettings, setOptimizationSettings] = useState({
-    bucketFilter: '',
+    bucketFilter: 'all',
     minFileSize: 1024
   })
 
@@ -155,12 +155,12 @@ export const ComprehensiveStorageManagement = () => {
     setIsProcessing(true)
     try {
       const result = await exportStorageMetadata(
-        exportSettings.bucketFilter || undefined,
+        exportSettings.bucketFilter === 'all' ? undefined : exportSettings.bucketFilter,
         exportSettings.includeUrls
       )
       
       if (result) {
-        const filename = `storage-export-${exportSettings.bucketFilter || 'all'}-${new Date().toISOString().split('T')[0]}.json`
+        const filename = `storage-export-${exportSettings.bucketFilter === 'all' ? 'all' : exportSettings.bucketFilter}-${new Date().toISOString().split('T')[0]}.json`
         downloadExportData(result, filename)
       }
     } finally {
@@ -242,7 +242,7 @@ export const ComprehensiveStorageManagement = () => {
     setIsProcessing(true)
     try {
       const result = await findDuplicateFiles(
-        optimizationSettings.bucketFilter || undefined,
+        optimizationSettings.bucketFilter === 'all' ? undefined : optimizationSettings.bucketFilter,
         optimizationSettings.minFileSize
       )
       setDuplicateResults(result)
@@ -332,7 +332,7 @@ export const ComprehensiveStorageManagement = () => {
                           <SelectValue placeholder="All buckets" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">All buckets</SelectItem>
+                           <SelectItem value="all">All buckets</SelectItem>
                           {buckets.map(bucket => (
                             <SelectItem key={bucket} value={bucket}>{bucket}</SelectItem>
                           ))}
@@ -645,7 +645,7 @@ export const ComprehensiveStorageManagement = () => {
                           <SelectValue placeholder="All buckets" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">All buckets</SelectItem>
+                          <SelectItem value="all">All buckets</SelectItem>
                           {buckets.map(bucket => (
                             <SelectItem key={bucket} value={bucket}>{bucket}</SelectItem>
                           ))}
