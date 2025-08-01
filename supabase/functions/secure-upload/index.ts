@@ -1,67 +1,180 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.52.1'
 
+// CORS headers for preflight requests
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+// Enhanced upload configuration interface
 interface UploadConfig {
+  uploadType: string
   bucket: string
   path: string
   maxSizeBytes: number
   allowedTypes: string[]
-  maxFiles?: number
+  maxFiles: number
+  enabled: boolean
+  autoCleanup: boolean
+  cleanupDays: number
 }
 
-const UPLOAD_CONFIGS: Record<string, UploadConfig> = {
+// Global settings interface
+interface GlobalSettings {
+  autoCleanupEnabled: boolean
+  defaultCleanupDays: number
+  maxConcurrentUploads: number
+  chunkSizeMB: number
+  retryAttempts: number
+  compressionEnabled: boolean
+  thumbnailGeneration: boolean
+}
+
+// Fallback upload configurations
+const FALLBACK_UPLOAD_CONFIGS: Record<string, UploadConfig> = {
   'opportunity-images': {
+    uploadType: 'opportunity-images',
     bucket: 'opportunity-images',
     path: 'opportunity-images',
-    maxSizeBytes: 5 * 1024 * 1024, // 5MB
-    allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
-    maxFiles: 1
-  },
-  'opportunity-documents': {
-    bucket: 'opportunity-attachments',
-    path: 'documents',
-    maxSizeBytes: 10 * 1024 * 1024, // 10MB
-    allowedTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
-    maxFiles: 5
-  },
-  'challenge-images': {
-    bucket: 'challenge-attachments',
-    path: 'images',
-    maxSizeBytes: 5 * 1024 * 1024, // 5MB
-    allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
-    maxFiles: 1
-  },
-  'challenge-documents': {
-    bucket: 'challenge-attachments',
-    path: 'documents',
-    maxSizeBytes: 20 * 1024 * 1024, // 20MB
-    allowedTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'],
-    maxFiles: 10
-  },
-  'event-resources': {
-    bucket: 'event-resources',
-    path: 'resources',
-    maxSizeBytes: 50 * 1024 * 1024, // 50MB
-    allowedTypes: ['application/pdf', 'image/jpeg', 'image/png', 'video/mp4', 'audio/mpeg'],
-    maxFiles: 20
+    maxSizeBytes: 5 * 1024 * 1024,
+    allowedTypes: ['image/jpeg', 'image/png', 'image/webp'],
+    maxFiles: 3,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
   },
   'user-avatars': {
+    uploadType: 'user-avatars',
     bucket: 'avatars',
     path: 'profiles',
-    maxSizeBytes: 2 * 1024 * 1024, // 2MB
+    maxSizeBytes: 2 * 1024 * 1024,
     allowedTypes: ['image/jpeg', 'image/png', 'image/webp'],
-    maxFiles: 1
+    maxFiles: 1,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
   },
-  'partner-logos': {
-    bucket: 'partner-logos',
-    path: 'logos',
-    maxSizeBytes: 3 * 1024 * 1024, // 3MB
-    allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'],
-    maxFiles: 1
+  'challenge-images': {
+    uploadType: 'challenge-images',
+    bucket: 'challenge-attachments',
+    path: 'images',
+    maxSizeBytes: 8 * 1024 * 1024,
+    allowedTypes: ['image/jpeg', 'image/png', 'image/webp'],
+    maxFiles: 2,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  },
+  'event-resources': {
+    uploadType: 'event-resources',
+    bucket: 'event-resources',
+    path: 'resources',
+    maxSizeBytes: 100 * 1024 * 1024,
+    allowedTypes: ['application/pdf', 'image/jpeg', 'image/png', 'video/mp4'],
+    maxFiles: 25,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 0
+  }
+}
+
+// Helper function to fetch upload configuration from database
+async function getUploadConfigFromDB(supabaseClient: any, uploadType: string): Promise<UploadConfig | null> {
+  try {
+    const { data, error } = await supabaseClient
+      .from('uploader_settings')
+      .select('*')
+      .eq('setting_type', 'upload_config')
+      .eq('setting_key', uploadType)
+      .eq('is_active', true)
+      .maybeSingle()
+
+    if (error) {
+      console.warn('Database config fetch error:', error)
+      return null
+    }
+
+    if (!data?.setting_value) {
+      return null
+    }
+
+    const config = data.setting_value as any
+    return {
+      uploadType: config.uploadType || uploadType,
+      bucket: config.bucket || '',
+      path: config.path || '',
+      maxSizeBytes: Number(config.maxSizeBytes) || 5242880,
+      allowedTypes: Array.isArray(config.allowedTypes) ? config.allowedTypes : [],
+      maxFiles: Number(config.maxFiles) || 1,
+      enabled: Boolean(config.enabled) !== false,
+      autoCleanup: Boolean(config.autoCleanup) || false,
+      cleanupDays: Number(config.cleanupDays) || 0
+    }
+  } catch (error) {
+    console.warn('Error fetching upload config from database:', error)
+    return null
+  }
+}
+
+// Helper function to fetch global settings from database
+async function getGlobalSettingsFromDB(supabaseClient: any): Promise<GlobalSettings> {
+  const defaultSettings: GlobalSettings = {
+    autoCleanupEnabled: true,
+    defaultCleanupDays: 7,
+    maxConcurrentUploads: 3,
+    chunkSizeMB: 1,
+    retryAttempts: 3,
+    compressionEnabled: true,
+    thumbnailGeneration: true
+  }
+
+  try {
+    const { data, error } = await supabaseClient
+      .from('uploader_settings')
+      .select('*')
+      .eq('setting_type', 'global')
+      .eq('is_active', true)
+
+    if (error || !data) {
+      console.warn('Global settings fetch error, using defaults:', error)
+      return defaultSettings
+    }
+
+    const processedSettings: Partial<GlobalSettings> = {}
+    data.forEach((item: any) => {
+      const value = typeof item.setting_value === 'object' && item.setting_value && 'value' in item.setting_value 
+        ? item.setting_value.value 
+        : item.setting_value
+
+      switch (item.setting_key) {
+        case 'auto_cleanup_enabled':
+          processedSettings.autoCleanupEnabled = Boolean(value)
+          break
+        case 'default_cleanup_days':
+          processedSettings.defaultCleanupDays = Number(value) || 7
+          break
+        case 'max_concurrent_uploads':
+          processedSettings.maxConcurrentUploads = Number(value) || 3
+          break
+        case 'chunk_size_mb':
+          processedSettings.chunkSizeMB = Number(value) || 1
+          break
+        case 'retry_attempts':
+          processedSettings.retryAttempts = Number(value) || 3
+          break
+        case 'compression_enabled':
+          processedSettings.compressionEnabled = Boolean(value)
+          break
+        case 'thumbnail_generation':
+          processedSettings.thumbnailGeneration = Boolean(value)
+          break
+      }
+    })
+
+    return { ...defaultSettings, ...processedSettings }
+  } catch (error) {
+    console.warn('Error fetching global settings, using defaults:', error)
+    return defaultSettings
   }
 }
 
@@ -98,12 +211,34 @@ Deno.serve(async (req) => {
     const columnName = formData.get('columnName') as string
     const isTemporary = formData.get('isTemporary') === 'true'
     const tempSessionId = formData.get('tempSessionId') as string
-    
-    if (!uploadType || !UPLOAD_CONFIGS[uploadType]) {
-      throw new Error('Invalid upload type')
+    const globalSettingsJson = formData.get('globalSettings') as string
+
+    // Parse global settings if provided
+    let globalSettings: GlobalSettings
+    try {
+      globalSettings = globalSettingsJson ? JSON.parse(globalSettingsJson) : await getGlobalSettingsFromDB(supabaseClient)
+    } catch {
+      globalSettings = await getGlobalSettingsFromDB(supabaseClient)
     }
 
-    const config = UPLOAD_CONFIGS[uploadType]
+    if (!uploadType) {
+      throw new Error('Upload type is required')
+    }
+
+    // Fetch configuration from database first, fallback to hardcoded
+    let config = await getUploadConfigFromDB(supabaseClient, uploadType)
+    if (!config) {
+      config = FALLBACK_UPLOAD_CONFIGS[uploadType]
+    }
+
+    if (!config) {
+      throw new Error(`Invalid upload type: ${uploadType}`)
+    }
+
+    if (!config.enabled) {
+      throw new Error(`Upload type ${uploadType} is disabled`)
+    }
+
     const files = formData.getAll('files') as File[]
 
     if (files.length === 0) {
@@ -113,6 +248,14 @@ Deno.serve(async (req) => {
     if (config.maxFiles && files.length > config.maxFiles) {
       throw new Error(`Maximum ${config.maxFiles} files allowed`)
     }
+
+    // Log configuration being used
+    console.log(`Using upload config for ${uploadType}:`, {
+      bucket: config.bucket,
+      maxFiles: config.maxFiles,
+      maxSizeBytes: config.maxSizeBytes,
+      allowedTypes: config.allowedTypes.length
+    })
 
     const uploadedFiles: { url: string; path: string; name: string; size: number }[] = []
 
@@ -124,7 +267,7 @@ Deno.serve(async (req) => {
 
       // Validate file size
       if (file.size > config.maxSizeBytes) {
-        throw new Error(`File size exceeds limit of ${config.maxSizeBytes / 1024 / 1024}MB`)
+        throw new Error(`File size exceeds limit of ${Math.round(config.maxSizeBytes / 1024 / 1024)}MB`)
       }
 
       // Generate unique filename
@@ -139,22 +282,59 @@ Deno.serve(async (req) => {
         filePath = `${config.path}/${fileName}`
       }
 
-      console.log(`Uploading file: ${fileName} to bucket: ${config.bucket}`)
+      console.log(`Uploading file: ${fileName} to bucket: ${config.bucket}, path: ${filePath}`)
 
-      // Upload file to Supabase Storage
-      const { data: uploadData, error: uploadError } = await supabaseClient.storage
-        .from(config.bucket)
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false
-        })
+      // Apply global settings for upload behavior
+      const uploadOptions: any = {
+        cacheControl: '3600',
+        upsert: false
+      }
+
+      // Apply compression if enabled
+      if (globalSettings.compressionEnabled && file.type.startsWith('image/')) {
+        console.log('Image compression enabled via global settings')
+        // Note: Actual compression would need additional implementation
+      }
+
+      // Upload file to Supabase Storage with retry logic
+      let uploadAttempts = 0
+      let uploadData: any = null
+      let uploadError: any = null
+
+      while (uploadAttempts < globalSettings.retryAttempts) {
+        try {
+          const result = await supabaseClient.storage
+            .from(config.bucket)
+            .upload(filePath, file, uploadOptions)
+
+          uploadData = result.data
+          uploadError = result.error
+
+          if (!uploadError) {
+            console.log(`Upload successful on attempt ${uploadAttempts + 1}`)
+            break
+          }
+
+          uploadAttempts++
+          if (uploadAttempts < globalSettings.retryAttempts) {
+            console.log(`Upload attempt ${uploadAttempts} failed, retrying...`)
+            await new Promise(resolve => setTimeout(resolve, 1000 * uploadAttempts))
+          }
+        } catch (error) {
+          uploadError = error
+          uploadAttempts++
+          if (uploadAttempts < globalSettings.retryAttempts) {
+            await new Promise(resolve => setTimeout(resolve, 1000 * uploadAttempts))
+          }
+        }
+      }
 
       if (uploadError) {
-        console.error('Upload error:', uploadError)
+        console.error('Upload error after all attempts:', uploadError)
         throw new Error(`Failed to upload ${file.name}: ${uploadError.message}`)
       }
 
-      // Get public URL if bucket is public, otherwise get signed URL
+      // Get public URL
       const { data: publicUrlData } = supabaseClient.storage
         .from(config.bucket)
         .getPublicUrl(filePath)
@@ -206,7 +386,12 @@ Deno.serve(async (req) => {
       JSON.stringify({
         success: true,
         files: uploadedFiles,
-        message: `Successfully uploaded ${uploadedFiles.length} file(s)`
+        message: `Successfully uploaded ${uploadedFiles.length} file(s)`,
+        configUsed: {
+          fromDatabase: !!await getUploadConfigFromDB(supabaseClient, uploadType),
+          uploadType: config.uploadType,
+          maxFiles: config.maxFiles
+        }
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

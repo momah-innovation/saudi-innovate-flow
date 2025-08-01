@@ -2,6 +2,8 @@ import { useState, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
+import { useUploaderSettings } from '@/hooks/useUploaderSettings'
+import { UPLOAD_CONFIGS } from '@/utils/uploadConfigs'
 
 export interface FileUploadConfig {
   uploadType: string
@@ -37,7 +39,67 @@ export interface FileUploadResult {
 export const useFileUploader = () => {
   const { user } = useAuth()
   const { toast } = useToast()
+  const { globalSettings, getUploadConfig, loading: settingsLoading } = useUploaderSettings()
   const [isUploading, setIsUploading] = useState(false)
+
+  // Helper function to resolve configuration with database settings
+  const resolveUploadConfig = useCallback((config: FileUploadConfig): FileUploadConfig => {
+    // Try to get database configuration first
+    const dbConfig = getUploadConfig(config.uploadType)
+    
+    // Fallback to hardcoded config if database config not found
+    let fallbackConfig = null
+    for (const [key, hardcodedConfig] of Object.entries(UPLOAD_CONFIGS)) {
+      if (hardcodedConfig.uploadType === config.uploadType) {
+        fallbackConfig = hardcodedConfig
+        break
+      }
+    }
+
+    // Merge database config with provided config, with database taking precedence for upload settings
+    const resolvedConfig: FileUploadConfig = {
+      ...fallbackConfig, // Start with hardcoded fallback
+      ...config, // Apply provided config
+      ...(dbConfig && { // Apply database config if available
+        maxFiles: dbConfig.maxFiles,
+        maxSizeBytes: dbConfig.maxSizeBytes,
+        allowedTypes: dbConfig.allowedTypes,
+        acceptString: dbConfig.acceptString
+      })
+    }
+
+    return resolvedConfig
+  }, [getUploadConfig])
+
+  // Enhanced file validation using database settings
+  const validateFiles = useCallback((files: File[], config: FileUploadConfig): { valid: boolean; errors: string[] } => {
+    const errors: string[] = []
+    const resolvedConfig = resolveUploadConfig(config)
+
+    // Check file count
+    if (resolvedConfig.maxFiles && files.length > resolvedConfig.maxFiles) {
+      errors.push(`Maximum ${resolvedConfig.maxFiles} files allowed`)
+    }
+
+    // Check individual files
+    files.forEach((file, index) => {
+      // Check file size
+      if (resolvedConfig.maxSizeBytes && file.size > resolvedConfig.maxSizeBytes) {
+        const maxSizeMB = Math.round(resolvedConfig.maxSizeBytes / (1024 * 1024))
+        errors.push(`File "${file.name}" exceeds maximum size of ${maxSizeMB}MB`)
+      }
+
+      // Check file type
+      if (resolvedConfig.allowedTypes && !resolvedConfig.allowedTypes.includes(file.type)) {
+        errors.push(`File "${file.name}" type "${file.type}" is not allowed`)
+      }
+    })
+
+    return {
+      valid: errors.length === 0,
+      errors
+    }
+  }, [resolveUploadConfig])
 
   const uploadFiles = useCallback(async (
     files: File[],
@@ -56,18 +118,50 @@ export const useFileUploader = () => {
       return { success: false, errors: [{ file: 'Files', error: 'No files provided' }] }
     }
 
+    // Wait for settings to load if they're still loading
+    if (settingsLoading) {
+      toast({
+        title: 'Loading settings',
+        description: 'Please wait while upload settings are loaded...',
+        variant: 'default'
+      })
+      return { success: false, errors: [{ file: 'Settings', error: 'Upload settings are loading' }] }
+    }
+
+    // Resolve configuration with database settings
+    const resolvedConfig = resolveUploadConfig(config)
+
+    // Validate files with resolved configuration
+    const validation = validateFiles(files, resolvedConfig)
+    if (!validation.valid) {
+      validation.errors.forEach(error => {
+        toast({
+          title: 'Validation Error',
+          description: error,
+          variant: 'destructive'
+        })
+      })
+      return { 
+        success: false, 
+        errors: validation.errors.map(error => ({ file: 'Validation', error }))
+      }
+    }
+
     setIsUploading(true)
 
     try {
       const formData = new FormData()
       
       // Add configuration
-      formData.append('uploadType', config.uploadType)
-      if (config.entityId) formData.append('entityId', config.entityId)
-      if (config.tableName) formData.append('tableName', config.tableName)
-      if (config.columnName) formData.append('columnName', config.columnName)
-      if (config.isTemporary) formData.append('isTemporary', 'true')
-      if (config.tempSessionId) formData.append('tempSessionId', config.tempSessionId)
+      formData.append('uploadType', resolvedConfig.uploadType)
+      if (resolvedConfig.entityId) formData.append('entityId', resolvedConfig.entityId)
+      if (resolvedConfig.tableName) formData.append('tableName', resolvedConfig.tableName)
+      if (resolvedConfig.columnName) formData.append('columnName', resolvedConfig.columnName)
+      if (resolvedConfig.isTemporary) formData.append('isTemporary', 'true')
+      if (resolvedConfig.tempSessionId) formData.append('tempSessionId', resolvedConfig.tempSessionId)
+      
+      // Add global settings for edge function to use
+      formData.append('globalSettings', JSON.stringify(globalSettings))
       
       // Add files
       files.forEach(file => {
@@ -113,7 +207,7 @@ export const useFileUploader = () => {
     } finally {
       setIsUploading(false)
     }
-  }, [user, toast])
+  }, [user, toast, globalSettings, settingsLoading, resolveUploadConfig, validateFiles])
 
   const getFileUrl = useCallback((relativePath: string): string => {
     if (relativePath.startsWith('http')) {
@@ -132,16 +226,19 @@ export const useFileUploader = () => {
 
     try {
       setIsUploading(true)
+      
+      // Resolve final configuration with database settings
+      const resolvedFinalConfig = resolveUploadConfig(finalConfig)
 
       const movedFiles: UploadedFile[] = []
       
       for (const tempFile of tempFiles) {
         // Move files from temp to final location
         const tempPath = tempFile.path.replace(/^\/[^\/]+\//, '')
-        const finalPath = `${finalConfig.uploadType}/${finalConfig.entityId || user.id}-${Date.now()}-${tempFile.name}`
+        const finalPath = `${resolvedFinalConfig.uploadType}/${resolvedFinalConfig.entityId || user.id}-${Date.now()}-${tempFile.name}`
         
         const { data: moveData, error: moveError } = await supabase.storage
-          .from(finalConfig.uploadType.split('-')[0])
+          .from(resolvedFinalConfig.uploadType.split('-')[0])
           .move(tempPath, finalPath)
 
         if (moveError) {
@@ -149,28 +246,28 @@ export const useFileUploader = () => {
           continue
         }
 
-        const finalUrl = getFileUrl(`/${finalConfig.uploadType.split('-')[0]}/${finalPath}`)
+        const finalUrl = getFileUrl(`/${resolvedFinalConfig.uploadType.split('-')[0]}/${finalPath}`)
         movedFiles.push({
           ...tempFile,
           url: finalUrl,
-          path: `/${finalConfig.uploadType.split('-')[0]}/${finalPath}`
+          path: `/${resolvedFinalConfig.uploadType.split('-')[0]}/${finalPath}`
         })
       }
 
       // Update database if specified
-      if (finalConfig.tableName && finalConfig.columnName && finalConfig.entityId && movedFiles.length > 0) {
+      if (resolvedFinalConfig.tableName && resolvedFinalConfig.columnName && resolvedFinalConfig.entityId && movedFiles.length > 0) {
         const updateData: any = {}
         
-        if (finalConfig.maxFiles === 1) {
-          updateData[finalConfig.columnName] = movedFiles[0].path
+        if (resolvedFinalConfig.maxFiles === 1) {
+          updateData[resolvedFinalConfig.columnName] = movedFiles[0].path
         } else {
-          updateData[finalConfig.columnName] = movedFiles.map(f => f.path)
+          updateData[resolvedFinalConfig.columnName] = movedFiles.map(f => f.path)
         }
 
         const { error: updateError } = await supabase
-          .from(finalConfig.tableName as any)
+          .from(resolvedFinalConfig.tableName as any)
           .update(updateData)
-          .eq('id', finalConfig.entityId)
+          .eq('id', resolvedFinalConfig.entityId)
 
         if (updateError) {
           console.error('Database update error:', updateError)
@@ -191,12 +288,15 @@ export const useFileUploader = () => {
     } finally {
       setIsUploading(false)
     }
-  }, [user, supabase, getFileUrl])
+  }, [user, supabase, getFileUrl, resolveUploadConfig])
 
   const cleanupTemporaryFiles = useCallback(async (tempSessionId: string): Promise<void> => {
     try {
       const { data, error } = await supabase.functions.invoke('cleanup-temp-files', {
-        body: { tempSessionId }
+        body: { 
+          tempSessionId,
+          globalSettings // Pass global settings for cleanup rules
+        }
       })
 
       if (error) {
@@ -210,13 +310,15 @@ export const useFileUploader = () => {
     } catch (error) {
       console.error('Cleanup error:', error)
     }
-  }, [supabase])
+  }, [supabase, globalSettings])
 
   return {
     uploadFiles,
     getFileUrl,
     commitTemporaryFiles,
     cleanupTemporaryFiles,
-    isUploading
+    isUploading,
+    validateFiles,
+    resolveUploadConfig
   }
 }

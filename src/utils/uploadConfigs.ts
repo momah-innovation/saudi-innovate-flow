@@ -252,5 +252,39 @@ export const getUploadConfig = (
   return UPLOAD_CONFIGS[configKey] || null
 }
 
+// New function to resolve upload configuration dynamically
+export function resolveUploadConfig(
+  configKey: string,
+  uploaderSettings?: any,
+  entityId?: string,
+  tableName?: string,
+  columnName?: string
+): FileUploadConfig | null {
+  // Try to get database configuration first
+  const dbConfig = uploaderSettings?.getUploadConfig?.(configKey)
+  
+  // Fallback to hardcoded config
+  const hardcodedConfig = UPLOAD_CONFIGS[configKey as keyof typeof UPLOAD_CONFIGS]
+  
+  if (!dbConfig && !hardcodedConfig) {
+    return null
+  }
+
+  // Merge configurations, database takes precedence for upload settings
+  const resolvedConfig: FileUploadConfig = {
+    uploadType: dbConfig?.uploadType || hardcodedConfig?.uploadType || configKey,
+    maxFiles: dbConfig?.maxFiles || hardcodedConfig?.maxFiles || 1,
+    maxSizeBytes: dbConfig?.maxSizeBytes || hardcodedConfig?.maxSizeBytes || 5242880,
+    allowedTypes: dbConfig?.allowedTypes || hardcodedConfig?.allowedTypes || [],
+    acceptString: dbConfig?.acceptString || hardcodedConfig?.acceptString || '',
+    entityId,
+    tableName,
+    columnName,
+    isTemporary: false
+  }
+
+  return resolvedConfig
+}
+
 // Hook for accessing dynamic uploader settings from database
 export { useUploaderSettings } from '@/hooks/useUploaderSettings'
