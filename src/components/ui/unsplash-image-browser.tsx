@@ -217,7 +217,9 @@ export function UnsplashImageBrowser({
 
       if (error) throw error
 
-      const newImages = data.results || []
+      // The response structure is { success: true, data: { results: [...] } }
+      const responseData = data?.data || data
+      const newImages = responseData?.results || []
       
       if (reset) {
         setImages(newImages)
