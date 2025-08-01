@@ -20,6 +20,7 @@
     "buckets": "Buckets",
     "analytics": "Analytics",
     "files_found": "files found",
+    "buckets_found": "buckets found",
     "search_files": "Search files..."
   },
   "units": {
@@ -175,6 +176,13 @@
   "recent_activity": "Recent Activity",
   "files_uploaded_last_7_days": "Files uploaded in last 7 days",
   "active_uploads": "Active uploads",
+  "images": "Images",
+  "videos": "Videos",
+  "used": "used",
+  "avg_files_per_bucket": "Avg files per bucket",
+  "no_recent_uploads": "No recent uploads",
+  "exit_selection": "Exit Selection",
+  "public_private_files": "{public} public, {private} private",
   "partners": "Partners",
   "organizations": "Organizations",
   "sectors": "Sectors",

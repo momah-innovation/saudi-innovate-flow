@@ -20,6 +20,7 @@
     "buckets": "الحاويات",
     "analytics": "التحليلات",
     "files_found": "ملف موجود",
+    "buckets_found": "حاوية موجودة",
     "search_files": "البحث في الملفات..."
   },
   "units": {
@@ -178,6 +179,13 @@
   "select_files": "اختر الملفات",
   "of_100_gb_used": "من 100 جيجابايت مستخدم",
   "public_private_files": "{public} عام، {private} خاص",
+  "images": "الصور",
+  "videos": "الفيديوهات",
+  "used": "مستخدم",
+  "active_storage_buckets": "حاويات التخزين النشطة",
+  "avg_files_per_bucket": "متوسط الملفات لكل حاوية",
+  "no_recent_uploads": "لا توجد رفعات حديثة",
+  "exit_selection": "إلغاء التحديد",
   "partners": "الشركاء",
   "organizations": "المنظمات",
   "sectors": "القطاعات",

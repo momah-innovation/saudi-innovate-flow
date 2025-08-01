@@ -78,7 +78,7 @@ export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
       {/* Storage Usage */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Storage Usage</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('storage_usage')}</CardTitle>
           <HardDrive className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -86,11 +86,11 @@ export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
             {formatFileSize(stats.usedSpace)}
           </div>
           <p className="text-xs text-muted-foreground mb-2">
-            of {formatFileSize(stats.totalSpace)} used
+            {t('of_x_used', { total: formatFileSize(stats.totalSpace) })}
           </p>
           <Progress value={usagePercentage} className="h-2" />
           <p className="text-xs text-muted-foreground mt-1">
-            {usagePercentage.toFixed(1)}% used
+            {usagePercentage.toFixed(1)}% {t('used')}
           </p>
         </CardContent>
       </Card>
@@ -98,22 +98,22 @@ export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
       {/* Total Files */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Files</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('total_files')}</CardTitle>
           <Files className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.totalFiles}</div>
           <p className="text-xs text-muted-foreground">
-            {stats.publicFiles} public, {stats.privateFiles} private
+            {t('public_private_files', { public: stats.publicFiles, private: stats.privateFiles })}
           </p>
           <div className="mt-2 space-y-1">
             <div className="flex justify-between text-xs">
-              <span>Images: {fileTypes.images}</span>
-              <span>Docs: {fileTypes.documents}</span>
+              <span>{t('images')}: {fileTypes.images}</span>
+              <span>{t('docs')}: {fileTypes.documents}</span>
             </div>
             <div className="flex justify-between text-xs">
-              <span>Videos: {fileTypes.videos}</span>
-              <span>Others: {fileTypes.others + fileTypes.audio}</span>
+              <span>{t('videos')}: {fileTypes.videos}</span>
+              <span>{t('others')}: {fileTypes.others + fileTypes.audio}</span>
             </div>
           </div>
         </CardContent>
@@ -122,17 +122,17 @@ export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
       {/* Storage Buckets */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Storage Buckets</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('storage_buckets')}</CardTitle>
           <FolderOpen className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.buckets}</div>
           <p className="text-xs text-muted-foreground">
-            Active storage buckets
+            {t('active_storage_buckets')}
           </p>
           <div className="mt-2">
             <div className="text-xs text-muted-foreground">
-              Avg files per bucket: {stats.buckets > 0 ? Math.round(stats.totalFiles / stats.buckets) : 0}
+              {t('avg_files_per_bucket')}: {stats.buckets > 0 ? Math.round(stats.totalFiles / stats.buckets) : 0}
             </div>
           </div>
         </CardContent>
@@ -152,7 +152,7 @@ export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
           <div className="mt-2">
             <div className="flex items-center text-xs text-muted-foreground">
               <TrendingUp className="w-3 h-3 mr-1" />
-              {recentUploads > 0 ? t('active_uploads') : 'No recent uploads'}
+              {recentUploads > 0 ? t('active_uploads') : t('no_recent_uploads')}
             </div>
           </div>
         </CardContent>
