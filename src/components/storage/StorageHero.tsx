@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { 
   HardDrive, 
   Files,
@@ -34,7 +34,11 @@ export function StorageHero({
   recentUploads,
   buckets
 }: StorageHeroProps) {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+  
+  // Debug logging
+  console.log('StorageHero - Current language:', language);
+  console.log('StorageHero - Translation test:', t('storage.title'));
   
   const formatBytes = (bytes: number) => {
     if (bytes === 0) return `0 ${t('units.bytes')}`;

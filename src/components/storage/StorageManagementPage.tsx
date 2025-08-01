@@ -51,7 +51,12 @@ import { useTranslation } from '@/hooks/useAppTranslation';
 
 export function StorageManagementPage() {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+  
+  // Debug logging
+  console.log('StorageManagementPage - Current language:', language);
+  console.log('StorageManagementPage - Translation test:', t('storage.title'));
+  
   const [selectedBucket, setSelectedBucket] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<any | null>(null);
   const [selectedBucketForManagement, setSelectedBucketForManagement] = useState<any | null>(null);
