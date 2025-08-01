@@ -153,12 +153,12 @@ function FilterField({ filter }: { filter: FilterConfig }) {
       return (
         <div className="space-y-2">
           <Label>{filter.label}</Label>
-          <Select value={filter.value || ''} onValueChange={filter.onChange}>
+          <Select value={filter.value || 'all'} onValueChange={filter.onChange}>
             <SelectTrigger>
               <SelectValue placeholder={filter.placeholder || t('selectPlaceholder', { label: filter.label.toLowerCase() })} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">{t('allOption')}</SelectItem>
+              <SelectItem value="all">{t('allOption')}</SelectItem>
               {filter.options?.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}

@@ -51,7 +51,7 @@ export function FocusQuestionWizard({
     question_type: "open_ended",
     is_sensitive: false,
     order_sequence: 0,
-    challenge_id: challengeId || "",
+    challenge_id: challengeId || "none",
   });
 
   const [challenges, setChallenges] = useState<Challenge[]>([]);
@@ -87,7 +87,7 @@ export function FocusQuestionWizard({
         question_type: question.question_type || "open_ended",
         is_sensitive: question.is_sensitive || false,
         order_sequence: question.order_sequence || 0,
-        challenge_id: question.challenge_id || challengeId || "",
+        challenge_id: question.challenge_id || challengeId || "none",
       });
     } else {
       setFormData({
@@ -95,7 +95,7 @@ export function FocusQuestionWizard({
         question_type: "open_ended",
         is_sensitive: false,
         order_sequence: 0,
-        challenge_id: challengeId || "",
+        challenge_id: challengeId || "none",
       });
     }
   }, [question, challengeId, isOpen]);
@@ -152,7 +152,7 @@ export function FocusQuestionWizard({
         question_type: formData.question_type,
         is_sensitive: formData.is_sensitive,
         order_sequence: formData.order_sequence,
-        challenge_id: formData.challenge_id || null,
+        challenge_id: (formData.challenge_id && formData.challenge_id !== 'none') ? formData.challenge_id : null,
       };
 
       if (question?.id) {
@@ -321,7 +321,7 @@ export function FocusQuestionWizard({
                 <SelectValue placeholder="اختر التحدي (اختياري)" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">بدون ربط بتحدي محدد</SelectItem>
+                <SelectItem value="none">بدون ربط بتحدي محدد</SelectItem>
                 {challenges.map((challenge) => (
                   <SelectItem key={challenge.id} value={challenge.id}>
                     {challenge.title_ar}
