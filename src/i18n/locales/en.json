@@ -1081,5 +1081,12 @@
   "bucket_label": "Bucket",
   "path_label": "Path",
   "auto_cleanup": "Auto Cleanup",
-  "enable_configuration": "Enable Configuration"
+  "enable_configuration": "Enable Configuration",
+  "bytes": "Bytes",
+  "kb": "KB", 
+  "mb": "MB",
+  "gb": "GB",
+  "tb": "TB",
+  "bucket_details": "Bucket Details",
+  "na": "N/A"
 }

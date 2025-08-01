@@ -62,9 +62,9 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
   }
 
   const formatBytes = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
+    if (bytes === 0) return `0 ${t('bytes')}`
     const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+    const sizes = [t('bytes'), t('kb'), t('mb'), t('gb'), t('tb')]
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
@@ -252,7 +252,7 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
                                 day: 'numeric',
                                 year: 'numeric'
                               })
-                            : 'N/A'
+                            : t('na')
                           }
                         </div>
                       </TableCell>
@@ -264,7 +264,7 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
                                 day: 'numeric',
                                 year: 'numeric'
                               })
-                            : 'N/A'
+                            : t('na')
                           }
                         </div>
                       </TableCell>

@@ -1035,5 +1035,12 @@
   "bucket_label": "الحاوية",
   "path_label": "المسار",
   "auto_cleanup": "التنظيف التلقائي",
-  "enable_configuration": "تفعيل الإعدادات"
+  "enable_configuration": "تفعيل الإعدادات",
+  "bytes": "بايت",
+  "kb": "كيلوبايت",
+  "mb": "ميجابايت", 
+  "gb": "جيجابايت",
+  "tb": "تيرابايت",
+  "bucket_details": "تفاصيل الحاويات",
+  "na": "غير متوفر"
 }
