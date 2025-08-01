@@ -7,10 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
-import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, LineChart, Line, Area, AreaChart
-} from 'recharts';
+import { ChartPlaceholder } from '@/components/common/ChartPlaceholder'
 import { 
   Lightbulb, TrendingUp, TrendingDown, Target, Trophy, 
   Star, Eye, Heart, MessageSquare, CheckCircle, Clock,
@@ -433,24 +430,7 @@ export function IdeaAnalyticsDashboard({ className }: IdeaAnalyticsDashboardProp
                 <CardTitle className="text-lg">توزيع الحالات</CardTitle>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={analytics.statusDistribution}
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={100}
-                      fill="#8884d8"
-                      dataKey="value"
-                      label={({ name, value, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                    >
-                      {analytics.statusDistribution.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
+                <ChartPlaceholder title="توزيع الحالات" />
               </CardContent>
             </Card>
 
@@ -460,15 +440,7 @@ export function IdeaAnalyticsDashboard({ className }: IdeaAnalyticsDashboardProp
                 <CardTitle className="text-lg">توزيع التقييمات</CardTitle>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={analytics.scoreDistribution}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="range" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="#3B82F6" />
-                  </BarChart>
-                </ResponsiveContainer>
+                <ChartPlaceholder title="توزيع التقييمات" />
               </CardContent>
             </Card>
           </div>
@@ -480,38 +452,7 @@ export function IdeaAnalyticsDashboard({ className }: IdeaAnalyticsDashboardProp
               <CardTitle className="text-lg">الاتجاهات الشهرية</CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={400}>
-                <AreaChart data={analytics.monthlyTrends}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Area 
-                    type="monotone" 
-                    dataKey="ideas" 
-                    stackId="1" 
-                    stroke="#3B82F6" 
-                    fill="#3B82F6" 
-                    name="إجمالي الأفكار"
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="approved" 
-                    stackId="2" 
-                    stroke="#10B981" 
-                    fill="#10B981" 
-                    name="معتمدة"
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="implemented" 
-                    stackId="3" 
-                    stroke="#059669" 
-                    fill="#059669" 
-                    name="منفذة"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+              <ChartPlaceholder title="الاتجاهات الشهرية" height={400} />
             </CardContent>
           </Card>
         </TabsContent>

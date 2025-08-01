@@ -251,3 +251,6 @@ export const getUploadConfig = (
   const configKey = `${type.toUpperCase()}_${subType.toUpperCase()}` as keyof typeof UPLOAD_CONFIGS
   return UPLOAD_CONFIGS[configKey] || null
 }
+
+// Hook for accessing dynamic uploader settings from database
+export { useUploaderSettings } from '@/hooks/useUploaderSettings'
