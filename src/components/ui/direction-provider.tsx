@@ -1,4 +1,5 @@
 import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
+import { useTranslation as useI18nextTranslation } from 'react-i18next';
 
 type Direction = 'ltr' | 'rtl';
 type Language = 'ar' | 'en';  // Arabic first
@@ -29,6 +30,7 @@ const RTL_LANGUAGES: Language[] = ['ar'];
 const DirectionContext = createContext<DirectionContextType | undefined>(undefined);
 
 export function DirectionProvider({ children }: { children: ReactNode }) {
+  const { i18n } = useI18nextTranslation();
   const [direction, setDirectionState] = useState<Direction>(defaultConfig.direction);
   const [language, setLanguageState] = useState<Language>(defaultConfig.language);
 
@@ -41,11 +43,16 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
   };
 
   const setLanguage = (newLanguage: Language) => {
+    console.log('DirectionProvider - Setting language to:', newLanguage);
     setLanguageState(newLanguage);
     const newDirection = RTL_LANGUAGES.includes(newLanguage) ? 'rtl' : 'ltr';
     setDirection(newDirection);
     document.documentElement.lang = newLanguage;
     localStorage.setItem('ui-language', newLanguage);
+    
+    // CRITICAL: Sync with react-i18next
+    i18n.changeLanguage(newLanguage);
+    console.log('DirectionProvider - Changed i18n language to:', newLanguage);
   };
 
   const toggleDirection = () => {
