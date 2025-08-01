@@ -6292,6 +6292,10 @@ export type Database = {
       }
     }
     Functions: {
+      admin_cleanup_temp_files: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       approve_role_request: {
         Args: { request_id: string; approve: boolean; reviewer_notes?: string }
         Returns: Json
@@ -6343,6 +6347,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      cleanup_old_temp_files: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       detect_suspicious_activity: {
         Args: {
           p_user_id: string
@@ -6360,6 +6368,16 @@ export type Database = {
       generate_invitation_token: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      get_bucket_stats: {
+        Args: { bucket_name: string }
+        Returns: {
+          total_files: number
+          total_size: number
+          avg_file_size: number
+          oldest_file: string
+          newest_file: string
+        }[]
       }
       get_event_stats: {
         Args: { event_uuid: string }
