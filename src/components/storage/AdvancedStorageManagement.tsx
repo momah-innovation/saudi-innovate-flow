@@ -55,13 +55,13 @@ export const AdvancedStorageManagement = () => {
   const [archiveSettings, setArchiveSettings] = useState({
     sourceBucket: '',
     daysOld: 365,
-    archiveBucket: 'archived-files-private'
+    archiveBucket: t('archived_files_private')
   })
 
   // Cleanup settings
   const [cleanupSettings, setCleanupSettings] = useState({
     bucketName: '',
-    filePattern: '%temp%',
+    filePattern: t('temp_pattern'),
     olderThanDays: 7,
     dryRun: true
   })
@@ -270,7 +270,7 @@ export const AdvancedStorageManagement = () => {
                 id="archiveBucket"
                 value={archiveSettings.archiveBucket}
                 onChange={(e) => setArchiveSettings(prev => ({ ...prev, archiveBucket: e.target.value }))}
-                placeholder="archived-files-private"
+                placeholder={t('archived_files_private')}
               />
             </div>
           </div>
@@ -343,7 +343,7 @@ export const AdvancedStorageManagement = () => {
                 id="filePattern"
                 value={cleanupSettings.filePattern}
                 onChange={(e) => setCleanupSettings(prev => ({ ...prev, filePattern: e.target.value }))}
-                placeholder="%temp%"
+                placeholder={t('temp_pattern')}
               />
             </div>
             <div className="space-y-2">

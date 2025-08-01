@@ -1061,5 +1061,8 @@
   "storage_health": "Storage Health",
   "configuration_testing": "Configuration Testing",
   "next": "Next",
-  "days": "days"
+  "days": "days",
+  "date_locale": "en-US",
+  "archived_files_private": "archived-files-private",
+  "temp_pattern": "%temp%"
 }

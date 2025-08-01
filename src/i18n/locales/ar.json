@@ -1015,5 +1015,8 @@
   "storage_health": "صحة التخزين",
   "configuration_testing": "اختبار الإعداد",
   "next": "التالي",
-  "days": "أيام"
+  "days": "أيام",
+  "date_locale": "ar-SA",
+  "archived_files_private": "الملفات-المؤرشفة-خاصة",
+  "temp_pattern": "%temp%"
 }
