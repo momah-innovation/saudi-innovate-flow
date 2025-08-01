@@ -126,7 +126,12 @@ export function StorageManagementPage() {
 
       for (const bucket of bucketsData || []) {
         console.log(`Loading files from bucket: ${bucket.id}`);
-        const { data: files, error: filesError } = await supabase.storage.from(bucket.id).list();
+        
+        // First try listing root level files
+        const { data: files, error: filesError } = await supabase.storage.from(bucket.id).list('', {
+          limit: 100,
+          offset: 0
+        });
         console.log(`Files from ${bucket.id}:`, { files, filesError });
         
         if (filesError) {
@@ -135,21 +140,53 @@ export function StorageManagementPage() {
         }
         
         if (files) {
-          const filesWithBucket = files.map(file => ({
-            ...file,
-            bucket_id: bucket.id,
-            is_public: bucket.public
-          }));
-          allFiles = [...allFiles, ...filesWithBucket];
+          // Process both files and folders
+          const processedFiles = [];
+          
+          for (const item of files) {
+            if (item.name && item.metadata) {
+              // This is a file
+              console.log('Processing file:', item);
+              processedFiles.push({
+                ...item,
+                bucket_id: bucket.id,
+                is_public: bucket.public,
+                full_path: item.name
+              });
+            } else if (item.name && !item.metadata) {
+              // This might be a folder, let's check inside
+              console.log('Found potential folder:', item.name);
+              const { data: subFiles, error: subError } = await supabase.storage
+                .from(bucket.id)
+                .list(item.name, { limit: 100 });
+              
+              if (subFiles && !subError) {
+                console.log(`Files in folder ${item.name}:`, subFiles);
+                subFiles.forEach(subFile => {
+                  if (subFile.metadata) {
+                    processedFiles.push({
+                      ...subFile,
+                      bucket_id: bucket.id,
+                      is_public: bucket.public,
+                      name: `${item.name}/${subFile.name}`,
+                      full_path: `${item.name}/${subFile.name}`
+                    });
+                  }
+                });
+              }
+            }
+          }
+          
+          allFiles = [...allFiles, ...processedFiles];
 
           if (bucket.public) {
-            publicCount += files.length;
+            publicCount += processedFiles.length;
           } else {
-            privateCount += files.length;
+            privateCount += processedFiles.length;
           }
 
           // Calculate total size
-          files.forEach(file => {
+          processedFiles.forEach(file => {
             if (file.metadata?.size) {
               totalSize += file.metadata.size;
             }
@@ -181,10 +218,14 @@ export function StorageManagementPage() {
   };
 
   const getFileUrl = (file: any): string => {
-    if (!file) return '';
+    if (!file || !file.name) {
+      console.log('Invalid file data:', file);
+      return '';
+    }
     
     if (file.is_public) {
       const { data } = supabase.storage.from(file.bucket_id).getPublicUrl(file.name);
+      console.log('Generated public URL:', data.publicUrl, 'for file:', file.name);
       return data.publicUrl;
     } else {
       // For private files, we'll need to generate a signed URL
