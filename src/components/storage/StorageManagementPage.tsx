@@ -297,9 +297,9 @@ export function StorageManagementPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      <div className="flex justify-between text-sm">
-                        <span>ID</span>
-                        <span className="font-mono">{bucket.id}</span>
+                       <div className="flex justify-between text-sm">
+                         <span>{t('id')}</span>
+                         <span className="font-mono">{bucket.id}</span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span>{t('created_at')}</span>

@@ -147,6 +147,7 @@ const translations = {
     'manage_bucket': 'إدارة المجموعة',
     'bucket': 'المجموعة',
     'unknown': 'غير معروف',
+    'id': 'المعرف',
     
     // Storage Hero specific
     'storage_usage': 'استخدام التخزين',
@@ -520,6 +521,7 @@ const translations = {
     'manage_bucket': 'Manage Bucket',
     'bucket': 'Bucket',
     'unknown': 'Unknown',
+    'id': 'ID',
     
     // Storage Hero specific
     'storage_usage': 'Storage Usage',
