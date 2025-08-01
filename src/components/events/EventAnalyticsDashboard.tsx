@@ -326,29 +326,7 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
                   <CardTitle className="text-base">{isRTL ? 'اتجاهات التسجيل (30 يوم)' : 'Registration Trends (30 Days)'}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <ResponsiveContainer width="100%" height={400}>
-                    <AreaChart data={analyticsData.registrationTrends}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="date" />
-                      <YAxis />
-                      <Tooltip />
-                      <Area 
-                        type="monotone" 
-                        dataKey="registrations" 
-                        stroke="#3b82f6" 
-                        fill="#3b82f6" 
-                        fillOpacity={0.3}
-                        name={isRTL ? 'التسجيلات' : 'Registrations'}
-                      />
-                      <Line 
-                        type="monotone" 
-                        dataKey="events" 
-                        stroke="#10b981" 
-                        strokeWidth={2}
-                        name={isRTL ? 'الفعاليات' : 'Events'}
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
+                  <ChartPlaceholder title={isRTL ? "اتجاهات التسجيل" : "Registration Trends"} height={400} />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -360,24 +338,7 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
                     <CardTitle className="text-base">{isRTL ? 'توزيع أنواع الفعاليات' : 'Event Types Distribution'}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ResponsiveContainer width="100%" height={300}>
-                      <PieChart>
-                        <Pie
-                          data={analyticsData.popularEventTypes}
-                          cx="50%"
-                          cy="50%"
-                          outerRadius={100}
-                          fill="#8884d8"
-                          dataKey="count"
-                          label={({ type, percentage }) => `${type} (${percentage}%)`}
-                        >
-                          {analyticsData.popularEventTypes.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <Tooltip />
-                      </PieChart>
-                    </ResponsiveContainer>
+                    <ChartPlaceholder title={isRTL ? "توزيع أنواع الفعاليات" : "Event Types Distribution"} height={300} />
                   </CardContent>
                 </Card>
 
@@ -420,24 +381,7 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
                     <CardTitle className="text-base">{isRTL ? 'توزيع صيغ الفعاليات' : 'Event Formats Distribution'}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ResponsiveContainer width="100%" height={300}>
-                      <PieChart>
-                        <Pie
-                          data={analyticsData.formatDistribution}
-                          cx="50%"
-                          cy="50%"
-                          outerRadius={100}
-                          fill="#8884d8"
-                          dataKey="value"
-                          label={({ name, value }) => `${name} (${value})`}
-                        >
-                          {analyticsData.formatDistribution.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                        <Tooltip />
-                      </PieChart>
-                    </ResponsiveContainer>
+                    <ChartPlaceholder title={isRTL ? "توزيع صيغ الفعاليات" : "Event Formats Distribution"} height={300} />
                   </CardContent>
                 </Card>
 

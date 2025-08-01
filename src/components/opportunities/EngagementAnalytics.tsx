@@ -14,7 +14,7 @@ import {
   Activity,
   MousePointer
 } from 'lucide-react';
-// Chart components removed
+import { ChartPlaceholder } from '@/components/common/ChartPlaceholder'
 
 interface EngagementAnalyticsProps {
   opportunityId: string;
@@ -261,19 +261,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={engagementData.engagementTrend}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="likes" stroke="#ef4444" name={isRTL ? 'إعجابات' : 'Likes'} />
-                <Line type="monotone" dataKey="shares" stroke="#3b82f6" name={isRTL ? 'مشاركات' : 'Shares'} />
-                <Line type="monotone" dataKey="comments" stroke="#10b981" name={isRTL ? 'تعليقات' : 'Comments'} />
-                <Line type="monotone" dataKey="bookmarks" stroke="#8b5cf6" name={isRTL ? 'حفظ' : 'Bookmarks'} />
-              </LineChart>
-            </ResponsiveContainer>
+            <ChartPlaceholder title={isRTL ? "اتجاه التفاعل" : "Engagement Trend"} height={300} />
           </CardContent>
         </Card>
 
@@ -286,25 +274,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={engagementData.platformShares}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ platform, percentage }) => `${platform}: ${percentage}%`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="count"
-                >
-                  {engagementData.platformShares.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+            <ChartPlaceholder title={isRTL ? "منصات المشاركة" : "Sharing Platforms"} height={300} />
           </CardContent>
         </Card>
 
@@ -368,21 +338,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={engagementData.hourlyEngagement}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="hour" />
-                <YAxis />
-                <Tooltip />
-                <Line 
-                  type="monotone" 
-                  dataKey="engagement" 
-                  stroke="#8884d8" 
-                  strokeWidth={2}
-                  name={isRTL ? 'التفاعل' : 'Engagement'}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            <ChartPlaceholder title={isRTL ? "نمط التفاعل اليومي" : "Hourly Engagement Pattern"} height={300} />
           </CardContent>
         </Card>
       </div>

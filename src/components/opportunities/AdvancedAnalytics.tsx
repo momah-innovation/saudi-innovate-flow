@@ -491,15 +491,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
-              <ScatterChart data={advancedData.audienceInsights.segments}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="count" name="Count" />
-                <YAxis dataKey="engagement" name="Engagement" />
-                <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                <Scatter dataKey="engagement" fill="#8884d8" />
-              </ScatterChart>
-            </ResponsiveContainer>
+            <ChartPlaceholder title="Audience Segments" height={250} />
           </CardContent>
         </Card>
 

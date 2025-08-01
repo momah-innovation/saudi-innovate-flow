@@ -95,46 +95,51 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
       // Process global settings
       const settings: Partial<GlobalSettings> = {}
       globalData?.forEach(item => {
-        const value = item.setting_value?.value
+        const value = typeof item.setting_value === 'object' && item.setting_value && 'value' in item.setting_value 
+          ? item.setting_value.value 
+          : item.setting_value
         switch (item.setting_key) {
           case 'auto_cleanup_enabled':
-            settings.autoCleanupEnabled = value
+            settings.autoCleanupEnabled = Boolean(value)
             break
           case 'default_cleanup_days':
-            settings.defaultCleanupDays = value
+            settings.defaultCleanupDays = Number(value)
             break
           case 'max_concurrent_uploads':
-            settings.maxConcurrentUploads = value
+            settings.maxConcurrentUploads = Number(value)
             break
           case 'chunk_size_mb':
-            settings.chunkSize = value * 1024 * 1024
+            settings.chunkSize = Number(value) * 1024 * 1024
             break
           case 'retry_attempts':
-            settings.retryAttempts = value
+            settings.retryAttempts = Number(value)
             break
           case 'compression_enabled':
-            settings.compressionEnabled = value
+            settings.compressionEnabled = Boolean(value)
             break
           case 'thumbnail_generation':
-            settings.thumbnailGeneration = value
+            settings.thumbnailGeneration = Boolean(value)
             break
         }
       })
       setGlobalSettings(prev => ({ ...prev, ...settings }))
 
       // Process upload configurations
-      const uploadConfigs: UploaderConfig[] = configData?.map(item => ({
-        id: item.id,
-        uploadType: item.setting_key,
-        bucket: item.setting_value.bucket || '',
-        path: item.setting_value.path || '',
-        maxSizeBytes: item.setting_value.maxSizeBytes || 0,
-        allowedTypes: item.setting_value.allowedTypes || [],
-        maxFiles: item.setting_value.maxFiles || 1,
-        enabled: item.setting_value.enabled || false,
-        autoCleanup: item.setting_value.autoCleanup || false,
-        cleanupDays: item.setting_value.cleanupDays || 0
-      })) || []
+      const uploadConfigs: UploaderConfig[] = configData?.map(item => {
+        const config = typeof item.setting_value === 'object' && item.setting_value ? item.setting_value as any : {}
+        return {
+          id: item.id,
+          uploadType: item.setting_key,
+          bucket: config.bucket || '',
+          path: config.path || '',
+          maxSizeBytes: Number(config.maxSizeBytes) || 0,
+          allowedTypes: Array.isArray(config.allowedTypes) ? config.allowedTypes : [],
+          maxFiles: Number(config.maxFiles) || 1,
+          enabled: Boolean(config.enabled),
+          autoCleanup: Boolean(config.autoCleanup),
+          cleanupDays: Number(config.cleanupDays) || 0
+        }
+      }) || []
 
       setConfigs(uploadConfigs)
     } catch (error) {

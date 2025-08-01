@@ -20,7 +20,7 @@ import {
   BookOpen,
   Zap
 } from 'lucide-react';
-// Chart components removed
+import { ChartPlaceholder } from '@/components/common/ChartPlaceholder'
 
 interface AnalyticsSummary {
   totalOpportunities: number;
@@ -395,39 +395,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <AreaChart data={analytics.engagementTrend}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Area 
-                    type="monotone" 
-                    dataKey="views" 
-                    stackId="1" 
-                    stroke="#3B82F6" 
-                    fill="#3B82F6" 
-                    name={isRTL ? 'المشاهدات' : 'Views'}
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="applications" 
-                    stackId="2" 
-                    stroke="#10B981" 
-                    fill="#10B981" 
-                    name={isRTL ? 'الطلبات' : 'Applications'}
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="engagement" 
-                    stackId="3" 
-                    stroke="#8B5CF6" 
-                    fill="#8B5CF6" 
-                    name={isRTL ? 'التفاعل' : 'Engagement'}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+              <ChartPlaceholder title={isRTL ? "اتجاهات التفاعل" : "Engagement Trends"} height={300} />
             </CardContent>
           </Card>
 
@@ -508,25 +476,7 @@ export const ComprehensiveAnalyticsDashboard = () => {
               <CardTitle>{isRTL ? 'مصادر الزيارات' : 'Traffic Sources'}</CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={analytics.trafficSources}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ source, percentage }) => `${source}: ${percentage}%`}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="count"
-                  >
-                    {analytics.trafficSources.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+              <ChartPlaceholder title={isRTL ? "مصادر الزيارات" : "Traffic Sources"} height={300} />
             </CardContent>
           </Card>
         </TabsContent>
