@@ -187,6 +187,20 @@ export const StoragePoliciesPage: React.FC = () => {
     )
   }
 
+  if (!isAdmin) {
+    return (
+      <PageLayout>
+        <Card>
+          <CardContent className="p-6 text-center">
+            <Shield className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+            <h2 className="text-2xl font-bold mb-2">Admin Access Required</h2>
+            <p className="text-muted-foreground">Only administrators can view storage policies and sensitive bucket information.</p>
+          </CardContent>
+        </Card>
+      </PageLayout>
+    )
+  }
+
   return (
     <PageLayout>
       <PageHeader
@@ -199,14 +213,6 @@ export const StoragePoliciesPage: React.FC = () => {
         </Button>
       </PageHeader>
 
-      {!isAdmin && (
-        <Alert>
-          <AlertTriangle className="w-4 h-4" />
-          <AlertDescription>
-            You have limited access to storage policy information. Contact an administrator for full policy management.
-          </AlertDescription>
-        </Alert>
-      )}
 
       <div className="space-y-6">
         {/* Enhanced Hero Dashboard */}
