@@ -42,31 +42,47 @@ serve(async (req) => {
       throw new Error('UNSPLASH_ACCESS_KEY is not configured')
     }
 
-    const url = new URL(req.url)
-    const action = url.searchParams.get('action') || 'search'
+    // Parse request body for POST requests or URL params for GET requests
+    let requestData: any = {}
     
+    if (req.method === 'POST') {
+      requestData = await req.json()
+    } else {
+      const url = new URL(req.url)
+      requestData = {
+        action: url.searchParams.get('action') || 'search',
+        query: url.searchParams.get('query'),
+        page: url.searchParams.get('page'),
+        per_page: url.searchParams.get('per_page'),
+        orientation: url.searchParams.get('orientation'),
+        category: url.searchParams.get('category'),
+        id: url.searchParams.get('id')
+      }
+    }
+    
+    const action = requestData.action || 'search'
     let unsplashUrl = ''
     let params = new URLSearchParams()
     
     switch (action) {
       case 'search':
-        const query = url.searchParams.get('query') || 'technology'
-        const page = url.searchParams.get('page') || '1'
-        const perPage = url.searchParams.get('per_page') || '20'
-        const orientation = url.searchParams.get('orientation')
-        const category = url.searchParams.get('category')
+        const query = requestData.query || 'technology'
+        const page = requestData.page || '1'
+        const perPage = requestData.per_page || '20'
+        const orientation = requestData.orientation
+        const category = requestData.category
         
         params.append('query', query)
         params.append('page', page)
         params.append('per_page', perPage)
-        if (orientation) params.append('orientation', orientation)
+        if (orientation && orientation !== 'all') params.append('orientation', orientation)
         if (category) params.append('category', category)
         
         unsplashUrl = `https://api.unsplash.com/search/photos?${params.toString()}`
         break
         
       case 'collections':
-        const collectionPage = url.searchParams.get('page') || '1'
+        const collectionPage = requestData.page || '1'
         params.append('page', collectionPage)
         params.append('per_page', '12')
         
@@ -74,11 +90,11 @@ serve(async (req) => {
         break
         
       case 'collection':
-        const collectionId = url.searchParams.get('id')
+        const collectionId = requestData.id
         if (!collectionId) {
           throw new Error('Collection ID is required')
         }
-        const collectionPhotosPage = url.searchParams.get('page') || '1'
+        const collectionPhotosPage = requestData.page || '1'
         params.append('page', collectionPhotosPage)
         params.append('per_page', '20')
         
@@ -86,7 +102,7 @@ serve(async (req) => {
         break
         
       case 'download':
-        const photoId = url.searchParams.get('id')
+        const photoId = requestData.id
         if (!photoId) {
           throw new Error('Photo ID is required')
         }
