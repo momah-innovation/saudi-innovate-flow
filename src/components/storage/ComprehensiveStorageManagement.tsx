@@ -30,6 +30,7 @@ import {
 } from 'lucide-react'
 import { useStorageAnalytics } from '@/hooks/useStorageAnalytics'
 import { useToast } from '@/hooks/use-toast'
+import { useTranslation } from '@/hooks/useAppTranslation'
 
 interface DuplicateFile {
   filename: string
@@ -55,6 +56,7 @@ interface QuotaInfo {
 
 export const ComprehensiveStorageManagement = () => {
   const { toast } = useToast()
+  const { t } = useTranslation()
   const { 
     getAllBucketAnalytics,
     exportStorageMetadata,
@@ -171,8 +173,8 @@ export const ComprehensiveStorageManagement = () => {
   const handleMigration = async () => {
     if (!migrationSettings.sourceBucket || !migrationSettings.targetBucket) {
       toast({
-        title: 'Missing Information',
-        description: 'Please select both source and target buckets',
+        title: t('missing_information'),
+        description: t('select_source_target'),
         variant: 'destructive'
       })
       return
@@ -195,8 +197,8 @@ export const ComprehensiveStorageManagement = () => {
   const handleBackup = async () => {
     if (!backupSettings.sourceBucket) {
       toast({
-        title: 'Missing Information',
-        description: 'Please select a source bucket',
+        title: t('missing_information'),
+        description: t('select_source_bucket_msg'),
         variant: 'destructive'
       })
       return
@@ -217,8 +219,8 @@ export const ComprehensiveStorageManagement = () => {
   const handleRestore = async () => {
     if (!restoreSettings.archiveBucket) {
       toast({
-        title: 'Missing Information',
-        description: 'Please select an archive bucket',
+        title: t('missing_information'),
+        description: t('select_archive_bucket_msg'),
         variant: 'destructive'
       })
       return
@@ -254,8 +256,8 @@ export const ComprehensiveStorageManagement = () => {
   const handleQuotaManagement = async () => {
     if (!quotaSettings.bucketName) {
       toast({
-        title: 'Missing Information',
-        description: 'Please select a bucket',
+        title: t('missing_information'),
+        description: t('select_bucket_msg'),
         variant: 'destructive'
       })
       return
@@ -291,20 +293,20 @@ export const ComprehensiveStorageManagement = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Database className="h-5 w-5" />
-            Comprehensive Storage Management
+            {t('comprehensive_storage_management')}
           </CardTitle>
           <CardDescription>
-            Complete storage operations including export, migration, backup, recovery, and optimization
+            {t('complete_storage_operations')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="export">Export & Migration</TabsTrigger>
-              <TabsTrigger value="backup">Backup & Recovery</TabsTrigger>
-              <TabsTrigger value="optimization">Optimization</TabsTrigger>
-              <TabsTrigger value="quotas">Quotas & Monitoring</TabsTrigger>
-              <TabsTrigger value="tools">Advanced Tools</TabsTrigger>
+              <TabsTrigger value="export">{t('export_migration')}</TabsTrigger>
+              <TabsTrigger value="backup">{t('backup_recovery')}</TabsTrigger>
+              <TabsTrigger value="optimization">{t('optimization')}</TabsTrigger>
+              <TabsTrigger value="quotas">{t('quotas_monitoring')}</TabsTrigger>
+              <TabsTrigger value="tools">{t('advanced_tools')}</TabsTrigger>
             </TabsList>
 
             {/* Export & Migration Tab */}

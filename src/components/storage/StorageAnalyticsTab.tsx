@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { useStorageAnalytics, StorageAnalytics } from '@/hooks/useStorageAnalytics'
 import { useToast } from '@/hooks/use-toast'
+import { useTranslation } from '@/hooks/useAppTranslation'
 import { 
   TrendingUp, 
   AlertTriangle, 
@@ -29,6 +30,7 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
   
   const { getAllBucketAnalytics, performAdminCleanup } = useStorageAnalytics()
   const { toast } = useToast()
+  const { t } = useTranslation()
 
   useEffect(() => {
     loadAnalytics()
@@ -92,12 +94,12 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2">
               <HardDrive className="w-5 h-5" />
-              Storage Management
+              {t('storage_management')}
             </CardTitle>
             <div className="flex gap-2">
               <Button variant="outline" onClick={loadAnalytics} disabled={loading}>
                 <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Refresh
+                {t('refresh')}
               </Button>
               <Button 
                 variant="destructive" 
@@ -105,7 +107,7 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
                 disabled={cleanupLoading}
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                {cleanupLoading ? 'Cleaning...' : 'Admin Cleanup'}
+                {cleanupLoading ? t('cleaning') : t('admin_cleanup')}
               </Button>
             </div>
           </div>
@@ -116,19 +118,19 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
               <div className="text-2xl font-bold text-primary">
                 {analytics.reduce((sum, item) => sum + item.stats.total_files, 0)}
               </div>
-              <div className="text-sm text-muted-foreground">Total Files</div>
+              <div className="text-sm text-muted-foreground">{t('total_files')}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-primary">
                 {formatBytes(analytics.reduce((sum, item) => sum + item.stats.total_size, 0))}
               </div>
-              <div className="text-sm text-muted-foreground">Total Size</div>
+              <div className="text-sm text-muted-foreground">{t('total_size')}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-primary">
                 {analytics.length}
               </div>
-              <div className="text-sm text-muted-foreground">Active Buckets</div>
+              <div className="text-sm text-muted-foreground">{t('active_buckets')}</div>
             </div>
           </div>
         </CardContent>
@@ -140,14 +142,14 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <CheckCircle className="w-5 h-5 text-green-500" />
-              Healthy Buckets
+              {t('healthy_buckets')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-green-600">
               {analytics.filter(a => a.healthStatus === 'healthy').length}
             </div>
-            <p className="text-sm text-muted-foreground">Operating normally</p>
+            <p className="text-sm text-muted-foreground">{t('operating_normally')}</p>
           </CardContent>
         </Card>
 
@@ -155,14 +157,14 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-yellow-500" />
-              Warning Buckets
+              {t('warning_buckets')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-yellow-600">
               {analytics.filter(a => a.healthStatus === 'warning').length}
             </div>
-            <p className="text-sm text-muted-foreground">Approaching limits</p>
+            <p className="text-sm text-muted-foreground">{t('approaching_limits')}</p>
           </CardContent>
         </Card>
 
@@ -170,14 +172,14 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-red-500" />
-              Critical Buckets
+              {t('critical_buckets')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-red-600">
               {analytics.filter(a => a.healthStatus === 'critical').length}
             </div>
-            <p className="text-sm text-muted-foreground">Need attention</p>
+            <p className="text-sm text-muted-foreground">{t('need_attention')}</p>
           </CardContent>
         </Card>
       </div>
@@ -187,7 +189,7 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5" />
-            Bucket Details
+            {t('bucket_details')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -195,21 +197,21 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[40px]">Status</TableHead>
-                  <TableHead>Bucket Name</TableHead>
-                  <TableHead className="text-center">Files</TableHead>
-                  <TableHead className="text-center">Size</TableHead>
-                  <TableHead className="text-center">Usage</TableHead>
-                  <TableHead className="text-center">Oldest File</TableHead>
-                  <TableHead className="text-center">Newest File</TableHead>
-                  <TableHead className="text-center">Health</TableHead>
+                  <TableHead className="w-[40px]">{t('status')}</TableHead>
+                  <TableHead>{t('bucket_name')}</TableHead>
+                  <TableHead className="text-center">{t('files')}</TableHead>
+                  <TableHead className="text-center">{t('size')}</TableHead>
+                  <TableHead className="text-center">{t('usage')}</TableHead>
+                  <TableHead className="text-center">{t('oldest_file')}</TableHead>
+                  <TableHead className="text-center">{t('newest_file')}</TableHead>
+                  <TableHead className="text-center">{t('health')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {analytics.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                      No bucket data available
+                      {t('no_bucket_data')}
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -275,7 +277,7 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
                           }
                           className="text-xs"
                         >
-                          {item.healthStatus}
+                          {t(item.healthStatus as 'healthy' | 'warning' | 'critical')}
                         </Badge>
                       </TableCell>
                     </TableRow>
@@ -293,34 +295,34 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-destructive" />
-              Admin Cleanup Confirmation
+              {t('admin_cleanup_confirmation')}
             </AlertDialogTitle>
             <AlertDialogDescription className="space-y-2">
-              <p>This will perform a <strong>system-wide cleanup</strong> of temporary files across all storage buckets.</p>
+              <p>{t('admin_cleanup_description')}</p>
               <div className="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 mt-3">
                 <div className="flex items-start gap-2">
                   <AlertTriangle className="w-4 h-4 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
                   <div className="text-sm">
-                    <p className="font-medium text-yellow-800 dark:text-yellow-200">Warning:</p>
+                    <p className="font-medium text-yellow-800 dark:text-yellow-200">{t('cleanup_warning')}</p>
                     <ul className="text-yellow-700 dark:text-yellow-300 mt-1 space-y-1">
-                      <li>• Files older than 7 days will be permanently deleted</li>
-                      <li>• This action cannot be undone</li>
-                      <li>• Only temporary files will be affected</li>
+                      <li>• {t('cleanup_warning_text_1')}</li>
+                      <li>• {t('cleanup_warning_text_2')}</li>
+                      <li>• {t('cleanup_warning_text_3')}</li>
                     </ul>
                   </div>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground">Are you sure you want to continue?</p>
+              <p className="text-sm text-muted-foreground">{t('continue_question')}</p>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
             <AlertDialogAction 
               onClick={handleAdminCleanup}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               disabled={cleanupLoading}
             >
-              {cleanupLoading ? 'Cleaning...' : 'Yes, Perform Cleanup'}
+              {cleanupLoading ? t('cleaning') : t('yes_perform_cleanup')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
