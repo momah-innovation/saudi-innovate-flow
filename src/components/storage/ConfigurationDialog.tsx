@@ -50,18 +50,50 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
   const isEditing = Boolean(config)
   const [availableBuckets, setAvailableBuckets] = useState<string[]>([])
   
-  const [formData, setFormData] = useState<UploaderConfig>(() => ({
-    id: config?.id || '',
-    uploadType: config?.uploadType || '',
-    bucket: config?.bucket || '',
-    path: config?.path || '',
-    maxSizeBytes: config?.maxSizeBytes || 5242880, // 5MB default
-    allowedTypes: config?.allowedTypes || [],
-    maxFiles: config?.maxFiles || 1,
-    enabled: config?.enabled !== false,
-    autoCleanup: config?.autoCleanup || false,
-    cleanupDays: config?.cleanupDays || 7
-  }))
+  const [formData, setFormData] = useState<UploaderConfig>({
+    id: '',
+    uploadType: '',
+    bucket: '',
+    path: '',
+    maxSizeBytes: 5242880, // 5MB default
+    allowedTypes: [],
+    maxFiles: 1,
+    enabled: true,
+    autoCleanup: false,
+    cleanupDays: 7
+  })
+
+  // Update form data when config prop changes
+  useEffect(() => {
+    if (config) {
+      setFormData({
+        id: config.id || '',
+        uploadType: config.uploadType || '',
+        bucket: config.bucket || '',
+        path: config.path || '',
+        maxSizeBytes: config.maxSizeBytes || 5242880,
+        allowedTypes: config.allowedTypes || [],
+        maxFiles: config.maxFiles || 1,
+        enabled: config.enabled !== false,
+        autoCleanup: config.autoCleanup || false,
+        cleanupDays: config.cleanupDays || 7
+      })
+    } else {
+      // Reset form for new configuration
+      setFormData({
+        id: '',
+        uploadType: '',
+        bucket: '',
+        path: '',
+        maxSizeBytes: 5242880,
+        allowedTypes: [],
+        maxFiles: 1,
+        enabled: true,
+        autoCleanup: false,
+        cleanupDays: 7
+      })
+    }
+  }, [config])
 
   // Load available buckets from Supabase
   useEffect(() => {
