@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
 import { 
   TrendingUp, Star, Clock, Target, Award, 
   Users, Calendar, BarChart3, Eye, Download
@@ -171,45 +170,29 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
               </TabsContent>
               
               <TabsContent value="scores" className="mt-4">
-                <ChartContainer config={{
-                  avgScore: { label: isRTL ? 'متوسط النتيجة' : 'Avg Score', color: 'hsl(var(--chart-2))' }
-                }} className="h-[200px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={evaluationTrends}>
-                      <XAxis dataKey="month" />
-                      <YAxis domain={[6, 10]} />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                      <Line 
-                        type="monotone" 
-                        dataKey="avgScore" 
-                        stroke="hsl(var(--chart-2))" 
-                        strokeWidth={3}
-                        dot={{ r: 4 }}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
+                <div className="h-[200px] flex items-center justify-center">
+                  <div className="space-y-3 w-full max-w-xs">
+                    {evaluationTrends.slice(-3).map((item, index) => (
+                      <div key={index} className="flex items-center justify-between">
+                        <span className="text-sm">{item.month}</span>
+                        <Badge variant="outline">{item.avgScore}/10</Badge>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </TabsContent>
               
               <TabsContent value="response-time" className="mt-4">
-                <ChartContainer config={{
-                  responseTime: { label: isRTL ? 'وقت الاستجابة' : 'Response Time', color: 'hsl(var(--chart-3))' }
-                }} className="h-[200px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={evaluationTrends}>
-                      <XAxis dataKey="month" />
-                      <YAxis />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                      <Area 
-                        type="monotone" 
-                        dataKey="responseTime" 
-                        stroke="hsl(var(--chart-3))"
-                        fill="hsl(var(--chart-3))"
-                        fillOpacity={0.3}
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
+                <div className="h-[200px] flex items-center justify-center">
+                  <div className="space-y-3 w-full max-w-xs">
+                    {evaluationTrends.slice(-3).map((item, index) => (
+                      <div key={index} className="flex items-center justify-between">
+                        <span className="text-sm">{item.month}</span>
+                        <Badge variant="secondary">{item.responseTime} {isRTL ? 'أيام' : 'days'}</Badge>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </TabsContent>
             </Tabs>
           </CardContent>
@@ -225,41 +208,33 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <ChartContainer config={{}} className="h-[200px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={categoryBreakdown}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={40}
-                      outerRadius={80}
-                      paddingAngle={5}
-                      dataKey="value"
-                    >
-                      {categoryBreakdown.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <ChartTooltip 
-                      content={({ active, payload }) => {
-                        if (active && payload && payload.length) {
-                          const data = payload[0].payload;
-                          return (
-                            <div className="bg-background border rounded-lg p-2 shadow-lg">
-                              <p className="font-medium">{data.name}</p>
-                              <p className="text-sm text-muted-foreground">
-                                {data.value}% ({Math.round(data.value * 2.8)} {isRTL ? 'تقييمات' : 'evaluations'})
-                              </p>
-                            </div>
-                          );
-                        }
-                        return null;
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </ChartContainer>
+              <div className="h-[200px] flex items-center justify-center">
+                <div className="space-y-3 w-full max-w-sm">
+                  {categoryBreakdown.map((category, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <div 
+                        className="w-4 h-4 rounded" 
+                        style={{ backgroundColor: category.color }}
+                      />
+                      <div className="flex-1">
+                        <div className="flex justify-between text-sm mb-1">
+                          <span>{category.name}</span>
+                          <span>{category.value}%</span>
+                        </div>
+                        <div className="w-full bg-muted rounded-full h-2">
+                          <div 
+                            className="h-2 rounded-full transition-all duration-300"
+                            style={{ 
+                              width: `${category.value}%`,
+                              backgroundColor: category.color
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
               
               <div className="space-y-2">
                 {categoryBreakdown.map((category, index) => (
