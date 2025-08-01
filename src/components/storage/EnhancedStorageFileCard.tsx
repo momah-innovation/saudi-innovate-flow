@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { FileActionsDropdown } from './FileActionsDropdown';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import {
   FileIcon,
   FileImage,
@@ -40,6 +41,7 @@ export function EnhancedStorageFileCard({
   onSelectionChange,
   showSelection = false
 }: EnhancedStorageFileCardProps) {
+  const { t } = useTranslation();
   const [imageError, setImageError] = useState(false);
 
   const formatFileSize = (bytes: number) => {
@@ -155,7 +157,7 @@ export function EnhancedStorageFileCard({
 
           <div className="flex items-center justify-between">
             <Badge variant={file.is_public ? "default" : "secondary"} className="text-xs">
-              {file.is_public ? "Public" : "Private"}
+              {file.is_public ? t('public') : t('private')}
             </Badge>
             <span className="text-xs text-muted-foreground">
               {file.bucket_id}

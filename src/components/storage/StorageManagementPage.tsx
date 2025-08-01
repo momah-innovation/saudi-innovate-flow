@@ -819,14 +819,14 @@ export function StorageManagementPage() {
                 {/* Filter by Type */}
                 <Select value={bucketFilter} onValueChange={setBucketFilter}>
                   <SelectTrigger className="w-full lg:w-[200px]">
-                    <SelectValue placeholder="Filter by type" />
+                    <SelectValue placeholder={t('filter_by_type')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Buckets</SelectItem>
-                    <SelectItem value="public">Public Only</SelectItem>
-                    <SelectItem value="private">Private Only</SelectItem>
-                    <SelectItem value="empty">Empty Buckets</SelectItem>
-                    <SelectItem value="large">Large Buckets (&gt;100MB)</SelectItem>
+                    <SelectItem value="all">{t('all_buckets')}</SelectItem>
+                    <SelectItem value="public">{t('public_only')}</SelectItem>
+                    <SelectItem value="private">{t('private_only')}</SelectItem>
+                    <SelectItem value="empty">{t('empty_buckets')}</SelectItem>
+                    <SelectItem value="large">{t('large_buckets')}</SelectItem>
                   </SelectContent>
                 </Select>
 

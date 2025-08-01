@@ -21,6 +21,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { supabase } from '@/integrations/supabase/client';
 
 interface FileActionsDropdownProps {
@@ -45,6 +46,7 @@ export function FileActionsDropdown({
   onShowInfo
 }: FileActionsDropdownProps) {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCopyUrl = async () => {
@@ -93,7 +95,7 @@ export function FileActionsDropdown({
           <p className="font-medium text-sm truncate">{file.name}</p>
           <div className="flex items-center gap-2 mt-1">
             <Badge variant={file.is_public ? "default" : "secondary"} className="text-xs">
-              {file.is_public ? "Public" : "Private"}
+              {file.is_public ? t('public') : t('private')}
             </Badge>
             {file.metadata?.size && (
               <span className="text-xs text-muted-foreground">

@@ -212,19 +212,19 @@ export function StorageFilters({
                 onValueChange={(value) => onFiltersChange({ ...filters, visibility: value })}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="All files" />
+                  <SelectValue placeholder={t('all_files')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
-                  <SelectItem value="all">All Files</SelectItem>
-                  <SelectItem value="public">Public Only</SelectItem>
-                  <SelectItem value="private">Private Only</SelectItem>
+                  <SelectItem value="all">{t('all_files')}</SelectItem>
+                  <SelectItem value="public">{t('public_only')}</SelectItem>
+                  <SelectItem value="private">{t('private_only')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {/* Size Filter */}
             <div>
-              <label className="text-sm font-medium mb-2 block">File Size</label>
+              <label className="text-sm font-medium mb-2 block">{t('file_size')}</label>
               <Select
                 value={filters.sizeRange}
                 onValueChange={(value) => onFiltersChange({ ...filters, sizeRange: value })}
