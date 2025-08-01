@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { ConfigurationDialog } from './ConfigurationDialog'
 import { useToast } from '@/hooks/use-toast'
+import { useTranslation } from '@/hooks/useAppTranslation'
 import { useSystemHealth } from '@/hooks/useSystemHealth'
 import { supabase } from '@/integrations/supabase/client'
 import { 
@@ -57,6 +58,7 @@ interface UploaderSettingsTabProps {
 
 export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
   const { toast } = useToast()
+  const { t } = useTranslation()
   const healthData = useSystemHealth()
   const [configs, setConfigs] = useState<UploaderConfig[]>([])
   const [allBuckets, setAllBuckets] = useState<any[]>([])
@@ -348,15 +350,15 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
       }
 
       toast({
-        title: "Configuration Saved",
-        description: `Upload configuration for ${config.uploadType} has been saved`
+        title: t('configuration_saved'),
+        description: t('upload_configuration_saved', { type: config.uploadType })
       })
 
       loadUploaderSettings() // Refresh the settings
     } catch (error) {
       toast({
-        title: "Save Failed",
-        description: "Failed to save configuration",
+        title: t('save_failed'),
+        description: t('failed_to_save_configuration'),
         variant: 'destructive'
       })
     }
@@ -367,8 +369,8 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
     
     if (orphanedConfigs.length === 0) {
       toast({
-        title: "No Cleanup Needed",
-        description: "All configurations have valid storage buckets"
+        title: t('no_cleanup_needed'),
+        description: t('all_configurations_valid')
       })
       return
     }
@@ -382,15 +384,15 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
       }
 
       toast({
-        title: "Cleanup Complete",
-        description: `Removed ${orphanedConfigs.length} orphaned configuration(s)`
+        title: t('cleanup_complete'),
+        description: t('removed_orphaned_configurations', { count: orphanedConfigs.length })
       })
       
       loadUploaderSettings() // Refresh
     } catch (error) {
       toast({
-        title: "Cleanup Failed",
-        description: "Failed to remove orphaned configurations",
+        title: t('cleanup_failed'),
+        description: t('failed_to_remove_orphaned_configurations'),
         variant: 'destructive'
       })
     }

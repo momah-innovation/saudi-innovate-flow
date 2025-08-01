@@ -48,7 +48,10 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
     const newDirection = RTL_LANGUAGES.includes(newLanguage) ? 'rtl' : 'ltr';
     setDirection(newDirection);
     document.documentElement.lang = newLanguage;
+    
+    // Save to both localStorage keys for full compatibility
     localStorage.setItem('ui-language', newLanguage);
+    localStorage.setItem('i18nextLng', newLanguage);
     
     // CRITICAL: Sync with react-i18next using the exact language code
     i18n.changeLanguage(newLanguage).then(() => {
@@ -62,16 +65,24 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    const savedDirection = localStorage.getItem('ui-direction') as Direction;
+    // Initialize from localStorage, prioritizing i18next key
+    const i18nextLng = localStorage.getItem('i18nextLng') as Language;
     const savedLanguage = localStorage.getItem('ui-language') as Language;
+    const savedDirection = localStorage.getItem('ui-direction') as Direction;
+    
+    // Determine initial language
+    const initialLanguage = i18nextLng || savedLanguage;
     
     if (savedDirection) {
       setDirection(savedDirection);
     }
     
-    if (savedLanguage) {
-      setLanguageState(savedLanguage);
-      document.documentElement.lang = savedLanguage;
+    if (initialLanguage && (initialLanguage === 'ar' || initialLanguage === 'en')) {
+      setLanguageState(initialLanguage);
+      document.documentElement.lang = initialLanguage;
+      // Ensure both localStorage keys are in sync
+      localStorage.setItem('ui-language', initialLanguage);
+      localStorage.setItem('i18nextLng', initialLanguage);
     } else if (defaultConfig.autoDetect) {
       const browserLang = navigator.language.split('-')[0] as Language;
       if (browserLang === 'en') {

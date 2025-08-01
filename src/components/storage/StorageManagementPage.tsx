@@ -369,8 +369,8 @@ export function StorageManagementPage() {
     setActiveTab("files");
     
     toast({
-      title: "Viewing Bucket Files",
-      description: `Showing files from bucket: ${bucket.name}`
+      title: t('viewing_bucket_files'),
+      description: t('showing_files_from_bucket', { bucket: bucket.name })
     });
   };
 
@@ -384,8 +384,8 @@ export function StorageManagementPage() {
   const handleFileUpload = async (files: FileList | null) => {
     if (!files || files.length === 0 || !selectedUploadBucket) {
       toast({
-        title: "Upload Error",
-        description: "Please select files and a bucket",
+        title: t('upload_error'),
+        description: t('please_select_files_and_bucket'),
         variant: 'destructive'
       });
       return;
@@ -403,15 +403,15 @@ export function StorageManagementPage() {
     try {
       await Promise.all(uploadPromises);
       toast({
-        title: "Upload Successful",
-        description: `${files.length} file(s) uploaded successfully`
+        title: t('upload_successful'),
+        description: t('files_uploaded_successfully', { count: files.length })
       });
       setShowUploadDialog(false);
       loadStorageData();
     } catch (error) {
       toast({
-        title: "Upload Failed",
-        description: "One or more files failed to upload",
+        title: t('upload_failed'),
+        description: t('one_or_more_files_failed_upload'),
         variant: 'destructive'
       });
     }
