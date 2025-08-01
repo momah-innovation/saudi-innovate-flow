@@ -1031,5 +1031,9 @@
   "buckets_no_policies_warning": "ليس لديها سياسات وصول. قد لا يتمكن المستخدمون من الوصول إلى الملفات في هذه الدلاء.",
   "unspecified": "غير محدد",
   "disabled": "معطل",
-  "file_name": "اسم الملف"
+  "file_name": "اسم الملف",
+  "bucket_label": "الحاوية",
+  "path_label": "المسار",
+  "auto_cleanup": "التنظيف التلقائي",
+  "enable_configuration": "تفعيل الإعدادات"
 }

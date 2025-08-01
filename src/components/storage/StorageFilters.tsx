@@ -279,7 +279,7 @@ export function StorageFilters({
           )}
           {filters.bucket && filters.bucket !== 'all' && (
             <Badge variant="secondary" className="text-xs">
-              Bucket: {buckets.find(b => b.id === filters.bucket)?.name || filters.bucket}
+              {t('bucket_label')}: {buckets.find(b => b.id === filters.bucket)?.name || filters.bucket}
               <X 
                 className="w-3 h-3 ml-1 cursor-pointer" 
                 onClick={() => onFiltersChange({ ...filters, bucket: 'all' })}

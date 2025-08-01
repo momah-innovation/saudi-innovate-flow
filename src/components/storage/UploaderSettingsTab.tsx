@@ -654,7 +654,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
                       <div>
                         <h4 className="font-medium">{config.uploadType}</h4>
                         <p className="text-sm text-muted-foreground">
-                          Bucket: {config.bucket} • Path: {config.path}
+                          {t('bucket_label')}: {config.bucket} • {t('path_label')}: {config.path}
                         </p>
                       </div>
                     </div>
@@ -691,7 +691,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
                        <p className="font-medium">{config.allowedTypes.length} {t('types')}</p>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Auto Cleanup:</span>
+                      <span className="text-muted-foreground">{t('auto_cleanup')}:</span>
                       <p className="font-medium">
                         {config.autoCleanup ? `${config.cleanupDays} ${t('days')}` : t('disabled')}
                       </p>
@@ -706,7 +706,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
                           handleConfigUpdate(index, { enabled: checked })
                         }
                       />
-                      <span className="text-sm">Enable Configuration</span>
+                      <span className="text-sm">{t('enable_configuration')}</span>
                     </div>
                     
                     <div className="flex items-center space-x-2">
@@ -716,7 +716,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
                           handleConfigUpdate(index, { autoCleanup: checked })
                         }
                       />
-                      <span className="text-sm">Auto Cleanup</span>
+                      <span className="text-sm">{t('auto_cleanup')}</span>
                     </div>
                   </div>
 
