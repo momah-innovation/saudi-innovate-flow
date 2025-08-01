@@ -9,6 +9,28 @@
   "security": "الأمان",
   "relationships": "العلاقات",
   "evaluations": "التقييمات",
+  "storage": {
+    "title": "إدارة التخزين",
+    "description": "مراقبة وإدارة تخزين الملفات عبر جميع الحاويات",
+    "upload_files": "رفع الملفات",
+    "storage_usage": "استخدام التخزين",
+    "of_x_used": "من {total} مستخدم",
+    "capacity": "السعة",
+    "files": "الملفات",
+    "buckets": "الحاويات",
+    "analytics": "التحليلات",
+    "files_found": "ملف موجود",
+    "search_files": "البحث في الملفات..."
+  },
+  "units": {
+    "mb": "ميجابايت",
+    "gb": "جيجابايت",
+    "tb": "تيرابايت"
+  },
+  "common": {
+    "refresh": "تحديث",
+    "error": "خطأ"
+  },
   "overview": "نظرة عامة",
   "system_administration": "إدارة النظام",
   "management_tools": "أدوات الإدارة",
