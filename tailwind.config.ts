@@ -18,6 +18,11 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'arabic': ['Cairo', 'system-ui', 'sans-serif'],
+				'english': ['Inter', 'system-ui', 'sans-serif'],
+				'sans': ['Cairo', 'Inter', 'system-ui', 'sans-serif'], // Default to Arabic-first
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',

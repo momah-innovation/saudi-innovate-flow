@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+/* Arabic and English fonts imported via index.html */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -156,6 +156,25 @@ All colors MUST be HSL for theming consistency.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Cairo', 'Inter', system-ui, sans-serif;
+  }
+  
+  /* Font family utilities for multi-language support */
+  .font-arabic {
+    font-family: 'Cairo', system-ui, sans-serif;
+  }
+  
+  .font-english {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  /* RTL/LTR direction utilities */
+  [dir="rtl"] {
+    font-family: 'Cairo', system-ui, sans-serif;
+  }
+  
+  [dir="ltr"] {
+    font-family: 'Inter', 'Cairo', system-ui, sans-serif;
   }
 }
 

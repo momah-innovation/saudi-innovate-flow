@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { NotificationCenter } from '@/components/notifications/NotificationCenter';
 import { UserMenu } from './UserMenu';
-import { LanguageToggle } from './LanguageToggle';
+import { LanguageToggle } from '@/components/ui/language-toggle';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDirection } from '@/components/ui/direction-provider';
 import { getInitials, useSystemSettings } from '@/contexts/SystemSettingsContext';
@@ -33,11 +33,11 @@ export function SystemHeader() {
   };
 
   const getSearchPlaceholder = () => {
-    return isRTL ? 'البحث...' : 'Search...';
+    return language === 'ar' ? 'البحث...' : 'Search...';
   };
 
   const getSystemTitle = () => {
-    return isRTL ? 'نظام رواد للابتكار' : 'Ruwād Innovation';
+    return language === 'ar' ? 'نظام رواد للابتكار' : 'Ruwād Innovation System';
   };
 
   return (
@@ -67,7 +67,7 @@ export function SystemHeader() {
               "hidden sm:block min-w-0",
               isRTL && "text-right"
             )}>
-              <h1 className="font-semibold text-sm truncate">
+              <h1 className={`font-semibold text-sm truncate ${language === 'ar' ? 'font-arabic' : 'font-english'}`}>
                 {getSystemTitle()}
               </h1>
             </div>
@@ -88,7 +88,7 @@ export function SystemHeader() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className={cn(
                 "h-9",
-                isRTL ? "pr-10 text-right" : "pl-10"
+                isRTL ? "pr-10 text-right font-arabic" : "pl-10 font-english"
               )}
               dir={isRTL ? 'rtl' : 'ltr'}
             />
