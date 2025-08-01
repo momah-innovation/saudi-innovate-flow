@@ -217,6 +217,9 @@ export const createTemporaryUploadConfig = (
   tempSessionId
 })
 
+// Export the WizardFileUploader component type for convenience
+export type { WizardFileUploaderProps, WizardFileUploaderRef } from '../components/ui/wizard-file-uploader'
+
 // Utility functions
 export const formatFileSize = (bytes: number): string => {
   if (bytes === 0) return '0 Bytes'
