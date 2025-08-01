@@ -1,9 +1,9 @@
 import { useDirection } from '@/components/ui/direction-provider';
 
-// Enhanced translation dictionary
+// Comprehensive translation dictionary covering all pages
 const translations = {
   ar: {
-    // Navigation
+    // Navigation & Core
     'dashboard': 'لوحة التحكم',
     'admin_dashboard': 'لوحة التحكم الإدارية',
     'storage_management': 'إدارة التخزين',
@@ -17,8 +17,93 @@ const translations = {
     'overview': 'نظرة عامة',
     'system_administration': 'إدارة النظام',
     'management_tools': 'أدوات الإدارة',
-    
-    // Storage specific
+    'profile': 'الملف الشخصي',
+    'notifications': 'الإشعارات',
+    'help': 'المساعدة',
+    'logout': 'تسجيل الخروج',
+
+    // Auth & User Management
+    'sign_in': 'تسجيل الدخول',
+    'sign_up': 'إنشاء حساب',
+    'email': 'البريد الإلكتروني',
+    'password': 'كلمة المرور',
+    'remember_me': 'تذكرني',
+    'forgot_password': 'نسيت كلمة المرور؟',
+    'create_account': 'إنشاء حساب جديد',
+    'already_have_account': 'لديك حساب بالفعل؟',
+    'dont_have_account': 'ليس لديك حساب؟',
+    'welcome_back': 'مرحباً بعودتك',
+    'welcome': 'مرحباً',
+    'authentication_required': 'مطلوب المصادقة',
+    'please_sign_in': 'يرجى تسجيل الدخول للمتابعة',
+    'password_requirements': 'كلمة المرور يجب أن تحتوي على {length} أحرف على الأقل',
+
+    // Actions
+    'search': 'البحث...',
+    'refresh': 'تحديث',
+    'upload': 'رفع',
+    'download': 'تحميل',
+    'delete': 'حذف',
+    'edit': 'تحرير',
+    'view': 'عرض',
+    'save': 'حفظ',
+    'cancel': 'إلغاء',
+    'submit': 'إرسال',
+    'close': 'إغلاق',
+    'create': 'إنشاء',
+    'update': 'تحديث',
+    'add': 'إضافة',
+    'remove': 'إزالة',
+    'confirm': 'تأكيد',
+    'back': 'رجوع',
+    'next': 'التالي',
+    'previous': 'السابق',
+    'finish': 'إنهاء',
+    'continue': 'متابعة',
+    'reset': 'إعادة تعيين',
+    'export': 'تصدير',
+    'import': 'استيراد',
+    'copy': 'نسخ',
+    'paste': 'لصق',
+    'select_all': 'تحديد الكل',
+    'clear_all': 'مسح الكل',
+
+    // Status & States
+    'active': 'نشط',
+    'inactive': 'غير نشط',
+    'enabled': 'مفعل',
+    'disabled': 'معطل',
+    'public': 'عام',
+    'private': 'خاص',
+    'protected': 'محمي',
+    'loading': 'جاري التحميل...',
+    'error': 'خطأ',
+    'success': 'نجح',
+    'warning': 'تحذير',
+    'info': 'معلومات',
+    'pending': 'في الانتظار',
+    'completed': 'مكتمل',
+    'failed': 'فشل',
+    'approved': 'موافق عليه',
+    'rejected': 'مرفوض',
+    'draft': 'مسودة',
+    'published': 'منشور',
+    'archived': 'مؤرشف',
+    'online': 'متصل',
+    'offline': 'غير متصل',
+    'available': 'متاح',
+    'unavailable': 'غير متاح',
+
+    // Storage & Files
+    'files': 'الملفات',
+    'buckets': 'المجموعات',
+    'storage_used': 'المساحة المستخدمة',
+    'total_files': 'إجمالي الملفات',
+    'recent_uploads': 'الرفعات الحديثة',
+    'file_size': 'حجم الملف',
+    'file_type': 'نوع الملف',
+    'upload_date': 'تاريخ الرفع',
+    'last_modified': 'آخر تعديل',
     'monitor_manage_storage': 'مراقبة وإدارة تخزين الملفات عبر جميع المجموعات',
     'monitor_manage_policies': 'مراقبة وإدارة سياسات الوصول لمجموعات التخزين',
     'bucket_access_policies': 'سياسات الوصول للمجموعات',
@@ -38,50 +123,226 @@ const translations = {
     'secure': 'آمن',
     'attention_required': 'يتطلب انتباه',
     'system_health': 'صحة النظام',
-    
-    // Common actions
-    'search': 'البحث...',
-    'refresh': 'تحديث',
-    'upload': 'رفع',
-    'download': 'تحميل',
-    'delete': 'حذف',
-    'edit': 'تحرير',
-    'view': 'عرض',
-    'save': 'حفظ',
-    'cancel': 'إلغاء',
-    'submit': 'إرسال',
-    'close': 'إغلاق',
-    
-    // Status
-    'active': 'نشط',
-    'inactive': 'غير نشط',
-    'enabled': 'مفعل',
-    'disabled': 'معطل',
-    'public': 'عام',
-    'private': 'خاص',
-    'protected': 'محمي',
-    'loading': 'جاري التحميل...',
-    'error': 'خطأ',
-    'success': 'نجح',
-    'warning': 'تحذير',
-    
-    // Storage
-    'files': 'الملفات',
-    'buckets': 'المجموعات',
-    'storage_used': 'المساحة المستخدمة',
-    'total_files': 'إجمالي الملفات',
-    'recent_uploads': 'الرفعات الحديثة',
-    
-    // User interface
-    'system_header_title': 'نظام رواد للابتكار',
+
+    // Partners & Organizations
+    'partners': 'الشركاء',
+    'organizations': 'المنظمات',
+    'sectors': 'القطاعات',
+    'collaboration': 'التعاون',
+    'partnership': 'الشراكة',
+    'active_partnerships': 'الشراكات النشطة',
+    'partner_engagement': 'مشاركة الشركاء',
+    'partnership_score': 'نقاط الشراكة',
+    'collaboration_projects': 'مشاريع التعاون',
+    'items_selected': '{count} عنصر محدد',
+    'bulk_actions': 'إجراءات مجمعة',
+    'select_action': 'اختر إجراءاً',
+
+    // Innovation & Ideas
+    'ideas': 'الأفكار',
+    'innovations': 'الابتكارات',
+    'challenges': 'التحديات',
+    'opportunities': 'الفرص',
+    'campaigns': 'الحملات',
+    'events': 'الفعاليات',
+    'stakeholders': 'أصحاب المصلحة',
+    'experts': 'الخبراء',
+    'evaluators': 'المقيمون',
+    'teams': 'الفرق',
+    'projects': 'المشاريع',
+    'submissions': 'المقترحات',
+    'feedback': 'التعليقات',
+    'ratings': 'التقييمات',
+    'scores': 'النقاط',
+
+    // System & Technical
+    'system_settings': 'إعدادات النظام',
+    'user_management': 'إدارة المستخدمين',
+    'role_management': 'إدارة الأدوار',
+    'permissions': 'الصلاحيات',
+    'access_control': 'التحكم في الوصول',
+    'audit_log': 'سجل المراجعة',
+    'backup': 'النسخ الاحتياطي',
+    'restore': 'الاستعادة',
+    'maintenance': 'الصيانة',
+    'updates': 'التحديثات',
+    'version': 'الإصدار',
+    'license': 'الترخيص',
+    'documentation': 'التوثيق',
+    'support': 'الدعم',
+    'contact': 'اتصل بنا',
+
+    // Time & Dates
+    'today': 'اليوم',
+    'yesterday': 'أمس',
+    'tomorrow': 'غداً',
+    'this_week': 'هذا الأسبوع',
+    'last_week': 'الأسبوع الماضي',
+    'next_week': 'الأسبوع القادم',
+    'this_month': 'هذا الشهر',
+    'last_month': 'الشهر الماضي',
+    'next_month': 'الشهر القادم',
+    'this_year': 'هذا العام',
+    'last_year': 'العام الماضي',
+    'next_year': 'العام القادم',
+    'date': 'التاريخ',
+    'time': 'الوقت',
+    'duration': 'المدة',
+    'deadline': 'الموعد النهائي',
+    'created_at': 'تاريخ الإنشاء',
+    'updated_at': 'تاريخ التحديث',
+
+    // Forms & Validation
+    'required_field': 'حقل مطلوب',
+    'optional_field': 'حقل اختياري',
+    'invalid_email': 'بريد إلكتروني غير صحيح',
+    'password_too_short': 'كلمة المرور قصيرة جداً',
+    'passwords_dont_match': 'كلمات المرور غير متطابقة',
+    'field_required': 'هذا الحقل مطلوب',
+    'invalid_format': 'تنسيق غير صحيح',
+    'value_too_long': 'القيمة طويلة جداً',
+    'value_too_short': 'القيمة قصيرة جداً',
+    'form_errors': 'أخطاء في النموذج',
+    'please_fix_errors': 'يرجى إصلاح الأخطاء',
+    'form_saved': 'تم حفظ النموذج',
+    'changes_saved': 'تم حفظ التغييرات',
+
+    // Numbers & Metrics
+    'total': 'الإجمالي',
+    'count': 'العدد',
+    'percentage': 'النسبة المئوية',
+    'average': 'المتوسط',
+    'minimum': 'الحد الأدنى',
+    'maximum': 'الحد الأقصى',
+    'growth': 'النمو',
+    'decline': 'الانخفاض',
+    'trend': 'الاتجاه',
+    'comparison': 'المقارنة',
+    'statistics': 'الإحصائيات',
+    'metrics': 'المؤشرات',
+    'kpi': 'مؤشرات الأداء الرئيسية',
+
+    // Interface Elements
+    'menu': 'القائمة',
+    'sidebar': 'الشريط الجانبي',
+    'header': 'الرأس',
+    'footer': 'التذييل',
+    'toolbar': 'شريط الأدوات',
+    'breadcrumb': 'مسار التنقل',
+    'pagination': 'ترقيم الصفحات',
+    'filter': 'تصفية',
+    'sort': 'ترتيب',
+    'group': 'تجميع',
+    'expand': 'توسيع',
+    'collapse': 'طي',
+    'minimize': 'تصغير',
+    'maximize': 'تكبير',
+    'fullscreen': 'شاشة كاملة',
+    'print': 'طباعة',
+    'share': 'مشاركة',
+
+    // Messages & Communication
+    'message': 'رسالة',
+    'messages': 'الرسائل',
+    'inbox': 'صندوق الوارد',
+    'sent': 'المرسل',
+    'drafts': 'المسودات',
+    'trash': 'المحذوفات',
+    'archive': 'الأرشيف',
+    'compose': 'كتابة',
+    'reply': 'رد',
+    'forward': 'إعادة إرسال',
+    'mark_as_read': 'تعيين كمقروء',
+    'mark_as_unread': 'تعيين كغير مقروء',
+    'notification': 'إشعار',
+    'alert': 'تنبيه',
+    'announcement': 'إعلان',
+
+    // Language & Localization
     'language': 'اللغة',
-    'theme': 'المظهر',
-    'notifications': 'الإشعارات',
-    'profile': 'الملف الشخصي',
-    'logout': 'تسجيل الخروج',
+    'arabic': 'العربية',
+    'english': 'الإنجليزية',
+    'rtl': 'من اليمين إلى اليسار',
+    'ltr': 'من اليسار إلى اليمين',
+    'direction': 'الاتجاه',
+    'locale': 'الإعدادات المحلية',
+    'timezone': 'المنطقة الزمنية',
+    'currency': 'العملة',
+    'format': 'التنسيق',
+
+    // Generic Messages
+    'no_data': 'لا توجد بيانات',
+    'no_results': 'لا توجد نتائج',
+    'empty_state': 'لا توجد عناصر',
+    'coming_soon': 'قريباً',
+    'under_construction': 'تحت الإنشاء',
+    'maintenance_mode': 'وضع الصيانة',
+    'service_unavailable': 'الخدمة غير متاحة',
+    'connection_error': 'خطأ في الاتصال',
+    'timeout_error': 'انتهت مهلة الاتصال',
+    'unauthorized': 'غير مصرح',
+    'forbidden': 'ممنوع',
+    'not_found': 'غير موجود',
+    'server_error': 'خطأ في الخادم',
+    'try_again': 'حاول مرة أخرى',
+    'reload_page': 'إعادة تحميل الصفحة',
+
+    // System Health & Status
+    'system_status': 'حالة النظام',
+    'uptime': 'وقت التشغيل',
+    'downtime': 'وقت التوقف',
+    'response_time': 'وقت الاستجابة',
+    'cpu_usage': 'استخدام المعالج',
+    'memory_usage': 'استخدام الذاكرة',
+    'disk_usage': 'استخدام القرص',
+    'network_usage': 'استخدام الشبكة',
+    'database_status': 'حالة قاعدة البيانات',
+    'api_status': 'حالة الواجهة البرمجية',
+    'healthy': 'سليم',
+    'unhealthy': 'غير سليم',
+    'degraded': 'متدهور',
+
+    // Advanced Filters
+    'advanced_filters': 'مرشحات متقدمة',
+    'filter_by': 'تصفية حسب',
+    'apply_filters': 'تطبيق المرشحات',
+    'clear_filters': 'مسح المرشحات',
+    'save_filter': 'حفظ المرشح',
+    'saved_filters': 'المرشحات المحفوظة',
+    'quick_filters': 'مرشحات سريعة',
+    'custom_filter': 'مرشح مخصص',
+    'date_range': 'نطاق التواريخ',
+    'from_date': 'من تاريخ',
+    'to_date': 'إلى تاريخ',
+    'contains': 'يحتوي على',
+    'equals': 'يساوي',
+    'not_equals': 'لا يساوي',
+    'greater_than': 'أكبر من',
+    'less_than': 'أصغر من',
+    'between': 'بين',
+    'is_empty': 'فارغ',
+    'is_not_empty': 'غير فارغ',
+
+    // Error Messages
+    'something_went_wrong': 'حدث خطأ ما',
+    'please_try_again': 'يرجى المحاولة مرة أخرى',
+    'contact_support': 'اتصل بالدعم الفني',
+    'error_code': 'رمز الخطأ',
+    'error_details': 'تفاصيل الخطأ',
+    'report_issue': 'إبلاغ عن مشكلة',
+    'failed_to_load': 'فشل في التحميل',
+    'failed_to_save': 'فشل في الحفظ',
+    'failed_to_delete': 'فشل في الحذف',
+    'failed_to_update': 'فشل في التحديث',
+    'network_error': 'خطأ في الشبكة',
+    'validation_error': 'خطأ في التحقق',
+    'permission_denied': 'الصلاحية مرفوضة',
+    'resource_not_found': 'المورد غير موجود',
+    'operation_failed': 'فشلت العملية',
+    'operation_successful': 'نجحت العملية',
   },
   en: {
-    // Navigation
+    // Navigation & Core
     'dashboard': 'Dashboard',
     'admin_dashboard': 'Admin Dashboard',
     'storage_management': 'Storage Management',
@@ -95,8 +356,93 @@ const translations = {
     'overview': 'Overview',
     'system_administration': 'System Administration',
     'management_tools': 'Management Tools',
-    
-    // Storage specific
+    'profile': 'Profile',
+    'notifications': 'Notifications',
+    'help': 'Help',
+    'logout': 'Logout',
+
+    // Auth & User Management
+    'sign_in': 'Sign In',
+    'sign_up': 'Sign Up',
+    'email': 'Email',
+    'password': 'Password',
+    'remember_me': 'Remember Me',
+    'forgot_password': 'Forgot Password?',
+    'create_account': 'Create Account',
+    'already_have_account': 'Already have an account?',
+    'dont_have_account': "Don't have an account?",
+    'welcome_back': 'Welcome Back',
+    'welcome': 'Welcome',
+    'authentication_required': 'Authentication Required',
+    'please_sign_in': 'Please sign in to continue',
+    'password_requirements': 'Password must be at least {length} characters long',
+
+    // Actions
+    'search': 'Search...',
+    'refresh': 'Refresh',
+    'upload': 'Upload',
+    'download': 'Download',
+    'delete': 'Delete',
+    'edit': 'Edit',
+    'view': 'View',
+    'save': 'Save',
+    'cancel': 'Cancel',
+    'submit': 'Submit',
+    'close': 'Close',
+    'create': 'Create',
+    'update': 'Update',
+    'add': 'Add',
+    'remove': 'Remove',
+    'confirm': 'Confirm',
+    'back': 'Back',
+    'next': 'Next',
+    'previous': 'Previous',
+    'finish': 'Finish',
+    'continue': 'Continue',
+    'reset': 'Reset',
+    'export': 'Export',
+    'import': 'Import',
+    'copy': 'Copy',
+    'paste': 'Paste',
+    'select_all': 'Select All',
+    'clear_all': 'Clear All',
+
+    // Status & States
+    'active': 'Active',
+    'inactive': 'Inactive',
+    'enabled': 'Enabled',
+    'disabled': 'Disabled',
+    'public': 'Public',
+    'private': 'Private',
+    'protected': 'Protected',
+    'loading': 'Loading...',
+    'error': 'Error',
+    'success': 'Success',
+    'warning': 'Warning',
+    'info': 'Info',
+    'pending': 'Pending',
+    'completed': 'Completed',
+    'failed': 'Failed',
+    'approved': 'Approved',
+    'rejected': 'Rejected',
+    'draft': 'Draft',
+    'published': 'Published',
+    'archived': 'Archived',
+    'online': 'Online',
+    'offline': 'Offline',
+    'available': 'Available',
+    'unavailable': 'Unavailable',
+
+    // Storage & Files
+    'files': 'Files',
+    'buckets': 'Buckets',
+    'storage_used': 'Storage Used',
+    'total_files': 'Total Files',
+    'recent_uploads': 'Recent Uploads',
+    'file_size': 'File Size',
+    'file_type': 'File Type',
+    'upload_date': 'Upload Date',
+    'last_modified': 'Last Modified',
     'monitor_manage_storage': 'Monitor and manage file storage across all buckets',
     'monitor_manage_policies': 'Monitor and manage storage bucket access policies',
     'bucket_access_policies': 'Bucket Access Policies',
@@ -116,61 +462,263 @@ const translations = {
     'secure': 'Secure',
     'attention_required': 'Attention Required',
     'system_health': 'System Health',
-    
-    // Common actions
-    'search': 'Search...',
-    'refresh': 'Refresh',
-    'upload': 'Upload',
-    'download': 'Download',
-    'delete': 'Delete',
-    'edit': 'Edit',
-    'view': 'View',
-    'save': 'Save',
-    'cancel': 'Cancel',
-    'submit': 'Submit',
-    'close': 'Close',
-    
-    // Status
-    'active': 'Active',
-    'inactive': 'Inactive',
-    'enabled': 'Enabled',
-    'disabled': 'Disabled',
-    'public': 'Public',
-    'private': 'Private',
-    'protected': 'Protected',
-    'loading': 'Loading...',
-    'error': 'Error',
-    'success': 'Success',
-    'warning': 'Warning',
-    
-    // Storage
-    'files': 'Files',
-    'buckets': 'Buckets',
-    'storage_used': 'Storage Used',
-    'total_files': 'Total Files',
-    'recent_uploads': 'Recent Uploads',
-    
-    // User interface
-    'system_header_title': 'Ruwād Innovation System',
+
+    // Partners & Organizations
+    'partners': 'Partners',
+    'organizations': 'Organizations',
+    'sectors': 'Sectors',
+    'collaboration': 'Collaboration',
+    'partnership': 'Partnership',
+    'active_partnerships': 'Active Partnerships',
+    'partner_engagement': 'Partner Engagement',
+    'partnership_score': 'Partnership Score',
+    'collaboration_projects': 'Collaboration Projects',
+    'items_selected': '{count} items selected',
+    'bulk_actions': 'Bulk Actions',
+    'select_action': 'Select an action',
+
+    // Innovation & Ideas
+    'ideas': 'Ideas',
+    'innovations': 'Innovations',
+    'challenges': 'Challenges',
+    'opportunities': 'Opportunities',
+    'campaigns': 'Campaigns',
+    'events': 'Events',
+    'stakeholders': 'Stakeholders',
+    'experts': 'Experts',
+    'evaluators': 'Evaluators',
+    'teams': 'Teams',
+    'projects': 'Projects',
+    'submissions': 'Submissions',
+    'feedback': 'Feedback',
+    'ratings': 'Ratings',
+    'scores': 'Scores',
+
+    // System & Technical
+    'system_settings': 'System Settings',
+    'user_management': 'User Management',
+    'role_management': 'Role Management',
+    'permissions': 'Permissions',
+    'access_control': 'Access Control',
+    'audit_log': 'Audit Log',
+    'backup': 'Backup',
+    'restore': 'Restore',
+    'maintenance': 'Maintenance',
+    'updates': 'Updates',
+    'version': 'Version',
+    'license': 'License',
+    'documentation': 'Documentation',
+    'support': 'Support',
+    'contact': 'Contact',
+
+    // Time & Dates
+    'today': 'Today',
+    'yesterday': 'Yesterday',
+    'tomorrow': 'Tomorrow',
+    'this_week': 'This Week',
+    'last_week': 'Last Week',
+    'next_week': 'Next Week',
+    'this_month': 'This Month',
+    'last_month': 'Last Month',
+    'next_month': 'Next Month',
+    'this_year': 'This Year',
+    'last_year': 'Last Year',
+    'next_year': 'Next Year',
+    'date': 'Date',
+    'time': 'Time',
+    'duration': 'Duration',
+    'deadline': 'Deadline',
+    'created_at': 'Created At',
+    'updated_at': 'Updated At',
+
+    // Forms & Validation
+    'required_field': 'Required Field',
+    'optional_field': 'Optional Field',
+    'invalid_email': 'Invalid Email',
+    'password_too_short': 'Password Too Short',
+    'passwords_dont_match': "Passwords Don't Match",
+    'field_required': 'This field is required',
+    'invalid_format': 'Invalid Format',
+    'value_too_long': 'Value Too Long',
+    'value_too_short': 'Value Too Short',
+    'form_errors': 'Form Errors',
+    'please_fix_errors': 'Please Fix Errors',
+    'form_saved': 'Form Saved',
+    'changes_saved': 'Changes Saved',
+
+    // Numbers & Metrics
+    'total': 'Total',
+    'count': 'Count',
+    'percentage': 'Percentage',
+    'average': 'Average',
+    'minimum': 'Minimum',
+    'maximum': 'Maximum',
+    'growth': 'Growth',
+    'decline': 'Decline',
+    'trend': 'Trend',
+    'comparison': 'Comparison',
+    'statistics': 'Statistics',
+    'metrics': 'Metrics',
+    'kpi': 'Key Performance Indicators',
+
+    // Interface Elements
+    'menu': 'Menu',
+    'sidebar': 'Sidebar',
+    'header': 'Header',
+    'footer': 'Footer',
+    'toolbar': 'Toolbar',
+    'breadcrumb': 'Breadcrumb',
+    'pagination': 'Pagination',
+    'filter': 'Filter',
+    'sort': 'Sort',
+    'group': 'Group',
+    'expand': 'Expand',
+    'collapse': 'Collapse',
+    'minimize': 'Minimize',
+    'maximize': 'Maximize',
+    'fullscreen': 'Fullscreen',
+    'print': 'Print',
+    'share': 'Share',
+
+    // Messages & Communication
+    'message': 'Message',
+    'messages': 'Messages',
+    'inbox': 'Inbox',
+    'sent': 'Sent',
+    'drafts': 'Drafts',
+    'trash': 'Trash',
+    'archive': 'Archive',
+    'compose': 'Compose',
+    'reply': 'Reply',
+    'forward': 'Forward',
+    'mark_as_read': 'Mark as Read',
+    'mark_as_unread': 'Mark as Unread',
+    'notification': 'Notification',
+    'alert': 'Alert',
+    'announcement': 'Announcement',
+
+    // Language & Localization
     'language': 'Language',
-    'theme': 'Theme',
-    'notifications': 'Notifications',
-    'profile': 'Profile',
-    'logout': 'Logout',
+    'arabic': 'Arabic',
+    'english': 'English',
+    'rtl': 'Right to Left',
+    'ltr': 'Left to Right',
+    'direction': 'Direction',
+    'locale': 'Locale',
+    'timezone': 'Timezone',
+    'currency': 'Currency',
+    'format': 'Format',
+
+    // Generic Messages
+    'no_data': 'No Data',
+    'no_results': 'No Results',
+    'empty_state': 'No Items',
+    'coming_soon': 'Coming Soon',
+    'under_construction': 'Under Construction',
+    'maintenance_mode': 'Maintenance Mode',
+    'service_unavailable': 'Service Unavailable',
+    'connection_error': 'Connection Error',
+    'timeout_error': 'Timeout Error',
+    'unauthorized': 'Unauthorized',
+    'forbidden': 'Forbidden',
+    'not_found': 'Not Found',
+    'server_error': 'Server Error',
+    'try_again': 'Try Again',
+    'reload_page': 'Reload Page',
+
+    // System Health & Status
+    'system_status': 'System Status',
+    'uptime': 'Uptime',
+    'downtime': 'Downtime',
+    'response_time': 'Response Time',
+    'cpu_usage': 'CPU Usage',
+    'memory_usage': 'Memory Usage',
+    'disk_usage': 'Disk Usage',
+    'network_usage': 'Network Usage',
+    'database_status': 'Database Status',
+    'api_status': 'API Status',
+    'healthy': 'Healthy',
+    'unhealthy': 'Unhealthy',
+    'degraded': 'Degraded',
+
+    // Advanced Filters
+    'advanced_filters': 'Advanced Filters',
+    'filter_by': 'Filter By',
+    'apply_filters': 'Apply Filters',
+    'clear_filters': 'Clear Filters',
+    'save_filter': 'Save Filter',
+    'saved_filters': 'Saved Filters',
+    'quick_filters': 'Quick Filters',
+    'custom_filter': 'Custom Filter',
+    'date_range': 'Date Range',
+    'from_date': 'From Date',
+    'to_date': 'To Date',
+    'contains': 'Contains',
+    'equals': 'Equals',
+    'not_equals': 'Not Equals',
+    'greater_than': 'Greater Than',
+    'less_than': 'Less Than',
+    'between': 'Between',
+    'is_empty': 'Is Empty',
+    'is_not_empty': 'Is Not Empty',
+
+    // Error Messages
+    'something_went_wrong': 'Something Went Wrong',
+    'please_try_again': 'Please Try Again',
+    'contact_support': 'Contact Support',
+    'error_code': 'Error Code',
+    'error_details': 'Error Details',
+    'report_issue': 'Report Issue',
+    'failed_to_load': 'Failed to Load',
+    'failed_to_save': 'Failed to Save',
+    'failed_to_delete': 'Failed to Delete',
+    'failed_to_update': 'Failed to Update',
+    'network_error': 'Network Error',
+    'validation_error': 'Validation Error',
+    'permission_denied': 'Permission Denied',
+    'resource_not_found': 'Resource Not Found',
+    'operation_failed': 'Operation Failed',
+    'operation_successful': 'Operation Successful',
   }
 } as const;
+
+// Helper function for string interpolation
+function interpolate(template: string, params: Record<string, any>): string {
+  return template.replace(/\{(\w+)\}/g, (match, key) => {
+    return params[key] !== undefined ? String(params[key]) : match;
+  });
+}
 
 export function useTranslation() {
   const { language } = useDirection();
   
-  const t = (key: string, fallback?: string): string => {
-    // Handle both strict keys and fallback for any string
+  const t = (key: string, params?: Record<string, any> | string, fallback?: string): string => {
+    // Handle both object params and fallback string as second parameter
+    let interpolationParams: Record<string, any> | undefined;
+    let fallbackText: string | undefined;
+
+    if (typeof params === 'string') {
+      fallbackText = params;
+    } else if (typeof params === 'object') {
+      interpolationParams = params;
+      fallbackText = fallback;
+    }
+
+    // Get translation
     const translation = translations[language]?.[key as keyof typeof translations.en] || 
                        translations.en[key as keyof typeof translations.en];
-    return translation || fallback || key;
+    
+    let result = translation || fallbackText || key;
+
+    // Apply interpolation if params provided
+    if (interpolationParams && typeof result === 'string') {
+      result = interpolate(result, interpolationParams);
+    }
+
+    return result;
   };
 
-  // Backward compatibility method
+  // Backward compatibility method for existing code
   const getDynamicText = (textAr: string, textEn?: string | null): string => {
     if (language === 'en' && textEn) {
       return textEn;
@@ -181,7 +729,6 @@ export function useTranslation() {
   // Number formatting for different locales
   const formatNumber = (num: number): string => {
     if (language === 'ar') {
-      // Arabic number formatting
       return new Intl.NumberFormat('ar-SA').format(num);
     }
     return new Intl.NumberFormat('en-US').format(num);
