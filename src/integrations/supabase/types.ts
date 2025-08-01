@@ -6333,6 +6333,14 @@ export type Database = {
         Args: { request_id: string; approve: boolean; reviewer_notes?: string }
         Returns: Json
       }
+      archive_old_files: {
+        Args: {
+          source_bucket: string
+          days_old?: number
+          archive_bucket?: string
+        }
+        Returns: Json
+      }
       assign_role_with_justification: {
         Args: {
           target_user_id: string
@@ -6354,6 +6362,15 @@ export type Database = {
       auto_track_weekly_capacity: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      bulk_cleanup_files: {
+        Args: {
+          bucket_name: string
+          file_pattern?: string
+          older_than_days?: number
+          dry_run?: boolean
+        }
+        Returns: Json
       }
       calculate_idea_analytics: {
         Args: { p_idea_id: string }
@@ -6439,6 +6456,10 @@ export type Database = {
           engagement_rate: number
           conversion_rate: number
         }[]
+      }
+      get_storage_analytics_with_trends: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       get_storage_buckets_info: {
         Args: Record<PropertyKey, never>
