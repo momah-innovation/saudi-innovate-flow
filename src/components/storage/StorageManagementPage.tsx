@@ -82,25 +82,20 @@ export const StorageManagementPage: React.FC = () => {
         
         for (const bucket of bucketsData) {
           try {
-            const { data: stats } = await supabase.rpc('get_bucket_stats', {
-              bucket_name: bucket.name
-            })
+            // Simple file listing approach since get_bucket_stats might not be available yet
+            const { data: files } = await supabase.storage.from(bucket.name).list()
             
-            if (stats && stats.length > 0) {
-              const stat = stats[0]
-              const bucketStat: BucketStats = {
-                name: bucket.name,
-                isPublic: bucket.public,
-                fileCount: stat.total_files || 0,
-                totalSize: stat.total_size || 0,
-                avgSize: stat.avg_file_size || 0,
-                oldestFile: stat.oldest_file || 'N/A',
-                newestFile: stat.newest_file || 'N/A'
-              }
-              bucketStats.push(bucketStat)
-              totalFiles += bucketStat.fileCount
-              totalSize += bucketStat.totalSize
+            const bucketStat: BucketStats = {
+              name: bucket.name,
+              isPublic: bucket.public,
+              fileCount: files?.length || 0,
+              totalSize: 0, // Would need individual file calls to get sizes
+              avgSize: 0,
+              oldestFile: 'N/A',
+              newestFile: 'N/A'
             }
+            bucketStats.push(bucketStat)
+            totalFiles += bucketStat.fileCount
           } catch (error) {
             console.error(`Error getting stats for bucket ${bucket.name}:`, error)
           }

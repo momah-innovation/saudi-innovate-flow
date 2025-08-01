@@ -8,6 +8,7 @@ export interface FileUploadConfig {
   maxFiles?: number
   maxSizeBytes?: number
   allowedTypes?: string[]
+  acceptString?: string
   entityId?: string
   tableName?: string
   columnName?: string

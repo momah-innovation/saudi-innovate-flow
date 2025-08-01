@@ -81,13 +81,6 @@ export const StoragePoliciesPage: React.FC = () => {
         return
       }
 
-      // Get storage policies from information_schema (if accessible)
-      const { data: policiesData } = await supabase
-        .from('information_schema.tables')
-        .select('*')
-        .eq('table_schema', 'storage')
-        .eq('table_name', 'objects')
-
       // For now, create a basic structure since we can't directly query storage policies
       const bucketInfo: BucketInfo[] = bucketsData.map(bucket => ({
         id: bucket.id,

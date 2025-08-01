@@ -1,6 +1,6 @@
 import React from 'react'
-import { FileUploader } from '@/components/ui/file-uploader'
-import { UPLOAD_CONFIGS, createUploadConfig } from '@/utils/fileUploadConfigs'
+import { EnhancedFileUploader } from '@/components/ui/enhanced-file-uploader'
+import { createUploadConfig, UPLOAD_CONFIGS } from '@/utils/uploadConfigs'
 import { UploadedFile } from '@/hooks/useFileUploader'
 
 interface OpportunityImageUploaderProps {
@@ -24,13 +24,12 @@ export const OpportunityImageUploader: React.FC<OpportunityImageUploaderProps> =
   )
 
   return (
-    <FileUploader
+    <EnhancedFileUploader
       config={config}
       onUploadComplete={onUploadComplete}
       className={className}
       disabled={disabled}
       showPreview={true}
-      multiple={false}
     />
   )
 }
