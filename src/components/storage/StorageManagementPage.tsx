@@ -95,6 +95,7 @@ export function StorageManagementPage() {
   // Bulk selection state
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
   const [showBulkActions, setShowBulkActions] = useState(false);
+  const [activeTab, setActiveTab] = useState("files");
   useEffect(() => {
     loadStorageData();
   }, []);
@@ -350,19 +351,9 @@ export function StorageManagementPage() {
       return newFilters;
     });
     
-    // Switch to files tab to show the filtered results
-    console.log('Attempting to switch to files tab...');
-    const tabsList = document.querySelector('[role="tablist"]');
-    const filesTab = tabsList?.querySelector('[value="files"]') as HTMLElement;
-    console.log('Found tabs list:', tabsList);
-    console.log('Found files tab:', filesTab);
-    
-    if (filesTab) {
-      console.log('Clicking files tab...');
-      filesTab.click();
-    } else {
-      console.error('Files tab not found!');
-    }
+    // Switch to files tab using state
+    console.log('Switching to files tab...');
+    setActiveTab("files");
     
     toast({
       title: "Viewing Bucket Files",
@@ -587,7 +578,7 @@ export function StorageManagementPage() {
           buckets={storageStats.buckets}
         />
 
-        <Tabs defaultValue="files" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="files">{t('storage.files')}</TabsTrigger>
             <TabsTrigger value="buckets">{t('storage.buckets')}</TabsTrigger>
