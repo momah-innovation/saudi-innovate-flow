@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { ConfigurationTester } from '@/components/admin/ConfigurationTester'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -926,7 +927,15 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
           }
         }}
         onSave={handleSaveConfig}
-      />
+       />
+
+      {/* Configuration Testing Section */}
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-lg font-semibold mb-4">Configuration Testing</h2>
+          <ConfigurationTester />
+        </div>
+      </div>
     </div>
   )
 }
