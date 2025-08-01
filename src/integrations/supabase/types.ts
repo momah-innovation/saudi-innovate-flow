@@ -6380,6 +6380,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      cleanup_legacy_buckets: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       cleanup_old_temp_files: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -6524,6 +6528,10 @@ export type Database = {
           target_role: Database["public"]["Enums"]["app_role"]
         }
         Returns: boolean
+      }
+      verify_storage_rls_coverage: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
     }
     Enums: {
