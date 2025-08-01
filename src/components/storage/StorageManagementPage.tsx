@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
+import { PageContainer } from '@/components/layout/PageContainer'
+import { PageHeader } from '@/components/ui/page-header'
 import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
 import { useAuth } from '@/contexts/AuthContext'
@@ -178,7 +180,7 @@ export const StorageManagementPage: React.FC = () => {
 
   if (!user) {
     return (
-      <div className="container mx-auto p-6">
+      <PageContainer>
         <Card>
           <CardContent className="p-6 text-center">
             <Lock className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
@@ -186,34 +188,28 @@ export const StorageManagementPage: React.FC = () => {
             <p className="text-muted-foreground">Please sign in to access storage management.</p>
           </CardContent>
         </Card>
-      </div>
+      </PageContainer>
     )
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Storage Management</h1>
-          <p className="text-muted-foreground">Manage and monitor storage buckets and files</p>
-        </div>
-        <div className="flex gap-2">
-          <Button onClick={loadBucketStats} disabled={loading}>
-            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-            Refresh
-          </Button>
-          {isAdmin && (
-            <Button 
-              onClick={cleanupTempFiles} 
-              variant="outline"
-              disabled={cleanupProgress > 0}
-            >
-              <Trash2 className="w-4 h-4 mr-2" />
-              Cleanup Temp Files
-            </Button>
-          )}
-        </div>
-      </div>
+    <PageContainer>
+      <PageHeader
+        title="Storage Management"
+        description="Manage and monitor storage buckets and files"
+        actionButton={
+          isAdmin ? {
+            label: "Cleanup Temp Files",
+            icon: <Trash2 className="w-4 h-4" />,
+            onClick: cleanupTempFiles
+          } : undefined
+        }
+      >
+        <Button onClick={loadBucketStats} disabled={loading} variant="outline">
+          <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+          Refresh
+        </Button>
+      </PageHeader>
 
       {cleanupProgress > 0 && (
         <Card>
@@ -394,6 +390,6 @@ export const StorageManagementPage: React.FC = () => {
           </CardContent>
         </Card>
       )}
-    </div>
+    </PageContainer>
   )
 }

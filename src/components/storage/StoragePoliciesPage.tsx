@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { PageContainer } from '@/components/layout/PageContainer'
+import { PageHeader } from '@/components/ui/page-header'
 import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
 import { useAuth } from '@/contexts/AuthContext'
@@ -144,7 +146,7 @@ export const StoragePoliciesPage: React.FC = () => {
 
   if (!user) {
     return (
-      <div className="container mx-auto p-6">
+      <PageContainer>
         <Card>
           <CardContent className="p-6 text-center">
             <Lock className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
@@ -152,22 +154,21 @@ export const StoragePoliciesPage: React.FC = () => {
             <p className="text-muted-foreground">Please sign in to access storage policies.</p>
           </CardContent>
         </Card>
-      </div>
+      </PageContainer>
     )
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Storage Policies</h1>
-          <p className="text-muted-foreground">Monitor and manage storage bucket access policies</p>
-        </div>
-        <Button onClick={loadStoragePolicies} disabled={loading}>
+    <PageContainer>
+      <PageHeader
+        title="Storage Policies"
+        description="Monitor and manage storage bucket access policies"
+      >
+        <Button onClick={loadStoragePolicies} disabled={loading} variant="outline">
           <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
           Refresh
         </Button>
-      </div>
+      </PageHeader>
 
       {!isAdmin && (
         <Alert>
@@ -379,6 +380,6 @@ export const StoragePoliciesPage: React.FC = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageContainer>
   )
 }
