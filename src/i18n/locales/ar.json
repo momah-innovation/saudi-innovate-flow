@@ -1021,5 +1021,12 @@
   "temp_pattern": "%temp%",
   "bucket_name_examples": "مثال: صور-الفرص، صور-المستخدمين",
   "search_buckets_placeholder": "البحث في الدلاء بالاسم...",
-  "created_date": "تاريخ الإنشاء"
+  "created_date": "تاريخ الإنشاء",
+  "no_files_found": "لم يتم العثور على ملفات",
+  "no_buckets_found": "لم يتم العثور على دلاء",
+  "no_policies": "لا توجد سياسات",
+  "no_storage_buckets": "لا توجد دلاء تخزين",
+  "no_storage_buckets_desc": "لم يتم العثور على دلاء تخزين في مشروعك.",
+  "no_access_policies_warning": "هذا الدلو لا يحتوي على سياسات وصول محددة. قد لا تكون الملفات متاحة للمستخدمين.",
+  "buckets_no_policies_warning": "ليس لديها سياسات وصول. قد لا يتمكن المستخدمون من الوصول إلى الملفات في هذه الدلاء."
 }

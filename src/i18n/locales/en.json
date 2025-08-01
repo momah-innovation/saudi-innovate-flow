@@ -1067,5 +1067,12 @@
   "temp_pattern": "%temp%",
   "bucket_name_examples": "e.g., opportunity-images, user-avatars",
   "search_buckets_placeholder": "Search buckets by name...",
-  "created_date": "Created Date"
+  "created_date": "Created Date",
+  "no_files_found": "No files found",
+  "no_buckets_found": "No buckets found",
+  "no_policies": "No Policies",
+  "no_storage_buckets": "No Storage Buckets",
+  "no_storage_buckets_desc": "No storage buckets found in your project.",
+  "no_access_policies_warning": "This bucket has no access policies defined. Files may not be accessible to users.",
+  "buckets_no_policies_warning": "have no access policies. Users may not be able to access files in these buckets."
 }

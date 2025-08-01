@@ -147,7 +147,7 @@ export const StoragePoliciesPage: React.FC = () => {
       return (
         <Badge variant="destructive">
           <AlertTriangle className="w-3 h-3 mr-1" />
-          No Policies
+          {t('no_policies')}
         </Badge>
       )
     }
@@ -289,8 +289,8 @@ export const StoragePoliciesPage: React.FC = () => {
           ) : buckets.length === 0 ? (
             <div className="text-center py-8">
               <Shield className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-              <h3 className="text-lg font-semibold mb-2">No Storage Buckets</h3>
-              <p className="text-muted-foreground">No storage buckets found in your project.</p>
+              <h3 className="text-lg font-semibold mb-2">{t('no_storage_buckets')}</h3>
+              <p className="text-muted-foreground">{t('no_storage_buckets_desc')}</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -321,7 +321,7 @@ export const StoragePoliciesPage: React.FC = () => {
                       <Alert variant="destructive">
                         <AlertTriangle className="w-4 h-4" />
                         <AlertDescription>
-                          This bucket has no access policies defined. Files may not be accessible to users.
+                          {t('no_access_policies_warning')}
                         </AlertDescription>
                       </Alert>
                     ) : (
@@ -408,7 +408,7 @@ export const StoragePoliciesPage: React.FC = () => {
                 <AlertTriangle className="w-4 h-4" />
                 <AlertDescription>
                   <strong>Action Required:</strong> {buckets.filter(b => !b.public && b.policies.length === 0).length} bucket(s) 
-                  have no access policies. Users may not be able to access files in these buckets.
+                  {t('buckets_no_policies_warning')}
                 </AlertDescription>
               </Alert>
             )}
