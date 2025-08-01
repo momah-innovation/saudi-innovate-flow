@@ -4,6 +4,8 @@ import { PageHeader } from '@/components/ui/page-header';
 import { StorageHero } from './StorageHero';
 import { StorageAnalyticsTab } from './StorageAnalyticsTab';
 import { UploaderSettingsTab } from './UploaderSettingsTab';
+import { FileViewDialog } from './FileViewDialog';
+import { BucketManagementDialog } from './BucketManagementDialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -13,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   Database, 
   Files, 
@@ -36,11 +39,18 @@ export function StorageManagementPage() {
   const { toast } = useToast();
   const { t } = useTranslation();
   const [selectedBucket, setSelectedBucket] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<any | null>(null);
+  const [selectedBucketForManagement, setSelectedBucketForManagement] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [buckets, setBuckets] = useState<any[]>([]);
   const [files, setFiles] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [showFileViewDialog, setShowFileViewDialog] = useState(false);
+  const [showBucketManagementDialog, setShowBucketManagementDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState<any | null>(null);
+  const [selectedUploadBucket, setSelectedUploadBucket] = useState<string>('');
   const [storageStats, setStorageStats] = useState({
     totalFiles: 0,
     totalSize: 0,
@@ -122,10 +132,8 @@ export function StorageManagementPage() {
   };
 
   const handleFileView = (file: any) => {
-    toast({
-      title: t('storage.view_file_details'),
-      description: t('storage.viewing_file', { filename: file.name })
-    });
+    setSelectedFile(file);
+    setShowFileViewDialog(true);
   };
 
   const handleFileDownload = async (file: any) => {
@@ -153,20 +161,70 @@ export function StorageManagementPage() {
     }
   };
 
-  const handleFileDelete = async (file: any) => {
+  const handleFileDelete = (file: any) => {
+    setFileToDelete(file);
+    setShowDeleteDialog(true);
+  };
+
+  const confirmFileDelete = async () => {
+    if (!fileToDelete) return;
+    
     try {
-      const { error } = await supabase.storage.from(file.bucket_id).remove([file.name]);
+      const { error } = await supabase.storage.from(fileToDelete.bucket_id).remove([fileToDelete.name]);
       if (!error) {
         toast({
           title: t('file_deleted'),
-          description: t('file_deleted_successfully', { filename: file.name })
+          description: t('file_deleted_successfully', { filename: fileToDelete.name })
         });
         loadStorageData(); // Refresh data
+        setShowDeleteDialog(false);
+        setFileToDelete(null);
       }
     } catch (error) {
       toast({
         title: t('delete_failed'),
         description: t('failed_to_delete'),
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleBucketManagement = (bucket: any) => {
+    setSelectedBucketForManagement(bucket);
+    setShowBucketManagementDialog(true);
+  };
+
+  const handleFileUpload = async (files: FileList | null) => {
+    if (!files || files.length === 0 || !selectedUploadBucket) {
+      toast({
+        title: "Upload Error",
+        description: "Please select files and a bucket",
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    const uploadPromises = Array.from(files).map(async (file) => {
+      const { error } = await supabase.storage
+        .from(selectedUploadBucket)
+        .upload(file.name, file);
+      
+      if (error) throw error;
+      return file.name;
+    });
+
+    try {
+      await Promise.all(uploadPromises);
+      toast({
+        title: "Upload Successful",
+        description: `${files.length} file(s) uploaded successfully`
+      });
+      setShowUploadDialog(false);
+      loadStorageData();
+    } catch (error) {
+      toast({
+        title: "Upload Failed",
+        description: "One or more files failed to upload",
         variant: 'destructive'
       });
     }
@@ -276,6 +334,13 @@ export function StorageManagementPage() {
                         <Download className="w-4 h-4 mr-2" />
                         {t('download')}
                       </Button>
+                      <Button 
+                        variant="destructive" 
+                        size="sm"
+                        onClick={() => handleFileDelete(file)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -308,7 +373,7 @@ export function StorageManagementPage() {
                         <span>{t('created_at')}</span>
                         <span>{bucket.created_at ? new Date(bucket.created_at).toLocaleDateString() : t('unknown')}</span>
                       </div>
-                      <Button variant="outline" className="w-full">
+                      <Button variant="outline" className="w-full" onClick={() => handleBucketManagement(bucket)}>
                         <Settings className="w-4 h-4 mr-2" />
                         {t('manage_bucket')}
                       </Button>
@@ -341,23 +406,47 @@ export function StorageManagementPage() {
           <div className="space-y-4">
             <div>
               <Label htmlFor="bucket-select">{t('select_bucket')}</Label>
-              <Input id="bucket-select" placeholder={t('choose_bucket')} className="mt-2" />
+              <Select value={selectedUploadBucket} onValueChange={setSelectedUploadBucket}>
+                <SelectTrigger className="mt-2">
+                  <SelectValue placeholder={t('choose_bucket')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {buckets.map((bucket) => (
+                    <SelectItem key={bucket.id} value={bucket.id}>
+                      {bucket.name} ({bucket.public ? 'Public' : 'Private'})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <Label htmlFor="file-upload">{t('choose_files')}</Label>
-              <Input id="file-upload" type="file" multiple className="mt-2" />
+              <Input 
+                id="file-upload" 
+                type="file" 
+                multiple 
+                className="mt-2"
+                onChange={(e) => {
+                  // Store files for upload
+                  if (e.target.files) {
+                    setSelectedUploadBucket(selectedUploadBucket);
+                  }
+                }}
+              />
             </div>
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setShowUploadDialog(false)}>
                 {t('cancel')}
               </Button>
-              <Button onClick={() => {
-                toast({
-                  title: t('upload_started'),
-                  description: t('files_being_uploaded')
-                });
-                setShowUploadDialog(false);
-              }}>
+              <Button 
+                onClick={() => {
+                  const fileInput = document.getElementById('file-upload') as HTMLInputElement;
+                  if (fileInput?.files) {
+                    handleFileUpload(fileInput.files);
+                  }
+                }}
+                disabled={!selectedUploadBucket}
+              >
                 <Upload className="w-4 h-4 mr-2" />
                 {t('upload')}
               </Button>
@@ -365,6 +454,39 @@ export function StorageManagementPage() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* File View Dialog */}
+      <FileViewDialog
+        file={selectedFile}
+        open={showFileViewDialog}
+        onOpenChange={setShowFileViewDialog}
+      />
+
+      {/* Bucket Management Dialog */}
+      <BucketManagementDialog
+        bucket={selectedBucketForManagement}
+        open={showBucketManagementDialog}
+        onOpenChange={setShowBucketManagementDialog}
+        onRefresh={loadStorageData}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete File</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{fileToDelete?.name}"? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setFileToDelete(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmFileDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </PageLayout>
   );
 }
