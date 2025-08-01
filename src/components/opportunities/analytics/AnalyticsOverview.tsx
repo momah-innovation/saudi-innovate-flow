@@ -13,7 +13,7 @@ import {
   Globe,
   Share2
 } from 'lucide-react';
-import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+// Chart components replaced with simple visualization
 
 interface AnalyticsOverviewProps {
   analytics: any;
@@ -155,44 +155,14 @@ export const AnalyticsOverview = ({ analytics, trends }: AnalyticsOverviewProps)
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
-              <AreaChart data={analytics.viewsData}>
-                <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                <XAxis 
-                  dataKey="date" 
-                  tick={{ fontSize: 12 }}
-                  tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                />
-                <YAxis tick={{ fontSize: 12 }} />
-                <Tooltip 
-                  labelFormatter={(value) => new Date(value).toLocaleDateString()}
-                  contentStyle={{ 
-                    backgroundColor: 'hsl(var(--card))',
-                    border: '1px solid hsl(var(--border))',
-                    borderRadius: '6px'
-                  }}
-                />
-                <Legend />
-                <Area 
-                  type="monotone" 
-                  dataKey="views" 
-                  stackId="1" 
-                  stroke="hsl(var(--primary))" 
-                  fill="hsl(var(--primary))" 
-                  fillOpacity={0.6}
-                  name={isRTL ? 'المشاهدات' : 'Views'}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="applications" 
-                  stackId="2" 
-                  stroke="hsl(var(--chart-2))" 
-                  fill="hsl(var(--chart-2))" 
-                  fillOpacity={0.6}
-                  name={isRTL ? 'الطلبات' : 'Applications'}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+            <div className="h-64 flex items-center justify-center bg-muted/20 rounded-lg">
+              <div className="text-center">
+                <Activity className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
+                <p className="text-sm text-muted-foreground">
+                  {isRTL ? 'بيانات الرسم البياني متاحة' : 'Chart data available'}
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
