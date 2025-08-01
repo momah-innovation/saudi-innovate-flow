@@ -286,57 +286,22 @@ Deno.serve(async (req) => {
           }
         }
 
-        // 2. Update database references
+        // 2. Update database references using our secure function
         console.log(`Updating database references for ${legacyBucket}`)
         
-        for (const dbUpdate of config.databaseUpdates) {
-          try {
-            let updateQuery
-            let updateResult
-
-            if (dbUpdate.isArray) {
-              // Handle array columns (like attachment_urls)
-              updateQuery = `
-                UPDATE ${dbUpdate.table} 
-                SET ${dbUpdate.column} = array(
-                  SELECT replace(unnest(${dbUpdate.column}), '${dbUpdate.searchPattern}', '${dbUpdate.replaceWith}')
-                )
-                WHERE ${dbUpdate.column} IS NOT NULL 
-                AND array_to_string(${dbUpdate.column}, ',') LIKE '%${dbUpdate.searchPattern}%'
-              `
-              
-              const { error: updateError } = await supabaseClient.rpc('execute_sql', {
-                query: updateQuery
-              })
-              
-              if (updateError) {
-                migrationResult.errors.push(`DB update failed for ${dbUpdate.table}.${dbUpdate.column}: ${updateError.message}`)
-                continue
-              }
-            } else {
-              // Handle regular text columns
-              const { data, error: updateError } = await supabaseClient
-                .from(dbUpdate.table)
-                .update({
-                  [dbUpdate.column]: supabaseClient.sql`replace(${dbUpdate.column}, ${dbUpdate.searchPattern}, ${dbUpdate.replaceWith})`
-                })
-                .like(dbUpdate.column, `%${dbUpdate.searchPattern}%`)
-
-              if (updateError) {
-                migrationResult.errors.push(`DB update failed for ${dbUpdate.table}.${dbUpdate.column}: ${updateError.message}`)
-                continue
-              }
-            }
-
-            console.log(`✅ Updated ${dbUpdate.table}.${dbUpdate.column}`)
+        try {
+          const { error: dbUpdateError } = await supabaseClient.rpc('update_file_paths_for_migration')
+          
+          if (dbUpdateError) {
+            migrationResult.errors.push(`Database update failed: ${dbUpdateError.message}`)
+          } else {
+            console.log(`✅ Updated database references for all legacy buckets`)
+            migrationResult.databaseUpdated = true
             summary.databaseUpdates++
-
-          } catch (dbError) {
-            migrationResult.errors.push(`Database update error for ${dbUpdate.table}.${dbUpdate.column}: ${dbError.message}`)
           }
+        } catch (dbError) {
+          migrationResult.errors.push(`Database update error: ${dbError.message}`)
         }
-
-        migrationResult.databaseUpdated = true
 
         // Mark bucket for removal if migration was successful
         if (migrationResult.filesFailed === 0 && migrationResult.errors.length === 0) {

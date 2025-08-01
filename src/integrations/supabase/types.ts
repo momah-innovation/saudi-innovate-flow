@@ -6510,6 +6510,10 @@ export type Database = {
         Args: { p_idea_id: string; p_to_status: string; p_reason?: string }
         Returns: boolean
       }
+      update_file_paths_for_migration: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       update_weekly_capacity: {
         Args: Record<PropertyKey, never>
         Returns: undefined
