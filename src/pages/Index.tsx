@@ -121,15 +121,15 @@ const Index = () => {
         );
       case "campaigns":
         return wrapInSection(
-          "Campaigns",
-          "Campaign management interface will be implemented here.",
-          <div>Campaigns content placeholder</div>
+          t('campaigns'),
+          t('campaignManagementDesc'),
+          <div>{t('campaignsContentPlaceholder')}</div>
         );
       case "events":
         return wrapInSection(
-          "Events",
-          "Event management interface will be implemented here.",
-          <div>Events content placeholder</div>
+          t('events'),
+          t('eventManagementDesc'),
+          <div>{t('eventsContentPlaceholder')}</div>
         );
       case "innovation-teams":
         return wrapInSection(
@@ -139,45 +139,45 @@ const Index = () => {
         );
       case "stakeholders":
         return wrapInSection(
-          "Stakeholders",
-          "Stakeholder management interface will be implemented here.",
-          <div>Stakeholders content placeholder</div>
+          t('stakeholders'),
+          t('stakeholderManagementDesc'),
+          <div>{t('stakeholdersContentPlaceholder')}</div>
         );
       case "analytics":
         return wrapInSection(
-          "Analytics",
-          "Analytics dashboard will be implemented here.",
-          <div>Analytics content placeholder</div>
+          t('analytics'),
+          t('analyticsDashboardDesc'),
+          <div>{t('analyticsContentPlaceholder')}</div>
         );
       case "trends":
         return wrapInSection(
-          "Trends & Insights",
-          "Trends and insights interface will be implemented here.",
-          <div>Trends content placeholder</div>
+          t('trendsInsights'),
+          t('trendsInsightsDesc'),
+          <div>{t('trendsContentPlaceholder')}</div>
         );
       case "reports":
         return wrapInSection(
-          "Reports",
-          "Reports interface will be implemented here.",
-          <div>Reports content placeholder</div>
+          t('reports'),
+          t('reportsInterfaceDesc'),
+          <div>{t('reportsContentPlaceholder')}</div>
         );
       case "system-analytics":
         return wrapInSection(
-          "System Analytics",
-          "System analytics interface will be implemented here.",
-          <div>System Analytics content placeholder</div>
+          t('systemAnalytics'),
+          t('systemAnalyticsDesc'),
+          <div>{t('systemAnalyticsPlaceholder')}</div>
         );
       case "organization":
         return wrapInSection(
-          "Organization",
-          "Organization management interface will be implemented here.",
-          <div>Organization content placeholder</div>
+          t('organizations'),
+          t('organizationManagementDesc'),
+          <div>{t('organizationContentPlaceholder')}</div>
         );
       case "user-management":
         return wrapInSection(
-          "User Management",
-          "User management interface will be implemented here.",
-          <div>User Management content placeholder</div>
+          t('user_management'),
+          t('userManagementDesc'),
+          <div>{t('userManagementPlaceholder')}</div>
         );
       case "challenge-management":
         return wrapInSection(
@@ -187,9 +187,9 @@ const Index = () => {
         );
       case "settings":
         return wrapInSection(
-          "Settings",
-          "Settings interface will be implemented here.",
-          <div>Settings content placeholder</div>
+          t('settings'),
+          t('settingsInterfaceDesc'),
+          <div>{t('settingsContentPlaceholder')}</div>
         );
       default:
         return <EnhancedDashboardOverview />;

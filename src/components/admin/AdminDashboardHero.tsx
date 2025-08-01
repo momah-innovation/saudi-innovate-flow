@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { 
   Users, 
   Activity,
@@ -33,18 +34,19 @@ export function AdminDashboardHero({
   pendingUpdates,
   systemHealth
 }: AdminDashboardHeroProps) {
+  const { t } = useTranslation();
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       {/* Total Users */}
       <Card className="gradient-border hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('total_users')}</CardTitle>
           <Users className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{totalUsers.toLocaleString()}</div>
           <p className="text-xs text-muted-foreground">
-            {activeUsers} active users
+            {t('active_users_count', { count: activeUsers })}
           </p>
           <div className="mt-2">
             <Progress value={(activeUsers / totalUsers) * 100} className="h-2" />
@@ -55,7 +57,7 @@ export function AdminDashboardHero({
       {/* System Health */}
       <Card className="gradient-border hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">System Health</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('system_health')}</CardTitle>
           <Server className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
