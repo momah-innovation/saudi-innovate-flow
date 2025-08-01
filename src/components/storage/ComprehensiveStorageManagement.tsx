@@ -578,7 +578,7 @@ export const ComprehensiveStorageManagement = () => {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="restorePattern">File Pattern</Label>
+                      <Label htmlFor="restorePattern">{t('file_pattern')}</Label>
                       <Input
                         id="restorePattern"
                         value={restoreSettings.filePattern}
@@ -587,7 +587,7 @@ export const ComprehensiveStorageManagement = () => {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="restoreOriginalPaths">Restore Original Paths</Label>
+                      <Label htmlFor="restoreOriginalPaths">{t('restore_original_paths')}</Label>
                       <div className="flex items-center space-x-2 pt-2">
                         <Switch
                           id="restoreOriginalPaths"
@@ -595,7 +595,7 @@ export const ComprehensiveStorageManagement = () => {
                           onCheckedChange={(checked) => setRestoreSettings(prev => ({ ...prev, restoreOriginalPaths: checked }))}
                         />
                         <Label htmlFor="restoreOriginalPaths" className="text-sm">
-                          Use original file paths
+                          {t('restore_to_original')}
                         </Label>
                       </div>
                     </div>
@@ -607,7 +607,7 @@ export const ComprehensiveStorageManagement = () => {
                       onCheckedChange={(checked) => setRestoreSettings(prev => ({ ...prev, dryRun: checked }))}
                     />
                     <Label htmlFor="restoreDryRun" className="text-sm">
-                      {restoreSettings.dryRun ? 'Simulation only' : 'Actually restore files'}
+                      {restoreSettings.dryRun ? t('simulation_only') : t('actually_restore')}
                     </Label>
                   </div>
                   
@@ -621,7 +621,7 @@ export const ComprehensiveStorageManagement = () => {
                     ) : (
                       <RotateCcw className="h-4 w-4 mr-2" />
                     )}
-                    {restoreSettings.dryRun ? 'Simulate Restore' : 'Execute Restore'}
+                    {restoreSettings.dryRun ? t('simulate_restore') : t('execute_restore')}
                   </Button>
                 </CardContent>
               </Card>
@@ -633,25 +633,25 @@ export const ComprehensiveStorageManagement = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Zap className="h-5 w-5" />
-                    Storage Optimization
+                    {t('storage_optimization')}
                   </CardTitle>
                   <CardDescription>
-                    Analyze and optimize storage usage by finding duplicates and wasted space
+                    {t('analyze_optimize_storage_usage')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="optimizationBucket">Bucket Filter</Label>
+                      <Label htmlFor="optimizationBucket">{t('bucket_filter')}</Label>
                       <Select 
                         value={optimizationSettings.bucketFilter} 
                         onValueChange={(value) => setOptimizationSettings(prev => ({ ...prev, bucketFilter: value }))}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="All buckets" />
+                          <SelectValue placeholder={t('all_buckets')} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="all">All buckets</SelectItem>
+                          <SelectItem value="all">{t('all_buckets')}</SelectItem>
                           {buckets.map(bucket => (
                             <SelectItem key={bucket} value={bucket}>{bucket}</SelectItem>
                           ))}
@@ -659,7 +659,7 @@ export const ComprehensiveStorageManagement = () => {
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="minFileSize">Minimum File Size (bytes)</Label>
+                      <Label htmlFor="minFileSize">{t('minimum_file_size')}</Label>
                       <Input
                         id="minFileSize"
                         type="number"
