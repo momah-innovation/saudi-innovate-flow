@@ -9,7 +9,7 @@ interface ViewLayoutsProps {
 export function ViewLayouts({ viewMode, children, listRenderer }: ViewLayoutsProps) {
   if (viewMode === 'cards') {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {children}
       </div>
     );
@@ -17,7 +17,7 @@ export function ViewLayouts({ viewMode, children, listRenderer }: ViewLayoutsPro
 
   if (viewMode === 'grid') {
     return (
-      <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+      <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
         {children}
       </div>
     );
@@ -35,5 +35,10 @@ export function ViewLayouts({ viewMode, children, listRenderer }: ViewLayoutsPro
     );
   }
 
-  return <div className="grid grid-cols-1 gap-6">{children}</div>;
+  // Default fallback for any undefined viewMode
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {children}
+    </div>
+  );
 }
