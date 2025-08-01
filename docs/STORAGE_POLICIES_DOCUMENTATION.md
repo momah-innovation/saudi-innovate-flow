@@ -283,27 +283,65 @@ const FALLBACK_UPLOAD_CONFIGS = {
 
 ---
 
+## 🔧 **Advanced Management Features**
+
+### **Storage Analytics & Monitoring**
+- **Real-time Analytics**: Track storage usage, file counts, and growth trends
+- **Bucket Health Status**: Monitor bucket health (healthy/warning/critical)
+- **Usage Metrics**: Total storage, average file sizes, oldest/newest files
+- **Admin Dashboard**: Comprehensive analytics interface for administrators
+
+### **File Migration & Backup**
+- **Cross-Bucket Migration**: Move files between buckets with path preservation
+- **Automated Backups**: Create full bucket backups with metadata
+- **Selective Restoration**: Restore specific files or patterns from archives
+- **Migration Scripts**: Edge functions for bulk file operations
+
+### **Storage Optimization**
+- **Duplicate Detection**: Find and analyze duplicate files across buckets
+- **Storage Cleanup**: Automated removal of old temporary files
+- **Bulk Operations**: Pattern-based file management and cleanup
+- **Archive Management**: Automatic archiving of files by age criteria
+
+### **Quota Management**
+- **Bucket Quotas**: Set and monitor storage limits per bucket
+- **Usage Alerts**: Automatic notifications for quota approaching limits
+- **Compliance Monitoring**: Track quota adherence across all buckets
+- **Dynamic Quotas**: Adjust quotas based on usage patterns
+
+### **Security & Compliance**
+- **Policy Linting**: Automated security policy validation
+- **Access Auditing**: Track file access patterns and permissions
+- **Compliance Reports**: Generate security and usage compliance reports
+- **Security Alerts**: Monitor for unusual access patterns
+
+---
+
 ## 🚨 **Security Considerations**
 
 ### **Row Level Security (RLS)**
 - All storage.objects policies use RLS for fine-grained access control
 - Policies check user authentication and role membership
 - File-level access uses folder structure: `bucket/user-id/filename`
+- Security definer functions prevent infinite recursion in policies
 
 ### **Role-Based Access**
 - Uses `has_role()` function for admin/role checks
 - Team membership verified through `innovation_team_members` table
 - Active status required for team member access
+- Hierarchical permissions: Public < Authenticated < Team < Admin
 
 ### **Path-Based Security**
 - Private files use folder structure: `user-id/filename`
 - Event recordings use: `recordings/event-id/filename`
 - Policies extract user/event ID from file path for access control
+- Path validation prevents unauthorized access across user directories
 
 ### **Public vs Private**
-- **Public buckets**: Viewable by anyone, upload restricted
-- **Private buckets**: Both view and upload access controlled
-- **Admin buckets**: Full admin-only access
+- **Public buckets**: Viewable by anyone, upload restricted to authorized users
+- **Private buckets**: Both view and upload access controlled by ownership/roles
+- **Admin buckets**: Full admin-only access with audit logging
+- **Temporary buckets**: Short-lived uploads with automatic cleanup policies
 
 ---
 
@@ -387,12 +425,114 @@ WHERE bucket_id = 'your-bucket-name';
 
 ---
 
+## 🔧 **Advanced Management API**
+
+### **Storage Analytics Functions**
+
+```typescript
+// Get detailed bucket statistics
+const stats = await getBucketStats('bucket-name')
+// Returns: { total_files, total_size, avg_file_size, oldest_file, newest_file }
+
+// Get all bucket analytics with health status
+const analytics = await getAllBucketAnalytics()
+// Returns array with health indicators (healthy/warning/critical)
+
+// Get advanced analytics with trends
+const advanced = await getAdvancedAnalytics()
+// Returns: storage trends, growth metrics, usage patterns
+```
+
+### **Migration & Backup Operations**
+
+```typescript
+// Migrate files between buckets
+await migrateBetweenBuckets(
+  'source-bucket',
+  'target-bucket',
+  '*.jpg',        // file pattern (optional)
+  true,           // preserve paths
+  false           // dry run (false = execute)
+)
+
+// Create bucket backup
+await createBucketBackup(
+  'source-bucket',
+  'backup-name',  // optional custom name
+  true            // include metadata
+)
+
+// Restore from archive
+await restoreFromArchive(
+  'archive-bucket',
+  'target-bucket',
+  '*.pdf',        // file pattern (optional)
+  true,           // restore original paths
+  false           // dry run
+)
+```
+
+### **Optimization & Cleanup**
+
+```typescript
+// Find duplicate files
+const duplicates = await findDuplicateFiles(
+  'bucket-filter',  // optional bucket pattern
+  1024             // min file size in bytes
+)
+// Returns: { duplicates: [], totalSavings: number }
+
+// Archive old files
+await archiveOldFiles(
+  'source-bucket',
+  30,              // days old
+  'archive-bucket' // optional archive destination
+)
+
+// Bulk cleanup with pattern
+await bulkCleanupFiles(
+  'bucket-name',
+  'temp-*',        // file pattern
+  7,               // older than days
+  true             // dry run first
+)
+```
+
+### **Quota Management**
+
+```typescript
+// Set bucket quota (100MB)
+await manageStorageQuotas('bucket-name', 104857600, 'set')
+
+// Check quota usage
+const quota = await manageStorageQuotas('bucket-name', null, 'check')
+// Returns: { usage, quota, percentage, status }
+
+// Remove quota
+await manageStorageQuotas('bucket-name', null, 'remove')
+```
+
+### **Export & Metadata**
+
+```typescript
+// Export storage metadata
+const metadata = await exportStorageMetadata(
+  'images-*',      // bucket filter (optional)
+  true             // include file URLs
+)
+// Returns downloadable JSON with comprehensive metadata
+```
+
+---
+
 ## 📚 **Additional Resources**
 
 - [Storage System Guide](./STORAGE_SYSTEM_GUIDE.md)
 - [Migration Plan](./STORAGE_MIGRATION_PLAN.md)
+- [Migration Execution Guide](./STORAGE_MIGRATION_EXECUTION_GUIDE.md)
 - [Upload Configuration Reference](../src/utils/uploadConfigs.ts)
 - [Edge Function Documentation](../supabase/functions/secure-upload/)
+- [Advanced Analytics Hook](../src/hooks/useStorageAnalytics.ts)
 
 ---
 
