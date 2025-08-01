@@ -75,7 +75,7 @@ const GRID_SIZES = {
 }
 
 const COLOR_FILTERS = [
-  { name: 'All', value: '', color: 'transparent' },
+  { name: 'All', value: 'all', color: 'transparent' },
   { name: 'Red', value: 'red', color: '#ef4444' },
   { name: 'Orange', value: 'orange', color: '#f97316' },
   { name: 'Yellow', value: 'yellow', color: '#eab308' },
@@ -116,8 +116,8 @@ export function UnsplashImageBrowser({
   const [orientation, setOrientation] = useState<string>('all')
   const [sortBy, setSortBy] = useState<SortOption>('relevant')
   const [sizeFilter, setSizeFilter] = useState<SizeFilter>('all')
-  const [colorFilter, setColorFilter] = useState('')
-  const [categoryFilter, setCategoryFilter] = useState('')
+  const [colorFilter, setColorFilter] = useState('all')
+  const [categoryFilter, setCategoryFilter] = useState('all')
 
   // Layout and view options
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
@@ -207,8 +207,8 @@ export function UnsplashImageBrowser({
         per_page: infiniteScroll ? 30 : 12,
         orientation: orientation === 'all' ? undefined : orientation,
         order_by: sortBy,
-        color: colorFilter || undefined,
-        category: categoryFilter || undefined
+        color: colorFilter === 'all' ? undefined : colorFilter,
+        category: categoryFilter === 'all' ? undefined : categoryFilter
       }
 
       const { data, error } = await supabase.functions.invoke('unsplash-images', {
@@ -365,8 +365,8 @@ export function UnsplashImageBrowser({
     setOrientation('all')
     setSortBy('relevant')
     setSizeFilter('all')
-    setColorFilter('')
-    setCategoryFilter('')
+    setColorFilter('all')
+    setCategoryFilter('all')
     setSearchQuery('')
     setPage(1)
     searchImages('', 1, true)
@@ -594,7 +594,7 @@ export function UnsplashImageBrowser({
                           <SelectValue placeholder="All Categories" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">All Categories</SelectItem>
+                          <SelectItem value="all">All Categories</SelectItem>
                           {CATEGORY_TAGS.map(category => (
                             <SelectItem key={category} value={category.toLowerCase()}>
                               {category}
