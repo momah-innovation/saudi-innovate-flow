@@ -2,7 +2,7 @@
 
 ## Overview
 
-The storage system provides comprehensive file upload, management, and monitoring capabilities with built-in security and analytics.
+The storage system provides comprehensive file upload, management, monitoring, and optimization capabilities with built-in security, analytics, and advanced administrative tools.
 
 ## Components
 
@@ -81,18 +81,112 @@ const {
 } = useFileUploader()
 ```
 
-### 4. Storage Management Pages
+### 4. Storage Analytics Hook (`useStorageAnalytics`)
+
+Comprehensive storage management and analytics:
+
+```tsx
+import { useStorageAnalytics } from '@/hooks/useStorageAnalytics'
+
+const {
+  getBucketStats,           // Get detailed bucket statistics
+  getAllBucketAnalytics,    // Get analytics for all buckets
+  performAdminCleanup,      // Admin-level cleanup operations
+  cleanupOldTempFiles,      // Remove old temporary files
+  getAdvancedAnalytics,     // Get analytics with trends
+  archiveOldFiles,          // Archive files by age
+  bulkCleanupFiles,         // Bulk file removal
+  exportStorageMetadata,    // Export metadata to JSON
+  migrateBetweenBuckets,    // Migrate files between buckets
+  createBucketBackup,       // Create bucket backups
+  restoreFromArchive,       // Restore from backup
+  findDuplicateFiles,       // Find and analyze duplicates
+  manageStorageQuotas       // Manage bucket quotas
+} = useStorageAnalytics()
+```
+
+### 5. Storage Management Components
+
+#### Storage Analytics Tab (`StorageAnalyticsTab`)
+- Real-time storage analytics dashboard
+- Bucket health monitoring (healthy/warning/critical)
+- Admin cleanup functionality
+- Storage usage overview with metrics
+- File count and size tracking per bucket
+
+**Features:**
+- Health status indicators with visual icons
+- Admin controls for refresh and cleanup
+- Detailed bucket analytics table
+- Total storage metrics summary
+
+#### Comprehensive Storage Management (`ComprehensiveStorageManagement`)
+Advanced storage operations with tabbed interface:
+
+**Export & Migration Tab:**
+- Export storage metadata to JSON
+- Cross-bucket file migration
+- Preserve file paths and metadata
+- Bulk migration operations
+
+**Backup & Recovery Tab:**
+- Create comprehensive bucket backups
+- Restore files from archives
+- Selective file restoration
+- Metadata preservation options
+
+**Optimization Tab:**
+- Duplicate file detection and analysis
+- Storage space optimization recommendations
+- Potential savings calculations
+- File deduplication tools
+
+**Quotas & Monitoring Tab:**
+- Set and manage bucket storage quotas
+- Monitor quota usage with progress bars
+- Quota compliance checking
+- Usage alerts and warnings
+
+**Advanced Tools Tab:**
+- Archive old files by age criteria
+- Bulk file cleanup with pattern matching
+- Dry-run capabilities for safe testing
+- Batch processing operations
+
+#### Advanced Storage Management (`AdvancedStorageManagement`)
+Enterprise-level storage analytics and operations:
+
+**Analytics Overview:**
+- Total storage usage across all buckets
+- File count metrics and trends
+- Growth rate analysis
+- Storage efficiency metrics
+
+**File Archiving:**
+- Automated archiving based on file age
+- Custom archive bucket selection
+- Bulk archiving operations
+- Archive policy management
+
+**Bulk Operations:**
+- Pattern-based file cleanup
+- Age-based file removal
+- Dry-run testing before execution
+- Batch processing with progress tracking
+
+### 6. Storage Management Pages
 
 #### Storage Management (`StorageManagementPage`)
-- Monitor storage usage across all buckets
-- View file counts and sizes
-- Admin cleanup operations
-- Bucket security status
+- Comprehensive analytics dashboard
+- Real-time bucket monitoring
+- Administrative cleanup tools
+- Security status overview
 
 #### Storage Policies (`StoragePoliciesPage`)
-- Review bucket access policies
-- Security recommendations
-- Policy compliance monitoring
+- Row Level Security policy review
+- Access control monitoring
+- Security compliance checking
+- Policy recommendation engine
 
 ## Security Features
 
@@ -160,12 +254,124 @@ Automated cleanup of temporary files:
 - Admin-only access
 - Comprehensive logging
 
+## Advanced Management Features
+
+### 1. Storage Analytics & Monitoring
+
+**Real-time Analytics:**
+```tsx
+const { getAdvancedAnalytics } = useStorageAnalytics()
+
+const analytics = await getAdvancedAnalytics()
+// Returns: total storage, bucket counts, growth trends
+```
+
+**Bucket Health Monitoring:**
+- Health status indicators (healthy/warning/critical)
+- File count and size tracking
+- Usage percentage monitoring
+- Oldest/newest file tracking
+
+### 2. File Migration & Backup
+
+**Cross-Bucket Migration:**
+```tsx
+const { migrateBetweenBuckets } = useStorageAnalytics()
+
+await migrateBetweenBuckets(
+  'source-bucket',
+  'target-bucket', 
+  '*.jpg',        // file pattern
+  true,           // preserve paths
+  false           // not a dry run
+)
+```
+
+**Backup Operations:**
+```tsx
+const { createBucketBackup, restoreFromArchive } = useStorageAnalytics()
+
+// Create backup
+await createBucketBackup('main-bucket', 'backup-2024', true)
+
+// Restore from backup
+await restoreFromArchive('backup-bucket', 'main-bucket', '*.pdf')
+```
+
+### 3. Storage Optimization
+
+**Duplicate File Detection:**
+```tsx
+const { findDuplicateFiles } = useStorageAnalytics()
+
+const duplicates = await findDuplicateFiles('images-bucket', 1024)
+// Find duplicates over 1KB in size
+```
+
+**Bulk Cleanup Operations:**
+```tsx
+const { bulkCleanupFiles, archiveOldFiles } = useStorageAnalytics()
+
+// Archive files older than 30 days
+await archiveOldFiles('main-bucket', 30, 'archive-bucket')
+
+// Bulk cleanup with pattern
+await bulkCleanupFiles('temp-bucket', 'temp-*', 7, false)
+```
+
+### 4. Quota Management
+
+**Storage Quotas:**
+```tsx
+const { manageStorageQuotas } = useStorageAnalytics()
+
+// Set quota (100MB limit)
+await manageStorageQuotas('user-uploads', 104857600, 'set')
+
+// Check quota status
+const quota = await manageStorageQuotas('user-uploads', null, 'check')
+```
+
+### 5. Metadata Export & Import
+
+**Export Storage Metadata:**
+```tsx
+const { exportStorageMetadata } = useStorageAnalytics()
+
+const metadata = await exportStorageMetadata('images-*', true)
+// Export with file URLs included
+```
+
 ## Best Practices
 
 ### 1. Use Appropriate Bucket Types
-- Public: Images, logos, public assets
-- Private: User documents, sensitive files
-- Temporary: Multi-step upload processes
+- **Public buckets**: Images, logos, public assets
+- **Private buckets**: User documents, sensitive files  
+- **Temporary buckets**: Multi-step upload processes
+- **Archive buckets**: Long-term storage for old files
+
+### 2. Implement Storage Quotas
+```tsx
+// Set reasonable quotas for different bucket types
+await manageStorageQuotas('user-uploads', 50 * 1024 * 1024, 'set') // 50MB
+await manageStorageQuotas('team-docs', 500 * 1024 * 1024, 'set')   // 500MB
+```
+
+### 3. Regular Maintenance
+```tsx
+// Weekly cleanup routine
+const performWeeklyMaintenance = async () => {
+  // Clean up old temporary files
+  await cleanupOldTempFiles()
+  
+  // Archive files older than 90 days
+  await archiveOldFiles('main-storage', 90, 'archive-storage')
+  
+  // Find and report duplicates
+  const duplicates = await findDuplicateFiles()
+  console.log('Potential savings:', duplicates.totalSavings)
+}
+```
 
 ### 2. Implement Proper Validation
 ```tsx
