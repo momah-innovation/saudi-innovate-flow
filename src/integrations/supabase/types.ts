@@ -6405,6 +6405,14 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      create_bucket_backup: {
+        Args: {
+          source_bucket: string
+          backup_name?: string
+          include_metadata?: boolean
+        }
+        Returns: Json
+      }
       detect_suspicious_activity: {
         Args: {
           p_user_id: string
@@ -6418,6 +6426,10 @@ export type Database = {
       ensure_innovator_exists: {
         Args: { user_uuid: string }
         Returns: string
+      }
+      export_storage_metadata: {
+        Args: { bucket_filter?: string; include_file_urls?: boolean }
+        Returns: Json
       }
       generate_invitation_token: {
         Args: Record<PropertyKey, never>
@@ -6492,6 +6504,16 @@ export type Database = {
           risk_level?: string
         }
         Returns: string
+      }
+      migrate_files_between_buckets: {
+        Args: {
+          source_bucket: string
+          target_bucket: string
+          file_pattern?: string
+          preserve_paths?: boolean
+          dry_run?: boolean
+        }
+        Returns: Json
       }
       refresh_opportunity_analytics: {
         Args: { p_opportunity_id: string }
