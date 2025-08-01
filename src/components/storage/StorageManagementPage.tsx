@@ -16,6 +16,7 @@ import { EnhancedStorageFileCard } from './EnhancedStorageFileCard';
 import { BulkFileActions } from './BulkFileActions';
 import { StorageStatsCards } from './StorageStatsCards';
 import { ViewLayouts } from '@/components/ui/view-layouts';
+import { ComprehensiveStorageManagement } from './ComprehensiveStorageManagement';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -662,10 +663,11 @@ export function StorageManagementPage() {
         />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="files">{t('storage.files')}</TabsTrigger>
             <TabsTrigger value="buckets">{t('storage.buckets')}</TabsTrigger>
-            <TabsTrigger value="settings">Uploader Settings</TabsTrigger>
+            <TabsTrigger value="management">Advanced</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
             <TabsTrigger value="analytics">{t('storage.analytics')}</TabsTrigger>
           </TabsList>
 
@@ -882,6 +884,10 @@ export function StorageManagementPage() {
                 </p>
               </div>
             )}
+          </TabsContent>
+
+          <TabsContent value="management" className="space-y-6">
+            <ComprehensiveStorageManagement />
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
