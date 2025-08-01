@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { MaintenanceGuard } from "@/components/maintenance/MaintenanceGuard";
+import AdminDashboard from "./pages/AdminDashboard";
 import LandingPage from "./pages/LandingPage";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -389,15 +390,15 @@ const App = () => (
                  } 
                 />
              <Route path="/help" element={<HelpPage />} />
-            {/* Legacy dashboard route pointing to Index */}
-            <Route 
-              path="/admin/dashboard" 
-              element={
-                <ProtectedRoute requireProfile>
-                  <Index />
-                </ProtectedRoute>
-              } 
-            />
+             {/* Admin Dashboard route */}
+             <Route 
+               path="/admin/dashboard" 
+               element={
+                 <ProtectedRoute requireProfile requiredRole="admin">
+                   <AdminDashboard />
+                 </ProtectedRoute>
+               } 
+             />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

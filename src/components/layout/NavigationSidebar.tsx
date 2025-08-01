@@ -375,7 +375,16 @@ export function NavigationSidebar() {
         path: '/admin/organizational-structure',
         group: 'admin',
         roles: ['admin'] 
-      },
+       },
+       { 
+         id: 'admin-dashboard', 
+         label: 'Admin Dashboard', 
+         arabicLabel: 'لوحة الإدارة',
+         icon: BarChart3, 
+         path: '/admin/dashboard',
+         group: 'admin',
+         roles: ['admin'] 
+       },
       { 
         id: 'expert-assignments', 
         label: 'Expert Assignments', 
