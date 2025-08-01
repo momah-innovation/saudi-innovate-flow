@@ -80,13 +80,13 @@ export function ImageSourceSelector({
         </Button>
       </DialogTrigger>
       
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
-        <DialogHeader>
+      <DialogContent className="max-w-6xl h-[90vh] flex flex-col">
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle>{dialogTitle}</DialogTitle>
         </DialogHeader>
         
-        <Tabs value={selectedTab} onValueChange={(value) => setSelectedTab(value as 'upload' | 'unsplash')} className="flex-1 flex flex-col">
-          <TabsList className="grid w-full grid-cols-2">
+        <Tabs value={selectedTab} onValueChange={(value) => setSelectedTab(value as 'upload' | 'unsplash')} className="flex-1 flex flex-col min-h-0">
+          <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
             <TabsTrigger value="unsplash" className="flex items-center gap-2">
               <Image className="h-4 w-4" />
               Browse Stock Images
@@ -97,19 +97,15 @@ export function ImageSourceSelector({
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="unsplash" className="flex-1 overflow-hidden">
-            <Card className="h-full">
-              <CardContent className="p-4 h-full overflow-hidden">
-                <UnsplashImageBrowser
-                  onImageSelect={handleUnsplashSelect}
-                  maxSelection={allowMultiple ? 10 : 1}
-                  className="h-full"
-                />
-              </CardContent>
-            </Card>
+          <TabsContent value="unsplash" className="flex-1 mt-4 min-h-0">
+            <UnsplashImageBrowser
+              onImageSelect={handleUnsplashSelect}
+              maxSelection={allowMultiple ? 10 : 1}
+              className="h-full"
+            />
           </TabsContent>
           
-          <TabsContent value="upload" className="flex-1">
+          <TabsContent value="upload" className="flex-1 mt-4">
             <Card className="h-full">
               <CardContent className="p-4">
                 <div className="space-y-4">
