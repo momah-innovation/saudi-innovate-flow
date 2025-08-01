@@ -899,13 +899,13 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
                   healthData.cleanup.autoCleanupEnabled ? 'text-purple-600' : 'text-gray-600'
                 }`} />
               </div>
-              <h4 className="font-medium">Cleanup Status</h4>
+              <h4 className="font-medium">{t('cleanup_status')}</h4>
               <p className="text-sm text-muted-foreground">
-                {healthData.cleanup.autoCleanupEnabled ? 'Auto-cleanup enabled' : 'Manual cleanup only'}
+                {healthData.cleanup.autoCleanupEnabled ? t('auto_cleanup_enabled') : t('manual_cleanup_only')}
               </p>
               {healthData.cleanup.lastCleanupRun && (
                 <p className="text-xs text-muted-foreground">
-                  Last run: {new Date(healthData.cleanup.lastCleanupRun).toLocaleDateString()}
+                  {t('last_run')}: {new Date(healthData.cleanup.lastCleanupRun).toLocaleDateString()}
                 </p>
               )}
               {healthData.cleanup.nextScheduledCleanup && (
