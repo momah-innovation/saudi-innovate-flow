@@ -11,6 +11,7 @@ import { Separator } from '@/components/ui/separator'
 import { Plus, Upload, X } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
+import { useTranslation } from '@/hooks/useAppTranslation'
 
 interface UploaderConfig {
   id: string
@@ -46,6 +47,7 @@ const commonFileTypes = [
 ]
 
 export function ConfigurationDialog({ config, open, onOpenChange, onSave }: ConfigurationDialogProps) {
+  const { t } = useTranslation()
   const { toast } = useToast()
   const isEditing = Boolean(config)
   const [availableBuckets, setAvailableBuckets] = useState<string[]>([])
@@ -155,8 +157,8 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
     
     if (!formData.uploadType || !formData.bucket) {
       toast({
-        title: "Validation Error",
-        description: "Upload type and bucket are required",
+        title: t('validation_error'),
+        description: t('upload_type_bucket_required'),
         variant: 'destructive'
       })
       return
@@ -164,8 +166,8 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
 
     if (formData.allowedTypes.length === 0) {
       toast({
-        title: "Validation Error", 
-        description: "At least one file type must be allowed",
+        title: t('validation_error'), 
+        description: t('at_least_one_file_type'),
         variant: 'destructive'
       })
       return
@@ -175,8 +177,8 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
     onOpenChange(false)
     
     toast({
-      title: isEditing ? "Configuration Updated" : "Configuration Created",
-      description: `Upload configuration for ${formData.uploadType} has been ${isEditing ? 'updated' : 'created'}`
+      title: isEditing ? t('configuration_updated') : t('configuration_created'),
+      description: isEditing ? t('upload_configuration_updated') : t('upload_configuration_created')
     })
   }
 
@@ -210,10 +212,10 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Upload className="w-5 h-5" />
-            {isEditing ? 'Edit Upload Configuration' : 'Create Upload Configuration'}
+            {isEditing ? t('edit_upload_configuration') : t('create_upload_configuration')}
           </DialogTitle>
           <DialogDescription>
-            Configure file upload settings for a specific upload type
+            {t('configure_file_upload_settings')}
           </DialogDescription>
         </DialogHeader>
 
@@ -221,7 +223,7 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
           {/* Basic Settings */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="uploadType">Upload Type *</Label>
+              <Label htmlFor="uploadType">{t('upload_type')} *</Label>
               <Input
                 id="uploadType"
                 value={formData.uploadType}
@@ -232,7 +234,7 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="bucket">Storage Bucket *</Label>
+              <Label htmlFor="bucket">{t('storage_bucket')} *</Label>
               <Select 
                 value={formData.bucket} 
                 onValueChange={(value) => {
@@ -243,14 +245,14 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
                 <SelectTrigger>
                   <SelectValue placeholder={
                     availableBuckets.length === 0 
-                      ? "Loading buckets..." 
-                      : "Select bucket"
+                      ? t('loading_buckets')
+                      : t('select_bucket')
                   } />
                 </SelectTrigger>
                 <SelectContent>
                   {availableBuckets.length === 0 ? (
                      <SelectItem value="no-buckets" disabled>
-                       No buckets available
+                       {t('no_buckets_available')}
                      </SelectItem>
                   ) : (
                     availableBuckets.map((bucket) => (
@@ -268,12 +270,12 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="path">Storage Path</Label>
+            <Label htmlFor="path">{t('storage_path')}</Label>
             <Input
               id="path"
               value={formData.path}
               onChange={(e) => setFormData(prev => ({ ...prev, path: e.target.value }))}
-              placeholder="Optional subfolder path"
+              placeholder={t('optional_subfolder_path')}
             />
           </div>
 
@@ -281,11 +283,11 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
 
           {/* File Restrictions */}
           <div className="space-y-4">
-            <h3 className="font-medium">File Restrictions</h3>
+            <h3 className="font-medium">{t('file_restrictions')}</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="maxSizeBytes">Max File Size</Label>
+                <Label htmlFor="maxSizeBytes">{t('max_file_size')}</Label>
                 <div className="flex gap-2">
                   <Input
                     id="maxSizeBytes"
@@ -298,15 +300,15 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
                     min="1"
                     max="100"
                   />
-                  <span className="text-sm text-muted-foreground mt-2">MB</span>
+                  <span className="text-sm text-muted-foreground mt-2">{t('mb')}</span>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Current: {formatBytes(formData.maxSizeBytes)}
+                  {t('current_size')}: {formatBytes(formData.maxSizeBytes)}
                 </p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="maxFiles">Max Files</Label>
+                <Label htmlFor="maxFiles">{t('max_files')}</Label>
                 <Input
                   id="maxFiles"
                   type="number"
@@ -321,12 +323,12 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
 
           {/* Allowed File Types */}
           <div className="space-y-4">
-            <Label>Allowed File Types *</Label>
+            <Label>{t('allowed_file_types')} *</Label>
             
             <div className="space-y-3">
               <Select onValueChange={addFileType}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Add file type" />
+                  <SelectValue placeholder={t('add_file_type')} />
                 </SelectTrigger>
                 <SelectContent>
                   {commonFileTypes.map((type) => (
@@ -359,13 +361,13 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
 
           {/* Cleanup Settings */}
           <div className="space-y-4">
-            <h3 className="font-medium">Cleanup Settings</h3>
+            <h3 className="font-medium">{t('cleanup_settings')}</h3>
             
             <div className="flex items-center justify-between">
               <div>
-                <Label htmlFor="autoCleanup">Auto Cleanup</Label>
+                <Label htmlFor="autoCleanup">{t('auto_cleanup')}</Label>
                 <p className="text-sm text-muted-foreground">
-                  Automatically delete old temporary files
+                  {t('auto_delete_temp_files')}
                 </p>
               </div>
               <Switch
@@ -377,7 +379,7 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
 
             {formData.autoCleanup && (
               <div className="space-y-2">
-                <Label htmlFor="cleanupDays">Cleanup After (Days)</Label>
+                <Label htmlFor="cleanupDays">{t('cleanup_after_days')}</Label>
                 <Input
                   id="cleanupDays"
                   type="number"
@@ -395,9 +397,9 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
           {/* Status */}
           <div className="flex items-center justify-between">
             <div>
-              <Label htmlFor="enabled">Configuration Status</Label>
+              <Label htmlFor="enabled">{t('configuration_status')}</Label>
               <p className="text-sm text-muted-foreground">
-                Enable or disable this upload configuration
+                {t('enable_disable_configuration')}
               </p>
             </div>
             <Switch
@@ -410,10 +412,10 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
           {/* Actions */}
           <div className="flex justify-end gap-2 pt-4 border-t">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('cancel')}
             </Button>
             <Button type="submit">
-              {isEditing ? 'Update Configuration' : 'Create Configuration'}
+              {isEditing ? t('update_configuration') : t('create_configuration')}
             </Button>
           </div>
         </form>

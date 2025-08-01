@@ -47,7 +47,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 export function StorageManagementPage() {
   const { toast } = useToast();

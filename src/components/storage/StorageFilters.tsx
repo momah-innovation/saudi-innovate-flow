@@ -23,6 +23,7 @@ import {
   FileAudio,
   File
 } from 'lucide-react';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 export interface FilterOptions {
   fileType: string;
@@ -56,14 +57,15 @@ export function StorageFilters({
   onClearFilters,
   activeFilterCount
 }: StorageFiltersProps) {
+  const { t } = useTranslation();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const fileTypeOptions = [
-    { value: 'all', label: 'All Types', icon: File },
-    { value: 'image', label: 'Images', icon: FileImage },
-    { value: 'document', label: 'Documents', icon: FileText },
-    { value: 'video', label: 'Videos', icon: FileVideo },
-    { value: 'audio', label: 'Audio', icon: FileAudio },
+    { value: 'all', label: t('all_types'), icon: File },
+    { value: 'image', label: t('images'), icon: FileImage },
+    { value: 'document', label: t('documents'), icon: FileText },
+    { value: 'video', label: t('videos'), icon: FileVideo },
+    { value: 'audio', label: t('audio'), icon: FileAudio },
   ];
 
   const sizeRangeOptions = [

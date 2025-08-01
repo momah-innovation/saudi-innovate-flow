@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Copy, Download, ExternalLink, FileIcon } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
+import { useTranslation } from '@/hooks/useAppTranslation'
 
 interface FileViewDialogProps {
   file: any | null
@@ -13,6 +14,7 @@ interface FileViewDialogProps {
 }
 
 export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps) {
+  const { t } = useTranslation()
   const { toast } = useToast()
 
   if (!file) return null
@@ -30,8 +32,8 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
       const { data } = supabase.storage.from(file.bucket_id).getPublicUrl(file.name)
       await navigator.clipboard.writeText(data.publicUrl)
       toast({
-        title: "URL Copied",
-        description: "File URL copied to clipboard"
+        title: t('url_copied'),
+        description: t('file_url_copied')
       })
     }
   }
@@ -48,14 +50,14 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
         URL.revokeObjectURL(url)
         
         toast({
-          title: "Download Started",
-          description: `Downloading ${file.name}`
+          title: t('download_started'),
+          description: t('downloading_file', { filename: file.name })
         })
       }
     } catch (error) {
       toast({
-        title: "Download Failed",
-        description: "Failed to download file",
+        title: t('download_failed'),
+        description: t('failed_to_download'),
         variant: 'destructive'
       })
     }
@@ -111,7 +113,7 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
         <div className="bg-muted/50 border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
           <FileIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
           <p className="text-sm text-muted-foreground">
-            Preview not available for private files
+            {t('preview_not_available_private')}
           </p>
         </div>
       )
@@ -132,7 +134,7 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
           />
           <div className="hidden">
             <FileIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <p className="text-sm text-muted-foreground">Failed to load image</p>
+            <p className="text-sm text-muted-foreground">{t('failed_to_load_image')}</p>
           </div>
         </div>
       )
@@ -159,7 +161,7 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
             preload="metadata"
           >
             <source src={fileUrl} type={file.metadata?.mimetype || ''} />
-            Your browser does not support the video tag.
+            {t('video_not_supported')}
           </video>
         </div>
       )
@@ -173,7 +175,7 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
           </div>
           <audio controls className="w-full max-w-md mx-auto">
             <source src={fileUrl} type={file.metadata?.mimetype || ''} />
-            Your browser does not support the audio tag.
+            {t('audio_not_supported')}
           </audio>
         </div>
       )
@@ -183,13 +185,13 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
       <div className="bg-muted/50 border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
         <FileIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
         <p className="text-sm text-muted-foreground mb-2">
-          Preview not available for this file type
+          {t('preview_not_available_type')}
         </p>
         <Button variant="outline" size="sm" onClick={() => {
           window.open(fileUrl, '_blank')
         }}>
           <ExternalLink className="w-4 h-4 mr-2" />
-          Open in new tab
+          {t('open_in_new_tab')}
         </Button>
       </div>
     )
@@ -204,7 +206,7 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
             {file.name}
           </DialogTitle>
           <DialogDescription>
-            File details and management options
+            {t('file_details_management')}
           </DialogDescription>
         </DialogHeader>
 
@@ -216,42 +218,42 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-3">
               <div>
-                <label className="text-sm font-medium text-muted-foreground">File Name</label>
+                <label className="text-sm font-medium text-muted-foreground">{t('file_name')}</label>
                 <p className="font-medium">{file.name}</p>
               </div>
               
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Bucket</label>
+                <label className="text-sm font-medium text-muted-foreground">{t('bucket')}</label>
                 <p className="font-medium">{file.bucket_id}</p>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Visibility</label>
+                <label className="text-sm font-medium text-muted-foreground">{t('visibility')}</label>
                 <Badge variant={file.is_public ? "default" : "secondary"}>
-                  {file.is_public ? "Public" : "Private"}
+                  {file.is_public ? t('public') : t('private')}
                 </Badge>
               </div>
             </div>
 
             <div className="space-y-3">
               <div>
-                <label className="text-sm font-medium text-muted-foreground">File Size</label>
+                <label className="text-sm font-medium text-muted-foreground">{t('file_size')}</label>
                 <p className="font-medium">
-                  {file.metadata?.size ? formatFileSize(file.metadata.size) : "Unknown"}
+                  {file.metadata?.size ? formatFileSize(file.metadata.size) : t('unknown')}
                 </p>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Last Modified</label>
+                <label className="text-sm font-medium text-muted-foreground">{t('last_modified')}</label>
                 <p className="font-medium">
-                  {file.updated_at ? new Date(file.updated_at).toLocaleDateString() : "Unknown"}
+                  {file.updated_at ? new Date(file.updated_at).toLocaleDateString() : t('unknown')}
                 </p>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Content Type</label>
+                <label className="text-sm font-medium text-muted-foreground">{t('content_type')}</label>
                 <p className="font-medium">
-                  {file.metadata?.mimetype || "Unknown"}
+                  {file.metadata?.mimetype || t('unknown')}
                 </p>
               </div>
             </div>
@@ -261,13 +263,13 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
           <div className="flex flex-wrap gap-2 pt-4 border-t">
             <Button onClick={handleDownload} className="flex-1 sm:flex-none">
               <Download className="w-4 h-4 mr-2" />
-              Download
+              {t('download')}
             </Button>
             
             {file.is_public && (
               <Button variant="outline" onClick={handleCopyUrl} className="flex-1 sm:flex-none">
                 <Copy className="w-4 h-4 mr-2" />
-                Copy URL
+                {t('copy_url')}
               </Button>
             )}
 
@@ -277,7 +279,7 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
                 window.open(data.publicUrl, '_blank')
               }} className="flex-1 sm:flex-none">
                 <ExternalLink className="w-4 h-4 mr-2" />
-                Open
+                {t('open')}
               </Button>
             )}
           </div>
