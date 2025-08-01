@@ -8,7 +8,6 @@ import {
 } from '@/components/ui/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 
@@ -47,63 +46,27 @@ export function StatisticsDetailDialog({ isOpen, onClose, type, data }: Statisti
   const renderChart = () => {
     if (!data.chartData) return null;
 
-    switch (data.chartType) {
-      case 'bar':
-        return (
-          <ChartContainer config={{}} className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data.chartData}>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="value" fill="hsl(var(--primary))" />
-              </BarChart>
-            </ResponsiveContainer>
-          </ChartContainer>
-        );
-
-      case 'pie':
-        return (
-          <ChartContainer config={{}} className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={data.chartData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {data.chartData.map((entry: any, index: number) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <ChartTooltip content={<ChartTooltipContent />} />
-              </PieChart>
-            </ResponsiveContainer>
-          </ChartContainer>
-        );
-
-      case 'line':
-        return (
-          <ChartContainer config={{}} className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={data.chartData}>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Line type="monotone" dataKey="value" stroke="hsl(var(--primary))" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
-          </ChartContainer>
-        );
-
-      default:
-        return null;
-    }
+    return (
+      <div className="h-[300px] flex items-center justify-center">
+        <div className="space-y-4 w-full max-w-sm">
+          {data.chartData.slice(0, 5).map((item: any, index: number) => (
+            <div key={index} className="flex items-center gap-3">
+              <div 
+                className="w-4 h-4 rounded" 
+                style={{ backgroundColor: COLORS[index % COLORS.length] }}
+              />
+              <div className="flex-1">
+                <div className="flex justify-between text-sm mb-1">
+                  <span>{item.name}</span>
+                  <span>{item.value}</span>
+                </div>
+                <Progress value={Math.min((item.value / Math.max(...data.chartData.map((d: any) => d.value))) * 100, 100)} className="h-2" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   };
 
   return (
