@@ -167,9 +167,9 @@ export function UnsplashImageBrowser({
   }, [orientation])
 
   return (
-    <div className={`space-y-4 ${className}`}>
-      {/* Search and Filters */}
-      <div className="space-y-4">
+    <div className={`h-full flex flex-col space-y-4 ${className}`}>
+      {/* Search and Filters - Fixed Header */}
+      <div className="flex-shrink-0 space-y-4">
         <form onSubmit={handleSearch} className="flex gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -221,25 +221,27 @@ export function UnsplashImageBrowser({
         </div>
       </div>
 
-      {/* Quick Search Tags */}
-      <div className="flex flex-wrap gap-2">
-        {['business', 'technology', 'team', 'office', 'innovation', 'data', 'meeting', 'workspace'].map(tag => (
-          <Badge
-            key={tag}
-            variant="secondary"
-            className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-            onClick={() => {
-              setSearchQuery(tag)
-              searchImages(tag, 1, true)
-            }}
-          >
-            {tag}
-          </Badge>
-        ))}
-      </div>
+      {/* Scrollable Results Section */}
+      <div className="flex-1 overflow-y-auto min-h-0">
+        {/* Quick Search Tags */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {['business', 'technology', 'team', 'office', 'innovation', 'data', 'meeting', 'workspace'].map(tag => (
+            <Badge
+              key={tag}
+              variant="secondary"
+              className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
+              onClick={() => {
+                setSearchQuery(tag)
+                searchImages(tag, 1, true)
+              }}
+            >
+              {tag}
+            </Badge>
+          ))}
+        </div>
 
-      {/* Images Grid */}
-      <div className={getImageGridClass()}>
+        {/* Images Grid */}
+        <div className={getImageGridClass()}>
         {images.map((image) => (
           <Card
             key={image.id}
@@ -300,30 +302,31 @@ export function UnsplashImageBrowser({
             </CardContent>
           </Card>
         ))}
+        </div>
+
+        {/* Load More */}
+        {hasMore && !loading && images.length > 0 && (
+          <div className="text-center pt-4">
+            <Button onClick={loadMore} variant="outline">
+              Load More Images
+            </Button>
+          </div>
+        )}
+
+        {loading && images.length === 0 && (
+          <div className="text-center py-8">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2" />
+            <p className="text-muted-foreground">Searching for images...</p>
+          </div>
+        )}
+
+        {!loading && images.length === 0 && searchQuery && (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground">No images found for "{searchQuery}"</p>
+            <p className="text-sm text-muted-foreground mt-1">Try a different search term</p>
+          </div>
+        )}
       </div>
-
-      {/* Load More */}
-      {hasMore && !loading && images.length > 0 && (
-        <div className="text-center">
-          <Button onClick={loadMore} variant="outline">
-            Load More Images
-          </Button>
-        </div>
-      )}
-
-      {loading && images.length === 0 && (
-        <div className="text-center py-8">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2" />
-          <p className="text-muted-foreground">Searching for images...</p>
-        </div>
-      )}
-
-      {!loading && images.length === 0 && searchQuery && (
-        <div className="text-center py-8">
-          <p className="text-muted-foreground">No images found for "{searchQuery}"</p>
-          <p className="text-sm text-muted-foreground mt-1">Try a different search term</p>
-        </div>
-      )}
 
       {/* Image Preview Dialog */}
       <Dialog open={showPreview} onOpenChange={setShowPreview}>
