@@ -316,25 +316,25 @@ export const ComprehensiveStorageManagement = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Download className="h-5 w-5" />
-                    Storage Export
+                    {t('storage_export')}
                   </CardTitle>
                   <CardDescription>
-                    Export storage metadata and file information to JSON format
+                    {t('storage_export_desc')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="exportBucket">Bucket Filter</Label>
+                      <Label htmlFor="exportBucket">{t('bucket_filter')}</Label>
                       <Select 
                         value={exportSettings.bucketFilter} 
                         onValueChange={(value) => setExportSettings(prev => ({ ...prev, bucketFilter: value }))}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="All buckets" />
+                          <SelectValue placeholder={t('all_buckets')} />
                         </SelectTrigger>
                         <SelectContent>
-                           <SelectItem value="all">All buckets</SelectItem>
+                           <SelectItem value="all">{t('all_buckets')}</SelectItem>
                           {buckets.map(bucket => (
                             <SelectItem key={bucket} value={bucket}>{bucket}</SelectItem>
                           ))}
@@ -342,7 +342,7 @@ export const ComprehensiveStorageManagement = () => {
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="includeUrls">Include Public URLs</Label>
+                      <Label htmlFor="includeUrls">{t('include_public_urls')}</Label>
                       <div className="flex items-center space-x-2 pt-2">
                         <Switch
                           id="includeUrls"
@@ -350,7 +350,7 @@ export const ComprehensiveStorageManagement = () => {
                           onCheckedChange={(checked) => setExportSettings(prev => ({ ...prev, includeUrls: checked }))}
                         />
                         <Label htmlFor="includeUrls" className="text-sm">
-                          Export public file URLs
+                          {t('export_public_urls')}
                         </Label>
                       </div>
                     </div>
@@ -361,7 +361,7 @@ export const ComprehensiveStorageManagement = () => {
                     ) : (
                       <Download className="h-4 w-4 mr-2" />
                     )}
-                    Export Storage Data
+                    {t('export_storage_data')}
                   </Button>
                 </CardContent>
               </Card>
@@ -371,22 +371,22 @@ export const ComprehensiveStorageManagement = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Move className="h-5 w-5" />
-                    Cross-Bucket Migration
+                    {t('cross_bucket_migration')}
                   </CardTitle>
                   <CardDescription>
-                    Move files between storage buckets with pattern matching
+                    {t('migration_desc')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="sourceBucket">Source Bucket</Label>
+                      <Label htmlFor="sourceBucket">{t('source_bucket')}</Label>
                       <Select 
                         value={migrationSettings.sourceBucket} 
                         onValueChange={(value) => setMigrationSettings(prev => ({ ...prev, sourceBucket: value }))}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select source bucket" />
+                          <SelectValue placeholder={t('select_source_bucket')} />
                         </SelectTrigger>
                         <SelectContent>
                           {buckets.map(bucket => (
@@ -396,16 +396,16 @@ export const ComprehensiveStorageManagement = () => {
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="targetBucket">Target Bucket</Label>
+                      <Label htmlFor="targetBucket">{t('target_bucket')}</Label>
                       <Input
                         id="targetBucket"
                         value={migrationSettings.targetBucket}
                         onChange={(e) => setMigrationSettings(prev => ({ ...prev, targetBucket: e.target.value }))}
-                        placeholder="Target bucket name"
+                        placeholder={t('target_bucket_name')}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="filePattern">File Pattern</Label>
+                      <Label htmlFor="filePattern">{t('file_pattern')}</Label>
                       <Input
                         id="filePattern"
                         value={migrationSettings.filePattern}
@@ -414,7 +414,7 @@ export const ComprehensiveStorageManagement = () => {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="preservePaths">Preserve Paths</Label>
+                      <Label htmlFor="preservePaths">{t('preserve_paths')}</Label>
                       <div className="flex items-center space-x-2 pt-2">
                         <Switch
                           id="preservePaths"
@@ -422,7 +422,7 @@ export const ComprehensiveStorageManagement = () => {
                           onCheckedChange={(checked) => setMigrationSettings(prev => ({ ...prev, preservePaths: checked }))}
                         />
                         <Label htmlFor="preservePaths" className="text-sm">
-                          Keep original file paths
+                          {t('keep_original_paths')}
                         </Label>
                       </div>
                     </div>
@@ -434,7 +434,7 @@ export const ComprehensiveStorageManagement = () => {
                       onCheckedChange={(checked) => setMigrationSettings(prev => ({ ...prev, dryRun: checked }))}
                     />
                     <Label htmlFor="migrationDryRun" className="text-sm">
-                      {migrationSettings.dryRun ? 'Simulation only' : 'Actually migrate files'}
+                      {migrationSettings.dryRun ? t('simulation_only') : t('actually_migrate')}
                     </Label>
                   </div>
                   
@@ -449,21 +449,25 @@ export const ComprehensiveStorageManagement = () => {
                         ) : (
                           <Move className="h-4 w-4 mr-2" />
                         )}
-                        {migrationSettings.dryRun ? 'Simulate Migration' : 'Execute Migration'}
+                        {migrationSettings.dryRun ? t('simulate_migration') : t('execute_migration')}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Confirm Migration</AlertDialogTitle>
+                        <AlertDialogTitle>{t('confirm_migration')}</AlertDialogTitle>
                         <AlertDialogDescription>
-                          This will {migrationSettings.dryRun ? 'simulate' : 'actually'} migrate files from "{migrationSettings.sourceBucket}" 
-                          to "{migrationSettings.targetBucket}". {!migrationSettings.dryRun && 'This action cannot be undone easily.'}
+                          {t('migration_confirm_text', {
+                            dryRun: migrationSettings.dryRun ? t('simulate') : t('actually'),
+                            source: migrationSettings.sourceBucket,
+                            target: migrationSettings.targetBucket,
+                            warning: !migrationSettings.dryRun ? t('migration_warning') : ''
+                          })}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                         <AlertDialogAction onClick={handleMigration}>
-                          {migrationSettings.dryRun ? 'Simulate' : 'Migrate'}
+                          {migrationSettings.dryRun ? t('simulate') : t('migrate')}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -479,22 +483,22 @@ export const ComprehensiveStorageManagement = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Archive className="h-5 w-5" />
-                    Create Backup
+                    {t('create_backup')}
                   </CardTitle>
                   <CardDescription>
-                    Create complete backups of storage buckets
+                    {t('backup_desc')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="backupSource">Source Bucket</Label>
+                      <Label htmlFor="backupSource">{t('source_bucket')}</Label>
                       <Select 
                         value={backupSettings.sourceBucket} 
                         onValueChange={(value) => setBackupSettings(prev => ({ ...prev, sourceBucket: value }))}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select bucket to backup" />
+                          <SelectValue placeholder={t('select_source_bucket')} />
                         </SelectTrigger>
                         <SelectContent>
                           {buckets.map(bucket => (
@@ -504,12 +508,12 @@ export const ComprehensiveStorageManagement = () => {
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="backupName">Backup Name (Optional)</Label>
+                      <Label htmlFor="backupName">{t('backup_name')}</Label>
                       <Input
                         id="backupName"
                         value={backupSettings.backupName}
                         onChange={(e) => setBackupSettings(prev => ({ ...prev, backupName: e.target.value }))}
-                        placeholder="Custom backup name"
+                        placeholder={t('optional_backup_name')}
                       />
                     </div>
                   </div>
@@ -520,7 +524,7 @@ export const ComprehensiveStorageManagement = () => {
                       onCheckedChange={(checked) => setBackupSettings(prev => ({ ...prev, includeMetadata: checked }))}
                     />
                     <Label htmlFor="includeMetadata" className="text-sm">
-                      Include backup metadata
+                      {t('backup_with_metadata')}
                     </Label>
                   </div>
                   
@@ -530,7 +534,7 @@ export const ComprehensiveStorageManagement = () => {
                     ) : (
                       <Archive className="h-4 w-4 mr-2" />
                     )}
-                    Create Backup
+                    {t('create_bucket_backup')}
                   </Button>
                 </CardContent>
               </Card>
@@ -540,22 +544,22 @@ export const ComprehensiveStorageManagement = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <RotateCcw className="h-5 w-5" />
-                    Restore from Archive
+                    {t('restore_from_archive')}
                   </CardTitle>
                   <CardDescription>
-                    Restore files from archive or backup buckets
+                    {t('restore_desc')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="archiveBucket">Archive Bucket</Label>
+                      <Label htmlFor="archiveBucket">{t('archive_bucket')}</Label>
                       <Select 
                         value={restoreSettings.archiveBucket} 
                         onValueChange={(value) => setRestoreSettings(prev => ({ ...prev, archiveBucket: value }))}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select archive bucket" />
+                          <SelectValue placeholder={t('select_archive_bucket')} />
                         </SelectTrigger>
                         <SelectContent>
                           {buckets.filter(b => b.includes('archive') || b.includes('backup')).map(bucket => (
@@ -565,12 +569,12 @@ export const ComprehensiveStorageManagement = () => {
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="restoreTarget">Target Bucket (Optional)</Label>
+                      <Label htmlFor="restoreTarget">{t('target_bucket')} ({t('optional')})</Label>
                       <Input
                         id="restoreTarget"
                         value={restoreSettings.targetBucket}
                         onChange={(e) => setRestoreSettings(prev => ({ ...prev, targetBucket: e.target.value }))}
-                        placeholder="Auto-detect from metadata"
+                        placeholder={t('auto_detect_metadata')}
                       />
                     </div>
                     <div className="space-y-2">
