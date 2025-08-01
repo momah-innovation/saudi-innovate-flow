@@ -11,6 +11,7 @@ import {
   Users,
   Settings
 } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface StoragePoliciesHeroProps {
   totalBuckets: number;
@@ -33,25 +34,27 @@ export function StoragePoliciesHero({
   lastReview,
   criticalIssues
 }: StoragePoliciesHeroProps) {
+  const { t, isRTL } = useTranslation();
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       {/* Total Buckets */}
       <Card className="gradient-border hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Buckets</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('total_buckets')}</CardTitle>
           <Database className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{totalBuckets}</div>
           <p className="text-xs text-muted-foreground">
-            {totalPolicies} active policies
+            {totalPolicies} {t('active')} {t('total_policies')}
           </p>
           <div className="flex gap-1 mt-2">
             <Badge variant="secondary" className="text-xs">
-              {publicBuckets} public
+              {publicBuckets} {t('public')}
             </Badge>
             <Badge variant="outline" className="text-xs">
-              {protectedBuckets} protected
+              {protectedBuckets} {t('protected')}
             </Badge>
           </div>
         </CardContent>
@@ -60,7 +63,7 @@ export function StoragePoliciesHero({
       {/* Security Score */}
       <Card className="gradient-border hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Security Score</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('security_score')}</CardTitle>
           <Shield className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
@@ -78,7 +81,7 @@ export function StoragePoliciesHero({
             <Progress value={securityScore} className="h-2" />
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            Last review: {lastReview}
+            {t('last_review')}: {lastReview}
           </p>
         </CardContent>
       </Card>
@@ -86,13 +89,13 @@ export function StoragePoliciesHero({
       {/* Policy Coverage */}
       <Card className="gradient-border hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Policy Coverage</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('total_policies')}</CardTitle>
           <Lock className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{protectedBuckets}</div>
           <p className="text-xs text-muted-foreground">
-            of {totalBuckets} buckets protected
+            of {totalBuckets} buckets {t('protected')}
           </p>
           <div className="mt-2">
             <Progress value={(protectedBuckets / totalBuckets) * 100} className="h-2" />
@@ -106,7 +109,7 @@ export function StoragePoliciesHero({
       {/* Security Issues */}
       <Card className="gradient-border hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Security Issues</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('critical_issues')}</CardTitle>
           <AlertTriangle className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
@@ -124,11 +127,11 @@ export function StoragePoliciesHero({
             )}
           </div>
           <p className="text-xs text-muted-foreground">
-            {unprotectedBuckets} unprotected buckets
+            {unprotectedBuckets} {t('unprotected_buckets')}
           </p>
           {criticalIssues > 0 && (
             <Badge variant="destructive" className="mt-2 text-xs">
-              Action Required
+              {t('attention_required')}
             </Badge>
           )}
         </CardContent>

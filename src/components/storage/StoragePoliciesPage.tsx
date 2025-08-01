@@ -9,6 +9,7 @@ import { StoragePoliciesHero } from './StoragePoliciesHero'
 import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
 import { useAuth } from '@/contexts/AuthContext'
+import { useTranslation } from '@/hooks/useTranslation'
 import { 
   Shield, 
   Users, 
@@ -52,6 +53,7 @@ const POLICY_COMMANDS = {
 export const StoragePoliciesPage: React.FC = () => {
   const { user } = useAuth()
   const { toast } = useToast()
+  const { t, isRTL } = useTranslation()
   const [buckets, setBuckets] = useState<BucketInfo[]>([])
   const [loading, setLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
@@ -188,12 +190,12 @@ export const StoragePoliciesPage: React.FC = () => {
   return (
     <PageLayout>
       <PageHeader
-        title="Storage Policies"
-        description="Monitor and manage storage bucket access policies"
+        title={t('storage_policies')}
+        description={t('monitor_manage_policies')}
       >
         <Button onClick={loadStoragePolicies} disabled={loading} variant="outline">
           <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-          Refresh
+          {t('refresh')}
         </Button>
       </PageHeader>
 
@@ -226,7 +228,7 @@ export const StoragePoliciesPage: React.FC = () => {
             <div className="flex items-center gap-2">
               <Unlock className="w-5 h-5 text-green-500" />
               <div>
-                <p className="text-sm text-muted-foreground">Public Buckets</p>
+                <p className="text-sm text-muted-foreground">{t('public_buckets')}</p>
                 <p className="text-2xl font-bold">
                   {buckets.filter(b => b.public).length}
                 </p>
@@ -240,7 +242,7 @@ export const StoragePoliciesPage: React.FC = () => {
             <div className="flex items-center gap-2">
               <Lock className="w-5 h-5 text-blue-500" />
               <div>
-                <p className="text-sm text-muted-foreground">Protected Buckets</p>
+                <p className="text-sm text-muted-foreground">{t('protected_buckets')}</p>
                 <p className="text-2xl font-bold">
                   {buckets.filter(b => !b.public && b.policies.length > 0).length}
                 </p>
@@ -254,7 +256,7 @@ export const StoragePoliciesPage: React.FC = () => {
             <div className="flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-red-500" />
               <div>
-                <p className="text-sm text-muted-foreground">Unprotected</p>
+                <p className="text-sm text-muted-foreground">{t('unprotected_buckets')}</p>
                 <p className="text-2xl font-bold">
                   {buckets.filter(b => !b.public && b.policies.length === 0).length}
                 </p>
@@ -269,14 +271,14 @@ export const StoragePoliciesPage: React.FC = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Shield className="w-5 h-5" />
-            Bucket Access Policies
+            {t('bucket_access_policies')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="text-center py-8">
               <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-muted-foreground" />
-              <p className="text-muted-foreground">Loading policy information...</p>
+              <p className="text-muted-foreground">{t('loading')}</p>
             </div>
           ) : buckets.length === 0 ? (
             <div className="text-center py-8">
@@ -390,7 +392,7 @@ export const StoragePoliciesPage: React.FC = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <AlertTriangle className="w-5 h-5" />
-            Security Recommendations
+            {t('security_recommendations')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
