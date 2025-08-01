@@ -341,14 +341,29 @@ export function StorageManagementPage() {
   };
 
   const handleBucketViewFiles = (bucket: any) => {
+    console.log('handleBucketViewFiles called with bucket:', bucket);
+    
     // Set the bucket filter to show only files from this bucket
-    setFilters(prev => ({ ...prev, bucket: bucket.id }));
+    setFilters(prev => {
+      const newFilters = { ...prev, bucket: bucket.id };
+      console.log('Setting filters:', newFilters);
+      return newFilters;
+    });
+    
     // Switch to files tab to show the filtered results
+    console.log('Attempting to switch to files tab...');
     const tabsList = document.querySelector('[role="tablist"]');
     const filesTab = tabsList?.querySelector('[value="files"]') as HTMLElement;
+    console.log('Found tabs list:', tabsList);
+    console.log('Found files tab:', filesTab);
+    
     if (filesTab) {
+      console.log('Clicking files tab...');
       filesTab.click();
+    } else {
+      console.error('Files tab not found!');
     }
+    
     toast({
       title: "Viewing Bucket Files",
       description: `Showing files from bucket: ${bucket.name}`
