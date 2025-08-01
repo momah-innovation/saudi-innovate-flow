@@ -236,7 +236,10 @@ export const EnhancedOpportunityDetailDialog = ({
         <div className="relative h-48 bg-gradient-to-r from-emerald-600 to-teal-600 overflow-hidden">
           {opportunity.image_url && (
             <img 
-              src={opportunity.image_url} 
+              src={opportunity.image_url.startsWith('http') 
+                ? opportunity.image_url 
+                : `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public${opportunity.image_url}`
+              } 
               alt={opportunity.title_ar}
               className="w-full h-full object-cover opacity-50"
             />
