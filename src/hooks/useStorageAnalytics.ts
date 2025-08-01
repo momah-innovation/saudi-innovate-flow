@@ -180,10 +180,114 @@ export const useStorageAnalytics = () => {
     }
   }, [])
 
+  const getAdvancedAnalytics = useCallback(async () => {
+    try {
+      const { data, error } = await supabase.rpc('get_storage_analytics_with_trends')
+
+      if (error) {
+        console.error('Advanced analytics error:', error)
+        toast({
+          title: 'Analytics Error',
+          description: 'Failed to load advanced analytics',
+          variant: 'destructive'
+        })
+        return null
+      }
+
+      return data
+    } catch (error) {
+      console.error('Advanced analytics error:', error)
+      return null
+    }
+  }, [toast])
+
+  const archiveOldFiles = useCallback(async (
+    sourceBucket: string, 
+    daysOld: number = 365, 
+    archiveBucket: string = 'archived-files-private'
+  ) => {
+    try {
+      const { data, error } = await supabase.rpc('archive_old_files', {
+        source_bucket: sourceBucket,
+        days_old: daysOld,
+        archive_bucket: archiveBucket
+      })
+
+      if (error) {
+        console.error('Archive error:', error)
+        toast({
+          title: 'Archive Failed',
+          description: 'Failed to archive files',
+          variant: 'destructive'
+        })
+        return null
+      }
+
+      const result = data as any
+      toast({
+        title: 'Archive Successful',
+        description: `Archived ${result.archived_count} files from ${sourceBucket}`
+      })
+      return result
+    } catch (error) {
+      console.error('Archive error:', error)
+      toast({
+        title: 'Archive Failed',
+        description: 'An error occurred during archiving',
+        variant: 'destructive'
+      })
+      return null
+    }
+  }, [toast])
+
+  const bulkCleanupFiles = useCallback(async (
+    bucketName: string,
+    filePattern: string = '%temp%',
+    olderThanDays: number = 7,
+    dryRun: boolean = true
+  ) => {
+    try {
+      const { data, error } = await supabase.rpc('bulk_cleanup_files', {
+        bucket_name: bucketName,
+        file_pattern: filePattern,
+        older_than_days: olderThanDays,
+        dry_run: dryRun
+      })
+
+      if (error) {
+        console.error('Bulk cleanup error:', error)
+        toast({
+          title: 'Cleanup Failed',
+          description: 'Failed to perform bulk cleanup',
+          variant: 'destructive'
+        })
+        return null
+      }
+
+      const result = data as any
+      toast({
+        title: dryRun ? 'Cleanup Simulation Complete' : 'Cleanup Successful',
+        description: result.message
+      })
+      return result
+    } catch (error) {
+      console.error('Bulk cleanup error:', error)
+      toast({
+        title: 'Cleanup Failed',
+        description: 'An error occurred during cleanup',
+        variant: 'destructive'
+      })
+      return null
+    }
+  }, [toast])
+
   return {
     getBucketStats,
     getAllBucketAnalytics,
     performAdminCleanup,
-    cleanupOldTempFiles
+    cleanupOldTempFiles,
+    getAdvancedAnalytics,
+    archiveOldFiles,
+    bulkCleanupFiles
   }
 }
