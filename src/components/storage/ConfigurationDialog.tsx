@@ -130,17 +130,22 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
           console.log('Config final fallback:', { buckets, error: storageE });
         }
         
-        if (buckets) {
+        if (buckets && buckets.length > 0) {
           const bucketNames = buckets.map(bucket => bucket.id).sort()
           console.log('Available buckets for config:', bucketNames);
           setAvailableBuckets(bucketNames)
+        } else {
+          console.warn('No buckets found for configuration dialog');
+          setAvailableBuckets([])
         }
       } catch (error) {
         console.error('Failed to load buckets:', error)
+        setAvailableBuckets([])
       }
     }
     
     if (open) {
+      console.log('Dialog opened, loading buckets...');
       loadBuckets()
     }
   }, [open])
@@ -230,19 +235,35 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
               <Label htmlFor="bucket">Storage Bucket *</Label>
               <Select 
                 value={formData.bucket} 
-                onValueChange={(value) => setFormData(prev => ({ ...prev, bucket: value }))}
+                onValueChange={(value) => {
+                  console.log('Bucket selected:', value);
+                  setFormData(prev => ({ ...prev, bucket: value }))
+                }}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select bucket" />
+                  <SelectValue placeholder={
+                    availableBuckets.length === 0 
+                      ? "Loading buckets..." 
+                      : "Select bucket"
+                  } />
                 </SelectTrigger>
                 <SelectContent>
-                  {availableBuckets.map((bucket) => (
-                    <SelectItem key={bucket} value={bucket}>
-                      {bucket}
+                  {availableBuckets.length === 0 ? (
+                    <SelectItem value="" disabled>
+                      No buckets available
                     </SelectItem>
-                  ))}
+                  ) : (
+                    availableBuckets.map((bucket) => (
+                      <SelectItem key={bucket} value={bucket}>
+                        {bucket}
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
+              <p className="text-xs text-muted-foreground">
+                Available buckets: {availableBuckets.length} | Current: {formData.bucket || 'None'}
+              </p>
             </div>
           </div>
 
