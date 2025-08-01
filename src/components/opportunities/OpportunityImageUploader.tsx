@@ -1,6 +1,6 @@
 import React from 'react'
 import { EnhancedFileUploader } from '@/components/ui/enhanced-file-uploader'
-import { createUploadConfig, UPLOAD_CONFIGS } from '@/utils/uploadConfigs'
+import { createUploadConfig, useUploaderSettings } from '@/utils/uploadConfigs'
 import { UploadedFile } from '@/hooks/useFileUploader'
 
 interface OpportunityImageUploaderProps {
@@ -16,12 +16,19 @@ export const OpportunityImageUploader: React.FC<OpportunityImageUploaderProps> =
   disabled = false,
   className
 }) => {
-  const config = createUploadConfig(
-    UPLOAD_CONFIGS.OPPORTUNITY_IMAGES,
+  const { getUploadConfig } = useUploaderSettings()
+  const baseConfig = getUploadConfig('OPPORTUNITY_IMAGES')
+  
+  const config = baseConfig ? createUploadConfig(
+    baseConfig,
     opportunityId,
     'opportunities',
     'image_url'
-  )
+  ) : null
+
+  if (!config) {
+    return <div className="text-sm text-muted-foreground">Loading uploader configuration...</div>
+  }
 
   return (
     <EnhancedFileUploader

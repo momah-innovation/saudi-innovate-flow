@@ -187,7 +187,7 @@ export const UPLOAD_CONFIGS = {
 
 // Helper functions for creating upload configurations
 export const createUploadConfig = (
-  baseConfig: typeof UPLOAD_CONFIGS[keyof typeof UPLOAD_CONFIGS],
+  baseConfig: typeof UPLOAD_CONFIGS[keyof typeof UPLOAD_CONFIGS] | any,
   entityId?: string,
   tableName?: string,
   columnName?: string
