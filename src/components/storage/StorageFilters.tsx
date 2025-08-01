@@ -1,0 +1,318 @@
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
+import { 
+  Popover, 
+  PopoverContent, 
+  PopoverTrigger 
+} from '@/components/ui/popover';
+import { 
+  Filter, 
+  X, 
+  ArrowUpDown,
+  FileImage,
+  FileText,
+  FileVideo,
+  FileAudio,
+  File
+} from 'lucide-react';
+
+export interface FilterOptions {
+  fileType: string;
+  bucket: string;
+  visibility: string;
+  sizeRange: string;
+  dateRange: string;
+}
+
+export interface SortOptions {
+  field: 'name' | 'size' | 'date' | 'type';
+  direction: 'asc' | 'desc';
+}
+
+interface StorageFiltersProps {
+  buckets: any[];
+  filters: FilterOptions;
+  sortBy: SortOptions;
+  onFiltersChange: (filters: FilterOptions) => void;
+  onSortChange: (sort: SortOptions) => void;
+  onClearFilters: () => void;
+  activeFilterCount: number;
+}
+
+export function StorageFilters({
+  buckets,
+  filters,
+  sortBy,
+  onFiltersChange,
+  onSortChange,
+  onClearFilters,
+  activeFilterCount
+}: StorageFiltersProps) {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const fileTypeOptions = [
+    { value: '', label: 'All Types', icon: File },
+    { value: 'image', label: 'Images', icon: FileImage },
+    { value: 'document', label: 'Documents', icon: FileText },
+    { value: 'video', label: 'Videos', icon: FileVideo },
+    { value: 'audio', label: 'Audio', icon: FileAudio },
+  ];
+
+  const sizeRangeOptions = [
+    { value: '', label: 'Any Size' },
+    { value: 'small', label: 'Small (< 1MB)' },
+    { value: 'medium', label: 'Medium (1-10MB)' },
+    { value: 'large', label: 'Large (> 10MB)' },
+  ];
+
+  const dateRangeOptions = [
+    { value: '', label: 'Any Date' },
+    { value: 'today', label: 'Today' },
+    { value: 'week', label: 'This Week' },
+    { value: 'month', label: 'This Month' },
+    { value: 'year', label: 'This Year' },
+  ];
+
+  const sortOptions = [
+    { value: 'name', label: 'Name' },
+    { value: 'size', label: 'Size' },
+    { value: 'date', label: 'Date Modified' },
+    { value: 'type', label: 'File Type' },
+  ];
+
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      {/* Sort Controls */}
+      <div className="flex items-center gap-2">
+        <Select
+          value={sortBy.field}
+          onValueChange={(field) => onSortChange({ ...sortBy, field: field as any })}
+        >
+          <SelectTrigger className="w-32">
+            <SelectValue placeholder="Sort by" />
+          </SelectTrigger>
+          <SelectContent className="bg-background border shadow-lg z-50">
+            {sortOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onSortChange({ 
+            ...sortBy, 
+            direction: sortBy.direction === 'asc' ? 'desc' : 'asc' 
+          })}
+          className="px-2"
+        >
+          <ArrowUpDown className="w-4 h-4" />
+          {sortBy.direction === 'asc' ? 'A-Z' : 'Z-A'}
+        </Button>
+      </div>
+
+      {/* Filter Controls */}
+      <Popover open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+        <PopoverTrigger asChild>
+          <Button variant="outline" size="sm" className="relative">
+            <Filter className="w-4 h-4 mr-2" />
+            Filters
+            {activeFilterCount > 0 && (
+              <Badge 
+                variant="destructive" 
+                className="ml-2 px-1.5 py-0.5 text-xs min-w-0"
+              >
+                {activeFilterCount}
+              </Badge>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-80 bg-background border shadow-lg z-50" align="start">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h4 className="font-medium">Filters</h4>
+              {activeFilterCount > 0 && (
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={onClearFilters}
+                  className="text-xs"
+                >
+                  <X className="w-3 h-3 mr-1" />
+                  Clear All
+                </Button>
+              )}
+            </div>
+
+            {/* File Type Filter */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">File Type</label>
+              <Select
+                value={filters.fileType}
+                onValueChange={(value) => onFiltersChange({ ...filters, fileType: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="All types" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border shadow-lg z-50">
+                  {fileTypeOptions.map((option) => {
+                    const Icon = option.icon;
+                    return (
+                      <SelectItem key={option.value} value={option.value}>
+                        <div className="flex items-center">
+                          <Icon className="w-4 h-4 mr-2" />
+                          {option.label}
+                        </div>
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Bucket Filter */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">Bucket</label>
+              <Select
+                value={filters.bucket}
+                onValueChange={(value) => onFiltersChange({ ...filters, bucket: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="All buckets" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border shadow-lg z-50">
+                  <SelectItem value="">All Buckets</SelectItem>
+                  {buckets.map((bucket) => (
+                    <SelectItem key={bucket.id} value={bucket.id}>
+                      {bucket.name || bucket.id}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Visibility Filter */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">Visibility</label>
+              <Select
+                value={filters.visibility}
+                onValueChange={(value) => onFiltersChange({ ...filters, visibility: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="All files" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border shadow-lg z-50">
+                  <SelectItem value="">All Files</SelectItem>
+                  <SelectItem value="public">Public Only</SelectItem>
+                  <SelectItem value="private">Private Only</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Size Filter */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">File Size</label>
+              <Select
+                value={filters.sizeRange}
+                onValueChange={(value) => onFiltersChange({ ...filters, sizeRange: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Any size" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border shadow-lg z-50">
+                  {sizeRangeOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Date Filter */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">Date Added</label>
+              <Select
+                value={filters.dateRange}
+                onValueChange={(value) => onFiltersChange({ ...filters, dateRange: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Any date" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border shadow-lg z-50">
+                  {dateRangeOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
+
+      {/* Active Filter Tags */}
+      {activeFilterCount > 0 && (
+        <div className="flex flex-wrap gap-1">
+          {filters.fileType && (
+            <Badge variant="secondary" className="text-xs">
+              Type: {fileTypeOptions.find(o => o.value === filters.fileType)?.label}
+              <X 
+                className="w-3 h-3 ml-1 cursor-pointer" 
+                onClick={() => onFiltersChange({ ...filters, fileType: '' })}
+              />
+            </Badge>
+          )}
+          {filters.bucket && (
+            <Badge variant="secondary" className="text-xs">
+              Bucket: {buckets.find(b => b.id === filters.bucket)?.name || filters.bucket}
+              <X 
+                className="w-3 h-3 ml-1 cursor-pointer" 
+                onClick={() => onFiltersChange({ ...filters, bucket: '' })}
+              />
+            </Badge>
+          )}
+          {filters.visibility && (
+            <Badge variant="secondary" className="text-xs">
+              {filters.visibility === 'public' ? 'Public' : 'Private'}
+              <X 
+                className="w-3 h-3 ml-1 cursor-pointer" 
+                onClick={() => onFiltersChange({ ...filters, visibility: '' })}
+              />
+            </Badge>
+          )}
+          {filters.sizeRange && (
+            <Badge variant="secondary" className="text-xs">
+              {sizeRangeOptions.find(o => o.value === filters.sizeRange)?.label}
+              <X 
+                className="w-3 h-3 ml-1 cursor-pointer" 
+                onClick={() => onFiltersChange({ ...filters, sizeRange: '' })}
+              />
+            </Badge>
+          )}
+          {filters.dateRange && (
+            <Badge variant="secondary" className="text-xs">
+              {dateRangeOptions.find(o => o.value === filters.dateRange)?.label}
+              <X 
+                className="w-3 h-3 ml-1 cursor-pointer" 
+                onClick={() => onFiltersChange({ ...filters, dateRange: '' })}
+              />
+            </Badge>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/ui/page-header';
 import { StorageHero } from './StorageHero';
@@ -6,6 +6,7 @@ import { StorageAnalyticsTab } from './StorageAnalyticsTab';
 import { UploaderSettingsTab } from './UploaderSettingsTab';
 import { FileViewDialog } from './FileViewDialog';
 import { BucketManagementDialog } from './BucketManagementDialog';
+import { StorageFilters, type FilterOptions, type SortOptions } from './StorageFilters';
 import { LayoutToggle, LayoutType } from '@/components/ui/layout-toggle';
 import { StorageFileCard } from './StorageFileCard';
 import { StorageFileTable } from './StorageFileTable';
@@ -68,6 +69,20 @@ export function StorageManagementPage() {
     privateFiles: 0,
     recentUploads: 0,
     buckets: 0
+  });
+
+  // Filter and sort state
+  const [filters, setFilters] = useState<FilterOptions>({
+    fileType: '',
+    bucket: '',
+    visibility: '',
+    sizeRange: '',
+    dateRange: ''
+  });
+
+  const [sortBy, setSortBy] = useState<SortOptions>({
+    field: 'name',
+    direction: 'asc'
   });
 
   useEffect(() => {
@@ -350,9 +365,128 @@ export function StorageManagementPage() {
     }
   };
 
-  const filteredFiles = files.filter(file => 
-    file.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter and sort logic
+  const getFileType = (filename: string): string => {
+    const extension = filename.split('.').pop()?.toLowerCase();
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(extension || '')) return 'image';
+    if (['pdf', 'doc', 'docx', 'txt', 'rtf'].includes(extension || '')) return 'document';
+    if (['mp4', 'avi', 'mov', 'webm', 'mkv'].includes(extension || '')) return 'video';
+    if (['mp3', 'wav', 'ogg', 'm4a', 'flac'].includes(extension || '')) return 'audio';
+    return 'other';
+  };
+
+  const getFileSizeCategory = (size: number): string => {
+    const mb = size / (1024 * 1024);
+    if (mb < 1) return 'small';
+    if (mb <= 10) return 'medium';
+    return 'large';
+  };
+
+  const isWithinDateRange = (fileDate: string, range: string): boolean => {
+    const date = new Date(fileDate);
+    const now = new Date();
+    
+    switch (range) {
+      case 'today':
+        return date.toDateString() === now.toDateString();
+      case 'week':
+        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        return date >= weekAgo;
+      case 'month':
+        const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+        return date >= monthAgo;
+      case 'year':
+        const yearAgo = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+        return date >= yearAgo;
+      default:
+        return true;
+    }
+  };
+
+  const filteredAndSortedFiles = useMemo(() => {
+    let filtered = files.filter(file => {
+      // Search filter
+      if (searchTerm && !file.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+        return false;
+      }
+
+      // File type filter
+      if (filters.fileType && getFileType(file.name) !== filters.fileType) {
+        return false;
+      }
+
+      // Bucket filter
+      if (filters.bucket && file.bucket_id !== filters.bucket) {
+        return false;
+      }
+
+      // Visibility filter
+      if (filters.visibility) {
+        const isPublic = file.is_public;
+        if (filters.visibility === 'public' && !isPublic) return false;
+        if (filters.visibility === 'private' && isPublic) return false;
+      }
+
+      // Size filter
+      if (filters.sizeRange && file.metadata?.size) {
+        const sizeCategory = getFileSizeCategory(file.metadata.size);
+        if (sizeCategory !== filters.sizeRange) return false;
+      }
+
+      // Date filter
+      if (filters.dateRange && file.created_at) {
+        if (!isWithinDateRange(file.created_at, filters.dateRange)) return false;
+      }
+
+      return true;
+    });
+
+    // Sort files
+    filtered.sort((a, b) => {
+      let aValue, bValue;
+
+      switch (sortBy.field) {
+        case 'name':
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+          break;
+        case 'size':
+          aValue = a.metadata?.size || 0;
+          bValue = b.metadata?.size || 0;
+          break;
+        case 'date':
+          aValue = new Date(a.updated_at || a.created_at || 0).getTime();
+          bValue = new Date(b.updated_at || b.created_at || 0).getTime();
+          break;
+        case 'type':
+          aValue = getFileType(a.name);
+          bValue = getFileType(b.name);
+          break;
+        default:
+          return 0;
+      }
+
+      if (aValue < bValue) return sortBy.direction === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortBy.direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    return filtered;
+  }, [files, searchTerm, filters, sortBy]);
+
+  const getActiveFilterCount = (): number => {
+    return Object.values(filters).filter(value => value !== '').length;
+  };
+
+  const handleClearFilters = () => {
+    setFilters({
+      fileType: '',
+      bucket: '',
+      visibility: '',
+      sizeRange: '',
+      dateRange: ''
+    });
+  };
 
   if (loading) {
     return (
@@ -406,7 +540,7 @@ export function StorageManagementPage() {
               <div>
                 <h3 className="text-lg font-semibold">{t('storage.files')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {filteredFiles.length} {t('storage.files_found')}
+                  {filteredAndSortedFiles.length} {t('storage.files_found')}
                 </p>
               </div>
               <LayoutToggle
@@ -432,17 +566,28 @@ export function StorageManagementPage() {
               </Button>
             </div>
 
+            {/* Filter and Sort Controls */}
+            <StorageFilters
+              buckets={buckets}
+              filters={filters}
+              sortBy={sortBy}
+              onFiltersChange={setFilters}
+              onSortChange={setSortBy}
+              onClearFilters={handleClearFilters}
+              activeFilterCount={getActiveFilterCount()}
+            />
+
             {/* Files Display */}
             {filesLayout === 'table' ? (
               <StorageFileTable
-                files={filteredFiles}
+                files={filteredAndSortedFiles}
                 onView={handleFileView}
                 onDownload={handleFileDownload}
                 onDelete={handleFileDelete}
               />
             ) : (
               <ViewLayouts viewMode={filesLayout}>
-                {filteredFiles.map((file) => (
+                {filteredAndSortedFiles.map((file) => (
                   <StorageFileCard
                     key={`${file.bucket_id}-${file.name}`}
                     file={file}
