@@ -3,7 +3,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { I18nextProvider } from "react-i18next";
+import i18n from "./i18n/config";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { DirectionProvider } from "@/components/ui/direction-provider";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { MaintenanceGuard } from "@/components/maintenance/MaintenanceGuard";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -66,8 +69,10 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <AuthProvider>
+    <I18nextProvider i18n={i18n}>
+      <DirectionProvider>
+        <TooltipProvider>
+          <AuthProvider>
         <Toaster />
         <Sonner />
         <MaintenanceGuard>
@@ -435,7 +440,9 @@ const App = () => (
         </MaintenanceGuard>
       </AuthProvider>
     </TooltipProvider>
-  </QueryClientProvider>
+  </DirectionProvider>
+</I18nextProvider>
+</QueryClientProvider>
 );
 
 export default App;

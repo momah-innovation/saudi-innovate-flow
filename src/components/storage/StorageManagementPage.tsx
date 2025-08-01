@@ -28,11 +28,11 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from 'react-i18next';
 
 export function StorageManagementPage() {
   const { toast } = useToast();
-  const { t, isRTL } = useTranslation();
+  const { t } = useTranslation();
   const [selectedBucket, setSelectedBucket] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [buckets, setBuckets] = useState<any[]>([]);
@@ -110,8 +110,8 @@ export function StorageManagementPage() {
     } catch (error) {
       console.error('Error loading storage data:', error);
       toast({
-        title: t('error'),
-        description: t('failed_to_load'),
+        title: t('common.error'),
+        description: t('storage.failed_to_load'),
         variant: 'destructive'
       });
     } finally {
@@ -121,8 +121,8 @@ export function StorageManagementPage() {
 
   const handleFileView = (file: any) => {
     toast({
-      title: t('view_file_details'),
-      description: t('viewing_file', { filename: file.name })
+      title: t('storage.view_file_details'),
+      description: t('storage.viewing_file', { filename: file.name })
     });
   };
 
@@ -180,7 +180,7 @@ export function StorageManagementPage() {
         <div className="min-h-[400px] flex items-center justify-center">
           <div className="text-center space-y-4">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-            <p className="text-sm text-muted-foreground">{t('loading')}</p>
+            <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
           </div>
         </div>
       </PageLayout>
@@ -190,10 +190,10 @@ export function StorageManagementPage() {
   return (
     <PageLayout>
       <PageHeader
-        title={t('storage_management')}
-        description={t('monitor_manage_storage')}
+        title={t('storage.title')}
+        description={t('storage.description')}
         actionButton={{
-          label: t('upload_files'),
+          label: t('storage.upload_files'),
           icon: <Upload className="w-4 h-4" />,
           onClick: () => setShowUploadDialog(true)
         }}
@@ -214,9 +214,9 @@ export function StorageManagementPage() {
 
         <Tabs defaultValue="files" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="files">{t('files')}</TabsTrigger>
-            <TabsTrigger value="buckets">{t('buckets')}</TabsTrigger>
-            <TabsTrigger value="analytics">{t('analytics')}</TabsTrigger>
+            <TabsTrigger value="files">{t('storage.files')}</TabsTrigger>
+            <TabsTrigger value="buckets">{t('storage.buckets')}</TabsTrigger>
+            <TabsTrigger value="analytics">{t('storage.analytics')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="files" className="space-y-6">
@@ -224,7 +224,7 @@ export function StorageManagementPage() {
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
-                  placeholder={t('search_files')}
+                  placeholder={t('storage.search_files')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -232,7 +232,7 @@ export function StorageManagementPage() {
               </div>
               <Button onClick={() => loadStorageData()}>
                 <RefreshCw className="w-4 h-4 mr-2" />
-                {t('refresh')}
+                {t('common.refresh')}
               </Button>
             </div>
 

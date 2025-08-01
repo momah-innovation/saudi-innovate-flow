@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from 'react-i18next';
 import { 
   HardDrive, 
   Files,
@@ -37,9 +37,9 @@ export function StorageHero({
   const { t } = useTranslation();
   
   const formatBytes = (bytes: number) => {
-    if (bytes === 0) return `0 ${t('bytes')}`;
+    if (bytes === 0) return `0 ${t('units.bytes')}`;
     const k = 1024;
-    const sizes = [t('bytes'), t('kb'), t('mb'), t('gb'), t('tb')];
+    const sizes = [t('units.bytes'), t('units.kb'), t('units.mb'), t('units.gb'), t('units.tb')];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
@@ -51,19 +51,19 @@ export function StorageHero({
       {/* Storage Usage */}
       <Card className="gradient-border hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">{t('storage_usage')}</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('storage.storage_usage')}</CardTitle>
           <HardDrive className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{formatBytes(usedSpace)}</div>
           <p className="text-xs text-muted-foreground">
-            {t('of_x_used', { total: formatBytes(totalSpace) })}
+            {t('storage.of_x_used', { total: formatBytes(totalSpace) })}
           </p>
           <div className="mt-2">
             <Progress value={usagePercentage} className="h-2" />
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            {usagePercentage.toFixed(1)}% {t('capacity')}
+            {usagePercentage.toFixed(1)}% {t('storage.capacity')}
           </p>
         </CardContent>
       </Card>
