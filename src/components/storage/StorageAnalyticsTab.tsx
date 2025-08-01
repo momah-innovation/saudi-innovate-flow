@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { useStorageAnalytics, StorageAnalytics } from '@/hooks/useStorageAnalytics'
 import { useToast } from '@/hooks/use-toast'
 import { 
@@ -23,6 +24,7 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
   const [analytics, setAnalytics] = useState<StorageAnalytics[]>([])
   const [loading, setLoading] = useState(true)
   const [cleanupLoading, setCleanupLoading] = useState(false)
+  const [showCleanupDialog, setShowCleanupDialog] = useState(false)
   
   const { getAllBucketAnalytics, performAdminCleanup } = useStorageAnalytics()
   const { toast } = useToast()
@@ -49,6 +51,7 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
       const success = await performAdminCleanup()
       if (success) {
         await loadAnalytics()
+        setShowCleanupDialog(false)
       }
     } finally {
       setCleanupLoading(false)
@@ -97,7 +100,7 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
               </Button>
               <Button 
                 variant="destructive" 
-                onClick={handleAdminCleanup}
+                onClick={() => setShowCleanupDialog(true)}
                 disabled={cleanupLoading}
               >
                 <Trash2 className="w-4 h-4 mr-2" />
@@ -229,6 +232,45 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
           </div>
         </CardContent>
       </Card>
+
+      {/* Admin Cleanup Confirmation Dialog */}
+      <AlertDialog open={showCleanupDialog} onOpenChange={setShowCleanupDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Admin Cleanup Confirmation
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-2">
+              <p>This will perform a <strong>system-wide cleanup</strong> of temporary files across all storage buckets.</p>
+              <div className="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 mt-3">
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="w-4 h-4 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
+                  <div className="text-sm">
+                    <p className="font-medium text-yellow-800 dark:text-yellow-200">Warning:</p>
+                    <ul className="text-yellow-700 dark:text-yellow-300 mt-1 space-y-1">
+                      <li>• Files older than 7 days will be permanently deleted</li>
+                      <li>• This action cannot be undone</li>
+                      <li>• Only temporary files will be affected</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground">Are you sure you want to continue?</p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleAdminCleanup}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              disabled={cleanupLoading}
+            >
+              {cleanupLoading ? 'Cleaning...' : 'Yes, Perform Cleanup'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
