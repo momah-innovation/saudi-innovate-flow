@@ -23,6 +23,8 @@
     "search_files": "Search files..."
   },
   "units": {
+    "bytes": "Bytes",
+    "kb": "KB",
     "mb": "MB",
     "gb": "GB",
     "tb": "TB"

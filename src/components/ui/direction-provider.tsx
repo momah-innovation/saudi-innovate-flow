@@ -50,9 +50,11 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
     document.documentElement.lang = newLanguage;
     localStorage.setItem('ui-language', newLanguage);
     
-    // CRITICAL: Sync with react-i18next
-    i18n.changeLanguage(newLanguage);
-    console.log('DirectionProvider - Changed i18n language to:', newLanguage);
+    // CRITICAL: Sync with react-i18next using the exact language code
+    i18n.changeLanguage(newLanguage).then(() => {
+      console.log('DirectionProvider - Successfully changed i18n language to:', newLanguage);
+      console.log('DirectionProvider - i18n.language is now:', i18n.language);
+    });
   };
 
   const toggleDirection = () => {

@@ -21,7 +21,12 @@ i18n
   .init({
     resources,
     fallbackLng: 'en',
-    debug: false,
+    debug: true, // Enable debug to see what's happening
+    
+    // Fix language detection to use only 'en' or 'ar'
+    lng: 'en', // Default language
+    supportedLngs: ['en', 'ar'], // Only these languages are supported
+    nonExplicitSupportedLngs: true, // Allow 'en-US' to fallback to 'en'
     
     interpolation: {
       escapeValue: false, // React already escapes by default
@@ -29,7 +34,8 @@ i18n
     
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
-      caches: ['localStorage']
+      caches: ['localStorage'],
+      lookupLocalStorage: 'i18nextLng' // Use standard i18next key
     },
     
     react: {
