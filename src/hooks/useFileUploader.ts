@@ -11,6 +11,8 @@ export interface FileUploadConfig {
   entityId?: string
   tableName?: string
   columnName?: string
+  isTemporary?: boolean
+  tempSessionId?: string
 }
 
 export interface UploadedFile {
@@ -63,6 +65,8 @@ export const useFileUploader = () => {
       if (config.entityId) formData.append('entityId', config.entityId)
       if (config.tableName) formData.append('tableName', config.tableName)
       if (config.columnName) formData.append('columnName', config.columnName)
+      if (config.isTemporary) formData.append('isTemporary', 'true')
+      if (config.tempSessionId) formData.append('tempSessionId', config.tempSessionId)
       
       // Add files
       files.forEach(file => {
@@ -117,9 +121,99 @@ export const useFileUploader = () => {
     return `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public${relativePath}`
   }, [])
 
+  const commitTemporaryFiles = useCallback(async (
+    tempFiles: UploadedFile[],
+    finalConfig: Omit<FileUploadConfig, 'isTemporary' | 'tempSessionId'>
+  ): Promise<FileUploadResult> => {
+    if (!user) {
+      return { success: false, errors: [{ file: 'Auth', error: 'User not authenticated' }] }
+    }
+
+    try {
+      setIsUploading(true)
+
+      const movedFiles: UploadedFile[] = []
+      
+      for (const tempFile of tempFiles) {
+        // Move files from temp to final location
+        const tempPath = tempFile.path.replace(/^\/[^\/]+\//, '')
+        const finalPath = `${finalConfig.uploadType}/${finalConfig.entityId || user.id}-${Date.now()}-${tempFile.name}`
+        
+        const { data: moveData, error: moveError } = await supabase.storage
+          .from(finalConfig.uploadType.split('-')[0])
+          .move(tempPath, finalPath)
+
+        if (moveError) {
+          console.error('Move error:', moveError)
+          continue
+        }
+
+        const finalUrl = getFileUrl(`/${finalConfig.uploadType.split('-')[0]}/${finalPath}`)
+        movedFiles.push({
+          ...tempFile,
+          url: finalUrl,
+          path: `/${finalConfig.uploadType.split('-')[0]}/${finalPath}`
+        })
+      }
+
+      // Update database if specified
+      if (finalConfig.tableName && finalConfig.columnName && finalConfig.entityId && movedFiles.length > 0) {
+        const updateData: any = {}
+        
+        if (finalConfig.maxFiles === 1) {
+          updateData[finalConfig.columnName] = movedFiles[0].path
+        } else {
+          updateData[finalConfig.columnName] = movedFiles.map(f => f.path)
+        }
+
+        const { error: updateError } = await supabase
+          .from(finalConfig.tableName as any)
+          .update(updateData)
+          .eq('id', finalConfig.entityId)
+
+        if (updateError) {
+          console.error('Database update error:', updateError)
+        }
+      }
+
+      return {
+        success: true,
+        files: movedFiles
+      }
+
+    } catch (error) {
+      console.error('Commit error:', error)
+      return {
+        success: false,
+        errors: [{ file: 'Commit', error: error instanceof Error ? error.message : 'Failed to commit files' }]
+      }
+    } finally {
+      setIsUploading(false)
+    }
+  }, [user, supabase, getFileUrl])
+
+  const cleanupTemporaryFiles = useCallback(async (tempSessionId: string): Promise<void> => {
+    try {
+      const { data: files } = await supabase.storage
+        .from('opportunity-images')
+        .list(`temp/${tempSessionId}`)
+
+      if (files && files.length > 0) {
+        const filePaths = files.map(f => `temp/${tempSessionId}/${f.name}`)
+        await supabase.storage
+          .from('opportunity-images')
+          .remove(filePaths)
+      }
+    } catch (error) {
+      console.error('Cleanup error:', error)
+    }
+  }, [supabase])
+
   return {
     uploadFiles,
     getFileUrl,
+    commitTemporaryFiles,
+    cleanupTemporaryFiles,
     isUploading
   }
 }

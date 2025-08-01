@@ -89,3 +89,22 @@ export const createUploadConfig = (
   tableName,
   columnName
 })
+
+export const createWizardUploadConfig = (
+  baseConfig: typeof UPLOAD_CONFIGS[keyof typeof UPLOAD_CONFIGS],
+  tableName?: string,
+  columnName?: string
+): Omit<FileUploadConfig, 'isTemporary' | 'tempSessionId'> => ({
+  ...baseConfig,
+  tableName,
+  columnName
+})
+
+export const createTemporaryUploadConfig = (
+  baseConfig: typeof UPLOAD_CONFIGS[keyof typeof UPLOAD_CONFIGS],
+  tempSessionId?: string
+): FileUploadConfig => ({
+  ...baseConfig,
+  isTemporary: true,
+  tempSessionId
+})

@@ -96,6 +96,8 @@ Deno.serve(async (req) => {
     const entityId = formData.get('entityId') as string
     const tableName = formData.get('tableName') as string
     const columnName = formData.get('columnName') as string
+    const isTemporary = formData.get('isTemporary') === 'true'
+    const tempSessionId = formData.get('tempSessionId') as string
     
     if (!uploadType || !UPLOAD_CONFIGS[uploadType]) {
       throw new Error('Invalid upload type')
@@ -128,7 +130,14 @@ Deno.serve(async (req) => {
       // Generate unique filename
       const fileExtension = file.name.split('.').pop()
       const fileName = `${entityId || user.id}-${Date.now()}.${fileExtension}`
-      const filePath = `${config.path}/${fileName}`
+      
+      // Use temporary path for temporary uploads
+      let filePath: string
+      if (isTemporary) {
+        filePath = `temp/${tempSessionId || user.id}/${fileName}`
+      } else {
+        filePath = `${config.path}/${fileName}`
+      }
 
       console.log(`Uploading file: ${fileName} to bucket: ${config.bucket}`)
 
@@ -163,8 +172,8 @@ Deno.serve(async (req) => {
       console.log(`File uploaded successfully: ${fileName}`)
     }
 
-    // Update database if table and column are provided
-    if (tableName && columnName && entityId && uploadedFiles.length > 0) {
+    // Update database if table and column are provided (skip for temporary uploads)
+    if (tableName && columnName && entityId && uploadedFiles.length > 0 && !isTemporary) {
       try {
         const updateData: any = {}
         

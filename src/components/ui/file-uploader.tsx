@@ -29,6 +29,8 @@ export interface FileUploadConfig {
   entityId?: string
   tableName?: string
   columnName?: string
+  isTemporary?: boolean
+  tempSessionId?: string
 }
 
 interface UploadedFile {
@@ -163,6 +165,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       if (config.entityId) formData.append('entityId', config.entityId)
       if (config.tableName) formData.append('tableName', config.tableName)
       if (config.columnName) formData.append('columnName', config.columnName)
+      if (config.isTemporary) formData.append('isTemporary', 'true')
+      if (config.tempSessionId) formData.append('tempSessionId', config.tempSessionId)
       
       // Add files
       selectedFiles.forEach(file => {
