@@ -76,7 +76,7 @@ export function StorageManagementPage() {
       
       try {
         const { data: dbBuckets, error: dbError } = await supabase
-          .rpc('get_storage_buckets_info');
+          .rpc('get_basic_storage_info');
         console.log('Database buckets response:', { dbBuckets, dbError });
         
         if (dbError) {
@@ -85,6 +85,7 @@ export function StorageManagementPage() {
           const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
           bucketsData = storageB || [];
           bucketError = storageE;
+          console.log('Storage API fallback:', { bucketsData, bucketError });
         } else {
           // Convert database response to storage API format
           bucketsData = dbBuckets?.map(bucket => ({
@@ -93,12 +94,14 @@ export function StorageManagementPage() {
             public: bucket.public,
             created_at: bucket.created_at
           })) || [];
+          console.log('Using database buckets:', bucketsData);
         }
       } catch (error) {
         console.error('Both methods failed, trying direct storage access:', error);
         const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
         bucketsData = storageB || [];
         bucketError = storageE;
+        console.log('Final fallback:', { bucketsData, bucketError });
       }
       
       if (bucketsData) {

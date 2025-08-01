@@ -6402,6 +6402,15 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_basic_storage_info: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          bucket_id: string
+          bucket_name: string
+          public: boolean
+          created_at: string
+        }[]
+      }
       get_bucket_stats: {
         Args: { bucket_name: string }
         Returns: {

@@ -47,7 +47,7 @@ export const useStorageAnalytics = () => {
       
       try {
         const { data: dbBuckets, error: dbError } = await supabase
-          .rpc('get_storage_buckets_info');
+          .rpc('get_basic_storage_info');
         console.log('Analytics database response:', { dbBuckets, dbError });
         
         if (dbError) {
@@ -63,11 +63,13 @@ export const useStorageAnalytics = () => {
             public: bucket.public,
             created_at: bucket.created_at
           })) || [];
+          console.log('Analytics using database buckets:', buckets);
         }
       } catch (error) {
         console.error('Both methods failed for analytics:', error);
         const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
         buckets = storageB || [];
+        console.log('Analytics final fallback:', { buckets, error: storageE });
       }
       
       if (!buckets || buckets.length === 0) {
