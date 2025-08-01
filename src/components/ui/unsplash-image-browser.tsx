@@ -168,52 +168,51 @@ export function UnsplashImageBrowser({
 
   return (
     <div className={`h-full flex flex-col space-y-4 ${className}`}>
-      {/* Search and Filters - Fixed Header */}
-      <div className="flex-shrink-0 space-y-4">
-        <form onSubmit={handleSearch} className="flex gap-2">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="text"
-              placeholder="Search for images..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <Button type="submit" disabled={loading}>
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Search'}
-          </Button>
-        </form>
+      {/* Search and Filters - Single Row */}
+      <div className="flex-shrink-0">
+        <div className="flex items-center gap-4">
+          <form onSubmit={handleSearch} className="flex gap-2 flex-1">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search for images..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Button type="submit" disabled={loading} className="bg-green-600 hover:bg-green-700">
+              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Search'}
+            </Button>
+          </form>
 
-        <div className="flex flex-wrap gap-2 items-center justify-between">
-          <div className="flex gap-2 items-center">
-            <Filter className="h-4 w-4 text-muted-foreground" />
-            <Select value={orientation} onValueChange={setOrientation}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="landscape">Landscape</SelectItem>
-                <SelectItem value="portrait">Portrait</SelectItem>
-                <SelectItem value="squarish">Square</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <Select value={orientation} onValueChange={setOrientation}>
+            <SelectTrigger className="w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="landscape">Landscape</SelectItem>
+              <SelectItem value="portrait">Portrait</SelectItem>
+              <SelectItem value="squarish">Square</SelectItem>
+            </SelectContent>
+          </Select>
 
-          <div className="flex gap-1">
+          <div className="flex border rounded-md">
             <Button
-              variant={viewMode === 'grid' ? 'default' : 'outline'}
+              variant={viewMode === 'grid' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setViewMode('grid')}
+              className={`rounded-r-none ${viewMode === 'grid' ? 'bg-green-600 hover:bg-green-700' : ''}`}
             >
               <Grid className="h-4 w-4" />
             </Button>
             <Button
-              variant={viewMode === 'list' ? 'default' : 'outline'}
+              variant={viewMode === 'list' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setViewMode('list')}
+              className={`rounded-l-none ${viewMode === 'list' ? 'bg-green-600 hover:bg-green-700' : ''}`}
             >
               <List className="h-4 w-4" />
             </Button>
