@@ -14,7 +14,6 @@ import { StatisticsDetailDialog } from '@/components/statistics/StatisticsDetail
 import { StatisticsAnalyticsDashboard } from '@/components/statistics/StatisticsAnalyticsDashboard';
 import { TrendingStatisticsWidget } from '@/components/statistics/TrendingStatisticsWidget';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area } from 'recharts';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useTranslation } from '@/hooks/useAppTranslation';
@@ -629,18 +628,22 @@ export default function StatisticsPage() {
                 <CardTitle>{isRTL ? 'اتجاهات النشاط (آخر 6 أشهر)' : 'Activity Trends (Last 6 Months)'}</CardTitle>
               </CardHeader>
               <CardContent>
-                <ChartContainer config={{}} className="h-[400px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={trendData}>
-                      <XAxis dataKey="period" />
-                      <YAxis />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                      <Area type="monotone" dataKey="ideas" stackId="1" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.6} />
-                      <Area type="monotone" dataKey="challenges" stackId="1" stroke="hsl(var(--secondary))" fill="hsl(var(--secondary))" fillOpacity={0.6} />
-                      <Area type="monotone" dataKey="events" stackId="1" stroke="hsl(var(--accent))" fill="hsl(var(--accent))" fillOpacity={0.6} />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
+                <div className="h-[400px] flex items-center justify-center">
+                  <div className="text-center space-y-4">
+                    <div className="grid grid-cols-3 gap-4 mb-6">
+                      {trendData.slice(-3).map((item, index) => (
+                        <div key={index} className="text-center">
+                          <div className="text-2xl font-bold text-primary">{item.ideas}</div>
+                          <div className="text-sm text-muted-foreground">{item.period}</div>
+                          <div className="text-xs text-muted-foreground">Ideas</div>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-muted-foreground">
+                      {isRTL ? 'اتجاهات النشاط للأشهر الستة الماضية' : 'Activity trends for the last 6 months'}
+                    </p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -652,27 +655,25 @@ export default function StatisticsPage() {
                   <CardTitle>{isRTL ? 'توزيع الأفكار حسب القطاع' : 'Ideas Distribution by Sector'}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <ChartContainer config={{}} className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={categoryStats}
-                          cx="50%"
-                          cy="50%"
-                          labelLine={false}
-                          label={({ name, percentage }) => `${name} ${percentage}%`}
-                          outerRadius={80}
-                          fill="#8884d8"
-                          dataKey="count"
-                        >
-                          {categoryStats.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </ChartContainer>
+                  <div className="h-[300px] flex items-center justify-center">
+                    <div className="space-y-4 w-full max-w-sm">
+                      {categoryStats.slice(0, 5).map((category, index) => (
+                        <div key={index} className="flex items-center gap-3">
+                          <div 
+                            className="w-4 h-4 rounded" 
+                            style={{ backgroundColor: category.color }}
+                          />
+                          <div className="flex-1">
+                            <div className="flex justify-between text-sm mb-1">
+                              <span>{category.name}</span>
+                              <span>{category.percentage}%</span>
+                            </div>
+                            <Progress value={category.percentage} className="h-2" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
 
