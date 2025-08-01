@@ -96,14 +96,14 @@ export default function AdminDashboard() {
       setLoading(true);
       
       // Load real data from Supabase
-      const { data: userCount } = await supabase
+      const { count: userCount } = await supabase
         .from('profiles')
         .select('id', { count: 'exact', head: true });
       
-      if (userCount) {
+      if (userCount !== null) {
         setDashboardData(prev => ({
           ...prev,
-          totalUsers: userCount || 1234
+          totalUsers: userCount
         }));
       }
       

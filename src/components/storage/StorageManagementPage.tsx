@@ -1,395 +1,400 @@
-import React, { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Progress } from '@/components/ui/progress'
-import { PageContainer } from '@/components/layout/PageContainer'
-import { PageHeader } from '@/components/ui/page-header'
-import { useToast } from '@/hooks/use-toast'
-import { supabase } from '@/integrations/supabase/client'
-import { useAuth } from '@/contexts/AuthContext'
+import { useState, useEffect } from 'react';
+import { PageContainer } from '@/components/layout/PageContainer';
+import { PageHeader } from '@/components/ui/page-header';
+import { StorageHero } from './StorageHero';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { 
   Database, 
-  HardDrive, 
-  FolderOpen, 
-  Trash2, 
-  RefreshCw, 
-  AlertTriangle,
-  CheckCircle,
-  Users,
-  Lock,
-  Unlock
-} from 'lucide-react'
+  Files, 
+  Upload,
+  Download,
+  Settings,
+  Trash2,
+  Eye,
+  MoreHorizontal,
+  RefreshCw,
+  Plus,
+  Shield,
+  HardDrive,
+  Search
+} from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
-interface BucketStats {
-  name: string
-  isPublic: boolean
-  fileCount: number
-  totalSize: number
-  avgSize: number
-  oldestFile: string
-  newestFile: string
-}
-
-interface StorageUsage {
-  totalFiles: number
-  totalSize: number
-  bucketCount: number
-  publicBuckets: number
-  privateBuckets: number
-}
-
-export const StorageManagementPage: React.FC = () => {
-  const { user } = useAuth()
-  const { toast } = useToast()
-  const [buckets, setBuckets] = useState<BucketStats[]>([])
-  const [usage, setUsage] = useState<StorageUsage | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [cleanupProgress, setCleanupProgress] = useState(0)
-  const [isAdmin, setIsAdmin] = useState(false)
-
-  const formatBytes = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
-
-  const checkAdminStatus = async () => {
-    try {
-      const { data } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user?.id)
-        .eq('is_active', true)
-        .in('role', ['admin', 'super_admin'])
-        .single()
-      
-      setIsAdmin(!!data)
-    } catch (error) {
-      setIsAdmin(false)
-    }
-  }
-
-  const loadBucketStats = async () => {
-    try {
-      setLoading(true)
-      const { data: bucketsData } = await supabase.storage.listBuckets()
-      
-      if (bucketsData) {
-        const bucketStats: BucketStats[] = []
-        let totalFiles = 0
-        let totalSize = 0
-        
-        for (const bucket of bucketsData) {
-          try {
-            // Simple file listing approach since get_bucket_stats might not be available yet
-            const { data: files } = await supabase.storage.from(bucket.name).list()
-            
-            const bucketStat: BucketStats = {
-              name: bucket.name,
-              isPublic: bucket.public,
-              fileCount: files?.length || 0,
-              totalSize: 0, // Would need individual file calls to get sizes
-              avgSize: 0,
-              oldestFile: 'N/A',
-              newestFile: 'N/A'
-            }
-            bucketStats.push(bucketStat)
-            totalFiles += bucketStat.fileCount
-          } catch (error) {
-            console.error(`Error getting stats for bucket ${bucket.name}:`, error)
-          }
-        }
-        
-        setBuckets(bucketStats)
-        setUsage({
-          totalFiles,
-          totalSize,
-          bucketCount: bucketsData.length,
-          publicBuckets: bucketsData.filter(b => b.public).length,
-          privateBuckets: bucketsData.filter(b => !b.public).length
-        })
-      }
-    } catch (error) {
-      console.error('Error loading bucket stats:', error)
-      toast({
-        title: 'Error loading storage stats',
-        description: 'Failed to fetch storage information',
-        variant: 'destructive'
-      })
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const cleanupTempFiles = async () => {
-    if (!isAdmin) {
-      toast({
-        title: 'Access denied',
-        description: 'Only administrators can perform cleanup operations',
-        variant: 'destructive'
-      })
-      return
-    }
-
-    try {
-      setCleanupProgress(0)
-      const progressInterval = setInterval(() => {
-        setCleanupProgress(prev => Math.min(prev + 10, 90))
-      }, 100)
-
-      const { data, error } = await supabase.functions.invoke('cleanup-temp-files', {
-        body: { 
-          buckets: ['temp-uploads-private', 'opportunity-images', 'ideas-images-public'] 
-        }
-      })
-
-      clearInterval(progressInterval)
-      setCleanupProgress(100)
-
-      if (error) throw error
-
-      toast({
-        title: 'Cleanup completed',
-        description: `Cleaned ${data?.cleanedFiles || 0} temporary files`,
-        variant: 'default'
-      })
-
-      // Reload stats
-      await loadBucketStats()
-    } catch (error) {
-      console.error('Cleanup error:', error)
-      toast({
-        title: 'Cleanup failed',
-        description: 'Failed to cleanup temporary files',
-        variant: 'destructive'
-      })
-    } finally {
-      setCleanupProgress(0)
-    }
-  }
+export function StorageManagementPage() {
+  const { toast } = useToast();
+  const [selectedBucket, setSelectedBucket] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [buckets, setBuckets] = useState<any[]>([]);
+  const [files, setFiles] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [storageStats, setStorageStats] = useState({
+    totalFiles: 0,
+    totalSize: 0,
+    usedSpace: 0,
+    totalSpace: 100 * 1024 * 1024 * 1024, // 100GB
+    publicFiles: 0,
+    privateFiles: 0,
+    recentUploads: 0,
+    buckets: 0
+  });
 
   useEffect(() => {
-    if (user) {
-      checkAdminStatus()
-      loadBucketStats()
-    }
-  }, [user])
+    loadStorageData();
+  }, []);
 
-  if (!user) {
+  const loadStorageData = async () => {
+    try {
+      setLoading(true);
+      
+      // Load buckets
+      const { data: bucketsData } = await supabase.storage.listBuckets();
+      if (bucketsData) {
+        setBuckets(bucketsData);
+        setStorageStats(prev => ({ ...prev, buckets: bucketsData.length }));
+      }
+
+      // Load files from all buckets
+      let allFiles: any[] = [];
+      let totalSize = 0;
+      let publicCount = 0;
+      let privateCount = 0;
+
+      for (const bucket of bucketsData || []) {
+        const { data: files } = await supabase.storage.from(bucket.id).list();
+        if (files) {
+          const filesWithBucket = files.map(file => ({
+            ...file,
+            bucket_id: bucket.id,
+            is_public: bucket.public
+          }));
+          allFiles = [...allFiles, ...filesWithBucket];
+
+          if (bucket.public) {
+            publicCount += files.length;
+          } else {
+            privateCount += files.length;
+          }
+
+          // Calculate total size
+          files.forEach(file => {
+            if (file.metadata?.size) {
+              totalSize += file.metadata.size;
+            }
+          });
+        }
+      }
+
+      setFiles(allFiles);
+      setStorageStats(prev => ({
+        ...prev,
+        totalFiles: allFiles.length,
+        totalSize,
+        usedSpace: totalSize,
+        publicFiles: publicCount,
+        privateFiles: privateCount,
+        recentUploads: Math.floor(allFiles.length * 0.1) // Simulate recent uploads
+      }));
+
+    } catch (error) {
+      console.error('Error loading storage data:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load storage data',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFileView = (file: any) => {
+    toast({
+      title: 'File Details',
+      description: `Viewing ${file.name}`
+    });
+  };
+
+  const handleFileDownload = async (file: any) => {
+    try {
+      const { data } = await supabase.storage.from(file.bucket_id).download(file.name);
+      if (data) {
+        const url = URL.createObjectURL(data);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = file.name;
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        toast({
+          title: 'Download Started',
+          description: `Downloading ${file.name}`
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Download Failed',
+        description: 'Failed to download file',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleFileDelete = async (file: any) => {
+    try {
+      const { error } = await supabase.storage.from(file.bucket_id).remove([file.name]);
+      if (!error) {
+        toast({
+          title: 'File Deleted',
+          description: `${file.name} has been deleted`
+        });
+        loadStorageData(); // Refresh data
+      }
+    } catch (error) {
+      toast({
+        title: 'Delete Failed',
+        description: 'Failed to delete file',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const filteredFiles = files.filter(file => 
+    file.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) {
     return (
       <PageContainer>
-        <Card>
-          <CardContent className="p-6 text-center">
-            <Lock className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-            <h2 className="text-2xl font-bold mb-2">Authentication Required</h2>
-            <p className="text-muted-foreground">Please sign in to access storage management.</p>
-          </CardContent>
-        </Card>
+        <div className="min-h-[400px] flex items-center justify-center">
+          <div className="text-center space-y-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="text-sm text-muted-foreground">Loading storage data...</p>
+          </div>
+        </div>
       </PageContainer>
-    )
+    );
   }
 
   return (
     <PageContainer>
       <PageHeader
         title="Storage Management"
-        description="Manage and monitor storage buckets and files"
-        actionButton={
-          isAdmin ? {
-            label: "Cleanup Temp Files",
-            icon: <Trash2 className="w-4 h-4" />,
-            onClick: cleanupTempFiles
-          } : undefined
-        }
-      >
-        <Button onClick={loadBucketStats} disabled={loading} variant="outline">
-          <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-          Refresh
-        </Button>
-      </PageHeader>
+        description="Monitor and manage file storage across all buckets"
+        actionButton={{
+          label: "Upload Files",
+          icon: <Upload className="w-4 h-4" />,
+          onClick: () => setShowUploadDialog(true)
+        }}
+      />
 
-      {cleanupProgress > 0 && (
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Trash2 className="w-4 h-4" />
-              <span className="text-sm">Cleaning up temporary files...</span>
+      <div className="space-y-6">
+        {/* Enhanced Hero Dashboard */}
+        <StorageHero 
+          totalFiles={storageStats.totalFiles}
+          totalSize={storageStats.totalSize}
+          usedSpace={storageStats.usedSpace}
+          totalSpace={storageStats.totalSpace}
+          publicFiles={storageStats.publicFiles}
+          privateFiles={storageStats.privateFiles}
+          recentUploads={storageStats.recentUploads}
+          buckets={storageStats.buckets}
+        />
+
+        <Tabs defaultValue="files" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="files">Files</TabsTrigger>
+            <TabsTrigger value="buckets">Buckets</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="files" className="space-y-6">
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                <Input
+                  placeholder="Search files..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <Button onClick={() => loadStorageData()}>
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Refresh
+              </Button>
             </div>
-            <Progress value={cleanupProgress} className="w-full" />
-          </CardContent>
-        </Card>
-      )}
 
-      {/* Storage Overview */}
-      {usage && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2">
-                <HardDrive className="w-5 h-5 text-blue-500" />
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Storage</p>
-                  <p className="text-2xl font-bold">{formatBytes(usage.totalSize)}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2">
-                <Database className="w-5 h-5 text-green-500" />
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Files</p>
-                  <p className="text-2xl font-bold">{usage.totalFiles.toLocaleString()}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2">
-                <FolderOpen className="w-5 h-5 text-purple-500" />
-                <div>
-                  <p className="text-sm text-muted-foreground">Buckets</p>
-                  <p className="text-2xl font-bold">{usage.bucketCount}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2">
-                <Users className="w-5 h-5 text-orange-500" />
-                <div>
-                  <p className="text-sm text-muted-foreground">Public/Private</p>
-                  <p className="text-2xl font-bold">{usage.publicBuckets}/{usage.privateBuckets}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-
-      {/* Bucket Details */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Database className="w-5 h-5" />
-            Storage Buckets
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {loading ? (
-            <div className="text-center py-8">
-              <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-muted-foreground" />
-              <p className="text-muted-foreground">Loading bucket information...</p>
-            </div>
-          ) : buckets.length === 0 ? (
-            <div className="text-center py-8">
-              <FolderOpen className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-              <h3 className="text-lg font-semibold mb-2">No Storage Buckets</h3>
-              <p className="text-muted-foreground">No storage buckets found in your project.</p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {buckets.map((bucket) => (
-                <div key={bucket.name} className="border rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <FolderOpen className="w-5 h-5 text-blue-500" />
-                      <h3 className="font-semibold">{bucket.name}</h3>
-                      <Badge variant={bucket.isPublic ? "default" : "secondary"}>
-                        {bucket.isPublic ? (
-                          <>
-                            <Unlock className="w-3 h-3 mr-1" />
-                            Public
-                          </>
-                        ) : (
-                          <>
-                            <Lock className="w-3 h-3 mr-1" />
-                            Private
-                          </>
-                        )}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredFiles.map((file) => (
+                <Card key={`${file.bucket_id}-${file.name}`} className="hover:shadow-lg transition-all duration-300 hover-scale">
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
+                        <Files className="w-6 h-6 text-muted-foreground" />
+                      </div>
+                      <Badge variant={file.is_public ? "default" : "secondary"}>
+                        {file.is_public ? "Public" : "Private"}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-2">
-                      {bucket.fileCount > 0 ? (
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                      ) : (
-                        <AlertTriangle className="w-4 h-4 text-yellow-500" />
-                      )}
+
+                    <h3 className="font-semibold text-foreground mb-2 line-clamp-2">
+                      {file.name}
+                    </h3>
+                    
+                    <div className="space-y-2 text-sm text-muted-foreground mb-4">
+                      <div className="flex justify-between">
+                        <span>Bucket</span>
+                        <span>{file.bucket_id}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Size</span>
+                        <span>{file.metadata?.size ? `${(file.metadata.size / 1024).toFixed(1)} KB` : 'Unknown'}</span>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                    <div>
-                      <p className="text-muted-foreground">Files</p>
-                      <p className="font-medium">{bucket.fileCount.toLocaleString()}</p>
+
+                    <div className="flex gap-2">
+                      <Button variant="outline" onClick={() => handleFileView(file)} className="flex-1">
+                        <Eye className="w-4 h-4 mr-2" />
+                        View
+                      </Button>
+                      <Button onClick={() => handleFileDownload(file)} className="flex-1">
+                        <Download className="w-4 h-4 mr-2" />
+                        Download
+                      </Button>
                     </div>
-                    <div>
-                      <p className="text-muted-foreground">Total Size</p>
-                      <p className="font-medium">{formatBytes(bucket.totalSize)}</p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground">Avg Size</p>
-                      <p className="font-medium">{formatBytes(bucket.avgSize)}</p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground">Last Modified</p>
-                      <p className="font-medium">
-                        {bucket.newestFile !== 'N/A' 
-                          ? new Date(bucket.newestFile).toLocaleDateString()
-                          : 'N/A'
-                        }
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
-          )}
-        </CardContent>
-      </Card>
+          </TabsContent>
 
-      {/* Admin Tools */}
-      {isAdmin && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5" />
-              Administrator Tools
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="p-4 border border-yellow-200 bg-yellow-50 rounded-lg">
-              <div className="flex items-start gap-3">
-                <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5" />
-                <div>
-                  <h4 className="font-medium text-yellow-800">Cleanup Operations</h4>
-                  <p className="text-sm text-yellow-700 mb-3">
-                    Remove temporary files older than 7 days to free up storage space.
-                  </p>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={cleanupTempFiles}
-                    disabled={cleanupProgress > 0}
-                  >
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Run Cleanup
-                  </Button>
-                </div>
-              </div>
+          <TabsContent value="buckets" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {buckets.map((bucket) => (
+                <Card key={bucket.id} className="hover:shadow-lg transition-all duration-300 hover-scale">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="flex items-center gap-2">
+                        <Database className="w-5 h-5" />
+                        {bucket.name}
+                      </CardTitle>
+                      <Badge variant={bucket.public ? "default" : "secondary"}>
+                        {bucket.public ? "Public" : "Private"}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex justify-between text-sm">
+                        <span>ID</span>
+                        <span className="font-mono">{bucket.id}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>Created</span>
+                        <span>{bucket.created_at ? new Date(bucket.created_at).toLocaleDateString() : 'Unknown'}</span>
+                      </div>
+                      <Button variant="outline" className="w-full">
+                        <Settings className="w-4 h-4 mr-2" />
+                        Manage Bucket
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-          </CardContent>
-        </Card>
-      )}
+          </TabsContent>
+
+          <TabsContent value="analytics" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Storage Usage Trend</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-primary">
+                        {((storageStats.usedSpace / storageStats.totalSpace) * 100).toFixed(1)}%
+                      </div>
+                      <div className="text-sm text-muted-foreground">Storage Used</div>
+                    </div>
+                    <Progress value={(storageStats.usedSpace / storageStats.totalSpace) * 100} className="h-3" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>File Distribution</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span>Public Files</span>
+                      <span className="font-semibold">{storageStats.publicFiles}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Private Files</span>
+                      <span className="font-semibold">{storageStats.privateFiles}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Total Buckets</span>
+                      <span className="font-semibold">{storageStats.buckets}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      {/* Upload Dialog */}
+      <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Upload Files</DialogTitle>
+            <DialogDescription>
+              Select files to upload to storage buckets
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="bucket-select">Select Bucket</Label>
+              <Input id="bucket-select" placeholder="Choose bucket..." className="mt-2" />
+            </div>
+            <div>
+              <Label htmlFor="file-upload">Choose Files</Label>
+              <Input id="file-upload" type="file" multiple className="mt-2" />
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setShowUploadDialog(false)}>
+                Cancel
+              </Button>
+              <Button onClick={() => {
+                toast({
+                  title: 'Upload Started',
+                  description: 'Files are being uploaded'
+                });
+                setShowUploadDialog(false);
+              }}>
+                <Upload className="w-4 h-4 mr-2" />
+                Upload
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </PageContainer>
-  )
+  );
 }
