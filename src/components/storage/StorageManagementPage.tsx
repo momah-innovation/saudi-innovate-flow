@@ -6,6 +6,7 @@ import { StorageAnalyticsTab } from './StorageAnalyticsTab';
 import { UploaderSettingsTab } from './UploaderSettingsTab';
 import { FileViewDialog } from './FileViewDialog';
 import { BucketManagementDialog } from './BucketManagementDialog';
+import { BucketViewDialog } from './BucketViewDialog';
 import { StorageFilters, type FilterOptions, type SortOptions } from './StorageFilters';
 import { LayoutToggle, LayoutType } from '@/components/ui/layout-toggle';
 import { StorageFileCard } from './StorageFileCard';
@@ -52,6 +53,7 @@ export function StorageManagementPage() {
   const [selectedBucket, setSelectedBucket] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<any | null>(null);
   const [selectedBucketForManagement, setSelectedBucketForManagement] = useState<any | null>(null);
+  const [selectedBucketForView, setSelectedBucketForView] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [buckets, setBuckets] = useState<any[]>([]);
   const [files, setFiles] = useState<any[]>([]);
@@ -59,6 +61,7 @@ export function StorageManagementPage() {
   const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [showFileViewDialog, setShowFileViewDialog] = useState(false);
   const [showBucketManagementDialog, setShowBucketManagementDialog] = useState(false);
+  const [showBucketViewDialog, setShowBucketViewDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [fileToDelete, setFileToDelete] = useState<any | null>(null);
   const [selectedUploadBucket, setSelectedUploadBucket] = useState<string>('');
@@ -333,6 +336,11 @@ export function StorageManagementPage() {
 
   const handleBucketView = (bucket: any) => {
     console.log('handleBucketView called with bucket:', bucket);
+    setSelectedBucketForView(bucket);
+    setShowBucketViewDialog(true);
+  };
+
+  const handleBucketViewFiles = (bucket: any) => {
     // Set the bucket filter to show only files from this bucket
     setFilters(prev => ({ ...prev, bucket: bucket.id }));
     // Switch to files tab to show the filtered results
@@ -794,6 +802,15 @@ export function StorageManagementPage() {
         open={showBucketManagementDialog}
         onOpenChange={setShowBucketManagementDialog}
         onRefresh={loadStorageData}
+      />
+
+      {/* Bucket View Dialog */}
+      <BucketViewDialog
+        bucket={selectedBucketForView}
+        open={showBucketViewDialog}
+        onOpenChange={setShowBucketViewDialog}
+        onViewFiles={handleBucketViewFiles}
+        onOpenSettings={handleBucketManagement}
       />
 
       {/* Delete Confirmation Dialog */}
