@@ -45,15 +45,32 @@ const commonFileTypes = [
 ]
 
 const predefinedBuckets = [
-  'opportunity-images',
-  'opportunity-attachments',
-  'challenge-attachments',
-  'event-resources',
   'avatars',
-  'partner-logos',
+  'campaign-images-public',
+  'campaigns-materials',
+  'challenge-attachments',
+  'challenges-attachments-private',
+  'challenges-documents-private',
+  'challenges-images-public',
+  'dashboard-images',
+  'event-resources',
   'idea-images',
-  'user-documents-private',
-  'ideas-documents-private'
+  'ideas-attachments-private',
+  'ideas-documents-private',
+  'ideas-images-public',
+  'opportunities-attachments-private',
+  'opportunities-documents-private',
+  'opportunities-images-public',
+  'opportunity-attachments',
+  'opportunity-images',
+  'partner-images',
+  'partner-logos',
+  'saved-images',
+  'sector-images',
+  'team-logos',
+  'temp-uploads-private',
+  'user-avatars-public',
+  'user-documents-private'
 ]
 
 export function ConfigurationDialog({ config, open, onOpenChange, onSave }: ConfigurationDialogProps) {
