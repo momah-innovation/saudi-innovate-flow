@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Switch } from '@/components/ui/switch'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { ConfigurationDialog } from './ConfigurationDialog'
 import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
 import { 
@@ -256,6 +257,57 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
     }
   }
 
+  const handleSaveConfig = async (config: UploaderConfig) => {
+    try {
+      const settingValue = {
+        uploadType: config.uploadType,
+        bucket: config.bucket,
+        path: config.path,
+        maxSizeBytes: config.maxSizeBytes,
+        allowedTypes: config.allowedTypes,
+        maxFiles: config.maxFiles,
+        enabled: config.enabled,
+        autoCleanup: config.autoCleanup,
+        cleanupDays: config.cleanupDays
+      }
+
+      if (editingConfig) {
+        // Update existing configuration
+        const { error } = await supabase
+          .from('uploader_settings')
+          .update({
+            setting_value: settingValue,
+            updated_at: new Date().toISOString()
+          })
+          .eq('setting_key', config.uploadType)
+          .eq('setting_type', 'upload_config')
+      } else {
+        // Create new configuration
+        const { error } = await supabase
+          .from('uploader_settings')
+          .insert({
+            setting_type: 'upload_config',
+            setting_key: config.uploadType,
+            setting_value: settingValue,
+            is_active: config.enabled
+          })
+      }
+
+      toast({
+        title: "Configuration Saved",
+        description: `Upload configuration for ${config.uploadType} has been saved`
+      })
+
+      loadUploaderSettings() // Refresh the settings
+    } catch (error) {
+      toast({
+        title: "Save Failed",
+        description: "Failed to save configuration",
+        variant: 'destructive'
+      })
+    }
+  }
+
   const getStatusIcon = (config: UploaderConfig) => {
     if (!config.enabled) {
       return <AlertTriangle className="w-4 h-4 text-yellow-500" />
@@ -499,6 +551,19 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
           </div>
         </CardContent>
       </Card>
+
+      {/* Configuration Dialog */}
+      <ConfigurationDialog
+        config={editingConfig}
+        open={newConfigOpen || Boolean(editingConfig)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setNewConfigOpen(false)
+            setEditingConfig(null)
+          }
+        }}
+        onSave={handleSaveConfig}
+      />
     </div>
   )
 }
