@@ -575,6 +575,8 @@ const ChallengesBrowse = () => {
               onFiltersChange={setFilters}
               onClearFilters={handleClearFilters}
               activeFiltersCount={getActiveFiltersCount()}
+              dynamicMaxBudget={dynamicMaxBudget}
+              dynamicMaxParticipants={dynamicMaxParticipants}
               className="animate-fade-in"
             />
 

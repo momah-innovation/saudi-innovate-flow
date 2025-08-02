@@ -46,6 +46,8 @@ interface EnhancedChallengeFiltersProps {
   onClearFilters: () => void;
   activeFiltersCount: number;
   className?: string;
+  dynamicMaxBudget?: number;
+  dynamicMaxParticipants?: number;
 }
 
 export const EnhancedChallengeFilters = ({ 
@@ -53,7 +55,9 @@ export const EnhancedChallengeFilters = ({
   onFiltersChange, 
   onClearFilters, 
   activeFiltersCount,
-  className = ""
+  className = "",
+  dynamicMaxBudget = 10000000,
+  dynamicMaxParticipants = 1000
 }: EnhancedChallengeFiltersProps) => {
   const { isRTL } = useDirection();
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
@@ -385,9 +389,9 @@ export const EnhancedChallengeFilters = ({
                   <Slider
                     value={filters.prizeRange}
                     onValueChange={(value) => updateFilter('prizeRange', value as [number, number])}
-                    max={10000000}
+                    max={dynamicMaxBudget}
                     min={0}
-                    step={10000}
+                    step={dynamicMaxBudget > 1000000 ? 100000 : 10000}
                     className="w-full"
                   />
                   <div className="flex justify-between text-sm text-muted-foreground mt-2">
@@ -407,9 +411,9 @@ export const EnhancedChallengeFilters = ({
                   <Slider
                     value={filters.participantRange}
                     onValueChange={(value) => updateFilter('participantRange', value as [number, number])}
-                    max={5000}
+                    max={dynamicMaxParticipants}
                     min={0}
-                    step={50}
+                    step={dynamicMaxParticipants > 100 ? 10 : 5}
                     className="w-full"
                   />
                   <div className="flex justify-between text-sm text-muted-foreground mt-2">
