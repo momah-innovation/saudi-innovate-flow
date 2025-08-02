@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { MultiStepForm } from '@/components/ui/multi-step-form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,6 +17,7 @@ import { format } from 'date-fns';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { ChallengeFormSchema } from '@/schemas/validation';
 import type { Challenge, Department, Deputy, Sector, Domain, SubDomain, Service, Partner, Expert } from "@/types";
 
 interface ChallengeFormData {
@@ -66,7 +68,10 @@ interface SystemLists {
 export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: ChallengeWizardProps) {
   const { toast } = useToast();
   const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels } = useSystemLists();
-  const form = useForm<Challenge>();
+  const form = useForm<ChallengeFormData>({
+    resolver: zodResolver(ChallengeFormSchema),
+    defaultValues: formData
+  });
   const [loading, setLoading] = useState(false);
   const [systemLists, setSystemLists] = useState<SystemLists>({
     departments: [],
