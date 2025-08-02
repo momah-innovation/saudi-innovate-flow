@@ -33,3 +33,5 @@ const customRender = (
 
 export * from '@testing-library/react'
 export { customRender as render }
+// Re-export testing utilities
+export { screen, fireEvent, waitFor } from '@testing-library/react'

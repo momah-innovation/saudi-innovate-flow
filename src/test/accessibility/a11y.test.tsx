@@ -10,7 +10,8 @@ describe('Accessibility Tests', () => {
   it('Button has no accessibility violations', async () => {
     const { container } = render(<Button>Click me</Button>)
     const results = await axe(container)
-    expect(results).toHaveNoViolations()
+    // Basic accessibility test
+    expect(results.violations).toHaveLength(0)
   })
 
   it('Input has no accessibility violations', async () => {
@@ -21,7 +22,8 @@ describe('Accessibility Tests', () => {
       </div>
     )
     const results = await axe(container)
-    expect(results).toHaveNoViolations()
+    // Basic accessibility test
+    expect(results.violations).toHaveLength(0)
   })
 
   it('Form elements have proper labels', () => {
