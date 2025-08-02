@@ -100,40 +100,55 @@ export const StoragePoliciesPage: React.FC = () => {
     try {
       setLoading(true)
       
-      let bucketInfo: BucketInfo[] = [];
+      // Get buckets
+      const { data: bucketsData, error: bucketsError } = await supabase.storage.listBuckets();
       
-      // Get buckets using the same RPC function that works for other tabs
-      const { data: bucketsData, error: bucketsError } = await supabase
-        .rpc('get_storage_buckets_info');
-      
-      if (bucketsError) {
+      if (bucketsError || !bucketsData) {
         console.error('Error loading buckets:', bucketsError);
-        // Fallback to basic storage info
-        const { data: fallbackData, error: fallbackError } = await supabase
-          .rpc('get_basic_storage_info');
-        
-        if (fallbackError) {
-          console.error('Fallback bucket loading failed:', fallbackError);
-          setBuckets([]);
-          return;
-        }
-        
-        // Convert basic storage info to bucket info
-        bucketInfo = (fallbackData || []).map((bucket: any) => ({
-          id: bucket.bucket_id,
-          name: bucket.bucket_name,
-          public: bucket.public,
-          policies: []
-        }));
-      } else {
-        // Convert RPC response to bucket info
-        bucketInfo = (bucketsData || []).map((bucket: any) => ({
-          id: bucket.bucket_id,
-          name: bucket.bucket_name,
-          public: bucket.public,
-          policies: []
-        }));
+        setBuckets([]);
+        return;
       }
+
+      // Get actual policies from pg_policies
+      const { data: policiesData, error: policiesError } = await supabase
+        .from('pg_policies')
+        .select('*')
+        .eq('tablename', 'objects')
+        .eq('schemaname', 'storage');
+
+      if (policiesError) {
+        console.error('Error loading policies:', policiesError);
+      }
+
+      // Group policies by bucket
+      const policiesByBucket: Record<string, StoragePolicy[]> = {};
+      
+      if (policiesData) {
+        policiesData.forEach((policy: any) => {
+          // Extract bucket name from policy condition
+          const bucketMatch = policy.qual?.match(/bucket_id = '([^']+)'/);
+          if (bucketMatch) {
+            const bucketName = bucketMatch[1];
+            if (!policiesByBucket[bucketName]) {
+              policiesByBucket[bucketName] = [];
+            }
+            policiesByBucket[bucketName].push({
+              name: policy.policyname,
+              command: policy.cmd,
+              condition: policy.qual || '',
+              check_expression: policy.with_check || ''
+            });
+          }
+        });
+      }
+
+      // Create bucket info with actual policies
+      const bucketInfo: BucketInfo[] = bucketsData.map(bucket => ({
+        id: bucket.id,
+        name: bucket.name,
+        public: bucket.public,
+        policies: policiesByBucket[bucket.name] || []
+      }));
 
       setBuckets(bucketInfo);
       
