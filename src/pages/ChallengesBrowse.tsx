@@ -10,8 +10,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { ChallengeCard } from '@/components/challenges/ChallengeCard';
-import { EnhancedChallengeCard } from '@/components/challenges/EnhancedChallengeCard';
-import { SuperChallengeCard } from '@/components/challenges/SuperChallengeCard';
 import { TrendingChallengesWidget } from '@/components/challenges/TrendingChallengesWidget';
 import { ChallengesHero } from '@/components/challenges/ChallengesHero';
 import { EnhancedChallengesHero } from '@/components/challenges/EnhancedChallengesHero';
@@ -363,17 +361,18 @@ const ChallengesBrowse = () => {
     return count;
   };
 
-  // Render enhanced challenge cards
+  // Render challenge cards
   const renderChallengeCards = (challenges: any[]) => (
     <ViewLayouts viewMode={viewMode}>
       {challenges.map((challenge) => (
-        <SuperChallengeCard
+        <ChallengeCard
           key={challenge.id}
           challenge={challenge}
           onViewDetails={handleViewDetails}
           onParticipate={handleParticipate}
           onBookmark={handleBookmark}
           viewMode={viewMode}
+          variant="enhanced"
         />
       ))}
     </ViewLayouts>
