@@ -36,6 +36,7 @@ import {
 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { RTLAware } from '@/components/ui/rtl-aware';
+import { useTranslation } from 'react-i18next';
 
 interface EnhancedStorageQuotasTabProps {
   onQuotasChanged?: () => void;
@@ -44,6 +45,7 @@ interface EnhancedStorageQuotasTabProps {
 export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuotasTabProps) {
   const { quotas, loading, error, setQuota, removeQuota, autoSetupQuotas, refreshQuotas } = useStorageQuotas();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedBucket, setSelectedBucket] = useState('');
   const [quotaSize, setQuotaSize] = useState('');
@@ -210,7 +212,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
       <RTLAware className="space-y-6">
         <div className="flex items-center justify-center p-8">
           <RefreshCw className="h-6 w-6 animate-spin mr-2" />
-          <span>Loading storage quotas...</span>
+          <span>{t('loading_storage_quotas')}</span>
         </div>
       </RTLAware>
     );
@@ -221,9 +223,9 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
     <RTLAware className="space-y-6">
       {/* Header */}
       <div>
-        <h3 className="text-lg font-semibold mb-2">Storage Quotas Management</h3>
+        <h3 className="text-lg font-semibold mb-2">{t('storage_quotas_management')}</h3>
         <p className="text-muted-foreground">
-          Set and manage storage limits for buckets to prevent excessive usage
+          {t('set_manage_storage_limits')}
         </p>
       </div>
 
@@ -231,39 +233,39 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Buckets</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('total_buckets_title')}</CardTitle>
             <Database className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{allBuckets.length}</div>
             <p className="text-xs text-muted-foreground">
-              Available storage buckets
+              {t('available_storage_buckets')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">With Quotas</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('with_quotas')}</CardTitle>
             <CheckCircle className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{quotas.length}</div>
             <p className="text-xs text-muted-foreground">
-              Buckets with quota limits
+              {t('buckets_with_quota_limits')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Without Quotas</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('without_quotas')}</CardTitle>
             <XCircle className="h-4 w-4 text-orange-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{bucketsWithoutQuotas.length}</div>
             <p className="text-xs text-muted-foreground">
-              Need quota setup
+              {t('need_quota_setup')}
             </p>
           </CardContent>
         </Card>
@@ -274,7 +276,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Settings className="h-5 w-5" />
-            Quick Actions
+            {t('quick_actions')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -283,20 +285,20 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
               <DialogTrigger asChild>
                 <Button>
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Quota
+                  {t('add_quota')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Set Storage Quota</DialogTitle>
+                  <DialogTitle>{t('set_storage_quota')}</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="bucket">Bucket</Label>
-                    <Select value={selectedBucket} onValueChange={setSelectedBucket}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a bucket" />
-                      </SelectTrigger>
+                    <div>
+                      <Label htmlFor="bucket">{t('bucket')}</Label>
+                      <Select value={selectedBucket} onValueChange={setSelectedBucket}>
+                        <SelectTrigger>
+                          <SelectValue placeholder={t('select_bucket')} />
+                        </SelectTrigger>
                       <SelectContent>
                         {bucketsWithoutQuotas.map((bucket) => (
                           <SelectItem key={bucket.bucket_name} value={bucket.bucket_name}>
@@ -308,7 +310,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     <div className="col-span-2">
-                      <Label htmlFor="quota">Quota Size</Label>
+                      <Label htmlFor="quota">{t('quota_size')}</Label>
                       <Input
                         id="quota"
                         type="number"
@@ -318,7 +320,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                       />
                     </div>
                     <div>
-                      <Label htmlFor="unit">Unit</Label>
+                      <Label htmlFor="unit">{t('unit')}</Label>
                       <Select value={quotaUnit} onValueChange={setQuotaUnit}>
                         <SelectTrigger>
                           <SelectValue />
@@ -336,7 +338,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                     className="w-full"
                   >
                     {actionLoading === 'set' && <RefreshCw className="h-4 w-4 mr-2 animate-spin" />}
-                    Set Quota
+                    {t('set_quota')}
                   </Button>
                 </div>
               </DialogContent>
@@ -353,7 +355,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                 ) : (
                   <Zap className="h-4 w-4 mr-2" />
                 )}
-                Auto Setup (5GB Default)
+                {t('auto_setup_5gb')}
               </Button>
             )}
 
@@ -366,7 +368,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
               disabled={loading}
             >
               <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
+              {t('refresh')}
             </Button>
           </div>
         </CardContent>
@@ -385,10 +387,10 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <HardDrive className="h-5 w-5" />
-            All Storage Buckets
+            {t('all_storage_buckets')}
           </CardTitle>
           <CardDescription>
-            Complete overview of all storage buckets and their quota status
+            {t('complete_overview_buckets')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -403,7 +405,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                     <div className="flex items-center gap-2">
                       <h4 className="font-medium">{bucket.bucket_name}</h4>
                       <Badge variant="outline" className="text-xs">
-                        {bucket.public ? 'Public' : 'Private'}
+                        {bucket.public ? t('public') : t('private')}
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2">
@@ -426,7 +428,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                           </Button>
                         </>
                       ) : (
-                        <Badge variant="secondary">No Quota</Badge>
+                        <Badge variant="secondary">{t('no_quota')}</Badge>
                       )}
                     </div>
                   </div>
@@ -435,21 +437,21 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                     <div className="space-y-2">
                       <Progress value={Math.min(quota.usage_percentage, 100)} className="h-2" />
                       <div className="flex justify-between text-sm text-muted-foreground">
-                        <span>{formatBytes(quota.current_usage_bytes)} used</span>
-                        <span>{formatBytes(quota.quota_bytes)} total</span>
+                        <span>{formatBytes(quota.current_usage_bytes)} {t('used')}</span>
+                        <span>{formatBytes(quota.quota_bytes)} {t('total')}</span>
                       </div>
                       {quota.current_usage_bytes > quota.quota_bytes && (
                         <Alert variant="destructive">
                           <AlertCircle className="h-4 w-4" />
                           <AlertDescription>
-                            Quota exceeded! Current usage is {formatBytes(quota.current_usage_bytes - quota.quota_bytes)} over the limit.
+                            {t('quota_exceeded')} {formatBytes(quota.current_usage_bytes - quota.quota_bytes)} {t('over_limit')}.
                           </AlertDescription>
                         </Alert>
                       )}
                     </div>
                   ) : (
                     <div className="text-sm text-muted-foreground">
-                      No storage quota configured for this bucket
+                      {t('no_storage_quota_configured')}
                     </div>
                   )}
                 </div>
