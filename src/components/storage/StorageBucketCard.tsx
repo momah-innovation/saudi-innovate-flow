@@ -23,7 +23,7 @@ interface StorageBucketCardProps {
 }
 
 export function StorageBucketCard({ bucket, onView, onSettings, onDelete }: StorageBucketCardProps) {
-  const { t } = useTranslation()
+  const { t, isRTL } = useTranslation()
   const formatSize = (size?: number) => {
     if (!size) return '0 B'
     if (size < 1024) return `${size} B`
@@ -33,6 +33,7 @@ export function StorageBucketCard({ bucket, onView, onSettings, onDelete }: Stor
   }
 
   return (
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
     <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-[1.02] hover:border-primary/20 bg-gradient-to-br from-background to-muted/30">
       <CardContent className="p-4">
         <div className="flex items-start justify-between mb-3">
@@ -116,5 +117,6 @@ export function StorageBucketCard({ bucket, onView, onSettings, onDelete }: Stor
         </div>
       </CardContent>
     </Card>
+    </div>
   )
 }

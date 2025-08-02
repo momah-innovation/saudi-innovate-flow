@@ -41,7 +41,7 @@ export function EnhancedStorageFileCard({
   onSelectionChange,
   showSelection = false
 }: EnhancedStorageFileCardProps) {
-  const { t } = useTranslation();
+  const { t, isRTL } = useTranslation();
   const [imageError, setImageError] = useState(false);
 
   const formatFileSize = (bytes: number) => {
@@ -100,6 +100,7 @@ export function EnhancedStorageFileCard({
   const imageUrl = getImageUrl();
 
   return (
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
     <Card className={`group hover:shadow-md transition-all duration-200 ${isSelected ? 'ring-2 ring-primary' : ''}`}>
       <CardContent className="p-4">
         {showSelection && (
@@ -200,5 +201,6 @@ export function EnhancedStorageFileCard({
         )}
       </CardContent>
     </Card>
+    </div>
   );
 }

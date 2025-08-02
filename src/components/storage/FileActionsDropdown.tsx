@@ -46,7 +46,7 @@ export function FileActionsDropdown({
   onShowInfo
 }: FileActionsDropdownProps) {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t, isRTL } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCopyUrl = async () => {
@@ -84,6 +84,7 @@ export function FileActionsDropdown({
   };
 
   return (
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
@@ -170,5 +171,6 @@ export function FileActionsDropdown({
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+    </div>
   );
 }

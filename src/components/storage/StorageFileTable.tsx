@@ -45,7 +45,7 @@ export function StorageFileTable({ files, onView, onDownload, onDelete }: Storag
   }
 
   return (
-    <div className="border rounded-lg">
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={`border rounded-lg ${isRTL ? 'font-arabic' : 'font-english'}`}>
       <Table>
         <TableHeader>
           <TableRow>
