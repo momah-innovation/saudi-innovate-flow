@@ -50,7 +50,7 @@ export function FixedStorageUploadTab({ onFilesUploaded }: FixedStorageUploadTab
     const result = await uploadFiles(files, uploadConfig);
     
     if (result.success) {
-      console.log('Files uploaded:', result.files);
+      // Files uploaded successfully
       setUploadedFiles(prev => [...prev, ...(result.files || [])]);
       onFilesUploaded(); // Refresh parent data
       toast({

@@ -82,20 +82,20 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
   const loadUploaderSettings = async () => {
     try {
       setLoading(true)
-      console.log('Loading uploader settings...');
+      // Loading uploader settings
       
       // Load all available buckets first
       let buckets: any[] = [];
       try {
         const { data: dbBuckets, error: dbError } = await supabase
           .rpc('get_basic_storage_info');
-        console.log('Uploader settings database response:', { dbBuckets, dbError });
+        // Database response received
         
         if (dbError) {
-          console.log('Database function failed for uploader settings, trying storage API...');
+          // Fallback to storage API
           const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
           buckets = storageB || [];
-          console.log('Uploader storage API response:', { buckets: storageB, error: storageE });
+          // Storage API response received
         } else {
           // Convert database response to storage API format
           buckets = dbBuckets?.map(bucket => ({
@@ -104,13 +104,13 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
             public: bucket.public,
             created_at: bucket.created_at
           })) || [];
-          console.log('Uploader using database buckets:', buckets);
+          // Using database buckets
         }
       } catch (error) {
         console.error('Both methods failed for uploader settings:', error);
         const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
         buckets = storageB || [];
-        console.log('Uploader final fallback:', { buckets, error: storageE });
+        // Final fallback completed
       }
       
       setAllBuckets(buckets);
@@ -122,7 +122,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
         .eq('setting_type', 'global')
         .eq('is_active', true)
 
-      console.log('Global settings response:', { globalData, globalError });
+      // Global settings response received
       if (globalError) throw globalError
 
       // Load upload configurations
@@ -132,7 +132,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
         .eq('setting_type', 'upload_config')
         .eq('is_active', true)
 
-      console.log('Config settings response:', { configData, configError });
+      // Config settings response received
 
       if (configError) throw configError
 
@@ -486,7 +486,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
           is_active: true
         })
 
-      console.log(`Auto-configured bucket: ${bucket.id}`, settingValue)
+      // Auto-configured bucket successfully
     } catch (error) {
       console.error(`Failed to auto-configure bucket ${bucket.id}:`, error)
       throw error

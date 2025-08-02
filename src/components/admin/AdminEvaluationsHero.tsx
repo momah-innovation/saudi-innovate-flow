@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useTranslation } from '@/hooks/useAppTranslation';
+import { useRTLAwareClasses } from '@/components/ui/rtl-aware';
 import { 
   FileCheck, 
   Clock, 
@@ -34,11 +35,12 @@ export function AdminEvaluationsHero({
   evaluationRate
 }: AdminEvaluationsHeroProps) {
   const { t } = useTranslation();
+  const { flexRow } = useRTLAwareClasses();
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       {/* Total Evaluations */}
       <Card className="gradient-border hover-scale">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('total_evaluations')}</CardTitle>
           <FileCheck className="h-4 w-4 text-primary" />
         </CardHeader>
@@ -52,7 +54,7 @@ export function AdminEvaluationsHero({
 
       {/* Pending Evaluations */}
       <Card className="hover-scale">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('pending_reviews')}</CardTitle>
           <Clock className="h-4 w-4 text-orange-500" />
         </CardHeader>
@@ -66,7 +68,7 @@ export function AdminEvaluationsHero({
 
       {/* Average Score */}
       <Card className="hover-scale">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('average_score')}</CardTitle>
           <Star className="h-4 w-4 text-yellow-500" />
         </CardHeader>
@@ -80,7 +82,7 @@ export function AdminEvaluationsHero({
 
       {/* Active Evaluators */}
       <Card className="hover-scale">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('active_evaluators')}</CardTitle>
           <Users className="h-4 w-4 text-blue-500" />
         </CardHeader>

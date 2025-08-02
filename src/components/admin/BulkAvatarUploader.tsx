@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Upload, CheckCircle, AlertCircle, Users } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -199,7 +199,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
           className="w-full"
           size="lg"
         >
-          <Upload className="h-4 w-4 mr-2" />
+          <Upload className="h-4 w-4 me-2" />
           {uploading ? t('uploading_avatars') : t('start_bulk_upload')}
         </Button>
 

@@ -465,7 +465,7 @@ export function StorageManagementPage() {
                   bucket={bucket}
                   onView={() => setSelectedBucketForView(bucket)}
                   onSettings={() => setSelectedBucketForManagement(bucket)}
-                  onDelete={() => console.log('Delete bucket:', bucket)}
+                  onDelete={() => {/* TODO: Implement bucket deletion */}}
                 />
               ))}
             </div>
