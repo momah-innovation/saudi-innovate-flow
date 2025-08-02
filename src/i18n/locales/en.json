@@ -161,7 +161,9 @@
     "no_storage_quota_configured": "No storage quota configured for this bucket",
     "loading_storage_quotas": "Loading storage quotas...",
     "used": "used",
-    "total": "total"
+    "total": "total",
+    "bytes": "Bytes",
+    "gb": "GB"
   },
   "units": {
     "bytes": "Bytes",

@@ -95,9 +95,9 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
   );
 
   const formatBytes = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return `0 ${t('storage.bytes')}`;
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const sizes = [t('storage.bytes'), 'KB', 'MB', t('storage.gb'), 'TB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };

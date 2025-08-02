@@ -161,7 +161,9 @@
     "no_storage_quota_configured": "لم يتم تكوين حصة تخزين لهذه الحاوية",
     "loading_storage_quotas": "جاري تحميل حصص التخزين...",
     "used": "مستخدم",
-    "total": "الإجمالي"
+    "total": "الإجمالي",
+    "bytes": "بايت",
+    "gb": "جيجابايت"
   },
   "units": {
     "bytes": "بايت",
