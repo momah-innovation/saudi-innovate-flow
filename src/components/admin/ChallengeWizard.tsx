@@ -16,8 +16,9 @@ import { format } from 'date-fns';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from "@/hooks/useSystemLists";
+import type { Challenge, Department, Deputy, Sector, Domain, SubDomain, Service, Partner, Expert } from "@/types";
 
-interface Challenge {
+interface ChallengeFormData {
   id?: string;
   title_ar: string;
   description_ar: string;
@@ -48,7 +49,7 @@ interface ChallengeWizardProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
-  challenge?: Challenge | null;
+  challenge?: ChallengeFormData | null;
 }
 
 interface SystemLists {
@@ -78,7 +79,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
     experts: []
   });
 
-  const [formData, setFormData] = useState<Challenge>({
+  const [formData, setFormData] = useState<ChallengeFormData>({
     title_ar: '',
     description_ar: '',
     status: 'draft',
@@ -191,7 +192,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
     setSelectedExperts([]);
   };
 
-  const updateFormData = (field: keyof Challenge, value: any) => {
+  const updateFormData = (field: keyof ChallengeFormData, value: string | number | boolean | string[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
