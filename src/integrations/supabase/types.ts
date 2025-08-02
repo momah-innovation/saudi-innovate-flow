@@ -2326,6 +2326,116 @@ export type Database = {
         }
         Relationships: []
       }
+      file_lifecycle_events: {
+        Row: {
+          created_at: string | null
+          event_details: Json | null
+          event_type: string
+          file_record_id: string | null
+          id: string
+          performed_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_details?: Json | null
+          event_type: string
+          file_record_id?: string | null
+          id?: string
+          performed_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_details?: Json | null
+          event_type?: string
+          file_record_id?: string | null
+          id?: string
+          performed_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "file_lifecycle_events_file_record_id_fkey"
+            columns: ["file_record_id"]
+            isOneToOne: false
+            referencedRelation: "file_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      file_records: {
+        Row: {
+          access_count: number | null
+          bucket_name: string
+          committed_at: string | null
+          created_at: string | null
+          description: string | null
+          entity_id: string | null
+          entity_type: string | null
+          expires_at: string | null
+          file_path: string
+          file_size: number
+          id: string
+          is_committed: boolean | null
+          is_temporary: boolean | null
+          last_accessed: string | null
+          metadata: Json | null
+          mime_type: string
+          original_filename: string
+          stored_filename: string
+          tags: string[] | null
+          upload_session_id: string | null
+          upload_type: string
+          uploader_id: string | null
+        }
+        Insert: {
+          access_count?: number | null
+          bucket_name: string
+          committed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          expires_at?: string | null
+          file_path: string
+          file_size: number
+          id?: string
+          is_committed?: boolean | null
+          is_temporary?: boolean | null
+          last_accessed?: string | null
+          metadata?: Json | null
+          mime_type: string
+          original_filename: string
+          stored_filename: string
+          tags?: string[] | null
+          upload_session_id?: string | null
+          upload_type: string
+          uploader_id?: string | null
+        }
+        Update: {
+          access_count?: number | null
+          bucket_name?: string
+          committed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          expires_at?: string | null
+          file_path?: string
+          file_size?: number
+          id?: string
+          is_committed?: boolean | null
+          is_temporary?: boolean | null
+          last_accessed?: string | null
+          metadata?: Json | null
+          mime_type?: string
+          original_filename?: string
+          stored_filename?: string
+          tags?: string[] | null
+          upload_session_id?: string | null
+          upload_type?: string
+          uploader_id?: string | null
+        }
+        Relationships: []
+      }
       focus_question_bookmarks: {
         Row: {
           created_at: string | null
@@ -6421,6 +6531,10 @@ export type Database = {
         Returns: number
       }
       cleanup_expired_security_data: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      cleanup_expired_temp_files: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
