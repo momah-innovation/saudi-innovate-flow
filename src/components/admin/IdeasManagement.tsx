@@ -36,7 +36,7 @@ export function IdeasManagement() {
 
   const handleRefresh = () => {
     // Refresh ideas list
-    console.log('Refreshing ideas...');
+    // Refreshing ideas data
   };
 
   return (

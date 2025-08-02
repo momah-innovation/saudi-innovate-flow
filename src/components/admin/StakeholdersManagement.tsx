@@ -115,11 +115,11 @@ export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, on
   };
 
   const handleView = (stakeholder: any) => {
-    console.log('View stakeholder:', stakeholder);
+    // TODO: Implement stakeholder view functionality
   };
 
   const handleDelete = (stakeholder: any) => {
-    console.log('Delete stakeholder:', stakeholder);
+    // TODO: Implement stakeholder deletion
   };
 
   return (

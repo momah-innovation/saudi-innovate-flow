@@ -101,7 +101,7 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
   useEffect(() => {
     const loadBuckets = async () => {
       try {
-        console.log('Loading buckets for configuration dialog...');
+        // Loading buckets for configuration
         
         // Try database function first, fallback to storage API
         let buckets: any[] = [];
@@ -109,13 +109,13 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
         try {
           const { data: dbBuckets, error: dbError } = await supabase
             .rpc('get_basic_storage_info');
-          console.log('Config dialog database response:', { dbBuckets, dbError });
+          // Database response received
           
           if (dbError) {
-            console.log('Database function failed for config, trying storage API...');
+            // Fallback to storage API
             const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
             buckets = storageB || [];
-            console.log('Config storage API response:', { buckets: storageB, error: storageE });
+            // Storage API response received
           } else {
             // Convert database response to storage API format
             buckets = dbBuckets?.map(bucket => ({
@@ -123,18 +123,18 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
               name: bucket.bucket_name,
               public: bucket.public
             })) || [];
-            console.log('Config using database buckets:', buckets);
+            // Using database buckets
           }
         } catch (error) {
           console.error('Both methods failed for config:', error);
           const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
           buckets = storageB || [];
-          console.log('Config final fallback:', { buckets, error: storageE });
+          // Final fallback completed
         }
         
         if (buckets && buckets.length > 0) {
           const bucketNames = buckets.map(bucket => bucket.id).sort()
-          console.log('Available buckets for config:', bucketNames);
+          // Buckets loaded successfully
           setAvailableBuckets(bucketNames)
         } else {
           console.warn('No buckets found for configuration dialog');
@@ -147,7 +147,7 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
     }
     
     if (open) {
-      console.log('Dialog opened, loading buckets...');
+      // Dialog opened, loading buckets
       loadBuckets()
     }
   }, [open])
@@ -239,7 +239,7 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
               <Select 
                 value={formData.bucket} 
                 onValueChange={(value) => {
-                  console.log('Bucket selected:', value);
+                  // Bucket selection updated
                   setFormData(prev => ({ ...prev, bucket: value }))
                 }}
               >

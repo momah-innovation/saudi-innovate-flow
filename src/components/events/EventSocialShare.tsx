@@ -79,7 +79,7 @@ export const EventSocialShare = ({
         });
       } catch (error) {
         // User cancelled or error occurred
-        console.log('Share cancelled or failed:', error);
+        // Share cancelled or failed - fallback to copy
       }
     } else {
       // Fallback to copy link

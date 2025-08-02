@@ -68,11 +68,11 @@ export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAdd
   };
 
   const handleView = (campaign: any) => {
-    console.log('View campaign:', campaign);
+    // TODO: Implement campaign view functionality
   };
 
   const handleDelete = (campaign: any) => {
-    console.log('Delete campaign:', campaign);
+    // TODO: Implement campaign deletion
   };
 
   return (

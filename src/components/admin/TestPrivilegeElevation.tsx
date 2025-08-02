@@ -13,7 +13,7 @@ export function TestPrivilegeElevation() {
     setResult(null);
     
     try {
-      console.log('Calling elevate-user-privileges function...');
+      // Calling elevate-user-privileges function
       
       const { data, error } = await supabase.functions.invoke('elevate-user-privileges', {
         body: { test: true }
@@ -25,7 +25,7 @@ export function TestPrivilegeElevation() {
         return;
       }
       
-      console.log('Function response:', data);
+      // Function executed successfully
       setResult(data);
     } catch (err) {
       console.error('Request error:', err);

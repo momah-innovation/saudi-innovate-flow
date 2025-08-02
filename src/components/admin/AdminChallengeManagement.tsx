@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { StandardPageLayout } from "@/components/layout/StandardPageLayout";
 import { ManagementCard } from "@/components/ui/management-card";
@@ -67,7 +67,7 @@ export function AdminChallengeManagement() {
     fetchChallenges();
   }, []);
 
-  const fetchChallenges = async () => {
+  const fetchChallenges = useCallback(async () => {
     try {
       setLoading(true);
       const { data, error } = await supabase
@@ -87,9 +87,9 @@ export function AdminChallengeManagement() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
-  const handleDelete = async (challengeId: string) => {
+  const handleDelete = useCallback(async (challengeId: string) => {
     try {
       const { error } = await supabase
         .from('challenges')
@@ -111,24 +111,24 @@ export function AdminChallengeManagement() {
         variant: "destructive"
       });
     }
-  };
+  }, [setChallenges, toast]);
 
-  const handleEdit = (challenge: Challenge) => {
+  const handleEdit = useCallback((challenge: Challenge) => {
     setSelectedChallenge(challenge);
     setShowWizard(true);
-  };
+  }, [setSelectedChallenge, setShowWizard]);
 
-  const handleSettings = (challenge: Challenge) => {
+  const handleSettings = useCallback((challenge: Challenge) => {
     setSelectedChallenge(challenge);
     setShowSettings(true);
-  };
+  }, [setSelectedChallenge, setShowSettings]);
 
-  const handleView = (challenge: Challenge) => {
+  const handleView = useCallback((challenge: Challenge) => {
     setSelectedChallenge(challenge);
     setShowDetails(true);
-  };
+  }, [setSelectedChallenge, setShowDetails]);
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = useCallback((status: string) => {
     switch (status) {
       case 'draft': return 'secondary';
       case 'active': return 'default';
@@ -137,18 +137,18 @@ export function AdminChallengeManagement() {
       case 'on_hold': return 'warning';
       default: return 'secondary';
     }
-  };
+  }, []);
 
-  const getPriorityColor = (priority: string) => {
+  const getPriorityColor = useCallback((priority: string) => {
     switch (priority) {
       case 'high': return 'destructive';
       case 'medium': return 'warning';
       case 'low': return 'secondary';
       default: return 'secondary';
     }
-  };
+  }, []);
 
-  const getStatusLabel = (status: string) => {
+  const getStatusLabel = useCallback((status: string) => {
     const labels = {
       draft: 'مسودة',
       active: 'نشط',
@@ -157,23 +157,23 @@ export function AdminChallengeManagement() {
       on_hold: 'معلق'
     };
     return labels[status as keyof typeof labels] || status;
-  };
+  }, []);
 
-  const getPriorityLabel = (priority: string) => {
+  const getPriorityLabel = useCallback((priority: string) => {
     const labels = {
       high: 'عالي',
       medium: 'متوسط',
       low: 'منخفض'
     };
     return labels[priority as keyof typeof labels] || priority;
-  };
+  }, []);
 
-  const filteredChallenges = challenges.filter(challenge => {
+  const filteredChallenges = useMemo(() => challenges.filter(challenge => {
     const matchesSearch = challenge.title_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          challenge.description_ar.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || challenge.status === statusFilter;
     return matchesSearch && matchesStatus;
-  });
+  }), [challenges, searchTerm, statusFilter]);
 
   const filters = [
     {
@@ -333,19 +333,19 @@ export function AdminChallengeManagement() {
           {selectedChallenge && (
             <div className="space-y-6">
               <div>
-                <h4 className="font-semibold mb-2">الوصف</h4>
+                <h4 className="font-semibold mb-2">{t('description')}</h4>
                 <p className="text-sm text-muted-foreground">{selectedChallenge.description_ar}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-semibold mb-2">الحالة</h4>
+                  <h4 className="font-semibold mb-2">{t('status')}</h4>
                   <Badge variant={getStatusColor(selectedChallenge.status) as any}>
                     {getStatusLabel(selectedChallenge.status)}
                   </Badge>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">الأولوية</h4>
+                  <h4 className="font-semibold mb-2">{t('priority')}</h4>
                   <Badge variant={getPriorityColor(selectedChallenge.priority_level) as any}>
                     {getPriorityLabel(selectedChallenge.priority_level)}
                   </Badge>
@@ -354,14 +354,14 @@ export function AdminChallengeManagement() {
 
               {selectedChallenge.vision_2030_goal && (
                 <div>
-                  <h4 className="font-semibold mb-2">هدف رؤية 2030</h4>
+                  <h4 className="font-semibold mb-2">{t('vision_2030_goal')}</h4>
                   <p className="text-sm text-muted-foreground">{selectedChallenge.vision_2030_goal}</p>
                 </div>
               )}
 
               {selectedChallenge.collaboration_details && (
                 <div>
-                  <h4 className="font-semibold mb-2">تفاصيل التعاون</h4>
+                  <h4 className="font-semibold mb-2">{t('collaboration_details')}</h4>
                   <p className="text-sm text-muted-foreground">{selectedChallenge.collaboration_details}</p>
                 </div>
               )}

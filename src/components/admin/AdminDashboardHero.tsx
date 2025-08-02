@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useTranslation } from '@/hooks/useAppTranslation';
+import { RTLAware, useRTLAwareClasses } from '@/components/ui/rtl-aware';
 import { 
   Users, 
   Activity,
@@ -35,11 +36,13 @@ export function AdminDashboardHero({
   systemHealth
 }: AdminDashboardHeroProps) {
   const { t } = useTranslation();
+  const { flexRow } = useRTLAwareClasses();
+  
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       {/* Total Users */}
       <Card className="gradient-border hover-scale">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('total_users')}</CardTitle>
           <Users className="h-4 w-4 text-primary" />
         </CardHeader>
@@ -56,7 +59,7 @@ export function AdminDashboardHero({
 
       {/* System Health */}
       <Card className="gradient-border hover-scale">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('system_health')}</CardTitle>
           <Server className="h-4 w-4 text-primary" />
         </CardHeader>
@@ -76,7 +79,7 @@ export function AdminDashboardHero({
 
       {/* Storage Usage */}
       <Card className="gradient-border hover-scale">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('storage_usage')}</CardTitle>
           <Database className="h-4 w-4 text-primary" />
         </CardHeader>
@@ -93,7 +96,7 @@ export function AdminDashboardHero({
 
       {/* Security Status */}
       <Card className="gradient-border hover-scale">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('security_status')}</CardTitle>
           <Shield className="h-4 w-4 text-primary" />
         </CardHeader>

@@ -212,7 +212,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
         }}
         event={selectedEvent}
         onSave={(eventData) => {
-          console.log('Event saved:', eventData);
+          // Event saved successfully
           loadEvents(); // Reload events after save
           onAddDialogChange(false);
         }}

@@ -240,8 +240,8 @@ export function EvaluationsManagement({
                 const originalEval = evaluations.find(e => e.id === evalData.id);
                 if (originalEval) handleViewEvaluation(originalEval);
               }}
-              onEdit={(evalData) => console.log('Edit evaluation:', evalData)}
-              onDelete={(evalData) => console.log('Delete evaluation:', evalData)}
+              onEdit={(evalData) => {/* TODO: Implement edit functionality */}}
+              onDelete={(evalData) => {/* TODO: Implement delete functionality */}}
             />
           )) : [
           <div key="empty" className="text-center py-12">

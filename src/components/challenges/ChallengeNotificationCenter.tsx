@@ -72,7 +72,7 @@ export const ChallengeNotificationCenter = ({
             filter: `recipient_id=eq.${user.id}`
           },
           (payload) => {
-            console.log('New notification:', payload);
+            // New notification received
             const newNotification = payload.new as ChallengeNotification;
             setNotifications(prev => [newNotification, ...prev]);
             setUnreadCount(prev => prev + 1);
