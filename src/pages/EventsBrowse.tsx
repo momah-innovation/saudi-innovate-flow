@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { AppShell } from '@/components/layout/AppShell';
+import { StandardBrowseLayout } from '@/components/layout/StandardBrowseLayout';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -294,46 +294,8 @@ const EventsBrowse = () => {
   };
 
   return (
-    <AppShell>
-      <PageLayout
-        title={isRTL ? 'استكشاف الفعاليات' : 'Browse Events'}
-        description={isRTL ? 'اكتشف وسجل في أحدث الفعاليات والأنشطة الابتكارية' : 'Discover and register for the latest innovation events and activities'}
-        itemCount={filteredEvents.length}
-        primaryAction={user && (hasRole('admin') || hasRole('super_admin') || hasRole('innovation_team_member')) ? {
-          label: isRTL ? 'فعالية جديدة' : 'New Event',
-          onClick: () => console.log('Create new event'),
-          icon: <Plus className="w-4 h-4" />
-        } : undefined}
-        secondaryActions={
-          <div className="flex gap-2">
-            <EventNotificationCenter />
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => console.log('Show analytics')}
-            >
-              <TrendingUp className="w-4 h-4 mr-2" />
-              {isRTL ? 'الإحصائيات' : 'Analytics'}
-            </Button>
-            <LayoutSelector
-              viewMode={viewMode}
-              onViewModeChange={setViewMode}
-            />
-            <Button
-              variant={viewMode === 'calendar' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setViewMode('calendar')}
-            >
-              <CalendarDays className="w-4 h-4" />
-            </Button>
-          </div>
-        }
-        showSearch={true}
-        searchValue={searchQuery}
-        onSearchChange={setSearchQuery}
-        searchPlaceholder={isRTL ? 'البحث في الفعاليات...' : 'Search events...'}
-      >
-        {/* Enhanced Hero Section */}
+    <StandardBrowseLayout
+      hero={
         <EnhancedEventsHero
           totalEvents={events.length}
           upcomingEvents={upcomingCount}
@@ -351,10 +313,139 @@ const EventsBrowse = () => {
             image: events[0].image_url
           } : undefined}
         />
+      }
+      mainContent={
+        <PageLayout
+          title={isRTL ? 'استكشاف الفعاليات' : 'Browse Events'}
+          description={isRTL ? 'اكتشف وسجل في أحدث الفعاليات والأنشطة الابتكارية' : 'Discover and register for the latest innovation events and activities'}
+          itemCount={filteredEvents.length}
+          primaryAction={user && (hasRole('admin') || hasRole('super_admin') || hasRole('innovation_team_member')) ? {
+            label: isRTL ? 'فعالية جديدة' : 'New Event',
+            onClick: () => console.log('Create new event'),
+            icon: <Plus className="w-4 h-4" />
+          } : undefined}
+          secondaryActions={
+            <div className="flex gap-2">
+              <EventNotificationCenter />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => console.log('Show analytics')}
+              >
+                <TrendingUp className="w-4 h-4 mr-2" />
+                {isRTL ? 'الإحصائيات' : 'Analytics'}
+              </Button>
+              <LayoutSelector
+                viewMode={viewMode}
+                onViewModeChange={setViewMode}
+              />
+              <Button
+                variant={viewMode === 'calendar' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('calendar')}
+              >
+                <CalendarDays className="w-4 h-4" />
+              </Button>
+            </div>
+          }
+          showSearch={true}
+          searchValue={searchQuery}
+          onSearchChange={setSearchQuery}
+          searchPlaceholder={isRTL ? 'البحث في الفعاليات...' : 'Search events...'}
+        >
+          <div className="space-y-6">
+            {/* Calendar View */}
+            {viewMode === 'calendar' ? (
+              <EventCalendarView
+                events={filteredEvents}
+                onEventSelect={(event) => {
+                  setSelectedEvent(event);
+                  setDetailDialogOpen(true);
+                }}
+                loading={loading}
+              />
+            ) : (
+              /* Tabs Navigation */
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="upcoming" className="animate-fade-in">
+                  <Calendar className="w-4 h-4 mr-2" />
+                  {isRTL ? 'القادمة' : 'Upcoming'}
+                  {activeTab === 'upcoming' && (
+                    <span className="ml-2 bg-primary/20 text-primary px-2 py-0.5 rounded-full text-xs">
+                      {filteredEvents.filter(e => new Date(e.event_date) >= new Date()).length}
+                    </span>
+                  )}
+                </TabsTrigger>
+                <TabsTrigger value="today" className="animate-fade-in">
+                  <TrendingUp className="w-4 h-4 mr-2" />
+                  {isRTL ? 'اليوم' : 'Today'}
+                  {activeTab === 'today' && (
+                    <span className="ml-2 bg-green-100 text-green-800 px-2 py-0.5 rounded-full text-xs">
+                      {filteredEvents.filter(e => {
+                        const eventDate = new Date(e.event_date);
+                        const today = new Date();
+                        return eventDate.toDateString() === today.toDateString();
+                      }).length}
+                    </span>
+                  )}
+                </TabsTrigger>
+                <TabsTrigger value="all" className="animate-fade-in">
+                  {isRTL ? 'جميع الفعاليات' : 'All Events'}
+                  {activeTab === 'all' && (
+                    <span className="ml-2 bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-xs">
+                      {filteredEvents.length}
+                    </span>
+                  )}
+                </TabsTrigger>
+                <TabsTrigger value="past" className="animate-fade-in">
+                  <MapPin className="w-4 h-4 mr-2" />
+                  {isRTL ? 'السابقة' : 'Past'}
+                  {activeTab === 'past' && (
+                    <span className="ml-2 bg-gray-100 text-gray-800 px-2 py-0.5 rounded-full text-xs">
+                      {filteredEvents.filter(e => new Date(e.event_date) < new Date()).length}
+                    </span>
+                  )}
+                </TabsTrigger>
+              </TabsList>
 
-        {/* Trending Events Widget */}
-        {viewMode !== 'calendar' && (
-          <div className="mb-8">
+              <TabsContent value={activeTab} className="space-y-4">
+                {loading ? (
+                  <div className="text-center py-12">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                    <p className="text-muted-foreground">{isRTL ? 'جاري تحميل الفعاليات...' : 'Loading events...'}</p>
+                  </div>
+                ) : filteredEvents.length > 0 ? (
+                  renderEventCards(filteredEvents)
+                ) : (
+                  <div className="text-center py-12">
+                    <Calendar className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+                    <h3 className="text-lg font-medium mb-2">
+                      {isRTL ? 'لا توجد فعاليات' : 'No events found'}
+                    </h3>
+                    <p className="text-muted-foreground mb-4">
+                      {searchQuery ? 
+                        (isRTL ? `لا توجد فعاليات تطابق البحث "${searchQuery}"` : `No events match your search for "${searchQuery}"`) :
+                        (isRTL ? 'لا توجد فعاليات في الوقت الحالي' : 'No events available at the moment')
+                      }
+                    </p>
+                    {searchQuery && (
+                      <Button variant="outline" onClick={() => setSearchQuery('')}>
+                        {isRTL ? 'مسح البحث' : 'Clear Search'}
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </TabsContent>
+            </Tabs>
+            )}
+          </div>
+        </PageLayout>
+      }
+      sidebar={
+        <div className="space-y-6">
+          {/* Trending Events Widget */}
+          {viewMode !== 'calendar' && (
             <TrendingEventsWidget
               onEventSelect={(eventId) => {
                 const event = events.find(e => e.id === eventId);
@@ -363,154 +454,69 @@ const EventsBrowse = () => {
                   setDetailDialogOpen(true);
                 }
               }}
-              className="mb-6"
             />
-          </div>
-        )}
+          )}
 
-        {/* Personalized Recommendations */}
-        {user && activeTab === 'upcoming' && viewMode !== 'calendar' && (
-          <EventRecommendations 
-            onEventSelect={(eventId) => {
-              const event = events.find(e => e.id === eventId);
-              if (event) {
-                setSelectedEvent(event);
-                setDetailDialogOpen(true);
-              }
-            }}
-            className="mb-8"
-          />
-        )}
-
-        <div className="space-y-6">
-          {/* Calendar View */}
-          {viewMode === 'calendar' ? (
-            <EventCalendarView
-              events={filteredEvents}
-              onEventSelect={(event) => {
-                setSelectedEvent(event);
-                setDetailDialogOpen(true);
+          {/* Personalized Recommendations */}
+          {user && activeTab === 'upcoming' && viewMode !== 'calendar' && (
+            <EventRecommendations 
+              onEventSelect={(eventId) => {
+                const event = events.find(e => e.id === eventId);
+                if (event) {
+                  setSelectedEvent(event);
+                  setDetailDialogOpen(true);
+                }
               }}
-              loading={loading}
             />
-          ) : (
-            /* Tabs Navigation */
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="upcoming" className="animate-fade-in">
-                <Calendar className="w-4 h-4 mr-2" />
-                {isRTL ? 'القادمة' : 'Upcoming'}
-                {activeTab === 'upcoming' && (
-                  <span className="ml-2 bg-primary/20 text-primary px-2 py-0.5 rounded-full text-xs">
-                    {filteredEvents.filter(e => new Date(e.event_date) >= new Date()).length}
-                  </span>
-                )}
-              </TabsTrigger>
-              <TabsTrigger value="today" className="animate-fade-in">
-                <TrendingUp className="w-4 h-4 mr-2" />
-                {isRTL ? 'اليوم' : 'Today'}
-                {activeTab === 'today' && (
-                  <span className="ml-2 bg-green-100 text-green-800 px-2 py-0.5 rounded-full text-xs">
-                    {filteredEvents.filter(e => {
-                      const eventDate = new Date(e.event_date);
-                      const today = new Date();
-                      return eventDate.toDateString() === today.toDateString();
-                    }).length}
-                  </span>
-                )}
-              </TabsTrigger>
-              <TabsTrigger value="all" className="animate-fade-in">
-                {isRTL ? 'جميع الفعاليات' : 'All Events'}
-                {activeTab === 'all' && (
-                  <span className="ml-2 bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-xs">
-                    {filteredEvents.length}
-                  </span>
-                )}
-              </TabsTrigger>
-              <TabsTrigger value="past" className="animate-fade-in">
-                <MapPin className="w-4 h-4 mr-2" />
-                {isRTL ? 'السابقة' : 'Past'}
-                {activeTab === 'past' && (
-                  <span className="ml-2 bg-gray-100 text-gray-800 px-2 py-0.5 rounded-full text-xs">
-                    {filteredEvents.filter(e => new Date(e.event_date) < new Date()).length}
-                  </span>
-                )}
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value={activeTab} className="space-y-4">
-              {loading ? (
-                <div className="text-center py-12">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                  <p className="text-muted-foreground">{isRTL ? 'جاري تحميل الفعاليات...' : 'Loading events...'}</p>
-                </div>
-              ) : filteredEvents.length > 0 ? (
-                renderEventCards(filteredEvents)
-              ) : (
-                <div className="text-center py-12">
-                  <Calendar className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-medium mb-2">
-                    {isRTL ? 'لا توجد فعاليات' : 'No events found'}
-                  </h3>
-                  <p className="text-muted-foreground mb-4">
-                    {searchQuery ? 
-                      (isRTL ? `لا توجد فعاليات تطابق البحث "${searchQuery}"` : `No events match your search for "${searchQuery}"`) :
-                      (isRTL ? 'لا توجد فعاليات في الوقت الحالي' : 'No events available at the moment')
-                    }
-                  </p>
-                  {searchQuery && (
-                    <Button variant="outline" onClick={() => setSearchQuery('')}>
-                      {isRTL ? 'مسح البحث' : 'Clear Search'}
-                    </Button>
-                  )}
-                </div>
-              )}
-            </TabsContent>
-          </Tabs>
           )}
         </div>
+      }
+      dialogs={
+        <>
+          {/* Enhanced Event Detail Dialog */}
+          <ComprehensiveEventDialog
+            event={selectedEvent}
+            open={detailDialogOpen}
+            onOpenChange={setDetailDialogOpen}
+            onRegister={registerForEvent}
+          />
 
-        {/* Enhanced Event Detail Dialog */}
-        <ComprehensiveEventDialog
-          event={selectedEvent}
-          open={detailDialogOpen}
-          onOpenChange={setDetailDialogOpen}
-          onRegister={registerForEvent}
-        />
+          {/* Waitlist Dialog */}
+          <EventWaitlistDialog
+            event={waitlistEvent}
+            open={showWaitlistDialog}
+            onOpenChange={setShowWaitlistDialog}
+            onSuccess={() => {
+              loadEvents(); // Refresh events after joining waitlist
+            }}
+          />
 
-        {/* Waitlist Dialog */}
-        <EventWaitlistDialog
-          event={waitlistEvent}
-          open={showWaitlistDialog}
-          onOpenChange={setShowWaitlistDialog}
-          onSuccess={() => {
-            loadEvents(); // Refresh events after joining waitlist
-          }}
-        />
-
-        {/* Reviews Dialog */}
-        <EventReviewsDialog
-          event={reviewsEvent}
-          open={showReviewsDialog}
-          onOpenChange={setShowReviewsDialog}
-        />
-        <EventAdvancedFilters
-          open={showAdvancedFilters}
-          onOpenChange={setShowAdvancedFilters}
-          filters={filters}
-          onFiltersChange={setFilters}
-          onClearFilters={() => setFilters({
-            eventTypes: [],
-            formats: [],
-            status: [],
-            dateRange: {},
-            location: '',
-            priceRange: '',
-            capacity: ''
-          })}
-        />
-      </PageLayout>
-    </AppShell>
+          {/* Reviews Dialog */}
+          <EventReviewsDialog
+            event={reviewsEvent}
+            open={showReviewsDialog}
+            onOpenChange={setShowReviewsDialog}
+          />
+          
+          {/* Advanced Filters Dialog */}
+          <EventAdvancedFilters
+            open={showAdvancedFilters}
+            onOpenChange={setShowAdvancedFilters}
+            filters={filters}
+            onFiltersChange={setFilters}
+            onClearFilters={() => setFilters({
+              eventTypes: [],
+              formats: [],
+              status: [],
+              dateRange: {},
+              location: '',
+              priceRange: '',
+              capacity: ''
+            })}
+          />
+        </>
+      }
+    />
   );
 };
 

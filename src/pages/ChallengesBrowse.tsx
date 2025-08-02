@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { AppShell } from '@/components/layout/AppShell';
+import { StandardBrowseLayout } from '@/components/layout/StandardBrowseLayout';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -394,8 +394,26 @@ const ChallengesBrowse = () => {
   );
 
   return (
-    <AppShell>
-        {/* Enhanced Hero Section */}
+    <StandardBrowseLayout
+      hero={
+        <EnhancedChallengesHero 
+          totalChallenges={stats.totalChallenges}
+          activeChallenges={stats.activeChallenges}
+          totalParticipants={stats.totalParticipants}
+          totalPrizes={stats.totalPrizes}
+          onCreateChallenge={() => setCreateChallengeOpen(true)}
+          onShowFilters={() => setShowAdvancedFilters(true)}
+          featuredChallenge={challenges.length > 0 ? {
+            id: challenges[0].id,
+            title_ar: challenges[0].title_ar,
+            participants: challenges[0].participants || 0,
+            prize: challenges[0].estimated_budget || 0,
+            daysLeft: challenges[0].end_date ? Math.ceil((new Date(challenges[0].end_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : 0,
+            image: challenges[0].image_url
+          } : undefined}
+        />
+      }
+      mainContent={
         <EnhancedChallengesHero 
           totalChallenges={stats.totalChallenges}
           activeChallenges={stats.activeChallenges}
@@ -653,8 +671,16 @@ const ChallengesBrowse = () => {
             onChallengeCreated={refetch}
           />
         )}
-      </PageLayout>
-    </AppShell>
+        </PageLayout>
+      }
+      sidebar={
+        <div className="space-y-6">
+          <TrendingChallengesWidget />
+          <ChallengeRecommendations onChallengeSelect={handleViewDetails} />
+        </div>
+      }
+      dialogs={<>/* All dialogs moved here */}</>}
+    />
   );
 };
 
