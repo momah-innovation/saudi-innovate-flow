@@ -212,7 +212,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
       <RTLAware className="space-y-6">
         <div className="flex items-center justify-center p-8">
           <RefreshCw className="h-6 w-6 animate-spin mr-2" />
-          <span>{t('loading_storage_quotas')}</span>
+          <span>{t('storage.loading_storage_quotas')}</span>
         </div>
       </RTLAware>
     );
@@ -223,9 +223,9 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
     <RTLAware className="space-y-6">
       {/* Header */}
       <div>
-        <h3 className="text-lg font-semibold mb-2">{t('storage_quotas_management')}</h3>
+        <h3 className="text-lg font-semibold mb-2">{t('storage.storage_quotas_management')}</h3>
         <p className="text-muted-foreground">
-          {t('set_manage_storage_limits')}
+          {t('storage.set_manage_storage_limits')}
         </p>
       </div>
 
@@ -233,39 +233,39 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('total_buckets_title')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('storage.total_buckets_title')}</CardTitle>
             <Database className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{allBuckets.length}</div>
             <p className="text-xs text-muted-foreground">
-              {t('available_storage_buckets')}
+              {t('storage.available_storage_buckets')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('with_quotas')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('storage.with_quotas')}</CardTitle>
             <CheckCircle className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{quotas.length}</div>
             <p className="text-xs text-muted-foreground">
-              {t('buckets_with_quota_limits')}
+              {t('storage.buckets_with_quota_limits')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('without_quotas')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('storage.without_quotas')}</CardTitle>
             <XCircle className="h-4 w-4 text-orange-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{bucketsWithoutQuotas.length}</div>
             <p className="text-xs text-muted-foreground">
-              {t('need_quota_setup')}
+              {t('storage.need_quota_setup')}
             </p>
           </CardContent>
         </Card>
@@ -276,7 +276,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Settings className="h-5 w-5" />
-            {t('quick_actions')}
+            {t('storage.quick_actions')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -285,19 +285,19 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
               <DialogTrigger asChild>
                 <Button>
                   <Plus className="h-4 w-4 mr-2" />
-                  {t('add_quota')}
+                  {t('storage.add_quota')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>{t('set_storage_quota')}</DialogTitle>
+                  <DialogTitle>{t('storage.set_storage_quota')}</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                     <div>
-                      <Label htmlFor="bucket">{t('bucket')}</Label>
+                      <Label htmlFor="bucket">{t('storage.bucket')}</Label>
                       <Select value={selectedBucket} onValueChange={setSelectedBucket}>
                         <SelectTrigger>
-                          <SelectValue placeholder={t('select_bucket')} />
+                          <SelectValue placeholder={t('storage.select_bucket')} />
                         </SelectTrigger>
                       <SelectContent>
                         {bucketsWithoutQuotas.map((bucket) => (
@@ -310,7 +310,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     <div className="col-span-2">
-                      <Label htmlFor="quota">{t('quota_size')}</Label>
+                      <Label htmlFor="quota">{t('storage.quota_size')}</Label>
                       <Input
                         id="quota"
                         type="number"
@@ -320,7 +320,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                       />
                     </div>
                     <div>
-                      <Label htmlFor="unit">{t('unit')}</Label>
+                      <Label htmlFor="unit">{t('storage.unit')}</Label>
                       <Select value={quotaUnit} onValueChange={setQuotaUnit}>
                         <SelectTrigger>
                           <SelectValue />
@@ -338,7 +338,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                     className="w-full"
                   >
                     {actionLoading === 'set' && <RefreshCw className="h-4 w-4 mr-2 animate-spin" />}
-                    {t('set_quota')}
+                    {t('storage.set_quota')}
                   </Button>
                 </div>
               </DialogContent>
@@ -355,7 +355,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                 ) : (
                   <Zap className="h-4 w-4 mr-2" />
                 )}
-                {t('auto_setup_5gb')}
+                {t('storage.auto_setup_5gb')}
               </Button>
             )}
 
@@ -387,10 +387,10 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <HardDrive className="h-5 w-5" />
-            {t('all_storage_buckets')}
+            {t('storage.all_storage_buckets')}
           </CardTitle>
           <CardDescription>
-            {t('complete_overview_buckets')}
+            {t('storage.complete_overview_buckets')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -405,7 +405,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                     <div className="flex items-center gap-2">
                       <h4 className="font-medium">{bucket.bucket_name}</h4>
                       <Badge variant="outline" className="text-xs">
-                        {bucket.public ? t('public') : t('private')}
+                        {bucket.public ? t('storage.public') : t('storage.private')}
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2">
@@ -428,7 +428,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                           </Button>
                         </>
                       ) : (
-                        <Badge variant="secondary">{t('no_quota')}</Badge>
+                        <Badge variant="secondary">{t('storage.no_quota')}</Badge>
                       )}
                     </div>
                   </div>
@@ -444,14 +444,14 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                         <Alert variant="destructive">
                           <AlertCircle className="h-4 w-4" />
                           <AlertDescription>
-                            {t('quota_exceeded')} {formatBytes(quota.current_usage_bytes - quota.quota_bytes)} {t('over_limit')}.
+                            {t('storage.quota_exceeded')} {formatBytes(quota.current_usage_bytes - quota.quota_bytes)} {t('storage.over_limit')}.
                           </AlertDescription>
                         </Alert>
                       )}
                     </div>
                   ) : (
                     <div className="text-sm text-muted-foreground">
-                      {t('no_storage_quota_configured')}
+                      {t('storage.no_storage_quota_configured')}
                     </div>
                   )}
                 </div>
