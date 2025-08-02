@@ -185,9 +185,7 @@ export function FocusQuestionWizard({
       onSave();
       onClose();
     } catch (error: any) {
-      console.error("Error saving focus question:", error);
-      
-      // Handle specific database errors
+      // Handle specific database errors using toast notifications
       if (error?.message?.includes('duplicate')) {
         setErrors({ question_text_ar: "يوجد سؤال مماثل بالفعل" });
       } else if (error?.message?.includes('constraint')) {

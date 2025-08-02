@@ -155,7 +155,6 @@ export function FocusQuestionDetailView({
         analytics
       });
     } catch (error) {
-      console.error('Error fetching related data:', error);
       toast({
         title: "خطأ",
         description: "فشل في تحميل البيانات المرتبطة",
