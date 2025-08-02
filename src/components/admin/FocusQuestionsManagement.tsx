@@ -67,7 +67,7 @@ const FocusQuestionsManagement = () => {
       setChallenges(challengesData || []);
       setFocusQuestions(questionsData || []);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      // Failed to fetch focus questions data
       toast({
         title: "خطأ",
         description: "فشل في تحميل البيانات",
@@ -107,7 +107,7 @@ const FocusQuestionsManagement = () => {
 
       fetchData();
     } catch (error) {
-      console.error('Error deleting focus question:', error);
+      // Failed to delete focus question
       toast({
         title: "خطأ",
         description: "فشل في حذف السؤال المحوري",

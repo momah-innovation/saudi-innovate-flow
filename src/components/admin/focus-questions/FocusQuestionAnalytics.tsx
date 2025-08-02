@@ -77,7 +77,7 @@ export function FocusQuestionAnalytics() {
       setAnalytics(processedAnalytics);
 
     } catch (error) {
-      console.error('Error fetching analytics:', error);
+      // Failed to fetch focus question analytics
       toast({
         title: "خطأ",
         description: "فشل في تحميل بيانات التحليلات",

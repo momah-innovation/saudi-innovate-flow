@@ -219,7 +219,7 @@ export function IdeaWizard({
       });
       setInnovators(enrichedInnovators);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      // Failed to fetch idea wizard data - using default options
     }
   };
 
@@ -328,7 +328,7 @@ export function IdeaWizard({
       onSave();
       onClose();
     } catch (error: any) {
-      console.error("Error saving idea:", error);
+      // Failed to save idea - show error to user
       
       // Handle specific database errors
       if (error?.message?.includes('duplicate')) {

@@ -171,7 +171,7 @@ export function CampaignWizard({
       setStakeholders(stakeholdersRes.data || []);
       setManagers(managersRes.data || []);
     } catch (error) {
-      console.error('خطأ في جلب البيانات المرتبطة:', error);
+      // Failed to fetch campaign wizard data - using defaults
     }
   };
 
@@ -206,7 +206,7 @@ export function CampaignWizard({
         stakeholder_ids: stakeholderLinksRes.data?.map(link => link.stakeholder_id) || []
       });
     } catch (error) {
-      console.error('خطأ في تحميل بيانات الحملة:', error);
+      // Failed to load campaign data
     }
   };
 
@@ -421,7 +421,7 @@ export function CampaignWizard({
       onSuccess();
       onOpenChange(false);
     } catch (error) {
-      console.error('خطأ في حفظ الحملة:', error);
+      // Failed to save campaign
       toast({
         title: "خطأ في الحفظ",
         description: "فشل في حفظ الحملة. يرجى المحاولة مرة أخرى",

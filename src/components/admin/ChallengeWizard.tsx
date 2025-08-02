@@ -156,7 +156,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
         experts: expertsRes.data || []
       });
     } catch (error) {
-      console.error('خطأ في تحميل القوائم:', error);
+      // Failed to load challenge wizard data - using defaults
     }
   };
 
@@ -293,7 +293,7 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
       onSuccess();
       onClose();
     } catch (error) {
-      console.error('خطأ في حفظ التحدي:', error);
+      // Failed to save challenge - show error to user
       toast({
         title: 'خطأ',
         description: 'فشل في حفظ التحدي. يرجى المحاولة مرة أخرى.',

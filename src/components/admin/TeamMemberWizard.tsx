@@ -127,7 +127,7 @@ export function TeamMemberWizard({
       if (error) throw error;
       setAvailableUsers(data || []);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      // Failed to fetch team member wizard users
       toast({
         title: "خطأ",
         description: "فشل في تحميل قائمة المستخدمين",
@@ -173,7 +173,7 @@ export function TeamMemberWizard({
         }));
       }
     } catch (error) {
-      console.error('Error fetching system settings:', error);
+      // Failed to fetch system settings - using defaults
     }
   };
 
@@ -330,7 +330,7 @@ export function TeamMemberWizard({
       onOpenChange(false);
       resetForm();
     } catch (error) {
-      console.error('Error saving team member:', error);
+      // Failed to save team member
       toast({
         title: "خطأ",
         description: "فشل في حفظ بيانات عضو الفريق",

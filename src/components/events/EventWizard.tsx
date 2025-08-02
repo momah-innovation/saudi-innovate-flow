@@ -211,7 +211,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
       setFocusQuestions(focusQuestionsRes.data || []);
       setEventManagers(eventManagersRes.data || []);
     } catch (error) {
-      console.error('Error fetching related data:', error);
+      // Failed to fetch event wizard data - using defaults
     }
   };
 
@@ -278,7 +278,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
       setSelectedFocusQuestions(focusQuestionsRes.data?.map(link => link.focus_question_id) || []);
       setSelectedChallenges(challengesRes.data?.map(link => link.challenge_id) || []);
     } catch (error) {
-      console.error('Error loading event relationships:', error);
+      // Failed to load event relationships
     }
   };
 
