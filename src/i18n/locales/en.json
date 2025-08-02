@@ -10,6 +10,9 @@
   "relationships": "Relationships",
   "evaluations": "Evaluations",
   "storage": {
+    "storage_management": "Storage Management", 
+    "manage_files_and_buckets": "Manage Files and Buckets",
+    "policies": "Policies",
     "title": "Storage Management",
     "description": "Monitor and manage file storage across all buckets",
     "upload_files": "Upload Files",

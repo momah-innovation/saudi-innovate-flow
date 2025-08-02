@@ -10,6 +10,9 @@
   "relationships": "العلاقات",
   "evaluations": "التقييمات",
   "storage": {
+    "storage_management": "إدارة التخزين",
+    "manage_files_and_buckets": "إدارة الملفات والحاويات",
+    "policies": "السياسات",
     "title": "إدارة التخزين",
     "description": "مراقبة وإدارة تخزين الملفات عبر جميع الحاويات",
     "upload_files": "رفع الملفات",
