@@ -523,7 +523,7 @@ const ChallengesBrowse = () => {
                   />
                 ) : (
                   <div className="animate-fade-in">
-                    {viewMode === 'list' ? renderChallengeList(filteredChallenges) : renderChallengeCards(filteredChallenges)}
+                    {viewMode === 'list' ? renderChallengeList(tabFilteredChallenges) : renderChallengeCards(tabFilteredChallenges)}
                   </div>
                 )}
               </TabsContent>
