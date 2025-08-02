@@ -84,7 +84,7 @@ const ChallengesBrowse = () => {
     status: 'all',
     category: 'all',
     difficulty: 'all',
-    prizeRange: [0, 5000000], // Increased to 5M to accommodate actual challenge budgets
+    prizeRange: [0, 10000000], // Increased to 10M to accommodate all challenge budgets
     participantRange: [0, 1000],
     deadline: 'all',
     features: [],
@@ -410,7 +410,7 @@ const ChallengesBrowse = () => {
       status: 'all',
       category: 'all',
       difficulty: 'all',
-      prizeRange: [0, 5000000], // Increased to 5M to accommodate actual challenge budgets
+      prizeRange: [0, 10000000], // Increased to 10M to accommodate all challenge budgets
       participantRange: [0, 1000],
       deadline: 'all',
       features: [],
@@ -427,7 +427,7 @@ const ChallengesBrowse = () => {
     if (filters.difficulty !== 'all') count++;
     if (filters.deadline !== 'all') count++;
     if (filters.features.length > 0) count += filters.features.length;
-    if (filters.prizeRange[0] > 0 || filters.prizeRange[1] < 5000000) count++;
+    if (filters.prizeRange[0] > 0 || filters.prizeRange[1] < 10000000) count++;
     if (filters.participantRange[0] > 0 || filters.participantRange[1] < 1000) count++;
     return count;
   };
