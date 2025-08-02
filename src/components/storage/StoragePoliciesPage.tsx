@@ -219,7 +219,7 @@ export const StoragePoliciesPage: React.FC = () => {
       return (
         <Badge variant="default" className="bg-green-100 text-green-800">
           <Unlock className="w-3 h-3 mr-1" />
-          Public Access
+          {t('storage.public_access')}
         </Badge>
       )
     }
@@ -236,7 +236,7 @@ export const StoragePoliciesPage: React.FC = () => {
     return (
       <Badge variant="secondary">
         <Lock className="w-3 h-3 mr-1" />
-        {bucket.policies.length} Policies
+        {t('storage.policies_count', { count: bucket.policies.length })}
       </Badge>
     )
   }
@@ -396,7 +396,7 @@ export const StoragePoliciesPage: React.FC = () => {
                       <Alert>
                         <Unlock className="w-4 h-4" />
                         <AlertDescription>
-                          This bucket is publicly accessible. All files can be viewed and downloaded by anyone with the URL.
+                          {t('storage.public_access_description')}
                         </AlertDescription>
                       </Alert>
                     ) : bucket.policies.length === 0 ? (
@@ -408,7 +408,7 @@ export const StoragePoliciesPage: React.FC = () => {
                       </Alert>
                     ) : (
                       <div className="space-y-2">
-                        <p className="text-sm font-medium">Access Policies:</p>
+                        <p className="text-sm font-medium">{t('storage.access_policies')}:</p>
                         {bucket.policies.map((policy, index) => {
                           const command = POLICY_COMMANDS[policy.command as keyof typeof POLICY_COMMANDS]
                           const Icon = command?.icon || Shield
@@ -427,38 +427,38 @@ export const StoragePoliciesPage: React.FC = () => {
 
                     <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                       <div>
-                        <p className="text-muted-foreground">Bucket Type</p>
+                        <p className="text-muted-foreground">{t('storage.bucket_type')}</p>
                         <p className="font-medium capitalize">{securityLevel}</p>
                       </div>
                       <div>
-                        <p className="text-muted-foreground">Access Level</p>
+                        <p className="text-muted-foreground">{t('storage.access_level')}</p>
                         <p className="font-medium">
-                          {bucket.public ? 'Public' : 'Restricted'}
+                          {bucket.public ? t('public') : t('restricted')}
                         </p>
                       </div>
                       <div>
-                        <p className="text-muted-foreground">Policies</p>
+                        <p className="text-muted-foreground">{t('storage.policies')}</p>
                         <p className="font-medium">{bucket.policies.length}</p>
                       </div>
                       <div>
-                        <p className="text-muted-foreground">Status</p>
+                        <p className="text-muted-foreground">{t('status')}</p>
                         <div className="flex items-center gap-1">
                           {securityLevel === 'public' && (
                             <>
                               <CheckCircle className="w-3 h-3 text-green-500" />
-                              <span className="font-medium text-green-700">Accessible</span>
+                              <span className="font-medium text-green-700">{t('accessible')}</span>
                             </>
                           )}
                           {securityLevel === 'protected' && (
                             <>
                               <CheckCircle className="w-3 h-3 text-blue-500" />
-                              <span className="font-medium text-blue-700">Protected</span>
+                              <span className="font-medium text-blue-700">{t('protected')}</span>
                             </>
                           )}
                           {securityLevel === 'restricted' && (
                             <>
                               <AlertTriangle className="w-3 h-3 text-red-500" />
-                              <span className="font-medium text-red-700">Restricted</span>
+                              <span className="font-medium text-red-700">{t('restricted')}</span>
                             </>
                           )}
                         </div>
@@ -495,12 +495,12 @@ export const StoragePoliciesPage: React.FC = () => {
             <Alert>
               <Shield className="w-4 h-4" />
               <AlertDescription>
-                <strong>Best Practices:</strong>
+                <strong>{t('storage.best_practices')}:</strong>
                 <ul className="list-disc list-inside mt-2 space-y-1">
-                  <li>Use public buckets only for assets that should be universally accessible</li>
-                  <li>Implement row-level security policies for user-specific content</li>
-                  <li>Regularly review and audit storage access policies</li>
-                  <li>Use temporary upload buckets for sensitive operations</li>
+                  <li>{t('storage.best_practice_1')}</li>
+                  <li>{t('storage.best_practice_2')}</li>
+                  <li>{t('storage.best_practice_3')}</li>
+                  <li>{t('storage.best_practice_4')}</li>
                 </ul>
               </AlertDescription>
             </Alert>
