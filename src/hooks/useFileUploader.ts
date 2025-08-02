@@ -226,10 +226,13 @@ export const useFileUploader = () => {
           .maybeSingle()
         
         if (fileRecord) {
-          // Use SQL increment for access count
-          await supabase.rpc('increment_access_count', { 
-            file_record_id: fileRecord.id 
-          })
+          // Update last accessed time  
+          await supabase
+            .from('file_records')
+            .update({ 
+              last_accessed: new Date().toISOString()
+            })
+            .eq('id', fileRecord.id)
           
           // Log access event
           await supabase

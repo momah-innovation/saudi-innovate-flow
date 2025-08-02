@@ -6686,6 +6686,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_access_count: {
+        Args: { file_record_id: string }
+        Returns: undefined
+      }
       increment_opportunity_views: {
         Args: { p_opportunity_id: string }
         Returns: undefined

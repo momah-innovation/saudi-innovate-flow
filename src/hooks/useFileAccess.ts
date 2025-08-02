@@ -151,10 +151,13 @@ export const useFileAccess = () => {
         throw error
       }
       
-      // Use SQL increment for access count
-      await supabase.rpc('increment_access_count', { 
-        file_record_id: fileRecordId 
-      })
+      // Update the file record's access count directly
+      await supabase
+        .from('file_records')
+        .update({
+          last_accessed: new Date().toISOString()
+        })
+        .eq('id', fileRecordId)
         
       return { success: true }
     } catch (err) {

@@ -1,509 +1,315 @@
-import { useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { useToast } from '@/hooks/use-toast'
-
-export interface BucketStats {
-  total_files: number
-  total_size: number
-  avg_file_size: number
-  oldest_file: string | null
-  newest_file: string | null
-}
 
 export interface StorageAnalytics {
-  bucketName: string
-  stats: BucketStats
-  healthStatus: 'healthy' | 'warning' | 'critical'
-  usagePercentage: number
+  totalStorage: number
+  totalFiles: number
+  bucketBreakdown: BucketStats[]
+  uploadTrends: UploadTrend[]
+  topUploaders: TopUploader[]
+  fileTypes: FileTypeStats[]
+  accessPatterns: AccessPattern[]
+  recentActivity: RecentActivity[]
+}
+
+export interface BucketStats {
+  bucket_name: string
+  file_count: number
+  total_size: number
+  public: boolean
+  created_at: string
+  usage_percentage?: number
+  quota_bytes?: number
+}
+
+export interface UploadTrend {
+  date: string
+  uploads: number
+  total_size: number
+}
+
+export interface TopUploader {
+  user_id: string
+  upload_count: number
+  total_size: number
+  last_upload: string
+}
+
+export interface FileTypeStats {
+  mime_type: string
+  file_count: number
+  total_size: number
+  percentage: number
+}
+
+export interface AccessPattern {
+  hour: number
+  access_count: number
+}
+
+export interface RecentActivity {
+  id: string
+  event_type: string
+  file_path: string
+  user_id: string
+  created_at: string
+  details: any
 }
 
 export const useStorageAnalytics = () => {
-  const { toast } = useToast()
+  const [analytics, setAnalytics] = useState<StorageAnalytics>({
+    totalStorage: 0,
+    totalFiles: 0,
+    bucketBreakdown: [],
+    uploadTrends: [],
+    topUploaders: [],
+    fileTypes: [],
+    accessPatterns: [],
+    recentActivity: []
+  })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const getBucketStats = useCallback(async (bucketName: string): Promise<BucketStats | null> => {
+  const fetchBucketStats = async (): Promise<BucketStats[]> => {
     try {
-      const { data, error } = await supabase.rpc('get_bucket_stats', {
-        bucket_name: bucketName
-      })
-
-      if (error) {
-        console.error('Error getting bucket stats:', error)
-        return null
-      }
-
-      return Array.isArray(data) && data.length > 0 ? data[0] as BucketStats : null
-    } catch (error) {
-      console.error('Bucket stats error:', error)
-      return null
-    }
-  }, [])
-
-  const getAllBucketAnalytics = useCallback(async (): Promise<StorageAnalytics[]> => {
-    try {
-      console.log('Loading bucket analytics...');
-      
-      // Try database function first, fallback to storage API
-      let buckets: any[] = [];
-      
-      try {
-        const { data: dbBuckets, error: dbError } = await supabase
-          .rpc('get_basic_storage_info');
-        console.log('Analytics database response:', { dbBuckets, dbError });
-        
-        if (dbError) {
-          console.log('Database function failed for analytics, trying storage API...');
-          const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
-          buckets = storageB || [];
-          console.log('Analytics storage API response:', { buckets: storageB, error: storageE });
-        } else {
-          // Convert database response to storage API format
-          buckets = dbBuckets?.map(bucket => ({
-            id: bucket.bucket_id,
-            name: bucket.bucket_name,
-            public: bucket.public,
-            created_at: bucket.created_at
-          })) || [];
-          console.log('Analytics using database buckets:', buckets);
-        }
-      } catch (error) {
-        console.error('Both methods failed for analytics:', error);
-        const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
-        buckets = storageB || [];
-        console.log('Analytics final fallback:', { buckets, error: storageE });
-      }
-      
-      if (!buckets || buckets.length === 0) {
-        console.log('No buckets found for analytics');
-        return []
-      }
-
-      const analytics: StorageAnalytics[] = []
-
-      for (const bucket of buckets) {
-        // Always add the bucket to analytics, even if stats fail
-        let stats = null;
-        try {
-          stats = await getBucketStats(bucket.id);
-          console.log(`Stats for bucket ${bucket.id}:`, stats);
-        } catch (error) {
-          console.error(`Failed to get stats for bucket ${bucket.id}:`, error);
-        }
-        
-        // If stats failed, create default empty stats
-        if (!stats) {
-          stats = {
-            total_files: 0,
-            total_size: 0,
-            avg_file_size: 0,
-            oldest_file: null,
-            newest_file: null
-          };
-        }
-        
-        // Use realistic storage limits - 1GB per bucket for public, 5GB for private
-        const bucketLimit = bucket.public ? (1024 * 1024 * 1024) : (5 * 1024 * 1024 * 1024)
-        const usagePercentage = stats.total_size > 0 ? (stats.total_size / bucketLimit) * 100 : 0
-        const healthStatus = 
-          usagePercentage > 90 ? 'critical' :
-          usagePercentage > 70 ? 'warning' : 'healthy'
-
-        console.log(`Bucket ${bucket.id} analytics:`, {
-          totalSize: stats.total_size,
-          bucketLimit,
-          usagePercentage,
-          healthStatus
-        });
-
-        analytics.push({
-          bucketName: bucket.id,
-          stats,
-          healthStatus,
-          usagePercentage: Math.min(usagePercentage, 100) // Cap at 100%
-        })
-      }
-
-      return analytics
-    } catch (error) {
-      console.error('Analytics error:', error)
-      toast({
-        title: 'Analytics Error',
-        description: 'Failed to load storage analytics',
-        variant: 'destructive'
-      })
+      const { data, error } = await supabase.rpc('get_storage_buckets_info')
+      if (error) throw error
+      return data || []
+    } catch (err) {
+      console.error('Failed to fetch bucket stats:', err)
       return []
     }
-  }, [getBucketStats, toast])
+  }
 
-  const performAdminCleanup = useCallback(async (): Promise<boolean> => {
+  const fetchUploadTrends = async (days = 30): Promise<UploadTrend[]> => {
     try {
-      const { data, error } = await supabase.rpc('admin_cleanup_temp_files')
+      const { data, error } = await supabase
+        .from('file_records')
+        .select('created_at, file_size')
+        .gte('created_at', new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString())
+        .order('created_at', { ascending: true })
 
-      if (error) {
-        console.error('Admin cleanup error:', error)
-        toast({
-          title: 'Cleanup Failed',
-          description: 'Failed to perform admin cleanup',
-          variant: 'destructive'
+      if (error) throw error
+
+      // Group by date
+      const trendMap = new Map<string, { uploads: number; total_size: number }>()
+      
+      data?.forEach(record => {
+        const date = new Date(record.created_at).toISOString().split('T')[0]
+        const current = trendMap.get(date) || { uploads: 0, total_size: 0 }
+        trendMap.set(date, {
+          uploads: current.uploads + 1,
+          total_size: current.total_size + (record.file_size || 0)
         })
-        return false
-      }
+      })
 
-      toast({
-        title: 'Cleanup Successful',
-        description: 'System-wide temporary file cleanup completed'
-      })
-      return true
-    } catch (error) {
-      console.error('Admin cleanup error:', error)
-      toast({
-        title: 'Cleanup Failed',
-        description: 'An error occurred during cleanup',
-        variant: 'destructive'
-      })
-      return false
+      return Array.from(trendMap.entries()).map(([date, stats]) => ({
+        date,
+        uploads: stats.uploads,
+        total_size: stats.total_size
+      }))
+    } catch (err) {
+      console.error('Failed to fetch upload trends:', err)
+      return []
     }
-  }, [toast])
+  }
 
-  const cleanupOldTempFiles = useCallback(async (): Promise<boolean> => {
+  const fetchTopUploaders = async (limit = 10): Promise<TopUploader[]> => {
     try {
-      const { data, error } = await supabase.rpc('cleanup_old_temp_files')
+      const { data, error } = await supabase
+        .from('file_records')
+        .select('uploader_id, file_size, created_at')
+        .not('uploader_id', 'is', null)
+        .order('created_at', { ascending: false })
 
-      if (error) {
-        console.error('Temp files cleanup error:', error)
-        return false
+      if (error) throw error
+
+      // Group by uploader
+      const uploaderMap = new Map<string, { upload_count: number; total_size: number; last_upload: string }>()
+      
+      data?.forEach(record => {
+        const userId = record.uploader_id!
+        const current = uploaderMap.get(userId) || { upload_count: 0, total_size: 0, last_upload: record.created_at }
+        uploaderMap.set(userId, {
+          upload_count: current.upload_count + 1,
+          total_size: current.total_size + (record.file_size || 0),
+          last_upload: record.created_at > current.last_upload ? record.created_at : current.last_upload
+        })
+      })
+
+      return Array.from(uploaderMap.entries())
+        .map(([user_id, stats]) => ({
+          user_id,
+          upload_count: stats.upload_count,
+          total_size: stats.total_size,
+          last_upload: stats.last_upload
+        }))
+        .sort((a, b) => b.upload_count - a.upload_count)
+        .slice(0, limit)
+    } catch (err) {
+      console.error('Failed to fetch top uploaders:', err)
+      return []
+    }
+  }
+
+  const fetchFileTypes = async (): Promise<FileTypeStats[]> => {
+    try {
+      const { data, error } = await supabase
+        .from('file_records')
+        .select('mime_type, file_size')
+
+      if (error) throw error
+
+      // Group by mime type
+      const typeMap = new Map<string, { file_count: number; total_size: number }>()
+      let totalFiles = 0
+
+      data?.forEach(record => {
+        const mimeType = record.mime_type || 'unknown'
+        const current = typeMap.get(mimeType) || { file_count: 0, total_size: 0 }
+        typeMap.set(mimeType, {
+          file_count: current.file_count + 1,
+          total_size: current.total_size + (record.file_size || 0)
+        })
+        totalFiles++
+      })
+
+      return Array.from(typeMap.entries())
+        .map(([mime_type, stats]) => ({
+          mime_type,
+          file_count: stats.file_count,
+          total_size: stats.total_size,
+          percentage: totalFiles > 0 ? (stats.file_count / totalFiles) * 100 : 0
+        }))
+        .sort((a, b) => b.file_count - a.file_count)
+    } catch (err) {
+      console.error('Failed to fetch file types:', err)
+      return []
+    }
+  }
+
+  const fetchAccessPatterns = async (): Promise<AccessPattern[]> => {
+    try {
+      const { data, error } = await supabase
+        .from('file_lifecycle_events')
+        .select('created_at')
+        .eq('event_type', 'accessed')
+        .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()) // Last 7 days
+
+      if (error) throw error
+
+      // Group by hour
+      const hourMap = new Map<number, number>()
+      for (let i = 0; i < 24; i++) {
+        hourMap.set(i, 0)
       }
 
-      return true
-    } catch (error) {
-      console.error('Temp files cleanup error:', error)
-      return false
+      data?.forEach(record => {
+        const hour = new Date(record.created_at).getHours()
+        hourMap.set(hour, (hourMap.get(hour) || 0) + 1)
+      })
+
+      return Array.from(hourMap.entries()).map(([hour, access_count]) => ({
+        hour,
+        access_count
+      }))
+    } catch (err) {
+      console.error('Failed to fetch access patterns:', err)
+      return Array.from({ length: 24 }, (_, i) => ({ hour: i, access_count: 0 }))
     }
+  }
+
+  const fetchRecentActivity = async (limit = 20): Promise<RecentActivity[]> => {
+    try {
+      const { data, error } = await supabase
+        .from('file_lifecycle_events')
+        .select(`
+          id,
+          event_type,
+          event_details,
+          performed_by,
+          created_at,
+          file_records!inner (
+            file_path
+          )
+        `)
+        .order('created_at', { ascending: false })
+        .limit(limit)
+
+      if (error) throw error
+
+      return (data || []).map(activity => ({
+        id: activity.id,
+        event_type: activity.event_type,
+        file_path: activity.file_records?.file_path || 'unknown',
+        user_id: activity.performed_by || 'system',
+        created_at: activity.created_at,
+        details: activity.event_details
+      }))
+    } catch (err) {
+      console.error('Failed to fetch recent activity:', err)
+      return []
+    }
+  }
+
+  const fetchAnalytics = async (period = '30_days') => {
+    try {
+      setLoading(true)
+      setError(null)
+
+      // Fetch all analytics data in parallel
+      const [
+        bucketStats,
+        uploadTrends,
+        topUploaders,
+        fileTypes,
+        accessPatterns,
+        recentActivity
+      ] = await Promise.all([
+        fetchBucketStats(),
+        fetchUploadTrends(30),
+        fetchTopUploaders(10),
+        fetchFileTypes(),
+        fetchAccessPatterns(),
+        fetchRecentActivity(20)
+      ])
+
+      // Calculate totals
+      const totalStorage = bucketStats.reduce((sum, bucket) => sum + bucket.total_size, 0)
+      const totalFiles = bucketStats.reduce((sum, bucket) => sum + bucket.file_count, 0)
+
+      setAnalytics({
+        totalStorage,
+        totalFiles,
+        bucketBreakdown: bucketStats,
+        uploadTrends,
+        topUploaders,
+        fileTypes,
+        accessPatterns,
+        recentActivity
+      })
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch analytics'
+      setError(errorMessage)
+      console.error('Storage analytics fetch error:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const refreshAnalytics = () => {
+    fetchAnalytics()
+  }
+
+  useEffect(() => {
+    fetchAnalytics()
   }, [])
 
-  const getAdvancedAnalytics = useCallback(async () => {
-    try {
-      const { data, error } = await supabase.rpc('get_storage_analytics_with_trends')
-
-      if (error) {
-        console.error('Advanced analytics error:', error)
-        toast({
-          title: 'Analytics Error',
-          description: 'Failed to load advanced analytics',
-          variant: 'destructive'
-        })
-        return null
-      }
-
-      return data
-    } catch (error) {
-      console.error('Advanced analytics error:', error)
-      return null
-    }
-  }, [toast])
-
-  const archiveOldFiles = useCallback(async (
-    sourceBucket: string, 
-    daysOld: number = 365, 
-    archiveBucket: string = 'archived-files-private'
-  ) => {
-    try {
-      const { data, error } = await supabase.rpc('archive_old_files', {
-        source_bucket: sourceBucket,
-        days_old: daysOld,
-        archive_bucket: archiveBucket
-      })
-
-      if (error) {
-        console.error('Archive error:', error)
-        toast({
-          title: 'Archive Failed',
-          description: 'Failed to archive files',
-          variant: 'destructive'
-        })
-        return null
-      }
-
-      const result = data as any
-      toast({
-        title: 'Archive Successful',
-        description: `Archived ${result.archived_count} files from ${sourceBucket}`
-      })
-      return result
-    } catch (error) {
-      console.error('Archive error:', error)
-      toast({
-        title: 'Archive Failed',
-        description: 'An error occurred during archiving',
-        variant: 'destructive'
-      })
-      return null
-    }
-  }, [toast])
-
-  const bulkCleanupFiles = useCallback(async (
-    bucketName: string,
-    filePattern: string = '%temp%',
-    olderThanDays: number = 7,
-    dryRun: boolean = true
-  ) => {
-    try {
-      const { data, error } = await supabase.rpc('bulk_cleanup_files', {
-        bucket_name: bucketName,
-        file_pattern: filePattern,
-        older_than_days: olderThanDays,
-        dry_run: dryRun
-      })
-
-      if (error) {
-        console.error('Bulk cleanup error:', error)
-        toast({
-          title: 'Cleanup Failed',
-          description: 'Failed to perform bulk cleanup',
-          variant: 'destructive'
-        })
-        return null
-      }
-
-      const result = data as any
-      toast({
-        title: dryRun ? 'Cleanup Simulation Complete' : 'Cleanup Successful',
-        description: result.message
-      })
-      return result
-    } catch (error) {
-      console.error('Bulk cleanup error:', error)
-      toast({
-        title: 'Cleanup Failed',
-        description: 'An error occurred during cleanup',
-        variant: 'destructive'
-      })
-      return null
-    }
-  }, [toast])
-
-  const exportStorageMetadata = useCallback(async (
-    bucketFilter?: string,
-    includeFileUrls: boolean = false
-  ) => {
-    try {
-      const { data, error } = await supabase.rpc('export_storage_metadata', {
-        bucket_filter: bucketFilter,
-        include_file_urls: includeFileUrls
-      })
-
-      if (error) {
-        console.error('Export error:', error)
-        toast({
-          title: 'Export Failed',
-          description: 'Failed to export storage metadata',
-          variant: 'destructive'
-        })
-        return null
-      }
-
-      const result = data as any
-      toast({
-        title: 'Export Successful',
-        description: `Exported ${result.total_files} files from ${result.buckets?.length || 0} buckets`
-      })
-      return result
-    } catch (error) {
-      console.error('Export error:', error)
-      return null
-    }
-  }, [toast])
-
-  const migrateBetweenBuckets = useCallback(async (
-    sourceBucket: string,
-    targetBucket: string,
-    filePattern: string = '%',
-    preservePaths: boolean = true,
-    dryRun: boolean = true
-  ) => {
-    try {
-      const { data, error } = await supabase.rpc('migrate_files_between_buckets', {
-        source_bucket: sourceBucket,
-        target_bucket: targetBucket,
-        file_pattern: filePattern,
-        preserve_paths: preservePaths,
-        dry_run: dryRun
-      })
-
-      if (error) {
-        console.error('Migration error:', error)
-        toast({
-          title: 'Migration Failed',
-          description: 'Failed to migrate files between buckets',
-          variant: 'destructive'
-        })
-        return null
-      }
-
-      const result = data as any
-      toast({
-        title: dryRun ? 'Migration Simulation Complete' : 'Migration Successful',
-        description: result.message
-      })
-      return result
-    } catch (error) {
-      console.error('Migration error:', error)
-      return null
-    }
-  }, [toast])
-
-  const createBucketBackup = useCallback(async (
-    sourceBucket: string,
-    backupName?: string,
-    includeMetadata: boolean = true
-  ) => {
-    try {
-      const { data, error } = await supabase.rpc('create_bucket_backup', {
-        source_bucket: sourceBucket,
-        backup_name: backupName,
-        include_metadata: includeMetadata
-      })
-
-      if (error) {
-        console.error('Backup error:', error)
-        toast({
-          title: 'Backup Failed',
-          description: 'Failed to create bucket backup',
-          variant: 'destructive'
-        })
-        return null
-      }
-
-      const result = data as any
-      toast({
-        title: 'Backup Successful',
-        description: `Created backup "${result.backup_bucket}" with ${result.file_count} files`
-      })
-      return result
-    } catch (error) {
-      console.error('Backup error:', error)
-      return null
-    }
-  }, [toast])
-
-  const restoreFromArchive = useCallback(async (
-    archiveBucket: string,
-    targetBucket?: string,
-    filePattern: string = '%',
-    restoreOriginalPaths: boolean = true,
-    dryRun: boolean = true
-  ) => {
-    try {
-      const { data, error } = await supabase.rpc('restore_from_archive', {
-        archive_bucket: archiveBucket,
-        target_bucket: targetBucket,
-        file_pattern: filePattern,
-        restore_original_paths: restoreOriginalPaths,
-        dry_run: dryRun
-      })
-
-      if (error) {
-        console.error('Restore error:', error)
-        toast({
-          title: 'Restore Failed',
-          description: 'Failed to restore files from archive',
-          variant: 'destructive'
-        })
-        return null
-      }
-
-      const result = data as any
-      toast({
-        title: dryRun ? 'Restore Simulation Complete' : 'Restore Successful',
-        description: result.message
-      })
-      return result
-    } catch (error) {
-      console.error('Restore error:', error)
-      return null
-    }
-  }, [toast])
-
-  const findDuplicateFiles = useCallback(async (
-    bucketFilter?: string,
-    minFileSize: number = 1024
-  ) => {
-    try {
-      const { data, error } = await supabase.rpc('find_duplicate_files', {
-        bucket_filter: bucketFilter,
-        min_file_size: minFileSize
-      })
-
-      if (error) {
-        console.error('Duplicate analysis error:', error)
-        toast({
-          title: 'Analysis Failed',
-          description: 'Failed to analyze duplicate files',
-          variant: 'destructive'
-        })
-        return null
-      }
-
-      const result = data as any
-      toast({
-        title: 'Analysis Complete',
-        description: `Found ${result.total_duplicate_groups} groups of duplicate files`
-      })
-      return result
-    } catch (error) {
-      console.error('Duplicate analysis error:', error)
-      return null
-    }
-  }, [toast])
-
-  const manageStorageQuotas = useCallback(async (
-    bucketName: string,
-    quotaBytes?: number,
-    action: 'check' | 'set' | 'remove' = 'check'
-  ) => {
-    try {
-      const { data, error } = await supabase.rpc('manage_storage_quotas', {
-        bucket_name: bucketName,
-        quota_bytes: quotaBytes,
-        action: action
-      })
-
-      if (error) {
-        console.error('Quota management error:', error)
-        toast({
-          title: 'Quota Management Failed',
-          description: 'Failed to manage storage quota',
-          variant: 'destructive'
-        })
-        return null
-      }
-
-      const result = data as any
-      if (action !== 'check') {
-        toast({
-          title: 'Quota Management Successful',
-          description: `Quota ${action === 'set' ? 'set' : 'removed'} for ${bucketName}`
-        })
-      }
-      return result
-    } catch (error) {
-      console.error('Quota management error:', error)
-      return null
-    }
-  }, [toast])
-
   return {
-    getBucketStats,
-    getAllBucketAnalytics,
-    performAdminCleanup,
-    cleanupOldTempFiles,
-    getAdvancedAnalytics,
-    archiveOldFiles,
-    bulkCleanupFiles,
-    exportStorageMetadata,
-    migrateBetweenBuckets,
-    createBucketBackup,
-    restoreFromArchive,
-    findDuplicateFiles,
-    manageStorageQuotas
+    analytics,
+    loading,
+    error,
+    fetchAnalytics,
+    refreshAnalytics
   }
 }
