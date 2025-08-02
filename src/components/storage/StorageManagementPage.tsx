@@ -668,8 +668,8 @@ export function StorageManagementPage() {
           buckets={storageStats.buckets}
         />
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full" dir={isRTL ? 'rtl' : 'ltr'}>
+          <TabsList className={`grid w-full grid-cols-5 ${isRTL ? 'font-arabic' : 'font-english'}`}>
             <TabsTrigger value="files">{t('storage.files')}</TabsTrigger>
             <TabsTrigger value="buckets">{t('storage.buckets')}</TabsTrigger>
             <TabsTrigger value="management">{t('common.advanced')}</TabsTrigger>
@@ -677,7 +677,7 @@ export function StorageManagementPage() {
             <TabsTrigger value="analytics">{t('storage.analytics')}</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="files" className="space-y-6">
+          <TabsContent value="files" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
             {/* Enhanced Stats Cards */}
             <StorageStatsCards stats={storageStats} files={filteredAndSortedFiles} />
 
@@ -707,13 +707,13 @@ export function StorageManagementPage() {
 
             {/* Search and Actions */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+              <div className={`relative flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+                <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4`} />
                 <Input
                   placeholder={t('storage.search_files')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className={isRTL ? 'pr-10 text-right' : 'pl-10 text-left'}
                 />
               </div>
               <Button onClick={() => loadStorageData()}>
@@ -786,7 +786,7 @@ export function StorageManagementPage() {
             )}
           </TabsContent>
 
-          <TabsContent value="buckets" className="space-y-6">
+          <TabsContent value="buckets" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
             {/* Header with layout toggle and controls */}
             <div className="flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -892,15 +892,15 @@ export function StorageManagementPage() {
             )}
           </TabsContent>
 
-          <TabsContent value="management" className="space-y-6">
+          <TabsContent value="management" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
             <ComprehensiveStorageManagement />
           </TabsContent>
 
-          <TabsContent value="settings" className="space-y-6">
+          <TabsContent value="settings" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
             <UploaderSettingsTab />
           </TabsContent>
 
-          <TabsContent value="analytics" className="space-y-6">
+          <TabsContent value="analytics" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
             <StorageAnalyticsTab />
           </TabsContent>
         </Tabs>
@@ -908,7 +908,7 @@ export function StorageManagementPage() {
 
       {/* Upload Dialog */}
       <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
-        <DialogContent>
+        <DialogContent dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
           <DialogHeader>
             <DialogTitle>{t('upload_files')}</DialogTitle>
             <DialogDescription>
@@ -993,7 +993,7 @@ export function StorageManagementPage() {
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent>
+        <AlertDialogContent dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete File</AlertDialogTitle>
             <AlertDialogDescription>

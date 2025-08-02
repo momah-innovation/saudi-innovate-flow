@@ -25,7 +25,7 @@ interface StorageStatsCardsProps {
 }
 
 export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
-  const { t } = useTranslation();
+  const { t, isRTL } = useTranslation();
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return `0 ${t('units.bytes')}`;
     const k = 1024;
@@ -74,7 +74,7 @@ export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
   const recentUploads = getRecentUploadsCount();
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
       {/* Storage Usage */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

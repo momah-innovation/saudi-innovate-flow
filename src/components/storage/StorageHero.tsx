@@ -34,7 +34,7 @@ export function StorageHero({
   recentUploads,
   buckets
 }: StorageHeroProps) {
-  const { t, language } = useTranslation();
+  const { t, language, isRTL } = useTranslation();
   
   const formatBytes = (bytes: number) => {
     if (bytes === 0) return `0 ${t('units.bytes')}`;
@@ -47,7 +47,7 @@ export function StorageHero({
   const usagePercentage = (usedSpace / totalSpace) * 100;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 ${isRTL ? 'font-arabic' : 'font-english'}`}>
       {/* Storage Usage */}
       <Card className="gradient-border hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
