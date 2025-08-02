@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/ui/page-header';
 import { StorageHero } from './StorageHero';
@@ -6,6 +6,7 @@ import { StorageAnalyticsDashboard } from '@/components/admin/StorageAnalyticsDa
 import { StorageQuotaManager } from '@/components/admin/StorageQuotaManager';
 import { UploaderSettingsTab } from './UploaderSettingsTab';
 import { VersionedFileUploader } from '@/components/ui/versioned-file-uploader';
+import { EnhancedFileUploader, EnhancedFileUploaderRef } from '@/components/ui/enhanced-file-uploader';
 import { useFileUploader } from '@/hooks/useFileUploader';
 import { useUploaderSettingsContext } from '@/contexts/UploaderSettingsContext';
 import { FileViewDialog } from './FileViewDialog';
@@ -20,6 +21,7 @@ import { EnhancedStorageFileCard } from './EnhancedStorageFileCard';
 import { BulkFileActions } from './BulkFileActions';
 import { StorageStatsCards } from './StorageStatsCards';
 import { ViewLayouts } from '@/components/ui/view-layouts';
+import { RTLAware, useRTLAwareClasses } from '@/components/ui/rtl-aware';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -55,8 +57,12 @@ import { useTranslation } from '@/hooks/useAppTranslation';
 export function StorageManagementPage() {
   const { toast } = useToast();
   const { t, language, isRTL } = useTranslation();
+  const rtlClasses = useRTLAwareClasses();
   const { uploadFiles, isUploading, getFileUrl: getUploaderFileUrl } = useFileUploader();
-  const { uploadConfigs } = useUploaderSettingsContext();
+  const { uploadConfigs, globalSettings } = useUploaderSettingsContext();
+  
+  // Enhanced File Uploader refs for each configuration
+  const uploaderRefs = useRef<Record<string, EnhancedFileUploaderRef>>({});
   
   const [selectedBucket, setSelectedBucket] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<any | null>(null);
@@ -819,58 +825,227 @@ export function StorageManagementPage() {
           </TabsContent>
 
           <TabsContent value="upload" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
-            <div className="space-y-6">
+            <RTLAware className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold mb-2">Advanced File Upload</h3>
-                <p className="text-muted-foreground">Upload files with temporary storage, file validation, and comprehensive tracking.</p>
+                <h3 className="text-lg font-semibold mb-2">{t('storage.advanced_file_upload')}</h3>
+                <p className="text-muted-foreground">{t('storage.upload_description')}</p>
               </div>
               
+              {/* Global Upload Settings Display */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Settings className="w-5 h-5" />
+                    {t('storage.global_settings')}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="font-medium">{t('storage.auto_cleanup')}:</span> {globalSettings.autoCleanupEnabled ? t('common.yes') : t('common.no')}
+                    </div>
+                    <div>
+                      <span className="font-medium">{t('storage.cleanup_days')}:</span> {globalSettings.defaultCleanupDays} {t('common.days')}
+                    </div>
+                    <div>
+                      <span className="font-medium">{t('storage.concurrent_uploads')}:</span> {globalSettings.maxConcurrentUploads}
+                    </div>
+                    <div>
+                      <span className="font-medium">{t('storage.chunk_size')}:</span> {globalSettings.chunkSizeMB}MB
+                    </div>
+                    <div>
+                      <span className="font-medium">{t('storage.retry_attempts')}:</span> {globalSettings.retryAttempts}
+                    </div>
+                    <div>
+                      <span className="font-medium">{t('storage.compression')}:</span> {globalSettings.compressionEnabled ? t('common.enabled') : t('common.disabled')}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Enhanced File Uploaders for Each Configuration */}
               <div className="grid gap-6">
                 {Object.entries(uploadConfigs).map(([key, config]) => (
                   <Card key={key}>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Upload className="w-5 h-5" />
-                        {config.uploadType}
+                        {config.uploadType || key} {t('storage.uploader')}
                       </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                          <div>
-                            <span className="font-medium">Max Size:</span> {(config.maxSizeBytes / 1024 / 1024).toFixed(1)}MB
-                          </div>
-                          <div>
-                            <span className="font-medium">Max Files:</span> {config.maxFiles}
-                          </div>
-                          <div>
-                            <span className="font-medium">Bucket:</span> {config.bucket}
-                          </div>
-                          <div>
-                            <span className="font-medium">Auto Cleanup:</span> {config.autoCleanup ? 'Yes' : 'No'}
-                          </div>
+                      <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
+                        <div>
+                          <span className="font-medium">{t('storage.max_size')}:</span> {(config.maxSizeBytes / 1024 / 1024).toFixed(1)}MB
                         </div>
                         <div>
-                          <span className="font-medium text-sm">Allowed Types:</span>
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {config.allowedTypes.slice(0, 5).map((type) => (
-                              <Badge key={type} variant="outline" className="text-xs">
-                                {type}
-                              </Badge>
-                            ))}
-                            {config.allowedTypes.length > 5 && (
-                              <Badge variant="outline" className="text-xs">
-                                +{config.allowedTypes.length - 5} more
-                              </Badge>
-                            )}
-                          </div>
+                          <span className="font-medium">{t('storage.max_files')}:</span> {config.maxFiles}
                         </div>
+                        <div>
+                          <span className="font-medium">{t('storage.bucket')}:</span> {config.bucket}
+                        </div>
+                        <div>
+                          <span className="font-medium">{t('storage.auto_cleanup')}:</span> {config.autoCleanup ? t('common.yes') : t('common.no')}
+                        </div>
+                      </div>
+                      <div>
+                        <span className="font-medium text-sm">{t('storage.allowed_types')}:</span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {config.allowedTypes.slice(0, 5).map((type) => (
+                            <Badge key={type} variant="outline" className="text-xs">
+                              {type}
+                            </Badge>
+                          ))}
+                          {config.allowedTypes.length > 5 && (
+                            <Badge variant="outline" className="text-xs">
+                              +{config.allowedTypes.length - 5} {t('common.more')}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <EnhancedFileUploader
+                        ref={(ref) => {
+                          if (ref) uploaderRefs.current[key] = ref;
+                        }}
+                        config={config}
+                        label={t('storage.select_files')}
+                        description={t('storage.drag_drop_description')}
+                        showPreview={true}
+                        showMetadata={true}
+                        allowReorder={true}
+                        onUploadComplete={(files) => {
+                          toast({
+                            title: t('storage.upload_successful'),
+                            description: t('storage.files_uploaded', { count: files.length }),
+                            variant: 'default'
+                          });
+                          loadStorageData(); // Refresh the storage data
+                        }}
+                        onUploadProgress={(progress) => {
+                          // Progress is handled internally by the component
+                        }}
+                        onFileValidationError={(file, error) => {
+                          toast({
+                            title: t('storage.validation_error'),
+                            description: `${file.name}: ${error}`,
+                            variant: 'destructive'
+                          });
+                        }}
+                        customValidation={(file) => {
+                          // Custom validation for file naming
+                          const namePattern = /^[a-zA-Z0-9._-]+$/;
+                          if (!namePattern.test(file.name)) {
+                            return {
+                              valid: false,
+                              error: t('storage.invalid_filename')
+                            };
+                          }
+                          return { valid: true };
+                        }}
+                      />
+                      
+                      {/* Quick Actions */}
+                      <div className={`flex gap-2 mt-4 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            uploaderRefs.current[key]?.clearFiles();
+                            toast({
+                              title: t('storage.files_cleared'),
+                              description: t('storage.files_cleared_description')
+                            });
+                          }}
+                        >
+                          <X className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                          {t('storage.clear_files')}
+                        </Button>
+                        <Button
+                          variant="default"
+                          size="sm"
+                          onClick={async () => {
+                            try {
+                              const files = uploaderRefs.current[key]?.getFiles() || [];
+                              if (files.length === 0) {
+                                toast({
+                                  title: t('storage.no_files'),
+                                  description: t('storage.no_files_description'),
+                                  variant: 'destructive'
+                                });
+                                return;
+                              }
+                              
+                              // Commit temporary files to permanent storage
+                              await uploaderRefs.current[key]?.commitFiles({
+                                uploadType: config.uploadType,
+                                maxSizeBytes: config.maxSizeBytes,
+                                maxFiles: config.maxFiles,
+                                allowedTypes: config.allowedTypes,
+                                entityId: 'storage-management',
+                                tableName: 'file_records',
+                                columnName: 'file_path'
+                              });
+                              
+                              loadStorageData(); // Refresh storage data
+                            } catch (error) {
+                              toast({
+                                title: t('storage.commit_failed'),
+                                description: t('storage.commit_failed_description'),
+                                variant: 'destructive'
+                              });
+                            }
+                          }}
+                          disabled={isUploading}
+                        >
+                          <Shield className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                          {t('storage.commit_files')}
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>
                 ))}
               </div>
-            </div>
+
+              {/* Temporary Files Cleanup */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Trash2 className="w-5 h-5" />
+                    {t('storage.temp_files_management')}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <p className="text-sm text-muted-foreground">
+                      {t('storage.temp_files_description')}
+                    </p>
+                    <Button
+                      variant="outline"
+                      onClick={async () => {
+                        try {
+                          const { data, error } = await supabase.rpc('cleanup_old_temp_files');
+                          if (!error) {
+                            toast({
+                              title: t('storage.cleanup_successful'),
+                              description: t('storage.temp_files_cleaned')
+                            });
+                          }
+                        } catch (error) {
+                          toast({
+                            title: t('storage.cleanup_failed'),
+                            description: t('storage.cleanup_failed_description'),
+                            variant: 'destructive'
+                          });
+                        }
+                      }}
+                    >
+                      <Trash2 className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                      {t('storage.cleanup_temp_files')}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </RTLAware>
           </TabsContent>
 
           <TabsContent value="versioning" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
