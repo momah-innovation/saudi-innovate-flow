@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Card, CardContent } from '@/components/ui/card';
 import { 
   Filter, 
   Search, 
@@ -16,9 +17,11 @@ import {
   Award,
   Users,
   Target,
-  SlidersHorizontal 
+  SlidersHorizontal
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { cn } from '@/lib/utils';
+import { challengesPageConfig, getFilterOptions } from '@/config/challengesPageConfig';
 
 export interface FilterState {
   search: string;
@@ -38,19 +41,55 @@ interface ChallengeFiltersProps {
   onFiltersChange: (filters: FilterState) => void;
   onClearFilters: () => void;
   activeFiltersCount: number;
+  className?: string;
+  dynamicMaxBudget?: number;
+  dynamicMaxParticipants?: number;
 }
 
-export const ChallengeFilters = ({ 
+export const ChallengeFilters = ({
   filters, 
   onFiltersChange, 
   onClearFilters, 
-  activeFiltersCount 
+  activeFiltersCount,
+  className = "",
+  dynamicMaxBudget = 10000000,
+  dynamicMaxParticipants = 1000
 }: ChallengeFiltersProps) => {
   const { isRTL } = useDirection();
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [searchExpanded, setSearchExpanded] = useState(false);
+  const [animateFilters, setAnimateFilters] = useState(false);
+
+  useEffect(() => {
+    if (activeFiltersCount > 0) {
+      setAnimateFilters(true);
+      const timer = setTimeout(() => setAnimateFilters(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [activeFiltersCount]);
 
   const updateFilter = (key: keyof FilterState, value: any) => {
     onFiltersChange({ ...filters, [key]: value });
+  };
+
+  const handleSearchFocus = () => {
+    setSearchFocused(true);
+    setSearchExpanded(true);
+  };
+
+  const handleSearchBlur = () => {
+    setSearchFocused(false);
+    // Only collapse if no search text
+    if (!filters.search) {
+      setSearchExpanded(false);
+    }
+  };
+
+  const handleSearchClick = () => {
+    if (!searchExpanded) {
+      setSearchExpanded(true);
+    }
   };
 
   const toggleFeature = (feature: string) => {
@@ -60,261 +99,309 @@ export const ChallengeFilters = ({
     updateFilter('features', newFeatures);
   };
 
-  const statusOptions = [
-    { value: 'all', label: isRTL ? 'جميع الحالات' : 'All Status' },
-    { value: 'active', label: isRTL ? 'نشط' : 'Active' },
-    { value: 'upcoming', label: isRTL ? 'قريباً' : 'Upcoming' },
-    { value: 'closed', label: isRTL ? 'مغلق' : 'Closed' }
-  ];
+  // Get filter options from configuration
+  const statusOptions = getFilterOptions('status');
+  const categoryOptions = getFilterOptions('category');
+  const difficultyOptions = getFilterOptions('difficulty');
+  const sortOptions = getFilterOptions('sortOptions');
+  const featureOptions = getFilterOptions('features');
 
-  const categoryOptions = [
-    { value: 'all', label: isRTL ? 'جميع الفئات' : 'All Categories' },
-    { value: 'environment', label: isRTL ? 'البيئة والاستدامة' : 'Environment & Sustainability' },
-    { value: 'fintech', label: isRTL ? 'التكنولوجيا المالية' : 'FinTech' },
-    { value: 'health', label: isRTL ? 'الصحة' : 'Healthcare' },
-    { value: 'education', label: isRTL ? 'التعليم' : 'Education' },
-    { value: 'transport', label: isRTL ? 'النقل' : 'Transportation' }
-  ];
-
-  const difficultyOptions = [
-    { value: 'all', label: isRTL ? 'جميع المستويات' : 'All Levels' },
-    { value: 'easy', label: isRTL ? 'سهل' : 'Easy' },
-    { value: 'medium', label: isRTL ? 'متوسط' : 'Medium' },
-    { value: 'hard', label: isRTL ? 'صعب' : 'Hard' }
-  ];
-
-  const sortOptions = [
-    { value: 'deadline', label: isRTL ? 'الموعد النهائي' : 'Deadline' },
-    { value: 'participants', label: isRTL ? 'عدد المشاركين' : 'Participants' },
-    { value: 'prize', label: isRTL ? 'قيمة الجائزة' : 'Prize Amount' },
-    { value: 'submissions', label: isRTL ? 'عدد المساهمات' : 'Submissions' },
-    { value: 'created', label: isRTL ? 'تاريخ الإنشاء' : 'Created Date' }
-  ];
-
-  const featureOptions = [
-    { value: 'trending', label: isRTL ? 'رائج' : 'Trending' },
-    { value: 'featured', label: isRTL ? 'مميز' : 'Featured' },
-    { value: 'new', label: isRTL ? 'جديد' : 'New' },
-    { value: 'ending-soon', label: isRTL ? 'ينتهي قريباً' : 'Ending Soon' }
-  ];
+  const QuickFilterChip = ({ 
+    option, 
+    isSelected, 
+    onClick 
+  }: { 
+    option: typeof featureOptions[0]; 
+    isSelected: boolean; 
+    onClick: () => void; 
+  }) => (
+    <Button
+      variant={isSelected ? "default" : "outline"}
+      size="sm"
+      onClick={onClick}
+      className={cn(
+        "transition-all duration-200 hover:scale-105 animate-fade-in",
+        isSelected && "shadow-lg",
+        animateFilters && "animate-pulse"
+      )}
+    >
+      <option.icon className="w-3 h-3 mr-1" />
+      {option.label}
+    </Button>
+  );
 
   return (
-    <div className="space-y-4 p-4 bg-muted/30 rounded-lg animate-fade-in">
-      {/* Search and Basic Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-          <Input
-            placeholder={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
-            value={filters.search}
-            onChange={(e) => updateFilter('search', e.target.value)}
-            className="pl-10"
-          />
-        </div>
+    <div className={cn("space-y-6", challengesPageConfig.ui.animations.fadeIn, className)}>
+      {/* Enhanced Filter Card with Glass Morphism */}
+      <Card className={cn("backdrop-blur-sm border-violet-200/50 shadow-xl", challengesPageConfig.ui.gradients.hero)}>
+        <CardContent className="p-4">
+          <div className="flex items-center gap-3 w-full overflow-x-auto">
+            {/* Collapsible Search Bar */}
+            <div className={cn(
+              "flex-shrink-0 transition-all duration-300 ease-out overflow-hidden",
+              searchExpanded || filters.search ? "w-48" : "w-8"
+            )}>
+              <div className="relative">
+                {!searchExpanded && !filters.search ? (
+                  // Collapsed state - just the search icon
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleSearchClick}
+                    className="h-10 w-10 p-0 transition-all duration-300 hover:scale-110 bg-gradient-to-r from-violet-100 to-purple-100 border-violet-300 hover:from-violet-200 hover:to-purple-200 shadow-md"
+                    title={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
+                  >
+                    <Search className="h-4 w-4 text-violet-600" />
+                  </Button>
+                ) : (
+                  // Expanded state - full search input
+                  <div className="relative animate-fade-in">
+                    <Search className={cn(
+                      "absolute left-2 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 transition-colors duration-200 cursor-pointer",
+                      searchFocused ? "text-primary" : "text-muted-foreground"
+                    )} 
+                    onClick={handleSearchClick}
+                    />
+                    <Input
+                      placeholder={isRTL ? 'البحث...' : 'Search...'}
+                      value={filters.search}
+                      onChange={(e) => updateFilter('search', e.target.value)}
+                      onFocus={handleSearchFocus}
+                      onBlur={handleSearchBlur}
+                      className="pl-8 h-10 text-sm transition-all duration-300 bg-white/80 backdrop-blur-sm border-violet-200 focus:border-violet-400 focus:ring-violet-400"
+                      title={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
+                      autoFocus={searchExpanded && !filters.search}
+                    />
+                    {filters.search && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => updateFilter('search', '')}
+                        className="absolute right-1 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-muted rounded-sm"
+                        title={isRTL ? 'مسح البحث' : 'Clear search'}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
 
-        <Select value={filters.status} onValueChange={(value) => updateFilter('status', value)}>
-          <SelectTrigger className="w-full sm:w-[180px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {statusOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+            {/* Quick Filter Chips - Compact */}
+            <div className="flex gap-1.5 flex-shrink-0">
+              {featureOptions.map((option) => (
+                <Button
+                  key={option.value}
+                  variant={filters.features.includes(option.value) ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => toggleFeature(option.value)}
+                  className={cn(
+                    "h-10 px-3 transition-all duration-300 hover:scale-105 shadow-md",
+                    filters.features.includes(option.value) 
+                      ? "bg-gradient-to-r from-violet-500 to-purple-600 text-white border-0" 
+                      : "bg-white/80 backdrop-blur-sm border-violet-200 hover:bg-violet-100 hover:border-violet-300"
+                  )}
+                    title={isRTL ? option.labelAr : option.label}
+                  >
+                    <option.icon className="w-3.5 h-3.5" />
+                  </Button>
+              ))}
+            </div>
 
-        <Select value={filters.category} onValueChange={(value) => updateFilter('category', value)}>
-          <SelectTrigger className="w-full sm:w-[200px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {categoryOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Button
-          variant="outline"
-          onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
-          className="w-full sm:w-auto"
-        >
-          <SlidersHorizontal className="w-4 h-4 mr-2" />
-          {isRTL ? 'فلاتر متقدمة' : 'Advanced Filters'}
-          <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${isAdvancedOpen ? 'rotate-180' : ''}`} />
-        </Button>
-      </div>
-
-      {/* Active Filters Display */}
-      {activeFiltersCount > 0 && (
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-sm text-muted-foreground">
-            {isRTL ? 'الفلاتر النشطة:' : 'Active filters:'}
-          </span>
-          <Badge variant="secondary" className="animate-scale-in">
-            {activeFiltersCount} {isRTL ? 'فلتر' : 'filters'}
-          </Badge>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClearFilters}
-            className="h-auto p-1 text-muted-foreground hover:text-foreground"
-          >
-            <X className="w-4 h-4" />
-            {isRTL ? 'مسح الكل' : 'Clear all'}
-          </Button>
-        </div>
-      )}
-
-      {/* Advanced Filters */}
-      <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>
-        <CollapsibleContent className="space-y-6 animate-accordion-down">
-          <Separator />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Difficulty Filter */}
-            <div className="space-y-3">
-              <label className="text-sm font-medium flex items-center gap-2">
-                <Target className="w-4 h-4" />
-                {isRTL ? 'مستوى الصعوبة' : 'Difficulty Level'}
-              </label>
-              <Select value={filters.difficulty} onValueChange={(value) => updateFilter('difficulty', value)}>
-                <SelectTrigger>
-                  <SelectValue />
+            {/* Status Filter */}
+            <div className="flex-shrink-0 min-w-[100px]">
+              <Select value={filters.status} onValueChange={(value) => updateFilter('status', value)}>
+                <SelectTrigger 
+                  className="h-8 text-sm transition-all duration-200 hover:border-primary/50"
+                  title={isRTL ? 'حالة التحدي' : 'Challenge Status'}
+                >
+                  <SelectValue placeholder={isRTL ? 'الحالة' : 'Status'} />
                 </SelectTrigger>
-                <SelectContent>
-                  {difficultyOptions.map((option) => (
+                <SelectContent className="z-50 bg-background border shadow-md">
+                  {statusOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
-                      {option.label}
+                      <div className="flex items-center gap-2">
+                        {option.icon && <option.icon className="w-3.5 h-3.5" />}
+                        {isRTL ? option.labelAr : option.label}
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
-            {/* Sort Options */}
-            <div className="space-y-3">
-              <label className="text-sm font-medium flex items-center gap-2">
-                <Filter className="w-4 h-4" />
-                {isRTL ? 'ترتيب حسب' : 'Sort by'}
-              </label>
-              <div className="flex gap-2">
-                <Select value={filters.sortBy} onValueChange={(value) => updateFilter('sortBy', value)}>
-                  <SelectTrigger className="flex-1">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {sortOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => updateFilter('sortOrder', filters.sortOrder === 'asc' ? 'desc' : 'asc')}
-                  className="px-3"
+            {/* Category Filter */}
+            <div className="flex-shrink-0 min-w-[100px]">
+              <Select value={filters.category} onValueChange={(value) => updateFilter('category', value)}>
+                <SelectTrigger 
+                  className="h-8 text-sm transition-all duration-200 hover:border-primary/50"
+                  title={isRTL ? 'فئة التحدي' : 'Challenge Category'}
                 >
-                  {filters.sortOrder === 'asc' ? '↑' : '↓'}
-                </Button>
-              </div>
-            </div>
-
-            {/* Deadline Filter */}
-            <div className="space-y-3">
-              <label className="text-sm font-medium flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                {isRTL ? 'الموعد النهائي' : 'Deadline'}
-              </label>
-              <Select value={filters.deadline} onValueChange={(value) => updateFilter('deadline', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder={isRTL ? 'اختر المدة' : 'Select timeframe'} />
+                  <SelectValue placeholder={isRTL ? 'الفئة' : 'Category'} />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">{isRTL ? 'جميع المواعيد' : 'All deadlines'}</SelectItem>
-                  <SelectItem value="week">{isRTL ? 'خلال أسبوع' : 'Within a week'}</SelectItem>
-                  <SelectItem value="month">{isRTL ? 'خلال شهر' : 'Within a month'}</SelectItem>
-                  <SelectItem value="quarter">{isRTL ? 'خلال 3 أشهر' : 'Within 3 months'}</SelectItem>
+                <SelectContent className="z-50 bg-background border shadow-md">
+                  {categoryOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {isRTL ? option.labelAr : option.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
-          </div>
 
-          {/* Prize Range Filter */}
-          <div className="space-y-3">
-            <label className="text-sm font-medium flex items-center gap-2">
-              <Award className="w-4 h-4" />
-              {isRTL ? 'نطاق الجائزة (ريال)' : 'Prize Range (SAR)'}
-            </label>
-            <div className="px-3">
-              <Slider
-                value={filters.prizeRange}
-                onValueChange={(value) => updateFilter('prizeRange', value)}
-                max={100000}
-                min={0}
-                step={5000}
-                className="w-full"
-              />
-              <div className="flex justify-between text-sm text-muted-foreground mt-1">
-                <span>{filters.prizeRange[0].toLocaleString()}</span>
-                <span>{filters.prizeRange[1].toLocaleString()}</span>
-              </div>
+            {/* Difficulty Filter */}
+            <div className="flex-shrink-0 min-w-[90px]">
+              <Select value={filters.difficulty} onValueChange={(value) => updateFilter('difficulty', value)}>
+                <SelectTrigger 
+                  className="h-8 text-sm transition-all duration-200 hover:border-primary/50"
+                  title={isRTL ? 'مستوى الصعوبة' : 'Difficulty Level'}
+                >
+                  <SelectValue placeholder={isRTL ? 'المستوى' : 'Level'} />
+                </SelectTrigger>
+                <SelectContent className="z-50 bg-background border shadow-md">
+                  {difficultyOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {isRTL ? option.labelAr : option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Sort Filter */}
+            <div className="flex gap-1 flex-shrink-0">
+              <Select value={filters.sortBy} onValueChange={(value) => updateFilter('sortBy', value)}>
+                <SelectTrigger 
+                  className="h-8 min-w-[90px] text-sm transition-all duration-200 hover:border-primary/50"
+                  title={isRTL ? 'ترتيب حسب' : 'Sort by'}
+                >
+                  <SelectValue placeholder="Sort" />
+                </SelectTrigger>
+                <SelectContent className="z-50 bg-background border shadow-md">
+                  {sortOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      <div className="flex items-center gap-2">
+                        {option.icon && <option.icon className="w-3.5 h-3.5" />}
+                        {isRTL ? option.labelAr : option.label}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => updateFilter('sortOrder', filters.sortOrder === 'asc' ? 'desc' : 'asc')}
+                className="h-8 w-8 px-0 transition-all duration-200 hover:scale-105"
+                title={filters.sortOrder === 'asc' ? 'Ascending' : 'Descending'}
+              >
+                {filters.sortOrder === 'asc' ? '↑' : '↓'}
+              </Button>
+            </div>
+
+            {/* Advanced Filters Toggle */}
+            <div className="flex-shrink-0 ml-auto">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
+                className="h-8 px-2 transition-all duration-200 hover:bg-muted/80"
+                title={isRTL ? 'فلاتر متقدمة' : 'Advanced Filters'}
+              >
+                <SlidersHorizontal className="w-3.5 h-3.5" />
+                <ChevronDown className={cn(
+                  "w-3.5 h-3.5 ml-1 transition-transform duration-200",
+                  isAdvancedOpen && "rotate-180"
+                )} />
+              </Button>
             </div>
           </div>
+        </CardContent>
+      </Card>
 
-          {/* Participants Range Filter */}
-          <div className="space-y-3">
-            <label className="text-sm font-medium flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              {isRTL ? 'عدد المشاركين' : 'Number of Participants'}
-            </label>
-            <div className="px-3">
-              <Slider
-                value={filters.participantRange}
-                onValueChange={(value) => updateFilter('participantRange', value)}
-                max={1000}
-                min={0}
-                step={50}
-                className="w-full"
-              />
-              <div className="flex justify-between text-sm text-muted-foreground mt-1">
-                <span>{filters.participantRange[0]}</span>
-                <span>{filters.participantRange[1]}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Special Features */}
-          <div className="space-y-3">
-            <label className="text-sm font-medium">
-              {isRTL ? 'ميزات خاصة' : 'Special Features'}
-            </label>
-            <div className="flex flex-wrap gap-3">
-              {featureOptions.map((feature) => (
-                <div key={feature.value} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={feature.value}
-                    checked={filters.features.includes(feature.value)}
-                    onCheckedChange={() => toggleFeature(feature.value)}
+      {/* Advanced Filters */}
+      <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>        
+        <CollapsibleContent className="animate-accordion-down">
+          <Card className="mt-4">
+            <CardContent className="p-6 space-y-6">
+              {/* Prize Range */}
+              <div className="space-y-3">
+                <label className="text-sm font-medium flex items-center gap-2">
+                  <Award className="w-4 h-4" />
+                  {isRTL ? 'نطاق الجائزة (ر.س)' : 'Prize Range (SAR)'}
+                </label>
+                <div className="px-3">
+                  <Slider
+                    value={filters.prizeRange}
+                    onValueChange={(value) => updateFilter('prizeRange', value as [number, number])}
+                    max={dynamicMaxBudget}
+                    min={0}
+                    step={dynamicMaxBudget > 1000000 ? 100000 : 10000}
+                    className="w-full"
                   />
-                  <label
-                    htmlFor={feature.value}
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-                  >
-                    {feature.label}
-                  </label>
+                  <div className="flex justify-between text-sm text-muted-foreground mt-2">
+                    <span>{filters.prizeRange[0].toLocaleString()}</span>
+                    <span>{filters.prizeRange[1].toLocaleString()}</span>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+
+              {/* Participant Range */}
+              <div className="space-y-3">
+                <label className="text-sm font-medium flex items-center gap-2">
+                  <Users className="w-4 h-4" />
+                  {isRTL ? 'نطاق المشاركين' : 'Participants Range'}
+                </label>
+                <div className="px-3">
+                  <Slider
+                    value={filters.participantRange}
+                    onValueChange={(value) => updateFilter('participantRange', value as [number, number])}
+                    max={dynamicMaxParticipants}
+                    min={0}
+                    step={dynamicMaxParticipants > 100 ? 10 : 5}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-sm text-muted-foreground mt-2">
+                    <span>{filters.participantRange[0]}</span>
+                    <span>{filters.participantRange[1]}</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </CollapsibleContent>
       </Collapsible>
+
+      {/* Active Filters & Clear */}
+      {activeFiltersCount > 0 && (
+        <Card className="animate-scale-in">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Badge 
+                  variant="secondary" 
+                  className={cn(
+                    "transition-all duration-200",
+                    animateFilters && "animate-pulse"
+                  )}
+                >
+                  {activeFiltersCount} {isRTL ? 'فلتر نشط' : 'active filters'}
+                </Badge>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onClearFilters}
+                className="text-muted-foreground hover:text-destructive transition-colors duration-200"
+              >
+                <X className="w-4 h-4 mr-2" />
+                {isRTL ? 'مسح الكل' : 'Clear all'}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

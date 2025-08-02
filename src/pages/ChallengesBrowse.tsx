@@ -17,7 +17,6 @@ import { ChallengeRecommendations } from '@/components/challenges/ChallengeRecom
 import { ChallengeDetailDialog } from '@/components/challenges/ChallengeDetailDialog';
 import { EnhancedChallengeDetailDialog } from '@/components/challenges/EnhancedChallengeDetailDialog';
 import { ChallengeFilters, FilterState } from '@/components/challenges/ChallengeFilters';
-import { EnhancedChallengeFilters } from '@/components/challenges/EnhancedChallengeFilters';
 import { challengesPageConfig, getViewModeConfig } from '@/config/challengesPageConfig';
 import { ChallengeSkeleton, ChallengeLoadingState, ChallengeEmptyState } from '@/components/challenges/ChallengeSkeletons';
 import { EnhancedSubmissionDialog } from '@/components/challenges/EnhancedSubmissionDialog';
@@ -558,7 +557,7 @@ const ChallengesBrowse = () => {
         >
           <div className="space-y-6">
             {/* Enhanced Filters */}
-            <EnhancedChallengeFilters
+            <ChallengeFilters
               filters={filters}
               onFiltersChange={setFilters}
               onClearFilters={handleClearFilters}
