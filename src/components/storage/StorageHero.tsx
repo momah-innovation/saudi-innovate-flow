@@ -57,7 +57,7 @@ export function StorageHero({
         <CardContent>
           <div className="text-2xl font-bold">{formatBytes(usedSpace)}</div>
           <p className="text-xs text-muted-foreground">
-            {t('storage.of_x_used', { total: formatBytes(totalSpace) })}
+            of {formatBytes(totalSpace)} used
           </p>
           <div className="mt-2">
             <Progress value={usagePercentage} className="h-2" />
@@ -77,7 +77,7 @@ export function StorageHero({
         <CardContent>
           <div className="text-2xl font-bold">{totalFiles.toLocaleString()}</div>
           <p className="text-xs text-muted-foreground">
-            {t('recent_uploads_count', { count: recentUploads })}
+            {recentUploads} recent uploads
           </p>
           <div className="flex items-center gap-1 mt-2">
             <TrendingUp className="h-3 w-3 text-green-500" />

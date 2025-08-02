@@ -86,7 +86,7 @@ export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
             {formatFileSize(stats.usedSpace)}
           </div>
           <p className="text-xs text-muted-foreground mb-2">
-            {t('storage.of_x_used', { total: formatFileSize(stats.totalSpace) })}
+            of {formatFileSize(stats.totalSpace)} used
           </p>
           <Progress value={usagePercentage} className="h-2" />
           <p className="text-xs text-muted-foreground mt-1">
@@ -104,7 +104,7 @@ export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
         <CardContent>
           <div className="text-2xl font-bold">{stats.totalFiles}</div>
           <p className="text-xs text-muted-foreground">
-            {t('public_private_files', { public: stats.publicFiles, private: stats.privateFiles })}
+            {stats.publicFiles} public, {stats.privateFiles} private
           </p>
           <div className="mt-2 space-y-1">
             <div className="flex justify-between text-xs">
