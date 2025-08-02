@@ -29,7 +29,7 @@ export function TeamWizard({
   const { t } = useTranslation();
   const { generalStatusOptions } = useSystemLists();
   
-  const [formData, setFormData] = useState<TeamFormData>({
+  const [formData, setFormData] = useState({
     name: "",
     description: "",
     type: "innovation",
@@ -37,8 +37,8 @@ export function TeamWizard({
     department_id: "",
     manager_id: "",
     max_members: 5,
-    skills_required: [],
-    objectives: [],
+    skills_required: [] as string[],
+    objectives: [] as string[],
   });
 
   const [departments, setDepartments] = useState<any[]>([]);
@@ -433,8 +433,6 @@ export function TeamWizard({
       onClose={onClose}
       title={team ? "تعديل الفريق" : "فريق جديد"}
       steps={steps}
-      isLoading={isLoading}
-      onComplete={handleSave}
     />
   );
 }
