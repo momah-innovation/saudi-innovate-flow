@@ -437,8 +437,8 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                     <div className="space-y-2">
                       <Progress value={Math.min(quota.usage_percentage, 100)} className="h-2" />
                       <div className="flex justify-between text-sm text-muted-foreground">
-                        <span>{formatBytes(quota.current_usage_bytes)} {t('used')}</span>
-                        <span>{formatBytes(quota.quota_bytes)} {t('total')}</span>
+                        <span>{formatBytes(quota.current_usage_bytes)} {t('storage.used')}</span>
+                        <span>{formatBytes(quota.quota_bytes)} {t('storage.total')}</span>
                       </div>
                       {quota.current_usage_bytes > quota.quota_bytes && (
                         <Alert variant="destructive">

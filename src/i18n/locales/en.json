@@ -159,7 +159,9 @@
     "quota_exceeded": "Quota exceeded! Current usage is",
     "over_limit": "over the limit",
     "no_storage_quota_configured": "No storage quota configured for this bucket",
-    "loading_storage_quotas": "Loading storage quotas..."
+    "loading_storage_quotas": "Loading storage quotas...",
+    "used": "used",
+    "total": "total"
   },
   "units": {
     "bytes": "Bytes",
