@@ -58,6 +58,7 @@ export const EnhancedChallengeFilters = ({
   const { isRTL } = useDirection();
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
+  const [searchExpanded, setSearchExpanded] = useState(false);
   const [animateFilters, setAnimateFilters] = useState(false);
 
   useEffect(() => {
@@ -70,6 +71,25 @@ export const EnhancedChallengeFilters = ({
 
   const updateFilter = (key: keyof FilterState, value: any) => {
     onFiltersChange({ ...filters, [key]: value });
+  };
+
+  const handleSearchFocus = () => {
+    setSearchFocused(true);
+    setSearchExpanded(true);
+  };
+
+  const handleSearchBlur = () => {
+    setSearchFocused(false);
+    // Only collapse if no search text
+    if (!filters.search) {
+      setSearchExpanded(false);
+    }
+  };
+
+  const handleSearchClick = () => {
+    if (!searchExpanded) {
+      setSearchExpanded(true);
+    }
   };
 
   const toggleFeature = (feature: string) => {
@@ -166,22 +186,55 @@ export const EnhancedChallengeFilters = ({
       <Card>
         <CardContent className="p-3">
           <div className="flex items-center gap-3 w-full overflow-x-auto">
-            {/* Search Bar */}
-            <div className="flex-shrink-0 w-48">
+            {/* Collapsible Search Bar */}
+            <div className={cn(
+              "flex-shrink-0 transition-all duration-300 ease-out overflow-hidden",
+              searchExpanded || filters.search ? "w-48" : "w-8"
+            )}>
               <div className="relative">
-                <Search className={cn(
-                  "absolute left-2 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 transition-colors duration-200",
-                  searchFocused ? "text-primary" : "text-muted-foreground"
-                )} />
-                <Input
-                  placeholder={isRTL ? 'البحث...' : 'Search...'}
-                  value={filters.search}
-                  onChange={(e) => updateFilter('search', e.target.value)}
-                  onFocus={() => setSearchFocused(true)}
-                  onBlur={() => setSearchFocused(false)}
-                  className="pl-8 h-8 text-sm transition-all duration-200"
-                  title={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
-                />
+                {!searchExpanded && !filters.search ? (
+                  // Collapsed state - just the search icon
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleSearchClick}
+                    className="h-8 w-8 p-0 transition-all duration-200 hover:scale-105"
+                    title={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
+                  >
+                    <Search className="h-3.5 w-3.5" />
+                  </Button>
+                ) : (
+                  // Expanded state - full search input
+                  <div className="relative animate-fade-in">
+                    <Search className={cn(
+                      "absolute left-2 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 transition-colors duration-200 cursor-pointer",
+                      searchFocused ? "text-primary" : "text-muted-foreground"
+                    )} 
+                    onClick={handleSearchClick}
+                    />
+                    <Input
+                      placeholder={isRTL ? 'البحث...' : 'Search...'}
+                      value={filters.search}
+                      onChange={(e) => updateFilter('search', e.target.value)}
+                      onFocus={handleSearchFocus}
+                      onBlur={handleSearchBlur}
+                      className="pl-8 h-8 text-sm transition-all duration-200"
+                      title={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
+                      autoFocus={searchExpanded && !filters.search}
+                    />
+                    {filters.search && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => updateFilter('search', '')}
+                        className="absolute right-1 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-muted rounded-sm"
+                        title={isRTL ? 'مسح البحث' : 'Clear search'}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
