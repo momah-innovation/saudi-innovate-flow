@@ -95,37 +95,57 @@ export const StoragePoliciesPage: React.FC = () => {
   const loadStoragePolicies = async () => {
     try {
       setLoading(true)
+      console.log('Loading storage policies...')
       
-      // Get buckets
-      const { data: bucketsData, error: bucketsError } = await supabase.storage.listBuckets();
+      // Try to get buckets using RPC first (more reliable with RLS)
+      const { data: bucketsFromRPC, error: rpcError } = await supabase
+        .rpc('get_basic_storage_info' as any);
       
-      if (bucketsError || !bucketsData) {
-        console.error('Error loading buckets:', bucketsError);
-        setBuckets([]);
-        return;
+      let bucketsData: any[] = [];
+      
+      if (rpcError || !bucketsFromRPC) {
+        console.log('RPC method failed, trying direct storage API:', rpcError);
+        // Fallback to direct storage API
+        const { data: directBuckets, error: storageError } = await supabase.storage.listBuckets();
+        
+        if (storageError || !directBuckets) {
+          console.error('Both bucket loading methods failed:', { rpcError, storageError });
+          toast({
+            title: 'Error Loading Buckets',
+            description: 'Failed to load storage buckets. Please check your permissions.',
+            variant: 'destructive'
+          });
+          setBuckets([]);
+          return;
+        }
+        
+        bucketsData = directBuckets.map(bucket => ({
+          bucket_id: bucket.id,
+          bucket_name: bucket.name,
+          public: bucket.public
+        }));
+      } else {
+        bucketsData = bucketsFromRPC;
       }
+      
+      console.log('Loaded buckets:', bucketsData.length);
 
-      // Use RPC to get policies (since pg_policies is a system view not directly accessible)
+      // Use RPC to get policies
       const { data: policiesData, error: policiesError } = await supabase
         .rpc('get_storage_policies_info' as any);
 
       if (policiesError) {
         console.error('Error loading policies:', policiesError);
-        // Fallback to empty policies for now
-        setBuckets(bucketsData.map(bucket => ({
-          id: bucket.id,
-          name: bucket.name,
-          public: bucket.public,
-          policies: []
-        })));
-        return;
       }
+
+      console.log('Loaded policies:', policiesData?.length || 0);
 
       // Group policies by bucket  
       const policiesByBucket: Record<string, StoragePolicy[]> = {};
       
       if (policiesData && Array.isArray(policiesData)) {
         policiesData.forEach((policy: any) => {
+          console.log('Processing policy:', policy.name);
           // Extract bucket name from policy condition
           const bucketMatch = policy.condition?.match(/bucket_id = '([^']+)'/) || 
                              policy.condition?.match(/bucket_id = ANY \(ARRAY\[([^\]]+)\]/);
@@ -158,12 +178,13 @@ export const StoragePoliciesPage: React.FC = () => {
 
       // Create bucket info with actual policies
       const bucketInfo: BucketInfo[] = bucketsData.map(bucket => ({
-        id: bucket.id,
-        name: bucket.name,
+        id: bucket.bucket_id,
+        name: bucket.bucket_name,
         public: bucket.public,
-        policies: policiesByBucket[bucket.name] || []
+        policies: policiesByBucket[bucket.bucket_name] || []
       }));
 
+      console.log('Final bucket info:', bucketInfo.map(b => ({ name: b.name, policies: b.policies.length })));
       setBuckets(bucketInfo);
       
       // Update stats
