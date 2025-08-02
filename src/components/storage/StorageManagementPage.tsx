@@ -117,19 +117,21 @@ export function StorageManagementPage() {
     try {
       setLoading(true);
       
-      // Load buckets directly using storage API
-      let bucketsData = [];
-      let bucketError = null;
+      // Use database function for bucket info
+      const { data: dbBuckets, error: bucketError } = await supabase
+        .rpc('get_basic_storage_info');
       
-      try {
-        console.log('Loading buckets from storage API...');
-        const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
-        bucketsData = storageB || [];
-        bucketError = storageE;
-        console.log('Storage API buckets:', { bucketsData, bucketError });
-      } catch (error) {
-        console.error('Failed to load buckets:', error);
-        bucketError = error;
+      console.log('Database buckets response:', { dbBuckets, bucketError });
+      
+      let bucketsData = [];
+      if (dbBuckets) {
+        // Convert database response to storage API format
+        bucketsData = dbBuckets.map(bucket => ({
+          id: bucket.bucket_id,
+          name: bucket.bucket_name,
+          public: bucket.public,
+          created_at: bucket.created_at
+        }));
       }
       
       if (bucketsData) {
