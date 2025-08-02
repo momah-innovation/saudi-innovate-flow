@@ -88,7 +88,10 @@ export function StorageManagementPage() {
   const [fileToDelete, setFileToDelete] = useState<any | null>(null);
   const [selectedUploadBucket, setSelectedUploadBucket] = useState<string>('');
   const [filesLayout, setFilesLayout] = useState<LayoutType>('cards');
-  const [bucketsLayout, setBucketsLayout] = useState<LayoutType>('cards');
+  const [bucketsLayout, setBucketsLayout] = useState<LayoutType>('grid');
+  const [bucketSearchTerm, setBucketSearchTerm] = useState('');
+  const [bucketFilter, setBucketFilter] = useState('all');
+  const [bucketSortBy, setBucketSortBy] = useState('name-asc');
   const [storageStats, setStorageStats] = useState({
     totalFiles: 0,
     totalSize: 0,
@@ -121,10 +124,6 @@ export function StorageManagementPage() {
   const [selectedFileRecord, setSelectedFileRecord] = useState<string | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
 
-  // Bucket filtering state
-  const [bucketSearchTerm, setBucketSearchTerm] = useState('');
-  const [bucketFilter, setBucketFilter] = useState('all');
-  const [bucketSortBy, setBucketSortBy] = useState('name-asc');
 
   useEffect(() => {
     loadStorageData();
@@ -706,13 +705,14 @@ export function StorageManagementPage() {
         />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full" dir={isRTL ? 'rtl' : 'ltr'}>
-          <TabsList className={`grid w-full grid-cols-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="quotas">Quotas</TabsTrigger>
-            <TabsTrigger value="upload">Upload</TabsTrigger>
-            <TabsTrigger value="versioning">Versions</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsList className={`grid w-full grid-cols-7 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+            <TabsTrigger value="overview">{t('storage.overview')}</TabsTrigger>
+            <TabsTrigger value="buckets">{t('storage.buckets')}</TabsTrigger>
+            <TabsTrigger value="analytics">{t('storage.analytics')}</TabsTrigger>
+            <TabsTrigger value="quotas">{t('storage.quotas')}</TabsTrigger>
+            <TabsTrigger value="upload">{t('storage.upload')}</TabsTrigger>
+            <TabsTrigger value="versioning">{t('storage.versions')}</TabsTrigger>
+            <TabsTrigger value="settings">{t('storage.settings')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
@@ -816,6 +816,169 @@ export function StorageManagementPage() {
                 ))}
               </ViewLayouts>
             )}
+          </TabsContent>
+
+          <TabsContent value="buckets" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+            {/* Bucket Management Section */}
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold mb-2">{t('storage.bucket_management')}</h3>
+                <p className="text-muted-foreground">{t('storage.bucket_management_description')}</p>
+              </div>
+
+              {/* Bucket Search and Filter Controls */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className={`relative flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+                  <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4`} />
+                  <Input
+                    placeholder={t('storage.search_buckets')}
+                    value={bucketSearchTerm}
+                    onChange={(e) => setBucketSearchTerm(e.target.value)}
+                    className={isRTL ? 'pr-10 text-right' : 'pl-10 text-left'}
+                  />
+                </div>
+                <Select value={bucketFilter} onValueChange={setBucketFilter}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder={t('storage.filter_buckets')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">{t('storage.all_buckets')}</SelectItem>
+                    <SelectItem value="public">{t('storage.public_buckets')}</SelectItem>
+                    <SelectItem value="private">{t('storage.private_buckets')}</SelectItem>
+                    <SelectItem value="empty">{t('storage.empty_buckets')}</SelectItem>
+                    <SelectItem value="large">{t('storage.large_buckets')}</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={bucketSortBy} onValueChange={setBucketSortBy}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder={t('storage.sort_buckets')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="name-asc">{t('storage.name_asc')}</SelectItem>
+                    <SelectItem value="name-desc">{t('storage.name_desc')}</SelectItem>
+                    <SelectItem value="created-newest">{t('storage.newest_first')}</SelectItem>
+                    <SelectItem value="created-oldest">{t('storage.oldest_first')}</SelectItem>
+                    <SelectItem value="size-largest">{t('storage.largest_first')}</SelectItem>
+                    <SelectItem value="size-smallest">{t('storage.smallest_first')}</SelectItem>
+                    <SelectItem value="files-most">{t('storage.most_files')}</SelectItem>
+                    <SelectItem value="files-least">{t('storage.least_files')}</SelectItem>
+                  </SelectContent>
+                </Select>
+                <div className="flex items-center gap-2">
+                  <LayoutToggle
+                    currentLayout={bucketsLayout}
+                    onLayoutChange={setBucketsLayout}
+                  />
+                  <Button onClick={() => loadStorageData()}>
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    {t('common.refresh')}
+                  </Button>
+                </div>
+              </div>
+
+              {/* Bucket Display */}
+              {filteredAndSortedBuckets.length === 0 ? (
+                <div className="text-center py-12">
+                  <Database className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">{t('storage.no_buckets_found')}</h3>
+                  <p className="text-muted-foreground mb-4">
+                    {bucketSearchTerm || bucketFilter !== 'all' 
+                      ? t('storage.try_adjusting_filters')
+                      : t('storage.no_buckets_available')}
+                  </p>
+                </div>
+              ) : bucketsLayout === 'table' ? (
+                <div className="rounded-md border">
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="border-b">
+                        <tr className="text-left">
+                          <th className="p-4">{t('storage.bucket_name')}</th>
+                          <th className="p-4">{t('storage.visibility')}</th>
+                          <th className="p-4">{t('storage.files_count')}</th>
+                          <th className="p-4">{t('storage.total_size')}</th>
+                          <th className="p-4">{t('storage.created_date')}</th>
+                          <th className="p-4">{t('common.actions')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredAndSortedBuckets.map((bucket) => {
+                          const bucketFiles = files.filter(f => f.bucket_id === bucket.id);
+                          const bucketSize = bucketFiles.reduce((total, f) => total + (f.metadata?.size || 0), 0);
+                          const formatSize = (bytes: number) => {
+                            if (bytes === 0) return '0 B';
+                            const k = 1024;
+                            const sizes = ['B', 'KB', 'MB', 'GB'];
+                            const i = Math.floor(Math.log(bytes) / Math.log(k));
+                            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                          };
+                          
+                          return (
+                            <tr key={bucket.id} className="border-b hover:bg-muted/50">
+                              <td className="p-4 font-medium">{bucket.name}</td>
+                              <td className="p-4">
+                                <Badge variant={bucket.public ? "default" : "secondary"}>
+                                  {bucket.public ? t('storage.public') : t('storage.private')}
+                                </Badge>
+                              </td>
+                              <td className="p-4">{bucketFiles.length}</td>
+                              <td className="p-4">{formatSize(bucketSize)}</td>
+                              <td className="p-4">{new Date(bucket.created_at).toLocaleDateString()}</td>
+                              <td className="p-4">
+                                <div className="flex gap-2">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleBucketView(bucket)}
+                                  >
+                                    <Eye className="w-4 h-4" />
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleBucketManagement(bucket)}
+                                  >
+                                    <Settings className="w-4 h-4" />
+                                  </Button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ) : (
+                <ViewLayouts viewMode={bucketsLayout}>
+                  {filteredAndSortedBuckets.map((bucket) => {
+                    const bucketFiles = files.filter(f => f.bucket_id === bucket.id);
+                    const bucketSize = bucketFiles.reduce((total, f) => total + (f.metadata?.size || 0), 0);
+                    
+                    return (
+                      <StorageBucketCard
+                        key={bucket.id}
+                        bucket={{
+                          ...bucket,
+                          file_count: bucketFiles.length,
+                          total_size: bucketSize
+                        }}
+                        onView={handleBucketView}
+                        onSettings={handleBucketManagement}
+                        onDelete={(bucket) => {
+                          // TODO: Implement bucket deletion
+                          toast({
+                            title: t('common.not_implemented'),
+                            description: t('storage.bucket_deletion_not_implemented'),
+                            variant: 'destructive'
+                          });
+                        }}
+                      />
+                    );
+                  })}
+                </ViewLayouts>
+              )}
+            </div>
           </TabsContent>
 
           <TabsContent value="analytics" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
