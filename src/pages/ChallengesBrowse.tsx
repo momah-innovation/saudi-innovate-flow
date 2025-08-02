@@ -478,7 +478,7 @@ const ChallengesBrowse = () => {
                 <TabsTrigger value="all" className="animate-fade-in">
                   {isRTL ? 'جميع التحديات' : 'All Challenges'}
                   {activeTab === 'all' && (
-                    <span className="ml-2 bg-primary/20 text-primary px-2 py-0.5 rounded-full text-xs">
+                    <span className="ml-2 bg-gradient-to-r from-violet-200 to-purple-200 text-violet-800 px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm">
                       {filteredChallenges.length}
                     </span>
                   )}
@@ -486,7 +486,7 @@ const ChallengesBrowse = () => {
                 <TabsTrigger value="active" className="animate-fade-in">
                   {isRTL ? 'النشطة' : 'Active'}
                   {activeTab === 'active' && (
-                    <span className="ml-2 bg-green-100 text-green-800 px-2 py-0.5 rounded-full text-xs">
+                    <span className="ml-2 bg-gradient-to-r from-green-200 to-emerald-200 text-green-800 px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm">
                       {filteredChallenges.filter(c => c.status === 'active').length}
                     </span>
                   )}
@@ -494,7 +494,7 @@ const ChallengesBrowse = () => {
                 <TabsTrigger value="upcoming" className="animate-fade-in">
                   {isRTL ? 'القادمة' : 'Upcoming'}
                   {activeTab === 'upcoming' && (
-                    <span className="ml-2 bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-xs">
+                    <span className="ml-2 bg-gradient-to-r from-blue-200 to-cyan-200 text-blue-800 px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm">
                       {filteredChallenges.filter(c => c.status === 'upcoming').length}
                     </span>
                   )}
@@ -502,7 +502,7 @@ const ChallengesBrowse = () => {
                 <TabsTrigger value="trending" className="animate-fade-in">
                   {isRTL ? 'الأكثر شعبية' : 'Trending'}
                   {activeTab === 'trending' && (
-                    <span className="ml-2 bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full text-xs">
+                    <span className="ml-2 bg-gradient-to-r from-orange-200 to-amber-200 text-orange-800 px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm">
                       {filteredChallenges.filter(c => c.trending || c.participants > 200).length}
                     </span>
                   )}
