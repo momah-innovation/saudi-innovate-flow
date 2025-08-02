@@ -9,6 +9,15 @@ export interface StorageQuota {
   quota_exceeded: boolean
 }
 
+export interface BucketInfo {
+  bucket_id: string
+  bucket_name: string
+  public: boolean
+  created_at: string
+  file_count?: number
+  total_size?: number
+}
+
 export const useStorageQuotas = () => {
   const [quotas, setQuotas] = useState<StorageQuota[]>([])
   const [loading, setLoading] = useState(true)

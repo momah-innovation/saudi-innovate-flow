@@ -3,7 +3,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/ui/page-header';
 import { StorageHero } from './StorageHero';
 import { StorageAnalyticsDashboard } from '@/components/admin/StorageAnalyticsDashboard';
-import { StorageQuotaManager } from '@/components/admin/StorageQuotaManager';
+import { EnhancedStorageQuotasTab } from './EnhancedStorageQuotasTab';
 import { UploaderSettingsTab } from './UploaderSettingsTab';
 import { FixedStorageUploadTab } from './FixedStorageUploadTab';
 
@@ -472,9 +472,13 @@ export function StorageManagementPage() {
             <StorageAnalyticsDashboard />
           </TabsContent>
 
-          <TabsContent value="quotas" className="space-y-6">
-            <StorageQuotaManager />
-          </TabsContent>
+        <TabsContent value="quotas" className="space-y-6">
+          <EnhancedStorageQuotasTab onQuotasChanged={() => {
+            refreshAnalytics();
+            refreshQuotas();
+            loadStorageData();
+          }} />
+        </TabsContent>
 
           <TabsContent value="upload" className="space-y-6">
             <FixedStorageUploadTab onFilesUploaded={loadStorageData} />
