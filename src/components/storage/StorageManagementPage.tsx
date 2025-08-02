@@ -7,7 +7,6 @@ import { StoragePoliciesPage } from './StoragePoliciesPage';
 import { EnhancedStorageQuotasTab } from './EnhancedStorageQuotasTab';
 import { UploaderSettingsTab } from './UploaderSettingsTab';
 import { FixedStorageUploadTab } from './FixedStorageUploadTab';
-import { TestPrivilegeElevation } from '@/components/admin/TestPrivilegeElevation';
 
 import { useFileUploader } from '@/hooks/useFileUploader';
 import { useStorageAnalytics } from '@/hooks/useStorageAnalytics';
@@ -394,9 +393,6 @@ export function StorageManagementPage() {
                   </div>
                 </CardContent>
               </Card>
-              
-              {/* Privilege Elevation for Admin Access */}
-              <TestPrivilegeElevation />
             </div>
           </TabsContent>
 

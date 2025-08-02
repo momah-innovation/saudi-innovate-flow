@@ -70,17 +70,29 @@ export const StoragePoliciesPage: React.FC = () => {
 
   const checkAdminStatus = async () => {
     try {
-      const { data } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user?.id)
-        .eq('is_active', true)
-        .in('role', ['admin', 'super_admin'])
-        .single()
+      // Use the has_role function to check admin status
+      const { data, error } = await supabase
+        .rpc('has_role', { 
+          _user_id: user?.id, 
+          _role: 'admin' 
+        });
       
-      setIsAdmin(!!data)
+      if (error) {
+        console.error('Admin check error:', error);
+        // Try super_admin if admin check fails
+        const { data: superAdminData, error: superAdminError } = await supabase
+          .rpc('has_role', { 
+            _user_id: user?.id, 
+            _role: 'super_admin' 
+          });
+        
+        setIsAdmin(!!superAdminData && !superAdminError);
+      } else {
+        setIsAdmin(!!data);
+      }
     } catch (error) {
-      setIsAdmin(false)
+      console.error('Admin status check failed:', error);
+      setIsAdmin(false);
     }
   }
 
