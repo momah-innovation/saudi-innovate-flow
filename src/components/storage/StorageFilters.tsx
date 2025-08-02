@@ -271,7 +271,7 @@ export function StorageFilters({
         <div className="flex flex-wrap gap-1">
           {filters.fileType && filters.fileType !== 'all' && (
             <Badge variant="secondary" className="text-xs">
-              Type: {fileTypeOptions.find(o => o.value === filters.fileType)?.label}
+              {t('file_type')}: {fileTypeOptions.find(o => o.value === filters.fileType)?.label}
               <X 
                 className="w-3 h-3 ml-1 cursor-pointer" 
                 onClick={() => onFiltersChange({ ...filters, fileType: 'all' })}
