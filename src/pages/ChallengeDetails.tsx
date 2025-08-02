@@ -33,7 +33,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { ExpertAssignmentWizard } from "@/components/challenges/ExpertAssignmentWizard";
-import { FocusQuestionWizard } from "@/components/challenges/FocusQuestionWizard";
+import { ChallengeFocusQuestionWizard } from "@/components/challenges/ChallengeFocusQuestionWizard";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 
 interface Challenge {
@@ -1311,7 +1311,7 @@ const ChallengeDetails = () => {
         }}
       />
 
-      <FocusQuestionWizard
+      <ChallengeFocusQuestionWizard
         open={questionDialogOpen}
         onOpenChange={setQuestionDialogOpen}
         challengeId={challengeId!}

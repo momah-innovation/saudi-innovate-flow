@@ -47,6 +47,7 @@ import PartnerProfile from "./pages/PartnerProfile";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import ChallengesBrowse from "./pages/ChallengesBrowse";
+import ChallengeActivityHub from "./pages/ChallengeActivityHub";
 import EvaluationsPage from "./pages/EvaluationsPage";
 import EventRegistration from "./pages/EventRegistration";
 import StakeholderDashboard from "./pages/StakeholderDashboard";
@@ -97,7 +98,15 @@ const App = () => (
               } 
             />
             <Route 
-              path="/admin/challenges" 
+              path="/admin/challenges/activity/:challengeId" 
+              element={
+                <ProtectedRoute requireProfile requiredRole="admin">
+                  <ChallengeActivityHub />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/challenges"
               element={
                 <ProtectedRoute requireProfile requiredRole="admin">
                   <ChallengesManagementPage />

@@ -36,7 +36,7 @@ interface FocusQuestionWizardProps {
   onSave: () => void;
 }
 
-export function FocusQuestionWizard({
+export function AdminFocusQuestionWizard({
   isOpen,
   onClose,
   question,

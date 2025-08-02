@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { ManagementCard } from "@/components/ui/management-card";
-import { FocusQuestionWizard } from "./FocusQuestionWizard";
+import { AdminFocusQuestionWizard } from "./AdminFocusQuestionWizard";
 import { FocusQuestionDetailView } from "./focus-questions/FocusQuestionDetailView";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ViewLayouts } from "@/components/ui/view-layouts";
@@ -239,7 +239,7 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
         ))}
       </ViewLayouts>
 
-      <FocusQuestionWizard
+      <AdminFocusQuestionWizard
         isOpen={showAddDialog}
         onClose={() => {
           onAddDialogChange(false);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { ManagementCard } from "@/components/ui/management-card";
-import { FocusQuestionWizard } from "../FocusQuestionWizard";
+import { AdminFocusQuestionWizard } from "../AdminFocusQuestionWizard";
 import { FocusQuestionDetailView } from "./FocusQuestionDetailView";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Badge } from "@/components/ui/badge";
@@ -347,7 +347,7 @@ export function FocusQuestionManagementList() {
         )}
       </div>
 
-      <FocusQuestionWizard
+      <AdminFocusQuestionWizard
         isOpen={showWizard}
         onClose={() => {
           setShowWizard(false);

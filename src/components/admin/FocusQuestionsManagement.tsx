@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/useAppTranslation';
-import { FocusQuestionWizard } from './FocusQuestionWizard';
+import { AdminFocusQuestionWizard } from './AdminFocusQuestionWizard';
 import { HelpCircle, Plus } from 'lucide-react';
 
 interface Challenge {
@@ -213,7 +213,7 @@ const FocusQuestionsManagement = () => {
       )}
 
       {showWizard && (
-        <FocusQuestionWizard
+        <AdminFocusQuestionWizard
           isOpen={showWizard}
           onClose={() => setShowWizard(false)}
           question={editingQuestion}

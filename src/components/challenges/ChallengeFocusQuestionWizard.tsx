@@ -26,7 +26,7 @@ interface FocusQuestionWizardProps {
   onQuestionSaved: () => void;
 }
 
-export function FocusQuestionWizard({ 
+export function ChallengeFocusQuestionWizard({ 
   open, 
   onOpenChange, 
   challengeId,
