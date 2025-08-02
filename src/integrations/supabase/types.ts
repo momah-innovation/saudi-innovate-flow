@@ -6688,9 +6688,11 @@ export type Database = {
         Returns: {
           bucket_name: string
           quota_bytes: number
-          current_usage: number
+          current_usage_bytes: number
           usage_percentage: number
-          quota_exceeded: boolean
+          file_count: number
+          created_at: string
+          updated_at: string
         }[]
       }
       get_basic_storage_info: {
@@ -6775,7 +6777,9 @@ export type Database = {
         Returns: string
       }
       manage_storage_quotas: {
-        Args: { bucket_name: string; quota_bytes?: number; action?: string }
+        Args:
+          | { bucket_name: string; quota_bytes?: number; action?: string }
+          | { p_bucket_name: string; p_quota_bytes?: number }
         Returns: Json
       }
       migrate_files_between_buckets: {
