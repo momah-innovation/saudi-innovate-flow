@@ -2,8 +2,12 @@ import { useState, useEffect, useMemo } from 'react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/ui/page-header';
 import { StorageHero } from './StorageHero';
-import { StorageAnalyticsTab } from './StorageAnalyticsTab';
+import { StorageAnalyticsDashboard } from '@/components/admin/StorageAnalyticsDashboard';
+import { StorageQuotaManager } from '@/components/admin/StorageQuotaManager';
 import { UploaderSettingsTab } from './UploaderSettingsTab';
+import { VersionedFileUploader } from '@/components/ui/versioned-file-uploader';
+import { useFileUploader } from '@/hooks/useFileUploader';
+import { useUploaderSettingsContext } from '@/contexts/UploaderSettingsContext';
 import { FileViewDialog } from './FileViewDialog';
 import { BucketManagementDialog } from './BucketManagementDialog';
 import { BucketViewDialog } from './BucketViewDialog';
@@ -16,7 +20,6 @@ import { EnhancedStorageFileCard } from './EnhancedStorageFileCard';
 import { BulkFileActions } from './BulkFileActions';
 import { StorageStatsCards } from './StorageStatsCards';
 import { ViewLayouts } from '@/components/ui/view-layouts';
-import { ComprehensiveStorageManagement } from './ComprehensiveStorageManagement';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -52,10 +55,8 @@ import { useTranslation } from '@/hooks/useAppTranslation';
 export function StorageManagementPage() {
   const { toast } = useToast();
   const { t, language, isRTL } = useTranslation();
-  
-  // Debug logging
-  console.log('StorageManagementPage - Current language:', language);
-  console.log('StorageManagementPage - Translation test:', t('storage.title'));
+  const { uploadFiles, isUploading, getFileUrl: getUploaderFileUrl } = useFileUploader();
+  const { uploadConfigs } = useUploaderSettingsContext();
   
   const [selectedBucket, setSelectedBucket] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<any | null>(null);
@@ -102,7 +103,9 @@ export function StorageManagementPage() {
   // Bulk selection state
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
   const [showBulkActions, setShowBulkActions] = useState(false);
-  const [activeTab, setActiveTab] = useState("files");
+  const [activeTab, setActiveTab] = useState("overview");
+  const [selectedFileRecord, setSelectedFileRecord] = useState<string | null>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
 
   // Bucket filtering state
   const [bucketSearchTerm, setBucketSearchTerm] = useState('');
@@ -629,6 +632,26 @@ export function StorageManagementPage() {
     setSelectedFiles(files);
   };
 
+  // Load file records for versioning
+  useEffect(() => {
+    const loadFileRecords = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('file_records')
+          .select('id, original_filename, bucket, path')
+          .limit(50);
+        
+        if (data && !error) {
+          setUploadedFiles(data);
+        }
+      } catch (error) {
+        console.error('Error loading file records:', error);
+      }
+    };
+
+    loadFileRecords();
+  }, []);
+
   if (loading) {
     return (
       <PageLayout>
@@ -669,24 +692,25 @@ export function StorageManagementPage() {
         />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full" dir={isRTL ? 'rtl' : 'ltr'}>
-          <TabsList className={`grid w-full grid-cols-5 ${isRTL ? 'font-arabic' : 'font-english'}`}>
-            <TabsTrigger value="files">{t('storage.files')}</TabsTrigger>
-            <TabsTrigger value="buckets">{t('storage.buckets')}</TabsTrigger>
-            <TabsTrigger value="management">{t('common.advanced')}</TabsTrigger>
-            <TabsTrigger value="settings">{t('common.settings')}</TabsTrigger>
-            <TabsTrigger value="analytics">{t('storage.analytics')}</TabsTrigger>
+          <TabsList className={`grid w-full grid-cols-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="quotas">Quotas</TabsTrigger>
+            <TabsTrigger value="upload">Upload</TabsTrigger>
+            <TabsTrigger value="versioning">Versions</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="files" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+          <TabsContent value="overview" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
             {/* Enhanced Stats Cards */}
             <StorageStatsCards stats={storageStats} files={filteredAndSortedFiles} />
 
             {/* Header with layout toggle */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h3 className="text-lg font-semibold">{t('storage.files')}</h3>
+                <h3 className="text-lg font-semibold">File Management</h3>
                 <p className="text-sm text-muted-foreground">
-                  {filteredAndSortedFiles.length} {t('storage.files_found')}
+                  {filteredAndSortedFiles.length} files found across {buckets.length} buckets
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -696,7 +720,7 @@ export function StorageManagementPage() {
                   onClick={() => setShowBulkActions(!showBulkActions)}
                   className={showBulkActions ? 'bg-primary text-primary-foreground' : ''}
                 >
-                  {showBulkActions ? t('exit_selection') : t('select_files')}
+                  {showBulkActions ? 'Exit Selection' : 'Select Files'}
                 </Button>
                 <LayoutToggle
                   currentLayout={filesLayout}
@@ -710,7 +734,7 @@ export function StorageManagementPage() {
               <div className={`relative flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
                 <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4`} />
                 <Input
-                  placeholder={t('storage.search_files')}
+                  placeholder="Search files..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className={isRTL ? 'pr-10 text-right' : 'pl-10 text-left'}
@@ -718,7 +742,7 @@ export function StorageManagementPage() {
               </div>
               <Button onClick={() => loadStorageData()}>
                 <RefreshCw className="w-4 h-4 mr-2" />
-                {t('common.refresh')}
+                Refresh
               </Button>
             </div>
 
@@ -748,18 +772,12 @@ export function StorageManagementPage() {
             {filteredAndSortedFiles.length === 0 ? (
               <div className="text-center py-12">
                 <Files className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">{t('no_files_found')}</h3>
+                <h3 className="text-lg font-semibold mb-2">No files found</h3>
                 <p className="text-muted-foreground mb-4">
                   {searchTerm || getActiveFilterCount() > 0 
-                    ? t('adjust_search_filters')
-                    : t('upload_files_to_start')}
+                    ? 'Try adjusting your search or filters'
+                    : 'Upload files to get started'}
                 </p>
-                {!searchTerm && getActiveFilterCount() === 0 && (
-                  <Button onClick={() => setShowUploadDialog(true)}>
-                    <Upload className="w-4 h-4 mr-2" />
-                    Upload Files
-                  </Button>
-                )}
               </div>
             ) : filesLayout === 'table' ? (
               <StorageFileTable
@@ -786,122 +804,118 @@ export function StorageManagementPage() {
             )}
           </TabsContent>
 
-          <TabsContent value="buckets" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
-            {/* Header with layout toggle and controls */}
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                  <h3 className="text-lg font-semibold">{t('storage.buckets')}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {filteredAndSortedBuckets.length} of {buckets.length} {t('storage.buckets_found')}
-                  </p>
-                </div>
-                <LayoutToggle
-                  currentLayout={bucketsLayout}
-                  onLayoutChange={setBucketsLayout}
-                />
-              </div>
-
-              {/* Search, Filter, and Sort Controls */}
-              <div className="flex flex-col lg:flex-row gap-4 p-4 bg-muted/50 rounded-lg">
-                {/* Search */}
-                <div className="flex-1">
-                  <div className="relative">
-                    <Search className={`absolute ${isRTL ? 'right-2' : 'left-2'} top-2.5 h-4 w-4 text-muted-foreground`} />
-                    <Input
-                      placeholder={t('search_buckets_placeholder')}
-                      value={bucketSearchTerm}
-                      onChange={(e) => setBucketSearchTerm(e.target.value)}
-                      className={isRTL ? 'pr-8 text-right' : 'pl-8 text-left'}
-                    />
-                  </div>
-                </div>
-
-                {/* Filter by Type */}
-                <Select value={bucketFilter} onValueChange={setBucketFilter}>
-                  <SelectTrigger className="w-full lg:w-[200px]">
-                    <SelectValue placeholder={t('filter_by_type')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{t('all_buckets')}</SelectItem>
-                    <SelectItem value="public">{t('public_only')}</SelectItem>
-                    <SelectItem value="private">{t('private_only')}</SelectItem>
-                    <SelectItem value="empty">{t('empty_buckets')}</SelectItem>
-                    <SelectItem value="large">{t('large_buckets')}</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                {/* Sort Options */}
-                <Select value={bucketSortBy} onValueChange={setBucketSortBy}>
-                  <SelectTrigger className="w-full lg:w-[200px]">
-                    <SelectValue placeholder={t('sort_by')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="name-asc">{t('name')} {t('a_z')}</SelectItem>
-                    <SelectItem value="name-desc">{t('name')} {t('z_a')}</SelectItem>
-                    <SelectItem value="created-newest">{t('newest_first')}</SelectItem>
-                    <SelectItem value="created-oldest">{t('oldest_first')}</SelectItem>
-                    <SelectItem value="size-largest">{t('largest_first')}</SelectItem>
-                    <SelectItem value="size-smallest">{t('smallest_first')}</SelectItem>
-                    <SelectItem value="files-most">{t('most_files')}</SelectItem>
-                    <SelectItem value="files-least">{t('least_files')}</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                {/* Clear Filters */}
-                {(bucketSearchTerm || bucketFilter !== 'all' || bucketSortBy !== 'name-asc') && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setBucketSearchTerm('')
-                      setBucketFilter('all')
-                      setBucketSortBy('name-asc')
-                    }}
-                    className="flex items-center gap-2"
-                  >
-                    <X className="h-4 w-4" />
-                    Clear
-                  </Button>
-                )}
-              </div>
+          <TabsContent value="analytics" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Storage Analytics Dashboard</h3>
+              <StorageAnalyticsDashboard />
             </div>
-
-            {/* Buckets Display */}
-            <ViewLayouts viewMode={bucketsLayout}>
-              {filteredAndSortedBuckets.map((bucket) => (
-                <StorageBucketCard
-                  key={bucket.id}
-                  bucket={bucket}
-                  onView={handleBucketView}
-                  onSettings={handleBucketManagement}
-                  onDelete={() => {}} // TODO: Implement bucket delete
-                />
-              ))}
-            </ViewLayouts>
-
-            {/* Empty State */}
-            {filteredAndSortedBuckets.length === 0 && buckets.length > 0 && (
-              <div className="text-center py-12">
-                <Search className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium mb-2">{t('no_buckets_found')}</h3>
-                <p className="text-muted-foreground">
-                  Try adjusting your search or filter criteria.
-                </p>
-              </div>
-            )}
           </TabsContent>
 
-          <TabsContent value="management" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
-            <ComprehensiveStorageManagement />
+          <TabsContent value="quotas" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Storage Quota Management</h3>
+              <StorageQuotaManager />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="upload" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Advanced File Upload</h3>
+                <p className="text-muted-foreground">Upload files with temporary storage, file validation, and comprehensive tracking.</p>
+              </div>
+              
+              <div className="grid gap-6">
+                {Object.entries(uploadConfigs).map(([key, config]) => (
+                  <Card key={key}>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Upload className="w-5 h-5" />
+                        {config.uploadType}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <span className="font-medium">Max Size:</span> {(config.maxSizeBytes / 1024 / 1024).toFixed(1)}MB
+                          </div>
+                          <div>
+                            <span className="font-medium">Max Files:</span> {config.maxFiles}
+                          </div>
+                          <div>
+                            <span className="font-medium">Bucket:</span> {config.bucket}
+                          </div>
+                          <div>
+                            <span className="font-medium">Auto Cleanup:</span> {config.autoCleanup ? 'Yes' : 'No'}
+                          </div>
+                        </div>
+                        <div>
+                          <span className="font-medium text-sm">Allowed Types:</span>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {config.allowedTypes.slice(0, 5).map((type) => (
+                              <Badge key={type} variant="outline" className="text-xs">
+                                {type}
+                              </Badge>
+                            ))}
+                            {config.allowedTypes.length > 5 && (
+                              <Badge variant="outline" className="text-xs">
+                                +{config.allowedTypes.length - 5} more
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="versioning" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold mb-2">File Versioning</h3>
+                <p className="text-muted-foreground">Manage file versions with upload, restore, and history tracking capabilities.</p>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Select File Record for Version Management</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Select value={selectedFileRecord || ''} onValueChange={setSelectedFileRecord}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Choose a file record to manage versions..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {uploadedFiles.map((file) => (
+                        <SelectItem key={file.id} value={file.id}>
+                          {file.original_filename} ({file.bucket}/{file.path})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </CardContent>
+              </Card>
+
+              {selectedFileRecord && (
+                <VersionedFileUploader
+                  fileRecordId={selectedFileRecord}
+                  onVersionCreated={() => {
+                    // Refresh file records or show success message
+                  }}
+                />
+              )}
+            </div>
           </TabsContent>
 
           <TabsContent value="settings" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
-            <UploaderSettingsTab />
-          </TabsContent>
-
-          <TabsContent value="analytics" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
-            <StorageAnalyticsTab />
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Uploader Settings</h3>
+              <UploaderSettingsTab />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
