@@ -23,12 +23,13 @@ Deno.serve(async (req) => {
     }
 
     const bucketsToClean = buckets || [
-      'opportunity-images',
-      'opportunity-attachments', 
-      'challenge-attachments',
-      'event-resources',
-      'avatars',
-      'partner-logos'
+      'temp-uploads-private',           // Primary temp bucket
+      'opportunities-images-public',
+      'opportunities-attachments-private',
+      'challenges-attachments-private',
+      'events-resources-public',
+      'user-avatars-public',
+      'partners-logos-public'
     ]
 
     let totalCleaned = 0
@@ -58,6 +59,50 @@ Deno.serve(async (req) => {
           } else {
             totalCleaned += files.length
             console.log(`Cleaned ${files.length} files from ${bucketName}/temp/${tempSessionId}`)
+
+            // Update file records and log lifecycle events
+            for (const file of files) {
+              try {
+                const filePath = `temp/${tempSessionId}/${file.name}`
+                
+                // Find and update file record
+                const { data: fileRecord } = await supabaseClient
+                  .from('file_records')
+                  .select('id')
+                  .eq('file_path', filePath)
+                  .eq('bucket_name', bucketName)
+                  .maybeSingle()
+                
+                if (fileRecord) {
+                  // Update record status
+                  await supabaseClient
+                    .from('file_records')
+                    .update({ 
+                      status: 'deleted',
+                      updated_at: new Date().toISOString()
+                    })
+                    .eq('id', fileRecord.id)
+                  
+                  // Log lifecycle event
+                  await supabaseClient
+                    .from('file_lifecycle_events')
+                    .insert({
+                      file_record_id: fileRecord.id,
+                      event_type: 'deleted',
+                      event_details: {
+                        cleanup_method: 'manual',
+                        bucket_name: bucketName,
+                        reason: 'temporary_file_cleanup',
+                        temp_session_id: tempSessionId
+                      }
+                    })
+                  
+                  console.log(`File record updated for: ${filePath}`)
+                }
+              } catch (recordError) {
+                console.warn(`Failed to update file record for ${file.name}:`, recordError)
+              }
+            }
           }
         }
       } catch (bucketError) {
@@ -69,7 +114,10 @@ Deno.serve(async (req) => {
       JSON.stringify({
         success: true,
         message: `Cleaned ${totalCleaned} temporary files`,
-        cleanedFiles: totalCleaned
+        cleanedFiles: totalCleaned,
+        bucketsProcessed: bucketsToClean.length,
+        tempSessionId,
+        cleanupTimestamp: new Date().toISOString()
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

@@ -536,14 +536,82 @@ Deno.serve(async (req) => {
       const fileUrl = publicUrlData.publicUrl
       const relativePath = `/${config.bucket}/${filePath}`
 
+      // Create file record for comprehensive tracking
+      const fileRecord = {
+        original_filename: file.name,
+        stored_filename: fileName,
+        file_path: filePath,
+        bucket_name: config.bucket,
+        file_size: file.size,
+        mime_type: file.type,
+        upload_type: uploadType,
+        entity_type: tableName || null,
+        entity_id: entityId || null,
+        uploader_id: user.id,
+        upload_session_id: isTemporary ? (tempSessionId || user.id) : null,
+        is_temporary: isTemporary,
+        is_committed: !isTemporary,
+        expires_at: isTemporary ? 
+          new Date(Date.now() + (globalSettings.defaultCleanupDays * 24 * 60 * 60 * 1000)).toISOString() : 
+          null,
+        metadata: {
+          originalSize: file.size,
+          uploadConfig: config.uploadType,
+          sessionId: tempSessionId,
+          userAgent: req.headers.get('user-agent') || 'unknown',
+          timestamp: new Date().toISOString()
+        }
+      }
+
+      let recordId = null
+      try {
+        const { data: recordData, error: recordError } = await supabaseClient
+          .from('file_records')
+          .insert(fileRecord)
+          .select('id')
+          .single()
+
+        if (recordError) {
+          console.warn('Failed to create file record:', recordError)
+        } else {
+          recordId = recordData.id
+          console.log(`File record created: ${recordId}`)
+          
+          // Log lifecycle event
+          try {
+            await supabaseClient
+              .from('file_lifecycle_events')
+              .insert({
+                file_record_id: recordData.id,
+                event_type: 'uploaded',
+                event_details: {
+                  upload_method: 'secure-upload',
+                  file_size: file.size,
+                  mime_type: file.type,
+                  bucket: config.bucket,
+                  upload_config: config.uploadType,
+                  is_temporary: isTemporary
+                },
+                performed_by: user.id
+              })
+            console.log(`Lifecycle event logged for file: ${recordId}`)
+          } catch (lifecycleError) {
+            console.warn('Failed to log lifecycle event:', lifecycleError)
+          }
+        }
+      } catch (trackingError) {
+        console.warn('File tracking error (upload still successful):', trackingError)
+      }
+
       uploadedFiles.push({
         url: fileUrl,
         path: relativePath,
         name: file.name,
-        size: file.size
+        size: file.size,
+        recordId: recordId
       })
 
-      console.log(`File uploaded successfully: ${fileName}`)
+      console.log(`File uploaded successfully: ${fileName} (Record ID: ${recordId})`)
     }
 
     // Update database if table and column are provided (skip for temporary uploads)
