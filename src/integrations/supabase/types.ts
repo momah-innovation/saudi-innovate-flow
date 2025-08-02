@@ -2469,6 +2469,66 @@ export type Database = {
         }
         Relationships: []
       }
+      file_versions: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          file_path: string
+          file_record_id: string
+          file_size: number
+          id: string
+          is_current: boolean | null
+          metadata: Json | null
+          mime_type: string
+          replaced_version_id: string | null
+          version_notes: string | null
+          version_number: number
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          file_path: string
+          file_record_id: string
+          file_size: number
+          id?: string
+          is_current?: boolean | null
+          metadata?: Json | null
+          mime_type: string
+          replaced_version_id?: string | null
+          version_notes?: string | null
+          version_number: number
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          file_path?: string
+          file_record_id?: string
+          file_size?: number
+          id?: string
+          is_current?: boolean | null
+          metadata?: Json | null
+          mime_type?: string
+          replaced_version_id?: string | null
+          version_notes?: string | null
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "file_versions_file_record_id_fkey"
+            columns: ["file_record_id"]
+            isOneToOne: false
+            referencedRelation: "file_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "file_versions_replaced_version_id_fkey"
+            columns: ["replaced_version_id"]
+            isOneToOne: false
+            referencedRelation: "file_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       focus_question_bookmarks: {
         Row: {
           created_at: string | null
@@ -6587,6 +6647,16 @@ export type Database = {
         }
         Returns: Json
       }
+      create_file_version: {
+        Args: {
+          p_file_record_id: string
+          p_file_path: string
+          p_file_size: number
+          p_mime_type: string
+          p_version_notes?: string
+        }
+        Returns: string
+      }
       detect_suspicious_activity: {
         Args: {
           p_user_id: string
@@ -6721,6 +6791,10 @@ export type Database = {
       refresh_opportunity_analytics: {
         Args: { p_opportunity_id: string }
         Returns: undefined
+      }
+      restore_file_version: {
+        Args: { p_version_id: string }
+        Returns: boolean
       }
       restore_from_archive: {
         Args: {
