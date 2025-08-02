@@ -44,14 +44,13 @@ export const useChallengesData = () => {
     try {
       setLoading(true);
 
-      // Fetch challenges with participant counts
+      // Fetch challenges with participant counts (all sensitivity levels based on user permissions)
       const { data: challengesData, error: challengesError } = await supabase
         .from('challenges')
         .select(`
           *,
           challenge_participants(count)
         `)
-        .eq('sensitivity_level', 'عادي')
         .order('created_at', { ascending: false });
 
       if (challengesError) throw challengesError;
