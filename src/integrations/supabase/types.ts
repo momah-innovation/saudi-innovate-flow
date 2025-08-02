@@ -6613,6 +6613,16 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_all_storage_quotas: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          bucket_name: string
+          quota_bytes: number
+          current_usage: number
+          usage_percentage: number
+          quota_exceeded: boolean
+        }[]
+      }
       get_basic_storage_info: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -6630,6 +6640,13 @@ export type Database = {
           avg_file_size: number
           oldest_file: string
           newest_file: string
+        }[]
+      }
+      get_bucket_usage: {
+        Args: { bucket_name: string }
+        Returns: {
+          total_size: number
+          file_count: number
         }[]
       }
       get_event_stats: {

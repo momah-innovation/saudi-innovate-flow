@@ -19,26 +19,13 @@ export const useStorageQuotas = () => {
       setLoading(true)
       setError(null)
       
-      // For now, we'll use a placeholder since the RPC function doesn't exist yet
-      // TODO: Implement get_all_storage_quotas RPC function
-      const { data, error: quotaError } = await supabase
-        .from('storage_quotas')
-        .select('*')
+      const { data, error: quotaError } = await supabase.rpc('get_all_storage_quotas')
       
       if (quotaError) {
         throw quotaError
       }
       
-      // Transform data to match StorageQuota interface
-      const transformedData: StorageQuota[] = (data || []).map(item => ({
-        bucket_name: item.bucket_name,
-        quota_bytes: item.quota_bytes,
-        current_usage: 0, // Will be calculated by RPC when implemented
-        usage_percentage: 0,
-        quota_exceeded: false
-      }))
-      
-      setQuotas(transformedData)
+      setQuotas(data || [])
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch quotas'
       setError(errorMessage)

@@ -209,12 +209,50 @@ export const useFileUploader = () => {
     }
   }, [user, toast, globalSettings, settingsLoading, resolveUploadConfig, validateFiles])
 
-  const getFileUrl = useCallback((relativePath: string): string => {
-    if (relativePath.startsWith('http')) {
-      return relativePath
+  const getFileUrl = useCallback(async (relativePath: string, trackAccess = true): Promise<string> => {
+    const url = relativePath.startsWith('http') 
+      ? relativePath 
+      : `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public${relativePath}`
+    
+    // Log access if tracking enabled
+    if (trackAccess && user) {
+      try {
+        // Find file record by path
+        const pathWithoutBucket = relativePath.replace(/^\/[^\/]+\//, '')
+        const { data: fileRecord } = await supabase
+          .from('file_records')
+          .select('id')
+          .eq('file_path', pathWithoutBucket)
+          .maybeSingle()
+        
+        if (fileRecord) {
+          // Use SQL increment for access count
+          await supabase.rpc('increment_access_count', { 
+            file_record_id: fileRecord.id 
+          })
+          
+          // Log access event
+          await supabase
+            .from('file_lifecycle_events')
+            .insert({
+              file_record_id: fileRecord.id,
+              event_type: 'accessed',
+              event_details: {
+                access_method: 'url_generation',
+                user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
+                referrer: typeof document !== 'undefined' ? document.referrer : 'unknown',
+                access_timestamp: new Date().toISOString()
+              },
+              performed_by: user.id
+            })
+        }
+      } catch (error) {
+        console.warn('Failed to log file access:', error)
+      }
     }
-    return `https://jxpbiljkoibvqxzdkgod.supabase.co/storage/v1/object/public${relativePath}`
-  }, [])
+    
+    return url
+  }, [user, supabase])
 
   const commitTemporaryFiles = useCallback(async (
     tempFiles: UploadedFile[],
@@ -246,7 +284,7 @@ export const useFileUploader = () => {
           continue
         }
 
-        const finalUrl = getFileUrl(`/${resolvedFinalConfig.uploadType.split('-')[0]}/${finalPath}`)
+        const finalUrl = await getFileUrl(`/${resolvedFinalConfig.uploadType.split('-')[0]}/${finalPath}`, false)
         movedFiles.push({
           ...tempFile,
           url: finalUrl,
