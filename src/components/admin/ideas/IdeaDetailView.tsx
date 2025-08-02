@@ -26,22 +26,7 @@ import {
   AlertCircle
 } from "lucide-react";
 import { format } from "date-fns";
-import { Idea } from "./IdeasManagementList";
-
-interface IdeaDetailViewIdea extends Idea {
-  solution_approach?: string;
-  implementation_plan?: string;
-  expected_impact?: string;
-  resource_requirements?: string;
-}
-
-interface IdeaDetailViewProps {
-  isOpen: boolean;
-  onClose: () => void;
-  idea: IdeaDetailViewIdea | null;
-  onEdit: (idea: IdeaDetailViewIdea) => void;
-  onRefresh: () => void;
-}
+import type { IdeaDetailView, IdeaDetailViewProps } from "@/types/api";
 
 export function IdeaDetailView({ 
   isOpen, 

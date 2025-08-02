@@ -421,4 +421,151 @@ export interface AnalyticsResponse {
   }[];
 }
 
+// Detail View Types
+export interface DetailViewProps<T> {
+  isOpen: boolean;
+  onClose: () => void;
+  item: T | null;
+  onEdit: (item: T) => void;
+  onRefresh: () => void;
+}
+
+// Aliases for existing types
+export type Challenge = ChallengeWithRelations;
+export type Idea = IdeaWithRelations;
+export type Campaign = CampaignWithRelations;
+export type Event = EventWithRelations;
+export type Partner = PartnerRow;
+export type Stakeholder = StakeholderRow;
+export type FocusQuestion = FocusQuestionRow;
+export type Department = DepartmentRow;
+export type Deputy = DeputyRow;
+export type Sector = SectorRow;
+export type Domain = DomainRow;
+
+// Enhanced detail view types
+export interface ChallengeDetailViewProps {
+  isOpen: boolean;
+  onClose: () => void;
+  challenge: Challenge | null;
+  onEdit: (challenge: Challenge) => void;
+  onRefresh: () => void;
+}
+
+export interface IdeaDetailViewProps {
+  isOpen: boolean;
+  onClose: () => void;
+  idea: IdeaDetailView | null;
+  onEdit: (idea: IdeaDetailView) => void;
+  onRefresh: () => void;
+}
+
+export interface IdeaDetailView extends Idea {
+  solution_approach?: string;
+  implementation_plan?: string;
+  expected_impact?: string;
+  resource_requirements?: string;
+  challenge?: Challenge;
+  focus_question?: FocusQuestion;
+}
+
+// Expert types (extending existing structure)
+export interface Expert {
+  id: string;
+  user_id: string;
+  expertise_areas: string[];
+  expert_level: 'junior' | 'senior' | 'lead' | 'principal';
+  availability_status: 'available' | 'busy' | 'unavailable';
+  hourly_rate?: number;
+  bio?: string;
+  years_of_experience?: number;
+  certification_level?: string;
+  specialization_tags?: string[];
+  max_concurrent_projects?: number;
+  preferred_project_types?: string[];
+  language_preferences?: string[];
+  created_at: string;
+  updated_at: string;
+  profiles?: {
+    name: string;
+    email: string;
+    profile_image_url?: string;
+  };
+}
+
+export interface ExpertDetailViewProps extends DetailViewProps<ExpertDetailView> {
+  expert: ExpertDetailView | null;
+}
+
+export interface ExpertDetailView extends Expert {
+  assignments?: any[];
+  evaluations?: any[];
+  team_activities?: any[];
+  workload_info?: {
+    current_workload: number;
+    max_concurrent_projects: number;
+    utilization_percentage: number;
+  };
+}
+
+export interface PartnerDetailViewProps extends DetailViewProps<PartnerDetailView> {
+  partner: PartnerDetailView | null;
+}
+
+export interface PartnerDetailView extends Partner {
+  active_collaborations?: Challenge[];
+  partnership_history?: any[];
+  partnership_metrics?: {
+    total_collaborations: number;
+    success_rate: number;
+    average_rating: number;
+  };
+}
+
+// Opportunity types
+export interface OpportunityRow {
+  id: string;
+  title_ar: string;
+  description_ar: string;
+  status: 'open' | 'closed' | 'paused';
+  opportunity_type: string;
+  deadline?: string;
+  budget_min?: number;
+  budget_max?: number;
+  requirements?: string[];
+  deliverables?: string[];
+  application_process?: string;
+  evaluation_criteria?: string[];
+  created_by?: string;
+  sector_id?: string;
+  department_id?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OpportunityWithRelations extends OpportunityRow {
+  sector?: SectorRow;
+  department?: DepartmentRow;
+  created_by_profile?: ProfileRow;
+  applications_count?: number;
+  views_count?: number;
+  likes_count?: number;
+}
+
+export type Opportunity = OpportunityWithRelations;
+
+export interface OpportunityDetailViewProps extends DetailViewProps<OpportunityDetailView> {
+  opportunity: OpportunityDetailView | null;
+}
+
+export interface OpportunityDetailView extends Opportunity {
+  applications?: any[];
+  analytics?: {
+    views_count: number;
+    applications_count: number;
+    likes_count: number;
+    conversion_rate: number;
+  };
+}
+
 // All interfaces are already exported above

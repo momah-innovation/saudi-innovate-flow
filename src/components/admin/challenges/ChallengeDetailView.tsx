@@ -31,42 +31,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 
-interface Challenge {
-  id: string;
-  title_ar: string;
-  description_ar: string;
-  status: string;
-  priority_level: string;
-  challenge_type: string;
-  start_date?: string;
-  end_date?: string;
-  estimated_budget?: number;
-  actual_budget?: number;
-  created_at: string;
-  updated_at: string;
-  sector_id?: string;
-  deputy_id?: string;
-  department_id?: string;
-  domain_id?: string;
-  service_id?: string;
-  vision_2030_goal?: string;
-  kpi_alignment?: string;
-  sensitivity_level: string;
-  collaboration_details?: string;
-  internal_team_notes?: string;
-  challenge_owner_id?: string;
-  assigned_expert_id?: string;
-  partner_organization_id?: string;
-  sub_domain_id?: string;
-}
-
-interface ChallengeDetailViewProps {
-  isOpen: boolean;
-  onClose: () => void;
-  challenge: Challenge | null;
-  onEdit: (challenge: Challenge) => void;
-  onRefresh: () => void;
-}
+import { Challenge, ChallengeDetailViewProps } from "@/types/api";
 
 export function ChallengeDetailView({ 
   isOpen, 
