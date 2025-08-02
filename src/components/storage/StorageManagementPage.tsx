@@ -117,38 +117,19 @@ export function StorageManagementPage() {
     try {
       setLoading(true);
       
-      // Try database function first, fallback to storage API
+      // Load buckets directly using storage API
       let bucketsData = [];
       let bucketError = null;
       
       try {
-        const { data: dbBuckets, error: dbError } = await supabase
-          .rpc('get_basic_storage_info');
-        console.log('Database buckets response:', { dbBuckets, dbError });
-        
-        if (dbError) {
-          console.log('Database function failed, trying storage API...');
-          // Fallback to storage API
-          const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
-          bucketsData = storageB || [];
-          bucketError = storageE;
-          console.log('Storage API fallback:', { bucketsData, bucketError });
-        } else {
-          // Convert database response to storage API format
-          bucketsData = dbBuckets?.map(bucket => ({
-            id: bucket.bucket_id,
-            name: bucket.bucket_name,
-            public: bucket.public,
-            created_at: bucket.created_at
-          })) || [];
-          console.log('Using database buckets:', bucketsData);
-        }
-      } catch (error) {
-        console.error('Both methods failed, trying direct storage access:', error);
+        console.log('Loading buckets from storage API...');
         const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
         bucketsData = storageB || [];
         bucketError = storageE;
-        console.log('Final fallback:', { bucketsData, bucketError });
+        console.log('Storage API buckets:', { bucketsData, bucketError });
+      } catch (error) {
+        console.error('Failed to load buckets:', error);
+        bucketError = error;
       }
       
       if (bucketsData) {
