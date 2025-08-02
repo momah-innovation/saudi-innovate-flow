@@ -837,14 +837,14 @@ export function StorageManagementPage() {
                     <SelectValue placeholder={t('sort_by')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="name-asc">Name A-Z</SelectItem>
-                    <SelectItem value="name-desc">Name Z-A</SelectItem>
-                    <SelectItem value="created-newest">Newest First</SelectItem>
-                    <SelectItem value="created-oldest">Oldest First</SelectItem>
-                    <SelectItem value="size-largest">Largest First</SelectItem>
-                    <SelectItem value="size-smallest">Smallest First</SelectItem>
-                    <SelectItem value="files-most">Most Files</SelectItem>
-                    <SelectItem value="files-least">Least Files</SelectItem>
+                    <SelectItem value="name-asc">{t('name')} {t('a_z')}</SelectItem>
+                    <SelectItem value="name-desc">{t('name')} {t('z_a')}</SelectItem>
+                    <SelectItem value="created-newest">{t('newest_first')}</SelectItem>
+                    <SelectItem value="created-oldest">{t('oldest_first')}</SelectItem>
+                    <SelectItem value="size-largest">{t('largest_first')}</SelectItem>
+                    <SelectItem value="size-smallest">{t('smallest_first')}</SelectItem>
+                    <SelectItem value="files-most">{t('most_files')}</SelectItem>
+                    <SelectItem value="files-least">{t('least_files')}</SelectItem>
                   </SelectContent>
                 </Select>
 
