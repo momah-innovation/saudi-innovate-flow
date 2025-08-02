@@ -117,58 +117,35 @@ export function StorageManagementPage() {
     try {
       setLoading(true);
       
-      // Use comprehensive storage function for detailed analytics
-      const { data: dbBuckets, error: bucketError } = await supabase
-        .rpc('get_storage_buckets_info');
-      
-      console.log('Storage analytics response:', { dbBuckets, bucketError });
-      
+      // Use basic storage function and calculate stats manually
       let bucketsData = [];
-      if (dbBuckets) {
-        // Convert database response to storage API format with analytics
-        bucketsData = dbBuckets.map(bucket => ({
-          id: bucket.bucket_id,
-          name: bucket.bucket_name,
-          public: bucket.public,
-          created_at: bucket.created_at,
-          file_count: bucket.file_count || 0,
-          total_size: bucket.total_size || 0
-        }));
+      let bucketError = null;
+      
+      try {
+        const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
+        bucketsData = storageB || [];
+        bucketError = storageE;
+        console.log('Storage API buckets:', { bucketsData, bucketError });
+      } catch (error) {
+        console.error('Failed to load buckets:', error);
+        bucketError = error;
       }
       
       if (bucketsData) {
         console.log('Setting buckets:', bucketsData);
         setBuckets(bucketsData);
         
-        // Calculate aggregate stats from database analytics
-        const totalFiles = bucketsData.reduce((sum, bucket) => sum + bucket.file_count, 0);
-        const totalSize = bucketsData.reduce((sum, bucket) => sum + bucket.total_size, 0);
-        const publicFiles = bucketsData
-          .filter(bucket => bucket.public)
-          .reduce((sum, bucket) => sum + bucket.file_count, 0);
-        const privateFiles = bucketsData
-          .filter(bucket => !bucket.public)
-          .reduce((sum, bucket) => sum + bucket.file_count, 0);
-        
-        // Update storage stats with database values
+        // Calculate aggregate stats manually since we're using storage API
         setStorageStats(prev => ({
           ...prev,
           buckets: bucketsData.length,
-          totalFiles,
-          totalSize,
-          usedSpace: totalSize,
-          publicFiles,
-          privateFiles,
-          recentUploads: Math.floor(totalFiles * 0.1) // Estimate recent uploads
+          totalFiles: 0, // Will be calculated after loading files
+          totalSize: 0, // Will be calculated after loading files
+          usedSpace: 0, // Will be calculated after loading files
+          publicFiles: 0, // Will be calculated after loading files
+          privateFiles: 0, // Will be calculated after loading files
+          recentUploads: 0 // Will be calculated after loading files
         }));
-        
-        console.log('Storage stats from database:', {
-          totalFiles,
-          totalSize,
-          publicFiles,
-          privateFiles,
-          buckets: bucketsData.length
-        });
       }
 
       // Still load individual files for detailed view and management
@@ -228,6 +205,49 @@ export function StorageManagementPage() {
       }
 
       setFiles(allFiles);
+      
+      // Calculate stats from loaded files
+      let totalSize = 0;
+      let publicCount = 0;
+      let privateCount = 0;
+      
+      allFiles.forEach(file => {
+        if (file.metadata?.size) {
+          totalSize += file.metadata.size;
+        }
+        if (file.is_public) {
+          publicCount++;
+        } else {
+          privateCount++;
+        }
+      });
+      
+      // Calculate recent uploads (last 7 days)
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      const recentUploads = allFiles.filter(file => {
+        if (!file.created_at) return false;
+        return new Date(file.created_at) > sevenDaysAgo;
+      }).length;
+      
+      // Update storage stats with calculated values
+      setStorageStats(prev => ({
+        ...prev,
+        totalFiles: allFiles.length,
+        totalSize,
+        usedSpace: totalSize,
+        publicFiles: publicCount,
+        privateFiles: privateCount,
+        recentUploads
+      }));
+      
+      console.log('Calculated storage stats:', {
+        totalFiles: allFiles.length,
+        totalSize,
+        publicFiles: publicCount,
+        privateFiles: privateCount,
+        recentUploads
+      });
 
     } catch (error) {
       console.error('Error loading storage data:', error);
