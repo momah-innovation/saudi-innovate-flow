@@ -422,32 +422,37 @@ const ChallengesBrowse = () => {
             icon: <Plus className="w-4 h-4" />
           } : undefined}
           secondaryActions={
-            <div className="flex items-center gap-2">
-              {/* Admin/Manager Only Actions */}
+            <div className="flex items-center gap-4">
+              {/* Management Actions - Admin/Sector Lead/Challenge Manager Only */}
               {user && (hasRole('admin') || hasRole('super_admin') || hasRole('sector_lead') || hasRole('challenge_manager')) && (
-                <div className="flex items-center gap-2 mr-2 border-r border-border pr-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setTemplatesDialogOpen(true)}
-                    className="h-8"
-                  >
-                    <FileText className="w-4 h-4 mr-2" />
-                    {isRTL ? 'القوالب' : 'Templates'}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setAnalyticsDialogOpen(true)}
-                    className="h-8"
-                  >
-                    <BarChart3 className="w-4 h-4 mr-2" />
-                    {isRTL ? 'الإحصائيات' : 'Analytics'}
-                  </Button>
-                </div>
+                <>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="default"
+                      size="sm"
+                      onClick={() => setTemplatesDialogOpen(true)}
+                      className="h-8 bg-primary hover:bg-primary/90"
+                    >
+                      <FileText className="w-4 h-4 mr-2" />
+                      {isRTL ? 'القوالب' : 'Templates'}
+                    </Button>
+                    <Button
+                      variant="default"
+                      size="sm"
+                      onClick={() => setAnalyticsDialogOpen(true)}
+                      className="h-8 bg-secondary hover:bg-secondary/90"
+                    >
+                      <BarChart3 className="w-4 h-4 mr-2" />
+                      {isRTL ? 'الإحصائيات' : 'Analytics'}
+                    </Button>
+                  </div>
+                  
+                  {/* Separator */}
+                  <div className="h-6 w-px bg-border"></div>
+                </>
               )}
               
-              {/* General Actions */}
+              {/* User Actions - Available to All */}
               <div className="flex items-center gap-2">
                 <ChallengeNotificationCenter />
                 <LayoutSelector
