@@ -23,6 +23,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { SystemActivityDialog } from '@/components/dialogs/SystemActivityDialog';
 import { SystemHealthDialog } from '@/components/dialogs/SystemHealthDialog';
+import { TestPrivilegeElevation } from '@/components/admin/TestPrivilegeElevation';
 
 export default function AdminDashboard() {
   const { toast } = useToast();
@@ -295,6 +296,9 @@ export default function AdminDashboard() {
                 </div>
               </CardContent>
             </Card>
+            
+            {/* Test Privilege Elevation */}
+            <TestPrivilegeElevation />
           </TabsContent>
         </Tabs>
       </div>
