@@ -106,6 +106,27 @@ export function StorageManagementPage() {
   // Bulk selection state
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
 
+  // Helper functions for filters
+  const getActiveFilterCount = () => {
+    let count = 0;
+    if (filters.fileType !== 'all') count++;
+    if (filters.bucket !== 'all') count++;
+    if (filters.visibility !== 'all') count++;
+    if (filters.sizeRange !== 'all') count++;
+    if (filters.dateRange !== 'all') count++;
+    return count;
+  };
+
+  const clearAllFilters = () => {
+    setFilters({
+      fileType: 'all',
+      bucket: 'all',
+      visibility: 'all',
+      sizeRange: 'all',
+      dateRange: 'all'
+    });
+  };
+
   useEffect(() => {
     loadStorageData();
   }, []);
@@ -390,6 +411,8 @@ export function StorageManagementPage() {
                   sortBy={sortBy}
                   onSortChange={setSortBy}
                   buckets={buckets}
+                  onClearFilters={clearAllFilters}
+                  activeFilterCount={getActiveFilterCount()}
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -412,9 +435,9 @@ export function StorageManagementPage() {
             ) : filesLayout === 'table' ? (
               <StorageFileTable 
                 files={filteredFiles}
-                onFileView={handleFileView}
-                onFileDownload={handleFileDownload}
-                onFileDelete={handleFileDelete}
+                onView={handleFileView}
+                onDownload={handleFileDownload}
+                onDelete={handleFileDelete}
               />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -438,7 +461,8 @@ export function StorageManagementPage() {
                   key={`${bucket.id}-${index}`}
                   bucket={bucket}
                   onView={() => setSelectedBucketForView(bucket)}
-                  onManage={() => setSelectedBucketForManagement(bucket)}
+                  onSettings={() => setSelectedBucketForManagement(bucket)}
+                  onDelete={() => console.log('Delete bucket:', bucket)}
                 />
               ))}
             </div>
@@ -468,13 +492,21 @@ export function StorageManagementPage() {
           bucket={selectedBucketForManagement}
           open={showBucketManagementDialog}
           onOpenChange={setShowBucketManagementDialog}
-          onBucketUpdated={loadStorageData}
+          onRefresh={loadStorageData}
         />
 
         <BucketViewDialog
           bucket={selectedBucketForView}
           open={showBucketViewDialog}
           onOpenChange={setShowBucketViewDialog}
+          onViewFiles={(bucket) => {
+            setSelectedBucket(bucket.id);
+            setActiveTab('files');
+          }}
+          onOpenSettings={(bucket) => {
+            setSelectedBucketForManagement(bucket);
+            setShowBucketManagementDialog(true);
+          }}
         />
 
         <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>

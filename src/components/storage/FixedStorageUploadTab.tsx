@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { VersionedFileUploader } from '@/components/ui/versioned-file-uploader';
+// import { VersionedFileUploader } from '@/components/ui/versioned-file-uploader';
 import { useFileUploader } from '@/hooks/useFileUploader';
 import { useUploaderSettingsContext } from '@/contexts/UploaderSettingsContext';
 import { RTLAware } from '@/components/ui/rtl-aware';
@@ -33,25 +33,43 @@ export function FixedStorageUploadTab({ onFilesUploaded }: FixedStorageUploadTab
     loading: settingsLoading 
   } = useUploaderSettingsContext();
 
-  const handleUploadComplete = (files: any[]) => {
-    console.log('Files uploaded:', files);
-    setUploadedFiles(prev => [...prev, ...files]);
-    onFilesUploaded(); // Refresh parent data
-    toast({
-      title: t('storage.upload_successful'),
-      description: t('storage.files_uploaded_successfully', { count: files.length })
-    });
-  };
+  const { uploadFiles, isUploading } = useFileUploader();
 
-  const handleUploadError = (errors: any[]) => {
-    console.error('Upload errors:', errors);
-    errors.forEach(error => {
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, config: any) => {
+    const files = Array.from(event.target.files || []);
+    if (files.length === 0) return;
+
+    const uploadConfig = {
+      uploadType: config.uploadType || 'temp-uploads-private',
+      maxFiles: config.maxFiles,
+      maxSizeBytes: config.maxSizeBytes,
+      allowedTypes: config.allowedTypes,
+      isTemporary: false
+    };
+
+    const result = await uploadFiles(files, uploadConfig);
+    
+    if (result.success) {
+      console.log('Files uploaded:', result.files);
+      setUploadedFiles(prev => [...prev, ...(result.files || [])]);
+      onFilesUploaded(); // Refresh parent data
       toast({
-        title: t('storage.upload_failed'),
-        description: error.error,
-        variant: 'destructive'
+        title: t('storage.upload_successful'),
+        description: t('storage.files_uploaded_successfully', { count: result.files?.length || 0 })
       });
-    });
+    } else {
+      console.error('Upload errors:', result.errors);
+      result.errors?.forEach(error => {
+        toast({
+          title: t('storage.upload_failed'),
+          description: error.error,
+          variant: 'destructive'
+        });
+      });
+    }
+
+    // Reset the input
+    event.target.value = '';
   };
 
   if (settingsLoading) {
@@ -114,10 +132,34 @@ export function FixedStorageUploadTab({ onFilesUploaded }: FixedStorageUploadTab
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
-                <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground mb-2">Upload files using the uploader system</p>
-                <p className="text-xs text-muted-foreground">The proper uploader system will be integrated here</p>
+              <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
+                <input
+                  type="file"
+                  multiple
+                  onChange={(e) => handleFileUpload(e, {
+                    uploadType: 'temp-uploads-private',
+                    maxFiles: 5,
+                    maxSizeBytes: 10 * 1024 * 1024,
+                    allowedTypes: ['image/*', 'application/pdf', '.doc', '.docx', '.txt']
+                  })}
+                  className="hidden"
+                  id="file-upload-general"
+                  disabled={isUploading}
+                />
+                <label
+                  htmlFor="file-upload-general"
+                  className={`cursor-pointer flex flex-col items-center gap-4 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  <Upload className="w-12 h-12 text-muted-foreground" />
+                  <div>
+                    <p className="text-lg font-medium">
+                      {isUploading ? 'Uploading...' : 'Click to upload files'}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Or drag and drop files here
+                    </p>
+                  </div>
+                </label>
               </div>
             </CardContent>
           </Card>
@@ -160,17 +202,27 @@ export function FixedStorageUploadTab({ onFilesUploaded }: FixedStorageUploadTab
                 </div>
               </CardHeader>
               <CardContent>
-                <VersionedFileUploader
-                  uploadConfig={{
-                    uploadType: config.uploadType || key,
-                    maxFiles: config.maxFiles,
-                    maxSizeBytes: config.maxSizeBytes,
-                    allowedTypes: config.allowedTypes,
-                    isTemporary: false
-                  }}
-                  onUploadComplete={handleUploadComplete}
-                  onUploadError={handleUploadError}
-                />
+                <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
+                  <input
+                    type="file"
+                    multiple
+                    onChange={(e) => handleFileUpload(e, config)}
+                    className="hidden"
+                    id={`file-upload-${key}`}
+                  />
+                  <label
+                    htmlFor={`file-upload-${key}`}
+                    className="cursor-pointer flex flex-col items-center gap-4"
+                  >
+                    <Upload className="w-12 h-12 text-muted-foreground" />
+                    <div>
+                      <p className="text-lg font-medium">Click to upload files</p>
+                      <p className="text-sm text-muted-foreground">
+                        Or drag and drop files here
+                      </p>
+                    </div>
+                  </label>
+                </div>
               </CardContent>
             </Card>
           ))
