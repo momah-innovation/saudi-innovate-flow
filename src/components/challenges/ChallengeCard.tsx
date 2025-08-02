@@ -289,7 +289,7 @@ export const ChallengeCard = ({
                       size="sm" 
                       onClick={() => onParticipate(challenge)}
                       disabled={challenge.status !== 'active' && challenge.status !== 'published'}
-                      className="ml-2"
+                      className="ml-2 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white border-0 shadow-md transition-all duration-300 hover:scale-105"
                     >
                       {isRTL ? 'شارك' : 'Join'}
                     </Button>
@@ -471,17 +471,17 @@ export const ChallengeCard = ({
         {/* Stats */}
         {variant !== 'compact' && (
           <div className="grid grid-cols-3 gap-3 mb-4">
-            <div className="text-center p-2 bg-muted/50 rounded-lg">
-              <div className="text-lg font-bold">{challenge.participants || 0}</div>
-              <div className="text-xs text-muted-foreground">{isRTL ? 'مشارك' : 'participants'}</div>
+            <div className="text-center p-3 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200/50 rounded-xl shadow-sm">
+              <div className="text-lg font-bold text-violet-700">{challenge.participants || 0}</div>
+              <div className="text-xs text-violet-600">{isRTL ? 'مشارك' : 'participants'}</div>
             </div>
-            <div className="text-center p-2 bg-muted/50 rounded-lg">
-              <div className="text-lg font-bold">{challenge.submissions || 0}</div>
-              <div className="text-xs text-muted-foreground">{isRTL ? 'مقترح' : 'submissions'}</div>
+            <div className="text-center p-3 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200/50 rounded-xl shadow-sm">
+              <div className="text-lg font-bold text-blue-700">{challenge.submissions || 0}</div>
+              <div className="text-xs text-blue-600">{isRTL ? 'مقترح' : 'submissions'}</div>
             </div>
-            <div className="text-center p-2 bg-muted/50 rounded-lg">
-              <div className="text-lg font-bold">{challenge.success_rate || 85}%</div>
-              <div className="text-xs text-muted-foreground">{isRTL ? 'نجاح' : 'success'}</div>
+            <div className="text-center p-3 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200/50 rounded-xl shadow-sm">
+              <div className="text-lg font-bold text-emerald-700">{challenge.success_rate || 85}%</div>
+              <div className="text-xs text-emerald-600">{isRTL ? 'نجاح' : 'success'}</div>
             </div>
           </div>
         )}
@@ -496,7 +496,7 @@ export const ChallengeCard = ({
           />
           <Button 
             onClick={() => onParticipate(challenge)}
-            className="flex-1"
+            className="flex-1 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white border-0 shadow-md transition-all duration-300 hover:scale-105"
             disabled={challenge.status !== 'active' && challenge.status !== 'published'}
           >
             <Zap className="w-4 h-4 mr-2" />
