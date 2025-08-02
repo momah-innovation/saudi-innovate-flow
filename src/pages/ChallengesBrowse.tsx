@@ -363,8 +363,6 @@ const ChallengesBrowse = () => {
     return count;
   };
 
-  // Use stats from the hook
-
   // Render enhanced challenge cards
   const renderChallengeCards = (challenges: any[]) => (
     <ViewLayouts viewMode={viewMode}>
@@ -414,272 +412,267 @@ const ChallengesBrowse = () => {
         />
       }
       mainContent={
-        <EnhancedChallengesHero 
-          totalChallenges={stats.totalChallenges}
-          activeChallenges={stats.activeChallenges}
-          totalParticipants={stats.totalParticipants}
-          totalPrizes={stats.totalPrizes}
-          onCreateChallenge={() => setCreateChallengeOpen(true)}
-          onShowFilters={() => setShowAdvancedFilters(true)}
-          featuredChallenge={challenges.length > 0 ? {
-            id: challenges[0].id,
-            title_ar: challenges[0].title_ar,
-            participants: challenges[0].participants || 0,
-            prize: challenges[0].estimated_budget || 0,
-            daysLeft: challenges[0].end_date ? Math.ceil((new Date(challenges[0].end_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : 0,
-            image: challenges[0].image_url
+        <PageLayout
+          title={isRTL ? 'التحديات المتاحة' : 'Available Challenges'}
+          description={isRTL ? 'تصفح واختر التحديات التي تناسب مهاراتك واهتماماتك' : 'Browse and select challenges that match your skills and interests'}
+          itemCount={tabFilteredChallenges.length}
+          primaryAction={user && (hasRole('admin') || hasRole('super_admin')) ? {
+            label: isRTL ? 'تحدي جديد' : 'New Challenge',
+            onClick: () => setCreateChallengeOpen(true),
+            icon: <Plus className="w-4 h-4" />
           } : undefined}
-        />
-      
-      <PageLayout
-        title={isRTL ? 'التحديات المتاحة' : 'Available Challenges'}
-        description={isRTL ? 'تصفح واختر التحديات التي تناسب مهاراتك واهتماماتك' : 'Browse and select challenges that match your skills and interests'}
-        itemCount={tabFilteredChallenges.length}
-        primaryAction={user && (hasRole('admin') || hasRole('super_admin')) ? {
-          label: isRTL ? 'تحدي جديد' : 'New Challenge',
-          onClick: () => setCreateChallengeOpen(true),
-          icon: <Plus className="w-4 h-4" />
-        } : undefined}
-        secondaryActions={
-          <div className="flex gap-2">
-            <ChallengeNotificationCenter />
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setTemplatesDialogOpen(true)}
-            >
-              <FileText className="w-4 h-4 mr-2" />
-              {isRTL ? 'القوالب' : 'Templates'}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setAnalyticsDialogOpen(true)}
-            >
-              <BarChart3 className="w-4 h-4 mr-2" />
-              {isRTL ? 'الإحصائيات' : 'Analytics'}
-            </Button>
-            <LayoutSelector
-              viewMode={viewMode}
-              onViewModeChange={(mode) => mode !== 'calendar' && setViewMode(mode)}
-            />
-          </div>
-        }
-      >
-        <div className="space-y-6">
-          {/* Enhanced Layout with Recommendations */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            {/* Main Content */}
-            <div className="lg:col-span-3 space-y-6">
-              {/* Enhanced Filters with Animations */}
-              <EnhancedChallengeFilters
-                filters={filters}
-                onFiltersChange={setFilters}
-                onClearFilters={handleClearFilters}
-                activeFiltersCount={getActiveFiltersCount()}
-                className="animate-fade-in"
+          secondaryActions={
+            <div className="flex gap-2">
+              <ChallengeNotificationCenter />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setTemplatesDialogOpen(true)}
+              >
+                <FileText className="w-4 h-4 mr-2" />
+                {isRTL ? 'القوالب' : 'Templates'}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setAnalyticsDialogOpen(true)}
+              >
+                <BarChart3 className="w-4 h-4 mr-2" />
+                {isRTL ? 'الإحصائيات' : 'Analytics'}
+              </Button>
+              <LayoutSelector
+                viewMode={viewMode}
+                onViewModeChange={(mode) => mode !== 'calendar' && setViewMode(mode)}
               />
             </div>
-            
-            {/* Sidebar with Recommendations */}
-            <div className="lg:col-span-1 space-y-6">
-              <TrendingChallengesWidget
-                onChallengeClick={handleViewDetails}
-                onChallengeSelect={(challengeId) => {
-                  const challenge = challenges.find(c => c.id === challengeId);
-                  if (challenge) handleViewDetails(challenge);
-                }}
-                className="sticky top-4"
-              />
-              <ChallengeRecommendations
-                onChallengeSelect={handleViewDetails}
-                className="sticky top-4"
-              />
-            </div>
-          </div>
-
-          {/* Tabs Navigation */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="all" className="animate-fade-in">
-                {isRTL ? 'جميع التحديات' : 'All Challenges'}
-                {activeTab === 'all' && (
-                  <span className="ml-2 bg-primary/20 text-primary px-2 py-0.5 rounded-full text-xs">
-                    {filteredChallenges.length}
-                  </span>
-                )}
-              </TabsTrigger>
-              <TabsTrigger value="active" className="animate-fade-in">
-                {isRTL ? 'النشطة' : 'Active'}
-                {activeTab === 'active' && (
-                  <span className="ml-2 bg-green-100 text-green-800 px-2 py-0.5 rounded-full text-xs">
-                    {filteredChallenges.filter(c => c.status === 'active').length}
-                  </span>
-                )}
-              </TabsTrigger>
-              <TabsTrigger value="upcoming" className="animate-fade-in">
-                {isRTL ? 'القادمة' : 'Upcoming'}
-                {activeTab === 'upcoming' && (
-                  <span className="ml-2 bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-xs">
-                    {filteredChallenges.filter(c => c.status === 'upcoming').length}
-                  </span>
-                )}
-              </TabsTrigger>
-              <TabsTrigger value="trending" className="animate-fade-in">
-                {isRTL ? 'الأكثر شعبية' : 'Trending'}
-                {activeTab === 'trending' && (
-                  <span className="ml-2 bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full text-xs">
-                    {filteredChallenges.filter(c => c.trending || c.participants > 200).length}
-                  </span>
-                )}
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="all" className="space-y-4">
-              {loading ? (
-                <ChallengeSkeleton viewMode={viewMode} count={6} className="animate-fade-in" />
-              ) : tabFilteredChallenges.length === 0 ? (
-                <ChallengeEmptyState
-                  title={isRTL ? 'لا توجد تحديات' : 'No challenges found'}
-                  description={isRTL ? 'جرب تعديل الفلاتر أو البحث' : 'Try adjusting your filters or search terms'}
-                  icon={Target}
-                  actionLabel={isRTL ? 'مسح الفلاتر' : 'Clear Filters'}
-                  onAction={handleClearFilters}
+          }
+        >
+          <div className="space-y-6">
+            {/* Enhanced Layout with Recommendations */}
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+              {/* Main Content */}
+              <div className="lg:col-span-3 space-y-6">
+                {/* Enhanced Filters with Animations */}
+                <EnhancedChallengeFilters
+                  filters={filters}
+                  onFiltersChange={setFilters}
+                  onClearFilters={handleClearFilters}
+                  activeFiltersCount={getActiveFiltersCount()}
                   className="animate-fade-in"
                 />
-              ) : (
-                <div className="animate-fade-in">
-                  {viewMode === 'list' ? renderChallengeList(filteredChallenges) : renderChallengeCards(filteredChallenges)}
-                </div>
-              )}
-            </TabsContent>
+              </div>
+              
+              {/* Sidebar with Recommendations */}
+              <div className="lg:col-span-1 space-y-6">
+                <TrendingChallengesWidget
+                  onChallengeClick={handleViewDetails}
+                  onChallengeSelect={(challengeId) => {
+                    const challenge = challenges.find(c => c.id === challengeId);
+                    if (challenge) handleViewDetails(challenge);
+                  }}
+                  className="sticky top-4"
+                />
+                <ChallengeRecommendations
+                  onChallengeSelect={handleViewDetails}
+                  className="sticky top-4"
+                />
+              </div>
+            </div>
 
-            <TabsContent value="active" className="space-y-4">
-              {loading ? (
-                <ChallengeSkeleton viewMode={viewMode} count={4} />
-              ) : (
-                <div className="animate-fade-in">
-                  {viewMode === 'list' ? 
-                    renderChallengeList(filteredChallenges.filter(c => c.status === 'active')) : 
-                    renderChallengeCards(filteredChallenges.filter(c => c.status === 'active'))
-                  }
-                </div>
-              )}
-            </TabsContent>
+            {/* Tabs Navigation */}
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="all" className="animate-fade-in">
+                  {isRTL ? 'جميع التحديات' : 'All Challenges'}
+                  {activeTab === 'all' && (
+                    <span className="ml-2 bg-primary/20 text-primary px-2 py-0.5 rounded-full text-xs">
+                      {filteredChallenges.length}
+                    </span>
+                  )}
+                </TabsTrigger>
+                <TabsTrigger value="active" className="animate-fade-in">
+                  {isRTL ? 'النشطة' : 'Active'}
+                  {activeTab === 'active' && (
+                    <span className="ml-2 bg-green-100 text-green-800 px-2 py-0.5 rounded-full text-xs">
+                      {filteredChallenges.filter(c => c.status === 'active').length}
+                    </span>
+                  )}
+                </TabsTrigger>
+                <TabsTrigger value="upcoming" className="animate-fade-in">
+                  {isRTL ? 'القادمة' : 'Upcoming'}
+                  {activeTab === 'upcoming' && (
+                    <span className="ml-2 bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-xs">
+                      {filteredChallenges.filter(c => c.status === 'upcoming').length}
+                    </span>
+                  )}
+                </TabsTrigger>
+                <TabsTrigger value="trending" className="animate-fade-in">
+                  {isRTL ? 'الأكثر شعبية' : 'Trending'}
+                  {activeTab === 'trending' && (
+                    <span className="ml-2 bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full text-xs">
+                      {filteredChallenges.filter(c => c.trending || c.participants > 200).length}
+                    </span>
+                  )}
+                </TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="upcoming" className="space-y-4">
-              {loading ? (
-                <ChallengeSkeleton viewMode={viewMode} count={4} />
-              ) : (
-                <div className="animate-fade-in">
-                  {viewMode === 'list' ? 
-                    renderChallengeList(filteredChallenges.filter(c => c.status === 'upcoming')) : 
-                    renderChallengeCards(filteredChallenges.filter(c => c.status === 'upcoming'))
-                  }
-                </div>
-              )}
-            </TabsContent>
+              <TabsContent value="all" className="space-y-4">
+                {loading ? (
+                  <ChallengeSkeleton viewMode={viewMode} count={6} className="animate-fade-in" />
+                ) : tabFilteredChallenges.length === 0 ? (
+                  <ChallengeEmptyState
+                    title={isRTL ? 'لا توجد تحديات' : 'No challenges found'}
+                    description={isRTL ? 'جرب تعديل الفلاتر أو البحث' : 'Try adjusting your filters or search terms'}
+                    icon={Target}
+                    actionLabel={isRTL ? 'مسح الفلاتر' : 'Clear Filters'}
+                    onAction={handleClearFilters}
+                    className="animate-fade-in"
+                  />
+                ) : (
+                  <div className="animate-fade-in">
+                    {viewMode === 'list' ? renderChallengeList(filteredChallenges) : renderChallengeCards(filteredChallenges)}
+                  </div>
+                )}
+              </TabsContent>
 
-            <TabsContent value="trending" className="space-y-4">
-              {loading ? (
-                <ChallengeSkeleton viewMode={viewMode} count={4} />
-              ) : (
-                <div className="animate-fade-in">
-                  {viewMode === 'list' ? 
-                    renderChallengeList(filteredChallenges.filter(c => c.trending || c.participants > 200)) : 
-                    renderChallengeCards(filteredChallenges.filter(c => c.trending || c.participants > 200))
-                  }
-                </div>
-              )}
-            </TabsContent>
-          </Tabs>
-        </div>
+              <TabsContent value="active" className="space-y-4">
+                {loading ? (
+                  <ChallengeSkeleton viewMode={viewMode} count={4} />
+                ) : (
+                  <div className="animate-fade-in">
+                    {viewMode === 'list' ? 
+                      renderChallengeList(filteredChallenges.filter(c => c.status === 'active')) : 
+                      renderChallengeCards(filteredChallenges.filter(c => c.status === 'active'))
+                    }
+                  </div>
+                )}
+              </TabsContent>
 
-        {/* Enhanced Challenge Detail Dialog */}
-        <EnhancedChallengeDetailDialog
-          challenge={selectedChallenge}
-          open={detailDialogOpen}
-          onOpenChange={setDetailDialogOpen}
-          onParticipate={handleParticipate}
-          onSubmit={handleSubmitToChallenge}
-          onBookmark={handleBookmark}
-        />
+              <TabsContent value="upcoming" className="space-y-4">
+                {loading ? (
+                  <ChallengeSkeleton viewMode={viewMode} count={4} />
+                ) : (
+                  <div className="animate-fade-in">
+                    {viewMode === 'list' ? 
+                      renderChallengeList(filteredChallenges.filter(c => c.status === 'upcoming')) : 
+                      renderChallengeCards(filteredChallenges.filter(c => c.status === 'upcoming'))
+                    }
+                  </div>
+                )}
+              </TabsContent>
 
-        {/* Expert Assignment Wizard */}
-        <ExpertAssignmentWizard
-          challenge={selectedChallenge}
-          open={expertAssignmentOpen}
-          onOpenChange={setExpertAssignmentOpen}
-          onAssignmentComplete={() => {
-            refetch();
-            toast({
-              title: isRTL ? 'تم التعيين بنجاح' : 'Assignment Successful',
-              description: isRTL ? 'تم تعيين الخبراء للتحدي بنجاح' : 'Experts have been successfully assigned to the challenge',
-            });
-          }}
-        />
-
-        {/* Enhanced Submission Dialog */}
-        <EnhancedSubmissionDialog
-          challenge={selectedChallenge}
-          open={submissionDialogOpen}
-          onOpenChange={setSubmissionDialogOpen}
-          onSubmissionComplete={refetch}
-        />
-
-        {/* Challenge Comments Dialog */}
-        <ChallengeCommentsDialog
-          challenge={selectedChallenge}
-          open={commentsDialogOpen}
-          onOpenChange={setCommentsDialogOpen}
-        />
-
-        {/* Challenge Submissions Dialog */}
-        <ChallengeSubmissionsDialog
-          challenge={selectedChallenge}
-          open={submissionsDialogOpen}
-          onOpenChange={setSubmissionsDialogOpen}
-        />
-
-        {/* Templates Dialog */}
-        <ChallengeTemplatesDialog
-          open={templatesDialogOpen}
-          onOpenChange={setTemplatesDialogOpen}
-          onTemplateSelect={(template) => {
-            setCreateChallengeOpen(true);
-          }}
-        />
-
-        {/* Analytics Dashboard Dialog */}
-        <Dialog open={analyticsDialogOpen} onOpenChange={setAnalyticsDialogOpen}>
-          <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <BarChart3 className="w-5 h-5" />
-                {isRTL ? 'لوحة إحصائيات التحديات' : 'Challenge Analytics Dashboard'}
-              </DialogTitle>
-            </DialogHeader>
-            <ChallengeAnalyticsDashboard />
-          </DialogContent>
-        </Dialog>
-
-        {/* Create Challenge Dialog - Only for Admins */}
-        {user && (hasRole('admin') || hasRole('super_admin')) && (
-          <CreateChallengeDialog
-            open={createChallengeOpen}
-            onOpenChange={setCreateChallengeOpen}
-            onChallengeCreated={refetch}
-          />
-        )}
+              <TabsContent value="trending" className="space-y-4">
+                {loading ? (
+                  <ChallengeSkeleton viewMode={viewMode} count={4} />
+                ) : (
+                  <div className="animate-fade-in">
+                    {viewMode === 'list' ? 
+                      renderChallengeList(filteredChallenges.filter(c => c.trending || c.participants > 200)) : 
+                      renderChallengeCards(filteredChallenges.filter(c => c.trending || c.participants > 200))
+                    }
+                  </div>
+                )}
+              </TabsContent>
+            </Tabs>
+          </div>
         </PageLayout>
       }
       sidebar={
         <div className="space-y-6">
-          <TrendingChallengesWidget />
-          <ChallengeRecommendations onChallengeSelect={handleViewDetails} />
+          <TrendingChallengesWidget
+            onChallengeClick={handleViewDetails}
+            onChallengeSelect={(challengeId) => {
+              const challenge = challenges.find(c => c.id === challengeId);
+              if (challenge) handleViewDetails(challenge);
+            }}
+            className="sticky top-4"
+          />
+          <ChallengeRecommendations
+            onChallengeSelect={handleViewDetails}
+            className="sticky top-4"
+          />
         </div>
       }
-      dialogs={<>/* All dialogs moved here */}</>}
+      dialogs={
+        <>
+          {/* Enhanced Challenge Detail Dialog */}
+          <EnhancedChallengeDetailDialog
+            challenge={selectedChallenge}
+            open={detailDialogOpen}
+            onOpenChange={setDetailDialogOpen}
+            onParticipate={handleParticipate}
+            onSubmit={handleSubmitToChallenge}
+            onBookmark={handleBookmark}
+          />
+
+          {/* Expert Assignment Wizard */}
+          <ExpertAssignmentWizard
+            challenge={selectedChallenge}
+            open={expertAssignmentOpen}
+            onOpenChange={setExpertAssignmentOpen}
+            onAssignmentComplete={() => {
+              refetch();
+              toast({
+                title: isRTL ? 'تم التعيين بنجاح' : 'Assignment Successful',
+                description: isRTL ? 'تم تعيين الخبراء للتحدي بنجاح' : 'Experts have been successfully assigned to the challenge',
+              });
+            }}
+          />
+
+          {/* Enhanced Submission Dialog */}
+          <EnhancedSubmissionDialog
+            challenge={selectedChallenge}
+            open={submissionDialogOpen}
+            onOpenChange={setSubmissionDialogOpen}
+            onSubmissionComplete={refetch}
+          />
+
+          {/* Challenge Comments Dialog */}
+          <ChallengeCommentsDialog
+            challenge={selectedChallenge}
+            open={commentsDialogOpen}
+            onOpenChange={setCommentsDialogOpen}
+          />
+
+          {/* Challenge Submissions Dialog */}
+          <ChallengeSubmissionsDialog
+            challenge={selectedChallenge}
+            open={submissionsDialogOpen}
+            onOpenChange={setSubmissionsDialogOpen}
+          />
+
+          {/* Templates Dialog */}
+          <ChallengeTemplatesDialog
+            open={templatesDialogOpen}
+            onOpenChange={setTemplatesDialogOpen}
+            onTemplateSelect={(template) => {
+              setCreateChallengeOpen(true);
+            }}
+          />
+
+          {/* Analytics Dashboard Dialog */}
+          <Dialog open={analyticsDialogOpen} onOpenChange={setAnalyticsDialogOpen}>
+            <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5" />
+                  {isRTL ? 'لوحة إحصائيات التحديات' : 'Challenge Analytics Dashboard'}
+                </DialogTitle>
+              </DialogHeader>
+              <ChallengeAnalyticsDashboard />
+            </DialogContent>
+          </Dialog>
+
+          {/* Create Challenge Dialog - Only for Admins */}
+          {user && (hasRole('admin') || hasRole('super_admin')) && (
+            <CreateChallengeDialog
+              open={createChallengeOpen}
+              onOpenChange={setCreateChallengeOpen}
+              onChallengeCreated={refetch}
+            />
+          )}
+        </>
+      }
     />
   );
 };
