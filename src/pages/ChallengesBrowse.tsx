@@ -478,7 +478,7 @@ const ChallengesBrowse = () => {
           onParticipate={handleParticipate}
           onBookmark={handleBookmark}
           viewMode={viewMode}
-          variant="enhanced"
+          variant={viewMode === 'grid' ? 'compact' : 'enhanced'}
         />
       ))}
     </ViewLayouts>
