@@ -156,7 +156,7 @@ export const ChallengeEmptyState = ({
     {actionLabel && onAction && (
       <button
         onClick={onAction}
-        className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors duration-200 animate-fade-in"
+        className="px-6 py-3 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white rounded-lg border-0 shadow-lg transition-all duration-300 hover:scale-105 animate-fade-in"
       >
         {actionLabel}
       </button>
