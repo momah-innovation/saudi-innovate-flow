@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { server } from '@/test/mocks/server'
 import { http, HttpResponse } from 'msw'
+import { describe, it, expect } from 'vitest'
 
 // Simple challenge list component for testing
 const ChallengeList = () => {

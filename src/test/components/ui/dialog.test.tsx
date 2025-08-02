@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { describe, it, expect } from 'vitest'
 
 describe('Dialog Component', () => {
   it('opens dialog when trigger is clicked', () => {

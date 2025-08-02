@@ -2,7 +2,7 @@ import { render } from '@/test/utils/test-utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { axe, toHaveNoViolations } from 'jest-axe'
-import { expect } from 'vitest'
+import { expect, describe, it } from 'vitest'
 
 expect.extend(toHaveNoViolations)
 

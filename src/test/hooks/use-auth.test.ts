@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from '@/test/utils/test-utils'
-import { vi } from 'vitest'
+import { vi, describe, it, beforeEach, expect } from 'vitest'
 
 // Mock supabase client
 const mockSupabase = {

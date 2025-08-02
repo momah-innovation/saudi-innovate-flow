@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@/test/utils/test-utils'
 import { Input } from '@/components/ui/input'
-import { vi } from 'vitest'
+import { vi, describe, it, expect } from 'vitest'
 
 describe('Input Component', () => {
   it('renders input with placeholder', () => {

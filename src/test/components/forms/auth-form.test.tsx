@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@/test/utils/test-utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { vi } from 'vitest'
+import { vi, describe, it, beforeEach, expect } from 'vitest'
 
 // Mock the auth context
 const mockSignIn = vi.fn()

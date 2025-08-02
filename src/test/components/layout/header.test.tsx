@@ -1,6 +1,6 @@
 import { render, screen } from '@/test/utils/test-utils'
 import { Button } from '@/components/ui/button'
-import { vi } from 'vitest'
+import { vi, describe, it, expect } from 'vitest'
 
 // Mock components and contexts
 vi.mock('@/contexts/AuthContext', () => ({
