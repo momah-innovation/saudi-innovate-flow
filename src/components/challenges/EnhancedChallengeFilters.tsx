@@ -164,49 +164,57 @@ export const EnhancedChallengeFilters = ({
     <div className={cn("space-y-4 animate-fade-in", className)}>
       {/* Single Row Layout */}
       <Card>
-        <CardContent className="p-4">
-          <div className="flex items-center gap-4 w-full overflow-x-auto">
+        <CardContent className="p-3">
+          <div className="flex items-center gap-3 w-full overflow-x-auto">
             {/* Search Bar */}
-            <div className="flex-shrink-0 w-64">
+            <div className="flex-shrink-0 w-48">
               <div className="relative">
                 <Search className={cn(
-                  "absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 transition-colors duration-200",
+                  "absolute left-2 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 transition-colors duration-200",
                   searchFocused ? "text-primary" : "text-muted-foreground"
                 )} />
                 <Input
-                  placeholder={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
+                  placeholder={isRTL ? 'البحث...' : 'Search...'}
                   value={filters.search}
                   onChange={(e) => updateFilter('search', e.target.value)}
                   onFocus={() => setSearchFocused(true)}
                   onBlur={() => setSearchFocused(false)}
-                  className="pl-10 h-10 transition-all duration-200"
+                  className="pl-8 h-8 text-sm transition-all duration-200"
+                  title={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
                 />
               </div>
             </div>
 
-            {/* Quick Filter Chips */}
-            <div className="flex gap-2 flex-shrink-0">
+            {/* Quick Filter Chips - Compact */}
+            <div className="flex gap-1.5 flex-shrink-0">
               {featureOptions.map((option) => (
-                <QuickFilterChip
+                <Button
                   key={option.value}
-                  option={option}
-                  isSelected={filters.features.includes(option.value)}
+                  variant={filters.features.includes(option.value) ? "default" : "outline"}
+                  size="sm"
                   onClick={() => toggleFeature(option.value)}
-                />
+                  className="h-8 px-2 transition-all duration-200 hover:scale-105"
+                  title={option.label}
+                >
+                  <option.icon className="w-3.5 h-3.5" />
+                </Button>
               ))}
             </div>
 
             {/* Status Filter */}
-            <div className="flex-shrink-0 min-w-[140px]">
+            <div className="flex-shrink-0 min-w-[100px]">
               <Select value={filters.status} onValueChange={(value) => updateFilter('status', value)}>
-                <SelectTrigger className="h-10 transition-all duration-200 hover:border-primary/50">
-                  <SelectValue placeholder={isRTL ? 'جميع الحالات' : 'All Status'} />
+                <SelectTrigger 
+                  className="h-8 text-sm transition-all duration-200 hover:border-primary/50"
+                  title={isRTL ? 'حالة التحدي' : 'Challenge Status'}
+                >
+                  <SelectValue placeholder={isRTL ? 'الحالة' : 'Status'} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="z-50 bg-background border shadow-md">
                   {statusOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       <div className="flex items-center gap-2">
-                        <option.icon className="w-4 h-4" />
+                        <option.icon className="w-3.5 h-3.5" />
                         {option.label}
                       </div>
                     </SelectItem>
@@ -216,12 +224,15 @@ export const EnhancedChallengeFilters = ({
             </div>
 
             {/* Category Filter */}
-            <div className="flex-shrink-0 min-w-[140px]">
+            <div className="flex-shrink-0 min-w-[100px]">
               <Select value={filters.category} onValueChange={(value) => updateFilter('category', value)}>
-                <SelectTrigger className="h-10 transition-all duration-200 hover:border-primary/50">
-                  <SelectValue placeholder={isRTL ? 'جميع الفئات' : 'All Categories'} />
+                <SelectTrigger 
+                  className="h-8 text-sm transition-all duration-200 hover:border-primary/50"
+                  title={isRTL ? 'فئة التحدي' : 'Challenge Category'}
+                >
+                  <SelectValue placeholder={isRTL ? 'الفئة' : 'Category'} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="z-50 bg-background border shadow-md">
                   {categoryOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
@@ -232,12 +243,15 @@ export const EnhancedChallengeFilters = ({
             </div>
 
             {/* Difficulty Filter */}
-            <div className="flex-shrink-0 min-w-[140px]">
+            <div className="flex-shrink-0 min-w-[90px]">
               <Select value={filters.difficulty} onValueChange={(value) => updateFilter('difficulty', value)}>
-                <SelectTrigger className="h-10 transition-all duration-200 hover:border-primary/50">
-                  <SelectValue placeholder={isRTL ? 'جميع المستويات' : 'All Levels'} />
+                <SelectTrigger 
+                  className="h-8 text-sm transition-all duration-200 hover:border-primary/50"
+                  title={isRTL ? 'مستوى الصعوبة' : 'Difficulty Level'}
+                >
+                  <SelectValue placeholder={isRTL ? 'المستوى' : 'Level'} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="z-50 bg-background border shadow-md">
                   {difficultyOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
@@ -248,16 +262,19 @@ export const EnhancedChallengeFilters = ({
             </div>
 
             {/* Sort Filter */}
-            <div className="flex gap-2 flex-shrink-0">
+            <div className="flex gap-1 flex-shrink-0">
               <Select value={filters.sortBy} onValueChange={(value) => updateFilter('sortBy', value)}>
-                <SelectTrigger className="h-10 min-w-[120px] transition-all duration-200 hover:border-primary/50">
-                  <SelectValue placeholder={isRTL ? 'ترتيب حسب' : 'Deadline'} />
+                <SelectTrigger 
+                  className="h-8 min-w-[90px] text-sm transition-all duration-200 hover:border-primary/50"
+                  title={isRTL ? 'ترتيب حسب' : 'Sort by'}
+                >
+                  <SelectValue placeholder="Sort" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="z-50 bg-background border shadow-md">
                   {sortOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       <div className="flex items-center gap-2">
-                        <option.icon className="w-4 h-4" />
+                        <option.icon className="w-3.5 h-3.5" />
                         {option.label}
                       </div>
                     </SelectItem>
@@ -268,7 +285,8 @@ export const EnhancedChallengeFilters = ({
                 variant="outline"
                 size="sm"
                 onClick={() => updateFilter('sortOrder', filters.sortOrder === 'asc' ? 'desc' : 'asc')}
-                className="h-10 px-3 transition-all duration-200 hover:scale-105"
+                className="h-8 w-8 px-0 transition-all duration-200 hover:scale-105"
+                title={filters.sortOrder === 'asc' ? 'Ascending' : 'Descending'}
               >
                 {filters.sortOrder === 'asc' ? '↑' : '↓'}
               </Button>
@@ -280,12 +298,12 @@ export const EnhancedChallengeFilters = ({
                 variant="outline" 
                 size="sm"
                 onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
-                className="h-10 transition-all duration-200 hover:bg-muted/80"
+                className="h-8 px-2 transition-all duration-200 hover:bg-muted/80"
+                title={isRTL ? 'فلاتر متقدمة' : 'Advanced Filters'}
               >
-                <SlidersHorizontal className="w-4 h-4 mr-2" />
-                {isRTL ? 'فلاتر متقدمة' : 'Advanced Filters'}
+                <SlidersHorizontal className="w-3.5 h-3.5" />
                 <ChevronDown className={cn(
-                  "w-4 h-4 ml-2 transition-transform duration-200",
+                  "w-3.5 h-3.5 ml-1 transition-transform duration-200",
                   isAdvancedOpen && "rotate-180"
                 )} />
               </Button>
