@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
 import { useAuth } from '@/contexts/AuthContext'
 import { useTranslation } from '@/hooks/useAppTranslation'
+import { useRTLAwareClasses } from '@/components/ui/rtl-aware'
 import { 
   Shield, 
   Users, 
@@ -64,7 +65,7 @@ export const StoragePoliciesPage: React.FC = () => {
     criticalIssues: 0
   })
 
-  const checkAdminStatus = async () => {
+  const checkAdminStatus = useCallback(async () => {
     try {
       // Use the has_role function to check admin status
       const { data, error } = await supabase
@@ -90,12 +91,12 @@ export const StoragePoliciesPage: React.FC = () => {
       console.error('Admin status check failed:', error);
       setIsAdmin(false);
     }
-  }
+  }, [user?.id]);
 
-  const loadStoragePolicies = async () => {
+  const loadStoragePolicies = useCallback(async () => {
     try {
       setLoading(true)
-      console.log('Loading storage policies...')
+      // Loading storage policies
       
       // Try to get buckets using RPC first (more reliable with RLS)
       const { data: bucketsFromRPC, error: rpcError } = await supabase
@@ -104,7 +105,7 @@ export const StoragePoliciesPage: React.FC = () => {
       let bucketsData: any[] = [];
       
       if (rpcError || !bucketsFromRPC) {
-        console.log('RPC method failed, trying direct storage API:', rpcError);
+        // Fallback to direct storage API
         // Fallback to direct storage API
         const { data: directBuckets, error: storageError } = await supabase.storage.listBuckets();
         
@@ -128,7 +129,7 @@ export const StoragePoliciesPage: React.FC = () => {
         bucketsData = bucketsFromRPC;
       }
       
-      console.log('Loaded buckets:', bucketsData.length);
+      // Buckets loaded successfully
 
       // Use RPC to get policies
       const { data: policiesData, error: policiesError } = await supabase
@@ -138,14 +139,14 @@ export const StoragePoliciesPage: React.FC = () => {
         console.error('Error loading policies:', policiesError);
       }
 
-      console.log('Loaded policies:', policiesData?.length || 0);
+      // Policies loaded successfully
 
       // Group policies by bucket  
       const policiesByBucket: Record<string, StoragePolicy[]> = {};
       
       if (policiesData && Array.isArray(policiesData)) {
         policiesData.forEach((policy: any) => {
-          console.log('Processing policy:', policy.name);
+          // Processing policy for bucket assignment
           // Extract bucket name from policy condition
           const bucketMatch = policy.condition?.match(/bucket_id = '([^']+)'/) || 
                              policy.condition?.match(/bucket_id = ANY \(ARRAY\[([^\]]+)\]/);
@@ -184,7 +185,7 @@ export const StoragePoliciesPage: React.FC = () => {
         policies: policiesByBucket[bucket.bucket_name] || []
       }));
 
-      console.log('Final bucket info:', bucketInfo.map(b => ({ name: b.name, policies: b.policies.length })));
+      // Final bucket policy mapping completed
       setBuckets(bucketInfo);
       
       // Update stats
@@ -212,9 +213,9 @@ export const StoragePoliciesPage: React.FC = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [toast, t]);
 
-  const renderPolicyStatus = (bucket: BucketInfo) => {
+  const renderPolicyStatus = useCallback((bucket: BucketInfo) => {
     if (bucket.public) {
       return (
         <Badge variant="default" className="bg-green-100 text-green-800">
@@ -239,13 +240,15 @@ export const StoragePoliciesPage: React.FC = () => {
         {t('storage.policies_count', { count: bucket.policies.length })}
       </Badge>
     )
-  }
+  }, [t]);
 
-  const getBucketSecurityLevel = (bucket: BucketInfo) => {
+  const getBucketSecurityLevel = useCallback((bucket: BucketInfo) => {
     if (bucket.public) return 'public'
     if (bucket.policies.length === 0) return 'restricted'
     return 'protected'
-  }
+  }, []);
+
+  const { mr } = useRTLAwareClasses();
 
   useEffect(() => {
     if (user) {

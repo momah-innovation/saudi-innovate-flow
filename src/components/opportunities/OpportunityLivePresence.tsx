@@ -85,7 +85,7 @@ export const OpportunityLivePresence = ({ opportunityId, className }: LivePresen
           filter: `opportunity_id=eq.${opportunityId}`
         },
         (payload) => {
-          console.log('Presence update:', payload);
+          // Presence update received
           loadPresenceUsers();
         }
       )

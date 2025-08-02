@@ -190,7 +190,7 @@ export function IdeaDetailDialog({
           url: window.location.href
         });
       } catch (error) {
-        console.log('Error sharing:', error);
+        // Share cancelled or failed
       }
     } else {
       navigator.clipboard.writeText(window.location.href);
