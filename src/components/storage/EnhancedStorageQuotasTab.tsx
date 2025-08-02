@@ -56,7 +56,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
   const fetchAllBuckets = async () => {
     try {
       setBucketsLoading(true);
-      console.log('Fetching bucket info...');
+      
       const { data, error } = await supabase.rpc('get_basic_storage_info');
       
       if (error) {
@@ -69,7 +69,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
         return;
       }
       
-      console.log('Buckets fetched:', data);
+      
       setAllBuckets(data || []);
     } catch (err) {
       console.error('Error fetching buckets:', err);
@@ -84,7 +84,6 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
   };
 
   useEffect(() => {
-    console.log('EnhancedStorageQuotasTab mounted, fetching buckets...');
     fetchAllBuckets();
   }, []);
 
@@ -110,13 +109,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
   };
 
   const handleSetQuota = async () => {
-    console.log('handleSetQuota called with:', { selectedBucket, quotaSize, quotaUnit });
-    console.log('Current allBuckets:', allBuckets);
-    console.log('Current quotas:', quotas);
-    console.log('bucketsWithoutQuotas:', bucketsWithoutQuotas);
-    
     if (!selectedBucket || !quotaSize) {
-      console.log('Validation failed - missing bucket or quota size');
       toast({
         title: 'Validation Error',
         description: 'Please select a bucket and enter quota size',
@@ -130,11 +123,7 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
     const multiplier = quotaUnit === 'GB' ? 1024 * 1024 * 1024 : 1024 * 1024;
     const quotaBytes = parseInt(quotaSize) * multiplier;
     
-    console.log(`Setting quota for ${selectedBucket}: ${quotaBytes} bytes (${quotaSize} ${quotaUnit})`);
-
     const result = await setQuota(selectedBucket, quotaBytes);
-    
-    console.log('setQuota result:', result);
     
     if (result.success) {
       toast({
@@ -227,33 +216,9 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
     );
   }
 
-  // Debug information
-  console.log('Render state:', {
-    loading,
-    bucketsLoading,
-    quotasCount: quotas.length,
-    allBucketsCount: allBuckets.length,
-    bucketsWithoutQuotasCount: bucketsWithoutQuotas.length,
-    error
-  });
 
   return (
     <RTLAware className="space-y-6">
-      {/* Debug Info Card */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-sm">Debug Information</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2 text-xs">
-            <div>Quotas loaded: {quotas.length}</div>
-            <div>All buckets: {allBuckets.length}</div>
-            <div>Buckets without quotas: {bucketsWithoutQuotas.length}</div>
-            <div>Error: {error || 'None'}</div>
-            <div>Loading states: quotas={loading.toString()}, buckets={bucketsLoading.toString()}</div>
-          </div>
-        </CardContent>
-      </Card>
       {/* Header */}
       <div>
         <h3 className="text-lg font-semibold mb-2">Storage Quotas Management</h3>
