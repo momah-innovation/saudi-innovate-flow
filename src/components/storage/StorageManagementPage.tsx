@@ -59,7 +59,15 @@ export function StorageManagementPage() {
   const { t, language, isRTL } = useTranslation();
   const rtlClasses = useRTLAwareClasses();
   const { uploadFiles, isUploading, getFileUrl: getUploaderFileUrl } = useFileUploader();
-  const { uploadConfigs, globalSettings } = useUploaderSettingsContext();
+  const { uploadConfigs = {}, globalSettings = {
+    autoCleanupEnabled: false,
+    defaultCleanupDays: 7,
+    maxConcurrentUploads: 3,
+    chunkSizeMB: 5,
+    retryAttempts: 3,
+    compressionEnabled: false,
+    thumbnailGeneration: false
+  }, loading: settingsLoading } = useUploaderSettingsContext();
   
   // Enhanced File Uploader refs for each configuration
   const uploaderRefs = useRef<Record<string, EnhancedFileUploaderRef>>({});

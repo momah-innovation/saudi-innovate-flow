@@ -60,6 +60,7 @@ import EvaluationManagement from "./pages/EvaluationManagement";
 import Opportunities from "./pages/Opportunities";
 import OpportunitiesManagement from "./pages/OpportunitiesManagement";
 import { StorageManagementPage } from "./components/storage/StorageManagementPage";
+import { UploaderSettingsProvider } from "./contexts/UploaderSettingsContext";
 import { StoragePoliciesPage } from "./components/storage/StoragePoliciesPage";
 import AdminRelationships from "./pages/AdminRelationships";
 import AdminEvaluations from "./pages/AdminEvaluations";
@@ -381,16 +382,18 @@ const App = () => (
                   </ProtectedRoute>
                 } 
                />
-               <Route 
-                 path="/admin/storage" 
-                 element={
-                   <ProtectedRoute requireProfile requiredRole="admin">
-                     <AppShell>
-                       <StorageManagementPage />
-                     </AppShell>
-                   </ProtectedRoute>
-                 } 
-                />
+                <Route 
+                  path="/admin/storage" 
+                  element={
+                    <ProtectedRoute requireProfile requiredRole="admin">
+                      <AppShell>
+                        <UploaderSettingsProvider>
+                          <StorageManagementPage />
+                        </UploaderSettingsProvider>
+                      </AppShell>
+                    </ProtectedRoute>
+                  } 
+                 />
                 <Route 
                   path="/admin/storage/policies" 
                   element={
