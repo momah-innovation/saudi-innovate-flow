@@ -99,7 +99,7 @@ export const ApplicationsManagementDialog = ({
 
       setApplications(processedData);
     } catch (error) {
-      console.error('Error loading applications:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'فشل في تحميل الطلبات' : 'Failed to load applications',
@@ -132,7 +132,7 @@ export const ApplicationsManagementDialog = ({
       setSelectedApplication(null);
       setReviewNotes('');
     } catch (error) {
-      console.error('Error updating application:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'فشل في تحديث الطلب' : 'Failed to update application',
@@ -299,7 +299,7 @@ export const ApplicationsManagementDialog = ({
                           size="sm"
                           onClick={() => setSelectedApplication(application)}
                         >
-                          <Eye className="w-4 h-4 mr-2" />
+                          <Eye className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                           {isRTL ? 'عرض' : 'View'}
                         </Button>
                       </div>
@@ -500,7 +500,7 @@ export const ApplicationsManagementDialog = ({
                       {selectedApplication.attachment_urls.map((url, index) => (
                         <Button key={index} variant="outline" size="sm" asChild>
                           <a href={url} target="_blank" rel="noopener noreferrer">
-                            <Download className="w-4 h-4 mr-2" />
+                            <Download className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                             {isRTL ? 'مرفق' : 'Attachment'} {index + 1}
                           </a>
                         </Button>
@@ -530,7 +530,7 @@ export const ApplicationsManagementDialog = ({
                           className="bg-green-600 hover:bg-green-700 text-white"
                           onClick={() => updateApplicationStatus(selectedApplication.id, 'approved', reviewNotes)}
                         >
-                          <CheckCircle className="w-4 h-4 mr-2" />
+                          <CheckCircle className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                           {isRTL ? 'قبول الطلب' : 'Approve Application'}
                         </Button>
                         
@@ -539,7 +539,7 @@ export const ApplicationsManagementDialog = ({
                           className="text-blue-600 border-blue-600 hover:bg-blue-50"
                           onClick={() => updateApplicationStatus(selectedApplication.id, 'under_review', reviewNotes)}
                         >
-                          <Clock className="w-4 h-4 mr-2" />
+                          <Clock className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                           {isRTL ? 'وضع قيد المراجعة' : 'Mark Under Review'}
                         </Button>
                         
@@ -548,7 +548,7 @@ export const ApplicationsManagementDialog = ({
                           className="text-red-600 border-red-600 hover:bg-red-50"
                           onClick={() => updateApplicationStatus(selectedApplication.id, 'rejected', reviewNotes)}
                         >
-                          <XCircle className="w-4 h-4 mr-2" />
+                          <XCircle className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                           {isRTL ? 'رفض الطلب' : 'Reject Application'}
                         </Button>
                       </div>

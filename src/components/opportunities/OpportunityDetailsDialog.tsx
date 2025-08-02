@@ -133,7 +133,7 @@ export const OpportunityDetailsDialog = ({
         }
       });
     } catch (error) {
-      console.error('Failed to track view:', error);
+      // View tracking failed - continue without blocking UI
     }
   };
 
@@ -151,7 +151,7 @@ export const OpportunityDetailsDialog = ({
         }
       });
     } catch (error) {
-      console.error('Failed to track time spent:', error);
+      // Time tracking failed - continue without blocking UI
     }
   };
 
@@ -193,7 +193,7 @@ export const OpportunityDetailsDialog = ({
 
       setOpportunity(processedData);
     } catch (error) {
-      console.error('Error loading opportunity details:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     } finally {
       setLoading(false);
     }
@@ -337,7 +337,7 @@ export const OpportunityDetailsDialog = ({
                     opportunityTitle={isRTL ? opportunity.title_ar : (opportunity.title_en || opportunity.title_ar)}
                   >
                     <Button variant="outline" size="sm">
-                      <Share2 className="w-4 h-4 mr-1" />
+                      <Share2 className={`w-4 h-4 ${isRTL ? 'ml-1' : 'mr-1'}`} />
                       {isRTL ? 'مشاركة' : 'Share'}
                     </Button>
                   </ShareOpportunityDialog>
@@ -409,7 +409,7 @@ export const OpportunityDetailsDialog = ({
                     <DollarSign className="w-4 h-4 text-green-600" />
                     <span className="font-medium">{isRTL ? 'الميزانية:' : 'Budget:'}</span>
                   </div>
-                  <p className="text-muted-foreground ml-6">
+                  <p className={`text-muted-foreground ${isRTL ? 'mr-6' : 'ml-6'}`}>
                     {formatBudget(opportunity.budget_min, opportunity.budget_max)}
                   </p>
                 </div>

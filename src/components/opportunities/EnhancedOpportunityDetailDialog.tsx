@@ -81,7 +81,7 @@ export const EnhancedOpportunityDetailDialog = ({
       
       setIsApplied(!!data);
     } catch (error) {
-      console.error('Error checking application:', error);
+      // Application status check failed - continue without blocking UI
     }
   };
 
@@ -98,7 +98,7 @@ export const EnhancedOpportunityDetailDialog = ({
       
       setIsBookmarked(!!data);
     } catch (error) {
-      console.error('Error checking bookmark:', error);
+      // Bookmark status check failed - continue without blocking UI
     }
   };
 
@@ -115,7 +115,7 @@ export const EnhancedOpportunityDetailDialog = ({
       
       setIsLiked(!!data);
     } catch (error) {
-      console.error('Error checking like:', error);
+      // Like status check failed - continue without blocking UI
     }
   };
 
@@ -132,7 +132,7 @@ export const EnhancedOpportunityDetailDialog = ({
       
       setApplications(data || []);
     } catch (error) {
-      console.error('Error loading applications:', error);
+      // Applications loading failed - continue without blocking UI
     }
   };
 
@@ -150,7 +150,7 @@ export const EnhancedOpportunityDetailDialog = ({
       
       setComments(data || []);
     } catch (error) {
-      console.error('Error loading comments:', error);
+      // Comments loading failed - continue without blocking UI
     }
   };
 
@@ -165,7 +165,7 @@ export const EnhancedOpportunityDetailDialog = ({
       
       setLikes(data?.length || 0);
     } catch (error) {
-      console.error('Error loading likes:', error);
+      // Likes loading failed - continue without blocking UI
     }
   };
 
@@ -194,7 +194,7 @@ export const EnhancedOpportunityDetailDialog = ({
         setLikes(prev => prev + 1);
       }
     } catch (error) {
-      console.error('Error toggling like:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     }
   };
 
@@ -555,17 +555,17 @@ export const EnhancedOpportunityDetailDialog = ({
                 onClick={() => onApply?.(opportunity)}
                 className="flex-1"
               >
-                <Send className="w-4 h-4 mr-2" />
+                <Send className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                 {isRTL ? 'تقدم للفرصة' : 'Apply for Opportunity'}
               </Button>
             ) : isApplied ? (
               <Button variant="secondary" className="flex-1" disabled>
-                <CheckCircle className="w-4 h-4 mr-2" />
+                <CheckCircle className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                 {isRTL ? 'تم التقديم' : 'Application Submitted'}
               </Button>
             ) : (
               <Button variant="secondary" className="flex-1" disabled>
-                <AlertCircle className="w-4 h-4 mr-2" />
+                <AlertCircle className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                 {isRTL ? 'مغلقة للتقديم' : 'Closed for Applications'}
               </Button>
             )}

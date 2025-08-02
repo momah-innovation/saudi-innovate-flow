@@ -131,7 +131,7 @@ export const OpportunityApplicationDialog = ({
       onOpenChange(false);
       onSuccess?.();
     } catch (error) {
-      console.error('Application submission error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: isRTL ? 'خطأ في الإرسال' : 'Submission Error',
         description: isRTL ? 'فشل في إرسال الطلب' : 'Failed to submit application',
@@ -382,12 +382,12 @@ export const OpportunityApplicationDialog = ({
             >
               {isSubmitting ? (
                 <>
-                  <span className="animate-spin mr-2">⏳</span>
+                  <span className={`animate-spin ${isRTL ? 'ml-2' : 'mr-2'}`}>⏳</span>
                   {isRTL ? 'جاري الإرسال...' : 'Submitting...'}
                 </>
               ) : (
                 <>
-                  <Send className="w-4 h-4 mr-2" />
+                  <Send className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                   {isRTL ? 'إرسال الطلب' : 'Submit Application'}
                 </>
               )}

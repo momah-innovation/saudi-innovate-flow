@@ -139,7 +139,7 @@ export const EditOpportunityDialog = ({
         description: isRTL ? 'تم رفع الصورة بنجاح' : 'Image uploaded successfully',
       });
     } catch (error) {
-      console.error('Error uploading image:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'فشل في رفع الصورة' : 'Failed to upload image',
@@ -204,8 +204,8 @@ export const EditOpportunityDialog = ({
             }
           });
         } catch (emailError) {
-          console.error('Email notification failed:', emailError);
-          // Don't fail the update if email fails
+          // Email notification failed - continue without blocking update
+          // User will still see successful update notification
         }
       }
 

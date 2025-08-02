@@ -62,7 +62,7 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
       if (error) throw error;
       setComments(data || []);
     } catch (error) {
-      console.error('Error loading comments:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     } finally {
       setLoading(false);
     }
@@ -94,7 +94,7 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
         description: isRTL ? 'تم إضافة تعليقك بنجاح' : 'Your comment has been added successfully',
       });
     } catch (error) {
-      console.error('Error submitting comment:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'فشل في إضافة التعليق' : 'Failed to add comment',
@@ -121,7 +121,7 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
         description: isRTL ? 'تم حذف تعليقك بنجاح' : 'Your comment has been deleted',
       });
     } catch (error) {
-      console.error('Error deleting comment:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'فشل في حذف التعليق' : 'Failed to delete comment',
@@ -203,7 +203,7 @@ export const OpportunityCommentsSection = ({ opportunityId }: OpportunityComment
                     disabled={!newComment.trim() || submitting}
                     size="sm"
                   >
-                    <Send className="w-4 h-4 mr-2" />
+                    <Send className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                     {submitting ? (isRTL ? 'جارٍ الإرسال...' : 'Posting...') : (isRTL ? 'إرسال' : 'Post')}
                   </Button>
                 </div>

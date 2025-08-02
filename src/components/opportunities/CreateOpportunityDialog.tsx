@@ -168,8 +168,8 @@ export const CreateOpportunityDialog = ({
       setImageUrl('');
       onOpenChange(false);
       onSuccess?.();
-    } catch (error: any) {
-      console.error('Error creating opportunity:', error);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'حدث خطأ أثناء إنشاء الفرصة' : 'Error creating opportunity',
