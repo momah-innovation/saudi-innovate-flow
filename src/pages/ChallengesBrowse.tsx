@@ -11,10 +11,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { ChallengeCard } from '@/components/challenges/ChallengeCard';
 import { TrendingChallengesWidget } from '@/components/challenges/TrendingChallengesWidget';
-import { ChallengesHero } from '@/components/challenges/ChallengesHero';
 import { EnhancedChallengesHero } from '@/components/challenges/EnhancedChallengesHero';
 import { ChallengeRecommendations } from '@/components/challenges/ChallengeRecommendations';
-import { ChallengeDetailDialog } from '@/components/challenges/ChallengeDetailDialog';
 import { EnhancedChallengeDetailDialog } from '@/components/challenges/EnhancedChallengeDetailDialog';
 import { ChallengeFilters, FilterState } from '@/components/challenges/ChallengeFilters';
 import { challengesPageConfig, getViewModeConfig } from '@/config/challengesPageConfig';
@@ -23,7 +21,7 @@ import { EnhancedSubmissionDialog } from '@/components/challenges/EnhancedSubmis
 import { ChallengeNotificationCenter } from '@/components/challenges/ChallengeNotificationCenter';
 import { ChallengeTemplatesDialog } from '@/components/challenges/ChallengeTemplatesDialog';
 import { ChallengeAnalyticsDashboard } from '@/components/challenges/ChallengeAnalyticsDashboard';
-import { ChallengeCollaborationHub } from '@/components/challenges/ChallengeCollaborationHub';
+
 import { ChallengeListView } from '@/components/challenges/ChallengeListView';
 import { ExpertAssignmentWizard } from '@/components/challenges/ExpertAssignmentWizard';
 import { ChallengeSubmissionDialog } from '@/components/challenges/ChallengeSubmissionDialog';
