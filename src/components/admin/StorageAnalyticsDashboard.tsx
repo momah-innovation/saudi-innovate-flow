@@ -29,6 +29,7 @@ import {
   Clock,
   Activity
 } from 'lucide-react'
+import { RTLAware } from '@/components/ui/rtl-aware'
 
 interface StorageAnalyticsDashboardProps {
   className?: string
@@ -62,17 +63,17 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
 
   if (loading) {
     return (
-      <div className={`space-y-6 ${className}`}>
+      <RTLAware className={`space-y-6 ${className}`}>
         <div className="flex items-center justify-center p-8">
           <RefreshCw className="h-8 w-8 animate-spin" />
         </div>
-      </div>
+      </RTLAware>
     )
   }
 
   if (error) {
     return (
-      <div className={`space-y-6 ${className}`}>
+      <RTLAware className={`space-y-6 ${className}`}>
         <Card>
           <CardContent className="p-6">
             <p className="text-destructive">{t("storage.error_loading_analytics")} {error}</p>
@@ -82,12 +83,12 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
             </Button>
           </CardContent>
         </Card>
-      </div>
+      </RTLAware>
     )
   }
 
   return (
-    <div className={`space-y-6 ${className}`}>
+    <RTLAware className={`space-y-6 ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -302,6 +303,6 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
           </CardContent>
         </Card>
       </div>
-    </div>
+    </RTLAware>
   )
 }
