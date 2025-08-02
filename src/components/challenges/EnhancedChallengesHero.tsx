@@ -20,6 +20,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
 interface EnhancedChallengesHeroProps {
@@ -27,7 +28,7 @@ interface EnhancedChallengesHeroProps {
   activeChallenges: number;
   totalParticipants: number;
   totalPrizes?: number;
-  onCreateChallenge: () => void;
+  onCreateChallenge?: () => void; // Make optional since not all users can create
   onShowFilters: () => void;
   featuredChallenge?: {
     id: string;
@@ -49,7 +50,16 @@ export const EnhancedChallengesHero = ({
   featuredChallenge
 }: EnhancedChallengesHeroProps) => {
   const { isRTL } = useDirection();
+  const { user, hasRole } = useAuth();
   const [currentStat, setCurrentStat] = useState(0);
+  
+  // Check if user can create challenges
+  const canCreateChallenges = user && (
+    hasRole('admin') || 
+    hasRole('super_admin') || 
+    hasRole('sector_lead') || 
+    hasRole('challenge_manager')
+  );
 
   const stats = [
     { icon: Target, value: totalChallenges, label: isRTL ? 'تحدي' : 'challenges', color: 'text-blue-400' },
@@ -144,15 +154,18 @@ export const EnhancedChallengesHero = ({
 
             {/* Enhanced Action Buttons */}
             <div className="flex flex-wrap gap-4">
-              <Button
-                onClick={onCreateChallenge}
-                variant="hero-primary"
-                size="lg"
-                className="shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-              >
-                <Plus className="w-5 h-5 mr-2" />
-                {isRTL ? 'إنشاء تحدي جديد' : 'Create New Challenge'}
-              </Button>
+              {/* Only show Create New Challenge button for authorized roles */}
+              {canCreateChallenges && onCreateChallenge && (
+                <Button
+                  onClick={onCreateChallenge}
+                  variant="hero-primary"
+                  size="lg"
+                  className="shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  {isRTL ? 'إنشاء تحدي جديد' : 'Create New Challenge'}
+                </Button>
+              )}
               
               <Button
                 onClick={onShowFilters}

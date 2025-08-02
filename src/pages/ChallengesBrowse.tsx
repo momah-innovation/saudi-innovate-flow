@@ -398,7 +398,7 @@ const ChallengesBrowse = () => {
           activeChallenges={stats.activeChallenges}
           totalParticipants={stats.totalParticipants}
           totalPrizes={stats.totalPrizes}
-          onCreateChallenge={() => setCreateChallengeOpen(true)}
+          onCreateChallenge={user && (hasRole('admin') || hasRole('super_admin') || hasRole('sector_lead') || hasRole('challenge_manager')) ? () => setCreateChallengeOpen(true) : undefined}
           onShowFilters={() => setShowAdvancedFilters(true)}
           featuredChallenge={challenges.length > 0 ? {
             id: challenges[0].id,
