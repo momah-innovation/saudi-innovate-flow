@@ -29,7 +29,7 @@ interface StorageQuotaManagerProps {
 }
 
 export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ className }) => {
-  const { quotas, loading, error, setQuota, removeQuota, refreshQuotas } = useStorageQuotas()
+  const { quotas, loading, error, setQuota, removeQuota, autoSetupQuotas, refreshQuotas } = useStorageQuotas()
   const { toast } = useToast()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedBucket, setSelectedBucket] = useState('')
@@ -126,6 +126,28 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
     } else {
       toast({
         title: 'Error',
+        description: result.error,
+        variant: 'destructive'
+      })
+    }
+    
+    setActionLoading(null)
+  }
+
+  const handleAutoSetup = async () => {
+    setActionLoading('auto-setup')
+    
+    const result = await autoSetupQuotas()
+    
+    if (result.success) {
+      const data = result.data as any
+      toast({
+        title: 'Auto Setup Complete',
+        description: `Successfully configured 5GB quotas for ${data?.buckets_configured || 0} buckets`
+      })
+    } else {
+      toast({
+        title: 'Auto Setup Failed',
         description: result.error,
         variant: 'destructive'
       })
@@ -248,8 +270,18 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
         )}
 
         {quotas.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
-            No storage quotas configured
+          <div className="text-center py-8 space-y-4">
+            <div className="text-muted-foreground">
+              No storage quotas configured
+            </div>
+            <Button 
+              onClick={handleAutoSetup} 
+              disabled={actionLoading === 'auto-setup'}
+              variant="outline"
+            >
+              {actionLoading === 'auto-setup' && <RefreshCw className="h-4 w-4 mr-2 animate-spin" />}
+              Auto Setup (5GB Default)
+            </Button>
           </div>
         ) : (
           <div className="space-y-4">

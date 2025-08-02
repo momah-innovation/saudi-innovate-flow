@@ -131,6 +131,32 @@ export const useStorageQuotas = () => {
     }
   }
 
+  const autoSetupQuotas = async () => {
+    try {
+      console.log('Auto setting up storage quotas...');
+      const { data, error } = await supabase.rpc('auto_setup_storage_quotas')
+      
+      if (error) {
+        console.error('RPC error auto setup:', error);
+        if (error.message?.includes('Admin access required')) {
+          throw new Error('Admin access required for auto setup')
+        }
+        throw error
+      }
+      
+      console.log('Auto setup completed:', data);
+      await fetchQuotas()
+      return { success: true, data }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to auto setup quotas'
+      console.error('Error in autoSetupQuotas:', err);
+      return { 
+        success: false, 
+        error: errorMessage
+      }
+    }
+  }
+
   const refreshQuotas = () => {
     fetchQuotas()
   }
@@ -147,6 +173,7 @@ export const useStorageQuotas = () => {
     setQuota,
     removeQuota,
     checkQuota,
+    autoSetupQuotas,
     refreshQuotas
   }
 }

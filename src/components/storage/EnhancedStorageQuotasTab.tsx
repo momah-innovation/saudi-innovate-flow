@@ -42,7 +42,7 @@ interface EnhancedStorageQuotasTabProps {
 }
 
 export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuotasTabProps) {
-  const { quotas, loading, error, setQuota, removeQuota, refreshQuotas } = useStorageQuotas();
+  const { quotas, loading, error, setQuota, removeQuota, autoSetupQuotas, refreshQuotas } = useStorageQuotas();
   const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedBucket, setSelectedBucket] = useState('');
@@ -179,48 +179,28 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
     setActionLoading(null);
   };
 
-  const handleBulkSetup = async () => {
-    const defaultQuotaGB = 5; // 5GB default quota
-    const bucketsToSetup = bucketsWithoutQuotas.slice(0, 5); // Setup first 5
-
-    console.log('Starting bulk setup for buckets:', bucketsToSetup.map(b => b.bucket_name));
+  const handleAutoSetup = async () => {
+    setActionLoading('auto-setup');
     
-    if (bucketsToSetup.length === 0) {
-      toast({
-        title: 'No Action Needed',
-        description: 'All buckets already have quotas set up',
-        variant: 'default'
-      });
-      return;
-    }
-
-    setActionLoading('bulk');
+    const result = await autoSetupQuotas();
     
-    try {
-      for (const bucket of bucketsToSetup) {
-        console.log(`Setting quota for bucket: ${bucket.bucket_name}`);
-        const result = await setQuota(bucket.bucket_name, defaultQuotaGB * 1024 * 1024 * 1024);
-        if (!result.success) {
-          console.error(`Failed to set quota for ${bucket.bucket_name}:`, result.error);
-          throw new Error(`Failed to set quota for ${bucket.bucket_name}: ${result.error}`);
-        }
-      }
-      
+    if (result.success) {
+      const data = result.data as any;
       toast({
-        title: 'Bulk Setup Complete',
-        description: `Set up ${defaultQuotaGB}GB quotas for ${bucketsToSetup.length} buckets`
+        title: 'Auto Setup Complete',
+        description: `Successfully configured 5GB quotas for ${data?.buckets_configured || 0} buckets`
       });
-    } catch (error) {
-      console.error('Bulk setup failed:', error);
+      fetchAllBuckets();
+      onQuotasChanged?.();
+    } else {
       toast({
-        title: 'Bulk Setup Failed',
-        description: error instanceof Error ? error.message : 'Failed to set up quotas',
+        title: 'Auto Setup Failed',
+        description: result.error,
         variant: 'destructive'
       });
-    } finally {
-      setActionLoading(null);
-      onQuotasChanged?.();
     }
+    
+    setActionLoading(null);
   };
 
   const getBucketStatus = (bucketName: string) => {
@@ -400,10 +380,10 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
             {bucketsWithoutQuotas.length > 0 && (
               <Button 
                 variant="outline" 
-                onClick={handleBulkSetup}
-                disabled={actionLoading === 'bulk'}
+                onClick={handleAutoSetup}
+                disabled={actionLoading === 'auto-setup'}
               >
-                {actionLoading === 'bulk' ? (
+                {actionLoading === 'auto-setup' ? (
                   <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
                 ) : (
                   <Zap className="h-4 w-4 mr-2" />

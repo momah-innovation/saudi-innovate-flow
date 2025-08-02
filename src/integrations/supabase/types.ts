@@ -6589,6 +6589,10 @@ export type Database = {
         }
         Returns: Json
       }
+      auto_setup_storage_quotas: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       auto_track_weekly_capacity: {
         Args: Record<PropertyKey, never>
         Returns: undefined
