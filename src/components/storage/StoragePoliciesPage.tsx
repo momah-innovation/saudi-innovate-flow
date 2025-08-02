@@ -100,23 +100,42 @@ export const StoragePoliciesPage: React.FC = () => {
     try {
       setLoading(true)
       
-      // Get buckets
-      const { data: bucketsData } = await supabase.storage.listBuckets()
+      let bucketInfo: BucketInfo[] = [];
       
-      if (!bucketsData) {
-        setBuckets([])
-        return
+      // Get buckets using the same RPC function that works for other tabs
+      const { data: bucketsData, error: bucketsError } = await supabase
+        .rpc('get_storage_buckets_info');
+      
+      if (bucketsError) {
+        console.error('Error loading buckets:', bucketsError);
+        // Fallback to basic storage info
+        const { data: fallbackData, error: fallbackError } = await supabase
+          .rpc('get_basic_storage_info');
+        
+        if (fallbackError) {
+          console.error('Fallback bucket loading failed:', fallbackError);
+          setBuckets([]);
+          return;
+        }
+        
+        // Convert basic storage info to bucket info
+        bucketInfo = (fallbackData || []).map((bucket: any) => ({
+          id: bucket.bucket_id,
+          name: bucket.bucket_name,
+          public: bucket.public,
+          policies: []
+        }));
+      } else {
+        // Convert RPC response to bucket info
+        bucketInfo = (bucketsData || []).map((bucket: any) => ({
+          id: bucket.bucket_id,
+          name: bucket.bucket_name,
+          public: bucket.public,
+          policies: []
+        }));
       }
 
-      // For now, create a basic structure since we can't directly query storage policies
-      const bucketInfo: BucketInfo[] = bucketsData.map(bucket => ({
-        id: bucket.id,
-        name: bucket.name,
-        public: bucket.public,
-        policies: []
-      }))
-
-      setBuckets(bucketInfo)
+      setBuckets(bucketInfo);
       
       // Update stats
       const publicCount = bucketInfo.filter(b => b.public).length
