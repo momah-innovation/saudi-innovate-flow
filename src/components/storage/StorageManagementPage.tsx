@@ -311,13 +311,14 @@ export function StorageManagementPage() {
         />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="overview">{t('storage.overview')}</TabsTrigger>
             <TabsTrigger value="files">{t('storage.files')}</TabsTrigger>
             <TabsTrigger value="buckets">{t('storage.buckets')}</TabsTrigger>
             <TabsTrigger value="analytics">{t('storage.analytics')}</TabsTrigger>
             <TabsTrigger value="quotas">{t('storage.quotas')}</TabsTrigger>
             <TabsTrigger value="upload">{t('storage.upload')}</TabsTrigger>
+            <TabsTrigger value="settings">{t('storage.settings')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -482,6 +483,10 @@ export function StorageManagementPage() {
 
           <TabsContent value="upload" className="space-y-6">
             <FixedStorageUploadTab onFilesUploaded={loadStorageData} />
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-6">
+            <UploaderSettingsTab />
           </TabsContent>
         </Tabs>
 
