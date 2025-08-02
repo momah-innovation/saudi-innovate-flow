@@ -300,9 +300,9 @@ export const ComprehensiveStorageManagement = () => {
             {t('complete_storage_operations')}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-5">
+        <CardContent dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
+          <Tabs value={activeTab} onValueChange={setActiveTab} dir={isRTL ? 'rtl' : 'ltr'}>
+            <TabsList className={`grid w-full grid-cols-5 ${isRTL ? 'font-arabic' : 'font-english'}`}>
               <TabsTrigger value="export">{t('export_migration')}</TabsTrigger>
               <TabsTrigger value="backup">{t('backup_recovery')}</TabsTrigger>
               <TabsTrigger value="optimization">{t('optimization')}</TabsTrigger>
@@ -311,7 +311,7 @@ export const ComprehensiveStorageManagement = () => {
             </TabsList>
 
             {/* Export & Migration Tab */}
-            <TabsContent value="export" className="space-y-6">
+            <TabsContent value="export" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {/* Storage Export */}
               <Card>
                 <CardHeader>
@@ -478,7 +478,7 @@ export const ComprehensiveStorageManagement = () => {
             </TabsContent>
 
             {/* Backup & Recovery Tab */}
-            <TabsContent value="backup" className="space-y-6">
+            <TabsContent value="backup" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {/* Backup Creation */}
               <Card>
                 <CardHeader>
@@ -629,7 +629,7 @@ export const ComprehensiveStorageManagement = () => {
             </TabsContent>
 
             {/* Optimization Tab */}
-            <TabsContent value="optimization" className="space-y-6">
+            <TabsContent value="optimization" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -731,7 +731,7 @@ export const ComprehensiveStorageManagement = () => {
             </TabsContent>
 
             {/* Quotas & Monitoring Tab */}
-            <TabsContent value="quotas" className="space-y-6">
+            <TabsContent value="quotas" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -844,7 +844,7 @@ export const ComprehensiveStorageManagement = () => {
             </TabsContent>
 
             {/* Advanced Tools Tab */}
-            <TabsContent value="tools" className="space-y-6">
+            <TabsContent value="tools" className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>

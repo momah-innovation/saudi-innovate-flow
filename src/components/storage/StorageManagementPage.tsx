@@ -807,12 +807,12 @@ export function StorageManagementPage() {
                 {/* Search */}
                 <div className="flex-1">
                   <div className="relative">
-                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Search className={`absolute ${isRTL ? 'right-2' : 'left-2'} top-2.5 h-4 w-4 text-muted-foreground`} />
                     <Input
                       placeholder={t('search_buckets_placeholder')}
                       value={bucketSearchTerm}
                       onChange={(e) => setBucketSearchTerm(e.target.value)}
-                      className="pl-8"
+                      className={isRTL ? 'pr-8 text-right' : 'pl-8 text-left'}
                     />
                   </div>
                 </div>
