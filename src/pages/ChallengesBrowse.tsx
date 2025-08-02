@@ -95,9 +95,18 @@ const ChallengesBrowse = () => {
   // Filter and search logic
   const getFilteredChallenges = () => {
     console.log('🔍 getFilteredChallenges - Input challenges:', challenges.length);
-    console.log('🔍 Applied filters:', JSON.stringify(filters, null, 2));
+    console.log('🔍 Applied filters:', {
+      search: filters.search,
+      status: filters.status,
+      category: filters.category,
+      difficulty: filters.difficulty,
+      prizeRange: filters.prizeRange,
+      participantRange: filters.participantRange,
+      features: filters.features
+    });
     
     let filtered = [...challenges];
+    console.log('🔍 Starting with challenges:', filtered.length);
 
     // Apply search filter
     if (filters.search) {
@@ -106,14 +115,15 @@ const ChallengesBrowse = () => {
         (isRTL ? challenge.title_ar : challenge.title_en || challenge.title_ar).toLowerCase().includes(filters.search.toLowerCase()) ||
         (isRTL ? challenge.description_ar : challenge.description_en || challenge.description_ar).toLowerCase().includes(filters.search.toLowerCase())
       );
-      console.log(`🔍 After search filter: ${beforeSearch} → ${filtered.length}`);
+      console.log(`🔍 After search filter ("${filters.search}"): ${beforeSearch} → ${filtered.length}`);
     }
 
     // Apply status filter
     if (filters.status !== 'all') {
       const beforeStatus = filtered.length;
       filtered = filtered.filter(challenge => challenge.status === filters.status);
-      console.log(`🔍 After status filter (${filters.status}): ${beforeStatus} → ${filtered.length}`);
+      console.log(`🔍 After status filter ("${filters.status}"): ${beforeStatus} → ${filtered.length}`);
+      console.log('🔍 Available statuses:', [...new Set(challenges.map(c => c.status))]);
     }
 
     // Apply category filter
@@ -123,29 +133,48 @@ const ChallengesBrowse = () => {
         const categoryKey = isRTL ? challenge.category : challenge.category_en || challenge.category;
         return categoryKey.toLowerCase().includes(filters.category.toLowerCase());
       });
-      console.log(`🔍 After category filter (${filters.category}): ${beforeCategory} → ${filtered.length}`);
+      console.log(`🔍 After category filter ("${filters.category}"): ${beforeCategory} → ${filtered.length}`);
+      console.log('🔍 Available categories:', [...new Set(challenges.map(c => c.category))]);
     }
 
     // Apply difficulty filter
     if (filters.difficulty !== 'all') {
       const beforeDifficulty = filtered.length;
-      filtered = filtered.filter(challenge => challenge.difficulty.toLowerCase() === filters.difficulty.toLowerCase());
-      console.log(`🔍 After difficulty filter (${filters.difficulty}): ${beforeDifficulty} → ${filtered.length}`);
+      console.log('🔍 Challenge difficulties before filter:', filtered.map(c => ({ id: c.id.slice(0, 8), difficulty: c.difficulty })));
+      filtered = filtered.filter(challenge => challenge.difficulty && challenge.difficulty.toLowerCase() === filters.difficulty.toLowerCase());
+      console.log(`🔍 After difficulty filter ("${filters.difficulty}"): ${beforeDifficulty} → ${filtered.length}`);
+      console.log('🔍 Available difficulties:', [...new Set(challenges.map(c => c.difficulty).filter(Boolean))]);
     }
 
     // Apply prize range filter
     const beforePrize = filtered.length;
+    console.log('🔍 Prize range filter checking:', {
+      range: filters.prizeRange,
+      sampleBudgets: filtered.slice(0, 5).map(c => ({ id: c.id.slice(0, 8), budget: c.estimated_budget }))
+    });
     filtered = filtered.filter(challenge => {
       const budgetValue = challenge.estimated_budget || 0;
-      return budgetValue >= filters.prizeRange[0] && budgetValue <= filters.prizeRange[1];
+      const inRange = budgetValue >= filters.prizeRange[0] && budgetValue <= filters.prizeRange[1];
+      if (!inRange) {
+        console.log(`🔍 Filtered out challenge ${challenge.id.slice(0, 8)} - budget ${budgetValue} not in range [${filters.prizeRange[0]}, ${filters.prizeRange[1]}]`);
+      }
+      return inRange;
     });
     console.log(`🔍 After prize range filter [${filters.prizeRange[0]}, ${filters.prizeRange[1]}]: ${beforePrize} → ${filtered.length}`);
 
     // Apply participant range filter
     const beforeParticipants = filtered.length;
+    console.log('🔍 Participant range filter checking:', {
+      range: filters.participantRange,
+      sampleParticipants: filtered.slice(0, 5).map(c => ({ id: c.id.slice(0, 8), participants: c.participants }))
+    });
     filtered = filtered.filter(challenge => {
       const participantCount = challenge.participants || 0;
-      return participantCount >= filters.participantRange[0] && participantCount <= filters.participantRange[1];
+      const inRange = participantCount >= filters.participantRange[0] && participantCount <= filters.participantRange[1];
+      if (!inRange) {
+        console.log(`🔍 Filtered out challenge ${challenge.id.slice(0, 8)} - participants ${participantCount} not in range [${filters.participantRange[0]}, ${filters.participantRange[1]}]`);
+      }
+      return inRange;
     });
     console.log(`🔍 After participant range filter [${filters.participantRange[0]}, ${filters.participantRange[1]}]: ${beforeParticipants} → ${filtered.length}`);
 
@@ -201,6 +230,7 @@ const ChallengesBrowse = () => {
     });
 
     console.log('🔍 Final filtered challenges:', filtered.length);
+    console.log('🔍 Final challenge IDs:', filtered.map(c => c.id.slice(0, 8)));
     return filtered;
   };
 
