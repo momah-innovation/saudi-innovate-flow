@@ -91,9 +91,7 @@ export function StorageManagementPage() {
     bucket: 'all',
     visibility: 'all',
     sizeRange: 'all',
-    dateRange: 'all',
-    department: '',
-    deputy: ''
+    dateRange: 'all'
   });
 
   const [sortBy, setSortBy] = useState<SortOptions>({
@@ -614,9 +612,7 @@ export function StorageManagementPage() {
       bucket: 'all',
       visibility: 'all',
       sizeRange: 'all',
-      dateRange: 'all',
-      department: '',
-      deputy: ''
+      dateRange: 'all'
     });
   };
 

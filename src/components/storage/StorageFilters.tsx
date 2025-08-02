@@ -24,8 +24,6 @@ import {
   File
 } from 'lucide-react';
 import { useTranslation } from '@/hooks/useAppTranslation';
-import { useOrganizationalData } from '@/hooks/useOrganizationalData';
-import { DynamicSelect, transformDepartments, transformDeputies } from '@/components/ui/dynamic-select';
 
 export interface FilterOptions {
   fileType: string;
@@ -33,8 +31,6 @@ export interface FilterOptions {
   visibility: string;
   sizeRange: string;
   dateRange: string;
-  department?: string;
-  deputy?: string;
 }
 
 export interface SortOptions {
@@ -62,7 +58,6 @@ export function StorageFilters({
   activeFilterCount
 }: StorageFiltersProps) {
   const { t, isRTL } = useTranslation();
-  const { departments, deputies, loading: orgLoading } = useOrganizationalData();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const fileTypeOptions = [
@@ -268,33 +263,6 @@ export function StorageFilters({
               </Select>
             </div>
 
-            {/* Department Filter */}
-            <div>
-              <label className="text-sm font-medium mb-2 block">{t('department')}</label>
-              <DynamicSelect
-                options={transformDepartments(departments, isRTL)}
-                value={filters.department || 'all'}
-                onValueChange={(value) => onFiltersChange({ ...filters, department: value === 'all' ? '' : value })}
-                placeholder={t('select_department')}
-                loading={orgLoading}
-                showAllOption={true}
-                allOptionLabel={t('all_departments')}
-              />
-            </div>
-
-            {/* Deputy Filter */}
-            <div>
-              <label className="text-sm font-medium mb-2 block">{t('deputy')}</label>
-              <DynamicSelect
-                options={transformDeputies(deputies, isRTL)}
-                value={filters.deputy || 'all'}
-                onValueChange={(value) => onFiltersChange({ ...filters, deputy: value === 'all' ? '' : value })}
-                placeholder={t('select_deputy')}
-                loading={orgLoading}
-                showAllOption={true}
-                allOptionLabel={t('all_deputies')}
-              />
-            </div>
           </div>
         </PopoverContent>
       </Popover>
@@ -344,24 +312,6 @@ export function StorageFilters({
               <X 
                 className="w-3 h-3 ml-1 cursor-pointer" 
                 onClick={() => onFiltersChange({ ...filters, dateRange: 'all' })}
-              />
-            </Badge>
-          )}
-          {filters.department && filters.department !== 'all' && (
-            <Badge variant="secondary" className="text-xs">
-              {t('department')}: {departments.find(d => d.id === filters.department)?.[isRTL ? 'name_ar' : 'name'] || filters.department}
-              <X 
-                className="w-3 h-3 ml-1 cursor-pointer" 
-                onClick={() => onFiltersChange({ ...filters, department: '' })}
-              />
-            </Badge>
-          )}
-          {filters.deputy && filters.deputy !== 'all' && (
-            <Badge variant="secondary" className="text-xs">
-              {t('deputy')}: {deputies.find(d => d.id === filters.deputy)?.[isRTL ? 'name_ar' : 'name'] || filters.deputy}
-              <X 
-                className="w-3 h-3 ml-1 cursor-pointer" 
-                onClick={() => onFiltersChange({ ...filters, deputy: '' })}
               />
             </Badge>
           )}

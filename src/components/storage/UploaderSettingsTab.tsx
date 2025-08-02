@@ -59,7 +59,6 @@ interface UploaderSettingsTabProps {
 export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
   const { toast } = useToast()
   const { t, isRTL } = useTranslation()
-  const { teamMembers, departments, loading: orgLoading } = useOrganizationalData()
   const healthData = useSystemHealth()
   const [configs, setConfigs] = useState<UploaderConfig[]>([])
   const [allBuckets, setAllBuckets] = useState<any[]>([])
@@ -599,38 +598,6 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
             </Button>
               </div>
 
-              {/* Default Assignment Settings */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-sm">{t('default_assignment_settings')}</h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="defaultAssignee">{t('default_assignee')}</Label>
-                    <DynamicSelect
-                      options={transformTeamMembers(teamMembers, isRTL)}
-                      value={globalSettings.defaultAssignee}
-                      onValueChange={(value) => setGlobalSettings(prev => ({ ...prev, defaultAssignee: value }))}
-                      placeholder={t('select_default_assignee')}
-                      loading={orgLoading}
-                      showAllOption={true}
-                      allOptionLabel={t('no_default_assignee')}
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="defaultDepartment">{t('default_department')}</Label>
-                    <DynamicSelect
-                      options={transformDepartments(departments, isRTL)}
-                      value={globalSettings.defaultDepartment}
-                      onValueChange={(value) => setGlobalSettings(prev => ({ ...prev, defaultDepartment: value }))}
-                      placeholder={t('select_default_department')}
-                      loading={orgLoading}
-                      showAllOption={true}
-                      allOptionLabel={t('no_default_department')}
-                    />
-                  </div>
-                </div>
-              </div>
             </CardContent>
       </Card>
 
