@@ -416,34 +416,45 @@ const ChallengesBrowse = () => {
           title={isRTL ? 'التحديات المتاحة' : 'Available Challenges'}
           description={isRTL ? 'تصفح واختر التحديات التي تناسب مهاراتك واهتماماتك' : 'Browse and select challenges that match your skills and interests'}
           itemCount={tabFilteredChallenges.length}
-          primaryAction={user && (hasRole('admin') || hasRole('super_admin')) ? {
+          primaryAction={user && (hasRole('admin') || hasRole('super_admin') || hasRole('sector_lead') || hasRole('challenge_manager')) ? {
             label: isRTL ? 'تحدي جديد' : 'New Challenge',
             onClick: () => setCreateChallengeOpen(true),
             icon: <Plus className="w-4 h-4" />
           } : undefined}
           secondaryActions={
-            <div className="flex gap-2">
-              <ChallengeNotificationCenter />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setTemplatesDialogOpen(true)}
-              >
-                <FileText className="w-4 h-4 mr-2" />
-                {isRTL ? 'القوالب' : 'Templates'}
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setAnalyticsDialogOpen(true)}
-              >
-                <BarChart3 className="w-4 h-4 mr-2" />
-                {isRTL ? 'الإحصائيات' : 'Analytics'}
-              </Button>
-              <LayoutSelector
-                viewMode={viewMode}
-                onViewModeChange={(mode) => mode !== 'calendar' && setViewMode(mode)}
-              />
+            <div className="flex items-center gap-2">
+              {/* Admin/Manager Only Actions */}
+              {user && (hasRole('admin') || hasRole('super_admin') || hasRole('sector_lead') || hasRole('challenge_manager')) && (
+                <div className="flex items-center gap-2 mr-2 border-r border-border pr-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setTemplatesDialogOpen(true)}
+                    className="h-8"
+                  >
+                    <FileText className="w-4 h-4 mr-2" />
+                    {isRTL ? 'القوالب' : 'Templates'}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setAnalyticsDialogOpen(true)}
+                    className="h-8"
+                  >
+                    <BarChart3 className="w-4 h-4 mr-2" />
+                    {isRTL ? 'الإحصائيات' : 'Analytics'}
+                  </Button>
+                </div>
+              )}
+              
+              {/* General Actions */}
+              <div className="flex items-center gap-2">
+                <ChallengeNotificationCenter />
+                <LayoutSelector
+                  viewMode={viewMode}
+                  onViewModeChange={(mode) => mode !== 'calendar' && setViewMode(mode)}
+                />
+              </div>
             </div>
           }
         >
@@ -641,8 +652,8 @@ const ChallengesBrowse = () => {
             </DialogContent>
           </Dialog>
 
-          {/* Create Challenge Dialog - Only for Admins */}
-          {user && (hasRole('admin') || hasRole('super_admin')) && (
+          {/* Create Challenge Dialog - Only for Admins/Managers */}
+          {user && (hasRole('admin') || hasRole('super_admin') || hasRole('sector_lead') || hasRole('challenge_manager')) && (
             <CreateChallengeDialog
               open={createChallengeOpen}
               onOpenChange={setCreateChallengeOpen}
