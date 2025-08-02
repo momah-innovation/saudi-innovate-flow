@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
@@ -37,11 +38,12 @@ const CHART_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#8
 
 export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps> = ({ className }) => {
   const { analytics, loading, error, refreshAnalytics } = useStorageAnalytics()
+  const { t } = useTranslation()
 
   const formatBytes = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes'
+    if (bytes === 0) return `0 ${t("storage.bytes")}`
     const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+    const sizes = [t("storage.bytes"), 'KB', 'MB', t("storage.gb"), 'TB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
@@ -51,10 +53,10 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
     const now = new Date()
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60))
     
-    if (diffInHours < 1) return 'Just now'
-    if (diffInHours < 24) return `${diffInHours}h ago`
+    if (diffInHours < 1) return t("storage.just_now")
+    if (diffInHours < 24) return t("storage.h_ago", { hours: diffInHours })
     const diffInDays = Math.floor(diffInHours / 24)
-    if (diffInDays < 7) return `${diffInDays}d ago`
+    if (diffInDays < 7) return t("storage.d_ago", { days: diffInDays })
     return date.toLocaleDateString()
   }
 
@@ -73,10 +75,10 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
       <div className={`space-y-6 ${className}`}>
         <Card>
           <CardContent className="p-6">
-            <p className="text-destructive">Error loading analytics: {error}</p>
+            <p className="text-destructive">{t("storage.error_loading_analytics")} {error}</p>
             <Button onClick={refreshAnalytics} className="mt-4">
               <RefreshCw className="h-4 w-4 mr-2" />
-              Retry
+              {t("storage.retry")}
             </Button>
           </CardContent>
         </Card>
@@ -89,14 +91,14 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Storage Analytics</h2>
+          <h2 className="text-3xl font-bold tracking-tight">{t("storage.storage_analytics")}</h2>
           <p className="text-muted-foreground">
-            Comprehensive overview of your file storage system
+            {t("storage.comprehensive_overview")}
           </p>
         </div>
         <Button onClick={refreshAnalytics} variant="outline">
           <RefreshCw className="h-4 w-4 mr-2" />
-          Refresh
+          {t("refresh")}
         </Button>
       </div>
 
@@ -104,52 +106,52 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Storage</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("storage.total_storage")}</CardTitle>
             <HardDrive className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatBytes(analytics.totalStorage)}</div>
             <p className="text-xs text-muted-foreground">
-              Across all buckets
+              {t("storage.across_all_buckets")}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Files</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("storage.total_files")}</CardTitle>
             <Files className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics.totalFiles.toLocaleString()}</div>
             <p className="text-xs text-muted-foreground">
-              Files stored
+              {t("storage.files_stored")}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Buckets</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("storage.active_buckets")}</CardTitle>
             <Upload className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics.bucketBreakdown.length}</div>
             <p className="text-xs text-muted-foreground">
-              Storage buckets
+              {t("storage.storage_buckets")}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Top Uploaders</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("storage.top_uploaders")}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics.topUploaders.length}</div>
             <p className="text-xs text-muted-foreground">
-              Active users
+              {t("storage.active_users")}
             </p>
           </CardContent>
         </Card>
@@ -160,8 +162,8 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
         {/* Upload Trends */}
         <Card>
           <CardHeader>
-            <CardTitle>Upload Trends (30 Days)</CardTitle>
-            <CardDescription>Daily upload activity</CardDescription>
+            <CardTitle>{t("storage.upload_trends_30_days")}</CardTitle>
+            <CardDescription>{t("storage.daily_upload_activity")}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -175,8 +177,8 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
                 <Tooltip 
                   labelFormatter={(value) => new Date(value).toLocaleDateString()}
                   formatter={(value, name) => [
-                    name === 'uploads' ? value : formatBytes(Number(value)),
-                    name === 'uploads' ? 'Uploads' : 'Total Size'
+                    name === "uploads" ? value : formatBytes(Number(value)),
+                    name === "uploads" ? t("storage.uploads") : t("storage.total_size")
                   ]}
                 />
                 <Line type="monotone" dataKey="uploads" stroke="#8884d8" strokeWidth={2} />
@@ -188,8 +190,8 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
         {/* File Types Distribution */}
         <Card>
           <CardHeader>
-            <CardTitle>File Types Distribution</CardTitle>
-            <CardDescription>Breakdown by MIME type</CardDescription>
+            <CardTitle>{t("storage.file_types_distribution")}</CardTitle>
+            <CardDescription>{t("storage.breakdown_by_mime_type")}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -208,7 +210,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
                     <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value, name) => [value, 'Files']} />
+                <Tooltip formatter={(value, name) => [value, t("storage.files")]} />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
@@ -218,8 +220,8 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
       {/* Access Patterns */}
       <Card>
         <CardHeader>
-          <CardTitle>Access Patterns (24 Hours)</CardTitle>
-          <CardDescription>File access activity by hour</CardDescription>
+          <CardTitle>{t("storage.access_patterns_24_hours")}</CardTitle>
+          <CardDescription>{t("storage.file_access_activity_by_hour")}</CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
@@ -229,7 +231,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
               <YAxis />
               <Tooltip 
                 labelFormatter={(value) => `${value}:00`}
-                formatter={(value) => [value, 'Accesses']}
+                formatter={(value) => [value, t("storage.accesses")]}
               />
               <Bar dataKey="access_count" fill="#00C49F" />
             </BarChart>
@@ -242,8 +244,8 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
         {/* Bucket Breakdown */}
         <Card>
           <CardHeader>
-            <CardTitle>Storage by Bucket</CardTitle>
-            <CardDescription>Usage breakdown by storage bucket</CardDescription>
+            <CardTitle>{t("storage.storage_by_bucket")}</CardTitle>
+            <CardDescription>{t("storage.usage_breakdown_by_bucket")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {analytics.bucketBreakdown.slice(0, 8).map((bucket, index) => (
@@ -252,11 +254,11 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
                   <div className="flex items-center gap-2">
                     <span className="font-medium">{bucket.bucket_name}</span>
                     <Badge variant={bucket.public ? "default" : "secondary"}>
-                      {bucket.public ? "Public" : "Private"}
+                      {bucket.public ? t("storage.public") : t("storage.private")}
                     </Badge>
                   </div>
                   <span className="text-muted-foreground">
-                    {formatBytes(bucket.total_size)} ({bucket.file_count} files)
+                    {formatBytes(bucket.total_size)} ({bucket.file_count} {t("storage.files")})
                   </span>
                 </div>
                 <Progress 
@@ -271,18 +273,18 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
         {/* Recent Activity */}
         <Card>
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Latest file operations</CardDescription>
+            <CardTitle>{t("storage.recent_activity")}</CardTitle>
+            <CardDescription>{t("storage.latest_file_operations")}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {analytics.recentActivity.slice(0, 10).map((activity) => (
                 <div key={activity.id} className="flex items-center gap-3 text-sm">
                   <div className="flex-shrink-0">
-                    {activity.event_type === 'uploaded' && <Upload className="h-4 w-4 text-green-500" />}
-                    {activity.event_type === 'accessed' && <Download className="h-4 w-4 text-blue-500" />}
-                    {activity.event_type === 'deleted' && <Activity className="h-4 w-4 text-red-500" />}
-                    {!['uploaded', 'accessed', 'deleted'].includes(activity.event_type) && (
+                    {activity.event_type === "uploaded" && <Upload className="h-4 w-4 text-green-500" />}
+                    {activity.event_type === "accessed" && <Download className="h-4 w-4 text-blue-500" />}
+                    {activity.event_type === "deleted" && <Activity className="h-4 w-4 text-red-500" />}
+                    {!["uploaded", "accessed", "deleted"].includes(activity.event_type) && (
                       <Clock className="h-4 w-4 text-muted-foreground" />
                     )}
                   </div>
@@ -291,7 +293,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
                       {activity.file_path.split('/').pop()}
                     </p>
                     <p className="text-muted-foreground capitalize">
-                      {activity.event_type} • {formatTimeAgo(activity.created_at)}
+                      {t(`storage.${activity.event_type}`)} • {formatTimeAgo(activity.created_at)}
                     </p>
                   </div>
                 </div>
