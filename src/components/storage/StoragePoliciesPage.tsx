@@ -202,6 +202,7 @@ export const StoragePoliciesPage: React.FC = () => {
   }
 
   return (
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
     <PageLayout>
       <PageHeader
         title={t('storage_policies')}
@@ -430,5 +431,6 @@ export const StoragePoliciesPage: React.FC = () => {
       </Card>
       </div>
     </PageLayout>
+    </div>
   )
 }

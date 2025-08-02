@@ -47,7 +47,7 @@ const getCommonFileTypes = (t: any) => [
 ]
 
 export function ConfigurationDialog({ config, open, onOpenChange, onSave }: ConfigurationDialogProps) {
-  const { t } = useTranslation()
+  const { t, isRTL } = useTranslation()
   const { toast } = useToast()
   const isEditing = Boolean(config)
   const [availableBuckets, setAvailableBuckets] = useState<string[]>([])
@@ -207,6 +207,7 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
   }
 
   return (
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
@@ -421,5 +422,6 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
         </form>
       </DialogContent>
     </Dialog>
+    </div>
   )
 }
