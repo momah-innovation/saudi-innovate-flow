@@ -1,5 +1,8 @@
 project_id = "jxpbiljkoibvqxzdkgod"
 
+[functions.elevate-user-privileges]
+verify_jwt = false
+
 [functions.send-opportunity-notification]
 verify_jwt = true
 
