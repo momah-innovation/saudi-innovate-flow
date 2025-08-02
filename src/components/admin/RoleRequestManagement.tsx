@@ -86,7 +86,7 @@ export default function RoleRequestManagement() {
          typeof data.setting_value === 'number' ? data.setting_value : 50) : 50;
       setJustificationPreviewLength(value);
     } catch (error) {
-      console.error('Error fetching system settings:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       setJustificationPreviewLength(50);
     }
   };
@@ -140,7 +140,7 @@ export default function RoleRequestManagement() {
 
       setRoleRequests(requestsWithProfiles);
     } catch (error) {
-      console.error('Error fetching role requests:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "Error",
         description: "Failed to load role requests.",
@@ -207,7 +207,7 @@ export default function RoleRequestManagement() {
       setSelectedRequest(null);
       fetchRoleRequests();
     } catch (error) {
-      console.error('Error reviewing request:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "Error",
         description: "Failed to review the request.",
@@ -745,7 +745,7 @@ export default function RoleRequestManagement() {
                       handleReviewRequest(selectedRequest, 'reject');
                     }}
                   >
-                    <XCircle className="h-4 w-4 mr-2" />
+                    <XCircle className="h-4 w-4 me-2" />
                     Reject Request
                   </Button>
                   <Button
@@ -754,7 +754,7 @@ export default function RoleRequestManagement() {
                       handleReviewRequest(selectedRequest, 'approve');
                     }}
                   >
-                    <CheckCircle2 className="h-4 w-4 mr-2" />
+                    <CheckCircle2 className="h-4 w-4 me-2" />
                     Approve Request
                   </Button>
                 </div>

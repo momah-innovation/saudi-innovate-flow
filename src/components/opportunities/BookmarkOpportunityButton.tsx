@@ -40,13 +40,13 @@ export const BookmarkOpportunityButton = ({
         .maybeSingle();
 
       if (error && error.code !== 'PGRST116') {
-        console.error('Error checking bookmark status:', error);
+        // Error handling - bookmark status check failed
         return;
       }
 
       setIsBookmarked(!!data);
     } catch (error) {
-      console.error('Error checking bookmark status:', error);
+      // Error handling - bookmark status check failed
     }
   };
 
@@ -73,7 +73,6 @@ export const BookmarkOpportunityButton = ({
           .eq('user_id', user.user.id);
 
         if (error) {
-          console.error('Error removing bookmark:', error);
           throw error;
         }
 
@@ -104,7 +103,6 @@ export const BookmarkOpportunityButton = ({
           });
 
         if (error) {
-          console.error('Error adding bookmark:', error);
           throw error;
         }
 
@@ -127,7 +125,7 @@ export const BookmarkOpportunityButton = ({
         });
       }
     } catch (error) {
-      console.error('Error toggling bookmark:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'فشل في تحديث الإشارة المرجعية' : 'Failed to update bookmark',
@@ -152,7 +150,7 @@ export const BookmarkOpportunityButton = ({
         <Bookmark className="w-4 h-4" />
       )}
       {showText && (
-        <span className="ml-2">
+        <span className={isRTL ? "mr-2" : "ml-2"}>
           {isBookmarked 
             ? (isRTL ? 'محفوظ' : 'Saved')
             : (isRTL ? 'حفظ' : 'Save')

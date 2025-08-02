@@ -48,7 +48,7 @@ export const LikeOpportunityButton = ({
       if (error) throw error;
       setIsLiked(!!data);
     } catch (error) {
-      console.error('Error checking like status:', error);
+      // Error handling - like status check failed
     }
   };
 
@@ -62,7 +62,7 @@ export const LikeOpportunityButton = ({
       if (error) throw error;
       setLikeCount(count || 0);
     } catch (error) {
-      console.error('Error loading like count:', error);
+      // Error handling - like count load failed
     }
   };
 
@@ -143,7 +143,7 @@ export const LikeOpportunityButton = ({
       });
 
     } catch (error) {
-      console.error('Error toggling like:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "Error",
         description: "Failed to update like status",
