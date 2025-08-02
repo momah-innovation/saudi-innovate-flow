@@ -199,7 +199,7 @@ export const StoragePoliciesPage: React.FC = () => {
         unprotectedBuckets: unprotectedCount,
         totalPolicies: bucketInfo.reduce((sum, b) => sum + b.policies.length, 0),
         securityScore: unprotectedCount > 0 ? 65 : 85,
-        lastReview: '2 days ago',
+        lastReview: t('storage.days_ago', { days: 2 }),
         criticalIssues: unprotectedCount
       })
     } catch (error) {

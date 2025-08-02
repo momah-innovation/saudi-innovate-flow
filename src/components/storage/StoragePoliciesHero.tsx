@@ -47,7 +47,7 @@ export function StoragePoliciesHero({
         <CardContent>
           <div className="text-2xl font-bold">{totalBuckets}</div>
           <p className="text-xs text-muted-foreground">
-            {totalPolicies} {t('active')} {t('total_policies')}
+            {t('storage.active_total_policies', { count: totalPolicies })}
           </p>
           <div className="flex gap-1 mt-2">
             <Badge variant="secondary" className="text-xs">
@@ -95,13 +95,13 @@ export function StoragePoliciesHero({
         <CardContent>
           <div className="text-2xl font-bold">{protectedBuckets}</div>
           <p className="text-xs text-muted-foreground">
-            of {totalBuckets} buckets {t('protected')}
+            {t('storage.buckets_protected', { count: totalBuckets, protected: protectedBuckets })}
           </p>
           <div className="mt-2">
             <Progress value={(protectedBuckets / totalBuckets) * 100} className="h-2" />
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            {((protectedBuckets / totalBuckets) * 100).toFixed(1)}% coverage
+            {((protectedBuckets / totalBuckets) * 100).toFixed(1)}% {t('storage.coverage')}
           </p>
         </CardContent>
       </Card>
