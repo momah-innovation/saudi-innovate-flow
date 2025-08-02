@@ -430,7 +430,7 @@ const ChallengesBrowse = () => {
                       variant="default"
                       size="sm"
                       onClick={() => setTemplatesDialogOpen(true)}
-                      className="h-8 bg-primary hover:bg-primary/90"
+                      className="h-8 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white border-0 shadow-md"
                     >
                       <FileText className="w-4 h-4 mr-2" />
                       {isRTL ? 'القوالب' : 'Templates'}
@@ -439,7 +439,7 @@ const ChallengesBrowse = () => {
                       variant="default"
                       size="sm"
                       onClick={() => setAnalyticsDialogOpen(true)}
-                      className="h-8 bg-secondary hover:bg-secondary/90"
+                      className="h-8 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white border-0 shadow-md"
                     >
                       <BarChart3 className="w-4 h-4 mr-2" />
                       {isRTL ? 'الإحصائيات' : 'Analytics'}
@@ -447,7 +447,7 @@ const ChallengesBrowse = () => {
                   </div>
                   
                   {/* Separator */}
-                  <div className="h-6 w-px bg-border"></div>
+                  <div className="h-6 w-px bg-gradient-to-b from-violet-300 to-purple-300"></div>
                 </>
               )}
               
