@@ -162,127 +162,100 @@ export const EnhancedChallengeFilters = ({
 
   return (
     <div className={cn("space-y-4 animate-fade-in", className)}>
-      {/* Enhanced Search Bar */}
-      <Card className={cn(
-        "transition-all duration-300",
-        searchFocused && "ring-2 ring-primary/20 shadow-lg scale-[1.02]"
-      )}>
-        <CardContent className="p-4">
-          <div className="relative">
-            <Search className={cn(
-              "absolute left-3 top-3 h-4 w-4 transition-colors duration-200",
-              searchFocused ? "text-primary" : "text-muted-foreground"
-            )} />
-            <Input
-              placeholder={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
-              value={filters.search}
-              onChange={(e) => updateFilter('search', e.target.value)}
-              onFocus={() => setSearchFocused(true)}
-              onBlur={() => setSearchFocused(false)}
-              className="pl-10 h-12 text-base transition-all duration-200"
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Quick Filter Chips */}
-      <div className="space-y-3">
-        <div className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-primary" />
-          <span className="text-sm font-medium text-muted-foreground">
-            {isRTL ? 'فلاتر سريعة' : 'Quick Filters'}
-          </span>
-        </div>
-        
-        <div className="flex flex-wrap gap-2">
-          {featureOptions.map((option) => (
-            <QuickFilterChip
-              key={option.value}
-              option={option}
-              isSelected={filters.features.includes(option.value)}
-              onClick={() => toggleFeature(option.value)}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Main Filters Row */}
+      {/* Single Row Layout */}
       <Card>
         <CardContent className="p-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Status Filter */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium flex items-center gap-2">
-                <Target className="w-4 h-4" />
-                {isRTL ? 'الحالة' : 'Status'}
-              </label>
-              <Select value={filters.status} onValueChange={(value) => updateFilter('status', value)}>
-                <SelectTrigger className="transition-all duration-200 hover:border-primary/50">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {statusOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      <div className="flex items-center gap-2">
-                        <option.icon className="w-4 h-4" />
+          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
+            {/* Search Bar */}
+            <div className="w-full lg:w-80">
+              <div className="relative">
+                <Search className={cn(
+                  "absolute left-3 top-3 h-4 w-4 transition-colors duration-200",
+                  searchFocused ? "text-primary" : "text-muted-foreground"
+                )} />
+                <Input
+                  placeholder={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
+                  value={filters.search}
+                  onChange={(e) => updateFilter('search', e.target.value)}
+                  onFocus={() => setSearchFocused(true)}
+                  onBlur={() => setSearchFocused(false)}
+                  className="pl-10 h-10 transition-all duration-200"
+                />
+              </div>
+            </div>
+
+            {/* Quick Filter Chips */}
+            <div className="flex flex-wrap gap-2 flex-shrink-0">
+              {featureOptions.map((option) => (
+                <QuickFilterChip
+                  key={option.value}
+                  option={option}
+                  isSelected={filters.features.includes(option.value)}
+                  onClick={() => toggleFeature(option.value)}
+                />
+              ))}
+            </div>
+
+            <Separator orientation="vertical" className="hidden lg:block h-8" />
+
+            {/* Main Filters */}
+            <div className="flex flex-wrap gap-4 w-full lg:w-auto">
+              {/* Status Filter */}
+              <div className="min-w-[140px]">
+                <Select value={filters.status} onValueChange={(value) => updateFilter('status', value)}>
+                  <SelectTrigger className="h-10 transition-all duration-200 hover:border-primary/50">
+                    <SelectValue placeholder={isRTL ? 'جميع الحالات' : 'All Status'} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {statusOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        <div className="flex items-center gap-2">
+                          <option.icon className="w-4 h-4" />
+                          {option.label}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Category Filter */}
+              <div className="min-w-[140px]">
+                <Select value={filters.category} onValueChange={(value) => updateFilter('category', value)}>
+                  <SelectTrigger className="h-10 transition-all duration-200 hover:border-primary/50">
+                    <SelectValue placeholder={isRTL ? 'جميع الفئات' : 'All Categories'} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categoryOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
                         {option.label}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-            {/* Category Filter */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium flex items-center gap-2">
-                <Filter className="w-4 h-4" />
-                {isRTL ? 'الفئة' : 'Category'}
-              </label>
-              <Select value={filters.category} onValueChange={(value) => updateFilter('category', value)}>
-                <SelectTrigger className="transition-all duration-200 hover:border-primary/50">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {categoryOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+              {/* Difficulty Filter */}
+              <div className="min-w-[140px]">
+                <Select value={filters.difficulty} onValueChange={(value) => updateFilter('difficulty', value)}>
+                  <SelectTrigger className="h-10 transition-all duration-200 hover:border-primary/50">
+                    <SelectValue placeholder={isRTL ? 'جميع المستويات' : 'All Levels'} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {difficultyOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-            {/* Difficulty Filter */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium flex items-center gap-2">
-                <SlidersHorizontal className="w-4 h-4" />
-                {isRTL ? 'الصعوبة' : 'Difficulty'}
-              </label>
-              <Select value={filters.difficulty} onValueChange={(value) => updateFilter('difficulty', value)}>
-                <SelectTrigger className="transition-all duration-200 hover:border-primary/50">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {difficultyOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Sort Filter */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium flex items-center gap-2">
-                <Award className="w-4 h-4" />
-                {isRTL ? 'ترتيب حسب' : 'Sort by'}
-              </label>
-              <div className="flex gap-2">
+              {/* Sort Filter */}
+              <div className="flex gap-2 min-w-[140px]">
                 <Select value={filters.sortBy} onValueChange={(value) => updateFilter('sortBy', value)}>
-                  <SelectTrigger className="transition-all duration-200 hover:border-primary/50">
-                    <SelectValue />
+                  <SelectTrigger className="h-10 transition-all duration-200 hover:border-primary/50">
+                    <SelectValue placeholder={isRTL ? 'ترتيب حسب' : 'Sort by'} />
                   </SelectTrigger>
                   <SelectContent>
                     {sortOptions.map((option) => (
@@ -299,32 +272,35 @@ export const EnhancedChallengeFilters = ({
                   variant="outline"
                   size="sm"
                   onClick={() => updateFilter('sortOrder', filters.sortOrder === 'asc' ? 'desc' : 'asc')}
-                  className="px-3 transition-all duration-200 hover:scale-105"
+                  className="h-10 px-3 transition-all duration-200 hover:scale-105"
                 >
                   {filters.sortOrder === 'asc' ? '↑' : '↓'}
                 </Button>
               </div>
+            </div>
+
+            {/* Advanced Filters Toggle */}
+            <div className="flex-shrink-0">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
+                className="h-10 transition-all duration-200 hover:bg-muted/80"
+              >
+                <SlidersHorizontal className="w-4 h-4 mr-2" />
+                {isRTL ? 'فلاتر متقدمة' : 'Advanced Filters'}
+                <ChevronDown className={cn(
+                  "w-4 h-4 ml-2 transition-transform duration-200",
+                  isAdvancedOpen && "rotate-180"
+                )} />
+              </Button>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Advanced Filters */}
-      <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>
-        <CollapsibleTrigger asChild>
-          <Button 
-            variant="outline" 
-            className="w-full transition-all duration-200 hover:bg-muted/80"
-          >
-            <SlidersHorizontal className="w-4 h-4 mr-2" />
-            {isRTL ? 'فلاتر متقدمة' : 'Advanced Filters'}
-            <ChevronDown className={cn(
-              "w-4 h-4 ml-2 transition-transform duration-200",
-              isAdvancedOpen && "rotate-180"
-            )} />
-          </Button>
-        </CollapsibleTrigger>
-        
+      <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>        
         <CollapsibleContent className="animate-accordion-down">
           <Card className="mt-4">
             <CardContent className="p-6 space-y-6">
