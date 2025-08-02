@@ -505,6 +505,108 @@ export interface PaginatedResponse<T> {
   };
 }
 
+// Form Data Types
+export interface IdeaFormData {
+  title_ar: string;
+  description_ar: string;
+  status: string;
+  maturity_level: string;
+  innovator_id: string;
+  challenge_id: string;
+  focus_question_id: string;
+  campaign_id: string;
+  event_id: string;
+  solution_approach: string;
+  implementation_plan: string;
+  expected_impact: string;
+  resource_requirements: string;
+}
+
+export interface EventFormData {
+  title_ar: string;
+  description_ar: string;
+  event_type: string;
+  event_date: string;
+  end_date: string;
+  start_time: string;
+  end_time: string;
+  location: string;
+  virtual_link: string;
+  format: string;
+  max_participants: string;
+  registered_participants: string;
+  actual_participants: string;
+  status: string;
+  budget: string;
+  event_manager_id: string;
+  campaign_id: string;
+  challenge_id: string;
+  sector_id: string;
+  event_visibility: string;
+  event_category: string;
+  inherit_from_campaign: boolean;
+  is_recurring: boolean;
+  recurrence_pattern: string;
+  recurrence_end_date: string;
+  target_stakeholder_groups: string[];
+}
+
+export interface CampaignFormData {
+  id?: string;
+  title_ar: string;
+  description_ar?: string;
+  status: string;
+  theme: string;
+  start_date: string;
+  end_date: string;
+  registration_deadline: string;
+  target_participants: number | null;
+  target_ideas: number | null;
+  budget: number | null;
+  success_metrics?: string;
+  campaign_manager_id: string;
+  sector_id: string;
+  deputy_id: string;
+  department_id: string;
+  challenge_id: string;
+  sector_ids: string[];
+  deputy_ids: string[];
+  department_ids: string[];
+  challenge_ids: string[];
+  partner_ids: string[];
+  stakeholder_ids: string[];
+}
+
+export interface TeamFormData {
+  name: string;
+  description?: string;
+  type: 'innovation' | 'evaluation' | 'implementation' | 'research';
+  status: 'active' | 'inactive' | 'disbanded';
+  department_id?: string;
+  manager_id: string;
+  max_members?: number;
+  skills_required?: string[];
+  objectives?: string[];
+}
+
+// System Lists Interface for useSystemLists hook
+export interface SystemLists {
+  generalStatusOptions: string[];
+  priorityLevels: string[];
+  sensitivityLevels: string[];
+  challengeTypes: string[];
+  ideaMaturityLevels: string[];
+  experienceLevels: string[];
+  departmentTypes: string[];
+  themes: string[];
+  eventTypes: string[];
+  eventFormats: string[];
+  eventCategories: string[];
+  eventVisibilityOptions: string[];
+  recurrencePatternOptions: string[];
+  campaignThemeOptions: string[];
+}
+
 // Component Props Types
 export interface BaseComponentProps {
   className?: string;

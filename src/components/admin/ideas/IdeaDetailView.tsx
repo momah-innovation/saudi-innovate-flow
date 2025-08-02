@@ -26,43 +26,20 @@ import {
   AlertCircle
 } from "lucide-react";
 import { format } from "date-fns";
+import { Idea } from "./IdeasManagementList";
 
-interface Idea {
-  id: string;
-  title_ar: string;
-  description_ar: string;
-  status: string;
-  maturity_level: string;
-  overall_score: number;
-  innovator_id: string;
-  challenge_id?: string;
-  focus_question_id?: string;
+interface IdeaDetailViewIdea extends Idea {
   solution_approach?: string;
   implementation_plan?: string;
   expected_impact?: string;
   resource_requirements?: string;
-  created_at: string;
-  updated_at: string;
-  innovator?: {
-    user_id: string;
-    display_name: string;
-  };
-  challenge?: {
-    id: string;
-    title_ar: string;
-    status: string;
-  };
-  focus_question?: {
-    id: string;
-    question_text_ar: string;
-  };
 }
 
 interface IdeaDetailViewProps {
   isOpen: boolean;
   onClose: () => void;
-  idea: Idea | null;
-  onEdit: (idea: Idea) => void;
+  idea: IdeaDetailViewIdea | null;
+  onEdit: (idea: IdeaDetailViewIdea) => void;
   onRefresh: () => void;
 }
 

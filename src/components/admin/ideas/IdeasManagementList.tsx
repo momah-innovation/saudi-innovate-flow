@@ -37,14 +37,16 @@ import { ViewLayouts } from "@/components/ui/view-layouts";
 import { EmptyState } from "@/components/ui/empty-state";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { format } from "date-fns";
+import { ManagementListProps } from "@/types";
 
-interface Idea {
+// Local Idea interface for this management component
+interface IdeaListItem {
   id: string;
   title_ar: string;
   description_ar: string;
   status: string;
   maturity_level: string;
-  overall_score: number;
+  overall_score?: number;
   innovator_id: string;
   challenge_id?: string;
   focus_question_id?: string;
@@ -65,9 +67,9 @@ interface Idea {
   };
 }
 
-export type { Idea };
+export type { IdeaListItem as Idea };
 
-interface IdeasManagementListProps {
+interface IdeasManagementListProps extends ManagementListProps {
   viewMode: 'cards' | 'list' | 'grid';
   searchTerm: string;
   selectedItems: string[];
@@ -79,8 +81,8 @@ interface IdeasManagementListProps {
     maturityLevel: string;
     scoreRange: [number, number];
   };
-  onEdit: (idea: Idea) => void;
-  onView: (idea: Idea) => void;
+  onEdit: (idea: IdeaListItem) => void;
+  onView: (idea: IdeaListItem) => void;
   onRefresh: () => void;
 }
 
@@ -94,9 +96,9 @@ export function IdeasManagementList({
   onView,
   onRefresh 
 }: IdeasManagementListProps) {
-  const [ideas, setIdeas] = useState<Idea[]>([]);
+  const [ideas, setIdeas] = useState<IdeaListItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
+  const [selectedIdea, setSelectedIdea] = useState<IdeaListItem | null>(null);
   const [showDetailView, setShowDetailView] = useState(false);
   const [showWizard, setShowWizard] = useState(false);
   const [localSearchTerm, setLocalSearchTerm] = useState("");
@@ -434,7 +436,7 @@ export function IdeasManagementList({
 
       {/* Detail View Dialog */}
       <IdeaDetailView
-        idea={selectedIdea}
+        idea={selectedIdea as any}
         isOpen={showDetailView}
         onClose={() => {
           setShowDetailView(false);
@@ -442,7 +444,7 @@ export function IdeasManagementList({
         }}
         onEdit={(idea) => {
           setShowDetailView(false);
-          setSelectedIdea(idea);
+          setSelectedIdea(idea as IdeaListItem);
           setShowWizard(true);
         }}
         onRefresh={fetchIdeas}

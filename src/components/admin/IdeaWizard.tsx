@@ -10,6 +10,7 @@ import { useTranslation } from "@/hooks/useAppTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { IdeaFormData, SystemLists } from "@/types";
 
 interface Challenge {
   id: string;
@@ -79,7 +80,7 @@ export function IdeaWizard({
   const { t } = useTranslation();
   const { generalStatusOptions, experienceLevels } = useSystemLists();
   
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<IdeaFormData>({
     title_ar: "",
     description_ar: "",
     status: "draft",

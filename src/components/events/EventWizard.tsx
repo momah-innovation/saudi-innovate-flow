@@ -29,6 +29,7 @@ import {
   Settings
 } from "lucide-react";
 import { updateEventPartners, updateEventStakeholders, updateEventFocusQuestions, updateEventChallenges } from "@/lib/relationshipHelpers";
+import { EventFormData, SystemLists } from "@/types";
 
 interface Event {
   id: string;
@@ -86,7 +87,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
   const [challengeSearch, setChallengeSearch] = useState("");
 
   // Form data
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<EventFormData>({
     title_ar: "",
     description_ar: "",
     event_type: "workshop",

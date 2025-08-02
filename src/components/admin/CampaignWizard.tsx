@@ -30,39 +30,14 @@ import {
   Check
 } from "lucide-react";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { CampaignFormData, SystemLists } from "@/types";
 
-interface CampaignData {
-  id?: string;
-  title_ar: string;
-  description_ar?: string;
-  status: string;
-  theme: string;
-  start_date: string;
-  end_date: string;
-  registration_deadline: string;
-  target_participants: number | null;
-  target_ideas: number | null;
-  budget: number | null;
-  success_metrics?: string;
-  campaign_manager_id: string;
-  // Single reference fields
-  sector_id: string;
-  deputy_id: string;
-  department_id: string;
-  challenge_id: string;
-  // Linked tables arrays
-  sector_ids: string[];
-  deputy_ids: string[];
-  department_ids: string[];
-  challenge_ids: string[];
-  partner_ids: string[];
-  stakeholder_ids: string[];
-}
+// Use the centralized CampaignFormData type
 
 interface CampaignWizardProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  editingCampaign?: CampaignData | null;
+  editingCampaign?: CampaignFormData | null;
   onSuccess: () => void;
 }
 
@@ -78,7 +53,7 @@ export function CampaignWizard({
   const [loading, setLoading] = useState(false);
 
   // Form data
-  const [formData, setFormData] = useState<CampaignData>({
+  const [formData, setFormData] = useState<CampaignFormData>({
     title_ar: "",
     description_ar: "",
     status: "planning",
