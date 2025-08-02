@@ -6,7 +6,7 @@ import { StorageAnalyticsDashboard } from '@/components/admin/StorageAnalyticsDa
 import { StorageQuotaManager } from '@/components/admin/StorageQuotaManager';
 import { UploaderSettingsTab } from './UploaderSettingsTab';
 import { VersionedFileUploader } from '@/components/ui/versioned-file-uploader';
-import { EnhancedFileUploader, EnhancedFileUploaderRef } from '@/components/ui/enhanced-file-uploader';
+
 import { useFileUploader } from '@/hooks/useFileUploader';
 import { useUploaderSettingsContext } from '@/contexts/UploaderSettingsContext';
 import { FileViewDialog } from './FileViewDialog';
@@ -69,8 +69,6 @@ export function StorageManagementPage() {
     thumbnailGeneration: false
   }, loading: settingsLoading } = useUploaderSettingsContext();
   
-  // Enhanced File Uploader refs for each configuration
-  const uploaderRefs = useRef<Record<string, EnhancedFileUploaderRef>>({});
   
   const [selectedBucket, setSelectedBucket] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<any | null>(null);
@@ -1074,103 +1072,40 @@ export function StorageManagementPage() {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <EnhancedFileUploader
-                        ref={(ref) => {
-                          if (ref) uploaderRefs.current[key] = ref;
-                        }}
-                        config={config}
-                        label={t('storage.select_files')}
-                        description={t('storage.drag_drop_description')}
-                        showPreview={true}
-                        showMetadata={true}
-                        allowReorder={true}
-                        onUploadComplete={(files) => {
-                          toast({
-                            title: t('storage.upload_successful'),
-                            description: t('storage.files_uploaded', { count: files.length }),
-                            variant: 'default'
-                          });
-                          loadStorageData(); // Refresh the storage data
-                        }}
-                        onUploadProgress={(progress) => {
-                          // Progress is handled internally by the component
-                        }}
-                        onFileValidationError={(file, error) => {
-                          toast({
-                            title: t('storage.validation_error'),
-                            description: `${file.name}: ${error}`,
-                            variant: 'destructive'
-                          });
-                        }}
-                        customValidation={(file) => {
-                          // Custom validation for file naming
-                          const namePattern = /^[a-zA-Z0-9._-]+$/;
-                          if (!namePattern.test(file.name)) {
-                            return {
-                              valid: false,
-                              error: t('storage.invalid_filename')
-                            };
-                          }
-                          return { valid: true };
-                        }}
-                      />
-                      
-                      {/* Quick Actions */}
-                      <div className={`flex gap-2 mt-4 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            uploaderRefs.current[key]?.clearFiles();
-                            toast({
-                              title: t('storage.files_cleared'),
-                              description: t('storage.files_cleared_description')
-                            });
-                          }}
-                        >
-                          <X className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                          {t('storage.clear_files')}
-                        </Button>
-                        <Button
-                          variant="default"
-                          size="sm"
-                          onClick={async () => {
-                            try {
-                              const files = uploaderRefs.current[key]?.getFiles() || [];
-                              if (files.length === 0) {
-                                toast({
-                                  title: t('storage.no_files'),
-                                  description: t('storage.no_files_description'),
-                                  variant: 'destructive'
-                                });
-                                return;
+                      {/* Simple file input to avoid form context issues */}
+                      <div className="space-y-4">
+                        <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
+                          <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                          <p className="text-sm text-muted-foreground mb-2">
+                            {t('storage.select_files')} ({config.allowedTypes.join(', ')})
+                          </p>
+                          <p className="text-xs text-muted-foreground mb-4">
+                            {t('storage.drag_drop_description')}
+                          </p>
+                          <input
+                            type="file"
+                            multiple={config.maxFiles > 1}
+                            accept={config.allowedTypes.map(type => `.${type}`).join(',')}
+                            onChange={(e) => {
+                              if (e.target.files) {
+                                handleFileUpload(e.target.files);
+                                setSelectedUploadBucket(config.bucket);
                               }
-                              
-                              // Commit temporary files to permanent storage
-                              await uploaderRefs.current[key]?.commitFiles({
-                                uploadType: config.uploadType,
-                                maxSizeBytes: config.maxSizeBytes,
-                                maxFiles: config.maxFiles,
-                                allowedTypes: config.allowedTypes,
-                                entityId: 'storage-management',
-                                tableName: 'file_records',
-                                columnName: 'file_path'
-                              });
-                              
-                              loadStorageData(); // Refresh storage data
-                            } catch (error) {
-                              toast({
-                                title: t('storage.commit_failed'),
-                                description: t('storage.commit_failed_description'),
-                                variant: 'destructive'
-                              });
-                            }
-                          }}
-                          disabled={isUploading}
-                        >
-                          <Shield className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                          {t('storage.commit_files')}
-                        </Button>
+                            }}
+                            className="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                          />
+                        </div>
+                        
+                        {/* Upload Progress */}
+                        {isUploading && (
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span>{t('common.uploading')}</span>
+                              <span>Processing...</span>
+                            </div>
+                            <Progress value={75} className="h-2" />
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
