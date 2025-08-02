@@ -1116,6 +1116,39 @@ export type Database = {
           },
         ]
       }
+      cleanup_logs: {
+        Row: {
+          cleanup_type: string
+          created_at: string | null
+          details: Json | null
+          errors_encountered: number | null
+          execution_time_ms: number | null
+          files_deleted: number | null
+          files_processed: number | null
+          id: string
+        }
+        Insert: {
+          cleanup_type: string
+          created_at?: string | null
+          details?: Json | null
+          errors_encountered?: number | null
+          execution_time_ms?: number | null
+          files_deleted?: number | null
+          files_processed?: number | null
+          id?: string
+        }
+        Update: {
+          cleanup_type?: string
+          created_at?: string | null
+          details?: Json | null
+          errors_encountered?: number | null
+          execution_time_ms?: number | null
+          files_deleted?: number | null
+          files_processed?: number | null
+          id?: string
+        }
+        Relationships: []
+      }
       collection_items: {
         Row: {
           added_at: string | null
@@ -6715,6 +6748,10 @@ export type Database = {
       trigger_idea_workflow_change: {
         Args: { p_idea_id: string; p_to_status: string; p_reason?: string }
         Returns: boolean
+      }
+      trigger_manual_cleanup: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       update_file_paths_for_migration: {
         Args: Record<PropertyKey, never>
