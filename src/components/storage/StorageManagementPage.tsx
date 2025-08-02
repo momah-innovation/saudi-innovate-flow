@@ -12,7 +12,7 @@ import { useUploaderSettingsContext } from '@/contexts/UploaderSettingsContext';
 import { FileViewDialog } from './FileViewDialog';
 import { BucketManagementDialog } from './BucketManagementDialog';
 import { BucketViewDialog } from './BucketViewDialog';
-import { EnhancedFileUploader } from '@/components/ui/enhanced-file-uploader';
+
 import { StorageFilters, type FilterOptions, type SortOptions } from './StorageFilters';
 import { LayoutToggle, LayoutType } from '@/components/ui/layout-toggle';
 import { StorageFileCard } from './StorageFileCard';
@@ -1073,18 +1073,47 @@ export function StorageManagementPage() {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <EnhancedFileUploader
-                        config={config}
-                        onUploadComplete={(files) => {
-                          toast({
-                            title: t('upload_successful'),
-                            description: t('files_uploaded_successfully', { count: files.length })
-                          });
-                          loadStorageData();
-                        }}
-                        showPreview={true}
-                        showMetadata={true}
-                      />
+                      <div className="space-y-4">
+                        <div 
+                          className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center hover:border-primary transition-colors cursor-pointer"
+                          onClick={() => {
+                            const input = document.createElement('input');
+                            input.type = 'file';
+                            input.multiple = config.maxFiles > 1;
+                            input.accept = config.allowedTypes.map(type => `.${type}`).join(',');
+                            input.onchange = (e) => {
+                              const files = (e.target as HTMLInputElement).files;
+                              if (files) {
+                                handleFileUpload(files);
+                                setSelectedUploadBucket(config.bucket);
+                              }
+                            };
+                            input.click();
+                          }}
+                        >
+                          <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                          <p className="text-sm text-muted-foreground mb-2">
+                            {t('storage.select_files')} ({config.allowedTypes.join(', ')})
+                          </p>
+                          <p className="text-xs text-muted-foreground mb-4">
+                            {t('storage.drag_drop_description')}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            Max size: {(config.maxSizeBytes / 1024 / 1024).toFixed(1)}MB • Max files: {config.maxFiles}
+                          </p>
+                        </div>
+                        
+                        {/* Upload Progress */}
+                        {isUploading && (
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span>{t('common.uploading')}</span>
+                              <span>Processing...</span>
+                            </div>
+                            <Progress value={75} className="h-2" />
+                          </div>
+                        )}
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
