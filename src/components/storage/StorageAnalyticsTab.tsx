@@ -30,7 +30,7 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
   
   const { getAllBucketAnalytics, performAdminCleanup } = useStorageAnalytics()
   const { toast } = useToast()
-  const { t } = useTranslation()
+  const { t, isRTL } = useTranslation()
 
   useEffect(() => {
     loadAnalytics()
@@ -87,7 +87,7 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
   }
 
   return (
-    <div className={`space-y-6 ${className}`}>
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'} ${className}`}>
       {/* Admin Controls */}
       <Card>
         <CardHeader>
@@ -291,7 +291,7 @@ export function StorageAnalyticsTab({ className }: StorageAnalyticsTabProps) {
 
       {/* Admin Cleanup Confirmation Dialog */}
       <AlertDialog open={showCleanupDialog} onOpenChange={setShowCleanupDialog}>
-        <AlertDialogContent>
+        <AlertDialogContent dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-destructive" />

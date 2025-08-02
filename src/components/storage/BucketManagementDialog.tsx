@@ -19,7 +19,7 @@ interface BucketManagementDialogProps {
 }
 
 export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }: BucketManagementDialogProps) {
-  const { t } = useTranslation()
+  const { t, isRTL } = useTranslation()
   const { toast } = useToast()
   const [isUpdating, setIsUpdating] = useState(false)
   const [corsEnabled, setCorsEnabled] = useState(true)
@@ -75,7 +75,8 @@ export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className={isRTL ? 'font-arabic' : 'font-english'}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <Database className="w-5 h-5" />
@@ -220,6 +221,7 @@ export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }
               </div>
             </div>
           </div>
+        </div>
         </div>
       </DialogContent>
     </Dialog>

@@ -287,7 +287,7 @@ export const AdvancedStorageManagement = () => {
                 {t('archive_files')}
               </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent>
+            <AlertDialogContent dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'font-arabic' : 'font-english'}>
               <AlertDialogHeader>
                 <AlertDialogTitle>{t('archive_old_files')}</AlertDialogTitle>
                 <AlertDialogDescription>

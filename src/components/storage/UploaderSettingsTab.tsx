@@ -58,7 +58,7 @@ interface UploaderSettingsTabProps {
 
 export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
   const { toast } = useToast()
-  const { t } = useTranslation()
+  const { t, isRTL } = useTranslation()
   const healthData = useSystemHealth()
   const [configs, setConfigs] = useState<UploaderConfig[]>([])
   const [allBuckets, setAllBuckets] = useState<any[]>([])
@@ -499,7 +499,7 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
   )
 
   return (
-    <div className={`space-y-6 ${className}`}>
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={`space-y-6 ${isRTL ? 'font-arabic' : 'font-english'} ${className}`}>
       {/* Global Settings */}
       <Card>
         <CardHeader>

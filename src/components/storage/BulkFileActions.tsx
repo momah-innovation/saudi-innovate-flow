@@ -45,7 +45,7 @@ export function BulkFileActions({
   buckets,
   allFiles
 }: BulkFileActionsProps) {
-  const { t } = useTranslation();
+  const { t, isRTL } = useTranslation();
   const { toast } = useToast();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showMoveDialog, setShowMoveDialog] = useState(false);
@@ -253,7 +253,8 @@ export function BulkFileActions({
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent className="bg-background">
+        <AlertDialogContent className="bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
+          <div className={isRTL ? 'font-arabic' : 'font-english'}>
           <AlertDialogHeader>
             <AlertDialogTitle>{t('delete_files')}</AlertDialogTitle>
             <AlertDialogDescription>
@@ -269,12 +270,14 @@ export function BulkFileActions({
               {t('delete_files')}
             </AlertDialogAction>
           </AlertDialogFooter>
+          </div>
         </AlertDialogContent>
       </AlertDialog>
 
       {/* Move Dialog */}
       <AlertDialog open={showMoveDialog} onOpenChange={setShowMoveDialog}>
-        <AlertDialogContent className="bg-background">
+        <AlertDialogContent className="bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
+          <div className={isRTL ? 'font-arabic' : 'font-english'}>
           <AlertDialogHeader>
             <AlertDialogTitle>{t('move_files')}</AlertDialogTitle>
             <AlertDialogDescription>
@@ -307,6 +310,7 @@ export function BulkFileActions({
               {t('move_files')}
             </AlertDialogAction>
           </AlertDialogFooter>
+          </div>
         </AlertDialogContent>
       </AlertDialog>
     </div>

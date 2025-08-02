@@ -14,7 +14,7 @@ interface FileViewDialogProps {
 }
 
 export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps) {
-  const { t } = useTranslation()
+  const { t, isRTL } = useTranslation()
   const { toast } = useToast()
 
   if (!file) return null
@@ -199,7 +199,8 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className={isRTL ? 'font-arabic' : 'font-english'}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <span className="text-2xl">{getFileIcon()}</span>
@@ -283,6 +284,7 @@ export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps
               </Button>
             )}
           </div>
+        </div>
         </div>
       </DialogContent>
     </Dialog>

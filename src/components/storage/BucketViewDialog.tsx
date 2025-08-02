@@ -32,7 +32,7 @@ export function BucketViewDialog({
   onViewFiles, 
   onOpenSettings 
 }: BucketViewDialogProps) {
-  const { t } = useTranslation();
+  const { t, isRTL } = useTranslation();
   if (!bucket) return null;
 
   const formatSize = (size?: number) => {
@@ -45,7 +45,8 @@ export function BucketViewDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className={`${isRTL ? 'font-arabic' : 'font-english'}`}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <Database className="w-5 h-5" />
@@ -186,6 +187,7 @@ export function BucketViewDialog({
               </Button>
             </div>
           </div>
+        </div>
         </div>
       </DialogContent>
     </Dialog>
