@@ -5703,6 +5703,7 @@ export type Database = {
           id: string
           quota_bytes: number
           updated_at: string | null
+          updated_by: string | null
         }
         Insert: {
           bucket_name: string
@@ -5711,6 +5712,7 @@ export type Database = {
           id?: string
           quota_bytes: number
           updated_at?: string | null
+          updated_by?: string | null
         }
         Update: {
           bucket_name?: string
@@ -5719,6 +5721,7 @@ export type Database = {
           id?: string
           quota_bytes?: number
           updated_at?: string | null
+          updated_by?: string | null
         }
         Relationships: []
       }
