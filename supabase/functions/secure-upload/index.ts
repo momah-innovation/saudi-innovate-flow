@@ -461,9 +461,12 @@ Deno.serve(async (req) => {
         throw new Error(`File size exceeds limit of ${Math.round(config.maxSizeBytes / 1024 / 1024)}MB`)
       }
 
-      // Generate unique filename
+      // Generate unique filename with collision prevention
       const fileExtension = file.name.split('.').pop()
-      const fileName = `${entityId || user.id}-${Date.now()}.${fileExtension}`
+      const timestamp = Date.now()
+      const randomSuffix = crypto.randomUUID().slice(0, 8)
+      const sanitizedOriginalName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_').slice(0, 50)
+      const fileName = `${entityId || user.id}_${timestamp}_${randomSuffix}_${sanitizedOriginalName}`
       
       // Use temporary path for temporary uploads
       let filePath: string
