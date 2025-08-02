@@ -94,51 +94,69 @@ const ChallengesBrowse = () => {
 
   // Filter and search logic
   const getFilteredChallenges = () => {
+    console.log('🔍 getFilteredChallenges - Input challenges:', challenges.length);
+    console.log('🔍 Applied filters:', filters);
+    
     let filtered = [...challenges];
 
     // Apply search filter
     if (filters.search) {
+      const beforeSearch = filtered.length;
       filtered = filtered.filter(challenge =>
         (isRTL ? challenge.title_ar : challenge.title_en || challenge.title_ar).toLowerCase().includes(filters.search.toLowerCase()) ||
         (isRTL ? challenge.description_ar : challenge.description_en || challenge.description_ar).toLowerCase().includes(filters.search.toLowerCase())
       );
+      console.log(`🔍 After search filter: ${beforeSearch} → ${filtered.length}`);
     }
 
     // Apply status filter
     if (filters.status !== 'all') {
+      const beforeStatus = filtered.length;
       filtered = filtered.filter(challenge => challenge.status === filters.status);
+      console.log(`🔍 After status filter (${filters.status}): ${beforeStatus} → ${filtered.length}`);
     }
 
     // Apply category filter
     if (filters.category !== 'all') {
+      const beforeCategory = filtered.length;
       filtered = filtered.filter(challenge => {
         const categoryKey = isRTL ? challenge.category : challenge.category_en || challenge.category;
         return categoryKey.toLowerCase().includes(filters.category.toLowerCase());
       });
+      console.log(`🔍 After category filter (${filters.category}): ${beforeCategory} → ${filtered.length}`);
     }
 
     // Apply difficulty filter
     if (filters.difficulty !== 'all') {
+      const beforeDifficulty = filtered.length;
       filtered = filtered.filter(challenge => challenge.difficulty.toLowerCase() === filters.difficulty.toLowerCase());
+      console.log(`🔍 After difficulty filter (${filters.difficulty}): ${beforeDifficulty} → ${filtered.length}`);
     }
 
     // Apply prize range filter
+    const beforePrize = filtered.length;
     filtered = filtered.filter(challenge => {
       const budgetValue = challenge.estimated_budget || 0;
       return budgetValue >= filters.prizeRange[0] && budgetValue <= filters.prizeRange[1];
     });
+    console.log(`🔍 After prize range filter [${filters.prizeRange[0]}, ${filters.prizeRange[1]}]: ${beforePrize} → ${filtered.length}`);
 
     // Apply participant range filter
+    const beforeParticipants = filtered.length;
     filtered = filtered.filter(challenge => {
       const participantCount = challenge.participants || 0;
       return participantCount >= filters.participantRange[0] && participantCount <= filters.participantRange[1];
     });
+    console.log(`🔍 After participant range filter [${filters.participantRange[0]}, ${filters.participantRange[1]}]: ${beforeParticipants} → ${filtered.length}`);
 
     // Apply feature filters
     if (filters.features.includes('trending')) {
+      const beforeTrending = filtered.length;
       filtered = filtered.filter(challenge => challenge.trending || challenge.priority_level === 'عالي');
+      console.log(`🔍 After trending filter: ${beforeTrending} → ${filtered.length}`);
     }
     if (filters.features.includes('ending-soon')) {
+      const beforeEndingSoon = filtered.length;
       filtered = filtered.filter(challenge => {
         if (!challenge.end_date) return false;
         const deadline = new Date(challenge.end_date);
@@ -146,6 +164,7 @@ const ChallengesBrowse = () => {
         const daysLeft = Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
         return daysLeft <= 7 && daysLeft > 0;
       });
+      console.log(`🔍 After ending-soon filter: ${beforeEndingSoon} → ${filtered.length}`);
     }
 
     // Apply sorting
@@ -181,24 +200,46 @@ const ChallengesBrowse = () => {
       }
     });
 
+    console.log('🔍 Final filtered challenges:', filtered.length);
     return filtered;
   };
 
   const getTabFilteredChallenges = (challenges: any[]) => {
+    console.log('📊 getTabFilteredChallenges - Input challenges:', challenges.length);
+    console.log('📊 Active tab:', activeTab);
+    
+    let tabFiltered;
     switch (activeTab) {
       case 'active':
-        return challenges.filter(c => c.status === 'active');
+        tabFiltered = challenges.filter(c => c.status === 'active');
+        break;
       case 'upcoming':
-        return challenges.filter(c => c.status === 'planning' || c.status === 'upcoming');
+        tabFiltered = challenges.filter(c => c.status === 'planning' || c.status === 'upcoming');
+        break;
       case 'trending':
-        return challenges.filter(c => c.priority_level === 'عالي' || (c.participants || 0) > 50);
+        tabFiltered = challenges.filter(c => c.priority_level === 'عالي' || (c.participants || 0) > 50);
+        break;
       default:
-        return challenges;
+        tabFiltered = challenges;
+        break;
     }
+    
+    console.log('📊 getTabFilteredChallenges - After tab filter:', tabFiltered.length);
+    console.log('📊 Sample challenge data:', tabFiltered.slice(0, 3).map(c => ({ 
+      id: c.id.slice(0, 8), 
+      status: c.status, 
+      participants: c.participants,
+      priority: c.priority_level,
+      title: c.title_ar?.slice(0, 30) + '...'
+    })));
+    
+    return tabFiltered;
   };
 
   const filteredChallenges = getFilteredChallenges();
   const tabFilteredChallenges = getTabFilteredChallenges(filteredChallenges);
+  
+  console.log('🎯 Final counts - filtered:', filteredChallenges.length, 'tabFiltered:', tabFilteredChallenges.length);
 
   // Event handlers
   const handleViewDetails = (challenge: any) => {
