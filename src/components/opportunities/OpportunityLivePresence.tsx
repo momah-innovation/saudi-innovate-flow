@@ -69,7 +69,7 @@ export const OpportunityLivePresence = ({ opportunityId, className }: LivePresen
       // Load existing presence
       await loadPresenceUsers();
     } catch (error) {
-      console.error('Error initializing presence:', error);
+      // Failed to initialize presence - continue without live presence
     }
   };
 
@@ -109,7 +109,7 @@ export const OpportunityLivePresence = ({ opportunityId, className }: LivePresen
       if (error) throw error;
       setPresenceUsers(data || []);
     } catch (error) {
-      console.error('Error loading presence users:', error);
+      // Failed to load presence users - use empty array
     }
   };
 
@@ -126,7 +126,7 @@ export const OpportunityLivePresence = ({ opportunityId, className }: LivePresen
         .eq('opportunity_id', opportunityId)
         .eq('session_id', sessionId);
     } catch (error) {
-      console.error('Error updating presence:', error);
+      // Failed to update presence - continue silently
     }
   };
 
@@ -140,7 +140,7 @@ export const OpportunityLivePresence = ({ opportunityId, className }: LivePresen
         .eq('opportunity_id', opportunityId)
         .eq('session_id', sessionId);
     } catch (error) {
-      console.error('Error marking user inactive:', error);
+      // Failed to mark user inactive - continue silently
     }
   };
 
@@ -157,7 +157,7 @@ export const OpportunityLivePresence = ({ opportunityId, className }: LivePresen
         .eq('opportunity_id', opportunityId)
         .eq('session_id', sessionId);
     } catch (error) {
-      console.error('Error updating section:', error);
+      // Failed to update section - continue silently
     }
   };
 
@@ -176,7 +176,7 @@ export const OpportunityLivePresence = ({ opportunityId, className }: LivePresen
         </Badge>
       </div>
       
-      <div className="flex -space-x-2">
+      <div className={`flex ${isRTL ? '-space-x-reverse -space-x-2' : '-space-x-2'}`}>
         {activeUsers.slice(0, 5).map((user, index) => (
           <Avatar key={user.session_id} className="w-6 h-6 border-2 border-background">
             <AvatarImage src={user.user_avatar} />

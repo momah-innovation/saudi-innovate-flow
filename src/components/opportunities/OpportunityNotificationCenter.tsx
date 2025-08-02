@@ -62,10 +62,13 @@ export const OpportunityNotificationCenter = () => {
 
       setNotifications(transformedNotifications);
     } catch (error) {
-      console.error('Error loading notifications:', error);
-      
-      // Fallback to empty array if no notifications table exists yet
+      // Failed to load notifications - use empty array
       setNotifications([]);
+      toast({
+        title: isRTL ? 'خطأ' : 'Error',
+        description: isRTL ? 'فشل في تحميل الإشعارات' : 'Failed to load notifications',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
@@ -114,10 +117,10 @@ export const OpportunityNotificationCenter = () => {
   return (
     <>
       <Button variant="outline" size="sm" className="relative" onClick={() => setOpen(true)}>
-        <Bell className="w-4 h-4 mr-2" />
+        <Bell className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
         {isRTL ? 'الإشعارات' : 'Notifications'}
         {unreadCount > 0 && (
-          <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-red-500 text-white text-xs">
+          <Badge className={`absolute -top-2 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-red-500 text-white text-xs ${isRTL ? '-left-2' : '-right-2'}`}>
             {unreadCount}
           </Badge>
         )}

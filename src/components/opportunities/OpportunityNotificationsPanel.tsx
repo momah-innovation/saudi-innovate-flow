@@ -95,7 +95,12 @@ export const OpportunityNotificationsPanel = ({
       setNotifications(data || []);
       setUnreadCount(data?.filter(n => !n.is_read).length || 0);
     } catch (error) {
-      console.error('Error loading notifications:', error);
+      // Failed to load notifications
+      toast({
+        title: isRTL ? 'خطأ' : 'Error',
+        description: isRTL ? 'فشل في تحميل الإشعارات' : 'Failed to load notifications',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
@@ -116,7 +121,12 @@ export const OpportunityNotificationsPanel = ({
       );
       setUnreadCount(prev => Math.max(0, prev - 1));
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      // Failed to mark as read
+      toast({
+        title: isRTL ? 'خطأ' : 'Error',
+        description: isRTL ? 'فشل في تحديث الإشعار' : 'Failed to update notification',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -140,7 +150,12 @@ export const OpportunityNotificationsPanel = ({
         description: isRTL ? 'تم تحديد جميع الإشعارات كمقروءة' : 'All notifications marked as read',
       });
     } catch (error) {
-      console.error('Error marking all as read:', error);
+      // Failed to mark all as read
+      toast({
+        title: isRTL ? 'خطأ' : 'Error',
+        description: isRTL ? 'فشل في تحديث الإشعارات' : 'Failed to update notifications',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -198,7 +213,7 @@ export const OpportunityNotificationsPanel = ({
             <Bell className="w-5 h-5" />
             {isRTL ? 'الإشعارات' : 'Notifications'}
             {unreadCount > 0 && (
-              <Badge variant="destructive" className="ml-2">
+              <Badge variant="destructive" className={isRTL ? 'mr-2' : 'ml-2'}>
                 {unreadCount}
               </Badge>
             )}
@@ -209,7 +224,7 @@ export const OpportunityNotificationsPanel = ({
               size="sm"
               onClick={markAllAsRead}
             >
-              <Check className="w-4 h-4 mr-2" />
+              <Check className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               {isRTL ? 'تحديد الكل كمقروء' : 'Mark All Read'}
             </Button>
           )}

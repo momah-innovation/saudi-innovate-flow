@@ -134,7 +134,7 @@ export const OpportunityAnalyticsWidget = ({
       analyticsCache.set(opportunityId, summaryData);
 
     } catch (error) {
-      console.error('Error loading analytics widget:', error);
+      // Failed to load analytics - show default values
       setAnalytics({
         views: 0,
         applications: 0,
@@ -281,7 +281,7 @@ export const OpportunityAnalyticsWidget = ({
               className="w-full"
               onClick={onViewDetails}
             >
-              <BarChart3 className="w-3 h-3 mr-2" />
+              <BarChart3 className={`w-3 h-3 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               {isRTL ? 'عرض التفاصيل' : 'View Details'}
             </Button>
           </div>

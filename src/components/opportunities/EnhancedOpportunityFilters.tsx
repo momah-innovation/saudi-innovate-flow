@@ -87,7 +87,7 @@ export const EnhancedOpportunityFilters = ({
       setSectors(sectorsData || []);
       setDepartments(departmentsData || []);
     } catch (error) {
-      console.error('Error loading filter data:', error);
+      // Failed to load filter data - continue with empty arrays
     }
   };
 
@@ -157,7 +157,7 @@ export const EnhancedOpportunityFilters = ({
             <Filter className="w-5 h-5" />
             {isRTL ? 'تصفية الفرص' : 'Filter Opportunities'}
             {activeFiltersCount > 0 && (
-              <Badge variant="secondary" className="ml-2">
+              <Badge variant="secondary" className={isRTL ? 'mr-2' : 'ml-2'}>
                 {activeFiltersCount}
               </Badge>
             )}
@@ -165,7 +165,7 @@ export const EnhancedOpportunityFilters = ({
           <div className="flex items-center gap-2">
             {activeFiltersCount > 0 && (
               <Button variant="outline" size="sm" onClick={onClearFilters}>
-                <X className="w-4 h-4 mr-1" />
+                <X className={`w-4 h-4 ${isRTL ? 'ml-1' : 'mr-1'}`} />
                 {isRTL ? 'مسح الكل' : 'Clear All'}
               </Button>
             )}
