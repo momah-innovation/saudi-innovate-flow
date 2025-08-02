@@ -68,10 +68,7 @@ interface SystemLists {
 export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: ChallengeWizardProps) {
   const { toast } = useToast();
   const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels } = useSystemLists();
-  const form = useForm<ChallengeFormData>({
-    resolver: zodResolver(ChallengeFormSchema),
-    defaultValues: formData
-  });
+  
   const [loading, setLoading] = useState(false);
   const [systemLists, setSystemLists] = useState<SystemLists>({
     departments: [],
@@ -113,6 +110,11 @@ export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: Chall
   const [selectedRequirements, setSelectedRequirements] = useState<string[]>([]);
   const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
   const [selectedExperts, setSelectedExperts] = useState<string[]>([]);
+
+  const form = useForm<ChallengeFormData>({
+    resolver: zodResolver(ChallengeFormSchema),
+    defaultValues: formData
+  });
 
   useEffect(() => {
     if (isOpen) {
