@@ -117,34 +117,62 @@ export function StorageManagementPage() {
     try {
       setLoading(true);
       
-      // Use database function for bucket info
+      // Use comprehensive storage function for detailed analytics
       const { data: dbBuckets, error: bucketError } = await supabase
-        .rpc('get_basic_storage_info');
+        .rpc('get_storage_buckets_info');
       
-      console.log('Database buckets response:', { dbBuckets, bucketError });
+      console.log('Storage analytics response:', { dbBuckets, bucketError });
       
       let bucketsData = [];
       if (dbBuckets) {
-        // Convert database response to storage API format
+        // Convert database response to storage API format with analytics
         bucketsData = dbBuckets.map(bucket => ({
           id: bucket.bucket_id,
           name: bucket.bucket_name,
           public: bucket.public,
-          created_at: bucket.created_at
+          created_at: bucket.created_at,
+          file_count: bucket.file_count || 0,
+          total_size: bucket.total_size || 0
         }));
       }
       
       if (bucketsData) {
         console.log('Setting buckets:', bucketsData);
         setBuckets(bucketsData);
-        setStorageStats(prev => ({ ...prev, buckets: bucketsData.length }));
+        
+        // Calculate aggregate stats from database analytics
+        const totalFiles = bucketsData.reduce((sum, bucket) => sum + bucket.file_count, 0);
+        const totalSize = bucketsData.reduce((sum, bucket) => sum + bucket.total_size, 0);
+        const publicFiles = bucketsData
+          .filter(bucket => bucket.public)
+          .reduce((sum, bucket) => sum + bucket.file_count, 0);
+        const privateFiles = bucketsData
+          .filter(bucket => !bucket.public)
+          .reduce((sum, bucket) => sum + bucket.file_count, 0);
+        
+        // Update storage stats with database values
+        setStorageStats(prev => ({
+          ...prev,
+          buckets: bucketsData.length,
+          totalFiles,
+          totalSize,
+          usedSpace: totalSize,
+          publicFiles,
+          privateFiles,
+          recentUploads: Math.floor(totalFiles * 0.1) // Estimate recent uploads
+        }));
+        
+        console.log('Storage stats from database:', {
+          totalFiles,
+          totalSize,
+          publicFiles,
+          privateFiles,
+          buckets: bucketsData.length
+        });
       }
 
-      // Load files from all buckets
+      // Still load individual files for detailed view and management
       let allFiles: any[] = [];
-      let totalSize = 0;
-      let publicCount = 0;
-      let privateCount = 0;
 
       for (const bucket of bucketsData || []) {
         console.log(`Loading files from bucket: ${bucket.id}`);
@@ -154,7 +182,6 @@ export function StorageManagementPage() {
           limit: 100,
           offset: 0
         });
-        console.log(`Files from ${bucket.id}:`, { files, filesError });
         
         if (filesError) {
           console.error(`Error loading files from bucket ${bucket.id}:`, filesError);
@@ -168,7 +195,6 @@ export function StorageManagementPage() {
           for (const item of files) {
             if (item.name && item.metadata) {
               // This is a file
-              console.log('Processing file:', item);
               processedFiles.push({
                 ...item,
                 bucket_id: bucket.id,
@@ -177,13 +203,11 @@ export function StorageManagementPage() {
               });
             } else if (item.name && !item.metadata) {
               // This might be a folder, let's check inside
-              console.log('Found potential folder:', item.name);
               const { data: subFiles, error: subError } = await supabase.storage
                 .from(bucket.id)
                 .list(item.name, { limit: 100 });
               
               if (subFiles && !subError) {
-                console.log(`Files in folder ${item.name}:`, subFiles);
                 subFiles.forEach(subFile => {
                   if (subFile.metadata) {
                     processedFiles.push({
@@ -200,32 +224,10 @@ export function StorageManagementPage() {
           }
           
           allFiles = [...allFiles, ...processedFiles];
-
-          if (bucket.public) {
-            publicCount += processedFiles.length;
-          } else {
-            privateCount += processedFiles.length;
-          }
-
-          // Calculate total size
-          processedFiles.forEach(file => {
-            if (file.metadata?.size) {
-              totalSize += file.metadata.size;
-            }
-          });
         }
       }
 
       setFiles(allFiles);
-      setStorageStats(prev => ({
-        ...prev,
-        totalFiles: allFiles.length,
-        totalSize,
-        usedSpace: totalSize,
-        publicFiles: publicCount,
-        privateFiles: privateCount,
-        recentUploads: Math.floor(allFiles.length * 0.1) // Simulate recent uploads
-      }));
 
     } catch (error) {
       console.error('Error loading storage data:', error);
