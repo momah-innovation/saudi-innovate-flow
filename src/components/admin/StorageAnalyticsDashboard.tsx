@@ -1,4 +1,5 @@
 import React from 'react'
+import { useRTLAwareClasses } from '@/components/ui/rtl-aware'
 import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -40,6 +41,7 @@ const CHART_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#8
 export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps> = ({ className }) => {
   const { analytics, loading, error, refreshAnalytics } = useStorageAnalytics()
   const { t } = useTranslation()
+  const { mr } = useRTLAwareClasses()
 
   const formatBytes = (bytes: number): string => {
     if (bytes === 0) return `0 ${t("storage.bytes")}`
@@ -78,7 +80,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
           <CardContent className="p-6">
             <p className="text-destructive">{t("storage.error_loading_analytics")} {error}</p>
             <Button onClick={refreshAnalytics} className="mt-4">
-              <RefreshCw className="h-4 w-4 mr-2" />
+              <RefreshCw className={`h-4 w-4 ${mr('2')}`} />
               {t("storage.retry")}
             </Button>
           </CardContent>
@@ -98,7 +100,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
           </p>
         </div>
         <Button onClick={refreshAnalytics} variant="outline">
-          <RefreshCw className="h-4 w-4 mr-2" />
+          <RefreshCw className={`h-4 w-4 ${mr('2')}`} />
           {t("refresh")}
         </Button>
       </div>

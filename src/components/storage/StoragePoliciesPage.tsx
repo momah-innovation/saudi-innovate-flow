@@ -53,6 +53,7 @@ export const StoragePoliciesPage: React.FC = () => {
   const { t, isRTL } = useTranslation()
   const [buckets, setBuckets] = useState<BucketInfo[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [isAdmin, setIsAdmin] = useState(false)
   const [policiesStats, setPoliciesStats] = useState({
     totalBuckets: 0,
@@ -136,7 +137,14 @@ export const StoragePoliciesPage: React.FC = () => {
         .rpc('get_storage_policies_info' as any);
 
       if (policiesError) {
-        console.error('Error loading policies:', policiesError);
+        const errorMessage = policiesError.message || 'Failed to load storage policies';
+        setError(errorMessage);
+        toast({
+          title: t('error'),
+          description: errorMessage,
+          variant: 'destructive'
+        });
+        return;
       }
 
       // Policies loaded successfully
@@ -219,7 +227,7 @@ export const StoragePoliciesPage: React.FC = () => {
     if (bucket.public) {
       return (
         <Badge variant="default" className="bg-green-100 text-green-800">
-          <Unlock className="w-3 h-3 mr-1" />
+          <Unlock className={`w-3 h-3 ${mr('1')}`} />
           {t('storage.public_access')}
         </Badge>
       )
@@ -228,7 +236,7 @@ export const StoragePoliciesPage: React.FC = () => {
     if (bucket.policies.length === 0) {
       return (
         <Badge variant="destructive">
-          <AlertTriangle className="w-3 h-3 mr-1" />
+          <AlertTriangle className={`w-3 h-3 ${mr('1')}`} />
           {t('no_policies')}
         </Badge>
       )
@@ -236,7 +244,7 @@ export const StoragePoliciesPage: React.FC = () => {
 
     return (
       <Badge variant="secondary">
-        <Lock className="w-3 h-3 mr-1" />
+        <Lock className={`w-3 h-3 ${mr('1')}`} />
         {t('storage.policies_count', { count: bucket.policies.length })}
       </Badge>
     )
@@ -293,7 +301,7 @@ export const StoragePoliciesPage: React.FC = () => {
         description={t('monitor_manage_policies')}
       >
         <Button onClick={loadStoragePolicies} disabled={loading} variant="outline">
-          <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-4 h-4 ${mr('2')} ${loading ? 'animate-spin' : ''}`} />
           {t('refresh')}
         </Button>
       </PageHeader>

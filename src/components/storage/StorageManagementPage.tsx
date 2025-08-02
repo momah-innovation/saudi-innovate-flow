@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import type { StorageBucket, StorageFile, LayoutType as StorageLayoutType } from '@/types/storage';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/ui/page-header';
 import { StorageHero } from './StorageHero';
@@ -74,23 +75,23 @@ export function StorageManagementPage() {
   }, loading: settingsLoading } = useUploaderSettingsContext();
   
   const [selectedBucket, setSelectedBucket] = useState<string | null>(null);
-  const [selectedFile, setSelectedFile] = useState<any | null>(null);
-  const [selectedBucketForManagement, setSelectedBucketForManagement] = useState<any | null>(null);
-  const [selectedBucketForView, setSelectedBucketForView] = useState<any | null>(null);
+  const [selectedFile, setSelectedFile] = useState<StorageFile | null>(null);
+  const [selectedBucketForManagement, setSelectedBucketForManagement] = useState<StorageBucket | null>(null);
+  const [selectedBucketForView, setSelectedBucketForView] = useState<StorageBucket | null>(null);
   const [loading, setLoading] = useState(true);
-  const [buckets, setBuckets] = useState<any[]>([]);
-  const [files, setFiles] = useState<any[]>([]);
+  const [buckets, setBuckets] = useState<StorageBucket[]>([]);
+  const [files, setFiles] = useState<StorageFile[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showFileViewDialog, setShowFileViewDialog] = useState(false);
   const [showBucketManagementDialog, setShowBucketManagementDialog] = useState(false);
   const [showBucketViewDialog, setShowBucketViewDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [fileToDelete, setFileToDelete] = useState<any | null>(null);
-  const [filesLayout, setFilesLayout] = useState<LayoutType>('cards');
-  const [bucketsLayout, setBucketsLayout] = useState<LayoutType>('grid');
+  const [fileToDelete, setFileToDelete] = useState<StorageFile | null>(null);
+  const [filesLayout, setFilesLayout] = useState<StorageLayoutType>('cards');
+  const [bucketsLayout, setBucketsLayout] = useState<StorageLayoutType>('grid');
   const [activeTab, setActiveTab] = useState("overview");
 
-  // Filter and sort state
+  // Use the existing filter and sort types from StorageFilters
   const [filters, setFilters] = useState<FilterOptions>({
     fileType: 'all',
     bucket: 'all',
