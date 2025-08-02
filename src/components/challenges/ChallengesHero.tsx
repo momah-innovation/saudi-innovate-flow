@@ -22,8 +22,10 @@ export const ChallengesHero = ({
   const { isRTL } = useDirection();
 
   return (
-    <div className="relative bg-gradient-to-r from-primary/90 via-primary to-primary/80 text-white">
-      <div className="container mx-auto px-4 py-12">
+    <div className="relative overflow-hidden bg-gradient-to-r from-primary via-accent to-innovation">
+      {/* Enhanced background with proper overlay for text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-black/30" />
+      <div className="container mx-auto px-4 py-12 relative z-10 text-white">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
           {/* Content */}
           <div className="flex-1">
@@ -70,17 +72,16 @@ export const ChallengesHero = ({
             <div className="flex flex-wrap gap-3">
               <Button
                 onClick={onCreateChallenge}
+                variant="hero-primary"
                 size="lg"
-                className="bg-white text-primary hover:bg-white/90"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 {isRTL ? 'إنشاء تحدي' : 'Create Challenge'}
               </Button>
               <Button
                 onClick={onShowFilters}
-                variant="outline"
+                variant="hero-secondary"
                 size="lg"
-                className="border-white/30 text-white hover:bg-white/10"
               >
                 <Filter className="w-4 h-4 mr-2" />
                 {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}

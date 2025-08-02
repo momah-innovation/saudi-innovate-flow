@@ -12,6 +12,7 @@ import { CalendarIcon, X, Plus, Users, Target, Building, Zap, Eye } from 'lucide
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
+import { ar } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from "@/hooks/useSystemLists";
@@ -541,15 +542,15 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>تاريخ البداية</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className="w-full justify-start text-left font-normal"
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {startDate ? format(startDate, "PPP") : <span>اختر التاريخ</span>}
-                      </Button>
+                   <Popover>
+                     <PopoverTrigger asChild>
+                       <Button
+                         variant="outline"
+                         className="w-full justify-start font-normal text-right"
+                       >
+                         <CalendarIcon className="ml-2 h-4 w-4" />
+                         {startDate ? format(startDate, "PPP", { locale: ar }) : <span>اختر التاريخ</span>}
+                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
                       <Calendar
@@ -564,15 +565,15 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
 
                 <div className="space-y-2">
                   <Label>تاريخ النهاية</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className="w-full justify-start text-left font-normal"
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {endDate ? format(endDate, "PPP") : <span>اختر التاريخ</span>}
-                      </Button>
+                   <Popover>
+                     <PopoverTrigger asChild>
+                       <Button
+                         variant="outline"
+                         className="w-full justify-start font-normal text-right"
+                       >
+                         <CalendarIcon className="ml-2 h-4 w-4" />
+                         {endDate ? format(endDate, "PPP", { locale: ar }) : <span>اختر التاريخ</span>}
+                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
                       <Calendar

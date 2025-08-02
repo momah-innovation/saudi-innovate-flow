@@ -60,10 +60,11 @@ All colors MUST be HSL for theming consistency.
     --partner: 213 94% 68%;
     --partner-foreground: 0 0% 98%;
 
-    /* Gradients */
+    /* Gradients with enhanced contrast */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
     --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--innovation)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--innovation)) 100%);
+    --gradient-hero-overlay: linear-gradient(135deg, hsl(var(--primary) / 0.9), hsl(var(--accent) / 0.8));
     --gradient-card: linear-gradient(145deg, hsl(0 0% 100% / 0.8), hsl(0 0% 100% / 0.4));
 
     /* Shadows */

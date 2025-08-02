@@ -56,10 +56,10 @@ export const EnhancedDashboardHero = ({
 
   return (
     <div className="relative overflow-hidden">
-      {/* Background with animated gradients */}
+      {/* Background with animated gradients and enhanced contrast */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
         <div className="absolute inset-0 bg-[url('/dashboard-images/dashboard-hero.jpg')] opacity-10 bg-cover bg-center" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/40" />
       </div>
 
       {/* Animated background elements */}
@@ -135,8 +135,9 @@ export const EnhancedDashboardHero = ({
             <div className="flex flex-wrap gap-4">
               <Button
                 onClick={() => onNavigate('/submit-idea')}
+                variant="hero-primary"
                 size="lg"
-                className="bg-gradient-to-r from-blue-400 to-indigo-500 text-white hover:from-blue-500 hover:to-indigo-600 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <Plus className="w-5 h-5 mr-2" />
                 {isRTL ? 'إضافة فكرة جديدة' : 'Submit New Idea'}
@@ -144,9 +145,8 @@ export const EnhancedDashboardHero = ({
               
               <Button
                 onClick={() => onNavigate('/challenges')}
-                variant="outline"
+                variant="hero-secondary"
                 size="lg"
-                className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
               >
                 <Target className="w-5 h-5 mr-2" />
                 {isRTL ? 'تصفح التحديات' : 'Browse Challenges'}
@@ -154,9 +154,8 @@ export const EnhancedDashboardHero = ({
 
               <Button
                 onClick={() => onNavigate('/events')}
-                variant="ghost"
+                variant="hero-ghost"
                 size="lg"
-                className="text-white hover:bg-white/10"
               >
                 <Calendar className="w-5 h-5 mr-2" />
                 {isRTL ? 'الفعاليات' : 'Events'}

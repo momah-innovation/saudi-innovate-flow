@@ -67,10 +67,10 @@ export const EnhancedChallengesHero = ({
 
   return (
     <div className="relative overflow-hidden">
-      {/* Background with animated gradients */}
+      {/* Background with animated gradients and enhanced contrast */}
       <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-purple-600 to-blue-600">
         <div className="absolute inset-0 bg-[url('/api/placeholder/1920/600')] opacity-10 bg-cover bg-center" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/40" />
       </div>
 
       {/* Animated background elements */}
@@ -146,8 +146,9 @@ export const EnhancedChallengesHero = ({
             <div className="flex flex-wrap gap-4">
               <Button
                 onClick={onCreateChallenge}
+                variant="hero-primary"
                 size="lg"
-                className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <Plus className="w-5 h-5 mr-2" />
                 {isRTL ? 'إنشاء تحدي جديد' : 'Create New Challenge'}
@@ -155,18 +156,16 @@ export const EnhancedChallengesHero = ({
               
               <Button
                 onClick={onShowFilters}
-                variant="outline"
+                variant="hero-secondary"
                 size="lg"
-                className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
               >
                 <Filter className="w-5 h-5 mr-2" />
                 {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
               </Button>
 
               <Button
-                variant="ghost"
+                variant="hero-ghost"
                 size="lg"
-                className="text-white hover:bg-white/10"
               >
                 <Play className="w-5 h-5 mr-2" />
                 {isRTL ? 'شاهد الفيديو' : 'Watch Demo'}
