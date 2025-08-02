@@ -3,6 +3,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/ui/page-header';
 import { StorageHero } from './StorageHero';
 import { StorageAnalyticsDashboard } from '@/components/admin/StorageAnalyticsDashboard';
+import { StoragePoliciesPage } from './StoragePoliciesPage';
 import { EnhancedStorageQuotasTab } from './EnhancedStorageQuotasTab';
 import { UploaderSettingsTab } from './UploaderSettingsTab';
 import { FixedStorageUploadTab } from './FixedStorageUploadTab';
@@ -311,12 +312,13 @@ export function StorageManagementPage() {
         />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="overview">{t('storage.overview')}</TabsTrigger>
             <TabsTrigger value="files">{t('storage.files')}</TabsTrigger>
             <TabsTrigger value="buckets">{t('storage.buckets')}</TabsTrigger>
             <TabsTrigger value="analytics">{t('storage.analytics')}</TabsTrigger>
             <TabsTrigger value="quotas">{t('storage.quotas')}</TabsTrigger>
+            <TabsTrigger value="policies">{t('storage.policies')}</TabsTrigger>
             <TabsTrigger value="upload">{t('storage.upload')}</TabsTrigger>
             <TabsTrigger value="settings">{t('storage.settings')}</TabsTrigger>
           </TabsList>
@@ -480,6 +482,10 @@ export function StorageManagementPage() {
             loadStorageData();
           }} />
         </TabsContent>
+
+          <TabsContent value="policies" className="space-y-6">
+            <StoragePoliciesPage />
+          </TabsContent>
 
           <TabsContent value="upload" className="space-y-6">
             <FixedStorageUploadTab onFilesUploaded={loadStorageData} />
