@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_elevation_logs: {
+        Row: {
+          elevated_at: string | null
+          elevated_by: string | null
+          email: string | null
+          id: number
+          user_id: string
+        }
+        Insert: {
+          elevated_at?: string | null
+          elevated_by?: string | null
+          email?: string | null
+          id?: never
+          user_id: string
+        }
+        Update: {
+          elevated_at?: string | null
+          elevated_by?: string | null
+          email?: string | null
+          id?: never
+          user_id?: string
+        }
+        Relationships: []
+      }
       bookmark_collections: {
         Row: {
           color: string | null
