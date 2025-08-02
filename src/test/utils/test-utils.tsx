@@ -18,7 +18,7 @@ const AllTheProviders = ({ children }: { children: ReactNode }) => {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider defaultTheme="light" storageKey="test-theme">
+        <ThemeProvider>
           {children}
         </ThemeProvider>
       </QueryClientProvider>
@@ -33,4 +33,3 @@ const customRender = (
 
 export * from '@testing-library/react'
 export { customRender as render }
-export { screen, fireEvent, waitFor } from '@testing-library/react'
