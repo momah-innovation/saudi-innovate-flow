@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { getViewModeConfig, createGridClassName } from "@/config/challengesPageConfig";
 
 interface ViewLayoutsProps {
   viewMode: 'cards' | 'list' | 'grid' | 'calendar' | 'table';
@@ -7,37 +8,40 @@ interface ViewLayoutsProps {
 }
 
 export function ViewLayouts({ viewMode, children, listRenderer }: ViewLayoutsProps) {
-  if (viewMode === 'cards') {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {children}
-      </div>
-    );
-  }
-
-  if (viewMode === 'grid') {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        {children}
-      </div>
-    );
-  }
-
+  // Use configuration-based layouts
   if (viewMode === 'list') {
     if (listRenderer) {
       return <>{listRenderer(children)}</>;
     }
     
     return (
-      <div className="space-y-3">
+      <div className={createGridClassName('list')}>
         {children}
       </div>
     );
   }
 
-  // Default fallback for any undefined viewMode
+  // Handle cards and grid using configuration
+  if (viewMode === 'cards' || viewMode === 'grid') {
+    return (
+      <div className={createGridClassName(viewMode)}>
+        {children}
+      </div>
+    );
+  }
+
+  // Calendar and table modes (not yet configured)
+  if (viewMode === 'calendar' || viewMode === 'table') {
+    return (
+      <div className="space-y-4">
+        {children}
+      </div>
+    );
+  }
+
+  // Default fallback using configuration
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className={createGridClassName('cards')}>
       {children}
     </div>
   );

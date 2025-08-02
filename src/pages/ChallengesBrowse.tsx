@@ -18,6 +18,7 @@ import { ChallengeDetailDialog } from '@/components/challenges/ChallengeDetailDi
 import { EnhancedChallengeDetailDialog } from '@/components/challenges/EnhancedChallengeDetailDialog';
 import { ChallengeFilters, FilterState } from '@/components/challenges/ChallengeFilters';
 import { EnhancedChallengeFilters } from '@/components/challenges/EnhancedChallengeFilters';
+import { challengesPageConfig, getViewModeConfig } from '@/config/challengesPageConfig';
 import { ChallengeSkeleton, ChallengeLoadingState, ChallengeEmptyState } from '@/components/challenges/ChallengeSkeletons';
 import { EnhancedSubmissionDialog } from '@/components/challenges/EnhancedSubmissionDialog';
 import { ChallengeNotificationCenter } from '@/components/challenges/ChallengeNotificationCenter';
@@ -56,8 +57,8 @@ const ChallengesBrowse = () => {
   const [createChallengeOpen, setCreateChallengeOpen] = useState(false);
   const [templatesDialogOpen, setTemplatesDialogOpen] = useState(false);
   const [analyticsDialogOpen, setAnalyticsDialogOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>(ui.defaultViewMode as any || 'cards');
-  const [activeTab, setActiveTab] = useState('all');
+  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>(challengesPageConfig.defaultViewMode);
+  const [activeTab, setActiveTab] = useState(challengesPageConfig.defaultTab);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   
   // Helper function to normalize values to nice round numbers
@@ -114,18 +115,11 @@ const ChallengesBrowse = () => {
   }, [challenges]);
 
   // Advanced filters state
-  const [filters, setFilters] = useState<FilterState>({
-    search: '',
-    status: 'all',
-    category: 'all',
-    difficulty: 'all',
-    prizeRange: [0, dynamicMaxBudget],
-    participantRange: [0, dynamicMaxParticipants],
-    deadline: 'all',
-    features: [],
-    sortBy: 'deadline',
-    sortOrder: 'desc'
-  });
+  const [filters, setFilters] = useState<FilterState>(() => ({
+    ...challengesPageConfig.defaultFilters,
+    prizeRange: [0, dynamicMaxBudget] as [number, number],
+    participantRange: [0, dynamicMaxParticipants] as [number, number]
+  }));
 
   // Filter and search logic
   const getFilteredChallenges = () => {
@@ -440,18 +434,12 @@ const ChallengesBrowse = () => {
   };
 
   const handleClearFilters = () => {
-    setFilters({
-      search: '',
-      status: 'all',
-      category: 'all',
-      difficulty: 'all',
-      prizeRange: [0, dynamicMaxBudget],
-      participantRange: [0, dynamicMaxParticipants],
-      deadline: 'all',
-      features: [],
-      sortBy: 'deadline',
-      sortOrder: 'desc'
-    });
+    const defaultFilters = { 
+      ...challengesPageConfig.defaultFilters,
+      prizeRange: [0, dynamicMaxBudget] as [number, number],
+      participantRange: [0, dynamicMaxParticipants] as [number, number]
+    };
+    setFilters(defaultFilters);
   };
 
   const getActiveFiltersCount = () => {
@@ -478,7 +466,7 @@ const ChallengesBrowse = () => {
           onParticipate={handleParticipate}
           onBookmark={handleBookmark}
           viewMode={viewMode}
-          variant={viewMode === 'grid' ? 'compact' : 'enhanced'}
+          variant={getViewModeConfig(viewMode).variant}
         />
       ))}
     </ViewLayouts>

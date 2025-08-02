@@ -17,15 +17,11 @@ import {
   Award,
   Users,
   Target,
-  SlidersHorizontal,
-  Sparkles,
-  TrendingUp,
-  Clock,
-  Star,
-  Zap
+  SlidersHorizontal
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
+import { challengesPageConfig, getFilterOptions } from '@/config/challengesPageConfig';
 
 export interface FilterState {
   search: string;
@@ -103,62 +99,12 @@ export const EnhancedChallengeFilters = ({
     updateFilter('features', newFeatures);
   };
 
-  const statusOptions = [
-    { value: 'all', label: isRTL ? 'جميع الحالات' : 'All Status', icon: Target },
-    { value: 'active', label: isRTL ? 'نشط' : 'Active', icon: Zap },
-    { value: 'upcoming', label: isRTL ? 'قريباً' : 'Upcoming', icon: Calendar },
-    { value: 'closed', label: isRTL ? 'مغلق' : 'Closed', icon: X }
-  ];
-
-  const categoryOptions = [
-    { value: 'all', label: isRTL ? 'جميع الفئات' : 'All Categories' },
-    { value: 'technical', label: isRTL ? 'تقني' : 'Technical' },
-    { value: 'business', label: isRTL ? 'أعمال' : 'Business' },
-    { value: 'health', label: isRTL ? 'صحة' : 'Health' },
-    { value: 'educational', label: isRTL ? 'تعليمي' : 'Educational' },
-    { value: 'environmental', label: isRTL ? 'بيئي' : 'Environmental' }
-  ];
-
-  const difficultyOptions = [
-    { value: 'all', label: isRTL ? 'جميع المستويات' : 'All Levels' },
-    { value: 'سهل', label: isRTL ? 'سهل' : 'Easy' },
-    { value: 'متوسط', label: isRTL ? 'متوسط' : 'Medium' },
-    { value: 'صعب', label: isRTL ? 'صعب' : 'Hard' }
-  ];
-
-  const sortOptions = [
-    { value: 'deadline', label: isRTL ? 'الموعد النهائي' : 'Deadline', icon: Clock },
-    { value: 'participants', label: isRTL ? 'عدد المشاركين' : 'Participants', icon: Users },
-    { value: 'prize', label: isRTL ? 'قيمة الجائزة' : 'Prize Amount', icon: Award },
-    { value: 'submissions', label: isRTL ? 'عدد المساهمات' : 'Submissions', icon: Target }
-  ];
-
-  const featureOptions = [
-    { 
-      value: 'trending', 
-      label: isRTL ? 'رائج' : 'Trending', 
-      icon: TrendingUp,
-      color: 'orange'
-    },
-    { 
-      value: 'featured', 
-      label: isRTL ? 'مميز' : 'Featured', 
-      icon: Star,
-      color: 'yellow'
-    },
-    { 
-      value: 'new', 
-      label: isRTL ? 'جديد' : 'New', 
-      icon: Sparkles,
-      color: 'blue'
-    },
-    { 
-      value: 'ending-soon', 
-      label: isRTL ? 'ينتهي قريباً' : 'Ending Soon', 
-      icon: Clock,
-      color: 'red'
-    }
-  ];
+  // Get filter options from configuration
+  const statusOptions = getFilterOptions('status');
+  const categoryOptions = getFilterOptions('category');
+  const difficultyOptions = getFilterOptions('difficulty');
+  const sortOptions = getFilterOptions('sortOptions');
+  const featureOptions = getFilterOptions('features');
 
   const QuickFilterChip = ({ 
     option, 
@@ -185,9 +131,9 @@ export const EnhancedChallengeFilters = ({
   );
 
   return (
-    <div className={cn("space-y-6 animate-fade-in", className)}>
+    <div className={cn("space-y-6", challengesPageConfig.ui.animations.fadeIn, className)}>
       {/* Enhanced Filter Card with Glass Morphism */}
-      <Card className="bg-gradient-to-r from-violet-50/90 via-purple-50/90 to-blue-50/90 backdrop-blur-sm border-violet-200/50 shadow-xl">
+      <Card className={cn("backdrop-blur-sm border-violet-200/50 shadow-xl", challengesPageConfig.ui.gradients.hero)}>
         <CardContent className="p-4">
           <div className="flex items-center gap-3 w-full overflow-x-auto">
             {/* Collapsible Search Bar */}
@@ -256,10 +202,10 @@ export const EnhancedChallengeFilters = ({
                       ? "bg-gradient-to-r from-violet-500 to-purple-600 text-white border-0" 
                       : "bg-white/80 backdrop-blur-sm border-violet-200 hover:bg-violet-100 hover:border-violet-300"
                   )}
-                  title={option.label}
-                >
-                  <option.icon className="w-3.5 h-3.5" />
-                </Button>
+                    title={isRTL ? option.labelAr : option.label}
+                  >
+                    <option.icon className="w-3.5 h-3.5" />
+                  </Button>
               ))}
             </div>
 
@@ -276,8 +222,8 @@ export const EnhancedChallengeFilters = ({
                   {statusOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       <div className="flex items-center gap-2">
-                        <option.icon className="w-3.5 h-3.5" />
-                        {option.label}
+                        {option.icon && <option.icon className="w-3.5 h-3.5" />}
+                        {isRTL ? option.labelAr : option.label}
                       </div>
                     </SelectItem>
                   ))}
@@ -297,7 +243,7 @@ export const EnhancedChallengeFilters = ({
                 <SelectContent className="z-50 bg-background border shadow-md">
                   {categoryOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
-                      {option.label}
+                      {isRTL ? option.labelAr : option.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -316,7 +262,7 @@ export const EnhancedChallengeFilters = ({
                 <SelectContent className="z-50 bg-background border shadow-md">
                   {difficultyOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
-                      {option.label}
+                      {isRTL ? option.labelAr : option.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -336,8 +282,8 @@ export const EnhancedChallengeFilters = ({
                   {sortOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       <div className="flex items-center gap-2">
-                        <option.icon className="w-3.5 h-3.5" />
-                        {option.label}
+                        {option.icon && <option.icon className="w-3.5 h-3.5" />}
+                        {isRTL ? option.labelAr : option.label}
                       </div>
                     </SelectItem>
                   ))}
