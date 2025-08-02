@@ -4,9 +4,11 @@ import { supabase } from '@/integrations/supabase/client'
 export interface StorageQuota {
   bucket_name: string
   quota_bytes: number
-  current_usage: number
+  current_usage_bytes: number
   usage_percentage: number
-  quota_exceeded: boolean
+  file_count: number
+  created_at: string
+  updated_at: string
 }
 
 export interface BucketInfo {
@@ -28,17 +30,22 @@ export const useStorageQuotas = () => {
       setLoading(true)
       setError(null)
       
-      console.log('fetchQuotas: Calling get_all_storage_quotas RPC...');
-      console.log('fetchQuotas: Auth state:', await supabase.auth.getUser());
+      // Check authentication first
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        throw new Error('Authentication required. Please log in.')
+      }
       
       const { data, error: quotaError } = await supabase.rpc('get_all_storage_quotas')
       
       if (quotaError) {
         console.error('fetchQuotas: RPC error:', quotaError);
+        if (quotaError.message?.includes('Admin access required')) {
+          throw new Error('Admin access required for storage quota management')
+        }
         throw quotaError
       }
       
-      console.log('fetchQuotas: RPC success, data:', data);
       setQuotas(data || [])
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch quotas'
@@ -53,13 +60,15 @@ export const useStorageQuotas = () => {
     try {
       console.log(`Setting quota for ${bucketName}: ${quotaBytes} bytes`);
       const { data, error } = await supabase.rpc('manage_storage_quotas', {
-        bucket_name: bucketName,
-        quota_bytes: quotaBytes,
-        action: 'set'
+        p_bucket_name: bucketName,
+        p_quota_bytes: quotaBytes
       })
       
       if (error) {
         console.error('RPC error setting quota:', error);
+        if (error.message?.includes('Admin access required')) {
+          throw new Error('Admin access required for storage quota management')
+        }
         throw error
       }
       
@@ -79,11 +88,14 @@ export const useStorageQuotas = () => {
   const removeQuota = async (bucketName: string) => {
     try {
       const { data, error } = await supabase.rpc('manage_storage_quotas', {
-        bucket_name: bucketName,
-        action: 'remove'
+        p_bucket_name: bucketName,
+        p_quota_bytes: null
       })
       
       if (error) {
+        if (error.message?.includes('Admin access required')) {
+          throw new Error('Admin access required for storage quota management')
+        }
         throw error
       }
       

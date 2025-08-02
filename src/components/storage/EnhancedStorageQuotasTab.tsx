@@ -102,7 +102,8 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
   };
 
   const getQuotaStatusColor = (quota: StorageQuota) => {
-    if (quota.quota_exceeded) return 'destructive';
+    const quotaExceeded = quota.current_usage_bytes > quota.quota_bytes;
+    if (quotaExceeded) return 'destructive';
     if (quota.usage_percentage > 80) return 'secondary';
     if (quota.usage_percentage > 60) return 'outline';
     return 'default';
@@ -225,9 +226,10 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
   const getBucketStatus = (bucketName: string) => {
     const quota = quotas.find(q => q.bucket_name === bucketName);
     if (quota) {
+      const quotaExceeded = quota.current_usage_bytes > quota.quota_bytes;
       return {
         hasQuota: true,
-        status: quota.quota_exceeded ? 'exceeded' : 'normal',
+        status: quotaExceeded ? 'exceeded' : 'normal',
         usage: quota.usage_percentage
       };
     }
@@ -488,14 +490,14 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
                     <div className="space-y-2">
                       <Progress value={Math.min(quota.usage_percentage, 100)} className="h-2" />
                       <div className="flex justify-between text-sm text-muted-foreground">
-                        <span>{formatBytes(quota.current_usage)} used</span>
+                        <span>{formatBytes(quota.current_usage_bytes)} used</span>
                         <span>{formatBytes(quota.quota_bytes)} total</span>
                       </div>
-                      {quota.quota_exceeded && (
+                      {quota.current_usage_bytes > quota.quota_bytes && (
                         <Alert variant="destructive">
                           <AlertCircle className="h-4 w-4" />
                           <AlertDescription>
-                            Quota exceeded! Current usage is {formatBytes(quota.current_usage - quota.quota_bytes)} over the limit.
+                            Quota exceeded! Current usage is {formatBytes(quota.current_usage_bytes - quota.quota_bytes)} over the limit.
                           </AlertDescription>
                         </Alert>
                       )}
