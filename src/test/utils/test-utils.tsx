@@ -1,3 +1,4 @@
+import React from 'react'
 import { render, RenderOptions } from '@testing-library/react'
 import { ReactElement, ReactNode } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -31,7 +32,6 @@ const customRender = (
   options?: Omit<RenderOptions, 'wrapper'>
 ) => render(ui, { wrapper: AllTheProviders, ...options })
 
-// Re-export everything from testing-library/react
+// Export everything from React Testing Library and our custom render
 export * from '@testing-library/react'
-// Override render with our custom version
 export { customRender as render }
