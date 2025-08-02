@@ -18,9 +18,9 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        // Hero button variants for enhanced contrast
-        "hero-primary": "bg-white text-primary hover:bg-white/90 shadow-lg",
-        "hero-secondary": "border border-white/30 text-white hover:bg-white/20 backdrop-blur-sm",
+        // Hero button variants for enhanced contrast and theme matching
+        "hero-primary": "bg-gradient-to-r from-yellow-400 to-orange-400 text-white hover:from-yellow-500 hover:to-orange-500 shadow-lg border-0 font-semibold",
+        "hero-secondary": "border border-white/30 text-white hover:bg-white/20 backdrop-blur-sm bg-white/10",
         "hero-ghost": "text-white hover:bg-white/10 backdrop-blur-sm",
         // Action button variants for consistent styling
         "action-edit": "border border-input bg-background hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200",
