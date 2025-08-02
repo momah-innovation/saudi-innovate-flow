@@ -26,14 +26,10 @@ import {
 } from 'lucide-react'
 
 interface StoragePolicy {
-  id: string
-  bucket_id: string
   name: string
-  roles: string[]
-  cmd: string
-  definition: string
-  check: string | null
-  with_check: boolean
+  command: string
+  condition: string
+  check_expression: string
 }
 
 interface BucketInfo {
@@ -109,34 +105,44 @@ export const StoragePoliciesPage: React.FC = () => {
         return;
       }
 
-      // Get actual policies from pg_policies
+      // Use RPC to get policies (since pg_policies is a system view not directly accessible)
       const { data: policiesData, error: policiesError } = await supabase
-        .from('pg_policies')
-        .select('*')
-        .eq('tablename', 'objects')
-        .eq('schemaname', 'storage');
+        .rpc('get_storage_policies_info');
 
       if (policiesError) {
         console.error('Error loading policies:', policiesError);
       }
 
-      // Group policies by bucket
+      // Group policies by bucket  
       const policiesByBucket: Record<string, StoragePolicy[]> = {};
       
-      if (policiesData) {
+      if (policiesData && Array.isArray(policiesData)) {
         policiesData.forEach((policy: any) => {
           // Extract bucket name from policy condition
-          const bucketMatch = policy.qual?.match(/bucket_id = '([^']+)'/);
+          const bucketMatch = policy.condition?.match(/bucket_id = '([^']+)'/) || 
+                             policy.condition?.match(/bucket_id = ANY \(ARRAY\[([^\]]+)\]/);
+          
           if (bucketMatch) {
-            const bucketName = bucketMatch[1];
-            if (!policiesByBucket[bucketName]) {
-              policiesByBucket[bucketName] = [];
+            let bucketNames: string[] = [];
+            
+            if (bucketMatch[1].includes("'")) {
+              // Multiple buckets in array format
+              bucketNames = bucketMatch[1].match(/'([^']+)'/g)?.map(b => b.replace(/'/g, '')) || [];
+            } else {
+              // Single bucket
+              bucketNames = [bucketMatch[1]];
             }
-            policiesByBucket[bucketName].push({
-              name: policy.policyname,
-              command: policy.cmd,
-              condition: policy.qual || '',
-              check_expression: policy.with_check || ''
+            
+            bucketNames.forEach(bucketName => {
+              if (!policiesByBucket[bucketName]) {
+                policiesByBucket[bucketName] = [];
+              }
+              policiesByBucket[bucketName].push({
+                name: policy.name,
+                command: policy.command,
+                condition: policy.condition || '',
+                check_expression: policy.check_expression || ''
+              });
             });
           }
         });
@@ -374,19 +380,16 @@ export const StoragePoliciesPage: React.FC = () => {
                     ) : (
                       <div className="space-y-2">
                         <p className="text-sm font-medium">Access Policies:</p>
-                        {bucket.policies.map((policy) => {
-                          const command = POLICY_COMMANDS[policy.cmd as keyof typeof POLICY_COMMANDS]
+                        {bucket.policies.map((policy, index) => {
+                          const command = POLICY_COMMANDS[policy.command as keyof typeof POLICY_COMMANDS]
                           const Icon = command?.icon || Shield
                           return (
-                            <div key={policy.id} className="flex items-center gap-2 p-2 bg-muted rounded">
+                            <div key={`${policy.name}-${index}`} className="flex items-center gap-2 p-2 bg-muted rounded">
                               <Icon className="w-4 h-4" />
                               <span className="text-sm font-medium">{policy.name}</span>
                               <Badge variant="outline" className="text-xs">
-                                {command?.label || policy.cmd}
+                                {command?.label || policy.command}
                               </Badge>
-                              <span className="text-xs text-muted-foreground">
-                                for {policy.roles.join(', ')}
-                              </span>
                             </div>
                           )
                         })}
