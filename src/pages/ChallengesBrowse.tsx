@@ -60,6 +60,16 @@ const ChallengesBrowse = () => {
   const [activeTab, setActiveTab] = useState('all');
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   
+  // Helper function to normalize values to nice round numbers
+  const normalizeMaxValue = (value: number): number => {
+    if (value <= 100) return Math.ceil(value / 10) * 10;
+    if (value <= 1000) return Math.ceil(value / 100) * 100;
+    if (value <= 10000) return Math.ceil(value / 1000) * 1000;
+    if (value <= 100000) return Math.ceil(value / 10000) * 10000;
+    if (value <= 1000000) return Math.ceil(value / 100000) * 100000;
+    return Math.ceil(value / 1000000) * 1000000; // For millions
+  };
+
   // Real-time updates
   const { isConnected } = useRealTimeChallenges({
     onChallengeUpdate: (update) => {
@@ -77,15 +87,40 @@ const ChallengesBrowse = () => {
   
   // Basic search - events style
   const [searchQuery, setSearchQuery] = useState('');
-  
+
+  // Dynamic max values state
+  const [dynamicMaxBudget, setDynamicMaxBudget] = useState(10000000);
+  const [dynamicMaxParticipants, setDynamicMaxParticipants] = useState(1000);
+
+  // Calculate dynamic max values when challenges data changes
+  useEffect(() => {
+    if (challenges.length > 0) {
+      const maxBudget = Math.max(...challenges.map(c => c.estimated_budget || 0));
+      const maxParticipants = Math.max(...challenges.map(c => c.participants || 0));
+      
+      const normalizedMaxBudget = normalizeMaxValue(maxBudget);
+      const normalizedMaxParticipants = normalizeMaxValue(maxParticipants);
+      
+      setDynamicMaxBudget(normalizedMaxBudget);
+      setDynamicMaxParticipants(normalizedMaxParticipants);
+      
+      // Update filter ranges if they're at default values
+      setFilters(prev => ({
+        ...prev,
+        prizeRange: [prev.prizeRange[0], normalizedMaxBudget],
+        participantRange: [prev.participantRange[0], normalizedMaxParticipants]
+      }));
+    }
+  }, [challenges]);
+
   // Advanced filters state
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     status: 'all',
     category: 'all',
     difficulty: 'all',
-    prizeRange: [0, 10000000], // Increased to 10M to accommodate all challenge budgets
-    participantRange: [0, 1000],
+    prizeRange: [0, dynamicMaxBudget],
+    participantRange: [0, dynamicMaxParticipants],
     deadline: 'all',
     features: [],
     sortBy: 'deadline',
@@ -410,8 +445,8 @@ const ChallengesBrowse = () => {
       status: 'all',
       category: 'all',
       difficulty: 'all',
-      prizeRange: [0, 10000000], // Increased to 10M to accommodate all challenge budgets
-      participantRange: [0, 1000],
+      prizeRange: [0, dynamicMaxBudget],
+      participantRange: [0, dynamicMaxParticipants],
       deadline: 'all',
       features: [],
       sortBy: 'deadline',
@@ -427,8 +462,8 @@ const ChallengesBrowse = () => {
     if (filters.difficulty !== 'all') count++;
     if (filters.deadline !== 'all') count++;
     if (filters.features.length > 0) count += filters.features.length;
-    if (filters.prizeRange[0] > 0 || filters.prizeRange[1] < 10000000) count++;
-    if (filters.participantRange[0] > 0 || filters.participantRange[1] < 1000) count++;
+    if (filters.prizeRange[0] > 0 || filters.prizeRange[1] < dynamicMaxBudget) count++;
+    if (filters.participantRange[0] > 0 || filters.participantRange[1] < dynamicMaxParticipants) count++;
     return count;
   };
 
