@@ -112,7 +112,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
 
       setSystemSettings(prev => ({ ...prev, ...settingsUpdate }));
     } catch (error) {
-      console.error('Error fetching system settings:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     }
   };
 

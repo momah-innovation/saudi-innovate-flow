@@ -65,7 +65,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
 
       setEvents(eventsWithCounts);
     } catch (error) {
-      console.error('Error loading events:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: 'خطأ في تحميل الفعاليات',
         description: 'حدث خطأ أثناء تحميل الفعاليات',
@@ -116,7 +116,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
 
       loadEvents(); // Reload events
     } catch (error) {
-      console.error('Error deleting event:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: 'خطأ في حذف الفعالية',
         variant: 'destructive'
@@ -140,7 +140,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
 
       loadEvents(); // Reload events
     } catch (error) {
-      console.error('Error updating event status:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: 'خطأ في تحديث الحالة',
         variant: 'destructive'

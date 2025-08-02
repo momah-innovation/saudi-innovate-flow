@@ -78,8 +78,8 @@ export function InnovationTeamsContent({
           .in('id', userIds);
 
         if (profilesError) {
-          console.warn('Error fetching profiles:', profilesError);
           // Continue without profiles if they fail to load
+          // Note: Profile data will be incomplete but core functionality preserved
         }
 
         // Fetch team assignments
@@ -89,7 +89,7 @@ export function InnovationTeamsContent({
           .in('team_member_id', members.map(m => m.id));
 
         if (assignmentsError) {
-          console.warn('Error fetching assignments:', assignmentsError);
+          // Continue without assignments if they fail to load
         }
 
         // Enrich members with profile data and assignments
@@ -121,7 +121,7 @@ export function InnovationTeamsContent({
       });
 
     } catch (error) {
-      console.error('Error fetching core team data:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "خطأ",
         description: "فشل في تحميل بيانات فريق الابتكار الأساسي.",
@@ -153,7 +153,7 @@ export function InnovationTeamsContent({
 
       fetchCoreTeamData();
     } catch (error) {
-      console.error('Error removing team member:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "خطأ",
         description: "فشل في إزالة عضو الفريق.",
@@ -219,12 +219,12 @@ export function InnovationTeamsContent({
     const actions: CoreTeamCardAction[] = [
       {
         label: t('edit'),
-        icon: <Edit className="h-4 w-4 mr-2" />,
+        icon: <Edit className="h-4 w-4 me-2" />,
         onClick: () => handleEditMember(member)
       },
       {
         label: t('remove'),
-        icon: <UserX className="h-4 w-4 mr-2" />,
+        icon: <UserX className="h-4 w-4 me-2" />,
         onClick: () => handleRemoveMember(member.id),
         variant: 'destructive'
       }

@@ -67,7 +67,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
               .eq('name', userName);
 
             if (error) {
-              console.error(`Failed to update ${userName}:`, error);
+              const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
               failedUploads.push(`${userName} (${mapping.fileName})`);
             } else {
               successfulUploads.push(`${userName} (${mapping.fileName})`);
@@ -81,7 +81,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
           await new Promise(resolve => setTimeout(resolve, 500));
           
         } catch (error) {
-          console.error(`Failed to process ${mapping.fileName}:`, error);
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
           failedUploads.push(mapping.fileName);
           completed++;
           setProgress((completed / AVATAR_MAPPING.length) * 100);
@@ -105,7 +105,7 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
 
       onComplete?.();
     } catch (error) {
-      console.error('Bulk upload error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast.error(t('failed_to_upload_avatars'));
     } finally {
       setUploading(false);

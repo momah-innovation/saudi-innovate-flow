@@ -72,7 +72,7 @@ export function PartnersManagement() {
       if (error) throw error;
       setPartners(data || []);
     } catch (error) {
-      console.error("Error fetching partners:", error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "Error",
         description: "Failed to fetch partners",
@@ -115,7 +115,7 @@ export function PartnersManagement() {
       resetForm();
       fetchPartners();
     } catch (error) {
-      console.error("Error saving partner:", error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "Error",
         description: "Failed to save partner",
@@ -180,7 +180,7 @@ export function PartnersManagement() {
       });
       fetchPartners();
     } catch (error) {
-      console.error("Error deleting partner:", error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "Error",
         description: "Failed to delete partner",
@@ -239,7 +239,7 @@ export function PartnersManagement() {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={() => { resetForm(); setEditingPartner(null); }}>
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               Add Partner
             </Button>
           </DialogTrigger>
@@ -284,30 +284,7 @@ export function PartnersManagement() {
                         <SelectItem key={type} value={type}>
                           {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                         </SelectItem>
-        ))}
-
-        {filteredPartners.length === 0 && (searchTerm || typeFilter !== "all" || statusFilter !== "all") && (
-          <Card>
-            <CardContent className="text-center py-8">
-              <p className="text-muted-foreground">No partners found matching your criteria</p>
-              <Button 
-                variant="outline" 
-                onClick={clearFilters}
-                className="mt-2"
-              >
-                Clear filters
-              </Button>
-            </CardContent>
-          </Card>
-        )}
-
-        {partners.length === 0 && !(searchTerm || typeFilter !== "all" || statusFilter !== "all") && (
-          <Card>
-            <CardContent className="text-center py-8">
-              <p className="text-muted-foreground">No partners found</p>
-            </CardContent>
-          </Card>
-        )}
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -426,14 +403,14 @@ export function PartnersManagement() {
                     setIsDetailOpen(false);
                     handleEdit(viewingPartner);
                   }}>
-                    <Edit className="w-4 h-4 mr-2" />
+                    <Edit className="w-4 h-4 me-2" />
                     Edit
                   </Button>
                   <Button variant="outline" size="sm" onClick={() => {
                     setIsDetailOpen(false);
                     handleDelete(viewingPartner.id);
                   }}>
-                    <Trash2 className="w-4 h-4 mr-2" />
+                    <Trash2 className="w-4 h-4 me-2" />
                     Delete
                   </Button>
                 </div>
