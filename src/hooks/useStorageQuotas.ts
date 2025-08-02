@@ -28,17 +28,20 @@ export const useStorageQuotas = () => {
       setLoading(true)
       setError(null)
       
+      console.log('fetchQuotas: Calling get_all_storage_quotas RPC...');
       const { data, error: quotaError } = await supabase.rpc('get_all_storage_quotas')
       
       if (quotaError) {
+        console.error('fetchQuotas: RPC error:', quotaError);
         throw quotaError
       }
       
+      console.log('fetchQuotas: RPC success, data:', data);
       setQuotas(data || [])
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch quotas'
+      console.error('fetchQuotas: Error:', err);
       setError(errorMessage)
-      console.error('Storage quotas fetch error:', err)
     } finally {
       setLoading(false)
     }
