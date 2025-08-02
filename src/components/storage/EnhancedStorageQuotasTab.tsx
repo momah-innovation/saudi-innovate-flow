@@ -170,19 +170,44 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
     const defaultQuotaGB = 5; // 5GB default quota
     const bucketsToSetup = bucketsWithoutQuotas.slice(0, 5); // Setup first 5
 
+    console.log('Starting bulk setup for buckets:', bucketsToSetup.map(b => b.bucket_name));
+    
+    if (bucketsToSetup.length === 0) {
+      toast({
+        title: 'No Action Needed',
+        description: 'All buckets already have quotas set up',
+        variant: 'default'
+      });
+      return;
+    }
+
     setActionLoading('bulk');
     
-    for (const bucket of bucketsToSetup) {
-      await setQuota(bucket.bucket_name, defaultQuotaGB * 1024 * 1024 * 1024);
+    try {
+      for (const bucket of bucketsToSetup) {
+        console.log(`Setting quota for bucket: ${bucket.bucket_name}`);
+        const result = await setQuota(bucket.bucket_name, defaultQuotaGB * 1024 * 1024 * 1024);
+        if (!result.success) {
+          console.error(`Failed to set quota for ${bucket.bucket_name}:`, result.error);
+          throw new Error(`Failed to set quota for ${bucket.bucket_name}: ${result.error}`);
+        }
+      }
+      
+      toast({
+        title: 'Bulk Setup Complete',
+        description: `Set up ${defaultQuotaGB}GB quotas for ${bucketsToSetup.length} buckets`
+      });
+    } catch (error) {
+      console.error('Bulk setup failed:', error);
+      toast({
+        title: 'Bulk Setup Failed',
+        description: error instanceof Error ? error.message : 'Failed to set up quotas',
+        variant: 'destructive'
+      });
+    } finally {
+      setActionLoading(null);
+      onQuotasChanged?.();
     }
-    
-    toast({
-      title: 'Bulk Setup Complete',
-      description: `Set up ${defaultQuotaGB}GB quotas for ${bucketsToSetup.length} buckets`
-    });
-    
-    setActionLoading(null);
-    onQuotasChanged?.();
   };
 
   const getBucketStatus = (bucketName: string) => {

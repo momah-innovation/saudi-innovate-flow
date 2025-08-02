@@ -46,6 +46,7 @@ export const useStorageQuotas = () => {
 
   const setQuota = async (bucketName: string, quotaBytes: number) => {
     try {
+      console.log(`Setting quota for ${bucketName}: ${quotaBytes} bytes`);
       const { data, error } = await supabase.rpc('manage_storage_quotas', {
         bucket_name: bucketName,
         quota_bytes: quotaBytes,
@@ -53,13 +54,16 @@ export const useStorageQuotas = () => {
       })
       
       if (error) {
+        console.error('RPC error setting quota:', error);
         throw error
       }
       
+      console.log('Quota set successfully:', data);
       await fetchQuotas()
       return { success: true, data }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to set quota'
+      console.error('Error in setQuota:', err);
       return { 
         success: false, 
         error: errorMessage
