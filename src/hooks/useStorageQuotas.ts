@@ -29,6 +29,8 @@ export const useStorageQuotas = () => {
       setError(null)
       
       console.log('fetchQuotas: Calling get_all_storage_quotas RPC...');
+      console.log('fetchQuotas: Auth state:', await supabase.auth.getUser());
+      
       const { data, error: quotaError } = await supabase.rpc('get_all_storage_quotas')
       
       if (quotaError) {
