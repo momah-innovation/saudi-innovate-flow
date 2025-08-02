@@ -448,36 +448,14 @@ const ChallengesBrowse = () => {
           }
         >
           <div className="space-y-6">
-            {/* Enhanced Layout with Recommendations */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-              {/* Main Content */}
-              <div className="lg:col-span-3 space-y-6">
-                {/* Enhanced Filters with Animations */}
-                <EnhancedChallengeFilters
-                  filters={filters}
-                  onFiltersChange={setFilters}
-                  onClearFilters={handleClearFilters}
-                  activeFiltersCount={getActiveFiltersCount()}
-                  className="animate-fade-in"
-                />
-              </div>
-              
-              {/* Sidebar with Recommendations */}
-              <div className="lg:col-span-1 space-y-6">
-                <TrendingChallengesWidget
-                  onChallengeClick={handleViewDetails}
-                  onChallengeSelect={(challengeId) => {
-                    const challenge = challenges.find(c => c.id === challengeId);
-                    if (challenge) handleViewDetails(challenge);
-                  }}
-                  className="sticky top-4"
-                />
-                <ChallengeRecommendations
-                  onChallengeSelect={handleViewDetails}
-                  className="sticky top-4"
-                />
-              </div>
-            </div>
+            {/* Enhanced Filters */}
+            <EnhancedChallengeFilters
+              filters={filters}
+              onFiltersChange={setFilters}
+              onClearFilters={handleClearFilters}
+              activeFiltersCount={getActiveFiltersCount()}
+              className="animate-fade-in"
+            />
 
             {/* Tabs Navigation */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
