@@ -57,7 +57,7 @@
     "cleanup_successful": "Cleanup Successful",
     "temp_files_cleaned": "Temporary files have been cleaned up",
     "cleanup_failed": "Cleanup Failed",
-    "cleanup_failed_description": "Failed to cleanup temporary files",
+    "recent_uploads_count": "Recent uploads count",
     "bucket_management": "Bucket Management",
     "bucket_management_description": "View and manage storage buckets, their settings, and contents",
     "search_buckets": "Search buckets...",
@@ -94,7 +94,7 @@
     "tb": "TB"
   },
   "common": {
-    "refresh": "Refresh",
+    "more": "more",
     "error": "Error",
     "advanced": "Advanced",
     "settings": "Settings",

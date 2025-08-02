@@ -57,7 +57,7 @@
     "cleanup_successful": "تم التنظيف بنجاح",
     "temp_files_cleaned": "تم تنظيف الملفات المؤقتة",
     "cleanup_failed": "فشل التنظيف",
-    "cleanup_failed_description": "فشل في تنظيف الملفات المؤقتة",
+    "recent_uploads_count": "عدد الرفوعات الأخيرة",
     "bucket_management": "إدارة الحاويات",
     "bucket_management_description": "عرض وإدارة حاويات التخزين وإعداداتها ومحتوياتها",
     "search_buckets": "البحث في الحاويات...",
@@ -94,7 +94,7 @@
     "tb": "تيرابايت"
   },
   "common": {
-    "refresh": "تحديث",
+    "more": "المزيد",
     "error": "خطأ",
     "advanced": "متقدم",
     "settings": "الإعدادات",
