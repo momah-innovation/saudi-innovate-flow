@@ -95,7 +95,7 @@ const ChallengesBrowse = () => {
   // Filter and search logic
   const getFilteredChallenges = () => {
     console.log('🔍 getFilteredChallenges - Input challenges:', challenges.length);
-    console.log('🔍 Applied filters:', filters);
+    console.log('🔍 Applied filters:', JSON.stringify(filters, null, 2));
     
     let filtered = [...challenges];
 
