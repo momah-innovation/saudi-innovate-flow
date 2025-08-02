@@ -440,6 +440,38 @@ Deno.serve(async (req) => {
       throw new Error(`Maximum ${config.maxFiles} files allowed`)
     }
 
+    // Check storage quota if enabled
+    try {
+      const { data: quotaData } = await supabaseClient
+        .from('storage_quotas')
+        .select('quota_bytes')
+        .eq('bucket_name', config.bucket)
+        .maybeSingle()
+
+      if (quotaData?.quota_bytes) {
+        // Get current bucket usage
+        const { data: bucketStats, error: statsError } = await supabaseClient.rpc('get_bucket_usage', {
+          bucket_name: config.bucket
+        })
+        
+        if (!statsError && bucketStats && bucketStats.length > 0) {
+          const currentUsage = bucketStats[0]?.total_size || 0
+          const totalNewSize = files.reduce((sum, file) => sum + file.size, 0)
+          
+          if (currentUsage + totalNewSize > quotaData.quota_bytes) {
+            const availableSpace = Math.max(0, quotaData.quota_bytes - currentUsage)
+            throw new Error(`Upload would exceed storage quota for ${config.bucket}. Available: ${Math.round(availableSpace / 1024 / 1024)}MB`)
+          }
+        }
+      }
+    } catch (quotaError) {
+      // If quota check fails, log but don't block upload (unless it's a quota exceeded error)
+      if (quotaError.message && quotaError.message.includes('exceed storage quota')) {
+        throw quotaError
+      }
+      console.warn('Storage quota check failed:', quotaError)
+    }
+
     // Log configuration being used
     console.log(`Using upload config for ${uploadType}:`, {
       bucket: config.bucket,
