@@ -60,7 +60,7 @@ export const StoragePoliciesPage: React.FC = () => {
     unprotectedBuckets: 0,
     totalPolicies: 0,
     securityScore: 85,
-    lastReview: '2 days ago',
+    lastReview: 'منذ يومين', // Default Arabic since we can't call t() here
     criticalIssues: 0
   })
 
