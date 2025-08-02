@@ -44,6 +44,20 @@ export const useChallengesData = () => {
     try {
       setLoading(true);
 
+      // Debug: Check user authentication
+      const { data: { user } } = await supabase.auth.getUser();
+      console.log('Current user:', user?.id);
+      
+      // Debug: Check user roles if authenticated
+      if (user) {
+        const { data: roles } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .eq('is_active', true);
+        console.log('User roles:', roles);
+      }
+
       // Fetch challenges with participant counts (all sensitivity levels based on user permissions)
       const { data: challengesData, error: challengesError } = await supabase
         .from('challenges')
@@ -53,7 +67,13 @@ export const useChallengesData = () => {
         `)
         .order('created_at', { ascending: false });
 
-      if (challengesError) throw challengesError;
+      if (challengesError) {
+        console.error('Error fetching challenges:', challengesError);
+        throw challengesError;
+      }
+
+      console.log('Fetched challenges count:', challengesData?.length);
+      console.log('Sample challenge data:', challengesData?.[0]);
 
       // Fetch submissions count for each challenge
       const challengeIds = challengesData?.map(c => c.id) || [];
@@ -117,6 +137,9 @@ export const useChallengesData = () => {
         };
       });
 
+      console.log('Transformed challenges:', transformedChallenges.length);
+      console.log('Challenge sensitivity levels:', transformedChallenges.map(c => ({ id: c.id, sensitivity: c.sensitivity_level })));
+      
       setChallenges(transformedChallenges);
 
       // Calculate stats
