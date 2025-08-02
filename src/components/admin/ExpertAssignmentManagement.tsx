@@ -127,7 +127,7 @@ export function ExpertAssignmentManagement() {
         }
       });
     } catch (error) {
-      console.error('Error fetching system settings:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       setMaxWorkload(5);
       setProfileTextareaRows(4);
     }
@@ -142,7 +142,7 @@ export function ExpertAssignmentManagement() {
         fetchChallengeExperts()
       ]);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     }
     setLoading(false);
   };
@@ -196,7 +196,7 @@ export function ExpertAssignmentManagement() {
 
       setExperts(expertsWithProfiles);
     } catch (error) {
-      console.error('Error fetching experts:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     }
   };
 
@@ -210,7 +210,7 @@ export function ExpertAssignmentManagement() {
       if (error) throw error;
       setChallenges(data || []);
     } catch (error) {
-      console.error('Error fetching challenges:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     }
   };
 
@@ -243,7 +243,7 @@ export function ExpertAssignmentManagement() {
       if (error) throw error;
       setChallengeExperts(data || []);
     } catch (error) {
-      console.error('Error fetching challenge experts:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     }
   };
 
@@ -279,7 +279,7 @@ export function ExpertAssignmentManagement() {
       resetAssignmentForm();
       fetchChallengeExperts();
     } catch (error) {
-      console.error('Error assigning expert:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "Error",
         description: "Failed to assign expert. Please try again.",
@@ -327,7 +327,7 @@ export function ExpertAssignmentManagement() {
       resetBulkAssignmentForm();
       fetchChallengeExperts();
     } catch (error) {
-      console.error('Error in bulk assignment:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "Error",
         description: "Failed to complete bulk assignment. Please try again.",
@@ -367,7 +367,7 @@ export function ExpertAssignmentManagement() {
       resetAssignmentForm();
       fetchChallengeExperts();
     } catch (error) {
-      console.error('Error updating assignment:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "Error",
         description: "Failed to update assignment. Please try again.",
@@ -392,7 +392,7 @@ export function ExpertAssignmentManagement() {
 
       fetchChallengeExperts();
     } catch (error) {
-      console.error('Error removing assignment:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "Error",
         description: "Failed to remove assignment. Please try again.",
@@ -484,11 +484,11 @@ export function ExpertAssignmentManagement() {
         </div>
         <div className="flex gap-2">
           <Button onClick={() => setIsAssignDialogOpen(true)}>
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-4 w-4 me-2" />
             Assign Expert
           </Button>
           <Button variant="outline" onClick={() => setIsBulkAssignDialogOpen(true)}>
-            <Users className="h-4 w-4 mr-2" />
+            <Users className="h-4 w-4 me-2" />
             Bulk Assign
           </Button>
         </div>

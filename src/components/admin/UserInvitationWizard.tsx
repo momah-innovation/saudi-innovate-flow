@@ -112,11 +112,11 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
 
       onOpenChange(false);
       onInvitationSent?.();
-    } catch (error: any) {
-      console.error('Error sending invitation:', error);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "Error",
-        description: error.message.includes('duplicate') 
+        description: errorMessage.includes('duplicate') 
           ? "An invitation for this email already exists." 
           : "Failed to send invitation. Please try again.",
         variant: "destructive",

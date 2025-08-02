@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 
-interface Challenge {
+interface AdminChallenge {
   id: string;
   title_ar: string;
   description_ar: string;
@@ -52,14 +52,14 @@ interface Challenge {
 }
 
 export function AdminChallengeManagement() {
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
+  const [challenges, setChallenges] = useState<AdminChallenge[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [showWizard, setShowWizard] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
-  const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
+  const [selectedChallenge, setSelectedChallenge] = useState<AdminChallenge | null>(null);
   const { toast } = useToast();
   const { t } = useTranslation();
 
@@ -78,7 +78,7 @@ export function AdminChallengeManagement() {
       if (error) throw error;
       setChallenges(data || []);
     } catch (error) {
-      console.error('Error fetching challenges:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "خطأ",
         description: "فشل في تحميل التحديات",
@@ -104,7 +104,7 @@ export function AdminChallengeManagement() {
         description: "تم حذف التحدي بنجاح"
       });
     } catch (error) {
-      console.error('Error deleting challenge:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
         title: "خطأ",
         description: "فشل في حذف التحدي",
@@ -113,17 +113,17 @@ export function AdminChallengeManagement() {
     }
   }, [setChallenges, toast]);
 
-  const handleEdit = useCallback((challenge: Challenge) => {
+  const handleEdit = useCallback((challenge: AdminChallenge) => {
     setSelectedChallenge(challenge);
     setShowWizard(true);
   }, [setSelectedChallenge, setShowWizard]);
 
-  const handleSettings = useCallback((challenge: Challenge) => {
+  const handleSettings = useCallback((challenge: AdminChallenge) => {
     setSelectedChallenge(challenge);
     setShowSettings(true);
   }, [setSelectedChallenge, setShowSettings]);
 
-  const handleView = useCallback((challenge: Challenge) => {
+  const handleView = useCallback((challenge: AdminChallenge) => {
     setSelectedChallenge(challenge);
     setShowDetails(true);
   }, [setSelectedChallenge, setShowDetails]);
@@ -233,13 +233,13 @@ export function AdminChallengeManagement() {
             title={challenge.title_ar}
             description={challenge.description_ar}
             badges={[
-              { 
+                { 
                 label: getStatusLabel(challenge.status),
-                variant: getStatusColor(challenge.status) as any
+                variant: getStatusColor(challenge.status) as "default" | "secondary" | "destructive" | "outline"
               },
               { 
                 label: getPriorityLabel(challenge.priority_level),
-                variant: getPriorityColor(challenge.priority_level) as any
+                variant: getPriorityColor(challenge.priority_level) as "default" | "secondary" | "destructive" | "outline"
               },
               ...(challenge.challenge_type ? [{ 
                 label: challenge.challenge_type, 
@@ -340,13 +340,13 @@ export function AdminChallengeManagement() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <h4 className="font-semibold mb-2">{t('status')}</h4>
-                  <Badge variant={getStatusColor(selectedChallenge.status) as any}>
+                  <Badge variant={getStatusColor(selectedChallenge.status) as "default" | "secondary" | "destructive" | "outline"}>
                     {getStatusLabel(selectedChallenge.status)}
                   </Badge>
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2">{t('priority')}</h4>
-                  <Badge variant={getPriorityColor(selectedChallenge.priority_level) as any}>
+                  <Badge variant={getPriorityColor(selectedChallenge.priority_level) as "default" | "secondary" | "destructive" | "outline"}>
                     {getPriorityLabel(selectedChallenge.priority_level)}
                   </Badge>
                 </div>
