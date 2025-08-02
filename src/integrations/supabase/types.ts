@@ -6782,6 +6782,15 @@ export type Database = {
           total_size: number
         }[]
       }
+      get_storage_policies_info: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          name: string
+          command: string
+          condition: string
+          check_expression: string
+        }[]
+      }
       has_role: {
         Args: {
           _user_id: string

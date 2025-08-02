@@ -107,10 +107,18 @@ export const StoragePoliciesPage: React.FC = () => {
 
       // Use RPC to get policies (since pg_policies is a system view not directly accessible)
       const { data: policiesData, error: policiesError } = await supabase
-        .rpc('get_storage_policies_info');
+        .rpc('get_storage_policies_info' as any);
 
       if (policiesError) {
         console.error('Error loading policies:', policiesError);
+        // Fallback to empty policies for now
+        setBuckets(bucketsData.map(bucket => ({
+          id: bucket.id,
+          name: bucket.name,
+          public: bucket.public,
+          policies: []
+        })));
+        return;
       }
 
       // Group policies by bucket  
