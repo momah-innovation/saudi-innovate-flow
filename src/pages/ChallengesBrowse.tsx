@@ -189,7 +189,7 @@ const ChallengesBrowse = () => {
       case 'active':
         return challenges.filter(c => c.status === 'active');
       case 'upcoming':
-        return challenges.filter(c => c.status === 'planning');
+        return challenges.filter(c => c.status === 'planning' || c.status === 'upcoming');
       case 'trending':
         return challenges.filter(c => c.priority_level === 'عالي' || (c.participants || 0) > 50);
       default:
@@ -495,7 +495,7 @@ const ChallengesBrowse = () => {
                   {isRTL ? 'القادمة' : 'Upcoming'}
                   {activeTab === 'upcoming' && (
                     <span className="ml-2 bg-gradient-to-r from-blue-200 to-cyan-200 text-blue-800 px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm">
-                      {filteredChallenges.filter(c => c.status === 'upcoming').length}
+                      {filteredChallenges.filter(c => c.status === 'planning' || c.status === 'upcoming').length}
                     </span>
                   )}
                 </TabsTrigger>
@@ -547,8 +547,8 @@ const ChallengesBrowse = () => {
                 ) : (
                   <div className="animate-fade-in">
                     {viewMode === 'list' ? 
-                      renderChallengeList(filteredChallenges.filter(c => c.status === 'upcoming')) : 
-                      renderChallengeCards(filteredChallenges.filter(c => c.status === 'upcoming'))
+                      renderChallengeList(filteredChallenges.filter(c => c.status === 'planning' || c.status === 'upcoming')) : 
+                      renderChallengeCards(filteredChallenges.filter(c => c.status === 'planning' || c.status === 'upcoming'))
                     }
                   </div>
                 )}
