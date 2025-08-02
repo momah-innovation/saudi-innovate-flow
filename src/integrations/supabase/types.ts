@@ -6900,6 +6900,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      user_has_access_to_challenge: {
+        Args: { challenge_id_param: string }
+        Returns: boolean
+      }
       validate_role_assignment: {
         Args: {
           assigner_user_id: string
