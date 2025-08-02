@@ -12,6 +12,7 @@ import { useUploaderSettingsContext } from '@/contexts/UploaderSettingsContext';
 import { FileViewDialog } from './FileViewDialog';
 import { BucketManagementDialog } from './BucketManagementDialog';
 import { BucketViewDialog } from './BucketViewDialog';
+import { EnhancedFileUploader } from '@/components/ui/enhanced-file-uploader';
 import { StorageFilters, type FilterOptions, type SortOptions } from './StorageFilters';
 import { LayoutToggle, LayoutType } from '@/components/ui/layout-toggle';
 import { StorageFileCard } from './StorageFileCard';
@@ -1072,41 +1073,18 @@ export function StorageManagementPage() {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      {/* Simple file input to avoid form context issues */}
-                      <div className="space-y-4">
-                        <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
-                          <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-                          <p className="text-sm text-muted-foreground mb-2">
-                            {t('storage.select_files')} ({config.allowedTypes.join(', ')})
-                          </p>
-                          <p className="text-xs text-muted-foreground mb-4">
-                            {t('storage.drag_drop_description')}
-                          </p>
-                          <input
-                            type="file"
-                            multiple={config.maxFiles > 1}
-                            accept={config.allowedTypes.map(type => `.${type}`).join(',')}
-                            onChange={(e) => {
-                              if (e.target.files) {
-                                handleFileUpload(e.target.files);
-                                setSelectedUploadBucket(config.bucket);
-                              }
-                            }}
-                            className="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
-                          />
-                        </div>
-                        
-                        {/* Upload Progress */}
-                        {isUploading && (
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-sm">
-                              <span>{t('common.uploading')}</span>
-                              <span>Processing...</span>
-                            </div>
-                            <Progress value={75} className="h-2" />
-                          </div>
-                        )}
-                      </div>
+                      <EnhancedFileUploader
+                        config={config}
+                        onUploadComplete={(files) => {
+                          toast({
+                            title: t('upload_successful'),
+                            description: t('files_uploaded_successfully', { count: files.length })
+                          });
+                          loadStorageData();
+                        }}
+                        showPreview={true}
+                        showMetadata={true}
+                      />
                     </CardContent>
                   </Card>
                 ))}
