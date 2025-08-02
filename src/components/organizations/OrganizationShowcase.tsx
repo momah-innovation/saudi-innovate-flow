@@ -123,7 +123,7 @@ export function OrganizationShowcase() {
 
   const handleViewDetails = (type: string, id: string) => {
     // This would navigate to detailed profile pages
-    console.log(`Viewing ${type} details for ID:`, id);
+    // Navigate to detailed profile pages
     toast.info(`Opening ${type} profile page - Feature coming soon!`);
   };
 

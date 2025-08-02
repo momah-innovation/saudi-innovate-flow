@@ -62,7 +62,7 @@ export const OpportunityNotificationsPanel = ({
             filter: `recipient_id=eq.${user.id}`
           },
           (payload) => {
-            console.log('New notification:', payload);
+            // New notification received
             loadNotifications();
           }
         )

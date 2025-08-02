@@ -29,14 +29,14 @@ export function StandardPageExample() {
         { label: 'Completed', value: 'completed' }
       ],
       placeholder: 'Select status',
-      onChange: (value) => console.log('Status filter:', value)
+      onChange: (value) => {/* Status filter changed */}
     },
     {
       id: 'dateRange',
       label: 'Date Range',
       type: 'daterange',
       placeholder: 'Select date range',
-      onChange: (value) => console.log('Date range:', value)
+      onChange: (value) => {/* Date range filter changed */}
     }
   ];
   
@@ -46,21 +46,21 @@ export function StandardPageExample() {
       id: 'edit',
       label: 'Edit Selected',
       icon: <Edit className="w-4 h-4" />,
-      onClick: (ids) => console.log('Edit items:', ids),
+      onClick: (ids) => {/* Edit selected items */},
       variant: 'outline'
     },
     {
       id: 'archive',
       label: 'Archive Selected',
       icon: <Archive className="w-4 h-4" />,
-      onClick: (ids) => console.log('Archive items:', ids),
+      onClick: (ids) => {/* Archive selected items */},
       variant: 'outline'
     },
     {
       id: 'delete',
       label: 'Delete Selected',
       icon: <Trash2 className="w-4 h-4" />,
-      onClick: (ids) => console.log('Delete items:', ids),
+      onClick: (ids) => {/* Delete selected items */},
       variant: 'destructive'
     }
   ];
@@ -111,13 +111,13 @@ export function StandardPageExample() {
       // Add button
       addButton={{
         label: "Add New Item",
-        onClick: () => console.log('Add new item')
+        onClick: () => {/* Add new item action */}
       }}
       
       // Layout options
       supportedLayouts={['cards', 'list', 'grid']}
       defaultLayout="cards"
-      onLayoutChange={(layout) => console.log('Layout changed:', layout)}
+      onLayoutChange={(layout) => {/* Layout changed */}}
       
       // Search and filters
       searchTerm={searchTerm}
@@ -125,7 +125,7 @@ export function StandardPageExample() {
       filters={filters}
       onClearFilters={() => {
         setSearchTerm('');
-        console.log('Clear all filters');
+        /* Clear all filters action */
       }}
       
       // Bulk actions

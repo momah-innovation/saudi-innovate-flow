@@ -63,7 +63,7 @@ export const StatisticsNotificationCenter = ({
             table: 'statistics_notifications'
           },
           (payload) => {
-            console.log('New statistics notification:', payload);
+            // New statistics notification received
             loadNotifications();
           }
         )

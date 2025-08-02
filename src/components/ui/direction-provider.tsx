@@ -43,7 +43,7 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
   };
 
   const setLanguage = (newLanguage: Language) => {
-    console.log('DirectionProvider - Setting language to:', newLanguage);
+    // Setting language preference
     setLanguageState(newLanguage);
     const newDirection = RTL_LANGUAGES.includes(newLanguage) ? 'rtl' : 'ltr';
     setDirection(newDirection);
@@ -55,8 +55,7 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
     
     // CRITICAL: Sync with react-i18next using the exact language code
     i18n.changeLanguage(newLanguage).then(() => {
-      console.log('DirectionProvider - Successfully changed i18n language to:', newLanguage);
-      console.log('DirectionProvider - i18n.language is now:', i18n.language);
+      // Language changed successfully
     });
   };
 

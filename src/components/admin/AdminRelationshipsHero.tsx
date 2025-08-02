@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from '@/hooks/useAppTranslation';
+import { useRTLAwareClasses } from '@/components/ui/rtl-aware';
 import { 
   Network, 
   GitBranch, 
@@ -33,11 +34,12 @@ export function AdminRelationshipsHero({
   lastUpdate
 }: AdminRelationshipsHeroProps) {
   const { t } = useTranslation();
+  const { flexRow } = useRTLAwareClasses();
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       {/* Total Connections */}
       <Card className="gradient-border hover-scale">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('total_connections')}</CardTitle>
           <Network className="h-4 w-4 text-primary" />
         </CardHeader>
