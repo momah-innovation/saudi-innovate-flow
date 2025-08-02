@@ -607,6 +607,15 @@ export interface SystemLists {
   campaignThemeOptions: string[];
 }
 
+// Hook return types
+export interface SystemListsHook extends SystemLists {
+  isLoading: boolean;
+  error?: string;
+}
+
+// Re-export API types
+export * from './api';
+
 // Component Props Types
 export interface BaseComponentProps {
   className?: string;
