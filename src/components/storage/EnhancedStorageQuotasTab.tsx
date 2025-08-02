@@ -56,16 +56,28 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
   const fetchAllBuckets = async () => {
     try {
       setBucketsLoading(true);
+      console.log('Fetching bucket info...');
       const { data, error } = await supabase.rpc('get_basic_storage_info');
       
       if (error) {
         console.error('Error fetching buckets:', error);
+        toast({
+          title: 'Error',
+          description: `Failed to fetch bucket info: ${error.message}`,
+          variant: 'destructive'
+        });
         return;
       }
       
+      console.log('Buckets fetched:', data);
       setAllBuckets(data || []);
     } catch (err) {
       console.error('Error fetching buckets:', err);
+      toast({
+        title: 'Error', 
+        description: 'Failed to fetch bucket information',
+        variant: 'destructive'
+      });
     } finally {
       setBucketsLoading(false);
     }
