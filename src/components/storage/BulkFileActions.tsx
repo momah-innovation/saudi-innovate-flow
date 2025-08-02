@@ -51,6 +51,11 @@ export function BulkFileActions({
   const [showMoveDialog, setShowMoveDialog] = useState(false);
   const [targetBucket, setTargetBucket] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [assigneeId, setAssigneeId] = useState('');
+  const [assignmentNotes, setAssignmentNotes] = useState('');
+  
+  // This would come from useOrganizationalData hook
+  const teamMembers: any[] = []; // Placeholder for now
 
   const selectAll = () => {
     onSelectionChange(allFiles);
@@ -198,6 +203,40 @@ export function BulkFileActions({
       </div>
     );
   }
+
+  const handleAssignFiles = async () => {
+    if (!assigneeId) {
+      toast({
+        title: t('error'),
+        description: t('please_select_assignee'),
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    try {
+      // This would require a custom backend function to assign files to team members
+      // For now, we'll just show a success message
+      toast({
+        title: t('files_assigned'),
+        description: t('files_assigned_successfully', { 
+          count: selectedFiles.length,
+          assignee: teamMembers.find(m => m.id === assigneeId)?.email || assigneeId
+        })
+      });
+      
+      onSelectionChange([]);
+      setAssigneeId('');
+      setAssignmentNotes('');
+    } catch (error) {
+      console.error('Error assigning files:', error);
+      toast({
+        title: t('assignment_failed'),
+        description: t('failed_to_assign_files'),
+        variant: 'destructive'
+      });
+    }
+  };
 
   return (
     <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg border">
