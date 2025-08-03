@@ -433,73 +433,73 @@ export const challengesPageConfig: ChallengesPageConfig = {
       slideInRight: 'animate-slide-in-right'
     },
     gradients: {
-      // Hero section gradients - dark, vibrant theme
-      hero: 'bg-gradient-to-r from-violet-600 via-purple-600 to-blue-600',
-      heroOverlay: 'bg-gradient-to-r from-black/50 via-black/30 to-black/40',
+      // Hero section gradients using semantic tokens
+      hero: 'bg-gradient-to-r from-primary via-primary/80 to-accent',
+      heroOverlay: 'bg-gradient-to-r from-background/90 via-background/70 to-background/80',
       
-      // Button gradients matching hero
-      button: 'bg-gradient-to-r from-purple-500 to-blue-500',
-      buttonHover: 'hover:from-purple-600 hover:to-blue-600',
+      // Button gradients using semantic tokens
+      button: 'bg-gradient-to-r from-primary to-accent',
+      buttonHover: 'hover:from-primary/90 hover:to-accent/90',
       
-      // Text highlight gradients
-      textHighlight: 'bg-gradient-to-r from-yellow-300 to-orange-300',
+      // Text highlight gradients using semantic tokens
+      textHighlight: 'bg-gradient-to-r from-warning/80 to-warning',
       
-      // Card gradients - consistent with hero theme
-      card: 'bg-gradient-to-r from-violet-500/10 to-purple-500/10',
-      cardHover: 'hover:from-violet-500/20 hover:to-purple-500/20',
+      // Card gradients using semantic tokens
+      card: 'bg-gradient-to-r from-primary/10 to-accent/10',
+      cardHover: 'hover:from-primary/20 hover:to-accent/20',
       
-      // Filter section gradients
-      filter: 'bg-gradient-to-r from-violet-500 to-purple-600',
-      filterLight: 'bg-gradient-to-r from-violet-50/90 via-purple-50/90 to-blue-50/90',
+      // Filter section gradients using semantic tokens
+      filter: 'bg-gradient-to-r from-primary to-accent',
+      filterLight: 'bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5',
       
-      // Featured content gradients
-      featured: 'bg-gradient-to-br from-purple-500/20 to-blue-500/20',
+      // Featured content gradients using semantic tokens
+      featured: 'bg-gradient-to-br from-primary/20 to-accent/20',
       
-      // Status gradients
-      success: 'bg-gradient-to-r from-green-500 to-emerald-500',
-      warning: 'bg-gradient-to-r from-yellow-500 to-orange-500',
-      danger: 'bg-gradient-to-r from-red-500 to-pink-500',
-      info: 'bg-gradient-to-r from-blue-500 to-cyan-500'
+      // Status gradients using semantic tokens
+      success: 'bg-gradient-to-r from-success to-success/80',
+      warning: 'bg-gradient-to-r from-warning to-warning/80',
+      danger: 'bg-gradient-to-r from-destructive to-destructive/80',
+      info: 'bg-gradient-to-r from-accent to-accent/80'
     },
     glassMorphism: {
-      // Glass morphism patterns from hero
-      light: 'bg-white/5 backdrop-blur-sm border-white/10',
-      medium: 'bg-white/10 backdrop-blur-sm border-white/20',
-      heavy: 'bg-white/10 backdrop-blur-xl border-white/20',
+      // Glass morphism patterns using semantic tokens
+      light: 'bg-background/5 backdrop-blur-sm border-border/10',
+      medium: 'bg-background/10 backdrop-blur-sm border-border/20',
+      heavy: 'bg-background/10 backdrop-blur-xl border-border/20',
       
-      // Card glass effects
-      card: 'bg-white/5 backdrop-blur-sm border-white/10',
-      cardHover: 'hover:bg-white/10 transition-all duration-300',
-      cardActive: 'bg-white/10 border-white/20 scale-105',
+      // Card glass effects using semantic tokens
+      card: 'bg-card/5 backdrop-blur-sm border-border/10',
+      cardHover: 'hover:bg-card/10 transition-all duration-300',
+      cardActive: 'bg-card/10 border-border/20 scale-105',
       
-      // Badge glass effects
-      badge: 'bg-white/10 text-white border-white/20 backdrop-blur-sm'
+      // Badge glass effects using semantic tokens
+      badge: 'bg-muted/10 text-muted-foreground border-border/20 backdrop-blur-sm'
     },
     colors: {
-      // Animation and icon colors consistent with hero
+      // Animation and icon colors using semantic tokens
       stats: {
-        blue: 'text-blue-400',
-        green: 'text-green-400', 
-        purple: 'text-purple-400',
-        yellow: 'text-yellow-400',
-        orange: 'text-orange-400',
-        red: 'text-red-400'
+        blue: 'text-accent',
+        green: 'text-success', 
+        purple: 'text-primary',
+        yellow: 'text-warning',
+        orange: 'text-warning',
+        red: 'text-destructive'
       },
       
-      // Text colors for dark theme
+      // Text colors using semantic tokens
       text: {
-        primary: 'text-white',
-        secondary: 'text-white/80',
-        muted: 'text-white/60',
-        accent: 'text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300'
+        primary: 'text-foreground',
+        secondary: 'text-muted-foreground',
+        muted: 'text-muted-foreground/60',
+        accent: 'text-transparent bg-clip-text bg-gradient-to-r from-warning to-warning/80'
       },
       
-      // Background variations
+      // Background variations using semantic tokens
       background: {
-        primary: 'bg-white/5',
-        secondary: 'bg-white/10',
-        accent: 'bg-white/20',
-        overlay: 'bg-black/60'
+        primary: 'bg-background/5',
+        secondary: 'bg-muted/10',
+        accent: 'bg-accent/20',
+        overlay: 'bg-background/60'
       }
     },
     effects: {
@@ -507,15 +507,15 @@ export const challengesPageConfig: ChallengesPageConfig = {
       pulse: 'animate-pulse',
       bounce: 'animate-bounce',
       
-      // Hover effects
+      // Hover effects using semantic tokens
       hoverScale: 'hover:scale-105 transition-transform duration-300',
-      hoverGlow: 'hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300',
+      hoverGlow: 'hover:shadow-lg hover:shadow-primary/25 transition-all duration-300',
       
-      // Focus effects
-      focus: 'focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500',
+      // Focus effects using semantic tokens
+      focus: 'focus:ring-2 focus:ring-primary/50 focus:border-primary',
       
-      // Interactive states
-      interactive: 'transition-all duration-300 hover:bg-white/10 cursor-pointer'
+      // Interactive states using semantic tokens
+      interactive: 'transition-all duration-300 hover:bg-muted/10 cursor-pointer'
     },
     breakpoints: {
       mobile: '640px',
