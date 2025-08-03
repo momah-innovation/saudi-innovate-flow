@@ -5614,58 +5614,155 @@ const DesignSystem = () => {
                     <div>
                       <h4 className="font-medium mb-4">Landing Page Patterns</h4>
                       <div className="space-y-6">
-                        {/* Hero Section */}
-                        <div className="border rounded-lg overflow-hidden">
-                          <div className="relative bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 p-12 text-center">
-                            <div className="absolute inset-0 opacity-5">
-                              <div className="w-full h-full" style={{backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`}}></div>
-                            </div>
-                            <div className="relative z-10 max-w-4xl mx-auto">
-                              <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
-                                Shape the Future of Innovation
-                              </h1>
-                              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-                                Join thousands of innovators solving real-world challenges with cutting-edge technology. 
-                                From AI to sustainability, your solutions can change the world.
-                              </p>
-                              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                                <Button size="lg" className="px-8">
-                                  Start Your Journey
-                                  <ArrowRight className="w-4 h-4 ml-2" />
-                                </Button>
-                                <Button size="lg" variant="outline">
-                                  <Play className="w-4 h-4 mr-2" />
-                                  Watch Demo
-                                </Button>
-                              </div>
-                              
-                              {/* Features Grid */}
-                              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div className="p-6 rounded-lg bg-background/50 border backdrop-blur-sm">
-                                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                                    <Target className="w-6 h-6 text-primary" />
-                                  </div>
-                                  <h3 className="font-semibold mb-2">Real Challenges</h3>
-                                  <p className="text-sm text-muted-foreground">Solve actual problems faced by governments and organizations</p>
-                                </div>
-                                <div className="p-6 rounded-lg bg-background/50 border backdrop-blur-sm">
-                                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                                    <Award className="w-6 h-6 text-accent" />
-                                  </div>
-                                  <h3 className="font-semibold mb-2">Meaningful Rewards</h3>
-                                  <p className="text-sm text-muted-foreground">Win prizes and recognition for your innovative solutions</p>
-                                </div>
-                                <div className="p-6 rounded-lg bg-background/50 border backdrop-blur-sm">
-                                  <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                                    <Users className="w-6 h-6 text-secondary" />
-                                  </div>
-                                  <h3 className="font-semibold mb-2">Global Community</h3>
-                                  <p className="text-sm text-muted-foreground">Connect with innovators and experts worldwide</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                         {/* Enhanced Hero Section - Advanced Pattern */}
+                         <div className="border rounded-lg overflow-hidden">
+                           <div className="relative">
+                             {/* Complex Layered Background */}
+                             <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600">
+                               <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23fff%22%20fill-opacity%3D%220.1%22%3E%3Cpath%20d%3D%22M30%2030m-10%200a10%2010%200%201%201%2020%200a10%2010%200%201%201%20-20%200%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
+                               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-black/30" />
+                             </div>
+
+                             {/* Animated Background Elements */}
+                             <div className="absolute inset-0 overflow-hidden">
+                               <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse" />
+                               <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-yellow-400/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
+                               <div className="absolute top-20 left-1/3 w-64 h-64 bg-pink-400/10 rounded-full blur-2xl animate-bounce" />
+                               <div className="absolute bottom-20 right-1/4 w-48 h-48 bg-green-400/10 rounded-full blur-xl animate-pulse" style={{animationDelay: '2s'}} />
+                             </div>
+
+                             <div className="relative z-10 p-12 text-center text-white">
+                               {/* Hero Content */}
+                               <div className="max-w-6xl mx-auto">
+                                 <div className="flex items-center justify-center gap-4 mb-6">
+                                   <div className="relative">
+                                     <div className="p-4 bg-white/10 backdrop-blur-sm rounded-full ring-4 ring-white/20">
+                                       <Sparkles className="w-12 h-12 text-white animate-pulse" />
+                                     </div>
+                                     <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full animate-ping" />
+                                   </div>
+                                 </div>
+
+                                 <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent animate-fade-in">
+                                   Shape the Future of Innovation
+                                 </h1>
+                                 <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed">
+                                   Join thousands of innovators solving real-world challenges with cutting-edge technology. 
+                                   From AI to sustainability, your solutions can change the world.
+                                 </p>
+
+                                 {/* Interactive CTA Buttons */}
+                                 <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                                   <Button size="lg" className="px-8 bg-white text-primary hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                                     Start Your Journey
+                                     <ArrowRight className="w-4 h-4 ml-2" />
+                                   </Button>
+                                   <Button size="lg" variant="outline" className="px-8 border-white/30 text-white hover:bg-white/10 backdrop-blur-sm hover:scale-105 transition-all duration-300">
+                                     <Play className="w-4 h-4 mr-2" />
+                                     Watch Demo
+                                   </Button>
+                                 </div>
+
+                                 {/* Interactive Stats Grid */}
+                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                                   <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 cursor-pointer">
+                                     <div className="flex items-center gap-3">
+                                       <div className="p-2 bg-blue-500/30 rounded-lg group-hover:bg-blue-500/50 transition-colors">
+                                         <Target className="w-5 h-5 text-white" />
+                                       </div>
+                                       <div>
+                                         <div className="text-2xl font-bold">10K+</div>
+                                         <div className="text-xs text-blue-200">Challenges</div>
+                                       </div>
+                                     </div>
+                                   </div>
+
+                                   <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 cursor-pointer">
+                                     <div className="flex items-center gap-3">
+                                       <div className="p-2 bg-purple-500/30 rounded-lg group-hover:bg-purple-500/50 transition-colors">
+                                         <Users className="w-5 h-5 text-white" />
+                                       </div>
+                                       <div>
+                                         <div className="text-2xl font-bold">50K+</div>
+                                         <div className="text-xs text-purple-200">Innovators</div>
+                                       </div>
+                                     </div>
+                                   </div>
+
+                                   <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 cursor-pointer">
+                                     <div className="flex items-center gap-3">
+                                       <div className="p-2 bg-green-500/30 rounded-lg group-hover:bg-green-500/50 transition-colors">
+                                         <Award className="w-5 h-5 text-white" />
+                                       </div>
+                                       <div>
+                                         <div className="text-2xl font-bold">$2M+</div>
+                                         <div className="text-xs text-green-200">Rewards</div>
+                                       </div>
+                                     </div>
+                                   </div>
+
+                                   <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 cursor-pointer">
+                                     <div className="flex items-center gap-3">
+                                       <div className="p-2 bg-yellow-500/30 rounded-lg group-hover:bg-yellow-500/50 transition-colors">
+                                         <Star className="w-5 h-5 text-white" />
+                                       </div>
+                                       <div>
+                                         <div className="text-2xl font-bold">4.9</div>
+                                         <div className="text-xs text-yellow-200">Rating</div>
+                                       </div>
+                                     </div>
+                                   </div>
+                                 </div>
+
+                                 {/* Enhanced Features Grid */}
+                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                   <div className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105">
+                                     <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:shadow-lg group-hover:shadow-blue-500/25 transition-shadow">
+                                       <Target className="w-7 h-7 text-white" />
+                                     </div>
+                                     <h3 className="text-lg font-semibold mb-2 text-white">Real Challenges</h3>
+                                     <p className="text-sm text-blue-200 leading-relaxed">Solve actual problems faced by governments and organizations worldwide</p>
+                                   </div>
+
+                                   <div className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105">
+                                     <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:shadow-lg group-hover:shadow-purple-500/25 transition-shadow">
+                                       <Award className="w-7 h-7 text-white" />
+                                     </div>
+                                     <h3 className="text-lg font-semibold mb-2 text-white">Meaningful Rewards</h3>
+                                     <p className="text-sm text-purple-200 leading-relaxed">Win substantial prizes and global recognition for your innovative solutions</p>
+                                   </div>
+
+                                   <div className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105">
+                                     <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:shadow-lg group-hover:shadow-green-500/25 transition-shadow">
+                                       <Users className="w-7 h-7 text-white" />
+                                     </div>
+                                     <h3 className="text-lg font-semibold mb-2 text-white">Global Community</h3>
+                                     <p className="text-sm text-green-200 leading-relaxed">Connect with innovators, experts, and mentors from around the globe</p>
+                                   </div>
+                                 </div>
+
+                                 {/* Call-to-Action Section */}
+                                 <div className="mt-12 p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10">
+                                   <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                                     <div className="text-left">
+                                       <h3 className="text-xl font-semibold text-white mb-1">Ready to Start?</h3>
+                                       <p className="text-blue-200 text-sm">Join the innovation revolution today</p>
+                                     </div>
+                                     <div className="flex gap-3">
+                                       <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-medium hover:scale-105 transition-transform">
+                                         <Plus className="w-4 h-4 mr-2" />
+                                         Create Challenge
+                                       </Button>
+                                       <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
+                                         Learn More
+                                       </Button>
+                                     </div>
+                                   </div>
+                                 </div>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
 
                         {/* Stats Section */}
                         <div className="border rounded-lg p-8 bg-card">
