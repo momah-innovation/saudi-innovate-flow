@@ -314,7 +314,7 @@ export function ChallengeViewDialog({
           
           {/* Status Badge */}
           <div className="absolute top-4 right-4">
-            <Badge className="bg-green-500 text-white">
+            <Badge className={`${challengesPageConfig.ui.gradients.success} ${challengesPageConfig.ui.colors.text.accent}`}>
               {challenge.status}
             </Badge>
           </div>
@@ -324,7 +324,7 @@ export function ChallengeViewDialog({
             <Button
               size="sm"
               variant="secondary"
-              className={`${challengesPageConfig.ui.glassMorphism.medium} hover:bg-white/30`}
+              className={`${challengesPageConfig.ui.glassMorphism.medium} ${challengesPageConfig.ui.glassMorphism.cardHover}`}
             >
               <Share2 className="w-4 h-4" />
             </Button>
@@ -334,8 +334,8 @@ export function ChallengeViewDialog({
               onClick={() => onBookmark?.(challenge)}
               className={`backdrop-blur-sm ${
                 isBookmarked 
-                  ? 'bg-red-500/80 hover:bg-red-600/80 text-white' 
-                  : 'bg-white/20 hover:bg-white/30'
+                  ? `${challengesPageConfig.ui.gradients.danger} ${challengesPageConfig.ui.colors.text.accent}` 
+                  : `${challengesPageConfig.ui.glassMorphism.medium} ${challengesPageConfig.ui.glassMorphism.cardHover}`
               }`}
             >
               <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
@@ -343,7 +343,7 @@ export function ChallengeViewDialog({
           </div>
 
           {/* Title and Key Info */}
-          <div className="absolute bottom-4 left-4 right-4 text-white">
+          <div className={`absolute bottom-4 left-4 right-4 ${challengesPageConfig.ui.colors.text.accent}`}>
             <h2 className="text-2xl font-bold mb-2">{challenge.title_ar}</h2>
             <div className="flex flex-wrap gap-4 text-sm">
               {daysRemaining !== null && (

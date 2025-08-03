@@ -359,8 +359,8 @@ export function ChallengeCreateDialog({
               <div key={step} className="flex items-center gap-2">
                 <div className={cn(
                   "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all",
-                  step === currentStep ? cn(challengesPageConfig.ui.gradients.button, "text-white") :
-                  step < currentStep ? cn(challengesPageConfig.ui.gradients.success, "text-white") : 
+                  step === currentStep ? cn(challengesPageConfig.ui.gradients.button, challengesPageConfig.ui.colors.text.accent) :
+                  step < currentStep ? cn(challengesPageConfig.ui.gradients.success, challengesPageConfig.ui.colors.text.accent) :
                   challengesPageConfig.ui.glassMorphism.light
                 )}>
                   {step < currentStep ? '✓' : step}

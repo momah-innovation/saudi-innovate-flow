@@ -594,7 +594,7 @@ export const ChallengeSubmitDialog = ({
                     <div className={cn(
                       "w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200",
                       isActive && "bg-primary text-primary-foreground scale-110",
-                      isCompleted && "bg-green-500 text-white",
+                      isCompleted && `${challengesPageConfig.ui.gradients.success} ${challengesPageConfig.ui.colors.text.accent}`,
                       !isActive && !isCompleted && "bg-muted text-muted-foreground"
                     )}>
                       {isCompleted ? (
