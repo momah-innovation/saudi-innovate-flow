@@ -11,13 +11,15 @@ import {
   Loader2, Wifi, WifiOff, Battery, Volume2, VolumeX,
   Send, MessageCircle, MoreVertical, HelpCircle,
   GripVertical, Move, Maximize2, Minimize2, Share,
-  Menu, ArrowRight, ArrowLeft, Languages, ThumbsUp
+  Menu, ArrowRight, ArrowLeft, Languages, ThumbsUp,
+  ExternalLink
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
+import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { useTheme } from 'next-themes';
 import { ThemeSelector } from '@/components/ui/theme-selector';
@@ -5631,136 +5633,175 @@ const DesignSystem = () => {
                                <div className="absolute bottom-20 right-1/4 w-48 h-48 bg-green-400/10 rounded-full blur-xl animate-pulse" style={{animationDelay: '2s'}} />
                              </div>
 
-                             <div className="relative z-10 p-12 text-center text-white">
-                               {/* Hero Content */}
-                               <div className="max-w-6xl mx-auto">
-                                 <div className="flex items-center justify-center gap-4 mb-6">
-                                   <div className="relative">
-                                     <div className="p-4 bg-white/10 backdrop-blur-sm rounded-full ring-4 ring-white/20">
-                                       <Sparkles className="w-12 h-12 text-white animate-pulse" />
-                                     </div>
-                                     <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full animate-ping" />
-                                   </div>
-                                 </div>
+                              <div className="relative z-10 p-12">
+                                {/* Hero Content - Two Column Layout */}
+                                <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                                  
+                                  {/* Left Column - Enhanced Content Section */}
+                                  <div className="text-white">
+                                    <div className="flex items-center gap-4 mb-6">
+                                      <div className="relative">
+                                        <div className="p-4 bg-white/10 backdrop-blur-sm rounded-full ring-4 ring-white/20">
+                                          <Sparkles className="w-12 h-12 text-white animate-pulse" />
+                                        </div>
+                                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full animate-ping" />
+                                      </div>
+                                      <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+                                        🎯 Latest
+                                      </Badge>
+                                    </div>
 
-                                 <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent animate-fade-in">
-                                   Shape the Future of Innovation
-                                 </h1>
-                                 <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed">
-                                   Join thousands of innovators solving real-world challenges with cutting-edge technology. 
-                                   From AI to sustainability, your solutions can change the world.
-                                 </p>
+                                    <h1 className="text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent animate-fade-in">
+                                      Shape the Future of Innovation
+                                    </h1>
+                                    <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+                                      Join thousands of innovators solving real-world challenges with cutting-edge technology. 
+                                      From AI to sustainability, your solutions can change the world.
+                                    </p>
 
-                                 {/* Interactive CTA Buttons */}
-                                 <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                                   <Button size="lg" className="px-8 bg-white text-primary hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
-                                     Start Your Journey
-                                     <ArrowRight className="w-4 h-4 ml-2" />
-                                   </Button>
-                                   <Button size="lg" variant="outline" className="px-8 border-white/30 text-white hover:bg-white/10 backdrop-blur-sm hover:scale-105 transition-all duration-300">
-                                     <Play className="w-4 h-4 mr-2" />
-                                     Watch Demo
-                                   </Button>
-                                 </div>
+                                    {/* Interactive Stats Grid */}
+                                    <div className="grid grid-cols-2 gap-4 mb-8">
+                                      <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 cursor-pointer">
+                                        <div className="flex items-center gap-3">
+                                          <div className="p-2 bg-blue-500/30 rounded-lg group-hover:bg-blue-500/50 transition-colors">
+                                            <Target className="w-5 h-5 text-white" />
+                                          </div>
+                                          <div>
+                                            <div className="text-2xl font-bold">10K+</div>
+                                            <div className="text-xs text-blue-200">Challenges</div>
+                                          </div>
+                                        </div>
+                                      </div>
 
-                                 {/* Interactive Stats Grid */}
-                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                                   <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 cursor-pointer">
-                                     <div className="flex items-center gap-3">
-                                       <div className="p-2 bg-blue-500/30 rounded-lg group-hover:bg-blue-500/50 transition-colors">
-                                         <Target className="w-5 h-5 text-white" />
-                                       </div>
-                                       <div>
-                                         <div className="text-2xl font-bold">10K+</div>
-                                         <div className="text-xs text-blue-200">Challenges</div>
-                                       </div>
-                                     </div>
-                                   </div>
+                                      <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 cursor-pointer">
+                                        <div className="flex items-center gap-3">
+                                          <div className="p-2 bg-purple-500/30 rounded-lg group-hover:bg-purple-500/50 transition-colors">
+                                            <Users className="w-5 h-5 text-white" />
+                                          </div>
+                                          <div>
+                                            <div className="text-2xl font-bold">50K+</div>
+                                            <div className="text-xs text-purple-200">Innovators</div>
+                                          </div>
+                                        </div>
+                                      </div>
 
-                                   <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 cursor-pointer">
-                                     <div className="flex items-center gap-3">
-                                       <div className="p-2 bg-purple-500/30 rounded-lg group-hover:bg-purple-500/50 transition-colors">
-                                         <Users className="w-5 h-5 text-white" />
-                                       </div>
-                                       <div>
-                                         <div className="text-2xl font-bold">50K+</div>
-                                         <div className="text-xs text-purple-200">Innovators</div>
-                                       </div>
-                                     </div>
-                                   </div>
+                                      <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 cursor-pointer">
+                                        <div className="flex items-center gap-3">
+                                          <div className="p-2 bg-green-500/30 rounded-lg group-hover:bg-green-500/50 transition-colors">
+                                            <Award className="w-5 h-5 text-white" />
+                                          </div>
+                                          <div>
+                                            <div className="text-2xl font-bold">$2M+</div>
+                                            <div className="text-xs text-green-200">Rewards</div>
+                                          </div>
+                                        </div>
+                                      </div>
 
-                                   <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 cursor-pointer">
-                                     <div className="flex items-center gap-3">
-                                       <div className="p-2 bg-green-500/30 rounded-lg group-hover:bg-green-500/50 transition-colors">
-                                         <Award className="w-5 h-5 text-white" />
-                                       </div>
-                                       <div>
-                                         <div className="text-2xl font-bold">$2M+</div>
-                                         <div className="text-xs text-green-200">Rewards</div>
-                                       </div>
-                                     </div>
-                                   </div>
+                                      <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 cursor-pointer">
+                                        <div className="flex items-center gap-3">
+                                          <div className="p-2 bg-yellow-500/30 rounded-lg group-hover:bg-yellow-500/50 transition-colors">
+                                            <Star className="w-5 h-5 text-white" />
+                                          </div>
+                                          <div>
+                                            <div className="text-2xl font-bold">4.9</div>
+                                            <div className="text-xs text-yellow-200">Rating</div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
 
-                                   <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 cursor-pointer">
-                                     <div className="flex items-center gap-3">
-                                       <div className="p-2 bg-yellow-500/30 rounded-lg group-hover:bg-yellow-500/50 transition-colors">
-                                         <Star className="w-5 h-5 text-white" />
-                                       </div>
-                                       <div>
-                                         <div className="text-2xl font-bold">4.9</div>
-                                         <div className="text-xs text-yellow-200">Rating</div>
-                                       </div>
-                                     </div>
-                                   </div>
-                                 </div>
+                                    {/* Interactive CTA Buttons */}
+                                    <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                                      <Button size="lg" className="px-8 bg-white text-primary hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                                        Start Your Journey
+                                        <ArrowRight className="w-4 h-4 ml-2" />
+                                      </Button>
+                                      <Button size="lg" variant="outline" className="px-8 border-white/30 text-white hover:bg-white/10 backdrop-blur-sm hover:scale-105 transition-all duration-300">
+                                        <Play className="w-4 h-4 mr-2" />
+                                        Watch Demo
+                                      </Button>
+                                    </div>
+                                  </div>
 
-                                 {/* Enhanced Features Grid */}
-                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                   <div className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105">
-                                     <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:shadow-lg group-hover:shadow-blue-500/25 transition-shadow">
-                                       <Target className="w-7 h-7 text-white" />
-                                     </div>
-                                     <h3 className="text-lg font-semibold mb-2 text-white">Real Challenges</h3>
-                                     <p className="text-sm text-blue-200 leading-relaxed">Solve actual problems faced by governments and organizations worldwide</p>
-                                   </div>
+                                  {/* Right Column - Enhanced Featured Card */}
+                                  <div className="space-y-6">
+                                    {/* Featured Challenge Card */}
+                                    <Card className="overflow-hidden border border-white/20 bg-white/10 backdrop-blur-sm hover:bg-white/15 transition-all duration-300 hover:scale-105">
+                                      <div className="relative">
+                                        <div className="aspect-video bg-gradient-to-br from-orange-500/80 to-red-600/80 relative overflow-hidden">
+                                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                                          <div className="absolute bottom-4 left-4 text-white">
+                                            <div className="flex items-center gap-2 text-sm mb-2">
+                                              <Calendar className="h-4 w-4" />
+                                              <span>Ends March 30, 2024</span>
+                                            </div>
+                                            <h3 className="font-semibold text-lg mb-1">AI for Climate Action</h3>
+                                            <p className="text-sm opacity-90">$50K prize • Global impact</p>
+                                          </div>
+                                          <div className="absolute top-4 right-4">
+                                            <Badge variant="secondary" className="bg-red-500/20 text-white border-red-300/30">
+                                              🔥 Trending
+                                            </Badge>
+                                          </div>
+                                        </div>
+                                        <div className="p-4">
+                                          <div className="flex items-center justify-between mb-3">
+                                            <div className="flex items-center gap-4 text-sm text-white/70">
+                                              <div className="flex items-center gap-1">
+                                                <Users className="h-4 w-4" />
+                                                <span>1.2k participants</span>
+                                              </div>
+                                              <div className="flex items-center gap-1">
+                                                <MapPin className="h-4 w-4" />
+                                                <span>Global</span>
+                                              </div>
+                                            </div>
+                                            <Button size="sm" variant="outline" className="border-white/30 text-white hover:bg-white/10">
+                                              <ExternalLink className="h-4 w-4 mr-1" />
+                                              Join Challenge
+                                            </Button>
+                                          </div>
+                                          <div className="space-y-2">
+                                            <div className="flex justify-between text-sm text-white/70">
+                                              <span>Submissions</span>
+                                              <span className="font-medium text-white">342 / 500</span>
+                                            </div>
+                                            <Progress value={68} className="h-2 bg-white/20" />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </Card>
 
-                                   <div className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105">
-                                     <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:shadow-lg group-hover:shadow-purple-500/25 transition-shadow">
-                                       <Award className="w-7 h-7 text-white" />
-                                     </div>
-                                     <h3 className="text-lg font-semibold mb-2 text-white">Meaningful Rewards</h3>
-                                     <p className="text-sm text-purple-200 leading-relaxed">Win substantial prizes and global recognition for your innovative solutions</p>
-                                   </div>
+                                    {/* Quick Action Cards */}
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <Card className="p-4 hover:scale-105 transition-all duration-300 cursor-pointer border-white/20 bg-white/10 backdrop-blur-sm hover:bg-white/15">
+                                        <div className="flex items-center gap-3">
+                                          <div className="w-8 h-8 rounded-lg bg-blue-500/30 flex items-center justify-center">
+                                            <Zap className="h-4 w-4 text-white" />
+                                          </div>
+                                          <div>
+                                            <p className="font-medium text-sm text-white">Trending</p>
+                                            <p className="text-xs text-white/70">Hot challenges</p>
+                                          </div>
+                                        </div>
+                                      </Card>
+                                      
+                                      <Card className="p-4 hover:scale-105 transition-all duration-300 cursor-pointer border-white/20 bg-white/10 backdrop-blur-sm hover:bg-white/15">
+                                        <div className="flex items-center gap-3">
+                                          <div className="w-8 h-8 rounded-lg bg-green-500/30 flex items-center justify-center">
+                                            <Award className="h-4 w-4 text-white" />
+                                          </div>
+                                          <div>
+                                            <p className="font-medium text-sm text-white">Leaderboard</p>
+                                            <p className="text-xs text-white/70">Top innovators</p>
+                                          </div>
+                                        </div>
+                                      </Card>
+                                    </div>
+                                  </div>
 
-                                   <div className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105">
-                                     <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:shadow-lg group-hover:shadow-green-500/25 transition-shadow">
-                                       <Users className="w-7 h-7 text-white" />
-                                     </div>
-                                     <h3 className="text-lg font-semibold mb-2 text-white">Global Community</h3>
-                                     <p className="text-sm text-green-200 leading-relaxed">Connect with innovators, experts, and mentors from around the globe</p>
-                                   </div>
-                                 </div>
-
-                                 {/* Call-to-Action Section */}
-                                 <div className="mt-12 p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10">
-                                   <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                                     <div className="text-left">
-                                       <h3 className="text-xl font-semibold text-white mb-1">Ready to Start?</h3>
-                                       <p className="text-blue-200 text-sm">Join the innovation revolution today</p>
-                                     </div>
-                                     <div className="flex gap-3">
-                                       <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-medium hover:scale-105 transition-transform">
-                                         <Plus className="w-4 h-4 mr-2" />
-                                         Create Challenge
-                                       </Button>
-                                       <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
-                                         Learn More
-                                       </Button>
-                                     </div>
-                                   </div>
-                                 </div>
-                               </div>
-                             </div>
+                                </div>
+                              </div>
                            </div>
                          </div>
 
