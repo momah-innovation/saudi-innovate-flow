@@ -2930,10 +2930,311 @@ const DesignSystem = () => {
                       </div>
                     </div>
                   </div>
-                </ComponentShowcase>
-              </div>
-            </div>
-          </TabsContent>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Video Streaming Controls">
+                   <div className="space-y-6">
+                     <div className="border rounded-lg overflow-hidden bg-black">
+                       <div className="relative aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                         <div className="text-center text-white">
+                           <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                             <Play className="w-8 h-8 text-white ml-1" />
+                           </div>
+                           <p className="text-lg font-medium">Government Innovation Summit 2024</p>
+                           <p className="text-sm opacity-80">Live Stream - 1,247 viewers</p>
+                         </div>
+                         
+                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                           <div className="flex items-center gap-4">
+                             <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                               <Play className="w-4 h-4" />
+                             </Button>
+                             <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                               <Volume2 className="w-4 h-4" />
+                             </Button>
+                             <div className="flex-1 flex items-center gap-2">
+                               <span className="text-xs text-white">12:34</span>
+                               <div className="flex-1 h-1 bg-white/30 rounded-full">
+                                 <div className="w-1/3 h-full bg-white rounded-full"></div>
+                               </div>
+                               <span className="text-xs text-white">45:20</span>
+                             </div>
+                             <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                               <Settings className="w-4 h-4" />
+                             </Button>
+                             <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                               <Maximize2 className="w-4 h-4" />
+                             </Button>
+                           </div>
+                         </div>
+                         
+                         <div className="absolute top-4 right-4">
+                           <Badge variant="destructive" className="bg-red-600 text-white">
+                             ● LIVE
+                           </Badge>
+                         </div>
+                       </div>
+                     </div>
+                     
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       <Card className="p-4">
+                         <h4 className="font-medium mb-3">Video Quality Settings</h4>
+                         <div className="space-y-2">
+                           <div className="flex items-center justify-between p-2 border rounded hover:bg-accent cursor-pointer">
+                             <span className="text-sm">Auto (720p)</span>
+                             <div className="w-2 h-2 bg-primary rounded-full"></div>
+                           </div>
+                           <div className="flex items-center justify-between p-2 hover:bg-accent cursor-pointer">
+                             <span className="text-sm">1080p HD</span>
+                           </div>
+                           <div className="flex items-center justify-between p-2 hover:bg-accent cursor-pointer">
+                             <span className="text-sm">720p</span>
+                           </div>
+                           <div className="flex items-center justify-between p-2 hover:bg-accent cursor-pointer">
+                             <span className="text-sm">480p</span>
+                           </div>
+                         </div>
+                       </Card>
+                       
+                       <Card className="p-4">
+                         <h4 className="font-medium mb-3">Playback Speed</h4>
+                         <div className="space-y-2">
+                           <div className="flex items-center justify-between p-2 hover:bg-accent cursor-pointer">
+                             <span className="text-sm">0.5x</span>
+                           </div>
+                           <div className="flex items-center justify-between p-2 hover:bg-accent cursor-pointer">
+                             <span className="text-sm">0.75x</span>
+                           </div>
+                           <div className="flex items-center justify-between p-2 border rounded hover:bg-accent cursor-pointer">
+                             <span className="text-sm">1x Normal</span>
+                             <div className="w-2 h-2 bg-primary rounded-full"></div>
+                           </div>
+                           <div className="flex items-center justify-between p-2 hover:bg-accent cursor-pointer">
+                             <span className="text-sm">1.25x</span>
+                           </div>
+                           <div className="flex items-center justify-between p-2 hover:bg-accent cursor-pointer">
+                             <span className="text-sm">1.5x</span>
+                           </div>
+                           <div className="flex items-center justify-between p-2 hover:bg-accent cursor-pointer">
+                             <span className="text-sm">2x</span>
+                           </div>
+                         </div>
+                       </Card>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Audio & Podcast Controls">
+                   <div className="space-y-6">
+                     <Card className="p-6">
+                       <div className="flex items-center gap-4">
+                         <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                           <span className="text-white font-bold text-lg">IP</span>
+                         </div>
+                         <div className="flex-1">
+                           <h4 className="font-medium">Innovation Podcast</h4>
+                           <p className="text-sm text-muted-foreground">Episode 42: Future of AI in Government</p>
+                           <p className="text-xs text-muted-foreground">Dr. Sarah Chen • 45 min</p>
+                         </div>
+                         <Button variant="ghost" size="sm">
+                           <Share className="w-4 h-4" />
+                         </Button>
+                       </div>
+                       
+                       <div className="mt-6 space-y-4">
+                         <div className="flex items-center gap-2">
+                           <span className="text-sm text-muted-foreground">12:34</span>
+                           <div className="flex-1 h-2 bg-muted rounded-full cursor-pointer">
+                             <div className="w-1/3 h-full bg-primary rounded-full relative">
+                               <div className="absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-primary rounded-full border-2 border-background"></div>
+                             </div>
+                           </div>
+                           <span className="text-sm text-muted-foreground">45:20</span>
+                         </div>
+                         
+                         <div className="flex items-center justify-center gap-4">
+                           <Button variant="ghost" size="sm">
+                             <ChevronLeft className="w-4 h-4" />
+                             <span className="text-xs ml-1">15</span>
+                           </Button>
+                           <Button variant="ghost" size="sm">
+                             <Pause className="w-5 h-5" />
+                           </Button>
+                           <Button variant="ghost" size="sm">
+                             <span className="text-xs mr-1">30</span>
+                             <ChevronRight className="w-4 h-4" />
+                           </Button>
+                         </div>
+                         
+                         <div className="flex items-center justify-between">
+                           <div className="flex items-center gap-2">
+                             <Button variant="ghost" size="sm">
+                               <Volume2 className="w-4 h-4" />
+                             </Button>
+                             <div className="w-20 h-1 bg-muted rounded-full">
+                               <div className="w-3/4 h-full bg-primary rounded-full"></div>
+                             </div>
+                           </div>
+                           <div className="flex items-center gap-2">
+                             <Button variant="ghost" size="sm">1x</Button>
+                             <Button variant="ghost" size="sm">
+                               <Heart className="w-4 h-4" />
+                             </Button>
+                             <Button variant="ghost" size="sm">
+                               <Download className="w-4 h-4" />
+                             </Button>
+                           </div>
+                         </div>
+                       </div>
+                     </Card>
+                     
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       <Card className="p-4">
+                         <h4 className="font-medium mb-3">Chapters</h4>
+                         <div className="space-y-2">
+                           <div className="flex items-center gap-3 p-2 bg-primary/10 rounded cursor-pointer">
+                             <div className="w-2 h-2 bg-primary rounded-full"></div>
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">Introduction</p>
+                               <p className="text-xs text-muted-foreground">0:00 - 2:15</p>
+                             </div>
+                           </div>
+                           <div className="flex items-center gap-3 p-2 hover:bg-accent rounded cursor-pointer">
+                             <div className="w-2 h-2 bg-muted rounded-full"></div>
+                             <div className="flex-1">
+                               <p className="text-sm">AI in Healthcare</p>
+                               <p className="text-xs text-muted-foreground">2:15 - 18:45</p>
+                             </div>
+                           </div>
+                           <div className="flex items-center gap-3 p-2 hover:bg-accent rounded cursor-pointer">
+                             <div className="w-2 h-2 bg-muted rounded-full"></div>
+                             <div className="flex-1">
+                               <p className="text-sm">Government Applications</p>
+                               <p className="text-xs text-muted-foreground">18:45 - 32:10</p>
+                             </div>
+                           </div>
+                         </div>
+                       </Card>
+                       
+                       <Card className="p-4">
+                         <h4 className="font-medium mb-3">Related Episodes</h4>
+                         <div className="space-y-3">
+                           <div className="flex items-center gap-3 cursor-pointer hover:bg-accent p-2 rounded">
+                             <div className="w-8 h-8 bg-secondary rounded flex items-center justify-center">
+                               <span className="text-white text-xs font-bold">41</span>
+                             </div>
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">Digital Transformation</p>
+                               <p className="text-xs text-muted-foreground">38 min</p>
+                             </div>
+                           </div>
+                           <div className="flex items-center gap-3 cursor-pointer hover:bg-accent p-2 rounded">
+                             <div className="w-8 h-8 bg-accent rounded flex items-center justify-center">
+                               <span className="text-white text-xs font-bold">40</span>
+                             </div>
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">Cybersecurity Trends</p>
+                               <p className="text-xs text-muted-foreground">42 min</p>
+                             </div>
+                           </div>
+                         </div>
+                       </Card>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Media Upload & Processing">
+                   <div className="space-y-6">
+                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                       <Card className="p-6">
+                         <h4 className="font-medium mb-4">Bulk Media Upload</h4>
+                         <div className="border-2 border-dashed border-muted rounded-lg p-8 text-center">
+                           <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                           <p className="text-sm font-medium mb-2">Drag multiple files here</p>
+                           <p className="text-xs text-muted-foreground mb-4">
+                             Images, Videos, Audio files up to 100MB each
+                           </p>
+                           <Button variant="outline">
+                             Choose Files
+                           </Button>
+                         </div>
+                         
+                         <div className="mt-4 space-y-3">
+                           <div className="flex items-center gap-3 p-3 border rounded-lg">
+                             <div className="w-10 h-10 bg-primary/10 rounded flex items-center justify-center">
+                               🎥
+                             </div>
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">summit-highlights.mp4</p>
+                               <div className="flex items-center gap-2 mt-1">
+                                 <div className="flex-1 h-1.5 bg-muted rounded-full">
+                                   <div className="w-2/3 h-full bg-primary rounded-full"></div>
+                                 </div>
+                                 <span className="text-xs text-muted-foreground">Processing... 67%</span>
+                               </div>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-center gap-3 p-3 border border-success/20 bg-success/5 rounded-lg">
+                             <div className="w-10 h-10 bg-success/10 rounded flex items-center justify-center">
+                               🖼️
+                             </div>
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">team-photo.jpg</p>
+                               <p className="text-xs text-success">Upload complete</p>
+                             </div>
+                             <CheckCircle className="w-4 h-4 text-success" />
+                           </div>
+                         </div>
+                       </Card>
+                       
+                       <Card className="p-6">
+                         <h4 className="font-medium mb-4">Media Processing Queue</h4>
+                         <div className="space-y-3">
+                           <div className="flex items-center justify-between p-3 border rounded-lg">
+                             <div className="flex items-center gap-3">
+                               <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                               <div>
+                                 <p className="text-sm font-medium">Generating thumbnails</p>
+                                 <p className="text-xs text-muted-foreground">3 files remaining</p>
+                               </div>
+                             </div>
+                             <Badge variant="outline">Processing</Badge>
+                           </div>
+                           
+                           <div className="flex items-center justify-between p-3 border rounded-lg">
+                             <div className="flex items-center gap-3">
+                               <Clock className="w-4 h-4 text-warning" />
+                               <div>
+                                 <p className="text-sm font-medium">Video compression</p>
+                                 <p className="text-xs text-muted-foreground">Queued for processing</p>
+                               </div>
+                             </div>
+                             <Badge variant="outline">Queued</Badge>
+                           </div>
+                           
+                           <div className="flex items-center justify-between p-3 border border-success/20 bg-success/5 rounded-lg">
+                             <div className="flex items-center gap-3">
+                               <CheckCircle className="w-4 h-4 text-success" />
+                               <div>
+                                 <p className="text-sm font-medium">Audio optimization</p>
+                                 <p className="text-xs text-success">Completed successfully</p>
+                               </div>
+                             </div>
+                             <Badge variant="outline" className="text-success border-success">Complete</Badge>
+                           </div>
+                         </div>
+                         
+                         <Button className="w-full mt-4" variant="outline">
+                           View Processing History
+                         </Button>
+                       </Card>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+               </div>
+             </div>
+           </TabsContent>
 
           {/* Communication Tab */}
           <TabsContent value="communication" className="space-y-8">
@@ -3311,10 +3612,472 @@ const DesignSystem = () => {
                       </div>
                     </div>
                   </div>
-                </ComponentShowcase>
-              </div>
-            </div>
-          </TabsContent>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Video Call Interface">
+                   <div className="space-y-6">
+                     <Card className="p-4 bg-black text-white">
+                       <div className="grid grid-cols-2 gap-4 mb-4">
+                         <div className="aspect-video bg-gradient-to-br from-primary/30 to-secondary/30 rounded-lg flex items-center justify-center relative">
+                           <div className="text-center">
+                             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                               <User className="w-8 h-8" />
+                             </div>
+                             <p className="text-sm font-medium">Dr. Sarah Chen</p>
+                             <p className="text-xs opacity-80">Host</p>
+                           </div>
+                           <div className="absolute top-2 left-2">
+                             <Badge variant="destructive" className="bg-red-600 text-white text-xs">
+                               ● LIVE
+                             </Badge>
+                           </div>
+                           <div className="absolute bottom-2 left-2">
+                             <Button variant="ghost" size="sm" className="text-white hover:bg-white/20 h-6 w-6 p-0">
+                               <Volume2 className="w-3 h-3" />
+                             </Button>
+                           </div>
+                         </div>
+                         
+                         <div className="aspect-video bg-gradient-to-br from-accent/30 to-primary/30 rounded-lg flex items-center justify-center relative">
+                           <div className="text-center">
+                             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                               <User className="w-8 h-8" />
+                             </div>
+                             <p className="text-sm font-medium">You</p>
+                           </div>
+                           <div className="absolute bottom-2 left-2">
+                             <Button variant="ghost" size="sm" className="text-white hover:bg-white/20 h-6 w-6 p-0">
+                               <VolumeX className="w-3 h-3" />
+                             </Button>
+                           </div>
+                         </div>
+                       </div>
+                       
+                       <div className="flex items-center justify-between">
+                         <div className="flex items-center gap-2">
+                           <span className="text-sm">Government Innovation Meeting</span>
+                           <Badge variant="outline" className="text-white border-white/30">
+                             12 participants
+                           </Badge>
+                         </div>
+                         <div className="flex items-center gap-1">
+                           <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                             <VolumeX className="w-4 h-4" />
+                           </Button>
+                           <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                             <Eye className="w-4 h-4" />
+                           </Button>
+                           <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                             <MessageCircle className="w-4 h-4" />
+                           </Button>
+                           <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                             <Share className="w-4 h-4" />
+                           </Button>
+                           <Button variant="destructive" size="sm">
+                             <Phone className="w-4 h-4 mr-2" />
+                             Leave
+                           </Button>
+                         </div>
+                       </div>
+                     </Card>
+                     
+                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                       <Card className="p-4">
+                         <h4 className="font-medium mb-3">Participants (12)</h4>
+                         <div className="space-y-2 max-h-48 overflow-y-auto">
+                           <div className="flex items-center gap-3 p-2 hover:bg-accent rounded">
+                             <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                               <span className="text-white text-sm font-bold">SC</span>
+                             </div>
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">Dr. Sarah Chen</p>
+                               <p className="text-xs text-muted-foreground">Host</p>
+                             </div>
+                             <div className="w-2 h-2 bg-success rounded-full"></div>
+                           </div>
+                           <div className="flex items-center gap-3 p-2 hover:bg-accent rounded">
+                             <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
+                               <span className="text-white text-sm font-bold">JD</span>
+                             </div>
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">John Doe</p>
+                               <p className="text-xs text-muted-foreground">Participant</p>
+                             </div>
+                             <VolumeX className="w-3 h-3 text-muted-foreground" />
+                           </div>
+                           <div className="flex items-center gap-3 p-2 hover:bg-accent rounded">
+                             <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                               <span className="text-white text-sm font-bold">AM</span>
+                             </div>
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">Alice Miller</p>
+                               <p className="text-xs text-muted-foreground">Participant</p>
+                             </div>
+                             <div className="w-2 h-2 bg-success rounded-full"></div>
+                           </div>
+                         </div>
+                       </Card>
+                       
+                       <Card className="p-4">
+                         <h4 className="font-medium mb-3">Chat</h4>
+                         <div className="space-y-3 max-h-48 overflow-y-auto mb-3">
+                           <div className="text-sm">
+                             <span className="font-medium text-primary">Dr. Sarah Chen:</span>
+                             <span className="ml-2">Welcome everyone to today's innovation meeting!</span>
+                           </div>
+                           <div className="text-sm">
+                             <span className="font-medium text-secondary">John Doe:</span>
+                             <span className="ml-2">Thank you for hosting. Looking forward to the discussion.</span>
+                           </div>
+                           <div className="text-sm">
+                             <span className="font-medium text-accent">Alice Miller:</span>
+                             <span className="ml-2">Could you share the presentation link?</span>
+                           </div>
+                         </div>
+                         <div className="flex gap-2">
+                           <input 
+                             type="text" 
+                             className="flex-1 px-3 py-2 border rounded-lg text-sm" 
+                             placeholder="Type a message..."
+                           />
+                           <Button size="sm">
+                             <Send className="w-4 h-4" />
+                           </Button>
+                         </div>
+                       </Card>
+                       
+                       <Card className="p-4">
+                         <h4 className="font-medium mb-3">Meeting Controls</h4>
+                         <div className="space-y-3">
+                           <div className="flex items-center justify-between">
+                             <span className="text-sm">Camera</span>
+                             <div className="flex items-center gap-2">
+                               <div className="w-8 h-4 bg-success rounded-full relative cursor-pointer">
+                                 <div className="absolute right-0 top-0 w-4 h-4 bg-white rounded-full border-2 border-success"></div>
+                               </div>
+                             </div>
+                           </div>
+                           <div className="flex items-center justify-between">
+                             <span className="text-sm">Microphone</span>
+                             <div className="flex items-center gap-2">
+                               <div className="w-8 h-4 bg-muted rounded-full relative cursor-pointer">
+                                 <div className="absolute left-0 top-0 w-4 h-4 bg-white rounded-full border-2 border-muted"></div>
+                               </div>
+                             </div>
+                           </div>
+                           <div className="flex items-center justify-between">
+                             <span className="text-sm">Screen Share</span>
+                             <Button variant="outline" size="sm">
+                               Start
+                             </Button>
+                           </div>
+                           <div className="flex items-center justify-between">
+                             <span className="text-sm">Recording</span>
+                             <Button variant="outline" size="sm" className="text-destructive border-destructive">
+                               <div className="w-2 h-2 bg-destructive rounded-full mr-2"></div>
+                               Record
+                             </Button>
+                           </div>
+                         </div>
+                       </Card>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Advanced Chat Interface">
+                   <div className="space-y-6">
+                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                       <Card className="lg:col-span-2 p-0 overflow-hidden">
+                         <div className="border-b p-4 bg-muted/30">
+                           <div className="flex items-center justify-between">
+                             <div className="flex items-center gap-3">
+                               <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                                 <Users className="w-5 h-5 text-white" />
+                               </div>
+                               <div>
+                                 <h4 className="font-medium">Innovation Team</h4>
+                                 <p className="text-sm text-muted-foreground">8 members • 3 online</p>
+                               </div>
+                             </div>
+                             <div className="flex items-center gap-2">
+                               <Button variant="ghost" size="sm">
+                                 <Phone className="w-4 h-4" />
+                               </Button>
+                               <Button variant="ghost" size="sm">
+                                 <Settings className="w-4 h-4" />
+                               </Button>
+                             </div>
+                           </div>
+                         </div>
+                         
+                         <div className="h-96 overflow-y-auto p-4 space-y-4">
+                           <div className="flex items-start gap-3">
+                             <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                               <span className="text-white text-sm font-bold">SC</span>
+                             </div>
+                             <div className="flex-1">
+                               <div className="flex items-center gap-2 mb-1">
+                                 <span className="text-sm font-medium">Dr. Sarah Chen</span>
+                                 <span className="text-xs text-muted-foreground">10:30 AM</span>
+                               </div>
+                               <div className="bg-muted p-3 rounded-lg rounded-tl-none">
+                                 <p className="text-sm">Good morning team! I've uploaded the new AI governance framework document. Please review it before our meeting tomorrow.</p>
+                               </div>
+                               <div className="mt-2 p-3 border rounded-lg bg-background">
+                                 <div className="flex items-center gap-3">
+                                   <div className="w-10 h-10 bg-primary/10 rounded flex items-center justify-center">
+                                     📄
+                                   </div>
+                                   <div className="flex-1">
+                                     <p className="text-sm font-medium">AI-Governance-Framework-v2.pdf</p>
+                                     <p className="text-xs text-muted-foreground">2.4 MB • PDF</p>
+                                   </div>
+                                   <Button variant="ghost" size="sm">
+                                     <Download className="w-4 h-4" />
+                                   </Button>
+                                 </div>
+                               </div>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-start gap-3 justify-end">
+                             <div className="flex-1 max-w-md">
+                               <div className="flex items-center gap-2 mb-1 justify-end">
+                                 <span className="text-xs text-muted-foreground">10:32 AM</span>
+                                 <span className="text-sm font-medium">You</span>
+                               </div>
+                               <div className="bg-primary text-primary-foreground p-3 rounded-lg rounded-tr-none">
+                                 <p className="text-sm">Thanks Sarah! I'll review it this afternoon. Should we also discuss the implementation timeline?</p>
+                               </div>
+                             </div>
+                             <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
+                               <span className="text-white text-sm font-bold">JD</span>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-start gap-3">
+                             <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                               <span className="text-white text-sm font-bold">AM</span>
+                             </div>
+                             <div className="flex-1">
+                               <div className="flex items-center gap-2 mb-1">
+                                 <span className="text-sm font-medium">Alice Miller</span>
+                                 <span className="text-xs text-muted-foreground">10:35 AM</span>
+                                 <Badge variant="outline" className="text-xs">AI Assistant</Badge>
+                               </div>
+                               <div className="bg-muted p-3 rounded-lg rounded-tl-none">
+                                 <p className="text-sm">I've created a summary of the key action items from our last meeting. Here they are:</p>
+                                 <ul className="mt-2 space-y-1 text-sm">
+                                   <li className="flex items-center gap-2">
+                                     <CheckCircle className="w-4 h-4 text-success" />
+                                     <span className="line-through text-muted-foreground">Review security protocols</span>
+                                   </li>
+                                   <li className="flex items-center gap-2">
+                                     <Clock className="w-4 h-4 text-warning" />
+                                     <span>Draft implementation plan</span>
+                                   </li>
+                                   <li className="flex items-center gap-2">
+                                     <Clock className="w-4 h-4 text-warning" />
+                                     <span>Schedule stakeholder meetings</span>
+                                   </li>
+                                 </ul>
+                               </div>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-center justify-center">
+                             <span className="text-xs text-muted-foreground bg-muted px-3 py-1 rounded-full">Today</span>
+                           </div>
+                         </div>
+                         
+                         <div className="border-t p-4">
+                           <div className="flex items-center gap-2">
+                             <Button variant="ghost" size="sm">
+                               <Plus className="w-4 h-4" />
+                             </Button>
+                             <input 
+                               type="text" 
+                               className="flex-1 px-3 py-2 border rounded-lg" 
+                               placeholder="Type a message..."
+                             />
+                             <Button variant="ghost" size="sm">
+                               <Sparkles className="w-4 h-4" />
+                             </Button>
+                             <Button size="sm">
+                               <Send className="w-4 h-4" />
+                             </Button>
+                           </div>
+                         </div>
+                       </Card>
+                       
+                       <Card className="p-4">
+                         <h4 className="font-medium mb-4">Team Members</h4>
+                         <div className="space-y-3">
+                           <div className="flex items-center gap-3">
+                             <div className="relative">
+                               <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                                 <span className="text-white text-sm font-bold">SC</span>
+                               </div>
+                               <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-background"></div>
+                             </div>
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">Dr. Sarah Chen</p>
+                               <p className="text-xs text-muted-foreground">Team Lead • Online</p>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-center gap-3">
+                             <div className="relative">
+                               <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center">
+                                 <span className="text-white text-sm font-bold">JD</span>
+                               </div>
+                               <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-background"></div>
+                             </div>
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">John Doe</p>
+                               <p className="text-xs text-muted-foreground">Developer • Online</p>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-center gap-3">
+                             <div className="relative">
+                               <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center">
+                                 <span className="text-white text-sm font-bold">AM</span>
+                               </div>
+                               <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-background"></div>
+                             </div>
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">Alice Miller</p>
+                               <p className="text-xs text-muted-foreground">AI Assistant • Online</p>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-center gap-3 opacity-50">
+                             <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
+                               <span className="text-muted-foreground text-sm font-bold">BW</span>
+                             </div>
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">Bob Wilson</p>
+                               <p className="text-xs text-muted-foreground">Designer • Away</p>
+                             </div>
+                           </div>
+                         </div>
+                         
+                         <Button className="w-full mt-4" variant="outline">
+                           <Plus className="w-4 h-4 mr-2" />
+                           Add Members
+                         </Button>
+                       </Card>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Real-time Collaboration & Notifications">
+                   <div className="space-y-6">
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                       <Card className="p-6">
+                         <h4 className="font-medium mb-4">Live Activity Feed</h4>
+                         <div className="space-y-4 max-h-64 overflow-y-auto">
+                           <div className="flex items-start gap-3">
+                             <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
+                             <div className="flex-1">
+                               <p className="text-sm">
+                                 <span className="font-medium">Dr. Sarah Chen</span> started a new challenge: 
+                                 <span className="text-primary"> "Smart Traffic Management"</span>
+                               </p>
+                               <p className="text-xs text-muted-foreground">2 minutes ago</p>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-start gap-3">
+                             <div className="w-2 h-2 bg-success rounded-full mt-2"></div>
+                             <div className="flex-1">
+                               <p className="text-sm">
+                                 <span className="font-medium">John Doe</span> completed the 
+                                 <span className="text-success"> "AI Healthcare Platform"</span> challenge
+                               </p>
+                               <p className="text-xs text-muted-foreground">5 minutes ago</p>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-start gap-3">
+                             <div className="w-2 h-2 bg-warning rounded-full mt-2"></div>
+                             <div className="flex-1">
+                               <p className="text-sm">
+                                 <span className="font-medium">Alice Miller</span> shared a document in 
+                                 <span className="text-warning"> "Innovation Team"</span>
+                               </p>
+                               <p className="text-xs text-muted-foreground">12 minutes ago</p>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-start gap-3">
+                             <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
+                             <div className="flex-1">
+                               <p className="text-sm">
+                                 <span className="font-medium">Bob Wilson</span> joined the platform
+                               </p>
+                               <p className="text-xs text-muted-foreground">1 hour ago</p>
+                             </div>
+                           </div>
+                         </div>
+                       </Card>
+                       
+                       <Card className="p-6">
+                         <h4 className="font-medium mb-4">Smart Notifications</h4>
+                         <div className="space-y-3">
+                           <div className="flex items-center justify-between">
+                             <span className="text-sm">Push Notifications</span>
+                             <div className="w-10 h-6 bg-primary rounded-full relative cursor-pointer">
+                               <div className="absolute right-0.5 top-0.5 w-5 h-5 bg-white rounded-full"></div>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-center justify-between">
+                             <span className="text-sm">Email Digest</span>
+                             <div className="w-10 h-6 bg-primary rounded-full relative cursor-pointer">
+                               <div className="absolute right-0.5 top-0.5 w-5 h-5 bg-white rounded-full"></div>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-center justify-between">
+                             <span className="text-sm">Desktop Alerts</span>
+                             <div className="w-10 h-6 bg-muted rounded-full relative cursor-pointer">
+                               <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full"></div>
+                             </div>
+                           </div>
+                           
+                           <Separator className="my-4" />
+                           
+                           <div className="space-y-2">
+                             <h5 className="text-sm font-medium">Notification Types</h5>
+                             <div className="space-y-2">
+                               <label className="flex items-center gap-2 cursor-pointer">
+                                 <input type="checkbox" className="rounded" defaultChecked />
+                                 <span className="text-sm">New challenges</span>
+                               </label>
+                               <label className="flex items-center gap-2 cursor-pointer">
+                                 <input type="checkbox" className="rounded" defaultChecked />
+                                 <span className="text-sm">Team messages</span>
+                               </label>
+                               <label className="flex items-center gap-2 cursor-pointer">
+                                 <input type="checkbox" className="rounded" />
+                                 <span className="text-sm">System updates</span>
+                               </label>
+                               <label className="flex items-center gap-2 cursor-pointer">
+                                 <input type="checkbox" className="rounded" defaultChecked />
+                                 <span className="text-sm">Achievement unlocked</span>
+                               </label>
+                             </div>
+                           </div>
+                         </div>
+                       </Card>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+               </div>
+             </div>
+           </TabsContent>
 
           {/* Interactions Tab */}
           <TabsContent value="interactions" className="space-y-8">
@@ -3838,10 +4601,260 @@ const DesignSystem = () => {
                       </div>
                     </div>
                   </div>
-                </ComponentShowcase>
-              </div>
-            </div>
-          </TabsContent>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Gesture Controls & Touch Interactions">
+                   <div className="space-y-6">
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                       <Card className="p-6">
+                         <h4 className="font-medium mb-4">Swipe Gestures</h4>
+                         <div className="space-y-4">
+                           <div className="p-4 border-2 border-dashed border-primary/30 rounded-lg bg-primary/5 text-center">
+                             <div className="flex items-center justify-center gap-2 mb-2">
+                               <ChevronLeft className="w-4 h-4 text-primary" />
+                               <span className="text-sm font-medium">Swipe Left</span>
+                               <ChevronRight className="w-4 h-4 text-primary" />
+                             </div>
+                             <p className="text-xs text-muted-foreground">Navigate between pages</p>
+                           </div>
+                           
+                           <div className="p-4 border-2 border-dashed border-success/30 rounded-lg bg-success/5 text-center">
+                             <div className="flex items-center justify-center gap-2 mb-2">
+                               <ChevronDown className="w-4 h-4 text-success" />
+                               <span className="text-sm font-medium">Pull to Refresh</span>
+                             </div>
+                             <p className="text-xs text-muted-foreground">Refresh content</p>
+                           </div>
+                           
+                           <div className="p-4 border-2 border-dashed border-warning/30 rounded-lg bg-warning/5 text-center">
+                             <div className="flex items-center justify-center gap-2 mb-2">
+                               <span className="text-sm font-medium">Pinch to Zoom</span>
+                             </div>
+                             <p className="text-xs text-muted-foreground">Scale content</p>
+                           </div>
+                         </div>
+                       </Card>
+                       
+                       <Card className="p-6">
+                         <h4 className="font-medium mb-4">Touch Feedback</h4>
+                         <div className="space-y-4">
+                           <Button className="w-full relative overflow-hidden">
+                             <span>Tap for Ripple Effect</span>
+                             <div className="absolute inset-0 bg-white/20 rounded-full scale-0 animate-ping"></div>
+                           </Button>
+                           
+                           <div className="p-4 border rounded-lg hover:shadow-lg transition-all duration-300 cursor-pointer">
+                             <div className="flex items-center gap-3">
+                               <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                 <User className="w-5 h-5 text-primary" />
+                               </div>
+                               <div>
+                                 <p className="text-sm font-medium">Long Press Action</p>
+                                 <p className="text-xs text-muted-foreground">Hold for context menu</p>
+                               </div>
+                             </div>
+                           </div>
+                           
+                           <div className="grid grid-cols-2 gap-2">
+                             <div className="aspect-square border rounded-lg hover:bg-accent transition-colors cursor-pointer flex items-center justify-center">
+                               <span className="text-xs">Tap</span>
+                             </div>
+                             <div className="aspect-square border rounded-lg hover:bg-accent transition-colors cursor-pointer flex items-center justify-center">
+                               <span className="text-xs">Double Tap</span>
+                             </div>
+                           </div>
+                         </div>
+                       </Card>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Micro-interactions & Animations">
+                   <div className="space-y-6">
+                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                       <Card className="p-6">
+                         <h4 className="font-medium mb-4">Button States</h4>
+                         <div className="space-y-3">
+                           <Button className="w-full transition-all duration-300 hover:scale-105">
+                             Hover to Scale
+                           </Button>
+                           <Button variant="outline" className="w-full transition-all duration-300 hover:shadow-lg">
+                             Hover for Shadow
+                           </Button>
+                           <Button variant="ghost" className="w-full relative overflow-hidden group">
+                             <span className="relative z-10">Slide Background</span>
+                             <div className="absolute inset-0 bg-primary transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                           </Button>
+                         </div>
+                       </Card>
+                       
+                       <Card className="p-6">
+                         <h4 className="font-medium mb-4">Loading Animations</h4>
+                         <div className="space-y-4">
+                           <div className="flex items-center gap-2">
+                             <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                             <span className="text-sm">Spinning loader</span>
+                           </div>
+                           
+                           <div className="flex items-center gap-2">
+                             <div className="flex space-x-1">
+                               <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+                               <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                               <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                             </div>
+                             <span className="text-sm">Bouncing dots</span>
+                           </div>
+                           
+                           <div className="space-y-2">
+                             <span className="text-sm">Progress bar</span>
+                             <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                               <div className="h-full bg-primary rounded-full animate-pulse" style={{width: '60%'}}></div>
+                             </div>
+                           </div>
+                           
+                           <div className="space-y-2">
+                             <span className="text-sm">Skeleton loading</span>
+                             <div className="space-y-2">
+                               <div className="h-4 bg-muted animate-pulse rounded"></div>
+                               <div className="h-4 bg-muted animate-pulse rounded w-3/4"></div>
+                               <div className="h-4 bg-muted animate-pulse rounded w-1/2"></div>
+                             </div>
+                           </div>
+                         </div>
+                       </Card>
+                       
+                       <Card className="p-6">
+                         <h4 className="font-medium mb-4">Interactive Elements</h4>
+                         <div className="space-y-4">
+                           <div className="group cursor-pointer">
+                             <div className="w-full h-12 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center transition-all duration-300 group-hover:shadow-xl group-hover:scale-105">
+                               <span className="text-white font-medium">Gradient Hover</span>
+                             </div>
+                           </div>
+                           
+                           <div className="relative overflow-hidden rounded-lg">
+                             <div className="w-full h-12 bg-accent flex items-center justify-center cursor-pointer">
+                               <span className="text-accent-foreground font-medium">Shine Effect</span>
+                               <div className="absolute inset-0 transform -skew-x-12 -translate-x-full hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                             </div>
+                           </div>
+                           
+                           <div className="space-y-2">
+                             <span className="text-sm">Toggle switch</span>
+                             <div className="w-12 h-6 bg-primary rounded-full relative cursor-pointer">
+                               <div className="absolute top-0.5 right-0.5 w-5 h-5 bg-white rounded-full transition-all duration-300"></div>
+                             </div>
+                           </div>
+                           
+                           <div className="space-y-2">
+                             <span className="text-sm">Rating stars</span>
+                             <div className="flex gap-1">
+                               {[1, 2, 3, 4, 5].map((star) => (
+                                 <Star 
+                                   key={star} 
+                                   className="w-5 h-5 cursor-pointer transition-all duration-200 hover:scale-125 text-warning fill-current" 
+                                 />
+                               ))}
+                             </div>
+                           </div>
+                         </div>
+                       </Card>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Advanced Interactions & Feedback">
+                   <div className="space-y-6">
+                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                       <Card className="p-6">
+                         <h4 className="font-medium mb-4">Drag & Drop Interface</h4>
+                         <div className="space-y-4">
+                           <div className="grid grid-cols-3 gap-2">
+                             <div className="aspect-square border-2 border-dashed border-muted rounded-lg flex items-center justify-center text-xs text-muted-foreground">
+                               Drop Zone
+                             </div>
+                             <div className="aspect-square border-2 border-dashed border-muted rounded-lg flex items-center justify-center text-xs text-muted-foreground">
+                               Drop Zone
+                             </div>
+                             <div className="aspect-square border-2 border-dashed border-muted rounded-lg flex items-center justify-center text-xs text-muted-foreground">
+                               Drop Zone
+                             </div>
+                           </div>
+                           
+                           <div className="flex gap-2">
+                             <div className="w-16 h-16 bg-primary rounded-lg flex items-center justify-center cursor-move hover:shadow-lg transition-all">
+                               <GripVertical className="w-4 h-4 text-white" />
+                             </div>
+                             <div className="w-16 h-16 bg-secondary rounded-lg flex items-center justify-center cursor-move hover:shadow-lg transition-all">
+                               <Move className="w-4 h-4 text-white" />
+                             </div>
+                             <div className="w-16 h-16 bg-accent rounded-lg flex items-center justify-center cursor-move hover:shadow-lg transition-all">
+                               <span className="text-white text-xs">Item</span>
+                             </div>
+                           </div>
+                           
+                           <p className="text-xs text-muted-foreground text-center">
+                             Drag items to drop zones above
+                           </p>
+                         </div>
+                       </Card>
+                       
+                       <Card className="p-6">
+                         <h4 className="font-medium mb-4">Contextual Feedback</h4>
+                         <div className="space-y-4">
+                           <div className="relative group">
+                             <Button variant="outline" className="w-full">
+                               Hover for Tooltip
+                             </Button>
+                             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                               This is a helpful tooltip
+                               <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-black"></div>
+                             </div>
+                           </div>
+                           
+                           <div className="space-y-2">
+                             <input 
+                               type="text" 
+                               className="w-full p-3 border border-success rounded-lg focus:ring-2 focus:ring-success/50" 
+                               value="Valid input"
+                               readOnly
+                             />
+                             <div className="flex items-center gap-2 text-success">
+                               <CheckCircle className="w-4 h-4" />
+                               <span className="text-sm">Input is valid</span>
+                             </div>
+                           </div>
+                           
+                           <div className="space-y-2">
+                             <input 
+                               type="text" 
+                               className="w-full p-3 border border-destructive rounded-lg focus:ring-2 focus:ring-destructive/50" 
+                               value="Invalid input"
+                               readOnly
+                             />
+                             <div className="flex items-center gap-2 text-destructive">
+                               <AlertCircle className="w-4 h-4" />
+                               <span className="text-sm">Please correct this field</span>
+                             </div>
+                           </div>
+                           
+                           <div className="p-4 bg-primary/10 border border-primary/20 rounded-lg">
+                             <div className="flex items-center gap-2 mb-2">
+                               <Info className="w-4 h-4 text-primary" />
+                               <span className="text-sm font-medium text-primary">Pro Tip</span>
+                             </div>
+                             <p className="text-sm text-muted-foreground">
+                               Use keyboard shortcuts to work more efficiently!
+                             </p>
+                           </div>
+                         </div>
+                       </Card>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+               </div>
+             </div>
+           </TabsContent>
 
           {/* Spacing Tab */}
           <TabsContent value="spacing" className="space-y-8">
