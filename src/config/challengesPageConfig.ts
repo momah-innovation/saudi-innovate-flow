@@ -125,38 +125,38 @@ export const challengesPageConfig: ChallengesPageConfig = {
         label: 'Trending', 
         labelAr: 'رائج', 
         icon: TrendingUp,
-        color: 'text-orange-400'
+        color: 'text-warning'
       },
       { 
         value: 'featured', 
         label: 'Featured', 
         labelAr: 'مميز', 
         icon: Star,
-        color: 'text-yellow-400'
+        color: 'text-expert'
       },
       { 
         value: 'new', 
         label: 'New', 
         labelAr: 'جديد', 
         icon: Sparkles,
-        color: 'text-blue-400'
+        color: 'text-accent'
       },
       { 
         value: 'ending-soon', 
         label: 'Ending Soon', 
         labelAr: 'ينتهي قريباً', 
         icon: Clock,
-        color: 'text-red-400'
+        color: 'text-destructive'
       }
     ]
   },
 
-  // Badge colors for special features - hero theme aligned
+  // Badge colors for special features - using semantic tokens
   badges: {
-    new: 'bg-blue-500/90 text-white border-0',
-    trending: 'bg-orange-500/90 text-white border-0 animate-pulse',
-    urgent: 'bg-red-500/90 text-white border-0 animate-pulse',
-    featured: 'bg-yellow-500/90 text-white border-0'
+    new: 'bg-accent/90 text-accent-foreground border-0',
+    trending: 'bg-warning/90 text-warning-foreground border-0 animate-pulse',
+    urgent: 'bg-destructive/90 text-destructive-foreground border-0 animate-pulse',
+    featured: 'bg-expert/90 text-expert-foreground border-0'
   },
 
   // Status, Priority, Difficulty, and Category Mappings
@@ -166,56 +166,56 @@ export const challengesPageConfig: ChallengesPageConfig = {
         value: 'active',
         label: 'Active',
         labelAr: 'نشط',
-        color: 'bg-green-500/90 text-white border-green-500/20',
+        color: 'bg-success/90 text-success-foreground border-success/20',
         icon: CheckCircle
       },
       {
         value: 'published',
         label: 'Active',
         labelAr: 'نشط',
-        color: 'bg-green-500/90 text-white border-green-500/20',
+        color: 'bg-success/90 text-success-foreground border-success/20',
         icon: CheckCircle
       },
       {
         value: 'upcoming',
         label: 'Upcoming',
         labelAr: 'قريباً',
-        color: 'bg-blue-500/90 text-white border-blue-500/20',
+        color: 'bg-accent/90 text-accent-foreground border-accent/20',
         icon: PlayCircle
       },
       {
         value: 'planning',
         label: 'Upcoming',
         labelAr: 'قريباً',
-        color: 'bg-blue-500/90 text-white border-blue-500/20',
+        color: 'bg-accent/90 text-accent-foreground border-accent/20',
         icon: PlayCircle
       },
       {
         value: 'draft',
         label: 'Draft',
         labelAr: 'مسودة',
-        color: 'bg-gray-500/90 text-white border-gray-500/20',
+        color: 'bg-muted/90 text-muted-foreground border-muted/20',
         icon: AlertCircle
       },
       {
         value: 'closed',
         label: 'Closed',
         labelAr: 'مغلق',
-        color: 'bg-gray-500/90 text-white border-gray-500/20',
+        color: 'bg-muted/90 text-muted-foreground border-muted/20',
         icon: XCircle
       },
       {
         value: 'completed',
         label: 'Completed',
         labelAr: 'مكتمل',
-        color: 'bg-purple-500/90 text-white border-purple-500/20',
+        color: 'bg-innovation/90 text-innovation-foreground border-innovation/20',
         icon: CheckCircle
       },
       {
         value: 'cancelled',
         label: 'Cancelled',
         labelAr: 'ملغي',
-        color: 'bg-red-500/90 text-white border-red-500/20',
+        color: 'bg-destructive/90 text-destructive-foreground border-destructive/20',
         icon: XCircle
       }
     ],
@@ -225,37 +225,37 @@ export const challengesPageConfig: ChallengesPageConfig = {
         value: 'عالي',
         label: 'High',
         labelAr: 'عالي',
-        color: 'bg-red-500/90 text-white border-red-500/20'
+        color: 'bg-destructive/90 text-destructive-foreground border-destructive/20'
       },
       {
         value: 'High',
         label: 'High',
         labelAr: 'عالي',
-        color: 'bg-red-500/90 text-white border-red-500/20'
+        color: 'bg-destructive/90 text-destructive-foreground border-destructive/20'
       },
       {
         value: 'متوسط',
         label: 'Medium',
         labelAr: 'متوسط',
-        color: 'bg-yellow-500/90 text-white border-yellow-500/20'
+        color: 'bg-warning/90 text-warning-foreground border-warning/20'
       },
       {
         value: 'Medium',
         label: 'Medium',
         labelAr: 'متوسط',
-        color: 'bg-yellow-500/90 text-white border-yellow-500/20'
+        color: 'bg-warning/90 text-warning-foreground border-warning/20'
       },
       {
         value: 'منخفض',
         label: 'Low',
         labelAr: 'منخفض',
-        color: 'bg-green-500/90 text-white border-green-500/20'
+        color: 'bg-success/90 text-success-foreground border-success/20'
       },
       {
         value: 'Low',
         label: 'Low',
         labelAr: 'منخفض',
-        color: 'bg-green-500/90 text-white border-green-500/20'
+        color: 'bg-success/90 text-success-foreground border-success/20'
       }
     ],
 
@@ -264,37 +264,37 @@ export const challengesPageConfig: ChallengesPageConfig = {
         value: 'صعب',
         label: 'Hard',
         labelAr: 'صعب',
-        color: 'bg-red-500/90 text-white border-red-500/20'
+        color: 'bg-destructive/90 text-destructive-foreground border-destructive/20'
       },
       {
         value: 'Hard',
         label: 'Hard',
         labelAr: 'صعب',
-        color: 'bg-red-500/90 text-white border-red-500/20'
+        color: 'bg-destructive/90 text-destructive-foreground border-destructive/20'
       },
       {
         value: 'متوسط',
         label: 'Medium',
         labelAr: 'متوسط',
-        color: 'bg-yellow-500/90 text-white border-yellow-500/20'
+        color: 'bg-warning/90 text-warning-foreground border-warning/20'
       },
       {
         value: 'Medium',
         label: 'Medium',
         labelAr: 'متوسط',
-        color: 'bg-yellow-500/90 text-white border-yellow-500/20'
+        color: 'bg-warning/90 text-warning-foreground border-warning/20'
       },
       {
         value: 'سهل',
         label: 'Easy',
         labelAr: 'سهل',
-        color: 'bg-green-500/90 text-white border-green-500/20'
+        color: 'bg-success/90 text-success-foreground border-success/20'
       },
       {
         value: 'Easy',
         label: 'Easy',
         labelAr: 'سهل',
-        color: 'bg-green-500/90 text-white border-green-500/20'
+        color: 'bg-success/90 text-success-foreground border-success/20'
       }
     ],
 
@@ -337,42 +337,42 @@ export const challengesPageConfig: ChallengesPageConfig = {
         label: 'Status Change',
         labelAr: 'تغيير الحالة',
         icon: AlertCircle,
-        color: 'text-blue-400'
+        color: 'text-accent'
       },
       {
         value: 'new_participant',
         label: 'New Participant',
         labelAr: 'مشارك جديد',
         icon: Users,
-        color: 'text-green-400'
+        color: 'text-success'
       },
       {
         value: 'new_submission',
         label: 'New Submission',
         labelAr: 'مقترح جديد',
         icon: Trophy,
-        color: 'text-yellow-400'
+        color: 'text-expert'
       },
       {
         value: 'comment',
         label: 'Comment',
         labelAr: 'تعليق',
         icon: MessageSquare,
-        color: 'text-purple-400'
+        color: 'text-innovation'
       },
       {
         value: 'deadline_reminder',
         label: 'Deadline Reminder',
         labelAr: 'تذكير بالموعد النهائي',
         icon: Clock,
-        color: 'text-red-400'
+        color: 'text-destructive'
       },
       {
         value: 'trending',
         label: 'Trending',
         labelAr: 'رائج',
         icon: TrendingUp,
-        color: 'text-orange-400'
+        color: 'text-warning'
       }
     ],
 
@@ -382,28 +382,28 @@ export const challengesPageConfig: ChallengesPageConfig = {
         label: 'Participation',
         labelAr: 'مشاركة',
         icon: Users,
-        color: 'text-green-400'
+        color: 'text-success'
       },
       {
         value: 'comment',
         label: 'Comment',
         labelAr: 'تعليق',
         icon: MessageSquare,
-        color: 'text-blue-400'
+        color: 'text-accent'
       },
       {
         value: 'submission',
         label: 'Submission',
         labelAr: 'مقترح',
         icon: FileText,
-        color: 'text-purple-400'
+        color: 'text-innovation'
       },
       {
         value: 'status_change',
         label: 'Status Change',
         labelAr: 'تغيير الحالة',
         icon: AlertCircle,
-        color: 'text-orange-400'
+        color: 'text-warning'
       }
     ]
   },
