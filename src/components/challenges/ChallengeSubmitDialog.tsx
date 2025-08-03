@@ -39,7 +39,7 @@ interface Challenge {
   participants?: number;
 }
 
-interface ChallengeSubmissionDialogProps {
+interface ChallengeSubmitDialogProps {
   challenge: Challenge | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -68,12 +68,12 @@ interface TeamMember {
   skills: string[];
 }
 
-export const ChallengeSubmissionDialog = ({
+export const ChallengeSubmitDialog = ({
   challenge,
   open,
   onOpenChange,
   onSubmissionComplete
-}: ChallengeSubmissionDialogProps) => {
+}: ChallengeSubmitDialogProps) => {
   const { isRTL } = useDirection();
   const { toast } = useToast();
   const { user } = useAuth();

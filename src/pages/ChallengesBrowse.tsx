@@ -17,7 +17,7 @@ import { ChallengeDetailDialog } from '@/components/challenges/ChallengeDetailDi
 import { ChallengeFilters, FilterState } from '@/components/challenges/ChallengeFilters';
 import { challengesPageConfig, getViewModeConfig } from '@/config/challengesPageConfig';
 import { ChallengeSkeleton, ChallengeLoadingState, ChallengeEmptyState } from '@/components/challenges/ChallengeSkeletons';
-import { ChallengeSubmissionDialog } from '@/components/challenges/ChallengeSubmissionDialog';
+import { ChallengeSubmitDialog } from '@/components/challenges/ChallengeSubmitDialog';
 import { ChallengeNotificationCenter } from '@/components/challenges/ChallengeNotificationCenter';
 import { ChallengeTemplatesDialog } from '@/components/challenges/ChallengeTemplatesDialog';
 import { ChallengeAnalyticsDashboard } from '@/components/challenges/ChallengeAnalyticsDashboard';
@@ -25,7 +25,7 @@ import { ChallengeAnalyticsDashboard } from '@/components/challenges/ChallengeAn
 import { ChallengeListView } from '@/components/challenges/ChallengeListView';
 import { ChallengeExpertAssignmentWizard } from '@/components/challenges/ChallengeExpertAssignmentWizard';
 import { ChallengeCommentsDialog } from '@/components/challenges/ChallengeCommentsDialog';
-import { ChallengeSubmissionsDialog } from '@/components/challenges/ChallengeSubmissionsDialog';
+import { ChallengeViewDialog } from '@/components/challenges/ChallengeViewDialog';
 import { ChallengeCreateDialog } from '@/components/challenges/ChallengeCreateDialog';
 import { useChallengeDefaults } from '@/hooks/useChallengeDefaults';
 import { useChallengesData } from '@/hooks/useChallengesData';
@@ -705,7 +705,7 @@ const ChallengesBrowse = () => {
           />
 
           {/* Enhanced Submission Dialog */}
-          <ChallengeSubmissionDialog
+          <ChallengeSubmitDialog
             challenge={selectedChallenge}
             open={submissionDialogOpen}
             onOpenChange={setSubmissionDialogOpen}
@@ -720,7 +720,7 @@ const ChallengesBrowse = () => {
           />
 
           {/* Challenge Submissions Dialog */}
-          <ChallengeSubmissionsDialog
+          <ChallengeViewDialog
             challenge={selectedChallenge}
             open={submissionsDialogOpen}
             onOpenChange={setSubmissionsDialogOpen}

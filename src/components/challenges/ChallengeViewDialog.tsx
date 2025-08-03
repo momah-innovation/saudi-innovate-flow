@@ -15,17 +15,17 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
-interface ChallengeSubmissionsDialogProps {
+interface ChallengeViewDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   challenge: any;
 }
 
-export function ChallengeSubmissionsDialog({ 
+export function ChallengeViewDialog({ 
   open, 
   onOpenChange, 
   challenge 
-}: ChallengeSubmissionsDialogProps) {
+}: ChallengeViewDialogProps) {
   const { user } = useAuth();
   const { toast } = useToast();
   const [submissions, setSubmissions] = useState<any[]>([]);
