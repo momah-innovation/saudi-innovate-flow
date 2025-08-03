@@ -42,7 +42,7 @@ export function StorageBucketCard({ bucket, onView, onSettings, onDelete }: Stor
               <FolderOpen className="w-6 h-6 text-primary" />
             </div>
             <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-background shadow-sm flex items-center justify-center">
-              <div className={`w-2 h-2 rounded-full ${bucket.public ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+              <div className={`w-2 h-2 rounded-full ${bucket.public ? 'bg-success' : 'bg-warning'}`} />
             </div>
           </div>
           

@@ -64,9 +64,9 @@ export const AdminEventsHero = ({
       value: `${totalRevenue.toLocaleString()} ${isRTL ? 'ر.س' : 'SAR'}`,
       icon: DollarSign,
       trend: isRTL ? '+15% من الشهر الماضي' : '+15% from last month',
-      color: 'bg-emerald-500',
-      bgColor: 'bg-emerald-50 dark:bg-emerald-900/20',
-      textColor: 'text-emerald-600 dark:text-emerald-400'
+      color: 'bg-success',
+      bgColor: 'bg-success/10 dark:bg-success/20',
+      textColor: 'text-success'
     }
   ];
 

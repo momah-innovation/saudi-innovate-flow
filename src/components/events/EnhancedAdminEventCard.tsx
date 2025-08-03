@@ -92,15 +92,15 @@ export const EnhancedAdminEventCard = ({
 
   const getEventTypeColor = (type: string) => {
     switch (type) {
-      case 'workshop': return 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/20 dark:text-purple-400';
-      case 'conference': return 'bg-indigo-100 text-indigo-800 border-indigo-200 dark:bg-indigo-900/20 dark:text-indigo-400';
-      case 'webinar': return 'bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-900/20 dark:text-cyan-400';
-      case 'meetup': return 'bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/20 dark:text-orange-400';
-      case 'hackathon': return 'bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400';
-      case 'summit': return 'bg-rose-100 text-rose-800 border-rose-200 dark:bg-rose-900/20 dark:text-rose-400';
-      case 'expo': return 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400';
-      case 'forum': return 'bg-teal-100 text-teal-800 border-teal-200 dark:bg-teal-900/20 dark:text-teal-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'workshop': return 'badge-innovation';
+      case 'conference': return 'badge-expert';
+      case 'webinar': return 'badge-info';
+      case 'meetup': return 'badge-warning';
+      case 'hackathon': return 'badge-success';
+      case 'summit': return 'badge-error';
+      case 'expo': return 'badge-warning';
+      case 'forum': return 'badge-partner';
+      default: return 'bg-muted text-muted-foreground border-muted';
     }
   };
 

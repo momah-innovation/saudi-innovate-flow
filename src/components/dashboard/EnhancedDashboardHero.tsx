@@ -44,7 +44,7 @@ export const EnhancedDashboardHero = ({
     { icon: Lightbulb, value: stats.totalIdeas, label: isRTL ? 'فكرة' : 'ideas', color: 'text-blue-400' },
     { icon: Target, value: stats.activeChallenges, label: isRTL ? 'تحدي نشط' : 'active challenges', color: 'text-green-400' },
     { icon: Award, value: stats.totalPoints, label: isRTL ? 'نقطة' : 'points', color: 'text-purple-400' },
-    { icon: Trophy, value: `${stats.innovationScore}%`, label: isRTL ? 'نتيجة الابتكار' : 'innovation score', color: 'text-yellow-400' }
+    { icon: Trophy, value: `${stats.innovationScore}%`, label: isRTL ? 'نتيجة الابتكار' : 'innovation score', color: 'icon-star' }
   ];
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export const EnhancedDashboardHero = ({
       {/* Background with animated gradients and enhanced contrast */}
       <div className="absolute inset-0 bg-gradient-primary">
         <div className="absolute inset-0 bg-[url('/dashboard-images/dashboard-hero.jpg')] opacity-10 bg-cover bg-center" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/40" />
+        <div className="absolute inset-0 overlay-primary" />
       </div>
 
       {/* Animated background elements */}
@@ -77,7 +77,7 @@ export const EnhancedDashboardHero = ({
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-primary/10 backdrop-blur-sm rounded-xl border border-primary/20">
-                  <Sparkles className="w-6 h-6 text-yellow-300" />
+                  <Sparkles className="w-6 h-6 icon-sparkle" />
                 </div>
                 <Badge variant="secondary" className="bg-primary/10 text-primary-foreground border-primary/20 backdrop-blur-sm">
                   <Star className="w-3 h-3 mr-1" />
@@ -89,11 +89,11 @@ export const EnhancedDashboardHero = ({
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
                   {isRTL ? (
                     <>
-                      مرحباً <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">{userProfile?.display_name || 'المبتكر'}</span>
+                      مرحباً <span className="gradient-text-warning">{userProfile?.display_name || 'المبتكر'}</span>
                     </>
                   ) : (
                     <>
-                      Welcome <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">{userProfile?.display_name || 'Innovator'}</span>
+                      Welcome <span className="gradient-text-warning">{userProfile?.display_name || 'Innovator'}</span>
                     </>
                   )}
                 </h1>
@@ -171,7 +171,7 @@ export const EnhancedDashboardHero = ({
                   <h3 className="text-xl font-bold text-primary-foreground mb-2">
                     {isRTL ? 'مستوى الابتكار' : 'Innovation Level'}
                   </h3>
-                  <div className="text-3xl font-bold text-yellow-300 mb-4">
+                  <div className="text-3xl font-bold text-warning mb-4">
                     {stats.innovationScore}%
                   </div>
                   <Progress 
@@ -212,7 +212,7 @@ export const EnhancedDashboardHero = ({
                 onClick={() => onNavigate('/saved')}
               >
                 <CardContent className="p-4 text-center">
-                  <Star className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
+                  <Star className="w-8 h-8 icon-star mx-auto mb-2" />
                   <div className="text-sm font-medium text-primary-foreground">
                     {isRTL ? 'المحفوظات' : 'Saved Items'}
                   </div>
@@ -227,7 +227,7 @@ export const EnhancedDashboardHero = ({
                 onClick={() => onNavigate('/evaluations')}
               >
                 <CardContent className="p-4 text-center">
-                  <Trophy className="w-8 h-8 text-purple-400 mx-auto mb-2" />
+                  <Trophy className="w-8 h-8 text-innovation mx-auto mb-2" />
                   <div className="text-sm font-medium text-primary-foreground">
                     {isRTL ? 'التقييمات' : 'Evaluations'}
                   </div>

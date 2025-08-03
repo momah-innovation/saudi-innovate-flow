@@ -80,13 +80,13 @@ export function IdeaTemplatesDialog({
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'technology': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'process': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
-      case 'digital': return 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400';
-      case 'sustainability': return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400';
-      case 'customer': return 'bg-pink-100 text-pink-800 dark:bg-pink-900/20 dark:text-pink-400';
-      case 'business': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'technology': return 'badge-info';
+      case 'process': return 'badge-success';
+      case 'digital': return 'badge-innovation';
+      case 'sustainability': return 'badge-success';
+      case 'customer': return 'badge-partner';
+      case 'business': return 'badge-warning';
+      default: return 'bg-muted text-muted-foreground border-muted';
     }
   };
 

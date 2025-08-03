@@ -566,3 +566,40 @@ All colors MUST be HSL for theming consistency.
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
+
+/* Gradient text utilities using semantic tokens */
+.gradient-text-primary {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-text-warning {
+  background: linear-gradient(135deg, hsl(var(--warning)), hsl(var(--expert)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Overlay gradients using semantic tokens */
+.overlay-dark {
+  background: linear-gradient(to top, hsl(var(--background) / 0.8), transparent);
+}
+
+.overlay-primary {
+  background: linear-gradient(to right, hsl(var(--primary) / 0.2), transparent);
+}
+
+.overlay-primary-heavy {
+  background: linear-gradient(to top, hsl(var(--primary-dark) / 0.6), transparent);
+}
+
+/* Sparkle and star icon colors */
+.icon-sparkle {
+  @apply text-warning;
+}
+
+.icon-star {
+  @apply text-warning;
+}
