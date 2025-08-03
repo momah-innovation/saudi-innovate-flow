@@ -11,7 +11,7 @@ import {
   Loader2, Wifi, WifiOff, Battery, Volume2, VolumeX,
   Send, MessageCircle, MoreVertical, HelpCircle,
   GripVertical, Move, Maximize2, Minimize2, Share,
-  Menu, ArrowRight, ArrowLeft, Languages
+  Menu, ArrowRight, ArrowLeft, Languages, ThumbsUp
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -3773,6 +3773,1166 @@ const DesignSystem = () => {
                             <div className="space-y-3">
                               <Button variant="outline" className="w-full">Resend Email</Button>
                               <p className="text-sm text-muted-foreground">Didn't receive it? Check your spam folder</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Layout & Structure Patterns">
+                  <div className="space-y-8">
+                    {/* Grid Systems */}
+                    <div>
+                      <h4 className="font-medium mb-4">Grid Systems</h4>
+                      <div className="space-y-6">
+                        {/* 12 Column Grid */}
+                        <div>
+                          <h5 className="text-sm font-medium mb-3">12-Column Grid</h5>
+                          <div className="grid grid-cols-12 gap-2 mb-2">
+                            {Array.from({length: 12}).map((_, i) => (
+                              <div key={i} className="bg-primary/20 p-2 text-center text-xs rounded">
+                                {i + 1}
+                              </div>
+                            ))}
+                          </div>
+                          <div className="grid grid-cols-12 gap-2">
+                            <div className="col-span-6 bg-accent/20 p-4 rounded">6 cols</div>
+                            <div className="col-span-6 bg-secondary/20 p-4 rounded">6 cols</div>
+                            <div className="col-span-4 bg-success/20 p-4 rounded">4 cols</div>
+                            <div className="col-span-4 bg-warning/20 p-4 rounded">4 cols</div>
+                            <div className="col-span-4 bg-innovation/20 p-4 rounded">4 cols</div>
+                          </div>
+                        </div>
+
+                        {/* Flexbox Grid */}
+                        <div>
+                          <h5 className="text-sm font-medium mb-3">Flexbox Layout</h5>
+                          <div className="flex gap-4 mb-4">
+                            <div className="flex-1 bg-primary/20 p-4 rounded">Flex 1</div>
+                            <div className="flex-2 bg-accent/20 p-4 rounded">Flex 2</div>
+                            <div className="flex-1 bg-secondary/20 p-4 rounded">Flex 1</div>
+                          </div>
+                          <div className="flex gap-4">
+                            <div className="w-64 bg-success/20 p-4 rounded">Fixed Width</div>
+                            <div className="flex-1 bg-warning/20 p-4 rounded">Flexible</div>
+                            <div className="w-32 bg-innovation/20 p-4 rounded">Fixed</div>
+                          </div>
+                        </div>
+
+                        {/* Masonry Grid */}
+                        <div>
+                          <h5 className="text-sm font-medium mb-3">Masonry Layout</h5>
+                          <div className="columns-3 gap-4">
+                            <div className="break-inside-avoid mb-4 bg-primary/20 p-4 rounded h-32">Card 1</div>
+                            <div className="break-inside-avoid mb-4 bg-accent/20 p-4 rounded h-48">Card 2</div>
+                            <div className="break-inside-avoid mb-4 bg-secondary/20 p-4 rounded h-24">Card 3</div>
+                            <div className="break-inside-avoid mb-4 bg-success/20 p-4 rounded h-40">Card 4</div>
+                            <div className="break-inside-avoid mb-4 bg-warning/20 p-4 rounded h-28">Card 5</div>
+                            <div className="break-inside-avoid mb-4 bg-innovation/20 p-4 rounded h-36">Card 6</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Content Layouts */}
+                    <div>
+                      <h4 className="font-medium mb-4">Content Layouts</h4>
+                      <div className="space-y-6">
+                        {/* Sidebar Layout */}
+                        <div>
+                          <h5 className="text-sm font-medium mb-3">Sidebar Layout</h5>
+                          <div className="border rounded-lg overflow-hidden h-64">
+                            <div className="flex h-full">
+                              <div className="w-64 bg-muted/30 p-4 border-r">
+                                <h6 className="font-medium mb-4">Navigation</h6>
+                                <div className="space-y-2">
+                                  <div className="p-2 rounded bg-primary/20">Dashboard</div>
+                                  <div className="p-2 rounded hover:bg-accent/20">Projects</div>
+                                  <div className="p-2 rounded hover:bg-accent/20">Settings</div>
+                                </div>
+                              </div>
+                              <div className="flex-1 p-4">
+                                <h6 className="font-medium mb-2">Main Content</h6>
+                                <p className="text-sm text-muted-foreground">Primary content area with flexible width</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Split View Layout */}
+                        <div>
+                          <h5 className="text-sm font-medium mb-3">Split View Layout</h5>
+                          <div className="border rounded-lg overflow-hidden h-64">
+                            <div className="flex h-full">
+                              <div className="w-1/2 p-4 border-r">
+                                <h6 className="font-medium mb-2">Left Panel</h6>
+                                <div className="space-y-2">
+                                  <div className="h-4 bg-muted rounded"></div>
+                                  <div className="h-4 bg-muted rounded w-3/4"></div>
+                                  <div className="h-4 bg-muted rounded w-1/2"></div>
+                                </div>
+                              </div>
+                              <div className="w-1/2 p-4">
+                                <h6 className="font-medium mb-2">Right Panel</h6>
+                                <div className="space-y-2">
+                                  <div className="h-4 bg-muted rounded"></div>
+                                  <div className="h-4 bg-muted rounded w-2/3"></div>
+                                  <div className="h-4 bg-muted rounded w-4/5"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Container Patterns */}
+                        <div>
+                          <h5 className="text-sm font-medium mb-3">Container Patterns</h5>
+                          <div className="space-y-4">
+                            <div className="max-w-4xl mx-auto bg-primary/10 p-4 rounded">
+                              <span className="text-sm font-medium">Fixed Container (max-width)</span>
+                            </div>
+                            <div className="w-full bg-accent/10 p-4 rounded">
+                              <span className="text-sm font-medium">Fluid Container (full-width)</span>
+                            </div>
+                            <div className="max-w-6xl mx-auto bg-secondary/10 p-4 rounded relative">
+                              <span className="text-sm font-medium">Breakout Container</span>
+                              <div className="absolute -left-8 -right-8 bg-success/20 p-2 mt-2 rounded">
+                                <span className="text-xs">Extends beyond parent</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Content Patterns">
+                  <div className="space-y-8">
+                    {/* Article Layouts */}
+                    <div>
+                      <h4 className="font-medium mb-4">Article/Blog Layouts</h4>
+                      <div className="space-y-6">
+                        <div className="border rounded-lg p-6 max-w-2xl">
+                          <div className="mb-4">
+                            <Badge className="mb-2">Technology</Badge>
+                            <h2 className="text-2xl font-bold mb-2">The Future of AI in Healthcare</h2>
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                              <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                                  <span className="text-white text-xs font-medium">JD</span>
+                                </div>
+                                <span>John Doe</span>
+                              </div>
+                              <span>•</span>
+                              <span>March 15, 2024</span>
+                              <span>•</span>
+                              <span>5 min read</span>
+                            </div>
+                          </div>
+                          <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg mb-4 flex items-center justify-center">
+                            <span className="text-4xl">🏥</span>
+                          </div>
+                          <div className="space-y-4 text-sm text-muted-foreground">
+                            <p>Artificial Intelligence is revolutionizing healthcare delivery...</p>
+                            <p>From diagnostic accuracy to treatment personalization...</p>
+                          </div>
+                          <div className="flex items-center gap-4 mt-6 pt-4 border-t">
+                            <Button variant="ghost" size="sm">
+                              <Heart className="w-4 h-4 mr-2" />
+                              24
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <MessageCircle className="w-4 h-4 mr-2" />
+                              8
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <Share className="w-4 h-4 mr-2" />
+                              Share
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Profile Pages */}
+                    <div>
+                      <h4 className="font-medium mb-4">Profile Layouts</h4>
+                      <div className="space-y-6">
+                        {/* User Profile */}
+                        <div className="border rounded-lg overflow-hidden max-w-2xl">
+                          <div className="h-32 bg-gradient-to-r from-primary to-accent"></div>
+                          <div className="p-6">
+                            <div className="flex items-start gap-4 mb-4">
+                              <div className="w-20 h-20 bg-white border-4 border-white rounded-full -mt-12 flex items-center justify-center shadow-lg">
+                                <span className="text-2xl font-bold text-primary">JD</span>
+                              </div>
+                              <div className="flex-1 mt-2">
+                                <h3 className="text-xl font-bold">Dr. Jane Doe</h3>
+                                <p className="text-muted-foreground">AI Research Scientist</p>
+                                <p className="text-sm text-muted-foreground">San Francisco, CA</p>
+                              </div>
+                              <Button size="sm">Follow</Button>
+                            </div>
+                            <p className="text-sm mb-4">
+                              Passionate about developing AI solutions for healthcare challenges. 
+                              10+ years experience in machine learning and medical technology.
+                            </p>
+                            <div className="grid grid-cols-3 gap-4 text-center">
+                              <div>
+                                <div className="text-xl font-bold text-primary">15</div>
+                                <div className="text-xs text-muted-foreground">Challenges Won</div>
+                              </div>
+                              <div>
+                                <div className="text-xl font-bold text-accent">1.2k</div>
+                                <div className="text-xs text-muted-foreground">Followers</div>
+                              </div>
+                              <div>
+                                <div className="text-xl font-bold text-secondary">850</div>
+                                <div className="text-xs text-muted-foreground">Following</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Company Profile */}
+                        <div className="border rounded-lg p-6 max-w-2xl">
+                          <div className="flex items-start gap-4 mb-4">
+                            <div className="w-16 h-16 bg-gradient-to-br from-innovation to-expert rounded-lg flex items-center justify-center">
+                              <span className="text-white text-xl font-bold">TC</span>
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="text-xl font-bold">TechCorp Solutions</h3>
+                              <p className="text-muted-foreground">Enterprise Software Company</p>
+                              <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                                <div className="flex items-center gap-1">
+                                  <MapPin className="w-4 h-4" />
+                                  <span>Global</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Users className="w-4 h-4" />
+                                  <span>1,000+ employees</span>
+                                </div>
+                              </div>
+                            </div>
+                            <Badge>Verified</Badge>
+                          </div>
+                          <p className="text-sm mb-4">
+                            Leading provider of AI-powered enterprise solutions. Specializing in automation, 
+                            analytics, and digital transformation for Fortune 500 companies.
+                          </p>
+                          <div className="flex gap-2 mb-4">
+                            <Badge variant="secondary">AI/ML</Badge>
+                            <Badge variant="secondary">Enterprise</Badge>
+                            <Badge variant="secondary">SaaS</Badge>
+                          </div>
+                          <div className="grid grid-cols-3 gap-4 text-center">
+                            <div>
+                              <div className="text-lg font-bold text-innovation">25</div>
+                              <div className="text-xs text-muted-foreground">Active Projects</div>
+                            </div>
+                            <div>
+                              <div className="text-lg font-bold text-expert">$50M+</div>
+                              <div className="text-xs text-muted-foreground">Invested</div>
+                            </div>
+                            <div>
+                              <div className="text-lg font-bold text-partner">98%</div>
+                              <div className="text-xs text-muted-foreground">Success Rate</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Pricing Tables */}
+                    <div>
+                      <h4 className="font-medium mb-4">Pricing Tables</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="border rounded-lg p-6 text-center">
+                          <h3 className="text-lg font-bold mb-2">Starter</h3>
+                          <div className="text-3xl font-bold mb-4">
+                            <span className="text-lg text-muted-foreground">$</span>19
+                            <span className="text-lg text-muted-foreground">/mo</span>
+                          </div>
+                          <ul className="space-y-2 text-sm mb-6">
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-success" />
+                              <span>5 Projects</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-success" />
+                              <span>10GB Storage</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-success" />
+                              <span>Email Support</span>
+                            </li>
+                          </ul>
+                          <Button variant="outline" className="w-full">Get Started</Button>
+                        </div>
+
+                        <div className="border-2 border-primary rounded-lg p-6 text-center relative">
+                          <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2">Most Popular</Badge>
+                          <h3 className="text-lg font-bold mb-2">Pro</h3>
+                          <div className="text-3xl font-bold mb-4">
+                            <span className="text-lg text-muted-foreground">$</span>49
+                            <span className="text-lg text-muted-foreground">/mo</span>
+                          </div>
+                          <ul className="space-y-2 text-sm mb-6">
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-success" />
+                              <span>25 Projects</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-success" />
+                              <span>100GB Storage</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-success" />
+                              <span>Priority Support</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-success" />
+                              <span>Advanced Analytics</span>
+                            </li>
+                          </ul>
+                          <Button className="w-full">Upgrade to Pro</Button>
+                        </div>
+
+                        <div className="border rounded-lg p-6 text-center">
+                          <h3 className="text-lg font-bold mb-2">Enterprise</h3>
+                          <div className="text-3xl font-bold mb-4">Custom</div>
+                          <ul className="space-y-2 text-sm mb-6">
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-success" />
+                              <span>Unlimited Projects</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-success" />
+                              <span>Unlimited Storage</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-success" />
+                              <span>24/7 Support</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-success" />
+                              <span>Custom Integration</span>
+                            </li>
+                          </ul>
+                          <Button variant="outline" className="w-full">Contact Sales</Button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Timeline Patterns */}
+                    <div>
+                      <h4 className="font-medium mb-4">Timeline Patterns</h4>
+                      <div className="space-y-6">
+                        {/* Vertical Timeline */}
+                        <div>
+                          <h5 className="text-sm font-medium mb-3">Vertical Timeline</h5>
+                          <div className="space-y-4 max-w-2xl">
+                            <div className="flex gap-4">
+                              <div className="flex flex-col items-center">
+                                <div className="w-3 h-3 bg-primary rounded-full"></div>
+                                <div className="w-px h-12 bg-muted"></div>
+                              </div>
+                              <div className="flex-1 pb-4">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <h6 className="font-medium">Project Started</h6>
+                                  <span className="text-xs text-muted-foreground">2 hours ago</span>
+                                </div>
+                                <p className="text-sm text-muted-foreground">AI Healthcare Challenge officially launched</p>
+                              </div>
+                            </div>
+                            <div className="flex gap-4">
+                              <div className="flex flex-col items-center">
+                                <div className="w-3 h-3 bg-accent rounded-full"></div>
+                                <div className="w-px h-12 bg-muted"></div>
+                              </div>
+                              <div className="flex-1 pb-4">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <h6 className="font-medium">First Submission</h6>
+                                  <span className="text-xs text-muted-foreground">1 day ago</span>
+                                </div>
+                                <p className="text-sm text-muted-foreground">Team Alpha submitted their initial prototype</p>
+                              </div>
+                            </div>
+                            <div className="flex gap-4">
+                              <div className="flex flex-col items-center">
+                                <div className="w-3 h-3 bg-success rounded-full"></div>
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <h6 className="font-medium">Milestone Reached</h6>
+                                  <span className="text-xs text-muted-foreground">3 days ago</span>
+                                </div>
+                                <p className="text-sm text-muted-foreground">50 participants joined the challenge</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Activity Feed */}
+                        <div>
+                          <h5 className="text-sm font-medium mb-3">Activity Feed</h5>
+                          <div className="border rounded-lg p-4 space-y-3 max-w-2xl">
+                            <div className="flex items-start gap-3">
+                              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                                <span className="text-white text-xs font-medium">JD</span>
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-sm">
+                                  <span className="font-medium">John Doe</span> submitted a solution to 
+                                  <span className="font-medium text-primary"> AI Healthcare Challenge</span>
+                                </p>
+                                <span className="text-xs text-muted-foreground">5 minutes ago</span>
+                              </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                              <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                                <span className="text-white text-xs font-medium">SM</span>
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-sm">
+                                  <span className="font-medium">Sarah Miller</span> commented on 
+                                  <span className="font-medium text-primary">Smart City Solutions</span>
+                                </p>
+                                <span className="text-xs text-muted-foreground">1 hour ago</span>
+                              </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                              <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
+                                <span className="text-white text-xs font-medium">TC</span>
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-sm">
+                                  <span className="font-medium">TechCorp</span> started following you
+                                </p>
+                                <span className="text-xs text-muted-foreground">2 hours ago</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Interactive Patterns">
+                  <div className="space-y-8">
+                    {/* Modal/Dialog Patterns */}
+                    <div>
+                      <h4 className="font-medium mb-4">Modal/Dialog Patterns</h4>
+                      <div className="space-y-6">
+                        {/* Confirmation Modal */}
+                        <div>
+                          <h5 className="text-sm font-medium mb-3">Confirmation Dialog</h5>
+                          <div className="border rounded-lg p-4 bg-black/5 max-w-sm mx-auto">
+                            <div className="bg-background border rounded-lg shadow-lg p-6">
+                              <div className="text-center">
+                                <div className="w-12 h-12 bg-destructive/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                  <AlertCircle className="w-6 h-6 text-destructive" />
+                                </div>
+                                <h3 className="text-lg font-semibold mb-2">Delete Challenge?</h3>
+                                <p className="text-sm text-muted-foreground mb-6">
+                                  This action cannot be undone. All submissions and data will be permanently removed.
+                                </p>
+                                <div className="flex gap-2">
+                                  <Button variant="outline" className="flex-1">Cancel</Button>
+                                  <Button variant="destructive" className="flex-1">Delete</Button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Form Modal */}
+                        <div>
+                          <h5 className="text-sm font-medium mb-3">Form Modal</h5>
+                          <div className="border rounded-lg p-4 bg-black/5 max-w-md mx-auto">
+                            <div className="bg-background border rounded-lg shadow-lg p-6">
+                              <div className="flex items-center justify-between mb-4">
+                                <h3 className="text-lg font-semibold">Create New Project</h3>
+                                <Button variant="ghost" size="sm">
+                                  <X className="w-4 h-4" />
+                                </Button>
+                              </div>
+                              <div className="space-y-4">
+                                <div>
+                                  <label className="text-sm font-medium mb-2 block">Project Name</label>
+                                  <input className="w-full p-2 border rounded" placeholder="Enter project name" />
+                                </div>
+                                <div>
+                                  <label className="text-sm font-medium mb-2 block">Description</label>
+                                  <textarea className="w-full p-2 border rounded h-20" placeholder="Project description"></textarea>
+                                </div>
+                                <div className="flex gap-2">
+                                  <Button variant="outline" className="flex-1">Cancel</Button>
+                                  <Button className="flex-1">Create</Button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Wizard/Stepper Patterns */}
+                    <div>
+                      <h4 className="font-medium mb-4">Wizard/Stepper Patterns</h4>
+                      <div className="space-y-6">
+                        <div className="border rounded-lg p-6 max-w-2xl mx-auto">
+                          {/* Stepper Header */}
+                          <div className="flex items-center justify-between mb-8">
+                            <div className="flex items-center">
+                              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                1
+                              </div>
+                              <div className="w-16 h-1 bg-primary mx-2"></div>
+                              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                2
+                              </div>
+                              <div className="w-16 h-1 bg-muted mx-2"></div>
+                              <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center text-muted-foreground text-sm font-medium">
+                                3
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* Step Content */}
+                          <div className="mb-8">
+                            <h3 className="text-lg font-semibold mb-2">Project Details</h3>
+                            <p className="text-sm text-muted-foreground mb-4">Tell us about your innovation project</p>
+                            <div className="space-y-4">
+                              <div>
+                                <label className="text-sm font-medium mb-2 block">Project Title</label>
+                                <input className="w-full p-2 border rounded" placeholder="Enter project title" />
+                              </div>
+                              <div>
+                                <label className="text-sm font-medium mb-2 block">Category</label>
+                                <select className="w-full p-2 border rounded">
+                                  <option>Select category</option>
+                                  <option>AI & Machine Learning</option>
+                                  <option>Healthcare</option>
+                                  <option>Climate Tech</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* Navigation */}
+                          <div className="flex justify-between">
+                            <Button variant="outline">Previous</Button>
+                            <Button>Next Step</Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Accordion Patterns */}
+                    <div>
+                      <h4 className="font-medium mb-4">Accordion/Collapse Patterns</h4>
+                      <div className="space-y-4 max-w-2xl">
+                        <div className="border rounded-lg">
+                          <button className="w-full flex items-center justify-between p-4 text-left hover:bg-accent/50">
+                            <span className="font-medium">Challenge Guidelines</span>
+                            <ChevronDown className="w-4 h-4" />
+                          </button>
+                          <div className="p-4 border-t bg-muted/30">
+                            <p className="text-sm text-muted-foreground">
+                              All submissions must include original code, documentation, and a demo video. 
+                              Projects will be evaluated based on innovation, technical implementation, and potential impact.
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="border rounded-lg">
+                          <button className="w-full flex items-center justify-between p-4 text-left hover:bg-accent/50">
+                            <span className="font-medium">Submission Requirements</span>
+                            <ChevronRight className="w-4 h-4" />
+                          </button>
+                        </div>
+                        
+                        <div className="border rounded-lg">
+                          <button className="w-full flex items-center justify-between p-4 text-left hover:bg-accent/50">
+                            <span className="font-medium">Judging Criteria</span>
+                            <ChevronRight className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Sidebar Patterns */}
+                    <div>
+                      <h4 className="font-medium mb-4">Sidebar Patterns</h4>
+                      <div className="space-y-6">
+                        {/* Overlay Sidebar */}
+                        <div>
+                          <h5 className="text-sm font-medium mb-3">Overlay Sidebar</h5>
+                          <div className="border rounded-lg overflow-hidden h-64 relative">
+                            <div className="w-full h-full bg-muted/20 p-4">
+                              <p className="text-sm text-muted-foreground">Main content area</p>
+                            </div>
+                            <div className="absolute top-0 left-0 w-64 h-full bg-background border-r shadow-lg p-4">
+                              <div className="flex items-center justify-between mb-4">
+                                <h6 className="font-medium">Navigation</h6>
+                                <Button variant="ghost" size="sm">
+                                  <X className="w-4 h-4" />
+                                </Button>
+                              </div>
+                              <div className="space-y-2">
+                                <div className="p-2 rounded bg-primary/20">Dashboard</div>
+                                <div className="p-2 rounded hover:bg-accent/20">Projects</div>
+                                <div className="p-2 rounded hover:bg-accent/20">Settings</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Collapsible Sidebar */}
+                        <div>
+                          <h5 className="text-sm font-medium mb-3">Collapsible Sidebar</h5>
+                          <div className="border rounded-lg overflow-hidden h-64 flex">
+                            <div className="w-16 bg-muted/30 p-2 flex flex-col items-center border-r">
+                              <Button variant="ghost" size="sm" className="mb-4">
+                                <Menu className="w-4 h-4" />
+                              </Button>
+                              <div className="space-y-2">
+                                <div className="w-8 h-8 bg-primary/20 rounded flex items-center justify-center">
+                                  <Home className="w-4 h-4" />
+                                </div>
+                                <div className="w-8 h-8 rounded flex items-center justify-center hover:bg-accent/20">
+                                  <Target className="w-4 h-4" />
+                                </div>
+                                <div className="w-8 h-8 rounded flex items-center justify-center hover:bg-accent/20">
+                                  <Settings className="w-4 h-4" />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="flex-1 p-4">
+                              <p className="text-sm text-muted-foreground">Main content with collapsed sidebar</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Data Visualization Patterns">
+                  <div className="space-y-8">
+                    {/* Chart Patterns */}
+                    <div>
+                      <h4 className="font-medium mb-4">Chart/Graph Patterns</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Bar Chart */}
+                        <div className="border rounded-lg p-4">
+                          <h5 className="font-medium mb-4">Bar Chart</h5>
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm w-16">AI/ML</span>
+                              <div className="flex-1 h-4 bg-muted rounded-full overflow-hidden">
+                                <div className="h-full bg-primary rounded-full" style={{width: '85%'}}></div>
+                              </div>
+                              <span className="text-sm font-medium">85%</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm w-16">Healthcare</span>
+                              <div className="flex-1 h-4 bg-muted rounded-full overflow-hidden">
+                                <div className="h-full bg-accent rounded-full" style={{width: '72%'}}></div>
+                              </div>
+                              <span className="text-sm font-medium">72%</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm w-16">Climate</span>
+                              <div className="flex-1 h-4 bg-muted rounded-full overflow-hidden">
+                                <div className="h-full bg-secondary rounded-full" style={{width: '68%'}}></div>
+                              </div>
+                              <span className="text-sm font-medium">68%</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm w-16">Education</span>
+                              <div className="flex-1 h-4 bg-muted rounded-full overflow-hidden">
+                                <div className="h-full bg-success rounded-full" style={{width: '45%'}}></div>
+                              </div>
+                              <span className="text-sm font-medium">45%</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Line Chart */}
+                        <div className="border rounded-lg p-4">
+                          <h5 className="font-medium mb-4">Progress Chart</h5>
+                          <div className="h-32 relative">
+                            <svg className="w-full h-full" viewBox="0 0 300 120">
+                              <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                  <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.3"/>
+                                  <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0"/>
+                                </linearGradient>
+                              </defs>
+                              <path d="M 0 100 L 50 80 L 100 60 L 150 40 L 200 35 L 250 25 L 300 20" 
+                                    stroke="hsl(var(--primary))" strokeWidth="2" fill="none"/>
+                              <path d="M 0 100 L 50 80 L 100 60 L 150 40 L 200 35 L 250 25 L 300 20 L 300 120 L 0 120 Z" 
+                                    fill="url(#gradient)"/>
+                            </svg>
+                            <div className="absolute top-2 left-2 text-xs text-muted-foreground">Submissions Over Time</div>
+                          </div>
+                        </div>
+
+                        {/* Pie Chart */}
+                        <div className="border rounded-lg p-4">
+                          <h5 className="font-medium mb-4">Distribution Chart</h5>
+                          <div className="flex items-center gap-4">
+                            <div className="w-24 h-24 rounded-full relative" style={{
+                              background: `conic-gradient(hsl(var(--primary)) 0deg 126deg, hsl(var(--accent)) 126deg 216deg, hsl(var(--secondary)) 216deg 288deg, hsl(var(--success)) 288deg 360deg)`
+                            }}>
+                              <div className="absolute inset-2 bg-background rounded-full flex items-center justify-center">
+                                <span className="text-xs font-medium">100%</span>
+                              </div>
+                            </div>
+                            <div className="space-y-2 text-xs">
+                              <div className="flex items-center gap-2">
+                                <div className="w-3 h-3 bg-primary rounded"></div>
+                                <span>AI/ML (35%)</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <div className="w-3 h-3 bg-accent rounded"></div>
+                                <span>Healthcare (25%)</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <div className="w-3 h-3 bg-secondary rounded"></div>
+                                <span>Climate (20%)</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <div className="w-3 h-3 bg-success rounded"></div>
+                                <span>Education (20%)</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Progress Rings */}
+                        <div className="border rounded-lg p-4">
+                          <h5 className="font-medium mb-4">Progress Indicators</h5>
+                          <div className="flex justify-around">
+                            <div className="text-center">
+                              <div className="w-16 h-16 rounded-full border-4 border-muted relative mb-2" style={{
+                                borderTopColor: 'hsl(var(--primary))',
+                                transform: 'rotate(225deg)'
+                              }}>
+                                <div className="absolute inset-0 flex items-center justify-center" style={{transform: 'rotate(-225deg)'}}>
+                                  <span className="text-xs font-medium">75%</span>
+                                </div>
+                              </div>
+                              <span className="text-xs text-muted-foreground">Completion</span>
+                            </div>
+                            <div className="text-center">
+                              <div className="w-16 h-16 rounded-full border-4 border-muted relative mb-2" style={{
+                                borderTopColor: 'hsl(var(--accent))',
+                                borderRightColor: 'hsl(var(--accent))',
+                                transform: 'rotate(180deg)'
+                              }}>
+                                <div className="absolute inset-0 flex items-center justify-center" style={{transform: 'rotate(-180deg)'}}>
+                                  <span className="text-xs font-medium">50%</span>
+                                </div>
+                              </div>
+                              <span className="text-xs text-muted-foreground">Quality</span>
+                            </div>
+                            <div className="text-center">
+                              <div className="w-16 h-16 rounded-full border-4 border-muted relative mb-2" style={{
+                                borderTopColor: 'hsl(var(--success))',
+                                borderRightColor: 'hsl(var(--success))',
+                                borderBottomColor: 'hsl(var(--success))',
+                                transform: 'rotate(270deg)'
+                              }}>
+                                <div className="absolute inset-0 flex items-center justify-center" style={{transform: 'rotate(-270deg)'}}>
+                                  <span className="text-xs font-medium">90%</span>
+                                </div>
+                              </div>
+                              <span className="text-xs text-muted-foreground">Score</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Statistics Display */}
+                    <div>
+                      <h4 className="font-medium mb-4">Statistics Display</h4>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="border rounded-lg p-4 text-center">
+                          <div className="text-2xl font-bold text-primary mb-1">2.5k</div>
+                          <div className="text-sm text-muted-foreground">Active Users</div>
+                          <div className="text-xs text-success mt-1">↗ +12.5%</div>
+                        </div>
+                        <div className="border rounded-lg p-4 text-center">
+                          <div className="text-2xl font-bold text-accent mb-1">156</div>
+                          <div className="text-sm text-muted-foreground">Challenges</div>
+                          <div className="text-xs text-success mt-1">↗ +8.2%</div>
+                        </div>
+                        <div className="border rounded-lg p-4 text-center">
+                          <div className="text-2xl font-bold text-secondary mb-1">$1.2M</div>
+                          <div className="text-sm text-muted-foreground">Total Prizes</div>
+                          <div className="text-xs text-warning mt-1">→ 0%</div>
+                        </div>
+                        <div className="border rounded-lg p-4 text-center">
+                          <div className="text-2xl font-bold text-success mb-1">94%</div>
+                          <div className="text-sm text-muted-foreground">Success Rate</div>
+                          <div className="text-xs text-destructive mt-1">↘ -2.1%</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Error & Empty State Patterns">
+                  <div className="space-y-8">
+                    {/* Error Pages */}
+                    <div>
+                      <h4 className="font-medium mb-4">Error Pages</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* 404 Error */}
+                        <div className="border rounded-lg p-8 text-center">
+                          <div className="text-6xl mb-4">🔍</div>
+                          <h2 className="text-2xl font-bold mb-2">Page Not Found</h2>
+                          <p className="text-muted-foreground mb-6">
+                            The page you're looking for doesn't exist or has been moved.
+                          </p>
+                          <div className="flex gap-2 justify-center">
+                            <Button variant="outline">Go Back</Button>
+                            <Button>Go Home</Button>
+                          </div>
+                        </div>
+
+                        {/* Server Error */}
+                        <div className="border border-destructive/20 rounded-lg p-8 text-center bg-destructive/5">
+                          <div className="text-6xl mb-4">⚠️</div>
+                          <h2 className="text-2xl font-bold mb-2 text-destructive">Server Error</h2>
+                          <p className="text-muted-foreground mb-6">
+                            Something went wrong on our servers. Our team has been notified.
+                          </p>
+                          <div className="flex gap-2 justify-center">
+                            <Button variant="outline">Try Again</Button>
+                            <Button variant="outline">Contact Support</Button>
+                          </div>
+                        </div>
+
+                        {/* Access Denied */}
+                        <div className="border border-warning/20 rounded-lg p-8 text-center bg-warning/5">
+                          <div className="text-6xl mb-4">🔒</div>
+                          <h2 className="text-2xl font-bold mb-2 text-warning">Access Denied</h2>
+                          <p className="text-muted-foreground mb-6">
+                            You don't have permission to access this resource.
+                          </p>
+                          <div className="flex gap-2 justify-center">
+                            <Button variant="outline">Request Access</Button>
+                            <Button>Sign In</Button>
+                          </div>
+                        </div>
+
+                        {/* Maintenance */}
+                        <div className="border border-accent/20 rounded-lg p-8 text-center bg-accent/5">
+                          <div className="text-6xl mb-4">🔧</div>
+                          <h2 className="text-2xl font-bold mb-2 text-accent">Under Maintenance</h2>
+                          <p className="text-muted-foreground mb-6">
+                            We're performing scheduled maintenance. Please check back soon.
+                          </p>
+                          <div className="flex gap-2 justify-center">
+                            <Button variant="outline">Check Status</Button>
+                            <Button variant="outline">Subscribe to Updates</Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Empty States */}
+                    <div>
+                      <h4 className="font-medium mb-4">Empty State Designs</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* No Data */}
+                        <div className="border rounded-lg p-8 text-center">
+                          <div className="w-16 h-16 bg-muted/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Grid className="w-8 h-8 text-muted-foreground" />
+                          </div>
+                          <h3 className="font-semibold mb-2">No Challenges Yet</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Start your innovation journey by creating your first challenge.
+                          </p>
+                          <Button>
+                            <Plus className="w-4 h-4 mr-2" />
+                            Create Challenge
+                          </Button>
+                        </div>
+
+                        {/* No Search Results */}
+                        <div className="border rounded-lg p-8 text-center">
+                          <div className="w-16 h-16 bg-muted/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Search className="w-8 h-8 text-muted-foreground" />
+                          </div>
+                          <h3 className="font-semibold mb-2">No Results Found</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Try adjusting your search criteria or filters.
+                          </p>
+                          <div className="flex gap-2 justify-center">
+                            <Button variant="outline">Clear Filters</Button>
+                            <Button variant="outline">Browse All</Button>
+                          </div>
+                        </div>
+
+                        {/* Empty Cart */}
+                        <div className="border rounded-lg p-8 text-center">
+                          <div className="w-16 h-16 bg-muted/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span className="text-2xl">🛒</span>
+                          </div>
+                          <h3 className="font-semibold mb-2">Your Cart is Empty</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Looks like you haven't added anything to your cart yet.
+                          </p>
+                          <Button>Start Shopping</Button>
+                        </div>
+
+                        {/* Empty Inbox */}
+                        <div className="border rounded-lg p-8 text-center">
+                          <div className="w-16 h-16 bg-muted/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Mail className="w-8 h-8 text-muted-foreground" />
+                          </div>
+                          <h3 className="font-semibold mb-2">Inbox Zero!</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            All caught up! You have no new messages.
+                          </p>
+                          <Button variant="outline">Compose Message</Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Communication Patterns">
+                  <div className="space-y-8">
+                    {/* Chat Interface */}
+                    <div>
+                      <h4 className="font-medium mb-4">Chat/Messaging Interface</h4>
+                      <div className="border rounded-lg overflow-hidden h-96 flex flex-col max-w-md mx-auto">
+                        <div className="bg-card border-b p-4 flex items-center gap-3">
+                          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-medium text-sm">
+                            TC
+                          </div>
+                          <div>
+                            <p className="font-medium">Team Challenge</p>
+                            <p className="text-sm text-muted-foreground">5 members online</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+                          <div className="flex gap-3">
+                            <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white font-medium text-sm">
+                              JD
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="font-medium text-sm">John</span>
+                                <span className="text-xs text-muted-foreground">2:30 PM</span>
+                              </div>
+                              <div className="bg-muted rounded-lg p-3 max-w-xs">
+                                <p className="text-sm">Hey team! Just submitted our AI model 🚀</p>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="flex gap-3 justify-end">
+                            <div className="max-w-xs">
+                              <div className="flex items-center gap-2 mb-1 justify-end">
+                                <span className="text-xs text-muted-foreground">2:32 PM</span>
+                                <span className="font-medium text-sm">You</span>
+                              </div>
+                              <div className="bg-primary text-primary-foreground rounded-lg p-3">
+                                <p className="text-sm">Awesome work! Let's review it together</p>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="flex gap-3">
+                            <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white font-medium text-sm">
+                              SM
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="font-medium text-sm">Sarah</span>
+                                <span className="text-xs text-muted-foreground">2:35 PM</span>
+                              </div>
+                              <div className="bg-muted rounded-lg p-3 max-w-xs">
+                                <p className="text-sm">Great job everyone! 💪</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="border-t p-4">
+                          <div className="flex gap-2">
+                            <input 
+                              type="text" 
+                              className="flex-1 p-2 border rounded-lg text-sm" 
+                              placeholder="Type your message..."
+                            />
+                            <Button size="sm">
+                              <Send className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Comment System */}
+                    <div>
+                      <h4 className="font-medium mb-4">Comment System</h4>
+                      <div className="border rounded-lg p-6 max-w-2xl">
+                        <div className="space-y-4">
+                          {/* Parent Comment */}
+                          <div className="flex gap-3">
+                            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-medium text-sm">
+                              JD
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="font-medium text-sm">John Doe</span>
+                                <span className="text-xs text-muted-foreground">2 hours ago</span>
+                              </div>
+                              <p className="text-sm mb-2">
+                                This is a fantastic approach to the healthcare challenge! 
+                                The AI model shows great potential for early diagnosis.
+                              </p>
+                              <div className="flex items-center gap-4 text-xs">
+                                <button className="flex items-center gap-1 text-muted-foreground hover:text-primary">
+                                  <ThumbsUp className="w-3 h-3" />
+                                  <span>5</span>
+                                </button>
+                                <button className="text-muted-foreground hover:text-primary">Reply</button>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Nested Reply */}
+                          <div className="ml-11 flex gap-3">
+                            <div className="w-6 h-6 bg-accent rounded-full flex items-center justify-center text-white font-medium text-xs">
+                              SM
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="font-medium text-xs">Sarah Miller</span>
+                                <span className="text-xs text-muted-foreground">1 hour ago</span>
+                              </div>
+                              <p className="text-xs mb-2">
+                                Thanks John! We're excited about the early results.
+                              </p>
+                              <div className="flex items-center gap-4 text-xs">
+                                <button className="flex items-center gap-1 text-muted-foreground hover:text-primary">
+                                  <ThumbsUp className="w-3 h-3" />
+                                  <span>2</span>
+                                </button>
+                                <button className="text-muted-foreground hover:text-primary">Reply</button>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Comment Input */}
+                          <div className="border-t pt-4">
+                            <div className="flex gap-3">
+                              <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
+                                <User className="w-4 h-4 text-muted-foreground" />
+                              </div>
+                              <div className="flex-1">
+                                <textarea 
+                                  className="w-full p-3 border rounded-lg text-sm" 
+                                  rows={3}
+                                  placeholder="Add a comment..."
+                                ></textarea>
+                                <div className="flex justify-end mt-2">
+                                  <Button size="sm">Post Comment</Button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Forum Discussion */}
+                    <div>
+                      <h4 className="font-medium mb-4">Forum/Discussion Layout</h4>
+                      <div className="space-y-4 max-w-3xl">
+                        <div className="border rounded-lg p-4 hover:bg-accent/50 transition-colors">
+                          <div className="flex items-start gap-4">
+                            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-medium">
+                              JD
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <h3 className="font-semibold">Best practices for AI model evaluation?</h3>
+                                <Badge variant="secondary" className="text-xs">Question</Badge>
+                              </div>
+                              <p className="text-sm text-muted-foreground mb-2">
+                                Looking for recommendations on evaluating AI models for healthcare applications...
+                              </p>
+                              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                <span>By John Doe</span>
+                                <span>•</span>
+                                <span>5 hours ago</span>
+                                <span>•</span>
+                                <div className="flex items-center gap-1">
+                                  <MessageCircle className="w-3 h-3" />
+                                  <span>12 replies</span>
+                                </div>
+                                <span>•</span>
+                                <div className="flex items-center gap-1">
+                                  <Eye className="w-3 h-3" />
+                                  <span>156 views</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-right text-xs text-muted-foreground">
+                              <div className="font-medium">Last reply</div>
+                              <div>2 hours ago</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="border rounded-lg p-4 hover:bg-accent/50 transition-colors border-l-4 border-l-accent">
+                          <div className="flex items-start gap-4">
+                            <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center text-white font-medium">
+                              SM
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <h3 className="font-semibold">Announcing new healthcare challenge!</h3>
+                                <Badge className="text-xs">Announcement</Badge>
+                              </div>
+                              <p className="text-sm text-muted-foreground mb-2">
+                                Excited to launch our biggest healthcare innovation challenge yet...
+                              </p>
+                              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                <span>By Sarah Miller</span>
+                                <span>•</span>
+                                <span>1 day ago</span>
+                                <span>•</span>
+                                <div className="flex items-center gap-1">
+                                  <MessageCircle className="w-3 h-3" />
+                                  <span>25 replies</span>
+                                </div>
+                                <span>•</span>
+                                <div className="flex items-center gap-1">
+                                  <Eye className="w-3 h-3" />
+                                  <span>342 views</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-right text-xs text-muted-foreground">
+                              <div className="font-medium">Last reply</div>
+                              <div>30 min ago</div>
                             </div>
                           </div>
                         </div>
