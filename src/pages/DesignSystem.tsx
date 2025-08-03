@@ -51,9 +51,9 @@ const DesignSystem = () => {
       >
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
           {copiedToken === className ? (
-            <Check className="h-5 w-5 text-white" />
+            <Check className="h-5 w-5 text-primary-foreground" />
           ) : (
-            <Copy className="h-5 w-5 text-white" />
+            <Copy className="h-5 w-5 text-primary-foreground" />
           )}
         </div>
       </div>
@@ -2155,7 +2155,7 @@ const DesignSystem = () => {
                       <h4 className="font-medium mb-4">Contact List</h4>
                       <div className="space-y-3">
                         <div className="flex items-center gap-3 p-3 border rounded-lg hover:bg-accent/50">
-                          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-medium">
+                          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-medium">
                             JD
                           </div>
                           <div className="flex-1">
@@ -2172,7 +2172,7 @@ const DesignSystem = () => {
                           </div>
                         </div>
                         <div className="flex items-center gap-3 p-3 border rounded-lg hover:bg-accent/50">
-                          <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white font-medium">
+                          <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-secondary-foreground font-medium">
                             SM
                           </div>
                           <div className="flex-1">
@@ -2189,7 +2189,7 @@ const DesignSystem = () => {
                           </div>
                         </div>
                         <div className="flex items-center gap-3 p-3 border rounded-lg hover:bg-accent/50">
-                          <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center text-white font-medium">
+                          <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center text-accent-foreground font-medium">
                             MJ
                           </div>
                           <div className="flex-1">
@@ -2330,7 +2330,7 @@ const DesignSystem = () => {
                                    </div>
                                  </td>
                                  <td className="p-3">
-                                   <Badge variant="default" className="bg-success text-white">Active</Badge>
+                                   <Badge variant="default" className="bg-success text-success-foreground">Active</Badge>
                                  </td>
                                  <td className="p-3">
                                    <div className="flex items-center gap-2">

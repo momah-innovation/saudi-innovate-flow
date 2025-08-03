@@ -83,7 +83,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
 
       {isOpen && (
         <div className="absolute top-full left-0 right-0 mt-2 z-50">
-          <Card className="p-4 shadow-lg border bg-background">
+          <Card className="p-4 shadow-lg border bg-popover text-popover-foreground">
             <div className="space-y-6">
               {/* Role-Based Themes */}
               <div>
