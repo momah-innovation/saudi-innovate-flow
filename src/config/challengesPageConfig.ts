@@ -125,38 +125,38 @@ export const challengesPageConfig: ChallengesPageConfig = {
         label: 'Trending', 
         labelAr: 'رائج', 
         icon: TrendingUp,
-        color: 'text-warning'
+        color: 'text-orange-400'
       },
       { 
         value: 'featured', 
         label: 'Featured', 
         labelAr: 'مميز', 
         icon: Star,
-        color: 'text-expert'
+        color: 'text-yellow-400'
       },
       { 
         value: 'new', 
         label: 'New', 
         labelAr: 'جديد', 
         icon: Sparkles,
-        color: 'text-accent'
+        color: 'text-blue-400'
       },
       { 
         value: 'ending-soon', 
         label: 'Ending Soon', 
         labelAr: 'ينتهي قريباً', 
         icon: Clock,
-        color: 'text-destructive'
+        color: 'text-red-400'
       }
     ]
   },
 
   // Badge colors for special features - hero theme aligned
   badges: {
-    new: 'bg-accent text-accent-foreground border-0',
-    trending: 'bg-warning text-warning-foreground border-0 animate-pulse',
-    urgent: 'bg-destructive text-destructive-foreground border-0 animate-pulse',
-    featured: 'bg-expert text-expert-foreground border-0'
+    new: 'bg-blue-500/90 text-white border-0',
+    trending: 'bg-orange-500/90 text-white border-0 animate-pulse',
+    urgent: 'bg-red-500/90 text-white border-0 animate-pulse',
+    featured: 'bg-yellow-500/90 text-white border-0'
   },
 
   // Status, Priority, Difficulty, and Category Mappings
@@ -166,56 +166,56 @@ export const challengesPageConfig: ChallengesPageConfig = {
         value: 'active',
         label: 'Active',
         labelAr: 'نشط',
-        color: 'bg-success text-success-foreground border-success/20',
+        color: 'bg-green-500/90 text-white border-green-500/20',
         icon: CheckCircle
       },
       {
         value: 'published',
         label: 'Active',
         labelAr: 'نشط',
-        color: 'bg-success text-success-foreground border-success/20',
+        color: 'bg-green-500/90 text-white border-green-500/20',
         icon: CheckCircle
       },
       {
         value: 'upcoming',
         label: 'Upcoming',
         labelAr: 'قريباً',
-        color: 'bg-accent text-accent-foreground border-accent/20',
+        color: 'bg-blue-500/90 text-white border-blue-500/20',
         icon: PlayCircle
       },
       {
         value: 'planning',
         label: 'Upcoming',
         labelAr: 'قريباً',
-        color: 'bg-accent text-accent-foreground border-accent/20',
+        color: 'bg-blue-500/90 text-white border-blue-500/20',
         icon: PlayCircle
       },
       {
         value: 'draft',
         label: 'Draft',
         labelAr: 'مسودة',
-        color: 'bg-muted text-muted-foreground border-muted/20',
+        color: 'bg-gray-500/90 text-white border-gray-500/20',
         icon: AlertCircle
       },
       {
         value: 'closed',
         label: 'Closed',
         labelAr: 'مغلق',
-        color: 'bg-muted text-muted-foreground border-muted/20',
+        color: 'bg-gray-500/90 text-white border-gray-500/20',
         icon: XCircle
       },
       {
         value: 'completed',
         label: 'Completed',
         labelAr: 'مكتمل',
-        color: 'bg-innovation text-innovation-foreground border-innovation/20',
+        color: 'bg-purple-500/90 text-white border-purple-500/20',
         icon: CheckCircle
       },
       {
         value: 'cancelled',
         label: 'Cancelled',
         labelAr: 'ملغي',
-        color: 'bg-destructive text-destructive-foreground border-destructive/20',
+        color: 'bg-red-500/90 text-white border-red-500/20',
         icon: XCircle
       }
     ],
@@ -225,37 +225,37 @@ export const challengesPageConfig: ChallengesPageConfig = {
         value: 'عالي',
         label: 'High',
         labelAr: 'عالي',
-        color: 'bg-destructive text-destructive-foreground border-destructive/20'
+        color: 'bg-red-500/90 text-white border-red-500/20'
       },
       {
         value: 'High',
         label: 'High',
         labelAr: 'عالي',
-        color: 'bg-destructive text-destructive-foreground border-destructive/20'
+        color: 'bg-red-500/90 text-white border-red-500/20'
       },
       {
         value: 'متوسط',
         label: 'Medium',
         labelAr: 'متوسط',
-        color: 'bg-warning text-warning-foreground border-warning/20'
+        color: 'bg-yellow-500/90 text-white border-yellow-500/20'
       },
       {
         value: 'Medium',
         label: 'Medium',
         labelAr: 'متوسط',
-        color: 'bg-warning text-warning-foreground border-warning/20'
+        color: 'bg-yellow-500/90 text-white border-yellow-500/20'
       },
       {
         value: 'منخفض',
         label: 'Low',
         labelAr: 'منخفض',
-        color: 'bg-success text-success-foreground border-success/20'
+        color: 'bg-green-500/90 text-white border-green-500/20'
       },
       {
         value: 'Low',
         label: 'Low',
         labelAr: 'منخفض',
-        color: 'bg-success text-success-foreground border-success/20'
+        color: 'bg-green-500/90 text-white border-green-500/20'
       }
     ],
 
@@ -264,37 +264,37 @@ export const challengesPageConfig: ChallengesPageConfig = {
         value: 'صعب',
         label: 'Hard',
         labelAr: 'صعب',
-        color: 'bg-destructive text-destructive-foreground border-destructive/20'
+        color: 'bg-red-500/90 text-white border-red-500/20'
       },
       {
         value: 'Hard',
         label: 'Hard',
         labelAr: 'صعب',
-        color: 'bg-destructive text-destructive-foreground border-destructive/20'
+        color: 'bg-red-500/90 text-white border-red-500/20'
       },
       {
         value: 'متوسط',
         label: 'Medium',
         labelAr: 'متوسط',
-        color: 'bg-warning text-warning-foreground border-warning/20'
+        color: 'bg-yellow-500/90 text-white border-yellow-500/20'
       },
       {
         value: 'Medium',
         label: 'Medium',
         labelAr: 'متوسط',
-        color: 'bg-warning text-warning-foreground border-warning/20'
+        color: 'bg-yellow-500/90 text-white border-yellow-500/20'
       },
       {
         value: 'سهل',
         label: 'Easy',
         labelAr: 'سهل',
-        color: 'bg-success text-success-foreground border-success/20'
+        color: 'bg-green-500/90 text-white border-green-500/20'
       },
       {
         value: 'Easy',
         label: 'Easy',
         labelAr: 'سهل',
-        color: 'bg-success text-success-foreground border-success/20'
+        color: 'bg-green-500/90 text-white border-green-500/20'
       }
     ],
 
@@ -337,42 +337,42 @@ export const challengesPageConfig: ChallengesPageConfig = {
         label: 'Status Change',
         labelAr: 'تغيير الحالة',
         icon: AlertCircle,
-        color: 'text-accent'
+        color: 'text-blue-400'
       },
       {
         value: 'new_participant',
         label: 'New Participant',
         labelAr: 'مشارك جديد',
         icon: Users,
-        color: 'text-success'
+        color: 'text-green-400'
       },
       {
         value: 'new_submission',
         label: 'New Submission',
         labelAr: 'مقترح جديد',
         icon: Trophy,
-        color: 'text-expert'
+        color: 'text-yellow-400'
       },
       {
         value: 'comment',
         label: 'Comment',
         labelAr: 'تعليق',
         icon: MessageSquare,
-        color: 'text-innovation'
+        color: 'text-purple-400'
       },
       {
         value: 'deadline_reminder',
         label: 'Deadline Reminder',
         labelAr: 'تذكير بالموعد النهائي',
         icon: Clock,
-        color: 'text-destructive'
+        color: 'text-red-400'
       },
       {
         value: 'trending',
         label: 'Trending',
         labelAr: 'رائج',
         icon: TrendingUp,
-        color: 'text-warning'
+        color: 'text-orange-400'
       }
     ],
 
@@ -382,28 +382,28 @@ export const challengesPageConfig: ChallengesPageConfig = {
         label: 'Participation',
         labelAr: 'مشاركة',
         icon: Users,
-        color: 'text-success'
+        color: 'text-green-400'
       },
       {
         value: 'comment',
         label: 'Comment',
         labelAr: 'تعليق',
         icon: MessageSquare,
-        color: 'text-accent'
+        color: 'text-blue-400'
       },
       {
         value: 'submission',
         label: 'Submission',
         labelAr: 'مقترح',
         icon: FileText,
-        color: 'text-innovation'
+        color: 'text-purple-400'
       },
       {
         value: 'status_change',
         label: 'Status Change',
         labelAr: 'تغيير الحالة',
         icon: AlertCircle,
-        color: 'text-warning'
+        color: 'text-orange-400'
       }
     ]
   },
@@ -433,73 +433,73 @@ export const challengesPageConfig: ChallengesPageConfig = {
       slideInRight: 'animate-slide-in-right'
     },
     gradients: {
-      // Hero section gradients using semantic tokens
-      hero: 'bg-gradient-to-r from-primary via-accent to-innovation',
-      heroOverlay: 'bg-gradient-to-r from-background/80 via-background/60 to-background/70',
+      // Hero section gradients - dark, vibrant theme
+      hero: 'bg-gradient-to-r from-violet-600 via-purple-600 to-blue-600',
+      heroOverlay: 'bg-gradient-to-r from-black/50 via-black/30 to-black/40',
       
       // Button gradients matching hero
-      button: 'bg-gradient-to-r from-primary to-accent',
-      buttonHover: 'hover:from-primary-dark hover:to-accent',
+      button: 'bg-gradient-to-r from-purple-500 to-blue-500',
+      buttonHover: 'hover:from-purple-600 hover:to-blue-600',
       
       // Text highlight gradients
-      textHighlight: 'bg-gradient-to-r from-expert to-warning',
+      textHighlight: 'bg-gradient-to-r from-yellow-300 to-orange-300',
       
       // Card gradients - consistent with hero theme
-      card: 'bg-gradient-to-r from-primary/10 to-accent/10',
-      cardHover: 'hover:from-primary/20 hover:to-accent/20',
+      card: 'bg-gradient-to-r from-violet-500/10 to-purple-500/10',
+      cardHover: 'hover:from-violet-500/20 hover:to-purple-500/20',
       
       // Filter section gradients
-      filter: 'bg-gradient-to-r from-primary to-innovation',
-      filterLight: 'bg-gradient-to-r from-primary/5 via-accent/5 to-innovation/5',
+      filter: 'bg-gradient-to-r from-violet-500 to-purple-600',
+      filterLight: 'bg-gradient-to-r from-violet-50/90 via-purple-50/90 to-blue-50/90',
       
       // Featured content gradients
-      featured: 'bg-gradient-to-br from-innovation/20 to-accent/20',
+      featured: 'bg-gradient-to-br from-purple-500/20 to-blue-500/20',
       
       // Status gradients
-      success: 'bg-gradient-to-r from-success to-success',
-      warning: 'bg-gradient-to-r from-warning to-expert',
-      danger: 'bg-gradient-to-r from-destructive to-destructive',
-      info: 'bg-gradient-to-r from-accent to-partner'
+      success: 'bg-gradient-to-r from-green-500 to-emerald-500',
+      warning: 'bg-gradient-to-r from-yellow-500 to-orange-500',
+      danger: 'bg-gradient-to-r from-red-500 to-pink-500',
+      info: 'bg-gradient-to-r from-blue-500 to-cyan-500'
     },
     glassMorphism: {
-      // Glass morphism patterns using semantic tokens
-      light: 'bg-background/5 backdrop-blur-sm border-border/10',
-      medium: 'bg-background/10 backdrop-blur-sm border-border/20',
-      heavy: 'bg-background/10 backdrop-blur-xl border-border/20',
+      // Glass morphism patterns from hero
+      light: 'bg-white/5 backdrop-blur-sm border-white/10',
+      medium: 'bg-white/10 backdrop-blur-sm border-white/20',
+      heavy: 'bg-white/10 backdrop-blur-xl border-white/20',
       
       // Card glass effects
-      card: 'bg-card/5 backdrop-blur-sm border-border/10',
-      cardHover: 'hover:bg-card/10 transition-all duration-300',
-      cardActive: 'bg-card/10 border-border/20 scale-105',
+      card: 'bg-white/5 backdrop-blur-sm border-white/10',
+      cardHover: 'hover:bg-white/10 transition-all duration-300',
+      cardActive: 'bg-white/10 border-white/20 scale-105',
       
       // Badge glass effects
-      badge: 'bg-background/10 text-foreground border-border/20 backdrop-blur-sm'
+      badge: 'bg-white/10 text-white border-white/20 backdrop-blur-sm'
     },
     colors: {
-      // Animation and icon colors using semantic tokens
+      // Animation and icon colors consistent with hero
       stats: {
-        blue: 'text-accent',
-        green: 'text-success', 
-        purple: 'text-innovation',
-        yellow: 'text-expert',
-        orange: 'text-warning',
-        red: 'text-destructive'
+        blue: 'text-blue-400',
+        green: 'text-green-400', 
+        purple: 'text-purple-400',
+        yellow: 'text-yellow-400',
+        orange: 'text-orange-400',
+        red: 'text-red-400'
       },
       
-      // Text colors using semantic tokens
+      // Text colors for dark theme
       text: {
-        primary: 'text-foreground',
-        secondary: 'text-foreground/80',
-        muted: 'text-muted-foreground',
-        accent: 'text-transparent bg-clip-text bg-gradient-to-r from-expert to-warning'
+        primary: 'text-white',
+        secondary: 'text-white/80',
+        muted: 'text-white/60',
+        accent: 'text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300'
       },
       
-      // Background variations using semantic tokens
+      // Background variations
       background: {
-        primary: 'bg-background/5',
-        secondary: 'bg-background/10',
-        accent: 'bg-accent/20',
-        overlay: 'bg-background/60'
+        primary: 'bg-white/5',
+        secondary: 'bg-white/10',
+        accent: 'bg-white/20',
+        overlay: 'bg-black/60'
       }
     },
     effects: {
@@ -509,13 +509,13 @@ export const challengesPageConfig: ChallengesPageConfig = {
       
       // Hover effects
       hoverScale: 'hover:scale-105 transition-transform duration-300',
-      hoverGlow: 'hover:shadow-lg hover:shadow-primary/25 transition-all duration-300',
+      hoverGlow: 'hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300',
       
       // Focus effects
-      focus: 'focus:ring-2 focus:ring-primary/50 focus:border-primary',
+      focus: 'focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500',
       
       // Interactive states
-      interactive: 'transition-all duration-300 hover:bg-background/10 cursor-pointer'
+      interactive: 'transition-all duration-300 hover:bg-white/10 cursor-pointer'
     },
     breakpoints: {
       mobile: '640px',
