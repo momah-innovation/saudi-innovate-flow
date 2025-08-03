@@ -3388,6 +3388,398 @@ const DesignSystem = () => {
                     </div>
                   </div>
                 </ComponentShowcase>
+                <ComponentShowcase title="Landing Page, Splash & Auth Patterns">
+                  <div className="space-y-8">
+                    {/* Landing Page Patterns */}
+                    <div>
+                      <h4 className="font-medium mb-4">Landing Page Patterns</h4>
+                      <div className="space-y-6">
+                        {/* Hero Section */}
+                        <div className="border rounded-lg overflow-hidden">
+                          <div className="relative bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 p-12 text-center">
+                            <div className="absolute inset-0 opacity-5">
+                              <div className="w-full h-full" style={{backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`}}></div>
+                            </div>
+                            <div className="relative z-10 max-w-4xl mx-auto">
+                              <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
+                                Shape the Future of Innovation
+                              </h1>
+                              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+                                Join thousands of innovators solving real-world challenges with cutting-edge technology. 
+                                From AI to sustainability, your solutions can change the world.
+                              </p>
+                              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                                <Button size="lg" className="px-8">
+                                  Start Your Journey
+                                  <ArrowRight className="w-4 h-4 ml-2" />
+                                </Button>
+                                <Button size="lg" variant="outline">
+                                  <Play className="w-4 h-4 mr-2" />
+                                  Watch Demo
+                                </Button>
+                              </div>
+                              
+                              {/* Features Grid */}
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="p-6 rounded-lg bg-background/50 border backdrop-blur-sm">
+                                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                                    <Target className="w-6 h-6 text-primary" />
+                                  </div>
+                                  <h3 className="font-semibold mb-2">Real Challenges</h3>
+                                  <p className="text-sm text-muted-foreground">Solve actual problems faced by governments and organizations</p>
+                                </div>
+                                <div className="p-6 rounded-lg bg-background/50 border backdrop-blur-sm">
+                                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                                    <Award className="w-6 h-6 text-accent" />
+                                  </div>
+                                  <h3 className="font-semibold mb-2">Meaningful Rewards</h3>
+                                  <p className="text-sm text-muted-foreground">Win prizes and recognition for your innovative solutions</p>
+                                </div>
+                                <div className="p-6 rounded-lg bg-background/50 border backdrop-blur-sm">
+                                  <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                                    <Users className="w-6 h-6 text-secondary" />
+                                  </div>
+                                  <h3 className="font-semibold mb-2">Global Community</h3>
+                                  <p className="text-sm text-muted-foreground">Connect with innovators and experts worldwide</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Stats Section */}
+                        <div className="border rounded-lg p-8 bg-card">
+                          <div className="text-center mb-8">
+                            <h2 className="text-3xl font-bold mb-4">Trusted by Innovators Worldwide</h2>
+                            <p className="text-muted-foreground">Join the growing community of problem solvers</p>
+                          </div>
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                            <div className="text-center">
+                              <div className="text-3xl font-bold text-primary mb-2">10K+</div>
+                              <div className="text-sm text-muted-foreground">Active Innovators</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-3xl font-bold text-accent mb-2">500+</div>
+                              <div className="text-sm text-muted-foreground">Challenges Solved</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-3xl font-bold text-secondary mb-2">$5M+</div>
+                              <div className="text-sm text-muted-foreground">Total Prizes</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-3xl font-bold text-success mb-2">95%</div>
+                              <div className="text-sm text-muted-foreground">Success Rate</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Testimonial Section */}
+                        <div className="border rounded-lg p-8 bg-muted/30">
+                          <div className="max-w-2xl mx-auto text-center">
+                            <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-6 mx-auto">
+                              <span className="text-white text-xl font-bold">🚀</span>
+                            </div>
+                            <blockquote className="text-lg italic mb-6">
+                              "Ruwād transformed how I approach innovation. The challenges are real, the community is supportive, 
+                              and the impact is tangible. It's where technology meets purpose."
+                            </blockquote>
+                            <div className="flex items-center justify-center gap-4">
+                              <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
+                                <span className="text-white font-medium">DR</span>
+                              </div>
+                              <div className="text-left">
+                                <div className="font-semibold">Dr. Sarah Rahman</div>
+                                <div className="text-sm text-muted-foreground">AI Research Scientist</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Splash Screen Patterns */}
+                    <div>
+                      <h4 className="font-medium mb-4">Splash Screen Patterns</h4>
+                      <div className="space-y-6">
+                        {/* Loading Splash */}
+                        <div className="border rounded-lg overflow-hidden">
+                          <div className="bg-gradient-to-br from-primary to-secondary p-12 text-center text-white min-h-[400px] flex flex-col justify-center">
+                            <div className="mb-8">
+                              <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-6 mx-auto backdrop-blur-sm">
+                                <span className="text-3xl">🏗️</span>
+                              </div>
+                              <h1 className="text-4xl font-bold mb-4">Ruwād</h1>
+                              <p className="text-xl opacity-90">Innovation Platform</p>
+                            </div>
+                            <div className="space-y-4">
+                              <div className="flex justify-center">
+                                <Loader2 className="w-8 h-8 animate-spin opacity-80" />
+                              </div>
+                              <p className="text-sm opacity-70">Loading your innovation journey...</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Progressive Loading */}
+                        <div className="border rounded-lg overflow-hidden">
+                          <div className="bg-background p-8 text-center min-h-[300px] flex flex-col justify-center">
+                            <div className="mb-8">
+                              <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mb-4 mx-auto">
+                                <span className="text-white text-2xl">R</span>
+                              </div>
+                              <h2 className="text-2xl font-bold mb-2">Welcome Back</h2>
+                              <p className="text-muted-foreground">Setting up your workspace</p>
+                            </div>
+                            <div className="space-y-3 max-w-sm mx-auto">
+                              <div className="flex items-center gap-3">
+                                <CheckCircle className="w-4 h-4 text-success" />
+                                <span className="text-sm">Loading challenges</span>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <CheckCircle className="w-4 h-4 text-success" />
+                                <span className="text-sm">Preparing dashboard</span>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                                <span className="text-sm">Syncing notifications</span>
+                              </div>
+                              <div className="w-full bg-muted rounded-full h-2 mt-4">
+                                <div className="bg-primary h-2 rounded-full transition-all duration-1000" style={{width: '75%'}}></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Brand Intro Splash */}
+                        <div className="border rounded-lg overflow-hidden">
+                          <div className="bg-card p-12 text-center min-h-[350px] flex flex-col justify-center">
+                            <div className="max-w-md mx-auto">
+                              <div className="w-24 h-24 bg-gradient-to-br from-primary via-accent to-secondary rounded-full flex items-center justify-center mb-6 mx-auto">
+                                <span className="text-white text-3xl font-bold">🌟</span>
+                              </div>
+                              <h1 className="text-3xl font-bold mb-4 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
+                                Innovation Awaits
+                              </h1>
+                              <p className="text-muted-foreground mb-8">
+                                Discover challenges that matter. Build solutions that last. 
+                                Create impact that transforms communities.
+                              </p>
+                              <div className="flex items-center justify-center gap-2">
+                                <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Signin/Signup Patterns */}
+                    <div>
+                      <h4 className="font-medium mb-4">Authentication Patterns</h4>
+                      <div className="space-y-6">
+                        {/* Sign In Form */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                          <div className="border rounded-lg p-8">
+                            <div className="max-w-sm mx-auto">
+                              <div className="text-center mb-8">
+                                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-4 mx-auto">
+                                  <span className="text-white font-bold">R</span>
+                                </div>
+                                <h2 className="text-2xl font-bold mb-2">Welcome back</h2>
+                                <p className="text-muted-foreground">Sign in to your Ruwād account</p>
+                              </div>
+                              
+                              <div className="space-y-4">
+                                <div>
+                                  <label className="text-sm font-medium mb-2 block">Email</label>
+                                  <input 
+                                    type="email" 
+                                    className="w-full p-3 border rounded-lg" 
+                                    placeholder="your@email.com"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-sm font-medium mb-2 block">Password</label>
+                                  <input 
+                                    type="password" 
+                                    className="w-full p-3 border rounded-lg" 
+                                    placeholder="Enter your password"
+                                  />
+                                </div>
+                                <div className="flex items-center justify-between">
+                                  <label className="flex items-center gap-2 text-sm">
+                                    <input type="checkbox" className="rounded" />
+                                    Remember me
+                                  </label>
+                                  <a href="#" className="text-sm text-primary hover:underline">Forgot password?</a>
+                                </div>
+                                <Button className="w-full">Sign In</Button>
+                                
+                                <div className="relative my-6">
+                                  <div className="absolute inset-0 flex items-center">
+                                    <div className="w-full border-t"></div>
+                                  </div>
+                                  <div className="relative flex justify-center text-sm">
+                                    <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+                                  </div>
+                                </div>
+                                
+                                <div className="grid grid-cols-2 gap-3">
+                                  <Button variant="outline">
+                                    <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
+                                      <path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                      <path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                      <path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                      <path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                                    </svg>
+                                    Google
+                                  </Button>
+                                  <Button variant="outline">
+                                    <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M20 10c0-5.523-4.477-10-10-10S0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.988C16.343 19.128 20 14.991 20 10z" clipRule="evenodd"/>
+                                    </svg>
+                                    Facebook
+                                  </Button>
+                                </div>
+                                
+                                <p className="text-center text-sm text-muted-foreground">
+                                  Don't have an account? <a href="#" className="text-primary hover:underline">Sign up</a>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Sign Up Form */}
+                          <div className="border rounded-lg p-8">
+                            <div className="max-w-sm mx-auto">
+                              <div className="text-center mb-8">
+                                <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center mb-4 mx-auto">
+                                  <span className="text-white font-bold">+</span>
+                                </div>
+                                <h2 className="text-2xl font-bold mb-2">Join Ruwād</h2>
+                                <p className="text-muted-foreground">Start your innovation journey today</p>
+                              </div>
+                              
+                              <div className="space-y-4">
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div>
+                                    <label className="text-sm font-medium mb-2 block">First Name</label>
+                                    <input 
+                                      type="text" 
+                                      className="w-full p-3 border rounded-lg" 
+                                      placeholder="John"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="text-sm font-medium mb-2 block">Last Name</label>
+                                    <input 
+                                      type="text" 
+                                      className="w-full p-3 border rounded-lg" 
+                                      placeholder="Doe"
+                                    />
+                                  </div>
+                                </div>
+                                <div>
+                                  <label className="text-sm font-medium mb-2 block">Email</label>
+                                  <input 
+                                    type="email" 
+                                    className="w-full p-3 border rounded-lg" 
+                                    placeholder="your@email.com"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-sm font-medium mb-2 block">Password</label>
+                                  <input 
+                                    type="password" 
+                                    className="w-full p-3 border rounded-lg" 
+                                    placeholder="Create a strong password"
+                                  />
+                                  <div className="mt-2 text-xs text-muted-foreground">
+                                    Must be at least 8 characters with numbers and letters
+                                  </div>
+                                </div>
+                                <div>
+                                  <label className="text-sm font-medium mb-2 block">I'm interested in</label>
+                                  <select className="w-full p-3 border rounded-lg">
+                                    <option>Select your field</option>
+                                    <option>Artificial Intelligence</option>
+                                    <option>Healthcare Technology</option>
+                                    <option>Climate Solutions</option>
+                                    <option>Smart Cities</option>
+                                    <option>Education Technology</option>
+                                  </select>
+                                </div>
+                                <div>
+                                  <label className="flex items-start gap-2 text-sm">
+                                    <input type="checkbox" className="rounded mt-0.5" />
+                                    <span>I agree to the <a href="#" className="text-primary hover:underline">Terms of Service</a> and <a href="#" className="text-primary hover:underline">Privacy Policy</a></span>
+                                  </label>
+                                </div>
+                                <Button className="w-full">Create Account</Button>
+                                
+                                <p className="text-center text-sm text-muted-foreground">
+                                  Already have an account? <a href="#" className="text-primary hover:underline">Sign in</a>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Password Reset */}
+                        <div className="border rounded-lg p-8 max-w-md mx-auto">
+                          <div className="text-center mb-8">
+                            <div className="w-12 h-12 bg-warning rounded-lg flex items-center justify-center mb-4 mx-auto">
+                              <Lock className="w-6 h-6 text-white" />
+                            </div>
+                            <h2 className="text-2xl font-bold mb-2">Reset Password</h2>
+                            <p className="text-muted-foreground">Enter your email to receive reset instructions</p>
+                          </div>
+                          
+                          <div className="space-y-4">
+                            <div>
+                              <label className="text-sm font-medium mb-2 block">Email Address</label>
+                              <input 
+                                type="email" 
+                                className="w-full p-3 border rounded-lg" 
+                                placeholder="your@email.com"
+                              />
+                            </div>
+                            <Button className="w-full">Send Reset Link</Button>
+                            <div className="text-center">
+                              <a href="#" className="text-sm text-primary hover:underline">Back to sign in</a>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Verification States */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="border rounded-lg p-8 text-center">
+                            <div className="w-16 h-16 bg-success rounded-full flex items-center justify-center mb-4 mx-auto">
+                              <CheckCircle className="w-8 h-8 text-white" />
+                            </div>
+                            <h3 className="text-xl font-bold mb-2">Account Verified!</h3>
+                            <p className="text-muted-foreground mb-6">Your email has been successfully verified. You can now access all features.</p>
+                            <Button>Continue to Dashboard</Button>
+                          </div>
+                          
+                          <div className="border border-warning/20 rounded-lg p-8 text-center bg-warning/5">
+                            <div className="w-16 h-16 bg-warning rounded-full flex items-center justify-center mb-4 mx-auto">
+                              <Mail className="w-8 h-8 text-white" />
+                            </div>
+                            <h3 className="text-xl font-bold mb-2">Check Your Email</h3>
+                            <p className="text-muted-foreground mb-6">We've sent a verification link to your email address. Please check your inbox and click the link to verify your account.</p>
+                            <div className="space-y-3">
+                              <Button variant="outline" className="w-full">Resend Email</Button>
+                              <p className="text-sm text-muted-foreground">Didn't receive it? Check your spam folder</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
               </div>
             </div>
           </TabsContent>
