@@ -5617,11 +5617,60 @@ const DesignSystem = () => {
                       <h4 className="font-medium mb-4">Hero Section Size Variants</h4>
                       <div className="space-y-6">
                         
+                        {/* Theme Selector for Heroes */}
+                        <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/50">
+                          <span className="text-sm font-medium">Hero Theme:</span>
+                          <div className="flex gap-2">
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => {
+                                const hero = document.querySelector('[data-hero-theme]');
+                                if (hero) {
+                                  hero.setAttribute('data-hero-theme', 'primary');
+                                  hero.className = hero.className.replace(/bg-gradient-to-r from-\w+-\d+ via-\w+-\d+ to-\w+-\d+/, 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600');
+                                }
+                              }}
+                              className="text-xs"
+                            >
+                              Primary
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => {
+                                const hero = document.querySelector('[data-hero-theme]');
+                                if (hero) {
+                                  hero.setAttribute('data-hero-theme', 'innovation');
+                                  hero.className = hero.className.replace(/bg-gradient-to-r from-\w+-\d+ via-\w+-\d+ to-\w+-\d+/, 'bg-gradient-to-r from-orange-600 via-red-600 to-pink-600');
+                                }
+                              }}
+                              className="text-xs"
+                            >
+                              Innovation
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => {
+                                const hero = document.querySelector('[data-hero-theme]');
+                                if (hero) {
+                                  hero.setAttribute('data-hero-theme', 'expert');
+                                  hero.className = hero.className.replace(/bg-gradient-to-r from-\w+-\d+ via-\w+-\d+ to-\w+-\d+/, 'bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600');
+                                }
+                              }}
+                              className="text-xs"
+                            >
+                              Expert
+                            </Button>
+                          </div>
+                        </div>
+                        
                         {/* Compact Hero */}
                         <div>
                           <h5 className="text-sm font-medium text-muted-foreground mb-3">Compact Hero</h5>
                           <div className="border rounded-lg overflow-hidden">
-                            <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 p-6">
+                            <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 p-6 hero-themed">
                               <div className="max-w-4xl mx-auto text-center text-white">
                                 <div className="flex items-center justify-center gap-2 mb-4">
                                   <div className="p-2 bg-white/10 backdrop-blur-sm rounded-full">
@@ -5661,7 +5710,7 @@ const DesignSystem = () => {
                         {/* Default Hero */}
                         <div>
                           <h5 className="text-sm font-medium text-muted-foreground mb-3">Default Hero</h5>
-                          <div className="border rounded-lg overflow-hidden">
+                          <div className="border rounded-lg overflow-hidden" data-hero-theme="primary">
                             <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 p-8">
                               <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                                 <div className="text-white">
@@ -5671,23 +5720,25 @@ const DesignSystem = () => {
                                     </div>
                                     <Badge variant="secondary" className="bg-white/20 text-white border-white/30">Latest</Badge>
                                   </div>
-                                  <h1 className="text-3xl lg:text-4xl font-bold mb-4">Shape the Future</h1>
+                                  <h1 className="text-3xl lg:text-4xl font-bold mb-4">
+                                    Shape the <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Future</span>
+                                  </h1>
                                   <p className="text-lg text-blue-100 mb-6">Join innovators solving real-world challenges.</p>
                                   <div className="grid grid-cols-2 gap-3 mb-6">
                                     <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
                                       <div className="flex items-center gap-2">
-                                        <Target className="w-4 h-4" />
+                                        <Target className="w-4 h-4 text-blue-300" />
                                         <div>
-                                          <div className="font-bold">10K+</div>
+                                          <div className="font-bold text-blue-300">10K+</div>
                                           <div className="text-xs text-blue-200">Challenges</div>
                                         </div>
                                       </div>
                                     </div>
                                     <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
                                       <div className="flex items-center gap-2">
-                                        <Award className="w-4 h-4" />
+                                        <Award className="w-4 h-4 text-green-300" />
                                         <div>
-                                          <div className="font-bold">$2M+</div>
+                                          <div className="font-bold text-green-300">$2M+</div>
                                           <div className="text-xs text-green-200">Rewards</div>
                                         </div>
                                       </div>
@@ -5752,17 +5803,17 @@ const DesignSystem = () => {
                                     <Badge variant="secondary" className="bg-white/20 text-white border-white/30">🎯 Latest</Badge>
                                   </div>
                                   <h1 className="text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent">
-                                    Shape the Future
+                                    Shape the <span className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">Future</span>
                                   </h1>
                                   <p className="text-xl text-blue-100 mb-8">Join thousands of innovators solving real challenges.</p>
                                   <div className="grid grid-cols-2 gap-4 mb-8">
                                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:scale-105 transition-transform cursor-pointer">
                                       <div className="flex items-center gap-3">
                                         <div className="p-2 bg-blue-500/30 rounded-lg">
-                                          <Target className="w-5 h-5" />
+                                          <Target className="w-5 h-5 text-blue-300" />
                                         </div>
                                         <div>
-                                          <div className="text-2xl font-bold">10K+</div>
+                                          <div className="text-2xl font-bold text-blue-300">10K+</div>
                                           <div className="text-xs text-blue-200">Challenges</div>
                                         </div>
                                       </div>
@@ -5770,10 +5821,10 @@ const DesignSystem = () => {
                                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:scale-105 transition-transform cursor-pointer">
                                       <div className="flex items-center gap-3">
                                         <div className="p-2 bg-green-500/30 rounded-lg">
-                                          <Award className="w-5 h-5" />
+                                          <Award className="w-5 h-5 text-green-300" />
                                         </div>
                                         <div>
-                                          <div className="text-2xl font-bold">$2M+</div>
+                                          <div className="text-2xl font-bold text-green-300">$2M+</div>
                                           <div className="text-xs text-green-200">Rewards</div>
                                         </div>
                                       </div>
@@ -5798,7 +5849,83 @@ const DesignSystem = () => {
                                         </div>
                                         <h3 className="font-semibold text-lg mb-1">AI for Climate Action</h3>
                                         <p className="text-sm opacity-90">$50K prize • Global impact</p>
-                                      </div>
+                        </div>
+
+                        {/* Multi-colored Theme Examples */}
+                        <div>
+                          <h5 className="text-sm font-medium text-muted-foreground mb-3">Multi-colored Text & Icon Examples</h5>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            
+                            {/* Innovation Theme */}
+                            <div className="border rounded-lg p-6 bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20">
+                              <div className="flex items-center gap-3 mb-4">
+                                <div className="p-2 bg-orange-500/20 rounded-lg">
+                                  <Sparkles className="w-5 h-5 text-orange-500" />
+                                </div>
+                                <Badge className="bg-orange-500/10 text-orange-600 border-orange-500/20">Innovation</Badge>
+                              </div>
+                              <h3 className="text-lg font-bold mb-2">
+                                Innovation <span className="hero-text-innovation">Hub</span>
+                              </h3>
+                              <div className="flex gap-4 text-sm">
+                                <div className="flex items-center gap-1">
+                                  <Target className="w-4 h-4 text-orange-500" />
+                                  <span className="font-medium text-orange-600">5K+ Projects</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Award className="w-4 h-4 text-red-500" />
+                                  <span className="font-medium text-red-600">$2M Funded</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Expert Theme */}
+                            <div className="border rounded-lg p-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20">
+                              <div className="flex items-center gap-3 mb-4">
+                                <div className="p-2 bg-green-500/20 rounded-lg">
+                                  <Users className="w-5 h-5 text-green-500" />
+                                </div>
+                                <Badge className="bg-green-500/10 text-green-600 border-green-500/20">Expert</Badge>
+                              </div>
+                              <h3 className="text-lg font-bold mb-2">
+                                Expert <span className="hero-text-expert">Network</span>
+                              </h3>
+                              <div className="flex gap-4 text-sm">
+                                <div className="flex items-center gap-1">
+                                  <Star className="w-4 h-4 text-green-500" />
+                                  <span className="font-medium text-green-600">2K+ Experts</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <CheckCircle className="w-4 h-4 text-emerald-500" />
+                                  <span className="font-medium text-emerald-600">98% Rating</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Partner Theme */}
+                            <div className="border rounded-lg p-6 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20">
+                              <div className="flex items-center gap-3 mb-4">
+                                <div className="p-2 bg-blue-500/20 rounded-lg">
+                                  <Award className="w-5 h-5 text-blue-500" />
+                                </div>
+                                <Badge className="bg-blue-500/10 text-blue-600 border-blue-500/20">Partner</Badge>
+                              </div>
+                              <h3 className="text-lg font-bold mb-2">
+                                Partner <span className="hero-text-partner">Portal</span>
+                              </h3>
+                              <div className="flex gap-4 text-sm">
+                                <div className="flex items-center gap-1">
+                                  <Users className="w-4 h-4 text-blue-500" />
+                                  <span className="font-medium text-blue-600">500+ Partners</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Gift className="w-4 h-4 text-purple-500" />
+                                  <span className="font-medium text-purple-600">100+ Deals</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                                       <div className="absolute top-4 right-4">
                                         <Badge className="bg-red-500/20 text-white border-red-300/30">🔥 Trending</Badge>
                                       </div>
