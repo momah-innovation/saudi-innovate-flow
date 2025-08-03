@@ -59,6 +59,8 @@ All colors MUST be HSL for theming consistency.
     --expert-foreground: 0 0% 15%;
     --partner: 213 94% 68%;
     --partner-foreground: 0 0% 98%;
+    --innovator: 142 76% 36%;
+    --innovator-foreground: 0 0% 98%;
 
     /* Opacity tokens for consistency */
     --opacity-subtle: 0.1;
@@ -151,6 +153,8 @@ All colors MUST be HSL for theming consistency.
     --expert-foreground: 0 0% 15%;
     --partner: 213 94% 68%;
     --partner-foreground: 0 0% 98%;
+    --innovator: 142 76% 36%;
+    --innovator-foreground: 0 0% 98%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -290,6 +294,82 @@ All colors MUST be HSL for theming consistency.
 
 .bg-gradient-text {
   background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+}
+
+/* Status colors using semantic tokens */
+.status-success {
+  @apply bg-success/10 text-success border-success/20;
+}
+
+.status-warning {
+  @apply bg-warning/10 text-warning border-warning/20;
+}
+
+.status-error {
+  @apply bg-destructive/10 text-destructive border-destructive/20;
+}
+
+.status-info {
+  @apply bg-primary/10 text-primary border-primary/20;
+}
+
+/* Badge variants using semantic tokens */
+.badge-success {
+  @apply bg-success/10 text-success border-success/20;
+}
+
+.badge-warning {
+  @apply bg-warning/10 text-warning border-warning/20;
+}
+
+.badge-error {
+  @apply bg-destructive/10 text-destructive border-destructive/20;
+}
+
+.badge-info {
+  @apply bg-primary/10 text-primary border-primary/20;
+}
+
+.badge-innovation {
+  @apply bg-innovation/10 text-innovation border-innovation/20;
+}
+
+.badge-expert {
+  @apply bg-expert/10 text-expert border-expert/20;
+}
+
+.badge-partner {
+  @apply bg-partner/10 text-partner border-partner/20;
+}
+
+.badge-innovator {
+  @apply bg-innovator/10 text-innovator border-innovator/20;
+}
+
+/* Interactive button utilities using semantic tokens */
+.btn-destructive {
+  @apply text-destructive hover:text-destructive/80;
+}
+
+.btn-success {
+  @apply bg-success hover:bg-success/90 text-success-foreground;
+}
+
+.btn-info {
+  @apply bg-primary hover:bg-primary/90 text-primary-foreground;
+}
+
+/* Hover state utilities */
+.hover-primary {
+  @apply hover:bg-primary/10 hover:text-primary;
+}
+
+.hover-success {
+  @apply hover:text-success;
+}
+
+.hover-destructive {
+  @apply hover:text-destructive;
 }
 
 /* RTL Support */
