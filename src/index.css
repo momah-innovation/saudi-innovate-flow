@@ -767,3 +767,144 @@ All colors MUST be HSL for theming consistency.
 .indicator-away {
   @apply bg-muted;
 }
+
+/* ============ PAGE-LEVEL THEMING ============ */
+
+/* Dashboard Page Theming */
+.themed-page-dashboard.theme-dashboards {
+  --page-primary: var(--success);
+  --page-accent: var(--muted);
+}
+
+.themed-page-dashboard .card {
+  @apply border-primary/10 bg-gradient-to-br from-background to-primary/5;
+}
+
+.themed-page-dashboard .dashboard-widget {
+  @apply hover:border-primary/30 transition-colors;
+}
+
+/* Challenges Page Theming */
+.themed-page-challenges.theme-challenges {
+  --page-primary: var(--innovation);
+  --page-accent: var(--accent);
+}
+
+.themed-page-challenges .challenge-card {
+  @apply border-innovation/20 hover:border-innovation/40;
+}
+
+.themed-page-challenges .challenge-status {
+  @apply bg-innovation/10 text-innovation-foreground;
+}
+
+/* Ideas Page Theming */
+.themed-page-ideas.theme-innovation {
+  --page-primary: var(--innovation);
+  --page-accent: var(--expert);
+}
+
+.themed-page-ideas .idea-card {
+  @apply border-innovation/20 hover:shadow-innovation/20;
+}
+
+.themed-page-ideas .innovation-badge {
+  @apply bg-gradient-primary text-white;
+}
+
+/* Experts Page Theming */
+.themed-page-experts.theme-expert {
+  --page-primary: var(--expert);
+  --page-accent: var(--accent);
+}
+
+.themed-page-experts .expert-profile {
+  @apply border-expert/20 bg-expert/5;
+}
+
+.themed-page-experts .expertise-tag {
+  @apply bg-expert/10 text-expert border-expert/20;
+}
+
+/* Partners Page Theming */
+.themed-page-partners.theme-partner {
+  --page-primary: var(--partner);
+  --page-accent: var(--success);
+}
+
+.themed-page-partners .partner-card {
+  @apply border-partner/20 hover:border-partner/40;
+}
+
+.themed-page-partners .partnership-status {
+  @apply bg-partner/10 text-partner-foreground;
+}
+
+/* Team Workspace Theming */
+.themed-page-team-workspace.theme-collaboration {
+  --page-primary: var(--accent);
+  --page-accent: var(--innovation);
+}
+
+.themed-page-team-workspace .workspace-card {
+  @apply border-accent/20 bg-gradient-to-br from-accent/5 to-innovation/5;
+}
+
+.themed-page-team-workspace .collaboration-badge {
+  @apply bg-accent/10 text-accent-foreground;
+}
+
+/* Admin Pages Theming */
+.themed-page-admin.theme-stakeholder {
+  --page-primary: var(--muted-foreground);
+  --page-accent: var(--warning);
+}
+
+.themed-page-admin .admin-card {
+  @apply border-muted bg-gradient-to-br from-background to-muted/20;
+}
+
+.themed-page-admin .admin-action {
+  @apply hover:bg-warning/10 hover:text-warning-foreground;
+}
+
+/* ============ COMPONENT-LEVEL THEMING ============ */
+
+/* Themed Buttons */
+.themed-button.theme-expert {
+  @apply border-expert/30 text-expert hover:bg-expert/10;
+}
+
+.themed-button.theme-innovation {
+  @apply bg-gradient-primary text-white hover:opacity-90;
+}
+
+.themed-button.theme-partner {
+  @apply border-partner/30 text-partner hover:bg-partner/10;
+}
+
+/* Themed Cards */
+.themed-card.theme-expert {
+  @apply border-expert/20 hover:shadow-lg hover:shadow-expert/10;
+}
+
+.themed-card.theme-innovation {
+  @apply border-innovation/20 bg-gradient-to-br from-innovation/5 to-accent/5;
+}
+
+.themed-card.theme-partner {
+  @apply border-partner/20 hover:border-partner/40;
+}
+
+/* Themed Headers */
+.themed-header.theme-expert {
+  @apply bg-gradient-to-r from-expert/10 to-accent/10 border-b-expert/20;
+}
+
+.themed-header.theme-innovation {
+  @apply bg-gradient-primary/10 border-b-innovation/20;
+}
+
+.themed-header.theme-partner {
+  @apply bg-gradient-to-r from-partner/10 to-success/10 border-b-partner/20;
+}
