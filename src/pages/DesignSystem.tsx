@@ -21,7 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
-import { useTheme } from 'next-themes';
+import { useTheme } from '@/components/ui/theme-provider';
 import { ThemeSelector } from '@/components/ui/theme-selector';
 import { useThemeSystem } from '@/contexts/ThemeContext';
 import { cn } from '@/lib/utils';
@@ -29,7 +29,7 @@ import { cn } from '@/lib/utils';
 const DesignSystem = () => {
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const { toast } = useToast();
-  const { theme: darkModeTheme, setTheme: setDarkModeTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const { currentTheme } = useThemeSystem();
 
   const copyToClipboard = (text: string, label: string) => {
@@ -92,9 +92,11 @@ const DesignSystem = () => {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setDarkModeTheme(darkModeTheme === 'dark' ? 'light' : 'dark')}
+                onClick={() => setTheme({ 
+                  colorScheme: theme.colorScheme === 'dark' ? 'light' : 'dark' 
+                })}
               >
-                {darkModeTheme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                {theme.colorScheme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </Button>
             </div>
           </div>
