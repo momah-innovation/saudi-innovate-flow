@@ -7159,10 +7159,652 @@ const DesignSystem = () => {
                       </div>
                     </div>
                   </div>
-                </ComponentShowcase>
-              </div>
-            </div>
-          </TabsContent>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Search & Filter Patterns">
+                   <div className="space-y-6">
+                     <div>
+                       <h4 className="font-medium mb-4">Advanced Search Interface</h4>
+                       <Card className="p-6">
+                         <div className="space-y-4">
+                           <div className="relative">
+                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+                             <input 
+                               type="text" 
+                               className="w-full pl-12 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary" 
+                               placeholder="Search challenges, teams, or experts..."
+                               value="AI healthcare"
+                             />
+                             <Button className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8">
+                               Search
+                             </Button>
+                           </div>
+                           
+                           <div className="flex flex-wrap gap-2">
+                             <Badge variant="secondary" className="text-xs">
+                               Recent: "smart cities"
+                             </Badge>
+                             <Badge variant="secondary" className="text-xs">
+                               Recent: "blockchain government"
+                             </Badge>
+                             <Badge variant="secondary" className="text-xs">
+                               Recent: "digital transformation"
+                             </Badge>
+                           </div>
+                         </div>
+                       </Card>
+                     </div>
+
+                     <div>
+                       <h4 className="font-medium mb-4">Faceted Search & Filters</h4>
+                       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                         <Card className="p-4">
+                           <h5 className="font-medium mb-3">Categories</h5>
+                           <div className="space-y-2">
+                             <label className="flex items-center gap-2 cursor-pointer">
+                               <input type="checkbox" className="rounded" defaultChecked />
+                               <span className="text-sm">Healthcare (47)</span>
+                             </label>
+                             <label className="flex items-center gap-2 cursor-pointer">
+                               <input type="checkbox" className="rounded" defaultChecked />
+                               <span className="text-sm">Technology (32)</span>
+                             </label>
+                             <label className="flex items-center gap-2 cursor-pointer">
+                               <input type="checkbox" className="rounded" />
+                               <span className="text-sm">Education (28)</span>
+                             </label>
+                             <label className="flex items-center gap-2 cursor-pointer">
+                               <input type="checkbox" className="rounded" />
+                               <span className="text-sm">Environment (15)</span>
+                             </label>
+                           </div>
+                         </Card>
+
+                         <Card className="p-4">
+                           <h5 className="font-medium mb-3">Difficulty</h5>
+                           <div className="space-y-2">
+                             <label className="flex items-center gap-2 cursor-pointer">
+                               <input type="radio" name="difficulty" className="rounded-full" />
+                               <span className="text-sm">Beginner</span>
+                             </label>
+                             <label className="flex items-center gap-2 cursor-pointer">
+                               <input type="radio" name="difficulty" className="rounded-full" defaultChecked />
+                               <span className="text-sm">Intermediate</span>
+                             </label>
+                             <label className="flex items-center gap-2 cursor-pointer">
+                               <input type="radio" name="difficulty" className="rounded-full" />
+                               <span className="text-sm">Advanced</span>
+                             </label>
+                           </div>
+                         </Card>
+
+                         <Card className="p-4">
+                           <h5 className="font-medium mb-3">Duration</h5>
+                           <div className="space-y-3">
+                             <div>
+                               <label className="text-xs text-muted-foreground">1 week - 6 months</label>
+                               <input type="range" min="1" max="24" value="12" className="w-full mt-1" />
+                               <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                                 <span>1w</span>
+                                 <span>6m</span>
+                               </div>
+                             </div>
+                           </div>
+                         </Card>
+
+                         <Card className="p-4">
+                           <h5 className="font-medium mb-3">Active Filters</h5>
+                           <div className="space-y-2">
+                             <div className="flex items-center gap-2">
+                               <Badge variant="outline" className="text-xs flex items-center gap-1">
+                                 Healthcare
+                                 <X className="w-3 h-3 cursor-pointer" />
+                               </Badge>
+                             </div>
+                             <div className="flex items-center gap-2">
+                               <Badge variant="outline" className="text-xs flex items-center gap-1">
+                                 Technology
+                                 <X className="w-3 h-3 cursor-pointer" />
+                               </Badge>
+                             </div>
+                             <div className="flex items-center gap-2">
+                               <Badge variant="outline" className="text-xs flex items-center gap-1">
+                                 Intermediate
+                                 <X className="w-3 h-3 cursor-pointer" />
+                               </Badge>
+                             </div>
+                             <Button variant="ghost" size="sm" className="text-xs h-6 mt-2">
+                               Clear All
+                             </Button>
+                           </div>
+                         </Card>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Onboarding & Progressive Disclosure Patterns">
+                   <div className="space-y-6">
+                     <div>
+                       <h4 className="font-medium mb-4">Feature Tour & Walkthrough</h4>
+                       <Card className="p-6 relative">
+                         <div className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center">
+                           <Card className="p-6 bg-background max-w-sm">
+                             <div className="flex items-center justify-between mb-4">
+                               <h5 className="font-medium">Welcome Tour</h5>
+                               <div className="flex items-center gap-2">
+                                 <span className="text-xs text-muted-foreground">2 of 5</span>
+                                 <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                   <X className="w-4 h-4" />
+                                 </Button>
+                               </div>
+                             </div>
+                             <div className="space-y-4">
+                               <div className="flex items-center gap-3">
+                                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                   <Target className="w-5 h-5 text-primary" />
+                                 </div>
+                                 <div>
+                                   <p className="font-medium">Create Your First Challenge</p>
+                                   <p className="text-sm text-muted-foreground">Start by defining your innovation goal</p>
+                                 </div>
+                               </div>
+                               <div className="flex justify-between">
+                                 <Button variant="outline" size="sm">Previous</Button>
+                                 <Button size="sm">Next</Button>
+                               </div>
+                             </div>
+                           </Card>
+                         </div>
+                         
+                         <div className="opacity-30">
+                           <h3 className="text-lg font-semibold mb-4">Dashboard Overview</h3>
+                           <div className="grid grid-cols-3 gap-4">
+                             <div className="h-20 bg-muted rounded-lg"></div>
+                             <div className="h-20 bg-muted rounded-lg border-2 border-primary"></div>
+                             <div className="h-20 bg-muted rounded-lg"></div>
+                           </div>
+                         </div>
+                       </Card>
+                     </div>
+
+                     <div>
+                       <h4 className="font-medium mb-4">Progressive Form Disclosure</h4>
+                       <Card className="p-6">
+                         <div className="space-y-6">
+                           <div className="flex items-center justify-between">
+                             <h5 className="font-medium">Challenge Setup</h5>
+                             <div className="flex space-x-1">
+                               <div className="w-8 h-1 bg-primary rounded-full"></div>
+                               <div className="w-8 h-1 bg-primary rounded-full"></div>
+                               <div className="w-8 h-1 bg-primary/30 rounded-full"></div>
+                               <div className="w-8 h-1 bg-muted rounded-full"></div>
+                             </div>
+                           </div>
+                           
+                           <div className="space-y-4">
+                             <div>
+                               <label className="text-sm font-medium mb-2 block">Challenge Title *</label>
+                               <input 
+                                 type="text" 
+                                 className="w-full p-3 border rounded-lg" 
+                                 value="AI-Powered Healthcare Diagnosis"
+                               />
+                             </div>
+                             
+                             <div className="p-4 bg-muted/30 rounded-lg border-l-4 border-l-primary">
+                               <div className="flex items-start gap-3">
+                                 <Info className="w-5 h-5 text-primary mt-0.5" />
+                                 <div>
+                                   <p className="text-sm font-medium">Next Steps</p>
+                                   <p className="text-xs text-muted-foreground">After this, we'll help you define success criteria and timeline.</p>
+                                 </div>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                       </Card>
+                     </div>
+
+                     <div>
+                       <h4 className="font-medium mb-4">Help & Tooltips System</h4>
+                       <Card className="p-6">
+                         <div className="space-y-4">
+                           <div className="flex items-center gap-3">
+                             <label className="text-sm font-medium">Project Scope</label>
+                             <div className="relative group">
+                               <HelpCircle className="w-4 h-4 text-muted-foreground cursor-help" />
+                               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity max-w-xs">
+                                 Define the boundaries and deliverables for your innovation challenge
+                                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-black"></div>
+                               </div>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-center gap-3">
+                             <label className="text-sm font-medium">Success Metrics</label>
+                             <div className="relative group">
+                               <HelpCircle className="w-4 h-4 text-muted-foreground cursor-help" />
+                               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity max-w-xs">
+                                 How will you measure the success of this challenge? Include quantifiable goals.
+                                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-black"></div>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                       </Card>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Social & Community Patterns">
+                   <div className="space-y-6">
+                     <div>
+                       <h4 className="font-medium mb-4">Activity Feed & Timeline</h4>
+                       <Card className="p-6">
+                         <div className="space-y-4">
+                           <div className="flex items-start gap-4">
+                             <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                               <span className="text-white text-sm font-bold">SC</span>
+                             </div>
+                             <div className="flex-1">
+                               <div className="flex items-center gap-2 mb-1">
+                                 <span className="font-medium">Dr. Sarah Chen</span>
+                                 <Badge variant="outline" className="text-xs">Expert</Badge>
+                                 <span className="text-xs text-muted-foreground">completed a challenge</span>
+                                 <span className="text-xs text-muted-foreground">2 hours ago</span>
+                               </div>
+                               <div className="bg-muted/30 p-3 rounded-lg">
+                                 <p className="text-sm font-medium mb-1">AI Healthcare Platform Challenge</p>
+                                 <p className="text-xs text-muted-foreground">Successfully developed a prototype for AI-assisted diagnosis</p>
+                               </div>
+                               <div className="flex items-center gap-4 mt-2">
+                                 <Button variant="ghost" size="sm" className="h-8 text-xs">
+                                   <ThumbsUp className="w-3 h-3 mr-1" />
+                                   12 Likes
+                                 </Button>
+                                 <Button variant="ghost" size="sm" className="h-8 text-xs">
+                                   <MessageCircle className="w-3 h-3 mr-1" />
+                                   3 Comments
+                                 </Button>
+                                 <Button variant="ghost" size="sm" className="h-8 text-xs">
+                                   <Share className="w-3 h-3 mr-1" />
+                                   Share
+                                 </Button>
+                               </div>
+                             </div>
+                           </div>
+
+                           <div className="flex items-start gap-4">
+                             <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center">
+                               <span className="text-white text-sm font-bold">JD</span>
+                             </div>
+                             <div className="flex-1">
+                               <div className="flex items-center gap-2 mb-1">
+                                 <span className="font-medium">John Doe</span>
+                                 <span className="text-xs text-muted-foreground">joined a team</span>
+                                 <span className="text-xs text-muted-foreground">4 hours ago</span>
+                               </div>
+                               <div className="bg-muted/30 p-3 rounded-lg">
+                                 <p className="text-sm font-medium mb-1">Smart Cities Innovation Team</p>
+                                 <p className="text-xs text-muted-foreground">Now collaborating on urban sustainability solutions</p>
+                               </div>
+                               <div className="flex items-center gap-4 mt-2">
+                                 <Button variant="ghost" size="sm" className="h-8 text-xs">
+                                   <ThumbsUp className="w-3 h-3 mr-1" />
+                                   8 Likes
+                                 </Button>
+                                 <Button variant="ghost" size="sm" className="h-8 text-xs">
+                                   <MessageCircle className="w-3 h-3 mr-1" />
+                                   Welcome
+                                 </Button>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                       </Card>
+                     </div>
+
+                     <div>
+                       <h4 className="font-medium mb-4">User Profile Cards</h4>
+                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                         <Card className="p-6 text-center">
+                           <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                             <span className="text-white text-xl font-bold">SC</span>
+                           </div>
+                           <h5 className="font-semibold mb-1">Dr. Sarah Chen</h5>
+                           <p className="text-sm text-muted-foreground mb-3">AI Research Expert</p>
+                           <div className="flex justify-center gap-2 mb-4">
+                             <Badge variant="outline" className="text-xs">Healthcare</Badge>
+                             <Badge variant="outline" className="text-xs">AI/ML</Badge>
+                           </div>
+                           <div className="grid grid-cols-3 gap-2 text-center mb-4">
+                             <div>
+                               <p className="text-lg font-bold">47</p>
+                               <p className="text-xs text-muted-foreground">Challenges</p>
+                             </div>
+                             <div>
+                               <p className="text-lg font-bold">156</p>
+                               <p className="text-xs text-muted-foreground">Followers</p>
+                             </div>
+                             <div>
+                               <p className="text-lg font-bold">89</p>
+                               <p className="text-xs text-muted-foreground">Following</p>
+                             </div>
+                           </div>
+                           <div className="flex gap-2">
+                             <Button size="sm" className="flex-1">Follow</Button>
+                             <Button variant="outline" size="sm" className="flex-1">Message</Button>
+                           </div>
+                         </Card>
+
+                         <Card className="p-6 text-center">
+                           <div className="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                             <span className="text-white text-xl font-bold">JD</span>
+                           </div>
+                           <h5 className="font-semibold mb-1">John Doe</h5>
+                           <p className="text-sm text-muted-foreground mb-3">Full Stack Developer</p>
+                           <div className="flex justify-center gap-2 mb-4">
+                             <Badge variant="outline" className="text-xs">Technology</Badge>
+                             <Badge variant="outline" className="text-xs">Frontend</Badge>
+                           </div>
+                           <div className="grid grid-cols-3 gap-2 text-center mb-4">
+                             <div>
+                               <p className="text-lg font-bold">23</p>
+                               <p className="text-xs text-muted-foreground">Challenges</p>
+                             </div>
+                             <div>
+                               <p className="text-lg font-bold">78</p>
+                               <p className="text-xs text-muted-foreground">Followers</p>
+                             </div>
+                             <div>
+                               <p className="text-lg font-bold">145</p>
+                               <p className="text-xs text-muted-foreground">Following</p>
+                             </div>
+                           </div>
+                           <div className="flex gap-2">
+                             <Button variant="outline" size="sm" className="flex-1">Following</Button>
+                             <Button variant="outline" size="sm" className="flex-1">Message</Button>
+                           </div>
+                         </Card>
+
+                         <Card className="p-6 text-center">
+                           <div className="w-20 h-20 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+                             <span className="text-white text-xl font-bold">AM</span>
+                           </div>
+                           <h5 className="font-semibold mb-1">Alice Miller</h5>
+                           <p className="text-sm text-muted-foreground mb-3">UX Designer</p>
+                           <div className="flex justify-center gap-2 mb-4">
+                             <Badge variant="outline" className="text-xs">Design</Badge>
+                             <Badge variant="outline" className="text-xs">Innovation</Badge>
+                           </div>
+                           <div className="grid grid-cols-3 gap-2 text-center mb-4">
+                             <div>
+                               <p className="text-lg font-bold">34</p>
+                               <p className="text-xs text-muted-foreground">Challenges</p>
+                             </div>
+                             <div>
+                               <p className="text-lg font-bold">92</p>
+                               <p className="text-xs text-muted-foreground">Followers</p>
+                             </div>
+                             <div>
+                               <p className="text-lg font-bold">67</p>
+                               <p className="text-xs text-muted-foreground">Following</p>
+                             </div>
+                           </div>
+                           <div className="flex gap-2">
+                             <Button size="sm" className="flex-1">Follow</Button>
+                             <Button variant="outline" size="sm" className="flex-1">Message</Button>
+                           </div>
+                         </Card>
+                       </div>
+                     </div>
+
+                     <div>
+                       <h4 className="font-medium mb-4">Social Interactions</h4>
+                       <Card className="p-6">
+                         <div className="space-y-4">
+                           <div className="flex items-center justify-between p-3 border rounded-lg">
+                             <div className="flex items-center gap-3">
+                               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                                 <Bell className="w-4 h-4 text-white" />
+                               </div>
+                               <div>
+                                 <p className="text-sm font-medium">Dr. Sarah Chen liked your solution</p>
+                                 <p className="text-xs text-muted-foreground">2 minutes ago</p>
+                               </div>
+                             </div>
+                             <Button variant="ghost" size="sm">
+                               <Eye className="w-4 h-4" />
+                             </Button>
+                           </div>
+
+                           <div className="flex items-center justify-between p-3 border rounded-lg">
+                             <div className="flex items-center gap-3">
+                               <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
+                                 <MessageCircle className="w-4 h-4 text-white" />
+                               </div>
+                               <div>
+                                 <p className="text-sm font-medium">New comment on your challenge</p>
+                                 <p className="text-xs text-muted-foreground">5 minutes ago</p>
+                               </div>
+                             </div>
+                             <Button variant="ghost" size="sm">
+                               <Eye className="w-4 h-4" />
+                             </Button>
+                           </div>
+
+                           <div className="flex items-center justify-between p-3 border rounded-lg">
+                             <div className="flex items-center gap-3">
+                               <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                                 <Users className="w-4 h-4 text-white" />
+                               </div>
+                               <div>
+                                 <p className="text-sm font-medium">John Doe wants to join your team</p>
+                                 <p className="text-xs text-muted-foreground">10 minutes ago</p>
+                               </div>
+                             </div>
+                             <div className="flex gap-2">
+                               <Button size="sm" variant="outline" className="h-8 text-xs">Decline</Button>
+                               <Button size="sm" className="h-8 text-xs">Accept</Button>
+                             </div>
+                           </div>
+                         </div>
+                       </Card>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="E-commerce & Marketplace Patterns">
+                   <div className="space-y-6">
+                     <div>
+                       <h4 className="font-medium mb-4">Service/Product Cards</h4>
+                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                         <Card className="p-0 overflow-hidden hover:shadow-lg transition-shadow">
+                           <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                             <div className="text-center">
+                               <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                                 <Settings className="w-8 h-8 text-primary" />
+                               </div>
+                               <span className="text-sm font-medium">AI Consulting</span>
+                             </div>
+                           </div>
+                           <div className="p-4">
+                             <div className="flex items-center justify-between mb-2">
+                               <h5 className="font-semibold">AI Strategy Consultation</h5>
+                               <Badge variant="outline" className="text-xs">Premium</Badge>
+                             </div>
+                             <p className="text-sm text-muted-foreground mb-3">
+                               Expert guidance on AI implementation for government agencies
+                             </p>
+                             <div className="flex items-center justify-between mb-3">
+                               <div className="flex items-center gap-1">
+                                 {[1, 2, 3, 4, 5].map((star) => (
+                                   <Star key={star} className="w-4 h-4 text-warning fill-current" />
+                                 ))}
+                                 <span className="text-sm text-muted-foreground ml-1">(24)</span>
+                               </div>
+                               <span className="text-lg font-bold">$2,500</span>
+                             </div>
+                             <div className="flex gap-2">
+                               <Button size="sm" className="flex-1">Book Now</Button>
+                               <Button variant="outline" size="sm">
+                                 <Heart className="w-4 h-4" />
+                               </Button>
+                             </div>
+                           </div>
+                         </Card>
+
+                         <Card className="p-0 overflow-hidden hover:shadow-lg transition-shadow">
+                           <div className="aspect-video bg-gradient-to-br from-accent/20 to-success/20 flex items-center justify-center">
+                             <div className="text-center">
+                               <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                                 <Users className="w-8 h-8 text-accent" />
+                               </div>
+                               <span className="text-sm font-medium">Team Training</span>
+                             </div>
+                           </div>
+                           <div className="p-4">
+                             <div className="flex items-center justify-between mb-2">
+                               <h5 className="font-semibold">Innovation Workshop</h5>
+                               <Badge className="text-xs bg-success">Popular</Badge>
+                             </div>
+                             <p className="text-sm text-muted-foreground mb-3">
+                               2-day intensive workshop on design thinking and innovation
+                             </p>
+                             <div className="flex items-center justify-between mb-3">
+                               <div className="flex items-center gap-1">
+                                 {[1, 2, 3, 4, 5].map((star) => (
+                                   <Star key={star} className="w-4 h-4 text-warning fill-current" />
+                                 ))}
+                                 <span className="text-sm text-muted-foreground ml-1">(156)</span>
+                               </div>
+                               <span className="text-lg font-bold">$1,800</span>
+                             </div>
+                             <div className="flex gap-2">
+                               <Button size="sm" className="flex-1">Book Now</Button>
+                               <Button variant="outline" size="sm">
+                                 <Heart className="w-4 h-4" />
+                               </Button>
+                             </div>
+                           </div>
+                         </Card>
+
+                         <Card className="p-0 overflow-hidden hover:shadow-lg transition-shadow">
+                           <div className="aspect-video bg-gradient-to-br from-warning/20 to-destructive/20 flex items-center justify-center">
+                             <div className="text-center">
+                               <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                                 <Award className="w-8 h-8 text-warning" />
+                               </div>
+                               <span className="text-sm font-medium">Certification</span>
+                             </div>
+                           </div>
+                           <div className="p-4">
+                             <div className="flex items-center justify-between mb-2">
+                               <h5 className="font-semibold">Digital Transformation</h5>
+                               <Badge variant="outline" className="text-xs">New</Badge>
+                             </div>
+                             <p className="text-sm text-muted-foreground mb-3">
+                               Professional certification in digital government transformation
+                             </p>
+                             <div className="flex items-center justify-between mb-3">
+                               <div className="flex items-center gap-1">
+                                 {[1, 2, 3, 4, 5].map((star) => (
+                                   <Star key={star} className="w-4 h-4 text-warning fill-current" />
+                                 ))}
+                                 <span className="text-sm text-muted-foreground ml-1">(8)</span>
+                               </div>
+                               <span className="text-lg font-bold">$3,200</span>
+                             </div>
+                             <div className="flex gap-2">
+                               <Button size="sm" className="flex-1">Enroll Now</Button>
+                               <Button variant="outline" size="sm">
+                                 <Heart className="w-4 h-4" />
+                               </Button>
+                             </div>
+                           </div>
+                         </Card>
+                       </div>
+                     </div>
+
+                     <div>
+                       <h4 className="font-medium mb-4">Shopping Cart & Checkout</h4>
+                       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                         <div className="lg:col-span-2">
+                           <Card className="p-6">
+                             <h5 className="font-medium mb-4">Cart Items (3)</h5>
+                             <div className="space-y-4">
+                               <div className="flex items-center gap-4 p-4 border rounded-lg">
+                                 <div className="w-16 h-16 bg-primary/20 rounded-lg flex items-center justify-center">
+                                   <Settings className="w-8 h-8 text-primary" />
+                                 </div>
+                                 <div className="flex-1">
+                                   <h6 className="font-medium">AI Strategy Consultation</h6>
+                                   <p className="text-sm text-muted-foreground">1 session • 2 hours</p>
+                                 </div>
+                                 <div className="text-right">
+                                   <p className="font-medium">$2,500</p>
+                                   <Button variant="ghost" size="sm" className="text-destructive h-6 mt-1">
+                                     Remove
+                                   </Button>
+                                 </div>
+                               </div>
+
+                               <div className="flex items-center gap-4 p-4 border rounded-lg">
+                                 <div className="w-16 h-16 bg-accent/20 rounded-lg flex items-center justify-center">
+                                   <Users className="w-8 h-8 text-accent" />
+                                 </div>
+                                 <div className="flex-1">
+                                   <h6 className="font-medium">Innovation Workshop</h6>
+                                   <p className="text-sm text-muted-foreground">2 days • Up to 20 participants</p>
+                                 </div>
+                                 <div className="text-right">
+                                   <p className="font-medium">$1,800</p>
+                                   <Button variant="ghost" size="sm" className="text-destructive h-6 mt-1">
+                                     Remove
+                                   </Button>
+                                 </div>
+                               </div>
+                             </div>
+                           </Card>
+                         </div>
+
+                         <Card className="p-6">
+                           <h5 className="font-medium mb-4">Order Summary</h5>
+                           <div className="space-y-3">
+                             <div className="flex justify-between">
+                               <span className="text-sm">Subtotal</span>
+                               <span className="text-sm">$4,300</span>
+                             </div>
+                             <div className="flex justify-between">
+                               <span className="text-sm">Government Discount (15%)</span>
+                               <span className="text-sm text-success">-$645</span>
+                             </div>
+                             <div className="flex justify-between">
+                               <span className="text-sm">Processing Fee</span>
+                               <span className="text-sm">$50</span>
+                             </div>
+                             <Separator />
+                             <div className="flex justify-between font-medium">
+                               <span>Total</span>
+                               <span>$3,705</span>
+                             </div>
+                           </div>
+                           <Button className="w-full mt-6">
+                             <CreditCard className="w-4 h-4 mr-2" />
+                             Proceed to Checkout
+                           </Button>
+                           <p className="text-xs text-muted-foreground text-center mt-2">
+                             Secure government payment processing
+                           </p>
+                         </Card>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+               </div>
+             </div>
+           </TabsContent>
 
           {/* States Tab */}
           <TabsContent value="states" className="space-y-8">
