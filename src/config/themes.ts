@@ -41,9 +41,13 @@ export const themes: ThemeConfig[] = [
     },
     cssVariables: {
       '--primary': '262.1 83.3% 57.8%',
+      '--primary-foreground': '0 0% 98%',
       '--secondary': '210 40% 95%',
+      '--secondary-foreground': '222 20% 15%',
       '--accent': '213 94% 55%',
+      '--accent-foreground': '0 0% 98%',
       '--muted': '210 40% 95%',
+      '--muted-foreground': '215 16% 47%',
       '--success': '142.1 76.2% 36.3%',
       '--warning': '47.9 95.8% 53.1%',
       '--destructive': '0 84.2% 60.2%',
@@ -71,9 +75,13 @@ export const themes: ThemeConfig[] = [
     },
     cssVariables: {
       '--primary': '217.2 91.2% 59.8%',
+      '--primary-foreground': '0 0% 98%',
       '--secondary': '214.3 31.8% 91.4%',
+      '--secondary-foreground': '222 20% 15%',
       '--accent': '173 58% 39%',
+      '--accent-foreground': '0 0% 98%',
       '--muted': '210 40% 95%',
+      '--muted-foreground': '215 16% 47%',
       '--success': '142.1 76.2% 36.3%',
       '--warning': '47.9 95.8% 53.1%',
       '--destructive': '0 84.2% 60.2%',
@@ -101,9 +109,13 @@ export const themes: ThemeConfig[] = [
     },
     cssVariables: {
       '--primary': '222.2 84% 4.9%',
+      '--primary-foreground': '0 0% 98%',
       '--secondary': '210 40% 95%',
+      '--secondary-foreground': '222 20% 15%',
       '--accent': '47.9 95.8% 53.1%',
+      '--accent-foreground': '0 0% 15%',
       '--muted': '210 40% 95%',
+      '--muted-foreground': '215 16% 47%',
       '--success': '142.1 76.2% 36.3%',
       '--warning': '47.9 95.8% 53.1%',
       '--destructive': '0 84.2% 60.2%',
@@ -130,9 +142,13 @@ export const themes: ThemeConfig[] = [
     },
     cssVariables: {
       '--primary': '346.8 77.2% 49.8%',
+      '--primary-foreground': '0 0% 98%',
       '--secondary': '210 40% 95%',
+      '--secondary-foreground': '222 20% 15%',
       '--accent': '280 100% 70%',
+      '--accent-foreground': '0 0% 15%',
       '--muted': '210 40% 95%',
+      '--muted-foreground': '215 16% 47%',
       '--innovator': '346.8 77.2% 49.8%',
       '--innovation': '280 100% 70%',
     }
@@ -158,9 +174,13 @@ export const themes: ThemeConfig[] = [
     },
     cssVariables: {
       '--primary': '142.1 76.2% 36.3%',
+      '--primary-foreground': '0 0% 98%',
       '--secondary': '210 40% 95%',
+      '--secondary-foreground': '222 20% 15%',
       '--accent': '173 58% 39%',
+      '--accent-foreground': '0 0% 98%',
       '--muted': '210 40% 95%',
+      '--muted-foreground': '215 16% 47%',
       '--partner': '142.1 76.2% 36.3%',
     }
   },
@@ -186,9 +206,13 @@ export const themes: ThemeConfig[] = [
     },
     cssVariables: {
       '--primary': '24.6 95% 53.1%',
+      '--primary-foreground': '0 0% 98%',
       '--secondary': '210 40% 95%',
+      '--secondary-foreground': '222 20% 15%',
       '--accent': '0 84.2% 60.2%',
+      '--accent-foreground': '0 0% 98%',
       '--muted': '210 40% 95%',
+      '--muted-foreground': '215 16% 47%',
     }
   },
   
@@ -212,9 +236,13 @@ export const themes: ThemeConfig[] = [
     },
     cssVariables: {
       '--primary': '262.1 83.3% 57.8%',
+      '--primary-foreground': '0 0% 98%',
       '--secondary': '210 40% 95%',
+      '--secondary-foreground': '222 20% 15%',
       '--accent': '346.8 77.2% 49.8%',
+      '--accent-foreground': '0 0% 98%',
       '--muted': '210 40% 95%',
+      '--muted-foreground': '215 16% 47%',
     }
   },
   
@@ -238,9 +266,13 @@ export const themes: ThemeConfig[] = [
     },
     cssVariables: {
       '--primary': '346.8 77.2% 49.8%',
+      '--primary-foreground': '0 0% 98%',
       '--secondary': '210 40% 95%',
+      '--secondary-foreground': '222 20% 15%',
       '--accent': '47.9 95.8% 53.1%',
+      '--accent-foreground': '0 0% 15%',
       '--muted': '210 40% 95%',
+      '--muted-foreground': '215 16% 47%',
     }
   },
   
@@ -264,9 +296,13 @@ export const themes: ThemeConfig[] = [
     },
     cssVariables: {
       '--primary': '217.2 91.2% 59.8%',
+      '--primary-foreground': '0 0% 98%',
       '--secondary': '210 40% 95%',
+      '--secondary-foreground': '222 20% 15%',
       '--accent': '142 76% 36%',
+      '--accent-foreground': '0 0% 98%',
       '--muted': '210 40% 95%',
+      '--muted-foreground': '215 16% 47%',
     }
   },
   
@@ -291,9 +327,13 @@ export const themes: ThemeConfig[] = [
     },
     cssVariables: {
       '--primary': '173 58% 39%',
+      '--primary-foreground': '0 0% 98%',
       '--secondary': '210 40% 95%',
+      '--secondary-foreground': '222 20% 15%',
       '--accent': '142.1 76.2% 36.3%',
+      '--accent-foreground': '0 0% 98%',
       '--muted': '210 40% 95%',
+      '--muted-foreground': '215 16% 47%',
     }
   },
   
@@ -317,9 +357,13 @@ export const themes: ThemeConfig[] = [
     },
     cssVariables: {
       '--primary': '222.2 84% 4.9%',
+      '--primary-foreground': '0 0% 98%',
       '--secondary': '210 40% 95%',
+      '--secondary-foreground': '222 20% 15%',
       '--accent': '217.2 91.2% 59.8%',
+      '--accent-foreground': '0 0% 98%',
       '--muted': '210 40% 95%',
+      '--muted-foreground': '215 16% 47%',
     }
   },
 ];
