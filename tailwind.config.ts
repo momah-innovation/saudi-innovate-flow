@@ -79,6 +79,10 @@ export default {
 					DEFAULT: 'hsl(var(--partner))',
 					foreground: 'hsl(var(--partner-foreground))'
 				},
+				innovator: {
+					DEFAULT: 'hsl(var(--innovator))',
+					foreground: 'hsl(var(--innovator-foreground))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
