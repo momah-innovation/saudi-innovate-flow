@@ -284,9 +284,9 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
               {analytics.recentActivity.slice(0, 10).map((activity) => (
                 <div key={activity.id} className="flex items-center gap-3 text-sm">
                   <div className="flex-shrink-0">
-                    {activity.event_type === "uploaded" && <Upload className="h-4 w-4 text-green-500" />}
-                    {activity.event_type === "accessed" && <Download className="h-4 w-4 text-blue-500" />}
-                    {activity.event_type === "deleted" && <Activity className="h-4 w-4 text-red-500" />}
+                    {activity.event_type === "uploaded" && <Upload className="h-4 w-4 icon-success" />}
+                    {activity.event_type === "accessed" && <Download className="h-4 w-4 icon-info" />}
+                    {activity.event_type === "deleted" && <Activity className="h-4 w-4 icon-error" />}
                     {!["uploaded", "accessed", "deleted"].includes(activity.event_type) && (
                       <Clock className="h-4 w-4 text-muted-foreground" />
                     )}

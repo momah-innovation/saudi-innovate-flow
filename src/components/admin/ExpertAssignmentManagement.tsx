@@ -707,7 +707,7 @@ export function ExpertAssignmentManagement() {
                         <div 
                           className={`h-2 rounded-full transition-all ${
                             workloadPercentage > 80 ? 'bg-destructive' : 
-                            workloadPercentage > 60 ? 'bg-yellow-500' : 'bg-primary'
+                            workloadPercentage > 60 ? 'workload-high' : 'bg-primary'
                           }`}
                           style={{ width: `${Math.min(workloadPercentage, 100)}%` }}
                         />
@@ -890,7 +890,7 @@ export function ExpertAssignmentManagement() {
                             setBulkSelectedChallenges(bulkSelectedChallenges.filter(id => id !== challenge.id));
                           }
                         }}
-                        className="rounded border-gray-300"
+                        className="rounded border-border"
                       />
                       <label htmlFor={`challenge-${challenge.id}`} className="text-sm flex-1 cursor-pointer">
                         {challenge.title_ar}
@@ -919,7 +919,7 @@ export function ExpertAssignmentManagement() {
                             setBulkSelectedExperts(bulkSelectedExperts.filter(id => id !== expert.id));
                           }
                         }}
-                        className="rounded border-gray-300"
+                        className="rounded border-border"
                       />
                       <label htmlFor={`expert-${expert.id}`} className="text-sm flex-1 cursor-pointer">
                         {expert.profiles?.name || `Expert ${expert.id}`} ({getExpertWorkload(expert.id)} challenges)

@@ -62,7 +62,7 @@ export function SimpleListEditor({ title, description, items, onChange, onReset,
               variant="outline"
               size="sm"
               onClick={() => removeItem(index)}
-              className="text-red-600 hover:text-red-700"
+              className="hover-destructive"
             >
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -178,7 +178,7 @@ export function RoleEditor({ title, description, roles, onChange, onReset }: Rol
                   variant="outline"
                   size="sm"
                   onClick={() => removeRole(role.value)}
-                  className="text-red-600 hover:text-red-700"
+                  className="hover-destructive"
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>

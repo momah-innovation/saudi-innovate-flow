@@ -233,9 +233,9 @@ export function ChallengeAnalytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">التحديات النشطة</p>
-                <p className="text-3xl font-bold text-green-600">{analytics.overview.activeChallenges}</p>
+                <p className="text-3xl font-bold text-success">{analytics.overview.activeChallenges}</p>
               </div>
-              <CheckCircle className="w-8 h-8 text-green-600" />
+              <CheckCircle className="w-8 h-8 icon-success" />
             </div>
           </CardContent>
         </Card>
@@ -245,9 +245,9 @@ export function ChallengeAnalytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">إجمالي الأفكار</p>
-                <p className="text-3xl font-bold text-blue-600">{analytics.overview.totalIdeas}</p>
+                <p className="text-3xl font-bold text-primary">{analytics.overview.totalIdeas}</p>
               </div>
-              <Lightbulb className="w-8 h-8 text-blue-600" />
+              <Lightbulb className="w-8 h-8 icon-info" />
             </div>
           </CardContent>
         </Card>
@@ -257,11 +257,11 @@ export function ChallengeAnalytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">إجمالي الميزانية</p>
-                <p className="text-3xl font-bold text-purple-600">
+                <p className="text-3xl font-bold text-innovation">
                   {(analytics.overview.totalBudget / 1000000).toFixed(1)}م ريال
                 </p>
               </div>
-              <DollarSign className="w-8 h-8 text-purple-600" />
+              <DollarSign className="w-8 h-8 text-innovation" />
             </div>
           </CardContent>
         </Card>
@@ -458,11 +458,11 @@ export function ChallengeAnalytics() {
                   <div className="grid grid-cols-3 gap-4 text-center">
                     <div>
                       <p className="text-sm text-muted-foreground">مكتملة</p>
-                      <p className="font-semibold text-green-600">{analytics.overview.completedChallenges}</p>
+                      <p className="font-semibold text-success">{analytics.overview.completedChallenges}</p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">نشطة</p>
-                      <p className="font-semibold text-blue-600">{analytics.overview.activeChallenges}</p>
+                      <p className="font-semibold text-primary">{analytics.overview.activeChallenges}</p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">إجمالي</p>
@@ -489,15 +489,15 @@ export function ChallengeAnalytics() {
                       <div className="w-16 text-sm font-medium">{trend.month}</div>
                       <div className="flex items-center gap-6">
                         <div className="flex items-center gap-1">
-                          <Target className="w-4 h-4 text-blue-500" />
+                          <Target className="w-4 h-4 icon-info" />
                           <span className="text-sm">{trend.challenges} تحدي</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Lightbulb className="w-4 h-4 text-yellow-500" />
+                          <Lightbulb className="w-4 h-4 icon-star" />
                           <span className="text-sm">{trend.ideas} فكرة</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <DollarSign className="w-4 h-4 text-green-500" />
+                          <DollarSign className="w-4 h-4 icon-success" />
                           <span className="text-sm">{(trend.budget / 1000).toFixed(0)}ك ريال</span>
                         </div>
                       </div>
@@ -505,8 +505,8 @@ export function ChallengeAnalytics() {
                     <div className="flex items-center gap-2">
                       {index > 0 && (
                         <div className="flex items-center gap-1">
-                          <TrendingUp className="w-4 h-4 text-green-500" />
-                          <span className="text-xs text-green-500">
+                          <TrendingUp className="w-4 h-4 icon-success" />
+                          <span className="text-xs text-success">
                             +{((trend.challenges / analytics.monthlyTrends[index - 1].challenges - 1) * 100).toFixed(0)}%
                           </span>
                         </div>

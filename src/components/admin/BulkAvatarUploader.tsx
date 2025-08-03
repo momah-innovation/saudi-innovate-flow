@@ -165,15 +165,15 @@ export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
         {results.total > 0 && !uploading && (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-              <div className="text-center p-4 bg-green-50 rounded-lg">
-                <CheckCircle className="h-8 w-8 text-green-600 mx-auto mb-2" />
-                <p className="font-medium text-green-900">{results.success.length}</p>
-                <p className="text-sm text-green-700">{t('successful')}</p>
+              <div className="text-center p-4 status-success rounded-lg">
+                <CheckCircle className="h-8 w-8 icon-success mx-auto mb-2" />
+                <p className="font-medium text-success">{results.success.length}</p>
+                <p className="text-sm text-success">{t('successful')}</p>
               </div>
-              <div className="text-center p-4 bg-red-50 rounded-lg">
-                <AlertCircle className="h-8 w-8 text-red-600 mx-auto mb-2" />
-                <p className="font-medium text-red-900">{results.failed.length}</p>
-                <p className="text-sm text-red-700">{t('failed')}</p>
+              <div className="text-center p-4 status-error rounded-lg">
+                <AlertCircle className="h-8 w-8 icon-error mx-auto mb-2" />
+                <p className="font-medium text-destructive">{results.failed.length}</p>
+                <p className="text-sm text-destructive">{t('failed')}</p>
               </div>
             </div>
 

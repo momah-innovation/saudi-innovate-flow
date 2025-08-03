@@ -482,10 +482,10 @@ export function TeamWorkspaceContent({
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">الالتزام بالمواعيد</CardTitle>
-            <Clock className="h-4 w-4 text-red-500" />
+            <Clock className="h-4 w-4 icon-error" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{teamData.metrics.deadlinesMet}%</div>
+            <div className="text-2xl font-bold text-destructive">{teamData.metrics.deadlinesMet}%</div>
             <p className="text-xs text-muted-foreground">مواعيد محققة</p>
           </CardContent>
         </Card>
@@ -507,9 +507,9 @@ export function TeamWorkspaceContent({
                 {teamData.recentActivities.map((activity: any) => (
                   <div key={activity.id} className="flex items-start gap-3 p-3 hover:bg-muted/50 rounded-lg transition-colors">
                     <div className={`w-2 h-2 rounded-full mt-2 ${
-                      activity.type === 'assignment' ? 'bg-blue-500' :
-                      activity.type === 'completion' ? 'bg-green-500' :
-                      activity.type === 'comment' ? 'bg-yellow-500' : 'bg-purple-500'
+                      activity.type === 'assignment' ? 'activity-assignment' :
+                      activity.type === 'completion' ? 'activity-completion' :
+                      activity.type === 'comment' ? 'activity-comment' : 'activity-general'
                     }`} />
                     <div className="flex-1">
                       <p className="text-sm">{activity.message}</p>
@@ -762,7 +762,7 @@ export function TeamWorkspaceContent({
             <CardTitle className="text-sm">الأعضاء النشطون</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">
+            <div className="text-2xl font-bold text-success">
               {teamData.teamMembers.filter((m: any) => m.status === 'active').length}
             </div>
           </CardContent>
@@ -772,7 +772,7 @@ export function TeamWorkspaceContent({
             <CardTitle className="text-sm">متوسط السعة</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">72%</div>
+            <div className="text-2xl font-bold text-primary">72%</div>
           </CardContent>
         </Card>
         <Card>
@@ -780,7 +780,7 @@ export function TeamWorkspaceContent({
             <CardTitle className="text-sm">معدل الأداء</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-purple-600">89%</div>
+            <div className="text-2xl font-bold text-innovation">89%</div>
           </CardContent>
         </Card>
       </div>
@@ -802,7 +802,7 @@ export function TeamWorkspaceContent({
                       {member.profiles?.display_name?.charAt(0) || 'U'}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-background"></div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-background"></div>
                 </div>
                 <div className="flex-1">
                   <CardTitle className="text-base group-hover:text-primary transition-colors">
@@ -823,8 +823,8 @@ export function TeamWorkspaceContent({
                 <div className="flex justify-between text-sm">
                   <span>السعة الحالية</span>
                   <span className={`font-medium ${
-                    (member.current_workload || 0) > 80 ? 'text-red-500' :
-                    (member.current_workload || 0) > 60 ? 'text-yellow-500' : 'text-green-500'
+                    (member.current_workload || 0) > 80 ? 'workload-critical' :
+                    (member.current_workload || 0) > 60 ? 'workload-high' : 'workload-normal'
                   }`}>
                     {member.current_workload || 65}%
                   </span>
@@ -832,8 +832,8 @@ export function TeamWorkspaceContent({
                 <Progress 
                   value={member.current_workload || 65} 
                   className={`h-2 ${
-                    (member.current_workload || 0) > 80 ? '[&>div]:bg-red-500' :
-                    (member.current_workload || 0) > 60 ? '[&>div]:bg-yellow-500' : '[&>div]:bg-green-500'
+                    (member.current_workload || 0) > 80 ? '[&>div]:workload-critical' :
+                    (member.current_workload || 0) > 60 ? '[&>div]:workload-high' : '[&>div]:workload-normal'
                   }`}
                 />
               </div>
@@ -944,7 +944,7 @@ export function TeamWorkspaceContent({
                     {Array.from({ length: 35 }, (_, i) => (
                       <div key={i} className={`p-2 rounded hover:bg-muted cursor-pointer ${
                         i === 15 ? 'bg-primary text-primary-foreground' :
-                        i === 18 || i === 22 ? 'bg-blue-100 text-blue-700' : ''
+                        i === 18 || i === 22 ? 'status-info' : ''
                       }`}>
                         {i < 31 ? i + 1 : ''}
                       </div>
@@ -971,10 +971,10 @@ export function TeamWorkspaceContent({
                     { title: 'عرض تقديمي', time: 'الأحد 3:00 م', type: 'presentation' }
                   ].map((event, index) => (
                     <div key={index} className="flex items-center gap-3 p-3 border rounded-lg">
-                      <div className={`w-3 h-3 rounded-full ${
-                        event.type === 'meeting' ? 'bg-blue-500' :
-                        event.type === 'deadline' ? 'bg-red-500' :
-                        event.type === 'review' ? 'bg-yellow-500' : 'bg-green-500'
+                       <div className={`w-3 h-3 rounded-full ${
+                        event.type === 'meeting' ? 'event-scheduled' :
+                        event.type === 'deadline' ? 'event-cancelled' :
+                        event.type === 'review' ? 'event-ongoing' : 'event-completed'
                       }`} />
                       <div className="flex-1">
                         <p className="font-medium text-sm">{event.title}</p>
