@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { HeroPatterns } from '@/components/design-system/HeroPatterns';
 import { 
   Palette, Eye, Type, Layout, Zap, Copy, Check, 
   Sun, Moon, ChevronDown, ChevronRight, ChevronLeft, Star,
@@ -5849,6 +5850,49 @@ const DesignSystem = () => {
                                         </div>
                                         <h3 className="font-semibold text-lg mb-1">AI for Climate Action</h3>
                                         <p className="text-sm opacity-90">$50K prize • Global impact</p>
+                                      </div>
+                                      <div className="absolute top-4 right-4">
+                                        <Badge className="bg-red-500/20 text-white border-red-300/30">🔥 Trending</Badge>
+                                      </div>
+                                    </div>
+                                    <div className="p-4">
+                                      <div className="flex items-center justify-between mb-3">
+                                        <div className="text-sm text-white/70">1.2k participants • Global</div>
+                                        <Button size="sm" variant="outline" className="border-white/30 text-white">
+                                          <ExternalLink className="h-4 w-4 mr-1" /> Join
+                                        </Button>
+                                      </div>
+                                      <Progress value={68} className="h-2 bg-white/20" />
+                                    </div>
+                                  </Card>
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/20 bg-white/10 backdrop-blur-sm">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-blue-500/30 flex items-center justify-center">
+                                          <Zap className="h-4 w-4 text-white" />
+                                        </div>
+                                        <div>
+                                          <p className="font-medium text-sm text-white">Trending</p>
+                                          <p className="text-xs text-white/70">Hot challenges</p>
+                                        </div>
+                                      </div>
+                                    </Card>
+                                    <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/20 bg-white/10 backdrop-blur-sm">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-green-500/30 flex items-center justify-center">
+                                          <Award className="h-4 w-4 text-white" />
+                                        </div>
+                                        <div>
+                                          <p className="font-medium text-sm text-white">Leaderboard</p>
+                                          <p className="text-xs text-white/70">Top innovators</p>
+                                        </div>
+                                      </div>
+                                    </Card>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
 
                         {/* Multi-colored Theme Examples */}
