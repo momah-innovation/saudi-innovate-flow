@@ -76,34 +76,135 @@ const DesignSystem = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20 border-b">
-        <div className="container mx-auto px-6 py-12">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-bold mb-2">Design System</h1>
-              <p className="text-lg text-muted-foreground mb-4">
-                Complete showcase of semantic tokens, components, and design patterns
-              </p>
-              <div className="flex items-center gap-2 text-sm">
+      {/* Enhanced Hero Section with Multi-colored Effects */}
+      <div className="relative overflow-hidden">
+        {/* Background with animated gradients matching theme */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-secondary">
+          <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
+        </div>
+
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-1000" />
+          <div className="absolute top-20 left-1/3 w-64 h-64 bg-accent/5 rounded-full blur-2xl animate-bounce" />
+        </div>
+
+        <div className="container mx-auto px-6 py-16 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Enhanced Content Section */}
+            <div className="space-y-8">
+              {/* Header with animation */}
+              <div className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                    <Sparkles className="w-6 h-6 text-yellow-300" />
+                  </div>
+                  <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                    <Star className="w-3 h-3 mr-1" />
+                    Design System Hub
+                  </Badge>
+                </div>
+                
+                <div className="space-y-4">
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                    Explore <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Design</span> Tokens
+                  </h1>
+                  
+                  <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
+                    Complete showcase of semantic tokens, components, and design patterns that power our innovation platform
+                  </p>
+                </div>
+              </div>
+
+              {/* Theme Statistics with Multi-colored Icons */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                  <div className="p-4 text-center">
+                    <Palette className="w-6 h-6 mx-auto mb-2 text-blue-400" />
+                    <div className="text-2xl font-bold text-white">24</div>
+                    <div className="text-sm text-white/70">colors</div>
+                  </div>
+                </Card>
+                <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                  <div className="p-4 text-center">
+                    <Layout className="w-6 h-6 mx-auto mb-2 text-green-400" />
+                    <div className="text-2xl font-bold text-white">50+</div>
+                    <div className="text-sm text-white/70">components</div>
+                  </div>
+                </Card>
+                <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                  <div className="p-4 text-center">
+                    <Type className="w-6 h-6 mx-auto mb-2 text-purple-400" />
+                    <div className="text-2xl font-bold text-white">8</div>
+                    <div className="text-sm text-white/70">type scales</div>
+                  </div>
+                </Card>
+                <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                  <div className="p-4 text-center">
+                    <Zap className="w-6 h-6 mx-auto mb-2 text-yellow-400" />
+                    <div className="text-2xl font-bold text-white">13</div>
+                    <div className="text-sm text-white/70">patterns</div>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Theme Info */}
+              <div className="flex items-center gap-4 text-white/90">
                 <span className="font-medium">Current Theme:</span>
-                <Badge variant="outline" className="text-primary border-primary">
+                <Badge variant="outline" className="text-white border-white/30 bg-white/10">
                   {currentTheme.name}
                 </Badge>
-                <span className="text-muted-foreground">•</span>
-                <span className="text-muted-foreground">{currentTheme.description}</span>
+                <span className="text-white/70">•</span>
+                <span className="text-white/70">{currentTheme.description}</span>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <ThemeSelector className="w-64" />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setDarkModeTheme(darkModeTheme === 'dark' ? 'light' : 'dark')}
-              >
-                {darkModeTheme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                Toggle Dark Mode
-              </Button>
+
+            {/* Theme Controls Section */}
+            <div className="space-y-6">
+              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+                <div className="p-6 space-y-4">
+                  <h3 className="text-xl font-bold text-white mb-4">Theme Controls</h3>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm text-white/80 mb-2 block">Theme Selector</label>
+                      <ThemeSelector className="w-full" />
+                    </div>
+                    
+                    <div>
+                      <label className="text-sm text-white/80 mb-2 block">Color Mode</label>
+                      <Button
+                        variant="outline"
+                        className="w-full border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
+                        onClick={() => setDarkModeTheme(darkModeTheme === 'dark' ? 'light' : 'dark')}
+                      >
+                        {darkModeTheme === 'dark' ? <Sun className="h-4 w-4 mr-2" /> : <Moon className="h-4 w-4 mr-2" />}
+                        {darkModeTheme === 'dark' ? 'Switch to Light' : 'Switch to Dark'}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Quick Navigation Cards */}
+              <div className="grid grid-cols-2 gap-4">
+                <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+                  <div className="p-4 text-center">
+                    <Palette className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+                    <div className="text-sm font-medium text-white">Colors</div>
+                    <div className="text-xs text-white/70">24 tokens</div>
+                  </div>
+                </Card>
+
+                <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+                  <div className="p-4 text-center">
+                    <Layout className="w-8 h-8 text-green-400 mx-auto mb-2" />
+                    <div className="text-sm font-medium text-white">Components</div>
+                    <div className="text-xs text-white/70">50+ items</div>
+                  </div>
+                </Card>
+              </div>
             </div>
           </div>
         </div>
