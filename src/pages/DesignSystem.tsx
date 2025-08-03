@@ -79,15 +79,15 @@ const DesignSystem = () => {
       {/* Enhanced Hero Section with Multi-colored Effects */}
       <div className="relative overflow-hidden">
         {/* Background with animated gradients matching theme */}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-secondary">
-          <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/60 via-accent/50 to-secondary/60">
+          <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/20" />
         </div>
 
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-1000" />
-          <div className="absolute top-20 left-1/3 w-64 h-64 bg-accent/5 rounded-full blur-2xl animate-bounce" />
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse delay-1000" />
+          <div className="absolute top-20 left-1/3 w-64 h-64 bg-accent/10 rounded-full blur-2xl animate-bounce" />
         </div>
 
         <div className="container mx-auto px-6 py-16 relative z-10">
@@ -97,21 +97,21 @@ const DesignSystem = () => {
               {/* Header with animation */}
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                    <Sparkles className="w-6 h-6 text-yellow-300" />
+                  <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl border border-white/40">
+                    <Sparkles className="w-6 h-6 text-yellow-200" />
                   </div>
-                  <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                  <Badge variant="secondary" className="bg-white/20 text-white border-white/40 backdrop-blur-sm">
                     <Star className="w-3 h-3 mr-1" />
                     Design System Hub
                   </Badge>
                 </div>
                 
                 <div className="space-y-4">
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                    Explore <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Design</span> Tokens
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight drop-shadow-lg">
+                    Explore <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-orange-200 drop-shadow-sm">Design</span> Tokens
                   </h1>
                   
-                  <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
+                  <p className="text-xl text-white/90 max-w-2xl leading-relaxed drop-shadow-md">
                     Complete showcase of semantic tokens, components, and design patterns that power our innovation platform
                   </p>
                 </div>
@@ -119,64 +119,64 @@ const DesignSystem = () => {
 
               {/* Theme Statistics with Multi-colored Icons */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                <Card className="bg-white/15 backdrop-blur-sm border-white/30">
                   <div className="p-4 text-center">
-                    <Palette className="w-6 h-6 mx-auto mb-2 text-blue-400" />
-                    <div className="text-2xl font-bold text-white">24</div>
-                    <div className="text-sm text-white/70">colors</div>
+                    <Palette className="w-6 h-6 mx-auto mb-2 text-blue-200" />
+                    <div className="text-2xl font-bold text-white drop-shadow-sm">24</div>
+                    <div className="text-sm text-white/90">colors</div>
                   </div>
                 </Card>
-                <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                <Card className="bg-white/15 backdrop-blur-sm border-white/30">
                   <div className="p-4 text-center">
-                    <Layout className="w-6 h-6 mx-auto mb-2 text-green-400" />
-                    <div className="text-2xl font-bold text-white">50+</div>
-                    <div className="text-sm text-white/70">components</div>
+                    <Layout className="w-6 h-6 mx-auto mb-2 text-green-200" />
+                    <div className="text-2xl font-bold text-white drop-shadow-sm">50+</div>
+                    <div className="text-sm text-white/90">components</div>
                   </div>
                 </Card>
-                <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                <Card className="bg-white/15 backdrop-blur-sm border-white/30">
                   <div className="p-4 text-center">
-                    <Type className="w-6 h-6 mx-auto mb-2 text-purple-400" />
-                    <div className="text-2xl font-bold text-white">8</div>
-                    <div className="text-sm text-white/70">type scales</div>
+                    <Type className="w-6 h-6 mx-auto mb-2 text-purple-200" />
+                    <div className="text-2xl font-bold text-white drop-shadow-sm">8</div>
+                    <div className="text-sm text-white/90">type scales</div>
                   </div>
                 </Card>
-                <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                <Card className="bg-white/15 backdrop-blur-sm border-white/30">
                   <div className="p-4 text-center">
-                    <Zap className="w-6 h-6 mx-auto mb-2 text-yellow-400" />
-                    <div className="text-2xl font-bold text-white">13</div>
-                    <div className="text-sm text-white/70">patterns</div>
+                    <Zap className="w-6 h-6 mx-auto mb-2 text-yellow-200" />
+                    <div className="text-2xl font-bold text-white drop-shadow-sm">13</div>
+                    <div className="text-sm text-white/90">patterns</div>
                   </div>
                 </Card>
               </div>
 
               {/* Theme Info */}
-              <div className="flex items-center gap-4 text-white/90">
+              <div className="flex items-center gap-4 text-white drop-shadow-sm">
                 <span className="font-medium">Current Theme:</span>
-                <Badge variant="outline" className="text-white border-white/30 bg-white/10">
+                <Badge variant="outline" className="text-white border-white/50 bg-white/20">
                   {currentTheme.name}
                 </Badge>
-                <span className="text-white/70">•</span>
-                <span className="text-white/70">{currentTheme.description}</span>
+                <span className="text-white/90">•</span>
+                <span className="text-white/90">{currentTheme.description}</span>
               </div>
             </div>
 
             {/* Theme Controls Section */}
             <div className="space-y-6">
-              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+              <Card className="bg-white/20 backdrop-blur-xl border-white/40 shadow-2xl">
                 <div className="p-6 space-y-4">
-                  <h3 className="text-xl font-bold text-white mb-4">Theme Controls</h3>
+                  <h3 className="text-xl font-bold text-white mb-4 drop-shadow-sm">Theme Controls</h3>
                   
                   <div className="space-y-4">
                     <div>
-                      <label className="text-sm text-white/80 mb-2 block">Theme Selector</label>
+                      <label className="text-sm text-white/90 mb-2 block drop-shadow-sm">Theme Selector</label>
                       <ThemeSelector className="w-full" />
                     </div>
                     
                     <div>
-                      <label className="text-sm text-white/80 mb-2 block">Color Mode</label>
+                      <label className="text-sm text-white/90 mb-2 block drop-shadow-sm">Color Mode</label>
                       <Button
                         variant="outline"
-                        className="w-full border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
+                        className="w-full border-white/50 text-white hover:bg-white/20 backdrop-blur-sm"
                         onClick={() => setDarkModeTheme(darkModeTheme === 'dark' ? 'light' : 'dark')}
                       >
                         {darkModeTheme === 'dark' ? <Sun className="h-4 w-4 mr-2" /> : <Moon className="h-4 w-4 mr-2" />}
@@ -189,19 +189,19 @@ const DesignSystem = () => {
 
               {/* Quick Navigation Cards */}
               <div className="grid grid-cols-2 gap-4">
-                <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+                <Card className="bg-white/15 backdrop-blur-sm border-white/30 hover:bg-white/25 transition-all cursor-pointer">
                   <div className="p-4 text-center">
-                    <Palette className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                    <div className="text-sm font-medium text-white">Colors</div>
-                    <div className="text-xs text-white/70">24 tokens</div>
+                    <Palette className="w-8 h-8 text-blue-200 mx-auto mb-2" />
+                    <div className="text-sm font-medium text-white drop-shadow-sm">Colors</div>
+                    <div className="text-xs text-white/90">24 tokens</div>
                   </div>
                 </Card>
 
-                <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+                <Card className="bg-white/15 backdrop-blur-sm border-white/30 hover:bg-white/25 transition-all cursor-pointer">
                   <div className="p-4 text-center">
-                    <Layout className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                    <div className="text-sm font-medium text-white">Components</div>
-                    <div className="text-xs text-white/70">50+ items</div>
+                    <Layout className="w-8 h-8 text-green-200 mx-auto mb-2" />
+                    <div className="text-sm font-medium text-white drop-shadow-sm">Components</div>
+                    <div className="text-xs text-white/90">50+ items</div>
                   </div>
                 </Card>
               </div>
@@ -5722,40 +5722,41 @@ const DesignSystem = () => {
                          <div>
                            <h5 className="text-sm font-medium text-muted-foreground mb-3">Compact Hero</h5>
                            <div className="border rounded-lg overflow-hidden">
-                             <div className="relative bg-gradient-to-r from-primary via-accent to-secondary p-6 border-l-4 border-l-accent/50">
-                               <div className="max-w-4xl mx-auto text-center text-white">
-                                 <div className="flex items-center justify-center gap-2 mb-4">
-                                   <div className="p-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-                                      <Sparkles className="w-6 h-6 text-accent" />
+                              <div className="relative bg-gradient-to-r from-primary/60 via-accent/50 to-secondary/60 p-6 border-l-4 border-l-accent/70">
+                                <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/20" />
+                                <div className="max-w-4xl mx-auto text-center text-white relative z-10">
+                                  <div className="flex items-center justify-center gap-2 mb-4">
+                                    <div className="p-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/40">
+                                       <Sparkles className="w-6 h-6 text-accent" />
+                                     </div>
+                                     <Badge variant="secondary" className="bg-white/25 text-white border-white/60">Featured</Badge>
+                                   </div>
+                                   <h1 className="text-2xl md:text-3xl font-bold mb-3 drop-shadow-lg">
+                                     Innovation <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary drop-shadow-sm">Made Simple</span>
+                                   </h1>
+                                   <p className="text-sm text-white/90 mb-4 max-w-xl mx-auto drop-shadow-md">Quick access to challenges and opportunities</p>
+                                   <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
+                                     <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg">
+                                       Get Started <ArrowRight className="w-4 h-4 ml-1" />
+                                     </Button>
+                                     <Button size="sm" variant="outline" className="border-white/60 text-white hover:bg-white/20 hover:border-white/80 backdrop-blur-sm">
+                                       <Play className="w-4 h-4 mr-1 text-accent" /> Demo
+                                     </Button>
+                                   </div>
+                                  <div className="flex justify-center gap-6 text-sm">
+                                    <div className="text-center">
+                                      <div className="font-bold text-blue-200 drop-shadow-sm">5K+</div>
+                                      <div className="text-xs text-white/90">Users</div>
                                     </div>
-                                    <Badge variant="secondary" className="bg-white/20 text-white border-white/50">Featured</Badge>
-                                  </div>
-                                  <h1 className="text-2xl md:text-3xl font-bold mb-3">
-                                    Innovation <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">Made Simple</span>
-                                  </h1>
-                                  <p className="text-sm text-white/80 mb-4 max-w-xl mx-auto">Quick access to challenges and opportunities</p>
-                                  <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
-                                    <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg">
-                                      Get Started <ArrowRight className="w-4 h-4 ml-1" />
-                                    </Button>
-                                    <Button size="sm" variant="outline" className="border-white/50 text-white hover:bg-white/10 hover:border-white/70">
-                                      <Play className="w-4 h-4 mr-1 text-accent" /> Demo
-                                    </Button>
-                                  </div>
-                                 <div className="flex justify-center gap-6 text-sm">
-                                   <div className="text-center">
-                                     <div className="font-bold text-blue-300">5K+</div>
-                                     <div className="text-xs text-white/70">Users</div>
-                                   </div>
-                                   <div className="text-center">
-                                     <div className="font-bold text-green-300">200+</div>
-                                     <div className="text-xs text-white/70">Projects</div>
-                                   </div>
-                                   <div className="text-center">
-                                     <div className="font-bold text-purple-300">98%</div>
-                                     <div className="text-xs text-white/70">Success</div>
-                                   </div>
-                                </div>
+                                    <div className="text-center">
+                                      <div className="font-bold text-green-200 drop-shadow-sm">200+</div>
+                                      <div className="text-xs text-white/90">Projects</div>
+                                    </div>
+                                    <div className="text-center">
+                                      <div className="font-bold text-purple-200 drop-shadow-sm">98%</div>
+                                      <div className="text-xs text-white/90">Success</div>
+                                    </div>
+                                 </div>
                               </div>
                             </div>
                           </div>
@@ -5765,72 +5766,73 @@ const DesignSystem = () => {
                          <div>
                            <h5 className="text-sm font-medium text-muted-foreground mb-3">Default Hero</h5>
                            <div className="border rounded-lg overflow-hidden">
-                             <div className="relative bg-gradient-to-r from-primary via-accent to-secondary p-8 border-l-4 border-l-accent/60">
-                               <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                                 <div className="text-white">
-                                   <div className="flex items-center gap-3 mb-4">
-                                      <div className="p-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/30">
-                                        <Sparkles className="w-8 h-8 text-accent" />
-                                      </div>
-                                      <Badge variant="secondary" className="bg-white/20 text-white border-white/50">Latest</Badge>
-                                    </div>
-                                    <h1 className="text-3xl lg:text-4xl font-bold mb-4">
-                                      Shape <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">the Future</span>
-                                    </h1>
-                                    <p className="text-lg text-white/80 mb-6">Join innovators solving real-world challenges.</p>
-                                    <div className="grid grid-cols-2 gap-3 mb-6">
-                                      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/30">
-                                        <div className="flex items-center gap-2">
-                                          <Target className="w-4 h-4 text-primary" />
-                                          <div>
-                                            <div className="font-bold">10K+</div>
-                                            <div className="text-xs text-white/70">Challenges</div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/30">
-                                        <div className="flex items-center gap-2">
-                                          <Award className="w-4 h-4 text-accent" />
-                                          <div>
-                                            <div className="font-bold">$2M+</div>
-                                            <div className="text-xs text-white/70">Rewards</div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div className="flex flex-col sm:flex-row gap-3">
-                                      <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg">
-                                        Start Journey <ArrowRight className="w-4 h-4 ml-2" />
-                                      </Button>
-                                      <Button variant="outline" className="border-white/50 text-white hover:bg-white/10 hover:border-white/70">
-                                        <Play className="w-4 h-4 mr-2 text-accent" /> Watch Demo
-                                      </Button>
-                                    </div>
+                              <div className="relative bg-gradient-to-r from-primary/60 via-accent/50 to-secondary/60 p-8 border-l-4 border-l-accent/70">
+                                <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/20" />
+                                <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10">
+                                  <div className="text-white">
+                                    <div className="flex items-center gap-3 mb-4">
+                                       <div className="p-3 bg-white/20 backdrop-blur-sm rounded-full border border-white/40">
+                                         <Sparkles className="w-8 h-8 text-accent" />
+                                       </div>
+                                       <Badge variant="secondary" className="bg-white/25 text-white border-white/60">Latest</Badge>
+                                     </div>
+                                     <h1 className="text-3xl lg:text-4xl font-bold mb-4 drop-shadow-lg">
+                                       Shape <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary drop-shadow-sm">the Future</span>
+                                     </h1>
+                                     <p className="text-lg text-white/90 mb-6 drop-shadow-md">Join innovators solving real-world challenges.</p>
+                                     <div className="grid grid-cols-2 gap-3 mb-6">
+                                       <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 border border-white/40">
+                                         <div className="flex items-center gap-2">
+                                           <Target className="w-4 h-4 text-primary" />
+                                           <div>
+                                             <div className="font-bold drop-shadow-sm">10K+</div>
+                                             <div className="text-xs text-white/90">Challenges</div>
+                                           </div>
+                                         </div>
+                                       </div>
+                                       <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 border border-white/40">
+                                         <div className="flex items-center gap-2">
+                                           <Award className="w-4 h-4 text-accent" />
+                                           <div>
+                                             <div className="font-bold drop-shadow-sm">$2M+</div>
+                                             <div className="text-xs text-white/90">Rewards</div>
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     <div className="flex flex-col sm:flex-row gap-3">
+                                       <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg">
+                                         Start Journey <ArrowRight className="w-4 h-4 ml-2" />
+                                       </Button>
+                                       <Button variant="outline" className="border-white/60 text-white hover:bg-white/20 hover:border-white/80 backdrop-blur-sm">
+                                         <Play className="w-4 h-4 mr-2 text-accent" /> Watch Demo
+                                       </Button>
+                                     </div>
                                  </div>
-                                 <div>
-                                   <Card className="overflow-hidden border border-white/20 bg-white/10 backdrop-blur-sm">
-                                     <div className="aspect-video bg-gradient-to-br from-orange-500/80 to-red-600/80 relative">
-                                       <div className="absolute bottom-3 left-3 text-white">
-                                         <div className="flex items-center gap-1 text-xs mb-1">
-                                           <Calendar className="h-3 w-3 text-purple-300" />
-                                          <span>Ends March 30</span>
-                                        </div>
-                                        <h3 className="font-semibold text-sm">AI for Climate</h3>
-                                        <p className="text-xs opacity-90">$50K prize</p>
-                                      </div>
-                                      <div className="absolute top-3 right-3">
-                                        <Badge className="bg-red-500/20 text-white text-xs">🔥 Hot</Badge>
-                                      </div>
-                                    </div>
-                                    <div className="p-3">
-                                      <div className="flex items-center justify-between mb-2">
-                                        <div className="text-xs text-white/70">1.2k participants</div>
-                                        <Button size="sm" variant="outline" className="border-white/50 text-white text-xs px-2 py-1 h-auto hover:bg-white/10 hover:border-white/70">Join</Button>
-                                      </div>
-                                      <Progress value={68} className="h-1.5 bg-white/20" />
-                                    </div>
-                                  </Card>
-                                </div>
+                                  <div>
+                                    <Card className="overflow-hidden border border-white/30 bg-white/15 backdrop-blur-sm">
+                                      <div className="aspect-video bg-gradient-to-br from-orange-500/80 to-red-600/80 relative">
+                                        <div className="absolute bottom-3 left-3 text-white">
+                                          <div className="flex items-center gap-1 text-xs mb-1">
+                                            <Calendar className="h-3 w-3 text-purple-200" />
+                                           <span>Ends March 30</span>
+                                         </div>
+                                         <h3 className="font-semibold text-sm drop-shadow-sm">AI for Climate</h3>
+                                         <p className="text-xs opacity-95 drop-shadow-sm">$50K prize</p>
+                                       </div>
+                                       <div className="absolute top-3 right-3">
+                                         <Badge className="bg-red-500/30 text-white text-xs border border-red-300/30">🔥 Hot</Badge>
+                                       </div>
+                                     </div>
+                                     <div className="p-3">
+                                       <div className="flex items-center justify-between mb-2">
+                                         <div className="text-xs text-white/90">1.2k participants</div>
+                                         <Button size="sm" variant="outline" className="border-white/60 text-white text-xs px-2 py-1 h-auto hover:bg-white/20 hover:border-white/80 backdrop-blur-sm">Join</Button>
+                                       </div>
+                                       <Progress value={68} className="h-1.5 bg-white/20" />
+                                     </div>
+                                   </Card>
+                                 </div>
                               </div>
                             </div>
                           </div>
@@ -5840,109 +5842,110 @@ const DesignSystem = () => {
                          <div>
                            <h5 className="text-sm font-medium text-muted-foreground mb-3">Large/Full Hero</h5>
                            <div className="border rounded-lg overflow-hidden">
-                              <div className="relative bg-gradient-to-r from-primary via-accent to-secondary p-12 border-l-8 border-l-accent/70">
-                                <div className="absolute inset-0 overflow-hidden">
-                                  <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse" />
-                                  <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse" />
-                                </div>
-                                <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                                  <div className="text-white">
-                                    <div className="flex items-center gap-4 mb-6">
-                                      <div className="relative">
-                                        <div className="p-4 bg-white/10 backdrop-blur-sm rounded-full ring-4 ring-white/30 border border-white/20">
-                                          <Sparkles className="w-12 h-12 animate-pulse text-accent" />
-                                        </div>
-                                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-accent rounded-full animate-ping" />
-                                      </div>
-                                      <Badge variant="secondary" className="bg-white/20 text-white border-white/50">🎯 Latest</Badge>
-                                    </div>
-                                    <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-                                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">Shape</span> the Future
-                                    </h1>
-                                    <p className="text-xl text-white/80 mb-8">Join thousands of innovators solving real challenges.</p>
-                                    <div className="grid grid-cols-2 gap-4 mb-8">
-                                      <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/30 hover:scale-105 transition-transform cursor-pointer">
-                                        <div className="flex items-center gap-3">
-                                          <div className="p-2 bg-primary/30 rounded-lg border border-white/20">
-                                            <Target className="w-5 h-5 text-primary" />
-                                          </div>
-                                          <div>
-                                            <div className="text-2xl font-bold">10K+</div>
-                                            <div className="text-xs text-white/70">Challenges</div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/30 hover:scale-105 transition-transform cursor-pointer">
-                                        <div className="flex items-center gap-3">
-                                          <div className="p-2 bg-accent/30 rounded-lg border border-white/20">
-                                            <Award className="w-5 h-5 text-accent" />
-                                          </div>
-                                          <div>
-                                            <div className="text-2xl font-bold">$2M+</div>
-                                            <div className="text-xs text-white/70">Rewards</div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div className="flex flex-col sm:flex-row gap-4">
-                                      <Button size="lg" className="px-8 bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105 transition-all shadow-lg">
-                                        Start Journey <ArrowRight className="w-4 h-4 ml-2" />
-                                      </Button>
-                                      <Button size="lg" variant="outline" className="px-8 border-white/50 text-white hover:bg-white/10 hover:border-white/70">
-                                        <Play className="w-4 h-4 mr-2 text-accent" /> Watch Demo
-                                      </Button>
-                                    </div>
+                               <div className="relative bg-gradient-to-r from-primary/60 via-accent/50 to-secondary/60 p-12 border-l-8 border-l-accent/80">
+                                 <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/20" />
+                                 <div className="absolute inset-0 overflow-hidden">
+                                   <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/15 rounded-full blur-3xl animate-pulse" />
+                                   <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-accent/15 rounded-full blur-3xl animate-pulse" />
                                  </div>
-                                 <div className="space-y-6">
-                                   <Card className="overflow-hidden border border-white/20 bg-white/10 backdrop-blur-sm hover:scale-105 transition-transform">
-                                     <div className="aspect-video bg-gradient-to-br from-orange-500/80 to-red-600/80 relative">
-                                       <div className="absolute bottom-4 left-4 text-white">
-                                         <div className="flex items-center gap-2 text-sm mb-2">
-                                           <Calendar className="h-4 w-4 text-purple-300" />
-                                           <span>Ends March 30, 2024</span>
+                                 <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center z-10">
+                                   <div className="text-white">
+                                     <div className="flex items-center gap-4 mb-6">
+                                       <div className="relative">
+                                         <div className="p-4 bg-white/20 backdrop-blur-sm rounded-full ring-4 ring-white/40 border border-white/30">
+                                           <Sparkles className="w-12 h-12 animate-pulse text-accent" />
                                          </div>
-                                         <h3 className="font-semibold text-lg mb-1">AI for Climate Action</h3>
-                                         <p className="text-sm opacity-90">$50K prize • Global impact</p>
+                                         <div className="absolute -top-2 -right-2 w-6 h-6 bg-accent rounded-full animate-ping" />
                                        </div>
-                                       <div className="absolute top-4 right-4">
-                                         <Badge className="bg-red-500/20 text-white border-red-300/30">🔥 Trending</Badge>
+                                       <Badge variant="secondary" className="bg-white/25 text-white border-white/60">🎯 Latest</Badge>
+                                     </div>
+                                     <h1 className="text-5xl lg:text-6xl font-bold mb-6 drop-shadow-lg">
+                                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary drop-shadow-sm">Shape</span> the Future
+                                     </h1>
+                                     <p className="text-xl text-white/90 mb-8 drop-shadow-md">Join thousands of innovators solving real challenges.</p>
+                                     <div className="grid grid-cols-2 gap-4 mb-8">
+                                       <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-white/40 hover:scale-105 transition-transform cursor-pointer">
+                                         <div className="flex items-center gap-3">
+                                           <div className="p-2 bg-primary/40 rounded-lg border border-white/30">
+                                             <Target className="w-5 h-5 text-primary" />
+                                           </div>
+                                           <div>
+                                             <div className="text-2xl font-bold drop-shadow-sm">10K+</div>
+                                             <div className="text-xs text-white/90">Challenges</div>
+                                           </div>
+                                         </div>
+                                       </div>
+                                       <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-white/40 hover:scale-105 transition-transform cursor-pointer">
+                                         <div className="flex items-center gap-3">
+                                           <div className="p-2 bg-accent/40 rounded-lg border border-white/30">
+                                             <Award className="w-5 h-5 text-accent" />
+                                           </div>
+                                           <div>
+                                             <div className="text-2xl font-bold drop-shadow-sm">$2M+</div>
+                                             <div className="text-xs text-white/90">Rewards</div>
+                                           </div>
+                                         </div>
                                        </div>
                                      </div>
-                                     <div className="p-4">
-                                       <div className="flex items-center justify-between mb-3">
-                                         <div className="text-sm text-white/70">1.2k participants • Global</div>
-                                          <Button size="sm" variant="outline" className="border-white/50 text-white hover:bg-white/10 hover:border-white/70">
-                                            <ExternalLink className="h-4 w-4 mr-1" /> Join
-                                          </Button>
-                                       </div>
-                                       <Progress value={68} className="h-2 bg-white/20" />
+                                     <div className="flex flex-col sm:flex-row gap-4">
+                                       <Button size="lg" className="px-8 bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105 transition-all shadow-lg">
+                                         Start Journey <ArrowRight className="w-4 h-4 ml-2" />
+                                       </Button>
+                                       <Button size="lg" variant="outline" className="px-8 border-white/60 text-white hover:bg-white/20 hover:border-white/80 backdrop-blur-sm">
+                                         <Play className="w-4 h-4 mr-2 text-accent" /> Watch Demo
+                                       </Button>
                                      </div>
-                                   </Card>
-                                   <div className="grid grid-cols-2 gap-4">
-                                     <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/20 bg-white/10 backdrop-blur-sm">
-                                       <div className="flex items-center gap-3">
-                                         <div className="w-8 h-8 rounded-lg bg-blue-500/30 flex items-center justify-center">
-                                           <Zap className="h-4 w-4 text-yellow-400" />
-                                         </div>
-                                         <div>
-                                           <p className="font-medium text-sm text-white">Trending</p>
-                                           <p className="text-xs text-white/70">Hot challenges</p>
-                                         </div>
-                                       </div>
-                                     </Card>
-                                     <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/20 bg-white/10 backdrop-blur-sm">
-                                       <div className="flex items-center gap-3">
-                                         <div className="w-8 h-8 rounded-lg bg-green-500/30 flex items-center justify-center">
-                                           <Award className="h-4 w-4 text-purple-400" />
-                                         </div>
-                                         <div>
-                                           <p className="font-medium text-sm text-white">Leaderboard</p>
-                                           <p className="text-xs text-white/70">Top innovators</p>
-                                         </div>
-                                       </div>
-                                     </Card>
-                                   </div>
                                  </div>
+                                  <div className="space-y-6">
+                                    <Card className="overflow-hidden border border-white/30 bg-white/15 backdrop-blur-sm hover:scale-105 transition-transform">
+                                      <div className="aspect-video bg-gradient-to-br from-orange-500/80 to-red-600/80 relative">
+                                        <div className="absolute bottom-4 left-4 text-white">
+                                          <div className="flex items-center gap-2 text-sm mb-2">
+                                            <Calendar className="h-4 w-4 text-purple-200" />
+                                            <span>Ends March 30, 2024</span>
+                                          </div>
+                                          <h3 className="font-semibold text-lg mb-1 drop-shadow-sm">AI for Climate Action</h3>
+                                          <p className="text-sm opacity-95 drop-shadow-sm">$50K prize • Global impact</p>
+                                        </div>
+                                        <div className="absolute top-4 right-4">
+                                          <Badge className="bg-red-500/30 text-white border-red-300/40">🔥 Trending</Badge>
+                                        </div>
+                                      </div>
+                                      <div className="p-4">
+                                        <div className="flex items-center justify-between mb-3">
+                                          <div className="text-sm text-white/90">1.2k participants • Global</div>
+                                           <Button size="sm" variant="outline" className="border-white/60 text-white hover:bg-white/20 hover:border-white/80 backdrop-blur-sm">
+                                             <ExternalLink className="h-4 w-4 mr-1" /> Join
+                                           </Button>
+                                        </div>
+                                        <Progress value={68} className="h-2 bg-white/20" />
+                                      </div>
+                                    </Card>
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/30 bg-white/15 backdrop-blur-sm">
+                                        <div className="flex items-center gap-3">
+                                          <div className="w-8 h-8 rounded-lg bg-blue-500/40 flex items-center justify-center">
+                                            <Zap className="h-4 w-4 text-yellow-200" />
+                                          </div>
+                                          <div>
+                                            <p className="font-medium text-sm text-white drop-shadow-sm">Trending</p>
+                                            <p className="text-xs text-white/90">Hot challenges</p>
+                                          </div>
+                                        </div>
+                                      </Card>
+                                      <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/30 bg-white/15 backdrop-blur-sm">
+                                        <div className="flex items-center gap-3">
+                                          <div className="w-8 h-8 rounded-lg bg-green-500/40 flex items-center justify-center">
+                                            <Award className="h-4 w-4 text-purple-200" />
+                                          </div>
+                                          <div>
+                                            <p className="font-medium text-sm text-white drop-shadow-sm">Leaderboard</p>
+                                            <p className="text-xs text-white/90">Top innovators</p>
+                                          </div>
+                                        </div>
+                                      </Card>
+                                    </div>
+                                  </div>
                                </div>
                              </div>
                           </div>
