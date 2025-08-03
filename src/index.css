@@ -60,12 +60,25 @@ All colors MUST be HSL for theming consistency.
     --partner: 213 94% 68%;
     --partner-foreground: 0 0% 98%;
 
-    /* Gradients with enhanced contrast */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
-    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--innovation)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--innovation)) 100%);
-    --gradient-hero-overlay: linear-gradient(135deg, hsl(var(--primary) / 0.9), hsl(var(--accent) / 0.8));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100% / 0.8), hsl(0 0% 100% / 0.4));
+    /* Opacity tokens for consistency */
+    --opacity-subtle: 0.1;
+    --opacity-light: 0.2;
+    --opacity-medium: 0.4;
+    --opacity-strong: 0.6;
+    --opacity-heavy: 0.8;
+    --opacity-overlay: 0.9;
+
+    /* Gradients with better contrast for white text */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary-dark)), hsl(var(--primary)));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--innovation)) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary-dark)) 0%, hsl(var(--accent)) 50%, hsl(var(--innovation)) 100%);
+    --gradient-hero-overlay: linear-gradient(135deg, hsl(var(--primary-dark) / var(--opacity-overlay)), hsl(var(--accent) / var(--opacity-heavy)));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100% / var(--opacity-heavy)), hsl(0 0% 100% / var(--opacity-medium)));
+    
+    /* Dark gradients for better white text contrast */
+    --gradient-dark: linear-gradient(135deg, hsl(142 76% 25%) 0%, hsl(213 94% 45%) 100%);
+    --gradient-dark-subtle: linear-gradient(135deg, hsl(142 76% 30%) 0%, hsl(213 94% 50%) 100%);
+    --gradient-overlay-dark: linear-gradient(135deg, hsl(222 20% 15% / var(--opacity-overlay)), hsl(222 20% 25% / var(--opacity-heavy)));
 
     /* Shadows */
     --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.2);
