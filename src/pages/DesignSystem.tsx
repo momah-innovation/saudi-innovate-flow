@@ -265,6 +265,10 @@ const DesignSystem = () => {
               <Grid className="h-3 w-3" />
               Widgets
             </TabsTrigger>
+            <TabsTrigger value="animations" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+              <Zap className="h-3 w-3" />
+              Animations & Icons
+            </TabsTrigger>
           </TabsList>
 
           {/* Colors Tab */}
@@ -10508,6 +10512,503 @@ const DesignSystem = () => {
                     </Card>
                   </div>
                 </ComponentShowcase>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Animations & Icons Tab */}
+          <TabsContent value="animations" className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Animations & Icons</h2>
+              
+              <div className="space-y-6">
+                
+                {/* Basic Animations */}
+                <ComponentShowcase title="Basic Animations">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <Card className="p-4 hover:shadow-lg transition-shadow">
+                      <h4 className="font-medium mb-3">Fade In</h4>
+                      <div className="space-y-3">
+                        <div className="w-full h-16 bg-primary/20 rounded-lg animate-fade-in"></div>
+                        <code className="text-xs bg-muted px-2 py-1 rounded">animate-fade-in</code>
+                      </div>
+                    </Card>
+
+                    <Card className="p-4 hover:shadow-lg transition-shadow">
+                      <h4 className="font-medium mb-3">Scale In</h4>
+                      <div className="space-y-3">
+                        <div className="w-full h-16 bg-secondary/20 rounded-lg animate-scale-in"></div>
+                        <code className="text-xs bg-muted px-2 py-1 rounded">animate-scale-in</code>
+                      </div>
+                    </Card>
+
+                    <Card className="p-4 hover:shadow-lg transition-shadow">
+                      <h4 className="font-medium mb-3">Pulse</h4>
+                      <div className="space-y-3">
+                        <div className="w-full h-16 bg-accent/20 rounded-lg animate-pulse"></div>
+                        <code className="text-xs bg-muted px-2 py-1 rounded">animate-pulse</code>
+                      </div>
+                    </Card>
+
+                    <Card className="p-4 hover:shadow-lg transition-shadow">
+                      <h4 className="font-medium mb-3">Bounce</h4>
+                      <div className="space-y-3">
+                        <div className="w-full h-16 bg-warning/20 rounded-lg animate-bounce"></div>
+                        <code className="text-xs bg-muted px-2 py-1 rounded">animate-bounce</code>
+                      </div>
+                    </Card>
+                  </div>
+                </ComponentShowcase>
+
+                {/* Interactive Animations */}
+                <ComponentShowcase title="Interactive Animations">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Card className="p-6 text-center hover-scale cursor-pointer">
+                      <Sparkles className="w-8 h-8 mx-auto mb-3 text-primary" />
+                      <h4 className="font-medium mb-2">Hover Scale</h4>
+                      <p className="text-sm text-muted-foreground">Hover to see effect</p>
+                      <code className="text-xs bg-muted px-2 py-1 rounded mt-2 inline-block">hover-scale</code>
+                    </Card>
+
+                    <Card className="p-6 text-center cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-105">
+                      <Award className="w-8 h-8 mx-auto mb-3 text-secondary" />
+                      <h4 className="font-medium mb-2">Combined Effects</h4>
+                      <p className="text-sm text-muted-foreground">Scale + Shadow</p>
+                      <code className="text-xs bg-muted px-2 py-1 rounded mt-2 inline-block">hover:scale-105</code>
+                    </Card>
+
+                    <Card className="p-6 text-center cursor-pointer transition-all duration-200 hover:bg-accent/10">
+                      <Heart className="w-8 h-8 mx-auto mb-3 text-destructive transition-colors hover:text-destructive/70" />
+                      <h4 className="font-medium mb-2">Color Transition</h4>
+                      <p className="text-sm text-muted-foreground">Hover for color change</p>
+                      <code className="text-xs bg-muted px-2 py-1 rounded mt-2 inline-block">transition-colors</code>
+                    </Card>
+                  </div>
+                </ComponentShowcase>
+
+                {/* Button Animations */}
+                <ComponentShowcase title="Button Animations">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="space-y-2">
+                      <Button className="w-full transition-transform hover:scale-105">
+                        <Zap className="w-4 h-4 mr-2" />
+                        Scale Hover
+                      </Button>
+                      <code className="text-xs bg-muted px-2 py-1 rounded">hover:scale-105</code>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Button variant="secondary" className="w-full group">
+                        <ArrowRight className="w-4 h-4 mr-2 transition-transform group-hover:translate-x-1" />
+                        Slide Icon
+                      </Button>
+                      <code className="text-xs bg-muted px-2 py-1 rounded">group-hover:translate-x-1</code>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Button variant="outline" className="w-full relative overflow-hidden group">
+                        <span className="relative z-10">Sweep Effect</span>
+                        <div className="absolute inset-0 bg-primary transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                        <Star className="w-4 h-4 ml-2 relative z-10" />
+                      </Button>
+                      <code className="text-xs bg-muted px-2 py-1 rounded">sweep animation</code>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Button variant="ghost" className="w-full story-link">
+                        <ExternalLink className="w-4 h-4 mr-2" />
+                        Underline
+                      </Button>
+                      <code className="text-xs bg-muted px-2 py-1 rounded">story-link</code>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                {/* Loading Animations */}
+                <ComponentShowcase title="Loading Animations">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <Card className="p-4 text-center">
+                      <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin text-primary" />
+                      <h4 className="font-medium mb-2">Spinning Loader</h4>
+                      <code className="text-xs bg-muted px-2 py-1 rounded">animate-spin</code>
+                    </Card>
+
+                    <Card className="p-4 text-center">
+                      <div className="flex justify-center mb-3">
+                        <div className="flex space-x-1">
+                          <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+                          <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                          <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                        </div>
+                      </div>
+                      <h4 className="font-medium mb-2">Dot Loading</h4>
+                      <code className="text-xs bg-muted px-2 py-1 rounded">staggered bounce</code>
+                    </Card>
+
+                    <Card className="p-4 text-center">
+                      <div className="w-8 h-8 mx-auto mb-3 border-4 border-muted border-t-primary rounded-full animate-spin"></div>
+                      <h4 className="font-medium mb-2">Spinner</h4>
+                      <code className="text-xs bg-muted px-2 py-1 rounded">border spinner</code>
+                    </Card>
+
+                    <Card className="p-4 text-center">
+                      <div className="w-8 h-1 mx-auto mb-3 bg-muted rounded overflow-hidden">
+                        <div className="w-full h-full bg-primary rounded animate-pulse"></div>
+                      </div>
+                      <h4 className="font-medium mb-2">Progress Bar</h4>
+                      <code className="text-xs bg-muted px-2 py-1 rounded">animate-pulse</code>
+                    </Card>
+                  </div>
+                </ComponentShowcase>
+
+                {/* Icon Categories */}
+                <ComponentShowcase title="Icon Categories">
+                  <div className="space-y-6">
+                    
+                    {/* Navigation Icons */}
+                    <div>
+                      <h4 className="font-medium mb-4">Navigation Icons</h4>
+                      <div className="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4">
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Home className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Home</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Search className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Search</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Menu className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Menu</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <ArrowLeft className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Back</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <ArrowRight className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Forward</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <ChevronDown className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Expand</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <ChevronRight className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Next</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <ExternalLink className="w-6 h-6 mb-2" />
+                          <span className="text-xs">External</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Action Icons */}
+                    <div>
+                      <h4 className="font-medium mb-4">Action Icons</h4>
+                      <div className="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4">
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Plus className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Add</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Edit className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Edit</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Trash2 className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Delete</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Share className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Share</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Copy className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Copy</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Download className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Download</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Upload className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Upload</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Settings className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Settings</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Status Icons */}
+                    <div>
+                      <h4 className="font-medium mb-4">Status Icons</h4>
+                      <div className="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4">
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <CheckCircle className="w-6 h-6 mb-2 text-success" />
+                          <span className="text-xs">Success</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <AlertCircle className="w-6 h-6 mb-2 text-warning" />
+                          <span className="text-xs">Warning</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <X className="w-6 h-6 mb-2 text-destructive" />
+                          <span className="text-xs">Error</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Info className="w-6 h-6 mb-2 text-accent" />
+                          <span className="text-xs">Info</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <HelpCircle className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Help</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Bell className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Notification</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Shield className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Security</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Lock className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Locked</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Innovation & Business Icons */}
+                    <div>
+                      <h4 className="font-medium mb-4">Innovation & Business Icons</h4>
+                      <div className="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4">
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Sparkles className="w-6 h-6 mb-2 text-primary" />
+                          <span className="text-xs">Innovation</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Target className="w-6 h-6 mb-2 text-accent" />
+                          <span className="text-xs">Target</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Award className="w-6 h-6 mb-2 text-warning" />
+                          <span className="text-xs">Award</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Star className="w-6 h-6 mb-2 text-warning" />
+                          <span className="text-xs">Star</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Users className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Team</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Zap className="w-6 h-6 mb-2 text-primary" />
+                          <span className="text-xs">Energy</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Clock className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Time</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Calendar className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Calendar</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Communication Icons */}
+                    <div>
+                      <h4 className="font-medium mb-4">Communication Icons</h4>
+                      <div className="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4">
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Mail className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Email</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <MessageCircle className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Message</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Phone className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Phone</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Send className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Send</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <ThumbsUp className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Like</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Heart className="w-6 h-6 mb-2 text-destructive" />
+                          <span className="text-xs">Love</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Eye className="w-6 h-6 mb-2" />
+                          <span className="text-xs">View</span>
+                        </div>
+                        <div className="flex flex-col items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Languages className="w-6 h-6 mb-2" />
+                          <span className="text-xs">Language</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </ComponentShowcase>
+
+                {/* Icon Sizes & Variants */}
+                <ComponentShowcase title="Icon Sizes & Variants">
+                  <div className="space-y-6">
+                    
+                    {/* Size Variants */}
+                    <div>
+                      <h4 className="font-medium mb-4">Size Variants</h4>
+                      <div className="flex items-center gap-6">
+                        <div className="text-center">
+                          <Sparkles className="w-4 h-4 mx-auto mb-2" />
+                          <span className="text-xs">Small (16px)</span>
+                        </div>
+                        <div className="text-center">
+                          <Sparkles className="w-5 h-5 mx-auto mb-2" />
+                          <span className="text-xs">Medium (20px)</span>
+                        </div>
+                        <div className="text-center">
+                          <Sparkles className="w-6 h-6 mx-auto mb-2" />
+                          <span className="text-xs">Large (24px)</span>
+                        </div>
+                        <div className="text-center">
+                          <Sparkles className="w-8 h-8 mx-auto mb-2" />
+                          <span className="text-xs">XL (32px)</span>
+                        </div>
+                        <div className="text-center">
+                          <Sparkles className="w-12 h-12 mx-auto mb-2" />
+                          <span className="text-xs">XXL (48px)</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Color Variants */}
+                    <div>
+                      <h4 className="font-medium mb-4">Color Variants</h4>
+                      <div className="flex items-center gap-6">
+                        <div className="text-center">
+                          <Award className="w-6 h-6 mx-auto mb-2" />
+                          <span className="text-xs">Default</span>
+                        </div>
+                        <div className="text-center">
+                          <Award className="w-6 h-6 mx-auto mb-2 text-primary" />
+                          <span className="text-xs">Primary</span>
+                        </div>
+                        <div className="text-center">
+                          <Award className="w-6 h-6 mx-auto mb-2 text-secondary" />
+                          <span className="text-xs">Secondary</span>
+                        </div>
+                        <div className="text-center">
+                          <Award className="w-6 h-6 mx-auto mb-2 text-success" />
+                          <span className="text-xs">Success</span>
+                        </div>
+                        <div className="text-center">
+                          <Award className="w-6 h-6 mx-auto mb-2 text-warning" />
+                          <span className="text-xs">Warning</span>
+                        </div>
+                        <div className="text-center">
+                          <Award className="w-6 h-6 mx-auto mb-2 text-destructive" />
+                          <span className="text-xs">Destructive</span>
+                        </div>
+                        <div className="text-center">
+                          <Award className="w-6 h-6 mx-auto mb-2 text-muted-foreground" />
+                          <span className="text-xs">Muted</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Icon with Backgrounds */}
+                    <div>
+                      <h4 className="font-medium mb-4">Icons with Backgrounds</h4>
+                      <div className="flex items-center gap-6">
+                        <div className="text-center">
+                          <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <Star className="w-5 h-5 text-primary" />
+                          </div>
+                          <span className="text-xs">Circle Soft</span>
+                        </div>
+                        <div className="text-center">
+                          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center mx-auto mb-2">
+                            <Star className="w-5 h-5 text-white" />
+                          </div>
+                          <span className="text-xs">Circle Solid</span>
+                        </div>
+                        <div className="text-center">
+                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <Star className="w-5 h-5 text-primary" />
+                          </div>
+                          <span className="text-xs">Square Soft</span>
+                        </div>
+                        <div className="text-center">
+                          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <Star className="w-5 h-5 text-white" />
+                          </div>
+                          <span className="text-xs">Square Solid</span>
+                        </div>
+                        <div className="text-center">
+                          <div className="w-10 h-10 border-2 border-primary rounded-full flex items-center justify-center mx-auto mb-2">
+                            <Star className="w-5 h-5 text-primary" />
+                          </div>
+                          <span className="text-xs">Outlined</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </ComponentShowcase>
+
+                {/* Advanced Animations */}
+                <ComponentShowcase title="Advanced Animations">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <Card className="p-6 text-center">
+                      <h4 className="font-medium mb-4">Accordion Animation</h4>
+                      <div className="space-y-2">
+                        <div className="p-3 bg-muted/20 rounded">Header 1</div>
+                        <div className="overflow-hidden">
+                          <div className="p-3 bg-muted/10 rounded animate-accordion-down">
+                            This content slides down smoothly with opacity fade
+                          </div>
+                        </div>
+                      </div>
+                      <code className="text-xs bg-muted px-2 py-1 rounded mt-3 inline-block">animate-accordion-down</code>
+                    </Card>
+
+                    <Card className="p-6 text-center">
+                      <h4 className="font-medium mb-4">Slide Animation</h4>
+                      <div className="relative h-16 bg-muted/20 rounded overflow-hidden">
+                        <div className="absolute inset-0 bg-primary/80 rounded animate-slide-in-right flex items-center justify-center text-white">
+                          Slide In
+                        </div>
+                      </div>
+                      <code className="text-xs bg-muted px-2 py-1 rounded mt-3 inline-block">animate-slide-in-right</code>
+                    </Card>
+
+                    <Card className="p-6 text-center">
+                      <h4 className="font-medium mb-4">Floating Animation</h4>
+                      <div className="flex justify-center">
+                        <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center animate-bounce">
+                          <Sparkles className="w-6 h-6 text-white" />
+                        </div>
+                      </div>
+                      <code className="text-xs bg-muted px-2 py-1 rounded mt-3 inline-block">animate-bounce</code>
+                    </Card>
+
+                  </div>
+                </ComponentShowcase>
+
               </div>
             </div>
           </TabsContent>
