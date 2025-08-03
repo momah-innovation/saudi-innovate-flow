@@ -36,7 +36,7 @@ All colors MUST be HSL for theming consistency.
     --muted-foreground: 215 16% 47%;
 
     /* Accent colors - Saudi Blue */
-    --accent: 213 94% 68%;
+    --accent: 213 94% 55%;
     --accent-foreground: 0 0% 98%;
 
     /* Status colors */
@@ -131,7 +131,7 @@ All colors MUST be HSL for theming consistency.
     --muted-foreground: 215 20.2% 65.1%;
 
     /* Keep accent consistent for branding */
-    --accent: 213 94% 68%;
+    --accent: 213 94% 55%;
     --accent-foreground: 0 0% 98%;
 
     /* Status colors for dark mode */
