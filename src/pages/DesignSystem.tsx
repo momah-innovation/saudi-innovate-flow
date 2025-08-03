@@ -5616,7 +5616,9 @@ const DesignSystem = () => {
                 </ComponentShowcase>
 
                 {/* Splash Screen Patterns */}
-                <ComponentShowcase title="Splash Screen Patterns">
+                  <div>Placeholder content</div>
+                </div>
+              </TabsContent>
                         {/* Theme Selector for Heroes */}
                         <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/50">
                           <span className="text-sm font-medium">Hero Theme:</span>
