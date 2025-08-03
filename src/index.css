@@ -372,6 +372,104 @@ All colors MUST be HSL for theming consistency.
   @apply hover:text-destructive;
 }
 
+/* Priority level utilities */
+.priority-urgent {
+  @apply bg-destructive text-destructive-foreground;
+}
+
+.priority-high {
+  @apply bg-warning text-warning-foreground;
+}
+
+.priority-medium {
+  @apply bg-warning/70 text-warning-foreground;
+}
+
+.priority-low {
+  @apply bg-success text-success-foreground;
+}
+
+/* Event status utilities */
+.event-scheduled {
+  @apply badge-info;
+}
+
+.event-ongoing {
+  @apply badge-success;
+}
+
+.event-completed {
+  @apply bg-muted text-muted-foreground border-muted;
+}
+
+.event-cancelled {
+  @apply badge-error;
+}
+
+/* Score rating utilities */
+.score-excellent {
+  @apply badge-success;
+}
+
+.score-good {
+  @apply badge-warning;
+}
+
+.score-average {
+  @apply bg-warning/50 text-warning border-warning/20;
+}
+
+.score-poor {
+  @apply badge-error;
+}
+
+/* Activity type utilities */
+.activity-assignment {
+  @apply bg-primary text-primary-foreground;
+}
+
+.activity-completion {
+  @apply bg-success text-success-foreground;
+}
+
+.activity-comment {
+  @apply bg-warning text-warning-foreground;
+}
+
+.activity-general {
+  @apply bg-innovation text-innovation-foreground;
+}
+
+/* Icon color utilities using semantic tokens */
+.icon-success {
+  @apply text-success;
+}
+
+.icon-warning {
+  @apply text-warning;
+}
+
+.icon-error {
+  @apply text-destructive;
+}
+
+.icon-info {
+  @apply text-primary;
+}
+
+/* Workload indicator utilities */
+.workload-critical {
+  @apply bg-destructive;
+}
+
+.workload-high {
+  @apply bg-warning;
+}
+
+.workload-normal {
+  @apply bg-success;
+}
+
 /* RTL Support */
 .rtl {
   direction: rtl;
