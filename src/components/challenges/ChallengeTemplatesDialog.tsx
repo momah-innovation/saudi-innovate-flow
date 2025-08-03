@@ -26,6 +26,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { getCategoryMapping, getDifficultyMapping, getFilterOptions } from '@/config/challengesPageConfig';
 
 interface ChallengeTemplate {
   id: string;
@@ -244,23 +245,13 @@ export const ChallengeTemplatesDialog = ({
   });
 
   const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'health': return <Heart className="w-4 h-4" />;
-      case 'educational': return <Lightbulb className="w-4 h-4" />;
-      case 'environmental': return <Leaf className="w-4 h-4" />;
-      case 'technical': return <Code className="w-4 h-4" />;
-      case 'business': return <Briefcase className="w-4 h-4" />;
-      default: return <Target className="w-4 h-4" />;
-    }
+    const mapping = getCategoryMapping(category);
+    const IconComponent = mapping.icon;
+    return <IconComponent className="w-4 h-4" />;
   };
 
   const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'سهل': return 'bg-green-100 text-green-800';
-      case 'متوسط': return 'bg-yellow-100 text-yellow-800';
-      case 'صعب': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
+    return getDifficultyMapping(difficulty).color;
   };
 
   const handleTemplateSelect = (template: ChallengeTemplate) => {
@@ -356,11 +347,11 @@ export const ChallengeTemplatesDialog = ({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">{isRTL ? 'جميع الفئات' : 'All Categories'}</SelectItem>
-              <SelectItem value="health">{isRTL ? 'صحة' : 'Health'}</SelectItem>
-              <SelectItem value="educational">{isRTL ? 'تعليمي' : 'Educational'}</SelectItem>
-              <SelectItem value="environmental">{isRTL ? 'بيئي' : 'Environmental'}</SelectItem>
-              <SelectItem value="technical">{isRTL ? 'تقني' : 'Technical'}</SelectItem>
-              <SelectItem value="business">{isRTL ? 'أعمال' : 'Business'}</SelectItem>
+              {getFilterOptions('category').filter(cat => cat.value !== 'all').map((category) => (
+                <SelectItem key={category.value} value={category.value}>
+                  {isRTL ? category.labelAr : category.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
           
@@ -370,9 +361,11 @@ export const ChallengeTemplatesDialog = ({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">{isRTL ? 'جميع المستويات' : 'All Levels'}</SelectItem>
-              <SelectItem value="سهل">{isRTL ? 'سهل' : 'Easy'}</SelectItem>
-              <SelectItem value="متوسط">{isRTL ? 'متوسط' : 'Medium'}</SelectItem>
-              <SelectItem value="صعب">{isRTL ? 'صعب' : 'Hard'}</SelectItem>
+              {getFilterOptions('difficulty').filter(diff => diff.value !== 'all').map((difficulty) => (
+                <SelectItem key={difficulty.value} value={difficulty.value}>
+                  {isRTL ? difficulty.labelAr : difficulty.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

@@ -1,6 +1,8 @@
 import { 
   Target, Zap, Calendar, X, Clock, Users, Award, 
-  TrendingUp, Star, Sparkles 
+  TrendingUp, Star, Sparkles, CheckCircle, AlertCircle,
+  PlayCircle, XCircle, PauseCircle, Heart, Lightbulb,
+  Leaf, Code, Briefcase
 } from 'lucide-react';
 import { ChallengesPageConfig } from '@/types/challengesConfig';
 
@@ -148,6 +150,179 @@ export const challengesPageConfig: ChallengesPageConfig = {
     ]
   },
 
+  // Status, Priority, Difficulty, and Category Mappings
+  mappings: {
+    status: [
+      {
+        value: 'active',
+        label: 'Active',
+        labelAr: 'نشط',
+        color: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400',
+        icon: CheckCircle
+      },
+      {
+        value: 'published',
+        label: 'Active',
+        labelAr: 'نشط',
+        color: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400',
+        icon: CheckCircle
+      },
+      {
+        value: 'upcoming',
+        label: 'Upcoming',
+        labelAr: 'قريباً',
+        color: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400',
+        icon: PlayCircle
+      },
+      {
+        value: 'planning',
+        label: 'Upcoming',
+        labelAr: 'قريباً',
+        color: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400',
+        icon: PlayCircle
+      },
+      {
+        value: 'draft',
+        label: 'Draft',
+        labelAr: 'مسودة',
+        color: 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400',
+        icon: AlertCircle
+      },
+      {
+        value: 'closed',
+        label: 'Closed',
+        labelAr: 'مغلق',
+        color: 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400',
+        icon: XCircle
+      },
+      {
+        value: 'completed',
+        label: 'Completed',
+        labelAr: 'مكتمل',
+        color: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400',
+        icon: CheckCircle
+      },
+      {
+        value: 'cancelled',
+        label: 'Cancelled',
+        labelAr: 'ملغي',
+        color: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400',
+        icon: XCircle
+      }
+    ],
+
+    priority: [
+      {
+        value: 'عالي',
+        label: 'High',
+        labelAr: 'عالي',
+        color: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400'
+      },
+      {
+        value: 'High',
+        label: 'High',
+        labelAr: 'عالي',
+        color: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400'
+      },
+      {
+        value: 'متوسط',
+        label: 'Medium',
+        labelAr: 'متوسط',
+        color: 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400'
+      },
+      {
+        value: 'Medium',
+        label: 'Medium',
+        labelAr: 'متوسط',
+        color: 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400'
+      },
+      {
+        value: 'منخفض',
+        label: 'Low',
+        labelAr: 'منخفض',
+        color: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400'
+      },
+      {
+        value: 'Low',
+        label: 'Low',
+        labelAr: 'منخفض',
+        color: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400'
+      }
+    ],
+
+    difficulty: [
+      {
+        value: 'صعب',
+        label: 'Hard',
+        labelAr: 'صعب',
+        color: 'bg-red-100 text-red-800 border-red-200'
+      },
+      {
+        value: 'Hard',
+        label: 'Hard',
+        labelAr: 'صعب',
+        color: 'bg-red-100 text-red-800 border-red-200'
+      },
+      {
+        value: 'متوسط',
+        label: 'Medium',
+        labelAr: 'متوسط',
+        color: 'bg-yellow-100 text-yellow-800 border-yellow-200'
+      },
+      {
+        value: 'Medium',
+        label: 'Medium',
+        labelAr: 'متوسط',
+        color: 'bg-yellow-100 text-yellow-800 border-yellow-200'
+      },
+      {
+        value: 'سهل',
+        label: 'Easy',
+        labelAr: 'سهل',
+        color: 'bg-green-100 text-green-800 border-green-200'
+      },
+      {
+        value: 'Easy',
+        label: 'Easy',
+        labelAr: 'سهل',
+        color: 'bg-green-100 text-green-800 border-green-200'
+      }
+    ],
+
+    categories: [
+      {
+        value: 'health',
+        label: 'Health',
+        labelAr: 'صحة',
+        icon: Heart
+      },
+      {
+        value: 'educational',
+        label: 'Educational',
+        labelAr: 'تعليمي',
+        icon: Lightbulb
+      },
+      {
+        value: 'environmental',
+        label: 'Environmental',
+        labelAr: 'بيئي',
+        icon: Leaf
+      },
+      {
+        value: 'technical',
+        label: 'Technical',
+        labelAr: 'تقني',
+        icon: Code
+      },
+      {
+        value: 'business',
+        label: 'Business',
+        labelAr: 'أعمال',
+        icon: Briefcase
+      }
+    ]
+  },
+
   // Default Filter State
   defaultFilters: {
     search: '',
@@ -194,6 +369,23 @@ export const getTabConfig = (tabKey: string) => {
 
 export const getFilterOptions = (filterType: keyof typeof challengesPageConfig.filters) => {
   return challengesPageConfig.filters[filterType] || [];
+};
+
+// Mapping helper functions
+export const getStatusMapping = (status: string) => {
+  return challengesPageConfig.mappings.status.find(s => s.value === status) || challengesPageConfig.mappings.status[0];
+};
+
+export const getPriorityMapping = (priority: string) => {
+  return challengesPageConfig.mappings.priority.find(p => p.value === priority) || challengesPageConfig.mappings.priority[0];
+};
+
+export const getDifficultyMapping = (difficulty: string) => {
+  return challengesPageConfig.mappings.difficulty.find(d => d.value === difficulty) || challengesPageConfig.mappings.difficulty[0];
+};
+
+export const getCategoryMapping = (category: string) => {
+  return challengesPageConfig.mappings.categories.find(c => c.value === category) || challengesPageConfig.mappings.categories[0];
 };
 
 export const createGridClassName = (viewMode: string) => {

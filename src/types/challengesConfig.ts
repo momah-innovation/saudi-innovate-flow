@@ -23,6 +23,35 @@ export interface FilterOption {
   color?: string;
 }
 
+export interface StatusMapping {
+  value: string;
+  label: string;
+  labelAr: string;
+  color: string;
+  icon: any;
+}
+
+export interface PriorityMapping {
+  value: string;
+  label: string;
+  labelAr: string;
+  color: string;
+}
+
+export interface DifficultyMapping {
+  value: string;
+  label: string;
+  labelAr: string;
+  color: string;
+}
+
+export interface CategoryMapping {
+  value: string;
+  label: string;
+  labelAr: string;
+  icon: any;
+}
+
 export interface TabConfig {
   key: string;
   label: string;
@@ -43,6 +72,13 @@ export interface ChallengesPageConfig {
     difficulty: FilterOption[];
     sortOptions: FilterOption[];
     features: FilterOption[];
+  };
+
+  mappings: {
+    status: StatusMapping[];
+    priority: PriorityMapping[];
+    difficulty: DifficultyMapping[];
+    categories: CategoryMapping[];
   };
   
   defaultFilters: {

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
+import { getStatusMapping, getPriorityMapping, getDifficultyMapping } from '@/config/challengesPageConfig';
 
 interface Challenge {
   id: string;
@@ -61,72 +62,17 @@ export const ChallengeCard = ({
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
-  // Helper functions
-  const getStatusColor = (status: string) => {
-    const colors = {
-      active: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400',
-      published: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400',
-      upcoming: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400',
-      planning: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400',
-      draft: 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400',
-      closed: 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400',
-      completed: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400',
-      cancelled: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400'
-    };
-    return colors[status as keyof typeof colors] || colors.draft;
-  };
+  // Get mappings from config
+  const statusMapping = getStatusMapping(challenge.status);
+  const priorityMapping = getPriorityMapping(challenge.priority_level || 'متوسط');
+  const difficultyMapping = getDifficultyMapping(challenge.difficulty || 'متوسط');
 
-  const getPriorityColor = (priority: string) => {
-    const colors = {
-      'عالي': 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400',
-      'High': 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400',
-      'متوسط': 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400',
-      'Medium': 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400',
-      'منخفض': 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400',
-      'Low': 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400'
-    };
-    return colors[priority as keyof typeof colors] || colors['متوسط'];
-  };
-
-  const getDifficultyColor = (difficulty: string) => {
-    const colors = {
-      'صعب': 'bg-red-100 text-red-800 border-red-200',
-      'Hard': 'bg-red-100 text-red-800 border-red-200',
-      'متوسط': 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      'Medium': 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      'سهل': 'bg-green-100 text-green-800 border-green-200',
-      'Easy': 'bg-green-100 text-green-800 border-green-200'
-    };
-    return colors[difficulty as keyof typeof colors] || colors['متوسط'];
-  };
-
-  const getStatusText = (status: string) => {
-    const statusMap = {
-      active: isRTL ? 'نشط' : 'Active',
-      published: isRTL ? 'نشط' : 'Active',
-      upcoming: isRTL ? 'قريباً' : 'Upcoming',
-      planning: isRTL ? 'قريباً' : 'Upcoming',
-      draft: isRTL ? 'مسودة' : 'Draft',
-      closed: isRTL ? 'مغلق' : 'Closed',
-      completed: isRTL ? 'مكتمل' : 'Completed',
-      cancelled: isRTL ? 'ملغي' : 'Cancelled'
-    };
-    return statusMap[status as keyof typeof statusMap] || status;
-  };
-
-  const getStatusIcon = (status: string) => {
-    const iconMap = {
-      active: CheckCircle,
-      published: CheckCircle,
-      upcoming: Clock,
-      planning: Clock,
-      closed: AlertCircle,
-      completed: CheckCircle,
-      cancelled: AlertCircle,
-      draft: Clock
-    };
-    return iconMap[status as keyof typeof iconMap] || Target;
-  };
+  // Helper functions using centralized config
+  const getStatusColor = (status: string) => getStatusMapping(status).color;
+  const getPriorityColor = (priority: string) => getPriorityMapping(priority).color;
+  const getDifficultyColor = (difficulty: string) => getDifficultyMapping(difficulty).color;
+  const getStatusText = (status: string) => isRTL ? getStatusMapping(status).labelAr : getStatusMapping(status).label;
+  const getStatusIcon = (status: string) => getStatusMapping(status).icon;
 
   const calculateDaysLeft = () => {
     if (!challenge.end_date) return null;
@@ -171,7 +117,7 @@ export const ChallengeCard = ({
   // Calculations
   const daysLeft = calculateDaysLeft();
   const progress = calculateProgress();
-  const StatusIcon = getStatusIcon(challenge.status);
+  const StatusIcon = statusMapping.icon;
   const isUrgent = daysLeft !== null && daysLeft <= 7 && daysLeft > 0;
   const isNew = new Date(challenge.start_date || Date.now()) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const title = isRTL ? challenge.title_ar : challenge.title_en || challenge.title_ar;
