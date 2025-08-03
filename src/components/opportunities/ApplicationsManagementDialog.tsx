@@ -271,7 +271,7 @@ export const ApplicationsManagementDialog = ({
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                        <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center text-white font-bold">
                           {application.application_type === 'organization' ? 
                             <Building2 className="w-6 h-6" /> : 
                             <User className="w-6 h-6" />

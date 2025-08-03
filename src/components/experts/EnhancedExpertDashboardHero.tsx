@@ -69,7 +69,7 @@ export const EnhancedExpertDashboardHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Background with animated gradients */}
-      <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-blue-600 to-violet-600">
+      <div className="absolute inset-0 bg-gradient-primary">
         <div className="absolute inset-0 bg-[url('/api/placeholder/1920/600')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
       </div>
@@ -148,7 +148,7 @@ export const EnhancedExpertDashboardHero = ({
               <Button
                 onClick={onStartEvaluating}
                 size="lg"
-                className="bg-gradient-to-r from-emerald-400 to-blue-500 text-white hover:from-emerald-500 hover:to-blue-600 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <Star className="w-5 h-5 mr-2" />
                 {isRTL ? 'ابدأ التقييم' : 'Start Evaluating'}
@@ -181,7 +181,7 @@ export const EnhancedExpertDashboardHero = ({
               <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
                 <CardContent className="p-0">
                   {/* Priority Header */}
-                  <div className="relative h-48 overflow-hidden rounded-t-lg bg-gradient-to-br from-emerald-500/20 to-blue-500/20 flex items-center justify-center">
+                  <div className="relative h-48 overflow-hidden rounded-t-lg bg-gradient-overlay flex items-center justify-center">
                     <div className="text-center space-y-4">
                       <div className="p-4 bg-white/10 rounded-full">
                         <Sparkles className="w-16 h-16 text-yellow-300" />
@@ -248,7 +248,7 @@ export const EnhancedExpertDashboardHero = ({
                     />
 
                     <Button 
-                      className="w-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white"
+                      className="w-full bg-gradient-primary hover:opacity-90 text-white"
                       onClick={onStartEvaluating}
                     >
                       {isRTL ? 'ابدأ التقييم' : 'Start Evaluation'}

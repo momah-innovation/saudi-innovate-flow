@@ -66,7 +66,7 @@ export const EnhancedEventsHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Background with animated gradients */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
+      <div className="absolute inset-0 bg-gradient-primary">
         <div className="absolute inset-0 bg-[url('/event-images/innovation.jpg')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
       </div>
@@ -188,7 +188,7 @@ export const EnhancedEventsHero = ({
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center">
+                      <div className="w-full h-full bg-gradient-overlay flex items-center justify-center">
                         <Calendar className="w-16 h-16 text-white/60" />
                       </div>
                     )}
@@ -236,7 +236,7 @@ export const EnhancedEventsHero = ({
                     />
 
                     <Button 
-                      className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white"
+                      className="w-full bg-gradient-primary hover:opacity-90 text-white"
                     >
                       {isRTL ? 'عرض التفاصيل' : 'View Details'}
                       <ArrowRight className="w-4 h-4 ml-2" />

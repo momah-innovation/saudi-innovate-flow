@@ -58,7 +58,7 @@ export const ExpertShowcase = ({
   return (
     <div className="space-y-8">
       {/* Expert Statistics */}
-      <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-100">
+      <Card className="bg-gradient-overlay border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Crown className="w-5 h-5 text-purple-600" />

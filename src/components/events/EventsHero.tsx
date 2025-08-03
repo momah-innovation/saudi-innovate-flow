@@ -62,7 +62,7 @@ export const EventsHero = ({
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg group-hover:shadow-blue-500/25 transition-shadow">
+                  <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
                     <CalendarIcon className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -110,7 +110,7 @@ export const EventsHero = ({
 
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg group-hover:shadow-purple-500/25 transition-shadow">
+                  <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
                     <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <div>

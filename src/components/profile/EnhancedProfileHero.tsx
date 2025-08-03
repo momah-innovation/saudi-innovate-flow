@@ -152,7 +152,7 @@ export const EnhancedProfileHero = ({
                 "shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105",
                 isEditing 
                   ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white hover:from-green-500 hover:to-emerald-600"
-                  : "bg-gradient-to-r from-blue-400 to-cyan-500 text-white hover:from-blue-500 hover:to-cyan-600"
+                  : "bg-gradient-primary text-white hover:opacity-90"
               )}
             >
               {isEditing ? (

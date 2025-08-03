@@ -196,7 +196,7 @@ export const EnhancedPartnerDashboardHero = ({
 
                 <Button 
                   onClick={() => onNavigate('/partner-profile')}
-                  className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white"
+                  className="w-full bg-gradient-primary hover:opacity-90 text-white"
                 >
                   {t('viewProfile')}
                   <ArrowRight className={cn("w-4 h-4", isRTL ? "mr-2" : "ml-2")} />

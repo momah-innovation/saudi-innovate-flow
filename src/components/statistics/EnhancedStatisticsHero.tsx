@@ -61,7 +61,7 @@ export const EnhancedStatisticsHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Background with animated gradients */}
-      <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600">
+      <div className="absolute inset-0 bg-gradient-primary">
         <div className="absolute inset-0 bg-[url('/dashboard-images/analytics-charts.jpg')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
       </div>
@@ -222,7 +222,7 @@ export const EnhancedStatisticsHero = ({
                   />
 
                   <Button 
-                    className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white"
+                    className="w-full bg-gradient-primary hover:opacity-90 text-white"
                   >
                     {isRTL ? 'عرض التحليلات' : 'View Analytics'}
                     <ArrowRight className="w-4 h-4 ml-2" />

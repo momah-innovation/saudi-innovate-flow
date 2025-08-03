@@ -60,7 +60,7 @@ export const EnhancedEvaluationHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Background with animated gradients */}
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600">
+      <div className="absolute inset-0 bg-gradient-primary">
         <div className="absolute inset-0 bg-[url('/dashboard-images/team-collaboration.jpg')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
       </div>
@@ -174,7 +174,7 @@ export const EnhancedEvaluationHero = ({
               <CardContent className="p-0">
                 {/* Evaluation Analytics */}
                 <div className="relative h-48 overflow-hidden rounded-t-lg">
-                  <div className="w-full h-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center">
+                  <div className="w-full h-full bg-gradient-overlay flex items-center justify-center">
                     <BarChart3 className="w-16 h-16 text-white/60" />
                   </div>
                   
@@ -221,7 +221,7 @@ export const EnhancedEvaluationHero = ({
                   />
 
                   <Button 
-                    className="w-full bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white"
+                    className="w-full bg-gradient-primary hover:opacity-90 text-white"
                   >
                     {isRTL ? 'عرض التقييمات' : 'View Evaluations'}
                     <ArrowRight className="w-4 h-4 ml-2" />

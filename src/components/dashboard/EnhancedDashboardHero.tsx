@@ -57,7 +57,7 @@ export const EnhancedDashboardHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Background with animated gradients and enhanced contrast */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
+      <div className="absolute inset-0 bg-gradient-primary">
         <div className="absolute inset-0 bg-[url('/dashboard-images/dashboard-hero.jpg')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/40" />
       </div>
@@ -197,7 +197,7 @@ export const EnhancedDashboardHero = ({
 
                 <Button 
                   onClick={() => onNavigate('/achievements')}
-                  className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+                  className="w-full bg-gradient-primary hover:opacity-90"
                 >
                   {isRTL ? 'عرض الإنجازات' : 'View Achievements'}
                   <ArrowRight className="w-4 h-4 ml-2" />
