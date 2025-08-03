@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n/config";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import { DirectionProvider } from "@/components/ui/direction-provider";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { MaintenanceGuard } from "@/components/maintenance/MaintenanceGuard";
@@ -75,10 +76,11 @@ const App = () => (
     <I18nextProvider i18n={i18n}>
       <DirectionProvider>
         <TooltipProvider>
-          <AuthProvider>
-        <Toaster />
-        <Sonner />
-        <MaintenanceGuard>
+          <ThemeProvider>
+            <AuthProvider>
+              <Toaster />
+              <Sonner />
+              <MaintenanceGuard>
           <BrowserRouter>
           <Routes>
             <Route path="/auth" element={<Auth />} />
@@ -460,12 +462,13 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
           </BrowserRouter>
-        </MaintenanceGuard>
-      </AuthProvider>
-    </TooltipProvider>
-  </DirectionProvider>
-</I18nextProvider>
-</QueryClientProvider>
+         </MaintenanceGuard>
+            </AuthProvider>
+          </ThemeProvider>
+        </TooltipProvider>
+      </DirectionProvider>
+    </I18nextProvider>
+  </QueryClientProvider>
 );
 
 export default App;

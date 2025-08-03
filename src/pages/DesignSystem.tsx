@@ -19,12 +19,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { useTheme } from 'next-themes';
+import { ThemeSelector } from '@/components/ui/theme-selector';
+import { useThemeSystem } from '@/contexts/ThemeContext';
 import { cn } from '@/lib/utils';
 
 const DesignSystem = () => {
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const { toast } = useToast();
-  const { theme, setTheme } = useTheme();
+  const { theme: darkModeTheme, setTheme: setDarkModeTheme } = useTheme();
+  const { currentTheme } = useThemeSystem();
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -76,18 +79,29 @@ const DesignSystem = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-4xl font-bold mb-2">Design System</h1>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-lg text-muted-foreground mb-4">
                 Complete showcase of semantic tokens, components, and design patterns
               </p>
+              <div className="flex items-center gap-2 text-sm">
+                <span className="font-medium">Current Theme:</span>
+                <Badge variant="outline" className="text-primary border-primary">
+                  {currentTheme.name}
+                </Badge>
+                <span className="text-muted-foreground">•</span>
+                <span className="text-muted-foreground">{currentTheme.description}</span>
+              </div>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            >
-              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              Toggle Theme
-            </Button>
+            <div className="flex items-center gap-4">
+              <ThemeSelector className="w-64" />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setDarkModeTheme(darkModeTheme === 'dark' ? 'light' : 'dark')}
+              >
+                {darkModeTheme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                Toggle Dark Mode
+              </Button>
+            </div>
           </div>
         </div>
       </div>
