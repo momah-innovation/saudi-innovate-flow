@@ -417,15 +417,15 @@ export const ChallengeCard = ({
         {/* Stats */}
         {variant !== 'compact' && (
           <div className="grid grid-cols-3 gap-3 mb-4">
-            <div className={`text-center p-3 ${challengesPageConfig.ui.gradients.featured} border border-violet-200/50 rounded-xl shadow-sm`}>
+            <div className={`text-center p-3 ${challengesPageConfig.ui.gradients.featured} border ${challengesPageConfig.ui.glassMorphism.badge} rounded-xl shadow-sm`}>
               <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.purple}`}>{challenge.participants || 0}</div>
               <div className={`text-xs ${challengesPageConfig.ui.colors.stats.purple}`}>{isRTL ? 'مشارك' : 'participants'}</div>
             </div>
-            <div className={`text-center p-3 ${challengesPageConfig.ui.gradients.info} border border-blue-200/50 rounded-xl shadow-sm`}>
+            <div className={`text-center p-3 ${challengesPageConfig.ui.gradients.info} border ${challengesPageConfig.ui.glassMorphism.badge} rounded-xl shadow-sm`}>
               <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.blue}`}>{challenge.submissions || 0}</div>
               <div className={`text-xs ${challengesPageConfig.ui.colors.stats.blue}`}>{isRTL ? 'مقترح' : 'submissions'}</div>
             </div>
-            <div className={`text-center p-3 ${challengesPageConfig.ui.gradients.success} border border-emerald-200/50 rounded-xl shadow-sm`}>
+            <div className={`text-center p-3 ${challengesPageConfig.ui.gradients.success} border ${challengesPageConfig.ui.glassMorphism.badge} rounded-xl shadow-sm`}>
               <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.green}`}>{challenge.success_rate || 85}%</div>
               <div className={`text-xs ${challengesPageConfig.ui.colors.stats.green}`}>{isRTL ? 'نجاح' : 'success'}</div>
             </div>

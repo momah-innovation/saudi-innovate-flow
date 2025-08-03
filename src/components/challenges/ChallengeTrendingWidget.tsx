@@ -169,7 +169,7 @@ export const ChallengeTrendingWidget = ({
             {trendingChallenges.map((challenge, index) => (
               <div 
                 key={challenge.id}
-                className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-muted/30 to-muted/10 hover:from-muted/50 hover:to-muted/20 transition-all cursor-pointer group border border-muted/50 hover:border-primary/20"
+                className={`flex items-start gap-3 p-3 rounded-lg ${challengesPageConfig.ui.glassMorphism.card} ${challengesPageConfig.ui.glassMorphism.cardHover} transition-all cursor-pointer group border border-muted/50 hover:border-primary/20`}
                 onClick={() => {
                   onChallengeSelect?.(challenge.id);
                   onChallengeClick?.(challenge);

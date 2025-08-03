@@ -79,9 +79,9 @@ export const ChallengesHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Background with animated gradients and enhanced contrast */}
-      <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-purple-600 to-blue-600">
+      <div className={`absolute inset-0 ${challengesPageConfig.ui.gradients.hero}`}>
         <div className="absolute inset-0 bg-[url('/api/placeholder/1920/600')] opacity-10 bg-cover bg-center" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/40" />
+        <div className={`absolute inset-0 ${challengesPageConfig.ui.colors.background.overlay}`} />
       </div>
 
       {/* Animated background elements */}
@@ -111,11 +111,11 @@ export const ChallengesHero = ({
                 <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold ${challengesPageConfig.ui.colors.text.accent} leading-tight`}>
                   {isRTL ? (
                     <>
-                      اكتشف <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">التحديات</span> المبتكرة
+                       اكتشف <span className={`text-transparent bg-clip-text ${challengesPageConfig.ui.gradients.textHighlight}`}>التحديات</span> المبتكرة
                     </>
                   ) : (
                     <>
-                      Discover <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Innovation</span> Challenges
+                      Discover <span className={`text-transparent bg-clip-text ${challengesPageConfig.ui.gradients.textHighlight}`}>Innovation</span> Challenges
                     </>
                   )}
                 </h1>
@@ -201,7 +201,7 @@ export const ChallengesHero = ({
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center">
+                      <div className={`w-full h-full ${challengesPageConfig.ui.gradients.featured} flex items-center justify-center`}>
                         <Target className={`w-16 h-16 ${challengesPageConfig.ui.colors.text.muted}`} />
                       </div>
                     )}
@@ -220,7 +220,7 @@ export const ChallengesHero = ({
                       </Badge>
                     </div>
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className={`absolute inset-0 ${challengesPageConfig.ui.colors.background.overlay}`} />
                   </div>
 
                   <div className="p-6 space-y-4">

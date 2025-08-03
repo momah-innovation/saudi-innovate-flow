@@ -133,7 +133,7 @@ export const ChallengeFilters = ({
   return (
     <div className={cn("space-y-6", challengesPageConfig.ui.animations.fadeIn, className)}>
       {/* Enhanced Filter Card with Glass Morphism */}
-      <Card className={cn("backdrop-blur-sm border-violet-200/50 shadow-xl", challengesPageConfig.ui.gradients.hero)}>
+      <Card className={cn("backdrop-blur-sm border-primary/20 shadow-xl", challengesPageConfig.ui.gradients.hero)}>
         <CardContent className="p-4">
           <div className="flex items-center gap-3 w-full overflow-x-auto">
             {/* Collapsible Search Bar */}
@@ -148,7 +148,7 @@ export const ChallengeFilters = ({
                     variant="outline"
                     size="sm"
                     onClick={handleSearchClick}
-                    className={`h-10 w-10 p-0 transition-all duration-300 ${challengesPageConfig.ui.effects.hoverScale} ${challengesPageConfig.ui.gradients.filter} border-violet-300 hover:${challengesPageConfig.ui.gradients.filterLight} shadow-md`}
+                    className={`h-10 w-10 p-0 transition-all duration-300 ${challengesPageConfig.ui.effects.hoverScale} ${challengesPageConfig.ui.gradients.filter} border-primary/30 hover:${challengesPageConfig.ui.gradients.filterLight} shadow-md`}
                     title={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
                   >
                     <Search className={`h-4 w-4 ${challengesPageConfig.ui.colors.stats.purple}`} />
