@@ -54,7 +54,7 @@ export const EnhancedProfileHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Background with animated gradients */}
-      <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600">
+      <div className="absolute inset-0 bg-gradient-primary">
         <div className="absolute inset-0 bg-[url('/api/placeholder/1920/600')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
       </div>
@@ -151,7 +151,7 @@ export const EnhancedProfileHero = ({
               className={cn(
                 "shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105",
                 isEditing 
-                  ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white hover:from-green-500 hover:to-emerald-600"
+                  ? "bg-gradient-primary text-white hover:opacity-90"
                   : "bg-gradient-primary text-white hover:opacity-90"
               )}
             >

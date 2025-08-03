@@ -136,7 +136,7 @@ export const TrendingEventsWidget = ({
                 onClick={() => onEventSelect?.(event.id)}
               >
                 <div className="flex-shrink-0">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-sm font-bold">
+                  <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white text-sm font-bold">
                     {index + 1}
                   </div>
                 </div>

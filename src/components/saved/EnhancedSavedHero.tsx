@@ -57,7 +57,7 @@ export const EnhancedSavedHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Background with animated gradients */}
-      <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600">
+      <div className="absolute inset-0 bg-gradient-primary">
         <div className="absolute inset-0 bg-[url('/ideas-images-public/saved/bookmarks-hero.jpg')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
       </div>
@@ -136,7 +136,7 @@ export const EnhancedSavedHero = ({
               <Button
                 onClick={onCreateCollection}
                 size="lg"
-                className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <FolderPlus className="w-5 h-5 mr-2" />
                 {isRTL ? 'إنشاء مجموعة جديدة' : 'Create New Collection'}
@@ -218,7 +218,7 @@ export const EnhancedSavedHero = ({
                   />
 
                   <Button 
-                    className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white"
+                    className="w-full bg-gradient-primary hover:opacity-90 text-white"
                   >
                     {isRTL ? 'تصفح المجموعات' : 'Browse Collections'}
                     <ArrowRight className="w-4 h-4 ml-2" />

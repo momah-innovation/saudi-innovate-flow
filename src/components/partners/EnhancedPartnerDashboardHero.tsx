@@ -64,7 +64,7 @@ export const EnhancedPartnerDashboardHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Background with animated gradients */}
-      <div className="absolute inset-0 bg-gradient-to-r from-amber-600 via-orange-600 to-red-600">
+      <div className="absolute inset-0 bg-gradient-primary">
         <div className="absolute inset-0 bg-[url('/api/placeholder/1920/600')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
       </div>
@@ -134,7 +134,7 @@ export const EnhancedPartnerDashboardHero = ({
               <Button
                 onClick={onCreatePartnership}
                 size="lg"
-                className="bg-gradient-to-r from-orange-400 to-red-500 text-white hover:from-orange-500 hover:to-red-600 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <Plus className={cn("w-5 h-5", isRTL ? "ml-2" : "mr-2")} />
                 {t('createNewPartnership')}

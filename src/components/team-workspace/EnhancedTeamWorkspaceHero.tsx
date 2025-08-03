@@ -61,7 +61,7 @@ export const EnhancedTeamWorkspaceHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Background with animated gradients */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
+      <div className="absolute inset-0 bg-gradient-primary">
         <div className="absolute inset-0 bg-[url('/dashboard-images/team-collaboration.jpg')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
       </div>
@@ -141,7 +141,7 @@ export const EnhancedTeamWorkspaceHero = ({
                 <Button
                   onClick={onJoinTeam}
                   size="lg"
-                  className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
                   <UserPlus className="w-5 h-5 mr-2" />
                   {isRTL ? 'انضم لفريق' : 'Join Team'}
@@ -175,7 +175,7 @@ export const EnhancedTeamWorkspaceHero = ({
               <CardContent className="p-0">
                 {/* Team Collaboration */}
                 <div className="relative h-48 overflow-hidden rounded-t-lg">
-                  <div className="w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
+                  <div className="w-full h-full bg-gradient-overlay flex items-center justify-center">
                     <Users className="w-16 h-16 text-white/60" />
                   </div>
                   
@@ -222,7 +222,7 @@ export const EnhancedTeamWorkspaceHero = ({
                   />
 
                   <Button 
-                    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
+                    className="w-full bg-gradient-primary hover:opacity-90 text-white"
                   >
                     {isRTL ? 'دخول مساحة العمل' : 'Enter Workspace'}
                     <ArrowRight className="w-4 h-4 ml-2" />

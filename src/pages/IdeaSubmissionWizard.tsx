@@ -907,7 +907,7 @@ export default function IdeaSubmissionWizard() {
                   <div className={`
                     relative w-16 h-16 rounded-full flex items-center justify-center border-2 transition-all duration-300 transform
                     ${isActive ? 'bg-gradient-to-br from-primary to-secondary text-white border-primary shadow-lg scale-110 animate-pulse' : 
-                      isCompleted ? 'bg-gradient-to-br from-green-400 to-green-600 text-white border-green-500 shadow-md' : 
+                      isCompleted ? 'bg-gradient-primary text-white border-primary/50 shadow-md' : 
                       'bg-muted text-muted-foreground border-muted group-hover:border-primary/50 group-hover:scale-105'}
                   `}>
                     {isCompleted ? (
@@ -1000,7 +1000,7 @@ export default function IdeaSubmissionWizard() {
                     <Button
                       onClick={submitIdea}
                       disabled={loading || !validateStep(currentStep)}
-                      className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 shadow-lg"
+                      className="flex items-center gap-2 px-8 py-3 bg-gradient-primary hover:opacity-90 disabled:opacity-50 shadow-lg"
                     >
                       {loading ? (
                         <>

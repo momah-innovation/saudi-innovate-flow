@@ -78,7 +78,7 @@ export const EventsHero = ({
 
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow-lg group-hover:shadow-green-500/25 transition-shadow">
+                  <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
                     <TrendingUp className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -94,7 +94,7 @@ export const EventsHero = ({
 
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg shadow-lg group-hover:shadow-orange-500/25 transition-shadow">
+                  <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
                     <Users className="w-6 h-6 text-white" />
                   </div>
                   <div>

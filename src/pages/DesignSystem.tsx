@@ -5395,7 +5395,7 @@ const DesignSystem = () => {
                       <h4 className="font-medium mb-4">Image Challenge Cards</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                          <div className="aspect-video bg-gradient-to-r from-blue-500 to-purple-600 relative">
+                          <div className="aspect-video bg-gradient-primary relative">
                             <div className="absolute top-3 left-3">
                               <Badge className="bg-success/90 text-success-foreground">Active</Badge>
                             </div>
@@ -5428,7 +5428,7 @@ const DesignSystem = () => {
                         </Card>
 
                         <Card className="overflow-hidden hover:shadow-lg transition-shadow border border-innovation/50">
-                          <div className="aspect-video bg-gradient-to-r from-orange-500 to-red-600 relative">
+                          <div className="aspect-video bg-gradient-primary relative">
                             <div className="absolute top-3 left-3">
                               <Badge className="bg-innovation/90 text-innovation-foreground">Featured</Badge>
                             </div>
@@ -7013,7 +7013,7 @@ const DesignSystem = () => {
                                  </div>
                                   <div>
                                     <Card className="overflow-hidden border border-white/30 bg-white/15 backdrop-blur-sm">
-                                      <div className="aspect-video bg-gradient-to-br from-orange-500/80 to-red-600/80 relative">
+                                      <div className="aspect-video bg-gradient-overlay relative">
                                         <div className="absolute bottom-3 left-3 text-white">
                                           <div className="flex items-center gap-1 text-xs mb-1">
                                             <Calendar className="h-3 w-3 text-purple-200" />
@@ -7100,7 +7100,7 @@ const DesignSystem = () => {
                                  </div>
                                   <div className="space-y-6">
                                     <Card className="overflow-hidden border border-white/30 bg-white/15 backdrop-blur-sm hover:scale-105 transition-transform">
-                                      <div className="aspect-video bg-gradient-to-br from-orange-500/80 to-red-600/80 relative">
+                                      <div className="aspect-video bg-gradient-overlay relative">
                                         <div className="absolute bottom-4 left-4 text-white">
                                           <div className="flex items-center gap-2 text-sm mb-2">
                                             <Calendar className="h-4 w-4 text-purple-200" />

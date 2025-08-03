@@ -21,7 +21,7 @@ export function LayoutSelector({ viewMode, onViewModeChange, className }: Layout
         onClick={() => onViewModeChange('cards')}
         className={`gap-2 transition-all duration-300 hover:scale-105 ${
           viewMode === 'cards' 
-            ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-md border-0' 
+            ? 'bg-gradient-primary text-white shadow-md border-0'
             : 'hover:bg-violet-100 text-violet-700'
         }`}
       >
@@ -34,7 +34,7 @@ export function LayoutSelector({ viewMode, onViewModeChange, className }: Layout
         onClick={() => onViewModeChange('list')}
         className={`gap-2 transition-all duration-300 hover:scale-105 ${
           viewMode === 'list' 
-            ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-md border-0' 
+            ? 'bg-gradient-primary text-white shadow-md border-0'
             : 'hover:bg-violet-100 text-violet-700'
         }`}
       >
@@ -47,7 +47,7 @@ export function LayoutSelector({ viewMode, onViewModeChange, className }: Layout
         onClick={() => onViewModeChange('grid')}
         className={`gap-2 transition-all duration-300 hover:scale-105 ${
           viewMode === 'grid' 
-            ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-md border-0' 
+            ? 'bg-gradient-primary text-white shadow-md border-0' 
             : 'hover:bg-violet-100 text-violet-700'
         }`}
       >

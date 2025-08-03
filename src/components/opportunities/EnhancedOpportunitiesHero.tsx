@@ -71,7 +71,7 @@ export const EnhancedOpportunitiesHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Background with animated gradients */}
-      <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600">
+      <div className="absolute inset-0 bg-gradient-primary">
         <div className="absolute inset-0 bg-[url('/opportunity-images/hero-background.jpg')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
       </div>
@@ -150,7 +150,7 @@ export const EnhancedOpportunitiesHero = ({
               <Button
                 onClick={onCreateOpportunity}
                 size="lg"
-                className="bg-gradient-to-r from-emerald-400 to-teal-500 text-white hover:from-emerald-500 hover:to-teal-600 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <Plus className="w-5 h-5 mr-2" />
                 {isRTL ? 'إنشاء فرصة جديدة' : 'Create New Opportunity'}
@@ -194,7 +194,7 @@ export const EnhancedOpportunitiesHero = ({
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-emerald-500/20 to-teal-500/20 flex items-center justify-center">
+                      <div className="w-full h-full bg-gradient-overlay flex items-center justify-center">
                         <Handshake className="w-16 h-16 text-muted-foreground/60" />
                       </div>
                     )}
@@ -242,7 +242,7 @@ export const EnhancedOpportunitiesHero = ({
                     />
 
                     <Button 
-                      className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white"
+                      className="w-full bg-gradient-primary hover:opacity-90 text-white"
                     >
                       {isRTL ? 'اعرض التفاصيل' : 'View Details'}
                       <ArrowRight className="w-4 h-4 ml-2" />

@@ -140,7 +140,7 @@ export const EnhancedStatisticsHero = ({
               <Button
                 onClick={onExportData}
                 size="lg"
-                className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <BarChart3 className="w-5 h-5 mr-2" />
                 {isRTL ? 'تصدير التقارير' : 'Export Reports'}

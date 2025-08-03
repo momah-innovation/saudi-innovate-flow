@@ -64,7 +64,7 @@ export const EventRegistrationHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Background with animated gradients */}
-      <div className="absolute inset-0 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600">
+      <div className="absolute inset-0 bg-gradient-primary">
         <div className="absolute inset-0 bg-[url('/event-images/conference.jpg')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
       </div>
@@ -148,12 +148,12 @@ export const EventRegistrationHero = ({
                   size="lg"
                   disabled={isRegistered || registeredCount >= maxCapacity}
                   className={cn(
-                    "bg-gradient-to-r text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105",
+                    "bg-gradient-primary text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105",
                     isRegistered 
-                      ? "from-gray-400 to-gray-500 cursor-not-allowed" 
+                      ? "opacity-50 cursor-not-allowed" 
                       : registeredCount >= maxCapacity
-                      ? "from-red-400 to-red-500 cursor-not-allowed"
-                      : "from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600"
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:opacity-90"
                   )}
                 >
                   {isRegistered ? (
@@ -192,7 +192,7 @@ export const EventRegistrationHero = ({
               <CardContent className="p-0">
                 {/* Event Image */}
                 <div className="relative h-48 overflow-hidden rounded-t-lg">
-                  <div className="w-full h-full bg-gradient-to-br from-emerald-500/20 to-teal-500/20 flex items-center justify-center">
+                  <div className="w-full h-full bg-gradient-overlay flex items-center justify-center">
                     <Calendar className="w-16 h-16 text-white/60" />
                   </div>
                   
@@ -232,7 +232,7 @@ export const EventRegistrationHero = ({
                   </div>
 
                   <Button 
-                    className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white"
+                    className="w-full bg-gradient-primary hover:opacity-90 text-white"
                   >
                     {isRTL ? 'عرض جدول الفعالية' : 'View Event Schedule'}
                     <ArrowRight className="w-4 h-4 ml-2" />
