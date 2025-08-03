@@ -108,56 +108,56 @@ const DesignSystem = () => {
 
       <div className="container mx-auto px-6 py-8">
         <Tabs defaultValue="colors" className="w-full">
-          <TabsList className="grid w-full grid-cols-13 text-xs">
-            <TabsTrigger value="colors" className="flex items-center gap-1">
+          <TabsList className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 backdrop-blur-sm border border-primary/20 p-1.5 text-muted-foreground shadow-lg overflow-x-auto">
+            <TabsTrigger value="colors" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
               <Palette className="h-3 w-3" />
               Colors
             </TabsTrigger>
-            <TabsTrigger value="typography" className="flex items-center gap-1">
+            <TabsTrigger value="typography" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
               <Type className="h-3 w-3" />
               Typography
             </TabsTrigger>
-            <TabsTrigger value="components" className="flex items-center gap-1">
+            <TabsTrigger value="components" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
               <Layout className="h-3 w-3" />
               Components
             </TabsTrigger>
-            <TabsTrigger value="forms" className="flex items-center gap-1">
+            <TabsTrigger value="forms" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
               <Edit className="h-3 w-3" />
               Forms
             </TabsTrigger>
-            <TabsTrigger value="navigation" className="flex items-center gap-1">
+            <TabsTrigger value="navigation" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
               <Home className="h-3 w-3" />
               Navigation
             </TabsTrigger>
-            <TabsTrigger value="data" className="flex items-center gap-1">
+            <TabsTrigger value="data" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
               <Grid className="h-3 w-3" />
               Data Display
             </TabsTrigger>
-            <TabsTrigger value="media" className="flex items-center gap-1">
+            <TabsTrigger value="media" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
               <Play className="h-3 w-3" />
               Media
             </TabsTrigger>
-            <TabsTrigger value="communication" className="flex items-center gap-1">
+            <TabsTrigger value="communication" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
               <Bell className="h-3 w-3" />
               Communication
             </TabsTrigger>
-            <TabsTrigger value="interactions" className="flex items-center gap-1">
+            <TabsTrigger value="interactions" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
               <Zap className="h-3 w-3" />
               Interactions
             </TabsTrigger>
-            <TabsTrigger value="spacing" className="flex items-center gap-1">
+            <TabsTrigger value="spacing" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
               <Target className="h-3 w-3" />
               Spacing
             </TabsTrigger>
-            <TabsTrigger value="patterns" className="flex items-center gap-1">
+            <TabsTrigger value="patterns" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
               <Eye className="h-3 w-3" />
               Patterns
             </TabsTrigger>
-            <TabsTrigger value="states" className="flex items-center gap-1">
+            <TabsTrigger value="states" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
               <Settings className="h-3 w-3" />
               States
             </TabsTrigger>
-            <TabsTrigger value="widgets" className="flex items-center gap-1">
+            <TabsTrigger value="widgets" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
               <Grid className="h-3 w-3" />
               Widgets
             </TabsTrigger>
