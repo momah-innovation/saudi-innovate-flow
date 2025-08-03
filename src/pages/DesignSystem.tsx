@@ -5739,7 +5739,7 @@ const DesignSystem = () => {
                                      <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg">
                                        Get Started <ArrowRight className="w-4 h-4 ml-1" />
                                      </Button>
-                                     <Button size="sm" variant="outline" className="border-white/60 text-white hover:bg-white/20 hover:border-white/80 backdrop-blur-sm">
+                                     <Button size="sm" variant="outline" className="border-white/60 text-white bg-white/40 hover:bg-white/50 hover:border-white/80 backdrop-blur-sm">
                                        <Play className="w-4 h-4 mr-1 text-accent" /> Demo
                                      </Button>
                                    </div>
@@ -5804,7 +5804,7 @@ const DesignSystem = () => {
                                        <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg">
                                          Start Journey <ArrowRight className="w-4 h-4 ml-2" />
                                        </Button>
-                                       <Button variant="outline" className="border-white/60 text-white hover:bg-white/20 hover:border-white/80 backdrop-blur-sm">
+                                       <Button variant="outline" className="border-white/60 text-white bg-white/40 hover:bg-white/50 hover:border-white/80 backdrop-blur-sm">
                                          <Play className="w-4 h-4 mr-2 text-accent" /> Watch Demo
                                        </Button>
                                      </div>
@@ -5827,7 +5827,7 @@ const DesignSystem = () => {
                                      <div className="p-3">
                                        <div className="flex items-center justify-between mb-2">
                                          <div className="text-xs text-white/90">1.2k participants</div>
-                                         <Button size="sm" variant="outline" className="border-white/60 text-white text-xs px-2 py-1 h-auto hover:bg-white/20 hover:border-white/80 backdrop-blur-sm">Join</Button>
+                                         <Button size="sm" variant="outline" className="border-white/60 text-white text-xs px-2 py-1 h-auto bg-white/40 hover:bg-white/50 hover:border-white/80 backdrop-blur-sm">Join</Button>
                                        </div>
                                        <Progress value={68} className="h-1.5 bg-white/20" />
                                      </div>
@@ -5891,7 +5891,7 @@ const DesignSystem = () => {
                                        <Button size="lg" className="px-8 bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105 transition-all shadow-lg">
                                          Start Journey <ArrowRight className="w-4 h-4 ml-2" />
                                        </Button>
-                                       <Button size="lg" variant="outline" className="px-8 border-white/60 text-white hover:bg-white/20 hover:border-white/80 backdrop-blur-sm">
+                                       <Button size="lg" variant="outline" className="px-8 border-white/60 text-white bg-white/40 hover:bg-white/50 hover:border-white/80 backdrop-blur-sm">
                                          <Play className="w-4 h-4 mr-2 text-accent" /> Watch Demo
                                        </Button>
                                      </div>
@@ -5914,7 +5914,7 @@ const DesignSystem = () => {
                                       <div className="p-4">
                                         <div className="flex items-center justify-between mb-3">
                                           <div className="text-sm text-white/90">1.2k participants • Global</div>
-                                           <Button size="sm" variant="outline" className="border-white/60 text-white hover:bg-white/20 hover:border-white/80 backdrop-blur-sm">
+                                           <Button size="sm" variant="outline" className="border-white/60 text-white bg-white/40 hover:bg-white/50 hover:border-white/80 backdrop-blur-sm">
                                              <ExternalLink className="h-4 w-4 mr-1" /> Join
                                            </Button>
                                         </div>
