@@ -3,7 +3,12 @@ import {
   Palette, Eye, Type, Layout, Zap, Copy, Check, 
   Sun, Moon, ChevronDown, ChevronRight, Star,
   Heart, AlertCircle, CheckCircle, Info, X,
-  Sparkles, Award, Clock, Users, Target
+  Sparkles, Award, Clock, Users, Target, Search,
+  Upload, Download, Play, Pause, Settings, Home,
+  Mail, Phone, MapPin, Calendar, Edit, Trash2,
+  Plus, Minus, Filter, ArrowUpDown, Grid, List, Bell,
+  Shield, Lock, Unlock, User, CreditCard, Gift,
+  Loader2, Wifi, WifiOff, Battery, Volume2, VolumeX
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -87,7 +92,7 @@ const DesignSystem = () => {
 
       <div className="container mx-auto px-6 py-8">
         <Tabs defaultValue="colors" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="colors" className="flex items-center gap-2">
               <Palette className="h-4 w-4" />
               Colors
@@ -100,6 +105,10 @@ const DesignSystem = () => {
               <Layout className="h-4 w-4" />
               Components
             </TabsTrigger>
+            <TabsTrigger value="spacing" className="flex items-center gap-2">
+              <Grid className="h-4 w-4" />
+              Spacing
+            </TabsTrigger>
             <TabsTrigger value="effects" className="flex items-center gap-2">
               <Zap className="h-4 w-4" />
               Effects
@@ -107,6 +116,10 @@ const DesignSystem = () => {
             <TabsTrigger value="patterns" className="flex items-center gap-2">
               <Eye className="h-4 w-4" />
               Patterns
+            </TabsTrigger>
+            <TabsTrigger value="states" className="flex items-center gap-2">
+              <Settings className="h-4 w-4" />
+              States
             </TabsTrigger>
           </TabsList>
 
@@ -314,6 +327,112 @@ const DesignSystem = () => {
             </div>
           </TabsContent>
 
+          {/* Spacing Tab */}
+          <TabsContent value="spacing" className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Spacing & Layout</h2>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <ComponentShowcase title="Spacing Scale">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-2 h-8 bg-primary"></div>
+                      <span className="text-sm">0.5rem (8px) - space-2</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-4 h-8 bg-primary"></div>
+                      <span className="text-sm">1rem (16px) - space-4</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-6 h-8 bg-primary"></div>
+                      <span className="text-sm">1.5rem (24px) - space-6</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-8 h-8 bg-primary"></div>
+                      <span className="text-sm">2rem (32px) - space-8</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-8 bg-primary"></div>
+                      <span className="text-sm">3rem (48px) - space-12</span>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Border Radius">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="h-16 bg-accent rounded-none border flex items-center justify-center text-sm">
+                      None
+                    </div>
+                    <div className="h-16 bg-accent rounded-sm border flex items-center justify-center text-sm">
+                      Small
+                    </div>
+                    <div className="h-16 bg-accent rounded-md border flex items-center justify-center text-sm">
+                      Medium
+                    </div>
+                    <div className="h-16 bg-accent rounded-lg border flex items-center justify-center text-sm">
+                      Large
+                    </div>
+                    <div className="h-16 bg-accent rounded-xl border flex items-center justify-center text-sm">
+                      XL
+                    </div>
+                    <div className="h-16 bg-accent rounded-full border flex items-center justify-center text-sm">
+                      Full
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Container Layouts">
+                  <div className="space-y-4">
+                    <div className="p-4 border rounded-lg">
+                      <h4 className="font-medium mb-2">Flex Row</h4>
+                      <div className="flex gap-2">
+                        <div className="flex-1 h-8 bg-primary/20 rounded"></div>
+                        <div className="flex-1 h-8 bg-primary/40 rounded"></div>
+                        <div className="flex-1 h-8 bg-primary/60 rounded"></div>
+                      </div>
+                    </div>
+                    <div className="p-4 border rounded-lg">
+                      <h4 className="font-medium mb-2">Grid Layout</h4>
+                      <div className="grid grid-cols-3 gap-2">
+                        <div className="h-8 bg-secondary/20 rounded"></div>
+                        <div className="h-8 bg-secondary/40 rounded"></div>
+                        <div className="h-8 bg-secondary/60 rounded"></div>
+                        <div className="h-8 bg-secondary/80 rounded"></div>
+                        <div className="h-8 bg-secondary rounded"></div>
+                        <div className="h-8 bg-secondary/60 rounded"></div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Responsive Breakpoints">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-4 h-4 bg-primary rounded"></div>
+                      <span className="text-sm">sm: 640px and up</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-4 h-4 bg-secondary rounded"></div>
+                      <span className="text-sm">md: 768px and up</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-4 h-4 bg-accent rounded"></div>
+                      <span className="text-sm">lg: 1024px and up</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-4 h-4 bg-muted rounded"></div>
+                      <span className="text-sm">xl: 1280px and up</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-4 h-4 bg-innovation rounded"></div>
+                      <span className="text-sm">2xl: 1536px and up</span>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+              </div>
+            </div>
+          </TabsContent>
+
           {/* Effects Tab */}
           <TabsContent value="effects" className="space-y-8">
             <div>
@@ -464,6 +583,187 @@ const DesignSystem = () => {
                       <div>
                         <p className="font-medium text-accent">Info notification</p>
                         <p className="text-sm text-accent/80">New feature available</p>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* States Tab */}
+          <TabsContent value="states" className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Application States</h2>
+              
+              <div className="space-y-6">
+                <ComponentShowcase title="Loading States">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 p-4 border rounded-lg">
+                      <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                      <span>Loading content...</span>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-4 bg-muted animate-pulse rounded"></div>
+                      <div className="h-4 bg-muted animate-pulse rounded w-3/4"></div>
+                      <div className="h-4 bg-muted animate-pulse rounded w-1/2"></div>
+                    </div>
+                    <div className="flex gap-2">
+                      <div className="w-12 h-12 bg-muted animate-pulse rounded-full"></div>
+                      <div className="flex-1 space-y-2">
+                        <div className="h-4 bg-muted animate-pulse rounded"></div>
+                        <div className="h-3 bg-muted animate-pulse rounded w-2/3"></div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Error States">
+                  <div className="space-y-4">
+                    <div className="text-center p-8 border border-destructive/20 rounded-lg bg-destructive/5">
+                      <X className="w-12 h-12 text-destructive mx-auto mb-4" />
+                      <h3 className="text-lg font-semibold text-destructive mb-2">Something went wrong</h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        We encountered an error while loading this content.
+                      </p>
+                      <Button variant="outline" size="sm">
+                        Try Again
+                      </Button>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 border border-warning/20 rounded-lg bg-warning/5">
+                      <AlertCircle className="w-5 h-5 text-warning" />
+                      <div className="flex-1">
+                        <p className="font-medium text-warning">Connection Issue</p>
+                        <p className="text-sm text-warning/80">Please check your internet connection</p>
+                      </div>
+                      <Button variant="ghost" size="sm">
+                        Retry
+                      </Button>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Empty States">
+                  <div className="space-y-4">
+                    <div className="text-center p-8 border-2 border-dashed border-muted rounded-lg">
+                      <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="text-lg font-semibold mb-2">No results found</h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Try adjusting your search criteria or browse all challenges.
+                      </p>
+                      <Button variant="outline" size="sm">
+                        Browse All
+                      </Button>
+                    </div>
+                    <div className="text-center p-6 border rounded-lg">
+                      <Plus className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
+                      <h4 className="font-medium mb-2">Start your first challenge</h4>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Create a challenge to get started
+                      </p>
+                      <Button size="sm">
+                        <Plus className="w-4 h-4 mr-2" />
+                        Create Challenge
+                      </Button>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Connection States">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 p-3 bg-success/10 border border-success/20 rounded-lg">
+                      <Wifi className="w-5 h-5 text-success" />
+                      <span className="text-sm text-success">Connected</span>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 bg-warning/10 border border-warning/20 rounded-lg">
+                      <Wifi className="w-5 h-5 text-warning" />
+                      <span className="text-sm text-warning">Reconnecting...</span>
+                      <Loader2 className="w-4 h-4 animate-spin text-warning ml-auto" />
+                    </div>
+                    <div className="flex items-center gap-3 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+                      <WifiOff className="w-5 h-5 text-destructive" />
+                      <span className="text-sm text-destructive">Offline</span>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Form States">
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Email Address</label>
+                      <input 
+                        type="email" 
+                        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-primary/50 focus:border-primary" 
+                        placeholder="Enter your email"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Password</label>
+                      <input 
+                        type="password" 
+                        className="w-full p-2 border border-destructive rounded-md focus:ring-2 focus:ring-destructive/50" 
+                        placeholder="Enter password"
+                      />
+                      <p className="text-xs text-destructive">Password must be at least 8 characters</p>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Username</label>
+                      <input 
+                        type="text" 
+                        className="w-full p-2 border border-success rounded-md focus:ring-2 focus:ring-success/50" 
+                        placeholder="Enter username"
+                      />
+                      <p className="text-xs text-success">Username is available</p>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-muted-foreground">Bio (Optional)</label>
+                      <textarea 
+                        disabled
+                        className="w-full p-2 border rounded-md bg-muted text-muted-foreground cursor-not-allowed" 
+                        placeholder="Tell us about yourself"
+                        rows={3}
+                      />
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Progress Indicators">
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Upload Progress</span>
+                        <span>75%</span>
+                      </div>
+                      <div className="w-full bg-muted rounded-full h-2">
+                        <div className="bg-primary h-2 rounded-full" style={{ width: '75%' }}></div>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Challenge Completion</span>
+                        <span>3 of 5 steps</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <div className="flex-1 h-2 bg-success rounded-full"></div>
+                        <div className="flex-1 h-2 bg-success rounded-full"></div>
+                        <div className="flex-1 h-2 bg-success rounded-full"></div>
+                        <div className="flex-1 h-2 bg-muted rounded-full"></div>
+                        <div className="flex-1 h-2 bg-muted rounded-full"></div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="relative w-16 h-16">
+                        <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 64 64">
+                          <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" strokeWidth="4" className="text-muted" />
+                          <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" strokeWidth="4" className="text-primary" strokeDasharray="175.929" strokeDashoffset="52.778" strokeLinecap="round" />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-sm font-medium">70%</span>
+                        </div>
+                      </div>
+                      <div>
+                        <p className="font-medium">Project Progress</p>
+                        <p className="text-sm text-muted-foreground">7 out of 10 tasks completed</p>
                       </div>
                     </div>
                   </div>
