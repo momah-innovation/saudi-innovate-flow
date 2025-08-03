@@ -6412,47 +6412,466 @@ const DesignSystem = () => {
                 </ComponentShowcase>
 
                 <ComponentShowcase title="Dashboard Widgets">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <Card className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="text-sm font-medium text-muted-foreground">Total Users</h4>
-                        <Users className="w-4 h-4 text-muted-foreground" />
+                  <div className="space-y-8">
+
+                    {/* Basic Metric Widgets */}
+                    <div>
+                      <h4 className="font-medium mb-4">Basic Metric Widgets</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <Card className="p-4 hover:shadow-md transition-shadow">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="text-sm font-medium text-muted-foreground">Total Users</h4>
+                            <Users className="w-4 h-4 text-muted-foreground" />
+                          </div>
+                          <p className="text-2xl font-bold">12,543</p>
+                          <p className="text-sm text-success flex items-center gap-1">
+                            +12.5% from last month
+                          </p>
+                        </Card>
+                        <Card className="p-4 hover:shadow-md transition-shadow">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="text-sm font-medium text-muted-foreground">Active Challenges</h4>
+                            <Target className="w-4 h-4 text-muted-foreground" />
+                          </div>
+                          <p className="text-2xl font-bold">24</p>
+                          <p className="text-sm text-warning flex items-center gap-1">
+                            +3 this week
+                          </p>
+                        </Card>
+                        <Card className="p-4 hover:shadow-md transition-shadow">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="text-sm font-medium text-muted-foreground">Total Prizes</h4>
+                            <Award className="w-4 h-4 text-muted-foreground" />
+                          </div>
+                          <p className="text-2xl font-bold">$2.1M</p>
+                          <p className="text-sm text-success flex items-center gap-1">
+                            +$250K this quarter
+                          </p>
+                        </Card>
+                        <Card className="p-4 hover:shadow-md transition-shadow">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="text-sm font-medium text-muted-foreground">Submissions</h4>
+                            <Upload className="w-4 h-4 text-muted-foreground" />
+                          </div>
+                          <p className="text-2xl font-bold">1,205</p>
+                          <p className="text-sm text-destructive flex items-center gap-1">
+                            -5.2% from last week
+                          </p>
+                        </Card>
                       </div>
-                      <p className="text-2xl font-bold">12,543</p>
-                      <p className="text-sm text-success flex items-center gap-1">
-                        +12.5% from last month
-                      </p>
-                    </Card>
-                    <Card className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="text-sm font-medium text-muted-foreground">Active Challenges</h4>
-                        <Target className="w-4 h-4 text-muted-foreground" />
+                    </div>
+
+                    {/* Progress & Status Widgets */}
+                    <div>
+                      <h4 className="font-medium mb-4">Progress & Status Widgets</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-sm font-medium">Challenge Completion</h4>
+                            <Badge className="bg-success/10 text-success">On Track</Badge>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span>Progress</span>
+                              <span className="font-medium">68%</span>
+                            </div>
+                            <Progress value={68} className="h-2" />
+                            <p className="text-xs text-muted-foreground">12 of 18 challenges completed</p>
+                          </div>
+                        </Card>
+
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-sm font-medium">Innovation Score</h4>
+                            <div className="flex items-center gap-1">
+                              <Star className="w-4 h-4 text-warning fill-current" />
+                              <span className="text-sm font-medium">4.8</span>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span>Rating</span>
+                              <span className="font-medium">Excellent</span>
+                            </div>
+                            <Progress value={96} className="h-2" />
+                            <p className="text-xs text-muted-foreground">Based on 234 evaluations</p>
+                          </div>
+                        </Card>
+
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-sm font-medium">Team Collaboration</h4>
+                            <div className="flex -space-x-1">
+                              <div className="w-6 h-6 bg-primary rounded-full border-2 border-background"></div>
+                              <div className="w-6 h-6 bg-secondary rounded-full border-2 border-background"></div>
+                              <div className="w-6 h-6 bg-accent rounded-full border-2 border-background"></div>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span>Active Members</span>
+                              <span className="font-medium">8/12</span>
+                            </div>
+                            <Progress value={67} className="h-2" />
+                            <p className="text-xs text-muted-foreground">67% team participation</p>
+                          </div>
+                        </Card>
                       </div>
-                      <p className="text-2xl font-bold">24</p>
-                      <p className="text-sm text-warning flex items-center gap-1">
-                        +3 this week
-                      </p>
-                    </Card>
-                    <Card className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="text-sm font-medium text-muted-foreground">Total Prizes</h4>
-                        <Award className="w-4 h-4 text-muted-foreground" />
+                    </div>
+
+                    {/* Chart Widgets */}
+                    <div>
+                      <h4 className="font-medium mb-4">Chart Widgets</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className="font-medium">Weekly Activity</h4>
+                            <Button variant="ghost" size="sm">
+                              <MoreVertical className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm text-muted-foreground">Submissions</span>
+                              <span className="text-2xl font-bold">142</span>
+                            </div>
+                            <div className="h-24 bg-muted/20 rounded flex items-end justify-center gap-1 p-2">
+                              <div className="w-4 bg-primary/60 rounded-t" style={{height: '20%'}}></div>
+                              <div className="w-4 bg-primary/70 rounded-t" style={{height: '40%'}}></div>
+                              <div className="w-4 bg-primary/80 rounded-t" style={{height: '60%'}}></div>
+                              <div className="w-4 bg-primary/90 rounded-t" style={{height: '80%'}}></div>
+                              <div className="w-4 bg-primary rounded-t" style={{height: '100%'}}></div>
+                              <div className="w-4 bg-primary/80 rounded-t" style={{height: '70%'}}></div>
+                              <div className="w-4 bg-primary/60 rounded-t" style={{height: '45%'}}></div>
+                            </div>
+                            <div className="flex justify-between text-xs text-muted-foreground">
+                              <span>Mon</span>
+                              <span>Tue</span>
+                              <span>Wed</span>
+                              <span>Thu</span>
+                              <span>Fri</span>
+                              <span>Sat</span>
+                              <span>Sun</span>
+                            </div>
+                          </div>
+                        </Card>
+
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className="font-medium">Challenge Categories</h4>
+                            <Button variant="ghost" size="sm">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-center">
+                              <div className="relative w-24 h-24">
+                                <div className="absolute inset-0 rounded-full border-8 border-muted"></div>
+                                <div className="absolute inset-0 rounded-full border-8 border-primary border-t-transparent transform rotate-45"></div>
+                                <div className="absolute inset-2 rounded-full border-6 border-secondary border-r-transparent transform -rotate-12"></div>
+                                <div className="absolute inset-4 rounded-full border-4 border-accent border-b-transparent transform rotate-90"></div>
+                              </div>
+                            </div>
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-3 h-3 bg-primary rounded-full"></div>
+                                  <span className="text-sm">Technology</span>
+                                </div>
+                                <span className="text-sm font-medium">45%</span>
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-3 h-3 bg-secondary rounded-full"></div>
+                                  <span className="text-sm">Health</span>
+                                </div>
+                                <span className="text-sm font-medium">30%</span>
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-3 h-3 bg-accent rounded-full"></div>
+                                  <span className="text-sm">Environment</span>
+                                </div>
+                                <span className="text-sm font-medium">25%</span>
+                              </div>
+                            </div>
+                          </div>
+                        </Card>
                       </div>
-                      <p className="text-2xl font-bold">$2.1M</p>
-                      <p className="text-sm text-success flex items-center gap-1">
-                        +$250K this quarter
-                      </p>
-                    </Card>
-                    <Card className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="text-sm font-medium text-muted-foreground">Submissions</h4>
-                        <Upload className="w-4 h-4 text-muted-foreground" />
+                    </div>
+
+                    {/* Action Widgets */}
+                    <div>
+                      <h4 className="font-medium mb-4">Action Widgets</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                              <Plus className="w-5 h-5 text-primary" />
+                            </div>
+                            <div>
+                              <h4 className="font-medium">Create Challenge</h4>
+                              <p className="text-sm text-muted-foreground">Launch new innovation</p>
+                            </div>
+                          </div>
+                          <Button className="w-full" size="sm">
+                            Get Started
+                          </Button>
+                        </Card>
+
+                        <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                              <Upload className="w-5 h-5 text-secondary" />
+                            </div>
+                            <div>
+                              <h4 className="font-medium">Submit Solution</h4>
+                              <p className="text-sm text-muted-foreground">Share your innovation</p>
+                            </div>
+                          </div>
+                          <Button variant="secondary" className="w-full" size="sm">
+                            Upload Files
+                          </Button>
+                        </Card>
+
+                        <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+                              <Users className="w-5 h-5 text-accent" />
+                            </div>
+                            <div>
+                              <h4 className="font-medium">Join Team</h4>
+                              <p className="text-sm text-muted-foreground">Collaborate with others</p>
+                            </div>
+                          </div>
+                          <Button variant="outline" className="w-full" size="sm">
+                            Find Teams
+                          </Button>
+                        </Card>
                       </div>
-                      <p className="text-2xl font-bold">1,205</p>
-                      <p className="text-sm text-destructive flex items-center gap-1">
-                        -5.2% from last week
-                      </p>
-                    </Card>
+                    </div>
+
+                    {/* List Widgets */}
+                    <div>
+                      <h4 className="font-medium mb-4">List Widgets</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className="font-medium">Recent Activity</h4>
+                            <Button variant="ghost" size="sm">
+                              <ExternalLink className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-success/10 rounded-full flex items-center justify-center">
+                                <CheckCircle className="w-4 h-4 text-success" />
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-sm font-medium">Challenge completed</p>
+                                <p className="text-xs text-muted-foreground">AI Healthcare Platform</p>
+                              </div>
+                              <span className="text-xs text-muted-foreground">2h ago</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                                <Star className="w-4 h-4 text-primary" />
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-sm font-medium">New achievement</p>
+                                <p className="text-xs text-muted-foreground">Innovation Expert Badge</p>
+                              </div>
+                              <span className="text-xs text-muted-foreground">1d ago</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-warning/10 rounded-full flex items-center justify-center">
+                                <Users className="w-4 h-4 text-warning" />
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-sm font-medium">Team invitation</p>
+                                <p className="text-xs text-muted-foreground">Climate Solutions Team</p>
+                              </div>
+                              <span className="text-xs text-muted-foreground">3d ago</span>
+                            </div>
+                          </div>
+                        </Card>
+
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className="font-medium">Top Performers</h4>
+                            <Button variant="ghost" size="sm">
+                              <Award className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-2">
+                                <div className="w-6 h-6 bg-warning rounded-full flex items-center justify-center text-xs font-bold text-white">1</div>
+                                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">A</div>
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-sm font-medium">Ahmed Al-Rashid</p>
+                                <p className="text-xs text-muted-foreground">2,450 points</p>
+                              </div>
+                              <Badge className="bg-warning/10 text-warning">Expert</Badge>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-2">
+                                <div className="w-6 h-6 bg-muted rounded-full flex items-center justify-center text-xs font-bold">2</div>
+                                <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white text-sm font-medium">S</div>
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-sm font-medium">Sarah Chen</p>
+                                <p className="text-xs text-muted-foreground">2,180 points</p>
+                              </div>
+                              <Badge className="bg-secondary/10 text-secondary">Pro</Badge>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-2">
+                                <div className="w-6 h-6 bg-muted rounded-full flex items-center justify-center text-xs font-bold">3</div>
+                                <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white text-sm font-medium">M</div>
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-sm font-medium">Mohammed Hassan</p>
+                                <p className="text-xs text-muted-foreground">1,950 points</p>
+                              </div>
+                              <Badge className="bg-accent/10 text-accent">Rising</Badge>
+                            </div>
+                          </div>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* Notification Widgets */}
+                    <div>
+                      <h4 className="font-medium mb-4">Notification Widgets</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Card className="p-4 border-l-4 border-l-warning">
+                          <div className="flex items-start gap-3">
+                            <div className="w-8 h-8 bg-warning/10 rounded-full flex items-center justify-center">
+                              <Clock className="w-4 h-4 text-warning" />
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="font-medium text-warning">Deadline Approaching</h4>
+                              <p className="text-sm text-muted-foreground mb-2">Climate Challenge submissions due in 2 days</p>
+                              <div className="flex gap-2">
+                                <Button size="sm" variant="outline">Remind Later</Button>
+                                <Button size="sm" className="bg-warning text-warning-foreground">Submit Now</Button>
+                              </div>
+                            </div>
+                          </div>
+                        </Card>
+
+                        <Card className="p-4 border-l-4 border-l-success">
+                          <div className="flex items-start gap-3">
+                            <div className="w-8 h-8 bg-success/10 rounded-full flex items-center justify-center">
+                              <Gift className="w-4 h-4 text-success" />
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="font-medium text-success">Congratulations!</h4>
+                              <p className="text-sm text-muted-foreground mb-2">You've earned the Innovation Expert badge</p>
+                              <div className="flex gap-2">
+                                <Button size="sm" variant="outline">Share</Button>
+                                <Button size="sm" className="bg-success text-success-foreground">View Badge</Button>
+                              </div>
+                            </div>
+                          </div>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* Complex Interactive Widgets */}
+                    <div>
+                      <h4 className="font-medium mb-4">Complex Interactive Widgets</h4>
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className="font-medium">Innovation Pipeline</h4>
+                            <Button variant="ghost" size="sm">
+                              <Settings className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
+                              <div className="flex items-center gap-3">
+                                <div className="w-2 h-2 bg-primary rounded-full"></div>
+                                <span className="text-sm font-medium">Ideas</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm">23</span>
+                                <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                  <Plus className="w-3 h-3" />
+                                </Button>
+                              </div>
+                            </div>
+                            <div className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
+                              <div className="flex items-center gap-3">
+                                <div className="w-2 h-2 bg-warning rounded-full"></div>
+                                <span className="text-sm font-medium">In Review</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm">8</span>
+                                <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                  <Eye className="w-3 h-3" />
+                                </Button>
+                              </div>
+                            </div>
+                            <div className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
+                              <div className="flex items-center gap-3">
+                                <div className="w-2 h-2 bg-success rounded-full"></div>
+                                <span className="text-sm font-medium">Implemented</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm">12</span>
+                                <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                  <CheckCircle className="w-3 h-3" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </Card>
+
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className="font-medium">Quick Actions</h4>
+                            <Button variant="ghost" size="sm">
+                              <MoreVertical className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          <div className="grid grid-cols-2 gap-3">
+                            <Button variant="outline" className="flex items-center gap-2 justify-start p-3 h-auto">
+                              <Search className="w-4 h-4" />
+                              <div className="text-left">
+                                <div className="text-sm font-medium">Find Experts</div>
+                                <div className="text-xs text-muted-foreground">Connect with specialists</div>
+                              </div>
+                            </Button>
+                            <Button variant="outline" className="flex items-center gap-2 justify-start p-3 h-auto">
+                              <Calendar className="w-4 h-4" />
+                              <div className="text-left">
+                                <div className="text-sm font-medium">Schedule Meet</div>
+                                <div className="text-xs text-muted-foreground">Book a session</div>
+                              </div>
+                            </Button>
+                            <Button variant="outline" className="flex items-center gap-2 justify-start p-3 h-auto">
+                              <Download className="w-4 h-4" />
+                              <div className="text-left">
+                                <div className="text-sm font-medium">Export Data</div>
+                                <div className="text-xs text-muted-foreground">Download reports</div>
+                              </div>
+                            </Button>
+                            <Button variant="outline" className="flex items-center gap-2 justify-start p-3 h-auto">
+                              <Share className="w-4 h-4" />
+                              <div className="text-left">
+                                <div className="text-sm font-medium">Share Project</div>
+                                <div className="text-xs text-muted-foreground">Invite collaborators</div>
+                              </div>
+                            </Button>
+                          </div>
+                        </Card>
+                      </div>
+                    </div>
+
                   </div>
                 </ComponentShowcase>
 
