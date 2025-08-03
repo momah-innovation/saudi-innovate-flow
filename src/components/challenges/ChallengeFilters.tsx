@@ -148,10 +148,10 @@ export const ChallengeFilters = ({
                     variant="outline"
                     size="sm"
                     onClick={handleSearchClick}
-                    className="h-10 w-10 p-0 transition-all duration-300 hover:scale-110 bg-gradient-to-r from-violet-100 to-purple-100 border-violet-300 hover:from-violet-200 hover:to-purple-200 shadow-md"
+                    className={`h-10 w-10 p-0 transition-all duration-300 ${challengesPageConfig.ui.effects.hoverScale} ${challengesPageConfig.ui.gradients.filter} border-violet-300 hover:${challengesPageConfig.ui.gradients.filterLight} shadow-md`}
                     title={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
                   >
-                    <Search className="h-4 w-4 text-violet-600" />
+                    <Search className={`h-4 w-4 ${challengesPageConfig.ui.colors.stats.purple}`} />
                   </Button>
                 ) : (
                   // Expanded state - full search input

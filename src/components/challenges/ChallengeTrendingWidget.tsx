@@ -219,7 +219,7 @@ export const ChallengeTrendingWidget = ({
 
                   {/* Trending Indicator */}
                   <div className="mt-2 flex items-center gap-1">
-                    <div className="flex items-center gap-1 text-xs text-orange-600">
+                    <div className={`flex items-center gap-1 text-xs ${challengesPageConfig.ui.colors.stats.orange}`}>
                       <TrendingUp className="w-3 h-3" />
                       <span className="font-medium">
                         {isRTL ? 'رائج' : 'Trending'}

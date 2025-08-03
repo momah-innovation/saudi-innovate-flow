@@ -87,8 +87,8 @@ export const ChallengesHero = ({
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-20 left-1/3 w-64 h-64 bg-blue-400/5 rounded-full blur-2xl animate-bounce" />
+        <div className={`absolute -bottom-40 -left-40 w-96 h-96 ${challengesPageConfig.ui.colors.background.overlay} rounded-full blur-3xl animate-pulse delay-1000`} />
+        <div className={`absolute top-20 left-1/3 w-64 h-64 ${challengesPageConfig.ui.colors.background.overlay} rounded-full blur-2xl animate-bounce`} />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
