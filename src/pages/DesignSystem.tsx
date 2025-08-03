@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { 
   Palette, Eye, Type, Layout, Zap, Copy, Check, 
-  Sun, Moon, ChevronDown, ChevronRight, Star,
+  Sun, Moon, ChevronDown, ChevronRight, ChevronLeft, Star,
   Heart, AlertCircle, CheckCircle, Info, X,
   Sparkles, Award, Clock, Users, Target, Search,
   Upload, Download, Play, Pause, Settings, Home,
   Mail, Phone, MapPin, Calendar, Edit, Trash2,
   Plus, Minus, Filter, ArrowUpDown, Grid, List, Bell,
   Shield, Lock, Unlock, User, CreditCard, Gift,
-  Loader2, Wifi, WifiOff, Battery, Volume2, VolumeX
+  Loader2, Wifi, WifiOff, Battery, Volume2, VolumeX,
+  Send, MessageCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -92,37 +93,53 @@ const DesignSystem = () => {
 
       <div className="container mx-auto px-6 py-8">
         <Tabs defaultValue="colors" className="w-full">
-          <TabsList className="grid w-full grid-cols-8">
-            <TabsTrigger value="colors" className="flex items-center gap-2">
-              <Palette className="h-4 w-4" />
+          <TabsList className="grid w-full grid-cols-12 text-xs">
+            <TabsTrigger value="colors" className="flex items-center gap-1">
+              <Palette className="h-3 w-3" />
               Colors
             </TabsTrigger>
-            <TabsTrigger value="typography" className="flex items-center gap-2">
-              <Type className="h-4 w-4" />
+            <TabsTrigger value="typography" className="flex items-center gap-1">
+              <Type className="h-3 w-3" />
               Typography
             </TabsTrigger>
-            <TabsTrigger value="components" className="flex items-center gap-2">
-              <Layout className="h-4 w-4" />
+            <TabsTrigger value="components" className="flex items-center gap-1">
+              <Layout className="h-3 w-3" />
               Components
             </TabsTrigger>
-            <TabsTrigger value="forms" className="flex items-center gap-2">
-              <Edit className="h-4 w-4" />
+            <TabsTrigger value="forms" className="flex items-center gap-1">
+              <Edit className="h-3 w-3" />
               Forms
             </TabsTrigger>
-            <TabsTrigger value="spacing" className="flex items-center gap-2">
-              <Grid className="h-4 w-4" />
+            <TabsTrigger value="navigation" className="flex items-center gap-1">
+              <Home className="h-3 w-3" />
+              Navigation
+            </TabsTrigger>
+            <TabsTrigger value="data" className="flex items-center gap-1">
+              <Grid className="h-3 w-3" />
+              Data Display
+            </TabsTrigger>
+            <TabsTrigger value="media" className="flex items-center gap-1">
+              <Play className="h-3 w-3" />
+              Media
+            </TabsTrigger>
+            <TabsTrigger value="communication" className="flex items-center gap-1">
+              <Bell className="h-3 w-3" />
+              Communication
+            </TabsTrigger>
+            <TabsTrigger value="interactions" className="flex items-center gap-1">
+              <Zap className="h-3 w-3" />
+              Interactions
+            </TabsTrigger>
+            <TabsTrigger value="spacing" className="flex items-center gap-1">
+              <Target className="h-3 w-3" />
               Spacing
             </TabsTrigger>
-            <TabsTrigger value="effects" className="flex items-center gap-2">
-              <Zap className="h-4 w-4" />
-              Effects
-            </TabsTrigger>
-            <TabsTrigger value="patterns" className="flex items-center gap-2">
-              <Eye className="h-4 w-4" />
+            <TabsTrigger value="patterns" className="flex items-center gap-1">
+              <Eye className="h-3 w-3" />
               Patterns
             </TabsTrigger>
-            <TabsTrigger value="states" className="flex items-center gap-2">
-              <Settings className="h-4 w-4" />
+            <TabsTrigger value="states" className="flex items-center gap-1">
+              <Settings className="h-3 w-3" />
               States
             </TabsTrigger>
           </TabsList>
@@ -655,7 +672,1286 @@ const DesignSystem = () => {
             </div>
           </TabsContent>
 
-          {/* Spacing Tab */}
+          {/* Navigation Tab */}
+          <TabsContent value="navigation" className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Navigation Components</h2>
+              
+              <div className="space-y-6">
+                <ComponentShowcase title="Sidebar Navigation">
+                  <div className="border rounded-lg overflow-hidden h-96 flex">
+                    <div className="w-64 bg-card border-r p-4">
+                      <div className="space-y-1">
+                        <div className="px-3 py-2 text-sm font-medium text-muted-foreground">MAIN</div>
+                        <div className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm flex items-center gap-2">
+                          <Home className="w-4 h-4" />
+                          Dashboard
+                        </div>
+                        <div className="px-3 py-2 text-sm flex items-center gap-2 hover:bg-accent rounded-md cursor-pointer">
+                          <Target className="w-4 h-4" />
+                          Challenges
+                        </div>
+                        <div className="px-3 py-2 text-sm flex items-center gap-2 hover:bg-accent rounded-md cursor-pointer">
+                          <Users className="w-4 h-4" />
+                          Community
+                        </div>
+                        <div className="px-3 py-2 text-sm flex items-center gap-2 hover:bg-accent rounded-md cursor-pointer">
+                          <Award className="w-4 h-4" />
+                          Leaderboard
+                        </div>
+                        <div className="px-3 py-2 text-sm font-medium text-muted-foreground mt-4">ACCOUNT</div>
+                        <div className="px-3 py-2 text-sm flex items-center gap-2 hover:bg-accent rounded-md cursor-pointer">
+                          <User className="w-4 h-4" />
+                          Profile
+                        </div>
+                        <div className="px-3 py-2 text-sm flex items-center gap-2 hover:bg-accent rounded-md cursor-pointer">
+                          <Settings className="w-4 h-4" />
+                          Settings
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex-1 p-6 bg-background">
+                      <h3 className="text-lg font-semibold mb-4">Main Content Area</h3>
+                      <p className="text-muted-foreground">Navigation content goes here...</p>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Top Navigation Bar">
+                  <div className="border rounded-lg overflow-hidden">
+                    <div className="bg-card border-b p-4 flex items-center justify-between">
+                      <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                            <Sparkles className="w-4 h-4 text-primary-foreground" />
+                          </div>
+                          <span className="font-semibold">InnovateLab</span>
+                        </div>
+                        <nav className="hidden md:flex items-center gap-6">
+                          <a href="#" className="text-sm font-medium">Challenges</a>
+                          <a href="#" className="text-sm text-muted-foreground hover:text-foreground">Community</a>
+                          <a href="#" className="text-sm text-muted-foreground hover:text-foreground">Resources</a>
+                          <a href="#" className="text-sm text-muted-foreground hover:text-foreground">About</a>
+                        </nav>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <div className="relative">
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                          <input 
+                            type="text" 
+                            className="pl-10 pr-3 py-2 border rounded-lg text-sm bg-background" 
+                            placeholder="Search..."
+                          />
+                        </div>
+                        <Button variant="ghost" size="sm">
+                          <Bell className="w-4 h-4" />
+                        </Button>
+                        <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                          <User className="w-4 h-4" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Mobile Navigation">
+                  <div className="border rounded-lg overflow-hidden">
+                    <div className="bg-card border-b p-4 flex items-center justify-between">
+                      <Button variant="ghost" size="sm">
+                        <div className="w-4 h-4 flex flex-col gap-1">
+                          <div className="w-4 h-0.5 bg-current"></div>
+                          <div className="w-4 h-0.5 bg-current"></div>
+                          <div className="w-4 h-0.5 bg-current"></div>
+                        </div>
+                      </Button>
+                      <span className="font-semibold">InnovateLab</span>
+                      <Button variant="ghost" size="sm">
+                        <User className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="bg-card border-b">
+                      <div className="grid grid-cols-4 gap-1 p-2">
+                        <div className="flex flex-col items-center gap-1 p-3 bg-primary/10 rounded-lg">
+                          <Home className="w-5 h-5 text-primary" />
+                          <span className="text-xs text-primary font-medium">Home</span>
+                        </div>
+                        <div className="flex flex-col items-center gap-1 p-3 hover:bg-accent rounded-lg">
+                          <Target className="w-5 h-5 text-muted-foreground" />
+                          <span className="text-xs text-muted-foreground">Challenges</span>
+                        </div>
+                        <div className="flex flex-col items-center gap-1 p-3 hover:bg-accent rounded-lg">
+                          <Users className="w-5 h-5 text-muted-foreground" />
+                          <span className="text-xs text-muted-foreground">Community</span>
+                        </div>
+                        <div className="flex flex-col items-center gap-1 p-3 hover:bg-accent rounded-lg">
+                          <Award className="w-5 h-5 text-muted-foreground" />
+                          <span className="text-xs text-muted-foreground">Awards</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Breadcrumb & Step Navigation">
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="font-medium mb-4">Breadcrumb Navigation</h4>
+                      <nav className="flex items-center space-x-2 text-sm">
+                        <a href="#" className="text-muted-foreground hover:text-foreground">Home</a>
+                        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                        <a href="#" className="text-muted-foreground hover:text-foreground">Challenges</a>
+                        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                        <a href="#" className="text-muted-foreground hover:text-foreground">Technology</a>
+                        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-foreground font-medium">AI Healthcare Platform</span>
+                      </nav>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-4">Step Navigation (Wizard)</h4>
+                      <div className="flex items-center justify-between max-w-md">
+                        <div className="flex flex-col items-center">
+                          <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium mb-2">
+                            ✓
+                          </div>
+                          <span className="text-xs text-center">Basic Info</span>
+                        </div>
+                        <div className="flex-1 h-0.5 bg-primary mx-2"></div>
+                        <div className="flex flex-col items-center">
+                          <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium mb-2">
+                            2
+                          </div>
+                          <span className="text-xs text-center">Project Details</span>
+                        </div>
+                        <div className="flex-1 h-0.5 bg-muted mx-2"></div>
+                        <div className="flex flex-col items-center">
+                          <div className="w-8 h-8 bg-muted text-muted-foreground rounded-full flex items-center justify-center text-sm font-medium mb-2">
+                            3
+                          </div>
+                          <span className="text-xs text-center text-muted-foreground">Review</span>
+                        </div>
+                        <div className="flex-1 h-0.5 bg-muted mx-2"></div>
+                        <div className="flex flex-col items-center">
+                          <div className="w-8 h-8 bg-muted text-muted-foreground rounded-full flex items-center justify-center text-sm font-medium mb-2">
+                            4
+                          </div>
+                          <span className="text-xs text-center text-muted-foreground">Submit</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Pagination">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-muted-foreground">Showing 1 to 10 of 47 results</p>
+                      <div className="flex items-center space-x-2">
+                        <Button variant="outline" size="sm" disabled>
+                          Previous
+                        </Button>
+                        <Button variant="outline" size="sm" className="bg-primary text-primary-foreground">
+                          1
+                        </Button>
+                        <Button variant="outline" size="sm">2</Button>
+                        <Button variant="outline" size="sm">3</Button>
+                        <span className="text-muted-foreground px-2">...</span>
+                        <Button variant="outline" size="sm">47</Button>
+                        <Button variant="outline" size="sm">Next</Button>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-center">
+                      <div className="flex items-center space-x-1">
+                        <Button variant="ghost" size="sm">
+                          «
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          ‹
+                        </Button>
+                        <span className="px-4 py-2 text-sm">Page 2 of 10</span>
+                        <Button variant="ghost" size="sm">
+                          ›
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          »
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Data Display Tab */}
+          <TabsContent value="data" className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Data Display Components</h2>
+              
+              <div className="space-y-6">
+                <ComponentShowcase title="Charts & Statistics">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <h4 className="font-medium">Bar Chart Mockup</h4>
+                      <div className="border rounded-lg p-4 bg-card">
+                        <div className="flex items-end justify-between h-32 gap-2">
+                          <div className="flex flex-col items-center gap-2">
+                            <div className="w-8 bg-primary rounded-t" style={{ height: '80%' }}></div>
+                            <span className="text-xs">Jan</span>
+                          </div>
+                          <div className="flex flex-col items-center gap-2">
+                            <div className="w-8 bg-secondary rounded-t" style={{ height: '60%' }}></div>
+                            <span className="text-xs">Feb</span>
+                          </div>
+                          <div className="flex flex-col items-center gap-2">
+                            <div className="w-8 bg-accent rounded-t" style={{ height: '90%' }}></div>
+                            <span className="text-xs">Mar</span>
+                          </div>
+                          <div className="flex flex-col items-center gap-2">
+                            <div className="w-8 bg-primary rounded-t" style={{ height: '70%' }}></div>
+                            <span className="text-xs">Apr</span>
+                          </div>
+                          <div className="flex flex-col items-center gap-2">
+                            <div className="w-8 bg-secondary rounded-t" style={{ height: '85%' }}></div>
+                            <span className="text-xs">May</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <h4 className="font-medium">Donut Chart Mockup</h4>
+                      <div className="border rounded-lg p-4 bg-card flex items-center justify-center">
+                        <div className="relative w-32 h-32">
+                          <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 36 36">
+                            <path
+                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="3"
+                              strokeDasharray="60, 100"
+                              className="text-primary"
+                            />
+                            <path
+                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="3"
+                              strokeDasharray="25, 100"
+                              strokeDashoffset="-60"
+                              className="text-secondary"
+                            />
+                            <path
+                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="3"
+                              strokeDasharray="15, 100"
+                              strokeDashoffset="-85"
+                              className="text-accent"
+                            />
+                          </svg>
+                          <div className="absolute inset-0 flex flex-col items-center justify-center">
+                            <span className="text-2xl font-bold">72%</span>
+                            <span className="text-xs text-muted-foreground">Completion</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Data Tables">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="sm">
+                          <Filter className="w-4 h-4 mr-2" />
+                          Filter
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <ArrowUpDown className="w-4 h-4 mr-2" />
+                          Sort
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <Download className="w-4 h-4 mr-2" />
+                          Export
+                        </Button>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button variant="ghost" size="sm">
+                          <List className="w-4 h-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm" className="bg-accent">
+                          <Grid className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="border rounded-lg overflow-hidden">
+                      <table className="w-full">
+                        <thead className="bg-muted/50">
+                          <tr>
+                            <th className="text-left p-4 font-medium">
+                              <input type="checkbox" className="rounded" />
+                            </th>
+                            <th className="text-left p-4 font-medium">Challenge</th>
+                            <th className="text-left p-4 font-medium">Status</th>
+                            <th className="text-left p-4 font-medium">Participants</th>
+                            <th className="text-left p-4 font-medium">Prize Pool</th>
+                            <th className="text-left p-4 font-medium">Deadline</th>
+                            <th className="text-left p-4 font-medium">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-t hover:bg-muted/30">
+                            <td className="p-4">
+                              <input type="checkbox" className="rounded" />
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                  <Sparkles className="w-5 h-5 text-primary" />
+                                </div>
+                                <div>
+                                  <p className="font-medium">AI Climate Solutions</p>
+                                  <p className="text-sm text-muted-foreground">Environmental technology</p>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <Badge className="bg-success/90 text-success-foreground">Active</Badge>
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-1">
+                                <Users className="w-4 h-4 text-muted-foreground" />
+                                <span>142</span>
+                              </div>
+                            </td>
+                            <td className="p-4 font-medium">$75,000</td>
+                            <td className="p-4 text-muted-foreground">
+                              <div className="flex items-center gap-1">
+                                <Clock className="w-4 h-4" />
+                                <span>12 days</span>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-2">
+                                <Button variant="ghost" size="sm">
+                                  <Eye className="w-4 h-4" />
+                                </Button>
+                                <Button variant="ghost" size="sm">
+                                  <Edit className="w-4 h-4" />
+                                </Button>
+                                <Button variant="ghost" size="sm">
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr className="border-t hover:bg-muted/30">
+                            <td className="p-4">
+                              <input type="checkbox" className="rounded" />
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                                  <Shield className="w-5 h-5 text-secondary" />
+                                </div>
+                                <div>
+                                  <p className="font-medium">Cybersecurity Innovation</p>
+                                  <p className="text-sm text-muted-foreground">Digital security solutions</p>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <Badge className="bg-warning/90 text-warning-foreground">Review</Badge>
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-1">
+                                <Users className="w-4 h-4 text-muted-foreground" />
+                                <span>89</span>
+                              </div>
+                            </td>
+                            <td className="p-4 font-medium">$50,000</td>
+                            <td className="p-4 text-muted-foreground">
+                              <div className="flex items-center gap-1">
+                                <Clock className="w-4 h-4" />
+                                <span>5 days</span>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-2">
+                                <Button variant="ghost" size="sm">
+                                  <Eye className="w-4 h-4" />
+                                </Button>
+                                <Button variant="ghost" size="sm">
+                                  <Edit className="w-4 h-4" />
+                                </Button>
+                                <Button variant="ghost" size="sm">
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="List Views & Timeline">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-medium mb-4">Activity Timeline</h4>
+                      <div className="space-y-4">
+                        <div className="flex gap-3">
+                          <div className="flex flex-col items-center">
+                            <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center">
+                              <CheckCircle className="w-4 h-4 text-white" />
+                            </div>
+                            <div className="w-0.5 h-12 bg-muted mt-2"></div>
+                          </div>
+                          <div className="flex-1 pt-1">
+                            <p className="font-medium">Challenge Submitted</p>
+                            <p className="text-sm text-muted-foreground">Your AI solution has been submitted successfully</p>
+                            <p className="text-xs text-muted-foreground mt-1">2 hours ago</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-3">
+                          <div className="flex flex-col items-center">
+                            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                              <Star className="w-4 h-4 text-white" />
+                            </div>
+                            <div className="w-0.5 h-12 bg-muted mt-2"></div>
+                          </div>
+                          <div className="flex-1 pt-1">
+                            <p className="font-medium">Featured Project</p>
+                            <p className="text-sm text-muted-foreground">Your project was featured on the homepage</p>
+                            <p className="text-xs text-muted-foreground mt-1">1 day ago</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-3">
+                          <div className="flex flex-col items-center">
+                            <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                              <Award className="w-4 h-4 text-white" />
+                            </div>
+                          </div>
+                          <div className="flex-1 pt-1">
+                            <p className="font-medium">Achievement Unlocked</p>
+                            <p className="text-sm text-muted-foreground">Earned "Innovation Master" badge</p>
+                            <p className="text-xs text-muted-foreground mt-1">3 days ago</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-4">Contact List</h4>
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3 p-3 border rounded-lg hover:bg-accent/50">
+                          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-medium">
+                            JD
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium">John Doe</p>
+                            <p className="text-sm text-muted-foreground">AI Researcher</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button variant="ghost" size="sm">
+                              <Mail className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <Phone className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3 p-3 border rounded-lg hover:bg-accent/50">
+                          <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white font-medium">
+                            SM
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium">Sarah Miller</p>
+                            <p className="text-sm text-muted-foreground">UX Designer</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button variant="ghost" size="sm">
+                              <Mail className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <Phone className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3 p-3 border rounded-lg hover:bg-accent/50">
+                          <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center text-white font-medium">
+                            MJ
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium">Mike Johnson</p>
+                            <p className="text-sm text-muted-foreground">Data Scientist</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button variant="ghost" size="sm">
+                              <Mail className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <Phone className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Tree View & Hierarchical Data">
+                  <div className="border rounded-lg p-4">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 p-2 hover:bg-accent rounded">
+                        <ChevronDown className="w-4 h-4" />
+                        <span className="font-medium">📁 Innovation Challenges</span>
+                      </div>
+                      <div className="ml-6 space-y-1">
+                        <div className="flex items-center gap-2 p-2 hover:bg-accent rounded">
+                          <ChevronRight className="w-4 h-4" />
+                          <span>🤖 AI & Machine Learning</span>
+                        </div>
+                        <div className="flex items-center gap-2 p-2 hover:bg-accent rounded">
+                          <ChevronDown className="w-4 h-4" />
+                          <span>🌍 Climate Tech</span>
+                        </div>
+                        <div className="ml-6 space-y-1">
+                          <div className="flex items-center gap-2 p-2 hover:bg-accent rounded">
+                            <span className="w-4 h-4"></span>
+                            <span>📄 Smart Grid Solutions</span>
+                          </div>
+                          <div className="flex items-center gap-2 p-2 hover:bg-accent rounded">
+                            <span className="w-4 h-4"></span>
+                            <span>📄 Carbon Tracking</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 p-2 hover:bg-accent rounded">
+                          <ChevronRight className="w-4 h-4" />
+                          <span>💊 Healthcare Innovation</span>
+                        </div>
+                        <div className="flex items-center gap-2 p-2 hover:bg-accent rounded">
+                          <ChevronRight className="w-4 h-4" />
+                          <span>🔒 Cybersecurity</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Media Tab */}
+          <TabsContent value="media" className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Media Components</h2>
+              
+              <div className="space-y-6">
+                <ComponentShowcase title="Image Gallery & Lightbox">
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="relative group cursor-pointer">
+                        <div className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center">
+                          <span className="text-2xl">🖼️</span>
+                        </div>
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                          <Eye className="w-6 h-6 text-white" />
+                        </div>
+                      </div>
+                      <div className="relative group cursor-pointer">
+                        <div className="aspect-square bg-gradient-to-br from-accent/20 to-innovation/20 rounded-lg flex items-center justify-center">
+                          <span className="text-2xl">🌅</span>
+                        </div>
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                          <Eye className="w-6 h-6 text-white" />
+                        </div>
+                      </div>
+                      <div className="relative group cursor-pointer">
+                        <div className="aspect-square bg-gradient-to-br from-success/20 to-warning/20 rounded-lg flex items-center justify-center">
+                          <span className="text-2xl">🏙️</span>
+                        </div>
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                          <Eye className="w-6 h-6 text-white" />
+                        </div>
+                      </div>
+                      <div className="relative group cursor-pointer">
+                        <div className="aspect-square bg-gradient-to-br from-expert/20 to-partner/20 rounded-lg flex items-center justify-center">
+                          <span className="text-2xl">🔬</span>
+                        </div>
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                          <Eye className="w-6 h-6 text-white" />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="border rounded-lg p-4 bg-black/5">
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="font-medium">Lightbox Preview</h4>
+                        <Button variant="ghost" size="sm">
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                      <div className="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center">
+                        <span className="text-4xl">🖼️</span>
+                      </div>
+                      <div className="flex items-center justify-between mt-4">
+                        <Button variant="ghost" size="sm">
+                          <ChevronLeft className="w-4 h-4" />
+                          Previous
+                        </Button>
+                        <span className="text-sm text-muted-foreground">1 of 4</span>
+                        <Button variant="ghost" size="sm">
+                          Next
+                          <ChevronRight className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Video & Audio Players">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-medium mb-4">Video Player</h4>
+                      <div className="border rounded-lg overflow-hidden bg-black">
+                        <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                          <div className="text-center text-white">
+                            <Play className="w-16 h-16 mx-auto mb-4 opacity-80" />
+                            <p className="text-lg font-medium">Innovation Challenge Demo</p>
+                            <p className="text-sm opacity-70">Click to play</p>
+                          </div>
+                        </div>
+                        <div className="bg-gray-900 p-4 text-white">
+                          <div className="flex items-center gap-4">
+                            <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                              <Play className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                              <Volume2 className="w-4 h-4" />
+                            </Button>
+                            <div className="flex-1 flex items-center gap-2">
+                              <span className="text-sm">02:30</span>
+                              <div className="flex-1 h-1 bg-gray-600 rounded-full">
+                                <div className="w-1/3 h-full bg-primary rounded-full"></div>
+                              </div>
+                              <span className="text-sm">08:45</span>
+                            </div>
+                            <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                              <Settings className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-4">Audio Player</h4>
+                      <div className="border rounded-lg p-6 bg-card">
+                        <div className="flex items-center gap-4 mb-4">
+                          <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <span className="text-2xl">🎵</span>
+                          </div>
+                          <div className="flex-1">
+                            <h5 className="font-medium">Innovation Podcast</h5>
+                            <p className="text-sm text-muted-foreground">Episode 42: AI in Healthcare</p>
+                          </div>
+                        </div>
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm text-muted-foreground">12:30</span>
+                            <div className="flex-1 h-2 bg-muted rounded-full">
+                              <div className="w-2/5 h-full bg-primary rounded-full"></div>
+                            </div>
+                            <span className="text-sm text-muted-foreground">31:20</span>
+                          </div>
+                          <div className="flex items-center justify-center gap-4">
+                            <Button variant="ghost" size="sm">
+                              <ChevronLeft className="w-4 h-4" />
+                            </Button>
+                            <Button size="sm" className="rounded-full w-12 h-12">
+                              <Pause className="w-5 h-5" />
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <ChevronRight className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="File Upload & Media Management">
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="font-medium mb-4">Advanced File Upload</h4>
+                      <div className="border-2 border-dashed border-muted rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer">
+                        <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-lg font-medium mb-2">Upload your project files</p>
+                        <p className="text-sm text-muted-foreground mb-4">
+                          Drag & drop files here, or click to browse
+                        </p>
+                        <p className="text-xs text-muted-foreground mb-4">
+                          Supports: Images (PNG, JPG, GIF), Videos (MP4, MOV), Documents (PDF, DOC, PPT) - Max 50MB per file
+                        </p>
+                        <Button variant="outline" size="sm">
+                          <Plus className="w-4 h-4 mr-2" />
+                          Choose Files
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-4">Upload Progress</h4>
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3 p-3 border rounded-lg">
+                          <div className="w-10 h-10 bg-success/10 rounded flex items-center justify-center">
+                            <span className="text-xs font-medium text-success">IMG</span>
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-1">
+                              <p className="text-sm font-medium">project-hero.jpg</p>
+                              <CheckCircle className="w-4 h-4 text-success" />
+                            </div>
+                            <div className="flex items-center justify-between text-xs text-muted-foreground">
+                              <span>2.3 MB</span>
+                              <span>Complete</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3 p-3 border rounded-lg">
+                          <div className="w-10 h-10 bg-primary/10 rounded flex items-center justify-center">
+                            <span className="text-xs font-medium text-primary">MP4</span>
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-1">
+                              <p className="text-sm font-medium">demo-video.mp4</p>
+                              <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                            </div>
+                            <div className="w-full bg-muted rounded-full h-1.5 mb-1">
+                              <div className="bg-primary h-1.5 rounded-full" style={{ width: '65%' }}></div>
+                            </div>
+                            <div className="flex items-center justify-between text-xs text-muted-foreground">
+                              <span>15.7 MB of 24.2 MB</span>
+                              <span>65% • 2 min left</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3 p-3 border border-destructive/20 bg-destructive/5 rounded-lg">
+                          <div className="w-10 h-10 bg-destructive/10 rounded flex items-center justify-center">
+                            <span className="text-xs font-medium text-destructive">PDF</span>
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-1">
+                              <p className="text-sm font-medium">large-document.pdf</p>
+                              <X className="w-4 h-4 text-destructive" />
+                            </div>
+                            <div className="flex items-center justify-between text-xs">
+                              <span className="text-destructive">File too large (52 MB)</span>
+                              <Button variant="ghost" size="sm" className="text-destructive h-auto p-0">
+                                Retry
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Avatar & Profile Images">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-medium mb-4">Avatar Variations</h4>
+                      <div className="flex flex-wrap items-center gap-4">
+                        <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white font-medium text-xl">
+                          JD
+                        </div>
+                        <div className="w-14 h-14 bg-secondary rounded-full flex items-center justify-center text-white font-medium">
+                          SM
+                        </div>
+                        <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white font-medium text-sm">
+                          MJ
+                        </div>
+                        <div className="w-10 h-10 bg-innovation rounded-full flex items-center justify-center text-white font-medium text-sm">
+                          AK
+                        </div>
+                        <div className="w-8 h-8 bg-expert rounded-full flex items-center justify-center text-white font-medium text-xs">
+                          TL
+                        </div>
+                      </div>
+                      
+                      <div className="mt-6 space-y-3">
+                        <div className="flex items-center gap-3">
+                          <div className="relative">
+                            <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-medium">
+                              JD
+                            </div>
+                            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-success border-2 border-background rounded-full"></div>
+                          </div>
+                          <div>
+                            <p className="font-medium">John Doe</p>
+                            <p className="text-sm text-muted-foreground">Online</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3">
+                          <div className="relative">
+                            <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white font-medium">
+                              SM
+                            </div>
+                            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-warning border-2 border-background rounded-full"></div>
+                          </div>
+                          <div>
+                            <p className="font-medium">Sarah Miller</p>
+                            <p className="text-sm text-muted-foreground">Away</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3">
+                          <div className="relative">
+                            <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center text-muted-foreground font-medium">
+                              MJ
+                            </div>
+                            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-muted-foreground border-2 border-background rounded-full"></div>
+                          </div>
+                          <div>
+                            <p className="font-medium text-muted-foreground">Mike Johnson</p>
+                            <p className="text-sm text-muted-foreground">Offline</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-4">Profile Image Upload</h4>
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-4">
+                          <div className="relative">
+                            <div className="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-medium text-2xl">
+                              JD
+                            </div>
+                            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-background border border-muted rounded-full flex items-center justify-center cursor-pointer hover:bg-accent">
+                              <Edit className="w-3 h-3" />
+                            </div>
+                          </div>
+                          <div>
+                            <p className="font-medium">John Doe</p>
+                            <p className="text-sm text-muted-foreground">Click the edit icon to change</p>
+                            <Button variant="outline" size="sm" className="mt-2">
+                              <Upload className="w-4 h-4 mr-2" />
+                              Upload New
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        <div className="border rounded-lg p-4 bg-muted/50">
+                          <h5 className="font-medium mb-2">Image Requirements</h5>
+                          <ul className="text-sm text-muted-foreground space-y-1">
+                            <li>• Minimum 200x200 pixels</li>
+                            <li>• Maximum file size: 5MB</li>
+                            <li>• Supported formats: JPG, PNG, GIF</li>
+                            <li>• Square images work best</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Communication Tab */}
+          <TabsContent value="communication" className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Communication Components</h2>
+              
+              <div className="space-y-6">
+                <ComponentShowcase title="Toast Notifications">
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Toast Examples</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3 p-4 bg-success/10 border border-success/20 rounded-lg max-w-md">
+                        <CheckCircle className="w-5 h-5 text-success" />
+                        <div className="flex-1">
+                          <p className="font-medium text-success">Success!</p>
+                          <p className="text-sm text-success/80">Your challenge has been submitted successfully.</p>
+                        </div>
+                        <Button variant="ghost" size="sm" className="text-success">
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                      
+                      <div className="flex items-center gap-3 p-4 bg-destructive/10 border border-destructive/20 rounded-lg max-w-md">
+                        <AlertCircle className="w-5 h-5 text-destructive" />
+                        <div className="flex-1">
+                          <p className="font-medium text-destructive">Error occurred</p>
+                          <p className="text-sm text-destructive/80">Failed to upload file. Please try again.</p>
+                        </div>
+                        <Button variant="ghost" size="sm" className="text-destructive">
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                      
+                      <div className="flex items-center gap-3 p-4 bg-warning/10 border border-warning/20 rounded-lg max-w-md">
+                        <AlertCircle className="w-5 h-5 text-warning" />
+                        <div className="flex-1">
+                          <p className="font-medium text-warning">Warning</p>
+                          <p className="text-sm text-warning/80">Challenge deadline is in 2 hours.</p>
+                        </div>
+                        <Button variant="ghost" size="sm" className="text-warning">
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                      
+                      <div className="flex items-center gap-3 p-4 bg-accent/10 border border-accent/20 rounded-lg max-w-md">
+                        <Info className="w-5 h-5 text-accent" />
+                        <div className="flex-1">
+                          <p className="font-medium text-accent">Information</p>
+                          <p className="text-sm text-accent/80">New feature: Real-time collaboration is now available.</p>
+                        </div>
+                        <Button variant="ghost" size="sm" className="text-accent">
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-6">
+                      <h4 className="font-medium mb-3">Toast Actions</h4>
+                      <div className="flex gap-2">
+                        <Button onClick={() => toast({ title: "Success!", description: "This is a success message", duration: 3000 })}>
+                          Show Success
+                        </Button>
+                        <Button variant="destructive" onClick={() => toast({ title: "Error!", description: "This is an error message", duration: 3000 })}>
+                          Show Error
+                        </Button>
+                        <Button variant="outline" onClick={() => toast({ title: "Info", description: "This is an info message", duration: 3000 })}>
+                          Show Info
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Chat Interface">
+                  <div className="border rounded-lg overflow-hidden h-96 flex flex-col">
+                    <div className="bg-card border-b p-4 flex items-center gap-3">
+                      <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-medium text-sm">
+                        TC
+                      </div>
+                      <div>
+                        <p className="font-medium">Team Chat</p>
+                        <p className="text-sm text-muted-foreground">5 members online</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+                      <div className="flex gap-3">
+                        <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white font-medium text-sm">
+                          JD
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-medium text-sm">John Doe</span>
+                            <span className="text-xs text-muted-foreground">2:30 PM</span>
+                          </div>
+                          <div className="bg-muted rounded-lg p-3">
+                            <p className="text-sm">Hey team! I just submitted our AI model. Looking great so far! 🚀</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex gap-3">
+                        <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white font-medium text-sm">
+                          SM
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-medium text-sm">Sarah Miller</span>
+                            <span className="text-xs text-muted-foreground">2:32 PM</span>
+                          </div>
+                          <div className="bg-muted rounded-lg p-3">
+                            <p className="text-sm">Awesome work! The UI integration is also ready. Should we schedule a final review?</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex gap-3 justify-end">
+                        <div className="max-w-xs">
+                          <div className="flex items-center gap-2 mb-1 justify-end">
+                            <span className="text-xs text-muted-foreground">2:35 PM</span>
+                            <span className="font-medium text-sm">You</span>
+                          </div>
+                          <div className="bg-primary text-primary-foreground rounded-lg p-3">
+                            <p className="text-sm">Perfect! Let's meet at 4 PM for the final review. Great teamwork everyone! 💪</p>
+                          </div>
+                        </div>
+                        <div className="w-8 h-8 bg-innovation rounded-full flex items-center justify-center text-white font-medium text-sm">
+                          Me
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="border-t p-4">
+                      <div className="flex gap-2">
+                        <input 
+                          type="text" 
+                          className="flex-1 p-2 border rounded-lg" 
+                          placeholder="Type your message..."
+                        />
+                        <Button size="sm">
+                          <Send className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Notification Center">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-medium mb-4">Notification Dropdown</h4>
+                      <div className="border rounded-lg overflow-hidden max-w-sm">
+                        <div className="bg-card border-b p-4 flex items-center justify-between">
+                          <h5 className="font-medium">Notifications</h5>
+                          <Badge variant="secondary" className="text-xs">3 new</Badge>
+                        </div>
+                        
+                        <div className="divide-y max-h-80 overflow-y-auto">
+                          <div className="p-4 hover:bg-accent/50 bg-primary/5">
+                            <div className="flex gap-3">
+                              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                                <Award className="w-4 h-4 text-white" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium text-sm">Challenge Won! 🎉</p>
+                                <p className="text-sm text-muted-foreground">You won first place in AI Healthcare Challenge</p>
+                                <p className="text-xs text-muted-foreground mt-1">2 minutes ago</p>
+                              </div>
+                              <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
+                            </div>
+                          </div>
+                          
+                          <div className="p-4 hover:bg-accent/50 bg-success/5">
+                            <div className="flex gap-3">
+                              <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center">
+                                <Users className="w-4 h-4 text-white" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium text-sm">New Team Member</p>
+                                <p className="text-sm text-muted-foreground">Alex joined your Climate Tech team</p>
+                                <p className="text-xs text-muted-foreground mt-1">1 hour ago</p>
+                              </div>
+                              <div className="w-2 h-2 bg-success rounded-full mt-2"></div>
+                            </div>
+                          </div>
+                          
+                          <div className="p-4 hover:bg-accent/50 bg-warning/5">
+                            <div className="flex gap-3">
+                              <div className="w-8 h-8 bg-warning rounded-full flex items-center justify-center">
+                                <Clock className="w-4 h-4 text-white" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium text-sm">Deadline Reminder</p>
+                                <p className="text-sm text-muted-foreground">Cybersecurity Challenge ends in 2 days</p>
+                                <p className="text-xs text-muted-foreground mt-1">3 hours ago</p>
+                              </div>
+                              <div className="w-2 h-2 bg-warning rounded-full mt-2"></div>
+                            </div>
+                          </div>
+                          
+                          <div className="p-4 hover:bg-accent/50">
+                            <div className="flex gap-3">
+                              <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                                <Heart className="w-4 h-4 text-white" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium text-sm">Project Liked</p>
+                                <p className="text-sm text-muted-foreground">Someone liked your Smart City project</p>
+                                <p className="text-xs text-muted-foreground mt-1">1 day ago</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="border-t p-3">
+                          <Button variant="ghost" className="w-full justify-center text-sm">
+                            View All Notifications
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-4">Alert Banners</h4>
+                      <div className="space-y-3">
+                        <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+                          <div className="flex items-start gap-3">
+                            <Info className="w-5 h-5 text-primary mt-0.5" />
+                            <div className="flex-1">
+                              <p className="font-medium text-primary">New Feature Available</p>
+                              <p className="text-sm text-primary/80 mt-1">
+                                Real-time collaboration is now live! Work together with your team seamlessly.
+                              </p>
+                            </div>
+                            <Button variant="ghost" size="sm" className="text-primary">
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-warning/10 border border-warning/20 rounded-lg p-4">
+                          <div className="flex items-start gap-3">
+                            <AlertCircle className="w-5 h-5 text-warning mt-0.5" />
+                            <div className="flex-1">
+                              <p className="font-medium text-warning">Maintenance Notice</p>
+                              <p className="text-sm text-warning/80 mt-1">
+                                Scheduled maintenance on Sunday 2 AM - 4 AM UTC. Plan accordingly.
+                              </p>
+                            </div>
+                            <Button variant="ghost" size="sm" className="text-warning">
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-success/10 border border-success/20 rounded-lg p-4">
+                          <div className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-success mt-0.5" />
+                            <div className="flex-1">
+                              <p className="font-medium text-success">System Updated</p>
+                              <p className="text-sm text-success/80 mt-1">
+                                Platform has been updated with improved performance and new features.
+                              </p>
+                            </div>
+                            <Button variant="ghost" size="sm" className="text-success">
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Comment System">
+                  <div className="space-y-6">
+                    <div className="space-y-4">
+                      <div className="flex gap-3">
+                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-medium text-sm">
+                          JD
+                        </div>
+                        <div className="flex-1">
+                          <div className="bg-card border rounded-lg p-4">
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className="font-medium text-sm">John Doe</span>
+                              <Badge variant="secondary" className="text-xs">Expert</Badge>
+                              <span className="text-xs text-muted-foreground">2 hours ago</span>
+                            </div>
+                            <p className="text-sm mb-3">
+                              Great approach to the AI healthcare problem! I particularly like how you've addressed the privacy concerns. Have you considered implementing federated learning for better data protection?
+                            </p>
+                            <div className="flex items-center gap-4">
+                              <Button variant="ghost" size="sm" className="h-auto p-0">
+                                <Heart className="w-4 h-4 mr-1" />
+                                <span className="text-xs">12</span>
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-auto p-0">
+                                <MessageCircle className="w-4 h-4 mr-1" />
+                                <span className="text-xs">Reply</span>
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          <div className="ml-8 mt-3 flex gap-3">
+                            <div className="w-6 h-6 bg-secondary rounded-full flex items-center justify-center text-white font-medium text-xs">
+                              S
+                            </div>
+                            <div className="flex-1">
+                              <div className="bg-muted rounded-lg p-3">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <span className="font-medium text-sm">Sarah</span>
+                                  <span className="text-xs text-muted-foreground">1 hour ago</span>
+                                </div>
+                                <p className="text-sm">
+                                  @John Great suggestion! Yes, we're exploring federated learning in our next iteration. Thanks for the feedback!
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex gap-3">
+                        <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white font-medium text-sm">
+                          MK
+                        </div>
+                        <div className="flex-1">
+                          <div className="bg-card border rounded-lg p-4">
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className="font-medium text-sm">Mike Chen</span>
+                              <span className="text-xs text-muted-foreground">4 hours ago</span>
+                            </div>
+                            <p className="text-sm mb-3">
+                              The scalability metrics look impressive. How does the system perform under high concurrent loads? Would love to see some stress test results.
+                            </p>
+                            <div className="flex items-center gap-4">
+                              <Button variant="ghost" size="sm" className="h-auto p-0">
+                                <Heart className="w-4 h-4 mr-1" />
+                                <span className="text-xs">8</span>
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-auto p-0">
+                                <MessageCircle className="w-4 h-4 mr-1" />
+                                <span className="text-xs">Reply</span>
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="border-t pt-4">
+                      <h4 className="font-medium mb-3">Add Comment</h4>
+                      <div className="flex gap-3">
+                        <div className="w-8 h-8 bg-innovation rounded-full flex items-center justify-center text-white font-medium text-sm">
+                          Me
+                        </div>
+                        <div className="flex-1 space-y-3">
+                          <textarea 
+                            className="w-full p-3 border rounded-lg resize-none" 
+                            rows={3}
+                            placeholder="Share your thoughts on this project..."
+                          />
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Button variant="ghost" size="sm">
+                                📷 Image
+                              </Button>
+                              <Button variant="ghost" size="sm">
+                                📎 File
+                              </Button>
+                            </div>
+                            <Button size="sm">Post Comment</Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Interactions Tab */}
           <TabsContent value="spacing" className="space-y-8">
             <div>
               <h2 className="text-2xl font-bold mb-6">Spacing & Layout</h2>
