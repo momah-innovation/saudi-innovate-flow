@@ -2,7 +2,8 @@ import {
   Target, Zap, Calendar, X, Clock, Users, Award, 
   TrendingUp, Star, Sparkles, CheckCircle, AlertCircle,
   PlayCircle, XCircle, PauseCircle, Heart, Lightbulb,
-  Leaf, Code, Briefcase
+  Leaf, Code, Briefcase, MessageSquare, FileText, Activity,
+  Info, Trophy
 } from 'lucide-react';
 import { ChallengesPageConfig } from '@/types/challengesConfig';
 
@@ -328,6 +329,82 @@ export const challengesPageConfig: ChallengesPageConfig = {
         labelAr: 'أعمال',
         icon: Briefcase
       }
+    ],
+
+    notificationTypes: [
+      {
+        value: 'status_change',
+        label: 'Status Change',
+        labelAr: 'تغيير الحالة',
+        icon: AlertCircle,
+        color: 'text-blue-500'
+      },
+      {
+        value: 'new_participant',
+        label: 'New Participant',
+        labelAr: 'مشارك جديد',
+        icon: Users,
+        color: 'text-green-500'
+      },
+      {
+        value: 'new_submission',
+        label: 'New Submission',
+        labelAr: 'مقترح جديد',
+        icon: Trophy,
+        color: 'text-yellow-500'
+      },
+      {
+        value: 'comment',
+        label: 'Comment',
+        labelAr: 'تعليق',
+        icon: MessageSquare,
+        color: 'text-purple-500'
+      },
+      {
+        value: 'deadline_reminder',
+        label: 'Deadline Reminder',
+        labelAr: 'تذكير بالموعد النهائي',
+        icon: Clock,
+        color: 'text-red-500'
+      },
+      {
+        value: 'trending',
+        label: 'Trending',
+        labelAr: 'رائج',
+        icon: TrendingUp,
+        color: 'text-orange-500'
+      }
+    ],
+
+    activityTypes: [
+      {
+        value: 'participation',
+        label: 'Participation',
+        labelAr: 'مشاركة',
+        icon: Users,
+        color: 'text-green-500'
+      },
+      {
+        value: 'comment',
+        label: 'Comment',
+        labelAr: 'تعليق',
+        icon: MessageSquare,
+        color: 'text-blue-500'
+      },
+      {
+        value: 'submission',
+        label: 'Submission',
+        labelAr: 'مقترح',
+        icon: FileText,
+        color: 'text-purple-500'
+      },
+      {
+        value: 'status_change',
+        label: 'Status Change',
+        labelAr: 'تغيير الحالة',
+        icon: AlertCircle,
+        color: 'text-orange-500'
+      }
     ]
   },
 
@@ -394,6 +471,14 @@ export const getDifficultyMapping = (difficulty: string) => {
 
 export const getCategoryMapping = (category: string) => {
   return challengesPageConfig.mappings.categories.find(c => c.value === category) || challengesPageConfig.mappings.categories[0];
+};
+
+export const getNotificationTypeMapping = (type: string) => {
+  return challengesPageConfig.mappings.notificationTypes.find(n => n.value === type) || challengesPageConfig.mappings.notificationTypes[0];
+};
+
+export const getActivityTypeMapping = (type: string) => {
+  return challengesPageConfig.mappings.activityTypes.find(a => a.value === type) || challengesPageConfig.mappings.activityTypes[0];
 };
 
 export const createGridClassName = (viewMode: string) => {

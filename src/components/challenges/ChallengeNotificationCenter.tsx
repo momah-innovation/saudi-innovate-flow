@@ -23,6 +23,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
+import { getNotificationTypeMapping } from '@/config/challengesPageConfig';
 
 interface ChallengeNotification {
   id: string;
@@ -155,22 +156,9 @@ export const ChallengeNotificationCenter = ({
   };
 
   const getNotificationIcon = (type: string) => {
-    switch (type) {
-      case 'status_change':
-        return <AlertCircle className="w-4 h-4 text-blue-500" />;
-      case 'new_participant':
-        return <Users className="w-4 h-4 text-green-500" />;
-      case 'new_submission':
-        return <Trophy className="w-4 h-4 text-yellow-500" />;
-      case 'comment':
-        return <MessageSquare className="w-4 h-4 text-purple-500" />;
-      case 'deadline_reminder':
-        return <Clock className="w-4 h-4 text-red-500" />;
-      case 'trending':
-        return <TrendingUp className="w-4 h-4 text-orange-500" />;
-      default:
-        return <Info className="w-4 h-4 text-gray-500" />;
-    }
+    const mapping = getNotificationTypeMapping(type);
+    const IconComponent = mapping.icon;
+    return <IconComponent className={`w-4 h-4 ${mapping.color}`} />;
   };
 
   const formatTimeAgo = (dateString: string) => {

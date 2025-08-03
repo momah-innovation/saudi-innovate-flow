@@ -52,6 +52,22 @@ export interface CategoryMapping {
   icon: any;
 }
 
+export interface NotificationTypeMapping {
+  value: string;
+  label: string;
+  labelAr: string;
+  icon: any;
+  color: string;
+}
+
+export interface ActivityTypeMapping {
+  value: string;
+  label: string;
+  labelAr: string;
+  icon: any;
+  color: string;
+}
+
 export interface TabConfig {
   key: string;
   label: string;
@@ -86,6 +102,8 @@ export interface ChallengesPageConfig {
     priority: PriorityMapping[];
     difficulty: DifficultyMapping[];
     categories: CategoryMapping[];
+    notificationTypes: NotificationTypeMapping[];
+    activityTypes: ActivityTypeMapping[];
   };
   
   defaultFilters: {

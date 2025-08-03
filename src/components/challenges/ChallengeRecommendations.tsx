@@ -145,15 +145,12 @@ export const ChallengeRecommendations = ({
 
   const getPriorityIcon = (priority: string) => {
     const mapping = getPriorityMapping(priority);
-    switch (mapping.value) {
-      case 'عالي':
-      case 'High': return <Zap className="w-4 h-4 text-red-500" />;
-      case 'متوسط': 
-      case 'Medium': return <Target className="w-4 h-4 text-yellow-500" />;
-      case 'منخفض':
-      case 'Low': return <Star className="w-4 h-4 text-green-500" />;
-      default: return <Target className="w-4 h-4 text-gray-500" />;
-    }
+    const IconComponent = mapping.value === 'عالي' || mapping.value === 'High' ? Zap : 
+                        mapping.value === 'متوسط' || mapping.value === 'Medium' ? Target : Star;
+    const colorClass = mapping.value === 'عالي' || mapping.value === 'High' ? 'text-red-500' :
+                      mapping.value === 'متوسط' || mapping.value === 'Medium' ? 'text-yellow-500' :
+                      'text-green-500';
+    return <IconComponent className={`w-4 h-4 ${colorClass}`} />;
   };
 
   if (loading) {

@@ -24,6 +24,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
+import { getActivityTypeMapping } from '@/config/challengesPageConfig';
 
 interface Challenge {
   id: string;
@@ -148,18 +149,9 @@ export const ChallengeActivityHub = ({
   };
 
   const getActivityIcon = (type: string) => {
-    switch (type) {
-      case 'participation':
-        return <Users className="w-4 h-4 text-green-500" />;
-      case 'comment':
-        return <MessageSquare className="w-4 h-4 text-blue-500" />;
-      case 'submission':
-        return <FileText className="w-4 h-4 text-purple-500" />;
-      case 'status_change':
-        return <AlertCircle className="w-4 h-4 text-orange-500" />;
-      default:
-        return <Activity className="w-4 h-4 text-gray-500" />;
-    }
+    const mapping = getActivityTypeMapping(type);
+    const IconComponent = mapping.icon;
+    return <IconComponent className={`w-4 h-4 ${mapping.color}`} />;
   };
 
   const formatTimeAgo = (dateString: string) => {

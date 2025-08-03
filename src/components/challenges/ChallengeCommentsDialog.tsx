@@ -275,7 +275,7 @@ export function ChallengeCommentsDialog({
                 size="sm"
                 variant="ghost"
                 onClick={() => handleDeleteComment(comment.id)}
-                className="h-auto p-1 text-xs text-red-500 hover:text-red-700"
+                className={`h-auto p-1 text-xs ${challengesPageConfig.badges.urgent.split(' ').filter(c => c.includes('text')).join(' ')} hover:text-red-700`}
               >
                 <Trash2 className="h-3 w-3 mr-1" />
                 حذف
