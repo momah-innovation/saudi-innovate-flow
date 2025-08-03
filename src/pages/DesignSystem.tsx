@@ -5722,23 +5722,23 @@ const DesignSystem = () => {
                          <div>
                            <h5 className="text-sm font-medium text-muted-foreground mb-3">Compact Hero</h5>
                            <div className="border rounded-lg overflow-hidden">
-                             <div className="relative bg-gradient-to-r from-primary/80 via-accent/70 to-secondary/80 p-6 border-l-4 border-l-accent/50">
+                             <div className="relative bg-gradient-to-r from-primary via-accent to-secondary p-6 border-l-4 border-l-accent/50">
                                <div className="max-w-4xl mx-auto text-center text-white">
                                  <div className="flex items-center justify-center gap-2 mb-4">
                                    <div className="p-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
                                       <Sparkles className="w-6 h-6 text-accent" />
                                     </div>
-                                    <Badge variant="secondary" className="bg-background/20 text-foreground border-border/50">Featured</Badge>
+                                    <Badge variant="secondary" className="bg-white/20 text-white border-white/50">Featured</Badge>
                                   </div>
                                   <h1 className="text-2xl md:text-3xl font-bold mb-3">
                                     Innovation <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">Made Simple</span>
                                   </h1>
                                   <p className="text-sm text-white/80 mb-4 max-w-xl mx-auto">Quick access to challenges and opportunities</p>
                                   <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
-                                    <Button size="sm" className="bg-background/20 text-foreground hover:bg-background/30 backdrop-blur-sm border border-white/20">
+                                    <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg">
                                       Get Started <ArrowRight className="w-4 h-4 ml-1" />
                                     </Button>
-                                    <Button size="sm" variant="outline" className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 backdrop-blur-sm">
+                                    <Button size="sm" variant="outline" className="border-white/50 text-white hover:bg-white/10 hover:border-white/70">
                                       <Play className="w-4 h-4 mr-1 text-accent" /> Demo
                                     </Button>
                                   </div>
@@ -5765,14 +5765,14 @@ const DesignSystem = () => {
                          <div>
                            <h5 className="text-sm font-medium text-muted-foreground mb-3">Default Hero</h5>
                            <div className="border rounded-lg overflow-hidden">
-                             <div className="relative bg-gradient-to-r from-primary/80 via-accent/70 to-secondary/80 p-8 border-l-4 border-l-accent/60">
+                             <div className="relative bg-gradient-to-r from-primary via-accent to-secondary p-8 border-l-4 border-l-accent/60">
                                <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                                  <div className="text-white">
                                    <div className="flex items-center gap-3 mb-4">
                                       <div className="p-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/30">
                                         <Sparkles className="w-8 h-8 text-accent" />
                                       </div>
-                                      <Badge variant="secondary" className="bg-background/20 text-foreground border-border/50">Latest</Badge>
+                                      <Badge variant="secondary" className="bg-white/20 text-white border-white/50">Latest</Badge>
                                     </div>
                                     <h1 className="text-3xl lg:text-4xl font-bold mb-4">
                                       Shape <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">the Future</span>
@@ -5799,37 +5799,37 @@ const DesignSystem = () => {
                                       </div>
                                     </div>
                                     <div className="flex flex-col sm:flex-row gap-3">
-                                      <Button className="bg-background/20 text-foreground hover:bg-background/30 backdrop-blur-sm border border-white/20">
+                                      <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg">
                                         Start Journey <ArrowRight className="w-4 h-4 ml-2" />
                                       </Button>
-                                      <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 backdrop-blur-sm">
+                                      <Button variant="outline" className="border-white/50 text-white hover:bg-white/10 hover:border-white/70">
                                         <Play className="w-4 h-4 mr-2 text-accent" /> Watch Demo
                                       </Button>
                                     </div>
                                  </div>
                                  <div>
-                                    <Card className="overflow-hidden border border-white/20 bg-card/10 backdrop-blur-sm">
-                                      <div className="aspect-video bg-gradient-to-br from-orange-500/80 to-red-600/80 relative">
-                                        <div className="absolute bottom-3 left-3 text-white">
-                                          <div className="flex items-center gap-1 text-xs mb-1">
-                                            <Calendar className="h-3 w-3 text-purple-300" />
-                                           <span>Ends March 30</span>
-                                         </div>
-                                         <h3 className="font-semibold text-sm">AI for Climate</h3>
-                                         <p className="text-xs opacity-90">$50K prize</p>
-                                       </div>
-                                       <div className="absolute top-3 right-3">
-                                         <Badge className="bg-red-500/20 text-white text-xs">🔥 Hot</Badge>
-                                       </div>
-                                     </div>
-                                     <div className="p-3">
-                                       <div className="flex items-center justify-between mb-2">
-                                         <div className="text-xs text-muted-foreground">1.2k participants</div>
-                                         <Button size="sm" variant="outline" className="border-white/30 text-white text-xs px-2 py-1 h-auto hover:bg-white/10 hover:border-white/50 backdrop-blur-sm">Join</Button>
-                                       </div>
-                                       <Progress value={68} className="h-1.5 bg-white/20" />
-                                     </div>
-                                   </Card>
+                                   <Card className="overflow-hidden border border-white/20 bg-white/10 backdrop-blur-sm">
+                                     <div className="aspect-video bg-gradient-to-br from-orange-500/80 to-red-600/80 relative">
+                                       <div className="absolute bottom-3 left-3 text-white">
+                                         <div className="flex items-center gap-1 text-xs mb-1">
+                                           <Calendar className="h-3 w-3 text-purple-300" />
+                                          <span>Ends March 30</span>
+                                        </div>
+                                        <h3 className="font-semibold text-sm">AI for Climate</h3>
+                                        <p className="text-xs opacity-90">$50K prize</p>
+                                      </div>
+                                      <div className="absolute top-3 right-3">
+                                        <Badge className="bg-red-500/20 text-white text-xs">🔥 Hot</Badge>
+                                      </div>
+                                    </div>
+                                    <div className="p-3">
+                                      <div className="flex items-center justify-between mb-2">
+                                        <div className="text-xs text-white/70">1.2k participants</div>
+                                        <Button size="sm" variant="outline" className="border-white/50 text-white text-xs px-2 py-1 h-auto hover:bg-white/10 hover:border-white/70">Join</Button>
+                                      </div>
+                                      <Progress value={68} className="h-1.5 bg-white/20" />
+                                    </div>
+                                  </Card>
                                 </div>
                               </div>
                             </div>
@@ -5840,7 +5840,7 @@ const DesignSystem = () => {
                          <div>
                            <h5 className="text-sm font-medium text-muted-foreground mb-3">Large/Full Hero</h5>
                            <div className="border rounded-lg overflow-hidden">
-                              <div className="relative bg-gradient-to-r from-primary/80 via-accent/70 to-secondary/80 p-12 border-l-8 border-l-accent/70">
+                              <div className="relative bg-gradient-to-r from-primary via-accent to-secondary p-12 border-l-8 border-l-accent/70">
                                 <div className="absolute inset-0 overflow-hidden">
                                   <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse" />
                                   <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse" />
@@ -5854,7 +5854,7 @@ const DesignSystem = () => {
                                         </div>
                                         <div className="absolute -top-2 -right-2 w-6 h-6 bg-accent rounded-full animate-ping" />
                                       </div>
-                                      <Badge variant="secondary" className="bg-background/20 text-foreground border-border/50">🎯 Latest</Badge>
+                                      <Badge variant="secondary" className="bg-white/20 text-white border-white/50">🎯 Latest</Badge>
                                     </div>
                                     <h1 className="text-5xl lg:text-6xl font-bold mb-6">
                                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">Shape</span> the Future
@@ -5885,63 +5885,63 @@ const DesignSystem = () => {
                                       </div>
                                     </div>
                                     <div className="flex flex-col sm:flex-row gap-4">
-                                      <Button size="lg" className="px-8 bg-background/20 text-foreground hover:bg-background/30 backdrop-blur-sm border border-white/20 hover:scale-105 transition-all">
+                                      <Button size="lg" className="px-8 bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105 transition-all shadow-lg">
                                         Start Journey <ArrowRight className="w-4 h-4 ml-2" />
                                       </Button>
-                                      <Button size="lg" variant="outline" className="px-8 border-white/30 text-white hover:bg-white/10 hover:border-white/50 backdrop-blur-sm">
+                                      <Button size="lg" variant="outline" className="px-8 border-white/50 text-white hover:bg-white/10 hover:border-white/70">
                                         <Play className="w-4 h-4 mr-2 text-accent" /> Watch Demo
                                       </Button>
                                     </div>
                                  </div>
                                  <div className="space-y-6">
-                                    <Card className="overflow-hidden border border-white/20 bg-card/10 backdrop-blur-sm hover:scale-105 transition-transform">
-                                      <div className="aspect-video bg-gradient-to-br from-orange-500/80 to-red-600/80 relative">
-                                        <div className="absolute bottom-4 left-4 text-white">
-                                          <div className="flex items-center gap-2 text-sm mb-2">
-                                            <Calendar className="h-4 w-4 text-purple-300" />
-                                            <span>Ends March 30, 2024</span>
-                                          </div>
-                                          <h3 className="font-semibold text-lg mb-1">AI for Climate Action</h3>
-                                          <p className="text-sm opacity-90">$50K prize • Global impact</p>
-                                        </div>
-                                        <div className="absolute top-4 right-4">
-                                          <Badge className="bg-red-500/20 text-white border-red-300/30">🔥 Trending</Badge>
-                                        </div>
-                                      </div>
-                                      <div className="p-4">
-                                        <div className="flex items-center justify-between mb-3">
-                                          <div className="text-sm text-muted-foreground">1.2k participants • Global</div>
-                                          <Button size="sm" variant="outline" className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 backdrop-blur-sm">
+                                   <Card className="overflow-hidden border border-white/20 bg-white/10 backdrop-blur-sm hover:scale-105 transition-transform">
+                                     <div className="aspect-video bg-gradient-to-br from-orange-500/80 to-red-600/80 relative">
+                                       <div className="absolute bottom-4 left-4 text-white">
+                                         <div className="flex items-center gap-2 text-sm mb-2">
+                                           <Calendar className="h-4 w-4 text-purple-300" />
+                                           <span>Ends March 30, 2024</span>
+                                         </div>
+                                         <h3 className="font-semibold text-lg mb-1">AI for Climate Action</h3>
+                                         <p className="text-sm opacity-90">$50K prize • Global impact</p>
+                                       </div>
+                                       <div className="absolute top-4 right-4">
+                                         <Badge className="bg-red-500/20 text-white border-red-300/30">🔥 Trending</Badge>
+                                       </div>
+                                     </div>
+                                     <div className="p-4">
+                                       <div className="flex items-center justify-between mb-3">
+                                         <div className="text-sm text-white/70">1.2k participants • Global</div>
+                                          <Button size="sm" variant="outline" className="border-white/50 text-white hover:bg-white/10 hover:border-white/70">
                                             <ExternalLink className="h-4 w-4 mr-1" /> Join
                                           </Button>
-                                        </div>
-                                        <Progress value={68} className="h-2 bg-white/20" />
-                                      </div>
-                                    </Card>
-                                    <div className="grid grid-cols-2 gap-4">
-                                      <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/20 bg-card/10 backdrop-blur-sm">
-                                        <div className="flex items-center gap-3">
-                                          <div className="w-8 h-8 rounded-lg bg-blue-500/30 flex items-center justify-center">
-                                            <Zap className="h-4 w-4 text-accent" />
-                                          </div>
-                                          <div>
-                                            <p className="font-medium text-sm text-white">Trending</p>
-                                            <p className="text-xs text-white/70">Hot challenges</p>
-                                          </div>
-                                        </div>
-                                      </Card>
-                                      <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/20 bg-card/10 backdrop-blur-sm">
-                                        <div className="flex items-center gap-3">
-                                          <div className="w-8 h-8 rounded-lg bg-accent/30 flex items-center justify-center">
-                                            <Award className="h-4 w-4 text-primary" />
-                                          </div>
-                                          <div>
-                                            <p className="font-medium text-sm text-white">Leaderboard</p>
-                                            <p className="text-xs text-white/70">Top innovators</p>
-                                          </div>
-                                        </div>
-                                      </Card>
-                                    </div>
+                                       </div>
+                                       <Progress value={68} className="h-2 bg-white/20" />
+                                     </div>
+                                   </Card>
+                                   <div className="grid grid-cols-2 gap-4">
+                                     <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/20 bg-white/10 backdrop-blur-sm">
+                                       <div className="flex items-center gap-3">
+                                         <div className="w-8 h-8 rounded-lg bg-blue-500/30 flex items-center justify-center">
+                                           <Zap className="h-4 w-4 text-yellow-400" />
+                                         </div>
+                                         <div>
+                                           <p className="font-medium text-sm text-white">Trending</p>
+                                           <p className="text-xs text-white/70">Hot challenges</p>
+                                         </div>
+                                       </div>
+                                     </Card>
+                                     <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/20 bg-white/10 backdrop-blur-sm">
+                                       <div className="flex items-center gap-3">
+                                         <div className="w-8 h-8 rounded-lg bg-green-500/30 flex items-center justify-center">
+                                           <Award className="h-4 w-4 text-purple-400" />
+                                         </div>
+                                         <div>
+                                           <p className="font-medium text-sm text-white">Leaderboard</p>
+                                           <p className="text-xs text-white/70">Top innovators</p>
+                                         </div>
+                                       </div>
+                                     </Card>
+                                   </div>
                                  </div>
                                </div>
                              </div>
