@@ -151,12 +151,12 @@ export const challengesPageConfig: ChallengesPageConfig = {
     ]
   },
 
-  // Badge colors for special features
+  // Badge colors for special features - hero theme aligned
   badges: {
-    new: 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400',
-    trending: 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400',
-    urgent: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
-    featured: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
+    new: 'bg-blue-500/90 text-white border-0',
+    trending: 'bg-orange-500/90 text-white border-0 animate-pulse',
+    urgent: 'bg-red-500/90 text-white border-0 animate-pulse',
+    featured: 'bg-yellow-500/90 text-white border-0'
   },
 
   // Status, Priority, Difficulty, and Category Mappings
@@ -166,56 +166,56 @@ export const challengesPageConfig: ChallengesPageConfig = {
         value: 'active',
         label: 'Active',
         labelAr: 'نشط',
-        color: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400',
+        color: 'bg-green-500/90 text-white border-green-500/20',
         icon: CheckCircle
       },
       {
         value: 'published',
         label: 'Active',
         labelAr: 'نشط',
-        color: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400',
+        color: 'bg-green-500/90 text-white border-green-500/20',
         icon: CheckCircle
       },
       {
         value: 'upcoming',
         label: 'Upcoming',
         labelAr: 'قريباً',
-        color: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400',
+        color: 'bg-blue-500/90 text-white border-blue-500/20',
         icon: PlayCircle
       },
       {
         value: 'planning',
         label: 'Upcoming',
         labelAr: 'قريباً',
-        color: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400',
+        color: 'bg-blue-500/90 text-white border-blue-500/20',
         icon: PlayCircle
       },
       {
         value: 'draft',
         label: 'Draft',
         labelAr: 'مسودة',
-        color: 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400',
+        color: 'bg-gray-500/90 text-white border-gray-500/20',
         icon: AlertCircle
       },
       {
         value: 'closed',
         label: 'Closed',
         labelAr: 'مغلق',
-        color: 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400',
+        color: 'bg-gray-500/90 text-white border-gray-500/20',
         icon: XCircle
       },
       {
         value: 'completed',
         label: 'Completed',
         labelAr: 'مكتمل',
-        color: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400',
+        color: 'bg-purple-500/90 text-white border-purple-500/20',
         icon: CheckCircle
       },
       {
         value: 'cancelled',
         label: 'Cancelled',
         labelAr: 'ملغي',
-        color: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400',
+        color: 'bg-red-500/90 text-white border-red-500/20',
         icon: XCircle
       }
     ],
@@ -225,37 +225,37 @@ export const challengesPageConfig: ChallengesPageConfig = {
         value: 'عالي',
         label: 'High',
         labelAr: 'عالي',
-        color: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400'
+        color: 'bg-red-500/90 text-white border-red-500/20'
       },
       {
         value: 'High',
         label: 'High',
         labelAr: 'عالي',
-        color: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400'
+        color: 'bg-red-500/90 text-white border-red-500/20'
       },
       {
         value: 'متوسط',
         label: 'Medium',
         labelAr: 'متوسط',
-        color: 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400'
+        color: 'bg-yellow-500/90 text-white border-yellow-500/20'
       },
       {
         value: 'Medium',
         label: 'Medium',
         labelAr: 'متوسط',
-        color: 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400'
+        color: 'bg-yellow-500/90 text-white border-yellow-500/20'
       },
       {
         value: 'منخفض',
         label: 'Low',
         labelAr: 'منخفض',
-        color: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400'
+        color: 'bg-green-500/90 text-white border-green-500/20'
       },
       {
         value: 'Low',
         label: 'Low',
         labelAr: 'منخفض',
-        color: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400'
+        color: 'bg-green-500/90 text-white border-green-500/20'
       }
     ],
 
@@ -264,37 +264,37 @@ export const challengesPageConfig: ChallengesPageConfig = {
         value: 'صعب',
         label: 'Hard',
         labelAr: 'صعب',
-        color: 'bg-red-100 text-red-800 border-red-200'
+        color: 'bg-red-500/90 text-white border-red-500/20'
       },
       {
         value: 'Hard',
         label: 'Hard',
         labelAr: 'صعب',
-        color: 'bg-red-100 text-red-800 border-red-200'
+        color: 'bg-red-500/90 text-white border-red-500/20'
       },
       {
         value: 'متوسط',
         label: 'Medium',
         labelAr: 'متوسط',
-        color: 'bg-yellow-100 text-yellow-800 border-yellow-200'
+        color: 'bg-yellow-500/90 text-white border-yellow-500/20'
       },
       {
         value: 'Medium',
         label: 'Medium',
         labelAr: 'متوسط',
-        color: 'bg-yellow-100 text-yellow-800 border-yellow-200'
+        color: 'bg-yellow-500/90 text-white border-yellow-500/20'
       },
       {
         value: 'سهل',
         label: 'Easy',
         labelAr: 'سهل',
-        color: 'bg-green-100 text-green-800 border-green-200'
+        color: 'bg-green-500/90 text-white border-green-500/20'
       },
       {
         value: 'Easy',
         label: 'Easy',
         labelAr: 'سهل',
-        color: 'bg-green-100 text-green-800 border-green-200'
+        color: 'bg-green-500/90 text-white border-green-500/20'
       }
     ],
 
