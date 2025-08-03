@@ -124,11 +124,64 @@ export interface ChallengesPageConfig {
       fadeIn: string;
       pulseGlow: string;
       scaleIn: string;
+      enter: string;
+      exit: string;
+      slideInRight: string;
     };
     gradients: {
       hero: string;
+      heroOverlay: string;
+      button: string;
+      buttonHover: string;
+      textHighlight: string;
       card: string;
+      cardHover: string;
       filter: string;
+      filterLight: string;
+      featured: string;
+      success: string;
+      warning: string;
+      danger: string;
+      info: string;
+    };
+    glassMorphism: {
+      light: string;
+      medium: string;
+      heavy: string;
+      card: string;
+      cardHover: string;
+      cardActive: string;
+      badge: string;
+    };
+    colors: {
+      stats: {
+        blue: string;
+        green: string;
+        purple: string;
+        yellow: string;
+        orange: string;
+        red: string;
+      };
+      text: {
+        primary: string;
+        secondary: string;
+        muted: string;
+        accent: string;
+      };
+      background: {
+        primary: string;
+        secondary: string;
+        accent: string;
+        overlay: string;
+      };
+    };
+    effects: {
+      pulse: string;
+      bounce: string;
+      hoverScale: string;
+      hoverGlow: string;
+      focus: string;
+      interactive: string;
     };
     breakpoints: {
       mobile: string;

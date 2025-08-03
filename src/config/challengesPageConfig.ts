@@ -427,12 +427,95 @@ export const challengesPageConfig: ChallengesPageConfig = {
     animations: {
       fadeIn: 'animate-fade-in',
       pulseGlow: 'animate-pulse-glow',
-      scaleIn: 'animate-scale-in'
+      scaleIn: 'animate-scale-in',
+      enter: 'animate-enter',
+      exit: 'animate-exit',
+      slideInRight: 'animate-slide-in-right'
     },
     gradients: {
-      hero: 'bg-gradient-to-r from-violet-50/90 via-purple-50/90 to-blue-50/90',
-      card: 'bg-gradient-to-r from-violet-100 to-purple-100',
-      filter: 'bg-gradient-to-r from-violet-500 to-purple-600'
+      // Hero section gradients - dark, vibrant theme
+      hero: 'bg-gradient-to-r from-violet-600 via-purple-600 to-blue-600',
+      heroOverlay: 'bg-gradient-to-r from-black/50 via-black/30 to-black/40',
+      
+      // Button gradients matching hero
+      button: 'bg-gradient-to-r from-purple-500 to-blue-500',
+      buttonHover: 'hover:from-purple-600 hover:to-blue-600',
+      
+      // Text highlight gradients
+      textHighlight: 'bg-gradient-to-r from-yellow-300 to-orange-300',
+      
+      // Card gradients - consistent with hero theme
+      card: 'bg-gradient-to-r from-violet-500/10 to-purple-500/10',
+      cardHover: 'hover:from-violet-500/20 hover:to-purple-500/20',
+      
+      // Filter section gradients
+      filter: 'bg-gradient-to-r from-violet-500 to-purple-600',
+      filterLight: 'bg-gradient-to-r from-violet-50/90 via-purple-50/90 to-blue-50/90',
+      
+      // Featured content gradients
+      featured: 'bg-gradient-to-br from-purple-500/20 to-blue-500/20',
+      
+      // Status gradients
+      success: 'bg-gradient-to-r from-green-500 to-emerald-500',
+      warning: 'bg-gradient-to-r from-yellow-500 to-orange-500',
+      danger: 'bg-gradient-to-r from-red-500 to-pink-500',
+      info: 'bg-gradient-to-r from-blue-500 to-cyan-500'
+    },
+    glassMorphism: {
+      // Glass morphism patterns from hero
+      light: 'bg-white/5 backdrop-blur-sm border-white/10',
+      medium: 'bg-white/10 backdrop-blur-sm border-white/20',
+      heavy: 'bg-white/10 backdrop-blur-xl border-white/20',
+      
+      // Card glass effects
+      card: 'bg-white/5 backdrop-blur-sm border-white/10',
+      cardHover: 'hover:bg-white/10 transition-all duration-300',
+      cardActive: 'bg-white/10 border-white/20 scale-105',
+      
+      // Badge glass effects
+      badge: 'bg-white/10 text-white border-white/20 backdrop-blur-sm'
+    },
+    colors: {
+      // Animation and icon colors consistent with hero
+      stats: {
+        blue: 'text-blue-400',
+        green: 'text-green-400', 
+        purple: 'text-purple-400',
+        yellow: 'text-yellow-400',
+        orange: 'text-orange-400',
+        red: 'text-red-400'
+      },
+      
+      // Text colors for dark theme
+      text: {
+        primary: 'text-white',
+        secondary: 'text-white/80',
+        muted: 'text-white/60',
+        accent: 'text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300'
+      },
+      
+      // Background variations
+      background: {
+        primary: 'bg-white/5',
+        secondary: 'bg-white/10',
+        accent: 'bg-white/20',
+        overlay: 'bg-black/60'
+      }
+    },
+    effects: {
+      // Animated background elements
+      pulse: 'animate-pulse',
+      bounce: 'animate-bounce',
+      
+      // Hover effects
+      hoverScale: 'hover:scale-105 transition-transform duration-300',
+      hoverGlow: 'hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300',
+      
+      // Focus effects
+      focus: 'focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500',
+      
+      // Interactive states
+      interactive: 'transition-all duration-300 hover:bg-white/10 cursor-pointer'
     },
     breakpoints: {
       mobile: '640px',
