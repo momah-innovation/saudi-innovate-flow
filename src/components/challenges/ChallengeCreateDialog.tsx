@@ -18,17 +18,17 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
-interface CreateChallengeDialogProps {
+interface ChallengeCreateDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onChallengeCreated?: () => void;
 }
 
-export function CreateChallengeDialog({ 
+export function ChallengeCreateDialog({ 
   open, 
   onOpenChange, 
   onChallengeCreated 
-}: CreateChallengeDialogProps) {
+}: ChallengeCreateDialogProps) {
   const { user } = useAuth();
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);

@@ -28,17 +28,17 @@ interface TrendingChallenge {
   image_url?: string;
 }
 
-interface TrendingChallengesWidgetProps {
+interface ChallengeTrendingWidgetProps {
   onChallengeSelect?: (challengeId: string) => void;
   onChallengeClick?: (challenge: any) => void;
   className?: string;
 }
 
-export const TrendingChallengesWidget = ({ 
+export const ChallengeTrendingWidget = ({ 
   onChallengeSelect, 
   onChallengeClick,
   className = "" 
-}: TrendingChallengesWidgetProps) => {
+}: ChallengeTrendingWidgetProps) => {
   const { isRTL } = useDirection();
   const [trendingChallenges, setTrendingChallenges] = useState<TrendingChallenge[]>([]);
   const [loading, setLoading] = useState(true);

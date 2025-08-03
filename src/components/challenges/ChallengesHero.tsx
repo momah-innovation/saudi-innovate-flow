@@ -23,7 +23,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
-interface EnhancedChallengesHeroProps {
+interface ChallengesHeroProps {
   totalChallenges: number;
   activeChallenges: number;
   totalParticipants: number;
@@ -40,7 +40,7 @@ interface EnhancedChallengesHeroProps {
   };
 }
 
-export const EnhancedChallengesHero = ({ 
+export const ChallengesHero = ({ 
   totalChallenges, 
   activeChallenges, 
   totalParticipants,
@@ -48,7 +48,7 @@ export const EnhancedChallengesHero = ({
   onCreateChallenge,
   onShowFilters,
   featuredChallenge
-}: EnhancedChallengesHeroProps) => {
+}: ChallengesHeroProps) => {
   const { isRTL } = useDirection();
   const { user, hasRole } = useAuth();
   const [currentStat, setCurrentStat] = useState(0);

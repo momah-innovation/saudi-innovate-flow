@@ -28,19 +28,19 @@ interface Expert {
   };
 }
 
-interface ExpertAssignmentWizardProps {
+interface ChallengeExpertAssignmentWizardProps {
   challenge: any;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onAssignmentComplete?: () => void;
 }
 
-export const ExpertAssignmentWizard = ({
+export const ChallengeExpertAssignmentWizard = ({
   challenge,
   open,
   onOpenChange,
   onAssignmentComplete
-}: ExpertAssignmentWizardProps) => {
+}: ChallengeExpertAssignmentWizardProps) => {
   const { isRTL } = useDirection();
   const { toast } = useToast();
   

@@ -10,10 +10,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { ChallengeCard } from '@/components/challenges/ChallengeCard';
-import { TrendingChallengesWidget } from '@/components/challenges/TrendingChallengesWidget';
-import { EnhancedChallengesHero } from '@/components/challenges/EnhancedChallengesHero';
+import { ChallengeTrendingWidget } from '@/components/challenges/ChallengeTrendingWidget';
+import { ChallengesHero } from '@/components/challenges/ChallengesHero';
 import { ChallengeRecommendations } from '@/components/challenges/ChallengeRecommendations';
-import { EnhancedChallengeDetailDialog } from '@/components/challenges/EnhancedChallengeDetailDialog';
+import { ChallengeDetailDialog } from '@/components/challenges/ChallengeDetailDialog';
 import { ChallengeFilters, FilterState } from '@/components/challenges/ChallengeFilters';
 import { challengesPageConfig, getViewModeConfig } from '@/config/challengesPageConfig';
 import { ChallengeSkeleton, ChallengeLoadingState, ChallengeEmptyState } from '@/components/challenges/ChallengeSkeletons';
@@ -23,11 +23,11 @@ import { ChallengeTemplatesDialog } from '@/components/challenges/ChallengeTempl
 import { ChallengeAnalyticsDashboard } from '@/components/challenges/ChallengeAnalyticsDashboard';
 
 import { ChallengeListView } from '@/components/challenges/ChallengeListView';
-import { ExpertAssignmentWizard } from '@/components/challenges/ExpertAssignmentWizard';
+import { ChallengeExpertAssignmentWizard } from '@/components/challenges/ChallengeExpertAssignmentWizard';
 import { ChallengeSubmissionDialog } from '@/components/challenges/ChallengeSubmissionDialog';
 import { ChallengeCommentsDialog } from '@/components/challenges/ChallengeCommentsDialog';
 import { ChallengeSubmissionsDialog } from '@/components/challenges/ChallengeSubmissionsDialog';
-import { CreateChallengeDialog } from '@/components/challenges/CreateChallengeDialog';
+import { ChallengeCreateDialog } from '@/components/challenges/ChallengeCreateDialog';
 import { useChallengeDefaults } from '@/hooks/useChallengeDefaults';
 import { useChallengesData } from '@/hooks/useChallengesData';
 import { useRealTimeChallenges } from '@/hooks/useRealTimeChallenges';
@@ -484,7 +484,7 @@ const ChallengesBrowse = () => {
   return (
     <StandardBrowseLayout
       hero={
-        <EnhancedChallengesHero 
+        <ChallengesHero 
           totalChallenges={stats.totalChallenges}
           activeChallenges={stats.activeChallenges}
           totalParticipants={stats.totalParticipants}
@@ -665,7 +665,7 @@ const ChallengesBrowse = () => {
       }
       sidebar={
         <div className="space-y-6">
-          <TrendingChallengesWidget
+          <ChallengeTrendingWidget
             onChallengeClick={handleViewDetails}
             onChallengeSelect={(challengeId) => {
               const challenge = challenges.find(c => c.id === challengeId);
@@ -682,7 +682,7 @@ const ChallengesBrowse = () => {
       dialogs={
         <>
           {/* Enhanced Challenge Detail Dialog */}
-          <EnhancedChallengeDetailDialog
+          <ChallengeDetailDialog
             challenge={selectedChallenge}
             open={detailDialogOpen}
             onOpenChange={setDetailDialogOpen}
@@ -692,7 +692,7 @@ const ChallengesBrowse = () => {
           />
 
           {/* Expert Assignment Wizard */}
-          <ExpertAssignmentWizard
+          <ChallengeExpertAssignmentWizard
             challenge={selectedChallenge}
             open={expertAssignmentOpen}
             onOpenChange={setExpertAssignmentOpen}
@@ -751,7 +751,7 @@ const ChallengesBrowse = () => {
 
           {/* Create Challenge Dialog - Only for Admins/Managers */}
           {user && (hasRole('admin') || hasRole('super_admin') || hasRole('sector_lead') || hasRole('challenge_manager')) && (
-            <CreateChallengeDialog
+            <ChallengeCreateDialog
               open={createChallengeOpen}
               onOpenChange={setCreateChallengeOpen}
               onChallengeCreated={refetch}

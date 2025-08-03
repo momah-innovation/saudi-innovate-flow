@@ -28,7 +28,7 @@ import {
   FileText
 } from 'lucide-react';
 
-interface EnhancedChallengeDetailDialogProps {
+interface ChallengeDetailDialogProps {
   challenge: any;
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -37,14 +37,14 @@ interface EnhancedChallengeDetailDialogProps {
   onBookmark?: (challenge: any) => void;
 }
 
-export const EnhancedChallengeDetailDialog = ({
+export const ChallengeDetailDialog = ({
   challenge,
   open,
   onOpenChange,
   onParticipate,
   onSubmit,
   onBookmark
-}: EnhancedChallengeDetailDialogProps) => {
+}: ChallengeDetailDialogProps) => {
   const { isRTL } = useDirection();
   const { user, hasRole } = useAuth();
   const { toast } = useToast();

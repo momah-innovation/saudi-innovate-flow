@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
-import { ExpertAssignmentWizard } from "@/components/challenges/ExpertAssignmentWizard";
+import { ChallengeExpertAssignmentWizard } from "@/components/challenges/ChallengeExpertAssignmentWizard";
 import { ChallengeFocusQuestionWizard } from "@/components/challenges/ChallengeFocusQuestionWizard";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 
@@ -1302,7 +1302,7 @@ const ChallengeDetails = () => {
       </div>
 
       {/* Dialogs */}
-      <ExpertAssignmentWizard
+      <ChallengeExpertAssignmentWizard
         open={expertDialogOpen}
         onOpenChange={setExpertDialogOpen}
         challenge={{ id: challengeId }}
