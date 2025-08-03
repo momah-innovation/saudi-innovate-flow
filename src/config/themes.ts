@@ -59,7 +59,7 @@ export const themes: ThemeConfig[] = [
     colors: {
       primary: 'hsl(217.2 91.2% 59.8%)',
       secondary: 'hsl(214.3 31.8% 91.4%)',
-      accent: 'hsl(213 94% 55%)',
+      accent: 'hsl(173 58% 39%)',
       muted: 'hsl(210 40% 95%)',
       success: 'hsl(142.1 76.2% 36.3%)',
       warning: 'hsl(47.9 95.8% 53.1%)',
@@ -72,7 +72,7 @@ export const themes: ThemeConfig[] = [
     cssVariables: {
       '--primary': '217.2 91.2% 59.8%',
       '--secondary': '214.3 31.8% 91.4%',
-      '--accent': '213 94% 55%',
+      '--accent': '173 58% 39%',
       '--muted': '210 40% 95%',
       '--success': '142.1 76.2% 36.3%',
       '--warning': '47.9 95.8% 53.1%',
@@ -252,7 +252,7 @@ export const themes: ThemeConfig[] = [
     colors: {
       primary: 'hsl(217.2 91.2% 59.8%)',
       secondary: 'hsl(210 40% 95%)',
-      accent: 'hsl(213 94% 55%)',
+      accent: 'hsl(142 76% 36%)',
       muted: 'hsl(210 40% 95%)',
       success: 'hsl(142.1 76.2% 36.3%)',
       warning: 'hsl(47.9 95.8% 53.1%)',
@@ -265,7 +265,7 @@ export const themes: ThemeConfig[] = [
     cssVariables: {
       '--primary': '217.2 91.2% 59.8%',
       '--secondary': '210 40% 95%',
-      '--accent': '213 94% 55%',
+      '--accent': '142 76% 36%',
       '--muted': '210 40% 95%',
     }
   },
