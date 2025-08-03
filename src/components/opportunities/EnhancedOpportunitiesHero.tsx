@@ -78,7 +78,7 @@ export const EnhancedOpportunitiesHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse" />
         <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-teal-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
         <div className="absolute top-20 left-1/3 w-64 h-64 bg-emerald-400/5 rounded-full blur-2xl animate-bounce" />
       </div>
@@ -90,17 +90,17 @@ export const EnhancedOpportunitiesHero = ({
             {/* Header with animation */}
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                <div className="p-3 bg-primary/10 backdrop-blur-sm rounded-xl border border-primary/20">
                   <Sparkles className="w-6 h-6 text-yellow-300" />
                 </div>
-                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                <Badge variant="secondary" className="bg-primary/10 text-primary-foreground border-primary/20 backdrop-blur-sm">
                   <Star className="w-3 h-3 mr-1" />
                   {isRTL ? 'منصة الفرص الاستثمارية' : 'Partnership Opportunities Platform'}
                 </Badge>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
                   {isRTL ? (
                     <>
                       اكتشف <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">الفرص</span> الاستثمارية
@@ -112,7 +112,7 @@ export const EnhancedOpportunitiesHero = ({
                   )}
                 </h1>
                 
-                <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
+                <p className="text-xl text-primary-foreground/80 max-w-2xl leading-relaxed">
                   {isRTL 
                     ? 'انضم إلى شبكة الشراكات الاستراتيجية واستكشف فرص التعاون مع القطاع الحكومي والشركات الرائدة'
                     : 'Join the strategic partnerships network and explore collaboration opportunities with government sectors and leading companies'
@@ -131,14 +131,14 @@ export const EnhancedOpportunitiesHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
-                      isActive && "bg-white/10 border-white/20 scale-105"
+                      "bg-primary/5 backdrop-blur-sm border-primary/10 transition-all duration-500",
+                      isActive && "bg-primary/10 border-primary/20 scale-105"
                     )}
                   >
                     <CardContent className="p-4 text-center">
                       <Icon className={cn("w-6 h-6 mx-auto mb-2 transition-colors", stat.color)} />
-                      <div className="text-2xl font-bold text-white">{stat.value}</div>
-                      <div className="text-sm text-white/70">{stat.label}</div>
+                      <div className="text-2xl font-bold text-primary-foreground">{stat.value}</div>
+                      <div className="text-sm text-primary-foreground/70">{stat.label}</div>
                     </CardContent>
                   </Card>
                 );
@@ -160,7 +160,7 @@ export const EnhancedOpportunitiesHero = ({
                 onClick={onShowFilters}
                 variant="outline"
                 size="lg"
-                className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
+                className="border-primary/30 text-primary-foreground hover:bg-primary/10 backdrop-blur-sm"
               >
                 <Filter className="w-5 h-5 mr-2" />
                 {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
@@ -169,7 +169,7 @@ export const EnhancedOpportunitiesHero = ({
               <Button
                 variant="ghost"
                 size="lg"
-                className="text-white hover:bg-white/10"
+                className="text-primary-foreground hover:bg-primary/10"
               >
                 <Play className="w-5 h-5 mr-2" />
                 {isRTL ? 'شاهد الفيديو' : 'Watch Demo'}
@@ -180,7 +180,7 @@ export const EnhancedOpportunitiesHero = ({
           {/* Enhanced Featured Opportunity */}
           <div className="space-y-6">
             {featuredOpportunity ? (
-              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+              <Card className="bg-primary/10 backdrop-blur-xl border-primary/20 shadow-2xl">
                 <CardContent className="p-0">
                   {/* Opportunity Image */}
                   <div className="relative h-48 overflow-hidden rounded-t-lg">
@@ -195,19 +195,19 @@ export const EnhancedOpportunitiesHero = ({
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-emerald-500/20 to-teal-500/20 flex items-center justify-center">
-                        <Handshake className="w-16 h-16 text-white/60" />
+                        <Handshake className="w-16 h-16 text-muted-foreground/60" />
                       </div>
                     )}
                     
                     <div className="absolute top-4 left-4">
-                      <Badge className="bg-red-500/90 text-white border-0 animate-pulse">
+                      <Badge className="bg-red-500/90 text-red-50 border-0 animate-pulse">
                         <Clock className="w-3 h-3 mr-1" />
                         {featuredOpportunity.daysLeft} {isRTL ? 'أيام متبقية' : 'days left'}
                       </Badge>
                     </div>
 
                     <div className="absolute top-4 right-4">
-                      <Badge className="bg-orange-500/90 text-white border-0">
+                      <Badge className="bg-orange-500/90 text-orange-50 border-0">
                         <TrendingUp className="w-3 h-3 mr-1" />
                         {isRTL ? 'مميزة' : 'Featured'}
                       </Badge>
@@ -217,7 +217,7 @@ export const EnhancedOpportunitiesHero = ({
                   </div>
 
                   <div className="p-6 space-y-4">
-                    <h3 className="text-xl font-bold text-white">
+                    <h3 className="text-xl font-bold text-primary-foreground">
                       {featuredOpportunity.title_ar}
                     </h3>
 
@@ -226,19 +226,19 @@ export const EnhancedOpportunitiesHero = ({
                         <div className="text-2xl font-bold text-emerald-300">
                           {featuredOpportunity.applications}
                         </div>
-                        <div className="text-sm text-white/70">{isRTL ? 'طلب' : 'applications'}</div>
+                        <div className="text-sm text-primary-foreground/70">{isRTL ? 'طلب' : 'applications'}</div>
                       </div>
                       <div className="text-center">
                         <div className="text-2xl font-bold text-yellow-300">
                           {Math.floor(featuredOpportunity.budget / 1000)}K
                         </div>
-                        <div className="text-sm text-white/70">{isRTL ? 'ر.س ميزانية' : 'SAR budget'}</div>
+                        <div className="text-sm text-primary-foreground/70">{isRTL ? 'ر.س ميزانية' : 'SAR budget'}</div>
                       </div>
                     </div>
 
                     <Progress 
                       value={(featuredOpportunity.applications / 100) * 100} 
-                      className="h-2 bg-white/20"
+                      className="h-2 bg-primary/20"
                     />
 
                     <Button 
@@ -251,13 +251,13 @@ export const EnhancedOpportunitiesHero = ({
                 </CardContent>
               </Card>
             ) : (
-              <Card className="bg-white/5 backdrop-blur-xl border-white/10 border-dashed">
+              <Card className="bg-primary/5 backdrop-blur-xl border-primary/10 border-dashed">
                 <CardContent className="p-8 text-center">
-                  <Building2 className="w-16 h-16 mx-auto text-white/40 mb-4" />
-                  <h3 className="text-lg font-semibold text-white/80 mb-2">
+                  <Building2 className="w-16 h-16 mx-auto text-muted-foreground/40 mb-4" />
+                  <h3 className="text-lg font-semibold text-muted-foreground/80 mb-2">
                     {isRTL ? 'لا توجد فرصة مميزة حالياً' : 'No Featured Opportunity'}
                   </h3>
-                  <p className="text-white/60 text-sm">
+                  <p className="text-muted-foreground/60 text-sm">
                     {isRTL ? 'سيتم عرض الفرص المميزة هنا' : 'Featured opportunities will appear here'}
                   </p>
                 </CardContent>
@@ -266,25 +266,25 @@ export const EnhancedOpportunitiesHero = ({
 
             {/* Quick Action Cards */}
             <div className="grid grid-cols-2 gap-4">
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+              <Card className="bg-primary/5 backdrop-blur-sm border-primary/10 hover:bg-primary/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
                   <Calendar className="w-8 h-8 text-teal-400 mx-auto mb-2" />
-                  <div className="text-sm font-medium text-white">
+                  <div className="text-sm font-medium text-primary-foreground">
                     {isRTL ? 'الفرص القادمة' : 'Upcoming'}
                   </div>
-                  <div className="text-xs text-white/70">
+                  <div className="text-xs text-primary-foreground/70">
                     {isRTL ? '8 فرص' : '8 opportunities'}
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+              <Card className="bg-primary/5 backdrop-blur-sm border-primary/10 hover:bg-primary/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
                   <Star className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
-                  <div className="text-sm font-medium text-white">
+                  <div className="text-sm font-medium text-primary-foreground">
                     {isRTL ? 'المفضلة' : 'Favorites'}
                   </div>
-                  <div className="text-xs text-white/70">
+                  <div className="text-xs text-primary-foreground/70">
                     {isRTL ? '15 محفوظة' : '15 saved'}
                   </div>
                 </CardContent>

@@ -64,7 +64,7 @@ export const EnhancedDashboardHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse" />
         <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
         <div className="absolute top-20 left-1/3 w-64 h-64 bg-purple-400/5 rounded-full blur-2xl animate-bounce" />
       </div>
@@ -76,17 +76,17 @@ export const EnhancedDashboardHero = ({
             {/* Header with animation */}
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                <div className="p-3 bg-primary/10 backdrop-blur-sm rounded-xl border border-primary/20">
                   <Sparkles className="w-6 h-6 text-yellow-300" />
                 </div>
-                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                <Badge variant="secondary" className="bg-primary/10 text-primary-foreground border-primary/20 backdrop-blur-sm">
                   <Star className="w-3 h-3 mr-1" />
                   {isRTL ? 'لوحة تحكم المبتكر' : 'Innovator Dashboard'}
                 </Badge>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
                   {isRTL ? (
                     <>
                       مرحباً <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">{userProfile?.display_name || 'المبتكر'}</span>
@@ -98,7 +98,7 @@ export const EnhancedDashboardHero = ({
                   )}
                 </h1>
                 
-                <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
+                <p className="text-xl text-primary-foreground/80 max-w-2xl leading-relaxed">
                   {isRTL 
                     ? 'استمر في رحلة الابتكار وشارك في بناء مستقبل أفضل. لديك أفكار جديدة في انتظار التنفيذ'
                     : 'Continue your innovation journey and participate in building a better future. You have new ideas waiting to be implemented'
@@ -117,14 +117,14 @@ export const EnhancedDashboardHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
-                      isActive && "bg-white/10 border-white/20 scale-105"
+                      "bg-primary/5 backdrop-blur-sm border-primary/10 transition-all duration-500",
+                      isActive && "bg-primary/10 border-primary/20 scale-105"
                     )}
                   >
                     <CardContent className="p-4 text-center">
                       <Icon className={cn("w-6 h-6 mx-auto mb-2 transition-colors", stat.color)} />
-                      <div className="text-2xl font-bold text-white">{stat.value}</div>
-                      <div className="text-sm text-white/70">{stat.label}</div>
+                      <div className="text-2xl font-bold text-primary-foreground">{stat.value}</div>
+                      <div className="text-sm text-primary-foreground/70">{stat.label}</div>
                     </CardContent>
                   </Card>
                 );
@@ -165,10 +165,10 @@ export const EnhancedDashboardHero = ({
 
           {/* Enhanced Progress Section */}
           <div className="space-y-6">
-            <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+            <Card className="bg-primary/10 backdrop-blur-xl border-primary/20 shadow-2xl">
               <CardContent className="p-6 space-y-6">
                 <div className="text-center">
-                  <h3 className="text-xl font-bold text-white mb-2">
+                  <h3 className="text-xl font-bold text-primary-foreground mb-2">
                     {isRTL ? 'مستوى الابتكار' : 'Innovation Level'}
                   </h3>
                   <div className="text-3xl font-bold text-yellow-300 mb-4">
@@ -176,28 +176,28 @@ export const EnhancedDashboardHero = ({
                   </div>
                   <Progress 
                     value={stats.innovationScore} 
-                    className="h-3 bg-white/20"
+                    className="h-3 bg-primary/20"
                   />
                 </div>
 
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-white/80">{isRTL ? 'أفكار مقدمة' : 'Ideas Submitted'}</span>
-                    <span className="text-white font-semibold">{stats.totalIdeas}</span>
+                    <span className="text-primary-foreground/80">{isRTL ? 'أفكار مقدمة' : 'Ideas Submitted'}</span>
+                    <span className="text-primary-foreground font-semibold">{stats.totalIdeas}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-white/80">{isRTL ? 'نقاط مكتسبة' : 'Points Earned'}</span>
-                    <span className="text-white font-semibold">{stats.totalPoints}</span>
+                    <span className="text-primary-foreground/80">{isRTL ? 'نقاط مكتسبة' : 'Points Earned'}</span>
+                    <span className="text-primary-foreground font-semibold">{stats.totalPoints}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-white/80">{isRTL ? 'تحديات نشطة' : 'Active Challenges'}</span>
-                    <span className="text-white font-semibold">{stats.activeChallenges}</span>
+                    <span className="text-primary-foreground/80">{isRTL ? 'تحديات نشطة' : 'Active Challenges'}</span>
+                    <span className="text-primary-foreground font-semibold">{stats.activeChallenges}</span>
                   </div>
                 </div>
 
                 <Button 
                   onClick={() => onNavigate('/achievements')}
-                  className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white"
+                  className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
                 >
                   {isRTL ? 'عرض الإنجازات' : 'View Achievements'}
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -208,30 +208,30 @@ export const EnhancedDashboardHero = ({
             {/* Quick Action Cards */}
             <div className="grid grid-cols-2 gap-4">
               <Card 
-                className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer"
+                className="bg-primary/5 backdrop-blur-sm border-primary/10 hover:bg-primary/10 transition-all cursor-pointer"
                 onClick={() => onNavigate('/saved')}
               >
                 <CardContent className="p-4 text-center">
                   <Star className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
-                  <div className="text-sm font-medium text-white">
+                  <div className="text-sm font-medium text-primary-foreground">
                     {isRTL ? 'المحفوظات' : 'Saved Items'}
                   </div>
-                  <div className="text-xs text-white/70">
+                  <div className="text-xs text-primary-foreground/70">
                     {isRTL ? '12 عنصر' : '12 items'}
                   </div>
                 </CardContent>
               </Card>
 
               <Card 
-                className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer"
+                className="bg-primary/5 backdrop-blur-sm border-primary/10 hover:bg-primary/10 transition-all cursor-pointer"
                 onClick={() => onNavigate('/evaluations')}
               >
                 <CardContent className="p-4 text-center">
                   <Trophy className="w-8 h-8 text-purple-400 mx-auto mb-2" />
-                  <div className="text-sm font-medium text-white">
+                  <div className="text-sm font-medium text-primary-foreground">
                     {isRTL ? 'التقييمات' : 'Evaluations'}
                   </div>
-                  <div className="text-xs text-white/70">
+                  <div className="text-xs text-primary-foreground/70">
                     {isRTL ? '3 جديدة' : '3 new'}
                   </div>
                 </CardContent>
