@@ -4957,10 +4957,256 @@ const DesignSystem = () => {
                       <span className="text-sm">2xl: 1536px and up</span>
                     </div>
                   </div>
-                </ComponentShowcase>
-              </div>
-            </div>
-          </TabsContent>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Grid Systems & Layout Overlays">
+                   <div className="space-y-6">
+                     <div>
+                       <h4 className="font-medium mb-4">12-Column Grid System</h4>
+                       <div className="grid grid-cols-12 gap-2 mb-4">
+                         {Array.from({ length: 12 }, (_, i) => (
+                           <div key={i} className="h-8 bg-primary/20 rounded flex items-center justify-center text-xs font-mono">
+                             {i + 1}
+                           </div>
+                         ))}
+                       </div>
+                       <div className="space-y-2">
+                         <div className="grid grid-cols-12 gap-2">
+                           <div className="col-span-6 h-12 bg-primary/40 rounded flex items-center justify-center text-sm">
+                             col-span-6
+                           </div>
+                           <div className="col-span-6 h-12 bg-secondary/40 rounded flex items-center justify-center text-sm">
+                             col-span-6
+                           </div>
+                         </div>
+                         <div className="grid grid-cols-12 gap-2">
+                           <div className="col-span-4 h-12 bg-accent/40 rounded flex items-center justify-center text-sm">
+                             col-span-4
+                           </div>
+                           <div className="col-span-8 h-12 bg-primary/40 rounded flex items-center justify-center text-sm">
+                             col-span-8
+                           </div>
+                         </div>
+                         <div className="grid grid-cols-12 gap-2">
+                           <div className="col-span-3 h-12 bg-success/40 rounded flex items-center justify-center text-sm">
+                             col-span-3
+                           </div>
+                           <div className="col-span-3 h-12 bg-warning/40 rounded flex items-center justify-center text-sm">
+                             col-span-3
+                           </div>
+                           <div className="col-span-3 h-12 bg-destructive/40 rounded flex items-center justify-center text-sm">
+                             col-span-3
+                           </div>
+                           <div className="col-span-3 h-12 bg-info/40 rounded flex items-center justify-center text-sm">
+                             col-span-3
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                     
+                     <div>
+                       <h4 className="font-medium mb-4">Visual Grid Overlay</h4>
+                       <div className="relative p-6 border rounded-lg bg-muted/30">
+                         <div className="absolute inset-0 pointer-events-none">
+                           <div className="h-full grid grid-cols-12 gap-2 p-6">
+                             {Array.from({ length: 12 }, (_, i) => (
+                               <div key={i} className="h-full border-r border-primary/20 border-dashed"></div>
+                             ))}
+                           </div>
+                         </div>
+                         <div className="relative z-10">
+                           <h5 className="text-lg font-medium mb-2">Content with Grid Overlay</h5>
+                           <p className="text-sm text-muted-foreground mb-4">
+                             This demonstrates how content aligns with the underlying grid system.
+                             The dashed lines show the column boundaries.
+                           </p>
+                           <Button>Call to Action</Button>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Advanced Spacing Utilities">
+                   <div className="space-y-6">
+                     <div>
+                       <h4 className="font-medium mb-4">Consistent Spacing Patterns</h4>
+                       <div className="space-y-4">
+                         <div className="p-2 border rounded-lg">
+                           <span className="text-xs text-muted-foreground">p-2 (8px)</span>
+                         </div>
+                         <div className="p-4 border rounded-lg">
+                           <span className="text-xs text-muted-foreground">p-4 (16px)</span>
+                         </div>
+                         <div className="p-6 border rounded-lg">
+                           <span className="text-xs text-muted-foreground">p-6 (24px)</span>
+                         </div>
+                         <div className="p-8 border rounded-lg">
+                           <span className="text-xs text-muted-foreground">p-8 (32px)</span>
+                         </div>
+                       </div>
+                     </div>
+                     
+                     <div>
+                       <h4 className="font-medium mb-4">Margin & Gap Relationships</h4>
+                       <div className="space-y-4">
+                         <div className="flex gap-2">
+                           <div className="flex-1 h-12 bg-primary/20 rounded flex items-center justify-center text-xs">
+                             gap-2
+                           </div>
+                           <div className="flex-1 h-12 bg-primary/20 rounded flex items-center justify-center text-xs">
+                             gap-2
+                           </div>
+                           <div className="flex-1 h-12 bg-primary/20 rounded flex items-center justify-center text-xs">
+                             gap-2
+                           </div>
+                         </div>
+                         <div className="flex gap-4">
+                           <div className="flex-1 h-12 bg-secondary/20 rounded flex items-center justify-center text-xs">
+                             gap-4
+                           </div>
+                           <div className="flex-1 h-12 bg-secondary/20 rounded flex items-center justify-center text-xs">
+                             gap-4
+                           </div>
+                         </div>
+                         <div className="flex gap-6">
+                           <div className="flex-1 h-12 bg-accent/20 rounded flex items-center justify-center text-xs">
+                             gap-6
+                           </div>
+                           <div className="flex-1 h-12 bg-accent/20 rounded flex items-center justify-center text-xs">
+                             gap-6
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Layout Debugging & Guides">
+                   <div className="space-y-6">
+                     <div>
+                       <h4 className="font-medium mb-4">Container Size Indicators</h4>
+                       <div className="space-y-3">
+                         <div className="max-w-sm mx-auto p-4 bg-primary/10 border-2 border-primary/30 rounded-lg text-center">
+                           <span className="text-sm font-medium">max-w-sm (384px)</span>
+                         </div>
+                         <div className="max-w-md mx-auto p-4 bg-secondary/10 border-2 border-secondary/30 rounded-lg text-center">
+                           <span className="text-sm font-medium">max-w-md (448px)</span>
+                         </div>
+                         <div className="max-w-lg mx-auto p-4 bg-accent/10 border-2 border-accent/30 rounded-lg text-center">
+                           <span className="text-sm font-medium">max-w-lg (512px)</span>
+                         </div>
+                         <div className="max-w-xl mx-auto p-4 bg-success/10 border-2 border-success/30 rounded-lg text-center">
+                           <span className="text-sm font-medium">max-w-xl (576px)</span>
+                         </div>
+                       </div>
+                     </div>
+                     
+                     <div>
+                       <h4 className="font-medium mb-4">Alignment Guides</h4>
+                       <div className="relative">
+                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                           <div className="w-px h-full bg-primary/30 border-l border-dashed"></div>
+                         </div>
+                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                           <div className="w-full h-px bg-primary/30 border-t border-dashed"></div>
+                         </div>
+                         <div className="grid grid-cols-3 gap-4 h-32">
+                           <div className="bg-muted/50 rounded flex items-center justify-center">
+                             <span className="text-xs">Left</span>
+                           </div>
+                           <div className="bg-primary/20 rounded flex items-center justify-center">
+                             <span className="text-xs font-medium">Center</span>
+                           </div>
+                           <div className="bg-muted/50 rounded flex items-center justify-center">
+                             <span className="text-xs">Right</span>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                     
+                     <div>
+                       <h4 className="font-medium mb-4">Safe Area Visualization</h4>
+                       <div className="relative border-2 border-dashed border-warning/50 rounded-lg p-8">
+                         <div className="absolute top-2 left-2 text-xs text-warning font-medium">Safe Area</div>
+                         <div className="border-2 border-dashed border-primary/50 rounded p-4">
+                           <div className="absolute top-10 left-6 text-xs text-primary font-medium">Content Area</div>
+                           <div className="bg-card rounded p-4 text-center">
+                             <h5 className="font-medium mb-2">Important Content</h5>
+                             <p className="text-sm text-muted-foreground">
+                               This content stays within safe boundaries for all device sizes
+                             </p>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Responsive Spacing & Breakpoint Utilities">
+                   <div className="space-y-6">
+                     <div>
+                       <h4 className="font-medium mb-4">Responsive Padding</h4>
+                       <div className="space-y-3">
+                         <div className="p-2 md:p-4 lg:p-6 xl:p-8 border rounded-lg bg-muted/30">
+                           <span className="text-sm font-mono">p-2 md:p-4 lg:p-6 xl:p-8</span>
+                           <p className="text-xs text-muted-foreground mt-1">
+                             Padding increases with screen size
+                           </p>
+                         </div>
+                       </div>
+                     </div>
+                     
+                     <div>
+                       <h4 className="font-medium mb-4">Responsive Grid Gaps</h4>
+                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-6">
+                         <div className="h-16 bg-primary/20 rounded flex items-center justify-center text-xs">
+                           Item 1
+                         </div>
+                         <div className="h-16 bg-secondary/20 rounded flex items-center justify-center text-xs">
+                           Item 2
+                         </div>
+                         <div className="h-16 bg-accent/20 rounded flex items-center justify-center text-xs">
+                           Item 3
+                         </div>
+                         <div className="h-16 bg-success/20 rounded flex items-center justify-center text-xs">
+                           Item 4
+                         </div>
+                       </div>
+                       <p className="text-xs text-muted-foreground mt-2">
+                         <span className="font-mono">gap-2 md:gap-4 lg:gap-6</span> - Gap increases with breakpoints
+                       </p>
+                     </div>
+                     
+                     <div>
+                       <h4 className="font-medium mb-4">Breakpoint Indicators</h4>
+                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+                         <div className="p-3 bg-primary/20 rounded text-center text-xs">
+                           <span className="block sm:hidden">Mobile</span>
+                           <span className="hidden sm:block md:hidden">Small</span>
+                           <span className="hidden md:block lg:hidden">Medium</span>
+                           <span className="hidden lg:block xl:hidden">Large</span>
+                           <span className="hidden xl:block">XLarge</span>
+                         </div>
+                         <div className="p-3 bg-secondary/20 rounded text-center text-xs hidden sm:block">
+                           sm: 640px+
+                         </div>
+                         <div className="p-3 bg-accent/20 rounded text-center text-xs hidden md:block">
+                           md: 768px+
+                         </div>
+                         <div className="p-3 bg-success/20 rounded text-center text-xs hidden lg:block">
+                           lg: 1024px+
+                         </div>
+                         <div className="p-3 bg-warning/20 rounded text-center text-xs hidden xl:block">
+                           xl: 1280px+
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+               </div>
+             </div>
+           </TabsContent>
 
           {/* Effects Tab */}
           <TabsContent value="effects" className="space-y-8">
