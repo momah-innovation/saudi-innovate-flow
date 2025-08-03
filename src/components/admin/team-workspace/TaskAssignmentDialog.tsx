@@ -131,25 +131,25 @@ export function TaskAssignmentDialog({
                   <SelectContent className="bg-background border shadow-lg z-50">
                     <SelectItem value="low">
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-green-500" />
+                        <div className="w-2 h-2 rounded-full indicator-online" />
                         منخفضة
                       </div>
                     </SelectItem>
                     <SelectItem value="medium">
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-yellow-500" />
+                        <div className="w-2 h-2 rounded-full indicator-busy" />
                         متوسطة
                       </div>
                     </SelectItem>
                     <SelectItem value="high">
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-orange-500" />
+                        <div className="w-2 h-2 rounded-full bg-warning" />
                         عالية
                       </div>
                     </SelectItem>
                     <SelectItem value="urgent">
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-red-500" />
+                        <div className="w-2 h-2 rounded-full bg-destructive" />
                         عاجلة
                       </div>
                     </SelectItem>
@@ -279,8 +279,8 @@ export function TaskAssignmentDialog({
                       <div className="flex justify-between text-sm mb-1">
                         <span>السعة الحالية</span>
                         <span className={
-                          (selectedMemberData.current_workload || 0) > 80 ? 'text-red-500' :
-                          (selectedMemberData.current_workload || 0) > 60 ? 'text-yellow-500' : 'text-green-500'
+                          (selectedMemberData.current_workload || 0) > 80 ? 'workload-text-critical' :
+                          (selectedMemberData.current_workload || 0) > 60 ? 'workload-text-high' : 'workload-text-normal'
                         }>
                           {selectedMemberData.current_workload || 65}%
                         </span>
@@ -304,7 +304,7 @@ export function TaskAssignmentDialog({
                       </div>
                       <div className="flex justify-between">
                         <span>معدل الإنجاز:</span>
-                        <span className="font-medium text-green-600">92%</span>
+                        <span className="font-medium workload-text-normal">92%</span>
                       </div>
                       <div className="flex justify-between">
                         <span>التقييم:</span>

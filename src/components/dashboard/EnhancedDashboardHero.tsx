@@ -41,9 +41,9 @@ export const EnhancedDashboardHero = ({
   const [currentStat, setCurrentStat] = useState(0);
 
   const dashboardStats = [
-    { icon: Lightbulb, value: stats.totalIdeas, label: isRTL ? 'فكرة' : 'ideas', color: 'text-blue-400' },
-    { icon: Target, value: stats.activeChallenges, label: isRTL ? 'تحدي نشط' : 'active challenges', color: 'text-green-400' },
-    { icon: Award, value: stats.totalPoints, label: isRTL ? 'نقطة' : 'points', color: 'text-purple-400' },
+    { icon: Lightbulb, value: stats.totalIdeas, label: isRTL ? 'فكرة' : 'ideas', color: 'hero-stats-ideas' },
+    { icon: Target, value: stats.activeChallenges, label: isRTL ? 'تحدي نشط' : 'active challenges', color: 'hero-stats-challenges' },
+    { icon: Award, value: stats.totalPoints, label: isRTL ? 'نقطة' : 'points', color: 'hero-stats-score' },
     { icon: Trophy, value: `${stats.innovationScore}%`, label: isRTL ? 'نتيجة الابتكار' : 'innovation score', color: 'icon-star' }
   ];
 

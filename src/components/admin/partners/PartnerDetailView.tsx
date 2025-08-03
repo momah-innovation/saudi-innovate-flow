@@ -292,7 +292,7 @@ export function PartnerDetailView({
                   <div className="space-y-3">
                     {relatedData.partnership_history.map((history: any, index) => (
                       <div key={index} className="flex items-start gap-3 p-3 border rounded-lg">
-                        <CheckCircle className="w-4 h-4 mt-1 text-green-500" />
+                        <CheckCircle className="w-4 h-4 mt-1 icon-success" />
                         <div className="flex-1">
                           <p className="font-medium">تعاون مكتمل</p>
                           <p className="text-sm text-muted-foreground">
