@@ -20,6 +20,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { getPriorityMapping } from '@/config/challengesPageConfig';
 
 interface Challenge {
   id: string;
@@ -143,10 +144,14 @@ export const ChallengeRecommendations = ({
   };
 
   const getPriorityIcon = (priority: string) => {
-    switch (priority) {
-      case 'عالي': return <Zap className="w-4 h-4 text-red-500" />;
-      case 'متوسط': return <Target className="w-4 h-4 text-yellow-500" />;
-      case 'منخفض': return <Star className="w-4 h-4 text-green-500" />;
+    const mapping = getPriorityMapping(priority);
+    switch (mapping.value) {
+      case 'عالي':
+      case 'High': return <Zap className="w-4 h-4 text-red-500" />;
+      case 'متوسط': 
+      case 'Medium': return <Target className="w-4 h-4 text-yellow-500" />;
+      case 'منخفض':
+      case 'Low': return <Star className="w-4 h-4 text-green-500" />;
       default: return <Target className="w-4 h-4 text-gray-500" />;
     }
   };

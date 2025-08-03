@@ -17,6 +17,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { getPriorityMapping } from '@/config/challengesPageConfig';
 
 interface ChallengeCreateDialogProps {
   open: boolean;
@@ -302,9 +303,7 @@ export function ChallengeCreateDialog({
               formData.priority_level === 'high' ? 'default' :
               formData.priority_level === 'medium' ? 'secondary' : 'outline'
             }>
-              {formData.priority_level === 'critical' ? 'حرجة' :
-               formData.priority_level === 'high' ? 'عالية' :
-               formData.priority_level === 'medium' ? 'متوسطة' : 'منخفضة'}
+              {getPriorityMapping(formData.priority_level || 'medium').labelAr}
             </Badge>
           </div>
           <div className="flex justify-between">
