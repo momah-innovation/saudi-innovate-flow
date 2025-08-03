@@ -10,7 +10,7 @@ import {
   Shield, Lock, Unlock, User, CreditCard, Gift,
   Loader2, Wifi, WifiOff, Battery, Volume2, VolumeX,
   Send, MessageCircle, MoreVertical, HelpCircle,
-  GripVertical, Move, Maximize2, Minimize2
+  GripVertical, Move, Maximize2, Minimize2, Share
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -108,7 +108,7 @@ const DesignSystem = () => {
 
       <div className="container mx-auto px-6 py-8">
         <Tabs defaultValue="colors" className="w-full">
-          <TabsList className="grid w-full grid-cols-12 text-xs">
+          <TabsList className="grid w-full grid-cols-13 text-xs">
             <TabsTrigger value="colors" className="flex items-center gap-1">
               <Palette className="h-3 w-3" />
               Colors
@@ -156,6 +156,10 @@ const DesignSystem = () => {
             <TabsTrigger value="states" className="flex items-center gap-1">
               <Settings className="h-3 w-3" />
               States
+            </TabsTrigger>
+            <TabsTrigger value="widgets" className="flex items-center gap-1">
+              <Grid className="h-3 w-3" />
+              Widgets
             </TabsTrigger>
           </TabsList>
 
@@ -3178,6 +3182,781 @@ const DesignSystem = () => {
                         <p className="text-sm text-muted-foreground">7 out of 10 tasks completed</p>
                       </div>
                     </div>
+                  </div>
+                </ComponentShowcase>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Widgets Tab */}
+          <TabsContent value="widgets" className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Widget Components</h2>
+              
+              <div className="space-y-6">
+                <ComponentShowcase title="Dashboard Analytics Widgets">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <Card className="p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="text-sm font-medium text-muted-foreground">Active Challenges</h4>
+                        <Target className="w-4 h-4 text-primary" />
+                      </div>
+                      <p className="text-3xl font-bold text-primary">24</p>
+                      <div className="flex items-center gap-1 mt-2">
+                        <span className="text-xs bg-success/10 text-success px-2 py-1 rounded-full">+12%</span>
+                        <span className="text-xs text-muted-foreground">vs last month</span>
+                      </div>
+                    </Card>
+                    
+                    <Card className="p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="text-sm font-medium text-muted-foreground">Total Participants</h4>
+                        <Users className="w-4 h-4 text-secondary" />
+                      </div>
+                      <p className="text-3xl font-bold text-secondary">1,247</p>
+                      <div className="flex items-center gap-1 mt-2">
+                        <span className="text-xs bg-warning/10 text-warning px-2 py-1 rounded-full">+5%</span>
+                        <span className="text-xs text-muted-foreground">this week</span>
+                      </div>
+                    </Card>
+                    
+                    <Card className="p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="text-sm font-medium text-muted-foreground">Prize Pool</h4>
+                        <Award className="w-4 h-4 text-warning" />
+                      </div>
+                      <p className="text-3xl font-bold text-warning">$2.1M</p>
+                      <div className="flex items-center gap-1 mt-2">
+                        <span className="text-xs bg-success/10 text-success px-2 py-1 rounded-full">+$250K</span>
+                        <span className="text-xs text-muted-foreground">this quarter</span>
+                      </div>
+                    </Card>
+                    
+                    <Card className="p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="text-sm font-medium text-muted-foreground">Success Rate</h4>
+                        <CheckCircle className="w-4 h-4 text-success" />
+                      </div>
+                      <p className="text-3xl font-bold text-success">87%</p>
+                      <div className="flex items-center gap-1 mt-2">
+                        <span className="text-xs bg-success/10 text-success px-2 py-1 rounded-full">+3%</span>
+                        <span className="text-xs text-muted-foreground">completion rate</span>
+                      </div>
+                    </Card>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Progress & Status Widgets">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <h4 className="font-medium">Linear Progress Widgets</h4>
+                      <Card className="p-4">
+                        <div className="space-y-4">
+                          <div>
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="text-sm font-medium">Challenge Progress</span>
+                              <span className="text-sm text-muted-foreground">7/10 completed</span>
+                            </div>
+                            <div className="w-full bg-muted rounded-full h-2">
+                              <div className="bg-primary h-2 rounded-full transition-all duration-300" style={{ width: '70%' }}></div>
+                            </div>
+                          </div>
+                          
+                          <div>
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="text-sm font-medium">Team Engagement</span>
+                              <span className="text-sm text-muted-foreground">85%</span>
+                            </div>
+                            <div className="w-full bg-muted rounded-full h-2">
+                              <div className="bg-success h-2 rounded-full transition-all duration-300" style={{ width: '85%' }}></div>
+                            </div>
+                          </div>
+                          
+                          <div>
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="text-sm font-medium">Innovation Score</span>
+                              <span className="text-sm text-muted-foreground">92%</span>
+                            </div>
+                            <div className="w-full bg-muted rounded-full h-2">
+                              <div className="bg-innovation h-2 rounded-full transition-all duration-300" style={{ width: '92%' }}></div>
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <h4 className="font-medium">Circular Progress Widgets</h4>
+                      <Card className="p-4">
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="text-center">
+                            <div className="relative w-16 h-16 mx-auto mb-2">
+                              <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 64 64">
+                                <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" strokeWidth="4" className="text-muted" />
+                                <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" strokeWidth="4" className="text-primary" strokeDasharray="175.929" strokeDashoffset="52.778" strokeLinecap="round" />
+                              </svg>
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <span className="text-xs font-medium">70%</span>
+                              </div>
+                            </div>
+                            <span className="text-xs text-muted-foreground">Completion</span>
+                          </div>
+                          
+                          <div className="text-center">
+                            <div className="relative w-16 h-16 mx-auto mb-2">
+                              <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 64 64">
+                                <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" strokeWidth="4" className="text-muted" />
+                                <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" strokeWidth="4" className="text-success" strokeDasharray="175.929" strokeDashoffset="26.389" strokeLinecap="round" />
+                              </svg>
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <span className="text-xs font-medium">85%</span>
+                              </div>
+                            </div>
+                            <span className="text-xs text-muted-foreground">Quality</span>
+                          </div>
+                          
+                          <div className="text-center">
+                            <div className="relative w-16 h-16 mx-auto mb-2">
+                              <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 64 64">
+                                <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" strokeWidth="4" className="text-muted" />
+                                <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" strokeWidth="4" className="text-warning" strokeDasharray="175.929" strokeDashoffset="14.074" strokeLinecap="round" />
+                              </svg>
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <span className="text-xs font-medium">92%</span>
+                              </div>
+                            </div>
+                            <span className="text-xs text-muted-foreground">Innovation</span>
+                          </div>
+                        </div>
+                      </Card>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Real-time Activity Widgets">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-4 flex items-center gap-2">
+                        <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+                        Live Activity Feed
+                      </h4>
+                      <div className="space-y-3 max-h-48 overflow-y-auto">
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-xs font-medium">
+                            JD
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm">
+                              <span className="font-medium">John Doe</span> submitted a solution to 
+                              <span className="text-primary">AI Healthcare Challenge</span>
+                            </p>
+                            <p className="text-xs text-muted-foreground">2 minutes ago</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center text-white text-xs font-medium">
+                            SM
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm">
+                              <span className="font-medium">Sarah Miller</span> won first place in 
+                              <span className="text-success">Climate Tech Innovation</span>
+                            </p>
+                            <p className="text-xs text-muted-foreground">5 minutes ago</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white text-xs font-medium">
+                            TC
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm">
+                              <span className="font-medium">Team Alpha</span> formed for 
+                              <span className="text-accent">Blockchain Solutions</span>
+                            </p>
+                            <p className="text-xs text-muted-foreground">8 minutes ago</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-warning rounded-full flex items-center justify-center text-white text-xs font-medium">
+                            MK
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm">
+                              <span className="font-medium">Mike Chen</span> started 
+                              <span className="text-warning">Smart City Challenge</span>
+                            </p>
+                            <p className="text-xs text-muted-foreground">12 minutes ago</p>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                    
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-4">Performance Metrics</h4>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">Server Response Time</span>
+                          <div className="flex items-center gap-2">
+                            <div className="w-20 bg-muted rounded-full h-1.5">
+                              <div className="bg-success h-1.5 rounded-full" style={{ width: '75%' }}></div>
+                            </div>
+                            <span className="text-xs text-success">142ms</span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">API Success Rate</span>
+                          <div className="flex items-center gap-2">
+                            <div className="w-20 bg-muted rounded-full h-1.5">
+                              <div className="bg-success h-1.5 rounded-full" style={{ width: '99%' }}></div>
+                            </div>
+                            <span className="text-xs text-success">99.2%</span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">Active Users</span>
+                          <div className="flex items-center gap-2">
+                            <div className="w-20 bg-muted rounded-full h-1.5">
+                              <div className="bg-primary h-1.5 rounded-full" style={{ width: '85%' }}></div>
+                            </div>
+                            <span className="text-xs text-primary">1,247</span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">Memory Usage</span>
+                          <div className="flex items-center gap-2">
+                            <div className="w-20 bg-muted rounded-full h-1.5">
+                              <div className="bg-warning h-1.5 rounded-full" style={{ width: '68%' }}></div>
+                            </div>
+                            <span className="text-xs text-warning">68%</span>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="User Profile & Team Widgets">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <Card className="p-4">
+                      <div className="text-center">
+                        <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full mx-auto mb-3 flex items-center justify-center text-white font-bold text-xl">
+                          JD
+                        </div>
+                        <h4 className="font-semibold">John Doe</h4>
+                        <p className="text-sm text-muted-foreground mb-3">AI Research Expert</p>
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span>Challenges Won</span>
+                            <span className="font-medium">12</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span>Innovation Score</span>
+                            <span className="font-medium text-innovation">94/100</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span>Team Collaborations</span>
+                            <span className="font-medium">8</span>
+                          </div>
+                        </div>
+                        <Button size="sm" className="w-full mt-3">View Profile</Button>
+                      </div>
+                    </Card>
+                    
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-3">Team Performance</h4>
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-xs font-medium">
+                            A
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex justify-between">
+                              <span className="text-sm font-medium">Team Alpha</span>
+                              <span className="text-xs text-success">92%</span>
+                            </div>
+                            <div className="w-full bg-muted rounded-full h-1 mt-1">
+                              <div className="bg-success h-1 rounded-full" style={{ width: '92%' }}></div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white text-xs font-medium">
+                            B
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex justify-between">
+                              <span className="text-sm font-medium">Team Beta</span>
+                              <span className="text-xs text-warning">78%</span>
+                            </div>
+                            <div className="w-full bg-muted rounded-full h-1 mt-1">
+                              <div className="bg-warning h-1 rounded-full" style={{ width: '78%' }}></div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white text-xs font-medium">
+                            G
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex justify-between">
+                              <span className="text-sm font-medium">Team Gamma</span>
+                              <span className="text-xs text-primary">85%</span>
+                            </div>
+                            <div className="w-full bg-muted rounded-full h-1 mt-1">
+                              <div className="bg-primary h-1 rounded-full" style={{ width: '85%' }}></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                    
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-3">Skill Distribution</h4>
+                      <div className="space-y-3">
+                        <div>
+                          <div className="flex justify-between mb-1">
+                            <span className="text-sm">AI/ML</span>
+                            <span className="text-xs">40%</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-primary h-2 rounded-full" style={{ width: '40%' }}></div>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <div className="flex justify-between mb-1">
+                            <span className="text-sm">Frontend</span>
+                            <span className="text-xs">30%</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-secondary h-2 rounded-full" style={{ width: '30%' }}></div>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <div className="flex justify-between mb-1">
+                            <span className="text-sm">Backend</span>
+                            <span className="text-xs">20%</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-accent h-2 rounded-full" style={{ width: '20%' }}></div>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <div className="flex justify-between mb-1">
+                            <span className="text-sm">Design</span>
+                            <span className="text-xs">10%</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-innovation h-2 rounded-full" style={{ width: '10%' }}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Calendar & Scheduling Widgets">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <Card className="p-4">
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="font-medium">Upcoming Events</h4>
+                        <Button variant="ghost" size="sm">
+                          <Calendar className="w-4 h-4" />
+                        </Button>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="flex gap-3">
+                          <div className="text-center">
+                            <div className="text-xs text-muted-foreground">MAR</div>
+                            <div className="text-lg font-bold text-primary">15</div>
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium text-sm">AI Healthcare Demo Day</p>
+                            <p className="text-xs text-muted-foreground">2:00 PM - 5:00 PM</p>
+                            <div className="flex items-center gap-1 mt-1">
+                              <div className="w-1.5 h-1.5 bg-success rounded-full"></div>
+                              <span className="text-xs text-success">Confirmed</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex gap-3">
+                          <div className="text-center">
+                            <div className="text-xs text-muted-foreground">MAR</div>
+                            <div className="text-lg font-bold text-warning">18</div>
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium text-sm">Climate Tech Workshop</p>
+                            <p className="text-xs text-muted-foreground">10:00 AM - 12:00 PM</p>
+                            <div className="flex items-center gap-1 mt-1">
+                              <div className="w-1.5 h-1.5 bg-warning rounded-full"></div>
+                              <span className="text-xs text-warning">Pending</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex gap-3">
+                          <div className="text-center">
+                            <div className="text-xs text-muted-foreground">MAR</div>
+                            <div className="text-lg font-bold text-accent">22</div>
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium text-sm">Innovation Summit</p>
+                            <p className="text-xs text-muted-foreground">All Day Event</p>
+                            <div className="flex items-center gap-1 mt-1">
+                              <div className="w-1.5 h-1.5 bg-accent rounded-full"></div>
+                              <span className="text-xs text-accent">Registered</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                    
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-4">Challenge Timeline</h4>
+                      <div className="space-y-4">
+                        <div className="flex items-start gap-3">
+                          <div className="flex flex-col items-center">
+                            <div className="w-3 h-3 bg-success rounded-full"></div>
+                            <div className="w-0.5 h-8 bg-muted"></div>
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm font-medium">Registration Open</p>
+                            <p className="text-xs text-muted-foreground">March 1-15, 2024</p>
+                          </div>
+                          <Badge className="bg-success/90 text-success-foreground text-xs">Complete</Badge>
+                        </div>
+                        
+                        <div className="flex items-start gap-3">
+                          <div className="flex flex-col items-center">
+                            <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
+                            <div className="w-0.5 h-8 bg-muted"></div>
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm font-medium">Development Phase</p>
+                            <p className="text-xs text-muted-foreground">March 16 - April 30, 2024</p>
+                          </div>
+                          <Badge className="bg-primary/90 text-primary-foreground text-xs">Active</Badge>
+                        </div>
+                        
+                        <div className="flex items-start gap-3">
+                          <div className="flex flex-col items-center">
+                            <div className="w-3 h-3 bg-muted rounded-full"></div>
+                            <div className="w-0.5 h-8 bg-muted"></div>
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm font-medium">Submission Deadline</p>
+                            <p className="text-xs text-muted-foreground">May 1, 2024</p>
+                          </div>
+                          <Badge variant="outline" className="text-xs">Upcoming</Badge>
+                        </div>
+                        
+                        <div className="flex items-start gap-3">
+                          <div className="flex flex-col items-center">
+                            <div className="w-3 h-3 bg-muted rounded-full"></div>
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm font-medium">Judging & Results</p>
+                            <p className="text-xs text-muted-foreground">May 2-15, 2024</p>
+                          </div>
+                          <Badge variant="outline" className="text-xs">Upcoming</Badge>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Social & Engagement Widgets">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-4">Leaderboard</h4>
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3 p-2 rounded-lg bg-gradient-to-r from-primary/10 to-accent/10">
+                          <div className="w-6 h-6 bg-warning rounded-full flex items-center justify-center text-white text-xs font-bold">
+                            1
+                          </div>
+                          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-xs font-medium">
+                            SM
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium text-sm">Sarah Miller</p>
+                            <p className="text-xs text-muted-foreground">AI Research Expert</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-bold text-sm">2,450</p>
+                            <p className="text-xs text-muted-foreground">points</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3 p-2 rounded-lg">
+                          <div className="w-6 h-6 bg-muted rounded-full flex items-center justify-center text-muted-foreground text-xs font-bold">
+                            2
+                          </div>
+                          <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white text-xs font-medium">
+                            JD
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium text-sm">John Doe</p>
+                            <p className="text-xs text-muted-foreground">Full Stack Developer</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-bold text-sm">2,180</p>
+                            <p className="text-xs text-muted-foreground">points</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3 p-2 rounded-lg">
+                          <div className="w-6 h-6 bg-muted rounded-full flex items-center justify-center text-muted-foreground text-xs font-bold">
+                            3
+                          </div>
+                          <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white text-xs font-medium">
+                            MK
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium text-sm">Mike Chen</p>
+                            <p className="text-xs text-muted-foreground">Data Scientist</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-bold text-sm">1,920</p>
+                            <p className="text-xs text-muted-foreground">points</p>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                    
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-4">Community Engagement</h4>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Heart className="w-4 h-4 text-destructive" />
+                            <span className="text-sm">Total Likes</span>
+                          </div>
+                          <span className="font-bold text-destructive">3,247</span>
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <MessageCircle className="w-4 h-4 text-primary" />
+                            <span className="text-sm">Comments</span>
+                          </div>
+                          <span className="font-bold text-primary">1,856</span>
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Share className="w-4 h-4 text-accent" />
+                            <span className="text-sm">Shares</span>
+                          </div>
+                          <span className="font-bold text-accent">642</span>
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Star className="w-4 h-4 text-warning" />
+                            <span className="text-sm">Favorites</span>
+                          </div>
+                          <span className="font-bold text-warning">928</span>
+                        </div>
+                        
+                        <Separator />
+                        
+                        <div className="text-center">
+                          <p className="text-2xl font-bold text-success">94%</p>
+                          <p className="text-sm text-muted-foreground">Engagement Rate</p>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Financial & E-commerce Widgets">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-4">Prize Pool Distribution</h4>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">🥇 First Place</span>
+                          <span className="font-bold text-warning">$50,000</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">🥈 Second Place</span>
+                          <span className="font-bold text-muted-foreground">$25,000</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">🥉 Third Place</span>
+                          <span className="font-bold text-muted-foreground">$15,000</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">🏆 Special Awards</span>
+                          <span className="font-bold text-primary">$10,000</span>
+                        </div>
+                        <Separator />
+                        <div className="flex justify-between items-center font-bold">
+                          <span>Total Prize Pool</span>
+                          <span className="text-success">$100,000</span>
+                        </div>
+                      </div>
+                    </Card>
+                    
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-4">Subscription Plans</h4>
+                      <div className="space-y-3">
+                        <div className="p-3 border rounded-lg">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="font-medium">Basic</span>
+                            <span className="text-lg font-bold">Free</span>
+                          </div>
+                          <ul className="text-xs text-muted-foreground space-y-1">
+                            <li>• 3 challenges per month</li>
+                            <li>• Basic support</li>
+                            <li>• Community access</li>
+                          </ul>
+                        </div>
+                        
+                        <div className="p-3 border-2 border-primary rounded-lg bg-primary/5">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="font-medium">Pro</span>
+                            <span className="text-lg font-bold text-primary">$29/mo</span>
+                          </div>
+                          <ul className="text-xs text-muted-foreground space-y-1">
+                            <li>• Unlimited challenges</li>
+                            <li>• Priority support</li>
+                            <li>• Advanced analytics</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </Card>
+                    
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-4">Revenue Analytics</h4>
+                      <div className="space-y-4">
+                        <div className="text-center">
+                          <p className="text-2xl font-bold text-success">$247K</p>
+                          <p className="text-sm text-muted-foreground">Monthly Revenue</p>
+                          <div className="flex items-center justify-center gap-1 mt-1">
+                            <span className="text-xs bg-success/10 text-success px-2 py-1 rounded-full">+12%</span>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span>Subscriptions</span>
+                            <span>85%</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-primary h-2 rounded-full" style={{ width: '85%' }}></div>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span>Partnerships</span>
+                            <span>15%</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-accent h-2 rounded-full" style={{ width: '15%' }}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="System Status & Monitoring Widgets">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-4">System Health</h4>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="text-center p-3 bg-success/10 rounded-lg">
+                          <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
+                            <CheckCircle className="w-4 h-4 text-white" />
+                          </div>
+                          <p className="text-sm font-medium">API Status</p>
+                          <p className="text-xs text-success">Operational</p>
+                        </div>
+                        
+                        <div className="text-center p-3 bg-success/10 rounded-lg">
+                          <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
+                            <Wifi className="w-4 h-4 text-white" />
+                          </div>
+                          <p className="text-sm font-medium">Network</p>
+                          <p className="text-xs text-success">Stable</p>
+                        </div>
+                        
+                        <div className="text-center p-3 bg-warning/10 rounded-lg">
+                          <div className="w-8 h-8 bg-warning rounded-full flex items-center justify-center mx-auto mb-2">
+                            <AlertCircle className="w-4 h-4 text-white" />
+                          </div>
+                          <p className="text-sm font-medium">Storage</p>
+                          <p className="text-xs text-warning">78% Used</p>
+                        </div>
+                        
+                        <div className="text-center p-3 bg-success/10 rounded-lg">
+                          <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
+                            <Shield className="w-4 h-4 text-white" />
+                          </div>
+                          <p className="text-sm font-medium">Security</p>
+                          <p className="text-xs text-success">Protected</p>
+                        </div>
+                      </div>
+                    </Card>
+                    
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-4">Resource Usage</h4>
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-sm">CPU Usage</span>
+                            <span className="text-sm font-medium">45%</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-success h-2 rounded-full transition-all duration-300" style={{ width: '45%' }}></div>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-sm">Memory</span>
+                            <span className="text-sm font-medium">68%</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-warning h-2 rounded-full transition-all duration-300" style={{ width: '68%' }}></div>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-sm">Disk Space</span>
+                            <span className="text-sm font-medium">32%</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-primary h-2 rounded-full transition-all duration-300" style={{ width: '32%' }}></div>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-sm">Bandwidth</span>
+                            <span className="text-sm font-medium">89%</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-destructive h-2 rounded-full transition-all duration-300" style={{ width: '89%' }}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
                   </div>
                 </ComponentShowcase>
               </div>
