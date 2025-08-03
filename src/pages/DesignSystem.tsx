@@ -104,8 +104,12 @@ const DesignSystem = () => {
       </div>
 
       <div className="container mx-auto px-6 py-8">
-        <Tabs defaultValue="colors" className="w-full">
+        <Tabs defaultValue="index" className="w-full">
           <TabsList className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 backdrop-blur-sm border border-primary/20 p-1.5 text-muted-foreground shadow-lg overflow-x-auto">
+            <TabsTrigger value="index" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+              <Grid className="h-3 w-3" />
+              Index
+            </TabsTrigger>
             <TabsTrigger value="colors" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
               <Palette className="h-3 w-3" />
               Colors
@@ -167,6 +171,499 @@ const DesignSystem = () => {
               Logo & Identity
             </TabsTrigger>
           </TabsList>
+
+          {/* Index Tab */}
+          <TabsContent value="index" className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Design System Index</h2>
+              <p className="text-muted-foreground mb-8">
+                Complete overview of all components, patterns, and design tokens available in this system.
+              </p>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                
+                {/* Colors & Theming */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                      <Palette className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Colors & Theming</h3>
+                      <p className="text-sm text-muted-foreground">Semantic color tokens & themes</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Primary Colors</span>
+                      <Badge variant="outline" className="text-xs">4 tokens</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Status Colors</span>
+                      <Badge variant="outline" className="text-xs">4 tokens</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Role Colors</span>
+                      <Badge variant="outline" className="text-xs">3 tokens</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Typography */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent to-primary flex items-center justify-center">
+                      <Type className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Typography</h3>
+                      <p className="text-sm text-muted-foreground">Text scales & hierarchy</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Heading Levels</span>
+                      <Badge variant="outline" className="text-xs">5 levels</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Body Text</span>
+                      <Badge variant="outline" className="text-xs">3 sizes</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Font Weights</span>
+                      <Badge variant="outline" className="text-xs">4 weights</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Components */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-secondary to-accent flex items-center justify-center">
+                      <Layout className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">UI Components</h3>
+                      <p className="text-sm text-muted-foreground">Interactive elements</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Buttons</span>
+                      <Badge variant="outline" className="text-xs">5 variants</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Badges</span>
+                      <Badge variant="outline" className="text-xs">4 variants</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Status Indicators</span>
+                      <Badge variant="outline" className="text-xs">3 states</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Interactive States</span>
+                      <Badge variant="outline" className="text-xs">3 effects</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Forms */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-success to-innovation flex items-center justify-center">
+                      <Edit className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Form Components</h3>
+                      <p className="text-sm text-muted-foreground">Input & form elements</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Input Types</span>
+                      <Badge variant="outline" className="text-xs">8 types</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Validation States</span>
+                      <Badge variant="outline" className="text-xs">3 states</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Multi-step Wizards</span>
+                      <Badge variant="outline" className="text-xs">4 steps</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Advanced Inputs</span>
+                      <Badge variant="outline" className="text-xs">6 components</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Navigation */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-warning to-destructive flex items-center justify-center">
+                      <Home className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Navigation</h3>
+                      <p className="text-sm text-muted-foreground">Headers & navigation systems</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>System Headers</span>
+                      <Badge variant="outline" className="text-xs">3 types</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Breadcrumbs</span>
+                      <Badge variant="outline" className="text-xs">2 styles</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Tab Systems</span>
+                      <Badge variant="outline" className="text-xs">4 variants</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Sidebar Navigation</span>
+                      <Badge variant="outline" className="text-xs">2 layouts</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Data Display */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-expert to-partner flex items-center justify-center">
+                      <Grid className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Data Display</h3>
+                      <p className="text-sm text-muted-foreground">Tables & data visualization</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Data Tables</span>
+                      <Badge variant="outline" className="text-xs">3 variants</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Card Layouts</span>
+                      <Badge variant="outline" className="text-xs">4 types</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Lists</span>
+                      <Badge variant="outline" className="text-xs">3 styles</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Grid Systems</span>
+                      <Badge variant="outline" className="text-xs">5 layouts</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Media */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-innovator to-success flex items-center justify-center">
+                      <Play className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Media Components</h3>
+                      <p className="text-sm text-muted-foreground">Images, video & media</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Image Galleries</span>
+                      <Badge variant="outline" className="text-xs">3 layouts</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Video Players</span>
+                      <Badge variant="outline" className="text-xs">2 styles</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Media Cards</span>
+                      <Badge variant="outline" className="text-xs">4 variants</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Carousels</span>
+                      <Badge variant="outline" className="text-xs">2 types</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Communication */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-warning to-innovation flex items-center justify-center">
+                      <Bell className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Communication</h3>
+                      <p className="text-sm text-muted-foreground">Notifications & messaging</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Notifications</span>
+                      <Badge variant="outline" className="text-xs">4 types</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Toast Messages</span>
+                      <Badge variant="outline" className="text-xs">4 variants</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Chat Interfaces</span>
+                      <Badge variant="outline" className="text-xs">2 layouts</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Alert Dialogs</span>
+                      <Badge variant="outline" className="text-xs">3 types</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Interactions */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-destructive to-warning flex items-center justify-center">
+                      <Zap className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Interactions</h3>
+                      <p className="text-sm text-muted-foreground">Animations & micro-interactions</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Hover Effects</span>
+                      <Badge variant="outline" className="text-xs">5 effects</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Loading States</span>
+                      <Badge variant="outline" className="text-xs">4 animations</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Transitions</span>
+                      <Badge variant="outline" className="text-xs">6 types</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Progress Indicators</span>
+                      <Badge variant="outline" className="text-xs">3 styles</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Spacing & Layout */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent to-secondary flex items-center justify-center">
+                      <Target className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Spacing & Layout</h3>
+                      <p className="text-sm text-muted-foreground">Grid systems & spacing</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Grid Layouts</span>
+                      <Badge variant="outline" className="text-xs">6 systems</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Spacing Utilities</span>
+                      <Badge variant="outline" className="text-xs">8 scales</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Responsive Breakpoints</span>
+                      <Badge variant="outline" className="text-xs">5 sizes</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Layout Debugging</span>
+                      <Badge variant="outline" className="text-xs">4 tools</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Design Patterns */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-innovation flex items-center justify-center">
+                      <Eye className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Design Patterns</h3>
+                      <p className="text-sm text-muted-foreground">Complex UI patterns</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Challenge Cards</span>
+                      <Badge variant="outline" className="text-xs">4 variants</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Profile Cards</span>
+                      <Badge variant="outline" className="text-xs">3 layouts</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Dashboard Cards</span>
+                      <Badge variant="outline" className="text-xs">6 types</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Timeline Components</span>
+                      <Badge variant="outline" className="text-xs">2 styles</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* States & Feedback */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-expert to-warning flex items-center justify-center">
+                      <Settings className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">States & Feedback</h3>
+                      <p className="text-sm text-muted-foreground">Loading, error & empty states</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Loading States</span>
+                      <Badge variant="outline" className="text-xs">5 types</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Error States</span>
+                      <Badge variant="outline" className="text-xs">4 variants</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Empty States</span>
+                      <Badge variant="outline" className="text-xs">3 layouts</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Success States</span>
+                      <Badge variant="outline" className="text-xs">3 types</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Widgets */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-partner to-innovator flex items-center justify-center">
+                      <Grid className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Widgets</h3>
+                      <p className="text-sm text-muted-foreground">Complex dashboard components</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Analytics Widgets</span>
+                      <Badge variant="outline" className="text-xs">6 types</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Calendar Widgets</span>
+                      <Badge variant="outline" className="text-xs">3 layouts</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Social Widgets</span>
+                      <Badge variant="outline" className="text-xs">4 components</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Financial Widgets</span>
+                      <Badge variant="outline" className="text-xs">5 types</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Animations & Icons */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-success to-accent flex items-center justify-center">
+                      <Sparkles className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Animations & Icons</h3>
+                      <p className="text-sm text-muted-foreground">Motion design & iconography</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Icon Library</span>
+                      <Badge variant="outline" className="text-xs">50+ icons</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Micro-animations</span>
+                      <Badge variant="outline" className="text-xs">8 effects</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Icon Animations</span>
+                      <Badge variant="outline" className="text-xs">4 styles</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Loading Animations</span>
+                      <Badge variant="outline" className="text-xs">6 variants</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Logo & Branding */}
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-innovation to-expert flex items-center justify-center">
+                      <Award className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Logo & Branding</h3>
+                      <p className="text-sm text-muted-foreground">Brand identity elements</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Logo Variations</span>
+                      <Badge variant="outline" className="text-xs">4 formats</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Brand Colors</span>
+                      <Badge variant="outline" className="text-xs">12 colors</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Typography Pairs</span>
+                      <Badge variant="outline" className="text-xs">3 combinations</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Brand Guidelines</span>
+                      <Badge variant="outline" className="text-xs">5 sections</Badge>
+                    </div>
+                  </div>
+                </Card>
+
+              </div>
+
+              <div className="mt-8 p-6 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5 rounded-xl border">
+                <h3 className="text-xl font-semibold mb-4">Quick Stats</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary">200+</div>
+                    <div className="text-sm text-muted-foreground">Components</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-accent">50+</div>
+                    <div className="text-sm text-muted-foreground">Patterns</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-secondary">30+</div>
+                    <div className="text-sm text-muted-foreground">Color Tokens</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-success">15</div>
+                    <div className="text-sm text-muted-foreground">Categories</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
 
           {/* Colors Tab */}
           <TabsContent value="colors" className="space-y-8">
