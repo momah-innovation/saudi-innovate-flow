@@ -105,70 +105,70 @@ const DesignSystem = () => {
 
       <div className="container mx-auto px-6 py-8">
         <Tabs defaultValue="index" className="w-full">
-          <TabsList className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 backdrop-blur-sm border border-primary/20 p-1.5 text-muted-foreground shadow-lg overflow-x-auto">
-            <TabsTrigger value="index" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+          <TabsList className="inline-flex h-10 w-full items-center justify-start rounded-xl bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 backdrop-blur-sm border border-primary/20 p-1 text-muted-foreground shadow-lg overflow-x-auto scrollbar-thin scrollbar-thumb-primary/20">
+            <TabsTrigger value="index" className="flex items-center gap-1 text-xs px-3 py-1.5 whitespace-nowrap font-medium bg-primary/90 text-primary-foreground">
               <Grid className="h-3 w-3" />
-              Index
+              📋 Index
             </TabsTrigger>
-            <TabsTrigger value="colors" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="colors" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Palette className="h-3 w-3" />
               Colors
             </TabsTrigger>
-            <TabsTrigger value="typography" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="typography" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Type className="h-3 w-3" />
-              Typography
+              Type
             </TabsTrigger>
-            <TabsTrigger value="components" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="components" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Layout className="h-3 w-3" />
-              Components
+              UI
             </TabsTrigger>
-            <TabsTrigger value="forms" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="forms" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Edit className="h-3 w-3" />
               Forms
             </TabsTrigger>
-            <TabsTrigger value="navigation" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="navigation" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Home className="h-3 w-3" />
-              Navigation
+              Nav
             </TabsTrigger>
-            <TabsTrigger value="data" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="data" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Grid className="h-3 w-3" />
-              Data Display
+              Data
             </TabsTrigger>
-            <TabsTrigger value="media" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="media" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Play className="h-3 w-3" />
               Media
             </TabsTrigger>
-            <TabsTrigger value="communication" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="communication" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Bell className="h-3 w-3" />
-              Communication
+              Comms
             </TabsTrigger>
-            <TabsTrigger value="interactions" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="interactions" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Zap className="h-3 w-3" />
-              Interactions
+              FX
             </TabsTrigger>
-            <TabsTrigger value="spacing" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="spacing" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Target className="h-3 w-3" />
-              Spacing
+              Layout
             </TabsTrigger>
-            <TabsTrigger value="patterns" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="patterns" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Eye className="h-3 w-3" />
               Patterns
             </TabsTrigger>
-            <TabsTrigger value="states" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="states" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Settings className="h-3 w-3" />
               States
             </TabsTrigger>
-            <TabsTrigger value="widgets" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="widgets" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Grid className="h-3 w-3" />
               Widgets
             </TabsTrigger>
-            <TabsTrigger value="animations" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="animations" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Zap className="h-3 w-3" />
-              Animations & Icons
+              Icons
             </TabsTrigger>
-            <TabsTrigger value="branding" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+            <TabsTrigger value="branding" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Award className="h-3 w-3" />
-              Logo & Identity
+              Brand
             </TabsTrigger>
           </TabsList>
 
