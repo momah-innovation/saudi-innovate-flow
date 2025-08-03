@@ -10,7 +10,8 @@ import {
   Shield, Lock, Unlock, User, CreditCard, Gift,
   Loader2, Wifi, WifiOff, Battery, Volume2, VolumeX,
   Send, MessageCircle, MoreVertical, HelpCircle,
-  GripVertical, Move, Maximize2, Minimize2, Share
+  GripVertical, Move, Maximize2, Minimize2, Share,
+  Menu, ArrowRight, ArrowLeft, Languages
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -360,6 +361,390 @@ const DesignSystem = () => {
                     </div>
                     <div className="p-4 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" tabIndex={0}>
                       Focus Ring Effect
+                    </div>
+                  </div>
+                </ComponentShowcase>
+                <ComponentShowcase title="Headers & Navigation Systems">
+                  <div className="space-y-8">
+                    {/* System Headers */}
+                    <div>
+                      <h4 className="font-medium mb-4">System Headers</h4>
+                      <div className="space-y-4">
+                        {/* Main System Header */}
+                        <div className="border rounded-lg overflow-hidden">
+                          <div className="h-14 border-b bg-background/95 backdrop-blur">
+                            <div className="container flex items-center justify-between px-4 h-full">
+                              <div className="flex items-center gap-3">
+                                <Menu className="w-5 h-5" />
+                                <div className="flex items-center gap-2">
+                                  <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
+                                    <span className="text-primary-foreground font-bold text-sm">🏗️</span>
+                                  </div>
+                                  <h1 className="font-semibold text-sm">Ruwād Innovation System</h1>
+                                </div>
+                              </div>
+                              <div className="flex-1 max-w-md mx-4">
+                                <div className="relative">
+                                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                  <input className="w-full h-9 pl-10 pr-4 border rounded-md" placeholder="Search..." />
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Button variant="ghost" size="sm">
+                                  <Bell className="w-4 h-4" />
+                                </Button>
+                                <Button variant="ghost" size="sm">
+                                  <User className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Compact System Header */}
+                        <div className="border rounded-lg overflow-hidden">
+                          <div className="h-12 border-b bg-background">
+                            <div className="flex items-center justify-between px-4 h-full">
+                              <div className="flex items-center gap-2">
+                                <div className="h-6 w-6 rounded bg-primary flex items-center justify-center">
+                                  <span className="text-primary-foreground text-xs">R</span>
+                                </div>
+                                <span className="font-medium text-sm">Ruwād</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Button variant="ghost" size="sm">
+                                  <Settings className="w-4 h-4" />
+                                </Button>
+                                <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center">
+                                  <span className="text-xs">J</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Page Headers */}
+                    <div>
+                      <h4 className="font-medium mb-4">Page Headers</h4>
+                      <div className="space-y-4">
+                        {/* Standard Page Header */}
+                        <div className="border rounded-lg p-6">
+                          <div className="flex items-start justify-between mb-6">
+                            <div>
+                              <h1 className="text-3xl font-bold tracking-tight mb-2">Innovation Challenges</h1>
+                              <p className="text-muted-foreground text-lg">Discover and participate in cutting-edge technology challenges</p>
+                            </div>
+                            <Button>
+                              <Plus className="w-4 h-4 mr-2" />
+                              Create Challenge
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        {/* Page Header with Stats */}
+                        <div className="border rounded-lg p-6">
+                          <div className="flex items-start justify-between mb-4">
+                            <div>
+                              <div className="flex items-center gap-3 mb-2">
+                                <h1 className="text-3xl font-bold tracking-tight">Projects Dashboard</h1>
+                                <span className="text-lg text-muted-foreground">(24)</span>
+                              </div>
+                              <p className="text-muted-foreground">Manage your active and completed projects</p>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button variant="outline">
+                                <Filter className="w-4 h-4 mr-2" />
+                                Filter
+                              </Button>
+                              <Button>
+                                <Plus className="w-4 h-4 mr-2" />
+                                New Project
+                              </Button>
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-3 gap-4">
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-primary">12</div>
+                              <div className="text-sm text-muted-foreground">Active</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-green-600">8</div>
+                              <div className="text-sm text-muted-foreground">Completed</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-amber-600">4</div>
+                              <div className="text-sm text-muted-foreground">In Review</div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Breadcrumb Page Header */}
+                        <div className="border rounded-lg p-6">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                            <Home className="w-4 h-4" />
+                            <ChevronRight className="w-4 h-4" />
+                            <span>Projects</span>
+                            <ChevronRight className="w-4 h-4" />
+                            <span>AI Solutions</span>
+                            <ChevronRight className="w-4 h-4" />
+                            <span className="text-foreground">Healthcare Assistant</span>
+                          </div>
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h1 className="text-2xl font-bold mb-2">Healthcare Assistant Project</h1>
+                              <p className="text-muted-foreground">AI-powered diagnostic tool for early disease detection</p>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button variant="outline" size="sm">
+                                <Share className="w-4 h-4 mr-2" />
+                                Share
+                              </Button>
+                              <Button variant="outline" size="sm">
+                                <Edit className="w-4 h-4 mr-2" />
+                                Edit
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Hero Headers */}
+                    <div>
+                      <h4 className="font-medium mb-4">Hero Headers</h4>
+                      <div className="space-y-4">
+                        {/* Events Hero */}
+                        <div className="border rounded-lg overflow-hidden">
+                          <div className="relative bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 p-8">
+                            <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+                            <div className="relative z-10">
+                              <div className="text-center mb-8">
+                                <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent mb-4">
+                                  Innovation Events
+                                </h1>
+                                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                                  Join cutting-edge events that shape the future of technology and innovation
+                                </p>
+                              </div>
+                              
+                              <div className="grid grid-cols-3 gap-6 mb-8">
+                                <div className="text-center p-4 rounded-lg bg-background/50 border hover:scale-105 transition-transform">
+                                  <div className="text-2xl font-bold text-primary mb-1">42</div>
+                                  <div className="text-sm text-muted-foreground">Total Events</div>
+                                </div>
+                                <div className="text-center p-4 rounded-lg bg-background/50 border hover:scale-105 transition-transform">
+                                  <div className="text-2xl font-bold text-accent mb-1">8</div>
+                                  <div className="text-sm text-muted-foreground">This Week</div>
+                                </div>
+                                <div className="text-center p-4 rounded-lg bg-background/50 border hover:scale-105 transition-transform">
+                                  <div className="text-2xl font-bold text-secondary mb-1">3</div>
+                                  <div className="text-sm text-muted-foreground">Today</div>
+                                </div>
+                              </div>
+                              
+                              <div className="flex justify-center gap-3">
+                                <Button size="lg">
+                                  <Plus className="w-4 h-4 mr-2" />
+                                  Create Event
+                                </Button>
+                                <Button variant="outline" size="lg">
+                                  <Filter className="w-4 h-4 mr-2" />
+                                  Browse Events
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Landing Hero */}
+                        <div className="border rounded-lg overflow-hidden">
+                          <div className="bg-gradient-to-r from-primary to-secondary p-12 text-center text-white">
+                            <h1 className="text-5xl font-bold mb-4">Welcome to Ruwād</h1>
+                            <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
+                              Empowering innovators to solve tomorrow's challenges with cutting-edge technology and collaborative innovation
+                            </p>
+                            <div className="flex justify-center gap-4">
+                              <Button size="lg" variant="secondary">
+                                Get Started
+                                <ArrowRight className="w-4 h-4 ml-2" />
+                              </Button>
+                              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
+                                <Play className="w-4 h-4 mr-2" />
+                                Watch Demo
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Mobile Headers */}
+                    <div>
+                      <h4 className="font-medium mb-4">Mobile Headers</h4>
+                      <div className="space-y-4">
+                        {/* Mobile System Header */}
+                        <div className="border rounded-lg overflow-hidden max-w-sm mx-auto">
+                          <div className="h-14 border-b bg-background flex items-center justify-between px-4">
+                            <Button variant="ghost" size="sm">
+                              <Menu className="w-5 h-5" />
+                            </Button>
+                            <div className="flex items-center gap-2">
+                              <div className="h-6 w-6 rounded bg-primary flex items-center justify-center">
+                                <span className="text-primary-foreground text-xs">R</span>
+                              </div>
+                              <span className="font-semibold text-sm">Ruwād</span>
+                            </div>
+                            <Button variant="ghost" size="sm">
+                              <User className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        {/* Mobile Page Header */}
+                        <div className="border rounded-lg overflow-hidden max-w-sm mx-auto">
+                          <div className="p-4">
+                            <div className="flex items-center justify-between mb-3">
+                              <Button variant="ghost" size="sm">
+                                <ArrowLeft className="w-4 h-4" />
+                              </Button>
+                              <h1 className="font-semibold">Challenge Details</h1>
+                              <Button variant="ghost" size="sm">
+                                <MoreVertical className="w-4 h-4" />
+                              </Button>
+                            </div>
+                            <div className="text-center">
+                              <h2 className="text-lg font-bold mb-1">AI Healthcare Challenge</h2>
+                              <p className="text-sm text-muted-foreground">Due in 5 days</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Directional Headers (RTL/LTR) */}
+                    <div>
+                      <h4 className="font-medium mb-4">Directional Headers</h4>
+                      <div className="space-y-4">
+                        {/* LTR Header */}
+                        <div className="border rounded-lg overflow-hidden">
+                          <div className="h-14 border-b bg-background">
+                            <div className="flex items-center justify-between px-4 h-full">
+                              <div className="flex items-center gap-4">
+                                <Button variant="ghost" size="sm">
+                                  <Menu className="w-5 h-5" />
+                                </Button>
+                                <h1 className="text-xl font-semibold">Innovation System</h1>
+                                <span className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded">LTR</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Button variant="ghost" size="sm">
+                                  <Languages className="w-4 h-4" />
+                                  English
+                                </Button>
+                                <Button variant="ghost" size="sm">
+                                  <Sun className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* RTL Header */}
+                        <div className="border rounded-lg overflow-hidden" dir="rtl">
+                          <div className="h-14 border-b bg-background">
+                            <div className="flex items-center justify-between px-4 h-full">
+                              <div className="flex items-center gap-4">
+                                <Button variant="ghost" size="sm">
+                                  <Menu className="w-5 h-5" />
+                                </Button>
+                                <h1 className="text-xl font-semibold">نظام رواد للابتكار</h1>
+                                <span className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded">RTL</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Button variant="ghost" size="sm">
+                                  <Languages className="w-4 h-4" />
+                                  العربية
+                                </Button>
+                                <Button variant="ghost" size="sm">
+                                  <Moon className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Header States */}
+                    <div>
+                      <h4 className="font-medium mb-4">Header States & Variants</h4>
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        {/* Loading State */}
+                        <div className="border rounded-lg overflow-hidden">
+                          <div className="h-14 border-b bg-background/95 backdrop-blur">
+                            <div className="flex items-center justify-between px-4 h-full">
+                              <div className="flex items-center gap-3">
+                                <div className="w-5 h-5 bg-muted animate-pulse rounded"></div>
+                                <div className="flex items-center gap-2">
+                                  <div className="h-8 w-8 bg-muted animate-pulse rounded-md"></div>
+                                  <div className="h-4 w-32 bg-muted animate-pulse rounded"></div>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 bg-muted animate-pulse rounded"></div>
+                                <div className="w-8 h-8 bg-muted animate-pulse rounded-full"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Error State */}
+                        <div className="border rounded-lg overflow-hidden border-destructive/20">
+                          <div className="h-14 border-b border-destructive/20 bg-destructive/5">
+                            <div className="flex items-center justify-between px-4 h-full">
+                              <div className="flex items-center gap-3">
+                                <AlertCircle className="w-5 h-5 text-destructive" />
+                                <span className="text-sm text-destructive">Connection Error</span>
+                              </div>
+                              <Button variant="outline" size="sm" className="border-destructive/20 text-destructive hover:bg-destructive/10">
+                                Retry
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Notification Header */}
+                        <div className="border rounded-lg overflow-hidden border-amber-200 bg-amber-50">
+                          <div className="h-14 border-b border-amber-200">
+                            <div className="flex items-center justify-between px-4 h-full">
+                              <div className="flex items-center gap-3">
+                                <Bell className="w-5 h-5 text-amber-600" />
+                                <span className="text-sm text-amber-800">System maintenance in 30 minutes</span>
+                              </div>
+                              <Button variant="ghost" size="sm" className="text-amber-600">
+                                <X className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Success Header */}
+                        <div className="border rounded-lg overflow-hidden border-green-200 bg-green-50">
+                          <div className="h-14 border-b border-green-200">
+                            <div className="flex items-center justify-between px-4 h-full">
+                              <div className="flex items-center gap-3">
+                                <CheckCircle className="w-5 h-5 text-green-600" />
+                                <span className="text-sm text-green-800">Profile updated successfully</span>
+                              </div>
+                              <Button variant="ghost" size="sm" className="text-green-600">
+                                <X className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </ComponentShowcase>
