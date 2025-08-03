@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { StandardBrowseLayout } from '@/components/layout/StandardBrowseLayout';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { ThemedPageWrapper } from '@/components/layout/ThemedPageWrapper';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,7 +9,6 @@ import { ViewLayouts } from '@/components/ui/view-layouts';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useComponentTheme } from '@/hooks/useComponentTheme';
 import { ChallengeCard } from '@/components/challenges/ChallengeCard';
 import { ChallengeTrendingWidget } from '@/components/challenges/ChallengeTrendingWidget';
 import { ChallengesHero } from '@/components/challenges/ChallengesHero';
@@ -42,12 +40,6 @@ const ChallengesBrowse = () => {
   const { toast } = useToast();
   const { ui } = useChallengeDefaults();
   const { user, hasRole } = useAuth();
-  
-  // Get theme-aware styling for components
-  const headerTheme = useComponentTheme('header');
-  const buttonTheme = useComponentTheme('button');
-  const cardTheme = useComponentTheme('card');
-  const modalTheme = useComponentTheme('modal');
   
   // Use enhanced challenges data hook
   const { challenges, loading, stats, refetch } = useChallengesData();
@@ -489,8 +481,7 @@ const ChallengesBrowse = () => {
   );
 
   return (
-    <ThemedPageWrapper pageType="challenges" className="min-h-screen">
-      <StandardBrowseLayout
+    <StandardBrowseLayout
       hero={
         <ChallengesHero 
           totalChallenges={stats.totalChallenges}
@@ -526,23 +517,19 @@ const ChallengesBrowse = () => {
                 <>
                   <div className="flex items-center gap-2">
                     <Button
-                      {...buttonTheme.getThemedProps({ 
-                        variant: 'default',
-                        size: 'sm'
-                      })}
+                      variant="default"
+                      size="sm"
                       onClick={() => setTemplatesDialogOpen(true)}
-                      className="themed-button h-8 shadow-md"
+                      className={`h-8 ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} ${challengesPageConfig.ui.colors.text.accent} border-0 shadow-md`}
                     >
                       <FileText className="w-4 h-4 mr-2" />
                       {isRTL ? 'القوالب' : 'Templates'}
                     </Button>
                     <Button
-                      {...buttonTheme.getThemedProps({ 
-                        variant: 'secondary',
-                        size: 'sm'
-                      })}
+                      variant="default"
+                      size="sm"
                       onClick={() => setAnalyticsDialogOpen(true)}
-                      className="themed-button h-8 shadow-md hover:scale-105 transition-transform"
+                      className={`h-8 ${challengesPageConfig.ui.gradients.info} ${challengesPageConfig.ui.colors.text.accent} border-0 shadow-md hover:scale-105 transition-transform`}
                     >
                       <BarChart3 className="w-4 h-4 mr-2" />
                       {isRTL ? 'الإحصائيات' : 'Analytics'}
@@ -550,7 +537,7 @@ const ChallengesBrowse = () => {
                   </div>
                   
                   {/* Separator */}
-                  <div className="h-6 w-px bg-border"></div>
+                  <div className={`h-6 w-px ${challengesPageConfig.ui.gradients.featured}`}></div>
                 </>
               )}
               
@@ -750,16 +737,14 @@ const ChallengesBrowse = () => {
 
           {/* Analytics Dashboard Dialog */}
           <Dialog open={analyticsDialogOpen} onOpenChange={setAnalyticsDialogOpen}>
-            <DialogContent className={`${modalTheme.className} max-w-6xl max-h-[90vh] overflow-y-auto`}>
+            <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
-                  <BarChart3 className="w-5 h-5 text-innovation" />
+                  <BarChart3 className="w-5 h-5" />
                   {isRTL ? 'لوحة إحصائيات التحديات' : 'Challenge Analytics Dashboard'}
                 </DialogTitle>
               </DialogHeader>
-              <div className="themed-dashboard-widget">
-                <ChallengeAnalyticsDashboard />
-              </div>
+              <ChallengeAnalyticsDashboard />
             </DialogContent>
           </Dialog>
 
@@ -774,7 +759,6 @@ const ChallengesBrowse = () => {
         </>
       }
     />
-    </ThemedPageWrapper>
   );
 };
 
