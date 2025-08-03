@@ -5380,56 +5380,461 @@ const DesignSystem = () => {
               
               <div className="space-y-6">
                 <ComponentShowcase title="Challenge Cards">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Card className="p-4 hover:shadow-lg transition-shadow">
-                      <div className="flex items-start justify-between mb-3">
-                        <Badge className="bg-success/90 text-success-foreground">Active</Badge>
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                          <Users className="w-4 h-4" />
-                          <span>45</span>
-                        </div>
-                      </div>
-                      <h3 className="font-semibold mb-2">Smart City Solutions</h3>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        Develop innovative solutions for urban challenges
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1 text-sm">
-                          <Award className="w-4 h-4 text-warning" />
-                          <span>$10,000</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                          <Clock className="w-4 h-4" />
-                          <span>15 days left</span>
-                        </div>
-                      </div>
-                    </Card>
+                  <div className="space-y-8">
+                    
+                    {/* Standard Variants */}
+                    <div>
+                      <h4 className="font-medium mb-4">Standard Challenge Cards</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Card className="p-4 hover:shadow-lg transition-shadow">
+                          <div className="flex items-start justify-between mb-3">
+                            <Badge className="bg-success/90 text-success-foreground">Active</Badge>
+                            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                              <Users className="w-4 h-4" />
+                              <span>45</span>
+                            </div>
+                          </div>
+                          <h3 className="font-semibold mb-2">Smart City Solutions</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Develop innovative solutions for urban challenges
+                          </p>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1 text-sm">
+                              <Award className="w-4 h-4 text-warning" />
+                              <span>$10,000</span>
+                            </div>
+                            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                              <Clock className="w-4 h-4" />
+                              <span>15 days left</span>
+                            </div>
+                          </div>
+                        </Card>
 
-                    <Card className="p-4 hover:shadow-lg transition-shadow border-l-4 border-l-innovation">
-                      <div className="flex items-start justify-between mb-3">
-                        <Badge className="bg-innovation/90 text-innovation-foreground">Featured</Badge>
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                          <Target className="w-4 h-4" />
-                          <span>32</span>
-                        </div>
+                        <Card className="p-4 hover:shadow-lg transition-shadow border-l-4 border-l-innovation">
+                          <div className="flex items-start justify-between mb-3">
+                            <Badge className="bg-innovation/90 text-innovation-foreground">Featured</Badge>
+                            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                              <Target className="w-4 h-4" />
+                              <span>32</span>
+                            </div>
+                          </div>
+                          <h3 className="font-semibold mb-2 flex items-center gap-2">
+                            AI Healthcare Platform
+                            <Star className="w-4 h-4 text-warning fill-current" />
+                          </h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Revolutionary AI-powered healthcare solutions
+                          </p>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1 text-sm">
+                              <Award className="w-4 h-4 text-warning" />
+                              <span>$25,000</span>
+                            </div>
+                            <Badge className="bg-accent/90 text-accent-foreground animate-pulse">
+                              Trending
+                            </Badge>
+                          </div>
+                        </Card>
                       </div>
-                      <h3 className="font-semibold mb-2 flex items-center gap-2">
-                        AI Healthcare Platform
-                        <Star className="w-4 h-4 text-warning fill-current" />
-                      </h3>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        Revolutionary AI-powered healthcare solutions
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1 text-sm">
-                          <Award className="w-4 h-4 text-warning" />
-                          <span>$25,000</span>
-                        </div>
-                        <Badge className="bg-accent/90 text-accent-foreground animate-pulse">
-                          Trending
-                        </Badge>
+                    </div>
+
+                    {/* Compact Variants */}
+                    <div>
+                      <h4 className="font-medium mb-4">Compact Challenge Cards</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <Card className="p-3 hover:shadow-md transition-shadow">
+                          <div className="flex items-center justify-between mb-2">
+                            <Badge className="bg-success/90 text-success-foreground text-xs">Active</Badge>
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                              <Users className="w-3 h-3" />
+                              <span>23</span>
+                            </div>
+                          </div>
+                          <h4 className="font-medium text-sm mb-1">Blockchain Security</h4>
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-warning font-medium">$5,000</span>
+                            <span className="text-muted-foreground">8 days</span>
+                          </div>
+                        </Card>
+
+                        <Card className="p-3 hover:shadow-md transition-shadow">
+                          <div className="flex items-center justify-between mb-2">
+                            <Badge className="bg-warning/90 text-warning-foreground text-xs">Review</Badge>
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                              <Users className="w-3 h-3" />
+                              <span>67</span>
+                            </div>
+                          </div>
+                          <h4 className="font-medium text-sm mb-1">Green Energy Tech</h4>
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-warning font-medium">$15,000</span>
+                            <span className="text-muted-foreground">2 days</span>
+                          </div>
+                        </Card>
+
+                        <Card className="p-3 hover:shadow-md transition-shadow opacity-60">
+                          <div className="flex items-center justify-between mb-2">
+                            <Badge className="bg-muted text-muted-foreground text-xs">Closed</Badge>
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                              <Users className="w-3 h-3" />
+                              <span>156</span>
+                            </div>
+                          </div>
+                          <h4 className="font-medium text-sm mb-1">Space Innovation</h4>
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-muted-foreground">$50,000</span>
+                            <span className="text-muted-foreground">Ended</span>
+                          </div>
+                        </Card>
                       </div>
-                    </Card>
+                    </div>
+
+                    {/* Image Card Variants */}
+                    <div>
+                      <h4 className="font-medium mb-4">Image Challenge Cards</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+                          <div className="aspect-video bg-gradient-to-r from-blue-500 to-purple-600 relative">
+                            <div className="absolute top-3 left-3">
+                              <Badge className="bg-success/90 text-success-foreground">Active</Badge>
+                            </div>
+                            <div className="absolute top-3 right-3">
+                              <div className="flex items-center gap-1 text-white text-sm bg-black/30 backdrop-blur-sm rounded px-2 py-1">
+                                <Users className="w-3 h-3" />
+                                <span>89</span>
+                              </div>
+                            </div>
+                            <div className="absolute bottom-3 left-3 text-white">
+                              <div className="flex items-center gap-1 text-sm">
+                                <Award className="w-4 h-4" />
+                                <span className="font-semibold">$30,000</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="p-4">
+                            <h3 className="font-semibold mb-2">Ocean Cleanup Technology</h3>
+                            <p className="text-sm text-muted-foreground mb-3">
+                              Innovative solutions for marine plastic pollution
+                            </p>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                                <Clock className="w-4 h-4" />
+                                <span>12 days left</span>
+                              </div>
+                              <Button size="sm">Join Challenge</Button>
+                            </div>
+                          </div>
+                        </Card>
+
+                        <Card className="overflow-hidden hover:shadow-lg transition-shadow border border-innovation/50">
+                          <div className="aspect-video bg-gradient-to-r from-orange-500 to-red-600 relative">
+                            <div className="absolute top-3 left-3">
+                              <Badge className="bg-innovation/90 text-innovation-foreground">Featured</Badge>
+                            </div>
+                            <div className="absolute top-3 right-3">
+                              <Star className="w-5 h-5 text-yellow-300 fill-current" />
+                            </div>
+                            <div className="absolute bottom-3 left-3 text-white">
+                              <div className="flex items-center gap-1 text-sm">
+                                <Award className="w-4 h-4" />
+                                <span className="font-semibold">$100,000</span>
+                              </div>
+                            </div>
+                            <div className="absolute bottom-3 right-3">
+                              <Badge className="bg-accent/90 text-accent-foreground animate-pulse">
+                                🔥 Hot
+                              </Badge>
+                            </div>
+                          </div>
+                          <div className="p-4">
+                            <h3 className="font-semibold mb-2">AI for Climate Action</h3>
+                            <p className="text-sm text-muted-foreground mb-3">
+                              Machine learning solutions for climate change
+                            </p>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                                <Users className="w-4 h-4" />
+                                <span>234 participants</span>
+                              </div>
+                              <Button size="sm" className="bg-innovation text-innovation-foreground">
+                                View Details
+                              </Button>
+                            </div>
+                          </div>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* Progress Card Variants */}
+                    <div>
+                      <h4 className="font-medium mb-4">Progress Challenge Cards</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Card className="p-4 hover:shadow-lg transition-shadow">
+                          <div className="flex items-start justify-between mb-3">
+                            <Badge className="bg-success/90 text-success-foreground">Active</Badge>
+                            <div className="text-right">
+                              <div className="text-sm font-medium">68%</div>
+                              <div className="text-xs text-muted-foreground">Complete</div>
+                            </div>
+                          </div>
+                          <h3 className="font-semibold mb-2">Smart Agriculture Platform</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            IoT solutions for modern farming techniques
+                          </p>
+                          <div className="space-y-3">
+                            <Progress value={68} className="h-2" />
+                            <div className="flex items-center justify-between text-sm">
+                              <div className="flex items-center gap-1">
+                                <Users className="w-4 h-4 text-muted-foreground" />
+                                <span>45/75 participants</span>
+                              </div>
+                              <div className="flex items-center gap-1 text-warning">
+                                <Award className="w-4 h-4" />
+                                <span>$20,000</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center justify-between text-xs text-muted-foreground">
+                              <span>Started 3 weeks ago</span>
+                              <span>5 days remaining</span>
+                            </div>
+                          </div>
+                        </Card>
+
+                        <Card className="p-4 hover:shadow-lg transition-shadow">
+                          <div className="flex items-start justify-between mb-3">
+                            <Badge className="bg-warning/90 text-warning-foreground">Ending Soon</Badge>
+                            <div className="text-right">
+                              <div className="text-sm font-medium">92%</div>
+                              <div className="text-xs text-muted-foreground">Complete</div>
+                            </div>
+                          </div>
+                          <h3 className="font-semibold mb-2">Quantum Computing Solutions</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Next-generation computing algorithms
+                          </p>
+                          <div className="space-y-3">
+                            <Progress value={92} className="h-2" />
+                            <div className="flex items-center justify-between text-sm">
+                              <div className="flex items-center gap-1">
+                                <Users className="w-4 h-4 text-muted-foreground" />
+                                <span>156/200 participants</span>
+                              </div>
+                              <div className="flex items-center gap-1 text-warning">
+                                <Award className="w-4 h-4" />
+                                <span>$75,000</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center justify-between text-xs text-muted-foreground">
+                              <span>Started 8 weeks ago</span>
+                              <span className="text-destructive font-medium">2 hours left!</span>
+                            </div>
+                          </div>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* Priority/Urgent Variants */}
+                    <div>
+                      <h4 className="font-medium mb-4">Priority & Urgent Challenge Cards</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Card className="p-4 hover:shadow-lg transition-shadow border-2 border-destructive/50 bg-destructive/5">
+                          <div className="flex items-start justify-between mb-3">
+                            <Badge className="bg-destructive text-destructive-foreground animate-pulse">
+                              🚨 Urgent
+                            </Badge>
+                            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                              <Users className="w-4 h-4" />
+                              <span>12</span>
+                            </div>
+                          </div>
+                          <h3 className="font-semibold mb-2 text-destructive">Emergency Response System</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Critical infrastructure for disaster management
+                          </p>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1 text-sm text-destructive font-semibold">
+                              <Award className="w-4 h-4" />
+                              <span>$200,000</span>
+                            </div>
+                            <div className="flex items-center gap-1 text-sm text-destructive font-medium">
+                              <Clock className="w-4 h-4 animate-pulse" />
+                              <span>6 hours left!</span>
+                            </div>
+                          </div>
+                        </Card>
+
+                        <Card className="p-4 hover:shadow-lg transition-shadow border-2 border-warning/50 bg-warning/5">
+                          <div className="flex items-start justify-between mb-3">
+                            <Badge className="bg-warning text-warning-foreground">
+                              ⚡ High Priority
+                            </Badge>
+                            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                              <Target className="w-4 h-4" />
+                              <span>28</span>
+                            </div>
+                          </div>
+                          <h3 className="font-semibold mb-2">Cybersecurity Defense</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Advanced threat detection and prevention
+                          </p>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1 text-sm text-warning font-semibold">
+                              <Award className="w-4 h-4" />
+                              <span>$80,000</span>
+                            </div>
+                            <div className="flex items-center gap-1 text-sm text-warning">
+                              <Clock className="w-4 h-4" />
+                              <span>3 days left</span>
+                            </div>
+                          </div>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* Category-specific Variants */}
+                    <div>
+                      <h4 className="font-medium mb-4">Category-specific Challenge Cards</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <Card className="p-4 hover:shadow-lg transition-shadow border-l-4 border-l-blue-500 bg-blue-50/50 dark:bg-blue-950/20">
+                          <div className="flex items-start justify-between mb-3">
+                            <Badge className="bg-blue-500/90 text-white">Technology</Badge>
+                            <div className="p-1 bg-blue-100 dark:bg-blue-900 rounded">
+                              <Zap className="w-4 h-4 text-blue-600" />
+                            </div>
+                          </div>
+                          <h3 className="font-semibold mb-2">Neural Network Optimization</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Deep learning efficiency improvements
+                          </p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-blue-600 font-medium">$45,000</span>
+                            <span className="text-xs text-muted-foreground">AI/ML</span>
+                          </div>
+                        </Card>
+
+                        <Card className="p-4 hover:shadow-lg transition-shadow border-l-4 border-l-green-500 bg-green-50/50 dark:bg-green-950/20">
+                          <div className="flex items-start justify-between mb-3">
+                            <Badge className="bg-green-500/90 text-white">Health</Badge>
+                            <div className="p-1 bg-green-100 dark:bg-green-900 rounded">
+                              <Heart className="w-4 h-4 text-green-600" />
+                            </div>
+                          </div>
+                          <h3 className="font-semibold mb-2">Telemedicine Platform</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Remote healthcare accessibility
+                          </p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-green-600 font-medium">$60,000</span>
+                            <span className="text-xs text-muted-foreground">Healthcare</span>
+                          </div>
+                        </Card>
+
+                        <Card className="p-4 hover:shadow-lg transition-shadow border-l-4 border-l-purple-500 bg-purple-50/50 dark:bg-purple-950/20">
+                          <div className="flex items-start justify-between mb-3">
+                            <Badge className="bg-purple-500/90 text-white">Finance</Badge>
+                            <div className="p-1 bg-purple-100 dark:bg-purple-900 rounded">
+                              <CreditCard className="w-4 h-4 text-purple-600" />
+                            </div>
+                          </div>
+                          <h3 className="font-semibold mb-2">DeFi Trading Platform</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Decentralized finance solutions
+                          </p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-purple-600 font-medium">$90,000</span>
+                            <span className="text-xs text-muted-foreground">Blockchain</span>
+                          </div>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* List Layout Variant */}
+                    <div>
+                      <h4 className="font-medium mb-4">List Layout Challenge Cards</h4>
+                      <div className="space-y-3">
+                        <Card className="p-4 hover:shadow-md transition-shadow">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
+                                <Sparkles className="w-6 h-6 text-white" />
+                              </div>
+                              <div>
+                                <h3 className="font-semibold">Renewable Energy Storage</h3>
+                                <p className="text-sm text-muted-foreground">Advanced battery technology solutions</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-6">
+                              <div className="text-center">
+                                <div className="text-sm font-medium">$35,000</div>
+                                <div className="text-xs text-muted-foreground">Prize</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-sm font-medium">89</div>
+                                <div className="text-xs text-muted-foreground">Participants</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-sm font-medium">7 days</div>
+                                <div className="text-xs text-muted-foreground">Remaining</div>
+                              </div>
+                              <Badge className="bg-success/90 text-success-foreground">Active</Badge>
+                            </div>
+                          </div>
+                        </Card>
+
+                        <Card className="p-4 hover:shadow-md transition-shadow">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className="w-12 h-12 bg-gradient-to-r from-secondary to-innovation rounded-lg flex items-center justify-center">
+                                <Shield className="w-6 h-6 text-white" />
+                              </div>
+                              <div>
+                                <h3 className="font-semibold">Data Privacy Framework</h3>
+                                <p className="text-sm text-muted-foreground">Next-gen privacy protection systems</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-6">
+                              <div className="text-center">
+                                <div className="text-sm font-medium">$55,000</div>
+                                <div className="text-xs text-muted-foreground">Prize</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-sm font-medium">123</div>
+                                <div className="text-xs text-muted-foreground">Participants</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-sm font-medium">14 days</div>
+                                <div className="text-xs text-muted-foreground">Remaining</div>
+                              </div>
+                              <Badge className="bg-innovation/90 text-innovation-foreground">Featured</Badge>
+                            </div>
+                          </div>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* Interactive States */}
+                    <div>
+                      <h4 className="font-medium mb-4">Interactive States</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <Card className="p-4 transition-shadow cursor-pointer hover:shadow-lg hover:scale-[1.02]">
+                          <Badge className="bg-success/90 text-success-foreground mb-3">Hover Effect</Badge>
+                          <h3 className="font-semibold mb-2">Hover to See</h3>
+                          <p className="text-sm text-muted-foreground">Hover over this card for effects</p>
+                        </Card>
+
+                        <Card className="p-4 transition-shadow border-2 border-primary bg-primary/5">
+                          <Badge className="bg-primary/90 text-primary-foreground mb-3">Selected</Badge>
+                          <h3 className="font-semibold mb-2">Selected State</h3>
+                          <p className="text-sm text-muted-foreground">This card is selected</p>
+                        </Card>
+
+                        <Card className="p-4 opacity-50 cursor-not-allowed">
+                          <Badge className="bg-muted text-muted-foreground mb-3">Disabled</Badge>
+                          <h3 className="font-semibold mb-2 text-muted-foreground">Disabled State</h3>
+                          <p className="text-sm text-muted-foreground">This card is disabled</p>
+                        </Card>
+                      </div>
+                    </div>
                   </div>
                 </ComponentShowcase>
 
