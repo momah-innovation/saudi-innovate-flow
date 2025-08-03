@@ -55,9 +55,9 @@ export const AdminEventsHero = ({
       value: totalParticipants.toLocaleString(),
       icon: Users,
       trend: isRTL ? '+8% معدل التسجيل' : '+8% registration rate',
-      color: 'bg-purple-500',
-      bgColor: 'bg-purple-50 dark:bg-purple-900/20',
-      textColor: 'text-purple-600 dark:text-purple-400'
+      color: 'bg-innovation',
+      bgColor: 'bg-innovation/10 dark:bg-innovation/20',
+      textColor: 'text-innovation'
     },
     {
       title: isRTL ? 'الإيرادات' : 'Revenue',
@@ -75,25 +75,25 @@ export const AdminEventsHero = ({
       label: isRTL ? 'القادمة' : 'Upcoming',
       value: upcomingEvents,
       icon: Clock,
-      color: 'text-orange-600'
+      color: 'icon-warning'
     },
     {
       label: isRTL ? 'مكتملة' : 'Completed',
       value: completedEvents,
       icon: CheckCircle2,
-      color: 'text-green-600'
+      color: 'icon-success'
     },
     {
       label: isRTL ? 'المواقع' : 'Venues',
       value: 8,
       icon: MapPin,
-      color: 'text-blue-600'
+      color: 'icon-info'
     },
     {
       label: isRTL ? 'تحتاج انتباه' : 'Need Attention',
       value: 3,
       icon: AlertCircle,
-      color: 'text-red-600'
+      color: 'icon-error'
     }
   ];
 
@@ -159,16 +159,16 @@ export const AdminEventsHero = ({
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-3">
-            <Badge variant="default" className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+            <Badge variant="default" className="badge-success">
               {isRTL ? 'مجدولة' : 'Scheduled'} ({upcomingEvents})
             </Badge>
-            <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
+            <Badge variant="secondary" className="badge-info">
               {isRTL ? 'جارية' : 'Ongoing'} ({activeEvents})
             </Badge>
-            <Badge variant="outline" className="bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400">
+            <Badge variant="outline" className="bg-muted text-muted-foreground border-muted">
               {isRTL ? 'مكتملة' : 'Completed'} ({completedEvents})
             </Badge>
-            <Badge variant="destructive" className="bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400">
+            <Badge variant="destructive" className="badge-error">
               {isRTL ? 'ملغية' : 'Cancelled'} (0)
             </Badge>
           </div>

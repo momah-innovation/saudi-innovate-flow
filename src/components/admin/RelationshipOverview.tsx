@@ -114,18 +114,18 @@ export function RelationshipOverview({
 
   const getRelationshipIcon = (type: string) => {
     switch (type) {
-      case 'sponsors': return <Target className="w-4 h-4 text-green-600" />;
-      case 'supports': return <Link className="w-4 h-4 text-blue-600" />;
-      case 'collaborates': return <Users className="w-4 h-4 text-purple-600" />;
-      default: return <GitBranch className="w-4 h-4 text-gray-600" />;
+      case 'sponsors': return <Target className="w-4 h-4 icon-success" />;
+      case 'supports': return <Link className="w-4 h-4 icon-info" />;
+      case 'collaborates': return <Users className="w-4 h-4 text-innovation" />;
+      default: return <GitBranch className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
   const getStrengthColor = (strength: number) => {
-    if (strength >= 8) return 'bg-green-100 text-green-700';
-    if (strength >= 6) return 'bg-yellow-100 text-yellow-700';
-    if (strength >= 4) return 'bg-orange-100 text-orange-700';
-    return 'bg-red-100 text-red-700';
+    if (strength >= 8) return 'score-excellent';
+    if (strength >= 6) return 'score-good';
+    if (strength >= 4) return 'score-average';
+    return 'score-poor';
   };
 
   const RelationshipCard = ({ relationship }: { relationship: RelationshipData }) => {

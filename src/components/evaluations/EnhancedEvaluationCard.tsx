@@ -44,16 +44,16 @@ export function EnhancedEvaluationCard({
   onDelete
 }: EnhancedEvaluationCardProps) {
   const getScoreColor = (score: number) => {
-    if (score >= 8) return 'bg-green-100 text-green-700 border-green-200';
-    if (score >= 6) return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-    if (score >= 4) return 'bg-orange-100 text-orange-700 border-orange-200';
-    return 'bg-red-100 text-red-700 border-red-200';
+    if (score >= 8) return 'score-excellent border-success/20';
+    if (score >= 6) return 'score-good border-warning/20';
+    if (score >= 4) return 'score-average border-warning/20';
+    return 'score-poor border-destructive/20';
   };
 
   const getStatusIcon = (score: number) => {
-    if (score >= 8) return <Star className="w-4 h-4 text-green-600" />;
-    if (score >= 6) return <TrendingUp className="w-4 h-4 text-yellow-600" />;
-    return <FileCheck className="w-4 h-4 text-red-600" />;
+    if (score >= 8) return <Star className="w-4 h-4 icon-success" />;
+    if (score >= 6) return <TrendingUp className="w-4 h-4 icon-warning" />;
+    return <FileCheck className="w-4 h-4 icon-error" />;
   };
 
   if (viewMode === 'list') {

@@ -55,10 +55,10 @@ export function AdminRelationshipsHero({
       <Card className="hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">{t('active_nodes')}</CardTitle>
-          <Users className="h-4 w-4 text-blue-500" />
+          <Users className="h-4 w-4 icon-info" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-blue-600">{activeNodes}</div>
+          <div className="text-2xl font-bold text-primary">{activeNodes}</div>
           <p className="text-xs text-muted-foreground">
             {t('connected_entities')}
           </p>
@@ -69,10 +69,10 @@ export function AdminRelationshipsHero({
       <Card className="hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">{t('network_density')}</CardTitle>
-          <Layers className="h-4 w-4 text-green-500" />
+          <Layers className="h-4 w-4 icon-success" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-green-600">{networkDensity}%</div>
+          <div className="text-2xl font-bold text-success">{networkDensity}%</div>
           <p className="text-xs text-muted-foreground">
             {t('connection_strength')}
           </p>
@@ -83,10 +83,10 @@ export function AdminRelationshipsHero({
       <Card className="hover-scale">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">{t('network_health')}</CardTitle>
-          <Activity className="h-4 w-4 text-purple-500" />
+          <Activity className="h-4 w-4 text-innovation" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-purple-600">{networkHealth}%</div>
+          <div className="text-2xl font-bold text-innovation">{networkHealth}%</div>
           <p className="text-xs text-muted-foreground">
             {t('overall_connectivity')}
           </p>
@@ -104,14 +104,14 @@ export function AdminRelationshipsHero({
         <CardContent>
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center">
-              <div className="text-xl font-bold text-green-600">{strongConnections}</div>
+              <div className="text-xl font-bold text-success">{strongConnections}</div>
               <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                 <Link className="h-3 w-3" />
                 {t('strong_links')}
               </div>
             </div>
             <div className="text-center">
-              <div className="text-xl font-bold text-yellow-600">{weakConnections}</div>
+              <div className="text-xl font-bold text-warning">{weakConnections}</div>
               <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                 <Target className="h-3 w-3" />
                 {t('weak_links')}
@@ -125,7 +125,7 @@ export function AdminRelationshipsHero({
       <Card className="md:col-span-2 lg:col-span-2">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-orange-500" />
+            <TrendingUp className="h-5 w-5 icon-warning" />
             {t('network_status')}
           </CardTitle>
         </CardHeader>
@@ -133,7 +133,7 @@ export function AdminRelationshipsHero({
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">{t('orphaned_entities')}</span>
-              <span className="text-lg font-bold text-red-600">{orphanedEntities}</span>
+              <span className="text-lg font-bold text-destructive">{orphanedEntities}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">{t('last_updated')}</span>
