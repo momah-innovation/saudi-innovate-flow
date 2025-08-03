@@ -5718,30 +5718,30 @@ const DesignSystem = () => {
                       <h4 className="font-medium mb-4">Hero Section Size Variants</h4>
                       <div className="space-y-6">
                         
-                        {/* Compact Hero */}
-                        <div>
-                          <h5 className="text-sm font-medium text-muted-foreground mb-3">Compact Hero</h5>
-                          <div className="border rounded-lg overflow-hidden">
-                            <div className="relative bg-gradient-to-r from-primary via-accent to-secondary p-6">
-                              <div className="max-w-4xl mx-auto text-center text-white">
-                                <div className="flex items-center justify-center gap-2 mb-4">
-                                  <div className="p-2 bg-white/10 backdrop-blur-sm rounded-full">
-                                     <Sparkles className="w-6 h-6 text-yellow-300" />
-                                   </div>
-                                   <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs">Featured</Badge>
-                                 </div>
-                                 <h1 className="text-2xl md:text-3xl font-bold mb-3">
-                                   Innovation <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Made Simple</span>
-                                 </h1>
-                                 <p className="text-sm text-white/80 mb-4 max-w-xl mx-auto">Quick access to challenges and opportunities</p>
-                                 <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
-                                   <Button size="sm" className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600">
-                                     Get Started <ArrowRight className="w-4 h-4 ml-1" />
-                                   </Button>
-                                   <Button size="sm" variant="outline" className="border-white/30 text-white hover:bg-white/10">
-                                     <Play className="w-4 h-4 mr-1 text-blue-300" /> Demo
-                                   </Button>
-                                 </div>
+                         {/* Compact Hero */}
+                         <div>
+                           <h5 className="text-sm font-medium text-muted-foreground mb-3">Compact Hero</h5>
+                           <div className="border rounded-lg overflow-hidden">
+                             <div className="relative bg-gradient-to-r from-primary via-accent to-secondary p-6 border-l-4 border-l-accent/50">
+                               <div className="max-w-4xl mx-auto text-center text-white">
+                                 <div className="flex items-center justify-center gap-2 mb-4">
+                                   <div className="p-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+                                      <Sparkles className="w-6 h-6 text-accent" />
+                                    </div>
+                                    <Badge variant="secondary" className="bg-white/20 text-white border-white/50">Featured</Badge>
+                                  </div>
+                                  <h1 className="text-2xl md:text-3xl font-bold mb-3">
+                                    Innovation <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">Made Simple</span>
+                                  </h1>
+                                  <p className="text-sm text-white/80 mb-4 max-w-xl mx-auto">Quick access to challenges and opportunities</p>
+                                  <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
+                                    <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg">
+                                      Get Started <ArrowRight className="w-4 h-4 ml-1" />
+                                    </Button>
+                                    <Button size="sm" variant="outline" className="border-white/50 text-white hover:bg-white/10 hover:border-white/70">
+                                      <Play className="w-4 h-4 mr-1 text-accent" /> Demo
+                                    </Button>
+                                  </div>
                                  <div className="flex justify-center gap-6 text-sm">
                                    <div className="text-center">
                                      <div className="font-bold text-blue-300">5K+</div>
@@ -5761,51 +5761,51 @@ const DesignSystem = () => {
                           </div>
                         </div>
 
-                        {/* Default Hero */}
-                        <div>
-                          <h5 className="text-sm font-medium text-muted-foreground mb-3">Default Hero</h5>
-                          <div className="border rounded-lg overflow-hidden">
-                            <div className="relative bg-gradient-to-r from-primary via-accent to-secondary p-8">
-                              <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                                <div className="text-white">
-                                  <div className="flex items-center gap-3 mb-4">
-                                     <div className="p-3 bg-white/10 backdrop-blur-sm rounded-full">
-                                       <Sparkles className="w-8 h-8 text-yellow-300" />
-                                     </div>
-                                     <Badge variant="secondary" className="bg-white/20 text-white border-white/30">Latest</Badge>
-                                   </div>
-                                   <h1 className="text-3xl lg:text-4xl font-bold mb-4">
-                                     Shape <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">the Future</span>
-                                   </h1>
-                                   <p className="text-lg text-white/80 mb-6">Join innovators solving real-world challenges.</p>
-                                   <div className="grid grid-cols-2 gap-3 mb-6">
-                                     <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
-                                       <div className="flex items-center gap-2">
-                                         <Target className="w-4 h-4 text-blue-400" />
-                                         <div>
-                                           <div className="font-bold">10K+</div>
-                                           <div className="text-xs text-white/70">Challenges</div>
-                                         </div>
-                                       </div>
-                                     </div>
-                                     <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
-                                       <div className="flex items-center gap-2">
-                                         <Award className="w-4 h-4 text-green-400" />
-                                         <div>
-                                           <div className="font-bold">$2M+</div>
-                                           <div className="text-xs text-white/70">Rewards</div>
-                                         </div>
-                                       </div>
-                                     </div>
-                                   </div>
-                                   <div className="flex flex-col sm:flex-row gap-3">
-                                     <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600">
-                                       Start Journey <ArrowRight className="w-4 h-4 ml-2" />
-                                     </Button>
-                                     <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
-                                       <Play className="w-4 h-4 mr-2 text-blue-300" /> Watch Demo
-                                     </Button>
-                                   </div>
+                         {/* Default Hero */}
+                         <div>
+                           <h5 className="text-sm font-medium text-muted-foreground mb-3">Default Hero</h5>
+                           <div className="border rounded-lg overflow-hidden">
+                             <div className="relative bg-gradient-to-r from-primary via-accent to-secondary p-8 border-l-4 border-l-accent/60">
+                               <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                 <div className="text-white">
+                                   <div className="flex items-center gap-3 mb-4">
+                                      <div className="p-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/30">
+                                        <Sparkles className="w-8 h-8 text-accent" />
+                                      </div>
+                                      <Badge variant="secondary" className="bg-white/20 text-white border-white/50">Latest</Badge>
+                                    </div>
+                                    <h1 className="text-3xl lg:text-4xl font-bold mb-4">
+                                      Shape <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">the Future</span>
+                                    </h1>
+                                    <p className="text-lg text-white/80 mb-6">Join innovators solving real-world challenges.</p>
+                                    <div className="grid grid-cols-2 gap-3 mb-6">
+                                      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/30">
+                                        <div className="flex items-center gap-2">
+                                          <Target className="w-4 h-4 text-primary" />
+                                          <div>
+                                            <div className="font-bold">10K+</div>
+                                            <div className="text-xs text-white/70">Challenges</div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/30">
+                                        <div className="flex items-center gap-2">
+                                          <Award className="w-4 h-4 text-accent" />
+                                          <div>
+                                            <div className="font-bold">$2M+</div>
+                                            <div className="text-xs text-white/70">Rewards</div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="flex flex-col sm:flex-row gap-3">
+                                      <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg">
+                                        Start Journey <ArrowRight className="w-4 h-4 ml-2" />
+                                      </Button>
+                                      <Button variant="outline" className="border-white/50 text-white hover:bg-white/10 hover:border-white/70">
+                                        <Play className="w-4 h-4 mr-2 text-accent" /> Watch Demo
+                                      </Button>
+                                    </div>
                                  </div>
                                  <div>
                                    <Card className="overflow-hidden border border-white/20 bg-white/10 backdrop-blur-sm">
@@ -5825,7 +5825,7 @@ const DesignSystem = () => {
                                     <div className="p-3">
                                       <div className="flex items-center justify-between mb-2">
                                         <div className="text-xs text-white/70">1.2k participants</div>
-                                        <Button size="sm" variant="outline" className="border-white/30 text-white text-xs px-2 py-1 h-auto">Join</Button>
+                                        <Button size="sm" variant="outline" className="border-white/50 text-white text-xs px-2 py-1 h-auto hover:bg-white/10 hover:border-white/70">Join</Button>
                                       </div>
                                       <Progress value={68} className="h-1.5 bg-white/20" />
                                     </div>
@@ -5836,62 +5836,62 @@ const DesignSystem = () => {
                           </div>
                         </div>
 
-                        {/* Large Hero */}
-                        <div>
-                          <h5 className="text-sm font-medium text-muted-foreground mb-3">Large/Full Hero</h5>
-                          <div className="border rounded-lg overflow-hidden">
-                             <div className="relative bg-gradient-to-r from-primary via-accent to-secondary p-12">
-                               <div className="absolute inset-0 overflow-hidden">
-                                 <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse" />
-                                 <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-yellow-400/10 rounded-full blur-3xl animate-pulse" />
-                               </div>
-                               <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                                 <div className="text-white">
-                                   <div className="flex items-center gap-4 mb-6">
-                                     <div className="relative">
-                                       <div className="p-4 bg-white/10 backdrop-blur-sm rounded-full ring-4 ring-white/20">
-                                         <Sparkles className="w-12 h-12 animate-pulse text-yellow-300" />
-                                       </div>
-                                       <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full animate-ping" />
-                                     </div>
-                                     <Badge variant="secondary" className="bg-white/20 text-white border-white/30">🎯 Latest</Badge>
-                                   </div>
-                                   <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Shape</span> the Future
-                                   </h1>
-                                   <p className="text-xl text-white/80 mb-8">Join thousands of innovators solving real challenges.</p>
-                                   <div className="grid grid-cols-2 gap-4 mb-8">
-                                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:scale-105 transition-transform cursor-pointer">
-                                       <div className="flex items-center gap-3">
-                                         <div className="p-2 bg-blue-500/30 rounded-lg">
-                                           <Target className="w-5 h-5 text-blue-400" />
-                                         </div>
-                                         <div>
-                                           <div className="text-2xl font-bold">10K+</div>
-                                           <div className="text-xs text-white/70">Challenges</div>
-                                         </div>
-                                       </div>
-                                     </div>
-                                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:scale-105 transition-transform cursor-pointer">
-                                       <div className="flex items-center gap-3">
-                                         <div className="p-2 bg-green-500/30 rounded-lg">
-                                           <Award className="w-5 h-5 text-green-400" />
-                                         </div>
-                                         <div>
-                                           <div className="text-2xl font-bold">$2M+</div>
-                                           <div className="text-xs text-white/70">Rewards</div>
-                                         </div>
-                                       </div>
-                                     </div>
-                                   </div>
-                                   <div className="flex flex-col sm:flex-row gap-4">
-                                     <Button size="lg" className="px-8 bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 hover:scale-105 transition-all">
-                                       Start Journey <ArrowRight className="w-4 h-4 ml-2" />
-                                     </Button>
-                                     <Button size="lg" variant="outline" className="px-8 border-white/30 text-white hover:bg-white/10">
-                                       <Play className="w-4 h-4 mr-2 text-blue-300" /> Watch Demo
-                                     </Button>
-                                   </div>
+                         {/* Large Hero */}
+                         <div>
+                           <h5 className="text-sm font-medium text-muted-foreground mb-3">Large/Full Hero</h5>
+                           <div className="border rounded-lg overflow-hidden">
+                              <div className="relative bg-gradient-to-r from-primary via-accent to-secondary p-12 border-l-8 border-l-accent/70">
+                                <div className="absolute inset-0 overflow-hidden">
+                                  <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse" />
+                                  <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse" />
+                                </div>
+                                <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                                  <div className="text-white">
+                                    <div className="flex items-center gap-4 mb-6">
+                                      <div className="relative">
+                                        <div className="p-4 bg-white/10 backdrop-blur-sm rounded-full ring-4 ring-white/30 border border-white/20">
+                                          <Sparkles className="w-12 h-12 animate-pulse text-accent" />
+                                        </div>
+                                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-accent rounded-full animate-ping" />
+                                      </div>
+                                      <Badge variant="secondary" className="bg-white/20 text-white border-white/50">🎯 Latest</Badge>
+                                    </div>
+                                    <h1 className="text-5xl lg:text-6xl font-bold mb-6">
+                                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">Shape</span> the Future
+                                    </h1>
+                                    <p className="text-xl text-white/80 mb-8">Join thousands of innovators solving real challenges.</p>
+                                    <div className="grid grid-cols-2 gap-4 mb-8">
+                                      <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/30 hover:scale-105 transition-transform cursor-pointer">
+                                        <div className="flex items-center gap-3">
+                                          <div className="p-2 bg-primary/30 rounded-lg border border-white/20">
+                                            <Target className="w-5 h-5 text-primary" />
+                                          </div>
+                                          <div>
+                                            <div className="text-2xl font-bold">10K+</div>
+                                            <div className="text-xs text-white/70">Challenges</div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/30 hover:scale-105 transition-transform cursor-pointer">
+                                        <div className="flex items-center gap-3">
+                                          <div className="p-2 bg-accent/30 rounded-lg border border-white/20">
+                                            <Award className="w-5 h-5 text-accent" />
+                                          </div>
+                                          <div>
+                                            <div className="text-2xl font-bold">$2M+</div>
+                                            <div className="text-xs text-white/70">Rewards</div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="flex flex-col sm:flex-row gap-4">
+                                      <Button size="lg" className="px-8 bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105 transition-all shadow-lg">
+                                        Start Journey <ArrowRight className="w-4 h-4 ml-2" />
+                                      </Button>
+                                      <Button size="lg" variant="outline" className="px-8 border-white/50 text-white hover:bg-white/10 hover:border-white/70">
+                                        <Play className="w-4 h-4 mr-2 text-accent" /> Watch Demo
+                                      </Button>
+                                    </div>
                                  </div>
                                  <div className="space-y-6">
                                    <Card className="overflow-hidden border border-white/20 bg-white/10 backdrop-blur-sm hover:scale-105 transition-transform">
@@ -5911,9 +5911,9 @@ const DesignSystem = () => {
                                      <div className="p-4">
                                        <div className="flex items-center justify-between mb-3">
                                          <div className="text-sm text-white/70">1.2k participants • Global</div>
-                                         <Button size="sm" variant="outline" className="border-white/30 text-white">
-                                           <ExternalLink className="h-4 w-4 mr-1" /> Join
-                                         </Button>
+                                          <Button size="sm" variant="outline" className="border-white/50 text-white hover:bg-white/10 hover:border-white/70">
+                                            <ExternalLink className="h-4 w-4 mr-1" /> Join
+                                          </Button>
                                        </div>
                                        <Progress value={68} className="h-2 bg-white/20" />
                                      </div>
