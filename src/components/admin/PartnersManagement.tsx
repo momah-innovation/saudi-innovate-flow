@@ -207,21 +207,21 @@ export function PartnersManagement() {
 
   const getPartnerTypeColor = (type: string) => {
     const colors: Record<string, string> = {
-      academic: "bg-blue-100 text-blue-800",
-      corporate: "bg-green-100 text-green-800",
-      government: "bg-purple-100 text-purple-800",
-      ngo: "bg-orange-100 text-orange-800"
+      academic: "badge-info",
+      corporate: "badge-success",
+      government: "badge-innovation",
+      ngo: "badge-warning"
     };
-    return colors[type] || "bg-gray-100 text-gray-800";
+    return colors[type] || "bg-muted text-muted-foreground";
   };
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      active: "bg-green-100 text-green-800",
-      inactive: "bg-red-100 text-red-800",
-      pending: "bg-yellow-100 text-yellow-800"
+      active: "badge-success",
+      inactive: "badge-error",
+      pending: "badge-warning"
     };
-    return colors[status] || "bg-gray-100 text-gray-800";
+    return colors[status] || "bg-muted text-muted-foreground";
   };
 
   if (isLoading) {

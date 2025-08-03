@@ -56,10 +56,10 @@ export function AdminEvaluationsHero({
       <Card className="hover-scale">
         <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('pending_reviews')}</CardTitle>
-          <Clock className="h-4 w-4 text-orange-500" />
+          <Clock className="h-4 w-4 icon-warning" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-orange-600">{pendingEvaluations}</div>
+          <div className="text-2xl font-bold text-warning">{pendingEvaluations}</div>
           <p className="text-xs text-muted-foreground">
             {t('awaiting_expert_review')}
           </p>
@@ -70,10 +70,10 @@ export function AdminEvaluationsHero({
       <Card className="hover-scale">
         <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('average_score')}</CardTitle>
-          <Star className="h-4 w-4 text-yellow-500" />
+          <Star className="h-4 w-4 icon-warning" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-green-600">{averageScore}/10</div>
+          <div className="text-2xl font-bold text-success">{averageScore}/10</div>
           <p className="text-xs text-muted-foreground">
             {t('quality_benchmark')}
           </p>
@@ -84,10 +84,10 @@ export function AdminEvaluationsHero({
       <Card className="hover-scale">
         <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('active_evaluators')}</CardTitle>
-          <Users className="h-4 w-4 text-blue-500" />
+          <Users className="h-4 w-4 icon-info" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-blue-600">{activeEvaluators}</div>
+          <div className="text-2xl font-bold text-primary">{activeEvaluators}</div>
           <p className="text-xs text-muted-foreground">
             {t('expert_reviewers')}
           </p>
@@ -105,14 +105,14 @@ export function AdminEvaluationsHero({
         <CardContent>
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center">
-              <div className="text-xl font-bold text-green-600">{completedEvaluations}</div>
+              <div className="text-xl font-bold text-success">{completedEvaluations}</div>
               <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                 <CheckCircle className="h-3 w-3" />
                 {t('completed')}
               </div>
             </div>
             <div className="text-center">
-              <div className="text-xl font-bold text-purple-600">{topPerformingIdeas}</div>
+              <div className="text-xl font-bold text-innovation">{topPerformingIdeas}</div>
               <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                 <Star className="h-3 w-3" />
                 {t('top_rated_8_plus')}
@@ -126,21 +126,21 @@ export function AdminEvaluationsHero({
       <Card className="md:col-span-2 lg:col-span-2">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Timer className="h-5 w-5 text-orange-500" />
+            <Timer className="h-5 w-5 icon-warning" />
             {t('review_status')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center">
-              <div className="text-xl font-bold text-red-600">{criticalReviews}</div>
+              <div className="text-xl font-bold text-destructive">{criticalReviews}</div>
               <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                 <AlertCircle className="h-3 w-3" />
                 {t('critical_issues')}
               </div>
             </div>
             <div className="text-center">
-              <div className="text-xl font-bold text-blue-600">{evaluationRate}%</div>
+              <div className="text-xl font-bold text-primary">{evaluationRate}%</div>
               <div className="text-sm text-muted-foreground">
                 {t('completion_rate')}
               </div>

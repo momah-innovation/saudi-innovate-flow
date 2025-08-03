@@ -162,10 +162,10 @@ export function EvaluationsManagement({
   };
 
   const getScoreColor = (score: number | null) => {
-    if (score === null || score === undefined) return "bg-gray-100 text-gray-600";
-    if (score >= 8) return "bg-green-100 text-green-700";
-    if (score >= 6) return "bg-yellow-100 text-yellow-700";
-    return "bg-red-100 text-red-700";
+    if (score === null || score === undefined) return "bg-muted text-muted-foreground";
+    if (score >= 8) return "score-excellent";
+    if (score >= 6) return "score-good";
+    return "score-poor";
   };
 
   const currentSearchTerm = externalSearchTerm || searchTerm;
@@ -308,19 +308,19 @@ export function EvaluationsManagement({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="font-semibold mb-2">Strengths</h3>
-                  <p className="text-sm bg-green-50 p-3 rounded border">{selectedEvaluation.strengths || "No strengths provided"}</p>
+                  <p className="text-sm status-success p-3 rounded border">{selectedEvaluation.strengths || "No strengths provided"}</p>
                 </div>
                 <div>
                   <h3 className="font-semibold mb-2">Weaknesses</h3>
-                  <p className="text-sm bg-red-50 p-3 rounded border">{selectedEvaluation.weaknesses || "No weaknesses provided"}</p>
+                  <p className="text-sm status-error p-3 rounded border">{selectedEvaluation.weaknesses || "No weaknesses provided"}</p>
                 </div>
                 <div>
                   <h3 className="font-semibold mb-2">Recommendations</h3>
-                  <p className="text-sm bg-blue-50 p-3 rounded border">{selectedEvaluation.recommendations || "No recommendations provided"}</p>
+                  <p className="text-sm status-info p-3 rounded border">{selectedEvaluation.recommendations || "No recommendations provided"}</p>
                 </div>
                 <div>
                   <h3 className="font-semibold mb-2">Next Steps</h3>
-                  <p className="text-sm bg-yellow-50 p-3 rounded border">{selectedEvaluation.next_steps || "No next steps provided"}</p>
+                  <p className="text-sm status-warning p-3 rounded border">{selectedEvaluation.next_steps || "No next steps provided"}</p>
                 </div>
               </div>
             </div>

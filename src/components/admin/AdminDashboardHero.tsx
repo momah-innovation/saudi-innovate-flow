@@ -65,7 +65,7 @@ export function AdminDashboardHero({
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-2 mb-2">
-            <CheckCircle className="h-5 w-5 text-green-500" />
+            <CheckCircle className="h-5 w-5 icon-success" />
             <div className="text-xl font-bold">{systemHealth}</div>
           </div>
           <p className="text-xs text-muted-foreground">
@@ -103,9 +103,9 @@ export function AdminDashboardHero({
         <CardContent>
           <div className="flex items-center gap-2 mb-2">
             {securityAlerts > 0 ? (
-              <AlertTriangle className="h-5 w-5 text-orange-500" />
+              <AlertTriangle className="h-5 w-5 icon-warning" />
             ) : (
-              <CheckCircle className="h-5 w-5 text-green-500" />
+              <CheckCircle className="h-5 w-5 icon-success" />
             )}
             <div className="text-xl font-bold">
               {securityAlerts > 0 ? t('alerts_count', { count: securityAlerts }) : t('secure')}
