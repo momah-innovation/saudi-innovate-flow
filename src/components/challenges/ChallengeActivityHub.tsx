@@ -24,7 +24,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
-import { getActivityTypeMapping } from '@/config/challengesPageConfig';
+import { getActivityTypeMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 
 interface Challenge {
   id: string;
@@ -315,13 +315,13 @@ export const ChallengeActivityHub = ({
               </div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-purple-600">{submissions.length}</div>
+              <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.purple}`}>{submissions.length}</div>
               <div className="text-xs text-muted-foreground">
                 {isRTL ? 'مشروع' : 'Submissions'}
               </div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-orange-600">{activities.length}</div>
+              <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.orange}`}>{activities.length}</div>
               <div className="text-xs text-muted-foreground">
                 {isRTL ? 'نشاط' : 'Activities'}
               </div>

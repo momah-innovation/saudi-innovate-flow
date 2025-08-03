@@ -212,7 +212,7 @@ export const ChallengeCard = ({
 
                   <div className="flex items-center gap-1">
                     <IconActionButton
-                      icon={<Heart className={cn("w-4 h-4", isLiked && "fill-current text-red-500")} />}
+                      icon={<Heart className={cn("w-4 h-4", isLiked && `fill-current ${challengesPageConfig.ui.colors.stats.red}`)} />}
                       tooltip={isRTL ? 'أعجبني' : 'Like'}
                       onClick={handleLike}
                     />
@@ -303,7 +303,7 @@ export const ChallengeCard = ({
         {/* Quick Actions */}
         <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <IconActionButton
-            icon={<Heart className={cn("w-4 h-4", isLiked && "fill-current text-red-500")} />}
+            icon={<Heart className={cn("w-4 h-4", isLiked && `fill-current ${challengesPageConfig.ui.colors.stats.red}`)} />}
             tooltip={isRTL ? 'أعجبني' : 'Like'}
             onClick={handleLike}
             className={`${challengesPageConfig.ui.glassMorphism.medium} hover:bg-white`}
@@ -325,7 +325,7 @@ export const ChallengeCard = ({
         {/* Urgency Indicator */}
         {isUrgent && (
           <div className="absolute bottom-3 left-3">
-            <Badge className="bg-red-500 text-white animate-pulse">
+            <Badge className={`${challengesPageConfig.badges.urgent} animate-pulse`}>
               <AlertCircle className="w-3 h-3 mr-1" />
               {daysLeft} {isRTL ? 'أيام' : 'days'}
             </Badge>

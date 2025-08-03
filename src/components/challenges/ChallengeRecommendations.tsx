@@ -147,9 +147,9 @@ export const ChallengeRecommendations = ({
     const mapping = getPriorityMapping(priority);
     const IconComponent = mapping.value === 'عالي' || mapping.value === 'High' ? Zap : 
                         mapping.value === 'متوسط' || mapping.value === 'Medium' ? Target : Star;
-    const colorClass = mapping.value === 'عالي' || mapping.value === 'High' ? 'text-red-500' :
-                      mapping.value === 'متوسط' || mapping.value === 'Medium' ? 'text-yellow-500' :
-                      'text-green-500';
+    const colorClass = mapping.value === 'عالي' || mapping.value === 'High' ? challengesPageConfig.ui.colors.stats.red :
+                      mapping.value === 'متوسط' || mapping.value === 'Medium' ? challengesPageConfig.ui.colors.stats.yellow :
+                      challengesPageConfig.ui.colors.stats.green;
     return <IconComponent className={`w-4 h-4 ${colorClass}`} />;
   };
 
@@ -176,12 +176,12 @@ export const ChallengeRecommendations = ({
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Trending Challenges */}
-      <Card className={`border-orange-200 ${challengesPageConfig.ui.gradients.warning}`}>
+      <Card className={`border-primary/20 ${challengesPageConfig.ui.gradients.warning}`}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-orange-800">
-            <TrendingUp className="w-5 h-5 text-orange-600" />
+          <CardTitle className={`flex items-center gap-2 ${challengesPageConfig.ui.colors.stats.orange}`}>
+            <TrendingUp className={`w-5 h-5 ${challengesPageConfig.ui.colors.stats.orange}`} />
             {isRTL ? 'التحديات الرائجة' : 'Trending Challenges'}
-            <Badge variant="secondary" className="ml-auto bg-orange-200 text-orange-800">
+            <Badge variant="secondary" className={`ml-auto ${challengesPageConfig.ui.colors.background.secondary} ${challengesPageConfig.ui.colors.stats.orange}`}>
               {recommendations.length}
             </Badge>
           </CardTitle>
@@ -189,8 +189,8 @@ export const ChallengeRecommendations = ({
         <CardContent>
           {recommendations.length === 0 ? (
             <div className="text-center py-8">
-              <TrendingUp className="w-12 h-12 mx-auto text-orange-300 mb-4" />
-              <p className="text-orange-700 text-sm">
+              <TrendingUp className={`w-12 h-12 mx-auto ${challengesPageConfig.ui.colors.stats.orange} mb-4`} />
+              <p className={`${challengesPageConfig.ui.colors.stats.orange} text-sm`}>
                 {isRTL ? 'لا توجد تحديات رائجة حالياً' : 'No trending challenges right now'}
               </p>
             </div>
@@ -199,7 +199,7 @@ export const ChallengeRecommendations = ({
               {recommendations.map((challenge) => (
                 <div 
                   key={challenge.id}
-                  className={`flex items-center gap-3 p-3 rounded-lg ${challengesPageConfig.ui.glassMorphism.card} ${challengesPageConfig.ui.effects.interactive} group border border-orange-200/50`}
+                  className={`flex items-center gap-3 p-3 rounded-lg ${challengesPageConfig.ui.glassMorphism.card} ${challengesPageConfig.ui.effects.interactive} group border border-primary/20`}
                   onClick={() => onChallengeSelect(challenge)}
                 >
                   <div className="flex-shrink-0">
@@ -209,10 +209,10 @@ export const ChallengeRecommendations = ({
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-semibold line-clamp-1 group-hover:text-orange-700 transition-colors">
+                    <h4 className={`text-sm font-semibold line-clamp-1 group-hover:${challengesPageConfig.ui.colors.stats.orange} transition-colors`}>
                       {challenge.title_ar}
                     </h4>
-                    <div className="flex items-center gap-3 mt-1 text-xs text-gray-600">
+                    <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <Users className="w-3 h-3" />
                         <span>{challenge.participants}</span>
@@ -228,7 +228,7 @@ export const ChallengeRecommendations = ({
                     </div>
                   </div>
 
-                  <ChevronRight className="w-4 h-4 text-orange-400 group-hover:text-orange-600 transition-colors" />
+                  <ChevronRight className={`w-4 h-4 ${challengesPageConfig.ui.colors.stats.orange} group-hover:text-primary transition-colors`} />
                 </div>
               ))}
             </div>
@@ -238,12 +238,12 @@ export const ChallengeRecommendations = ({
 
       {/* Personalized Recommendations */}
       {user && personalizedChallenges.length > 0 && (
-        <Card className={`border-purple-200 ${challengesPageConfig.ui.gradients.featured}`}>
+        <Card className={`border-primary/20 ${challengesPageConfig.ui.gradients.featured}`}>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-purple-800">
-              <Sparkles className="w-5 h-5 text-purple-600" />
+            <CardTitle className={`flex items-center gap-2 ${challengesPageConfig.ui.colors.stats.purple}`}>
+              <Sparkles className={`w-5 h-5 ${challengesPageConfig.ui.colors.stats.purple}`} />
               {isRTL ? 'مقترحة لك' : 'Recommended for You'}
-              <Badge variant="secondary" className="ml-auto bg-purple-200 text-purple-800">
+              <Badge variant="secondary" className={`ml-auto ${challengesPageConfig.ui.colors.background.secondary} ${challengesPageConfig.ui.colors.stats.purple}`}>
                 {personalizedChallenges.length}
               </Badge>
             </CardTitle>
@@ -253,7 +253,7 @@ export const ChallengeRecommendations = ({
               {personalizedChallenges.map((challenge) => (
                 <div 
                   key={challenge.id}
-                  className={`flex items-center gap-3 p-3 rounded-lg ${challengesPageConfig.ui.glassMorphism.card} ${challengesPageConfig.ui.effects.interactive} group border border-purple-200/50`}
+                  className={`flex items-center gap-3 p-3 rounded-lg ${challengesPageConfig.ui.glassMorphism.card} ${challengesPageConfig.ui.effects.interactive} group border border-primary/20`}
                   onClick={() => onChallengeSelect(challenge)}
                 >
                   <div className="flex-shrink-0">
@@ -263,23 +263,23 @@ export const ChallengeRecommendations = ({
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-semibold line-clamp-1 group-hover:text-purple-700 transition-colors">
+                    <h4 className={`text-sm font-semibold line-clamp-1 group-hover:${challengesPageConfig.ui.colors.stats.purple} transition-colors`}>
                       {challenge.title_ar}
                     </h4>
-                    <p className="text-xs text-gray-600 line-clamp-1 mt-1">
+                    <p className="text-xs text-muted-foreground line-clamp-1 mt-1">
                       {challenge.description_ar}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
                       <Badge variant="outline" className="text-xs">
                         {challenge.challenge_type}
                       </Badge>
-                      <div className="text-xs text-purple-600 font-medium">
+                      <div className={`text-xs ${challengesPageConfig.ui.colors.stats.purple} font-medium`}>
                         {isRTL ? 'مطابق لاهتماماتك' : 'Matches your interests'}
                       </div>
                     </div>
                   </div>
 
-                  <ChevronRight className={`w-4 h-4 ${challengesPageConfig.ui.colors.stats.purple} group-hover:text-purple-600 transition-colors`} />
+                  <ChevronRight className={`w-4 h-4 ${challengesPageConfig.ui.colors.stats.purple} group-hover:text-primary transition-colors`} />
                 </div>
               ))}
             </div>
@@ -288,23 +288,23 @@ export const ChallengeRecommendations = ({
       )}
 
       {/* Quick Actions */}
-      <Card className={`border-blue-200 ${challengesPageConfig.ui.gradients.info}`}>
+      <Card className={`border-primary/20 ${challengesPageConfig.ui.gradients.info}`}>
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
+              <div className={`w-8 h-8 rounded-full ${challengesPageConfig.ui.colors.background.primary} flex items-center justify-center`}>
                 <BookmarkIcon className="w-4 h-4 text-white" />
               </div>
               <div>
-                <div className="text-sm font-medium text-blue-800">
+                <div className={`text-sm font-medium ${challengesPageConfig.ui.colors.stats.blue}`}>
                   {isRTL ? 'التحديات المحفوظة' : 'Saved Challenges'}
                 </div>
-                <div className="text-xs text-blue-600">
+                <div className={`text-xs ${challengesPageConfig.ui.colors.stats.blue}`}>
                   {isRTL ? 'اعرض قائمة المفضلة' : 'View your bookmarks'}
                 </div>
               </div>
             </div>
-            <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-700">
+            <Button variant="ghost" size="sm" className={`${challengesPageConfig.ui.colors.stats.blue} hover:text-primary`}>
               <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
