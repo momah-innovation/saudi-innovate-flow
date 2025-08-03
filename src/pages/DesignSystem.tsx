@@ -5735,12 +5735,12 @@ const DesignSystem = () => {
                                  </h1>
                                  <p className="text-sm text-white/80 mb-4 max-w-xl mx-auto">Quick access to challenges and opportunities</p>
                                  <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
-                                   <Button size="sm" className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600">
-                                     Get Started <ArrowRight className="w-4 h-4 ml-1" />
-                                   </Button>
-                                   <Button size="sm" variant="outline" className="border-white/30 text-white hover:bg-white/10">
-                                     <Play className="w-4 h-4 mr-1 text-blue-300" /> Demo
-                                   </Button>
+                                    <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground border border-primary/20">
+                                      Get Started <ArrowRight className="w-4 h-4 ml-1" />
+                                    </Button>
+                                    <Button size="sm" variant="outline" className="border-white/50 text-white hover:bg-white/20 hover:border-white/70">
+                                      <Play className="w-4 h-4 mr-1 text-accent" /> Demo
+                                    </Button>
                                  </div>
                                  <div className="flex justify-center gap-6 text-sm">
                                    <div className="text-center">
@@ -5779,18 +5779,18 @@ const DesignSystem = () => {
                                    </h1>
                                    <p className="text-lg text-white/80 mb-6">Join innovators solving real-world challenges.</p>
                                    <div className="grid grid-cols-2 gap-3 mb-6">
-                                     <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                                     <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/30">
                                        <div className="flex items-center gap-2">
-                                         <Target className="w-4 h-4 text-blue-400" />
+                                         <Target className="w-4 h-4 text-accent" />
                                          <div>
                                            <div className="font-bold">10K+</div>
                                            <div className="text-xs text-white/70">Challenges</div>
                                          </div>
                                        </div>
                                      </div>
-                                     <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                                     <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/30">
                                        <div className="flex items-center gap-2">
-                                         <Award className="w-4 h-4 text-green-400" />
+                                         <Award className="w-4 h-4 text-primary" />
                                          <div>
                                            <div className="font-bold">$2M+</div>
                                            <div className="text-xs text-white/70">Rewards</div>
@@ -5799,36 +5799,36 @@ const DesignSystem = () => {
                                      </div>
                                    </div>
                                    <div className="flex flex-col sm:flex-row gap-3">
-                                     <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600">
+                                     <Button className="bg-primary hover:bg-primary/90 text-primary-foreground border border-primary/20">
                                        Start Journey <ArrowRight className="w-4 h-4 ml-2" />
                                      </Button>
-                                     <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
-                                       <Play className="w-4 h-4 mr-2 text-blue-300" /> Watch Demo
+                                     <Button variant="outline" className="border-white/50 text-white hover:bg-white/20 hover:border-white/70">
+                                       <Play className="w-4 h-4 mr-2 text-accent" /> Watch Demo
                                      </Button>
                                    </div>
                                  </div>
                                  <div>
-                                   <Card className="overflow-hidden border border-white/20 bg-white/10 backdrop-blur-sm">
+                                   <Card className="overflow-hidden border border-white/30 bg-white/10 backdrop-blur-sm">
                                      <div className="aspect-video bg-gradient-to-br from-orange-500/80 to-red-600/80 relative">
                                        <div className="absolute bottom-3 left-3 text-white">
                                          <div className="flex items-center gap-1 text-xs mb-1">
-                                           <Calendar className="h-3 w-3 text-purple-300" />
-                                          <span>Ends March 30</span>
-                                        </div>
-                                        <h3 className="font-semibold text-sm">AI for Climate</h3>
-                                        <p className="text-xs opacity-90">$50K prize</p>
-                                      </div>
-                                      <div className="absolute top-3 right-3">
-                                        <Badge className="bg-red-500/20 text-white text-xs">🔥 Hot</Badge>
-                                      </div>
-                                    </div>
-                                    <div className="p-3">
-                                      <div className="flex items-center justify-between mb-2">
-                                        <div className="text-xs text-white/70">1.2k participants</div>
-                                        <Button size="sm" variant="outline" className="border-white/30 text-white text-xs px-2 py-1 h-auto">Join</Button>
-                                      </div>
-                                      <Progress value={68} className="h-1.5 bg-white/20" />
-                                    </div>
+                                           <Calendar className="h-3 w-3 text-accent" />
+                                           <span>Ends March 30</span>
+                                         </div>
+                                         <h3 className="font-semibold text-sm">AI for Climate</h3>
+                                         <p className="text-xs opacity-90">$50K prize</p>
+                                       </div>
+                                       <div className="absolute top-3 right-3">
+                                         <Badge className="bg-red-500/20 text-white text-xs border border-red-300/30">🔥 Hot</Badge>
+                                       </div>
+                                     </div>
+                                     <div className="p-3">
+                                       <div className="flex items-center justify-between mb-2">
+                                         <div className="text-xs text-white/70">1.2k participants</div>
+                                         <Button size="sm" variant="outline" className="border-white/50 text-white text-xs px-2 py-1 h-auto hover:bg-white/20">Join</Button>
+                                       </div>
+                                       <Progress value={68} className="h-1.5 bg-white/20" />
+                                     </div>
                                   </Card>
                                 </div>
                               </div>
@@ -5861,10 +5861,10 @@ const DesignSystem = () => {
                                    </h1>
                                    <p className="text-xl text-white/80 mb-8">Join thousands of innovators solving real challenges.</p>
                                    <div className="grid grid-cols-2 gap-4 mb-8">
-                                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:scale-105 transition-transform cursor-pointer">
+                                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/30 hover:scale-105 transition-transform cursor-pointer">
                                        <div className="flex items-center gap-3">
-                                         <div className="p-2 bg-blue-500/30 rounded-lg">
-                                           <Target className="w-5 h-5 text-blue-400" />
+                                         <div className="p-2 bg-accent/30 rounded-lg">
+                                           <Target className="w-5 h-5 text-accent" />
                                          </div>
                                          <div>
                                            <div className="text-2xl font-bold">10K+</div>
@@ -5872,10 +5872,10 @@ const DesignSystem = () => {
                                          </div>
                                        </div>
                                      </div>
-                                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:scale-105 transition-transform cursor-pointer">
+                                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/30 hover:scale-105 transition-transform cursor-pointer">
                                        <div className="flex items-center gap-3">
-                                         <div className="p-2 bg-green-500/30 rounded-lg">
-                                           <Award className="w-5 h-5 text-green-400" />
+                                         <div className="p-2 bg-primary/30 rounded-lg">
+                                           <Award className="w-5 h-5 text-primary" />
                                          </div>
                                          <div>
                                            <div className="text-2xl font-bold">$2M+</div>
@@ -5885,33 +5885,33 @@ const DesignSystem = () => {
                                      </div>
                                    </div>
                                    <div className="flex flex-col sm:flex-row gap-4">
-                                     <Button size="lg" className="px-8 bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 hover:scale-105 transition-all">
+                                     <Button size="lg" className="px-8 bg-primary hover:bg-primary/90 text-primary-foreground border border-primary/20 hover:scale-105 transition-all">
                                        Start Journey <ArrowRight className="w-4 h-4 ml-2" />
                                      </Button>
-                                     <Button size="lg" variant="outline" className="px-8 border-white/30 text-white hover:bg-white/10">
-                                       <Play className="w-4 h-4 mr-2 text-blue-300" /> Watch Demo
+                                     <Button size="lg" variant="outline" className="px-8 border-white/50 text-white hover:bg-white/20 hover:border-white/70">
+                                       <Play className="w-4 h-4 mr-2 text-accent" /> Watch Demo
                                      </Button>
                                    </div>
                                  </div>
                                  <div className="space-y-6">
-                                   <Card className="overflow-hidden border border-white/20 bg-white/10 backdrop-blur-sm hover:scale-105 transition-transform">
+                                   <Card className="overflow-hidden border border-white/30 bg-white/10 backdrop-blur-sm hover:scale-105 transition-transform">
                                      <div className="aspect-video bg-gradient-to-br from-orange-500/80 to-red-600/80 relative">
                                        <div className="absolute bottom-4 left-4 text-white">
                                          <div className="flex items-center gap-2 text-sm mb-2">
-                                           <Calendar className="h-4 w-4 text-purple-300" />
+                                           <Calendar className="h-4 w-4 text-accent" />
                                            <span>Ends March 30, 2024</span>
                                          </div>
                                          <h3 className="font-semibold text-lg mb-1">AI for Climate Action</h3>
                                          <p className="text-sm opacity-90">$50K prize • Global impact</p>
                                        </div>
                                        <div className="absolute top-4 right-4">
-                                         <Badge className="bg-red-500/20 text-white border-red-300/30">🔥 Trending</Badge>
+                                         <Badge className="bg-red-500/20 text-white border border-red-300/30">🔥 Trending</Badge>
                                        </div>
                                      </div>
                                      <div className="p-4">
                                        <div className="flex items-center justify-between mb-3">
                                          <div className="text-sm text-white/70">1.2k participants • Global</div>
-                                         <Button size="sm" variant="outline" className="border-white/30 text-white">
+                                         <Button size="sm" variant="outline" className="border-white/50 text-white hover:bg-white/20">
                                            <ExternalLink className="h-4 w-4 mr-1" /> Join
                                          </Button>
                                        </div>
@@ -5919,10 +5919,10 @@ const DesignSystem = () => {
                                      </div>
                                    </Card>
                                    <div className="grid grid-cols-2 gap-4">
-                                     <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/20 bg-white/10 backdrop-blur-sm">
+                                     <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/30 bg-white/10 backdrop-blur-sm">
                                        <div className="flex items-center gap-3">
-                                         <div className="w-8 h-8 rounded-lg bg-blue-500/30 flex items-center justify-center">
-                                           <Zap className="h-4 w-4 text-yellow-400" />
+                                         <div className="w-8 h-8 rounded-lg bg-accent/30 flex items-center justify-center">
+                                           <Zap className="h-4 w-4 text-accent" />
                                          </div>
                                          <div>
                                            <p className="font-medium text-sm text-white">Trending</p>
@@ -5930,10 +5930,10 @@ const DesignSystem = () => {
                                          </div>
                                        </div>
                                      </Card>
-                                     <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/20 bg-white/10 backdrop-blur-sm">
+                                     <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/30 bg-white/10 backdrop-blur-sm">
                                        <div className="flex items-center gap-3">
-                                         <div className="w-8 h-8 rounded-lg bg-green-500/30 flex items-center justify-center">
-                                           <Award className="h-4 w-4 text-purple-400" />
+                                         <div className="w-8 h-8 rounded-lg bg-primary/30 flex items-center justify-center">
+                                           <Award className="h-4 w-4 text-primary" />
                                          </div>
                                          <div>
                                            <p className="font-medium text-sm text-white">Leaderboard</p>
