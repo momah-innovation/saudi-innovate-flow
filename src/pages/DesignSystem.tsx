@@ -5612,12 +5612,11 @@ const DesignSystem = () => {
                   </div>
                 </ComponentShowcase>
                 <ComponentShowcase title="Landing Page, Splash & Auth Patterns">
-                  <div className="space-y-8">
-                    {/* Landing Page Patterns */}
-                    <div>
-                      <h4 className="font-medium mb-4">Hero Section Size Variants</h4>
-                      <div className="space-y-6">
-                        
+                  <HeroPatterns />
+                </ComponentShowcase>
+
+                {/* Splash Screen Patterns */}
+                <ComponentShowcase title="Splash Screen Patterns">
                         {/* Theme Selector for Heroes */}
                         <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/50">
                           <span className="text-sm font-medium">Hero Theme:</span>
