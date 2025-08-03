@@ -23,14 +23,12 @@ import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { useTheme } from '@/components/ui/theme-provider';
 import { ThemeSelector } from '@/components/ui/theme-selector';
-import { useThemeSystem } from '@/contexts/ThemeContext';
 import { cn } from '@/lib/utils';
 
 const DesignSystem = () => {
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const { toast } = useToast();
   const { theme, setTheme } = useTheme();
-  const { currentTheme } = useThemeSystem();
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
