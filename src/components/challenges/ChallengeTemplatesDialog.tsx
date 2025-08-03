@@ -26,7 +26,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import { getCategoryMapping, getDifficultyMapping, getFilterOptions } from '@/config/challengesPageConfig';
+import { getCategoryMapping, getDifficultyMapping, getFilterOptions, challengesPageConfig } from '@/config/challengesPageConfig';
 
 interface ChallengeTemplate {
   id: string;
@@ -276,7 +276,7 @@ export const ChallengeTemplatesDialog = ({
               {isRTL ? template.name_ar : template.name_en}
             </CardTitle>
             {template.is_featured && (
-              <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+              <Badge variant="secondary" className={challengesPageConfig.badges.featured}>
                 <Star className="w-3 h-3 mr-1" />
                 {isRTL ? 'مميز' : 'Featured'}
               </Badge>

@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
-import { getStatusMapping, getPriorityMapping, getDifficultyMapping } from '@/config/challengesPageConfig';
+import { getStatusMapping, getPriorityMapping, getDifficultyMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 
 interface Challenge {
   id: string;
@@ -161,14 +161,14 @@ export const ChallengeCard = ({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2">
                     <h3 className="font-semibold text-lg truncate">{title}</h3>
-                    {isNew && (
-                      <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-800">
-                        {isRTL ? 'جديد' : 'New'}
+                     {isNew && (
+                       <Badge variant="secondary" className={challengesPageConfig.badges.new}>
+                         {isRTL ? 'جديد' : 'New'}
                       </Badge>
                     )}
-                    {isUrgent && (
-                      <Badge variant="secondary" className="text-xs bg-red-100 text-red-800">
-                        <AlertCircle className="w-3 h-3 mr-1" />
+                     {isUrgent && (
+                       <Badge variant="secondary" className={challengesPageConfig.badges.urgent}>
+                         <AlertCircle className="w-3 h-3 mr-1" />
                         {isRTL ? 'عاجل' : 'Urgent'}
                       </Badge>
                     )}
@@ -287,13 +287,13 @@ export const ChallengeCard = ({
             {getStatusText(challenge.status)}
           </Badge>
           {challenge.trending && (
-            <Badge className="bg-orange-100 text-orange-800">
+            <Badge className={challengesPageConfig.badges.trending}>
               <TrendingUp className="w-3 h-3 mr-1" />
               {isRTL ? 'رائج' : 'Trending'}
             </Badge>
           )}
           {isNew && (
-            <Badge className="bg-blue-100 text-blue-800">
+            <Badge className={challengesPageConfig.badges.new}>
               <Star className="w-3 h-3 mr-1" />
               {isRTL ? 'جديد' : 'New'}
             </Badge>

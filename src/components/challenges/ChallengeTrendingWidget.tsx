@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { getPriorityMapping, getCategoryMapping } from '@/config/challengesPageConfig';
 
 interface TrendingChallenge {
   id: string;
@@ -111,23 +112,13 @@ export const ChallengeTrendingWidget = ({
   };
 
   const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'عالي': return 'bg-red-100 text-red-800';
-      case 'متوسط': return 'bg-yellow-100 text-yellow-800';
-      case 'منخفض': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
+    return getPriorityMapping(priority).color;
   };
 
   const getChallengeTypeIcon = (type: string) => {
-    switch (type) {
-      case 'technical': return <Zap className="w-4 h-4" />;
-      case 'business': return <Trophy className="w-4 h-4" />;
-      case 'health': return <Target className="w-4 h-4" />;
-      case 'educational': return <Star className="w-4 h-4" />;
-      case 'environmental': return <Target className="w-4 h-4" />;
-      default: return <Target className="w-4 h-4" />;
-    }
+    const mapping = getCategoryMapping(type);
+    const IconComponent = mapping.icon;
+    return <IconComponent className="w-4 h-4" />;
   };
 
   if (loading) {

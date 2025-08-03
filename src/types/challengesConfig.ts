@@ -74,6 +74,13 @@ export interface ChallengesPageConfig {
     features: FilterOption[];
   };
 
+  badges: {
+    new: string;
+    trending: string;
+    urgent: string;
+    featured: string;
+  };
+
   mappings: {
     status: StatusMapping[];
     priority: PriorityMapping[];

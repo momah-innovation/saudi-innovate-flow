@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { getStatusMapping, getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 
 interface AnalyticsData {
   totalChallenges: number;
@@ -62,8 +63,8 @@ export const ChallengeAnalyticsDashboard = ({
       if (error) throw error;
 
       const totalChallenges = challenges?.length || 0;
-      const activeChallenges = challenges?.filter(c => c.status === 'active').length || 0;
-      const completedChallenges = challenges?.filter(c => c.status === 'completed').length || 0;
+      const activeChallenges = challenges?.filter(c => getStatusMapping(c.status).value === 'active' || getStatusMapping(c.status).value === 'published').length || 0;
+      const completedChallenges = challenges?.filter(c => getStatusMapping(c.status).value === 'completed').length || 0;
 
       // Get total participants across all challenges
       const { count: totalParticipants } = await supabase
@@ -128,7 +129,7 @@ export const ChallengeAnalyticsDashboard = ({
         totalParticipants: totalParticipants || 0,
         totalPrizes,
         averageParticipation: totalChallenges > 0 ? Math.round((totalParticipants || 0) / totalChallenges) : 0,
-        trendingChallenges: challenges?.filter(c => c.priority_level === 'عالي').length || 0,
+        trendingChallenges: challenges?.filter(c => getPriorityMapping(c.priority_level || 'متوسط').value === 'عالي' || getPriorityMapping(c.priority_level || 'متوسط').value === 'High').length || 0,
         categoryBreakdown,
         participationTrend,
         topChallenges

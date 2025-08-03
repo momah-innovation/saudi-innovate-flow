@@ -150,6 +150,14 @@ export const challengesPageConfig: ChallengesPageConfig = {
     ]
   },
 
+  // Badge colors for special features
+  badges: {
+    new: 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400',
+    trending: 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400',
+    urgent: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
+    featured: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
+  },
+
   // Status, Priority, Difficulty, and Category Mappings
   mappings: {
     status: [
