@@ -809,7 +809,8 @@ All colors MUST be HSL for theming consistency.
 }
 
 .themed-page-ideas .innovation-badge {
-  @apply bg-gradient-primary text-white;
+  background: var(--gradient-primary);
+  @apply text-white;
 }
 
 /* Experts Page Theming */
@@ -876,7 +877,8 @@ All colors MUST be HSL for theming consistency.
 }
 
 .themed-button.theme-innovation {
-  @apply bg-gradient-primary text-white hover:opacity-90;
+  background: var(--gradient-primary);
+  @apply text-white hover:opacity-90;
 }
 
 .themed-button.theme-partner {
@@ -898,13 +900,14 @@ All colors MUST be HSL for theming consistency.
 
 /* Themed Headers */
 .themed-header.theme-expert {
-  @apply bg-gradient-to-r from-expert/10 to-accent/10 border-b-expert/20;
+  @apply bg-gradient-to-r from-expert/10 to-accent/10 border-b border-expert/20;
 }
 
 .themed-header.theme-innovation {
-  @apply bg-gradient-primary/10 border-b-innovation/20;
+  background: var(--gradient-primary);
+  @apply border-b border-innovation/20 bg-opacity-10;
 }
 
 .themed-header.theme-partner {
-  @apply bg-gradient-to-r from-partner/10 to-success/10 border-b-partner/20;
+  @apply bg-gradient-to-r from-partner/10 to-success/10 border-b border-partner/20;
 }
