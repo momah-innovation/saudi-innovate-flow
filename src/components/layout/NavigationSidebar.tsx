@@ -5,7 +5,7 @@ import {
   FileText, Settings, PieChart, Briefcase, Award, Zap,
   Shield, BookOpen, BarChart3, UserCheck, Network, Search,
   PlusCircle, Star, HelpCircle, Globe, Edit, Bookmark,
-  Database, HardDrive
+  Database, HardDrive, Palette
 } from 'lucide-react';
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent,
@@ -469,15 +469,24 @@ export function NavigationSidebar() {
         group: 'settings',
         roles: ['all'] 
       },
-      { 
-        id: 'help', 
-        label: 'Help & Documentation', 
-        arabicLabel: 'المساعدة والوثائق',
-        icon: HelpCircle, 
-        path: '/help',
-        group: 'settings',
-        roles: ['all'] 
-      },
+        { 
+          id: 'help', 
+          label: 'Help & Documentation', 
+          arabicLabel: 'المساعدة والوثائق',
+          icon: HelpCircle, 
+          path: '/help',
+          group: 'settings',
+          roles: ['all'] 
+        },
+        { 
+          id: 'design-system', 
+          label: 'Design System', 
+          arabicLabel: 'نظام التصميم',
+          icon: Palette, 
+          path: '/design-system',
+          group: 'settings',
+          roles: ['admin'] 
+        },
     ];
 
     return [...baseItems, ...discoverItems, ...partnerItems, ...workflowItems, ...managementItems, ...analyticsItems, ...adminItems, ...settingsItems];

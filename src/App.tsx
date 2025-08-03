@@ -57,6 +57,7 @@ import ReportsPage from "./pages/ReportsPage";
 import SystemAnalyticsPage from "./pages/SystemAnalyticsPage";
 import HelpPage from "./pages/HelpPage";
 import SavedItemsPage from "./pages/SavedItems";
+import DesignSystem from "./pages/DesignSystem";
 import EvaluationManagement from "./pages/EvaluationManagement";
 import Opportunities from "./pages/Opportunities";
 import OpportunitiesManagement from "./pages/OpportunitiesManagement";
@@ -433,8 +434,18 @@ const App = () => (
                      </ProtectedRoute>
                    } 
                   />
-               <Route path="/help" element={<HelpPage />} />
-               {/* Admin Dashboard route */}
+                <Route path="/help" element={<HelpPage />} />
+                <Route 
+                  path="/design-system" 
+                  element={
+                    <ProtectedRoute>
+                      <AppShell>
+                        <DesignSystem />
+                      </AppShell>
+                    </ProtectedRoute>
+                  } 
+                />
+                {/* Admin Dashboard route */}
                <Route 
                  path="/admin/dashboard" 
                  element={
