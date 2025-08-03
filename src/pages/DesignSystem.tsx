@@ -269,6 +269,10 @@ const DesignSystem = () => {
               <Zap className="h-3 w-3" />
               Animations & Icons
             </TabsTrigger>
+            <TabsTrigger value="branding" className="flex items-center gap-1 text-xs px-2 py-1.5 whitespace-nowrap">
+              <Award className="h-3 w-3" />
+              Logo & Identity
+            </TabsTrigger>
           </TabsList>
 
           {/* Colors Tab */}
@@ -11004,6 +11008,504 @@ const DesignSystem = () => {
                         </div>
                       </div>
                       <code className="text-xs bg-muted px-2 py-1 rounded mt-3 inline-block">animate-bounce</code>
+                    </Card>
+
+                  </div>
+                </ComponentShowcase>
+
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Logo & Identity Tab */}
+          <TabsContent value="branding" className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Platform Logo & Identity</h2>
+              
+              <div className="space-y-6">
+                
+                {/* Logo Variants */}
+                <ComponentShowcase title="Logo Variants">
+                  <div className="space-y-8">
+                    
+                    {/* Primary Logo */}
+                    <div>
+                      <h4 className="font-medium mb-4">Primary Logo</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <Card className="p-8 text-center bg-white">
+                          <div className="flex items-center justify-center mb-4">
+                            <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center">
+                              <Sparkles className="w-8 h-8 text-white" />
+                            </div>
+                            <div className="ml-3 text-left">
+                              <h3 className="text-2xl font-bold text-primary">Ruwād</h3>
+                              <p className="text-sm text-muted-foreground">Innovation Platform</p>
+                            </div>
+                          </div>
+                          <p className="text-xs text-muted-foreground">Full Logo - Light Background</p>
+                        </Card>
+
+                        <Card className="p-8 text-center bg-slate-900">
+                          <div className="flex items-center justify-center mb-4">
+                            <div className="w-16 h-16 bg-gradient-to-r from-white/20 to-white/10 rounded-2xl flex items-center justify-center border border-white/20">
+                              <Sparkles className="w-8 h-8 text-white" />
+                            </div>
+                            <div className="ml-3 text-left">
+                              <h3 className="text-2xl font-bold text-white">Ruwād</h3>
+                              <p className="text-sm text-white/70">Innovation Platform</p>
+                            </div>
+                          </div>
+                          <p className="text-xs text-white/70">Full Logo - Dark Background</p>
+                        </Card>
+
+                        <Card className="p-8 text-center bg-gradient-to-r from-primary to-accent">
+                          <div className="flex items-center justify-center mb-4">
+                            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-white/30">
+                              <Sparkles className="w-8 h-8 text-white" />
+                            </div>
+                            <div className="ml-3 text-left">
+                              <h3 className="text-2xl font-bold text-white">Ruwād</h3>
+                              <p className="text-sm text-white/90">Innovation Platform</p>
+                            </div>
+                          </div>
+                          <p className="text-xs text-white/90">Full Logo - Gradient Background</p>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* Logo Icon Only */}
+                    <div>
+                      <h4 className="font-medium mb-4">Logo Icon Variants</h4>
+                      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                        <Card className="p-6 text-center">
+                          <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <Sparkles className="w-6 h-6 text-white" />
+                          </div>
+                          <p className="text-xs text-muted-foreground">Standard</p>
+                        </Card>
+
+                        <Card className="p-6 text-center">
+                          <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <Sparkles className="w-6 h-6 text-white" />
+                          </div>
+                          <p className="text-xs text-muted-foreground">Primary</p>
+                        </Card>
+
+                        <Card className="p-6 text-center">
+                          <div className="w-12 h-12 bg-white border-2 border-primary rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <Sparkles className="w-6 h-6 text-primary" />
+                          </div>
+                          <p className="text-xs text-muted-foreground">Outlined</p>
+                        </Card>
+
+                        <Card className="p-6 text-center">
+                          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <Sparkles className="w-6 h-6 text-primary" />
+                          </div>
+                          <p className="text-xs text-muted-foreground">Soft</p>
+                        </Card>
+
+                        <Card className="p-6 text-center">
+                          <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-3">
+                            <Sparkles className="w-6 h-6 text-white" />
+                          </div>
+                          <p className="text-xs text-muted-foreground">Circle</p>
+                        </Card>
+
+                        <Card className="p-6 text-center">
+                          <div className="w-12 h-12 bg-muted rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <Sparkles className="w-6 h-6 text-muted-foreground" />
+                          </div>
+                          <p className="text-xs text-muted-foreground">Monochrome</p>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* Logo Sizes */}
+                    <div>
+                      <h4 className="font-medium mb-4">Logo Sizes</h4>
+                      <div className="flex items-end gap-8">
+                        <div className="text-center">
+                          <div className="flex items-center justify-center mb-2">
+                            <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
+                              <Sparkles className="w-4 h-4 text-white" />
+                            </div>
+                            <span className="ml-2 text-lg font-bold">Ruwād</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">Small (32px)</p>
+                        </div>
+
+                        <div className="text-center">
+                          <div className="flex items-center justify-center mb-2">
+                            <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-xl flex items-center justify-center">
+                              <Sparkles className="w-6 h-6 text-white" />
+                            </div>
+                            <span className="ml-3 text-xl font-bold">Ruwād</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">Medium (48px)</p>
+                        </div>
+
+                        <div className="text-center">
+                          <div className="flex items-center justify-center mb-2">
+                            <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center">
+                              <Sparkles className="w-8 h-8 text-white" />
+                            </div>
+                            <span className="ml-4 text-2xl font-bold">Ruwād</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">Large (64px)</p>
+                        </div>
+
+                        <div className="text-center">
+                          <div className="flex items-center justify-center mb-2">
+                            <div className="w-20 h-20 bg-gradient-to-r from-primary to-accent rounded-3xl flex items-center justify-center">
+                              <Sparkles className="w-10 h-10 text-white" />
+                            </div>
+                            <span className="ml-4 text-3xl font-bold">Ruwād</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">Extra Large (80px)</p>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </ComponentShowcase>
+
+                {/* Brand Slogans & Taglines */}
+                <ComponentShowcase title="Brand Slogans & Taglines">
+                  <div className="space-y-6">
+                    
+                    {/* Primary Slogans */}
+                    <div>
+                      <h4 className="font-medium mb-4">Primary Slogans</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <Card className="p-6 text-center bg-gradient-to-r from-primary/10 to-accent/10">
+                          <h3 className="text-2xl font-bold mb-2 text-primary">Innovate. Create. Lead.</h3>
+                          <p className="text-sm text-muted-foreground">Primary motivational slogan</p>
+                        </Card>
+
+                        <Card className="p-6 text-center bg-gradient-to-r from-secondary/10 to-innovation/10">
+                          <h3 className="text-2xl font-bold mb-2 text-secondary">Where Ideas Become Reality</h3>
+                          <p className="text-sm text-muted-foreground">Vision-focused tagline</p>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* Descriptive Taglines */}
+                    <div>
+                      <h4 className="font-medium mb-4">Descriptive Taglines</h4>
+                      <div className="space-y-4">
+                        <Card className="p-4">
+                          <h4 className="font-semibold mb-2">Platform Description</h4>
+                          <p className="text-lg">"Empowering innovators across the region to transform challenges into breakthrough solutions"</p>
+                        </Card>
+
+                        <Card className="p-4">
+                          <h4 className="font-semibold mb-2">Mission Statement</h4>
+                          <p className="text-lg">"Building the future through collaborative innovation and entrepreneurial excellence"</p>
+                        </Card>
+
+                        <Card className="p-4">
+                          <h4 className="font-semibold mb-2">Community Focus</h4>
+                          <p className="text-lg">"Connecting minds, creating solutions, shaping tomorrow"</p>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* Category-Specific Slogans */}
+                    <div>
+                      <h4 className="font-medium mb-4">Category-Specific Slogans</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <Card className="p-4 border-l-4 border-l-blue-500">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Zap className="w-5 h-5 text-blue-500" />
+                            <h5 className="font-semibold">Technology</h5>
+                          </div>
+                          <p className="text-sm">"Code the Future"</p>
+                        </Card>
+
+                        <Card className="p-4 border-l-4 border-l-green-500">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Heart className="w-5 h-5 text-green-500" />
+                            <h5 className="font-semibold">Healthcare</h5>
+                          </div>
+                          <p className="text-sm">"Healing Through Innovation"</p>
+                        </Card>
+
+                        <Card className="p-4 border-l-4 border-l-emerald-500">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Target className="w-5 h-5 text-emerald-500" />
+                            <h5 className="font-semibold">Environment</h5>
+                          </div>
+                          <p className="text-sm">"Sustain Tomorrow"</p>
+                        </Card>
+
+                        <Card className="p-4 border-l-4 border-l-purple-500">
+                          <div className="flex items-center gap-2 mb-2">
+                            <CreditCard className="w-5 h-5 text-purple-500" />
+                            <h5 className="font-semibold">Finance</h5>
+                          </div>
+                          <p className="text-sm">"Financial Evolution"</p>
+                        </Card>
+
+                        <Card className="p-4 border-l-4 border-l-orange-500">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Users className="w-5 h-5 text-orange-500" />
+                            <h5 className="font-semibold">Social Impact</h5>
+                          </div>
+                          <p className="text-sm">"Change Lives, Change World"</p>
+                        </Card>
+
+                        <Card className="p-4 border-l-4 border-l-indigo-500">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Sparkles className="w-5 h-5 text-indigo-500" />
+                            <h5 className="font-semibold">Innovation</h5>
+                          </div>
+                          <p className="text-sm">"Think Beyond Limits"</p>
+                        </Card>
+                      </div>
+                    </div>
+
+                  </div>
+                </ComponentShowcase>
+
+                {/* Brand Voice & Tone */}
+                <ComponentShowcase title="Brand Voice & Tone">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <Card className="p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <Sparkles className="w-5 h-5 text-primary" />
+                        </div>
+                        <h4 className="font-semibold">Inspiring</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">Motivational and uplifting, encouraging innovation and creativity</p>
+                      <div className="space-y-2">
+                        <p className="text-sm italic">"Transform your boldest ideas into reality"</p>
+                        <p className="text-sm italic">"Every great innovation starts with a single spark"</p>
+                      </div>
+                    </Card>
+
+                    <Card className="p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                          <Shield className="w-5 h-5 text-secondary" />
+                        </div>
+                        <h4 className="font-semibold">Professional</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">Credible and trustworthy, building confidence in our platform</p>
+                      <div className="space-y-2">
+                        <p className="text-sm italic">"Proven methodologies for sustainable innovation"</p>
+                        <p className="text-sm italic">"Expert-guided innovation journey"</p>
+                      </div>
+                    </Card>
+
+                    <Card className="p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+                          <Users className="w-5 h-5 text-accent" />
+                        </div>
+                        <h4 className="font-semibold">Collaborative</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">Emphasizing community, teamwork, and shared success</p>
+                      <div className="space-y-2">
+                        <p className="text-sm italic">"Together, we shape the future"</p>
+                        <p className="text-sm italic">"Innovation thrives in collaboration"</p>
+                      </div>
+                    </Card>
+
+                  </div>
+                </ComponentShowcase>
+
+                {/* Brand Applications */}
+                <ComponentShowcase title="Brand Applications">
+                  <div className="space-y-6">
+                    
+                    {/* Email Signatures */}
+                    <div>
+                      <h4 className="font-medium mb-4">Email Signature</h4>
+                      <Card className="p-6 bg-muted/20">
+                        <div className="flex items-center gap-4 mb-3">
+                          <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-xl flex items-center justify-center">
+                            <Sparkles className="w-6 h-6 text-white" />
+                          </div>
+                          <div>
+                            <h5 className="font-semibold">Ahmed Al-Rashid</h5>
+                            <p className="text-sm text-muted-foreground">Innovation Manager</p>
+                          </div>
+                        </div>
+                        <div className="border-l-4 border-l-primary pl-4">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-bold text-primary">Ruwād</span>
+                            <span className="text-sm text-muted-foreground">Innovation Platform</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground italic">Where Ideas Become Reality</p>
+                          <div className="flex items-center gap-4 mt-2 text-xs">
+                            <span>📧 ahmed@ruwad.com</span>
+                            <span>🌐 www.ruwad.com</span>
+                          </div>
+                        </div>
+                      </Card>
+                    </div>
+
+                    {/* Social Media Headers */}
+                    <div>
+                      <h4 className="font-medium mb-4">Social Media Applications</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <Card className="overflow-hidden">
+                          <div className="h-24 bg-gradient-to-r from-primary via-accent to-secondary p-4 flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                                <Sparkles className="w-6 h-6 text-white" />
+                              </div>
+                              <div className="text-white">
+                                <h5 className="font-bold text-lg">Ruwād</h5>
+                                <p className="text-sm opacity-90">Innovation Platform</p>
+                              </div>
+                            </div>
+                            <Button size="sm" variant="secondary" className="bg-white/20 text-white border-white/30 hover:bg-white/30">
+                              Follow
+                            </Button>
+                          </div>
+                          <div className="p-4">
+                            <p className="text-sm text-muted-foreground">LinkedIn Cover Design</p>
+                          </div>
+                        </Card>
+
+                        <Card className="overflow-hidden">
+                          <div className="h-24 bg-gradient-to-br from-primary to-accent p-4 flex items-center">
+                            <div className="flex items-center gap-3">
+                              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                                <Sparkles className="w-6 h-6 text-primary" />
+                              </div>
+                              <div className="text-white">
+                                <h5 className="font-bold text-lg">@RuwadPlatform</h5>
+                                <p className="text-sm opacity-90">Innovate. Create. Lead.</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="p-4">
+                            <p className="text-sm text-muted-foreground">Twitter/X Header Design</p>
+                          </div>
+                        </Card>
+
+                      </div>
+                    </div>
+
+                    {/* Business Cards */}
+                    <div>
+                      <h4 className="font-medium mb-4">Business Card Design</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        {/* Front */}
+                        <Card className="p-6 bg-gradient-to-br from-primary to-accent text-white">
+                          <div className="flex items-center justify-between mb-6">
+                            <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                              <Sparkles className="w-5 h-5 text-white" />
+                            </div>
+                            <div className="text-right">
+                              <h4 className="font-bold">Ruwād</h4>
+                              <p className="text-xs opacity-90">Innovation Platform</p>
+                            </div>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-lg">Sarah Al-Zahra</h5>
+                            <p className="text-sm opacity-90">Senior Innovation Strategist</p>
+                          </div>
+                          <p className="text-xs mt-4 opacity-75">Front Side</p>
+                        </Card>
+
+                        {/* Back */}
+                        <Card className="p-6 bg-white border-2 border-primary">
+                          <div className="text-center mb-4">
+                            <p className="text-sm font-medium text-primary italic">"Where Ideas Become Reality"</p>
+                          </div>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex items-center gap-2">
+                              <Mail className="w-4 h-4 text-primary" />
+                              <span>sarah@ruwad.com</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Phone className="w-4 h-4 text-primary" />
+                              <span>+966 50 123 4567</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <ExternalLink className="w-4 h-4 text-primary" />
+                              <span>www.ruwad.com</span>
+                            </div>
+                          </div>
+                          <p className="text-xs mt-4 text-muted-foreground">Back Side</p>
+                        </Card>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </ComponentShowcase>
+
+                {/* Brand Guidelines */}
+                <ComponentShowcase title="Brand Usage Guidelines">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    {/* Do's */}
+                    <Card className="p-6 border-l-4 border-l-success">
+                      <div className="flex items-center gap-2 mb-4">
+                        <CheckCircle className="w-5 h-5 text-success" />
+                        <h4 className="font-semibold text-success">Do's</h4>
+                      </div>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 bg-success rounded-full mt-2"></div>
+                          <span>Use the logo on clean, uncluttered backgrounds</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 bg-success rounded-full mt-2"></div>
+                          <span>Maintain minimum clear space around the logo</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 bg-success rounded-full mt-2"></div>
+                          <span>Use approved color variations only</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 bg-success rounded-full mt-2"></div>
+                          <span>Scale proportionally to maintain integrity</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 bg-success rounded-full mt-2"></div>
+                          <span>Use consistent typography with brand voice</span>
+                        </li>
+                      </ul>
+                    </Card>
+
+                    {/* Don'ts */}
+                    <Card className="p-6 border-l-4 border-l-destructive">
+                      <div className="flex items-center gap-2 mb-4">
+                        <X className="w-5 h-5 text-destructive" />
+                        <h4 className="font-semibold text-destructive">Don'ts</h4>
+                      </div>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 bg-destructive rounded-full mt-2"></div>
+                          <span>Don't stretch or distort the logo</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 bg-destructive rounded-full mt-2"></div>
+                          <span>Don't use unauthorized color combinations</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 bg-destructive rounded-full mt-2"></div>
+                          <span>Don't place logo on busy or competing backgrounds</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 bg-destructive rounded-full mt-2"></div>
+                          <span>Don't recreate or modify the logo design</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 bg-destructive rounded-full mt-2"></div>
+                          <span>Don't use outdated versions of brand elements</span>
+                        </li>
+                      </ul>
                     </Card>
 
                   </div>
