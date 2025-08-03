@@ -17,14 +17,13 @@ import { ChallengeDetailDialog } from '@/components/challenges/ChallengeDetailDi
 import { ChallengeFilters, FilterState } from '@/components/challenges/ChallengeFilters';
 import { challengesPageConfig, getViewModeConfig } from '@/config/challengesPageConfig';
 import { ChallengeSkeleton, ChallengeLoadingState, ChallengeEmptyState } from '@/components/challenges/ChallengeSkeletons';
-import { EnhancedSubmissionDialog } from '@/components/challenges/EnhancedSubmissionDialog';
+import { ChallengeSubmissionDialog } from '@/components/challenges/ChallengeSubmissionDialog';
 import { ChallengeNotificationCenter } from '@/components/challenges/ChallengeNotificationCenter';
 import { ChallengeTemplatesDialog } from '@/components/challenges/ChallengeTemplatesDialog';
 import { ChallengeAnalyticsDashboard } from '@/components/challenges/ChallengeAnalyticsDashboard';
 
 import { ChallengeListView } from '@/components/challenges/ChallengeListView';
 import { ChallengeExpertAssignmentWizard } from '@/components/challenges/ChallengeExpertAssignmentWizard';
-import { ChallengeSubmissionDialog } from '@/components/challenges/ChallengeSubmissionDialog';
 import { ChallengeCommentsDialog } from '@/components/challenges/ChallengeCommentsDialog';
 import { ChallengeSubmissionsDialog } from '@/components/challenges/ChallengeSubmissionsDialog';
 import { ChallengeCreateDialog } from '@/components/challenges/ChallengeCreateDialog';
@@ -706,7 +705,7 @@ const ChallengesBrowse = () => {
           />
 
           {/* Enhanced Submission Dialog */}
-          <EnhancedSubmissionDialog
+          <ChallengeSubmissionDialog
             challenge={selectedChallenge}
             open={submissionDialogOpen}
             onOpenChange={setSubmissionDialogOpen}

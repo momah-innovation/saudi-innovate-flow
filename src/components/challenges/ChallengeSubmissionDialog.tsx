@@ -1,59 +1,136 @@
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
+import { Card, CardContent } from '@/components/ui/card';
 import { 
-  Upload, X, Plus, FileText, Image, Video, 
-  Users, Target, Clock, Award, Send
+  Upload, 
+  FileText, 
+  Users, 
+  Clock, 
+  Award,
+  Target,
+  CheckCircle,
+  AlertCircle,
+  Info,
+  ArrowRight,
+  ArrowLeft,
+  Send,
+  Save,
+  X
 } from 'lucide-react';
+import { useDirection } from '@/components/ui/direction-provider';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { cn } from '@/lib/utils';
 
-interface ChallengeSubmissionDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  challenge: any;
+interface Challenge {
+  id: string;
+  title_ar: string;
+  description_ar: string;
+  challenge_type: string;
+  end_date: string;
+  estimated_budget: number;
+  participants?: number;
 }
 
-export function ChallengeSubmissionDialog({ 
-  open, 
-  onOpenChange, 
-  challenge 
-}: ChallengeSubmissionDialogProps) {
-  const { user } = useAuth();
+interface ChallengeSubmissionDialogProps {
+  challenge: Challenge | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSubmissionComplete?: () => void;
+}
+
+interface SubmissionData {
+  title: string;
+  description: string;
+  approach: string;
+  implementation: string;
+  businessModel: string;
+  expectedImpact: string;
+  teamMembers: TeamMember[];
+  attachments: File[];
+  attachmentUrls: string[];
+  technicalDetails: any;
+  isPublic: boolean;
+}
+
+interface TeamMember {
+  id: number;
+  name: string;
+  role: string;
+  email: string;
+  skills: string[];
+}
+
+export const ChallengeSubmissionDialog = ({
+  challenge,
+  open,
+  onOpenChange,
+  onSubmissionComplete
+}: ChallengeSubmissionDialogProps) => {
+  const { isRTL } = useDirection();
   const { toast } = useToast();
+  const { user } = useAuth();
+  
   const [currentStep, setCurrentStep] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [formData, setFormData] = useState({
-    title_ar: '',
-    description_ar: '',
-    solution_approach: '',
-    implementation_plan: '',
-    business_model: '',
-    expected_impact: '',
-    technical_details: {},
-    team_members: [] as any[],
-    attachment_urls: [] as string[],
-    is_public: false
+  const [submissionData, setSubmissionData] = useState<SubmissionData>({
+    title: '',
+    description: '',
+    approach: '',
+    implementation: '',
+    businessModel: '',
+    expectedImpact: '',
+    teamMembers: [],
+    attachments: [],
+    attachmentUrls: [],
+    technicalDetails: {},
+    isPublic: false
   });
 
-  const handleInputChange = (field: string, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const totalSteps = 4;
+  const progress = (currentStep / totalSteps) * 100;
+
+  const steps = [
+    { 
+      number: 1, 
+      title: isRTL ? 'المعلومات الأساسية' : 'Basic Information',
+      icon: Info,
+      description: isRTL ? 'اسم المشروع ووصفه' : 'Project title and description'
+    },
+    { 
+      number: 2, 
+      title: isRTL ? 'الحل والتنفيذ' : 'Solution & Implementation',
+      icon: Target,
+      description: isRTL ? 'خطة الحل وآلية التنفيذ' : 'Solution approach and implementation plan'
+    },
+    { 
+      number: 3, 
+      title: isRTL ? 'النموذج التجاري' : 'Business Model',
+      icon: Award,
+      description: isRTL ? 'النموذج التجاري والأثر المتوقع' : 'Business model and expected impact'
+    },
+    { 
+      number: 4, 
+      title: isRTL ? 'الفريق والمرفقات' : 'Team & Attachments',
+      icon: Users,
+      description: isRTL ? 'أعضاء الفريق والملفات' : 'Team members and files'
+    }
+  ];
+
+  const updateSubmissionData = (field: keyof SubmissionData, value: any) => {
+    setSubmissionData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files || files.length === 0) return;
+  const handleFileUpload = async (files: FileList | null) => {
+    if (!files || files.length === 0 || !user) return;
 
     setUploading(true);
     try {
@@ -61,7 +138,7 @@ export function ChallengeSubmissionDialog({
       
       for (const file of Array.from(files)) {
         const fileExt = file.name.split('.').pop();
-        const fileName = `${challenge.id}/${user?.id}/${Date.now()}.${fileExt}`;
+        const fileName = `${challenge?.id}/${user.id}/${Date.now()}.${fileExt}`;
         
         const { data, error } = await supabase.storage
           .from('challenge-attachments')
@@ -76,15 +153,17 @@ export function ChallengeSubmissionDialog({
         uploadedUrls.push(publicUrl);
       }
 
-      handleInputChange('attachment_urls', [...formData.attachment_urls, ...uploadedUrls]);
+      updateSubmissionData('attachmentUrls', [...submissionData.attachmentUrls, ...uploadedUrls]);
+      updateSubmissionData('attachments', [...submissionData.attachments, ...Array.from(files)]);
+      
       toast({
-        title: "تم رفع الملفات بنجاح",
-        description: `تم رفع ${uploadedUrls.length} ملف`,
+        title: isRTL ? 'تم رفع الملفات بنجاح' : 'Files uploaded successfully',
+        description: isRTL ? `تم رفع ${uploadedUrls.length} ملف` : `Uploaded ${uploadedUrls.length} files`,
       });
     } catch (error) {
       toast({
-        title: "خطأ في رفع الملفات",
-        description: "حدث خطأ أثناء رفع الملفات",
+        title: isRTL ? 'خطأ في رفع الملفات' : 'Upload Error',
+        description: isRTL ? 'حدث خطأ أثناء رفع الملفات' : 'Error uploading files',
         variant: "destructive",
       });
     } finally {
@@ -92,287 +171,384 @@ export function ChallengeSubmissionDialog({
     }
   };
 
-  const removeAttachment = (index: number) => {
-    const newAttachments = formData.attachment_urls.filter((_, i) => i !== index);
-    handleInputChange('attachment_urls', newAttachments);
+  const removeFile = (index: number) => {
+    const newAttachments = submissionData.attachments.filter((_, i) => i !== index);
+    updateSubmissionData('attachments', newAttachments);
   };
 
+  const validateCurrentStep = () => {
+    switch (currentStep) {
+      case 1:
+        return submissionData.title.trim().length >= 10 && submissionData.description.trim().length >= 50;
+      case 2:
+        return submissionData.approach.trim().length >= 100 && submissionData.implementation.trim().length >= 100;
+      case 3:
+        return submissionData.businessModel.trim().length >= 50 && submissionData.expectedImpact.trim().length >= 50;
+        case 4:
+          return submissionData.teamMembers.length > 0 || submissionData.attachments.length > 0;
+      default:
+        return false;
+    }
+  };
+
+  const handleNext = () => {
+    if (validateCurrentStep() && currentStep < totalSteps) {
+      setCurrentStep(prev => prev + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 1) {
+      setCurrentStep(prev => prev - 1);
+    }
+  };
+
+  // Team member management functions
   const addTeamMember = () => {
-    const newMember = {
+    const newMember: TeamMember = {
       id: Date.now(),
       name: '',
       role: '',
       email: '',
       skills: []
     };
-    handleInputChange('team_members', [...formData.team_members, newMember]);
+    updateSubmissionData('teamMembers', [...submissionData.teamMembers, newMember]);
   };
 
-  const updateTeamMember = (index: number, field: string, value: any) => {
-    const newMembers = formData.team_members.map((member, i) => 
+  const updateTeamMember = (index: number, field: keyof TeamMember, value: any) => {
+    const newMembers = submissionData.teamMembers.map((member, i) => 
       i === index ? { ...member, [field]: value } : member
     );
-    handleInputChange('team_members', newMembers);
+    updateSubmissionData('teamMembers', newMembers);
   };
 
   const removeTeamMember = (index: number) => {
-    const newMembers = formData.team_members.filter((_, i) => i !== index);
-    handleInputChange('team_members', newMembers);
+    const newMembers = submissionData.teamMembers.filter((_, i) => i !== index);
+    updateSubmissionData('teamMembers', newMembers);
   };
 
-  const handleSubmit = async (isDraft = false) => {
+  const handleSubmitDraft = async () => {
+    if (!user || !challenge) return;
+
     try {
-      const submissionData = {
-        challenge_id: challenge.id,
-        submitted_by: user?.id,
-        ...formData,
-        status: isDraft ? 'draft' : 'submitted',
-        submission_date: isDraft ? null : new Date().toISOString(),
-        team_members: JSON.stringify(formData.team_members),
-        technical_details: JSON.stringify(formData.technical_details)
-      };
-
-      const { error } = await supabase
-        .from('challenge_submissions')
-        .insert(submissionData);
-
-      if (error) throw error;
-
-      toast({
-        title: isDraft ? "تم حفظ المسودة" : "تم إرسال المشاركة",
-        description: isDraft ? "تم حفظ مشاركتك كمسودة" : "تم إرسال مشاركتك بنجاح للمراجعة",
-      });
-
-      onOpenChange(false);
-      // Reset form
-      setFormData({
-        title_ar: '',
-        description_ar: '',
-        solution_approach: '',
-        implementation_plan: '',
-        business_model: '',
-        expected_impact: '',
-        technical_details: {},
-        team_members: [],
-        attachment_urls: [],
-        is_public: false
-      });
-      setCurrentStep(1);
-    } catch (error) {
-      toast({
-        title: "خطأ",
-        description: "فشل في إرسال المشاركة",
-        variant: "destructive",
-      });
+      setLoading(true);
+      await submitSubmission(true);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const renderStep1 = () => (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="title">عنوان الحل *</Label>
-        <Input
-          id="title"
-          placeholder="اكتب عنوان مبتكر لحلك"
-          value={formData.title_ar}
-          onChange={(e) => handleInputChange('title_ar', e.target.value)}
-        />
-      </div>
+  const submitSubmission = async (isDraft = false) => {
+    if (!user || !challenge) return;
 
-      <div className="space-y-2">
-        <Label htmlFor="description">وصف الحل *</Label>
-        <Textarea
-          id="description"
-          placeholder="اشرح حلك بالتفصيل..."
-          value={formData.description_ar}
-          onChange={(e) => handleInputChange('description_ar', e.target.value)}
-          rows={6}
-        />
-      </div>
+    const submissionPayload = {
+      challenge_id: challenge.id,
+      submitted_by: user.id,
+      title_ar: submissionData.title,
+      description_ar: submissionData.description,
+      solution_approach: submissionData.approach,
+      implementation_plan: submissionData.implementation,
+      business_model: submissionData.businessModel,
+      expected_impact: submissionData.expectedImpact,
+      team_members: JSON.stringify(submissionData.teamMembers),
+      attachment_urls: submissionData.attachmentUrls,
+      technical_details: submissionData.technicalDetails,
+      is_public: submissionData.isPublic,
+      status: isDraft ? 'draft' : 'submitted',
+      submission_date: isDraft ? null : new Date().toISOString()
+    };
 
-      <div className="space-y-2">
-        <Label htmlFor="approach">منهجية الحل</Label>
-        <Textarea
-          id="approach"
-          placeholder="اشرح الطريقة التي ستتبعها لحل التحدي..."
-          value={formData.solution_approach}
-          onChange={(e) => handleInputChange('solution_approach', e.target.value)}
-          rows={4}
-        />
-      </div>
-    </div>
-  );
+    const { error } = await supabase
+      .from('challenge_submissions')
+      .insert(submissionPayload);
 
-  const renderStep2 = () => (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="implementation">خطة التنفيذ</Label>
-        <Textarea
-          id="implementation"
-          placeholder="اشرح كيف ستقوم بتنفيذ حلك خطوة بخطوة..."
-          value={formData.implementation_plan}
-          onChange={(e) => handleInputChange('implementation_plan', e.target.value)}
-          rows={5}
-        />
-      </div>
+    if (error) throw error;
 
-      <div className="space-y-2">
-        <Label htmlFor="business">النموذج التجاري</Label>
-        <Textarea
-          id="business"
-          placeholder="اشرح كيف يمكن تحويل حلك إلى نموذج تجاري مستدام..."
-          value={formData.business_model}
-          onChange={(e) => handleInputChange('business_model', e.target.value)}
-          rows={4}
-        />
-      </div>
+    toast({
+      title: isDraft ? 
+        (isRTL ? 'تم حفظ المسودة!' : 'Draft Saved!') : 
+        (isRTL ? 'تم تسليم المشروع بنجاح!' : 'Submission Successful!'),
+      description: isDraft ?
+        (isRTL ? 'تم حفظ مشاركتك كمسودة' : 'Your submission has been saved as draft') :
+        (isRTL ? 'تم تسليم مشروعك بنجاح. سيتم مراجعته قريباً.' : 'Your submission has been received and will be reviewed soon.'),
+    });
 
-      <div className="space-y-2">
-        <Label htmlFor="impact">التأثير المتوقع</Label>
-        <Textarea
-          id="impact"
-          placeholder="ما هو التأثير المتوقع لحلك على المجتمع أو الصناعة؟"
-          value={formData.expected_impact}
-          onChange={(e) => handleInputChange('expected_impact', e.target.value)}
-          rows={4}
-        />
-      </div>
-    </div>
-  );
+    onSubmissionComplete?.();
+    onOpenChange(false);
+    resetForm();
+  };
 
-  const renderStep3 = () => (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <Label>أعضاء الفريق</Label>
-        <Button size="sm" variant="outline" onClick={addTeamMember}>
-          <Plus className="h-4 w-4 mr-2" />
-          إضافة عضو
-        </Button>
-      </div>
+  const resetForm = () => {
+    setCurrentStep(1);
+    setSubmissionData({
+      title: '',
+      description: '',
+      approach: '',
+      implementation: '',
+      businessModel: '',
+      expectedImpact: '',
+      teamMembers: [],
+      attachments: [],
+      attachmentUrls: [],
+      technicalDetails: {},
+      isPublic: false
+    });
+  };
 
-      <div className="space-y-3 max-h-60 overflow-y-auto">
-        {formData.team_members.map((member, index) => (
-          <Card key={member.id}>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="font-medium">عضو {index + 1}</h4>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => removeTeamMember(index)}
-                >
-                  <X className="h-4 w-4" />
+  const handleSubmit = async () => {
+    if (!user || !challenge) return;
+
+    try {
+      setLoading(true);
+      await submitSubmission(false);
+    } catch (error) {
+      console.error('Submission error:', error);
+      toast({
+        title: isRTL ? 'خطأ في التسليم' : 'Submission Error',
+        description: isRTL ? 'حدث خطأ أثناء تسليم المشروع' : 'An error occurred while submitting',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <div className="space-y-6 animate-fade-in">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                {isRTL ? 'عنوان المشروع' : 'Project Title'} *
+              </label>
+              <Input
+                value={submissionData.title}
+                onChange={(e) => updateSubmissionData('title', e.target.value)}
+                placeholder={isRTL ? 'أدخل عنوان مشروعك المبتكر...' : 'Enter your innovative project title...'}
+                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+              />
+              <p className="text-xs text-muted-foreground">
+                {submissionData.title.length}/10 {isRTL ? 'حرف على الأقل' : 'characters minimum'}
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                {isRTL ? 'وصف المشروع' : 'Project Description'} *
+              </label>
+              <Textarea
+                value={submissionData.description}
+                onChange={(e) => updateSubmissionData('description', e.target.value)}
+                placeholder={isRTL ? 
+                  'اشرح فكرة مشروعك، المشكلة التي يحلها، والفئة المستهدفة...' : 
+                  'Explain your project idea, the problem it solves, and target audience...'
+                }
+                rows={6}
+                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+              />
+              <p className="text-xs text-muted-foreground">
+                {submissionData.description.length}/50 {isRTL ? 'حرف على الأقل' : 'characters minimum'}
+              </p>
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="space-y-6 animate-fade-in">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                {isRTL ? 'نهج الحل' : 'Solution Approach'} *
+              </label>
+              <Textarea
+                value={submissionData.approach}
+                onChange={(e) => updateSubmissionData('approach', e.target.value)}
+                placeholder={isRTL ? 
+                  'اشرح كيف سيحل مشروعك المشكلة المطروحة في التحدي...' : 
+                  'Explain how your project will solve the challenge problem...'
+                }
+                rows={5}
+                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+              />
+              <p className="text-xs text-muted-foreground">
+                {submissionData.approach.length}/100 {isRTL ? 'حرف على الأقل' : 'characters minimum'}
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                {isRTL ? 'خطة التنفيذ' : 'Implementation Plan'} *
+              </label>
+              <Textarea
+                value={submissionData.implementation}
+                onChange={(e) => updateSubmissionData('implementation', e.target.value)}
+                placeholder={isRTL ? 
+                  'اشرح خطة تنفيذ المشروع، المراحل، والجدول الزمني...' : 
+                  'Explain the implementation plan, phases, and timeline...'
+                }
+                rows={5}
+                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+              />
+              <p className="text-xs text-muted-foreground">
+                {submissionData.implementation.length}/100 {isRTL ? 'حرف على الأقل' : 'characters minimum'}
+              </p>
+            </div>
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className="space-y-6 animate-fade-in">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                {isRTL ? 'النموذج التجاري' : 'Business Model'} *
+              </label>
+              <Textarea
+                value={submissionData.businessModel}
+                onChange={(e) => updateSubmissionData('businessModel', e.target.value)}
+                placeholder={isRTL ? 
+                  'اشرح كيف سيحقق المشروع الإيرادات ونموذج الاستدامة المالية...' : 
+                  'Explain revenue generation and financial sustainability model...'
+                }
+                rows={4}
+                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                {isRTL ? 'الأثر المتوقع' : 'Expected Impact'} *
+              </label>
+              <Textarea
+                value={submissionData.expectedImpact}
+                onChange={(e) => updateSubmissionData('expectedImpact', e.target.value)}
+                placeholder={isRTL ? 
+                  'اشرح الأثر المتوقع لمشروعك على المجتمع والاقتصاد...' : 
+                  'Explain the expected impact on society and economy...'
+                }
+                rows={4}
+                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+              />
+            </div>
+          </div>
+        );
+
+      case 4:
+        return (
+          <div className="space-y-6 animate-fade-in">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium">
+                  {isRTL ? 'أعضاء الفريق' : 'Team Members'}
+                </label>
+                <Button size="sm" variant="outline" onClick={addTeamMember}>
+                  <Users className="h-4 w-4 mr-2" />
+                  {isRTL ? 'إضافة عضو' : 'Add Member'}
                 </Button>
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <Input
-                  placeholder="الاسم"
-                  value={member.name}
-                  onChange={(e) => updateTeamMember(index, 'name', e.target.value)}
+              
+              {submissionData.teamMembers.map((member, index) => (
+                <Card key={member.id} className="p-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs font-medium">{isRTL ? 'الاسم' : 'Name'}</label>
+                      <Input
+                        value={member.name}
+                        onChange={(e) => updateTeamMember(index, 'name', e.target.value)}
+                        placeholder={isRTL ? 'اسم العضو' : 'Member name'}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium">{isRTL ? 'الدور' : 'Role'}</label>
+                      <Input
+                        value={member.role}
+                        onChange={(e) => updateTeamMember(index, 'role', e.target.value)}
+                        placeholder={isRTL ? 'دور العضو' : 'Member role'}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium">{isRTL ? 'البريد الإلكتروني' : 'Email'}</label>
+                      <Input
+                        value={member.email}
+                        onChange={(e) => updateTeamMember(index, 'email', e.target.value)}
+                        placeholder={isRTL ? 'البريد الإلكتروني' : 'Email address'}
+                      />
+                    </div>
+                    <div className="flex items-end">
+                      <Button variant="outline" size="sm" onClick={() => removeTeamMember(index)}>
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                {isRTL ? 'المرفقات' : 'Attachments'}
+              </label>
+              <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
+                <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
+                <p className="text-sm text-muted-foreground mb-2">
+                  {isRTL ? 'اختر الملفات أو اسحبها هنا' : 'Choose files or drag them here'}
+                </p>
+                <input
+                  type="file"
+                  multiple
+                  onChange={(e) => handleFileUpload(e.target.files)}
+                  className="hidden"
+                  id="file-upload"
                 />
-                <Input
-                  placeholder="الدور"
-                  value={member.role}
-                  onChange={(e) => updateTeamMember(index, 'role', e.target.value)}
-                />
-                <Input
-                  placeholder="البريد الإلكتروني"
-                  type="email"
-                  value={member.email}
-                  onChange={(e) => updateTeamMember(index, 'email', e.target.value)}
-                />
-                <Input
-                  placeholder="المهارات (مفصولة بفواصل)"
-                  value={member.skills.join(', ')}
-                  onChange={(e) => updateTeamMember(index, 'skills', e.target.value.split(', '))}
-                />
+                <Button variant="outline" size="sm" asChild disabled={uploading}>
+                  <label htmlFor="file-upload" className="cursor-pointer">
+                    {uploading ? (isRTL ? 'جاري الرفع...' : 'Uploading...') : (isRTL ? 'اختر الملفات' : 'Choose Files')}
+                  </label>
+                </Button>
               </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
 
-      {formData.team_members.length === 0 && (
-        <Card className="bg-muted/50">
-          <CardContent className="p-6 text-center">
-            <Users className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
-            <p className="text-muted-foreground">لم تتم إضافة أي أعضاء فريق بعد</p>
-            <Button onClick={addTeamMember} className="mt-3">
-              <Plus className="h-4 w-4 mr-2" />
-              إضافة عضو فريق
-            </Button>
-          </CardContent>
-        </Card>
-      )}
-    </div>
-  );
-
-  const renderStep4 = () => (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label>المرفقات</Label>
-        <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6">
-          <div className="text-center">
-            <Upload className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground mb-4">
-              اسحب الملفات هنا أو انقر لاختيارها
-            </p>
-            <input
-              type="file"
-              multiple
-              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.mp4,.mov"
-              onChange={handleFileUpload}
-              className="hidden"
-              id="file-upload"
-            />
-            <label htmlFor="file-upload">
-              <Button variant="outline" disabled={uploading} asChild>
-                <span>
-                  {uploading ? 'جاري الرفع...' : 'اختيار ملفات'}
-                </span>
-              </Button>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      {formData.attachment_urls.length > 0 && (
-        <div className="space-y-2">
-          <Label>الملفات المرفوعة</Label>
-          <div className="space-y-2">
-            {formData.attachment_urls.map((url, index) => (
-              <div key={index} className="flex items-center justify-between p-2 border rounded">
-                <div className="flex items-center gap-2">
-                  <FileText className="h-4 w-4" />
-                  <span className="text-sm">ملف {index + 1}</span>
+              {submissionData.attachments.length > 0 && (
+                <div className="space-y-2">
+                  {submissionData.attachments.map((file, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4" />
+                        <span className="text-sm">{file.name}</span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeFile(index)}
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))}
                 </div>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => removeAttachment(index)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="public"
+                  checked={submissionData.isPublic}
+                  onChange={(e) => updateSubmissionData('isPublic', e.target.checked)}
+                />
+                <label htmlFor="public" className="text-sm">
+                  {isRTL ? 'جعل المشاركة عامة' : 'Make submission public'}
+                </label>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      )}
+        );
 
-      <div className="space-y-3">
-        <div className="flex items-center space-x-2">
-          <Checkbox
-            id="public"
-            checked={formData.is_public}
-            onCheckedChange={(checked) => handleInputChange('is_public', checked)}
-          />
-          <Label htmlFor="public" className="text-sm">
-            جعل المشاركة عامة للعرض
-          </Label>
-        </div>
-      </div>
-    </div>
-  );
+      default:
+        return null;
+    }
+  };
 
   if (!challenge) return null;
 
@@ -380,98 +556,113 @@ export function ChallengeSubmissionDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Send className="h-5 w-5" />
-            مشاركة في التحدي: {challenge.title_ar}
-          </DialogTitle>
-          <DialogDescription>
-            الخطوة {currentStep} من 4 - {
-              currentStep === 1 ? 'وصف الحل' :
-              currentStep === 2 ? 'التفاصيل التقنية' :
-              currentStep === 3 ? 'الفريق' : 'المرفقات والمراجعة'
-            }
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="space-y-6">
-          {/* Progress Indicator */}
-          <div className="flex items-center gap-2">
-            {[1, 2, 3, 4].map((step) => (
-              <div key={step} className="flex items-center gap-2">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                  step === currentStep ? 'bg-primary text-primary-foreground' :
-                  step < currentStep ? 'bg-green-500 text-white' : 'bg-muted text-muted-foreground'
-                }`}>
-                  {step < currentStep ? '✓' : step}
-                </div>
-                {step < 4 && <div className={`w-12 h-0.5 ${step < currentStep ? 'bg-green-500' : 'bg-muted'}`} />}
+          <div className="space-y-4">
+            {/* Header */}
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Send className="w-5 h-5 text-primary" />
               </div>
-            ))}
-          </div>
-
-          {/* Challenge Info */}
-          <Card className="bg-muted/50">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <Target className="h-4 w-4" />
-                  <span className="text-sm font-medium">{challenge.title_ar}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
-                  <span className="text-sm">المهلة: {challenge.deadline}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Award className="h-4 w-4" />
-                  <span className="text-sm">{challenge.prize}</span>
-                </div>
+              <div>
+                <h2 className="text-xl font-bold">
+                  {isRTL ? 'تسليم مشروع' : 'Submit Project'}
+                </h2>
+                <p className="text-muted-foreground">
+                  {challenge.title_ar}
+                </p>
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Step Content */}
-          <ScrollArea className="max-h-96">
-            {currentStep === 1 && renderStep1()}
-            {currentStep === 2 && renderStep2()}
-            {currentStep === 3 && renderStep3()}
-            {currentStep === 4 && renderStep4()}
-          </ScrollArea>
-
-          {/* Navigation */}
-          <div className="flex justify-between">
-            <div className="flex gap-2">
-              <Button 
-                variant="outline" 
-                onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
-                disabled={currentStep === 1}
-              >
-                السابق
-              </Button>
-              <Button 
-                variant="ghost"
-                onClick={() => handleSubmit(true)}
-                disabled={!formData.title_ar || !formData.description_ar}
-              >
-                حفظ كمسودة
-              </Button>
             </div>
 
-            {currentStep < 4 ? (
-              <Button 
-                onClick={() => setCurrentStep(currentStep + 1)}
-                disabled={
-                  currentStep === 1 && (!formData.title_ar || !formData.description_ar)
-                }
+            {/* Progress */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span>{isRTL ? 'التقدم' : 'Progress'}</span>
+                <span>{currentStep} / {totalSteps}</span>
+              </div>
+              <Progress value={progress} className="h-2" />
+            </div>
+
+            {/* Steps */}
+            <div className="flex justify-between">
+              {steps.map((step) => {
+                const Icon = step.icon;
+                const isActive = currentStep === step.number;
+                const isCompleted = currentStep > step.number;
+                
+                return (
+                  <div key={step.number} className="flex flex-col items-center space-y-2 flex-1">
+                    <div className={cn(
+                      "w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200",
+                      isActive && "bg-primary text-primary-foreground scale-110",
+                      isCompleted && "bg-green-500 text-white",
+                      !isActive && !isCompleted && "bg-muted text-muted-foreground"
+                    )}>
+                      {isCompleted ? (
+                        <CheckCircle className="w-5 h-5" />
+                      ) : (
+                        <Icon className="w-5 h-5" />
+                      )}
+                    </div>
+                    <div className="text-center">
+                      <p className="text-xs font-medium">{step.title}</p>
+                      <p className="text-xs text-muted-foreground hidden md:block">
+                        {step.description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </DialogHeader>
+
+        {/* Content */}
+        <div className="py-6">
+          {renderStepContent()}
+        </div>
+
+        {/* Footer */}
+        <div className="flex justify-between pt-4 border-t">
+          <Button
+            variant="outline"
+            onClick={handlePrevious}
+            disabled={currentStep === 1}
+            className="transition-all duration-200"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            {isRTL ? 'السابق' : 'Previous'}
+          </Button>
+
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              onClick={handleSubmitDraft}
+              disabled={!submissionData.title || !submissionData.description}
+            >
+              {isRTL ? 'حفظ كمسودة' : 'Save Draft'}
+              <Save className="w-4 h-4 ml-2" />
+            </Button>
+
+            {currentStep < totalSteps ? (
+              <Button
+                onClick={handleNext}
+                disabled={!validateCurrentStep()}
+                className="transition-all duration-200"
               >
-                التالي
+                {isRTL ? 'التالي' : 'Next'}
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             ) : (
-              <Button 
-                onClick={() => handleSubmit(false)}
-                disabled={!formData.title_ar || !formData.description_ar}
+              <Button
+                onClick={handleSubmit}
+                disabled={!validateCurrentStep() || loading}
+                className="transition-all duration-200"
               >
-                <Send className="h-4 w-4 mr-2" />
-                إرسال المشاركة
+                {loading ? (
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                ) : (
+                  <Send className="w-4 h-4 mr-2" />
+                )}
+                {isRTL ? 'تسليم المشروع' : 'Submit Project'}
               </Button>
             )}
           </div>
@@ -479,4 +670,4 @@ export function ChallengeSubmissionDialog({
       </DialogContent>
     </Dialog>
   );
-}
+};
