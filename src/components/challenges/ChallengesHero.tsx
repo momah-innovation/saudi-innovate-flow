@@ -22,6 +22,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
+import { challengesPageConfig } from '@/config/challengesPageConfig';
 
 interface ChallengesHeroProps {
   totalChallenges: number;
@@ -62,10 +63,10 @@ export const ChallengesHero = ({
   );
 
   const stats = [
-    { icon: Target, value: totalChallenges, label: isRTL ? 'تحدي' : 'challenges', color: 'text-blue-400' },
-    { icon: Award, value: activeChallenges, label: isRTL ? 'نشط' : 'active', color: 'text-green-400' },
-    { icon: Users, value: `${Math.floor(totalParticipants / 1000)}K+`, label: isRTL ? 'مشارك' : 'participants', color: 'text-purple-400' },
-    { icon: Trophy, value: `${Math.floor(totalPrizes / 1000000)}M+`, label: isRTL ? 'ر.س' : 'SAR', color: 'text-yellow-400' }
+    { icon: Target, value: totalChallenges, label: isRTL ? 'تحدي' : 'challenges', color: challengesPageConfig.ui.colors.stats.blue },
+    { icon: Award, value: activeChallenges, label: isRTL ? 'نشط' : 'active', color: challengesPageConfig.ui.colors.stats.green },
+    { icon: Users, value: `${Math.floor(totalParticipants / 1000)}K+`, label: isRTL ? 'مشارك' : 'participants', color: challengesPageConfig.ui.colors.stats.purple },
+    { icon: Trophy, value: `${Math.floor(totalPrizes / 1000000)}M+`, label: isRTL ? 'ر.س' : 'SAR', color: challengesPageConfig.ui.colors.stats.yellow }
   ];
 
   useEffect(() => {
@@ -274,7 +275,7 @@ export const ChallengesHero = ({
             <div className="grid grid-cols-2 gap-4">
               <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <Calendar className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+                  <Calendar className={`w-8 h-8 ${challengesPageConfig.ui.colors.stats.blue} mx-auto mb-2`} />
                   <div className="text-sm font-medium text-white">
                     {isRTL ? 'التحديات القادمة' : 'Upcoming'}
                   </div>
@@ -286,7 +287,7 @@ export const ChallengesHero = ({
 
               <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <Star className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
+                  <Star className={`w-8 h-8 ${challengesPageConfig.ui.colors.stats.yellow} mx-auto mb-2`} />
                   <div className="text-sm font-medium text-white">
                     {isRTL ? 'المفضلة' : 'Favorites'}
                   </div>

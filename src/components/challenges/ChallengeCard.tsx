@@ -131,7 +131,7 @@ export const ChallengeCard = ({
           <div className="flex items-start gap-4">
             {/* Challenge Image */}
             <div className="relative flex-shrink-0">
-              <div className="w-20 h-20 rounded-lg overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+              <div className={`w-20 h-20 rounded-lg overflow-hidden ${challengesPageConfig.ui.gradients.featured}`}>
                 {challenge.image_url ? (
                   <img 
                     src={challenge.image_url} 
@@ -235,7 +235,7 @@ export const ChallengeCard = ({
                       size="sm" 
                       onClick={() => onParticipate(challenge)}
                       disabled={challenge.status !== 'active' && challenge.status !== 'published'}
-                      className="ml-2 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white border-0 shadow-md transition-all duration-300 hover:scale-105"
+                      className={`ml-2 ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} text-white border-0 shadow-md ${challengesPageConfig.ui.effects.hoverScale}`}
                     >
                       {isRTL ? 'شارك' : 'Join'}
                     </Button>
@@ -272,13 +272,13 @@ export const ChallengeCard = ({
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+          <div className={`w-full h-full ${challengesPageConfig.ui.gradients.featured} flex items-center justify-center`}>
             <Target className="w-16 h-16 text-primary/40" />
           </div>
         )}
         
         {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <div className={`absolute inset-0 ${challengesPageConfig.ui.colors.background.overlay} bg-gradient-to-t from-black/60 via-transparent to-transparent`} />
         
         {/* Status Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
@@ -306,19 +306,19 @@ export const ChallengeCard = ({
             icon={<Heart className={cn("w-4 h-4", isLiked && "fill-current text-red-500")} />}
             tooltip={isRTL ? 'أعجبني' : 'Like'}
             onClick={handleLike}
-            className="bg-white/80 hover:bg-white"
+            className={`${challengesPageConfig.ui.glassMorphism.medium} hover:bg-white`}
           />
           <IconActionButton
             icon={<BookmarkIcon className={cn("w-4 h-4", isBookmarked && "fill-current")} />}
             tooltip={isRTL ? 'حفظ' : 'Bookmark'}
             onClick={handleBookmark}
-            className="bg-white/80 hover:bg-white"
+            className={`${challengesPageConfig.ui.glassMorphism.medium} hover:bg-white`}
           />
           <IconActionButton
             icon={<Share2 className="w-4 h-4" />}
             tooltip={isRTL ? 'مشاركة' : 'Share'}
             onClick={handleShare}
-            className="bg-white/80 hover:bg-white"
+            className={`${challengesPageConfig.ui.glassMorphism.medium} hover:bg-white`}
           />
         </div>
 
@@ -334,7 +334,7 @@ export const ChallengeCard = ({
 
         {/* Prize */}
         <div className="absolute bottom-3 right-3">
-          <div className="bg-white/95 backdrop-blur-sm rounded-lg p-2 text-center min-w-[4rem]">
+          <div className={`${challengesPageConfig.ui.glassMorphism.heavy} rounded-lg p-2 text-center min-w-[4rem]`}>
             <div className="text-xs font-medium text-muted-foreground">
               {isRTL ? 'الجائزة' : 'Prize'}
             </div>
@@ -417,16 +417,16 @@ export const ChallengeCard = ({
         {/* Stats */}
         {variant !== 'compact' && (
           <div className="grid grid-cols-3 gap-3 mb-4">
-            <div className="text-center p-3 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200/50 rounded-xl shadow-sm">
-              <div className="text-lg font-bold text-violet-700">{challenge.participants || 0}</div>
+            <div className={`text-center p-3 ${challengesPageConfig.ui.gradients.featured} border border-violet-200/50 rounded-xl shadow-sm`}>
+              <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.purple}`}>{challenge.participants || 0}</div>
               <div className="text-xs text-violet-600">{isRTL ? 'مشارك' : 'participants'}</div>
             </div>
-            <div className="text-center p-3 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200/50 rounded-xl shadow-sm">
-              <div className="text-lg font-bold text-blue-700">{challenge.submissions || 0}</div>
+            <div className={`text-center p-3 ${challengesPageConfig.ui.gradients.info} border border-blue-200/50 rounded-xl shadow-sm`}>
+              <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.blue}`}>{challenge.submissions || 0}</div>
               <div className="text-xs text-blue-600">{isRTL ? 'مقترح' : 'submissions'}</div>
             </div>
-            <div className="text-center p-3 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200/50 rounded-xl shadow-sm">
-              <div className="text-lg font-bold text-emerald-700">{challenge.success_rate || 85}%</div>
+            <div className={`text-center p-3 ${challengesPageConfig.ui.gradients.success} border border-emerald-200/50 rounded-xl shadow-sm`}>
+              <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.green}`}>{challenge.success_rate || 85}%</div>
               <div className="text-xs text-emerald-600">{isRTL ? 'نجاح' : 'success'}</div>
             </div>
           </div>
@@ -442,7 +442,7 @@ export const ChallengeCard = ({
           />
           <Button 
             onClick={() => onParticipate(challenge)}
-            className="flex-1 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white border-0 shadow-md transition-all duration-300 hover:scale-105"
+            className={`flex-1 ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} text-white border-0 shadow-md ${challengesPageConfig.ui.effects.hoverScale}`}
             disabled={challenge.status !== 'active' && challenge.status !== 'published'}
           >
             <Zap className="w-4 h-4 mr-2" />

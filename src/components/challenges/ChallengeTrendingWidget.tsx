@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
-import { getPriorityMapping, getCategoryMapping } from '@/config/challengesPageConfig';
+import { getPriorityMapping, getCategoryMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 
 interface TrendingChallenge {
   id: string;
@@ -149,7 +149,7 @@ export const ChallengeTrendingWidget = ({
     <Card className={className}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-orange-500" />
+          <TrendingUp className={`w-5 h-5 ${challengesPageConfig.ui.colors.stats.orange}`} />
           {isRTL ? 'التحديات الرائجة' : 'Trending Challenges'}
           <Badge variant="secondary" className="ml-auto">
             {trendingChallenges.length}
@@ -225,7 +225,7 @@ export const ChallengeTrendingWidget = ({
                         {isRTL ? 'رائج' : 'Trending'}
                       </span>
                     </div>
-                    <div className="flex-1 h-px bg-gradient-to-r from-orange-200 to-transparent"></div>
+                    <div className={`flex-1 h-px ${challengesPageConfig.ui.gradients.warning}`}></div>
                   </div>
                 </div>
               </div>

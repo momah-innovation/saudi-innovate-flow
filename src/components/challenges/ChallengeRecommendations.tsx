@@ -20,7 +20,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { getPriorityMapping } from '@/config/challengesPageConfig';
+import { getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 
 interface Challenge {
   id: string;
@@ -176,7 +176,7 @@ export const ChallengeRecommendations = ({
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Trending Challenges */}
-      <Card className="border-orange-200 bg-gradient-to-br from-orange-50 to-orange-100/50">
+      <Card className={`border-orange-200 ${challengesPageConfig.ui.gradients.warning}`}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-orange-800">
             <TrendingUp className="w-5 h-5 text-orange-600" />
@@ -199,11 +199,11 @@ export const ChallengeRecommendations = ({
               {recommendations.map((challenge) => (
                 <div 
                   key={challenge.id}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-white/60 hover:bg-white/80 transition-all cursor-pointer group border border-orange-200/50"
+                  className={`flex items-center gap-3 p-3 rounded-lg ${challengesPageConfig.ui.glassMorphism.card} ${challengesPageConfig.ui.effects.interactive} group border border-orange-200/50`}
                   onClick={() => onChallengeSelect(challenge)}
                 >
                   <div className="flex-shrink-0">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-sm font-bold">
+                    <div className={`w-10 h-10 rounded-full ${challengesPageConfig.ui.gradients.warning} flex items-center justify-center text-white text-sm font-bold`}>
                       {getPriorityIcon(challenge.priority_level)}
                     </div>
                   </div>
@@ -238,7 +238,7 @@ export const ChallengeRecommendations = ({
 
       {/* Personalized Recommendations */}
       {user && personalizedChallenges.length > 0 && (
-        <Card className="border-purple-200 bg-gradient-to-br from-purple-50 to-purple-100/50">
+        <Card className={`border-purple-200 ${challengesPageConfig.ui.gradients.featured}`}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-purple-800">
               <Sparkles className="w-5 h-5 text-purple-600" />
@@ -253,11 +253,11 @@ export const ChallengeRecommendations = ({
               {personalizedChallenges.map((challenge) => (
                 <div 
                   key={challenge.id}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-white/60 hover:bg-white/80 transition-all cursor-pointer group border border-purple-200/50"
+                  className={`flex items-center gap-3 p-3 rounded-lg ${challengesPageConfig.ui.glassMorphism.card} ${challengesPageConfig.ui.effects.interactive} group border border-purple-200/50`}
                   onClick={() => onChallengeSelect(challenge)}
                 >
                   <div className="flex-shrink-0">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+                    <div className={`w-10 h-10 rounded-full ${challengesPageConfig.ui.gradients.featured} flex items-center justify-center`}>
                       <Lightbulb className="w-5 h-5 text-white" />
                     </div>
                   </div>
@@ -279,7 +279,7 @@ export const ChallengeRecommendations = ({
                     </div>
                   </div>
 
-                  <ChevronRight className="w-4 h-4 text-purple-400 group-hover:text-purple-600 transition-colors" />
+                  <ChevronRight className={`w-4 h-4 ${challengesPageConfig.ui.colors.stats.purple} group-hover:text-purple-600 transition-colors`} />
                 </div>
               ))}
             </div>
@@ -288,7 +288,7 @@ export const ChallengeRecommendations = ({
       )}
 
       {/* Quick Actions */}
-      <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100/50">
+      <Card className={`border-blue-200 ${challengesPageConfig.ui.gradients.info}`}>
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">

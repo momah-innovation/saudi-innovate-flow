@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
+import { challengesPageConfig } from '@/config/challengesPageConfig';
 
 interface ChallengeSkeletonProps {
   viewMode?: 'cards' | 'list' | 'grid';
@@ -156,7 +157,7 @@ export const ChallengeEmptyState = ({
     {actionLabel && onAction && (
       <button
         onClick={onAction}
-        className="px-6 py-3 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white rounded-lg border-0 shadow-lg transition-all duration-300 hover:scale-105 animate-fade-in"
+        className={`px-6 py-3 ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} text-white rounded-lg border-0 shadow-lg ${challengesPageConfig.ui.effects.hoverScale} ${challengesPageConfig.ui.animations.fadeIn}`}
       >
         {actionLabel}
       </button>

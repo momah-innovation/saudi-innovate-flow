@@ -33,6 +33,7 @@ import {
   Download,
   Eye
 } from 'lucide-react';
+import { challengesPageConfig } from '@/config/challengesPageConfig';
 
 interface ChallengeViewDialogProps {
   open: boolean;
@@ -301,7 +302,7 @@ export function ChallengeViewDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden p-0">
         {/* Header with Hero Image */}
-        <div className="relative h-48 bg-gradient-to-r from-primary to-primary-glow overflow-hidden">
+        <div className={`relative h-48 ${challengesPageConfig.ui.gradients.hero} overflow-hidden`}>
           {challenge.image_url && (
             <img 
               src={challenge.image_url} 
@@ -309,7 +310,7 @@ export function ChallengeViewDialog({
               className="w-full h-full object-cover opacity-50"
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className={`absolute inset-0 ${challengesPageConfig.ui.colors.background.overlay} bg-gradient-to-t from-black/60 to-transparent`} />
           
           {/* Status Badge */}
           <div className="absolute top-4 right-4">
@@ -323,7 +324,7 @@ export function ChallengeViewDialog({
             <Button
               size="sm"
               variant="secondary"
-              className="bg-white/20 backdrop-blur-sm hover:bg-white/30"
+              className={`${challengesPageConfig.ui.glassMorphism.medium} hover:bg-white/30`}
             >
               <Share2 className="w-4 h-4" />
             </Button>
