@@ -140,8 +140,8 @@ export const InnovatorDashboard = () => {
 
   const getSensitivityIcon = (sensitivity: string) => {
     switch (sensitivity) {
-      case 'confidential': return <AlertTriangle className="h-4 w-4 text-red-500" />;
-      case 'sensitive': return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+      case 'confidential': return <AlertTriangle className="h-4 w-4 icon-confidential" />;
+      case 'sensitive': return <AlertTriangle className="h-4 w-4 icon-sensitive" />;
       default: return null;
     }
   };
@@ -290,7 +290,7 @@ export const InnovatorDashboard = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">High Priority</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-red-500" />
+            <AlertTriangle className="h-4 w-4 icon-confidential" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">

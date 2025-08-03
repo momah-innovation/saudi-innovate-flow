@@ -44,10 +44,10 @@ export const EnhancedEvaluationHero = ({
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    { icon: ClipboardCheck, value: totalEvaluations, label: isRTL ? 'تقييم' : 'evaluations', color: 'text-blue-400' },
-    { icon: Clock, value: pendingEvaluations, label: isRTL ? 'معلق' : 'pending', color: 'text-orange-400' },
-    { icon: CheckCircle, value: completedEvaluations, label: isRTL ? 'مكتمل' : 'completed', color: 'text-green-400' },
-    { icon: Star, value: `${averageScore}/10`, label: isRTL ? 'متوسط النقاط' : 'avg score', color: 'text-yellow-400' }
+    { icon: ClipboardCheck, value: totalEvaluations, label: isRTL ? 'تقييم' : 'evaluations', color: 'hero-stats-ideas' },
+    { icon: Clock, value: pendingEvaluations, label: isRTL ? 'معلق' : 'pending', color: 'hero-stats-score' },
+    { icon: CheckCircle, value: completedEvaluations, label: isRTL ? 'مكتمل' : 'completed', color: 'hero-stats-challenges' },
+    { icon: Star, value: `${averageScore}/10`, label: isRTL ? 'متوسط النقاط' : 'avg score', color: 'hero-stats-score' }
   ];
 
   useEffect(() => {
@@ -68,8 +68,8 @@ export const EnhancedEvaluationHero = ({
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-20 left-1/3 w-64 h-64 bg-purple-400/5 rounded-full blur-2xl animate-bounce" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 hero-bg-accent rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-20 left-1/3 w-64 h-64 hero-bg-secondary rounded-full blur-2xl animate-bounce" />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -80,7 +80,7 @@ export const EnhancedEvaluationHero = ({
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-primary/10 backdrop-blur-sm rounded-xl border border-primary/20">
-                  <Sparkles className="w-6 h-6 text-yellow-300" />
+                  <Sparkles className="w-6 h-6 icon-sparkle" />
                 </div>
                 <Badge variant="secondary" className="bg-primary/10 text-primary-foreground border-primary/20 backdrop-blur-sm">
                   <Star className="w-3 h-3 mr-1" />
@@ -179,14 +179,14 @@ export const EnhancedEvaluationHero = ({
                   </div>
                   
                   <div className="absolute top-4 left-4">
-                    <Badge className="bg-green-500/90 text-white border-0 animate-pulse">
+                    <Badge className="badge-success text-success-foreground animate-pulse">
                       <TrendingUp className="w-3 h-3 mr-1" />
                       {isRTL ? 'تحليلات مباشرة' : 'Live Analytics'}
                     </Badge>
                   </div>
 
                   <div className="absolute top-4 right-4">
-                    <Badge className="bg-blue-500/90 text-white border-0">
+                    <Badge className="badge-info text-info-foreground">
                       <Users className="w-3 h-3 mr-1" />
                       {isRTL ? 'تقييم جماعي' : 'Collaborative'}
                     </Badge>
@@ -202,13 +202,13 @@ export const EnhancedEvaluationHero = ({
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-green-300">
+                      <div className="text-2xl font-bold hero-stats-challenges">
                         {Math.round((completedEvaluations / Math.max(totalEvaluations, 1)) * 100)}%
                       </div>
                       <div className="text-sm text-white/70">{isRTL ? 'معدل الإنجاز' : 'completion rate'}</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-yellow-300">
+                      <div className="text-2xl font-bold hero-stats-score">
                         {averageScore.toFixed(1)}
                       </div>
                       <div className="text-sm text-white/70">{isRTL ? 'متوسط النقاط' : 'average score'}</div>
@@ -234,7 +234,7 @@ export const EnhancedEvaluationHero = ({
             <div className="grid grid-cols-2 gap-4">
               <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <Clock className="w-8 h-8 text-orange-400 mx-auto mb-2" />
+                  <Clock className="w-8 h-8 hero-stats-score mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
                     {isRTL ? 'في الانتظار' : 'Pending Review'}
                   </div>
@@ -246,7 +246,7 @@ export const EnhancedEvaluationHero = ({
 
               <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <FileText className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+                  <FileText className="w-8 h-8 hero-stats-ideas mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
                     {isRTL ? 'التقارير' : 'Reports'}
                   </div>
