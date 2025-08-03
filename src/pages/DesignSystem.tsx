@@ -9,7 +9,8 @@ import {
   Plus, Minus, Filter, ArrowUpDown, Grid, List, Bell,
   Shield, Lock, Unlock, User, CreditCard, Gift,
   Loader2, Wifi, WifiOff, Battery, Volume2, VolumeX,
-  Send, MessageCircle
+  Send, MessageCircle, MoreVertical, HelpCircle,
+  GripVertical, Move, Maximize2, Minimize2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -1952,6 +1953,533 @@ const DesignSystem = () => {
           </TabsContent>
 
           {/* Interactions Tab */}
+          <TabsContent value="interactions" className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Interactive Components</h2>
+              
+              <div className="space-y-6">
+                <ComponentShowcase title="Modal & Dialog Systems">
+                  <div className="space-y-4">
+                    <div className="flex gap-3">
+                      <Button>Simple Modal</Button>
+                      <Button variant="outline">Confirmation Dialog</Button>
+                      <Button variant="destructive">Delete Warning</Button>
+                    </div>
+                    
+                    <div className="border rounded-lg p-6 bg-black/5">
+                      <h4 className="font-medium mb-4">Modal Preview</h4>
+                      <div className="bg-background border rounded-lg shadow-lg p-6 max-w-md mx-auto">
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="text-lg font-semibold">Create New Challenge</h3>
+                          <Button variant="ghost" size="sm">
+                            <X className="w-4 h-4" />
+                          </Button>
+                        </div>
+                        <div className="space-y-4">
+                          <div>
+                            <label className="text-sm font-medium mb-2 block">Challenge Title</label>
+                            <input type="text" className="w-full p-2 border rounded-md" placeholder="Enter title" />
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium mb-2 block">Category</label>
+                            <select className="w-full p-2 border rounded-md">
+                              <option>AI & Machine Learning</option>
+                              <option>Healthcare</option>
+                              <option>Climate Tech</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="flex gap-2 mt-6">
+                          <Button className="flex-1">Create Challenge</Button>
+                          <Button variant="outline" className="flex-1">Cancel</Button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="border rounded-lg p-4 bg-destructive/5">
+                      <h4 className="font-medium mb-3">Confirmation Dialog</h4>
+                      <div className="bg-background border rounded-lg shadow-lg p-6 max-w-sm mx-auto">
+                        <div className="text-center">
+                          <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
+                          <h3 className="text-lg font-semibold mb-2">Delete Challenge?</h3>
+                          <p className="text-sm text-muted-foreground mb-6">
+                            This action cannot be undone. This will permanently delete the challenge and all associated data.
+                          </p>
+                          <div className="flex gap-2">
+                            <Button variant="destructive" className="flex-1">Delete</Button>
+                            <Button variant="outline" className="flex-1">Cancel</Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Dropdown Menus & Context Menus">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-medium mb-4">Dropdown Menu</h4>
+                      <div className="space-y-4">
+                        <div className="relative inline-block">
+                          <Button variant="outline">
+                            Actions
+                            <ChevronDown className="w-4 h-4 ml-2" />
+                          </Button>
+                        </div>
+                        
+                        <div className="border rounded-lg shadow-lg bg-background p-1 max-w-48">
+                          <div className="py-1">
+                            <a href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
+                              <Edit className="w-4 h-4" />
+                              Edit Challenge
+                            </a>
+                            <a href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
+                              <Copy className="w-4 h-4" />
+                              Duplicate
+                            </a>
+                            <a href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
+                              <Download className="w-4 h-4" />
+                              Export Data
+                            </a>
+                            <div className="border-t my-1"></div>
+                            <a href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-destructive/10 text-destructive rounded">
+                              <Trash2 className="w-4 h-4" />
+                              Delete
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-4">Context Menu</h4>
+                      <div className="border rounded-lg p-4 bg-muted/30 text-center cursor-context-menu">
+                        <p className="text-sm text-muted-foreground mb-2">Right-click anywhere in this area</p>
+                        <div className="border rounded-lg shadow-lg bg-background p-1 max-w-48 mx-auto">
+                          <div className="py-1">
+                            <a href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
+                              <Copy className="w-4 h-4" />
+                              Copy
+                            </a>
+                            <a href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
+                              <Edit className="w-4 h-4" />
+                              Edit
+                            </a>
+                            <a href="#" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded">
+                              <Search className="w-4 h-4" />
+                              Inspect
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Tooltips & Popovers">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-medium mb-4">Tooltip Examples</h4>
+                      <div className="space-y-4">
+                        <div className="flex gap-4 items-center">
+                          <div className="relative group">
+                            <Button variant="outline">
+                              <HelpCircle className="w-4 h-4" />
+                            </Button>
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block">
+                              <div className="bg-foreground text-background text-xs rounded py-1 px-2 whitespace-nowrap">
+                                Click for help
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-foreground"></div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="relative group">
+                            <Button>
+                              <Settings className="w-4 h-4" />
+                            </Button>
+                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 hidden group-hover:block">
+                              <div className="bg-foreground text-background text-xs rounded py-1 px-2 whitespace-nowrap">
+                                Settings
+                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-b-foreground"></div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="relative group">
+                            <Button variant="destructive">
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                            <div className="absolute bottom-full right-0 mb-2 hidden group-hover:block">
+                              <div className="bg-foreground text-background text-xs rounded py-1 px-2 whitespace-nowrap">
+                                Delete permanently
+                                <div className="absolute top-full right-2 border-4 border-transparent border-t-foreground"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-4">Popover Content</h4>
+                      <div className="space-y-4">
+                        <Button variant="outline">
+                          User Profile
+                          <ChevronDown className="w-4 h-4 ml-2" />
+                        </Button>
+                        
+                        <div className="border rounded-lg shadow-lg bg-background p-4 max-w-64">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-medium">
+                              JD
+                            </div>
+                            <div>
+                              <p className="font-medium">John Doe</p>
+                              <p className="text-sm text-muted-foreground">AI Researcher</p>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-2 text-sm">
+                              <Mail className="w-4 h-4 text-muted-foreground" />
+                              john@example.com
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <MapPin className="w-4 h-4 text-muted-foreground" />
+                              San Francisco, CA
+                            </div>
+                          </div>
+                          <div className="border-t mt-3 pt-3">
+                            <Button size="sm" className="w-full">View Profile</Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Accordion & Collapsible Content">
+                  <div className="space-y-4">
+                    <div className="border rounded-lg overflow-hidden">
+                      <div className="border-b">
+                        <button className="w-full flex items-center justify-between p-4 text-left hover:bg-accent">
+                          <span className="font-medium">Challenge Guidelines</span>
+                          <ChevronDown className="w-4 h-4" />
+                        </button>
+                        <div className="p-4 bg-muted/30">
+                          <p className="text-sm text-muted-foreground">
+                            All submissions must include original code, documentation, and a demo video. 
+                            Projects will be evaluated based on innovation, technical implementation, and potential impact.
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="border-b">
+                        <button className="w-full flex items-center justify-between p-4 text-left hover:bg-accent">
+                          <span className="font-medium">Submission Requirements</span>
+                          <ChevronRight className="w-4 h-4" />
+                        </button>
+                      </div>
+                      
+                      <div className="border-b">
+                        <button className="w-full flex items-center justify-between p-4 text-left hover:bg-accent">
+                          <span className="font-medium">Judging Criteria</span>
+                          <ChevronRight className="w-4 h-4" />
+                        </button>
+                      </div>
+                      
+                      <div>
+                        <button className="w-full flex items-center justify-between p-4 text-left hover:bg-accent">
+                          <span className="font-medium">Prize Information</span>
+                          <ChevronDown className="w-4 h-4" />
+                        </button>
+                        <div className="p-4 bg-muted/30">
+                          <div className="space-y-2">
+                            <div className="flex justify-between">
+                              <span>🥇 First Place</span>
+                              <span className="font-medium">$50,000</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>🥈 Second Place</span>
+                              <span className="font-medium">$25,000</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>🥉 Third Place</span>
+                              <span className="font-medium">$10,000</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Calendar & Date Picker">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-medium mb-4">Date Picker</h4>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="text-sm font-medium mb-2 block">Challenge Deadline</label>
+                          <div className="relative">
+                            <input 
+                              type="text" 
+                              className="w-full p-3 border rounded-lg pr-10" 
+                              placeholder="Select date"
+                              value="March 15, 2024"
+                              readOnly
+                            />
+                            <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                          </div>
+                        </div>
+                        
+                        <div className="border rounded-lg p-4 bg-background shadow-lg max-w-sm">
+                          <div className="flex items-center justify-between mb-4">
+                            <Button variant="ghost" size="sm">
+                              <ChevronLeft className="w-4 h-4" />
+                            </Button>
+                            <span className="font-medium">March 2024</span>
+                            <Button variant="ghost" size="sm">
+                              <ChevronRight className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          
+                          <div className="grid grid-cols-7 gap-1 mb-2">
+                            {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => (
+                              <div key={day} className="text-center text-xs font-medium text-muted-foreground p-2">
+                                {day}
+                              </div>
+                            ))}
+                          </div>
+                          
+                          <div className="grid grid-cols-7 gap-1">
+                            {Array.from({ length: 35 }, (_, i) => {
+                              const day = i - 5;
+                              const isCurrentMonth = day > 0 && day <= 31;
+                              const isSelected = day === 15;
+                              const isToday = day === 12;
+                              
+                              return (
+                                <button
+                                  key={i}
+                                  className={`text-center text-sm p-2 rounded hover:bg-accent ${
+                                    !isCurrentMonth ? 'text-muted-foreground' :
+                                    isSelected ? 'bg-primary text-primary-foreground' :
+                                    isToday ? 'bg-accent font-medium' : ''
+                                  }`}
+                                >
+                                  {isCurrentMonth ? day : ''}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-4">Time Picker</h4>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="text-sm font-medium mb-2 block">Submission Time</label>
+                          <div className="flex gap-2">
+                            <select className="flex-1 p-2 border rounded-md">
+                              {Array.from({ length: 12 }, (_, i) => (
+                                <option key={i} value={i + 1}>{i + 1}</option>
+                              ))}
+                            </select>
+                            <select className="flex-1 p-2 border rounded-md">
+                              {Array.from({ length: 60 }, (_, i) => (
+                                <option key={i} value={i.toString().padStart(2, '0')}>
+                                  {i.toString().padStart(2, '0')}
+                                </option>
+                              ))}
+                            </select>
+                            <select className="p-2 border rounded-md">
+                              <option>AM</option>
+                              <option>PM</option>
+                            </select>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <label className="text-sm font-medium mb-2 block">Duration</label>
+                          <div className="flex items-center gap-2">
+                            <input type="range" min="1" max="24" defaultValue="8" className="flex-1" />
+                            <span className="text-sm font-medium w-16">8 hours</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Drag & Drop Interfaces">
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="font-medium mb-4">Sortable Task List</h4>
+                      <div className="space-y-2 max-w-md">
+                        <div className="flex items-center gap-3 p-3 border rounded-lg bg-background cursor-move hover:shadow-md transition-shadow">
+                          <GripVertical className="w-4 h-4 text-muted-foreground" />
+                          <div className="flex-1">
+                            <p className="font-medium">Define project requirements</p>
+                            <p className="text-sm text-muted-foreground">High priority</p>
+                          </div>
+                          <Badge className="bg-destructive/90 text-destructive-foreground">High</Badge>
+                        </div>
+                        
+                        <div className="flex items-center gap-3 p-3 border rounded-lg bg-background cursor-move hover:shadow-md transition-shadow">
+                          <GripVertical className="w-4 h-4 text-muted-foreground" />
+                          <div className="flex-1">
+                            <p className="font-medium">Design system architecture</p>
+                            <p className="text-sm text-muted-foreground">Medium priority</p>
+                          </div>
+                          <Badge className="bg-warning/90 text-warning-foreground">Medium</Badge>
+                        </div>
+                        
+                        <div className="flex items-center gap-3 p-3 border rounded-lg bg-background cursor-move hover:shadow-md transition-shadow">
+                          <GripVertical className="w-4 h-4 text-muted-foreground" />
+                          <div className="flex-1">
+                            <p className="font-medium">Create documentation</p>
+                            <p className="text-sm text-muted-foreground">Low priority</p>
+                          </div>
+                          <Badge className="bg-success/90 text-success-foreground">Low</Badge>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-4">Kanban Board</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="border rounded-lg p-4 bg-muted/30">
+                          <h5 className="font-medium mb-3 flex items-center justify-between">
+                            To Do
+                            <Badge variant="secondary">3</Badge>
+                          </h5>
+                          <div className="space-y-2">
+                            <div className="p-3 bg-background border rounded-lg cursor-move hover:shadow-md transition-shadow">
+                              <p className="font-medium text-sm">AI Model Training</p>
+                              <p className="text-xs text-muted-foreground mt-1">Due in 3 days</p>
+                            </div>
+                            <div className="p-3 bg-background border rounded-lg cursor-move hover:shadow-md transition-shadow">
+                              <p className="font-medium text-sm">Data Preprocessing</p>
+                              <p className="text-xs text-muted-foreground mt-1">Due in 5 days</p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="border rounded-lg p-4 bg-primary/5">
+                          <h5 className="font-medium mb-3 flex items-center justify-between">
+                            In Progress
+                            <Badge variant="secondary">2</Badge>
+                          </h5>
+                          <div className="space-y-2">
+                            <div className="p-3 bg-background border rounded-lg cursor-move hover:shadow-md transition-shadow">
+                              <p className="font-medium text-sm">UI Development</p>
+                              <div className="w-full bg-muted rounded-full h-1.5 mt-2">
+                                <div className="bg-primary h-1.5 rounded-full" style={{ width: '60%' }}></div>
+                              </div>
+                            </div>
+                            <div className="p-3 bg-background border rounded-lg cursor-move hover:shadow-md transition-shadow">
+                              <p className="font-medium text-sm">API Integration</p>
+                              <div className="w-full bg-muted rounded-full h-1.5 mt-2">
+                                <div className="bg-primary h-1.5 rounded-full" style={{ width: '30%' }}></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="border rounded-lg p-4 bg-success/5">
+                          <h5 className="font-medium mb-3 flex items-center justify-between">
+                            Done
+                            <Badge variant="secondary">4</Badge>
+                          </h5>
+                          <div className="space-y-2">
+                            <div className="p-3 bg-background border rounded-lg opacity-75">
+                              <p className="font-medium text-sm">Project Setup</p>
+                              <div className="flex items-center gap-1 mt-1">
+                                <CheckCircle className="w-3 h-3 text-success" />
+                                <span className="text-xs text-success">Completed</span>
+                              </div>
+                            </div>
+                            <div className="p-3 bg-background border rounded-lg opacity-75">
+                              <p className="font-medium text-sm">Research Phase</p>
+                              <div className="flex items-center gap-1 mt-1">
+                                <CheckCircle className="w-3 h-3 text-success" />
+                                <span className="text-xs text-success">Completed</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                <ComponentShowcase title="Resizable Panels & Layouts">
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="font-medium mb-4">Split Pane Layout</h4>
+                      <div className="border rounded-lg overflow-hidden h-64 flex">
+                        <div className="w-1/3 bg-muted/30 p-4 border-r">
+                          <h5 className="font-medium mb-2">Sidebar</h5>
+                          <p className="text-sm text-muted-foreground">Resizable sidebar content</p>
+                        </div>
+                        <div className="w-1 bg-border cursor-col-resize hover:bg-accent flex items-center justify-center">
+                          <GripVertical className="w-3 h-3 text-muted-foreground rotate-90" />
+                        </div>
+                        <div className="flex-1 p-4">
+                          <h5 className="font-medium mb-2">Main Content</h5>
+                          <p className="text-sm text-muted-foreground">
+                            This area adjusts as you resize the sidebar. Drag the divider to test.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-4">Resizable Cards</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="relative border rounded-lg p-4 bg-background min-h-32">
+                          <div className="flex items-center justify-between mb-2">
+                            <h5 className="font-medium">Chart Widget</h5>
+                            <div className="flex gap-1">
+                              <Button variant="ghost" size="sm">
+                                <Minimize2 className="w-3 h-3" />
+                              </Button>
+                              <Button variant="ghost" size="sm">
+                                <Maximize2 className="w-3 h-3" />
+                              </Button>
+                            </div>
+                          </div>
+                          <p className="text-sm text-muted-foreground">Resizable chart content</p>
+                          <div className="absolute bottom-1 right-1 w-3 h-3 bg-muted cursor-se-resize"></div>
+                        </div>
+                        
+                        <div className="relative border rounded-lg p-4 bg-background min-h-32">
+                          <div className="flex items-center justify-between mb-2">
+                            <h5 className="font-medium">Data Table</h5>
+                            <div className="flex gap-1">
+                              <Button variant="ghost" size="sm">
+                                <Minimize2 className="w-3 h-3" />
+                              </Button>
+                              <Button variant="ghost" size="sm">
+                                <Maximize2 className="w-3 h-3" />
+                              </Button>
+                            </div>
+                          </div>
+                          <p className="text-sm text-muted-foreground">Resizable table widget</p>
+                          <div className="absolute bottom-1 right-1 w-3 h-3 bg-muted cursor-se-resize"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Spacing Tab */}
           <TabsContent value="spacing" className="space-y-8">
             <div>
               <h2 className="text-2xl font-bold mb-6">Spacing & Layout</h2>
