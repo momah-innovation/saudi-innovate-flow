@@ -17,7 +17,8 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { getPriorityMapping } from '@/config/challengesPageConfig';
+import { getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
+import { cn } from '@/lib/utils';
 
 interface ChallengeCreateDialogProps {
   open: boolean;
@@ -337,13 +338,13 @@ export function ChallengeCreateDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className={cn("max-w-3xl max-h-[90vh] overflow-y-auto", challengesPageConfig.ui.glassMorphism.heavy)}>
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Plus className="h-5 w-5" />
+          <DialogTitle className={cn("flex items-center gap-2", challengesPageConfig.ui.colors.text.primary)}>
+            <Plus className={cn("h-5 w-5", challengesPageConfig.ui.colors.stats.green)} />
             إنشاء تحدي جديد
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className={challengesPageConfig.ui.colors.text.secondary}>
             الخطوة {currentStep} من 3 - {
               currentStep === 1 ? 'المعلومات الأساسية' :
               currentStep === 2 ? 'التوقيت والميزانية' : 'التفاصيل النهائية'
@@ -356,28 +357,39 @@ export function ChallengeCreateDialog({
           <div className="flex items-center gap-2">
             {[1, 2, 3].map((step) => (
               <div key={step} className="flex items-center gap-2">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                  step === currentStep ? 'bg-primary text-primary-foreground' :
-                  step < currentStep ? 'bg-green-500 text-white' : 'bg-muted text-muted-foreground'
-                }`}>
+                <div className={cn(
+                  "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all",
+                  step === currentStep ? cn(challengesPageConfig.ui.gradients.button, "text-white") :
+                  step < currentStep ? cn(challengesPageConfig.ui.gradients.success, "text-white") : 
+                  challengesPageConfig.ui.glassMorphism.light
+                )}>
                   {step < currentStep ? '✓' : step}
                 </div>
-                {step < 3 && <div className={`w-12 h-0.5 ${step < currentStep ? 'bg-green-500' : 'bg-muted'}`} />}
+                {step < 3 && (
+                  <div className={cn(
+                    "w-12 h-0.5 transition-all",
+                    step < currentStep ? challengesPageConfig.ui.gradients.success.replace('bg-gradient-to-r', 'bg-gradient-to-r') : 
+                    challengesPageConfig.ui.glassMorphism.light
+                  )} />
+                )}
               </div>
             ))}
           </div>
 
           {/* Step Content */}
-          {currentStep === 1 && renderStep1()}
-          {currentStep === 2 && renderStep2()}
-          {currentStep === 3 && renderStep3()}
+          <div className={cn("space-y-4", challengesPageConfig.ui.animations.fadeIn)}>
+            {currentStep === 1 && renderStep1()}
+            {currentStep === 2 && renderStep2()}
+            {currentStep === 3 && renderStep3()}
+          </div>
 
           {/* Navigation Buttons */}
-          <div className="flex justify-between">
+          <div className="flex justify-between pt-4 border-t border-white/10">
             <Button 
               variant="outline" 
               onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
               disabled={currentStep === 1}
+              className={challengesPageConfig.ui.glassMorphism.light}
             >
               السابق
             </Button>
@@ -388,6 +400,11 @@ export function ChallengeCreateDialog({
                 disabled={
                   currentStep === 1 && (!formData.title_ar || !formData.description_ar || !formData.challenge_type)
                 }
+                className={cn(
+                  challengesPageConfig.ui.gradients.button,
+                  challengesPageConfig.ui.gradients.buttonHover,
+                  challengesPageConfig.ui.effects.hoverScale
+                )}
               >
                 التالي
               </Button>
@@ -395,6 +412,10 @@ export function ChallengeCreateDialog({
               <Button 
                 onClick={handleCreateChallenge}
                 disabled={!formData.title_ar || !formData.description_ar || !formData.challenge_type}
+                className={cn(
+                  challengesPageConfig.ui.gradients.success,
+                  challengesPageConfig.ui.effects.hoverScale
+                )}
               >
                 <CheckCircle className="h-4 w-4 mr-2" />
                 إنشاء التحدي

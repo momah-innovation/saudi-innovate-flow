@@ -10,6 +10,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { challengesPageConfig } from '@/config/challengesPageConfig';
+import { cn } from '@/lib/utils';
 import {
   Users,
   Search,
@@ -148,35 +150,35 @@ export const ChallengeExpertAssignmentWizard = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
+      <DialogContent className={cn("max-w-4xl max-h-[90vh] overflow-hidden", challengesPageConfig.ui.glassMorphism.heavy)}>
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Users className="w-5 h-5" />
+          <DialogTitle className={cn("flex items-center gap-2", challengesPageConfig.ui.colors.text.primary)}>
+            <Users className={cn("w-5 h-5", challengesPageConfig.ui.colors.stats.purple)} />
             {isRTL ? 'تعيين خبراء للتحدي' : 'Assign Experts to Challenge'}
           </DialogTitle>
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto space-y-6">
           <div>
-            <h3 className="text-lg font-semibold mb-4">
+            <h3 className={cn("text-lg font-semibold mb-4", challengesPageConfig.ui.colors.text.primary)}>
               {isRTL ? 'اختيار الخبراء' : 'Select Experts'}
             </h3>
 
             {/* Search */}
             <div className="relative mb-4">
-              <Search className="w-4 h-4 absolute left-3 top-3 text-muted-foreground" />
+              <Search className={cn("w-4 h-4 absolute left-3 top-3", challengesPageConfig.ui.colors.text.muted)} />
               <Input
                 placeholder={isRTL ? 'البحث في الخبراء...' : 'Search experts...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+                className={cn("pl-10", challengesPageConfig.ui.effects.focus)}
               />
             </div>
 
             {/* Selected Experts Summary */}
             {selectedExperts.length > 0 && (
-              <div className="mb-4 p-3 bg-primary/10 border border-primary/20 rounded-lg">
-                <p className="text-sm font-medium">
+              <div className={cn("mb-4 p-3 rounded-lg", challengesPageConfig.ui.glassMorphism.medium)}>
+                <p className={cn("text-sm font-medium", challengesPageConfig.ui.colors.text.primary)}>
                   {isRTL ? `تم اختيار ${selectedExperts.length} خبير` : `${selectedExperts.length} expert(s) selected`}
                 </p>
               </div>
@@ -189,33 +191,36 @@ export const ChallengeExpertAssignmentWizard = ({
                 return (
                   <Card 
                     key={expert.id} 
-                    className={`cursor-pointer transition-all duration-200 ${
-                      isSelected ? 'border-primary bg-primary/5' : 'hover:border-primary/50'
-                    }`}
+                    className={cn(
+                      "cursor-pointer transition-all duration-200",
+                      challengesPageConfig.ui.glassMorphism.card,
+                      challengesPageConfig.ui.effects.hoverScale,
+                      isSelected && challengesPageConfig.ui.glassMorphism.cardActive
+                    )}
                     onClick={() => handleExpertSelection(expert.id)}
                   >
                     <CardContent className="p-4">
                       <div className="flex items-start gap-3">
                         <Avatar className="w-10 h-10">
                           <AvatarImage src={expert.profiles.profile_image_url} />
-                          <AvatarFallback>
+                          <AvatarFallback className={challengesPageConfig.ui.glassMorphism.light}>
                             {expert.profiles.display_name?.charAt(0) || 'E'}
                           </AvatarFallback>
                         </Avatar>
 
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-1">
-                            <h4 className="font-medium truncate">
+                            <h4 className={cn("font-medium truncate", challengesPageConfig.ui.colors.text.primary)}>
                               {expert.profiles.display_name || (isRTL ? 'خبير' : 'Expert')}
                             </h4>
-                            {isSelected && <CheckCircle className="w-4 h-4 text-primary" />}
+                            {isSelected && <CheckCircle className={cn("w-4 h-4", challengesPageConfig.ui.colors.stats.green)} />}
                           </div>
 
-                          <p className="text-sm text-muted-foreground mb-2">
+                          <p className={cn("text-sm mb-2", challengesPageConfig.ui.colors.text.muted)}>
                             {expert.specialization || (isRTL ? 'تخصص عام' : 'General Expertise')}
                           </p>
 
-                          <Badge variant="outline">
+                          <Badge variant="outline" className={challengesPageConfig.ui.glassMorphism.badge}>
                             {isRTL ? 'عضو فريق' : 'Team Member'}
                           </Badge>
                         </div>
@@ -227,13 +232,22 @@ export const ChallengeExpertAssignmentWizard = ({
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
+            <Button 
+              variant="outline" 
+              onClick={() => onOpenChange(false)}
+              className={challengesPageConfig.ui.glassMorphism.light}
+            >
               {isRTL ? 'إلغاء' : 'Cancel'}
             </Button>
             <Button 
               onClick={handleAssignExperts}
               disabled={loading || selectedExperts.length === 0}
+              className={cn(
+                challengesPageConfig.ui.gradients.button,
+                challengesPageConfig.ui.gradients.buttonHover,
+                challengesPageConfig.ui.effects.hoverScale
+              )}
             >
               {loading ? (
                 <div className="flex items-center gap-2">

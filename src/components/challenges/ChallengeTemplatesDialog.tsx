@@ -266,13 +266,22 @@ export const ChallengeTemplatesDialog = ({
   };
 
   const TemplateCard = ({ template }: { template: ChallengeTemplate }) => (
-    <Card className="hover:shadow-lg transition-all duration-200 cursor-pointer group" 
+    <Card className={cn(
+      "cursor-pointer group transition-all duration-200",
+      challengesPageConfig.ui.glassMorphism.card,
+      challengesPageConfig.ui.effects.hoverScale,
+      challengesPageConfig.ui.effects.hoverGlow
+    )} 
           onClick={() => handleTemplateSelect(template)}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2">
             {getCategoryIcon(template.category)}
-            <CardTitle className="text-lg group-hover:text-primary transition-colors">
+            <CardTitle className={cn(
+              "text-lg transition-colors",
+              challengesPageConfig.ui.colors.text.primary,
+              "group-hover:" + challengesPageConfig.ui.colors.stats.blue.replace('text-', 'text-')
+            )}>
               {isRTL ? template.name_ar : template.name_en}
             </CardTitle>
             {template.is_featured && (
@@ -284,27 +293,27 @@ export const ChallengeTemplatesDialog = ({
           </div>
         </div>
         
-        <p className="text-sm text-muted-foreground line-clamp-2">
+        <p className={cn("text-sm line-clamp-2", challengesPageConfig.ui.colors.text.muted)}>
           {isRTL ? template.description_ar : template.description_en}
         </p>
       </CardHeader>
       
       <CardContent className="space-y-4">
         <div className="flex flex-wrap gap-2">
-          <Badge variant="outline" className={getDifficultyColor(template.difficulty)}>
+          <Badge variant="outline" className={cn(getDifficultyColor(template.difficulty), challengesPageConfig.ui.glassMorphism.badge)}>
             {template.difficulty}
           </Badge>
-          <Badge variant="outline">
+          <Badge variant="outline" className={challengesPageConfig.ui.glassMorphism.badge}>
             <Clock className="w-3 h-3 mr-1" />
             {template.estimated_duration} {isRTL ? 'يوم' : 'days'}
           </Badge>
-          <Badge variant="outline">
+          <Badge variant="outline" className={challengesPageConfig.ui.glassMorphism.badge}>
             <Award className="w-3 h-3 mr-1" />
             {Math.floor(template.suggested_budget / 1000)}K {isRTL ? 'ر.س' : 'SAR'}
           </Badge>
         </div>
         
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
+        <div className={cn("flex items-center justify-between text-sm", challengesPageConfig.ui.colors.text.muted)}>
           <div className="flex items-center gap-1">
             <Users className="w-3 h-3" />
             <span>{template.usage_count} {isRTL ? 'استخدام' : 'uses'}</span>
@@ -312,7 +321,11 @@ export const ChallengeTemplatesDialog = ({
           <span>{template.timeline_phases.length} {isRTL ? 'مراحل' : 'phases'}</span>
         </div>
         
-        <Button className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+        <Button className={cn(
+          "w-full transition-colors",
+          challengesPageConfig.ui.gradients.button,
+          challengesPageConfig.ui.gradients.buttonHover
+        )}>
           {isRTL ? 'استخدام القالب' : 'Use Template'}
         </Button>
       </CardContent>
@@ -321,10 +334,10 @@ export const ChallengeTemplatesDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className={cn("max-w-6xl max-h-[90vh] overflow-y-auto", challengesPageConfig.ui.glassMorphism.heavy)}>
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl">
-            <FileText className="w-6 h-6 text-primary" />
+          <DialogTitle className={cn("flex items-center gap-2 text-xl", challengesPageConfig.ui.colors.text.primary)}>
+            <FileText className={cn("w-6 h-6", challengesPageConfig.ui.colors.stats.blue)} />
             {isRTL ? 'قوالب التحديات' : 'Challenge Templates'}
           </DialogTitle>
         </DialogHeader>
@@ -332,20 +345,20 @@ export const ChallengeTemplatesDialog = ({
         {/* Filters */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div className="relative">
-            <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+            <Search className={cn("absolute left-3 top-3 w-4 h-4", challengesPageConfig.ui.colors.text.muted)} />
             <Input
               placeholder={isRTL ? 'البحث في القوالب...' : 'Search templates...'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
+              className={cn("pl-10", challengesPageConfig.ui.effects.focus)}
             />
           </div>
           
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger>
+            <SelectTrigger className={challengesPageConfig.ui.glassMorphism.light}>
               <SelectValue placeholder={isRTL ? 'الفئة' : 'Category'} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className={challengesPageConfig.ui.glassMorphism.heavy}>
               <SelectItem value="all">{isRTL ? 'جميع الفئات' : 'All Categories'}</SelectItem>
               {getFilterOptions('category').filter(cat => cat.value !== 'all').map((category) => (
                 <SelectItem key={category.value} value={category.value}>
@@ -356,10 +369,10 @@ export const ChallengeTemplatesDialog = ({
           </Select>
           
           <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-            <SelectTrigger>
+            <SelectTrigger className={challengesPageConfig.ui.glassMorphism.light}>
               <SelectValue placeholder={isRTL ? 'المستوى' : 'Difficulty'} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className={challengesPageConfig.ui.glassMorphism.heavy}>
               <SelectItem value="all">{isRTL ? 'جميع المستويات' : 'All Levels'}</SelectItem>
               {getFilterOptions('difficulty').filter(diff => diff.value !== 'all').map((difficulty) => (
                 <SelectItem key={difficulty.value} value={difficulty.value}>
@@ -374,18 +387,18 @@ export const ChallengeTemplatesDialog = ({
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
-              <Card key={i} className="animate-pulse">
+              <Card key={i} className={cn("animate-pulse", challengesPageConfig.ui.glassMorphism.card)}>
                 <CardHeader>
-                  <div className="h-4 bg-muted rounded w-3/4" />
-                  <div className="h-3 bg-muted rounded w-full" />
+                  <div className={cn("h-4 rounded w-3/4", challengesPageConfig.ui.glassMorphism.light)} />
+                  <div className={cn("h-3 rounded w-full", challengesPageConfig.ui.glassMorphism.light)} />
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     <div className="flex gap-2">
-                      <div className="h-5 bg-muted rounded w-16" />
-                      <div className="h-5 bg-muted rounded w-20" />
+                      <div className={cn("h-5 rounded w-16", challengesPageConfig.ui.glassMorphism.light)} />
+                      <div className={cn("h-5 rounded w-20", challengesPageConfig.ui.glassMorphism.light)} />
                     </div>
-                    <div className="h-9 bg-muted rounded" />
+                    <div className={cn("h-9 rounded", challengesPageConfig.ui.glassMorphism.light)} />
                   </div>
                 </CardContent>
               </Card>
@@ -393,16 +406,16 @@ export const ChallengeTemplatesDialog = ({
           </div>
         ) : filteredTemplates.length === 0 ? (
           <div className="text-center py-12">
-            <FileText className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-lg font-medium text-muted-foreground mb-2">
+            <FileText className={cn("w-16 h-16 mx-auto mb-4", challengesPageConfig.ui.colors.text.muted)} />
+            <h3 className={cn("text-lg font-medium mb-2", challengesPageConfig.ui.colors.text.muted)}>
               {isRTL ? 'لم يتم العثور على قوالب' : 'No templates found'}
             </h3>
-            <p className="text-muted-foreground">
+            <p className={challengesPageConfig.ui.colors.text.muted}>
               {isRTL ? 'جرب تعديل معايير البحث' : 'Try adjusting your search criteria'}
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
+          <div className={cn("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6", challengesPageConfig.ui.animations.fadeIn)}>
             {filteredTemplates.map((template) => (
               <TemplateCard key={template.id} template={template} />
             ))}

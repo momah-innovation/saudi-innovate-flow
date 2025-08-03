@@ -27,6 +27,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { challengesPageConfig } from '@/config/challengesPageConfig';
 import { cn } from '@/lib/utils';
 
 interface Challenge {

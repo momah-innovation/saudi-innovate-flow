@@ -16,6 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { cn } from '@/lib/utils';
 
 interface ChallengeCommentsDialogProps {
   open: boolean;
@@ -326,13 +327,13 @@ export function ChallengeCommentsDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col">
+      <DialogContent className={cn("max-w-2xl max-h-[80vh] flex flex-col", challengesPageConfig.ui.glassMorphism.heavy)}>
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5" />
+          <DialogTitle className={cn("flex items-center gap-2", challengesPageConfig.ui.colors.text.primary)}>
+            <MessageSquare className={cn("h-5 w-5", challengesPageConfig.ui.colors.stats.blue)} />
             تعليقات التحدي
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className={challengesPageConfig.ui.colors.text.secondary}>
             {challenge.title_ar}
           </DialogDescription>
         </DialogHeader>
@@ -342,17 +343,17 @@ export function ChallengeCommentsDialog({
           <div className="space-y-6">
             {loading ? (
               <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                <p className="text-muted-foreground mt-2">جاري تحميل التعليقات...</p>
+                <div className={cn("animate-spin rounded-full h-8 w-8 border-b-2 mx-auto", challengesPageConfig.ui.colors.stats.blue.replace('text-', 'border-'))}></div>
+                <p className={cn("mt-2", challengesPageConfig.ui.colors.text.muted)}>جاري تحميل التعليقات...</p>
               </div>
             ) : organizedComments.length > 0 ? (
               organizedComments.map(comment => renderComment(comment))
             ) : (
-              <Card className="bg-muted/50">
+              <Card className={challengesPageConfig.ui.glassMorphism.light}>
                 <CardContent className="p-6 text-center">
-                  <MessageSquare className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
-                  <p className="text-muted-foreground">لا توجد تعليقات بعد</p>
-                  <p className="text-sm text-muted-foreground">كن أول من يعلق على هذا التحدي</p>
+                  <MessageSquare className={cn("h-12 w-12 mx-auto mb-3", challengesPageConfig.ui.colors.text.muted)} />
+                  <p className={challengesPageConfig.ui.colors.text.muted}>لا توجد تعليقات بعد</p>
+                  <p className={cn("text-sm", challengesPageConfig.ui.colors.text.muted)}>كن أول من يعلق على هذا التحدي</p>
                 </CardContent>
               </Card>
             )}
@@ -360,17 +361,23 @@ export function ChallengeCommentsDialog({
         </ScrollArea>
 
         {/* Add Comment */}
-        <div className="border-t pt-4 space-y-3">
+        <div className="border-t pt-4 space-y-3 border-white/10">
           <Textarea
             placeholder="شاركنا رأيك أو اطرح سؤالاً..."
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             rows={3}
+            className={cn("transition-all duration-200", challengesPageConfig.ui.effects.focus)}
           />
           <div className="flex justify-end">
             <Button 
               onClick={handleAddComment}
               disabled={!newComment.trim()}
+              className={cn(
+                challengesPageConfig.ui.gradients.button,
+                challengesPageConfig.ui.gradients.buttonHover,
+                challengesPageConfig.ui.effects.hoverScale
+              )}
             >
               <Send className="h-4 w-4 mr-2" />
               إرسال التعليق
