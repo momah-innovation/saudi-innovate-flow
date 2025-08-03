@@ -1071,10 +1071,404 @@ const DesignSystem = () => {
                       </div>
                     </div>
                   </div>
-                </ComponentShowcase>
-              </div>
-            </div>
-          </TabsContent>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Multi-step Form Wizard">
+                   <div className="space-y-6">
+                     <div className="flex items-center justify-between mb-6">
+                       <div className="flex items-center space-x-4">
+                         <div className="flex items-center">
+                           <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">
+                             ✓
+                           </div>
+                           <span className="ml-2 text-sm font-medium">Personal Info</span>
+                         </div>
+                         <div className="w-12 h-0.5 bg-primary"></div>
+                         <div className="flex items-center">
+                           <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">
+                             2
+                           </div>
+                           <span className="ml-2 text-sm font-medium">Account Setup</span>
+                         </div>
+                         <div className="w-12 h-0.5 bg-muted"></div>
+                         <div className="flex items-center">
+                           <div className="w-8 h-8 bg-muted text-muted-foreground rounded-full flex items-center justify-center text-sm font-medium">
+                             3
+                           </div>
+                           <span className="ml-2 text-sm text-muted-foreground">Preferences</span>
+                         </div>
+                         <div className="w-12 h-0.5 bg-muted"></div>
+                         <div className="flex items-center">
+                           <div className="w-8 h-8 bg-muted text-muted-foreground rounded-full flex items-center justify-center text-sm font-medium">
+                             4
+                           </div>
+                           <span className="ml-2 text-sm text-muted-foreground">Complete</span>
+                         </div>
+                       </div>
+                     </div>
+                     
+                     <Card className="p-6">
+                       <h4 className="font-medium mb-4">Step 2: Account Setup</h4>
+                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Username</label>
+                           <input 
+                             type="text" 
+                             className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary" 
+                             placeholder="Choose a username"
+                           />
+                         </div>
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Password</label>
+                           <input 
+                             type="password" 
+                             className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary" 
+                             placeholder="Create a password"
+                           />
+                         </div>
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Confirm Password</label>
+                           <input 
+                             type="password" 
+                             className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary" 
+                             placeholder="Confirm your password"
+                           />
+                         </div>
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Security Question</label>
+                           <select className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background">
+                             <option>What was your first pet's name?</option>
+                             <option>What city were you born in?</option>
+                             <option>What's your mother's maiden name?</option>
+                           </select>
+                         </div>
+                       </div>
+                       <div className="flex justify-between mt-6">
+                         <Button variant="outline">
+                           <ChevronLeft className="w-4 h-4 mr-2" />
+                           Previous
+                         </Button>
+                         <Button>
+                           Next Step
+                           <ChevronRight className="w-4 h-4 ml-2" />
+                         </Button>
+                       </div>
+                     </Card>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Form Validation & Error Handling">
+                   <div className="space-y-6">
+                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                       <div className="space-y-4">
+                         <h4 className="font-medium">Validation States</h4>
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Valid Input</label>
+                           <input 
+                             type="email" 
+                             className="w-full p-3 border border-success rounded-lg focus:ring-2 focus:ring-success/50" 
+                             value="user@example.com"
+                             readOnly
+                           />
+                           <p className="text-sm text-success mt-1 flex items-center gap-1">
+                             <CheckCircle className="w-4 h-4" />
+                             Email format is valid
+                           </p>
+                         </div>
+                         
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Invalid Input</label>
+                           <input 
+                             type="email" 
+                             className="w-full p-3 border border-destructive rounded-lg focus:ring-2 focus:ring-destructive/50" 
+                             value="invalid-email"
+                             readOnly
+                           />
+                           <p className="text-sm text-destructive mt-1 flex items-center gap-1">
+                             <AlertCircle className="w-4 h-4" />
+                             Please enter a valid email address
+                           </p>
+                         </div>
+                         
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Warning State</label>
+                           <input 
+                             type="password" 
+                             className="w-full p-3 border border-warning rounded-lg focus:ring-2 focus:ring-warning/50" 
+                             value="weak123"
+                             readOnly
+                           />
+                           <p className="text-sm text-warning mt-1 flex items-center gap-1">
+                             <AlertCircle className="w-4 h-4" />
+                             Password strength: Weak
+                           </p>
+                         </div>
+                       </div>
+                       
+                       <div className="space-y-4">
+                         <h4 className="font-medium">Real-time Validation</h4>
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Password Requirements</label>
+                           <input 
+                             type="password" 
+                             className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary" 
+                             placeholder="Enter password"
+                           />
+                           <div className="mt-2 space-y-1">
+                             <div className="flex items-center gap-2 text-sm">
+                               <CheckCircle className="w-4 h-4 text-success" />
+                               <span className="text-success">At least 8 characters</span>
+                             </div>
+                             <div className="flex items-center gap-2 text-sm">
+                               <CheckCircle className="w-4 h-4 text-success" />
+                               <span className="text-success">Contains uppercase letter</span>
+                             </div>
+                             <div className="flex items-center gap-2 text-sm">
+                               <X className="w-4 h-4 text-destructive" />
+                               <span className="text-destructive">Contains number</span>
+                             </div>
+                             <div className="flex items-center gap-2 text-sm">
+                               <X className="w-4 h-4 text-destructive" />
+                               <span className="text-destructive">Contains special character</span>
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Advanced Input Components">
+                   <div className="space-y-6">
+                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                       <div className="space-y-4">
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Date Range Picker</label>
+                           <div className="flex items-center gap-2">
+                             <input 
+                               type="date" 
+                               className="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary" 
+                               value="2024-01-01"
+                             />
+                             <span className="text-muted-foreground">to</span>
+                             <input 
+                               type="date" 
+                               className="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary" 
+                               value="2024-12-31"
+                             />
+                           </div>
+                         </div>
+                         
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Time Picker</label>
+                           <div className="flex items-center gap-2">
+                             <select className="flex-1 p-3 border rounded-lg bg-background">
+                               <option>09</option>
+                               <option>10</option>
+                               <option>11</option>
+                             </select>
+                             <span>:</span>
+                             <select className="flex-1 p-3 border rounded-lg bg-background">
+                               <option>00</option>
+                               <option>15</option>
+                               <option>30</option>
+                               <option>45</option>
+                             </select>
+                             <select className="flex-1 p-3 border rounded-lg bg-background">
+                               <option>AM</option>
+                               <option>PM</option>
+                             </select>
+                           </div>
+                         </div>
+                         
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Tags Input</label>
+                           <div className="flex flex-wrap gap-2 p-3 border rounded-lg min-h-[50px]">
+                             <Badge variant="secondary" className="flex items-center gap-1">
+                               React
+                               <X className="w-3 h-3 cursor-pointer" />
+                             </Badge>
+                             <Badge variant="secondary" className="flex items-center gap-1">
+                               TypeScript
+                               <X className="w-3 h-3 cursor-pointer" />
+                             </Badge>
+                             <Badge variant="secondary" className="flex items-center gap-1">
+                               Tailwind
+                               <X className="w-3 h-3 cursor-pointer" />
+                             </Badge>
+                             <input 
+                               type="text" 
+                               className="flex-1 min-w-[120px] outline-none bg-transparent" 
+                               placeholder="Add tag..."
+                             />
+                           </div>
+                         </div>
+                       </div>
+                       
+                       <div className="space-y-4">
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Slider Range</label>
+                           <div className="px-3">
+                             <div className="relative">
+                               <input 
+                                 type="range" 
+                                 min="0" 
+                                 max="100" 
+                                 value="75" 
+                                 className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer slider" 
+                               />
+                               <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                                 <span>0</span>
+                                 <span>50</span>
+                                 <span>100</span>
+                               </div>
+                             </div>
+                             <p className="text-sm text-center mt-2">Value: <span className="font-medium">75</span></p>
+                           </div>
+                         </div>
+                         
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Auto-complete</label>
+                           <div className="relative">
+                             <input 
+                               type="text" 
+                               className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary" 
+                               placeholder="Type to search..."
+                               value="react"
+                             />
+                             <div className="absolute top-full left-0 right-0 mt-1 bg-background border rounded-lg shadow-lg z-10">
+                               <div className="p-2 space-y-1">
+                                 <div className="px-3 py-2 bg-primary/10 text-primary rounded cursor-pointer">React</div>
+                                 <div className="px-3 py-2 hover:bg-accent rounded cursor-pointer">React Native</div>
+                                 <div className="px-3 py-2 hover:bg-accent rounded cursor-pointer">React Router</div>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                         
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Phone Number</label>
+                           <div className="flex">
+                             <select className="w-20 p-3 border border-r-0 rounded-l-lg bg-background">
+                               <option>🇺🇸 +1</option>
+                               <option>🇬🇧 +44</option>
+                               <option>🇩🇪 +49</option>
+                             </select>
+                             <input 
+                               type="tel" 
+                               className="flex-1 p-3 border rounded-r-lg focus:ring-2 focus:ring-primary/50 focus:border-primary" 
+                               placeholder="(555) 123-4567"
+                             />
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="File Upload & Rich Media">
+                   <div className="space-y-6">
+                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                       <div className="space-y-4">
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Drag & Drop Upload</label>
+                           <div className="border-2 border-dashed border-muted rounded-lg p-8 text-center hover:border-primary/50 transition-colors">
+                             <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                             <p className="text-sm font-medium mb-2">Drag files here or click to browse</p>
+                             <p className="text-xs text-muted-foreground">PNG, JPG, PDF up to 10MB</p>
+                             <Button variant="outline" size="sm" className="mt-3">
+                               Choose Files
+                             </Button>
+                           </div>
+                         </div>
+                         
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Upload Progress</label>
+                           <div className="space-y-3">
+                             <div className="flex items-center gap-3 p-3 border rounded-lg">
+                               <div className="w-8 h-8 bg-primary/10 rounded flex items-center justify-center">
+                                 📄
+                               </div>
+                               <div className="flex-1">
+                                 <p className="text-sm font-medium">document.pdf</p>
+                                 <div className="flex items-center gap-2 mt-1">
+                                   <div className="flex-1 h-1.5 bg-muted rounded-full">
+                                     <div className="w-3/4 h-full bg-primary rounded-full"></div>
+                                   </div>
+                                   <span className="text-xs text-muted-foreground">75%</span>
+                                 </div>
+                               </div>
+                               <Button variant="ghost" size="sm">
+                                 <X className="w-4 h-4" />
+                               </Button>
+                             </div>
+                             
+                             <div className="flex items-center gap-3 p-3 border border-success/20 bg-success/5 rounded-lg">
+                               <div className="w-8 h-8 bg-success/10 rounded flex items-center justify-center">
+                                 🖼️
+                               </div>
+                               <div className="flex-1">
+                                 <p className="text-sm font-medium">image.jpg</p>
+                                 <p className="text-xs text-success">Upload complete</p>
+                               </div>
+                               <CheckCircle className="w-4 h-4 text-success" />
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                       
+                       <div className="space-y-4">
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Rich Text Editor</label>
+                           <div className="border rounded-lg">
+                             <div className="flex items-center gap-1 p-2 border-b bg-muted/50">
+                               <Button variant="ghost" size="sm" className="h-8 w-8">
+                                 <strong>B</strong>
+                               </Button>
+                               <Button variant="ghost" size="sm" className="h-8 w-8">
+                                 <em>I</em>
+                               </Button>
+                               <Button variant="ghost" size="sm" className="h-8 w-8">
+                                 <u>U</u>
+                               </Button>
+                               <Separator orientation="vertical" className="h-6 mx-1" />
+                               <Button variant="ghost" size="sm" className="h-8 w-8">
+                                 📝
+                               </Button>
+                               <Button variant="ghost" size="sm" className="h-8 w-8">
+                                 🔗
+                               </Button>
+                               <Button variant="ghost" size="sm" className="h-8 w-8">
+                                 📎
+                               </Button>
+                             </div>
+                             <div className="p-4 min-h-[120px] text-sm">
+                               <p>This is a <strong>rich text editor</strong> with formatting options. You can make text <em>italic</em>, add <u>underlines</u>, and insert links.</p>
+                             </div>
+                           </div>
+                         </div>
+                         
+                         <div>
+                           <label className="text-sm font-medium mb-2 block">Image Preview</label>
+                           <div className="grid grid-cols-3 gap-2">
+                             <div className="aspect-square border rounded-lg overflow-hidden bg-muted flex items-center justify-center">
+                               <div className="text-2xl">🖼️</div>
+                             </div>
+                             <div className="aspect-square border rounded-lg overflow-hidden bg-muted flex items-center justify-center">
+                               <div className="text-2xl">📷</div>
+                             </div>
+                             <div className="aspect-square border-2 border-dashed border-muted rounded-lg flex items-center justify-center cursor-pointer hover:border-primary/50">
+                               <Plus className="w-6 h-6 text-muted-foreground" />
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+               </div>
+             </div>
+           </TabsContent>
 
           {/* Navigation Tab */}
           <TabsContent value="navigation" className="space-y-8">
@@ -5080,46 +5474,259 @@ const DesignSystem = () => {
                   </div>
                 </ComponentShowcase>
 
-                <ComponentShowcase title="Progress Indicators">
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Upload Progress</span>
-                        <span>75%</span>
-                      </div>
-                      <div className="w-full bg-muted rounded-full h-2">
-                        <div className="bg-primary h-2 rounded-full" style={{ width: '75%' }}></div>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Challenge Completion</span>
-                        <span>3 of 5 steps</span>
-                      </div>
-                      <div className="flex gap-2">
-                        <div className="flex-1 h-2 bg-success rounded-full"></div>
-                        <div className="flex-1 h-2 bg-success rounded-full"></div>
-                        <div className="flex-1 h-2 bg-success rounded-full"></div>
-                        <div className="flex-1 h-2 bg-muted rounded-full"></div>
-                        <div className="flex-1 h-2 bg-muted rounded-full"></div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="relative w-16 h-16">
-                        <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 64 64">
-                          <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" strokeWidth="4" className="text-muted" />
-                          <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" strokeWidth="4" className="text-primary" strokeDasharray="175.929" strokeDashoffset="52.778" strokeLinecap="round" />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-sm font-medium">70%</span>
-                        </div>
-                      </div>
-                      <div>
-                        <p className="font-medium">Project Progress</p>
-                        <p className="text-sm text-muted-foreground">7 out of 10 tasks completed</p>
-                      </div>
-                    </div>
-                  </div>
+                 <ComponentShowcase title="Progress Indicators">
+                   <div className="space-y-4">
+                     <div className="space-y-2">
+                       <div className="flex justify-between text-sm">
+                         <span>Upload Progress</span>
+                         <span>75%</span>
+                       </div>
+                       <div className="w-full bg-muted rounded-full h-2">
+                         <div className="bg-primary h-2 rounded-full transition-all duration-300" style={{ width: '75%' }}></div>
+                       </div>
+                     </div>
+                     <div className="space-y-2">
+                       <div className="flex justify-between text-sm">
+                         <span>Challenge Completion</span>
+                         <span>3 of 5 steps</span>
+                       </div>
+                       <div className="flex gap-2">
+                         <div className="flex-1 h-2 bg-success rounded-full"></div>
+                         <div className="flex-1 h-2 bg-success rounded-full"></div>
+                         <div className="flex-1 h-2 bg-success rounded-full"></div>
+                         <div className="flex-1 h-2 bg-muted rounded-full"></div>
+                         <div className="flex-1 h-2 bg-muted rounded-full"></div>
+                       </div>
+                     </div>
+                     <div className="space-y-2">
+                       <div className="flex justify-between text-sm">
+                         <span>Processing</span>
+                         <span className="flex items-center gap-2">
+                           <Loader2 className="w-3 h-3 animate-spin" />
+                           Processing...
+                         </span>
+                       </div>
+                       <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+                         <div className="bg-primary h-2 rounded-full animate-pulse w-1/3"></div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Network & Sync States">
+                   <div className="space-y-4">
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       <div className="space-y-3">
+                         <h4 className="text-sm font-medium">Network Status</h4>
+                         <div className="flex items-center gap-3 p-3 bg-success/10 border border-success/20 rounded-lg">
+                           <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+                           <span className="text-sm">Online - Fast Connection</span>
+                         </div>
+                         <div className="flex items-center gap-3 p-3 bg-warning/10 border border-warning/20 rounded-lg">
+                           <div className="w-2 h-2 bg-warning rounded-full animate-pulse"></div>
+                           <span className="text-sm">Online - Slow Connection</span>
+                         </div>
+                         <div className="flex items-center gap-3 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+                           <div className="w-2 h-2 bg-muted rounded-full"></div>
+                           <span className="text-sm text-muted-foreground">Offline</span>
+                         </div>
+                       </div>
+                       
+                       <div className="space-y-3">
+                         <h4 className="text-sm font-medium">Sync Status</h4>
+                         <div className="flex items-center gap-3 p-3 bg-success/10 border border-success/20 rounded-lg">
+                           <CheckCircle className="w-4 h-4 text-success" />
+                           <span className="text-sm">All changes saved</span>
+                         </div>
+                         <div className="flex items-center gap-3 p-3 bg-warning/10 border border-warning/20 rounded-lg">
+                           <Loader2 className="w-4 h-4 animate-spin text-warning" />
+                           <span className="text-sm">Syncing changes...</span>
+                         </div>
+                         <div className="flex items-center gap-3 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+                           <AlertCircle className="w-4 h-4 text-destructive" />
+                           <span className="text-sm">Sync failed - Retry?</span>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Authentication States">
+                   <div className="space-y-4">
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       <div className="space-y-3">
+                         <h4 className="text-sm font-medium">User Status</h4>
+                         <div className="flex items-center gap-3 p-3 border rounded-lg">
+                           <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                             <User className="w-4 h-4 text-white" />
+                           </div>
+                           <div className="flex-1">
+                             <p className="text-sm font-medium">John Doe</p>
+                             <p className="text-xs text-muted-foreground">Authenticated</p>
+                           </div>
+                           <div className="w-2 h-2 bg-success rounded-full"></div>
+                         </div>
+                         
+                         <div className="flex items-center gap-3 p-3 border rounded-lg">
+                           <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
+                             <User className="w-4 h-4 text-muted-foreground" />
+                           </div>
+                           <div className="flex-1">
+                             <p className="text-sm font-medium text-muted-foreground">Guest User</p>
+                             <p className="text-xs text-muted-foreground">Limited access</p>
+                           </div>
+                           <div className="w-2 h-2 bg-warning rounded-full"></div>
+                         </div>
+                       </div>
+
+                       <div className="space-y-3">
+                         <h4 className="text-sm font-medium">Session Status</h4>
+                         <div className="p-3 border border-success/20 bg-success/5 rounded-lg">
+                           <div className="flex items-center gap-2 mb-2">
+                             <Lock className="w-4 h-4 text-success" />
+                             <span className="text-sm font-medium text-success">Session Active</span>
+                           </div>
+                           <p className="text-xs text-muted-foreground">Expires in 4 hours</p>
+                         </div>
+                         
+                         <div className="p-3 border border-warning/20 bg-warning/5 rounded-lg">
+                           <div className="flex items-center gap-2 mb-2">
+                             <Clock className="w-4 h-4 text-warning" />
+                             <span className="text-sm font-medium text-warning">Session Expiring</span>
+                           </div>
+                           <p className="text-xs text-muted-foreground">5 minutes remaining</p>
+                           <Button variant="outline" size="sm" className="mt-2 h-6 text-xs">
+                             Extend Session
+                           </Button>
+                         </div>
+                         
+                         <div className="p-3 border border-destructive/20 bg-destructive/5 rounded-lg">
+                           <div className="flex items-center gap-2 mb-2">
+                             <Unlock className="w-4 h-4 text-destructive" />
+                             <span className="text-sm font-medium text-destructive">Session Expired</span>
+                           </div>
+                           <Button variant="outline" size="sm" className="mt-2 h-6 text-xs">
+                             Sign In Again
+                           </Button>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Permission & Access States">
+                   <div className="space-y-4">
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       <div className="space-y-3">
+                         <h4 className="text-sm font-medium">Resource Access</h4>
+                         <div className="flex items-center gap-3 p-3 bg-success/10 border border-success/20 rounded-lg">
+                           <CheckCircle className="w-4 h-4 text-success" />
+                           <span className="text-sm">Full Access Granted</span>
+                         </div>
+                         <div className="flex items-center gap-3 p-3 bg-warning/10 border border-warning/20 rounded-lg">
+                           <Shield className="w-4 h-4 text-warning" />
+                           <span className="text-sm">Read-Only Access</span>
+                         </div>
+                         <div className="flex items-center gap-3 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+                           <X className="w-4 h-4 text-destructive" />
+                           <span className="text-sm">Access Denied</span>
+                         </div>
+                       </div>
+
+                       <div className="space-y-3">
+                         <h4 className="text-sm font-medium">Permission Levels</h4>
+                         <div className="space-y-2">
+                           <div className="flex items-center justify-between p-2 border rounded">
+                             <span className="text-sm">Admin</span>
+                             <Badge variant="default" className="text-xs">Full Control</Badge>
+                           </div>
+                           <div className="flex items-center justify-between p-2 border rounded">
+                             <span className="text-sm">Moderator</span>
+                             <Badge variant="secondary" className="text-xs">Limited</Badge>
+                           </div>
+                           <div className="flex items-center justify-between p-2 border rounded">
+                             <span className="text-sm">User</span>
+                             <Badge variant="outline" className="text-xs">Basic</Badge>
+                           </div>
+                           <div className="flex items-center justify-between p-2 border rounded opacity-50">
+                             <span className="text-sm">Guest</span>
+                             <Badge variant="outline" className="text-xs opacity-50">No Access</Badge>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Notification States">
+                   <div className="space-y-4">
+                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                       <div className="space-y-3">
+                         <h4 className="text-sm font-medium">System Notifications</h4>
+                         <div className="space-y-2">
+                           <div className="flex items-start gap-3 p-3 border border-primary/20 bg-primary/5 rounded-lg">
+                             <Info className="w-4 h-4 text-primary mt-0.5" />
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">System Update Available</p>
+                               <p className="text-xs text-muted-foreground">New features and improvements</p>
+                             </div>
+                             <div className="w-2 h-2 bg-primary rounded-full"></div>
+                           </div>
+                           
+                           <div className="flex items-start gap-3 p-3 border border-success/20 bg-success/5 rounded-lg">
+                             <CheckCircle className="w-4 h-4 text-success mt-0.5" />
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">Backup Completed</p>
+                               <p className="text-xs text-muted-foreground">All data backed up successfully</p>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-start gap-3 p-3 border border-warning/20 bg-warning/5 rounded-lg">
+                             <AlertCircle className="w-4 h-4 text-warning mt-0.5" />
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">High CPU Usage</p>
+                               <p className="text-xs text-muted-foreground">Consider upgrading your plan</p>
+                             </div>
+                             <div className="w-2 h-2 bg-warning rounded-full animate-pulse"></div>
+                           </div>
+                         </div>
+                       </div>
+
+                       <div className="space-y-3">
+                         <h4 className="text-sm font-medium">User Notifications</h4>
+                         <div className="space-y-2">
+                           <div className="flex items-center gap-3 p-3 border rounded-lg">
+                             <Bell className="w-4 h-4 text-primary" />
+                             <div className="flex-1">
+                               <p className="text-sm font-medium">Notifications Enabled</p>
+                               <p className="text-xs text-muted-foreground">You'll receive all updates</p>
+                             </div>
+                           </div>
+                           
+                           <div className="flex items-center gap-3 p-3 border rounded-lg opacity-50">
+                             <Bell className="w-4 h-4 text-muted-foreground" />
+                             <div className="flex-1">
+                               <p className="text-sm font-medium text-muted-foreground">Notifications Disabled</p>
+                               <p className="text-xs text-muted-foreground">Enable to stay updated</p>
+                             </div>
+                           </div>
+
+                           <div className="relative">
+                             <div className="flex items-center gap-3 p-3 border rounded-lg">
+                               <Bell className="w-4 h-4 text-primary" />
+                               <div className="flex-1">
+                                 <p className="text-sm font-medium">Smart Notifications</p>
+                                 <p className="text-xs text-muted-foreground">Only important updates</p>
+                               </div>
+                             </div>
+                             <div className="absolute -top-1 -right-1 w-3 h-3 bg-destructive rounded-full flex items-center justify-center">
+                               <span className="text-xs text-white font-bold">3</span>
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
                 </ComponentShowcase>
               </div>
             </div>
