@@ -739,11 +739,11 @@ export function ExpertAssignmentManagement() {
                       </div>
                       <div className="flex flex-col items-end gap-2">
                         {isAvailable && !isOverloaded ? (
-                          <CheckCircle2 className="h-5 w-5 text-green-500" />
+                          <CheckCircle2 className="h-5 w-5 icon-success" />
                         ) : isOverloaded ? (
-                          <AlertCircle className="h-5 w-5 text-red-500" />
+                          <AlertCircle className="h-5 w-5 icon-error" />
                         ) : (
-                          <XCircle className="h-5 w-5 text-gray-400" />
+                          <XCircle className="h-5 w-5 text-muted-foreground" />
                         )}
                         <Badge variant={
                           isAvailable && !isOverloaded ? 'default' : 

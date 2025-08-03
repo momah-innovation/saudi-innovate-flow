@@ -217,9 +217,9 @@ export function FocusQuestionAnalytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">الأسئلة النشطة</p>
-                <p className="text-3xl font-bold text-green-600">{analytics.overview.activeQuestions}</p>
+                <p className="text-3xl font-bold hero-stats-challenges">{analytics.overview.activeQuestions}</p>
               </div>
-              <CheckCircle className="w-8 h-8 text-green-600" />
+              <CheckCircle className="w-8 h-8 icon-success" />
             </div>
           </CardContent>
         </Card>
@@ -229,9 +229,9 @@ export function FocusQuestionAnalytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">إجمالي الأفكار</p>
-                <p className="text-3xl font-bold text-blue-600">{analytics.overview.totalIdeas}</p>
+                <p className="text-3xl font-bold hero-stats-ideas">{analytics.overview.totalIdeas}</p>
               </div>
-              <Users className="w-8 h-8 text-blue-600" />
+              <Users className="w-8 h-8 icon-info" />
             </div>
           </CardContent>
         </Card>

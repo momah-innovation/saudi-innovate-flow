@@ -438,10 +438,10 @@ export function TeamWorkspaceContent({
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('completedTasks')}</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-500" />
+            <CheckCircle className="h-4 w-4 icon-success" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{teamData.metrics.completedTasks}</div>
+            <div className="text-2xl font-bold hero-stats-challenges">{teamData.metrics.completedTasks}</div>
             <p className="text-xs text-muted-foreground">+12% هذا الشهر</p>
           </CardContent>
         </Card>
@@ -449,10 +449,10 @@ export function TeamWorkspaceContent({
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('teamCapacity')}</CardTitle>
-            <Users className="h-4 w-4 text-blue-500" />
+            <Users className="h-4 w-4 icon-info" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{teamData.metrics.teamCapacity}%</div>
+            <div className="text-2xl font-bold hero-stats-users">{teamData.metrics.teamCapacity}%</div>
             <Progress value={teamData.metrics.teamCapacity} className="mt-2" />
           </CardContent>
         </Card>
