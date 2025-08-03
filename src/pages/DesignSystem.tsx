@@ -5839,98 +5839,575 @@ const DesignSystem = () => {
                 </ComponentShowcase>
 
                 <ComponentShowcase title="Data Tables">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm">
-                          <Filter className="w-4 h-4 mr-2" />
-                          Filter
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          <ArrowUpDown className="w-4 h-4 mr-2" />
-                          Sort
-                        </Button>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="sm">
-                          <List className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm">
-                          <Grid className="w-4 h-4" />
-                        </Button>
+                  <div className="space-y-8">
+
+                    {/* Basic Data Table */}
+                    <div>
+                      <h4 className="font-medium mb-4">Basic Data Table</h4>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Button variant="outline" size="sm">
+                              <Filter className="w-4 h-4 mr-2" />
+                              Filter
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <ArrowUpDown className="w-4 h-4 mr-2" />
+                              Sort
+                            </Button>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button variant="ghost" size="sm">
+                              <List className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <Grid className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="border rounded-lg overflow-hidden">
+                          <table className="w-full">
+                            <thead className="bg-muted/50">
+                              <tr>
+                                <th className="text-left p-4 font-medium">Name</th>
+                                <th className="text-left p-4 font-medium">Status</th>
+                                <th className="text-left p-4 font-medium">Participants</th>
+                                <th className="text-left p-4 font-medium">Prize</th>
+                                <th className="text-left p-4 font-medium">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr className="border-t hover:bg-muted/30">
+                                <td className="p-4">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                                      <Sparkles className="w-4 h-4 text-primary" />
+                                    </div>
+                                    <div>
+                                      <p className="font-medium">Climate Tech Innovation</p>
+                                      <p className="text-sm text-muted-foreground">Environmental solutions</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="p-4">
+                                  <Badge className="bg-success/90 text-success-foreground">Active</Badge>
+                                </td>
+                                <td className="p-4 text-muted-foreground">127</td>
+                                <td className="p-4 font-medium">$50,000</td>
+                                <td className="p-4">
+                                  <div className="flex items-center gap-2">
+                                    <Button variant="ghost" size="sm">
+                                      <Eye className="w-4 h-4" />
+                                    </Button>
+                                    <Button variant="ghost" size="sm">
+                                      <Edit className="w-4 h-4" />
+                                    </Button>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr className="border-t hover:bg-muted/30">
+                                <td className="p-4">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 bg-secondary/10 rounded-full flex items-center justify-center">
+                                      <CreditCard className="w-4 h-4 text-secondary" />
+                                    </div>
+                                    <div>
+                                      <p className="font-medium">Fintech Revolution</p>
+                                      <p className="text-sm text-muted-foreground">Digital banking solutions</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="p-4">
+                                  <Badge className="bg-warning/90 text-warning-foreground">Review</Badge>
+                                </td>
+                                <td className="p-4 text-muted-foreground">89</td>
+                                <td className="p-4 font-medium">$30,000</td>
+                                <td className="p-4">
+                                  <div className="flex items-center gap-2">
+                                    <Button variant="ghost" size="sm">
+                                      <Eye className="w-4 h-4" />
+                                    </Button>
+                                    <Button variant="ghost" size="sm">
+                                      <Edit className="w-4 h-4" />
+                                    </Button>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     </div>
-                    <div className="border rounded-lg overflow-hidden">
-                      <table className="w-full">
-                        <thead className="bg-muted/50">
-                          <tr>
-                            <th className="text-left p-4 font-medium">Name</th>
-                            <th className="text-left p-4 font-medium">Status</th>
-                            <th className="text-left p-4 font-medium">Participants</th>
-                            <th className="text-left p-4 font-medium">Prize</th>
-                            <th className="text-left p-4 font-medium">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr className="border-t hover:bg-muted/30">
-                            <td className="p-4">
-                              <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                                  <Sparkles className="w-4 h-4 text-primary" />
+
+                    {/* Compact Data Table */}
+                    <div>
+                      <h4 className="font-medium mb-4">Compact Data Table</h4>
+                      <div className="border rounded-lg overflow-hidden">
+                        <table className="w-full text-sm">
+                          <thead className="bg-muted/30">
+                            <tr>
+                              <th className="text-left p-2 font-medium">Challenge</th>
+                              <th className="text-left p-2 font-medium">Status</th>
+                              <th className="text-left p-2 font-medium">Users</th>
+                              <th className="text-left p-2 font-medium">Prize</th>
+                              <th className="text-left p-2 font-medium">Deadline</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="border-t hover:bg-muted/20">
+                              <td className="p-2">AI Healthcare</td>
+                              <td className="p-2"><Badge className="bg-success/90 text-success-foreground text-xs">Active</Badge></td>
+                              <td className="p-2">234</td>
+                              <td className="p-2 font-medium">$25K</td>
+                              <td className="p-2 text-muted-foreground">5 days</td>
+                            </tr>
+                            <tr className="border-t hover:bg-muted/20">
+                              <td className="p-2">Blockchain Security</td>
+                              <td className="p-2"><Badge className="bg-warning/90 text-warning-foreground text-xs">Review</Badge></td>
+                              <td className="p-2">89</td>
+                              <td className="p-2 font-medium">$15K</td>
+                              <td className="p-2 text-muted-foreground">2 days</td>
+                            </tr>
+                            <tr className="border-t hover:bg-muted/20">
+                              <td className="p-2">Space Innovation</td>
+                              <td className="p-2"><Badge className="bg-muted text-muted-foreground text-xs">Closed</Badge></td>
+                              <td className="p-2">456</td>
+                              <td className="p-2 font-medium">$100K</td>
+                              <td className="p-2 text-muted-foreground">Ended</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    {/* Selectable Rows Table */}
+                    <div>
+                      <h4 className="font-medium mb-4">Selectable Rows Table</h4>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <input type="checkbox" className="rounded border-muted-foreground" />
+                            <span className="text-sm text-muted-foreground">Select all</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button variant="outline" size="sm" disabled>
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Delete (0)
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Download className="w-4 h-4 mr-2" />
+                              Export
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="border rounded-lg overflow-hidden">
+                          <table className="w-full">
+                            <thead className="bg-muted/50">
+                              <tr>
+                                <th className="text-left p-4 w-12">
+                                  <input type="checkbox" className="rounded border-muted-foreground" />
+                                </th>
+                                <th className="text-left p-4 font-medium">Participant</th>
+                                <th className="text-left p-4 font-medium">Score</th>
+                                <th className="text-left p-4 font-medium">Submissions</th>
+                                <th className="text-left p-4 font-medium">Last Active</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr className="border-t hover:bg-muted/30 bg-primary/5">
+                                <td className="p-4">
+                                  <input type="checkbox" className="rounded border-muted-foreground" checked />
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                      A
+                                    </div>
+                                    <div>
+                                      <p className="font-medium">Ahmed Al-Rashid</p>
+                                      <p className="text-sm text-muted-foreground">Innovator Level</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-bold text-success">2,450</span>
+                                    <Badge className="bg-success/10 text-success">+150</Badge>
+                                  </div>
+                                </td>
+                                <td className="p-4 text-muted-foreground">12</td>
+                                <td className="p-4 text-muted-foreground">2 hours ago</td>
+                              </tr>
+                              <tr className="border-t hover:bg-muted/30">
+                                <td className="p-4">
+                                  <input type="checkbox" className="rounded border-muted-foreground" />
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                      S
+                                    </div>
+                                    <div>
+                                      <p className="font-medium">Sarah Chen</p>
+                                      <p className="text-sm text-muted-foreground">Expert Level</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-bold">1,890</span>
+                                    <Badge className="bg-warning/10 text-warning">+50</Badge>
+                                  </div>
+                                </td>
+                                <td className="p-4 text-muted-foreground">8</td>
+                                <td className="p-4 text-muted-foreground">1 day ago</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Sortable Columns Table */}
+                    <div>
+                      <h4 className="font-medium mb-4">Sortable Columns Table</h4>
+                      <div className="border rounded-lg overflow-hidden">
+                        <table className="w-full">
+                          <thead className="bg-muted/50">
+                            <tr>
+                              <th className="text-left p-4 font-medium cursor-pointer hover:bg-muted/30">
+                                <div className="flex items-center gap-2">
+                                  Challenge Name
+                                  <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
                                 </div>
-                                <div>
-                                  <p className="font-medium">Climate Tech Innovation</p>
-                                  <p className="text-sm text-muted-foreground">Environmental solutions</p>
+                              </th>
+                              <th className="text-left p-4 font-medium cursor-pointer hover:bg-muted/30">
+                                <div className="flex items-center gap-2">
+                                  Created Date
+                                  <ChevronDown className="w-4 h-4 text-primary" />
                                 </div>
+                              </th>
+                              <th className="text-left p-4 font-medium cursor-pointer hover:bg-muted/30">
+                                <div className="flex items-center gap-2">
+                                  Prize Amount
+                                  <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
+                                </div>
+                              </th>
+                              <th className="text-left p-4 font-medium cursor-pointer hover:bg-muted/30">
+                                <div className="flex items-center gap-2">
+                                  Participants
+                                  <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="border-t hover:bg-muted/30">
+                              <td className="p-4 font-medium">AI for Climate Action</td>
+                              <td className="p-4 text-muted-foreground">Mar 15, 2024</td>
+                              <td className="p-4 text-success font-semibold">$100,000</td>
+                              <td className="p-4">
+                                <div className="flex items-center gap-2">
+                                  <span>234</span>
+                                  <Progress value={78} className="w-16 h-2" />
+                                </div>
+                              </td>
+                            </tr>
+                            <tr className="border-t hover:bg-muted/30">
+                              <td className="p-4 font-medium">Smart City Solutions</td>
+                              <td className="p-4 text-muted-foreground">Mar 10, 2024</td>
+                              <td className="p-4 text-success font-semibold">$75,000</td>
+                              <td className="p-4">
+                                <div className="flex items-center gap-2">
+                                  <span>156</span>
+                                  <Progress value={52} className="w-16 h-2" />
+                                </div>
+                              </td>
+                            </tr>
+                            <tr className="border-t hover:bg-muted/30">
+                              <td className="p-4 font-medium">Blockchain Security</td>
+                              <td className="p-4 text-muted-foreground">Mar 8, 2024</td>
+                              <td className="p-4 text-success font-semibold">$50,000</td>
+                              <td className="p-4">
+                                <div className="flex items-center gap-2">
+                                  <span>89</span>
+                                  <Progress value={30} className="w-16 h-2" />
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    {/* Expandable Rows Table */}
+                    <div>
+                      <h4 className="font-medium mb-4">Expandable Rows Table</h4>
+                      <div className="border rounded-lg overflow-hidden">
+                        <table className="w-full">
+                          <thead className="bg-muted/50">
+                            <tr>
+                              <th className="text-left p-4 w-12"></th>
+                              <th className="text-left p-4 font-medium">Project</th>
+                              <th className="text-left p-4 font-medium">Status</th>
+                              <th className="text-left p-4 font-medium">Progress</th>
+                              <th className="text-left p-4 font-medium">Team</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="border-t hover:bg-muted/30">
+                              <td className="p-4">
+                                <Button variant="ghost" size="sm" className="p-0 h-6 w-6">
+                                  <ChevronRight className="w-4 h-4" />
+                                </Button>
+                              </td>
+                              <td className="p-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-8 h-8 bg-innovation/20 rounded-lg flex items-center justify-center">
+                                    <Sparkles className="w-4 h-4 text-innovation" />
+                                  </div>
+                                  <div>
+                                    <p className="font-medium">Neural Network Platform</p>
+                                    <p className="text-sm text-muted-foreground">Deep learning infrastructure</p>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="p-4">
+                                <Badge className="bg-success/90 text-success-foreground">In Progress</Badge>
+                              </td>
+                              <td className="p-4">
+                                <div className="flex items-center gap-2">
+                                  <Progress value={68} className="w-20 h-2" />
+                                  <span className="text-sm text-muted-foreground">68%</span>
+                                </div>
+                              </td>
+                              <td className="p-4">
+                                <div className="flex -space-x-2">
+                                  <div className="w-6 h-6 bg-primary rounded-full border-2 border-background flex items-center justify-center text-xs text-white">A</div>
+                                  <div className="w-6 h-6 bg-secondary rounded-full border-2 border-background flex items-center justify-center text-xs text-white">S</div>
+                                  <div className="w-6 h-6 bg-accent rounded-full border-2 border-background flex items-center justify-center text-xs text-white">M</div>
+                                  <div className="w-6 h-6 bg-muted rounded-full border-2 border-background flex items-center justify-center text-xs text-muted-foreground">+3</div>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr className="border-t bg-muted/20">
+                              <td colSpan={5} className="p-4">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                  <div>
+                                    <h5 className="font-medium mb-2">Project Details</h5>
+                                    <p className="text-muted-foreground">Advanced neural network platform for real-time data processing and machine learning inference.</p>
+                                  </div>
+                                  <div>
+                                    <h5 className="font-medium mb-2">Timeline</h5>
+                                    <div className="space-y-1">
+                                      <div className="flex justify-between">
+                                        <span className="text-muted-foreground">Started:</span>
+                                        <span>Feb 1, 2024</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-muted-foreground">Deadline:</span>
+                                        <span>May 15, 2024</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <h5 className="font-medium mb-2">Key Metrics</h5>
+                                    <div className="space-y-1">
+                                      <div className="flex justify-between">
+                                        <span className="text-muted-foreground">Budget:</span>
+                                        <span className="text-success">$50,000</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-muted-foreground">ROI:</span>
+                                        <span className="text-success">+245%</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr className="border-t hover:bg-muted/30">
+                              <td className="p-4">
+                                <Button variant="ghost" size="sm" className="p-0 h-6 w-6">
+                                  <ChevronDown className="w-4 h-4" />
+                                </Button>
+                              </td>
+                              <td className="p-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-8 h-8 bg-warning/20 rounded-lg flex items-center justify-center">
+                                    <Shield className="w-4 h-4 text-warning" />
+                                  </div>
+                                  <div>
+                                    <p className="font-medium">Security Framework</p>
+                                    <p className="text-sm text-muted-foreground">Enterprise security solution</p>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="p-4">
+                                <Badge className="bg-warning/90 text-warning-foreground">Review</Badge>
+                              </td>
+                              <td className="p-4">
+                                <div className="flex items-center gap-2">
+                                  <Progress value={95} className="w-20 h-2" />
+                                  <span className="text-sm text-muted-foreground">95%</span>
+                                </div>
+                              </td>
+                              <td className="p-4">
+                                <div className="flex -space-x-2">
+                                  <div className="w-6 h-6 bg-expert rounded-full border-2 border-background flex items-center justify-center text-xs text-white">E</div>
+                                  <div className="w-6 h-6 bg-partner rounded-full border-2 border-background flex items-center justify-center text-xs text-white">P</div>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    {/* Card-Style Table */}
+                    <div>
+                      <h4 className="font-medium mb-4">Card-Style Data Table</h4>
+                      <div className="space-y-3">
+                        <Card className="p-4 hover:shadow-md transition-shadow">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-xl flex items-center justify-center">
+                                <Award className="w-6 h-6 text-white" />
                               </div>
-                            </td>
-                            <td className="p-4">
+                              <div>
+                                <h3 className="font-semibold">Climate Solutions Challenge</h3>
+                                <p className="text-sm text-muted-foreground">Environmental innovation competition</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-6 text-right">
+                              <div>
+                                <div className="text-sm font-medium text-success">$75,000</div>
+                                <div className="text-xs text-muted-foreground">Prize Pool</div>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium">156</div>
+                                <div className="text-xs text-muted-foreground">Participants</div>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium">12 days</div>
+                                <div className="text-xs text-muted-foreground">Remaining</div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Badge className="bg-success/90 text-success-foreground">Active</Badge>
+                                <Button variant="ghost" size="sm">
+                                  <MoreVertical className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </Card>
+
+                        <Card className="p-4 hover:shadow-md transition-shadow">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className="w-12 h-12 bg-gradient-to-r from-secondary to-innovation rounded-xl flex items-center justify-center">
+                                <Zap className="w-6 h-6 text-white" />
+                              </div>
+                              <div>
+                                <h3 className="font-semibold">AI Innovation Summit</h3>
+                                <p className="text-sm text-muted-foreground">Machine learning showcase event</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-6 text-right">
+                              <div>
+                                <div className="text-sm font-medium text-success">$100,000</div>
+                                <div className="text-xs text-muted-foreground">Prize Pool</div>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium">289</div>
+                                <div className="text-xs text-muted-foreground">Participants</div>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium">3 days</div>
+                                <div className="text-xs text-muted-foreground">Remaining</div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Badge className="bg-innovation/90 text-innovation-foreground">Featured</Badge>
+                                <Button variant="ghost" size="sm">
+                                  <MoreVertical className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* Mobile-Responsive Stack Table */}
+                    <div>
+                      <h4 className="font-medium mb-4">Mobile-Responsive Stack Table</h4>
+                      <div className="space-y-3 md:space-y-0">
+                        {/* Desktop View */}
+                        <div className="hidden md:block border rounded-lg overflow-hidden">
+                          <table className="w-full">
+                            <thead className="bg-muted/50">
+                              <tr>
+                                <th className="text-left p-4 font-medium">Challenge</th>
+                                <th className="text-left p-4 font-medium">Status</th>
+                                <th className="text-left p-4 font-medium">Participants</th>
+                                <th className="text-left p-4 font-medium">Prize</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr className="border-t hover:bg-muted/30">
+                                <td className="p-4 font-medium">Healthcare AI</td>
+                                <td className="p-4"><Badge className="bg-success/90 text-success-foreground">Active</Badge></td>
+                                <td className="p-4">234</td>
+                                <td className="p-4 text-success font-semibold">$60,000</td>
+                              </tr>
+                              <tr className="border-t hover:bg-muted/30">
+                                <td className="p-4 font-medium">Green Energy</td>
+                                <td className="p-4"><Badge className="bg-warning/90 text-warning-foreground">Review</Badge></td>
+                                <td className="p-4">156</td>
+                                <td className="p-4 text-success font-semibold">$45,000</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        
+                        {/* Mobile View */}
+                        <div className="md:hidden space-y-3">
+                          <Card className="p-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <h3 className="font-semibold">Healthcare AI</h3>
                               <Badge className="bg-success/90 text-success-foreground">Active</Badge>
-                            </td>
-                            <td className="p-4 text-muted-foreground">127</td>
-                            <td className="p-4 font-medium">$50,000</td>
-                            <td className="p-4">
-                              <div className="flex items-center gap-2">
-                                <Button variant="ghost" size="sm">
-                                  <Eye className="w-4 h-4" />
-                                </Button>
-                                <Button variant="ghost" size="sm">
-                                  <Edit className="w-4 h-4" />
-                                </Button>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2 text-sm">
+                              <div>
+                                <span className="text-muted-foreground">Participants:</span>
+                                <span className="ml-1 font-medium">234</span>
                               </div>
-                            </td>
-                          </tr>
-                          <tr className="border-t hover:bg-muted/30">
-                            <td className="p-4">
-                              <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 bg-secondary/10 rounded-full flex items-center justify-center">
-                                  <CreditCard className="w-4 h-4 text-secondary" />
-                                </div>
-                                <div>
-                                  <p className="font-medium">Fintech Revolution</p>
-                                  <p className="text-sm text-muted-foreground">Digital banking solutions</p>
-                                </div>
+                              <div>
+                                <span className="text-muted-foreground">Prize:</span>
+                                <span className="ml-1 font-medium text-success">$60,000</span>
                               </div>
-                            </td>
-                            <td className="p-4">
+                            </div>
+                          </Card>
+                          <Card className="p-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <h3 className="font-semibold">Green Energy</h3>
                               <Badge className="bg-warning/90 text-warning-foreground">Review</Badge>
-                            </td>
-                            <td className="p-4 text-muted-foreground">89</td>
-                            <td className="p-4 font-medium">$30,000</td>
-                            <td className="p-4">
-                              <div className="flex items-center gap-2">
-                                <Button variant="ghost" size="sm">
-                                  <Eye className="w-4 h-4" />
-                                </Button>
-                                <Button variant="ghost" size="sm">
-                                  <Edit className="w-4 h-4" />
-                                </Button>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2 text-sm">
+                              <div>
+                                <span className="text-muted-foreground">Participants:</span>
+                                <span className="ml-1 font-medium">156</span>
                               </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                              <div>
+                                <span className="text-muted-foreground">Prize:</span>
+                                <span className="ml-1 font-medium text-success">$45,000</span>
+                              </div>
+                            </div>
+                          </Card>
+                        </div>
+                      </div>
                     </div>
+
                   </div>
                 </ComponentShowcase>
 
