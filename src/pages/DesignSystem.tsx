@@ -1677,10 +1677,213 @@ const DesignSystem = () => {
                       </div>
                     </div>
                   </div>
-                </ComponentShowcase>
-              </div>
-            </div>
-          </TabsContent>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Advanced Mobile Navigation">
+                   <div className="space-y-6">
+                     <div className="border rounded-lg overflow-hidden max-w-sm mx-auto">
+                       <div className="bg-card border-b p-4 flex items-center justify-between">
+                         <Button variant="ghost" size="sm">
+                           <Menu className="w-4 h-4" />
+                         </Button>
+                         <span className="font-semibold">Mobile App</span>
+                         <Button variant="ghost" size="sm">
+                           <User className="w-4 h-4" />
+                         </Button>
+                       </div>
+                       
+                       <div className="bg-card">
+                         <div className="grid grid-cols-5 gap-1 p-2">
+                           <div className="flex flex-col items-center gap-1 p-2 bg-primary/10 rounded-lg">
+                             <Home className="w-4 h-4 text-primary" />
+                             <span className="text-xs text-primary font-medium">Home</span>
+                           </div>
+                           <div className="flex flex-col items-center gap-1 p-2 hover:bg-accent rounded-lg">
+                             <Search className="w-4 h-4 text-muted-foreground" />
+                             <span className="text-xs text-muted-foreground">Search</span>
+                           </div>
+                           <div className="flex flex-col items-center gap-1 p-2 hover:bg-accent rounded-lg relative">
+                             <Bell className="w-4 h-4 text-muted-foreground" />
+                             <span className="text-xs text-muted-foreground">Alerts</span>
+                             <div className="absolute -top-1 -right-1 w-2 h-2 bg-destructive rounded-full"></div>
+                           </div>
+                           <div className="flex flex-col items-center gap-1 p-2 hover:bg-accent rounded-lg">
+                             <MessageCircle className="w-4 h-4 text-muted-foreground" />
+                             <span className="text-xs text-muted-foreground">Chat</span>
+                           </div>
+                           <div className="flex flex-col items-center gap-1 p-2 hover:bg-accent rounded-lg">
+                             <Settings className="w-4 h-4 text-muted-foreground" />
+                             <span className="text-xs text-muted-foreground">More</span>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                     
+                     <div className="border rounded-lg overflow-hidden max-w-sm mx-auto">
+                       <div className="bg-card p-4">
+                         <h4 className="font-medium mb-3">Swipe Navigation</h4>
+                         <div className="flex space-x-2 overflow-x-auto pb-2">
+                           <div className="flex-shrink-0 w-20 h-16 bg-primary/10 rounded-lg flex flex-col items-center justify-center">
+                             <Target className="w-5 h-5 text-primary" />
+                             <span className="text-xs mt-1">Active</span>
+                           </div>
+                           <div className="flex-shrink-0 w-20 h-16 bg-muted rounded-lg flex flex-col items-center justify-center">
+                             <Calendar className="w-5 h-5 text-muted-foreground" />
+                             <span className="text-xs mt-1">Events</span>
+                           </div>
+                           <div className="flex-shrink-0 w-20 h-16 bg-muted rounded-lg flex flex-col items-center justify-center">
+                             <Users className="w-5 h-5 text-muted-foreground" />
+                             <span className="text-xs mt-1">Team</span>
+                           </div>
+                           <div className="flex-shrink-0 w-20 h-16 bg-muted rounded-lg flex flex-col items-center justify-center">
+                             <Award className="w-5 h-5 text-muted-foreground" />
+                             <span className="text-xs mt-1">Awards</span>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Advanced Breadcrumbs & Context Navigation">
+                   <div className="space-y-6">
+                     <div>
+                       <h4 className="font-medium mb-4">Hierarchical Breadcrumbs</h4>
+                       <nav className="flex items-center space-x-2 text-sm p-3 bg-muted/30 rounded-lg">
+                         <Home className="w-4 h-4 text-muted-foreground" />
+                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                         <a href="#" className="text-muted-foreground hover:text-foreground">Government</a>
+                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                         <a href="#" className="text-muted-foreground hover:text-foreground">Innovation Hub</a>
+                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                         <a href="#" className="text-muted-foreground hover:text-foreground">Challenges</a>
+                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                         <span className="text-foreground font-medium">AI Healthcare Platform</span>
+                       </nav>
+                     </div>
+                     
+                     <div>
+                       <h4 className="font-medium mb-4">Collapsible Breadcrumbs</h4>
+                       <nav className="flex items-center space-x-2 text-sm p-3 bg-muted/30 rounded-lg">
+                         <Home className="w-4 h-4 text-muted-foreground" />
+                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                         <span className="text-muted-foreground">...</span>
+                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                         <a href="#" className="text-muted-foreground hover:text-foreground">Challenges</a>
+                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                         <a href="#" className="text-muted-foreground hover:text-foreground">Technology</a>
+                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                         <span className="text-foreground font-medium">Current Page</span>
+                       </nav>
+                     </div>
+                     
+                     <div>
+                       <h4 className="font-medium mb-4">Context Navigation</h4>
+                       <div className="flex items-center justify-between p-3 border rounded-lg">
+                         <div className="flex items-center gap-3">
+                           <Button variant="ghost" size="sm">
+                             <ChevronLeft className="w-4 h-4" />
+                           </Button>
+                           <div>
+                             <p className="text-sm font-medium">AI Healthcare Platform</p>
+                             <p className="text-xs text-muted-foreground">Challenge 3 of 12</p>
+                           </div>
+                         </div>
+                         <div className="flex items-center gap-2">
+                           <div className="flex space-x-1">
+                             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
+                               <div 
+                                 key={i} 
+                                 className={`w-2 h-2 rounded-full ${i === 3 ? 'bg-primary' : i < 3 ? 'bg-primary/50' : 'bg-muted'}`}
+                               ></div>
+                             ))}
+                           </div>
+                           <Button variant="ghost" size="sm">
+                             <ChevronRight className="w-4 h-4" />
+                           </Button>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Navigation Patterns & Mega Menus">
+                   <div className="space-y-6">
+                     <div>
+                       <h4 className="font-medium mb-4">Mega Menu Preview</h4>
+                       <div className="border rounded-lg p-4 bg-card">
+                         <div className="grid grid-cols-4 gap-6">
+                           <div>
+                             <h5 className="font-medium mb-3 text-primary">Challenges</h5>
+                             <div className="space-y-2">
+                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Technology</a>
+                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Healthcare</a>
+                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Education</a>
+                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Environment</a>
+                             </div>
+                           </div>
+                           <div>
+                             <h5 className="font-medium mb-3 text-primary">Community</h5>
+                             <div className="space-y-2">
+                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Forums</a>
+                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Events</a>
+                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Teams</a>
+                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Mentorship</a>
+                             </div>
+                           </div>
+                           <div>
+                             <h5 className="font-medium mb-3 text-primary">Resources</h5>
+                             <div className="space-y-2">
+                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Documentation</a>
+                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">API Reference</a>
+                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Tutorials</a>
+                               <a href="#" className="block text-sm text-muted-foreground hover:text-foreground">Best Practices</a>
+                             </div>
+                           </div>
+                           <div>
+                             <h5 className="font-medium mb-3 text-primary">Featured</h5>
+                             <div className="p-3 bg-primary/10 rounded-lg">
+                               <p className="text-sm font-medium mb-1">New Challenge</p>
+                               <p className="text-xs text-muted-foreground mb-2">AI for Climate Change</p>
+                               <Button size="sm" variant="outline" className="h-6 text-xs">
+                                 Learn More
+                               </Button>
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+
+                     <div>
+                       <h4 className="font-medium mb-4">Quick Actions Navigation</h4>
+                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                         <div className="p-4 border rounded-lg hover:bg-accent cursor-pointer text-center">
+                           <Plus className="w-8 h-8 mx-auto mb-2 text-primary" />
+                           <p className="text-sm font-medium">Create Challenge</p>
+                           <p className="text-xs text-muted-foreground">Start new project</p>
+                         </div>
+                         <div className="p-4 border rounded-lg hover:bg-accent cursor-pointer text-center">
+                           <Users className="w-8 h-8 mx-auto mb-2 text-primary" />
+                           <p className="text-sm font-medium">Join Team</p>
+                           <p className="text-xs text-muted-foreground">Collaborate now</p>
+                         </div>
+                         <div className="p-4 border rounded-lg hover:bg-accent cursor-pointer text-center">
+                           <Calendar className="w-8 h-8 mx-auto mb-2 text-primary" />
+                           <p className="text-sm font-medium">View Events</p>
+                           <p className="text-xs text-muted-foreground">Upcoming activities</p>
+                         </div>
+                         <div className="p-4 border rounded-lg hover:bg-accent cursor-pointer text-center">
+                           <Award className="w-8 h-8 mx-auto mb-2 text-primary" />
+                           <p className="text-sm font-medium">My Achievements</p>
+                           <p className="text-xs text-muted-foreground">Track progress</p>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+               </div>
+             </div>
+           </TabsContent>
 
           {/* Data Display Tab */}
           <TabsContent value="data" className="space-y-8">
@@ -2040,10 +2243,374 @@ const DesignSystem = () => {
                       </div>
                     </div>
                   </div>
-                </ComponentShowcase>
-              </div>
-            </div>
-          </TabsContent>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Advanced Data Tables">
+                   <div className="space-y-6">
+                     <div>
+                       <h4 className="font-medium mb-4">Sortable & Filterable Table</h4>
+                       <div className="border rounded-lg overflow-hidden">
+                         <div className="p-4 bg-muted/30 border-b flex items-center justify-between">
+                           <div className="flex items-center gap-4">
+                             <div className="relative">
+                               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                               <input 
+                                 type="text" 
+                                 className="pl-10 pr-3 py-2 border rounded-md bg-background text-sm" 
+                                 placeholder="Search challenges..."
+                               />
+                             </div>
+                             <select className="px-3 py-2 border rounded-md bg-background text-sm">
+                               <option>All Categories</option>
+                               <option>Technology</option>
+                               <option>Healthcare</option>
+                             </select>
+                           </div>
+                           <div className="flex items-center gap-2">
+                             <Button variant="outline" size="sm">
+                               <Filter className="w-4 h-4 mr-2" />
+                               Filter
+                             </Button>
+                             <Button variant="outline" size="sm">
+                               <Download className="w-4 h-4 mr-2" />
+                               Export
+                             </Button>
+                           </div>
+                         </div>
+                         
+                         <div className="overflow-x-auto">
+                           <table className="w-full">
+                             <thead className="bg-muted/50">
+                               <tr>
+                                 <th className="text-left p-3 text-sm font-medium">
+                                   <div className="flex items-center gap-2">
+                                     Challenge
+                                     <ArrowUpDown className="w-3 h-3 text-muted-foreground" />
+                                   </div>
+                                 </th>
+                                 <th className="text-left p-3 text-sm font-medium">
+                                   <div className="flex items-center gap-2">
+                                     Category
+                                     <ArrowUpDown className="w-3 h-3 text-muted-foreground" />
+                                   </div>
+                                 </th>
+                                 <th className="text-left p-3 text-sm font-medium">
+                                   <div className="flex items-center gap-2">
+                                     Participants
+                                     <ArrowUpDown className="w-3 h-3 text-muted-foreground" />
+                                   </div>
+                                 </th>
+                                 <th className="text-left p-3 text-sm font-medium">Status</th>
+                                 <th className="text-left p-3 text-sm font-medium">Actions</th>
+                               </tr>
+                             </thead>
+                             <tbody>
+                               <tr className="border-b hover:bg-accent/50">
+                                 <td className="p-3">
+                                   <div>
+                                     <p className="font-medium">AI Healthcare Platform</p>
+                                     <p className="text-sm text-muted-foreground">Innovative medical solutions</p>
+                                   </div>
+                                 </td>
+                                 <td className="p-3">
+                                   <Badge variant="outline">Healthcare</Badge>
+                                 </td>
+                                 <td className="p-3">
+                                   <div className="flex items-center gap-2">
+                                     <span className="text-sm font-medium">147</span>
+                                     <div className="flex -space-x-1">
+                                       <div className="w-6 h-6 bg-primary rounded-full border-2 border-background"></div>
+                                       <div className="w-6 h-6 bg-secondary rounded-full border-2 border-background"></div>
+                                       <div className="w-6 h-6 bg-accent rounded-full border-2 border-background"></div>
+                                     </div>
+                                   </div>
+                                 </td>
+                                 <td className="p-3">
+                                   <Badge variant="default" className="bg-success text-white">Active</Badge>
+                                 </td>
+                                 <td className="p-3">
+                                   <div className="flex items-center gap-2">
+                                     <Button variant="ghost" size="sm">
+                                       <Eye className="w-4 h-4" />
+                                     </Button>
+                                     <Button variant="ghost" size="sm">
+                                       <Edit className="w-4 h-4" />
+                                     </Button>
+                                     <Button variant="ghost" size="sm">
+                                       <MoreVertical className="w-4 h-4" />
+                                     </Button>
+                                   </div>
+                                 </td>
+                               </tr>
+                               <tr className="border-b hover:bg-accent/50">
+                                 <td className="p-3">
+                                   <div>
+                                     <p className="font-medium">Smart City Infrastructure</p>
+                                     <p className="text-sm text-muted-foreground">Urban development solutions</p>
+                                   </div>
+                                 </td>
+                                 <td className="p-3">
+                                   <Badge variant="outline">Technology</Badge>
+                                 </td>
+                                 <td className="p-3">
+                                   <div className="flex items-center gap-2">
+                                     <span className="text-sm font-medium">89</span>
+                                     <div className="flex -space-x-1">
+                                       <div className="w-6 h-6 bg-warning rounded-full border-2 border-background"></div>
+                                       <div className="w-6 h-6 bg-destructive rounded-full border-2 border-background"></div>
+                                     </div>
+                                   </div>
+                                 </td>
+                                 <td className="p-3">
+                                   <Badge variant="secondary">Draft</Badge>
+                                 </td>
+                                 <td className="p-3">
+                                   <div className="flex items-center gap-2">
+                                     <Button variant="ghost" size="sm">
+                                       <Eye className="w-4 h-4" />
+                                     </Button>
+                                     <Button variant="ghost" size="sm">
+                                       <Edit className="w-4 h-4" />
+                                     </Button>
+                                     <Button variant="ghost" size="sm">
+                                       <MoreVertical className="w-4 h-4" />
+                                     </Button>
+                                   </div>
+                                 </td>
+                               </tr>
+                             </tbody>
+                           </table>
+                         </div>
+                         
+                         <div className="p-4 border-t bg-muted/30 flex items-center justify-between">
+                           <p className="text-sm text-muted-foreground">Showing 1-10 of 47 results</p>
+                           <div className="flex items-center gap-2">
+                             <Button variant="outline" size="sm" disabled>
+                               <ChevronLeft className="w-4 h-4" />
+                             </Button>
+                             <Button variant="outline" size="sm">1</Button>
+                             <Button variant="ghost" size="sm">2</Button>
+                             <Button variant="ghost" size="sm">3</Button>
+                             <span className="text-muted-foreground">...</span>
+                             <Button variant="ghost" size="sm">5</Button>
+                             <Button variant="outline" size="sm">
+                               <ChevronRight className="w-4 h-4" />
+                             </Button>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Data Visualization Components">
+                   <div className="space-y-6">
+                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                       <div className="space-y-4">
+                         <h4 className="font-medium">Real-time Analytics Dashboard</h4>
+                         <div className="grid grid-cols-2 gap-4">
+                           <Card className="p-4">
+                             <div className="flex items-center justify-between mb-2">
+                               <h5 className="text-sm font-medium text-muted-foreground">Total Users</h5>
+                               <Users className="w-4 h-4 text-primary" />
+                             </div>
+                             <p className="text-2xl font-bold">24,567</p>
+                             <div className="flex items-center gap-1 mt-2">
+                               <span className="text-xs bg-success/10 text-success px-2 py-1 rounded-full">+12.5%</span>
+                               <span className="text-xs text-muted-foreground">vs last month</span>
+                             </div>
+                           </Card>
+                           
+                           <Card className="p-4">
+                             <div className="flex items-center justify-between mb-2">
+                               <h5 className="text-sm font-medium text-muted-foreground">Active Challenges</h5>
+                               <Target className="w-4 h-4 text-warning" />
+                             </div>
+                             <p className="text-2xl font-bold">1,234</p>
+                             <div className="flex items-center gap-1 mt-2">
+                               <span className="text-xs bg-warning/10 text-warning px-2 py-1 rounded-full">+5.2%</span>
+                               <span className="text-xs text-muted-foreground">vs last week</span>
+                             </div>
+                           </Card>
+                           
+                           <Card className="p-4">
+                             <div className="flex items-center justify-between mb-2">
+                               <h5 className="text-sm font-medium text-muted-foreground">Completed Projects</h5>
+                               <CheckCircle className="w-4 h-4 text-success" />
+                             </div>
+                             <p className="text-2xl font-bold">856</p>
+                             <div className="flex items-center gap-1 mt-2">
+                               <span className="text-xs bg-success/10 text-success px-2 py-1 rounded-full">+18.1%</span>
+                               <span className="text-xs text-muted-foreground">vs last month</span>
+                             </div>
+                           </Card>
+                           
+                           <Card className="p-4">
+                             <div className="flex items-center justify-between mb-2">
+                               <h5 className="text-sm font-medium text-muted-foreground">Revenue</h5>
+                               <CreditCard className="w-4 h-4 text-primary" />
+                             </div>
+                             <p className="text-2xl font-bold">$45.2K</p>
+                             <div className="flex items-center gap-1 mt-2">
+                               <span className="text-xs bg-destructive/10 text-destructive px-2 py-1 rounded-full">-2.4%</span>
+                               <span className="text-xs text-muted-foreground">vs last month</span>
+                             </div>
+                           </Card>
+                         </div>
+                       </div>
+                       
+                       <div className="space-y-4">
+                         <h4 className="font-medium">Interactive Charts</h4>
+                         <Card className="p-4">
+                           <h5 className="text-sm font-medium mb-4">Challenge Participation Trends</h5>
+                           <div className="h-32 flex items-end gap-2">
+                             <div className="flex-1 bg-primary/20 rounded-t" style={{height: '60%'}}></div>
+                             <div className="flex-1 bg-primary/40 rounded-t" style={{height: '80%'}}></div>
+                             <div className="flex-1 bg-primary/60 rounded-t" style={{height: '45%'}}></div>
+                             <div className="flex-1 bg-primary/80 rounded-t" style={{height: '90%'}}></div>
+                             <div className="flex-1 bg-primary rounded-t" style={{height: '75%'}}></div>
+                             <div className="flex-1 bg-primary/70 rounded-t" style={{height: '65%'}}></div>
+                             <div className="flex-1 bg-primary/50 rounded-t" style={{height: '85%'}}></div>
+                           </div>
+                           <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                             <span>Mon</span>
+                             <span>Tue</span>
+                             <span>Wed</span>
+                             <span>Thu</span>
+                             <span>Fri</span>
+                             <span>Sat</span>
+                             <span>Sun</span>
+                           </div>
+                         </Card>
+                         
+                         <Card className="p-4">
+                           <h5 className="text-sm font-medium mb-4">Category Distribution</h5>
+                           <div className="flex items-center justify-center">
+                             <div className="relative w-32 h-32">
+                               <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 128 128">
+                                 <circle cx="64" cy="64" r="48" fill="none" stroke="currentColor" strokeWidth="16" className="text-muted" />
+                                 <circle cx="64" cy="64" r="48" fill="none" stroke="currentColor" strokeWidth="16" className="text-primary" strokeDasharray="301.593" strokeDashoffset="90.478" strokeLinecap="round" />
+                                 <circle cx="64" cy="64" r="48" fill="none" stroke="currentColor" strokeWidth="16" className="text-secondary" strokeDasharray="301.593" strokeDashoffset="150.796" strokeLinecap="round" />
+                                 <circle cx="64" cy="64" r="48" fill="none" stroke="currentColor" strokeWidth="16" className="text-accent" strokeDasharray="301.593" strokeDashoffset="211.114" strokeLinecap="round" />
+                               </svg>
+                               <div className="absolute inset-0 flex items-center justify-center">
+                                 <div className="text-center">
+                                   <p className="text-lg font-bold">100%</p>
+                                   <p className="text-xs text-muted-foreground">Total</p>
+                                 </div>
+                               </div>
+                             </div>
+                           </div>
+                           <div className="grid grid-cols-2 gap-2 mt-4">
+                             <div className="flex items-center gap-2">
+                               <div className="w-3 h-3 bg-primary rounded-full"></div>
+                               <span className="text-xs">Tech (40%)</span>
+                             </div>
+                             <div className="flex items-center gap-2">
+                               <div className="w-3 h-3 bg-secondary rounded-full"></div>
+                               <span className="text-xs">Health (30%)</span>
+                             </div>
+                             <div className="flex items-center gap-2">
+                               <div className="w-3 h-3 bg-accent rounded-full"></div>
+                               <span className="text-xs">Edu (20%)</span>
+                             </div>
+                             <div className="flex items-center gap-2">
+                               <div className="w-3 h-3 bg-muted rounded-full"></div>
+                               <span className="text-xs">Other (10%)</span>
+                             </div>
+                           </div>
+                         </Card>
+                       </div>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+
+                 <ComponentShowcase title="Data Export & Reporting">
+                   <div className="space-y-6">
+                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                       <Card className="p-6">
+                         <h4 className="font-medium mb-4">Export Options</h4>
+                         <div className="space-y-3">
+                           <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent cursor-pointer">
+                             <div className="flex items-center gap-3">
+                               <div className="w-8 h-8 bg-success/10 rounded-lg flex items-center justify-center">
+                                 📊
+                               </div>
+                               <div>
+                                 <p className="text-sm font-medium">Excel Report</p>
+                                 <p className="text-xs text-muted-foreground">Detailed spreadsheet with all data</p>
+                               </div>
+                             </div>
+                             <Download className="w-4 h-4 text-muted-foreground" />
+                           </div>
+                           
+                           <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent cursor-pointer">
+                             <div className="flex items-center gap-3">
+                               <div className="w-8 h-8 bg-destructive/10 rounded-lg flex items-center justify-center">
+                                 📄
+                               </div>
+                               <div>
+                                 <p className="text-sm font-medium">PDF Summary</p>
+                                 <p className="text-xs text-muted-foreground">Executive summary report</p>
+                               </div>
+                             </div>
+                             <Download className="w-4 h-4 text-muted-foreground" />
+                           </div>
+                           
+                           <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent cursor-pointer">
+                             <div className="flex items-center gap-3">
+                               <div className="w-8 h-8 bg-warning/10 rounded-lg flex items-center justify-center">
+                                 💾
+                               </div>
+                               <div>
+                                 <p className="text-sm font-medium">CSV Data</p>
+                                 <p className="text-xs text-muted-foreground">Raw data for analysis</p>
+                               </div>
+                             </div>
+                             <Download className="w-4 h-4 text-muted-foreground" />
+                           </div>
+                         </div>
+                       </Card>
+                       
+                       <Card className="p-6">
+                         <h4 className="font-medium mb-4">Scheduled Reports</h4>
+                         <div className="space-y-3">
+                           <div className="flex items-center justify-between p-3 border rounded-lg">
+                             <div>
+                               <p className="text-sm font-medium">Weekly Analytics</p>
+                               <p className="text-xs text-muted-foreground">Every Monday at 9:00 AM</p>
+                             </div>
+                             <Badge variant="outline" className="text-success border-success">Active</Badge>
+                           </div>
+                           
+                           <div className="flex items-center justify-between p-3 border rounded-lg">
+                             <div>
+                               <p className="text-sm font-medium">Monthly Summary</p>
+                               <p className="text-xs text-muted-foreground">First day of each month</p>
+                             </div>
+                             <Badge variant="outline" className="text-success border-success">Active</Badge>
+                           </div>
+                           
+                           <div className="flex items-center justify-between p-3 border rounded-lg opacity-50">
+                             <div>
+                               <p className="text-sm font-medium">Quarterly Review</p>
+                               <p className="text-xs text-muted-foreground">End of each quarter</p>
+                             </div>
+                             <Badge variant="outline">Paused</Badge>
+                           </div>
+                         </div>
+                         
+                         <Button className="w-full mt-4" variant="outline">
+                           <Plus className="w-4 h-4 mr-2" />
+                           Create New Schedule
+                         </Button>
+                       </Card>
+                     </div>
+                   </div>
+                 </ComponentShowcase>
+               </div>
+             </div>
+           </TabsContent>
 
           {/* Media Tab */}
           <TabsContent value="media" className="space-y-8">
