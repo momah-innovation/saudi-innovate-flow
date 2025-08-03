@@ -240,9 +240,9 @@ export function IdeaDetailView({
                 <div className="text-center p-4 border rounded-lg">
                   <div className="text-2xl font-bold text-primary">
                     {relatedData.analytics.evaluationStatus === 'completed' ? (
-                      <CheckCircle className="w-6 h-6 mx-auto mb-1 text-green-500" />
+                      <CheckCircle className="w-6 h-6 mx-auto mb-1 icon-success" />
                     ) : (
-                      <AlertCircle className="w-6 h-6 mx-auto mb-1 text-yellow-500" />
+                      <AlertCircle className="w-6 h-6 mx-auto mb-1 icon-warning" />
                     )}
                   </div>
                   <div className="text-sm text-muted-foreground" dir="rtl">
@@ -416,21 +416,21 @@ export function IdeaDetailView({
 
                       {evaluation.strengths && (
                         <div>
-                          <h6 className="font-medium text-sm text-green-600">نقاط القوة:</h6>
+                          <h6 className="font-medium text-sm section-strengths">نقاط القوة:</h6>
                           <p className="text-sm text-muted-foreground" dir="rtl">{evaluation.strengths}</p>
                         </div>
                       )}
 
                       {evaluation.weaknesses && (
                         <div>
-                          <h6 className="font-medium text-sm text-red-600">نقاط الضعف:</h6>
+                          <h6 className="font-medium text-sm section-weaknesses">نقاط الضعف:</h6>
                           <p className="text-sm text-muted-foreground" dir="rtl">{evaluation.weaknesses}</p>
                         </div>
                       )}
 
                       {evaluation.recommendations && (
                         <div>
-                          <h6 className="font-medium text-sm text-blue-600">التوصيات:</h6>
+                          <h6 className="font-medium text-sm section-recommendations">التوصيات:</h6>
                           <p className="text-sm text-muted-foreground" dir="rtl">{evaluation.recommendations}</p>
                         </div>
                       )}

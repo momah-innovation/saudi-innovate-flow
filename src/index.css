@@ -702,3 +702,68 @@ All colors MUST be HSL for theming consistency.
 .section-recommendations {
   @apply text-primary;
 }
+
+/* Dashboard hero color variations */
+.hero-stats-ideas {
+  @apply text-primary;
+}
+
+.hero-stats-challenges {
+  @apply text-success;
+}
+
+.hero-stats-users {
+  @apply text-innovation;
+}
+
+.hero-stats-score {
+  @apply text-warning;
+}
+
+/* Background overlays for hero sections */
+.hero-bg-accent {
+  background: hsl(var(--primary) / 0.05);
+}
+
+.hero-bg-secondary {
+  background: hsl(var(--accent) / 0.05);
+}
+
+/* Additional workload text colors */
+.workload-text-critical {
+  @apply text-destructive;
+}
+
+.workload-text-high {
+  @apply text-warning;
+}
+
+.workload-text-normal {
+  @apply text-success;
+}
+
+/* Progress bar colors for workload */
+.progress-critical > div {
+  @apply bg-destructive;
+}
+
+.progress-high > div {
+  @apply bg-warning;
+}
+
+.progress-normal > div {
+  @apply bg-success;
+}
+
+/* Team member activity indicators */
+.indicator-online {
+  @apply bg-success;
+}
+
+.indicator-busy {
+  @apply bg-warning;
+}
+
+.indicator-away {
+  @apply bg-muted;
+}
