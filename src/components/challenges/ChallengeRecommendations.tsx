@@ -203,7 +203,7 @@ export const ChallengeRecommendations = ({
                   onClick={() => onChallengeSelect(challenge)}
                 >
                   <div className="flex-shrink-0">
-                    <div className={`w-10 h-10 rounded-full ${challengesPageConfig.ui.gradients.warning} flex items-center justify-center text-white text-sm font-bold`}>
+                    <div className={`w-10 h-10 rounded-full ${challengesPageConfig.ui.gradients.warning} flex items-center justify-center ${challengesPageConfig.ui.colors.text.accent} text-sm font-bold`}>
                       {getPriorityIcon(challenge.priority_level)}
                     </div>
                   </div>
@@ -258,7 +258,7 @@ export const ChallengeRecommendations = ({
                 >
                   <div className="flex-shrink-0">
                     <div className={`w-10 h-10 rounded-full ${challengesPageConfig.ui.gradients.featured} flex items-center justify-center`}>
-                      <Lightbulb className="w-5 h-5 text-white" />
+                      <Lightbulb className={`w-5 h-5 ${challengesPageConfig.ui.colors.text.accent}`} />
                     </div>
                   </div>
 
@@ -293,7 +293,7 @@ export const ChallengeRecommendations = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className={`w-8 h-8 rounded-full ${challengesPageConfig.ui.colors.background.primary} flex items-center justify-center`}>
-                <BookmarkIcon className="w-4 h-4 text-white" />
+                <BookmarkIcon className={`w-4 h-4 ${challengesPageConfig.ui.colors.text.accent}`} />
               </div>
               <div>
                 <div className={`text-sm font-medium ${challengesPageConfig.ui.colors.stats.blue}`}>

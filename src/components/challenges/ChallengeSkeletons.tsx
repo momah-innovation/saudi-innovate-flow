@@ -157,7 +157,7 @@ export const ChallengeEmptyState = ({
     {actionLabel && onAction && (
       <button
         onClick={onAction}
-        className={`px-6 py-3 ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} text-white rounded-lg border-0 shadow-lg ${challengesPageConfig.ui.effects.hoverScale} ${challengesPageConfig.ui.animations.fadeIn}`}
+        className={`px-6 py-3 ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} ${challengesPageConfig.ui.colors.text.accent} rounded-lg border-0 shadow-lg ${challengesPageConfig.ui.effects.hoverScale} ${challengesPageConfig.ui.animations.fadeIn}`}
       >
         {actionLabel}
       </button>

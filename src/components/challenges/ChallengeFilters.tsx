@@ -199,7 +199,7 @@ export const ChallengeFilters = ({
                   className={cn(
                      "h-10 px-3 transition-all duration-300 hover:scale-105 shadow-md",
                     filters.features.includes(option.value) 
-                       ? `${challengesPageConfig.ui.gradients.button} text-white border-0` 
+                       ? `${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.colors.text.accent} border-0` 
                       : `${challengesPageConfig.ui.glassMorphism.medium} border-primary/20 ${challengesPageConfig.ui.effects.interactive}`
                   )}
                     title={isRTL ? option.labelAr : option.label}

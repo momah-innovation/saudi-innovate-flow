@@ -405,17 +405,17 @@ export function ChallengeViewDialog({
                   <div className="text-sm text-muted-foreground">{isRTL ? 'مشارك' : 'Participants'}</div>
                 </div>
                 <div className="bg-muted/50 rounded-lg p-4 text-center">
-                  <Trophy className="w-6 h-6 mx-auto mb-2 text-yellow-500" />
+                  <Trophy className={`w-6 h-6 mx-auto mb-2 ${challengesPageConfig.ui.colors.stats.yellow}`} />
                   <div className="text-2xl font-bold">{challenge.estimated_budget?.toLocaleString() || '0'}</div>
                   <div className="text-sm text-muted-foreground">{isRTL ? 'ريال' : 'SAR'}</div>
                 </div>
                 <div className="bg-muted/50 rounded-lg p-4 text-center">
-                  <Clock className="w-6 h-6 mx-auto mb-2 text-blue-500" />
+                  <Clock className={`w-6 h-6 mx-auto mb-2 ${challengesPageConfig.ui.colors.stats.blue}`} />
                   <div className="text-2xl font-bold">{daysRemaining || 0}</div>
                   <div className="text-sm text-muted-foreground">{isRTL ? 'يوم متبقي' : 'Days Left'}</div>
                 </div>
                 <div className="bg-muted/50 rounded-lg p-4 text-center">
-                  <Target className="w-6 h-6 mx-auto mb-2 text-green-500" />
+                  <Target className={`w-6 h-6 mx-auto mb-2 ${challengesPageConfig.ui.colors.stats.green}`} />
                   <div className="text-2xl font-bold">{Math.round(progressPercentage)}%</div>
                   <div className="text-sm text-muted-foreground">{isRTL ? 'مكتمل' : 'Complete'}</div>
                 </div>
@@ -526,17 +526,17 @@ export function ChallengeViewDialog({
                             <Card key={i} className="animate-pulse">
                               <CardHeader>
                                 <div className="flex items-center space-x-2">
-                                  <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+                                  <div className={`w-8 h-8 ${challengesPageConfig.ui.glassMorphism.light} rounded-full`}></div>
                                   <div className="space-y-2">
-                                    <div className="h-4 bg-gray-300 rounded w-24"></div>
-                                    <div className="h-3 bg-gray-300 rounded w-16"></div>
+                                     <div className={`h-4 ${challengesPageConfig.ui.glassMorphism.light} rounded w-24`}></div>
+                                     <div className={`h-3 ${challengesPageConfig.ui.glassMorphism.light} rounded w-16`}></div>
                                   </div>
                                 </div>
                               </CardHeader>
                               <CardContent>
                                 <div className="space-y-2">
-                                  <div className="h-4 bg-gray-300 rounded"></div>
-                                  <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                                   <div className={`h-4 ${challengesPageConfig.ui.glassMorphism.light} rounded`}></div>
+                                   <div className={`h-4 ${challengesPageConfig.ui.glassMorphism.light} rounded w-3/4`}></div>
                                 </div>
                               </CardContent>
                             </Card>
@@ -608,7 +608,7 @@ export function ChallengeViewDialog({
             <Button
               variant="outline"
               onClick={() => onBookmark?.(challenge)}
-              className={isBookmarked ? 'border-red-500 text-red-500' : ''}
+              className={isBookmarked ? `${challengesPageConfig.ui.colors.stats.red} ${challengesPageConfig.ui.colors.stats.red.replace('text-', 'border-')}` : ''}
             >
               <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
             </Button>

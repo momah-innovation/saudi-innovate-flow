@@ -235,7 +235,7 @@ export const ChallengeCard = ({
                       size="sm" 
                       onClick={() => onParticipate(challenge)}
                       disabled={challenge.status !== 'active' && challenge.status !== 'published'}
-                      className={`ml-2 ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} text-white border-0 shadow-md ${challengesPageConfig.ui.effects.hoverScale}`}
+                      className={`ml-2 ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} ${challengesPageConfig.ui.colors.text.accent} border-0 shadow-md ${challengesPageConfig.ui.effects.hoverScale}`}
                     >
                       {isRTL ? 'شارك' : 'Join'}
                     </Button>
@@ -306,19 +306,19 @@ export const ChallengeCard = ({
             icon={<Heart className={cn("w-4 h-4", isLiked && `fill-current ${challengesPageConfig.ui.colors.stats.red}`)} />}
             tooltip={isRTL ? 'أعجبني' : 'Like'}
             onClick={handleLike}
-            className={`${challengesPageConfig.ui.glassMorphism.medium} hover:bg-white`}
+             className={`${challengesPageConfig.ui.glassMorphism.medium} ${challengesPageConfig.ui.glassMorphism.cardHover}`}
           />
           <IconActionButton
             icon={<BookmarkIcon className={cn("w-4 h-4", isBookmarked && "fill-current")} />}
             tooltip={isRTL ? 'حفظ' : 'Bookmark'}
             onClick={handleBookmark}
-            className={`${challengesPageConfig.ui.glassMorphism.medium} hover:bg-white`}
+             className={`${challengesPageConfig.ui.glassMorphism.medium} ${challengesPageConfig.ui.glassMorphism.cardHover}`}
           />
           <IconActionButton
             icon={<Share2 className="w-4 h-4" />}
             tooltip={isRTL ? 'مشاركة' : 'Share'}
             onClick={handleShare}
-            className={`${challengesPageConfig.ui.glassMorphism.medium} hover:bg-white`}
+            className={`${challengesPageConfig.ui.glassMorphism.medium} ${challengesPageConfig.ui.glassMorphism.cardHover}`}
           />
         </div>
 
@@ -423,7 +423,7 @@ export const ChallengeCard = ({
             </div>
             <div className={`text-center p-3 ${challengesPageConfig.ui.gradients.info} border border-blue-200/50 rounded-xl shadow-sm`}>
               <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.blue}`}>{challenge.submissions || 0}</div>
-              <div className="text-xs text-blue-600">{isRTL ? 'مقترح' : 'submissions'}</div>
+              <div className={`text-xs ${challengesPageConfig.ui.colors.stats.blue}`}>{isRTL ? 'مقترح' : 'submissions'}</div>
             </div>
             <div className={`text-center p-3 ${challengesPageConfig.ui.gradients.success} border border-emerald-200/50 rounded-xl shadow-sm`}>
               <div className={`text-lg font-bold ${challengesPageConfig.ui.colors.stats.green}`}>{challenge.success_rate || 85}%</div>
@@ -442,7 +442,7 @@ export const ChallengeCard = ({
           />
           <Button 
             onClick={() => onParticipate(challenge)}
-            className={`flex-1 ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} text-white border-0 shadow-md ${challengesPageConfig.ui.effects.hoverScale}`}
+            className={`flex-1 ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} ${challengesPageConfig.ui.colors.text.accent} border-0 shadow-md ${challengesPageConfig.ui.effects.hoverScale}`}
             disabled={challenge.status !== 'active' && challenge.status !== 'published'}
           >
             <Zap className="w-4 h-4 mr-2" />
