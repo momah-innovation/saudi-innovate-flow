@@ -87,8 +87,8 @@ export const ChallengesHero = ({
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-20 left-1/3 w-64 h-64 bg-purple-400/5 rounded-full blur-2xl animate-bounce" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-20 left-1/3 w-64 h-64 bg-blue-400/5 rounded-full blur-2xl animate-bounce" />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -98,17 +98,17 @@ export const ChallengesHero = ({
             {/* Header with animation */}
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <Sparkles className="w-6 h-6 text-yellow-300" />
+                <div className={`p-3 ${challengesPageConfig.ui.glassMorphism.medium} rounded-xl border ${challengesPageConfig.ui.glassMorphism.light.split(' ').find(c => c.includes('border'))}`}>
+                  <Sparkles className={`w-6 h-6 ${challengesPageConfig.ui.colors.stats.yellow}`} />
                 </div>
-                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                <Badge variant="secondary" className={`${challengesPageConfig.ui.glassMorphism.medium} ${challengesPageConfig.ui.colors.text.accent} border ${challengesPageConfig.ui.glassMorphism.light.split(' ').find(c => c.includes('border'))} backdrop-blur-sm`}>
                   <Star className="w-3 h-3 mr-1" />
                   {isRTL ? 'منصة التحديات المبتكرة' : 'Innovation Challenges Platform'}
                 </Badge>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold ${challengesPageConfig.ui.colors.text.accent} leading-tight`}>
                   {isRTL ? (
                     <>
                       اكتشف <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">التحديات</span> المبتكرة
@@ -120,7 +120,7 @@ export const ChallengesHero = ({
                   )}
                 </h1>
                 
-                <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
+                <p className={`text-xl ${challengesPageConfig.ui.colors.text.muted} max-w-2xl leading-relaxed`}>
                   {isRTL 
                     ? 'انضم إلى مجتمع المبدعين وشارك في حل التحديات التي تشكل مستقبل المملكة ورؤية 2030'
                     : 'Join the innovators community and participate in solving challenges that shape the future of Saudi Arabia and Vision 2030'
@@ -139,14 +139,14 @@ export const ChallengesHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
-                      isActive && "bg-white/10 border-white/20 scale-105"
+                      `${challengesPageConfig.ui.glassMorphism.light} transition-all duration-500`,
+                      isActive && `${challengesPageConfig.ui.glassMorphism.medium} scale-105`
                     )}
                   >
                     <CardContent className="p-4 text-center">
                       <Icon className={cn("w-6 h-6 mx-auto mb-2 transition-colors", stat.color)} />
-                      <div className="text-2xl font-bold text-white">{stat.value}</div>
-                      <div className="text-sm text-white/70">{stat.label}</div>
+                      <div className={`text-2xl font-bold ${challengesPageConfig.ui.colors.text.accent}`}>{stat.value}</div>
+                      <div className={`text-sm ${challengesPageConfig.ui.colors.text.muted}`}>{stat.label}</div>
                     </CardContent>
                   </Card>
                 );
@@ -190,7 +190,7 @@ export const ChallengesHero = ({
           {/* Enhanced Featured Challenge */}
           <div className="space-y-6">
             {featuredChallenge ? (
-              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+              <Card className={`${challengesPageConfig.ui.glassMorphism.heavy} shadow-2xl`}>
                 <CardContent className="p-0">
                   {/* Challenge Image */}
                   <div className="relative h-48 overflow-hidden rounded-t-lg">
@@ -202,19 +202,19 @@ export const ChallengesHero = ({
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center">
-                        <Target className="w-16 h-16 text-white/60" />
+                        <Target className={`w-16 h-16 ${challengesPageConfig.ui.colors.text.muted}`} />
                       </div>
                     )}
                     
                     <div className="absolute top-4 left-4">
-                      <Badge className="bg-red-500/90 text-white border-0 animate-pulse">
+                      <Badge className={`${challengesPageConfig.ui.gradients.danger} ${challengesPageConfig.ui.colors.text.accent} border-0 animate-pulse`}>
                         <Clock className="w-3 h-3 mr-1" />
                         {featuredChallenge.daysLeft} {isRTL ? 'أيام متبقية' : 'days left'}
                       </Badge>
                     </div>
 
                     <div className="absolute top-4 right-4">
-                      <Badge className="bg-orange-500/90 text-white border-0">
+                      <Badge className={`${challengesPageConfig.ui.gradients.warning} ${challengesPageConfig.ui.colors.text.accent} border-0`}>
                         <TrendingUp className="w-3 h-3 mr-1" />
                         {isRTL ? 'رائج' : 'Trending'}
                       </Badge>
@@ -224,32 +224,32 @@ export const ChallengesHero = ({
                   </div>
 
                   <div className="p-6 space-y-4">
-                    <h3 className="text-xl font-bold text-white">
+                    <h3 className={`text-xl font-bold ${challengesPageConfig.ui.colors.text.accent}`}>
                       {featuredChallenge.title_ar}
                     </h3>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-purple-300">
+                        <div className={`text-2xl font-bold ${challengesPageConfig.ui.colors.stats.purple}`}>
                           {featuredChallenge.participants}
                         </div>
-                        <div className="text-sm text-white/70">{isRTL ? 'مشارك' : 'participants'}</div>
+                        <div className={`text-sm ${challengesPageConfig.ui.colors.text.muted}`}>{isRTL ? 'مشارك' : 'participants'}</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-yellow-300">
+                        <div className={`text-2xl font-bold ${challengesPageConfig.ui.colors.stats.yellow}`}>
                           {Math.floor(featuredChallenge.prize / 1000)}K
                         </div>
-                        <div className="text-sm text-white/70">{isRTL ? 'ر.س جائزة' : 'SAR prize'}</div>
+                        <div className={`text-sm ${challengesPageConfig.ui.colors.text.muted}`}>{isRTL ? 'ر.س جائزة' : 'SAR prize'}</div>
                       </div>
                     </div>
 
                     <Progress 
                       value={(featuredChallenge.participants / 1000) * 100} 
-                      className="h-2 bg-white/20"
+                      className={`h-2 ${challengesPageConfig.ui.glassMorphism.light.split(' ').find(c => c.includes('bg'))}`}
                     />
 
                     <Button 
-                      className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white"
+                      className={`w-full ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} ${challengesPageConfig.ui.colors.text.accent}`}
                     >
                       {isRTL ? 'اعرض التفاصيل' : 'View Details'}
                       <ArrowRight className="w-4 h-4 ml-2" />
@@ -258,13 +258,13 @@ export const ChallengesHero = ({
                 </CardContent>
               </Card>
             ) : (
-              <Card className="bg-white/5 backdrop-blur-xl border-white/10 border-dashed">
+              <Card className={`${challengesPageConfig.ui.glassMorphism.light} border-dashed`}>
                 <CardContent className="p-8 text-center">
-                  <Target className="w-16 h-16 mx-auto text-white/40 mb-4" />
-                  <h3 className="text-lg font-semibold text-white/80 mb-2">
+                  <Target className={`w-16 h-16 mx-auto ${challengesPageConfig.ui.colors.text.muted} mb-4`} />
+                  <h3 className={`text-lg font-semibold ${challengesPageConfig.ui.colors.text.secondary} mb-2`}>
                     {isRTL ? 'لا يوجد تحدي مميز حالياً' : 'No Featured Challenge'}
                   </h3>
-                  <p className="text-white/60 text-sm">
+                  <p className={`${challengesPageConfig.ui.colors.text.muted} text-sm`}>
                     {isRTL ? 'سيتم عرض التحديات المميزة هنا' : 'Featured challenges will appear here'}
                   </p>
                 </CardContent>
@@ -273,25 +273,25 @@ export const ChallengesHero = ({
 
             {/* Quick Action Cards */}
             <div className="grid grid-cols-2 gap-4">
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+              <Card className={`${challengesPageConfig.ui.glassMorphism.light} ${challengesPageConfig.ui.glassMorphism.cardHover} transition-all cursor-pointer`}>
                 <CardContent className="p-4 text-center">
                   <Calendar className={`w-8 h-8 ${challengesPageConfig.ui.colors.stats.blue} mx-auto mb-2`} />
-                  <div className="text-sm font-medium text-white">
+                  <div className={`text-sm font-medium ${challengesPageConfig.ui.colors.text.accent}`}>
                     {isRTL ? 'التحديات القادمة' : 'Upcoming'}
                   </div>
-                  <div className="text-xs text-white/70">
+                  <div className={`text-xs ${challengesPageConfig.ui.colors.text.muted}`}>
                     {isRTL ? '5 تحديات' : '5 challenges'}
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+              <Card className={`${challengesPageConfig.ui.glassMorphism.light} ${challengesPageConfig.ui.glassMorphism.cardHover} transition-all cursor-pointer`}>
                 <CardContent className="p-4 text-center">
                   <Star className={`w-8 h-8 ${challengesPageConfig.ui.colors.stats.yellow} mx-auto mb-2`} />
-                  <div className="text-sm font-medium text-white">
+                  <div className={`text-sm font-medium ${challengesPageConfig.ui.colors.text.accent}`}>
                     {isRTL ? 'المفضلة' : 'Favorites'}
                   </div>
-                  <div className="text-xs text-white/70">
+                  <div className={`text-xs ${challengesPageConfig.ui.colors.text.muted}`}>
                     {isRTL ? '12 محفوظة' : '12 saved'}
                   </div>
                 </CardContent>
