@@ -13,7 +13,7 @@ import { ChallengeCard } from '@/components/challenges/ChallengeCard';
 import { ChallengeTrendingWidget } from '@/components/challenges/ChallengeTrendingWidget';
 import { ChallengesHero } from '@/components/challenges/ChallengesHero';
 import { ChallengeRecommendations } from '@/components/challenges/ChallengeRecommendations';
-import { ChallengeDetailDialog } from '@/components/challenges/ChallengeDetailDialog';
+
 import { ChallengeFilters, FilterState } from '@/components/challenges/ChallengeFilters';
 import { challengesPageConfig, getViewModeConfig } from '@/config/challengesPageConfig';
 import { ChallengeSkeleton, ChallengeLoadingState, ChallengeEmptyState } from '@/components/challenges/ChallengeSkeletons';
@@ -680,8 +680,8 @@ const ChallengesBrowse = () => {
       }
       dialogs={
         <>
-          {/* Enhanced Challenge Detail Dialog */}
-          <ChallengeDetailDialog
+          {/* Enhanced Challenge View Dialog */}
+          <ChallengeViewDialog
             challenge={selectedChallenge}
             open={detailDialogOpen}
             onOpenChange={setDetailDialogOpen}
