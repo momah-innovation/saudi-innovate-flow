@@ -219,11 +219,11 @@ export function OpportunityManagementList({
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'open': return 'bg-green-500/10 text-green-600 border-green-200';
-      case 'closed': return 'bg-gray-500/10 text-gray-600 border-gray-200';
-      case 'on_hold': return 'bg-yellow-500/10 text-yellow-600 border-yellow-200';
-      case 'cancelled': return 'bg-red-500/10 text-red-600 border-red-200';
-      default: return 'bg-gray-500/10 text-gray-600 border-gray-200';
+      case 'open': return 'status-open';
+      case 'closed': return 'status-closed';
+      case 'on_hold': return 'status-on-hold';
+      case 'cancelled': return 'status-cancelled';
+      default: return 'status-closed';
     }
   };
 

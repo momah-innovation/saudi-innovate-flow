@@ -176,9 +176,9 @@ export const EventReviewsDialog = ({
             key={star}
             className={`w-5 h-5 ${
               star <= rating 
-                ? 'fill-yellow-400 text-yellow-400' 
-                : 'text-gray-300'
-            } ${interactive ? 'cursor-pointer hover:text-yellow-400' : ''}`}
+                ? 'star-filled' 
+                : 'star-empty'
+            } ${interactive ? 'star-interactive' : ''}`}
             onClick={() => interactive && onRatingChange?.(star)}
           />
         ))}

@@ -188,8 +188,8 @@ export function CreateProjectDialog({ open, onOpenChange, teamMembers }: CreateP
                 <div className="flex items-center gap-2">
                   <Badge variant="outline">{member.specialization}</Badge>
                   <div className={`w-3 h-3 rounded-full ${
-                    (member.current_workload || 0) > 80 ? 'bg-red-500' :
-                    (member.current_workload || 0) > 60 ? 'bg-yellow-500' : 'bg-green-500'
+                    (member.current_workload || 0) > 80 ? 'workload-critical' :
+                    (member.current_workload || 0) > 60 ? 'workload-high' : 'workload-normal'
                   }`} />
                 </div>
               </div>

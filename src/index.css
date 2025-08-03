@@ -603,3 +603,102 @@ All colors MUST be HSL for theming consistency.
 .icon-star {
   @apply text-warning;
 }
+
+/* Star rating utilities */
+.star-filled {
+  @apply text-warning fill-current;
+}
+
+.star-empty {
+  @apply text-muted-foreground;
+}
+
+.star-interactive {
+  @apply cursor-pointer hover:text-warning;
+}
+
+/* Chart color utilities using semantic tokens */
+.chart-color-1 {
+  color: hsl(var(--primary));
+}
+
+.chart-color-2 {
+  color: hsl(var(--success));
+}
+
+.chart-color-3 {
+  color: hsl(var(--warning));
+}
+
+.chart-color-4 {
+  color: hsl(var(--innovation));
+}
+
+.chart-color-5 {
+  color: hsl(var(--accent));
+}
+
+/* Status indicator utilities for opportunities */
+.status-open {
+  @apply badge-success;
+}
+
+.status-closed {
+  @apply bg-muted text-muted-foreground border-muted;
+}
+
+.status-on-hold {
+  @apply badge-warning;
+}
+
+.status-cancelled {
+  @apply badge-error;
+}
+
+/* Additional icon color utilities */
+.icon-confidential {
+  @apply text-destructive;
+}
+
+.icon-sensitive {
+  @apply text-warning;
+}
+
+.icon-available {
+  @apply text-success;
+}
+
+/* Workflow step utilities */
+.step-completed {
+  @apply bg-success text-success-foreground;
+}
+
+.step-pending {
+  @apply bg-muted text-muted-foreground;
+}
+
+/* Team member status utilities */
+.member-online {
+  @apply bg-success;
+}
+
+.member-busy {
+  @apply bg-warning;
+}
+
+.member-away {
+  @apply bg-muted;
+}
+
+/* Strength/weakness section utilities */
+.section-strengths {
+  @apply text-success;
+}
+
+.section-weaknesses {
+  @apply text-destructive;
+}
+
+.section-recommendations {
+  @apply text-primary;
+}
