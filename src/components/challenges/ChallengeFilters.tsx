@@ -168,7 +168,7 @@ export const ChallengeFilters = ({
                       onChange={(e) => updateFilter('search', e.target.value)}
                       onFocus={handleSearchFocus}
                       onBlur={handleSearchBlur}
-                      className="pl-8 h-10 text-sm transition-all duration-300 bg-white/80 backdrop-blur-sm border-violet-200 focus:border-violet-400 focus:ring-violet-400"
+                      className={`pl-8 h-10 text-sm transition-all duration-300 ${challengesPageConfig.ui.glassMorphism.medium} border-white/20 focus:border-primary focus:ring-primary`}
                       title={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
                       autoFocus={searchExpanded && !filters.search}
                     />
@@ -197,10 +197,10 @@ export const ChallengeFilters = ({
                   size="sm"
                   onClick={() => toggleFeature(option.value)}
                   className={cn(
-                    "h-10 px-3 transition-all duration-300 hover:scale-105 shadow-md",
+                     "h-10 px-3 transition-all duration-300 hover:scale-105 shadow-md",
                     filters.features.includes(option.value) 
-                      ? "bg-gradient-to-r from-violet-500 to-purple-600 text-white border-0" 
-                      : "bg-white/80 backdrop-blur-sm border-violet-200 hover:bg-violet-100 hover:border-violet-300"
+                       ? `${challengesPageConfig.ui.gradients.button} text-white border-0` 
+                      : `${challengesPageConfig.ui.glassMorphism.medium} border-primary/20 ${challengesPageConfig.ui.effects.interactive}`
                   )}
                     title={isRTL ? option.labelAr : option.label}
                   >

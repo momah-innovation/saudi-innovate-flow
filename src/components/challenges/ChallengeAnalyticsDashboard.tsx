@@ -184,7 +184,7 @@ export const ChallengeAnalyticsDashboard = ({
             <p className="text-2xl font-bold">{value}</p>
             {change && (
               <div className={`flex items-center gap-1 text-xs ${
-                trend === 'up' ? 'text-green-600' : 'text-red-600'
+                trend === 'up' ? challengesPageConfig.ui.colors.stats.green : challengesPageConfig.ui.colors.stats.red
               }`}>
                 {trend === 'up' ? (
                   <ArrowUp className="w-3 h-3" />
