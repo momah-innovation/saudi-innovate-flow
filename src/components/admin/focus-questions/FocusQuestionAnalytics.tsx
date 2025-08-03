@@ -241,9 +241,9 @@ export function FocusQuestionAnalytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">الفعاليات المرتبطة</p>
-                <p className="text-3xl font-bold text-purple-600">{analytics.overview.totalEvents}</p>
+                <p className="text-3xl font-bold hero-stats-users">{analytics.overview.totalEvents}</p>
               </div>
-              <Calendar className="w-8 h-8 text-purple-600" />
+              <Calendar className="w-8 h-8 icon-info" />
             </div>
           </CardContent>
         </Card>
@@ -446,11 +446,11 @@ export function FocusQuestionAnalytics() {
                     </div>
                     <div className="text-center">
                       <div className="text-sm text-muted-foreground">أفكار</div>
-                      <div className="font-bold text-blue-600">{trend.ideas}</div>
+                      <div className="font-bold hero-stats-ideas">{trend.ideas}</div>
                     </div>
                     <div className="text-center">
                       <div className="text-sm text-muted-foreground">فعاليات</div>
-                      <div className="font-bold text-purple-600">{trend.events}</div>
+                      <div className="font-bold hero-stats-users">{trend.events}</div>
                     </div>
                   </div>
                 ))}

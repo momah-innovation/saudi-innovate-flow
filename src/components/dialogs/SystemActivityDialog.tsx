@@ -103,26 +103,26 @@ export function SystemActivityDialog({ isOpen, onClose }: SystemActivityDialogPr
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'success':
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
+        return <CheckCircle className="h-4 w-4 icon-success" />;
       case 'error':
-        return <AlertTriangle className="h-4 w-4 text-red-500" />;
+        return <AlertTriangle className="h-4 w-4 icon-error" />;
       case 'warning':
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+        return <AlertTriangle className="h-4 w-4 icon-warning" />;
       default:
-        return <Activity className="h-4 w-4 text-blue-500" />;
+        return <Activity className="h-4 w-4 icon-info" />;
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'success':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'badge-success';
       case 'error':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'badge-error';
       case 'warning':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+        return 'badge-warning';
       default:
-        return 'bg-blue-100 text-blue-800 border-blue-200';
+        return 'badge-info';
     }
   };
 

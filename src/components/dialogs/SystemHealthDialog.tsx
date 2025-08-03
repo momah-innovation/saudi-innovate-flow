@@ -68,13 +68,13 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
     switch (status) {
       case 'healthy':
       case 'online':
-        return <Badge className="bg-green-100 text-green-800 border-green-200">Healthy</Badge>;
+        return <Badge className="badge-success">Healthy</Badge>;
       case 'warning':
       case 'slow':
-        return <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">Warning</Badge>;
+        return <Badge className="badge-warning">Warning</Badge>;
       case 'critical':
       case 'offline':
-        return <Badge className="bg-red-100 text-red-800 border-red-200">Critical</Badge>;
+        return <Badge className="badge-error">Critical</Badge>;
       default:
         return <Badge variant="secondary">Unknown</Badge>;
     }
@@ -84,13 +84,13 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
     switch (status) {
       case 'healthy':
       case 'online':
-        return <CheckCircle className="h-5 w-5 text-green-500" />;
+        return <CheckCircle className="h-5 w-5 icon-success" />;
       case 'warning':
       case 'slow':
-        return <AlertTriangle className="h-5 w-5 text-yellow-500" />;
+        return <AlertTriangle className="h-5 w-5 icon-warning" />;
       case 'critical':
       case 'offline':
-        return <AlertTriangle className="h-5 w-5 text-red-500" />;
+        return <AlertTriangle className="h-5 w-5 icon-error" />;
       default:
         return <Server className="h-5 w-5 text-muted-foreground" />;
     }
@@ -221,11 +221,11 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
                 </div>
                 <div className="flex items-center justify-between">
                   <span>SSL Status</span>
-                  <Badge className="bg-green-100 text-green-800 border-green-200">Active</Badge>
+                  <Badge className="badge-success">Active</Badge>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Firewall</span>
-                  <Badge className="bg-green-100 text-green-800 border-green-200">Protected</Badge>
+                  <Badge className="badge-success">Protected</Badge>
                 </div>
               </CardContent>
             </Card>
@@ -241,11 +241,11 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span>CDN Status</span>
-                  <Badge className="bg-green-100 text-green-800 border-green-200">Online</Badge>
+                  <Badge className="badge-success">Online</Badge>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>API Endpoints</span>
-                  <Badge className="bg-green-100 text-green-800 border-green-200">All Available</Badge>
+                  <Badge className="badge-success">All Available</Badge>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Avg Latency</span>
