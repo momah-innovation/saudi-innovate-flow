@@ -46,15 +46,15 @@ interface ChallengeActivity {
   challenge_title: string;
 }
 
-interface ChallengeCollaborationHubProps {
+interface ChallengeActivityHubProps {
   challenge: Challenge;
   className?: string;
 }
 
-export const ChallengeCollaborationHub = ({ 
+export const ChallengeActivityHub = ({ 
   challenge, 
   className = "" 
-}: ChallengeCollaborationHubProps) => {
+}: ChallengeActivityHubProps) => {
   const { isRTL } = useDirection();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('activity');
