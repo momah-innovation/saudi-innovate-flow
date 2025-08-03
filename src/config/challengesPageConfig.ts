@@ -125,28 +125,28 @@ export const challengesPageConfig: ChallengesPageConfig = {
         label: 'Trending', 
         labelAr: 'رائج', 
         icon: TrendingUp,
-        color: 'orange'
+        color: 'text-orange-400'
       },
       { 
         value: 'featured', 
         label: 'Featured', 
         labelAr: 'مميز', 
         icon: Star,
-        color: 'yellow'
+        color: 'text-yellow-400'
       },
       { 
         value: 'new', 
         label: 'New', 
         labelAr: 'جديد', 
         icon: Sparkles,
-        color: 'blue'
+        color: 'text-blue-400'
       },
       { 
         value: 'ending-soon', 
         label: 'Ending Soon', 
         labelAr: 'ينتهي قريباً', 
         icon: Clock,
-        color: 'red'
+        color: 'text-red-400'
       }
     ]
   },
@@ -337,42 +337,42 @@ export const challengesPageConfig: ChallengesPageConfig = {
         label: 'Status Change',
         labelAr: 'تغيير الحالة',
         icon: AlertCircle,
-        color: 'text-blue-500'
+        color: 'text-blue-400'
       },
       {
         value: 'new_participant',
         label: 'New Participant',
         labelAr: 'مشارك جديد',
         icon: Users,
-        color: 'text-green-500'
+        color: 'text-green-400'
       },
       {
         value: 'new_submission',
         label: 'New Submission',
         labelAr: 'مقترح جديد',
         icon: Trophy,
-        color: 'text-yellow-500'
+        color: 'text-yellow-400'
       },
       {
         value: 'comment',
         label: 'Comment',
         labelAr: 'تعليق',
         icon: MessageSquare,
-        color: 'text-purple-500'
+        color: 'text-purple-400'
       },
       {
         value: 'deadline_reminder',
         label: 'Deadline Reminder',
         labelAr: 'تذكير بالموعد النهائي',
         icon: Clock,
-        color: 'text-red-500'
+        color: 'text-red-400'
       },
       {
         value: 'trending',
         label: 'Trending',
         labelAr: 'رائج',
         icon: TrendingUp,
-        color: 'text-orange-500'
+        color: 'text-orange-400'
       }
     ],
 
@@ -382,28 +382,28 @@ export const challengesPageConfig: ChallengesPageConfig = {
         label: 'Participation',
         labelAr: 'مشاركة',
         icon: Users,
-        color: 'text-green-500'
+        color: 'text-green-400'
       },
       {
         value: 'comment',
         label: 'Comment',
         labelAr: 'تعليق',
         icon: MessageSquare,
-        color: 'text-blue-500'
+        color: 'text-blue-400'
       },
       {
         value: 'submission',
         label: 'Submission',
         labelAr: 'مقترح',
         icon: FileText,
-        color: 'text-purple-500'
+        color: 'text-purple-400'
       },
       {
         value: 'status_change',
         label: 'Status Change',
         labelAr: 'تغيير الحالة',
         icon: AlertCircle,
-        color: 'text-orange-500'
+        color: 'text-orange-400'
       }
     ]
   },
