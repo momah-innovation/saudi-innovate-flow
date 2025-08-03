@@ -175,7 +175,7 @@ const DesignSystem = () => {
           {/* Index Tab */}
           <TabsContent value="index" className="space-y-8">
             <div>
-              <h2 className="text-2xl font-bold mb-6">Design System Index</h2>
+              <h2 className="text-2xl font-bold mb-6">📋 Design System Index</h2>
               <p className="text-muted-foreground mb-8">
                 Complete overview of all components, patterns, and design tokens available in this system.
               </p>
