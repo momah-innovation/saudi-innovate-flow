@@ -570,6 +570,14 @@ export const ProfileSetup = () => {
           </CardContent>
         </Card>
         
+        {/* SIMPLE TEST - THIS SHOULD ALWAYS SHOW */}
+        <div className="mt-4 p-4 bg-red-100 border-2 border-red-500 rounded-lg">
+          <h2 className="text-xl font-bold text-red-700">🚨 TEST: Can you see this red box?</h2>
+          <p>If you can see this, the page is updating correctly.</p>
+          <p>User logged in: {user ? 'YES' : 'NO'}</p>
+          <p>Current time: {new Date().toLocaleTimeString()}</p>
+        </div>
+        
         {/* Always show debug info for troubleshooting */}
         <Card className="mt-4 border-red-200">
           <CardHeader>
