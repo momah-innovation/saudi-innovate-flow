@@ -38,6 +38,7 @@ export const PUBLIC_ROUTES = {
   // Public content
   STATISTICS: '/statistics',
   HELP: '/help',
+  DESIGN_SYSTEM: '/design-system',
 } as const;
 
 // Authenticated routes (require login)

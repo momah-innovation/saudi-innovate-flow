@@ -389,7 +389,7 @@ export function NavigationSidebar() {
         icon: Palette, 
         path: '/design-system',
         group: 'settings',
-        roles: ['admin'] 
+        roles: ['all'] 
       },
     ];
 
