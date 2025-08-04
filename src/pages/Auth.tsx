@@ -4,11 +4,13 @@ import { Auth } from '@/components/auth/Auth';
 import { Loader2 } from 'lucide-react';
 
 const AuthPage = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, userProfile } = useAuth();
 
   // Redirect if already authenticated
   if (user && !loading) {
-    return <Navigate to="/dashboard" replace />;
+    // If user has profile, go to dashboard, otherwise go to profile setup
+    const redirectPath = userProfile ? "/dashboard" : "/profile/setup";
+    return <Navigate to={redirectPath} replace />;
   }
 
   // Show loading spinner while checking auth state

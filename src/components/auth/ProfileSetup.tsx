@@ -103,11 +103,22 @@ export const ProfileSetup = () => {
     }
   });
 
-  const { user } = useAuth();
+  const { user, userProfile } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+    
+    // If user already has a profile, redirect to dashboard
+    if (userProfile) {
+      navigate('/dashboard');
+      return;
+    }
+
     if (user) {
       setProfileData(prev => ({
         ...prev,
@@ -115,7 +126,7 @@ export const ProfileSetup = () => {
         organization: user.user_metadata?.organization || ''
       }));
     }
-  }, [user]);
+  }, [user, userProfile, navigate]);
 
   const totalSteps = 4;
   const progress = (currentStep / totalSteps) * 100;
