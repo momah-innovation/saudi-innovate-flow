@@ -72,8 +72,6 @@ export { LoadingSpinner, LoadingDots, LoadingPulse, ProgressBar, CardSkeleton, T
 // Migration Helper
 export * from './ui-migration-helper';
 
-// Event-specific components
-export { EventNotificationCenter } from '../events/EventNotificationCenter';
 
 // Re-export all existing shadcn components for consistency
 export * from './accordion';

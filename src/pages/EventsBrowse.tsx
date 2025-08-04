@@ -17,7 +17,7 @@ import { EventWaitlistDialog } from '@/components/events/EventWaitlistDialog';
 import { EventReviewsDialog } from '@/components/events/EventReviewsDialog';
 import { EventSocialShare } from '@/components/events/EventSocialShare';
 import { EnhancedEventsHero } from '@/components/events/EnhancedEventsHero';
-import { EventNotificationCenter } from '@/components/events/EventNotificationCenter';
+
 import { EventAnalyticsDashboard } from '@/components/events/EventAnalyticsDashboard';
 import { TrendingEventsWidget } from '@/components/events/TrendingEventsWidget';
 import { supabase } from '@/integrations/supabase/client';
@@ -345,7 +345,6 @@ const EventsBrowse = () => {
             
             {/* Right side - Actions */}
             <div className="flex items-center gap-2">
-              <EventNotificationCenter />
               <Button
                 variant="outline"
                 size="sm"
