@@ -1,9 +1,15 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Users, Settings, Shield, BarChart3, Database, Calendar, Briefcase, Trophy } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from '@/hooks/useAppTranslation';
+import { 
+  AdminPageWrapper, 
+  AdminContentGrid, 
+  MetricCard, 
+  Heading1, 
+  BodyText,
+  Icon 
+} from '@/components/ui';
+import { Users, Settings, Shield, BarChart3, Database, Calendar, Briefcase, Trophy } from 'lucide-react';
 
 interface AdminDashboardProps {
   userProfile: any;
@@ -125,81 +131,57 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
   };
 
   return (
-    <div className="space-y-8">
-      {/* Hero Section using proper Design System tokens */}
-      <div className="bg-gradient-primary text-primary-foreground rounded-xl p-8" style={{ boxShadow: 'var(--shadow-elegant)' }}>
-        <div className="flex items-center gap-4 mb-3">
+    <AdminPageWrapper>
+      {/* Hero Section using Design System patterns */}
+      <div className="bg-gradient-to-br from-primary to-accent text-primary-foreground rounded-xl p-8 mb-8">
+        <div className="flex items-center gap-4 mb-4">
           <div className="w-12 h-12 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
-            <Shield className="w-6 h-6" />
+            <Icon icon={Shield} className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold">
+            <Heading1 className="text-primary-foreground mb-2">
               {language === 'ar' ? 'لوحة التحكم الإدارية' : 'Administrative Dashboard'}
-            </h1>
-            <p className="text-primary-foreground/80 text-lg">
+            </Heading1>
+            <BodyText className="text-primary-foreground/90">
               {language === 'ar' 
                 ? `أهلاً بك ${userProfile?.display_name || 'Admin'} - إدارة شاملة للنظام`
                 : `Welcome ${userProfile?.display_name || 'Admin'} - Comprehensive system management`}
-            </p>
+            </BodyText>
           </div>
         </div>
       </div>
 
-      {/* Admin Actions organized by categories */}
-      <div className="space-y-8">
-        {Object.entries(actionsByCategory).map(([category, actions]) => (
-          <div key={category}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                {category === 'management' && <Users className="w-4 h-4 text-primary" />}
-                {category === 'content' && <Database className="w-4 h-4 text-primary" />}
-                {category === 'security' && <Shield className="w-4 h-4 text-primary" />}
-                {category === 'analytics' && <BarChart3 className="w-4 h-4 text-primary" />}
-                {category === 'system' && <Settings className="w-4 h-4 text-primary" />}
-              </div>
-              <h2 className="text-xl font-semibold text-foreground">
-                {categoryLabels[category]?.[language] || category}
-              </h2>
+      {/* Admin Actions organized by categories using MetricCard */}
+      {Object.entries(actionsByCategory).map(([category, actions]) => (
+        <div key={category} className="mb-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+              {category === 'management' && <Icon icon={Users} className="w-4 h-4 text-primary" />}
+              {category === 'content' && <Icon icon={Database} className="w-4 h-4 text-primary" />}
+              {category === 'security' && <Icon icon={Shield} className="w-4 h-4 text-primary" />}
+              {category === 'analytics' && <Icon icon={BarChart3} className="w-4 h-4 text-primary" />}
+              {category === 'system' && <Icon icon={Settings} className="w-4 h-4 text-primary" />}
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {actions.map((action, index) => (
-                <Card 
-                  key={index} 
-                  className="group hover-primary transition-all duration-300 cursor-pointer border-border/50 hover:border-primary/20 bg-card" 
-                  style={{ boxShadow: 'var(--shadow-card)' }}
-                  onClick={action.action}
-                >
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 group-hover:bg-primary transition-all duration-300 flex items-center justify-center">
-                        <action.icon className="w-5 h-5 text-primary group-hover:text-primary-foreground transition-colors" />
-                      </div>
-                      <div className="flex-1">
-                        <CardTitle className="text-base font-semibold text-card-foreground group-hover:text-primary transition-colors">
-                          {action.title}
-                        </CardTitle>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                      {action.description}
-                    </p>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="w-full hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all"
-                    >
-                      {language === 'ar' ? 'الوصول' : 'Access'}
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <Heading1 className="text-xl">
+              {categoryLabels[category]?.[language] || category}
+            </Heading1>
           </div>
-        ))}
-      </div>
-    </div>
+          
+          <AdminContentGrid viewMode="cards">
+            {actions.map((action, index) => (
+              <MetricCard
+                key={index}
+                title={action.title}
+                value={language === 'ar' ? 'الوصول' : 'Access'}
+                subtitle={action.description}
+                icon={<Icon icon={action.icon} className="w-5 h-5" variant="primary" />}
+                onClick={action.action}
+                className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:border-primary/30"
+              />
+            ))}
+          </AdminContentGrid>
+        </div>
+      ))}
+    </AdminPageWrapper>
   );
 }
