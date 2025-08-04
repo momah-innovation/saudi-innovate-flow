@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDirection } from "@/components/ui/direction-provider";
 import { useLandingPageData } from "@/hooks/useLandingPageData";
+import { LandingNavigation } from "@/components/landing/LandingNavigation";
 import { 
   Lightbulb, 
   Users, 
@@ -19,7 +20,9 @@ import {
   BarChart3,
   HelpCircle,
   Languages,
-  ChevronRight
+  ChevronRight,
+  Calendar,
+  ShoppingBag
 } from "lucide-react";
 
 export default function LandingPage() {
@@ -116,8 +119,10 @@ export default function LandingPage() {
 
   return (
     <div className={`min-h-screen bg-background ${isRTL ? 'rtl' : ''}`}>
+      <LandingNavigation />
+      
       {/* Language Toggle */}
-      <div className={`fixed top-4 ${isRTL ? 'left-4' : 'right-4'} z-50`}>
+      <div className={`fixed top-20 ${isRTL ? 'left-4' : 'right-4'} z-50`}>
         <Button
           variant="outline"
           size="sm"
@@ -160,25 +165,24 @@ export default function LandingPage() {
             )}
           </p>
           <div className={`flex flex-col sm:flex-row gap-4 justify-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-            <Button 
-              size="lg" 
-              className="bg-background text-primary hover:bg-background/90 text-lg px-8 py-4"
-              onClick={() => navigate('/auth')}
-            >
-              {getText("Access Platform", "الوصول إلى المنصة")}
-              <ArrowRight className={`h-5 w-5 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-foreground/30 text-foreground hover:bg-foreground/10 text-lg px-8 py-4"
-              onClick={() => {
-                const featuresSection = document.getElementById('features-section');
-                featuresSection?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              {getText("Learn More", "اعرف المزيد")}
-            </Button>
+              <Button 
+                size="lg" 
+                className="bg-background text-primary hover:bg-background/90 text-lg px-8 py-4"
+                onClick={() => navigate('/signup')}
+              >
+                {getText("Get Started", "ابدأ الآن")}
+                <ArrowRight className={`h-5 w-5 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
+              </Button>
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="border-foreground/30 text-foreground hover:bg-foreground/10 text-lg px-8 py-4"
+                asChild
+              >
+                <Link to="/challenges">
+                  {getText("Browse Challenges", "استكشف التحديات")}
+                </Link>
+              </Button>
           </div>
         </div>
       </section>
@@ -282,21 +286,88 @@ export default function LandingPage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className="border-border/50 hover:border-primary/50 transition-colors">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                    <feature.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">
-                    {feature.description}
-                  </CardDescription>
+            {features.map((feature, index) => {
+              const getFeatureLink = () => {
+                switch (feature.icon) {
+                  case Lightbulb: return '/challenges';
+                  case Users: return '/events';
+                  case Target: return '/about';
+                  case TrendingUp: return '/statistics';
+                  case Shield: return '/help';
+                  case Globe: return '/marketplace';
+                  default: return '/about';
+                }
+              };
+              
+              return (
+                <Link to={getFeatureLink()} key={index}>
+                  <Card className="border-border/50 hover:border-primary/50 transition-all hover:shadow-lg h-full">
+                    <CardHeader>
+                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                        <feature.icon className="h-6 w-6 text-primary" />
+                      </div>
+                      <CardTitle className="text-xl">{feature.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-base">
+                        {feature.description}
+                      </CardDescription>
+                      <div className={`flex items-center mt-4 text-primary font-medium ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <span className="text-sm">
+                          {getText("Learn More", "اعرف المزيد")}
+                        </span>
+                        <ArrowRight className={`h-4 w-4 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
+          
+          {/* Quick Navigation Section */}
+          <div className={`mt-16 grid md:grid-cols-3 gap-6 max-w-4xl mx-auto ${isRTL ? 'text-right' : ''}`}>
+            <Link to="/challenges" className="group">
+              <Card className="border-border/50 hover:border-primary/50 transition-all hover:shadow-lg">
+                <CardContent className="p-6 text-center">
+                  <Target className="h-8 w-8 text-primary mx-auto mb-3" />
+                  <h3 className="font-semibold mb-2">
+                    {getText("Browse Challenges", "استكشف التحديات")}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {getText("Discover government innovation challenges", "اكتشف تحديات الابتكار الحكومي")}
+                  </p>
                 </CardContent>
               </Card>
-            ))}
+            </Link>
+            
+            <Link to="/events" className="group">
+              <Card className="border-border/50 hover:border-primary/50 transition-all hover:shadow-lg">
+                <CardContent className="p-6 text-center">
+                  <Calendar className="h-8 w-8 text-primary mx-auto mb-3" />
+                  <h3 className="font-semibold mb-2">
+                    {getText("Upcoming Events", "الفعاليات القادمة")}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {getText("Join innovation events and workshops", "انضم للفعاليات وورش الابتكار")}
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+            
+            <Link to="/marketplace" className="group">
+              <Card className="border-border/50 hover:border-primary/50 transition-all hover:shadow-lg">
+                <CardContent className="p-6 text-center">
+                  <ShoppingBag className="h-8 w-8 text-primary mx-auto mb-3" />
+                  <h3 className="font-semibold mb-2">
+                    {getText("Partnership Opportunities", "فرص الشراكة")}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {getText("Explore collaboration possibilities", "استكشف إمكانيات التعاون")}
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </div>
       </section>
@@ -355,14 +426,27 @@ export default function LandingPage() {
                 ))}
               </div>
 
-              <Button 
-                size="lg" 
-                className="text-lg px-8 py-4"
-                onClick={() => navigate('/auth')}
-              >
-                {getText("Get Started Today", "ابدأ اليوم")}
-                <ArrowRight className={`h-5 w-5 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
-              </Button>
+              <div className={`flex gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <Button 
+                  size="lg" 
+                  className="text-lg px-8 py-4"
+                  onClick={() => navigate('/signup')}
+                >
+                  {getText("Join Platform", "انضم للمنصة")}
+                  <ArrowRight className={`h-5 w-5 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
+                </Button>
+                <Button 
+                  variant="outline"
+                  size="lg" 
+                  className="text-lg px-8 py-4"
+                  asChild
+                >
+                  <Link to="/events">
+                    <Calendar className={`h-5 w-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                    {getText("View Events", "عرض الفعاليات")}
+                  </Link>
+                </Button>
+              </div>
             </div>
 
             <div className={isRTL ? 'lg:col-start-1' : ''}>
@@ -480,22 +564,101 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-muted/50 py-8 px-4 border-t">
-        <div className="container mx-auto text-center">
-          <div className={`flex items-center justify-center mb-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <div className={`h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center ${isRTL ? 'ml-3' : 'mr-3'}`}>
-              <div className="text-lg">🏗️</div>
+      <footer className="bg-muted/50 py-12 px-4 border-t">
+        <div className="container mx-auto">
+          <div className="grid md:grid-cols-4 gap-8">
+            {/* Brand Column */}
+            <div className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
+              <div className={`flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className={`h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center ${isRTL ? 'ml-3' : 'mr-3'}`}>
+                  <div className="text-lg">🏗️</div>
+                </div>
+                <span className="text-lg font-semibold">
+                  {getText("Ruwād", "رواد")}
+                </span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                {getText(
+                  "Government Innovation Management Platform aligned with Saudi Vision 2030",
+                  "منصة إدارة الابتكار الحكومي متماشية مع رؤية السعودية 2030"
+                )}
+              </p>
             </div>
-            <span className="text-lg font-semibold">
-              {getText("Ruwād Innovation System", "نظام رواد للابتكار")}
-            </span>
+            
+            {/* Discover Column */}
+            <div className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
+              <h3 className="font-semibold">
+                {getText("Discover", "استكشف")}
+              </h3>
+              <nav className="space-y-2">
+                <Link to="/challenges" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  {getText("Challenges", "التحديات")}
+                </Link>
+                <Link to="/events" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  {getText("Events", "الفعاليات")}
+                </Link>
+                <Link to="/campaigns" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  {getText("Campaigns", "الحملات")}
+                </Link>
+                <Link to="/marketplace" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  {getText("Marketplace", "السوق")}
+                </Link>
+              </nav>
+            </div>
+            
+            {/* Platform Column */}
+            <div className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
+              <h3 className="font-semibold">
+                {getText("Platform", "المنصة")}
+              </h3>
+              <nav className="space-y-2">
+                <Link to="/about" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  {getText("About", "حول المنصة")}
+                </Link>
+                <Link to="/pricing" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  {getText("Pricing", "الأسعار")}
+                </Link>
+                <Link to="/statistics" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  {getText("Statistics", "الإحصائيات")}
+                </Link>
+                <Link to="/help" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  {getText("Help", "المساعدة")}
+                </Link>
+              </nav>
+            </div>
+            
+            {/* Get Started Column */}
+            <div className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
+              <h3 className="font-semibold">
+                {getText("Get Started", "ابدأ")}
+              </h3>
+              <div className="space-y-3">
+                <Button 
+                  className="w-full"
+                  onClick={() => navigate('/signup')}
+                >
+                  {getText("Sign Up", "إنشاء حساب")}
+                </Button>
+                <Button 
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => navigate('/login')}
+                >
+                  {getText("Sign In", "تسجيل الدخول")}
+                </Button>
+              </div>
+            </div>
           </div>
-          <p className="text-muted-foreground">
-            {getText(
-              "Government Innovation Management Platform • Aligned with Saudi Vision 2030",
-              "منصة إدارة الابتكار الحكومي • متماشية مع رؤية السعودية 2030"
-            )}
-          </p>
+          
+          {/* Bottom Bar */}
+          <div className={`mt-8 pt-8 border-t text-center ${isRTL ? 'text-right' : ''}`}>
+            <p className="text-sm text-muted-foreground">
+              {getText(
+                "© 2024 Ruwād Innovation System. Supporting Saudi Vision 2030.",
+                "© ٢٠٢٤ نظام رواد للابتكار. دعماً لرؤية السعودية ٢٠٣٠."
+              )}
+            </p>
+          </div>
         </div>
       </footer>
     </div>
