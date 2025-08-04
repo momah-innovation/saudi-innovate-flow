@@ -57,7 +57,7 @@
 
 ## 🔐 PHASE 2: ENHANCED AUTHENTICATION & USER MANAGEMENT (Week 2-3)
 **Status:** 🟡 IN PROGRESS  
-**Progress:** 3/7 tasks completed (43%)  
+**Progress:** 4/7 tasks completed (57%)  
 **Priority:** HIGH  
 
 ### Task Checklist
@@ -76,25 +76,25 @@
   - *Progress: Comprehensive role hierarchy with permissions matrix*
   - *Estimated: 5 hours*
 
-- [ ] **A2.4** - Multi-factor authentication
+- [✅] **A2.4** - Database schema for enhanced user management
+  - *Status: COMPLETED*
+  - *Progress: Extended role hierarchy with 8 new roles (team_lead, project_manager, research_lead, innovation_manager, external_expert, mentor, judge, facilitator). Created comprehensive profiles table with multilingual support, social links, skills tracking, and privacy settings. Implemented automatic profile creation triggers.*
+  - *Estimated: 4 hours*
+
+- [ ] **A2.5** - Multi-factor authentication implementation
   - *Status: PENDING*
   - *Progress: SMS and app-based 2FA implementation*
   - *Estimated: 6 hours*
 
-- [ ] **A2.5** - Password policy enforcement
+- [ ] **A2.6** - Password policy enforcement
   - *Status: PENDING*
   - *Progress: Complex password requirements and history*
   - *Estimated: 3 hours*
 
-- [ ] **A2.6** - Session management and security
+- [ ] **A2.7** - Session management and security
   - *Status: PENDING*
   - *Progress: Secure session handling and timeout policies*
   - *Estimated: 4 hours*
-
-- [ ] **A2.7** - Account verification and recovery
-  - *Status: PENDING*
-  - *Progress: Email/SMS verification and password recovery*
-  - *Estimated: 5 hours*
 
 ### Success Criteria
 - [✅] Enhanced Arabic-first authentication interface
