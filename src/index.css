@@ -29,6 +29,21 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    
+    /* Semantic Status Colors */
+    --success: 142 76% 36%;
+    --success-foreground: 355 7% 97%;
+    --warning: 43 96% 56%;
+    --warning-foreground: 25 5% 11%;
+    --info: 217 91% 60%;
+    --info-foreground: 210 40% 98%;
+    
+    /* Semantic Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8));
+    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(var(--success) / 0.8));
+    --gradient-warning: linear-gradient(135deg, hsl(var(--warning)), hsl(var(--warning) / 0.8));
+    --gradient-info: linear-gradient(135deg, hsl(var(--info)), hsl(var(--info) / 0.8));
+    --gradient-subtle: linear-gradient(135deg, hsl(var(--muted)), hsl(var(--accent)));
   }
 
   .dark {
@@ -56,6 +71,14 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    
+    /* Dark Mode Semantic Colors */
+    --success: 142 66% 46%;
+    --success-foreground: 142 10% 5%;
+    --warning: 43 86% 66%;
+    --warning-foreground: 43 10% 5%;
+    --info: 217 81% 70%;
+    --info-foreground: 217 10% 5%;
   }
 }
 

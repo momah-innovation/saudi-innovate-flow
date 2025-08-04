@@ -52,6 +52,26 @@ export default {
 					DEFAULT: "hsl(var(--card))",
 					foreground: "hsl(var(--card-foreground))",
 				},
+				// Semantic status colors
+				success: {
+					DEFAULT: "hsl(var(--success))",
+					foreground: "hsl(var(--success-foreground))",
+				},
+				warning: {
+					DEFAULT: "hsl(var(--warning))",
+					foreground: "hsl(var(--warning-foreground))",
+				},
+				info: {
+					DEFAULT: "hsl(var(--info))",
+					foreground: "hsl(var(--info-foreground))",
+				},
+			},
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-success': 'var(--gradient-success)',
+				'gradient-warning': 'var(--gradient-warning)',
+				'gradient-info': 'var(--gradient-info)',
+				'gradient-subtle': 'var(--gradient-subtle)',
 			},
 			borderRadius: {
 				lg: "var(--radius)",

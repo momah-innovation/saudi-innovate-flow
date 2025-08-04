@@ -41,14 +41,14 @@ export const DashboardHero = ({
       case 'admin':
       case 'super_admin':
         return {
-          gradient: 'from-red-500 to-pink-600',
+          gradient: 'bg-gradient-primary',
           title: language === 'ar' ? 'لوحة الإدارة' : 'Admin Dashboard',
           subtitle: language === 'ar' ? 'إدارة شاملة للنظام والمستخدمين' : 'Complete system and user management',
           icon: Shield,
           stats: [
-            { icon: Users, value: '156', label: language === 'ar' ? 'المستخدمين' : 'Users', color: 'text-white' },
-            { icon: Settings, value: '12', label: language === 'ar' ? 'المهام النشطة' : 'Active Tasks', color: 'text-white' },
-            { icon: BarChart3, value: '98%', label: language === 'ar' ? 'أداء النظام' : 'System Performance', color: 'text-white' },
+            { icon: Users, value: '156', label: language === 'ar' ? 'المستخدمين' : 'Users', color: 'text-primary-foreground' },
+            { icon: Settings, value: '12', label: language === 'ar' ? 'المهام النشطة' : 'Active Tasks', color: 'text-primary-foreground' },
+            { icon: BarChart3, value: '98%', label: language === 'ar' ? 'أداء النظام' : 'System Performance', color: 'text-primary-foreground' },
           ],
           actions: [
             { title: language === 'ar' ? 'إدارة المستخدمين' : 'Manage Users', path: '/admin/users', icon: Users },
@@ -58,14 +58,14 @@ export const DashboardHero = ({
         };
       case 'expert':
         return {
-          gradient: 'from-purple-500 to-indigo-600',
+          gradient: 'bg-gradient-info',
           title: language === 'ar' ? 'مركز الخبرة' : 'Expert Center',
           subtitle: language === 'ar' ? 'تقييم ومراجعة الأفكار الابتكارية' : 'Evaluate and review innovative ideas',
           icon: Brain,
           stats: [
-            { icon: FileText, value: stats.totalIdeas.toString(), label: language === 'ar' ? 'أفكار للمراجعة' : 'Ideas to Review', color: 'text-white' },
-            { icon: Star, value: '4.8', label: language === 'ar' ? 'تقييم الخبرة' : 'Expert Rating', color: 'text-white' },
-            { icon: Trophy, value: '24', label: language === 'ar' ? 'تم التقييم' : 'Evaluated', color: 'text-white' },
+            { icon: FileText, value: stats.totalIdeas.toString(), label: language === 'ar' ? 'أفكار للمراجعة' : 'Ideas to Review', color: 'text-primary-foreground' },
+            { icon: Star, value: '4.8', label: language === 'ar' ? 'تقييم الخبرة' : 'Expert Rating', color: 'text-primary-foreground' },
+            { icon: Trophy, value: '24', label: language === 'ar' ? 'تم التقييم' : 'Evaluated', color: 'text-primary-foreground' },
           ],
           actions: [
             { title: language === 'ar' ? 'تقييم الأفكار' : 'Evaluate Ideas', path: '/expert/evaluate', icon: FileText },
@@ -74,14 +74,14 @@ export const DashboardHero = ({
         };
       case 'partner':
         return {
-          gradient: 'from-green-500 to-teal-600',
+          gradient: 'bg-gradient-success',
           title: language === 'ar' ? 'منصة الشريك' : 'Partner Platform',
           subtitle: language === 'ar' ? 'إدارة الشراكات والفرص الاستثمارية' : 'Manage partnerships and investment opportunities',
           icon: Handshake,
           stats: [
-            { icon: Briefcase, value: '8', label: language === 'ar' ? 'فرص نشطة' : 'Active Opportunities', color: 'text-white' },
-            { icon: TrendingUp, value: '85%', label: language === 'ar' ? 'معدل النجاح' : 'Success Rate', color: 'text-white' },
-            { icon: Award, value: '2.5M', label: language === 'ar' ? 'SAR مستثمر' : 'SAR Invested', color: 'text-white' },
+            { icon: Briefcase, value: '8', label: language === 'ar' ? 'فرص نشطة' : 'Active Opportunities', color: 'text-primary-foreground' },
+            { icon: TrendingUp, value: '85%', label: language === 'ar' ? 'معدل النجاح' : 'Success Rate', color: 'text-primary-foreground' },
+            { icon: Award, value: '2.5M', label: language === 'ar' ? 'SAR مستثمر' : 'SAR Invested', color: 'text-primary-foreground' },
           ],
           actions: [
             { title: language === 'ar' ? 'إدارة الفرص' : 'Manage Opportunities', path: '/partner/opportunities', icon: Briefcase },
@@ -90,12 +90,12 @@ export const DashboardHero = ({
         };
       default: // innovator and others
         return {
-          gradient: 'from-innovation to-innovation-foreground',
+          gradient: 'bg-gradient-primary',
           title: language === 'ar' ? 'رحلة الابتكار' : 'Innovation Journey',
           subtitle: language === 'ar' ? 'اكتشف، ابتكر، وشارك أفكارك مع العالم' : 'Discover, innovate, and share your ideas with the world',
           icon: Lightbulb,
           stats: [
-            { icon: Lightbulb, value: stats.totalIdeas.toString(), label: language === 'ar' ? 'أفكاري' : 'My Ideas', color: 'text-white' },
+            { icon: Lightbulb, value: stats.totalIdeas.toString(), label: language === 'ar' ? 'أفكاري' : 'My Ideas', color: 'text-primary-foreground' },
             { icon: Target, value: stats.activeChallenges.toString(), label: language === 'ar' ? 'التحديات' : 'Challenges', color: 'text-white' },
             { icon: Award, value: stats.totalPoints.toString(), label: language === 'ar' ? 'النقاط' : 'Points', color: 'text-white' },
             { icon: Trophy, value: `${stats.innovationScore}%`, label: language === 'ar' ? 'نتيجة الابتكار' : 'Innovation Score', color: 'text-white' },

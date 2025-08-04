@@ -171,31 +171,31 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
 
       {/* Professional Admin Tabs Interface */}
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 h-12 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-1 shadow-sm">
+        <TabsList className="grid w-full grid-cols-4 h-12 bg-muted rounded-lg p-1">
           <TabsTrigger 
             value="overview" 
-            className="flex items-center gap-2 h-9 px-4 rounded-md text-slate-600 dark:text-slate-400 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-sm font-medium transition-all hover:text-slate-900 dark:hover:text-slate-100"
+            className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <BarChart3 className="w-4 h-4" />
             {language === 'ar' ? 'نظرة عامة' : 'Overview'}
           </TabsTrigger>
           <TabsTrigger 
             value="management" 
-            className="flex items-center gap-2 h-9 px-4 rounded-md text-slate-600 dark:text-slate-400 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-sm font-medium transition-all hover:text-slate-900 dark:hover:text-slate-100"
+            className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Users className="w-4 h-4" />
             {language === 'ar' ? 'الإدارة' : 'Management'}
           </TabsTrigger>
           <TabsTrigger 
             value="content" 
-            className="flex items-center gap-2 h-9 px-4 rounded-md text-slate-600 dark:text-slate-400 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-sm font-medium transition-all hover:text-slate-900 dark:hover:text-slate-100"
+            className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Database className="w-4 h-4" />
             {language === 'ar' ? 'المحتوى' : 'Content'}
           </TabsTrigger>
           <TabsTrigger 
             value="system" 
-            className="flex items-center gap-2 h-9 px-4 rounded-md text-slate-600 dark:text-slate-400 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-sm font-medium transition-all hover:text-slate-900 dark:hover:text-slate-100"
+            className="flex items-center gap-2 h-9 px-4 rounded-md text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm font-medium transition-all hover:text-foreground"
           >
             <Settings className="w-4 h-4" />
             {language === 'ar' ? 'النظام' : 'System'}

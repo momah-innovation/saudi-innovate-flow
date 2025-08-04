@@ -117,7 +117,7 @@ export const EmailVerification = () => {
 
   if (isVerified) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-subtle p-4">
         <Card className="w-full max-w-md border-0 shadow-2xl backdrop-blur-sm bg-card/80">
           <CardHeader className="text-center space-y-4">
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
@@ -131,7 +131,7 @@ export const EmailVerification = () => {
           <CardContent>
             <Button 
               onClick={() => navigate('/dashboard')}
-              className="w-full bg-gradient-primary hover:opacity-90 text-white"
+              className="w-full bg-gradient-primary hover:opacity-90 text-primary-foreground"
             >
               الانتقال إلى لوحة التحكم
             </Button>
@@ -142,14 +142,14 @@ export const EmailVerification = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-subtle p-4">
       <Card className="w-full max-w-md border-0 shadow-2xl backdrop-blur-sm bg-card/80">
         <CardHeader className="text-center space-y-4">
           <div className="w-16 h-16 rounded-xl bg-gradient-primary flex items-center justify-center mx-auto">
             {isVerifying ? (
-              <RefreshCw className="h-8 w-8 text-white animate-spin" />
+              <RefreshCw className="h-8 w-8 text-primary-foreground animate-spin" />
             ) : (
-              <Mail className="h-8 w-8 text-white" />
+              <Mail className="h-8 w-8 text-primary-foreground" />
             )}
           </div>
           <CardTitle className="text-2xl">

@@ -251,8 +251,8 @@ export const AutomatedTaggingPanel: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
-          <Tags className="h-6 w-6 text-white" />
+        <div className="w-12 h-12 rounded-lg bg-gradient-info flex items-center justify-center">
+          <Tags className="h-6 w-6 text-info-foreground" />
         </div>
         <div>
           <h1 className="text-2xl font-bold">نظام العلامات التلقائي</h1>
@@ -295,8 +295,8 @@ export const AutomatedTaggingPanel: React.FC = () => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <CheckCircle className="h-4 w-4 text-green-600" />
+              <div className="p-2 bg-success/10 rounded-lg">
+                <CheckCircle className="h-4 w-4 text-success" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-muted-foreground">علامات موافق عليها</p>
@@ -309,8 +309,8 @@ export const AutomatedTaggingPanel: React.FC = () => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <TrendingUp className="h-4 w-4 text-blue-600" />
+              <div className="p-2 bg-info/10 rounded-lg">
+                <TrendingUp className="h-4 w-4 text-info" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-muted-foreground">معدل الأتمتة</p>
@@ -335,7 +335,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
                   placeholder="البحث في الاقتراحات..."
                   value={searchTerm}
@@ -374,8 +374,8 @@ export const AutomatedTaggingPanel: React.FC = () => {
               </div>
             ) : filteredSuggestions.length === 0 ? (
               <div className="text-center py-8">
-                <Tags className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-                <p className="text-gray-500">لا توجد اقتراحات للعرض</p>
+                <Tags className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                <p className="text-muted-foreground">لا توجد اقتراحات للعرض</p>
               </div>
             ) : (
               filteredSuggestions.map((suggestion) => (
@@ -440,7 +440,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                               suggestion.id, 
                               suggestion.suggested_tags.map((tag: any) => tag.tag || tag)
                             )}
-                            className="text-white bg-green-600 hover:bg-green-700"
+                            className="text-success-foreground bg-success hover:bg-success/90"
                           >
                             <CheckCircle className="h-4 w-4 mr-1" />
                             موافقة وتطبيق
@@ -449,7 +449,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                             size="sm"
                             variant="outline"
                             onClick={() => rejectSuggestion(suggestion.id)}
-                            className="text-red-600 hover:text-red-700"
+                            className="text-destructive hover:text-destructive/90"
                           >
                             <X className="h-4 w-4 mr-1" />
                             رفض
@@ -477,7 +477,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                 <Card>
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-3">
-                      <Zap className="h-8 w-8 text-blue-500" />
+                      <Zap className="h-8 w-8 text-primary" />
                       <div>
                         <h3 className="font-medium">محتوى جديد</h3>
                         <p className="text-sm text-muted-foreground">

@@ -130,7 +130,7 @@ export const Auth = () => {
   );
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-subtle p-4">
       {/* Back to Home Button */}
       <div className="fixed top-4 left-4 z-50">
         <Button
@@ -147,11 +147,11 @@ export const Auth = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
-            <div className="h-16 w-16 rounded-xl bg-gradient-primary flex items-center justify-center text-white text-2xl font-bold shadow-elegant">
+            <div className="h-16 w-16 rounded-xl bg-gradient-primary flex items-center justify-center text-primary-foreground text-2xl font-bold">
               رواد
             </div>
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-text bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-foreground">
             منصة رواد للابتكار
           </h1>
           <p className="text-muted-foreground mt-2">
@@ -290,7 +290,7 @@ export const Auth = () => {
 
               <Button
                 type="submit"
-                className="w-full h-11 bg-gradient-primary hover:opacity-90 text-white"
+                className="w-full h-11 bg-gradient-primary hover:opacity-90 text-primary-foreground"
                 disabled={isLoading}
               >
                 {isLoading ? "جارٍ التحميل..." : activeTab === 'login' ? "تسجيل الدخول" : "إنشاء الحساب"}

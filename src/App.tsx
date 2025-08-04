@@ -175,7 +175,7 @@ const App = () => (
                                     مطلوب فريق لتطوير تطبيق موحد للخدمات الحكومية
                                   </p>
                                   <div className="flex justify-between items-center">
-                                    <span className="badge bg-green-100 text-green-800">مفتوحة</span>
+                                    <span className="badge bg-success/10 text-success">مفتوحة</span>
                                     <span className="text-sm text-muted-foreground">الموعد النهائي: 30 أيام</span>
                                   </div>
                                 </div>
@@ -199,7 +199,7 @@ const App = () => (
                                   <p className="text-muted-foreground text-sm mb-3">
                                     شراكة في مجال الحوسبة السحابية والذكاء الاصطناعي
                                   </p>
-                                  <span className="badge bg-blue-100 text-blue-800">شريك استراتيجي</span>
+                                  <span className="badge bg-info/10 text-info">شريك استراتيجي</span>
                                 </div>
                                 <div className="border rounded-lg p-4">
                                   <h3 className="font-semibold mb-2">جامعة الملك عبدالله</h3>
@@ -230,15 +230,15 @@ const App = () => (
                               <div className="text-3xl font-bold mb-4">مجاناً</div>
                               <ul className="space-y-2 mb-6">
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   تقديم الأفكار الأساسية
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   عرض التحديات العامة
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   الوصول للمجتمع
                                 </li>
                               </ul>
@@ -256,19 +256,19 @@ const App = () => (
                               <div className="text-3xl font-bold mb-4">199 ريال<span className="text-base font-normal">/شهر</span></div>
                               <ul className="space-y-2 mb-6">
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   أفكار غير محدودة
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   تحليلات متقدمة
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   دعم أولوية
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   مساعدة الذكاء الاصطناعي
                                 </li>
                               </ul>
@@ -283,19 +283,19 @@ const App = () => (
                               <div className="text-3xl font-bold mb-4">999 ريال<span className="text-base font-normal">/شهر</span></div>
                               <ul className="space-y-2 mb-6">
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   علامة تجارية مخصصة
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   أمان متقدم
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   دعم مخصص
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   كل شيء غير محدود
                                 </li>
                               </ul>
