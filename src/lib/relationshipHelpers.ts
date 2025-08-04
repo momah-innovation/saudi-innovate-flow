@@ -133,3 +133,138 @@ export const updateEventChallenges = async (eventId: string, challengeIds: strin
     if (error) throw error;
   }
 };
+
+// Tag relationship helpers
+export const updateChallengeTagsById = async (challengeId: string, tagIds: string[]) => {
+  // First, delete existing tag relationships
+  await supabase
+    .from("challenge_tags")
+    .delete()
+    .eq("challenge_id", challengeId);
+
+  // Then insert new tag relationships
+  if (tagIds.length > 0) {
+    const links = tagIds.map(tagId => ({
+      challenge_id: challengeId,
+      tag_id: tagId
+    }));
+
+    const { error } = await supabase
+      .from("challenge_tags")
+      .insert(links);
+
+    if (error) throw error;
+  }
+};
+
+export const updateEventTagsById = async (eventId: string, tagIds: string[]) => {
+  // First, delete existing tag relationships
+  await supabase
+    .from("event_tags")
+    .delete()
+    .eq("event_id", eventId);
+
+  // Then insert new tag relationships
+  if (tagIds.length > 0) {
+    const links = tagIds.map(tagId => ({
+      event_id: eventId,
+      tag_id: tagId
+    }));
+
+    const { error } = await supabase
+      .from("event_tags")
+      .insert(links);
+
+    if (error) throw error;
+  }
+};
+
+export const updateCampaignTagsById = async (campaignId: string, tagIds: string[]) => {
+  // First, delete existing tag relationships
+  await supabase
+    .from("campaign_tags")
+    .delete()
+    .eq("campaign_id", campaignId);
+
+  // Then insert new tag relationships
+  if (tagIds.length > 0) {
+    const links = tagIds.map(tagId => ({
+      campaign_id: campaignId,
+      tag_id: tagId
+    }));
+
+    const { error } = await supabase
+      .from("campaign_tags")
+      .insert(links);
+
+    if (error) throw error;
+  }
+};
+
+export const updatePartnerTagsById = async (partnerId: string, tagIds: string[]) => {
+  // First, delete existing tag relationships
+  await supabase
+    .from("partner_tags")
+    .delete()
+    .eq("partner_id", partnerId);
+
+  // Then insert new tag relationships
+  if (tagIds.length > 0) {
+    const links = tagIds.map(tagId => ({
+      partner_id: partnerId,
+      tag_id: tagId
+    }));
+
+    const { error } = await supabase
+      .from("partner_tags")
+      .insert(links);
+
+    if (error) throw error;
+  }
+};
+
+export const updateStakeholderTagsById = async (stakeholderId: string, tagIds: string[]) => {
+  // First, delete existing tag relationships
+  await supabase
+    .from("stakeholder_tags")
+    .delete()
+    .eq("stakeholder_id", stakeholderId);
+
+  // Then insert new tag relationships
+  if (tagIds.length > 0) {
+    const links = tagIds.map(tagId => ({
+      stakeholder_id: stakeholderId,
+      tag_id: tagId
+    }));
+
+    const { error } = await supabase
+      .from("stakeholder_tags")
+      .insert(links);
+
+    if (error) throw error;
+  }
+};
+
+export const updateUserTagsById = async (userId: string, tagIds: string[], tagType: string = 'skill') => {
+  // First, delete existing tag relationships of this type
+  await supabase
+    .from("user_tags")
+    .delete()
+    .eq("user_id", userId)
+    .eq("tag_type", tagType);
+
+  // Then insert new tag relationships
+  if (tagIds.length > 0) {
+    const links = tagIds.map(tagId => ({
+      user_id: userId,
+      tag_id: tagId,
+      tag_type: tagType
+    }));
+
+    const { error } = await supabase
+      .from("user_tags")
+      .insert(links);
+
+    if (error) throw error;
+  }
+};
