@@ -28,3 +28,6 @@ verify_jwt = true
 
 [functions.check-paddle-subscription]
 verify_jwt = true
+
+[functions.logflare-analytics]
+verify_jwt = true
