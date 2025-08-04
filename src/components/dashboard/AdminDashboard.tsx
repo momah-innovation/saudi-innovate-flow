@@ -12,8 +12,10 @@ import {
   BodyText,
   Icon 
 } from '@/components/ui';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
 import { 
   Users, 
   Settings, 
@@ -29,7 +31,11 @@ import {
   Server,
   Activity,
   AlertTriangle,
-  ArrowRight
+  ArrowRight,
+  Target,
+  Building,
+  FileText,
+  Zap
 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -286,60 +292,219 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
         </div>
       </div>
 
-      {/* Admin Actions organized by categories using enhanced card design */}
-      {Object.entries(actionsByCategory).map(([category, actions]) => (
-        <div key={category} className="mb-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-              {category === 'management' && <Users className="w-5 h-5 text-primary-foreground" />}
-              {category === 'content' && <Database className="w-5 h-5 text-primary-foreground" />}
-              {category === 'security' && <Shield className="w-5 h-5 text-primary-foreground" />}
-              {category === 'analytics' && <BarChart3 className="w-5 h-5 text-primary-foreground" />}
-              {category === 'system' && <Settings className="w-5 h-5 text-primary-foreground" />}
-            </div>
-            <div>
-              <Heading1 className="text-xl mb-1">
-                {categoryLabels[category]?.[language] || category}
-              </Heading1>
-              <BodyText className="text-sm text-muted-foreground">
-                {language === 'ar' 
-                  ? `${actions.length} أدوات متاحة`
-                  : `${actions.length} tools available`}
-              </BodyText>
-            </div>
+      {/* Tabs-based Admin Interface following User Dashboard pattern */}
+      <Tabs defaultValue="overview" className="w-full">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="overview" className="flex items-center gap-2">
+            <BarChart3 className="w-4 h-4" />
+            {language === 'ar' ? 'نظرة عامة' : 'Overview'}
+          </TabsTrigger>
+          <TabsTrigger value="management" className="flex items-center gap-2">
+            <Users className="w-4 h-4" />
+            {language === 'ar' ? 'الإدارة' : 'Management'}
+          </TabsTrigger>
+          <TabsTrigger value="content" className="flex items-center gap-2">
+            <Database className="w-4 h-4" />
+            {language === 'ar' ? 'المحتوى' : 'Content'}
+          </TabsTrigger>
+          <TabsTrigger value="system" className="flex items-center gap-2">
+            <Settings className="w-4 h-4" />
+            {language === 'ar' ? 'النظام' : 'System'}
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="space-y-6">
+          {/* Quick Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  {language === 'ar' ? 'إجمالي المستخدمين' : 'Total Users'}
+                </CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">2,847</div>
+                <p className="text-xs text-muted-foreground">
+                  +12% {language === 'ar' ? 'هذا الشهر' : 'this month'}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  {language === 'ar' ? 'التحديات النشطة' : 'Active Challenges'}
+                </CardTitle>
+                <Target className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">18</div>
+                <p className="text-xs text-muted-foreground">
+                  +3 {language === 'ar' ? 'جديدة' : 'new'}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  {language === 'ar' ? 'الأفكار المقدمة' : 'Ideas Submitted'}
+                </CardTitle>
+                <Database className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">1,251</div>
+                <p className="text-xs text-muted-foreground">
+                  +47 {language === 'ar' ? 'هذا الأسبوع' : 'this week'}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  {language === 'ar' ? 'أداء النظام' : 'System Performance'}
+                </CardTitle>
+                <Zap className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">99.2%</div>
+                <p className="text-xs text-muted-foreground">
+                  {language === 'ar' ? 'وقت التشغيل' : 'uptime'}
+                </p>
+              </CardContent>
+            </Card>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {actions.map((action, index) => (
-              <Card 
-                key={index}
-                className="p-6 cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-primary/50 group"
-                onClick={action.action}
-              >
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center group-hover:from-primary/20 group-hover:to-accent/20 transition-all duration-300">
-                    <action.icon className="w-6 h-6 text-primary group-hover:scale-110 transition-transform duration-300" />
+
+          {/* Quick Actions Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>{language === 'ar' ? 'إجراءات سريعة' : 'Quick Actions'}</CardTitle>
+                <CardDescription>
+                  {language === 'ar' ? 'الوظائف الأكثر استخداماً' : 'Most frequently used functions'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Button onClick={() => navigate('/admin/users')} className="w-full justify-start">
+                  <Users className="w-4 h-4 mr-2" />
+                  {language === 'ar' ? 'إدارة المستخدمين' : 'Manage Users'}
+                </Button>
+                <Button onClick={() => navigate('/admin/challenges')} variant="outline" className="w-full justify-start">
+                  <Target className="w-4 h-4 mr-2" />
+                  {language === 'ar' ? 'إدارة التحديات' : 'Manage Challenges'}
+                </Button>
+                <Button onClick={() => navigate('/admin/evaluations')} variant="outline" className="w-full justify-start">
+                  <BarChart3 className="w-4 h-4 mr-2" />
+                  {language === 'ar' ? 'تقارير النظام' : 'System Reports'}
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>{language === 'ar' ? 'نشاط النظام' : 'System Activity'}</CardTitle>
+                <CardDescription>
+                  {language === 'ar' ? 'آخر التحديثات والأنشطة' : 'Latest updates and activities'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-center space-x-3 p-3 border rounded-lg">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                    <Users className="w-4 h-4" />
                   </div>
-                  
-                  <div className="space-y-2">
-                    <h3 className="font-semibold text-sm group-hover:text-primary transition-colors duration-300">
-                      {action.title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {action.description}
-                    </p>
-                  </div>
-                  
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground group-hover:text-primary transition-colors duration-300">
-                    <span>{language === 'ar' ? 'انقر للوصول' : 'Click to access'}</span>
-                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-300" />
+                  <div className="flex-1">
+                    <p className="font-medium text-sm">{language === 'ar' ? 'مستخدم جديد مسجل' : 'New user registered'}</p>
+                    <p className="text-xs text-muted-foreground">{language === 'ar' ? 'منذ 5 دقائق' : '5 minutes ago'}</p>
                   </div>
                 </div>
+                <div className="flex items-center space-x-3 p-3 border rounded-lg">
+                  <div className="p-2 rounded-lg bg-success/10 text-success">
+                    <Database className="w-4 h-4" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium text-sm">{language === 'ar' ? 'فكرة جديدة مقدمة' : 'New idea submitted'}</p>
+                    <p className="text-xs text-muted-foreground">{language === 'ar' ? 'منذ 15 دقيقة' : '15 minutes ago'}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="management" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {actionsByCategory.management?.map((action, index) => (
+              <Card key={index} className="cursor-pointer hover:shadow-md transition-shadow" onClick={action.action}>
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <action.icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-base">{action.title}</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-sm">{action.description}</CardDescription>
+                  <Button variant="ghost" size="sm" className="mt-3 p-0 h-auto">
+                    {language === 'ar' ? 'انقر للوصول' : 'Click to access'}
+                    <ArrowRight className="w-3 h-3 ml-1" />
+                  </Button>
+                </CardContent>
               </Card>
             ))}
           </div>
-        </div>
-      ))}
+        </TabsContent>
+
+        <TabsContent value="content" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {actionsByCategory.content?.map((action, index) => (
+              <Card key={index} className="cursor-pointer hover:shadow-md transition-shadow" onClick={action.action}>
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <action.icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-base">{action.title}</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-sm">{action.description}</CardDescription>
+                  <Button variant="ghost" size="sm" className="mt-3 p-0 h-auto">
+                    {language === 'ar' ? 'انقر للوصول' : 'Click to access'}
+                    <ArrowRight className="w-3 h-3 ml-1" />
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="system" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[...actionsByCategory.system || [], ...actionsByCategory.security || [], ...actionsByCategory.analytics || []].map((action, index) => (
+              <Card key={index} className="cursor-pointer hover:shadow-md transition-shadow" onClick={action.action}>
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <action.icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-base">{action.title}</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-sm">{action.description}</CardDescription>
+                  <Button variant="ghost" size="sm" className="mt-3 p-0 h-auto">
+                    {language === 'ar' ? 'انقر للوصول' : 'Click to access'}
+                    <ArrowRight className="w-3 h-3 ml-1" />
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
     </AdminPageWrapper>
   );
 }
