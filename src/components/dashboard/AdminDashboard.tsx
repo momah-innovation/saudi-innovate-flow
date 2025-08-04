@@ -28,7 +28,8 @@ import {
   AlertCircle,
   Server,
   Activity,
-  AlertTriangle
+  AlertTriangle,
+  ArrowRight
 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -285,35 +286,58 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
         </div>
       </div>
 
-      {/* Admin Actions organized by categories using MetricCard */}
+      {/* Admin Actions organized by categories using enhanced card design */}
       {Object.entries(actionsByCategory).map(([category, actions]) => (
         <div key={category} className="mb-8">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-              {category === 'management' && <Icon icon={Users} className="w-4 h-4 text-primary" />}
-              {category === 'content' && <Icon icon={Database} className="w-4 h-4 text-primary" />}
-              {category === 'security' && <Icon icon={Shield} className="w-4 h-4 text-primary" />}
-              {category === 'analytics' && <Icon icon={BarChart3} className="w-4 h-4 text-primary" />}
-              {category === 'system' && <Icon icon={Settings} className="w-4 h-4 text-primary" />}
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+              {category === 'management' && <Users className="w-5 h-5 text-primary-foreground" />}
+              {category === 'content' && <Database className="w-5 h-5 text-primary-foreground" />}
+              {category === 'security' && <Shield className="w-5 h-5 text-primary-foreground" />}
+              {category === 'analytics' && <BarChart3 className="w-5 h-5 text-primary-foreground" />}
+              {category === 'system' && <Settings className="w-5 h-5 text-primary-foreground" />}
             </div>
-            <Heading1 className="text-xl">
-              {categoryLabels[category]?.[language] || category}
-            </Heading1>
+            <div>
+              <Heading1 className="text-xl mb-1">
+                {categoryLabels[category]?.[language] || category}
+              </Heading1>
+              <BodyText className="text-sm text-muted-foreground">
+                {language === 'ar' 
+                  ? `${actions.length} أدوات متاحة`
+                  : `${actions.length} tools available`}
+              </BodyText>
+            </div>
           </div>
           
-          <AdminContentGrid viewMode="cards">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {actions.map((action, index) => (
-              <MetricCard
+              <Card 
                 key={index}
-                title={action.title}
-                value={language === 'ar' ? 'الوصول' : 'Access'}
-                subtitle={action.description}
-                icon={<Icon icon={action.icon} className="w-5 h-5" variant="primary" />}
+                className="p-6 cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-primary/50 group"
                 onClick={action.action}
-                className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:border-primary/30"
-              />
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center group-hover:from-primary/20 group-hover:to-accent/20 transition-all duration-300">
+                    <action.icon className="w-6 h-6 text-primary group-hover:scale-110 transition-transform duration-300" />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <h3 className="font-semibold text-sm group-hover:text-primary transition-colors duration-300">
+                      {action.title}
+                    </h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {action.description}
+                    </p>
+                  </div>
+                  
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground group-hover:text-primary transition-colors duration-300">
+                    <span>{language === 'ar' ? 'انقر للوصول' : 'Click to access'}</span>
+                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-300" />
+                  </div>
+                </div>
+              </Card>
             ))}
-          </AdminContentGrid>
+          </div>
         </div>
       ))}
     </AdminPageWrapper>
