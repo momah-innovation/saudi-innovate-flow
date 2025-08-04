@@ -326,6 +326,45 @@ export type Database = {
           },
         ]
       }
+      campaign_tags: {
+        Row: {
+          added_at: string | null
+          added_by: string | null
+          campaign_id: string
+          id: string
+          tag_id: string
+        }
+        Insert: {
+          added_at?: string | null
+          added_by?: string | null
+          campaign_id: string
+          id?: string
+          tag_id: string
+        }
+        Update: {
+          added_at?: string | null
+          added_by?: string | null
+          campaign_id?: string
+          id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_tags_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       campaigns: {
         Row: {
           budget: number | null
@@ -944,6 +983,45 @@ export type Database = {
             columns: ["challenge_id"]
             isOneToOne: false
             referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_tags: {
+        Row: {
+          added_at: string | null
+          added_by: string | null
+          challenge_id: string
+          id: string
+          tag_id: string
+        }
+        Insert: {
+          added_at?: string | null
+          added_by?: string | null
+          challenge_id: string
+          id?: string
+          tag_id: string
+        }
+        Update: {
+          added_at?: string | null
+          added_by?: string | null
+          challenge_id?: string
+          id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_tags_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challenge_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
             referencedColumns: ["id"]
           },
         ]
@@ -2070,6 +2148,45 @@ export type Database = {
             columns: ["stakeholder_id"]
             isOneToOne: false
             referencedRelation: "stakeholders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_tags: {
+        Row: {
+          added_at: string | null
+          added_by: string | null
+          event_id: string
+          id: string
+          tag_id: string
+        }
+        Insert: {
+          added_at?: string | null
+          added_by?: string | null
+          event_id: string
+          id?: string
+          tag_id: string
+        }
+        Update: {
+          added_at?: string | null
+          added_by?: string | null
+          event_id?: string
+          id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_tags_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
             referencedColumns: ["id"]
           },
         ]
@@ -4942,6 +5059,45 @@ export type Database = {
           },
         ]
       }
+      partner_tags: {
+        Row: {
+          added_at: string | null
+          added_by: string | null
+          id: string
+          partner_id: string
+          tag_id: string
+        }
+        Insert: {
+          added_at?: string | null
+          added_by?: string | null
+          id?: string
+          partner_id: string
+          tag_id: string
+        }
+        Update: {
+          added_at?: string | null
+          added_by?: string | null
+          id?: string
+          partner_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_tags_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "partner_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       partners: {
         Row: {
           address: string | null
@@ -5650,6 +5806,45 @@ export type Database = {
           },
         ]
       }
+      stakeholder_tags: {
+        Row: {
+          added_at: string | null
+          added_by: string | null
+          id: string
+          stakeholder_id: string
+          tag_id: string
+        }
+        Insert: {
+          added_at?: string | null
+          added_by?: string | null
+          id?: string
+          stakeholder_id: string
+          tag_id: string
+        }
+        Update: {
+          added_at?: string | null
+          added_by?: string | null
+          id?: string
+          stakeholder_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stakeholder_tags_stakeholder_id_fkey"
+            columns: ["stakeholder_id"]
+            isOneToOne: false
+            referencedRelation: "stakeholders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stakeholder_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       stakeholders: {
         Row: {
           created_at: string | null
@@ -5847,6 +6042,57 @@ export type Database = {
           setting_value?: Json
           updated_at?: string
           updated_by?: string | null
+        }
+        Relationships: []
+      }
+      tags: {
+        Row: {
+          category: string | null
+          color: string | null
+          created_at: string | null
+          created_by: string | null
+          description_ar: string | null
+          description_en: string | null
+          icon: string | null
+          id: string
+          is_system: boolean | null
+          name_ar: string
+          name_en: string
+          slug: string
+          updated_at: string | null
+          usage_count: number | null
+        }
+        Insert: {
+          category?: string | null
+          color?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description_ar?: string | null
+          description_en?: string | null
+          icon?: string | null
+          id?: string
+          is_system?: boolean | null
+          name_ar: string
+          name_en: string
+          slug: string
+          updated_at?: string | null
+          usage_count?: number | null
+        }
+        Update: {
+          category?: string | null
+          color?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description_ar?: string | null
+          description_en?: string | null
+          icon?: string | null
+          id?: string
+          is_system?: boolean | null
+          name_ar?: string
+          name_en?: string
+          slug?: string
+          updated_at?: string | null
+          usage_count?: number | null
         }
         Relationships: []
       }
@@ -6490,6 +6736,44 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_tags: {
+        Row: {
+          added_at: string | null
+          added_by: string | null
+          id: string
+          proficiency_level: number | null
+          tag_id: string
+          tag_type: string | null
+          user_id: string
+        }
+        Insert: {
+          added_at?: string | null
+          added_by?: string | null
+          id?: string
+          proficiency_level?: number | null
+          tag_id: string
+          tag_type?: string | null
+          user_id: string
+        }
+        Update: {
+          added_at?: string | null
+          added_by?: string | null
+          id?: string
+          proficiency_level?: number | null
+          tag_id?: string
+          tag_type?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
