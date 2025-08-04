@@ -372,6 +372,7 @@
   "of_x_used": "مستخدم من {total}",
   "capacity": "السعة",
   "recent_uploads_count": "{count} تحميلات حديثة",
+  "toggleSidebar": "تبديل الشريط الجانبي",
   "monthly_growth": "+12% هذا الشهر",
   "active_storage_buckets": "حاويات التخزين النشطة",
   "all_operational": "جميعها تعمل",
