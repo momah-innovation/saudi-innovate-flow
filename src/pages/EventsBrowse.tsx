@@ -22,7 +22,8 @@ import { EventAnalyticsDashboard } from '@/components/events/EventAnalyticsDashb
 import { TrendingEventsWidget } from '@/components/events/TrendingEventsWidget';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Plus, Calendar, TrendingUp, MapPin, Grid, List, CalendarDays } from 'lucide-react';
+import { Plus, Calendar, TrendingUp, MapPin, Grid, List, CalendarDays, Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
 interface Event {
   id: string;
@@ -315,17 +316,35 @@ const EventsBrowse = () => {
         />
       }
       mainContent={
-        <PageLayout
-          title={isRTL ? 'استكشاف الفعاليات' : 'Browse Events'}
-          description={isRTL ? 'اكتشف وسجل في أحدث الفعاليات والأنشطة الابتكارية' : 'Discover and register for the latest innovation events and activities'}
-          itemCount={filteredEvents.length}
-          primaryAction={user && (hasRole('admin') || hasRole('super_admin') || hasRole('innovation_team_member')) ? {
-            label: isRTL ? 'فعالية جديدة' : 'New Event',
-            onClick: () => console.log('Create new event'),
-            icon: <Plus className="w-4 h-4" />
-          } : undefined}
-          secondaryActions={
-            <div className="flex gap-2">
+        <div className="space-y-6">
+          {/* Page Title and Description */}
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold tracking-tight">
+              {isRTL ? 'استكشاف الفعاليات' : 'Browse Events'}
+            </h1>
+            <p className="text-muted-foreground">
+              {isRTL ? 'اكتشف وسجل في أحدث الفعاليات والأنشطة الابتكارية' : 'Discover and register for the latest innovation events and activities'}
+              {` (${filteredEvents.length} ${filteredEvents.length === 1 ? (isRTL ? 'عنصر' : 'Item') : (isRTL ? 'عناصر' : 'Items')})`}
+            </p>
+          </div>
+
+          {/* Controls Row */}
+          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+            {/* Left side - Search */}
+            <div className="flex-1">
+              <div className="relative max-w-md">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 text-muted-foreground -translate-y-1/2" />
+                <Input
+                  className="pl-10 h-9"
+                  placeholder={isRTL ? 'البحث في الفعاليات...' : 'Search events...'}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </div>
+            
+            {/* Right side - Actions */}
+            <div className="flex items-center gap-2">
               <EventNotificationCenter />
               <Button
                 variant="outline"
@@ -347,13 +366,15 @@ const EventsBrowse = () => {
               >
                 <CalendarDays className="w-4 h-4" />
               </Button>
+              {user && (hasRole('admin') || hasRole('super_admin') || hasRole('innovation_team_member')) && (
+                <Button onClick={() => console.log('Create new event')}>
+                  <Plus className="w-4 h-4 mr-2" />
+                  {isRTL ? 'فعالية جديدة' : 'New Event'}
+                </Button>
+              )}
             </div>
-          }
-          showSearch={true}
-          searchValue={searchQuery}
-          onSearchChange={setSearchQuery}
-          searchPlaceholder={isRTL ? 'البحث في الفعاليات...' : 'Search events...'}
-        >
+          </div>
+          {/* Content */}
           <div className="space-y-6">
             {/* Calendar View */}
             {viewMode === 'calendar' ? (
@@ -372,41 +393,41 @@ const EventsBrowse = () => {
                 <TabsTrigger value="upcoming" className="animate-fade-in">
                   <Calendar className="w-4 h-4 mr-2" />
                   {isRTL ? 'القادمة' : 'Upcoming'}
-                   {activeTab === 'upcoming' && (
-                     <span className="ml-2 bg-primary/20 text-primary px-2 py-0.5 rounded-full text-xs">
-                       {filteredEvents.filter(e => new Date(e.event_date) >= new Date()).length}
-                     </span>
-                   )}
+                  {activeTab === 'upcoming' && (
+                    <span className="ml-2 bg-primary/20 text-primary px-2 py-0.5 rounded-full text-xs">
+                      {filteredEvents.filter(e => new Date(e.event_date) >= new Date()).length}
+                    </span>
+                  )}
                 </TabsTrigger>
                 <TabsTrigger value="today" className="animate-fade-in">
                   <TrendingUp className="w-4 h-4 mr-2" />
                   {isRTL ? 'اليوم' : 'Today'}
-                   {activeTab === 'today' && (
-                     <span className="ml-2 bg-accent text-accent-foreground px-2 py-0.5 rounded-full text-xs">
-                       {filteredEvents.filter(e => {
-                         const eventDate = new Date(e.event_date);
-                         const today = new Date();
-                         return eventDate.toDateString() === today.toDateString();
-                       }).length}
-                     </span>
-                   )}
+                  {activeTab === 'today' && (
+                    <span className="ml-2 bg-accent text-accent-foreground px-2 py-0.5 rounded-full text-xs">
+                      {filteredEvents.filter(e => {
+                        const eventDate = new Date(e.event_date);
+                        const today = new Date();
+                        return eventDate.toDateString() === today.toDateString();
+                      }).length}
+                    </span>
+                  )}
                 </TabsTrigger>
                 <TabsTrigger value="all" className="animate-fade-in">
                   {isRTL ? 'جميع الفعاليات' : 'All Events'}
-                   {activeTab === 'all' && (
-                     <span className="ml-2 bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full text-xs">
-                       {filteredEvents.length}
-                     </span>
-                   )}
+                  {activeTab === 'all' && (
+                    <span className="ml-2 bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full text-xs">
+                      {filteredEvents.length}
+                    </span>
+                  )}
                 </TabsTrigger>
                 <TabsTrigger value="past" className="animate-fade-in">
                   <MapPin className="w-4 h-4 mr-2" />
                   {isRTL ? 'السابقة' : 'Past'}
-                   {activeTab === 'past' && (
-                     <span className="ml-2 bg-muted text-muted-foreground px-2 py-0.5 rounded-full text-xs">
-                       {filteredEvents.filter(e => new Date(e.event_date) < new Date()).length}
-                     </span>
-                   )}
+                  {activeTab === 'past' && (
+                    <span className="ml-2 bg-muted text-muted-foreground px-2 py-0.5 rounded-full text-xs">
+                      {filteredEvents.filter(e => new Date(e.event_date) < new Date()).length}
+                    </span>
+                  )}
                 </TabsTrigger>
               </TabsList>
 
@@ -441,7 +462,7 @@ const EventsBrowse = () => {
             </Tabs>
             )}
           </div>
-        </PageLayout>
+        </div>
       }
       sidebar={
         <div className="space-y-6">
