@@ -15,9 +15,9 @@ const AuthPage = () => {
 
   // Redirect if already authenticated
   if (user && !loading && userProfile) {
-    // Check profile completion and redirect accordingly
+    // All authenticated users with sufficient profile completion go to dashboard
     const redirectPath = userProfile.profile_completion_percentage >= 80 ? "/dashboard" : "/profile/setup";
-    console.log('AuthPage: Redirecting authenticated user to:', redirectPath, 'Profile completion:', userProfile.profile_completion_percentage);
+    console.log('AuthPage: Redirecting authenticated user to:', redirectPath, 'Profile completion:', userProfile.profile_completion_percentage, 'Roles:', userProfile.user_roles?.map(r => r.role));
     return <Navigate to={redirectPath} replace />;
   }
 

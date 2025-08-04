@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRoleAccess } from '@/hooks/useRoleAccess';
 import { useTranslation } from '@/hooks/useAppTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
@@ -65,10 +66,13 @@ interface Goal {
 
 export default function UserDashboard() {
   const { userProfile } = useAuth();
+  const { permissions, getPrimaryRole, canAccess } = useRoleAccess();
   const { t, language } = useTranslation();
   const currentLanguage = language;
   const { isRTL } = useDirection();
   const navigate = useNavigate();
+  
+  const primaryRole = getPrimaryRole();
   
   const [stats, setStats] = useState<DashboardStats>({
     totalIdeas: 0,
