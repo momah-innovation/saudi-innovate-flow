@@ -6937,6 +6937,14 @@ export type Database = {
         | "event_manager"
         | "stakeholder_manager"
         | "partnership_manager"
+        | "team_lead"
+        | "project_manager"
+        | "research_lead"
+        | "innovation_manager"
+        | "external_expert"
+        | "mentor"
+        | "judge"
+        | "facilitator"
       role_hierarchy_level: "1" | "2" | "3" | "4" | "5"
     }
     CompositeTypes: {
@@ -7085,6 +7093,14 @@ export const Constants = {
         "event_manager",
         "stakeholder_manager",
         "partnership_manager",
+        "team_lead",
+        "project_manager",
+        "research_lead",
+        "innovation_manager",
+        "external_expert",
+        "mentor",
+        "judge",
+        "facilitator",
       ],
       role_hierarchy_level: ["1", "2", "3", "4", "5"],
     },
