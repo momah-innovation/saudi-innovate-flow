@@ -38,6 +38,57 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_email_templates: {
+        Row: {
+          body_template: string
+          created_at: string | null
+          created_by: string | null
+          effectiveness_score: number | null
+          generated_by: string | null
+          id: string
+          language: string | null
+          subject_template: string
+          template_category: string
+          template_name: string
+          tone: string | null
+          updated_at: string | null
+          usage_count: number | null
+          variables: Json | null
+        }
+        Insert: {
+          body_template: string
+          created_at?: string | null
+          created_by?: string | null
+          effectiveness_score?: number | null
+          generated_by?: string | null
+          id?: string
+          language?: string | null
+          subject_template: string
+          template_category: string
+          template_name: string
+          tone?: string | null
+          updated_at?: string | null
+          usage_count?: number | null
+          variables?: Json | null
+        }
+        Update: {
+          body_template?: string
+          created_at?: string | null
+          created_by?: string | null
+          effectiveness_score?: number | null
+          generated_by?: string | null
+          id?: string
+          language?: string | null
+          subject_template?: string
+          template_category?: string
+          template_name?: string
+          tone?: string | null
+          updated_at?: string | null
+          usage_count?: number | null
+          variables?: Json | null
+        }
+        Relationships: []
+      }
       ai_feature_toggles: {
         Row: {
           created_at: string | null
@@ -134,6 +185,90 @@ export type Database = {
           smart_partner_matching?: boolean | null
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      ai_tag_suggestions: {
+        Row: {
+          confidence_scores: Json
+          created_at: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          reviewed_by: string | null
+          status: string | null
+          suggested_by: string | null
+          suggested_tags: Json
+          updated_at: string | null
+        }
+        Insert: {
+          confidence_scores?: Json
+          created_at?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          reviewed_by?: string | null
+          status?: string | null
+          suggested_by?: string | null
+          suggested_tags?: Json
+          updated_at?: string | null
+        }
+        Update: {
+          confidence_scores?: Json
+          created_at?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          reviewed_by?: string | null
+          status?: string | null
+          suggested_by?: string | null
+          suggested_tags?: Json
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      ai_usage_tracking: {
+        Row: {
+          cost_estimate: number | null
+          created_at: string | null
+          error_message: string | null
+          execution_time_ms: number | null
+          feature_name: string
+          id: string
+          input_tokens: number | null
+          metadata: Json | null
+          output_tokens: number | null
+          success: boolean | null
+          usage_type: string
+          user_id: string | null
+        }
+        Insert: {
+          cost_estimate?: number | null
+          created_at?: string | null
+          error_message?: string | null
+          execution_time_ms?: number | null
+          feature_name: string
+          id?: string
+          input_tokens?: number | null
+          metadata?: Json | null
+          output_tokens?: number | null
+          success?: boolean | null
+          usage_type: string
+          user_id?: string | null
+        }
+        Update: {
+          cost_estimate?: number | null
+          created_at?: string | null
+          error_message?: string | null
+          execution_time_ms?: number | null
+          feature_name?: string
+          id?: string
+          input_tokens?: number | null
+          metadata?: Json | null
+          output_tokens?: number | null
+          success?: boolean | null
+          usage_type?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -1436,6 +1571,102 @@ export type Database = {
           },
         ]
       }
+      competitive_intelligence: {
+        Row: {
+          analysis_date: string | null
+          analysis_type: string
+          confidence_level: number | null
+          created_at: string | null
+          data_sources: string[] | null
+          id: string
+          insights: Json
+          opportunities: Json | null
+          recommendations: Json | null
+          sector_id: string | null
+          threats: Json | null
+          trends_identified: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          analysis_date?: string | null
+          analysis_type: string
+          confidence_level?: number | null
+          created_at?: string | null
+          data_sources?: string[] | null
+          id?: string
+          insights?: Json
+          opportunities?: Json | null
+          recommendations?: Json | null
+          sector_id?: string | null
+          threats?: Json | null
+          trends_identified?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          analysis_date?: string | null
+          analysis_type?: string
+          confidence_level?: number | null
+          created_at?: string | null
+          data_sources?: string[] | null
+          id?: string
+          insights?: Json
+          opportunities?: Json | null
+          recommendations?: Json | null
+          sector_id?: string | null
+          threats?: Json | null
+          trends_identified?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      content_moderation_logs: {
+        Row: {
+          categories_detected: string[] | null
+          confidence_score: number | null
+          content_id: string | null
+          content_text: string
+          content_type: string
+          created_at: string | null
+          flagged: boolean | null
+          id: string
+          moderated_by: string | null
+          moderation_result: Json
+          reviewer_id: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          categories_detected?: string[] | null
+          confidence_score?: number | null
+          content_id?: string | null
+          content_text: string
+          content_type: string
+          created_at?: string | null
+          flagged?: boolean | null
+          id?: string
+          moderated_by?: string | null
+          moderation_result?: Json
+          reviewer_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          categories_detected?: string[] | null
+          confidence_score?: number | null
+          content_id?: string | null
+          content_text?: string
+          content_type?: string
+          created_at?: string | null
+          flagged?: boolean | null
+          id?: string
+          moderated_by?: string | null
+          moderation_result?: Json
+          reviewer_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       departments: {
         Row: {
           budget_allocation: number | null
@@ -1517,6 +1748,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      document_analysis_results: {
+        Row: {
+          action_items: Json | null
+          analyzed_by: string | null
+          confidence_score: number | null
+          created_at: string | null
+          document_type: string | null
+          entities_found: Json | null
+          extracted_text: string | null
+          file_record_id: string
+          id: string
+          key_insights: Json | null
+          processing_time_ms: number | null
+          sentiment_analysis: Json | null
+          summary: string | null
+          topics_detected: string[] | null
+        }
+        Insert: {
+          action_items?: Json | null
+          analyzed_by?: string | null
+          confidence_score?: number | null
+          created_at?: string | null
+          document_type?: string | null
+          entities_found?: Json | null
+          extracted_text?: string | null
+          file_record_id: string
+          id?: string
+          key_insights?: Json | null
+          processing_time_ms?: number | null
+          sentiment_analysis?: Json | null
+          summary?: string | null
+          topics_detected?: string[] | null
+        }
+        Update: {
+          action_items?: Json | null
+          analyzed_by?: string | null
+          confidence_score?: number | null
+          created_at?: string | null
+          document_type?: string | null
+          entities_found?: Json | null
+          extracted_text?: string | null
+          file_record_id?: string
+          id?: string
+          key_insights?: Json | null
+          processing_time_ms?: number | null
+          sentiment_analysis?: Json | null
+          summary?: string | null
+          topics_detected?: string[] | null
+        }
+        Relationships: []
       }
       domains: {
         Row: {
@@ -5773,6 +6055,48 @@ export type Database = {
         }
         Relationships: []
       }
+      project_ai_insights: {
+        Row: {
+          confidence_level: number | null
+          created_at: string | null
+          generated_at: string | null
+          id: string
+          insights: Json
+          project_id: string
+          project_type: string
+          recommendations: Json
+          resource_optimization: Json | null
+          risk_assessment: Json | null
+          timeline_predictions: Json | null
+        }
+        Insert: {
+          confidence_level?: number | null
+          created_at?: string | null
+          generated_at?: string | null
+          id?: string
+          insights?: Json
+          project_id: string
+          project_type: string
+          recommendations?: Json
+          resource_optimization?: Json | null
+          risk_assessment?: Json | null
+          timeline_predictions?: Json | null
+        }
+        Update: {
+          confidence_level?: number | null
+          created_at?: string | null
+          generated_at?: string | null
+          id?: string
+          insights?: Json
+          project_id?: string
+          project_type?: string
+          recommendations?: Json
+          resource_optimization?: Json | null
+          risk_assessment?: Json | null
+          timeline_predictions?: Json | null
+        }
+        Relationships: []
+      }
       public_statistics: {
         Row: {
           created_at: string | null
@@ -6203,6 +6527,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      smart_search_index: {
+        Row: {
+          content_vector: Json | null
+          created_at: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          keywords: string[] | null
+          last_indexed: string | null
+          popularity_score: number | null
+          relevance_factors: Json | null
+          semantic_tags: string[] | null
+        }
+        Insert: {
+          content_vector?: Json | null
+          created_at?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          keywords?: string[] | null
+          last_indexed?: string | null
+          popularity_score?: number | null
+          relevance_factors?: Json | null
+          semantic_tags?: string[] | null
+        }
+        Update: {
+          content_vector?: Json | null
+          created_at?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          keywords?: string[] | null
+          last_indexed?: string | null
+          popularity_score?: number | null
+          relevance_factors?: Json | null
+          semantic_tags?: string[] | null
+        }
+        Relationships: []
       }
       stakeholder_bookmarks: {
         Row: {
@@ -7152,6 +7515,45 @@ export type Database = {
           metadata?: Json | null
           points_earned?: number | null
           title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_behavior_predictions: {
+        Row: {
+          behavioral_patterns: Json | null
+          confidence_score: number | null
+          created_at: string | null
+          id: string
+          next_likely_actions: string[] | null
+          prediction_date: string | null
+          prediction_type: string
+          predictions: Json
+          recommendation_scores: Json | null
+          user_id: string
+        }
+        Insert: {
+          behavioral_patterns?: Json | null
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          next_likely_actions?: string[] | null
+          prediction_date?: string | null
+          prediction_type: string
+          predictions?: Json
+          recommendation_scores?: Json | null
+          user_id: string
+        }
+        Update: {
+          behavioral_patterns?: Json | null
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          next_likely_actions?: string[] | null
+          prediction_date?: string | null
+          prediction_type?: string
+          predictions?: Json
+          recommendation_scores?: Json | null
           user_id?: string
         }
         Relationships: []
