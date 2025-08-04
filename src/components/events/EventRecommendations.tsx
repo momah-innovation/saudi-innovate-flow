@@ -240,8 +240,8 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
 
                       {/* Recommendation Reason */}
                       <div className="flex items-center gap-2">
-                        <div className={cn("p-1 rounded", getReasonColor(event.reason).replace('text-', 'bg-'), "bg-opacity-10")}>
-                          <ReasonIcon className={cn("w-3 h-3", getReasonColor(event.reason))} />
+                        <div className="p-1 rounded bg-purple-100 bg-opacity-10">
+                          <ReasonIcon className="w-3 h-3 text-purple-600" />
                         </div>
                         <span className="text-xs text-muted-foreground truncate">
                           {event.reason}
