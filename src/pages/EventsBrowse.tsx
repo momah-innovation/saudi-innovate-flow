@@ -20,6 +20,7 @@ import { EnhancedEventsHero } from '@/components/events/EnhancedEventsHero';
 
 import { EventAnalyticsDashboard } from '@/components/events/EventAnalyticsDashboard';
 import { TrendingEventsWidget } from '@/components/events/TrendingEventsWidget';
+import { EventStatsWidget } from '@/components/events/EventStatsWidget';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Plus, Calendar, TrendingUp, MapPin, Grid, List, CalendarDays, Search } from 'lucide-react';
@@ -457,11 +458,18 @@ const EventsBrowse = () => {
         </div>
       }
       sidebar={
-        <div className="space-y-6">
+        <div className="space-y-4">
+          {/* Event Stats Widget */}
+          <EventStatsWidget />
+
           {/* Trending Events Widget */}
           {viewMode !== 'calendar' && (
             <TrendingEventsWidget
               onEventSelect={(eventId) => {
+                if (eventId === 'all') {
+                  // Handle view all trending events
+                  return;
+                }
                 const event = events.find(e => e.id === eventId);
                 if (event) {
                   setSelectedEvent(event);
@@ -475,6 +483,10 @@ const EventsBrowse = () => {
           {user && activeTab === 'upcoming' && viewMode !== 'calendar' && (
             <EventRecommendations 
               onEventSelect={(eventId) => {
+                if (eventId === 'all-recommendations') {
+                  // Handle view all recommendations
+                  return;
+                }
                 const event = events.find(e => e.id === eventId);
                 if (event) {
                   setSelectedEvent(event);
