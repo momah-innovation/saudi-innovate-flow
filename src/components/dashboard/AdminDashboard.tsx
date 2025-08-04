@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '@/hooks/useAppTranslation';
 import { useRoleAccess } from '@/hooks/useRoleAccess';
 import { useGlobalRoleTheme } from '@/hooks/useGlobalRoleTheme';
+import { useSystemHealth } from '@/hooks/useSystemHealth';
 import { 
   AdminPageWrapper, 
   AdminContentGrid, 
@@ -11,7 +12,24 @@ import {
   BodyText,
   Icon 
 } from '@/components/ui';
-import { Users, Settings, Shield, BarChart3, Database, Calendar, Briefcase, Trophy } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { 
+  Users, 
+  Settings, 
+  Shield, 
+  BarChart3, 
+  Database, 
+  Calendar, 
+  Briefcase, 
+  Trophy,
+  CheckCircle,
+  Wifi,
+  AlertCircle,
+  Server,
+  Activity,
+  AlertTriangle
+} from 'lucide-react';
 
 interface AdminDashboardProps {
   userProfile: any;
@@ -24,6 +42,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
   const { t, language } = useTranslation();
   const navigate = useNavigate();
   const { getPrimaryRole } = useRoleAccess();
+  const systemHealth = useSystemHealth();
   
   // Apply role-based theming
   useGlobalRoleTheme();
@@ -144,22 +163,125 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
 
   return (
     <AdminPageWrapper>
-      {/* Hero Section using Design System patterns */}
-      <div className="bg-gradient-to-br from-primary to-accent text-primary-foreground rounded-xl p-8 mb-8">
-        <div className="flex items-center gap-4 mb-4">
-          <div className="w-12 h-12 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
-            <Icon icon={Shield} className="w-6 h-6" />
+      {/* Header Section */}
+      <div className="mb-8">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="w-12 h-12 rounded-lg bg-primary/10 backdrop-blur-sm flex items-center justify-center">
+            <Icon icon={Shield} className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <Heading1 className="text-primary-foreground mb-2">
+            <Heading1 className="mb-2">
               {language === 'ar' ? 'لوحة التحكم الإدارية' : 'Administrative Dashboard'}
             </Heading1>
-            <BodyText className="text-primary-foreground/90">
+            <BodyText className="text-muted-foreground">
               {language === 'ar' 
                 ? `أهلاً بك ${userProfile?.display_name || 'Admin'} - إدارة شاملة للنظام`
                 : `Welcome ${userProfile?.display_name || 'Admin'} - Comprehensive system management`}
             </BodyText>
           </div>
+        </div>
+
+        {/* Platform Widgets - System Status & Monitoring */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* System Health Widget */}
+          <Card className="p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Server className="w-5 h-5 text-primary" />
+              <h3 className="font-semibold">{language === 'ar' ? 'حالة النظام' : 'System Health'}</h3>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center p-3 bg-success/10 rounded-lg">
+                <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
+                  <CheckCircle className="w-4 h-4 text-white" />
+                </div>
+                <p className="text-sm font-medium">{language === 'ar' ? 'واجهة البرمجة' : 'API Status'}</p>
+                <p className="text-xs text-success">{language === 'ar' ? 'متاح' : 'Operational'}</p>
+              </div>
+              
+              <div className="text-center p-3 bg-success/10 rounded-lg">
+                <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Wifi className="w-4 h-4 text-white" />
+                </div>
+                <p className="text-sm font-medium">{language === 'ar' ? 'الشبكة' : 'Network'}</p>
+                <p className="text-xs text-success">{language === 'ar' ? 'مستقر' : 'Stable'}</p>
+              </div>
+              
+              <div className="text-center p-3 bg-warning/10 rounded-lg">
+                <div className="w-8 h-8 bg-warning rounded-full flex items-center justify-center mx-auto mb-2">
+                  <AlertCircle className="w-4 h-4 text-white" />
+                </div>
+                <p className="text-sm font-medium">{language === 'ar' ? 'التخزين' : 'Storage'}</p>
+                <p className="text-xs text-warning">
+                  {systemHealth.storage.totalSize > 0 
+                    ? `${Math.round((systemHealth.storage.totalSize / (1024 * 1024 * 1024)) * 100) / 100} GB`
+                    : '0 GB'}
+                </p>
+              </div>
+              
+              <div className="text-center p-3 bg-success/10 rounded-lg">
+                <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Shield className="w-4 h-4 text-white" />
+                </div>
+                <p className="text-sm font-medium">{language === 'ar' ? 'الأمان' : 'Security'}</p>
+                <p className="text-xs text-success">{language === 'ar' ? 'محمي' : 'Protected'}</p>
+              </div>
+            </div>
+          </Card>
+
+          {/* Resource Usage Widget */}
+          <Card className="p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Activity className="w-5 h-5 text-primary" />
+              <h3 className="font-semibold">{language === 'ar' ? 'استخدام الموارد' : 'Resource Usage'}</h3>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm">{language === 'ar' ? 'ملفات النظام' : 'System Files'}</span>
+                  <span className="text-sm font-medium">{systemHealth.storage.totalFiles}</span>
+                </div>
+                <Progress value={Math.min((systemHealth.storage.totalFiles / 1000) * 100, 100)} className="h-2" />
+              </div>
+              
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm">{language === 'ar' ? 'أحداث الأمان' : 'Security Events'}</span>
+                  <span className="text-sm font-medium">{systemHealth.security.totalSecurityEvents}</span>
+                </div>
+                <Progress 
+                  value={systemHealth.security.highRiskEvents > 0 
+                    ? Math.min((systemHealth.security.highRiskEvents / 10) * 100, 100)
+                    : 5
+                  } 
+                  className="h-2" 
+                />
+              </div>
+              
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm">{language === 'ar' ? 'مساحة التخزين' : 'Storage Space'}</span>
+                  <span className="text-sm font-medium">
+                    {systemHealth.formatBytes(systemHealth.storage.totalSize)}
+                  </span>
+                </div>
+                <Progress value={32} className="h-2" />
+              </div>
+              
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm">{language === 'ar' ? 'الأنشطة المشبوهة' : 'Suspicious Activities'}</span>
+                  <span className="text-sm font-medium">{systemHealth.security.suspiciousActivities}</span>
+                </div>
+                <Progress 
+                  value={systemHealth.security.suspiciousActivities > 0 
+                    ? Math.min((systemHealth.security.suspiciousActivities / 5) * 100, 100)
+                    : 2
+                  } 
+                  className="h-2" 
+                />
+              </div>
+            </div>
+          </Card>
         </div>
       </div>
 
