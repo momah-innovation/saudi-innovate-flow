@@ -1,46 +1,63 @@
-import { Navigate } from 'react-router-dom';
+// Theme-Aware Protected Route Component
+// Provides comprehensive route protection with theming support
+
+import React from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { Loader2 } from 'lucide-react';
+import { ALL_ROUTES } from '@/routing/routes';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: string;
+  requireAuth?: boolean;
   requireProfile?: boolean;
+  requiredRole?: string;
+  subscriptionRequired?: boolean;
+  redirectTo?: string;
+  theme?: 'default' | 'admin' | 'expert' | 'workspace';
 }
 
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
-  children, 
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+  requireAuth = true,
+  requireProfile = false,
   requiredRole,
-  requireProfile = false 
+  subscriptionRequired = false,
+  redirectTo,
+  theme = 'default',
 }) => {
-  const { user, loading, hasRole, userProfile } = useAuth();
+  const { user, userProfile, hasRole } = useAuth();
+  const location = useLocation();
 
-  // Show loading spinner while checking auth state OR while profile is loading
-  if (loading || (user && requireProfile && userProfile === null)) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto" />
-          <p className="text-sm text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    );
+  // Apply theme classes to body
+  React.useEffect(() => {
+    const body = document.body;
+    body.classList.remove('theme-default', 'theme-admin', 'theme-expert', 'theme-workspace');
+    body.classList.add(`theme-${theme}`);
+    
+    return () => {
+      body.classList.remove(`theme-${theme}`);
+    };
+  }, [theme]);
+
+  // Check authentication
+  if (requireAuth && !user) {
+    return <Navigate to={redirectTo || ALL_ROUTES.AUTH} state={{ from: location }} replace />;
   }
 
-  // Redirect to auth if not authenticated
-  if (!user) {
-    return <Navigate to="/auth" replace />;
+  // Check profile completion
+  if (requireProfile && user && !userProfile) {
+    return <Navigate to={ALL_ROUTES.PROFILE_SETUP} replace />;
   }
 
-  // Check if profile is required but not found (only after userProfile has been attempted to load)
-  if (requireProfile && userProfile !== null && !userProfile.id) {
-    return <Navigate to="/profile/setup" replace />;
-  }
-
-  // Check role requirements - redirect to dashboard instead of showing access denied
+  // Check role requirements
   if (requiredRole && !hasRole(requiredRole)) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={ALL_ROUTES.DASHBOARD} replace />;
   }
 
-  return <>{children}</>;
+  // Check subscription requirements (placeholder for Phase 4)
+  if (subscriptionRequired) {
+    console.log('Subscription check - implement in Phase 4');
+  }
+
+  return <div className={`route-theme-${theme}`}>{children}</div>;
 };

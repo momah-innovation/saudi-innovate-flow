@@ -14,10 +14,9 @@ import { DirectionProvider } from "@/components/ui/direction-provider";
 
 // New routing components from Phase 1
 import { PublicRoute } from "@/routing/RouteGuards";
-import { ThemeProtectedRoute } from "@/components/auth/ThemeProtectedRoute";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { ALL_ROUTES } from "@/routing/routes";
 // Legacy components (will be organized better in subsequent phases)
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { MaintenanceGuard } from "@/components/maintenance/MaintenanceGuard";
 import AdminDashboard from "./pages/AdminDashboard";
 import LandingPage from "./pages/LandingPage";
@@ -135,42 +134,42 @@ const App = () => (
                     
                     {/* User Workspace - Placeholder for Phase 6 */}
                     <Route path={ALL_ROUTES.WORKSPACE_USER} element={
-                      <ThemeProtectedRoute requireProfile theme="workspace">
+                      <ProtectedRoute requireProfile theme="workspace">
                         <div className="container mx-auto px-4 py-16">
                           <h1 className="text-2xl font-bold">User Workspace</h1>
                           <p>Personal innovation workspace - coming in Phase 6</p>
                         </div>
-                      </ThemeProtectedRoute>
+                      </ProtectedRoute>
                     } />
 
                     {/* Expert Workspace - Placeholder for Phase 6 */}
                     <Route path={ALL_ROUTES.WORKSPACE_EXPERT} element={
-                      <ThemeProtectedRoute requireProfile theme="expert">
+                      <ProtectedRoute requireProfile theme="expert">
                         <div className="container mx-auto px-4 py-16">
                           <h1 className="text-2xl font-bold">Expert Workspace</h1>
                           <p>Expert evaluation workspace - coming in Phase 6</p>
                         </div>
-                      </ThemeProtectedRoute>
+                      </ProtectedRoute>
                     } />
 
                     {/* Organization Workspace - Placeholder for Phase 6 */}
                     <Route path={ALL_ROUTES.WORKSPACE_ORG} element={
-                      <ThemeProtectedRoute requireProfile theme="workspace">
+                      <ProtectedRoute requireProfile theme="workspace">
                         <div className="container mx-auto px-4 py-16">
                           <h1 className="text-2xl font-bold">Organization Workspace</h1>
                           <p>Organization management workspace - coming in Phase 6</p>
                         </div>
-                      </ThemeProtectedRoute>
+                      </ProtectedRoute>
                     } />
 
                     {/* Admin Workspace - Placeholder for Phase 6 */}
                     <Route path={ALL_ROUTES.WORKSPACE_ADMIN} element={
-                      <ThemeProtectedRoute requireProfile requiredRole="admin" theme="admin">
+                      <ProtectedRoute requireProfile requiredRole="admin" theme="admin">
                         <div className="container mx-auto px-4 py-16">
                           <h1 className="text-2xl font-bold">Admin Workspace</h1>
                           <p>System administration workspace - coming in Phase 6</p>
                         </div>
-                      </ThemeProtectedRoute>
+                      </ProtectedRoute>
                     } />
 
                     {/* ============ LEGACY ROUTES - Preserved from original App.tsx ============ */}
