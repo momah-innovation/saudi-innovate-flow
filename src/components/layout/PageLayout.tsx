@@ -125,7 +125,7 @@ export function PageLayout({
                 {primaryAction && (
                   <Button 
                     onClick={primaryAction.onClick} 
-                    className="gap-2 bg-gradient-primary hover:opacity-90 text-white border-0 shadow-lg transition-all duration-300 hover:scale-105"
+                    className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 border-0 shadow-lg transition-all duration-300 hover:scale-105"
                   >
                     {primaryAction.icon || <Plus className="w-4 h-4" />}
                     {primaryAction.label}

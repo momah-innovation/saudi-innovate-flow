@@ -371,41 +371,41 @@ const EventsBrowse = () => {
                 <TabsTrigger value="upcoming" className="animate-fade-in">
                   <Calendar className="w-4 h-4 mr-2" />
                   {isRTL ? 'القادمة' : 'Upcoming'}
-                  {activeTab === 'upcoming' && (
-                    <span className="ml-2 bg-primary/20 text-primary px-2 py-0.5 rounded-full text-xs">
-                      {filteredEvents.filter(e => new Date(e.event_date) >= new Date()).length}
-                    </span>
-                  )}
+                   {activeTab === 'upcoming' && (
+                     <span className="ml-2 bg-primary/20 text-primary px-2 py-0.5 rounded-full text-xs">
+                       {filteredEvents.filter(e => new Date(e.event_date) >= new Date()).length}
+                     </span>
+                   )}
                 </TabsTrigger>
                 <TabsTrigger value="today" className="animate-fade-in">
                   <TrendingUp className="w-4 h-4 mr-2" />
                   {isRTL ? 'اليوم' : 'Today'}
-                  {activeTab === 'today' && (
-                    <span className="ml-2 bg-green-100 text-green-800 px-2 py-0.5 rounded-full text-xs">
-                      {filteredEvents.filter(e => {
-                        const eventDate = new Date(e.event_date);
-                        const today = new Date();
-                        return eventDate.toDateString() === today.toDateString();
-                      }).length}
-                    </span>
-                  )}
+                   {activeTab === 'today' && (
+                     <span className="ml-2 bg-accent text-accent-foreground px-2 py-0.5 rounded-full text-xs">
+                       {filteredEvents.filter(e => {
+                         const eventDate = new Date(e.event_date);
+                         const today = new Date();
+                         return eventDate.toDateString() === today.toDateString();
+                       }).length}
+                     </span>
+                   )}
                 </TabsTrigger>
                 <TabsTrigger value="all" className="animate-fade-in">
                   {isRTL ? 'جميع الفعاليات' : 'All Events'}
-                  {activeTab === 'all' && (
-                    <span className="ml-2 bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-xs">
-                      {filteredEvents.length}
-                    </span>
-                  )}
+                   {activeTab === 'all' && (
+                     <span className="ml-2 bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full text-xs">
+                       {filteredEvents.length}
+                     </span>
+                   )}
                 </TabsTrigger>
                 <TabsTrigger value="past" className="animate-fade-in">
                   <MapPin className="w-4 h-4 mr-2" />
                   {isRTL ? 'السابقة' : 'Past'}
-                  {activeTab === 'past' && (
-                    <span className="ml-2 bg-gray-100 text-gray-800 px-2 py-0.5 rounded-full text-xs">
-                      {filteredEvents.filter(e => new Date(e.event_date) < new Date()).length}
-                    </span>
-                  )}
+                   {activeTab === 'past' && (
+                     <span className="ml-2 bg-muted text-muted-foreground px-2 py-0.5 rounded-full text-xs">
+                       {filteredEvents.filter(e => new Date(e.event_date) < new Date()).length}
+                     </span>
+                   )}
                 </TabsTrigger>
               </TabsList>
 

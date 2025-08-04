@@ -14,15 +14,15 @@ export function LayoutSelector({ viewMode, onViewModeChange, className }: Layout
   const { t } = useTranslation();
   
   return (
-    <div className={`flex items-center gap-1 p-1.5 bg-gradient-to-r from-violet-100/80 to-purple-100/80 backdrop-blur-sm border border-violet-200/50 rounded-xl shadow-md ${className}`}>
+    <div className={`flex items-center gap-1 p-1.5 bg-gradient-to-r from-accent/20 to-accent/10 backdrop-blur-sm border border-border rounded-xl shadow-sm ${className}`}>
       <Button
         variant={viewMode === 'cards' ? 'default' : 'ghost'}
         size="sm"
         onClick={() => onViewModeChange('cards')}
         className={`gap-2 transition-all duration-300 hover:scale-105 ${
           viewMode === 'cards' 
-            ? 'bg-gradient-primary text-white shadow-md border-0'
-            : 'hover:bg-violet-100 text-violet-700'
+            ? 'bg-primary text-primary-foreground shadow-md border-0'
+            : 'hover:bg-accent hover:text-accent-foreground'
         }`}
       >
         <LayoutGrid className="w-4 h-4" />
@@ -34,8 +34,8 @@ export function LayoutSelector({ viewMode, onViewModeChange, className }: Layout
         onClick={() => onViewModeChange('list')}
         className={`gap-2 transition-all duration-300 hover:scale-105 ${
           viewMode === 'list' 
-            ? 'bg-gradient-primary text-white shadow-md border-0'
-            : 'hover:bg-violet-100 text-violet-700'
+            ? 'bg-primary text-primary-foreground shadow-md border-0'
+            : 'hover:bg-accent hover:text-accent-foreground'
         }`}
       >
         <List className="w-4 h-4" />
@@ -47,8 +47,8 @@ export function LayoutSelector({ viewMode, onViewModeChange, className }: Layout
         onClick={() => onViewModeChange('grid')}
         className={`gap-2 transition-all duration-300 hover:scale-105 ${
           viewMode === 'grid' 
-            ? 'bg-gradient-primary text-white shadow-md border-0' 
-            : 'hover:bg-violet-100 text-violet-700'
+            ? 'bg-primary text-primary-foreground shadow-md border-0' 
+            : 'hover:bg-accent hover:text-accent-foreground'
         }`}
       >
         <Grid className="w-4 h-4" />
