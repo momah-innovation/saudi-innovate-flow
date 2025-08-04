@@ -26,7 +26,7 @@ This document outlines the complete navigation structure of the Ruwād platform,
 │
 └── 🔒 Authenticated Areas (Post-Login)
     │
-    ├── 🏠 MAIN DASHBOARD (/) 
+    ├── 🏠 MAIN DASHBOARD (/dashboard) 
     │   │
     │   ├── 📊 Personal Workspace
     │   │   ├── My Ideas (/ideas)
@@ -34,6 +34,7 @@ This document outlines the complete navigation structure of the Ruwād platform,
     │   │   │   ├── Idea Drafts (/drafts)
     │   │   │   └── Idea Details (/ideas/:id)
     │   │   ├── My Profile (/profile)
+    │   │   │   └── Profile User (/profile/:userId)
     │   │   ├── Saved Items (/saved)
     │   │   └── Settings (/settings)
     │   │       └── Subscription (/settings/subscription)
@@ -126,42 +127,126 @@ This document outlines the complete navigation structure of the Ruwād platform,
 - Tablet: Collapsible sidebar
 - Mobile: Drawer navigation + bottom nav for key actions
 
-## 🔗 Cross-Page Link Patterns
+## 🔗 Navigation Link Map & Interconnections
 
-### From Landing Page
-```tsx
-// Navigation to discovery
-<Link to="/challenges">Browse Challenges</Link>
-<Link to="/events">Upcoming Events</Link>
-<Link to="/about">Learn More</Link>
+### 🏠 From Landing Page (/):
+```
+Primary Actions:
+├── "Get Started" → /signup
+├── "Sign In" → /login  
+├── "Browse Challenges" → /challenges
+└── "View Events" → /events
 
-// Call-to-action flows
-<Link to="/signup">Get Started</Link>
-<Link to="/login">Sign In</Link>
+Public Discovery Links:
+├── About → /about
+├── Campaigns → /campaigns
+├── Challenges → /challenges
+├── Events → /events
+├── Marketplace → /marketplace
+├── Pricing → /pricing
+├── Statistics → /statistics
+└── Help → /help
+
+Footer Navigation:
+├── Discover Section: /challenges, /events, /campaigns, /marketplace
+├── Platform Section: /about, /pricing, /statistics, /help
+└── Auth Section: /signup, /login
 ```
 
-### From Dashboard
-```tsx
-// Quick actions
-<Link to="/submit-idea">Submit New Idea</Link>
-<Link to="/challenges">Find Challenges</Link>
-<Link to="/evaluations">Pending Evaluations</Link>
-
-// Navigation cards
-<Link to="/ideas">My Ideas ({ideaCount})</Link>
-<Link to="/saved">Saved Items ({savedCount})</Link>
+### 🔐 After Authentication (/login or /signup):
+```
+Post-Login Flow:
+├── First Login → /profile/setup (if profile incomplete)
+├── Profile Complete → /dashboard (default authenticated landing)
+└── Direct Access → Original intended destination
 ```
 
-### From Content Pages
-```tsx
-// Contextual navigation
-<Link to="/challenges/{challengeId}/ideas">View Ideas</Link>
-<Link to="/ideas/{ideaId}/edit">Edit Idea</Link>
-<Link to="/profile/{userId}">View Profile</Link>
+### 🏠 From Dashboard (/dashboard):
+```
+Quick Actions:
+├── "Submit New Idea" → /submit-idea
+├── "Browse Challenges" → /challenges
+├── "View My Ideas" → /ideas
+├── "Pending Evaluations" → /evaluations (if expert/admin)
+└── "My Profile" → /profile
 
-// Related content
-<Link to="/events?category={category}">Related Events</Link>
-<Link to="/challenges?sector={sector}">Similar Challenges</Link>
+Navigation Cards:
+├── Ideas Section → /ideas, /submit-idea, /drafts
+├── Challenges Section → /challenges, /challenges/:id
+├── Events Section → /events, /events/:id
+├── Analytics Section → /analytics, /trends, /reports (if permitted)
+└── Settings Section → /settings, /settings/subscription
+```
+
+### 📝 From Ideas Section (/ideas):
+```
+Ideas Management:
+├── "Submit New Idea" → /submit-idea
+├── "View Drafts" → /drafts
+├── Individual Idea → /ideas/:id
+└── Back to Dashboard → /dashboard
+
+Related Navigation:
+├── Associated Challenge → /challenges/:challengeId
+├── Edit Idea → /ideas/:id/edit
+└── Share Idea → /ideas/:id/share
+```
+
+### 🎯 From Challenges Section (/challenges):
+```
+Challenge Exploration:
+├── Challenge Details → /challenges/:id
+├── Challenge Questions → /challenges/:id/questions
+├── Challenge Ideas → /challenges/:id/ideas
+└── Participate/Submit → /submit-idea?challenge=:id
+
+Filtering & Search:
+├── By Sector → /challenges?sector=:sector
+├── By Status → /challenges?status=:status
+└── Search Results → /search?q=:query&type=challenges
+```
+
+### 📅 From Events Section (/events):
+```
+Event Participation:
+├── Event Details → /events/:id
+├── Event Registration → /events/:id/register
+├── Event Feedback → /events/:id/feedback (post-event)
+└── Event Resources → /events/:id/resources
+
+Event Discovery:
+├── By Category → /events?category=:category
+├── By Date Range → /events?from=:date&to=:date
+└── My Events → /events/my-events
+```
+
+### 👤 From Profile Section (/profile):
+```
+Profile Management:
+├── Edit Profile → /profile/edit
+├── View Others → /profile/:userId
+├── Profile Settings → /settings
+└── Privacy Settings → /settings/privacy
+
+Profile Related:
+├── User Ideas → /profile/:userId/ideas
+├── User Achievements → /profile/:userId/achievements
+└── User Activity → /profile/:userId/activity
+```
+
+### ⚙️ From Settings (/settings):
+```
+Settings Categories:
+├── Subscription → /settings/subscription
+├── Notifications → /settings/notifications
+├── Privacy → /settings/privacy
+├── Account → /settings/account
+└── AI Preferences → /ai-preferences
+
+Admin Settings (if admin):
+├── System Settings → /admin/system-settings
+├── User Management → /admin/users
+└── System Analytics → /admin/system-analytics
 ```
 
 ## 🎨 Navigation Components

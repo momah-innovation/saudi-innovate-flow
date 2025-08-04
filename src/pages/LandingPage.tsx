@@ -564,100 +564,174 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-muted/50 py-12 px-4 border-t">
+      <footer className="bg-muted/50 py-16 px-4 border-t">
         <div className="container mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-8">
             {/* Brand Column */}
-            <div className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
+            <div className={`lg:col-span-2 space-y-4 ${isRTL ? 'text-right' : ''}`}>
               <div className={`flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <div className={`h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center ${isRTL ? 'ml-3' : 'mr-3'}`}>
-                  <div className="text-lg">🏗️</div>
+                <div className={`h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center ${isRTL ? 'ml-3' : 'mr-3'}`}>
+                  <div className="text-xl">🏗️</div>
                 </div>
-                <span className="text-lg font-semibold">
-                  {getText("Ruwād", "رواد")}
+                <span className="text-xl font-bold">
+                  {getText("Ruwād Innovation System", "نظام رواد للابتكار")}
                 </span>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground max-w-sm">
                 {getText(
-                  "Government Innovation Management Platform aligned with Saudi Vision 2030",
-                  "منصة إدارة الابتكار الحكومي متماشية مع رؤية السعودية 2030"
+                  "Government Innovation Management Platform driving digital transformation across Saudi Arabia, aligned with Vision 2030 strategic objectives.",
+                  "منصة إدارة الابتكار الحكومي التي تقود التحول الرقمي عبر المملكة العربية السعودية، متماشية مع الأهداف الاستراتيجية لرؤية 2030."
                 )}
               </p>
-            </div>
-            
-            {/* Discover Column */}
-            <div className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
-              <h3 className="font-semibold">
-                {getText("Discover", "استكشف")}
-              </h3>
-              <nav className="space-y-2">
-                <Link to="/challenges" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  {getText("Challenges", "التحديات")}
-                </Link>
-                <Link to="/events" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  {getText("Events", "الفعاليات")}
-                </Link>
-                <Link to="/campaigns" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  {getText("Campaigns", "الحملات")}
-                </Link>
-                <Link to="/marketplace" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  {getText("Marketplace", "السوق")}
-                </Link>
-              </nav>
-            </div>
-            
-            {/* Platform Column */}
-            <div className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
-              <h3 className="font-semibold">
-                {getText("Platform", "المنصة")}
-              </h3>
-              <nav className="space-y-2">
-                <Link to="/about" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  {getText("About", "حول المنصة")}
-                </Link>
-                <Link to="/pricing" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  {getText("Pricing", "الأسعار")}
-                </Link>
-                <Link to="/statistics" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  {getText("Statistics", "الإحصائيات")}
-                </Link>
-                <Link to="/help" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  {getText("Help", "المساعدة")}
-                </Link>
-              </nav>
-            </div>
-            
-            {/* Get Started Column */}
-            <div className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
-              <h3 className="font-semibold">
-                {getText("Get Started", "ابدأ")}
-              </h3>
-              <div className="space-y-3">
+              <div className={`flex gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Button 
-                  className="w-full"
+                  size="sm"
                   onClick={() => navigate('/signup')}
                 >
-                  {getText("Sign Up", "إنشاء حساب")}
+                  {getText("Join Platform", "انضم للمنصة")}
                 </Button>
                 <Button 
                   variant="outline"
-                  className="w-full"
+                  size="sm"
                   onClick={() => navigate('/login')}
                 >
                   {getText("Sign In", "تسجيل الدخول")}
                 </Button>
               </div>
             </div>
+            
+            {/* Discovery Column */}
+            <div className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
+              <h3 className="font-semibold text-foreground">
+                {getText("Discovery", "الاستكشاف")}
+              </h3>
+              <nav className="space-y-2">
+                <Link to="/challenges" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                  {getText("Innovation Challenges", "تحديات الابتكار")}
+                </Link>
+                <Link to="/events" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                  {getText("Events & Workshops", "الفعاليات وورش العمل")}
+                </Link>
+                <Link to="/campaigns" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                  {getText("Active Campaigns", "الحملات النشطة")}
+                </Link>
+                <Link to="/marketplace" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                  {getText("Partnership Hub", "مركز الشراكات")}
+                </Link>
+                <Link to="/statistics" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                  {getText("Impact Statistics", "إحصائيات التأثير")}
+                </Link>
+              </nav>
+            </div>
+            
+            {/* Platform Column */}
+            <div className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
+              <h3 className="font-semibold text-foreground">
+                {getText("Platform", "المنصة")}
+              </h3>
+              <nav className="space-y-2">
+                <Link to="/about" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                  {getText("About Ruwād", "حول رواد")}
+                </Link>
+                <Link to="/pricing" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                  {getText("Plans & Pricing", "الخطط والأسعار")}
+                </Link>
+                <Link to="/help" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                  {getText("Help Center", "مركز المساعدة")}
+                </Link>
+              </nav>
+            </div>
+            
+            {/* Authenticated Features Preview */}
+            <div className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
+              <h3 className="font-semibold text-foreground">
+                {getText("Features", "الميزات")}
+              </h3>
+              <nav className="space-y-2">
+                <div className="text-sm text-muted-foreground">
+                  {getText("Idea Management", "إدارة الأفكار")}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {getText("Expert Collaboration", "تعاون الخبراء")}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {getText("Analytics & Reports", "التحليلات والتقارير")}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {getText("Project Tracking", "تتبع المشاريع")}
+                </div>
+              </nav>
+            </div>
+            
+            {/* Quick Links */}
+            <div className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
+              <h3 className="font-semibold text-foreground">
+                {getText("Quick Access", "الوصول السريع")}
+              </h3>
+              <nav className="space-y-2">
+                <Link to="/auth" className="block text-sm text-primary font-medium hover:text-primary/80 transition-colors">
+                  {getText("Access Dashboard", "الوصول للوحة القيادة")}
+                </Link>
+                <div className="text-xs text-muted-foreground pt-2 space-y-1">
+                  <div>{getText("Authenticated Features:", "الميزات المصادقة:")}</div>
+                  <div>{getText("• Submit Ideas", "• تقديم الأفكار")}</div>
+                  <div>{getText("• Track Progress", "• تتبع التقدم")}</div>
+                  <div>{getText("• Expert Network", "• شبكة الخبراء")}</div>
+                  <div>{getText("• Analytics", "• التحليلات")}</div>
+                </div>
+              </nav>
+            </div>
           </div>
           
-          {/* Bottom Bar */}
-          <div className={`mt-8 pt-8 border-t text-center ${isRTL ? 'text-right' : ''}`}>
-            <p className="text-sm text-muted-foreground">
-              {getText(
-                "© 2024 Ruwād Innovation System. Supporting Saudi Vision 2030.",
-                "© ٢٠٢٤ نظام رواد للابتكار. دعماً لرؤية السعودية ٢٠٣٠."
-              )}
-            </p>
+          {/* Bottom Bar with Additional Links */}
+          <div className="mt-12 pt-8 border-t">
+            <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 ${isRTL ? 'text-right' : ''}`}>
+              {/* Vision 2030 Alignment */}
+              <div className="space-y-2">
+                <h4 className="font-medium text-sm text-foreground">
+                  {getText("Vision 2030 Alignment", "التوافق مع رؤية 2030")}
+                </h4>
+                <p className="text-xs text-muted-foreground">
+                  {getText(
+                    "Supporting digital government transformation and innovation ecosystem development.",
+                    "دعم التحول الحكومي الرقمي وتطوير النظام البيئي للابتكار."
+                  )}
+                </p>
+              </div>
+              
+              {/* Platform Status */}
+              <div className="space-y-2">
+                <h4 className="font-medium text-sm text-foreground">
+                  {getText("Platform Status", "حالة المنصة")}
+                </h4>
+                <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="text-xs text-muted-foreground">
+                    {getText("All systems operational", "جميع الأنظمة تعمل")}
+                  </span>
+                </div>
+              </div>
+              
+              {/* Contact */}
+              <div className="space-y-2">
+                <h4 className="font-medium text-sm text-foreground">
+                  {getText("Support", "الدعم")}
+                </h4>
+                <Link to="/help" className="text-xs text-primary hover:text-primary/80 transition-colors">
+                  {getText("Get help and documentation", "الحصول على المساعدة والوثائق")}
+                </Link>
+              </div>
+            </div>
+            
+            {/* Copyright */}
+            <div className={`text-center pt-4 border-t ${isRTL ? 'text-right' : ''}`}>
+              <p className="text-xs text-muted-foreground">
+                {getText(
+                  "© 2024 Ruwād Innovation System. Empowering government innovation across Saudi Arabia in support of Vision 2030.",
+                  "© ٢٠٢ل نظام رواد للابتكار. تمكين الابتكار الحكومي عبر المملكة العربية السعودية دعماً لرؤية ٢٠٣٠."
+                )}
+              </p>
+            </div>
           </div>
         </div>
       </footer>
