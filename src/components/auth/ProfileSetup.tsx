@@ -570,8 +570,30 @@ export const ProfileSetup = () => {
           </CardContent>
         </Card>
         
-        {/* Debug Test Component - only show for admins/testing */}
-        {userProfile && (userProfile.user_roles?.some(r => r.role === 'admin' || r.role === 'super_admin')) && (
+        {/* Debug User Profile Data */}
+        <Card className="mt-4">
+          <CardHeader>
+            <CardTitle>Debug: User Profile Data</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <p><strong>User ID:</strong> {user?.id}</p>
+              <p><strong>Has User Profile:</strong> {userProfile ? 'Yes' : 'No'}</p>
+              <p><strong>Profile Completion:</strong> {userProfile?.profile_completion_percentage}%</p>
+              <p><strong>User Roles:</strong></p>
+              <pre className="text-xs bg-muted p-2 rounded overflow-auto">
+                {JSON.stringify(userProfile?.user_roles, null, 2)}
+              </pre>
+              <p><strong>Full Profile (first 500 chars):</strong></p>
+              <pre className="text-xs bg-muted p-2 rounded overflow-auto">
+                {JSON.stringify(userProfile, null, 2).substring(0, 500)}...
+              </pre>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Test Component - Show for any authenticated user for now */}
+        {user && (
           <div className="mt-6">
             <TestProfileCalculation />
           </div>
