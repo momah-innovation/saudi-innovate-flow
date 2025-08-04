@@ -93,7 +93,8 @@ export const Auth = () => {
       if (activeTab === 'login') {
         const { error } = await signIn(formData.email, formData.password);
         if (!error) {
-          navigate('/dashboard');
+          // Let the auth state change handle the redirect
+          // This will properly check profile completion
         }
       } else {
         await signUp(formData.email, formData.password, {
