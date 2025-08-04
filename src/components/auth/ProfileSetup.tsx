@@ -31,6 +31,7 @@ import {
   ArrowRight,
   ArrowLeft
 } from 'lucide-react';
+import { TestProfileCalculation } from '@/components/admin/TestProfileCalculation';
 
 interface ProfileData {
   // Basic Information
@@ -568,6 +569,13 @@ export const ProfileSetup = () => {
             </div>
           </CardContent>
         </Card>
+        
+        {/* Debug Test Component - only show for admins/testing */}
+        {userProfile && (userProfile.user_roles?.some(r => r.role === 'admin' || r.role === 'super_admin')) && (
+          <div className="mt-6">
+            <TestProfileCalculation />
+          </div>
+        )}
       </div>
     </div>
   );

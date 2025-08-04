@@ -16,10 +16,26 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
+    console.log('Function started, checking environment variables...');
+    
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    
+    console.log('SUPABASE_URL available:', !!supabaseUrl);
+    console.log('SUPABASE_SERVICE_ROLE_KEY available:', !!serviceRoleKey);
+    
+    if (!supabaseUrl || !serviceRoleKey) {
+      console.error('Missing environment variables');
+      return new Response(
+        JSON.stringify({ error: 'Missing environment variables' }),
+        { 
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      );
+    }
+    
+    const supabase = createClient(supabaseUrl, serviceRoleKey);
 
     const { user_id }: ProfileCompletionRequest = await req.json();
 
