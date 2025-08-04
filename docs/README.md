@@ -3,10 +3,10 @@
 ## 📁 Active Project Documentation
 
 ### 🎯 Core Planning Documents
-- **[RUWAD_REFACTORING_PLAN.md](./RUWAD_REFACTORING_PLAN.md)** - Complete refactoring overview, phase breakdown, and success metrics
-- **[PHASE_TRACKER.md](./PHASE_TRACKER.md)** - Detailed task tracking with progress indicators and dependencies
-- **[TECHNICAL_REQUIREMENTS.md](./TECHNICAL_REQUIREMENTS.md)** - Database schema extensions and technical specifications
-- **[QUALITY_GATES.md](./QUALITY_GATES.md)** - Success criteria and quality standards for each phase
+- **[01_RUWAD_REFACTORING_PLAN.md](./01_RUWAD_REFACTORING_PLAN.md)** - Complete refactoring overview, phase breakdown, and success metrics
+- **[02_PHASE_TRACKER.md](./02_PHASE_TRACKER.md)** - Detailed task tracking with progress indicators and dependencies  
+- **[03_TECHNICAL_REQUIREMENTS.md](./03_TECHNICAL_REQUIREMENTS.md)** - Database schema extensions and technical specifications
+- **[04_QUALITY_GATES.md](./04_QUALITY_GATES.md)** - Success criteria and quality standards for each phase
 
 ## 🔄 Project Status
 
@@ -40,9 +40,9 @@ Previous system documentation (from the "100% complete" version) has been moved 
 
 ## 🚀 Getting Started
 
-1. Review [RUWAD_REFACTORING_PLAN.md](./RUWAD_REFACTORING_PLAN.md) for complete project overview
-2. Check [PHASE_TRACKER.md](./PHASE_TRACKER.md) for current tasks and dependencies
-3. Reference [TECHNICAL_REQUIREMENTS.md](./TECHNICAL_REQUIREMENTS.md) for technical specifications
+1. Review [01_RUWAD_REFACTORING_PLAN.md](./01_RUWAD_REFACTORING_PLAN.md) for complete project overview
+2. Check [02_PHASE_TRACKER.md](./02_PHASE_TRACKER.md) for current tasks and dependencies
+3. Reference [03_TECHNICAL_REQUIREMENTS.md](./03_TECHNICAL_REQUIREMENTS.md) for technical specifications
 
 ---
 

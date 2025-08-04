@@ -28,10 +28,10 @@ This is an **8-9 week refactoring project** to transform the existing Ruwād pla
 
 ## 📚 Project Documentation
 
-- **[Complete Refactoring Plan](./docs/RUWAD_REFACTORING_PLAN.md)** - Full project overview and phases
-- **[Phase Tracker](./docs/PHASE_TRACKER.md)** - Detailed task tracking and progress
-- **[Technical Requirements](./docs/TECHNICAL_REQUIREMENTS.md)** - Database schema and technical specs
-- **[Quality Gates](./docs/QUALITY_GATES.md)** - Success criteria and quality standards
+- **[Complete Refactoring Plan](./docs/01_RUWAD_REFACTORING_PLAN.md)** - Full project overview and phases
+- **[Phase Tracker](./docs/02_PHASE_TRACKER.md)** - Detailed task tracking and progress
+- **[Technical Requirements](./docs/03_TECHNICAL_REQUIREMENTS.md)** - Database schema and technical specs
+- **[Quality Gates](./docs/04_QUALITY_GATES.md)** - Success criteria and quality standards
 
 ## 🚀 Getting Started
 
