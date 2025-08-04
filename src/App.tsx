@@ -1,3 +1,6 @@
+// Enhanced App.tsx with New Routing Architecture - Phase 1 Implementation
+// Implements public/authenticated route separation with subscription awareness
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,13 +11,18 @@ import i18n from "./i18n/config";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { DirectionProvider } from "@/components/ui/direction-provider";
+
+// New routing components from Phase 1
+import { EnhancedProtectedRoute, PublicRoute } from "@/routing/RouteGuards";
+import { ALL_ROUTES } from "@/routing/routes";
+// Legacy components (will be organized better in subsequent phases)
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { MaintenanceGuard } from "@/components/maintenance/MaintenanceGuard";
 import AdminDashboard from "./pages/AdminDashboard";
 import LandingPage from "./pages/LandingPage";
-import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import ProfileSetup from "./pages/ProfileSetup";
+// Import remaining components as before...
 import ChallengeDetails from "./pages/ChallengeDetails";
 import ChallengesManagementPage from "./pages/ChallengesManagement";
 import FocusQuestionsManagement from "./pages/FocusQuestionsManagement";
@@ -81,9 +89,91 @@ const App = () => (
               <Toaster />
               <Sonner />
               <MaintenanceGuard>
-          <BrowserRouter>
-          <Routes>
-            <Route path="/auth" element={<Auth />} />
+                <BrowserRouter>
+                  <Routes>
+                    {/* ============ PUBLIC ROUTES - New Phase 1 Structure ============ */}
+                    
+                    {/* Landing Page */}
+                    <Route path={ALL_ROUTES.HOME} element={<LandingPage />} />
+                    
+                    {/* Public Discovery Pages - Placeholders for Phase 3 */}
+                    <Route path={ALL_ROUTES.ABOUT} element={
+                      <div className="container mx-auto px-4 py-16">
+                        <h1 className="text-4xl font-bold mb-8">About Ruwād</h1>
+                        <p>Innovation platform for Saudi Arabia's government ministries.</p>
+                        <p className="text-sm text-muted-foreground mt-4">Coming in Phase 3</p>
+                      </div>
+                    } />
+                    <Route path={ALL_ROUTES.CAMPAIGNS} element={
+                      <div className="container mx-auto px-4 py-16">
+                        <h1 className="text-4xl font-bold mb-8">Innovation Campaigns</h1>
+                        <p>Discover ongoing innovation campaigns across government sectors.</p>
+                        <p className="text-sm text-muted-foreground mt-4">Coming in Phase 3</p>
+                      </div>
+                    } />
+                    <Route path={ALL_ROUTES.MARKETPLACE} element={
+                      <div className="container mx-auto px-4 py-16">
+                        <h1 className="text-4xl font-bold mb-8">Innovation Marketplace</h1>
+                        <p>Explore innovation opportunities and partnerships.</p>
+                        <p className="text-sm text-muted-foreground mt-4">Coming in Phase 3</p>
+                      </div>
+                    } />
+                    <Route path={ALL_ROUTES.PRICING} element={
+                      <div className="container mx-auto px-4 py-16">
+                        <h1 className="text-4xl font-bold mb-8">Pricing Plans</h1>
+                        <p>Choose the right plan for your innovation needs.</p>
+                        <p className="text-sm text-muted-foreground mt-4">Coming in Phase 4</p>
+                      </div>
+                    } />
+
+                    {/* Authentication Routes */}
+                    <Route path={ALL_ROUTES.AUTH} element={<Auth />} />
+                    <Route path={ALL_ROUTES.LOGIN} element={<Auth />} />
+                    <Route path={ALL_ROUTES.SIGNUP} element={<Auth />} />
+
+                    {/* ============ WORKSPACE ROUTES - New Phase 1 Structure ============ */}
+                    
+                    {/* User Workspace - Placeholder for Phase 6 */}
+                    <Route path={ALL_ROUTES.WORKSPACE_USER} element={
+                      <EnhancedProtectedRoute requireProfile>
+                        <div className="container mx-auto px-4 py-16">
+                          <h1 className="text-2xl font-bold">User Workspace</h1>
+                          <p>Personal innovation workspace - coming in Phase 6</p>
+                        </div>
+                      </EnhancedProtectedRoute>
+                    } />
+
+                    {/* Expert Workspace - Placeholder for Phase 6 */}
+                    <Route path={ALL_ROUTES.WORKSPACE_EXPERT} element={
+                      <EnhancedProtectedRoute requireProfile>
+                        <div className="container mx-auto px-4 py-16">
+                          <h1 className="text-2xl font-bold">Expert Workspace</h1>
+                          <p>Expert evaluation workspace - coming in Phase 6</p>
+                        </div>
+                      </EnhancedProtectedRoute>
+                    } />
+
+                    {/* Organization Workspace - Placeholder for Phase 6 */}
+                    <Route path={ALL_ROUTES.WORKSPACE_ORG} element={
+                      <EnhancedProtectedRoute requireProfile>
+                        <div className="container mx-auto px-4 py-16">
+                          <h1 className="text-2xl font-bold">Organization Workspace</h1>
+                          <p>Organization management workspace - coming in Phase 6</p>
+                        </div>
+                      </EnhancedProtectedRoute>
+                    } />
+
+                    {/* Admin Workspace - Placeholder for Phase 6 */}
+                    <Route path={ALL_ROUTES.WORKSPACE_ADMIN} element={
+                      <EnhancedProtectedRoute requireProfile requiredRole="admin">
+                        <div className="container mx-auto px-4 py-16">
+                          <h1 className="text-2xl font-bold">Admin Workspace</h1>
+                          <p>System administration workspace - coming in Phase 6</p>
+                        </div>
+                      </EnhancedProtectedRoute>
+                    } />
+
+                    {/* ============ LEGACY ROUTES - Preserved from original App.tsx ============ */}
             <Route 
               path="/profile/setup" 
               element={
