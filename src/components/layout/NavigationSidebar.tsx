@@ -1,39 +1,40 @@
-import { useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  Home, Target, Lightbulb, Users, Calendar, TrendingUp,
-  FileText, Settings, PieChart, Briefcase, Award, Zap,
-  Shield, BookOpen, BarChart3, UserCheck, Network, Search,
-  PlusCircle, Star, HelpCircle, Globe, Edit, Bookmark,
-  Database, HardDrive, Palette
+import React, { useMemo } from 'react';
+import { 
+  Home, Search, Calendar, BarChart3, Users, Lightbulb, Bookmark, UserCheck, 
+  Edit, Award, FileText, Building, Database, HardDrive, Briefcase, Target, 
+  Star, Activity, MessageSquare, TrendingUp, Settings, HelpCircle, Palette, 
+  BookOpen, Network, DollarSign, Shield, Zap, Brain, Archive, Tag, Upload,
+  ChevronDown, ChevronRight
 } from 'lucide-react';
-import {
+import { NavLink, useLocation } from 'react-router-dom';
+import { 
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent,
   SidebarGroupLabel, SidebarMenu, SidebarMenuButton,
-  SidebarMenuItem, useSidebar
+  SidebarMenuItem, useSidebar, SidebarRail
 } from '@/components/ui/sidebar';
-import { Badge } from '@/components/ui/badge';
-import { useAuth } from '@/contexts/AuthContext';
-import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
+// import { useAuth } from '@/hooks/useAuth';
+// import { useProfile } from '@/hooks/useProfile';
+import { useTranslation } from '@/hooks/useAppTranslation';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 /**
  * NavigationSidebar - Optimized sidebar navigation with role-based menu items
- * Features:
- * - Performance optimized with useMemo
- * - Role-based visibility
- * - RTL support
- * - Active state management
- * - Grouped menu items
+ * Now includes new tag management and file system pages with organized grouping
  */
+
 export function NavigationSidebar() {
   const { state } = useSidebar();
-  const { userProfile, hasRole } = useAuth();
-  const { isRTL, language } = useDirection();
   const location = useLocation();
-  const navigate = useNavigate();
+  const { isRTL } = useTranslation();
+  // const { user } = useAuth();
+  // const { profile: userProfile } = useProfile();
+  const userProfile = null; // Simplified for now
+  const [isOldLinksOpen, setIsOldLinksOpen] = React.useState(false);
 
-  // Memoized menu items for performance - consolidated from all sidebars
+  // Memoized menu items for performance - reorganized with new pages
   const menuItems = useMemo(() => {
     const baseItems = [
       { 
@@ -98,49 +99,9 @@ export function NavigationSidebar() {
         group: 'partners',
         roles: ['all'] 
       },
-      { 
-        id: 'partner-profile', 
-        label: 'Partner Profile', 
-        arabicLabel: 'ملف الشريك',
-        icon: Edit, 
-        path: '/partner-profile',
-        group: 'partners',
-        roles: ['partner', 'admin'] 
-      },
     ];
 
     const workflowItems = [
-      // User Dashboards - grouped by role
-      { 
-        id: 'user-dashboard', 
-        label: 'My Dashboard', 
-        arabicLabel: 'لوحة التحكم الشخصية',
-        icon: Home, 
-        path: '/dashboard',
-        group: 'personal',
-        roles: ['innovator', 'stakeholder'] 
-      },
-      { 
-        id: 'expert-dashboard', 
-        label: 'Expert Dashboard', 
-        arabicLabel: 'لوحة تحكم الخبير',
-        icon: Star, 
-        path: '/expert-dashboard',
-        badge: 8,
-        group: 'personal',
-        roles: ['expert', 'admin'] 
-      },
-      { 
-        id: 'stakeholder-dashboard', 
-        label: 'Stakeholder Dashboard', 
-        arabicLabel: 'لوحة تحكم المعني',
-        icon: Users, 
-        path: '/stakeholder-dashboard',
-        group: 'personal',
-        roles: ['stakeholder', 'admin'] 
-      },
-      
-      // Core workflow items
       { 
         id: 'ideas', 
         label: 'My Ideas', 
@@ -170,8 +131,6 @@ export function NavigationSidebar() {
         group: 'workflow',
         roles: ['expert', 'team', 'admin'] 
       },
-      
-      // Profile management - moved to personal group
       { 
         id: 'user-profile', 
         label: 'My Profile', 
@@ -180,36 +139,6 @@ export function NavigationSidebar() {
         path: '/profile',
         group: 'personal',
         roles: ['all'] 
-      },
-      { 
-        id: 'expert-profile', 
-        label: 'Expert Profile', 
-        arabicLabel: 'ملف الخبير',
-        icon: Edit, 
-        path: '/expert-profile',
-        group: 'personal',
-        roles: ['expert'] 
-      },
-      
-      // Event participation
-      { 
-        id: 'event-registration', 
-        label: 'Event Registration', 
-        arabicLabel: 'تسجيل الفعاليات',
-        icon: Award, 
-        path: '/event-registration',
-        group: 'workflow',
-        roles: ['all'] 
-      },
-      
-      { 
-        id: 'team-workspace', 
-        label: 'Team Workspace', 
-        arabicLabel: 'مساحة عمل الفريق',
-        icon: Users, 
-        path: '/team-workspace',
-        group: 'workflow',
-        roles: ['team', 'admin', 'innovator', 'expert'] 
       },
     ];
 
@@ -235,15 +164,6 @@ export function NavigationSidebar() {
         roles: ['team', 'admin'] 
       },
       { 
-        id: 'focus-questions', 
-        label: 'Focus Questions', 
-        arabicLabel: 'الأسئلة المحورية',
-        icon: FileText, 
-        path: '/admin/focus-questions',
-        group: 'management',
-        roles: ['admin'] 
-      },
-      { 
         id: 'events', 
         label: 'Events', 
         arabicLabel: 'الفعاليات',
@@ -262,51 +182,6 @@ export function NavigationSidebar() {
         group: 'management',
         roles: ['team', 'admin'] 
       },
-      { 
-        id: 'evaluations-management', 
-        label: 'Evaluation System', 
-        arabicLabel: 'نظام التقييم',
-        icon: FileText, 
-        path: '/admin/evaluation-management',
-        group: 'management',
-        roles: ['admin'] 
-      },
-      { 
-        id: 'opportunities-management', 
-        label: 'Partnership Opportunities', 
-        arabicLabel: 'إدارة فرص الشراكة',
-        icon: Briefcase, 
-        path: '/admin/opportunities',
-        group: 'management',
-        roles: ['admin'] 
-      },
-      { 
-        id: 'stakeholders', 
-        label: 'Stakeholders', 
-        arabicLabel: 'المعنيين',
-        icon: Users, 
-        path: '/admin/stakeholders',
-        group: 'management',
-        roles: ['team', 'admin'] 
-      },
-      { 
-        id: 'innovation-teams', 
-        label: 'Core Innovation Team', 
-        arabicLabel: 'فريق الابتكار الأساسي',
-        icon: Zap, 
-        path: '/innovation-teams',
-        group: 'management',
-        roles: ['admin'] 
-      },
-      { 
-        id: 'team-management', 
-        label: 'Team Management', 
-        arabicLabel: 'إدارة الفرق',
-        icon: Users, 
-        path: '/team-management',
-        group: 'management',
-        roles: ['team', 'admin'] 
-      },
     ];
 
     const analyticsItems = [
@@ -314,7 +189,7 @@ export function NavigationSidebar() {
         id: 'analytics', 
         label: 'Analytics', 
         arabicLabel: 'التحليلات',
-        icon: PieChart, 
+        icon: BarChart3, 
         path: '/analytics',
         group: 'analytics',
         roles: ['team', 'admin'] 
@@ -327,24 +202,6 @@ export function NavigationSidebar() {
         path: '/trends',
         group: 'analytics',
         roles: ['team', 'admin'] 
-      },
-      { 
-        id: 'reports', 
-        label: 'Reports', 
-        arabicLabel: 'التقارير',
-        icon: FileText, 
-        path: '/reports',
-        group: 'analytics',
-        roles: ['team', 'admin'] 
-      },
-      { 
-        id: 'system-analytics', 
-        label: 'System Analytics', 
-        arabicLabel: 'تحليلات النظام',
-        icon: BarChart3, 
-        path: '/admin/system-analytics',
-        group: 'analytics',
-        roles: ['admin'] 
       },
     ];
 
@@ -359,39 +216,61 @@ export function NavigationSidebar() {
         roles: ['admin'] 
       },
       { 
-        id: 'sectors', 
-        label: 'Sectors', 
-        arabicLabel: 'القطاعات',
-        icon: Shield, 
-        path: '/admin/sectors',
+        id: 'storage-management', 
+        label: 'Storage Management', 
+        arabicLabel: 'إدارة التخزين',
+        icon: Database, 
+        path: '/admin/storage',
         group: 'admin',
         roles: ['admin'] 
       },
       { 
-        id: 'organizational-structure', 
-        label: 'Organizational Structure', 
-        arabicLabel: 'الهيكل التنظيمي',
+        id: 'tag-management', 
+        label: 'Tag Management', 
+        arabicLabel: 'إدارة العلامات',
+        icon: Tag, 
+        path: '/admin/tags',
+        group: 'admin',
+        roles: ['admin', 'team'] 
+      },
+      { 
+        id: 'admin-relationships', 
+        label: 'Relationships', 
+        arabicLabel: 'العلاقات',
         icon: Network, 
-        path: '/admin/organizational-structure',
+        path: '/admin/relationships',
         group: 'admin',
         roles: ['admin'] 
-       },
-       { 
-         id: 'admin-dashboard', 
-         label: 'Admin Dashboard', 
-         arabicLabel: 'لوحة الإدارة',
-         icon: BarChart3, 
-         path: '/admin/dashboard',
-         group: 'admin',
-         roles: ['admin'] 
-       },
+      },
+    ];
+
+    // New dedicated system pages
+    const systemItems = [
       { 
-        id: 'expert-assignments', 
-        label: 'Expert Assignments', 
-        arabicLabel: 'تعيين الخبراء',
-        icon: Award, 
-        path: '/admin/expert-assignments',
-        group: 'admin',
+        id: 'file-uploader-demo', 
+        label: 'File Upload System', 
+        arabicLabel: 'نظام رفع الملفات',
+        icon: Upload, 
+        path: '/admin/file-uploader',
+        group: 'system',
+        roles: ['admin', 'team'] 
+      },
+      { 
+        id: 'team-management', 
+        label: 'Team Management', 
+        arabicLabel: 'إدارة الفريق',
+        icon: Users, 
+        path: '/team-management',
+        group: 'system',
+        roles: ['admin', 'team'] 
+      },
+      { 
+        id: 'profile-management', 
+        label: 'Profile Management', 
+        arabicLabel: 'إدارة الملفات الشخصية',
+        icon: Edit, 
+        path: '/profile-management',
+        group: 'system',
         roles: ['admin'] 
       },
       { 
@@ -399,64 +278,10 @@ export function NavigationSidebar() {
         label: 'User Management', 
         arabicLabel: 'إدارة المستخدمين',
         icon: UserCheck, 
-        path: '/admin/users',
-        group: 'admin',
+        path: '/user-management',
+        group: 'system',
         roles: ['admin'] 
       },
-      { 
-        id: 'system-settings', 
-        label: 'System Settings', 
-        arabicLabel: 'إعدادات النظام',
-        icon: Settings, 
-        path: '/admin/system-settings',
-        group: 'admin',
-        roles: ['admin'] 
-      },
-       { 
-         id: 'system-documentation', 
-         label: 'System Documentation', 
-         arabicLabel: 'وثائق النظام',
-         icon: BookOpen, 
-         path: '/admin/system-documentation',
-         group: 'admin',
-         roles: ['all'] 
-       },
-       { 
-         id: 'storage-management', 
-         label: 'Storage Management', 
-         arabicLabel: 'إدارة التخزين',
-         icon: Database, 
-         path: '/admin/storage',
-         group: 'admin',
-         roles: ['admin'] 
-       },
-       { 
-         id: 'storage-policies', 
-         label: 'Storage Policies', 
-         arabicLabel: 'سياسات التخزين',
-         icon: HardDrive, 
-         path: '/admin/storage/policies',
-         group: 'admin',
-         roles: ['admin'] 
-       },
-       { 
-         id: 'admin-relationships', 
-         label: 'Relationships', 
-         arabicLabel: 'العلاقات',
-         icon: Network, 
-         path: '/admin/relationships',
-         group: 'admin',
-         roles: ['admin'] 
-       },
-       { 
-         id: 'admin-evaluations', 
-         label: 'Evaluations', 
-         arabicLabel: 'التقييمات',
-         icon: UserCheck, 
-         path: '/admin/evaluations',
-         group: 'admin',
-         roles: ['admin'] 
-       },
     ];
 
     const settingsItems = [
@@ -469,30 +294,52 @@ export function NavigationSidebar() {
         group: 'settings',
         roles: ['all'] 
       },
-        { 
-          id: 'help', 
-          label: 'Help & Documentation', 
-          arabicLabel: 'المساعدة والوثائق',
-          icon: HelpCircle, 
-          path: '/help',
-          group: 'settings',
-          roles: ['all'] 
-        },
-        { 
-          id: 'design-system', 
-          label: 'Design System', 
-          arabicLabel: 'نظام التصميم',
-          icon: Palette, 
-          path: '/design-system',
-          group: 'settings',
-          roles: ['admin'] 
-        },
+      { 
+        id: 'help', 
+        label: 'Help & Documentation', 
+        arabicLabel: 'المساعدة والوثائق',
+        icon: HelpCircle, 
+        path: '/help',
+        group: 'settings',
+        roles: ['all'] 
+      },
+      { 
+        id: 'design-system', 
+        label: 'Design System', 
+        arabicLabel: 'نظام التصميم',
+        icon: Palette, 
+        path: '/design-system',
+        group: 'settings',
+        roles: ['admin'] 
+      },
     ];
 
-    return [...baseItems, ...discoverItems, ...partnerItems, ...workflowItems, ...managementItems, ...analyticsItems, ...adminItems, ...settingsItems];
+    // Old/Legacy links that will be moved to collapsible section
+    const oldItems = [
+      { 
+        id: 'old-admin-dashboard', 
+        label: 'Legacy Admin Dashboard', 
+        arabicLabel: 'لوحة التحكم الإدارية القديمة',
+        icon: Archive, 
+        path: '/admin-dashboard',
+        group: 'old',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'old-relationships', 
+        label: 'Legacy Relationships View', 
+        arabicLabel: 'عرض العلاقات القديم',
+        icon: Archive, 
+        path: '/relationships',
+        group: 'old',
+        roles: ['admin'] 
+      },
+    ];
+
+    return [...baseItems, ...discoverItems, ...partnerItems, ...workflowItems, ...managementItems, ...analyticsItems, ...adminItems, ...systemItems, ...settingsItems, ...oldItems];
   }, []);
 
-  // Check if user can see a menu item - same logic as AppSidebar
+  // Check if user can see a menu item
   const canAccessItem = (item: any) => {
     if (item.roles.includes('all')) return true;
     
@@ -500,114 +347,123 @@ export function NavigationSidebar() {
       return item.roles.includes('innovator');
     }
     
-    const userRoles = [];
-    if (userProfile?.innovator_profile) userRoles.push('innovator');
-    if (userProfile?.expert_profile) userRoles.push('expert');
-    if (userProfile?.partner_profile) userRoles.push('partner');
-    if (userProfile?.stakeholder_profile) userRoles.push('stakeholder');
-    if (hasRole('admin')) userRoles.push('admin');
-    if (hasRole('super_admin')) userRoles.push('admin'); // super_admin should see admin items
-    if (hasRole('team_member')) userRoles.push('team');
-    
+    const userRoles = userProfile.user_roles.map((role: any) => role.role);
     return item.roles.some((role: string) => userRoles.includes(role));
   };
 
-  // Get visible items grouped
-  const visibleItems = useMemo(() => {
-    const filtered = menuItems.filter(canAccessItem);
-    return {
-      main: filtered.filter(item => item.group === 'main'),
-      discover: filtered.filter(item => item.group === 'discover'),
-      personal: filtered.filter(item => item.group === 'personal'),
-      partners: filtered.filter(item => item.group === 'partners'),
-      workflow: filtered.filter(item => item.group === 'workflow'),
-      management: filtered.filter(item => item.group === 'management'),
-      analytics: filtered.filter(item => item.group === 'analytics'),
-      admin: filtered.filter(item => item.group === 'admin'),
-      settings: filtered.filter(item => item.group === 'settings'),
-    };
-  }, [menuItems, userProfile, hasRole]);
+  const groupedItems = useMemo(() => {
+    const groups: Record<string, any[]> = {};
+    
+    menuItems.forEach(item => {
+      if (canAccessItem(item)) {
+        if (!groups[item.group]) {
+          groups[item.group] = [];
+        }
+        groups[item.group].push(item);
+      }
+    });
+    
+    return groups;
+  }, [menuItems, userProfile]);
 
-  // Check if current path matches item
-  const isActive = (item: any) => {
-    return location.pathname === item.path;
+  // Group labels with translations
+  const groupLabels: Record<string, { en: string; ar: string }> = {
+    main: { en: 'Dashboard', ar: 'لوحة التحكم' },
+    discover: { en: 'Discover', ar: 'استكشاف' },
+    personal: { en: 'Personal', ar: 'شخصي' },
+    workflow: { en: 'Workflow', ar: 'سير العمل' },
+    partners: { en: 'Partners', ar: 'الشركاء' },
+    management: { en: 'Management', ar: 'الإدارة' },
+    analytics: { en: 'Analytics', ar: 'التحليلات' },
+    admin: { en: 'Administration', ar: 'الإدارة العامة' },
+    system: { en: 'System Management', ar: 'إدارة النظام' },
+    settings: { en: 'Settings', ar: 'الإعدادات' },
+    old: { en: 'Legacy Links', ar: 'الروابط القديمة' }
   };
 
-  // Handle navigation
-  const handleNavigation = (path: string) => {
-    navigate(path);
+  // Priority order for groups
+  const groupOrder = ['main', 'discover', 'personal', 'workflow', 'partners', 'management', 'analytics', 'admin', 'system', 'settings'];
+
+  const renderMenuItems = (items: any[]) => {
+    return items.map((item) => {
+      const isActive = location.pathname === item.path;
+      
+      return (
+        <SidebarMenuItem key={item.id}>
+          <SidebarMenuButton 
+            asChild 
+            className={cn(
+              "w-full justify-start",
+              isActive && "bg-primary text-primary-foreground",
+              isRTL && "flex-row-reverse"
+            )}
+          >
+            <NavLink 
+              to={item.path}
+              className={({ isActive }) => cn(
+                "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                isActive 
+                  ? "bg-primary text-primary-foreground" 
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted",
+                isRTL && "flex-row-reverse text-right"
+              )}
+            >
+              <item.icon className={cn("h-4 w-4", isRTL && "ml-3 mr-0")} />
+              <span className="flex-1">
+                {isRTL ? item.arabicLabel : item.label}
+              </span>
+              {item.badge && (
+                <Badge variant="secondary" className={cn("ml-auto text-xs", isRTL && "ml-0 mr-auto")}>
+                  {item.badge}
+                </Badge>
+              )}
+            </NavLink>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      );
+    });
   };
 
-  // Get localized label
-  const getLabel = (item: any) => {
-    return isRTL && language === 'ar' ? item.arabicLabel : item.label;
-  };
-
-  // Get localized group label
-  const getGroupLabel = (key: string) => {
-    const labels = {
-      discover: isRTL ? 'استكشاف' : 'Discover',
-      personal: isRTL ? 'الحساب الشخصي' : 'Personal',
-      partners: isRTL ? 'الشراكات' : 'Partnerships',
-      workflow: isRTL ? 'سير العمل' : 'Workflow',
-      management: isRTL ? 'الإدارة' : 'Management',
-      analytics: isRTL ? 'التحليلات' : 'Analytics',
-      admin: isRTL ? 'الإدارة العامة' : 'Administration',
-      settings: isRTL ? 'الإعدادات' : 'Settings',
-    };
-    return labels[key as keyof typeof labels];
-  };
-
-  // Render menu group
-  const renderGroup = (items: any[], groupKey?: string) => {
-    if (!items.length) return null;
+  const renderGroup = (groupKey: string, items: any[]) => {
+    if (groupKey === 'old') {
+      return (
+        <Collapsible key={groupKey} open={isOldLinksOpen} onOpenChange={setIsOldLinksOpen}>
+          <SidebarGroup>
+            <SidebarGroupLabel asChild>
+              <CollapsibleTrigger className={cn(
+                "flex w-full items-center justify-between text-xs font-medium text-muted-foreground hover:text-foreground",
+                isRTL && "text-right"
+              )}>
+                <span>{isRTL ? groupLabels[groupKey]?.ar : groupLabels[groupKey]?.en}</span>
+                <Button variant="ghost" size="sm" className="h-4 w-4 p-0">
+                  {isOldLinksOpen ? (
+                    <ChevronDown className="h-3 w-3" />
+                  ) : (
+                    <ChevronRight className="h-3 w-3" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+            </SidebarGroupLabel>
+            <CollapsibleContent>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {renderMenuItems(items)}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </CollapsibleContent>
+          </SidebarGroup>
+        </Collapsible>
+      );
+    }
 
     return (
       <SidebarGroup key={groupKey}>
-        {groupKey && (
-          <SidebarGroupLabel className={cn(isRTL && 'text-right')}>
-            {getGroupLabel(groupKey)}
-          </SidebarGroupLabel>
-        )}
+        <SidebarGroupLabel className={cn(isRTL && 'text-right')}>
+          {isRTL ? groupLabels[groupKey]?.ar : groupLabels[groupKey]?.en}
+        </SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            {items.map((item) => {
-              const Icon = item.icon;
-              const active = isActive(item);
-              
-              return (
-                <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton 
-                    onClick={() => handleNavigation(item.path)}
-                    className={cn(
-                      active && "bg-primary/10 text-primary font-medium",
-                      isRTL && "flex-row-reverse",
-                      "transition-colors hover:bg-accent/50"
-                    )}
-                  >
-                    <Icon className="h-4 w-4 shrink-0" />
-                    {state !== "collapsed" && (
-                      <>
-                        <span className={cn(
-                          "flex-1 truncate",
-                          isRTL && "text-right"
-                        )}>
-                          {getLabel(item)}
-                        </span>
-                        {item.badge && (
-                          <Badge variant="secondary" className={cn(
-                            "bg-primary/10 text-primary text-xs",
-                            isRTL ? "mr-auto" : "ml-auto"
-                          )}>
-                            {item.badge}
-                          </Badge>
-                        )}
-                      </>
-                    )}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              );
-            })}
+            {renderMenuItems(items)}
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>
@@ -616,24 +472,31 @@ export function NavigationSidebar() {
 
   return (
     <Sidebar 
-      className={cn(
-        state === "collapsed" ? "w-16" : "w-60",
-        isRTL && "border-l border-r-0"
-      )} 
-      collapsible="icon"
+      variant="sidebar"
       side={isRTL ? "right" : "left"}
+      className={cn(
+        "border-r",
+        isRTL && "border-l border-r-0"
+      )}
     >
       <SidebarContent className={cn(isRTL && "text-right")}>
-        {renderGroup(visibleItems.main)}
-        {renderGroup(visibleItems.discover, 'discover')}
-        {renderGroup(visibleItems.personal, 'personal')}
-        {renderGroup(visibleItems.partners, 'partners')}
-        {renderGroup(visibleItems.workflow, 'workflow')}
-        {renderGroup(visibleItems.management, 'management')}
-        {renderGroup(visibleItems.analytics, 'analytics')}
-        {renderGroup(visibleItems.admin, 'admin')}
-        {renderGroup(visibleItems.settings, 'settings')}
+        {/* Render groups in priority order */}
+        {groupOrder.map(groupKey => {
+          const items = groupedItems[groupKey];
+          if (!items || items.length === 0) return null;
+          return renderGroup(groupKey, items);
+        })}
+
+        {/* Render remaining groups not in priority order */}
+        {Object.entries(groupedItems).map(([groupKey, items]) => {
+          if (groupOrder.includes(groupKey) || !items || items.length === 0) return null;
+          return renderGroup(groupKey, items);
+        })}
+
+        {/* Always render old links section at the bottom */}
+        {groupedItems.old && groupedItems.old.length > 0 && renderGroup('old', groupedItems.old)}
       </SidebarContent>
+      <SidebarRail />
     </Sidebar>
   );
 }
