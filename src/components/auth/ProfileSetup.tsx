@@ -122,15 +122,8 @@ export const ProfileSetup = () => {
     }
     
     // Load existing profile data if it exists
-    const isSuperAdmin = userProfile?.user_roles?.some(role => role.role === 'super_admin' && role.is_active);
-    const isAdmin = userProfile?.user_roles?.some(role => role.role === 'admin' && role.is_active);
-    
-    if (userProfile && userProfile.id && (userProfile.profile_completion_percentage >= 80 || isSuperAdmin || isAdmin)) {
-      console.log('ProfileSetup: Profile complete or admin user, redirecting to dashboard', {
-        completion: userProfile.profile_completion_percentage,
-        isSuperAdmin,
-        isAdmin
-      });
+    if (userProfile && userProfile.id && userProfile.profile_completion_percentage >= 80) {
+      console.log('ProfileSetup: Profile complete, redirecting to dashboard');
       navigate('/dashboard');
       return;
     }
