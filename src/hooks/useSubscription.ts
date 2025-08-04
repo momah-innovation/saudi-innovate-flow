@@ -56,22 +56,47 @@ export const useSubscription = (): UseSubscriptionResult => {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase.rpc('get_user_subscription_status', {
-        p_user_id: user.id
-      });
+      // Direct query instead of RPC for now
+      const { data: userSubscriptions, error: subError } = await supabase
+        .from('user_subscriptions')
+        .select(`
+          *,
+          subscription_plans (
+            name,
+            name_ar,
+            features
+          )
+        `)
+        .eq('user_id', user.id)
+        .in('status', ['active', 'trialing'])
+        .maybeSingle();
 
-      if (error) throw error;
+      if (subError) throw subError;
 
-      if (data && data.length > 0) {
-        const status = data[0];
+      if (userSubscriptions) {
+        const plan = userSubscriptions.subscription_plans as any;
         setSubscriptionStatus({
-          hasSubscription: status.has_subscription,
-          planNameAr: status.plan_name_ar,
-          planNameEn: status.plan_name_en,
-          status: status.status,
-          trialEnd: status.trial_end,
-          currentPeriodEnd: status.current_period_end,
-          features: status.features
+          hasSubscription: true,
+          planNameAr: plan?.name_ar || 'خطة مميزة',
+          planNameEn: plan?.name || 'Premium Plan',
+          status: userSubscriptions.status,
+          trialEnd: userSubscriptions.trial_end,
+          currentPeriodEnd: userSubscriptions.current_period_end,
+          features: plan?.features || {}
+        });
+      } else {
+        setSubscriptionStatus({
+          hasSubscription: false,
+          planNameAr: 'خطة مجانية',
+          planNameEn: 'Free Plan',
+          status: 'inactive',
+          features: {
+            ideas_per_month: 5,
+            challenges_per_month: 3,
+            events_per_month: 2,
+            file_uploads_mb: 100,
+            ai_requests_per_month: 10
+          }
         });
       }
     } catch (err) {

@@ -7426,6 +7426,35 @@ export type Database = {
         }
         Relationships: []
       }
+      user_subscription_overview: {
+        Row: {
+          created_at: string | null
+          currency: string | null
+          current_period_end: string | null
+          current_period_start: string | null
+          features: Json | null
+          id: string | null
+          name_ar: string | null
+          name_en: string | null
+          plan_id: string | null
+          price_monthly: number | null
+          price_yearly: number | null
+          status: string | null
+          trial_end: string | null
+          updated_at: string | null
+          usage_metrics: Json | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       admin_cleanup_temp_files: {
@@ -7635,6 +7664,18 @@ export type Database = {
           command: string
           condition: string
           check_expression: string
+        }[]
+      }
+      get_user_subscription_status: {
+        Args: { p_user_id: string }
+        Returns: {
+          has_subscription: boolean
+          plan_name_ar: string
+          plan_name_en: string
+          status: string
+          trial_end: string
+          current_period_end: string
+          features: Json
         }[]
       }
       has_role: {

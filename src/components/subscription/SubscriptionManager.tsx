@@ -139,7 +139,7 @@ export const SubscriptionManager = () => {
                   return (
                     <div key={key} className="flex items-center gap-2 text-sm">
                       <FeatureIcon className="w-4 h-4 text-primary" />
-                      <span>{value === -1 ? '∞' : value}</span>
+                      <span>{typeof value === 'number' && value === -1 ? '∞' : String(value)}</span>
                       <span className="text-muted-foreground truncate">
                         {key.replace(/_/g, ' ')}
                       </span>

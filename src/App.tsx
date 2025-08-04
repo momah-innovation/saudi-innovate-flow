@@ -74,7 +74,7 @@ import { UploaderSettingsProvider } from "./contexts/UploaderSettingsContext";
 import { StoragePoliciesPage } from "./components/storage/StoragePoliciesPage";
 import AdminRelationships from "./pages/AdminRelationships";
 import AdminEvaluations from "./pages/AdminEvaluations";
-import { TagManagement } from "./pages/TagManagement";
+import { SubscriptionPage } from "./pages/SubscriptionPage";
 import { AppShell } from "@/components/layout/AppShell";
 
 const queryClient = new QueryClient();
@@ -602,10 +602,10 @@ const App = () => (
               }
             />
             <Route 
-              path="/admin/tags" 
+              path="/subscription" 
               element={
-                <ProtectedRoute requireProfile requiredRole="admin">
-                  <TagManagement />
+                <ProtectedRoute requireProfile>
+                  <SubscriptionPage />
                 </ProtectedRoute>
               }
             />
