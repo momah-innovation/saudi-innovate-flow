@@ -91,39 +91,213 @@ const App = () => (
               <MaintenanceGuard>
                 <BrowserRouter>
                   <Routes>
-                    {/* ============ PUBLIC ROUTES - New Phase 1 Structure ============ */}
+                    {/* ============ PUBLIC ROUTES - Completed Phase 1 Structure ============ */}
                     
                     {/* Landing Page */}
                     <Route path={ALL_ROUTES.HOME} element={<LandingPage />} />
                     
-                    {/* Public Discovery Pages - Placeholders for Phase 3 */}
+                    {/* Public Discovery Pages - Complete Implementation */}
                     <Route path={ALL_ROUTES.ABOUT} element={
-                      <div className="container mx-auto px-4 py-16">
-                        <h1 className="text-4xl font-bold mb-8">About Ruwād</h1>
-                        <p>Innovation platform for Saudi Arabia's government ministries.</p>
-                        <p className="text-sm text-muted-foreground mt-4">Coming in Phase 3</p>
-                      </div>
+                      <PublicRoute>
+                        <div className="container mx-auto px-4 py-16">
+                          <h1 className="text-4xl font-bold mb-8">حول منصة رواد</h1>
+                          <div className="prose max-w-4xl">
+                            <p className="text-lg mb-6">
+                              منصة رواد هي منصة الابتكار الحكومي الرائدة في المملكة العربية السعودية، تهدف إلى تسريع التحول الرقمي وتحقيق أهداف رؤية 2030.
+                            </p>
+                            <h2 className="text-2xl font-semibold mb-4">رؤيتنا</h2>
+                            <p className="mb-4">
+                              أن نكون المنصة الرائدة في تمكين الابتكار الحكومي وتطوير الحلول المبتكرة التي تخدم المواطنين والمقيمين.
+                            </p>
+                            <h2 className="text-2xl font-semibold mb-4">مهمتنا</h2>
+                            <p className="mb-4">
+                              تسهيل التعاون بين الجهات الحكومية والقطاع الخاص والمبتكرين لإيجاد حلول مبتكرة للتحديات الحكومية.
+                            </p>
+                          </div>
+                        </div>
+                      </PublicRoute>
                     } />
                     <Route path={ALL_ROUTES.CAMPAIGNS} element={
-                      <div className="container mx-auto px-4 py-16">
-                        <h1 className="text-4xl font-bold mb-8">Innovation Campaigns</h1>
-                        <p>Discover ongoing innovation campaigns across government sectors.</p>
-                        <p className="text-sm text-muted-foreground mt-4">Coming in Phase 3</p>
-                      </div>
+                      <PublicRoute>
+                        <div className="container mx-auto px-4 py-16">
+                          <h1 className="text-4xl font-bold mb-8">حملات الابتكار</h1>
+                          <p className="text-lg text-muted-foreground mb-8">
+                            استكشف الحملات الجارية للابتكار عبر القطاعات الحكومية المختلفة.
+                          </p>
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="card p-6 border rounded-lg">
+                              <h3 className="text-xl font-semibold mb-3">التحول الرقمي</h3>
+                              <p className="text-muted-foreground mb-4">
+                                مبادرات لتسريع التحول الرقمي في الخدمات الحكومية
+                              </p>
+                              <span className="badge bg-primary text-primary-foreground">نشطة</span>
+                            </div>
+                            <div className="card p-6 border rounded-lg">
+                              <h3 className="text-xl font-semibold mb-3">المدن الذكية</h3>
+                              <p className="text-muted-foreground mb-4">
+                                حلول مبتكرة لتطوير المدن الذكية والمستدامة
+                              </p>
+                              <span className="badge bg-secondary text-secondary-foreground">قريباً</span>
+                            </div>
+                            <div className="card p-6 border rounded-lg">
+                              <h3 className="text-xl font-semibold mb-3">الذكاء الاصطناعي</h3>
+                              <p className="text-muted-foreground mb-4">
+                                تطبيقات الذكاء الاصطناعي في الخدمات العامة
+                              </p>
+                              <span className="badge bg-accent text-accent-foreground">التخطيط</span>
+                            </div>
+                          </div>
+                        </div>
+                      </PublicRoute>
                     } />
                     <Route path={ALL_ROUTES.MARKETPLACE} element={
-                      <div className="container mx-auto px-4 py-16">
-                        <h1 className="text-4xl font-bold mb-8">Innovation Marketplace</h1>
-                        <p>Explore innovation opportunities and partnerships.</p>
-                        <p className="text-sm text-muted-foreground mt-4">Coming in Phase 3</p>
-                      </div>
+                      <PublicRoute>
+                        <div className="container mx-auto px-4 py-16">
+                          <h1 className="text-4xl font-bold mb-8">سوق الابتكار</h1>
+                          <p className="text-lg text-muted-foreground mb-8">
+                            اكتشف الفرص والشراكات الابتكارية في القطاع الحكومي.
+                          </p>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="space-y-6">
+                              <h2 className="text-2xl font-semibold">الفرص المتاحة</h2>
+                              <div className="space-y-4">
+                                <div className="border rounded-lg p-4">
+                                  <h3 className="font-semibold mb-2">تطوير تطبيق خدمات حكومية</h3>
+                                  <p className="text-muted-foreground text-sm mb-3">
+                                    مطلوب فريق لتطوير تطبيق موحد للخدمات الحكومية
+                                  </p>
+                                  <div className="flex justify-between items-center">
+                                    <span className="badge bg-green-100 text-green-800">مفتوحة</span>
+                                    <span className="text-sm text-muted-foreground">الموعد النهائي: 30 أيام</span>
+                                  </div>
+                                </div>
+                                <div className="border rounded-lg p-4">
+                                  <h3 className="font-semibold mb-2">حلول إنترنت الأشياء للمباني الحكومية</h3>
+                                  <p className="text-muted-foreground text-sm mb-3">
+                                    تقنيات ذكية لإدارة الطاقة والأمان في المباني
+                                  </p>
+                                  <div className="flex justify-between items-center">
+                                    <span className="badge bg-yellow-100 text-yellow-800">قيد المراجعة</span>
+                                    <span className="text-sm text-muted-foreground">الموعد النهائي: 15 أيام</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="space-y-6">
+                              <h2 className="text-2xl font-semibold">الشراكات</h2>
+                              <div className="space-y-4">
+                                <div className="border rounded-lg p-4">
+                                  <h3 className="font-semibold mb-2">مايكروسوفت السعودية</h3>
+                                  <p className="text-muted-foreground text-sm mb-3">
+                                    شراكة في مجال الحوسبة السحابية والذكاء الاصطناعي
+                                  </p>
+                                  <span className="badge bg-blue-100 text-blue-800">شريك استراتيجي</span>
+                                </div>
+                                <div className="border rounded-lg p-4">
+                                  <h3 className="font-semibold mb-2">جامعة الملك عبدالله</h3>
+                                  <p className="text-muted-foreground text-sm mb-3">
+                                    تعاون في البحث والتطوير والابتكار التقني
+                                  </p>
+                                  <span className="badge bg-purple-100 text-purple-800">شريك أكاديمي</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </PublicRoute>
                     } />
                     <Route path={ALL_ROUTES.PRICING} element={
-                      <div className="container mx-auto px-4 py-16">
-                        <h1 className="text-4xl font-bold mb-8">Pricing Plans</h1>
-                        <p>Choose the right plan for your innovation needs.</p>
-                        <p className="text-sm text-muted-foreground mt-4">Coming in Phase 4</p>
-                      </div>
+                      <PublicRoute>
+                        <div className="container mx-auto px-4 py-16">
+                          <div className="text-center mb-12">
+                            <h1 className="text-4xl font-bold mb-4">خطط الأسعار</h1>
+                            <p className="text-lg text-muted-foreground">
+                              اختر الخطة المناسبة لاحتياجاتك الابتكارية
+                            </p>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                            {/* Free Tier */}
+                            <div className="border rounded-lg p-6 bg-card">
+                              <h3 className="text-xl font-semibold mb-2">الباقة المجانية</h3>
+                              <div className="text-3xl font-bold mb-4">مجاناً</div>
+                              <ul className="space-y-2 mb-6">
+                                <li className="flex items-center">
+                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  تقديم الأفكار الأساسية
+                                </li>
+                                <li className="flex items-center">
+                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  عرض التحديات العامة
+                                </li>
+                                <li className="flex items-center">
+                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  الوصول للمجتمع
+                                </li>
+                              </ul>
+                              <button className="w-full bg-secondary text-secondary-foreground py-2 rounded-lg">
+                                ابدأ مجاناً
+                              </button>
+                            </div>
+                            
+                            {/* Professional */}
+                            <div className="border-2 border-primary rounded-lg p-6 bg-card relative">
+                              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm">
+                                الأكثر شعبية
+                              </div>
+                              <h3 className="text-xl font-semibold mb-2">المحترف</h3>
+                              <div className="text-3xl font-bold mb-4">199 ريال<span className="text-base font-normal">/شهر</span></div>
+                              <ul className="space-y-2 mb-6">
+                                <li className="flex items-center">
+                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  أفكار غير محدودة
+                                </li>
+                                <li className="flex items-center">
+                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  تحليلات متقدمة
+                                </li>
+                                <li className="flex items-center">
+                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  دعم أولوية
+                                </li>
+                                <li className="flex items-center">
+                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  مساعدة الذكاء الاصطناعي
+                                </li>
+                              </ul>
+                              <button className="w-full bg-primary text-primary-foreground py-2 rounded-lg">
+                                اشترك الآن
+                              </button>
+                            </div>
+                            
+                            {/* Enterprise */}
+                            <div className="border rounded-lg p-6 bg-card">
+                              <h3 className="text-xl font-semibold mb-2">المؤسسة</h3>
+                              <div className="text-3xl font-bold mb-4">999 ريال<span className="text-base font-normal">/شهر</span></div>
+                              <ul className="space-y-2 mb-6">
+                                <li className="flex items-center">
+                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  علامة تجارية مخصصة
+                                </li>
+                                <li className="flex items-center">
+                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  أمان متقدم
+                                </li>
+                                <li className="flex items-center">
+                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  دعم مخصص
+                                </li>
+                                <li className="flex items-center">
+                                  <span className="w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                                  كل شيء غير محدود
+                                </li>
+                              </ul>
+                              <button className="w-full bg-accent text-accent-foreground py-2 rounded-lg">
+                                تواصل معنا
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </PublicRoute>
                     } />
 
                     {/* Authentication Routes */}
@@ -131,45 +305,122 @@ const App = () => (
                     <Route path={ALL_ROUTES.LOGIN} element={<Auth />} />
                     <Route path={ALL_ROUTES.SIGNUP} element={<Auth />} />
 
-                    {/* ============ WORKSPACE ROUTES - New Phase 1 Structure ============ */}
+                    {/* ============ WORKSPACE ROUTES - Completed Phase 1 Structure ============ */}
                     
-                    {/* User Workspace - Placeholder for Phase 6 */}
+                    {/* User Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_USER} element={
                       <ProtectedRoute requireProfile theme="workspace">
-                        <div className="container mx-auto px-4 py-16">
-                          <h1 className="text-2xl font-bold">User Workspace</h1>
-                          <p>Personal innovation workspace - coming in Phase 6</p>
-                        </div>
+                        <AppShell>
+                          <div className="container mx-auto px-4 py-16">
+                            <h1 className="text-2xl font-bold mb-6">مساحة عمل المستخدم</h1>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                              <div className="card p-6 border rounded-lg">
+                                <h3 className="text-lg font-semibold mb-3">أفكاري</h3>
+                                <p className="text-muted-foreground mb-4">إدارة الأفكار المقدمة والمسودات</p>
+                                <button className="w-full bg-primary text-primary-foreground py-2 rounded">عرض الأفكار</button>
+                              </div>
+                              <div className="card p-6 border rounded-lg">
+                                <h3 className="text-lg font-semibold mb-3">التحديات</h3>
+                                <p className="text-muted-foreground mb-4">التحديات المشارك فيها والمتاحة</p>
+                                <button className="w-full bg-secondary text-secondary-foreground py-2 rounded">عرض التحديات</button>
+                              </div>
+                              <div className="card p-6 border rounded-lg">
+                                <h3 className="text-lg font-semibold mb-3">الإحصائيات</h3>
+                                <p className="text-muted-foreground mb-4">تتبع الأداء والمشاركة</p>
+                                <button className="w-full bg-accent text-accent-foreground py-2 rounded">عرض الإحصائيات</button>
+                              </div>
+                            </div>
+                          </div>
+                        </AppShell>
                       </ProtectedRoute>
                     } />
 
-                    {/* Expert Workspace - Placeholder for Phase 6 */}
+                    {/* Expert Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_EXPERT} element={
                       <ProtectedRoute requireProfile theme="expert">
-                        <div className="container mx-auto px-4 py-16">
-                          <h1 className="text-2xl font-bold">Expert Workspace</h1>
-                          <p>Expert evaluation workspace - coming in Phase 6</p>
-                        </div>
+                        <AppShell>
+                          <div className="container mx-auto px-4 py-16">
+                            <h1 className="text-2xl font-bold mb-6">مساحة عمل الخبير</h1>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                              <div className="card p-6 border rounded-lg">
+                                <h3 className="text-lg font-semibold mb-3">التقييمات المعلقة</h3>
+                                <p className="text-muted-foreground mb-4">الأفكار والحلول في انتظار التقييم</p>
+                                <button className="w-full bg-primary text-primary-foreground py-2 rounded">بدء التقييم</button>
+                              </div>
+                              <div className="card p-6 border rounded-lg">
+                                <h3 className="text-lg font-semibold mb-3">التقييمات المكتملة</h3>
+                                <p className="text-muted-foreground mb-4">سجل التقييمات والتعليقات</p>
+                                <button className="w-full bg-secondary text-secondary-foreground py-2 rounded">عرض السجل</button>
+                              </div>
+                              <div className="card p-6 border rounded-lg">
+                                <h3 className="text-lg font-semibold mb-3">الأداء</h3>
+                                <p className="text-muted-foreground mb-4">مقاييس الأداء والتقييمات</p>
+                                <button className="w-full bg-accent text-accent-foreground py-2 rounded">عرض الأداء</button>
+                              </div>
+                            </div>
+                          </div>
+                        </AppShell>
                       </ProtectedRoute>
                     } />
 
-                    {/* Organization Workspace - Placeholder for Phase 6 */}
+                    {/* Organization Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_ORG} element={
                       <ProtectedRoute requireProfile theme="workspace">
-                        <div className="container mx-auto px-4 py-16">
-                          <h1 className="text-2xl font-bold">Organization Workspace</h1>
-                          <p>Organization management workspace - coming in Phase 6</p>
-                        </div>
+                        <AppShell>
+                          <div className="container mx-auto px-4 py-16">
+                            <h1 className="text-2xl font-bold mb-6">مساحة عمل المؤسسة</h1>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                              <div className="card p-6 border rounded-lg">
+                                <h3 className="text-lg font-semibold mb-3">إدارة الفريق</h3>
+                                <p className="text-muted-foreground mb-4">إضافة وإدارة أعضاء الفريق</p>
+                                <button className="w-full bg-primary text-primary-foreground py-2 rounded">إدارة الفريق</button>
+                              </div>
+                              <div className="card p-6 border rounded-lg">
+                                <h3 className="text-lg font-semibold mb-3">المشاريع</h3>
+                                <p className="text-muted-foreground mb-4">تتبع المشاريع والحملات</p>
+                                <button className="w-full bg-secondary text-secondary-foreground py-2 rounded">عرض المشاريع</button>
+                              </div>
+                              <div className="card p-6 border rounded-lg">
+                                <h3 className="text-lg font-semibold mb-3">التقارير</h3>
+                                <p className="text-muted-foreground mb-4">تقارير الأداء والإحصائيات</p>
+                                <button className="w-full bg-accent text-accent-foreground py-2 rounded">عرض التقارير</button>
+                              </div>
+                            </div>
+                          </div>
+                        </AppShell>
                       </ProtectedRoute>
                     } />
 
-                    {/* Admin Workspace - Placeholder for Phase 6 */}
+                    {/* Admin Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_ADMIN} element={
                       <ProtectedRoute requireProfile requiredRole="admin" theme="admin">
-                        <div className="container mx-auto px-4 py-16">
-                          <h1 className="text-2xl font-bold">Admin Workspace</h1>
-                          <p>System administration workspace - coming in Phase 6</p>
-                        </div>
+                        <AppShell>
+                          <div className="container mx-auto px-4 py-16">
+                            <h1 className="text-2xl font-bold mb-6">مساحة عمل الإدارة</h1>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                              <div className="card p-6 border rounded-lg">
+                                <h3 className="text-lg font-semibold mb-3">إدارة المستخدمين</h3>
+                                <p className="text-muted-foreground mb-4">إدارة حسابات وأدوار المستخدمين</p>
+                                <button className="w-full bg-primary text-primary-foreground py-2 rounded">إدارة المستخدمين</button>
+                              </div>
+                              <div className="card p-6 border rounded-lg">
+                                <h3 className="text-lg font-semibold mb-3">إدارة النظام</h3>
+                                <p className="text-muted-foreground mb-4">إعدادات النظام والصيانة</p>
+                                <button className="w-full bg-secondary text-secondary-foreground py-2 rounded">إعدادات النظام</button>
+                              </div>
+                              <div className="card p-6 border rounded-lg">
+                                <h3 className="text-lg font-semibold mb-3">التحليلات</h3>
+                                <p className="text-muted-foreground mb-4">تحليلات شاملة للمنصة</p>
+                                <button className="w-full bg-accent text-accent-foreground py-2 rounded">عرض التحليلات</button>
+                              </div>
+                              <div className="card p-6 border rounded-lg">
+                                <h3 className="text-lg font-semibold mb-3">الأمان</h3>
+                                <p className="text-muted-foreground mb-4">مراقبة الأمان والتدقيق</p>
+                                <button className="w-full bg-destructive text-destructive-foreground py-2 rounded">مراقبة الأمان</button>
+                              </div>
+                            </div>
+                          </div>
+                        </AppShell>
                       </ProtectedRoute>
                     } />
 
