@@ -20,6 +20,9 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { AppShell } from '@/components/layout/AppShell';
 import { DashboardHero } from './DashboardHero';
+import { AdminDashboard } from './AdminDashboard';
+import { ExpertDashboard } from './ExpertDashboard';
+import { PartnerDashboard } from './PartnerDashboard';
 
 interface DashboardStats {
   totalIdeas: number;
@@ -312,10 +315,39 @@ export default function UserDashboard() {
       />
       
       <PageLayout
-        title={currentLanguage === 'ar' ? 'لوحة القيادة - المبتكر' : 'Innovator Dashboard'}
-        description={`${currentLanguage === 'ar' ? 'أهلاً بك' : 'Welcome'} ${userProfile?.display_name || (currentLanguage === 'ar' ? 'المبتكر' : 'Innovator')}! ${currentLanguage === 'ar' ? 'إليك نظرة عامة على أنشطتك' : 'Here\'s an overview of your activities'}`}
+        title={currentLanguage === 'ar' ? `لوحة القيادة - ${primaryRole === 'admin' || primaryRole === 'super_admin' ? 'المدير' : primaryRole === 'expert' ? 'الخبير' : primaryRole === 'partner' ? 'الشريك' : 'المبتكر'}` : `${primaryRole === 'admin' || primaryRole === 'super_admin' ? 'Admin' : primaryRole === 'expert' ? 'Expert' : primaryRole === 'partner' ? 'Partner' : 'Innovator'} Dashboard`}
+        description={`${currentLanguage === 'ar' ? 'أهلاً بك' : 'Welcome'} ${userProfile?.display_name || (currentLanguage === 'ar' ? 'المستخدم' : 'User')}! ${currentLanguage === 'ar' ? 'إليك نظرة عامة على أنشطتك' : 'Here\'s an overview of your activities'}`}
         className="space-y-6"
       >
+        {/* Role-specific Dashboard Content */}
+        {(primaryRole === 'admin' || primaryRole === 'super_admin') && (
+          <AdminDashboard 
+            userProfile={userProfile}
+            canManageUsers={permissions.canManageUsers}
+            canManageSystem={permissions.canManageSystem}
+            canViewAnalytics={permissions.canViewAnalytics}
+          />
+        )}
+        
+        {primaryRole === 'expert' && (
+          <ExpertDashboard 
+            userProfile={userProfile}
+            canEvaluateIdeas={permissions.canEvaluateIdeas}
+            canAccessExpertTools={permissions.canAccessExpertTools}
+          />
+        )}
+        
+        {primaryRole === 'partner' && (
+          <PartnerDashboard 
+            userProfile={userProfile}
+            canManageOpportunities={permissions.canManageOpportunities}
+            canViewPartnerDashboard={permissions.canViewPartnerDashboard}
+          />
+        )}
+        
+        {/* Default Innovator Dashboard for other roles */}
+        {!['admin', 'super_admin', 'expert', 'partner'].includes(primaryRole) && (
+          <div>
         {/* Hero Banner */}
         <div className="relative overflow-hidden rounded-lg bg-gradient-to-r from-innovation to-innovation-foreground text-white">
           <div className="absolute inset-0 bg-black/20"></div>
@@ -639,6 +671,8 @@ export default function UserDashboard() {
             </Card>
           </TabsContent>
         </Tabs>
+        </div>
+        )}
       </PageLayout>
     </AppShell>
   );
