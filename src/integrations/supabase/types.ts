@@ -8047,6 +8047,14 @@ export type Database = {
           conversion_rate: number
         }[]
       }
+      get_search_suggestions: {
+        Args: { partial_query: string; search_type?: string }
+        Returns: {
+          suggestion: string
+          suggestion_type: string
+          result_count: number
+        }[]
+      }
       get_storage_analytics_with_trends: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -8126,6 +8134,10 @@ export type Database = {
       }
       refresh_opportunity_analytics: {
         Args: { p_opportunity_id: string }
+        Returns: undefined
+      }
+      refresh_platform_cache: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       restore_file_version: {
