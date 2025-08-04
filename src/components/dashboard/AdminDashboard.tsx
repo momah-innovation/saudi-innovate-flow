@@ -126,10 +126,10 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
 
   return (
     <div className="space-y-8">
-      {/* Hero Section using Design System tokens */}
-      <div className="bg-gradient-primary text-primary-foreground rounded-xl p-8 shadow-elegant">
+      {/* Hero Section using proper Design System tokens */}
+      <div className="bg-gradient-primary text-primary-foreground rounded-xl p-8" style={{ boxShadow: 'var(--shadow-elegant)' }}>
         <div className="flex items-center gap-4 mb-3">
-          <div className="w-12 h-12 rounded-lg bg-white/20 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
             <Shield className="w-6 h-6" />
           </div>
           <div>
@@ -150,7 +150,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
         {Object.entries(actionsByCategory).map(([category, actions]) => (
           <div key={category}>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-lg bg-gradient-subtle flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
                 {category === 'management' && <Users className="w-4 h-4 text-primary" />}
                 {category === 'content' && <Database className="w-4 h-4 text-primary" />}
                 {category === 'security' && <Shield className="w-4 h-4 text-primary" />}
@@ -166,12 +166,13 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
               {actions.map((action, index) => (
                 <Card 
                   key={index} 
-                  className="group hover:shadow-elegant transition-all duration-300 cursor-pointer border-border/50 hover:border-primary/20 bg-card" 
+                  className="group hover-primary transition-all duration-300 cursor-pointer border-border/50 hover:border-primary/20 bg-card" 
+                  style={{ boxShadow: 'var(--shadow-card)' }}
                   onClick={action.action}
                 >
                   <CardHeader className="pb-3">
                     <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-subtle group-hover:bg-gradient-primary transition-all duration-300 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 group-hover:bg-primary transition-all duration-300 flex items-center justify-center">
                         <action.icon className="w-5 h-5 text-primary group-hover:text-primary-foreground transition-colors" />
                       </div>
                       <div className="flex-1">
@@ -188,7 +189,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all"
+                      className="w-full hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all"
                     >
                       {language === 'ar' ? 'الوصول' : 'Access'}
                     </Button>
