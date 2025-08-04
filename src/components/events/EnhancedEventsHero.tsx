@@ -50,10 +50,10 @@ export const EnhancedEventsHero = ({
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    { icon: Calendar, value: totalEvents, label: isRTL ? 'فعالية' : 'events', color: 'text-info' },
-    { icon: Clock, value: upcomingEvents, label: isRTL ? 'قادمة' : 'upcoming', color: 'text-success' },
-    { icon: TrendingUp, value: todayEvents, label: isRTL ? 'اليوم' : 'today', color: 'text-warning' },
-    { icon: Users, value: `${Math.floor(totalEvents * 45)}+`, label: isRTL ? 'مشارك' : 'participants', color: 'text-info' }
+    { icon: Calendar, value: totalEvents, label: isRTL ? 'فعالية' : 'events', color: 'text-blue-400' },
+    { icon: Clock, value: upcomingEvents, label: isRTL ? 'قادمة' : 'upcoming', color: 'text-green-400' },
+    { icon: TrendingUp, value: todayEvents, label: isRTL ? 'اليوم' : 'today', color: 'text-purple-400' },
+    { icon: Users, value: `${Math.floor(totalEvents * 45)}+`, label: isRTL ? 'مشارك' : 'participants', color: 'text-yellow-400' }
   ];
 
   useEffect(() => {
@@ -85,29 +85,29 @@ export const EnhancedEventsHero = ({
             {/* Header with animation */}
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-background/10 backdrop-blur-sm rounded-xl border border-border/20">
-                  <Sparkles className="w-6 h-6 text-warning" />
+                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                  <Sparkles className="w-6 h-6 text-yellow-300" />
                 </div>
-                <Badge variant="secondary" className="bg-background/10 text-foreground border-border/20 backdrop-blur-sm">
+                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                   <Star className="w-3 h-3 mr-1" />
                   {isRTL ? 'منصة الفعاليات المبتكرة' : 'Innovation Events Platform'}
                 </Badge>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   {isRTL ? (
                     <>
-                      استكشف <span className="text-transparent bg-clip-text bg-gradient-warning">الفعاليات</span> الملهمة
+                      استكشف <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">الفعاليات</span> الملهمة
                     </>
                   ) : (
                     <>
-                      Discover <span className="text-transparent bg-clip-text bg-gradient-warning">Inspiring</span> Events
+                      Discover <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Inspiring</span> Events
                     </>
                   )}
                 </h1>
                 
-                <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
+                <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
                   {isRTL 
                     ? 'انضم إلى مجتمع المبدعين وشارك في الفعاليات التي تشكل مستقبل المملكة ورؤية 2030'
                     : 'Join the innovators community and participate in events that shape the future of Saudi Arabia and Vision 2030'
@@ -126,14 +126,14 @@ export const EnhancedEventsHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-background/5 backdrop-blur-sm border-border/10 transition-all duration-500",
-                      isActive && "bg-background/10 border-border/20 scale-105"
+                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
+                      isActive && "bg-white/10 border-white/20 scale-105"
                     )}
                   >
                     <CardContent className="p-4 text-center">
                       <Icon className={cn("w-6 h-6 mx-auto mb-2 transition-colors", stat.color)} />
-                      <div className="text-2xl font-bold text-foreground">{stat.value}</div>
-                      <div className="text-sm text-muted-foreground">{stat.label}</div>
+                      <div className="text-2xl font-bold text-white">{stat.value}</div>
+                      <div className="text-sm text-white/70">{stat.label}</div>
                     </CardContent>
                   </Card>
                 );

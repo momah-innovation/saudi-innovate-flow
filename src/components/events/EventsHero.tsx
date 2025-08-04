@@ -23,7 +23,7 @@ export const EventsHero = ({
   const { isRTL } = useDirection();
 
   return (
-    <div className="relative overflow-hidden bg-gradient-subtle rounded-xl p-8 mb-8 border">
+    <div className="relative overflow-hidden bg-gradient-to-br from-primary/20 via-primary/5 to-background rounded-xl p-8 mb-8 border">
       {/* Dynamic Background with Animation */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-primary/10 animate-pulse" />
@@ -63,10 +63,10 @@ export const EventsHero = ({
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <CalendarIcon className="w-6 h-6 text-primary-foreground" />
+                    <CalendarIcon className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-info transition-colors">
+                    <div className="text-2xl font-bold text-foreground group-hover:text-blue-600 transition-colors">
                       {totalEvents}
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -79,10 +79,10 @@ export const EventsHero = ({
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <TrendingUp className="w-6 h-6 text-primary-foreground" />
+                    <TrendingUp className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-success transition-colors">
+                    <div className="text-2xl font-bold text-foreground group-hover:text-green-600 transition-colors">
                       {upcomingEvents}
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -95,10 +95,10 @@ export const EventsHero = ({
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <Users className="w-6 h-6 text-primary-foreground" />
+                    <Users className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-warning transition-colors">
+                    <div className="text-2xl font-bold text-foreground group-hover:text-orange-600 transition-colors">
                       {todayEvents}
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -111,10 +111,10 @@ export const EventsHero = ({
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <MapPin className="w-6 h-6 text-primary-foreground" />
+                    <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-info transition-colors">
+                    <div className="text-2xl font-bold text-foreground group-hover:text-purple-600 transition-colors">
                       12
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -131,7 +131,7 @@ export const EventsHero = ({
             {canCreateEvent && (
               <Button 
                 onClick={onCreateEvent} 
-                className="gap-2 bg-gradient-primary hover:opacity-90 shadow-lg hover:shadow-primary/25 transition-all duration-300"
+                className="gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-primary/25 transition-all duration-300"
                 size="lg"
               >
                 <Plus className="w-5 h-5" />
