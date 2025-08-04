@@ -223,36 +223,36 @@ export const DashboardHero = ({
                     </h3>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="text-center p-3 bg-emerald-500/20 rounded-lg border border-emerald-400/30">
-                      <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <div className="text-center p-3 bg-green-500/30 rounded-lg border border-green-400/50 backdrop-blur-sm">
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
                         <CheckCircle className="w-4 h-4 text-white" />
                       </div>
-                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'API' : 'API'}</p>
-                      <p className="text-xs text-emerald-300">{language === 'ar' ? 'متاح' : 'Online'}</p>
+                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'واجهة البرمجة' : 'API'}</p>
+                      <p className="text-xs text-green-200">{language === 'ar' ? 'متاح' : 'Online'}</p>
                     </div>
                     
-                    <div className="text-center p-3 bg-emerald-500/20 rounded-lg border border-emerald-400/30">
-                      <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <div className="text-center p-3 bg-green-500/30 rounded-lg border border-green-400/50 backdrop-blur-sm">
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
                         <Wifi className="w-4 h-4 text-white" />
                       </div>
                       <p className="text-xs font-medium text-white">{language === 'ar' ? 'الشبكة' : 'Network'}</p>
-                      <p className="text-xs text-emerald-300">{language === 'ar' ? 'مستقر' : 'Stable'}</p>
+                      <p className="text-xs text-green-200">{language === 'ar' ? 'مستقر' : 'Stable'}</p>
                     </div>
                     
-                    <div className="text-center p-3 bg-amber-500/20 rounded-lg border border-amber-400/30">
-                      <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <div className="text-center p-3 bg-orange-500/30 rounded-lg border border-orange-400/50 backdrop-blur-sm">
+                      <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2">
                         <AlertCircle className="w-4 h-4 text-white" />
                       </div>
                       <p className="text-xs font-medium text-white">{language === 'ar' ? 'التخزين' : 'Storage'}</p>
-                      <p className="text-xs text-amber-300">68%</p>
+                      <p className="text-xs text-orange-200">68%</p>
                     </div>
                     
-                    <div className="text-center p-3 bg-emerald-500/20 rounded-lg border border-emerald-400/30">
-                      <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <div className="text-center p-3 bg-green-500/30 rounded-lg border border-green-400/50 backdrop-blur-sm">
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
                         <Shield className="w-4 h-4 text-white" />
                       </div>
                       <p className="text-xs font-medium text-white">{language === 'ar' ? 'الأمان' : 'Security'}</p>
-                      <p className="text-xs text-emerald-300">{language === 'ar' ? 'محمي' : 'Secure'}</p>
+                      <p className="text-xs text-green-200">{language === 'ar' ? 'محمي' : 'Secure'}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -273,7 +273,7 @@ export const DashboardHero = ({
                         <span className="text-sm text-white/80">{language === 'ar' ? 'ملفات النظام' : 'System Files'}</span>
                         <span className="text-sm font-medium text-white">2,847</span>
                       </div>
-                      <Progress value={65} className="h-2 bg-white/20" />
+                      <Progress value={65} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
                     </div>
                     
                     <div>
@@ -281,7 +281,7 @@ export const DashboardHero = ({
                         <span className="text-sm text-white/80">{language === 'ar' ? 'أحداث الأمان' : 'Security Events'}</span>
                         <span className="text-sm font-medium text-white">12</span>
                       </div>
-                      <Progress value={20} className="h-2 bg-white/20" />
+                      <Progress value={20} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
                     </div>
                     
                     <div>
@@ -289,7 +289,7 @@ export const DashboardHero = ({
                         <span className="text-sm text-white/80">{language === 'ar' ? 'مساحة التخزين' : 'Storage Space'}</span>
                         <span className="text-sm font-medium text-white">1.2 GB</span>
                       </div>
-                      <Progress value={68} className="h-2 bg-white/20" />
+                      <Progress value={68} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-orange-400 [&>div]:to-orange-500" />
                     </div>
                   </div>
                 </CardContent>
