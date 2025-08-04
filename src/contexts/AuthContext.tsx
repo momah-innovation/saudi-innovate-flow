@@ -70,6 +70,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       };
 
       setUserProfile(enrichedProfile);
+      console.log('AuthContext: Profile loaded successfully:', {
+        userId,
+        profileId: enrichedProfile.id,
+        completion: enrichedProfile.profile_completion_percentage,
+        roles: enrichedProfile.user_roles?.map(r => r.role)
+      });
     } catch (error) {
       console.error('Error in fetchUserProfile:', error);
       // Provide basic access even if profile fetch fails

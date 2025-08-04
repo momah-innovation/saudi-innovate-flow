@@ -108,14 +108,22 @@ export const ProfileSetup = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('ProfileSetup useEffect triggered:', {
+      hasUser: !!user,
+      userProfile,
+      profileCompletion: userProfile?.profile_completion_percentage,
+      userRoles: userProfile?.user_roles?.map(r => r.role)
+    });
+
     if (!user) {
+      console.log('ProfileSetup: No user, redirecting to auth');
       navigate('/auth');
       return;
     }
     
     // Load existing profile data if it exists
     if (userProfile && userProfile.id && userProfile.profile_completion_percentage >= 80) {
-      // User has a mostly complete profile, redirect to dashboard
+      console.log('ProfileSetup: Profile complete, redirecting to dashboard');
       navigate('/dashboard');
       return;
     }

@@ -28,6 +28,18 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const { user, userProfile, hasRole } = useAuth();
   const location = useLocation();
 
+  // DEBUG: Log all auth decisions
+  console.log('ProtectedRoute Debug:', {
+    path: location.pathname,
+    requireAuth,
+    requireProfile,
+    requiredRole,
+    hasUser: !!user,
+    hasProfile: !!userProfile,
+    profileCompletion: userProfile?.profile_completion_percentage,
+    userRoles: userProfile?.user_roles?.map(r => r.role)
+  });
+
   // Apply theme classes to body
   React.useEffect(() => {
     const body = document.body;
@@ -41,16 +53,25 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // Check authentication
   if (requireAuth && !user) {
+    console.log('ProtectedRoute: Redirecting to auth - no user');
     return <Navigate to={redirectTo || ALL_ROUTES.AUTH} state={{ from: location }} replace />;
   }
 
   // Check profile completion - redirect if profile is less than 80% complete
   if (requireProfile && user && (!userProfile || userProfile.profile_completion_percentage < 80)) {
+    console.log('ProtectedRoute: Redirecting to profile setup - incomplete profile', {
+      hasProfile: !!userProfile,
+      completion: userProfile?.profile_completion_percentage
+    });
     return <Navigate to={ALL_ROUTES.PROFILE_SETUP} replace />;
   }
 
   // Check role requirements
   if (requiredRole && !hasRole(requiredRole)) {
+    console.log('ProtectedRoute: Redirecting to dashboard - insufficient role', {
+      requiredRole,
+      hasRole: hasRole(requiredRole)
+    });
     return <Navigate to={ALL_ROUTES.DASHBOARD} replace />;
   }
 

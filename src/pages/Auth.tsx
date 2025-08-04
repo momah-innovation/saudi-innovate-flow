@@ -6,10 +6,18 @@ import { Loader2 } from 'lucide-react';
 const AuthPage = () => {
   const { user, loading, userProfile } = useAuth();
 
+  console.log('AuthPage Debug:', {
+    hasUser: !!user,
+    loading,
+    userProfile: userProfile?.id ? 'loaded' : 'null',
+    profileCompletion: userProfile?.profile_completion_percentage
+  });
+
   // Redirect if already authenticated
   if (user && !loading) {
     // If user has profile, go to dashboard, otherwise go to profile setup
-    const redirectPath = userProfile ? "/dashboard" : "/profile/setup";
+    const redirectPath = userProfile?.profile_completion_percentage >= 80 ? "/dashboard" : "/profile/setup";
+    console.log('AuthPage: Redirecting authenticated user to:', redirectPath);
     return <Navigate to={redirectPath} replace />;
   }
 
