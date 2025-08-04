@@ -6,7 +6,7 @@ import { EventWizard } from '@/components/events/EventWizard';
 import { ComprehensiveEventWizard } from '@/components/events/ComprehensiveEventWizard';
 import { ComprehensiveEventDialog } from '@/components/events/ComprehensiveEventDialog';
 import { AdminEventsHero } from '@/components/events/AdminEventsHero';
-import { EnhancedAdminEventCard } from '@/components/events/EnhancedAdminEventCard';
+import { AdminEventCard } from '@/components/events/AdminEventCard';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { 
@@ -182,7 +182,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
           </div>
         ] : filteredEvents.length > 0 ? 
           filteredEvents.map((event) => (
-            <EnhancedAdminEventCard
+            <AdminEventCard
               key={event.id}
               event={{
                 ...event,

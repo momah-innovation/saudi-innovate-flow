@@ -18,7 +18,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { AppShell } from '@/components/layout/AppShell';
-import { EnhancedDashboardHero } from './EnhancedDashboardHero';
+import { DashboardHero } from './DashboardHero';
 
 interface DashboardStats {
   totalIdeas: number;
@@ -296,7 +296,7 @@ export default function UserDashboard() {
 
   return (
     <AppShell>
-      <EnhancedDashboardHero
+      <DashboardHero
         userProfile={userProfile}
         stats={{
           totalIdeas: stats.totalIdeas,
