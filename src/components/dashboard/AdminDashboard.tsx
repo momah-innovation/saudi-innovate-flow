@@ -171,22 +171,34 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
   return (
     <AdminPageWrapper>
 
-      {/* Tabs-based Admin Interface following User Dashboard pattern */}
+      {/* Professional Admin Tabs Interface */}
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview" className="flex items-center gap-2">
+        <TabsList className="grid w-full grid-cols-4 h-12 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-1 shadow-sm">
+          <TabsTrigger 
+            value="overview" 
+            className="flex items-center gap-2 h-9 px-4 rounded-md text-slate-600 dark:text-slate-400 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-sm font-medium transition-all hover:text-slate-900 dark:hover:text-slate-100"
+          >
             <BarChart3 className="w-4 h-4" />
             {language === 'ar' ? 'نظرة عامة' : 'Overview'}
           </TabsTrigger>
-          <TabsTrigger value="management" className="flex items-center gap-2">
+          <TabsTrigger 
+            value="management" 
+            className="flex items-center gap-2 h-9 px-4 rounded-md text-slate-600 dark:text-slate-400 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-sm font-medium transition-all hover:text-slate-900 dark:hover:text-slate-100"
+          >
             <Users className="w-4 h-4" />
             {language === 'ar' ? 'الإدارة' : 'Management'}
           </TabsTrigger>
-          <TabsTrigger value="content" className="flex items-center gap-2">
+          <TabsTrigger 
+            value="content" 
+            className="flex items-center gap-2 h-9 px-4 rounded-md text-slate-600 dark:text-slate-400 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-sm font-medium transition-all hover:text-slate-900 dark:hover:text-slate-100"
+          >
             <Database className="w-4 h-4" />
             {language === 'ar' ? 'المحتوى' : 'Content'}
           </TabsTrigger>
-          <TabsTrigger value="system" className="flex items-center gap-2">
+          <TabsTrigger 
+            value="system" 
+            className="flex items-center gap-2 h-9 px-4 rounded-md text-slate-600 dark:text-slate-400 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-sm font-medium transition-all hover:text-slate-900 dark:hover:text-slate-100"
+          >
             <Settings className="w-4 h-4" />
             {language === 'ar' ? 'النظام' : 'System'}
           </TabsTrigger>
