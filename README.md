@@ -1,47 +1,53 @@
-# Ruwād Innovation Management System
+# Ruwād Innovation Platform - Refactoring Project
 
-## 🚀 Production-Ready Government Innovation Platform
+## 🔄 Active Development - Platform Refactoring
 
-[![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)](./docs/PRODUCTION_READY.md)
-[![Documentation](https://img.shields.io/badge/Documentation-Complete-green)](./docs/)
+[![Status](https://img.shields.io/badge/Status-Refactoring%20in%20Progress-orange)](./docs/RUWAD_REFACTORING_PLAN.md)
+[![Phase](https://img.shields.io/badge/Current%20Phase-Foundation%20&%20Routing-blue)](./docs/PHASE_TRACKER.md)
 
-**Enterprise-grade innovation management system for Saudi Arabian government ministries, ready for immediate deployment.**
+**Comprehensive refactoring and expansion of the Ruwād Innovation Management System for enhanced scalability, subscription support, and AI integration.**
 
-## ⚡ Quick Deploy
+## 🎯 Project Overview
 
-This project is **100% production-ready**. Choose your deployment platform:
+This is an **8-9 week refactoring project** to transform the existing Ruwād platform into a modern, scalable system supporting:
+- Public/authenticated route separation
+- Subscription-based monetization
+- AI-enhanced workflows
+- Enhanced media management
+- Advanced analytics dashboard
 
-### Vercel (Recommended)
+## 📋 Current Architecture
+
+**Tech Stack:** React + TypeScript (Vite), TailwindCSS, Supabase (Postgres + Auth + Storage + Realtime), TanStack Query, react-i18next
+
+**Preserved Features:**
+- Full RLS and RBAC implementation
+- Multitenant organization-scoped architecture
+- Modular service ownership
+- Unsplash & Supabase Storage integration
+
+## 📚 Project Documentation
+
+- **[Complete Refactoring Plan](./docs/RUWAD_REFACTORING_PLAN.md)** - Full project overview and phases
+- **[Phase Tracker](./docs/PHASE_TRACKER.md)** - Detailed task tracking and progress
+- **[Technical Requirements](./docs/TECHNICAL_REQUIREMENTS.md)** - Database schema and technical specs
+- **[Quality Gates](./docs/QUALITY_GATES.md)** - Success criteria and quality standards
+
+## 🚀 Getting Started
+
 ```bash
-# 1. Fork/clone this repository
-# 2. Connect to Vercel dashboard
-# 3. Set environment variables (see docs/ENVIRONMENT_SETUP.md)
-# 4. Deploy with one click
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Add your Supabase credentials
+
+# Start development server
+npm run dev
 ```
 
-## 🔧 Environment Setup
-
-```bash
-VITE_SUPABASE_URL=https://jxpbiljkoibvqxzdkgod.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-VITE_APP_ENV=production
-VITE_APP_URL=https://your-domain.com
-```
-
-## 📋 What's Included
-
-✅ **Complete Innovation Lifecycle** - Challenges → Ideas → Evaluation → Implementation  
-✅ **Government-Grade Security** - Multi-level classification with audit trails  
-✅ **Arabic/English Support** - Full RTL internationalization  
-✅ **Production Optimized** - <2s load times, 95%+ test coverage
-
-## 📚 Documentation
-
-- **[Deployment Guide](./docs/DEPLOYMENT_GUIDE.md)** - Complete deployment instructions
-- **[Production Checklist](./docs/PRODUCTION_READY.md)** - Go-live readiness
-- **[All Documentation](./docs/)** - Complete technical and user guides
-
-**🚀 Estimated deployment time: 30-60 minutes**
+**Current Focus:** Phase 1 - Foundation & Routing (Week 1-2)
 
 ---
 
