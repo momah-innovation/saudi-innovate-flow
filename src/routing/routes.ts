@@ -98,6 +98,22 @@ export const ADMIN_ROUTES = {
   ADMIN_STORAGE: '/admin/storage',
 } as const;
 
+// Dashboard routes (unified admin interface)
+export const DASHBOARD_ROUTES = {
+  DASHBOARD: '/dashboard',
+  DASHBOARD_USERS: '/dashboard/users',
+  DASHBOARD_ROLES: '/dashboard/roles', 
+  DASHBOARD_ACCESS_CONTROL: '/dashboard/access-control',
+  DASHBOARD_CHALLENGES: '/dashboard/challenges',
+  DASHBOARD_IDEAS: '/dashboard/ideas',
+  DASHBOARD_ANALYTICS: '/dashboard/analytics',
+  DASHBOARD_SYSTEM: '/dashboard/system',
+  DASHBOARD_EVENTS: '/dashboard/events',
+  DASHBOARD_CAMPAIGNS: '/dashboard/campaigns',
+  DASHBOARD_PARTNERS: '/dashboard/partners',
+  DASHBOARD_TEAMS: '/dashboard/teams',
+} as const;
+
 // Route categories for navigation
 export const ROUTE_CATEGORIES = {
   PUBLIC: 'public',
@@ -115,4 +131,5 @@ export const ALL_ROUTES = {
   ...AUTHENTICATED_ROUTES,
   ...SUBSCRIPTION_ROUTES,
   ...ADMIN_ROUTES,
+  ...DASHBOARD_ROUTES,
 } as const;

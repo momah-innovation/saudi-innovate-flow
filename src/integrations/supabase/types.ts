@@ -14,6 +14,47 @@ export type Database = {
   }
   public: {
     Tables: {
+      access_control_audit_log: {
+        Row: {
+          access_control_id: string | null
+          action_type: string
+          change_reason: string | null
+          changed_by: string | null
+          created_at: string | null
+          id: string
+          new_values: Json | null
+          old_values: Json | null
+        }
+        Insert: {
+          access_control_id?: string | null
+          action_type: string
+          change_reason?: string | null
+          changed_by?: string | null
+          created_at?: string | null
+          id?: string
+          new_values?: Json | null
+          old_values?: Json | null
+        }
+        Update: {
+          access_control_id?: string | null
+          action_type?: string
+          change_reason?: string | null
+          changed_by?: string | null
+          created_at?: string | null
+          id?: string
+          new_values?: Json | null
+          old_values?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "access_control_audit_log_access_control_id_fkey"
+            columns: ["access_control_id"]
+            isOneToOne: false
+            referencedRelation: "role_access_controls"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       admin_elevation_logs: {
         Row: {
           elevated_at: string | null
@@ -6163,6 +6204,45 @@ export type Database = {
         }
         Relationships: []
       }
+      role_access_controls: {
+        Row: {
+          access_level: string
+          conditions: Json | null
+          created_at: string | null
+          created_by: string | null
+          id: string
+          is_active: boolean | null
+          resource_name: string
+          resource_type: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at: string | null
+        }
+        Insert: {
+          access_level?: string
+          conditions?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          resource_name: string
+          resource_type: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at?: string | null
+        }
+        Update: {
+          access_level?: string
+          conditions?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          resource_name?: string
+          resource_type?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       role_approval_requests: {
         Row: {
           approver_id: string | null
@@ -7934,6 +8014,14 @@ export type Database = {
         }
         Returns: number
       }
+      check_role_access: {
+        Args: {
+          user_role: Database["public"]["Enums"]["app_role"]
+          resource_type: string
+          resource_name: string
+        }
+        Returns: string
+      }
       cleanup_expired_security_data: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -8078,6 +8166,10 @@ export type Database = {
           condition: string
           check_expression: string
         }[]
+      }
+      get_user_access_level: {
+        Args: { user_id: string; resource_type: string; resource_name: string }
+        Returns: string
       }
       get_user_subscription_status: {
         Args: { p_user_id: string }

@@ -79,6 +79,7 @@ import { UploaderSettingsProvider } from "./contexts/UploaderSettingsContext";
 import { StoragePoliciesPage } from "./components/storage/StoragePoliciesPage";
 import AdminRelationships from "./pages/AdminRelationships";
 import AdminEvaluations from "./pages/AdminEvaluations";
+import AccessControlManagement from "./pages/dashboard/AccessControlManagement";
 import { SubscriptionPage } from "./pages/SubscriptionPage";
 import PaddleSubscriptionPage from "./pages/PaddleSubscriptionPage";
 import LogflareAnalyticsPage from "./pages/LogflareAnalyticsPage";
@@ -823,17 +824,37 @@ const App = () => (
                     </ProtectedRoute>
                   } 
                 />
-                {/* Admin Dashboard route */}
-               <Route 
-                 path="/admin/dashboard" 
-                 element={
-                   <ProtectedRoute requireProfile requiredRole="admin">
-                     <AppShell>
-                       <AdminDashboard />
-                     </AppShell>
-                   </ProtectedRoute>
-                 } 
-               />
+                 {/* Admin Dashboard route */}
+                <Route 
+                  path="/admin/dashboard" 
+                  element={
+                    <ProtectedRoute requireProfile requiredRole="admin">
+                      <AppShell>
+                        <AdminDashboard />
+                      </AppShell>
+                    </ProtectedRoute>
+                  } 
+                />
+                {/* Dashboard routes */}
+                <Route 
+                  path="/dashboard" 
+                  element={
+                    <ProtectedRoute requireProfile requiredRole="admin">
+                      <AppShell>
+                        <AdminDashboard />
+                      </AppShell>
+                    </ProtectedRoute>
+                  } 
+                />
+                {/* Access Control Management - Super Admin Only */}
+                <Route 
+                  path="/dashboard/access-control" 
+                  element={
+                    <ProtectedRoute requireProfile requiredRole="super_admin">
+                      <AccessControlManagement />
+                    </ProtectedRoute>
+                  } 
+                />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
