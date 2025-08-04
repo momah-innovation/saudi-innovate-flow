@@ -4,7 +4,8 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { 
   Lightbulb, Target, Award, Trophy, Star, Sparkles, Users, Settings, 
-  Shield, BarChart3, Brain, FileText, Clock, Handshake, Briefcase, TrendingUp
+  Shield, BarChart3, Brain, FileText, Clock, Handshake, Briefcase, TrendingUp,
+  Server, Activity, CheckCircle, Wifi, AlertCircle
 } from 'lucide-react';
 import { useTranslation } from '@/hooks/useAppTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
@@ -208,6 +209,93 @@ export const DashboardHero = ({
               ))}
             </div>
           </div>
+
+          {/* Admin System Monitoring Section */}
+          {(userRole === 'admin' || userRole === 'super_admin') && (
+            <div className="space-y-6">
+              {/* System Health Card */}
+              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Server className="w-5 h-5 text-white" />
+                    <h3 className="text-lg font-bold text-white">
+                      {language === 'ar' ? 'حالة النظام' : 'System Health'}
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="text-center p-3 bg-emerald-500/20 rounded-lg border border-emerald-400/30">
+                      <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <CheckCircle className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'API' : 'API'}</p>
+                      <p className="text-xs text-emerald-300">{language === 'ar' ? 'متاح' : 'Online'}</p>
+                    </div>
+                    
+                    <div className="text-center p-3 bg-emerald-500/20 rounded-lg border border-emerald-400/30">
+                      <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <Wifi className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'الشبكة' : 'Network'}</p>
+                      <p className="text-xs text-emerald-300">{language === 'ar' ? 'مستقر' : 'Stable'}</p>
+                    </div>
+                    
+                    <div className="text-center p-3 bg-amber-500/20 rounded-lg border border-amber-400/30">
+                      <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <AlertCircle className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'التخزين' : 'Storage'}</p>
+                      <p className="text-xs text-amber-300">68%</p>
+                    </div>
+                    
+                    <div className="text-center p-3 bg-emerald-500/20 rounded-lg border border-emerald-400/30">
+                      <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <Shield className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'الأمان' : 'Security'}</p>
+                      <p className="text-xs text-emerald-300">{language === 'ar' ? 'محمي' : 'Secure'}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Resource Usage Card */}
+              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Activity className="w-5 h-5 text-white" />
+                    <h3 className="text-lg font-bold text-white">
+                      {language === 'ar' ? 'استخدام الموارد' : 'Resource Usage'}
+                    </h3>
+                  </div>
+                  <div className="space-y-3">
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-white/80">{language === 'ar' ? 'ملفات النظام' : 'System Files'}</span>
+                        <span className="text-sm font-medium text-white">2,847</span>
+                      </div>
+                      <Progress value={65} className="h-2 bg-white/20" />
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-white/80">{language === 'ar' ? 'أحداث الأمان' : 'Security Events'}</span>
+                        <span className="text-sm font-medium text-white">12</span>
+                      </div>
+                      <Progress value={20} className="h-2 bg-white/20" />
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-white/80">{language === 'ar' ? 'مساحة التخزين' : 'Storage Space'}</span>
+                        <span className="text-sm font-medium text-white">1.2 GB</span>
+                      </div>
+                      <Progress value={68} className="h-2 bg-white/20" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
 
           {/* Progress Section - Only for innovators */}
           {userRole === 'innovator' && (
