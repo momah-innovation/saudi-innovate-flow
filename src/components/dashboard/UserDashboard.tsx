@@ -63,7 +63,7 @@ interface Goal {
   type: 'ideas' | 'challenges' | 'events';
 }
 
-export default function EnhancedUserDashboard() {
+export default function UserDashboard() {
   const { userProfile } = useAuth();
   const { t, language } = useTranslation();
   const currentLanguage = language;

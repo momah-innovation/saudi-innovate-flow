@@ -14,7 +14,7 @@ import { RoleRequestWizard } from "@/components/admin/RoleRequestWizard";
 import { ExpertProfileDialog } from "@/components/admin/ExpertProfileDialog";
 import { useSystemLists } from "@/hooks/useSystemLists";
 
-const UserManagement = () => {
+export default function UserManagement() {
   const { t, language, isRTL } = useTranslation();
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('list');
   const [searchValue, setSearchValue] = useState('');
