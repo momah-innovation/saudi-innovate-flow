@@ -32,7 +32,7 @@ interface DashboardHeroProps {
   onNavigate: (path: string) => void;
 }
 
-export const EnhancedDashboardHero = ({ 
+export const DashboardHero = ({ 
   userProfile,
   stats,
   onNavigate

@@ -49,7 +49,7 @@ interface Event {
   virtual_link?: string;
 }
 
-interface EnhancedAdminEventCardProps {
+interface AdminEventCardProps {
   event: Event;
   onEdit: (event: Event) => void;
   onView: (event: Event) => void;
@@ -58,14 +58,14 @@ interface EnhancedAdminEventCardProps {
   viewMode?: 'cards' | 'list' | 'grid';
 }
 
-export const EnhancedAdminEventCard = ({ 
+export const AdminEventCard = ({ 
   event, 
   onEdit, 
   onView, 
   onDelete,
   onStatusChange,
   viewMode = 'cards'
-}: EnhancedAdminEventCardProps) => {
+}: AdminEventCardProps) => {
   const { isRTL } = useDirection();
 
   const getStatusColor = (status: string) => {
