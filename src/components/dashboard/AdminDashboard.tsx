@@ -60,7 +60,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: language === 'ar' ? 'إدارة المستخدمين' : 'User Management',
       description: language === 'ar' ? 'إدارة المستخدمين والأدوار والصلاحيات' : 'Manage users, roles and permissions',
       icon: Users,
-      action: () => navigate('/dashboard/users'),
+      action: () => navigate('/admin/users'),
       show: canManageUsers,
       category: 'management'
     },
@@ -68,7 +68,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: language === 'ar' ? 'إدارة الأدوار' : 'Role Management',
       description: language === 'ar' ? 'تكوين الأدوار والصلاحيات' : 'Configure roles and permissions',
       icon: Shield,
-      action: () => navigate('/dashboard/roles'),
+      action: () => navigate('/admin/organizational-structure'),
       show: canManageUsers,
       category: 'management'
     },
@@ -76,7 +76,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: language === 'ar' ? 'التحكم في الوصول' : 'Access Control',
       description: language === 'ar' ? 'إدارة التحكم في الوصول للصفحات والميزات' : 'Manage page and feature access control',
       icon: Shield,
-      action: () => navigate('/dashboard/access-control'),
+      action: () => navigate('/admin/expert-assignments'),
       show: canManageSystem,
       category: 'security'
     },
@@ -84,7 +84,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: language === 'ar' ? 'إدارة التحديات' : 'Challenge Management',
       description: language === 'ar' ? 'إنشاء وإدارة التحديات والمسابقات' : 'Create and manage challenges and competitions',
       icon: BarChart3,
-      action: () => navigate('/dashboard/challenges'),
+      action: () => navigate('/admin/challenges'),
       show: true,
       category: 'content'
     },
@@ -92,7 +92,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: language === 'ar' ? 'إدارة الأفكار' : 'Ideas Management',
       description: language === 'ar' ? 'مراجعة وإدارة الأفكار المقترحة' : 'Review and manage submitted ideas',
       icon: Database,
-      action: () => navigate('/dashboard/ideas'),
+      action: () => navigate('/ideas'),
       show: true,
       category: 'content'
     },
@@ -100,7 +100,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: language === 'ar' ? 'التحليلات والتقارير' : 'Analytics & Reports',
       description: language === 'ar' ? 'عرض تقارير النظام والإحصائيات المتقدمة' : 'View system reports and advanced analytics',
       icon: BarChart3,
-      action: () => navigate('/dashboard/analytics'),
+      action: () => navigate('/admin/evaluations'),
       show: canViewAnalytics,
       category: 'analytics'
     },
@@ -108,7 +108,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: language === 'ar' ? 'إعدادات النظام' : 'System Settings',
       description: language === 'ar' ? 'تكوين إعدادات النظام العامة' : 'Configure global system settings',
       icon: Settings,
-      action: () => navigate('/dashboard/system'),
+      action: () => navigate('/admin/system-settings'),
       show: canManageSystem,
       category: 'system'
     },
@@ -116,7 +116,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: language === 'ar' ? 'إدارة الفعاليات' : 'Events Management',
       description: language === 'ar' ? 'تنظيم وإدارة الفعاليات والمؤتمرات' : 'Organize and manage events and conferences',
       icon: Users,
-      action: () => navigate('/dashboard/events'),
+      action: () => navigate('/admin/events'),
       show: true,
       category: 'content'
     },
@@ -124,7 +124,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: language === 'ar' ? 'إدارة الحملات' : 'Campaigns Management',
       description: language === 'ar' ? 'إنشاء وإدارة حملات الابتكار' : 'Create and manage innovation campaigns',
       icon: Database,
-      action: () => navigate('/dashboard/campaigns'),
+      action: () => navigate('/admin/campaigns'),
       show: true,
       category: 'content'
     },
@@ -132,7 +132,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: language === 'ar' ? 'إدارة الشراكات' : 'Partners Management',
       description: language === 'ar' ? 'إدارة الشراكات والتعاون الخارجي' : 'Manage partnerships and external collaborations',
       icon: Users,
-      action: () => navigate('/dashboard/partners'),
+      action: () => navigate('/admin/partners'),
       show: true,
       category: 'management'
     },
@@ -140,7 +140,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
       title: language === 'ar' ? 'إدارة الفرق' : 'Teams Management',
       description: language === 'ar' ? 'تنظيم فرق العمل والمشاريع' : 'Organize work teams and projects',
       icon: Users,
-      action: () => navigate('/dashboard/teams'),
+      action: () => navigate('/innovation-teams'),
       show: true,
       category: 'management'
     }
