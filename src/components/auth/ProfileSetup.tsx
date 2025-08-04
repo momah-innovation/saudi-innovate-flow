@@ -570,34 +570,39 @@ export const ProfileSetup = () => {
           </CardContent>
         </Card>
         
-        {/* Debug User Profile Data */}
-        <Card className="mt-4">
+        {/* Always show debug info for troubleshooting */}
+        <Card className="mt-4 border-red-200">
           <CardHeader>
-            <CardTitle>Debug: User Profile Data</CardTitle>
+            <CardTitle className="text-red-600">🐛 Debug: Role Detection</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
+            <div className="space-y-2 text-sm">
+              <p><strong>User:</strong> {user ? 'Logged in' : 'Not logged in'}</p>
               <p><strong>User ID:</strong> {user?.id}</p>
-              <p><strong>Has User Profile:</strong> {userProfile ? 'Yes' : 'No'}</p>
-              <p><strong>Profile Completion:</strong> {userProfile?.profile_completion_percentage}%</p>
-              <p><strong>User Roles:</strong></p>
-              <pre className="text-xs bg-muted p-2 rounded overflow-auto">
-                {JSON.stringify(userProfile?.user_roles, null, 2)}
-              </pre>
-              <p><strong>Full Profile (first 500 chars):</strong></p>
-              <pre className="text-xs bg-muted p-2 rounded overflow-auto">
-                {JSON.stringify(userProfile, null, 2).substring(0, 500)}...
-              </pre>
+              <p><strong>UserProfile exists:</strong> {userProfile ? 'Yes' : 'No'}</p>
+              <p><strong>UserProfile.user_roles exists:</strong> {userProfile?.user_roles ? 'Yes' : 'No'}</p>
+              {userProfile?.user_roles && (
+                <div>
+                  <p><strong>Roles found:</strong></p>
+                  <ul className="list-disc list-inside">
+                    {userProfile.user_roles.map((role: any, index: number) => (
+                      <li key={index}>
+                        {role.role} (active: {role.is_active ? 'Yes' : 'No'})
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <p><strong>Has admin role:</strong> {userProfile?.user_roles?.some((r: any) => r.role === 'admin' && r.is_active) ? 'Yes' : 'No'}</p>
+              <p><strong>Has super_admin role:</strong> {userProfile?.user_roles?.some((r: any) => r.role === 'super_admin' && r.is_active) ? 'Yes' : 'No'}</p>
             </div>
           </CardContent>
         </Card>
 
-        {/* Test Component - Show for any authenticated user for now */}
-        {user && (
-          <div className="mt-6">
-            <TestProfileCalculation />
-          </div>
-        )}
+        {/* Test Component - Show for any user for now */}
+        <div className="mt-6">
+          <TestProfileCalculation />
+        </div>
       </div>
     </div>
   );
