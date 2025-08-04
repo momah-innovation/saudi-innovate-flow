@@ -5,10 +5,11 @@ interface ViewLayoutsProps {
   viewMode: 'cards' | 'list' | 'grid' | 'calendar' | 'table';
   children: ReactNode[];
   listRenderer?: (items: ReactNode[]) => ReactNode;
+  tableRenderer?: (items: ReactNode[]) => ReactNode;
 }
 
-export function ViewLayouts({ viewMode, children, listRenderer }: ViewLayoutsProps) {
-  // Use configuration-based layouts
+export function ViewLayouts({ viewMode, children, listRenderer, tableRenderer }: ViewLayoutsProps) {
+  // Handle list layout with custom renderer
   if (viewMode === 'list') {
     if (listRenderer) {
       return <>{listRenderer(children)}</>;
@@ -16,6 +17,20 @@ export function ViewLayouts({ viewMode, children, listRenderer }: ViewLayoutsPro
     
     return (
       <div className={createGridClassName('list')}>
+        {children}
+      </div>
+    );
+  }
+
+  // Handle table layout with custom renderer  
+  if (viewMode === 'table') {
+    if (tableRenderer) {
+      return <>{tableRenderer(children)}</>;
+    }
+    
+    // Default table layout - single column with spacing
+    return (
+      <div className="space-y-2">
         {children}
       </div>
     );
@@ -30,8 +45,8 @@ export function ViewLayouts({ viewMode, children, listRenderer }: ViewLayoutsPro
     );
   }
 
-  // Calendar and table modes (not yet configured)
-  if (viewMode === 'calendar' || viewMode === 'table') {
+  // Calendar mode (not yet fully configured)
+  if (viewMode === 'calendar') {
     return (
       <div className="space-y-4">
         {children}

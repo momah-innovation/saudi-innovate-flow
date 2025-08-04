@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react";
 import { Plus, Users } from "lucide-react";
 import { PageHeader } from "@/components/ui/page-header";
-import { LayoutSelector } from "@/components/ui/layout-selector";
+import { LayoutSelector, ViewMode } from "@/components/ui/layout-selector";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { SearchAndFilters } from "@/components/ui/search-and-filters";
 import { CompactSearchAndFilters } from "@/components/ui/compact-search-filters";
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useAppTranslation";
 
-export type ViewMode = 'cards' | 'list' | 'grid' | 'calendar' | 'gantt' | 'timeline';
+// Use unified ViewMode from layout-selector
 export type FilterConfig = {
   id: string;
   label: string;

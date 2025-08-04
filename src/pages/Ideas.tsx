@@ -946,7 +946,12 @@ export default function IdeasPage() {
             </Button>
             <LayoutSelector
               viewMode={viewMode}
-              onViewModeChange={(mode) => mode !== 'calendar' && setViewMode(mode)}
+              onViewModeChange={(mode) => {
+                if (['cards', 'list', 'grid'].includes(mode)) {
+                  setViewMode(mode as 'cards' | 'list' | 'grid');
+                }
+              }}
+              supportedLayouts={['cards', 'list', 'grid']}
             />
             <Button variant="outline" size="sm" onClick={() => {
               if (activeTab === 'published') {

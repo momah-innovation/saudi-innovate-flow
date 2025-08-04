@@ -4,7 +4,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { LayoutSelector } from '@/components/ui/layout-selector';
+import { LayoutSelector, ViewMode } from '@/components/ui/layout-selector';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -53,7 +53,7 @@ const ChallengesBrowse = () => {
   const [createChallengeOpen, setCreateChallengeOpen] = useState(false);
   const [templatesDialogOpen, setTemplatesDialogOpen] = useState(false);
   const [analyticsDialogOpen, setAnalyticsDialogOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>(challengesPageConfig.defaultViewMode);
+  const [viewMode, setViewMode] = useState<ViewMode>(challengesPageConfig.defaultViewMode as ViewMode);
   const [activeTab, setActiveTab] = useState(challengesPageConfig.defaultTab);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   
@@ -461,7 +461,7 @@ const ChallengesBrowse = () => {
           onViewDetails={handleViewDetails}
           onParticipate={handleParticipate}
           onBookmark={handleBookmark}
-          viewMode={viewMode}
+          viewMode={viewMode as 'cards' | 'list' | 'grid'}
           variant={getViewModeConfig(viewMode).variant}
         />
       ))}
@@ -546,7 +546,7 @@ const ChallengesBrowse = () => {
                 <ChallengeNotificationCenter />
                 <LayoutSelector
                   viewMode={viewMode}
-                  onViewModeChange={(mode) => mode !== 'calendar' && setViewMode(mode)}
+                  onViewModeChange={(mode) => ['cards', 'list', 'grid'].includes(mode) && setViewMode(mode)}
                 />
               </div>
             </div>
@@ -603,7 +603,7 @@ const ChallengesBrowse = () => {
 
               <TabsContent value="all" className="space-y-4">
                 {loading ? (
-                  <ChallengeSkeleton viewMode={viewMode} count={6} className="animate-fade-in" />
+                  <ChallengeSkeleton viewMode={viewMode as 'cards' | 'list' | 'grid'} count={6} className="animate-fade-in" />
                 ) : tabFilteredChallenges.length === 0 ? (
                   <ChallengeEmptyState
                     title={isRTL ? 'لا توجد تحديات' : 'No challenges found'}
@@ -622,7 +622,7 @@ const ChallengesBrowse = () => {
 
               <TabsContent value="active" className="space-y-4">
                 {loading ? (
-                  <ChallengeSkeleton viewMode={viewMode} count={4} />
+                  <ChallengeSkeleton viewMode={viewMode as 'cards' | 'list' | 'grid'} count={4} />
                 ) : (
                   <div className="animate-fade-in">
                     {viewMode === 'list' ? 
@@ -635,7 +635,7 @@ const ChallengesBrowse = () => {
 
               <TabsContent value="upcoming" className="space-y-4">
                 {loading ? (
-                  <ChallengeSkeleton viewMode={viewMode} count={4} />
+                  <ChallengeSkeleton viewMode={viewMode as 'cards' | 'list' | 'grid'} count={4} />
                 ) : (
                   <div className="animate-fade-in">
                     {viewMode === 'list' ? 
@@ -648,7 +648,7 @@ const ChallengesBrowse = () => {
 
               <TabsContent value="trending" className="space-y-4">
                 {loading ? (
-                  <ChallengeSkeleton viewMode={viewMode} count={4} />
+                  <ChallengeSkeleton viewMode={viewMode as 'cards' | 'list' | 'grid'} count={4} />
                 ) : (
                   <div className="animate-fade-in">
                     {viewMode === 'list' ? 

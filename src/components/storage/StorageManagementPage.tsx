@@ -18,7 +18,7 @@ import { BucketManagementDialog } from './BucketManagementDialog';
 import { BucketViewDialog } from './BucketViewDialog';
 
 import { StorageFilters, type FilterOptions, type SortOptions } from './StorageFilters';
-import { LayoutToggle, LayoutType } from '@/components/ui/layout-toggle';
+import { LayoutSelector, ViewMode } from '@/components/ui/layout-selector';
 import { StorageFileCard } from './StorageFileCard';
 import { StorageFileTable } from './StorageFileTable';
 import { StorageBucketCard } from './StorageBucketCard';
@@ -87,8 +87,8 @@ export function StorageManagementPage() {
   const [showBucketViewDialog, setShowBucketViewDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [fileToDelete, setFileToDelete] = useState<StorageFile | null>(null);
-  const [filesLayout, setFilesLayout] = useState<StorageLayoutType>('cards');
-  const [bucketsLayout, setBucketsLayout] = useState<StorageLayoutType>('grid');
+  const [filesLayout, setFilesLayout] = useState<ViewMode>('cards');
+  const [bucketsLayout, setBucketsLayout] = useState<ViewMode>('cards');
   const [activeTab, setActiveTab] = useState("overview");
 
   // Use the existing filter and sort types from StorageFilters
@@ -420,7 +420,11 @@ export function StorageManagementPage() {
                 />
               </div>
               <div className="flex items-center gap-2">
-                <LayoutToggle currentLayout={filesLayout} onLayoutChange={setFilesLayout} />
+                <LayoutSelector 
+                  viewMode={filesLayout} 
+                  onViewModeChange={setFilesLayout}
+                  supportedLayouts={['cards', 'list', 'table']}
+                />
                 <Button onClick={loadStorageData}>
                   <RefreshCw className="w-4 h-4 mr-2" />
                   {t('common.refresh')}

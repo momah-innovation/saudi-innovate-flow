@@ -3,7 +3,7 @@ import { StandardBrowseLayout } from '@/components/layout/StandardBrowseLayout';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { LayoutSelector } from '@/components/ui/layout-selector';
+import { LayoutSelector, ViewMode } from '@/components/ui/layout-selector';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
@@ -66,7 +66,7 @@ const EventsBrowse = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid' | 'calendar'>('cards');
+  const [viewMode, setViewMode] = useState<ViewMode>('cards');
   const [activeTab, setActiveTab] = useState('upcoming');
   const [loading, setLoading] = useState(true);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
@@ -286,7 +286,7 @@ const EventsBrowse = () => {
             event={event}
             onViewDetails={handleViewDetails}
             onRegister={registerForEvent}
-            viewMode={viewMode}
+            viewMode={viewMode as 'cards' | 'list' | 'grid'}
           />
         ))}
       </ViewLayouts>
@@ -338,6 +338,7 @@ const EventsBrowse = () => {
               <LayoutSelector
                 viewMode={viewMode}
                 onViewModeChange={setViewMode}
+                supportedLayouts={['cards', 'list', 'grid']}
               />
               <Button
                 variant={viewMode === 'calendar' ? 'default' : 'outline'}

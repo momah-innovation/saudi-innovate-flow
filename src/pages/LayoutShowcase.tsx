@@ -79,7 +79,15 @@ export default function LayoutShowcase() {
               <h2 className="text-2xl font-semibold">Content Grid</h2>
               <p className="text-muted-foreground">Responsive grid layout with different view modes</p>
             </div>
-            <LayoutSelector viewMode={viewMode} onViewModeChange={(mode) => mode !== 'calendar' && setViewMode(mode)} />
+            <LayoutSelector 
+              viewMode={viewMode} 
+              onViewModeChange={(mode) => {
+                if (['cards', 'list', 'grid'].includes(mode)) {
+                  setViewMode(mode as 'cards' | 'list' | 'grid');
+                }
+              }}
+              supportedLayouts={['cards', 'list', 'grid']}
+            />
           </div>
 
           {/* Responsive Content Grid */}
