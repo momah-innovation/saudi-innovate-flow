@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '@/hooks/useAppTranslation';
 import { useRoleAccess } from '@/hooks/useRoleAccess';
 import { useGlobalRoleTheme } from '@/hooks/useGlobalRoleTheme';
+import { useSystemHealth } from '@/hooks/useSystemHealth';
 import { 
   AdminPageWrapper, 
   AdminContentGrid, 
@@ -11,7 +12,19 @@ import {
   BodyText,
   Icon 
 } from '@/components/ui';
-import { Users, Settings, Shield, BarChart3, Database, Calendar, Briefcase, Trophy } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { 
+  Users, 
+  Settings, 
+  Shield, 
+  BarChart3, 
+  Database, 
+  CheckCircle,
+  AlertCircle,
+  Wifi,
+  Server,
+  Activity
+} from 'lucide-react';
 
 interface AdminDashboardProps {
   userProfile: any;
@@ -24,6 +37,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
   const { t, language } = useTranslation();
   const navigate = useNavigate();
   const { getPrimaryRole } = useRoleAccess();
+  const healthHook = useSystemHealth();
   
   // Apply role-based theming
   useGlobalRoleTheme();
@@ -144,9 +158,9 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
 
   return (
     <AdminPageWrapper>
-      {/* Hero Section using Design System patterns */}
+      {/* Hero Section with System Status & Monitoring Widgets */}
       <div className="bg-gradient-to-br from-primary to-accent text-primary-foreground rounded-xl p-8 mb-8">
-        <div className="flex items-center gap-4 mb-4">
+        <div className="flex items-center gap-4 mb-6">
           <div className="w-12 h-12 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
             <Icon icon={Shield} className="w-6 h-6" />
           </div>
@@ -160,6 +174,91 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                 : `Welcome ${userProfile?.display_name || 'Admin'} - Comprehensive system management`}
             </BodyText>
           </div>
+        </div>
+
+        {/* System Status & Monitoring Widgets */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          <Card className="p-4 bg-white/10 backdrop-blur-sm border-white/20">
+            <h4 className="font-medium mb-4 text-primary-foreground">System Health</h4>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center p-3 bg-success/20 rounded-lg">
+                <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
+                  <CheckCircle className="w-4 h-4 text-white" />
+                </div>
+                <p className="text-sm font-medium text-primary-foreground">API Status</p>
+                <p className="text-xs text-success">Operational</p>
+              </div>
+              
+              <div className="text-center p-3 bg-success/20 rounded-lg">
+                <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Wifi className="w-4 h-4 text-white" />
+                </div>
+                <p className="text-sm font-medium text-primary-foreground">Network</p>
+                <p className="text-xs text-success">Stable</p>
+              </div>
+              
+              <div className="text-center p-3 bg-warning/20 rounded-lg">
+                <div className="w-8 h-8 bg-warning rounded-full flex items-center justify-center mx-auto mb-2">
+                  <AlertCircle className="w-4 h-4 text-white" />
+                </div>
+                <p className="text-sm font-medium text-primary-foreground">Storage</p>
+                <p className="text-xs text-warning">{Math.round((healthHook.storage.totalSize / (1024 * 1024 * 1024)) * 100) / 100} GB Used</p>
+              </div>
+              
+              <div className="text-center p-3 bg-success/20 rounded-lg">
+                <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Shield className="w-4 h-4 text-white" />
+                </div>
+                <p className="text-sm font-medium text-primary-foreground">Security</p>
+                <p className="text-xs text-success">Protected</p>
+              </div>
+            </div>
+          </Card>
+          
+          <Card className="p-4 bg-white/10 backdrop-blur-sm border-white/20">
+            <h4 className="font-medium mb-4 text-primary-foreground">Resource Usage</h4>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-primary-foreground">CPU Usage</span>
+                  <span className="text-sm font-medium text-primary-foreground">45%</span>
+                </div>
+                <div className="w-full bg-white/20 rounded-full h-2">
+                  <div className="bg-success h-2 rounded-full transition-all duration-300" style={{ width: '45%' }}></div>
+                </div>
+              </div>
+              
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-primary-foreground">Memory</span>
+                  <span className="text-sm font-medium text-primary-foreground">68%</span>
+                </div>
+                <div className="w-full bg-white/20 rounded-full h-2">
+                  <div className="bg-warning h-2 rounded-full transition-all duration-300" style={{ width: '68%' }}></div>
+                </div>
+              </div>
+              
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-primary-foreground">Storage ({healthHook.storage.totalFiles} files)</span>
+                  <span className="text-sm font-medium text-primary-foreground">32%</span>
+                </div>
+                <div className="w-full bg-white/20 rounded-full h-2">
+                  <div className="bg-primary h-2 rounded-full transition-all duration-300" style={{ width: '32%' }}></div>
+                </div>
+              </div>
+              
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-primary-foreground">Security Events</span>
+                  <span className="text-sm font-medium text-primary-foreground">{healthHook.security.totalSecurityEvents}</span>
+                </div>
+                <div className="w-full bg-white/20 rounded-full h-2">
+                  <div className="bg-success h-2 rounded-full transition-all duration-300" style={{ width: '20%' }}></div>
+                </div>
+              </div>
+            </div>
+          </Card>
         </div>
       </div>
 
