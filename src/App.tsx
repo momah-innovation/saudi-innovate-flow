@@ -20,8 +20,8 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { MaintenanceGuard } from "@/components/maintenance/MaintenanceGuard";
 import AdminDashboard from "./pages/AdminDashboard";
 import LandingPage from "./pages/LandingPage";
+import { EnhancedProtectedRoute, ProtectedRoute } from "@/components/auth/EnhancedProtectedRoute";
 import Auth from "./pages/Auth";
-import ProfileSetup from "./pages/ProfileSetup";
 // Import remaining components as before...
 import ChallengeDetails from "./pages/ChallengeDetails";
 import ChallengesManagementPage from "./pages/ChallengesManagement";
