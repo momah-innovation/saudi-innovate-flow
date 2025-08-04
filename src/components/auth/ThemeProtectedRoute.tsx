@@ -1,12 +1,12 @@
-// Enhanced Protected Route Component - Phase 1 Final Implementation
+// Theme-Aware Protected Route Component
 // Provides comprehensive route protection with theming support
 
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { ALL_ROUTES } from './routes';
+import { ALL_ROUTES } from '@/routing/routes';
 
-interface EnhancedProtectedRouteProps {
+interface ThemeProtectedRouteProps {
   children: React.ReactNode;
   requireAuth?: boolean;
   requireProfile?: boolean;
@@ -16,7 +16,7 @@ interface EnhancedProtectedRouteProps {
   theme?: 'default' | 'admin' | 'expert' | 'workspace';
 }
 
-export const EnhancedProtectedRoute: React.FC<EnhancedProtectedRouteProps> = ({
+export const ThemeProtectedRoute: React.FC<ThemeProtectedRouteProps> = ({
   children,
   requireAuth = true,
   requireProfile = false,
@@ -63,4 +63,4 @@ export const EnhancedProtectedRoute: React.FC<EnhancedProtectedRouteProps> = ({
 };
 
 // Legacy ProtectedRoute wrapper for backward compatibility
-export const ProtectedRoute = EnhancedProtectedRoute;
+export const ProtectedRoute = ThemeProtectedRoute;

@@ -13,14 +13,14 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { DirectionProvider } from "@/components/ui/direction-provider";
 
 // New routing components from Phase 1
-import { EnhancedProtectedRoute, PublicRoute } from "@/routing/RouteGuards";
+import { PublicRoute } from "@/routing/RouteGuards";
+import { ThemeProtectedRoute } from "@/components/auth/ThemeProtectedRoute";
 import { ALL_ROUTES } from "@/routing/routes";
 // Legacy components (will be organized better in subsequent phases)
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { MaintenanceGuard } from "@/components/maintenance/MaintenanceGuard";
 import AdminDashboard from "./pages/AdminDashboard";
 import LandingPage from "./pages/LandingPage";
-import { EnhancedProtectedRoute, ProtectedRoute } from "@/components/auth/EnhancedProtectedRoute";
 import Auth from "./pages/Auth";
 // Import remaining components as before...
 import ChallengeDetails from "./pages/ChallengeDetails";
@@ -135,42 +135,42 @@ const App = () => (
                     
                     {/* User Workspace - Placeholder for Phase 6 */}
                     <Route path={ALL_ROUTES.WORKSPACE_USER} element={
-                      <EnhancedProtectedRoute requireProfile>
+                      <ThemeProtectedRoute requireProfile theme="workspace">
                         <div className="container mx-auto px-4 py-16">
                           <h1 className="text-2xl font-bold">User Workspace</h1>
                           <p>Personal innovation workspace - coming in Phase 6</p>
                         </div>
-                      </EnhancedProtectedRoute>
+                      </ThemeProtectedRoute>
                     } />
 
                     {/* Expert Workspace - Placeholder for Phase 6 */}
                     <Route path={ALL_ROUTES.WORKSPACE_EXPERT} element={
-                      <EnhancedProtectedRoute requireProfile>
+                      <ThemeProtectedRoute requireProfile theme="expert">
                         <div className="container mx-auto px-4 py-16">
                           <h1 className="text-2xl font-bold">Expert Workspace</h1>
                           <p>Expert evaluation workspace - coming in Phase 6</p>
                         </div>
-                      </EnhancedProtectedRoute>
+                      </ThemeProtectedRoute>
                     } />
 
                     {/* Organization Workspace - Placeholder for Phase 6 */}
                     <Route path={ALL_ROUTES.WORKSPACE_ORG} element={
-                      <EnhancedProtectedRoute requireProfile>
+                      <ThemeProtectedRoute requireProfile theme="workspace">
                         <div className="container mx-auto px-4 py-16">
                           <h1 className="text-2xl font-bold">Organization Workspace</h1>
                           <p>Organization management workspace - coming in Phase 6</p>
                         </div>
-                      </EnhancedProtectedRoute>
+                      </ThemeProtectedRoute>
                     } />
 
                     {/* Admin Workspace - Placeholder for Phase 6 */}
                     <Route path={ALL_ROUTES.WORKSPACE_ADMIN} element={
-                      <EnhancedProtectedRoute requireProfile requiredRole="admin">
+                      <ThemeProtectedRoute requireProfile requiredRole="admin" theme="admin">
                         <div className="container mx-auto px-4 py-16">
                           <h1 className="text-2xl font-bold">Admin Workspace</h1>
                           <p>System administration workspace - coming in Phase 6</p>
                         </div>
-                      </EnhancedProtectedRoute>
+                      </ThemeProtectedRoute>
                     } />
 
                     {/* ============ LEGACY ROUTES - Preserved from original App.tsx ============ */}
@@ -178,7 +178,7 @@ const App = () => (
               path="/profile/setup" 
               element={
                 <ProtectedRoute>
-                  <ProfileSetup />
+                  <div>Profile Setup - TODO: Implement</div>
                 </ProtectedRoute>
               } 
             />
