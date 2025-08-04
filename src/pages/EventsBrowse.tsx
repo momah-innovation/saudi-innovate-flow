@@ -356,15 +356,8 @@ const EventsBrowse = () => {
               <LayoutSelector
                 viewMode={viewMode}
                 onViewModeChange={setViewMode}
-                supportedLayouts={['cards', 'list', 'grid']}
+                supportedLayouts={['cards', 'list', 'grid', 'calendar']}
               />
-              <Button
-                variant={viewMode === 'calendar' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setViewMode('calendar')}
-              >
-                <CalendarDays className="w-4 h-4" />
-              </Button>
               {user && (hasRole('admin') || hasRole('super_admin') || hasRole('innovation_team_member')) && (
                 <Button onClick={() => console.log('Create new event')}>
                   <Plus className="w-4 h-4 mr-2" />
