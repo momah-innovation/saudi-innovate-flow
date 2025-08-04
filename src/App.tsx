@@ -75,6 +75,8 @@ import { StoragePoliciesPage } from "./components/storage/StoragePoliciesPage";
 import AdminRelationships from "./pages/AdminRelationships";
 import AdminEvaluations from "./pages/AdminEvaluations";
 import { SubscriptionPage } from "./pages/SubscriptionPage";
+import PaddleSubscriptionPage from "./pages/PaddleSubscriptionPage";
+import LogflareAnalyticsPage from "./pages/LogflareAnalyticsPage";
 import { AppShell } from "@/components/layout/AppShell";
 
 const queryClient = new QueryClient();
@@ -606,6 +608,22 @@ const App = () => (
               element={
                 <ProtectedRoute requireProfile>
                   <SubscriptionPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route 
+              path="/paddle-subscription" 
+              element={
+                <ProtectedRoute requireProfile>
+                  <PaddleSubscriptionPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route 
+              path="/admin/logflare-analytics" 
+              element={
+                <ProtectedRoute requireProfile requiredRole="admin">
+                  <LogflareAnalyticsPage />
                 </ProtectedRoute>
               }
             />
