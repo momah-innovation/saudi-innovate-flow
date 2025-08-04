@@ -26,8 +26,7 @@ export function AppShell({ children }: AppShellProps) {
   const { isOpen } = useSidebarPersistence();
   
   return (
-    <GlobalRoleThemeProvider>
-      <SidebarProvider defaultOpen={isOpen}>
+    <SidebarProvider defaultOpen={isOpen}>
         <div className={cn(
           "min-h-screen flex w-full bg-background",
           isRTL && "flex-row-reverse"
@@ -49,6 +48,5 @@ export function AppShell({ children }: AppShellProps) {
           </div>
         </div>
       </SidebarProvider>
-    </GlobalRoleThemeProvider>
   );
 }
