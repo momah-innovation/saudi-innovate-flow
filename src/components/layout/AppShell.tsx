@@ -5,6 +5,8 @@ import { NavigationSidebar } from './NavigationSidebar';
 import { LoadingSpinner } from '@/components/ui/loading';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
+import { useSidebarPersistence } from '@/contexts/SidebarContext';
+import { GlobalRoleThemeProvider } from '@/components/layout/GlobalRoleThemeProvider';
 
 interface AppShellProps {
   children: ReactNode;
@@ -21,29 +23,32 @@ interface AppShellProps {
  */
 export function AppShell({ children }: AppShellProps) {
   const { isRTL } = useDirection();
+  const { isOpen } = useSidebarPersistence();
   
   return (
-    <SidebarProvider defaultOpen={true}>
-      <div className={cn(
-        "min-h-screen flex w-full bg-background",
-        isRTL && "flex-row-reverse"
-      )}>
-        {/* Navigation Sidebar */}
-        <NavigationSidebar />
-        
-        {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0">
-          {/* Global Header */}
-          <SystemHeader />
+    <GlobalRoleThemeProvider>
+      <SidebarProvider defaultOpen={isOpen}>
+        <div className={cn(
+          "min-h-screen flex w-full bg-background",
+          isRTL && "flex-row-reverse"
+        )}>
+          {/* Navigation Sidebar */}
+          <NavigationSidebar />
           
-          {/* Page Content with Loading */}
-          <main className="flex-1 overflow-auto">
-            <Suspense fallback={<LoadingSpinner />}>
-              {children}
-            </Suspense>
-          </main>
+          {/* Main Content Area */}
+          <div className="flex-1 flex flex-col min-w-0">
+            {/* Global Header */}
+            <SystemHeader />
+            
+            {/* Page Content with Loading */}
+            <main className="flex-1 overflow-auto">
+              <Suspense fallback={<LoadingSpinner />}>
+                {children}
+              </Suspense>
+            </main>
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </GlobalRoleThemeProvider>
   );
 }

@@ -11,6 +11,7 @@ import i18n from "./i18n/config";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { DirectionProvider } from "@/components/ui/direction-provider";
+import { SidebarPersistenceProvider } from "@/contexts/SidebarContext";
 
 // New routing components from Phase 1
 import { PublicRoute } from "@/routing/RouteGuards";
@@ -92,9 +93,10 @@ const App = () => (
         <TooltipProvider>
           <ThemeProvider>
             <AuthProvider>
-              <Toaster />
-              <Sonner />
-              <MaintenanceGuard>
+              <SidebarPersistenceProvider>
+                <Toaster />
+                <Sonner />
+                <MaintenanceGuard>
                 <BrowserRouter>
                   <Routes>
                     {/* ============ PUBLIC ROUTES - Completed Phase 1 Structure ============ */}
@@ -836,7 +838,8 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
           </BrowserRouter>
-         </MaintenanceGuard>
+                </MaintenanceGuard>
+              </SidebarPersistenceProvider>
             </AuthProvider>
           </ThemeProvider>
         </TooltipProvider>

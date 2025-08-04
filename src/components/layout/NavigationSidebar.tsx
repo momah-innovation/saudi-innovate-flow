@@ -19,6 +19,7 @@ import { useTranslation } from '@/hooks/useAppTranslation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { useSidebarPersistence } from '@/contexts/SidebarContext';
 
 /**
  * NavigationSidebar - Optimized sidebar navigation with role-based menu items
@@ -27,12 +28,18 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 
 export function NavigationSidebar() {
   const { state } = useSidebar();
+  const { setIsOpen } = useSidebarPersistence();
   const location = useLocation();
   const { isRTL } = useTranslation();
   // const { user } = useAuth();
   // const { profile: userProfile } = useProfile();
   const userProfile = null; // Simplified for now
   const [isOldLinksOpen, setIsOldLinksOpen] = React.useState(false);
+
+  // Sync sidebar state with persistent storage
+  React.useEffect(() => {
+    setIsOpen(state === 'expanded');
+  }, [state, setIsOpen]);
 
   const menuItems = useMemo(() => {
     const baseItems = [
