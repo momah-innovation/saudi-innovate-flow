@@ -6,7 +6,7 @@ import { LoadingSpinner } from '@/components/ui/loading';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { useSidebarPersistence } from '@/contexts/SidebarContext';
-import { GlobalRoleThemeProvider } from '@/components/layout/GlobalRoleThemeProvider';
+
 
 interface AppShellProps {
   children: ReactNode;

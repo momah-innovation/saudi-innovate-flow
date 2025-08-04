@@ -22,7 +22,7 @@ import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { useTheme } from '@/components/ui/theme-provider';
-import { ThemeSelector } from '@/components/ui/theme-selector';
+
 import { cn } from '@/lib/utils';
 
 const DesignSystem = () => {
@@ -86,7 +86,7 @@ const DesignSystem = () => {
             </div>
             
             <div className="flex items-center gap-4">
-              <ThemeSelector />
+              <p className="text-muted-foreground">Theme customization has been simplified to use shadcn/ui defaults only.</p>
               <Button
                 variant="outline"
                 size="sm"

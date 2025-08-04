@@ -9,7 +9,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n/config";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { ThemeProvider } from "@/contexts/ThemeContext";
+
 import { DirectionProvider } from "@/components/ui/direction-provider";
 import { SidebarPersistenceProvider } from "@/contexts/SidebarContext";
 
@@ -92,7 +92,6 @@ const App = () => (
     <I18nextProvider i18n={i18n}>
       <DirectionProvider>
         <TooltipProvider>
-          <ThemeProvider>
             <AuthProvider>
               <SidebarPersistenceProvider>
                 <Toaster />
@@ -862,7 +861,6 @@ const App = () => (
                 </MaintenanceGuard>
               </SidebarPersistenceProvider>
             </AuthProvider>
-          </ThemeProvider>
         </TooltipProvider>
       </DirectionProvider>
     </I18nextProvider>

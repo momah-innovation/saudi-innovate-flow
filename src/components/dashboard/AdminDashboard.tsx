@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '@/hooks/useAppTranslation';
 import { useRoleAccess } from '@/hooks/useRoleAccess';
-import { useGlobalRoleTheme } from '@/hooks/useGlobalRoleTheme';
+
 import { useSystemHealth } from '@/hooks/useSystemHealth';
 import { 
   AdminPageWrapper, 
@@ -51,8 +51,6 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
   const { getPrimaryRole } = useRoleAccess();
   const systemHealth = useSystemHealth();
   
-  // Apply role-based theming
-  useGlobalRoleTheme();
   
   // Log current role for debugging
   useEffect(() => {
