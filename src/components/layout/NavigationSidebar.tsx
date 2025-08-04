@@ -41,7 +41,7 @@ export function NavigationSidebar() {
         label: 'Dashboard', 
         arabicLabel: 'لوحة التحكم',
         icon: Home, 
-        path: '/',
+        path: '/dashboard',
         group: 'main',
         roles: ['all'] 
       },
