@@ -114,8 +114,8 @@ export const ProfileSetup = () => {
     }
     
     // Load existing profile data if it exists
-    if (userProfile && userProfile.id && userProfile.profile_completion_percentage === 100) {
-      // User has a complete profile, redirect to dashboard
+    if (userProfile && userProfile.id && userProfile.profile_completion_percentage >= 80) {
+      // User has a mostly complete profile, redirect to dashboard
       navigate('/dashboard');
       return;
     }

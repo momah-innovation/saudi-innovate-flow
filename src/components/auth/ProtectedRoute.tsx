@@ -44,8 +44,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to={redirectTo || ALL_ROUTES.AUTH} state={{ from: location }} replace />;
   }
 
-  // Check profile completion - only redirect if truly no profile or incomplete
-  if (requireProfile && user && (!userProfile || (userProfile.basic_access && !userProfile.id))) {
+  // Check profile completion - redirect if profile is less than 80% complete
+  if (requireProfile && user && (!userProfile || userProfile.profile_completion_percentage < 80)) {
     return <Navigate to={ALL_ROUTES.PROFILE_SETUP} replace />;
   }
 

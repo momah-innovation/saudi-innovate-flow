@@ -89,6 +89,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     try {
+      // Calculate completion percentage based on filled fields
+      const fields = {
+        name: profileData.fullName,
+        phone: profileData.phone,
+        department: profileData.department,
+        position: profileData.jobTitle,
+        bio: profileData.bio,
+        preferred_language: profileData.languages?.[0]
+      };
+      
+      const filledFields = Object.values(fields).filter(value => value && value.trim() !== '').length;
+      const completionPercentage = Math.round((filledFields / Object.keys(fields).length) * 100);
+
       const { error } = await supabase
         .from('profiles')
         .upsert({
@@ -102,7 +115,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           bio: profileData.bio || '',
           preferred_language: profileData.languages?.[0] || 'العربية',
           status: 'active',
-          profile_completion_percentage: 100,
+          profile_completion_percentage: completionPercentage,
           updated_at: new Date().toISOString()
         });
 
