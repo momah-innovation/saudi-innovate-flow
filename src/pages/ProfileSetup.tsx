@@ -101,8 +101,11 @@ const ProfileSetup = () => {
     return <Navigate to="/auth" replace />;
   }
 
-  // Allow access to dashboard even without profile for now
-  // This ensures users can access the system while profile is being set up
+  // If user has sufficient profile completion, redirect to dashboard
+  if (userProfile && userProfile.profile_completion_percentage >= 80) {
+    console.log("ProfileSetup: User has sufficient profile completion, redirecting to dashboard");
+    return <Navigate to="/dashboard" replace />;
+  }
 
   console.log("ProfileSetup - User:", user?.id, "Profile:", userProfile);
 
