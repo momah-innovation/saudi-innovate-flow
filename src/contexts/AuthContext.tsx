@@ -133,7 +133,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signUp = async (email: string, password: string, userData?: { name: string; name_ar?: string }) => {
     try {
-      const redirectUrl = `${window.location.origin}/dashboard`;
+      const redirectUrl = `${window.location.origin}/auth/verify-email`;
       
       const { error } = await supabase.auth.signUp({
         email,
@@ -154,8 +154,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       toast({
-        title: "Sign Up Successful",
-        description: "Please check your email to confirm your account.",
+        title: "تم إنشاء الحساب",
+        description: "يرجى فحص بريدك الإلكتروني لتأكيد الحساب",
       });
 
       return { error: null };

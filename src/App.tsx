@@ -21,6 +21,10 @@ import { MaintenanceGuard } from "@/components/maintenance/MaintenanceGuard";
 import AdminDashboard from "./pages/AdminDashboard";
 import LandingPage from "./pages/LandingPage";
 import Auth from "./pages/Auth";
+import ProfileSetupPage from '@/pages/ProfileSetup';
+import { PasswordReset } from '@/components/auth/PasswordReset';
+import { UpdatePassword } from '@/components/auth/UpdatePassword';
+import { EmailVerification } from '@/components/auth/EmailVerification';
 // Import remaining components as before...
 import ChallengeDetails from "./pages/ChallengeDetails";
 import ChallengesManagementPage from "./pages/ChallengesManagement";
@@ -304,6 +308,9 @@ const App = () => (
 
                     {/* Authentication Routes */}
                     <Route path={ALL_ROUTES.AUTH} element={<Auth />} />
+                    <Route path="/auth/forgot-password" element={<PasswordReset />} />
+                    <Route path="/auth/reset-password" element={<UpdatePassword />} />
+                    <Route path="/auth/verify-email" element={<EmailVerification />} />
                     <Route path={ALL_ROUTES.LOGIN} element={<Auth />} />
                     <Route path={ALL_ROUTES.SIGNUP} element={<Auth />} />
 
@@ -431,7 +438,7 @@ const App = () => (
               path="/profile/setup" 
               element={
                 <ProtectedRoute>
-                  <div>Profile Setup - TODO: Import ProfileSetup component</div>
+                  <ProfileSetupPage />
                 </ProtectedRoute>
               } 
             />

@@ -297,7 +297,11 @@ export const Auth = () => {
 
               {activeTab === 'login' && (
                 <div className="text-center">
-                  <Button variant="link" className="text-sm text-muted-foreground hover-primary">
+                  <Button 
+                    variant="link" 
+                    className="text-sm text-muted-foreground hover-primary"
+                    onClick={() => navigate('/auth/forgot-password')}
+                  >
                     نسيت كلمة المرور؟
                   </Button>
                 </div>
