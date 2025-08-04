@@ -13,6 +13,7 @@ interface AuthContextType {
   hasRole: (role: string) => boolean;
   userProfile: any;
   refreshProfile: () => Promise<void>;
+  updateProfile: (profileData: any) => Promise<{ error: any }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -79,6 +80,57 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const refreshProfile = async () => {
     if (user) {
       await fetchUserProfile(user.id);
+    }
+  };
+
+  const updateProfile = async (profileData: any) => {
+    if (!user) {
+      return { error: { message: 'No user found' } };
+    }
+
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .upsert({
+          id: user.id,
+          email: user.email || '',
+          name: profileData.fullName,
+          name_ar: profileData.fullNameAr || '',
+          phone: profileData.phone || '',
+          department: profileData.department || '',
+          position: profileData.jobTitle || '',
+          bio: profileData.bio || '',
+          preferred_language: profileData.languages?.[0] || 'العربية',
+          status: 'active',
+          profile_completion_percentage: 100,
+          updated_at: new Date().toISOString()
+        });
+
+      if (error) {
+        toast({
+          title: "Profile Update Failed",
+          description: error.message,
+          variant: "destructive",
+        });
+        return { error };
+      }
+
+      // Refresh the profile data
+      await refreshProfile();
+      
+      toast({
+        title: "Profile Updated",
+        description: "Your profile has been successfully updated.",
+      });
+
+      return { error: null };
+    } catch (error: any) {
+      toast({
+        title: "Profile Update Error",
+        description: error.message,
+        variant: "destructive",
+      });
+      return { error };
     }
   };
 
@@ -245,6 +297,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     hasRole,
     userProfile,
     refreshProfile,
+    updateProfile,
   };
 
   return (

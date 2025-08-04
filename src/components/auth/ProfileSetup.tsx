@@ -103,7 +103,7 @@ export const ProfileSetup = () => {
     }
   });
 
-  const { user, userProfile } = useAuth();
+  const { user, userProfile, updateProfile } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -113,16 +113,39 @@ export const ProfileSetup = () => {
       return;
     }
     
-    // If user already has a profile, redirect to dashboard
-    if (userProfile) {
+    // Load existing profile data if it exists
+    if (userProfile && userProfile.id && userProfile.profile_completion_percentage === 100) {
+      // User has a complete profile, redirect to dashboard
       navigate('/dashboard');
       return;
     }
 
-    if (user) {
+    // If userProfile exists, load the data into form (whether complete or incomplete)
+    if (userProfile && userProfile.id) {
       setProfileData(prev => ({
         ...prev,
-        fullName: user.user_metadata?.full_name || '',
+        fullName: userProfile.name || user.user_metadata?.full_name || user.user_metadata?.name || '',
+        jobTitle: userProfile.position || '',
+        department: userProfile.department || '',
+        organization: userProfile.organization || user.user_metadata?.organization || '',
+        phone: userProfile.phone || '',
+        location: userProfile.location || '',
+        website: userProfile.website || '',
+        experienceLevel: userProfile.experience_level || 'mid',
+        specializations: userProfile.specializations || [],
+        bio: userProfile.bio || '',
+        languages: userProfile.languages || ['العربية'],
+        notificationPreferences: userProfile.notification_preferences || {
+          email: true,
+          sms: false,
+          push: true
+        }
+      }));
+    } else if (user) {
+      // New user, just load basic info from auth metadata
+      setProfileData(prev => ({
+        ...prev,
+        fullName: user.user_metadata?.full_name || user.user_metadata?.name || '',
         organization: user.user_metadata?.organization || ''
       }));
     }
@@ -195,22 +218,16 @@ export const ProfileSetup = () => {
     
     setIsLoading(true);
     try {
-      // TODO: Implement updateProfile in AuthContext
-      console.log('Profile data to save:', {
-        full_name: profileData.fullName,
-        job_title: profileData.jobTitle,
-        department: profileData.department,
-        organization: profileData.organization,
-        phone: profileData.phone,
-        location: profileData.location,
-        website: profileData.website,
-        experience_level: profileData.experienceLevel,
-        specializations: profileData.specializations,
-        bio: profileData.bio,
-        languages: profileData.languages,
-        notification_preferences: profileData.notificationPreferences,
-        profile_completed: true
-      });
+      const { error } = await updateProfile(profileData);
+      
+      if (error) {
+        toast({
+          title: "خطأ في حفظ البيانات",
+          description: error.message || "حدث خطأ غير متوقع",
+          variant: "destructive"
+        });
+        return;
+      }
 
       toast({
         title: "تم إكمال الملف الشخصي",
