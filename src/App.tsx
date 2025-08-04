@@ -74,6 +74,7 @@ import { UploaderSettingsProvider } from "./contexts/UploaderSettingsContext";
 import { StoragePoliciesPage } from "./components/storage/StoragePoliciesPage";
 import AdminRelationships from "./pages/AdminRelationships";
 import AdminEvaluations from "./pages/AdminEvaluations";
+import { TagManagement } from "./pages/TagManagement";
 import { AppShell } from "@/components/layout/AppShell";
 
 const queryClient = new QueryClient();
@@ -346,6 +347,14 @@ const App = () => (
               element={
                 <ProtectedRoute requireProfile requiredRole="admin">
                   <RelationshipOverviewPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route 
+              path="/admin/tags" 
+              element={
+                <ProtectedRoute requireProfile requiredRole="admin">
+                  <TagManagement />
                 </ProtectedRoute>
               }
             />

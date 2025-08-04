@@ -38,6 +38,159 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_feature_toggles: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          description_ar: string | null
+          feature_category: string | null
+          feature_name: string
+          feature_name_ar: string
+          id: string
+          is_beta: boolean | null
+          is_enabled: boolean | null
+          model_configuration: Json | null
+          required_subscription_tier: string | null
+          updated_at: string | null
+          usage_limit_per_month: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          description_ar?: string | null
+          feature_category?: string | null
+          feature_name: string
+          feature_name_ar: string
+          id?: string
+          is_beta?: boolean | null
+          is_enabled?: boolean | null
+          model_configuration?: Json | null
+          required_subscription_tier?: string | null
+          updated_at?: string | null
+          usage_limit_per_month?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          description_ar?: string | null
+          feature_category?: string | null
+          feature_name?: string
+          feature_name_ar?: string
+          id?: string
+          is_beta?: boolean | null
+          is_enabled?: boolean | null
+          model_configuration?: Json | null
+          required_subscription_tier?: string | null
+          updated_at?: string | null
+          usage_limit_per_month?: number | null
+        }
+        Relationships: []
+      }
+      ai_preferences: {
+        Row: {
+          ai_enabled: boolean | null
+          challenge_assist: boolean | null
+          created_at: string | null
+          creativity_level: string | null
+          custom_prompts: Json | null
+          focus_question_generation: boolean | null
+          id: string
+          idea_evaluation_ai: boolean | null
+          language_preference: string | null
+          notification_preferences: Json | null
+          similar_idea_detection: boolean | null
+          smart_partner_matching: boolean | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          ai_enabled?: boolean | null
+          challenge_assist?: boolean | null
+          created_at?: string | null
+          creativity_level?: string | null
+          custom_prompts?: Json | null
+          focus_question_generation?: boolean | null
+          id?: string
+          idea_evaluation_ai?: boolean | null
+          language_preference?: string | null
+          notification_preferences?: Json | null
+          similar_idea_detection?: boolean | null
+          smart_partner_matching?: boolean | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          ai_enabled?: boolean | null
+          challenge_assist?: boolean | null
+          created_at?: string | null
+          creativity_level?: string | null
+          custom_prompts?: Json | null
+          focus_question_generation?: boolean | null
+          id?: string
+          idea_evaluation_ai?: boolean | null
+          language_preference?: string | null
+          notification_preferences?: Json | null
+          similar_idea_detection?: boolean | null
+          smart_partner_matching?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      analytics_events: {
+        Row: {
+          entity_id: string | null
+          entity_type: string | null
+          event_category: string | null
+          event_type: string
+          id: string
+          ip_address: unknown | null
+          page_url: string | null
+          processed: boolean | null
+          properties: Json | null
+          referrer: string | null
+          session_id: string | null
+          tags: Json | null
+          timestamp: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          entity_id?: string | null
+          entity_type?: string | null
+          event_category?: string | null
+          event_type: string
+          id?: string
+          ip_address?: unknown | null
+          page_url?: string | null
+          processed?: boolean | null
+          properties?: Json | null
+          referrer?: string | null
+          session_id?: string | null
+          tags?: Json | null
+          timestamp?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          entity_id?: string | null
+          entity_type?: string | null
+          event_category?: string | null
+          event_type?: string
+          id?: string
+          ip_address?: unknown | null
+          page_url?: string | null
+          processed?: boolean | null
+          properties?: Json | null
+          referrer?: string | null
+          session_id?: string | null
+          tags?: Json | null
+          timestamp?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       bookmark_collections: {
         Row: {
           color: string | null
@@ -4182,6 +4335,114 @@ export type Database = {
           },
         ]
       }
+      knowledge_base: {
+        Row: {
+          author_id: string | null
+          category: string | null
+          content: string
+          content_ar: string
+          created_at: string | null
+          difficulty_level: string | null
+          estimated_read_time: number | null
+          excerpt: string | null
+          excerpt_ar: string | null
+          helpful_count: number | null
+          id: string
+          is_featured: boolean | null
+          is_published: boolean | null
+          last_reviewed_at: string | null
+          not_helpful_count: number | null
+          title: string
+          title_ar: string
+          updated_at: string | null
+          version: number | null
+          view_count: number | null
+        }
+        Insert: {
+          author_id?: string | null
+          category?: string | null
+          content: string
+          content_ar: string
+          created_at?: string | null
+          difficulty_level?: string | null
+          estimated_read_time?: number | null
+          excerpt?: string | null
+          excerpt_ar?: string | null
+          helpful_count?: number | null
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          last_reviewed_at?: string | null
+          not_helpful_count?: number | null
+          title: string
+          title_ar: string
+          updated_at?: string | null
+          version?: number | null
+          view_count?: number | null
+        }
+        Update: {
+          author_id?: string | null
+          category?: string | null
+          content?: string
+          content_ar?: string
+          created_at?: string | null
+          difficulty_level?: string | null
+          estimated_read_time?: number | null
+          excerpt?: string | null
+          excerpt_ar?: string | null
+          helpful_count?: number | null
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          last_reviewed_at?: string | null
+          not_helpful_count?: number | null
+          title?: string
+          title_ar?: string
+          updated_at?: string | null
+          version?: number | null
+          view_count?: number | null
+        }
+        Relationships: []
+      }
+      knowledge_base_tags: {
+        Row: {
+          added_at: string | null
+          added_by: string | null
+          article_id: string
+          id: string
+          tag_id: string
+        }
+        Insert: {
+          added_at?: string | null
+          added_by?: string | null
+          article_id: string
+          id?: string
+          tag_id: string
+        }
+        Update: {
+          added_at?: string | null
+          added_by?: string | null
+          article_id?: string
+          id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_base_tags_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_base"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "knowledge_base_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       landing_page_content: {
         Row: {
           content_ar: string
@@ -4253,6 +4514,126 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      media_content: {
+        Row: {
+          author_id: string | null
+          content_type: string
+          content_url: string
+          created_at: string | null
+          description: string | null
+          description_ar: string | null
+          download_count: number | null
+          duration_seconds: number | null
+          file_size_bytes: number | null
+          id: string
+          is_featured: boolean | null
+          is_public: boolean | null
+          language: string | null
+          metadata: Json | null
+          organization: string | null
+          published_at: string | null
+          rating_average: number | null
+          rating_count: number | null
+          thumbnail_url: string | null
+          title: string
+          title_ar: string
+          transcript_url: string | null
+          updated_at: string | null
+          view_count: number | null
+        }
+        Insert: {
+          author_id?: string | null
+          content_type: string
+          content_url: string
+          created_at?: string | null
+          description?: string | null
+          description_ar?: string | null
+          download_count?: number | null
+          duration_seconds?: number | null
+          file_size_bytes?: number | null
+          id?: string
+          is_featured?: boolean | null
+          is_public?: boolean | null
+          language?: string | null
+          metadata?: Json | null
+          organization?: string | null
+          published_at?: string | null
+          rating_average?: number | null
+          rating_count?: number | null
+          thumbnail_url?: string | null
+          title: string
+          title_ar: string
+          transcript_url?: string | null
+          updated_at?: string | null
+          view_count?: number | null
+        }
+        Update: {
+          author_id?: string | null
+          content_type?: string
+          content_url?: string
+          created_at?: string | null
+          description?: string | null
+          description_ar?: string | null
+          download_count?: number | null
+          duration_seconds?: number | null
+          file_size_bytes?: number | null
+          id?: string
+          is_featured?: boolean | null
+          is_public?: boolean | null
+          language?: string | null
+          metadata?: Json | null
+          organization?: string | null
+          published_at?: string | null
+          rating_average?: number | null
+          rating_count?: number | null
+          thumbnail_url?: string | null
+          title?: string
+          title_ar?: string
+          transcript_url?: string | null
+          updated_at?: string | null
+          view_count?: number | null
+        }
+        Relationships: []
+      }
+      media_content_tags: {
+        Row: {
+          added_at: string | null
+          added_by: string | null
+          id: string
+          media_id: string
+          tag_id: string
+        }
+        Insert: {
+          added_at?: string | null
+          added_by?: string | null
+          id?: string
+          media_id: string
+          tag_id: string
+        }
+        Update: {
+          added_at?: string | null
+          added_by?: string | null
+          id?: string
+          media_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "media_content_tags_media_id_fkey"
+            columns: ["media_id"]
+            isOneToOne: false
+            referencedRelation: "media_content"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "media_content_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       notifications: {
         Row: {
@@ -5020,6 +5401,68 @@ export type Database = {
           view_count?: number
         }
         Relationships: []
+      }
+      org_subscriptions: {
+        Row: {
+          admin_user_id: string
+          billing_email: string | null
+          created_at: string | null
+          current_period_end: string | null
+          current_period_start: string | null
+          id: string
+          organization_metadata: Json | null
+          organization_name: string
+          plan_id: string
+          seats_included: number | null
+          seats_used: number | null
+          status: string | null
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          admin_user_id: string
+          billing_email?: string | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          organization_metadata?: Json | null
+          organization_name: string
+          plan_id: string
+          seats_included?: number | null
+          seats_used?: number | null
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          admin_user_id?: string
+          billing_email?: string | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          organization_metadata?: Json | null
+          organization_name?: string
+          plan_id?: string
+          seats_included?: number | null
+          seats_used?: number | null
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "org_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_plans"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       partner_bookmarks: {
         Row: {
@@ -5961,6 +6404,63 @@ export type Database = {
           },
         ]
       }
+      subscription_plans: {
+        Row: {
+          created_at: string | null
+          currency: string | null
+          description: string | null
+          description_ar: string | null
+          features: Json | null
+          id: string
+          is_active: boolean | null
+          is_public: boolean | null
+          limits: Json | null
+          name: string
+          name_ar: string
+          price_monthly: number | null
+          price_yearly: number | null
+          stripe_price_id: string | null
+          stripe_product_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          description_ar?: string | null
+          features?: Json | null
+          id?: string
+          is_active?: boolean | null
+          is_public?: boolean | null
+          limits?: Json | null
+          name: string
+          name_ar: string
+          price_monthly?: number | null
+          price_yearly?: number | null
+          stripe_price_id?: string | null
+          stripe_product_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          description_ar?: string | null
+          features?: Json | null
+          id?: string
+          is_active?: boolean | null
+          is_public?: boolean | null
+          limits?: Json | null
+          name?: string
+          name_ar?: string
+          price_monthly?: number | null
+          price_yearly?: number | null
+          stripe_price_id?: string | null
+          stripe_product_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       suspicious_activities: {
         Row: {
           activity_type: string
@@ -6736,6 +7236,65 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_subscriptions: {
+        Row: {
+          cancel_at_period_end: boolean | null
+          created_at: string | null
+          current_period_end: string | null
+          current_period_start: string | null
+          id: string
+          plan_id: string
+          status: string | null
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          trial_end: string | null
+          trial_start: string | null
+          updated_at: string | null
+          usage_metrics: Json | null
+          user_id: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          plan_id: string
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          trial_end?: string | null
+          trial_start?: string | null
+          updated_at?: string | null
+          usage_metrics?: Json | null
+          user_id: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          plan_id?: string
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          trial_end?: string | null
+          trial_start?: string | null
+          updated_at?: string | null
+          usage_metrics?: Json | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_plans"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_tags: {
         Row: {
