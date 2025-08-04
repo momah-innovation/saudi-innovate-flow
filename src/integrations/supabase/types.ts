@@ -8193,7 +8193,7 @@ export type Database = {
         Returns: undefined
       }
       user_has_access_to_challenge: {
-        Args: { challenge_id_param: string }
+        Args: { challenge_id: string }
         Returns: boolean
       }
       validate_role_assignment: {
