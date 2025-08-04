@@ -206,16 +206,6 @@ const ProfileSetup = () => {
 
   return (
     <AppShell>
-      {/* SIMPLE TEST - THIS SHOULD ALWAYS SHOW */}
-      <div className="m-4 p-4 bg-red-100 border-2 border-red-500 rounded-lg">
-        <h2 className="text-xl font-bold text-red-700">🚨 TEST: Can you see this red box?</h2>
-        <p>User logged in: {user ? 'YES' : 'NO'}</p>
-        <p>User ID: {user?.id}</p>
-        <p>User Profile: {userProfile ? 'LOADED' : 'NULL'}</p>
-        <p>Profile completion: {userProfile?.profile_completion_percentage}%</p>
-        <p>User roles: {userProfile?.user_roles?.map(r => r.role).join(', ') || 'None'}</p>
-        <p>Current time: {new Date().toLocaleTimeString()}</p>
-      </div>
       <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4">
       <div className="max-w-2xl mx-auto py-8">
         <div className="text-center mb-8">
