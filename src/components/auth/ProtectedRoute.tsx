@@ -13,7 +13,7 @@ interface ProtectedRouteProps {
   requiredRole?: string;
   subscriptionRequired?: boolean;
   redirectTo?: string;
-  theme?: 'default' | 'admin' | 'expert' | 'workspace';
+  
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
@@ -23,7 +23,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   requiredRole,
   subscriptionRequired = false,
   redirectTo,
-  theme = 'default',
+  
 }) => {
   const { user, userProfile, hasRole } = useAuth();
   const location = useLocation();
@@ -40,16 +40,6 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     userRoles: userProfile?.user_roles?.map(r => r.role)
   });
 
-  // Apply theme classes to body
-  React.useEffect(() => {
-    const body = document.body;
-    body.classList.remove('theme-default', 'theme-admin', 'theme-expert', 'theme-workspace');
-    body.classList.add(`theme-${theme}`);
-    
-    return () => {
-      body.classList.remove(`theme-${theme}`);
-    };
-  }, [theme]);
 
   // Check authentication
   if (requireAuth && !user) {
@@ -80,5 +70,5 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     console.log('Subscription check - implement in Phase 4');
   }
 
-  return <div className={`route-theme-${theme}`}>{children}</div>;
+  return <div>{children}</div>;
 };

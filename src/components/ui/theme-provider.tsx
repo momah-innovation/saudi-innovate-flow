@@ -61,9 +61,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       root.classList.add(theme.colorScheme);
     }
     
-    // Apply theme variant classes
-    root.classList.remove('theme-default', 'theme-modern', 'theme-minimal', 'theme-vibrant');
-    root.classList.add(`theme-${theme.variant}`);
+    // Remove any theme variant classes
     
     // Apply border radius
     root.classList.remove('radius-none', 'radius-sm', 'radius-md', 'radius-lg', 'radius-xl');

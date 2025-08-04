@@ -320,7 +320,7 @@ const App = () => (
                     
                     {/* User Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_USER} element={
-                      <ProtectedRoute requireProfile theme="workspace">
+                      <ProtectedRoute requireProfile>
                         <AppShell>
                           <div className="container mx-auto px-4 py-16">
                             <h1 className="text-2xl font-bold mb-6">مساحة عمل المستخدم</h1>
@@ -348,7 +348,7 @@ const App = () => (
 
                     {/* Expert Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_EXPERT} element={
-                      <ProtectedRoute requireProfile theme="expert">
+                      <ProtectedRoute requireProfile>
                         <AppShell>
                           <div className="container mx-auto px-4 py-16">
                             <h1 className="text-2xl font-bold mb-6">مساحة عمل الخبير</h1>
@@ -376,7 +376,7 @@ const App = () => (
 
                     {/* Organization Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_ORG} element={
-                      <ProtectedRoute requireProfile theme="workspace">
+                      <ProtectedRoute requireProfile>
                         <AppShell>
                           <div className="container mx-auto px-4 py-16">
                             <h1 className="text-2xl font-bold mb-6">مساحة عمل المؤسسة</h1>
@@ -404,7 +404,7 @@ const App = () => (
 
                     {/* Admin Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_ADMIN} element={
-                      <ProtectedRoute requireProfile requiredRole="admin" theme="admin">
+                      <ProtectedRoute requireProfile requiredRole="admin">
                         <AppShell>
                           <div className="container mx-auto px-4 py-16">
                             <h1 className="text-2xl font-bold mb-6">مساحة عمل الإدارة</h1>
