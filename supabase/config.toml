@@ -1,5 +1,8 @@
 project_id = "jxpbiljkoibvqxzdkgod"
 
+[functions.calculate-profile-completion]
+verify_jwt = true
+
 [functions.elevate-user-privileges]
 verify_jwt = false
 

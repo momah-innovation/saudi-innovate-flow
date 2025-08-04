@@ -35,6 +35,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const fetchUserProfile = async (userId: string) => {
     try {
+      // First, trigger profile completion calculation
+      console.log('Triggering profile completion calculation for user:', userId);
+      const { error: calcError } = await supabase.functions.invoke('calculate-profile-completion', {
+        body: { user_id: userId }
+      });
+
+      if (calcError) {
+        console.warn('Warning: Failed to calculate profile completion:', calcError);
+        // Continue with profile fetch even if calculation fails
+      }
+
       // Use Promise.all to fetch profile and roles simultaneously
       const [profileResponse, rolesResponse] = await Promise.all([
         supabase
