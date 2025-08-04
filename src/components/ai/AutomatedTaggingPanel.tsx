@@ -25,10 +25,13 @@ interface TagSuggestion {
   id: string;
   entity_id: string;
   entity_type: string;
-  suggested_tags: any[];
-  confidence_scores: Record<string, number>;
-  status: 'pending' | 'approved' | 'rejected';
+  suggested_tags: any;
+  confidence_scores: any;
+  status: string;
   created_at: string;
+  reviewed_by?: string;
+  suggested_by?: string;
+  updated_at?: string;
 }
 
 interface EntityData {
@@ -74,7 +77,11 @@ export const AutomatedTaggingPanel: React.FC = () => {
       const { data, error } = await query;
       if (error) throw error;
 
-      setSuggestions(data || []);
+      setSuggestions((data || []).map(item => ({
+        ...item,
+        suggested_tags: Array.isArray(item.suggested_tags) ? item.suggested_tags : [],
+        confidence_scores: item.confidence_scores || {}
+      })));
     } catch (error) {
       console.error('Error fetching tag suggestions:', error);
       toast({

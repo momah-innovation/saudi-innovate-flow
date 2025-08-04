@@ -100,9 +100,9 @@ export const SmartSearchPanel: React.FC = () => {
     }
   };
 
-  const saveSearchToHistory = (searchQuery: string) => {
+  const saveSearchToHistory = async (searchQuery: string) => {
     try {
-      const { data: { user } } = supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user || !searchQuery.trim()) return;
 
       const updatedHistory = [

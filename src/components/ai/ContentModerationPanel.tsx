@@ -30,8 +30,11 @@ interface ModerationLog {
   flagged: boolean;
   confidence_score: number;
   categories_detected: string[];
-  status: 'pending' | 'approved' | 'rejected' | 'requires_review';
+  status: string;
   created_at: string;
+  moderated_by?: string;
+  reviewer_id?: string;
+  updated_at?: string;
 }
 
 export const ContentModerationPanel: React.FC = () => {
@@ -66,7 +69,10 @@ export const ContentModerationPanel: React.FC = () => {
       const { data, error } = await query;
       if (error) throw error;
 
-      setLogs(data || []);
+      setLogs((data || []).map(item => ({
+        ...item,
+        status: item.status as 'pending' | 'approved' | 'rejected' | 'requires_review'
+      })));
     } catch (error) {
       console.error('Error fetching moderation logs:', error);
       toast({
