@@ -312,6 +312,8 @@ export default function UserDashboard() {
           innovationScore: stats.innovationScore
         }}
         onNavigate={navigate}
+        userRole={primaryRole}
+        rolePermissions={permissions}
       />
       
       <PageLayout
