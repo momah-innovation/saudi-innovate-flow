@@ -34,7 +34,6 @@ export function NavigationSidebar() {
   const userProfile = null; // Simplified for now
   const [isOldLinksOpen, setIsOldLinksOpen] = React.useState(false);
 
-  // Memoized menu items for performance - reorganized with new pages
   const menuItems = useMemo(() => {
     const baseItems = [
       { 
@@ -53,7 +52,7 @@ export function NavigationSidebar() {
         id: 'challenges-browse', 
         label: 'Browse Challenges', 
         arabicLabel: 'استكشاف التحديات',
-        icon: Search, 
+        icon: Target, 
         path: '/challenges',
         badge: 12,
         group: 'discover',
@@ -70,38 +69,26 @@ export function NavigationSidebar() {
         roles: ['all'] 
       },
       { 
-        id: 'public-statistics', 
-        label: 'Statistics', 
-        arabicLabel: 'الإحصائيات',
-        icon: BarChart3, 
-        path: '/statistics',
-        group: 'discover',
-        roles: ['admin'] 
-      },
-    ];
-
-    const partnerItems = [
-      { 
-        id: 'partner-dashboard', 
-        label: 'Partner Dashboard', 
-        arabicLabel: 'لوحة تحكم الشريك',
-        icon: Briefcase, 
-        path: '/partner-dashboard',
-        group: 'partners',
-        roles: ['partner', 'admin'] 
-      },
-      { 
         id: 'opportunities', 
         label: 'Partnership Opportunities', 
         arabicLabel: 'فرص الشراكة',
-        icon: Target, 
+        icon: Briefcase, 
         path: '/opportunities',
-        group: 'partners',
+        group: 'discover',
+        roles: ['all'] 
+      },
+      { 
+        id: 'search', 
+        label: 'Smart Search', 
+        arabicLabel: 'البحث الذكي',
+        icon: Search, 
+        path: '/search',
+        group: 'discover',
         roles: ['all'] 
       },
     ];
 
-    const workflowItems = [
+    const personalItems = [
       { 
         id: 'ideas', 
         label: 'My Ideas', 
@@ -109,8 +96,17 @@ export function NavigationSidebar() {
         icon: Lightbulb, 
         path: '/ideas',
         badge: 3,
-        group: 'workflow',
+        group: 'personal',
         roles: ['innovator', 'expert', 'all'] 
+      },
+      { 
+        id: 'idea-submission', 
+        label: 'Submit New Idea', 
+        arabicLabel: 'تقديم فكرة جديدة',
+        icon: Lightbulb, 
+        path: '/ideas/submit',
+        group: 'personal',
+        roles: ['all'] 
       },
       { 
         id: 'saved-items', 
@@ -118,18 +114,8 @@ export function NavigationSidebar() {
         arabicLabel: 'العناصر المحفوظة',
         icon: Bookmark, 
         path: '/saved',
-        group: 'workflow',
+        group: 'personal',
         roles: ['all'] 
-      },
-      { 
-        id: 'evaluations', 
-        label: 'Evaluations', 
-        arabicLabel: 'التقييمات',
-        icon: UserCheck, 
-        path: '/evaluations',
-        badge: 8,
-        group: 'workflow',
-        roles: ['expert', 'team', 'admin'] 
       },
       { 
         id: 'user-profile', 
@@ -142,55 +128,83 @@ export function NavigationSidebar() {
       },
     ];
 
-    const managementItems = [
+    const workflowItems = [
       { 
-        id: 'campaigns', 
-        label: 'Campaigns', 
-        arabicLabel: 'الحملات',
-        icon: Calendar, 
-        path: '/admin/campaigns',
-        badge: 3,
-        group: 'management',
-        roles: ['team', 'admin'] 
+        id: 'evaluations', 
+        label: 'Evaluations', 
+        arabicLabel: 'التقييمات',
+        icon: UserCheck, 
+        path: '/evaluations',
+        badge: 8,
+        group: 'workflow',
+        roles: ['expert', 'team', 'admin'] 
       },
       { 
-        id: 'admin-challenges', 
-        label: 'Challenge Management', 
-        arabicLabel: 'إدارة التحديات',
-        icon: Target, 
-        path: '/admin/challenges',
-        badge: 5,
-        group: 'management',
-        roles: ['team', 'admin'] 
-      },
-      { 
-        id: 'events', 
-        label: 'Events', 
-        arabicLabel: 'الفعاليات',
+        id: 'expert-dashboard', 
+        label: 'Expert Dashboard', 
+        arabicLabel: 'لوحة تحكم الخبير',
         icon: Award, 
-        path: '/admin/events',
-        badge: 2,
-        group: 'management',
-        roles: ['team', 'admin'] 
+        path: '/expert',
+        group: 'workflow',
+        roles: ['expert', 'admin'] 
       },
       { 
-        id: 'ideas-management', 
-        label: 'Ideas Management', 
-        arabicLabel: 'إدارة الأفكار',
-        icon: Lightbulb, 
-        path: '/admin/ideas',
-        group: 'management',
+        id: 'partner-dashboard', 
+        label: 'Partner Dashboard', 
+        arabicLabel: 'لوحة تحكم الشريك',
+        icon: Briefcase, 
+        path: '/partner-dashboard',
+        group: 'workflow',
+        roles: ['partner', 'admin'] 
+      },
+      { 
+        id: 'team-workspace', 
+        label: 'Team Workspace', 
+        arabicLabel: 'مساحة عمل الفريق',
+        icon: Users, 
+        path: '/team',
+        group: 'workflow',
         roles: ['team', 'admin'] 
+      },
+    ];
+
+    const subscriptionItems = [
+      { 
+        id: 'subscription', 
+        label: 'Subscription Plans', 
+        arabicLabel: 'خطط الاشتراك',
+        icon: DollarSign, 
+        path: '/subscription',
+        group: 'subscription',
+        roles: ['all'] 
+      },
+      { 
+        id: 'ai-preferences', 
+        label: 'AI Preferences', 
+        arabicLabel: 'إعدادات الذكاء الاصطناعي',
+        icon: Brain, 
+        path: '/ai-preferences',
+        group: 'subscription',
+        roles: ['all'] 
       },
     ];
 
     const analyticsItems = [
       { 
         id: 'analytics', 
-        label: 'Analytics', 
-        arabicLabel: 'التحليلات',
+        label: 'Analytics Dashboard', 
+        arabicLabel: 'لوحة التحليلات',
         icon: BarChart3, 
         path: '/analytics',
+        group: 'analytics',
+        roles: ['team', 'admin'] 
+      },
+      { 
+        id: 'statistics', 
+        label: 'Platform Statistics', 
+        arabicLabel: 'إحصائيات المنصة',
+        icon: TrendingUp, 
+        path: '/statistics',
         group: 'analytics',
         roles: ['team', 'admin'] 
       },
@@ -203,25 +217,103 @@ export function NavigationSidebar() {
         group: 'analytics',
         roles: ['team', 'admin'] 
       },
+      { 
+        id: 'reports', 
+        label: 'Reports', 
+        arabicLabel: 'التقارير',
+        icon: FileText, 
+        path: '/reports',
+        group: 'analytics',
+        roles: ['team', 'admin'] 
+      },
     ];
 
     const adminItems = [
       { 
-        id: 'partners', 
-        label: 'Partners', 
-        arabicLabel: 'الشركاء',
+        id: 'admin-dashboard', 
+        label: 'Admin Dashboard', 
+        arabicLabel: 'لوحة التحكم الإدارية',
+        icon: Shield, 
+        path: '/admin',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'admin-challenges', 
+        label: 'Manage Challenges', 
+        arabicLabel: 'إدارة التحديات',
+        icon: Target, 
+        path: '/admin/challenges',
+        badge: 5,
+        group: 'admin',
+        roles: ['team', 'admin'] 
+      },
+      { 
+        id: 'admin-ideas', 
+        label: 'Manage Ideas', 
+        arabicLabel: 'إدارة الأفكار',
+        icon: Lightbulb, 
+        path: '/admin/ideas',
+        group: 'admin',
+        roles: ['team', 'admin'] 
+      },
+      { 
+        id: 'admin-events', 
+        label: 'Manage Events', 
+        arabicLabel: 'إدارة الفعاليات',
+        icon: Calendar, 
+        path: '/admin/events',
+        badge: 2,
+        group: 'admin',
+        roles: ['team', 'admin'] 
+      },
+      { 
+        id: 'admin-users', 
+        label: 'User Management', 
+        arabicLabel: 'إدارة المستخدمين',
+        icon: Users, 
+        path: '/admin/users',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'admin-partners', 
+        label: 'Partner Management', 
+        arabicLabel: 'إدارة الشركاء',
         icon: Briefcase, 
         path: '/admin/partners',
         group: 'admin',
         roles: ['admin'] 
       },
       { 
+        id: 'admin-evaluations', 
+        label: 'Evaluation Management', 
+        arabicLabel: 'إدارة التقييمات',
+        icon: UserCheck, 
+        path: '/admin/evaluations',
+        group: 'admin',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'admin-campaigns', 
+        label: 'Campaign Management', 
+        arabicLabel: 'إدارة الحملات',
+        icon: Zap, 
+        path: '/admin/campaigns',
+        badge: 3,
+        group: 'admin',
+        roles: ['team', 'admin'] 
+      },
+    ];
+
+    const systemItems = [
+      { 
         id: 'storage-management', 
         label: 'Storage Management', 
         arabicLabel: 'إدارة التخزين',
         icon: Database, 
         path: '/admin/storage',
-        group: 'admin',
+        group: 'system',
         roles: ['admin'] 
       },
       { 
@@ -230,55 +322,42 @@ export function NavigationSidebar() {
         arabicLabel: 'إدارة العلامات',
         icon: Tag, 
         path: '/admin/tags',
-        group: 'admin',
+        group: 'system',
         roles: ['admin', 'team'] 
       },
       { 
-        id: 'admin-relationships', 
-        label: 'Relationships', 
-        arabicLabel: 'العلاقات',
+        id: 'system-settings', 
+        label: 'System Settings', 
+        arabicLabel: 'إعدادات النظام',
+        icon: Settings, 
+        path: '/admin/system-settings',
+        group: 'system',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'system-analytics', 
+        label: 'System Analytics', 
+        arabicLabel: 'تحليلات النظام',
+        icon: Activity, 
+        path: '/admin/system-analytics',
+        group: 'system',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'organizational-structure', 
+        label: 'Organizational Structure', 
+        arabicLabel: 'الهيكل التنظيمي',
+        icon: Building, 
+        path: '/admin/organizational-structure',
+        group: 'system',
+        roles: ['admin'] 
+      },
+      { 
+        id: 'sectors-management', 
+        label: 'Sectors Management', 
+        arabicLabel: 'إدارة القطاعات',
         icon: Network, 
-        path: '/admin/relationships',
-        group: 'admin',
-        roles: ['admin'] 
-      },
-    ];
-
-    // New dedicated system pages
-    const systemItems = [
-      { 
-        id: 'file-uploader-demo', 
-        label: 'File Upload System', 
-        arabicLabel: 'نظام رفع الملفات',
-        icon: Upload, 
-        path: '/admin/file-uploader',
-        group: 'system',
-        roles: ['admin', 'team'] 
-      },
-      { 
-        id: 'team-management', 
-        label: 'Team Management', 
-        arabicLabel: 'إدارة الفريق',
-        icon: Users, 
-        path: '/team-management',
-        group: 'system',
-        roles: ['admin', 'team'] 
-      },
-      { 
-        id: 'profile-management', 
-        label: 'Profile Management', 
-        arabicLabel: 'إدارة الملفات الشخصية',
-        icon: Edit, 
-        path: '/profile-management',
-        group: 'system',
-        roles: ['admin'] 
-      },
-      { 
-        id: 'user-management', 
-        label: 'User Management', 
-        arabicLabel: 'إدارة المستخدمين',
-        icon: UserCheck, 
-        path: '/user-management',
+        path: '/admin/sectors',
         group: 'system',
         roles: ['admin'] 
       },
@@ -287,7 +366,7 @@ export function NavigationSidebar() {
     const settingsItems = [
       { 
         id: 'settings', 
-        label: 'Settings', 
+        label: 'User Settings', 
         arabicLabel: 'الإعدادات',
         icon: Settings, 
         path: '/settings',
@@ -314,29 +393,7 @@ export function NavigationSidebar() {
       },
     ];
 
-    // Old/Legacy links that will be moved to collapsible section
-    const oldItems = [
-      { 
-        id: 'old-admin-dashboard', 
-        label: 'Legacy Admin Dashboard', 
-        arabicLabel: 'لوحة التحكم الإدارية القديمة',
-        icon: Archive, 
-        path: '/admin-dashboard',
-        group: 'old',
-        roles: ['admin'] 
-      },
-      { 
-        id: 'old-relationships', 
-        label: 'Legacy Relationships View', 
-        arabicLabel: 'عرض العلاقات القديم',
-        icon: Archive, 
-        path: '/relationships',
-        group: 'old',
-        roles: ['admin'] 
-      },
-    ];
-
-    return [...baseItems, ...discoverItems, ...partnerItems, ...workflowItems, ...managementItems, ...analyticsItems, ...adminItems, ...systemItems, ...settingsItems, ...oldItems];
+    return [...baseItems, ...discoverItems, ...personalItems, ...workflowItems, ...subscriptionItems, ...analyticsItems, ...adminItems, ...systemItems, ...settingsItems];
   }, []);
 
   // Check if user can see a menu item
@@ -366,23 +423,20 @@ export function NavigationSidebar() {
     return groups;
   }, [menuItems, userProfile]);
 
-  // Group labels with translations
   const groupLabels: Record<string, { en: string; ar: string }> = {
     main: { en: 'Dashboard', ar: 'لوحة التحكم' },
     discover: { en: 'Discover', ar: 'استكشاف' },
     personal: { en: 'Personal', ar: 'شخصي' },
     workflow: { en: 'Workflow', ar: 'سير العمل' },
-    partners: { en: 'Partners', ar: 'الشركاء' },
-    management: { en: 'Management', ar: 'الإدارة' },
-    analytics: { en: 'Analytics', ar: 'التحليلات' },
+    subscription: { en: 'Subscription & AI', ar: 'الاشتراك والذكاء الاصطناعي' },
+    analytics: { en: 'Analytics & Reports', ar: 'التحليلات والتقارير' },
     admin: { en: 'Administration', ar: 'الإدارة العامة' },
     system: { en: 'System Management', ar: 'إدارة النظام' },
-    settings: { en: 'Settings', ar: 'الإعدادات' },
-    old: { en: 'Legacy Links', ar: 'الروابط القديمة' }
+    settings: { en: 'Settings & Help', ar: 'الإعدادات والمساعدة' }
   };
 
   // Priority order for groups
-  const groupOrder = ['main', 'discover', 'personal', 'workflow', 'partners', 'management', 'analytics', 'admin', 'system', 'settings'];
+  const groupOrder = ['main', 'discover', 'personal', 'workflow', 'subscription', 'analytics', 'admin', 'system', 'settings'];
 
   const renderMenuItems = (items: any[]) => {
     return items.map((item) => {
