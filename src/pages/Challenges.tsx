@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { PageLayout } from '@/components/layout/PageLayout';
+import { AppShell } from '@/components/layout/AppShell';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -170,186 +170,193 @@ export default function Challenges() {
 
   if (loading) {
     return (
-      <PageLayout 
-        title="التحديات الابتكارية"
-        description="استكشف التحديات المتاحة وشارك في الابتكار"
-      >
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      <AppShell>
+        <div className="container mx-auto px-4 py-8">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold mb-2">التحديات الابتكارية</h1>
+            <p className="text-muted-foreground">استكشف التحديات المتاحة وشارك في الابتكار</p>
+          </div>
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+          </div>
         </div>
-      </PageLayout>
+      </AppShell>
     );
   }
 
   return (
-    <PageLayout 
-      title="التحديات الابتكارية"
-      description="استكشف التحديات المتاحة وشارك في الابتكار"
-    >
-      <div className="space-y-6">
-        {/* Header Actions */}
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="flex flex-1 gap-4">
-            <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="البحث في التحديات..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+    <AppShell>
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">التحديات الابتكارية</h1>
+          <p className="text-muted-foreground">استكشف التحديات المتاحة وشارك في الابتكار</p>
+        </div>
+        
+        <div className="space-y-6">
+          {/* Header Actions */}
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-1 gap-4">
+              <div className="relative flex-1 max-w-sm">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="البحث في التحديات..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              
+              <TagSelector
+                selectedTags={selectedTags}
+                onTagsChange={setSelectedTags}
+                category="challenge"
+                placeholder="تصفية بالعلامات..."
+                className="max-w-xs"
               />
             </div>
             
-            <TagSelector
-              selectedTags={selectedTags}
-              onTagsChange={setSelectedTags}
-              category="challenge"
-              placeholder="تصفية بالعلامات..."
-              className="max-w-xs"
-            />
+            {hasRole('admin') && (
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                إضافة تحدي جديد
+              </Button>
+            )}
           </div>
-          
-          {hasRole('admin') && (
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              إضافة تحدي جديد
-            </Button>
-          )}
-        </div>
 
-        {/* Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="all">جميع التحديات</TabsTrigger>
-            <TabsTrigger value="active">النشطة</TabsTrigger>
-            <TabsTrigger value="upcoming">القادمة</TabsTrigger>
-            <TabsTrigger value="completed">المكتملة</TabsTrigger>
-          </TabsList>
+          {/* Tabs */}
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="all">جميع التحديات</TabsTrigger>
+              <TabsTrigger value="active">النشطة</TabsTrigger>
+              <TabsTrigger value="upcoming">القادمة</TabsTrigger>
+              <TabsTrigger value="completed">المكتملة</TabsTrigger>
+            </TabsList>
 
-          <TabsContent value={activeTab} className="mt-6">
-            {filteredChallenges.length === 0 ? (
-              <Card>
-                <CardContent className="flex flex-col items-center justify-center py-16">
-                  <Target className="h-12 w-12 text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">لا توجد تحديات</h3>
-                  <p className="text-muted-foreground text-center">
-                    لا توجد تحديات متاحة حاليًا وفقًا للمعايير المحددة
-                  </p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {filteredChallenges.map((challenge) => (
-                  <Card key={challenge.id} className="group hover:shadow-lg transition-all duration-200">
-                    {challenge.image_url && (
-                      <div className="aspect-video overflow-hidden rounded-t-lg">
-                        <img
-                          src={challenge.image_url}
-                          alt={challenge.title_ar}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                        />
-                      </div>
-                    )}
-                    
-                    <CardHeader className="pb-4">
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <CardTitle className="text-lg line-clamp-2 flex-1">
-                          {challenge.title_ar}
-                        </CardTitle>
-                        <Badge 
-                          variant="secondary" 
-                          className={`${getStatusColor(challenge.status)} text-white`}
-                        >
-                          {getStatusText(challenge.status)}
-                        </Badge>
-                      </div>
+            <TabsContent value={activeTab} className="mt-6">
+              {filteredChallenges.length === 0 ? (
+                <Card>
+                  <CardContent className="flex flex-col items-center justify-center py-16">
+                    <Target className="h-12 w-12 text-muted-foreground mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">لا توجد تحديات</h3>
+                    <p className="text-muted-foreground text-center">
+                      لا توجد تحديات متاحة حاليًا وفقًا للمعايير المحددة
+                    </p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {filteredChallenges.map((challenge) => (
+                    <Card key={challenge.id} className="group hover:shadow-lg transition-all duration-200">
+                      {challenge.image_url && (
+                        <div className="aspect-video overflow-hidden rounded-t-lg">
+                          <img
+                            src={challenge.image_url}
+                            alt={challenge.title_ar}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                          />
+                        </div>
+                      )}
                       
-                      <p className="text-sm text-muted-foreground line-clamp-3">
-                        {challenge.description_ar}
-                      </p>
-                    </CardHeader>
+                      <CardHeader className="pb-4">
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <CardTitle className="text-lg line-clamp-2 flex-1">
+                            {challenge.title_ar}
+                          </CardTitle>
+                          <Badge 
+                            variant="secondary" 
+                            className={`${getStatusColor(challenge.status)} text-white`}
+                          >
+                            {getStatusText(challenge.status)}
+                          </Badge>
+                        </div>
+                        
+                        <p className="text-sm text-muted-foreground line-clamp-3">
+                          {challenge.description_ar}
+                        </p>
+                      </CardHeader>
 
-                    <CardContent className="pt-0">
-                      <div className="space-y-4">
-                        {/* Tags */}
-                        {challenge.tag_names_ar && challenge.tag_names_ar.length > 0 && (
-                          <div className="flex flex-wrap gap-1">
-                            {challenge.tag_names_ar.slice(0, 3).map((tag, index) => (
-                              <Badge
-                                key={index}
-                                variant="outline"
-                                style={{ 
-                                  borderColor: challenge.tag_colors?.[index] || '#3B82F6',
-                                  color: challenge.tag_colors?.[index] || '#3B82F6'
-                                }}
-                                className="text-xs"
-                              >
-                                {tag}
-                              </Badge>
-                            ))}
-                            {challenge.tag_names_ar.length > 3 && (
-                              <Badge variant="outline" className="text-xs">
-                                +{challenge.tag_names_ar.length - 3}
-                              </Badge>
-                            )}
-                          </div>
-                        )}
-
-                        {/* Stats */}
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <Users className="h-4 w-4" />
-                            <span>{challenge.participant_count || 0}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Target className="h-4 w-4" />
-                            <span>{challenge.submission_count || 0}</span>
-                          </div>
-                          {challenge.end_date && (
-                            <div className="flex items-center gap-1">
-                              <Calendar className="h-4 w-4" />
-                              <span>{format(new Date(challenge.end_date), 'MMM dd')}</span>
+                      <CardContent className="pt-0">
+                        <div className="space-y-4">
+                          {/* Tags */}
+                          {challenge.tag_names_ar && challenge.tag_names_ar.length > 0 && (
+                            <div className="flex flex-wrap gap-1">
+                              {challenge.tag_names_ar.slice(0, 3).map((tag, index) => (
+                                <Badge
+                                  key={index}
+                                  variant="outline"
+                                  style={{ 
+                                    borderColor: challenge.tag_colors?.[index] || '#3B82F6',
+                                    color: challenge.tag_colors?.[index] || '#3B82F6'
+                                  }}
+                                  className="text-xs"
+                                >
+                                  {tag}
+                                </Badge>
+                              ))}
+                              {challenge.tag_names_ar.length > 3 && (
+                                <Badge variant="outline" className="text-xs">
+                                  +{challenge.tag_names_ar.length - 3}
+                                </Badge>
+                              )}
                             </div>
                           )}
-                        </div>
 
-                        {/* Budget */}
-                        {challenge.estimated_budget && (
-                          <div className="flex items-center gap-2">
-                            <Award className="h-4 w-4 text-primary" />
-                            <span className="font-semibold text-primary">
-                              {challenge.estimated_budget.toLocaleString()} ريال
-                            </span>
+                          {/* Stats */}
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Users className="h-4 w-4" />
+                              <span>{challenge.participant_count || 0}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Target className="h-4 w-4" />
+                              <span>{challenge.submission_count || 0}</span>
+                            </div>
+                            {challenge.end_date && (
+                              <div className="flex items-center gap-1">
+                                <Calendar className="h-4 w-4" />
+                                <span>{format(new Date(challenge.end_date), 'MMM dd')}</span>
+                              </div>
+                            )}
                           </div>
-                        )}
 
-                        {/* Actions */}
-                        <div className="flex gap-2 pt-2">
-                          <Button variant="outline" size="sm" className="flex-1">
-                            <Eye className="w-4 h-4 mr-2" />
-                            عرض التفاصيل
-                          </Button>
-                          
-                          {challenge.status === 'active' && user && (
-                            <Button 
-                              size="sm" 
-                              onClick={() => handleParticipate(challenge.id)}
-                              className="flex-1"
-                            >
-                              <Target className="w-4 h-4 mr-2" />
-                              شارك الآن
-                            </Button>
+                          {/* Budget */}
+                          {challenge.estimated_budget && (
+                            <div className="flex items-center gap-2">
+                              <Award className="h-4 w-4 text-primary" />
+                              <span className="font-semibold text-primary">
+                                {challenge.estimated_budget.toLocaleString()} ريال
+                              </span>
+                            </div>
                           )}
+
+                          {/* Actions */}
+                          <div className="flex gap-2 pt-2">
+                            <Button variant="outline" size="sm" className="flex-1">
+                              <Eye className="w-4 h-4 mr-2" />
+                              عرض التفاصيل
+                            </Button>
+                            
+                            {challenge.status === 'active' && user && (
+                              <Button 
+                                size="sm" 
+                                onClick={() => handleParticipate(challenge.id)}
+                                className="flex-1"
+                              >
+                                <Target className="w-4 h-4 mr-2" />
+                                شارك الآن
+                              </Button>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
-    </PageLayout>
+    </AppShell>
   );
 }
