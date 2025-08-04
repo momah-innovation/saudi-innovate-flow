@@ -54,7 +54,7 @@ import PartnerDashboard from "./pages/PartnerDashboard";
 import PartnerProfile from "./pages/PartnerProfile";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
-import ChallengesBrowse from "./pages/ChallengesBrowse";
+import Challenges from "./pages/Challenges";
 import ChallengeActivityHub from "./pages/ChallengeActivityHub";
 import EvaluationsPage from "./pages/EvaluationsPage";
 import EventRegistration from "./pages/EventRegistration";
@@ -721,7 +721,7 @@ const App = () => (
             />
             <Route path="/" element={<LandingPage />} />
             {/* Missing pages routes */}
-            <Route path="/challenges" element={<ChallengesBrowse />} />
+            <Route path="/challenges" element={<Challenges />} />
             <Route path="/evaluations" element={<EvaluationsPage />} />
             <Route path="/event-registration" element={<EventRegistration />} />
             <Route path="/stakeholder-dashboard" element={<StakeholderDashboard />} />
