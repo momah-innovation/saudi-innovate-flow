@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '@/hooks/useAppTranslation';
+import { useRoleAccess } from '@/hooks/useRoleAccess';
+import { useGlobalRoleTheme } from '@/hooks/useGlobalRoleTheme';
 import { 
   AdminPageWrapper, 
   AdminContentGrid, 
@@ -21,6 +23,16 @@ interface AdminDashboardProps {
 export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, canViewAnalytics }: AdminDashboardProps) {
   const { t, language } = useTranslation();
   const navigate = useNavigate();
+  const { getPrimaryRole } = useRoleAccess();
+  
+  // Apply role-based theming
+  useGlobalRoleTheme();
+  
+  // Log current role for debugging
+  useEffect(() => {
+    const role = getPrimaryRole();
+    console.log('Admin Dashboard - Current role:', role);
+  }, [getPrimaryRole]);
 
   const adminActions = [
     // Dashboard Routes (New unified admin interface)
