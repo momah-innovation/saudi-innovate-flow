@@ -5127,6 +5127,7 @@ export type Database = {
           phone: string | null
           position: string | null
           preferred_language: string | null
+          profile_completion_percentage: number | null
           profile_image_url: string | null
           status: string | null
           updated_at: string | null
@@ -5146,6 +5147,7 @@ export type Database = {
           phone?: string | null
           position?: string | null
           preferred_language?: string | null
+          profile_completion_percentage?: number | null
           profile_image_url?: string | null
           status?: string | null
           updated_at?: string | null
@@ -5165,6 +5167,7 @@ export type Database = {
           phone?: string | null
           position?: string | null
           preferred_language?: string | null
+          profile_completion_percentage?: number | null
           profile_image_url?: string | null
           status?: string | null
           updated_at?: string | null

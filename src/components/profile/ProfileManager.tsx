@@ -36,20 +36,12 @@ export const ProfileManager: React.FC = () => {
   const [avatarUploading, setAvatarUploading] = useState(false);
 
   const [formData, setFormData] = useState({
-    full_name_ar: '',
-    full_name_en: '',
-    bio_ar: '',
-    bio_en: '',
+    name: '',
+    name_ar: '',
+    bio: '',
     phone: '',
-    location: '',
-    website: '',
-    twitter_handle: '',
-    linkedin_profile: '',
-    specialization: '',
-    years_of_experience: '',
-    education_level: '',
-    current_position: '',
-    organization: ''
+    department: '',
+    position: ''
   });
 
   const [settings, setSettings] = useState<ProfileSettings>({
@@ -64,20 +56,12 @@ export const ProfileManager: React.FC = () => {
   useEffect(() => {
     if (userProfile) {
       setFormData({
-        full_name_ar: userProfile.full_name_ar || '',
-        full_name_en: userProfile.full_name_en || '',
-        bio_ar: userProfile.bio_ar || '',
-        bio_en: userProfile.bio_en || '',
+        name: userProfile.name || '',
+        name_ar: userProfile.name_ar || '',
+        bio: userProfile.bio || '',
         phone: userProfile.phone || '',
-        location: userProfile.location || '',
-        website: userProfile.website || '',
-        twitter_handle: userProfile.twitter_handle || '',
-        linkedin_profile: userProfile.linkedin_profile || '',
-        specialization: userProfile.specialization || '',
-        years_of_experience: userProfile.years_of_experience?.toString() || '',
-        education_level: userProfile.education_level || '',
-        current_position: userProfile.current_position || '',
-        organization: userProfile.organization || ''
+        department: userProfile.department || '',
+        position: userProfile.position || ''
       });
     }
   }, [userProfile]);
@@ -85,10 +69,7 @@ export const ProfileManager: React.FC = () => {
   const handleSaveProfile = async () => {
     setLoading(true);
     try {
-      const updateData = {
-        ...formData,
-        years_of_experience: formData.years_of_experience ? parseInt(formData.years_of_experience) : null
-      };
+      const updateData = formData;
 
       const { error } = await supabase
         .from('profiles')
@@ -240,7 +221,7 @@ export const ProfileManager: React.FC = () => {
                 <Avatar className="h-20 w-20">
                   <AvatarImage src={userProfile.profile_image_url} />
                   <AvatarFallback className="text-lg">
-                    {userProfile.full_name_ar?.charAt(0) || userProfile.full_name_en?.charAt(0) || 'U'}
+                    {userProfile.name_ar?.charAt(0) || userProfile.name?.charAt(0) || 'U'}
                   </AvatarFallback>
                 </Avatar>
                 <div className="space-y-2">
@@ -273,23 +254,23 @@ export const ProfileManager: React.FC = () => {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="full_name_ar">الاسم الكامل (عربي)</Label>
+                  <Label htmlFor="name_ar">الاسم (عربي)</Label>
                   <Input
-                    id="full_name_ar"
-                    value={formData.full_name_ar}
-                    onChange={(e) => setFormData({...formData, full_name_ar: e.target.value})}
+                    id="name_ar"
+                    value={formData.name_ar}
+                    onChange={(e) => setFormData({...formData, name_ar: e.target.value})}
                     disabled={!isEditing}
-                    placeholder="اسمك الكامل بالعربية"
+                    placeholder="اسمك بالعربية"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="full_name_en">الاسم الكامل (English)</Label>
+                  <Label htmlFor="name">الاسم (English)</Label>
                   <Input
-                    id="full_name_en"
-                    value={formData.full_name_en}
-                    onChange={(e) => setFormData({...formData, full_name_en: e.target.value})}
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
                     disabled={!isEditing}
-                    placeholder="Your full name in English"
+                    placeholder="Your name in English"
                   />
                 </div>
                 <div className="space-y-2">
@@ -303,37 +284,25 @@ export const ProfileManager: React.FC = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="location">الموقع</Label>
+                  <Label htmlFor="department">القسم</Label>
                   <Input
-                    id="location"
-                    value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
+                    id="department"
+                    value={formData.department}
+                    onChange={(e) => setFormData({...formData, department: e.target.value})}
                     disabled={!isEditing}
-                    placeholder="الرياض، المملكة العربية السعودية"
+                    placeholder="قسم تقنية المعلومات"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="bio_ar">النبذة التعريفية (عربي)</Label>
+                <Label htmlFor="bio">النبذة التعريفية</Label>
                 <Textarea
-                  id="bio_ar"
-                  value={formData.bio_ar}
-                  onChange={(e) => setFormData({...formData, bio_ar: e.target.value})}
+                  id="bio"
+                  value={formData.bio}
+                  onChange={(e) => setFormData({...formData, bio: e.target.value})}
                   disabled={!isEditing}
-                  placeholder="اكتب نبذة مختصرة عنك باللغة العربية..."
-                  className="min-h-20"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="bio_en">النبذة التعريفية (English)</Label>
-                <Textarea
-                  id="bio_en"
-                  value={formData.bio_en}
-                  onChange={(e) => setFormData({...formData, bio_en: e.target.value})}
-                  disabled={!isEditing}
-                  placeholder="Write a brief bio in English..."
+                  placeholder="اكتب نبذة مختصرة عنك..."
                   className="min-h-20"
                 />
               </div>
@@ -349,73 +318,23 @@ export const ProfileManager: React.FC = () => {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="current_position">المنصب الحالي</Label>
+                  <Label htmlFor="position">المنصب الحالي</Label>
                   <Input
-                    id="current_position"
-                    value={formData.current_position}
-                    onChange={(e) => setFormData({...formData, current_position: e.target.value})}
+                    id="position"
+                    value={formData.position}
+                    onChange={(e) => setFormData({...formData, position: e.target.value})}
                     disabled={!isEditing}
                     placeholder="مدير تقنية المعلومات"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="organization">المؤسسة</Label>
+                  <Label htmlFor="department">القسم/الإدارة</Label>
                   <Input
-                    id="organization"
-                    value={formData.organization}
-                    onChange={(e) => setFormData({...formData, organization: e.target.value})}
+                    id="department"
+                    value={formData.department}
+                    onChange={(e) => setFormData({...formData, department: e.target.value})}
                     disabled={!isEditing}
-                    placeholder="اسم الشركة أو المؤسسة"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="specialization">التخصص</Label>
-                  <Input
-                    id="specialization"
-                    value={formData.specialization}
-                    onChange={(e) => setFormData({...formData, specialization: e.target.value})}
-                    disabled={!isEditing}
-                    placeholder="تقنية المعلومات، الذكاء الاصطناعي، إلخ"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="years_of_experience">سنوات الخبرة</Label>
-                  <Input
-                    id="years_of_experience"
-                    type="number"
-                    value={formData.years_of_experience}
-                    onChange={(e) => setFormData({...formData, years_of_experience: e.target.value})}
-                    disabled={!isEditing}
-                    placeholder="5"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="education_level">المستوى التعليمي</Label>
-                  <Select
-                    value={formData.education_level}
-                    onValueChange={(value) => setFormData({...formData, education_level: value})}
-                    disabled={!isEditing}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="اختر المستوى التعليمي" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="high_school">الثانوية العامة</SelectItem>
-                      <SelectItem value="diploma">دبلوم</SelectItem>
-                      <SelectItem value="bachelor">بكالوريوس</SelectItem>
-                      <SelectItem value="master">ماجستير</SelectItem>
-                      <SelectItem value="phd">دكتوراه</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="linkedin_profile">LinkedIn</Label>
-                  <Input
-                    id="linkedin_profile"
-                    value={formData.linkedin_profile}
-                    onChange={(e) => setFormData({...formData, linkedin_profile: e.target.value})}
-                    disabled={!isEditing}
-                    placeholder="https://linkedin.com/in/username"
+                    placeholder="إدارة تقنية المعلومات"
                   />
                 </div>
               </div>
@@ -505,20 +424,12 @@ export const ProfileManager: React.FC = () => {
                   // Reset form data
                   if (userProfile) {
                     setFormData({
-                      full_name_ar: userProfile.full_name_ar || '',
-                      full_name_en: userProfile.full_name_en || '',
-                      bio_ar: userProfile.bio_ar || '',
-                      bio_en: userProfile.bio_en || '',
+                      name: userProfile.name || '',
+                      name_ar: userProfile.name_ar || '',
+                      bio: userProfile.bio || '',
                       phone: userProfile.phone || '',
-                      location: userProfile.location || '',
-                      website: userProfile.website || '',
-                      twitter_handle: userProfile.twitter_handle || '',
-                      linkedin_profile: userProfile.linkedin_profile || '',
-                      specialization: userProfile.specialization || '',
-                      years_of_experience: userProfile.years_of_experience?.toString() || '',
-                      education_level: userProfile.education_level || '',
-                      current_position: userProfile.current_position || '',
-                      organization: userProfile.organization || ''
+                      department: userProfile.department || '',
+                      position: userProfile.position || ''
                     });
                   }
                 }}
