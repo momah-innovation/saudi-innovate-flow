@@ -58,10 +58,16 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   // Check profile completion - redirect if profile is less than 80% complete
-  if (requireProfile && user && (!userProfile || userProfile.profile_completion_percentage < 80)) {
+  // BUT allow super_admin and admin users to bypass this requirement
+  const isSuperAdmin = userProfile?.user_roles?.some(role => role.role === 'super_admin' && role.is_active);
+  const isAdmin = userProfile?.user_roles?.some(role => role.role === 'admin' && role.is_active);
+  
+  if (requireProfile && user && !isSuperAdmin && !isAdmin && (!userProfile || userProfile.profile_completion_percentage < 80)) {
     console.log('ProtectedRoute: Redirecting to profile setup - incomplete profile', {
       hasProfile: !!userProfile,
-      completion: userProfile?.profile_completion_percentage
+      completion: userProfile?.profile_completion_percentage,
+      isSuperAdmin,
+      isAdmin
     });
     return <Navigate to={ALL_ROUTES.PROFILE_SETUP} replace />;
   }

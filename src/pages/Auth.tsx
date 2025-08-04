@@ -15,9 +15,17 @@ const AuthPage = () => {
 
   // Redirect if already authenticated
   if (user && !loading) {
-    // If user has profile, go to dashboard, otherwise go to profile setup
-    const redirectPath = userProfile?.profile_completion_percentage >= 80 ? "/dashboard" : "/profile/setup";
-    console.log('AuthPage: Redirecting authenticated user to:', redirectPath);
+    // Check if user is admin/super_admin - they can bypass profile completion
+    const isSuperAdmin = userProfile?.user_roles?.some(role => role.role === 'super_admin' && role.is_active);
+    const isAdmin = userProfile?.user_roles?.some(role => role.role === 'admin' && role.is_active);
+    
+    // If user has profile with high completion OR is admin, go to dashboard
+    const redirectPath = (userProfile?.profile_completion_percentage >= 80 || isSuperAdmin || isAdmin) ? "/dashboard" : "/profile/setup";
+    console.log('AuthPage: Redirecting authenticated user to:', redirectPath, {
+      completion: userProfile?.profile_completion_percentage,
+      isSuperAdmin,
+      isAdmin
+    });
     return <Navigate to={redirectPath} replace />;
   }
 
