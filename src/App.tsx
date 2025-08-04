@@ -177,7 +177,7 @@ const App = () => (
               path="/profile/setup" 
               element={
                 <ProtectedRoute>
-                  <div>Profile Setup - TODO: Implement</div>
+                  <div>Profile Setup - TODO: Import ProfileSetup component</div>
                 </ProtectedRoute>
               } 
             />
