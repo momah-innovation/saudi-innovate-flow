@@ -22,3 +22,9 @@ verify_jwt = true
 
 [functions.comprehensive-storage-migration]
 verify_jwt = true
+
+[functions.create-paddle-checkout]
+verify_jwt = true
+
+[functions.check-paddle-subscription]
+verify_jwt = true

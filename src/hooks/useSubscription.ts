@@ -56,33 +56,25 @@ export const useSubscription = (): UseSubscriptionResult => {
       setLoading(true);
       setError(null);
 
-      // Direct query instead of RPC for now
-      const { data: userSubscriptions, error: subError } = await supabase
-        .from('user_subscriptions')
-        .select(`
-          *,
-          subscription_plans (
-            name,
-            name_ar,
-            features
-          )
-        `)
-        .eq('user_id', user.id)
-        .in('status', ['active', 'trialing'])
-        .maybeSingle();
+      // Use Paddle edge function to check subscription
+      const { data, error } = await supabase.functions.invoke('check-paddle-subscription');
+      
+      if (error) throw error;
 
-      if (subError) throw subError;
-
-      if (userSubscriptions) {
-        const plan = userSubscriptions.subscription_plans as any;
+      if (data?.has_subscription) {
         setSubscriptionStatus({
           hasSubscription: true,
-          planNameAr: plan?.name_ar || 'خطة مميزة',
-          planNameEn: plan?.name || 'Premium Plan',
-          status: userSubscriptions.status,
-          trialEnd: userSubscriptions.trial_end,
-          currentPeriodEnd: userSubscriptions.current_period_end,
-          features: plan?.features || {}
+          planNameAr: data.plan_name || 'خطة مميزة',
+          planNameEn: data.plan_name || 'Premium Plan',
+          status: data.subscription_status,
+          currentPeriodEnd: data.expires_at,
+          features: {
+            ideas_per_month: 100,
+            challenges_per_month: 50,
+            events_per_month: 25,
+            file_uploads_mb: 1000,
+            ai_requests_per_month: 500
+          }
         });
       } else {
         setSubscriptionStatus({
@@ -130,12 +122,18 @@ export const useSubscription = (): UseSubscriptionResult => {
     }
 
     try {
-      const { data, error } = await supabase.functions.invoke('create-checkout', {
+      const { data, error } = await supabase.functions.invoke('create-paddle-checkout', {
         body: { planId }
       });
 
       if (error) throw error;
-      return data.url;
+      
+      // Open checkout in new tab and return URL
+      if (data?.checkout_url) {
+        window.open(data.checkout_url, '_blank');
+        return data.checkout_url;
+      }
+      return null;
     } catch (err) {
       console.error('Error creating checkout session:', err);
       setError(err instanceof Error ? err.message : 'Failed to create checkout session');
