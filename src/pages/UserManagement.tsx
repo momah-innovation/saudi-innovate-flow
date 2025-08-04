@@ -349,5 +349,3 @@ export default function UserManagement() {
     </AppShell>
   );
 };
-
-export default UserManagement;
