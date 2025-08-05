@@ -24,6 +24,7 @@ import {
   Eye,
   Brain
 } from 'lucide-react';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface ImplementationItem {
   category: string;
@@ -37,6 +38,7 @@ interface ImplementationItem {
 
 export const AnalyticsImplementationStatus = () => {
   const { isRTL } = useDirection();
+  const { ms, me } = useRTLAware();
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const implementationItems: ImplementationItem[] = [
@@ -331,7 +333,7 @@ export const AnalyticsImplementationStatus = () => {
             className="flex items-center gap-2"
           >
             {category.name}
-            <Badge variant="secondary" className="ml-1">
+            <Badge variant="secondary" className={ms("1")}>
               {category.count}
             </Badge>
           </Button>
@@ -360,13 +362,13 @@ export const AnalyticsImplementationStatus = () => {
                   {getStatusBadge(item.status)}
                   {item.supabaseIntegrated && (
                     <Badge variant="outline" className="text-blue-600 border-blue-200">
-                      <Database className="w-3 h-3 mr-1" />
+                      <Database className={`w-3 h-3 ${me("1")}`} />
                       Supabase
                     </Badge>
                   )}
                   {item.realTimeEnabled && (
                     <Badge variant="outline" className="text-purple-600 border-purple-200">
-                      <Zap className="w-3 h-3 mr-1" />
+                      <Zap className={`w-3 h-3 ${me("1")}`} />
                       {isRTL ? 'مباشر' : 'Real-time'}
                     </Badge>
                   )}

@@ -102,35 +102,35 @@ export function UserMenu() {
             <div className="flex flex-wrap gap-1">
               {getUserRoles().map((role: string) => (
                 <Badge key={role} variant="secondary" className="text-xs">
-                  <Shield className="w-3 h-3 mr-1" />
-                  {role.replace('_', ' ')}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        )}
+                   <Shield className="w-3 h-3 mr-1" />
+                   {role.replace('_', ' ')}
+                 </Badge>
+               ))}
+             </div>
+           </div>
+         )}
 
-        {/* Menu Items */}
-        <div className="py-1">
-          <DropdownMenuItem onClick={handleProfileClick} className="cursor-pointer">
-            <User className={cn("h-4 w-4", isRTL ? "ml-3" : "mr-3")} />
-            <span>{getText('View Profile', 'عرض الملف الشخصي')}</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleSettingsClick} className="cursor-pointer">
-            <Settings className={cn("h-4 w-4", isRTL ? "ml-3" : "mr-3")} />
-            <span>{getText('Settings', 'الإعدادات')}</span>
-          </DropdownMenuItem>
-        </div>
+         {/* Menu Items */}
+         <div className="py-1">
+           <DropdownMenuItem onClick={handleProfileClick} className="cursor-pointer">
+             <User className={cn("h-4 w-4", isRTL ? "ml-3" : "mr-3")} />
+             <span>{getText('View Profile', 'عرض الملف الشخصي')}</span>
+           </DropdownMenuItem>
+           <DropdownMenuItem onClick={handleSettingsClick} className="cursor-pointer">
+             <Settings className={cn("h-4 w-4", isRTL ? "ml-3" : "mr-3")} />
+             <span>{getText('Settings', 'الإعدادات')}</span>
+           </DropdownMenuItem>
+         </div>
 
-        <DropdownMenuSeparator />
+         <DropdownMenuSeparator />
 
-        {/* Sign Out */}
-        <div className="py-1">
-          <DropdownMenuItem 
-            onClick={signOut} 
-            className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
-          >
-            <LogOut className={cn("h-4 w-4", isRTL ? "ml-3" : "mr-3")} />
+         {/* Sign Out */}
+         <div className="py-1">
+           <DropdownMenuItem 
+             onClick={signOut} 
+             className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
+           >
+             <LogOut className={cn("h-4 w-4", isRTL ? "ml-3" : "mr-3")} />
             <span>{getText('Sign out', 'تسجيل الخروج')}</span>
           </DropdownMenuItem>
         </div>

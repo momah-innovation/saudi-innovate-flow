@@ -4,6 +4,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface BookmarkOpportunityButtonProps {
   opportunityId: string;
@@ -20,6 +21,7 @@ export const BookmarkOpportunityButton = ({
 }: BookmarkOpportunityButtonProps) => {
   const { toast } = useToast();
   const { isRTL } = useDirection();
+  const { ms } = useRTLAware();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -150,7 +152,7 @@ export const BookmarkOpportunityButton = ({
         <Bookmark className="w-4 h-4" />
       )}
       {showText && (
-        <span className={isRTL ? "mr-2" : "ml-2"}>
+        <span className={ms("2")}>
           {isBookmarked 
             ? (isRTL ? 'محفوظ' : 'Saved')
             : (isRTL ? 'حفظ' : 'Save')
