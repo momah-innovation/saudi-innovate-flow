@@ -12,7 +12,7 @@ import {
   Send, MessageCircle, MoreVertical, HelpCircle,
   GripVertical, Move, Maximize2, Minimize2, Share,
   Menu, ArrowRight, ArrowLeft, Languages, ThumbsUp,
-  ExternalLink, TrendingUp
+  ExternalLink, TrendingUp, FileText, Image as ImageIcon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -11505,250 +11505,479 @@ const DesignSystem = () => {
             </div>
           </TabsContent>
 
-          {/* Logo & Identity Tab */}
+          {/* Enhanced Brand Identity Tab */}
           <TabsContent value="branding" className="space-y-8">
             <div>
-              <h2 className="text-2xl font-bold mb-6">Platform Logo & Identity</h2>
+              <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Brand Identity System</h2>
               
-              <div className="space-y-6">
-                
-                {/* Logo Variants */}
-                <ComponentShowcase title="Logo Variants">
+              <div className="space-y-8">
+
+                {/* Brand Overview */}
+                <ComponentShowcase title="Brand Overview">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <Card className="p-8 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/10 border border-primary/20">
+                      <div className="mb-6">
+                        <div className="flex items-center gap-4 mb-4">
+                          <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg">
+                            <Sparkles className="w-8 h-8 text-white" />
+                          </div>
+                          <div>
+                            <h3 className="text-2xl font-bold text-primary">Ruwād</h3>
+                            <p className="text-muted-foreground">Innovation Platform</p>
+                          </div>
+                        </div>
+                        <p className="text-lg leading-relaxed">A comprehensive innovation ecosystem designed to empower creators, entrepreneurs, and visionaries across the region.</p>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-2 h-2 rounded-full bg-primary"></div>
+                          <span className="text-sm">Founded on innovation principles</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="w-2 h-2 rounded-full bg-accent"></div>
+                          <span className="text-sm">Community-driven development</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="w-2 h-2 rounded-full bg-secondary"></div>
+                          <span className="text-sm">Technology-enabled solutions</span>
+                        </div>
+                      </div>
+                    </Card>
+
+                    <Card className="p-8">
+                      <h4 className="font-semibold text-lg mb-6">Brand Values</h4>
+                      <div className="space-y-6">
+                        <div className="flex gap-4">
+                          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Sparkles className="w-6 h-6 text-primary" />
+                          </div>
+                          <div>
+                            <h5 className="font-semibold mb-1">Innovation First</h5>
+                            <p className="text-sm text-muted-foreground">Pushing boundaries and exploring new possibilities</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-4">
+                          <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Users className="w-6 h-6 text-accent" />
+                          </div>
+                          <div>
+                            <h5 className="font-semibold mb-1">Collaborative Spirit</h5>
+                            <p className="text-sm text-muted-foreground">Building together for greater impact</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-4">
+                          <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Target className="w-6 h-6 text-secondary" />
+                          </div>
+                          <div>
+                            <h5 className="font-semibold mb-1">Purpose Driven</h5>
+                            <p className="text-sm text-muted-foreground">Creating meaningful solutions for real challenges</p>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                </ComponentShowcase>
+
+                {/* Logo System */}
+                <ComponentShowcase title="Logo System">
                   <div className="space-y-8">
                     
-                    {/* Primary Logo */}
+                    {/* Primary Logos */}
                     <div>
-                      <h4 className="font-medium mb-4">Primary Logo</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <Card className="p-8 text-center bg-white">
-                          <div className="flex items-center justify-center mb-4">
-                            <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center">
+                      <h4 className="font-semibold text-lg mb-6">Primary Logo Variants</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <Card className="p-8 text-center bg-white border-2">
+                          <div className="flex items-center justify-center mb-6">
+                            <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg">
                               <Sparkles className="w-8 h-8 text-white" />
                             </div>
-                            <div className="ml-3 text-left">
+                            <div className="ml-4 text-left">
                               <h3 className="text-2xl font-bold text-primary">Ruwād</h3>
                               <p className="text-sm text-muted-foreground">Innovation Platform</p>
                             </div>
                           </div>
-                          <p className="text-xs text-muted-foreground">Full Logo - Light Background</p>
+                          <Badge variant="outline" className="text-xs">Light Background</Badge>
                         </Card>
 
-                        <Card className="p-8 text-center bg-slate-900">
-                          <div className="flex items-center justify-center mb-4">
-                            <div className="w-16 h-16 bg-gradient-to-r from-white/20 to-white/10 rounded-2xl flex items-center justify-center border border-white/20">
+                        <Card className="p-8 text-center bg-slate-900 border-2 border-slate-700">
+                          <div className="flex items-center justify-center mb-6">
+                            <div className="w-16 h-16 bg-gradient-to-r from-white/20 to-white/10 rounded-2xl flex items-center justify-center border border-white/20 backdrop-blur-sm">
                               <Sparkles className="w-8 h-8 text-white" />
                             </div>
-                            <div className="ml-3 text-left">
+                            <div className="ml-4 text-left">
                               <h3 className="text-2xl font-bold text-white">Ruwād</h3>
                               <p className="text-sm text-white/70">Innovation Platform</p>
                             </div>
                           </div>
-                          <p className="text-xs text-white/70">Full Logo - Dark Background</p>
+                          <Badge variant="secondary" className="text-xs text-white bg-white/20">Dark Background</Badge>
                         </Card>
 
-                        <Card className="p-8 text-center bg-gradient-to-r from-primary to-accent">
-                          <div className="flex items-center justify-center mb-4">
+                        <Card className="p-8 text-center bg-gradient-to-br from-primary via-accent to-primary border-2 border-primary/30">
+                          <div className="flex items-center justify-center mb-6">
                             <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-white/30">
                               <Sparkles className="w-8 h-8 text-white" />
                             </div>
-                            <div className="ml-3 text-left">
-                              <h3 className="text-2xl font-bold text-white">Ruwād</h3>
+                            <div className="ml-4 text-left">
+                              <h3 className="text-2xl font-bold text-white drop-shadow-sm">Ruwād</h3>
                               <p className="text-sm text-white/90">Innovation Platform</p>
                             </div>
                           </div>
-                          <p className="text-xs text-white/90">Full Logo - Gradient Background</p>
+                          <Badge variant="secondary" className="text-xs text-white bg-white/20">Gradient Background</Badge>
                         </Card>
                       </div>
                     </div>
 
-                    {/* Logo Icon Only */}
+                    {/* Icon Variations */}
                     <div>
-                      <h4 className="font-medium mb-4">Logo Icon Variants</h4>
-                      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                        <Card className="p-6 text-center">
-                          <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-xl flex items-center justify-center mx-auto mb-3">
-                            <Sparkles className="w-6 h-6 text-white" />
+                      <h4 className="font-semibold text-lg mb-6">Icon Variations</h4>
+                      <div className="grid grid-cols-3 md:grid-cols-6 gap-6">
+                        <Card className="p-6 text-center group hover:scale-105 transition-transform">
+                          <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow">
+                            <Sparkles className="w-8 h-8 text-white" />
                           </div>
-                          <p className="text-xs text-muted-foreground">Standard</p>
+                          <p className="text-xs text-muted-foreground font-medium">Standard</p>
                         </Card>
 
-                        <Card className="p-6 text-center">
-                          <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center mx-auto mb-3">
-                            <Sparkles className="w-6 h-6 text-white" />
+                        <Card className="p-6 text-center group hover:scale-105 transition-transform">
+                          <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow">
+                            <Sparkles className="w-8 h-8 text-white" />
                           </div>
-                          <p className="text-xs text-muted-foreground">Primary</p>
+                          <p className="text-xs text-muted-foreground font-medium">Primary</p>
                         </Card>
 
-                        <Card className="p-6 text-center">
-                          <div className="w-12 h-12 bg-white border-2 border-primary rounded-xl flex items-center justify-center mx-auto mb-3">
-                            <Sparkles className="w-6 h-6 text-primary" />
+                        <Card className="p-6 text-center group hover:scale-105 transition-transform">
+                          <div className="w-16 h-16 bg-white border-2 border-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow">
+                            <Sparkles className="w-8 h-8 text-primary" />
                           </div>
-                          <p className="text-xs text-muted-foreground">Outlined</p>
+                          <p className="text-xs text-muted-foreground font-medium">Outlined</p>
                         </Card>
 
-                        <Card className="p-6 text-center">
-                          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
-                            <Sparkles className="w-6 h-6 text-primary" />
+                        <Card className="p-6 text-center group hover:scale-105 transition-transform">
+                          <div className="w-16 h-16 bg-primary/10 border border-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow">
+                            <Sparkles className="w-8 h-8 text-primary" />
                           </div>
-                          <p className="text-xs text-muted-foreground">Soft</p>
+                          <p className="text-xs text-muted-foreground font-medium">Soft</p>
                         </Card>
 
-                        <Card className="p-6 text-center">
-                          <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-3">
-                            <Sparkles className="w-6 h-6 text-white" />
+                        <Card className="p-6 text-center group hover:scale-105 transition-transform">
+                          <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow">
+                            <Sparkles className="w-8 h-8 text-white" />
                           </div>
-                          <p className="text-xs text-muted-foreground">Circle</p>
+                          <p className="text-xs text-muted-foreground font-medium">Circle</p>
                         </Card>
 
-                        <Card className="p-6 text-center">
-                          <div className="w-12 h-12 bg-muted rounded-xl flex items-center justify-center mx-auto mb-3">
-                            <Sparkles className="w-6 h-6 text-muted-foreground" />
+                        <Card className="p-6 text-center group hover:scale-105 transition-transform">
+                          <div className="w-16 h-16 bg-muted border border-border rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow">
+                            <Sparkles className="w-8 h-8 text-muted-foreground" />
                           </div>
-                          <p className="text-xs text-muted-foreground">Monochrome</p>
+                          <p className="text-xs text-muted-foreground font-medium">Monochrome</p>
                         </Card>
                       </div>
                     </div>
 
-                    {/* Logo Sizes */}
+                    {/* Size Guidelines */}
                     <div>
-                      <h4 className="font-medium mb-4">Logo Sizes</h4>
-                      <div className="flex items-end gap-8">
-                        <div className="text-center">
-                          <div className="flex items-center justify-center mb-2">
-                            <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
-                              <Sparkles className="w-4 h-4 text-white" />
+                      <h4 className="font-semibold text-lg mb-6">Size Guidelines</h4>
+                      <Card className="p-8">
+                        <div className="flex flex-wrap items-end gap-12 justify-center">
+                          <div className="text-center">
+                            <div className="flex items-center justify-center mb-4">
+                              <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center shadow-md">
+                                <Sparkles className="w-4 h-4 text-white" />
+                              </div>
+                              <span className="ml-2 text-lg font-bold">Ruwād</span>
                             </div>
-                            <span className="ml-2 text-lg font-bold">Ruwād</span>
+                            <Badge variant="outline" className="text-xs">32px - Compact</Badge>
                           </div>
-                          <p className="text-xs text-muted-foreground">Small (32px)</p>
-                        </div>
 
-                        <div className="text-center">
-                          <div className="flex items-center justify-center mb-2">
-                            <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-xl flex items-center justify-center">
-                              <Sparkles className="w-6 h-6 text-white" />
+                          <div className="text-center">
+                            <div className="flex items-center justify-center mb-4">
+                              <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-xl flex items-center justify-center shadow-md">
+                                <Sparkles className="w-6 h-6 text-white" />
+                              </div>
+                              <span className="ml-3 text-xl font-bold">Ruwād</span>
                             </div>
-                            <span className="ml-3 text-xl font-bold">Ruwād</span>
+                            <Badge variant="outline" className="text-xs">48px - Standard</Badge>
                           </div>
-                          <p className="text-xs text-muted-foreground">Medium (48px)</p>
-                        </div>
 
-                        <div className="text-center">
-                          <div className="flex items-center justify-center mb-2">
-                            <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center">
-                              <Sparkles className="w-8 h-8 text-white" />
+                          <div className="text-center">
+                            <div className="flex items-center justify-center mb-4">
+                              <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg">
+                                <Sparkles className="w-8 h-8 text-white" />
+                              </div>
+                              <span className="ml-4 text-2xl font-bold">Ruwād</span>
                             </div>
-                            <span className="ml-4 text-2xl font-bold">Ruwād</span>
+                            <Badge variant="outline" className="text-xs">64px - Large</Badge>
                           </div>
-                          <p className="text-xs text-muted-foreground">Large (64px)</p>
-                        </div>
 
-                        <div className="text-center">
-                          <div className="flex items-center justify-center mb-2">
-                            <div className="w-20 h-20 bg-gradient-to-r from-primary to-accent rounded-3xl flex items-center justify-center">
-                              <Sparkles className="w-10 h-10 text-white" />
+                          <div className="text-center">
+                            <div className="flex items-center justify-center mb-4">
+                              <div className="w-20 h-20 bg-gradient-to-r from-primary to-accent rounded-3xl flex items-center justify-center shadow-lg">
+                                <Sparkles className="w-10 h-10 text-white" />
+                              </div>
+                              <span className="ml-4 text-3xl font-bold">Ruwād</span>
                             </div>
-                            <span className="ml-4 text-3xl font-bold">Ruwād</span>
+                            <Badge variant="outline" className="text-xs">80px - Hero</Badge>
                           </div>
-                          <p className="text-xs text-muted-foreground">Extra Large (80px)</p>
                         </div>
-                      </div>
+                      </Card>
                     </div>
 
                   </div>
                 </ComponentShowcase>
 
-                {/* Brand Slogans & Taglines */}
-                <ComponentShowcase title="Brand Slogans & Taglines">
-                  <div className="space-y-6">
+                {/* Brand Colors & Typography */}
+                <ComponentShowcase title="Brand Color Palette">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div className="space-y-6">
+                      <div>
+                        <h4 className="font-semibold text-lg mb-4">Primary Colors</h4>
+                        <div className="grid grid-cols-1 gap-4">
+                          <Card className="p-4">
+                            <div className="flex items-center gap-4">
+                              <div className="w-16 h-16 rounded-xl bg-primary shadow-lg border-2 border-white"></div>
+                              <div className="flex-1">
+                                <div className="flex items-center justify-between mb-1">
+                                  <h5 className="font-semibold">Primary</h5>
+                                  <Button variant="ghost" size="sm" className="h-6 px-2">
+                                    <Copy className="w-3 h-3" />
+                                  </Button>
+                                </div>
+                                <p className="text-sm font-mono text-muted-foreground">hsl(263, 70%, 50%)</p>
+                                <p className="text-xs text-muted-foreground">Main brand color for primary actions</p>
+                              </div>
+                            </div>
+                          </Card>
+                          
+                          <Card className="p-4">
+                            <div className="flex items-center gap-4">
+                              <div className="w-16 h-16 rounded-xl bg-accent shadow-lg border-2 border-white"></div>
+                              <div className="flex-1">
+                                <div className="flex items-center justify-between mb-1">
+                                  <h5 className="font-semibold">Accent</h5>
+                                  <Button variant="ghost" size="sm" className="h-6 px-2">
+                                    <Copy className="w-3 h-3" />
+                                  </Button>
+                                </div>
+                                <p className="text-sm font-mono text-muted-foreground">hsl(270, 95%, 75%)</p>
+                                <p className="text-xs text-muted-foreground">Secondary highlights and emphasis</p>
+                              </div>
+                            </div>
+                          </Card>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="font-semibold text-lg mb-4">Supporting Colors</h4>
+                        <div className="grid grid-cols-2 gap-4">
+                          <Card className="p-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-12 h-12 rounded-lg bg-secondary shadow-sm"></div>
+                              <div className="flex-1 min-w-0">
+                                <h6 className="font-medium text-sm">Secondary</h6>
+                                <p className="text-xs text-muted-foreground font-mono truncate">hsl(210, 40%, 98%)</p>
+                              </div>
+                            </div>
+                          </Card>
+                          
+                          <Card className="p-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-12 h-12 rounded-lg bg-success shadow-sm"></div>
+                              <div className="flex-1 min-w-0">
+                                <h6 className="font-medium text-sm">Success</h6>
+                                <p className="text-xs text-muted-foreground font-mono truncate">hsl(142, 76%, 36%)</p>
+                              </div>
+                            </div>
+                          </Card>
+                          
+                          <Card className="p-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-12 h-12 rounded-lg bg-warning shadow-sm"></div>
+                              <div className="flex-1 min-w-0">
+                                <h6 className="font-medium text-sm">Warning</h6>
+                                <p className="text-xs text-muted-foreground font-mono truncate">hsl(38, 92%, 50%)</p>
+                              </div>
+                            </div>
+                          </Card>
+                          
+                          <Card className="p-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-12 h-12 rounded-lg bg-destructive shadow-sm"></div>
+                              <div className="flex-1 min-w-0">
+                                <h6 className="font-medium text-sm">Destructive</h6>
+                                <p className="text-xs text-muted-foreground font-mono truncate">hsl(0, 84%, 60%)</p>
+                              </div>
+                            </div>
+                          </Card>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold text-lg mb-4">Typography Scale</h4>
+                      <Card className="p-6 space-y-6">
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-muted-foreground">Hero</span>
+                            <Badge variant="outline" className="text-xs">48px/52px</Badge>
+                          </div>
+                          <div className="text-5xl font-bold leading-tight">Innovation Starts Here</div>
+                        </div>
+                        
+                        <Separator />
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-muted-foreground">Heading 1</span>
+                            <Badge variant="outline" className="text-xs">36px/40px</Badge>
+                          </div>
+                          <div className="text-4xl font-bold">Transform Ideas</div>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-muted-foreground">Heading 2</span>
+                            <Badge variant="outline" className="text-xs">24px/32px</Badge>
+                          </div>
+                          <div className="text-2xl font-semibold">Build the Future</div>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-muted-foreground">Body</span>
+                            <Badge variant="outline" className="text-xs">16px/24px</Badge>
+                          </div>
+                          <div className="text-base">Empowering innovators to create breakthrough solutions through collaborative technology and entrepreneurial excellence.</div>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-muted-foreground">Caption</span>
+                            <Badge variant="outline" className="text-xs">14px/20px</Badge>
+                          </div>
+                          <div className="text-sm text-muted-foreground">Supporting information and metadata</div>
+                        </div>
+                      </Card>
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                {/* Brand Assets Library */}
+                <ComponentShowcase title="Brand Assets & Downloads">
+                  <div className="space-y-8">
                     
-                    {/* Primary Slogans */}
                     <div>
-                      <h4 className="font-medium mb-4">Primary Slogans</h4>
+                      <h4 className="font-semibold text-lg mb-6">Logo Assets</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <Card className="p-6">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                              <Sparkles className="w-5 h-5 text-primary" />
+                            </div>
+                            <div>
+                              <h5 className="font-semibold text-sm">Primary Logo</h5>
+                              <p className="text-xs text-muted-foreground">Full color version</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2 mb-4">
+                            <Badge variant="outline" className="text-xs">SVG</Badge>
+                            <Badge variant="outline" className="text-xs">PNG</Badge>
+                            <Badge variant="secondary" className="text-xs">Vector</Badge>
+                          </div>
+                          <Button variant="outline" size="sm" className="w-full">
+                            <Download className="w-4 h-4 mr-2" />
+                            Download Pack
+                          </Button>
+                        </Card>
+
+                        <Card className="p-6">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                              <Sparkles className="w-5 h-5 text-secondary" />
+                            </div>
+                            <div>
+                              <h5 className="font-semibold text-sm">Monochrome Logo</h5>
+                              <p className="text-xs text-muted-foreground">Single color versions</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2 mb-4">
+                            <Badge variant="outline" className="text-xs">SVG</Badge>
+                            <Badge variant="outline" className="text-xs">PNG</Badge>
+                            <Badge variant="secondary" className="text-xs">B&W</Badge>
+                          </div>
+                          <Button variant="outline" size="sm" className="w-full">
+                            <Download className="w-4 h-4 mr-2" />
+                            Download Pack
+                          </Button>
+                        </Card>
+
+                        <Card className="p-6">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+                              <ImageIcon className="w-5 h-5 text-accent" />
+                            </div>
+                            <div>
+                              <h5 className="font-semibold text-sm">Icon Set</h5>
+                              <p className="text-xs text-muted-foreground">Complete icon library</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2 mb-4">
+                            <Badge variant="outline" className="text-xs">SVG</Badge>
+                            <Badge variant="outline" className="text-xs">AI</Badge>
+                            <Badge variant="secondary" className="text-xs">120 icons</Badge>
+                          </div>
+                          <Button variant="outline" size="sm" className="w-full">
+                            <Download className="w-4 h-4 mr-2" />
+                            Download Pack
+                          </Button>
+                        </Card>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold text-lg mb-6">Brand Templates</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <Card className="p-6 text-center bg-gradient-to-r from-primary/10 to-accent/10">
-                          <h3 className="text-2xl font-bold mb-2 text-primary">Innovate. Create. Lead.</h3>
-                          <p className="text-sm text-muted-foreground">Primary motivational slogan</p>
-                        </Card>
-
-                        <Card className="p-6 text-center bg-gradient-to-r from-secondary/10 to-innovation/10">
-                          <h3 className="text-2xl font-bold mb-2 text-secondary">Where Ideas Become Reality</h3>
-                          <p className="text-sm text-muted-foreground">Vision-focused tagline</p>
-                        </Card>
-                      </div>
-                    </div>
-
-                    {/* Descriptive Taglines */}
-                    <div>
-                      <h4 className="font-medium mb-4">Descriptive Taglines</h4>
-                      <div className="space-y-4">
-                        <Card className="p-4">
-                          <h4 className="font-semibold mb-2">Platform Description</h4>
-                          <p className="text-lg">"Empowering innovators across the region to transform challenges into breakthrough solutions"</p>
-                        </Card>
-
-                        <Card className="p-4">
-                          <h4 className="font-semibold mb-2">Mission Statement</h4>
-                          <p className="text-lg">"Building the future through collaborative innovation and entrepreneurial excellence"</p>
-                        </Card>
-
-                        <Card className="p-4">
-                          <h4 className="font-semibold mb-2">Community Focus</h4>
-                          <p className="text-lg">"Connecting minds, creating solutions, shaping tomorrow"</p>
-                        </Card>
-                      </div>
-                    </div>
-
-                    {/* Category-Specific Slogans */}
-                    <div>
-                      <h4 className="font-medium mb-4">Category-Specific Slogans</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <Card className="p-4 border-l-4 border-l-blue-500">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Zap className="w-5 h-5 text-blue-500" />
-                            <h5 className="font-semibold">Technology</h5>
+                        <Card className="p-6">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className="w-10 h-10 bg-innovation/10 rounded-lg flex items-center justify-center">
+                              <FileText className="w-5 h-5 text-innovation" />
+                            </div>
+                            <div>
+                              <h5 className="font-semibold text-sm">Presentation Template</h5>
+                              <p className="text-xs text-muted-foreground">Professional slide deck</p>
+                            </div>
                           </div>
-                          <p className="text-sm">"Code the Future"</p>
+                          <div className="flex gap-2 mb-4">
+                            <Badge variant="outline" className="text-xs">PowerPoint</Badge>
+                            <Badge variant="outline" className="text-xs">Keynote</Badge>
+                            <Badge variant="secondary" className="text-xs">24 slides</Badge>
+                          </div>
+                          <Button variant="outline" size="sm" className="w-full">
+                            <Download className="w-4 h-4 mr-2" />
+                            Download
+                          </Button>
                         </Card>
 
-                        <Card className="p-4 border-l-4 border-l-green-500">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Heart className="w-5 h-5 text-green-500" />
-                            <h5 className="font-semibold">Healthcare</h5>
+                        <Card className="p-6">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
+                              <FileText className="w-5 h-5 text-success" />
+                            </div>
+                            <div>
+                              <h5 className="font-semibold text-sm">Brand Guidelines</h5>
+                              <p className="text-xs text-muted-foreground">Complete brand manual</p>
+                            </div>
                           </div>
-                          <p className="text-sm">"Healing Through Innovation"</p>
-                        </Card>
-
-                        <Card className="p-4 border-l-4 border-l-emerald-500">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Target className="w-5 h-5 text-emerald-500" />
-                            <h5 className="font-semibold">Environment</h5>
+                          <div className="flex gap-2 mb-4">
+                            <Badge variant="outline" className="text-xs">PDF</Badge>
+                            <Badge variant="outline" className="text-xs">InDesign</Badge>
+                            <Badge variant="secondary" className="text-xs">32 pages</Badge>
                           </div>
-                          <p className="text-sm">"Sustain Tomorrow"</p>
-                        </Card>
-
-                        <Card className="p-4 border-l-4 border-l-purple-500">
-                          <div className="flex items-center gap-2 mb-2">
-                            <CreditCard className="w-5 h-5 text-purple-500" />
-                            <h5 className="font-semibold">Finance</h5>
-                          </div>
-                          <p className="text-sm">"Financial Evolution"</p>
-                        </Card>
-
-                        <Card className="p-4 border-l-4 border-l-orange-500">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Users className="w-5 h-5 text-orange-500" />
-                            <h5 className="font-semibold">Social Impact</h5>
-                          </div>
-                          <p className="text-sm">"Change Lives, Change World"</p>
-                        </Card>
-
-                        <Card className="p-4 border-l-4 border-l-indigo-500">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Sparkles className="w-5 h-5 text-indigo-500" />
-                            <h5 className="font-semibold">Innovation</h5>
-                          </div>
-                          <p className="text-sm">"Think Beyond Limits"</p>
+                          <Button variant="outline" size="sm" className="w-full">
+                            <Download className="w-4 h-4 mr-2" />
+                            Download
+                          </Button>
                         </Card>
                       </div>
                     </div>
