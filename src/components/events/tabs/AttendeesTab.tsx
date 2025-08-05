@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { Calendar, Clock, UserCheck, UserX, Users, Download } from 'lucide-react';
 
 interface EventParticipant {
@@ -30,6 +31,7 @@ export const AttendeesTab = ({
   onCancelRegistration 
 }: AttendeesTabProps) => {
   const { isRTL } = useDirection();
+  const { me, ms } = useRTLAware();
 
   const getAttendanceStatusColor = (status: string) => {
     switch (status) {
@@ -156,13 +158,13 @@ export const AttendeesTab = ({
         <h4 className="font-semibold flex items-center gap-2">
           <Users className="w-4 h-4" />
           {isRTL ? 'قائمة الحضور' : 'Attendee List'}
-          <Badge variant="secondary" className="ml-2">
+          <Badge variant="secondary" className={ms('2')}>
             {participants.length}
           </Badge>
         </h4>
         
         <Button variant="outline" size="sm">
-          <Download className="w-4 h-4 mr-2" />
+          <Download className={`w-4 h-4 ${me('2')}`} />
           {isRTL ? 'تصدير القائمة' : 'Export List'}
         </Button>
       </div>

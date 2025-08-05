@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
 import { TrendingUp, Calendar, Users, MapPin, Flame, Eye, Star } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 
@@ -35,6 +36,7 @@ export const TrendingEventsWidget = ({
   className = "" 
 }: TrendingEventsWidgetProps) => {
   const { isRTL } = useDirection();
+  const { end, ms } = useRTLAware();
   const [trendingEvents, setTrendingEvents] = useState<TrendingEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalViews, setTotalViews] = useState(0);
@@ -210,7 +212,7 @@ export const TrendingEventsWidget = ({
                   onClick={() => onEventSelect?.(event.id)}
                 >
                   {/* Trending Rank */}
-                  <div className="absolute top-2 right-2 flex items-center gap-1">
+                  <div className={`absolute top-2 ${end('2')} flex items-center gap-1`}>
                     {getTrendingIcon(event.trending_rank || index + 1)}
                     <span className="text-xs font-medium">#{index + 1}</span>
                   </div>
@@ -288,7 +290,7 @@ export const TrendingEventsWidget = ({
               onClick={() => onEventSelect?.('all')}
             >
               {isRTL ? 'عرض جميع الفعاليات الرائجة' : 'View All Trending Events'}
-              <TrendingUp className="w-4 h-4 ml-2" />
+              <TrendingUp className={`w-4 h-4 ${ms('2')}`} />
             </Button>
           </div>
         )}

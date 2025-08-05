@@ -20,6 +20,7 @@ import {
   Upload
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -52,6 +53,7 @@ export const EventResourcesTab = ({
   onResourcesUpdate
 }: EventResourcesTabProps) => {
   const { isRTL } = useDirection();
+  const { me } = useRTLAware();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [showAddDialog, setShowAddDialog] = useState(false);
@@ -452,7 +454,7 @@ export const EventResourcesTab = ({
                       onClick={() => handleDownload(resource)}
                       className="flex-1"
                     >
-                      <Download className="w-3 h-3 mr-1" />
+                      <Download className={`w-3 h-3 ${me('1')}`} />
                       {isRTL ? 'تحميل' : 'Download'}
                     </Button>
                   )}
@@ -483,7 +485,7 @@ export const EventResourcesTab = ({
             {isRTL ? 'ابدأ بإضافة موارد لهذه الفعالية' : 'Start by adding resources to this event'}
           </p>
           <Button onClick={() => setShowAddDialog(true)}>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className={`w-4 h-4 ${me('2')}`} />
             {isRTL ? 'إضافة مورد' : 'Add Resource'}
           </Button>
         </div>

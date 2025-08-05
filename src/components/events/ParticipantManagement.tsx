@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Users, UserCheck, UserX, Clock, CheckCircle, Search, Download, Send } from "lucide-react";
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface EventParticipant {
   id: string;
@@ -48,6 +49,7 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
   const [selectedParticipants, setSelectedParticipants] = useState<string[]>([]);
   
   const { toast } = useToast();
+  const { me, ms } = useRTLAware();
   const { generalStatusOptions } = useSystemLists();
 
   const { attendanceStatusOptions } = useSystemLists();
@@ -246,7 +248,7 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={exportParticipants}>
-            <Download className="h-4 w-4 mr-2" />
+            <Download className={`h-4 w-4 ${me('2')}`} />
             Export CSV
           </Button>
           {selectedParticipants.length > 0 && (
@@ -288,7 +290,7 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
         <Card>
           <CardContent className="flex items-center p-4">
             <Users className="h-8 w-8 text-blue-600" />
-            <div className="ml-4">
+            <div className={ms('4')}>
               <p className="text-sm font-medium text-muted-foreground">Total Registered</p>
               <p className="text-2xl font-bold">{participants.length}</p>
               {maxParticipants && (
@@ -301,7 +303,7 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
         <Card>
           <CardContent className="flex items-center p-4">
             <UserCheck className="h-8 w-8 text-green-600" />
-            <div className="ml-4">
+            <div className={ms('4')}>
               <p className="text-sm font-medium text-muted-foreground">Confirmed</p>
               <p className="text-2xl font-bold">{confirmedCount}</p>
             </div>
@@ -311,7 +313,7 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
         <Card>
           <CardContent className="flex items-center p-4">
             <CheckCircle className="h-8 w-8 text-emerald-600" />
-            <div className="ml-4">
+            <div className={ms('4')}>
               <p className="text-sm font-medium text-muted-foreground">Attended</p>
               <p className="text-2xl font-bold">{attendedCount}</p>
             </div>
@@ -321,7 +323,7 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
         <Card>
           <CardContent className="flex items-center p-4">
             <UserX className="h-8 w-8 text-red-600" />
-            <div className="ml-4">
+            <div className={ms('4')}>
               <p className="text-sm font-medium text-muted-foreground">No Show</p>
               <p className="text-2xl font-bold">{noShowCount}</p>
             </div>
