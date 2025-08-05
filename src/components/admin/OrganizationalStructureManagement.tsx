@@ -475,7 +475,7 @@ export function OrganizationalStructureManagement() {
             <Dialog open={isDomainDialogOpen} onOpenChange={setIsDomainDialogOpen}>
               <DialogTrigger asChild>
                 <Button onClick={() => { setEditingDomain(null); setDomainForm({ name: "", name_ar: "", domain_lead: "", specialization: "", department_id: "" }); }}>
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className={`w-4 h-4 ${me("2")}`} />
                   Add Domain
                 </Button>
               </DialogTrigger>
@@ -571,7 +571,7 @@ export function OrganizationalStructureManagement() {
             <Dialog open={isSubDomainDialogOpen} onOpenChange={setIsSubDomainDialogOpen}>
               <DialogTrigger asChild>
                 <Button onClick={() => { setEditingSubDomain(null); setSubDomainForm({ name: "", name_ar: "", technical_focus: "", domain_id: "" }); }}>
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className={`w-4 h-4 ${me("2")}`} />
                   Add Sub-domain
                 </Button>
               </DialogTrigger>
@@ -655,7 +655,7 @@ export function OrganizationalStructureManagement() {
             <Dialog open={isServiceDialogOpen} onOpenChange={setIsServiceDialogOpen}>
               <DialogTrigger asChild>
                 <Button onClick={() => { setEditingService(null); setServiceForm({ name: "", name_ar: "", service_type: "", citizen_facing: false, digital_maturity_score: 0, sub_domain_id: "" }); }}>
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className={`w-4 h-4 ${me("2")}`} />
                   Add Service
                 </Button>
               </DialogTrigger>

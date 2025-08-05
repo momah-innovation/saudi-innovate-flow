@@ -340,7 +340,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                   placeholder="البحث في الاقتراحات..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="ps-10"
                 />
               </div>
             </div>
@@ -511,12 +511,12 @@ export const AutomatedTaggingPanel: React.FC = () => {
               >
                 {processing ? (
                   <>
-                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    <RefreshCw className="h-4 w-4 me-2 animate-spin" />
                     جاري المعالجة...
                   </>
                 ) : (
                   <>
-                    <Sparkles className="h-4 w-4 mr-2" />
+                    <Sparkles className="h-4 w-4 me-2" />
                     بدء العلامات التلقائية الشاملة
                   </>
                 )}

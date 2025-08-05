@@ -262,7 +262,7 @@ export const ContentModerationPanel: React.FC = () => {
                   placeholder="البحث في المحتوى..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="ps-10"
                 />
               </div>
             </div>
@@ -411,12 +411,12 @@ export const ContentModerationPanel: React.FC = () => {
               >
                 {testing ? (
                   <>
-                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    <RefreshCw className="h-4 w-4 me-2 animate-spin" />
                     جاري الفحص...
                   </>
                 ) : (
                   <>
-                    <Shield className="h-4 w-4 mr-2" />
+                    <Shield className="h-4 w-4 me-2" />
                     فحص المحتوى
                   </>
                 )}

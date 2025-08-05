@@ -272,7 +272,7 @@ export function TeamChatSheet({ open, onOpenChange, teamMembers }: TeamChatSheet
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    className="pr-10"
+                    className="pe-10"
                   />
                   <Button 
                     size="sm" 

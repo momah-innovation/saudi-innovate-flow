@@ -194,7 +194,7 @@ export const Auth = () => {
                       id="fullName"
                       type="text"
                       placeholder="أدخل اسمك الكامل"
-                      className="pl-10"
+                      className="ps-10"
                       value={formData.fullName}
                       onChange={(e) => handleInputChange('fullName', e.target.value)}
                       required
@@ -211,7 +211,7 @@ export const Auth = () => {
                     id="email"
                     type="email"
                     placeholder="أدخل بريدك الإلكتروني"
-                    className="pl-10"
+                    className="ps-10"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                     required
@@ -227,7 +227,7 @@ export const Auth = () => {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder={activeTab === 'signup' ? "8 أحرف على الأقل" : "أدخل كلمة المرور"}
-                    className="pl-10 pr-10"
+                    className="ps-10 pe-10"
                     value={formData.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
                     required
@@ -254,7 +254,7 @@ export const Auth = () => {
                         id="confirmPassword"
                         type={showConfirmPassword ? "text" : "password"}
                         placeholder="أعد إدخال كلمة المرور"
-                        className="pl-10 pr-10"
+                        className="ps-10 pe-10"
                         value={formData.confirmPassword}
                         onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                         required
@@ -279,7 +279,7 @@ export const Auth = () => {
                         id="organization"
                         type="text"
                         placeholder="اسم الوزارة أو الجهة الحكومية"
-                        className="pl-10"
+                        className="ps-10"
                         value={formData.organization}
                         onChange={(e) => handleInputChange('organization', e.target.value)}
                       />
