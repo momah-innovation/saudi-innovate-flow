@@ -27,6 +27,10 @@ import { StatusIndicator } from '@/components/ui/status-indicator';
 import { NotificationCenter } from '@/components/ui/notification-center';
 import { AdvancedDataTable } from '@/components/ui/advanced-data-table';
 import { MediaGallery } from '@/components/ui/media-gallery';
+import { FileUploader } from '@/components/ui/file-uploader-advanced';
+import { CommandPalette, useCommandPalette } from '@/components/ui/command-palette';
+import { StarRating, FeedbackForm } from '@/components/ui/feedback';
+import { ProductTour, useProductTour } from '@/components/ui/product-tour';
 
 import { cn } from '@/lib/utils';
 
@@ -66,6 +70,15 @@ const DesignSystem = () => {
     { id: '2', src: '/placeholder.svg', type: 'image' as const, title: 'Team Collaboration', size: '1.8 MB' },
     { id: '3', src: '/placeholder.svg', type: 'document' as const, title: 'Project Report.pdf', size: '5.2 MB' }
   ];
+
+  // Command palette setup
+  const commandActions = [
+    { id: 'new-challenge', title: 'Create Challenge', description: 'Start a new innovation challenge', category: 'Create', onSelect: () => toast({ title: 'Creating challenge...' }) },
+    { id: 'new-idea', title: 'Submit Idea', description: 'Share your innovative idea', category: 'Create', onSelect: () => toast({ title: 'Opening idea form...' }) },
+    { id: 'analytics', title: 'View Analytics', description: 'Check platform insights', category: 'Navigate', onSelect: () => toast({ title: 'Opening analytics...' }) }
+  ];
+  
+  const { isOpen: isCommandOpen, open: openCommand, close: closeCommand, updateRecent } = useCommandPalette(commandActions);
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -12074,9 +12087,60 @@ const DesignSystem = () => {
                     </Card>
                   </div>
                 </ComponentShowcase>
+
+                {/* File Uploader */}
+                <ComponentShowcase title="Advanced File Uploader">
+                  <FileUploader
+                    onFilesSelected={(files) => toast({ title: `${files.length} files selected` })}
+                    acceptedTypes={['image/*', '.pdf', '.doc', '.docx']}
+                    maxFiles={5}
+                    maxSize={10}
+                  />
+                </ComponentShowcase>
+
+                {/* Command Palette */}
+                <ComponentShowcase title="Command Palette">
+                  <div className="space-y-4">
+                    <Button onClick={openCommand} variant="outline" className="w-full">
+                      Open Command Palette (⌘K)
+                    </Button>
+                    <p className="text-sm text-muted-foreground">
+                      Fast navigation and actions. Try pressing ⌘K (Cmd+K) or Ctrl+K anywhere in the app.
+                    </p>
+                  </div>
+                </ComponentShowcase>
+
+                {/* Feedback Components */}
+                <ComponentShowcase title="Feedback & Rating System">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <h4 className="font-medium">Star Rating</h4>
+                      <StarRating 
+                        rating={4} 
+                        onChange={(rating) => toast({ title: `Rated ${rating} stars` })}
+                        showLabel
+                      />
+                    </div>
+                    
+                    <FeedbackForm
+                      onSubmit={(feedback) => toast({ title: 'Feedback submitted!', description: `Rating: ${feedback.rating}, Comment: ${feedback.comment}` })}
+                      title="Quick Feedback"
+                      showRating={false}
+                      showLikeDislike
+                    />
+                  </div>
+                </ComponentShowcase>
               </div>
             </div>
           </TabsContent>
+
+          {/* Command Palette */}
+          <CommandPalette
+            isOpen={isCommandOpen}
+            onClose={closeCommand}
+            actions={commandActions}
+            onRecentUpdate={updateRecent}
+          />
         </Tabs>
       </div>
     </div>
