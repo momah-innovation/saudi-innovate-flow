@@ -70,7 +70,7 @@ function TimelineItemComponent({
         "relative z-10 flex h-12 w-12 items-center justify-center rounded-full border-2",
         config.dotColor
       )}>
-        <Icon className="h-5 w-5 text-white" />
+        <Icon className="h-5 w-5 text-primary-foreground" />
       </div>
       
       {/* Content */}
@@ -165,9 +165,9 @@ export function HorizontalTimeline({ steps, className }: HorizontalTimelineProps
                 step.status === 'active' && "ring-2 ring-primary/20"
               )}>
                 {step.status === 'completed' ? (
-                  <CheckCircle className="h-4 w-4 text-white" />
+                  <CheckCircle className="h-4 w-4 text-primary-foreground" />
                 ) : (
-                  <span className="text-white">{index + 1}</span>
+                  <span className="text-primary-foreground">{index + 1}</span>
                 )}
               </div>
               <span className={cn(
