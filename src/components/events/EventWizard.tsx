@@ -760,13 +760,13 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                       {formData.campaign_id
                         ? campaigns.find((campaign) => campaign.id === formData.campaign_id)?.title_ar
                         : "اختر الحملة..."}
-                       <ChevronsUpDown className={cn("h-4 w-4 shrink-0 opacity-50", ms("2"))} />
+                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                      </Button>
                    </PopoverTrigger>
                    <PopoverContent className="w-[300px] p-0">
                      <Command>
-                       <CommandInput placeholder={isRTL ? "ابحث عن حملة..." : "Search campaign..."} />
-                       <CommandEmpty>{isRTL ? "لم يتم العثور على حملات." : "No campaigns found."}</CommandEmpty>
+                       <CommandInput placeholder="ابحث عن حملة..." />
+                       <CommandEmpty>لم يتم العثور على حملات.</CommandEmpty>
                        <CommandGroup>
                          <CommandList>
                            {campaigns.map((campaign) => (
@@ -778,13 +778,10 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                                  setOpenCampaign(false);
                                }}
                              >
-                              <Check className={cn("h-4 w-4", me("2"), {
-                                "opacity-100": formData.campaign_id === campaign.id,
-                                "opacity-0": formData.campaign_id !== campaign.id
-                              })} />
+                               <Check className={`mr-2 h-4 w-4 ${
+                                 formData.campaign_id === campaign.id ? "opacity-100" : "opacity-0"
+                               }`} />
                                {campaign.title_ar}
-                            </CommandItem>
-                          ))}
                              </CommandItem>
                            ))}
                          </CommandList>
@@ -1285,12 +1282,22 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                  disabled={isLoading}
                >
                  التالي
-                 <ChevronRight className={cn("h-4 w-4", ms("2"))} />
-              </Button>
-            )}
+                  <ChevronRight className="ml-2 h-4 w-4" />
+                </Button>
+              ) : (
+                <Button 
+                  type="button" 
+                  onClick={handleSave}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "جاري الحفظ..." : event ? "تحديث الحدث" : "إنشاء الحدث"}
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </DialogContent>
     </Dialog>
   );
+}
 }
