@@ -3,25 +3,25 @@
 
   /* 🔘 EXECUTIVE BUTTON VARIANTS */
   .btn-executive {
-    @apply bg-gradient-to-r from-ksa-government-primary to-ksa-vision-gold 
+    @apply bg-gradient-to-r from-slate-800 to-yellow-600 
            text-white font-semibold tracking-wide
            shadow-lg hover:shadow-xl
-           border border-ksa-government-border/20
+           border border-slate-300/20
            transition-all duration-300
            hover:scale-105 active:scale-95;
   }
 
   .btn-operational {
-    @apply bg-ksa-operational-primary text-white
-           hover:bg-ksa-operational-accent
-           border border-ksa-operational-border
+    @apply bg-blue-600 text-white
+           hover:bg-blue-700
+           border border-blue-300
            font-medium transition-colors duration-200
-           focus:ring-2 focus:ring-ksa-operational-primary/20;
+           focus:ring-2 focus:ring-blue-500/20;
   }
 
   .btn-citizen {
-    @apply bg-ksa-citizen-primary text-white
-           hover:bg-ksa-citizen-accent
+    @apply bg-emerald-600 text-white
+           hover:bg-teal-600
            rounded-lg font-medium
            shadow-md hover:shadow-lg
            transition-all duration-200;
@@ -37,8 +37,8 @@
 
   /* 🃏 EXECUTIVE CARD VARIANTS */
   .card-executive {
-    @apply bg-gradient-to-br from-white to-ksa-government-neutral/10
-           border border-ksa-government-border
+    @apply bg-gradient-to-br from-white to-slate-50
+           border border-slate-200
            shadow-lg hover:shadow-xl
            backdrop-blur-sm
            transition-all duration-300
@@ -46,17 +46,17 @@
   }
 
   .card-operational {
-    @apply bg-white border border-ksa-operational-border
+    @apply bg-white border border-blue-200
            shadow-md hover:shadow-lg
            transition-shadow duration-200
-           focus-within:ring-2 focus-within:ring-ksa-operational-primary/20;
+           focus-within:ring-2 focus-within:ring-blue-500/20;
   }
 
   .card-citizen {
-    @apply bg-white border border-ksa-citizen-border
+    @apply bg-white border border-emerald-200
            rounded-xl shadow-md hover:shadow-lg
            transition-all duration-200
-           hover:border-ksa-citizen-accent/50;
+           hover:border-emerald-400/50;
   }
 
   .card-innovation {
@@ -77,7 +77,7 @@
 
   /* 🏷️ ENHANCED BADGE VARIANTS */
   .badge-executive {
-    @apply bg-gradient-to-r from-ksa-government-primary to-ksa-vision-gold
+    @apply bg-gradient-to-r from-slate-700 to-yellow-600
            text-white font-semibold text-xs
            px-3 py-1 rounded-full
            shadow-sm;
@@ -116,54 +116,54 @@
 
   /* 📝 ENHANCED INPUT VARIANTS */
   .input-executive {
-    @apply border-ksa-government-border
-           focus:border-ksa-government-primary
-           focus:ring-2 focus:ring-ksa-government-primary/20
+    @apply border-slate-300
+           focus:border-slate-600
+           focus:ring-2 focus:ring-slate-500/20
            transition-all duration-200
            bg-white/80 backdrop-blur-sm;
   }
 
   .input-operational {
-    @apply border-ksa-operational-border
-           focus:border-ksa-operational-primary
-           focus:ring-2 focus:ring-ksa-operational-primary/20
+    @apply border-blue-300
+           focus:border-blue-600
+           focus:ring-2 focus:ring-blue-500/20
            transition-colors duration-200;
   }
 
   .input-citizen {
-    @apply border-ksa-citizen-border
-           focus:border-ksa-citizen-primary
-           focus:ring-2 focus:ring-ksa-citizen-primary/20
+    @apply border-emerald-300
+           focus:border-emerald-600
+           focus:ring-2 focus:ring-emerald-500/20
            rounded-lg
            transition-all duration-200;
   }
 
   /* 🗂️ NAVIGATION VARIANTS */
   .nav-executive {
-    @apply bg-gradient-to-r from-ksa-government-primary to-ksa-government-secondary
+    @apply bg-gradient-to-r from-slate-800 to-slate-700
            text-white shadow-lg
-           border-b border-ksa-government-border/20;
+           border-b border-slate-600/20;
   }
 
   .nav-operational {
-    @apply bg-white border-b border-ksa-operational-border
+    @apply bg-white border-b border-blue-200
            shadow-sm;
   }
 
   .nav-citizen {
-    @apply bg-gradient-to-r from-ksa-citizen-primary to-ksa-citizen-accent
+    @apply bg-gradient-to-r from-emerald-600 to-teal-600
            text-white shadow-md;
   }
 
   /* 📊 DATA VISUALIZATION VARIANTS */
   .chart-executive {
-    @apply bg-gradient-to-br from-white to-ksa-government-neutral/5
-           border border-ksa-government-border
+    @apply bg-gradient-to-br from-white to-slate-50/50
+           border border-slate-200
            rounded-lg p-6 shadow-lg;
   }
 
   .chart-operational {
-    @apply bg-white border border-ksa-operational-border
+    @apply bg-white border border-blue-200
            rounded-lg p-4 shadow-md;
   }
 
@@ -178,7 +178,7 @@
   .glass-executive {
     @apply bg-white/20 backdrop-blur-xl
            border border-white/30
-           shadow-xl shadow-ksa-government-primary/10;
+           shadow-xl shadow-slate-500/10;
   }
 
   .glass-operational {
@@ -195,18 +195,18 @@
 
   /* 🌟 HERO SECTION VARIANTS */
   .hero-executive {
-    @apply bg-gradient-to-br from-ksa-government-primary via-ksa-government-secondary to-ksa-vision-gold
+    @apply bg-gradient-to-br from-slate-800 via-slate-700 to-yellow-600
            text-white min-h-[60vh] flex items-center justify-center
            relative overflow-hidden;
   }
 
   .hero-operational {
-    @apply bg-gradient-to-br from-ksa-operational-primary to-ksa-operational-accent
+    @apply bg-gradient-to-br from-blue-600 to-blue-700
            text-white min-h-[50vh] flex items-center justify-center;
   }
 
   .hero-citizen {
-    @apply bg-gradient-to-br from-ksa-citizen-primary to-ksa-citizen-accent
+    @apply bg-gradient-to-br from-emerald-600 to-teal-600
            text-white min-h-[40vh] flex items-center justify-center
            rounded-lg;
   }

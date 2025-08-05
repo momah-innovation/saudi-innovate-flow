@@ -2,7 +2,6 @@
 @import url('./styles/global-themes.css');
 @import url('./styles/specialized-themes.css');
 @import url('./styles/component-themes.css');
-@import url('./styles/enhanced-specialized-themes.css');
 @import url('./styles/component-variants.css');
 @tailwind base;
 @tailwind components;
