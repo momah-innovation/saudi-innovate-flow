@@ -102,35 +102,35 @@ export const EventSocialShare = ({
       name: 'WhatsApp',
       icon: MessageCircle,
       url: shareUrls.whatsapp,
-      color: 'bg-green-500 hover:bg-green-600',
-      textColor: 'text-white'
+      color: 'bg-success hover:bg-success/90',
+      textColor: 'text-success-foreground'
     },
     {
       name: 'Facebook',
       icon: Facebook,
       url: shareUrls.facebook,
-      color: 'bg-blue-600 hover:bg-blue-700',
-      textColor: 'text-white'
+      color: 'bg-info hover:bg-info/90',
+      textColor: 'text-info-foreground'
     },
     {
       name: 'Twitter',
       icon: Twitter,
       url: shareUrls.twitter,
-      color: 'bg-sky-500 hover:bg-sky-600',
-      textColor: 'text-white'
+      color: 'bg-primary hover:bg-primary/90',
+      textColor: 'text-primary-foreground'
     },
     {
       name: 'LinkedIn',
       icon: Linkedin,
       url: shareUrls.linkedin,
-      color: 'bg-blue-700 hover:bg-blue-800',
-      textColor: 'text-white'
+      color: 'bg-accent hover:bg-accent/90',
+      textColor: 'text-accent-foreground'
     },
     {
       name: 'Email',
       icon: Mail,
       url: shareUrls.email,
-      color: 'bg-gray-600 hover:bg-gray-700',
+      color: 'bg-muted hover:bg-muted/90',
       textColor: 'text-white'
     }
   ];

@@ -143,12 +143,12 @@ export const EventCalendarView = ({
 
   const getEventTypeColor = (type: string) => {
     const colors = {
-      'conference': 'bg-blue-500',
-      'workshop': 'bg-purple-500',
-      'summit': 'bg-green-500',
-      'expo': 'bg-orange-500',
-      'forum': 'bg-cyan-500',
-      'default': 'bg-gray-500'
+      'conference': 'bg-info',
+      'workshop': 'bg-accent',
+      'summit': 'bg-success',
+      'expo': 'bg-warning',
+      'forum': 'bg-primary',
+      'default': 'bg-muted'
     };
     return colors[type as keyof typeof colors] || colors.default;
   };

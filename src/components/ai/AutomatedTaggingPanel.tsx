@@ -341,7 +341,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
               <div className="relative">
                 <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
                 <Input
-                  placeholder="البحث في الاقتراحات..."
+                  placeholder={t('search_suggestions') || 'البحث في الاقتراحات...'}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className={`${start('10')}`}
@@ -353,11 +353,11 @@ export const AutomatedTaggingPanel: React.FC = () => {
                 <SelectValue placeholder="نوع المحتوى" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">جميع الأنواع</SelectItem>
-                <SelectItem value="idea">الأفكار</SelectItem>
-                <SelectItem value="challenge">التحديات</SelectItem>
-                <SelectItem value="opportunity">الفرص</SelectItem>
-                <SelectItem value="event">الفعاليات</SelectItem>
+                <SelectItem value="all">{t('all_types') || 'جميع الأنواع'}</SelectItem>
+                <SelectItem value="idea">{t('ideas') || 'الأفكار'}</SelectItem>
+                <SelectItem value="challenge">{t('challenges') || 'التحديات'}</SelectItem>
+                <SelectItem value="opportunity">{t('opportunities') || 'الفرص'}</SelectItem>
+                <SelectItem value="event">{t('events') || 'الفعاليات'}</SelectItem>
               </SelectContent>
             </Select>
             <Button
@@ -495,7 +495,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                 <Card>
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-3">
-                      <Brain className="h-8 w-8 text-purple-500" />
+                      <Brain className="h-8 w-8 text-primary" />
                       <div>
                         <h3 className="font-medium">محتوى غير مُعلم</h3>
                         <p className="text-sm text-muted-foreground">

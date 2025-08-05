@@ -62,8 +62,8 @@ export const EnhancedEventCard = ({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'upcoming':
-      case 'scheduled': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'ongoing': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
+      case 'scheduled': return 'badge-info';
+      case 'ongoing': return 'badge-success';
       case 'completed': return 'badge-secondary';
       case 'cancelled': return 'badge-error';
       default: return 'badge-secondary';
@@ -274,7 +274,7 @@ export const EnhancedEventCard = ({
             className="bg-background/90 hover:bg-background"
             onClick={() => setLiked(!liked)}
           >
-            <Heart className={`w-4 h-4 ${liked ? 'fill-current text-red-500' : ''}`} />
+            <Heart className={`w-4 h-4 ${liked ? 'fill-current text-destructive' : ''}`} />
           </Button>
         </div>
 

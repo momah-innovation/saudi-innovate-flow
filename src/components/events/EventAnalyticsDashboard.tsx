@@ -222,9 +222,9 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'الفعاليات القادمة' : 'Upcoming Events'}</p>
-                <p className="text-2xl font-bold text-blue-600">{analyticsData.upcomingEvents}</p>
+                <p className="text-2xl font-bold text-info">{analyticsData.upcomingEvents}</p>
               </div>
-              <Clock className="w-8 h-8 text-blue-600/60" />
+              <Clock className="w-8 h-8 text-info/60" />
             </div>
           </CardContent>
         </Card>
@@ -234,9 +234,9 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'إجمالي التسجيلات' : 'Total Registrations'}</p>
-                <p className="text-2xl font-bold text-green-600">{analyticsData.totalRegistrations}</p>
+                <p className="text-2xl font-bold text-success">{analyticsData.totalRegistrations}</p>
               </div>
-              <Users className="w-8 h-8 text-green-600/60" />
+              <Users className="w-8 h-8 text-success/60" />
             </div>
           </CardContent>
         </Card>
@@ -246,9 +246,9 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'متوسط الحضور' : 'Avg Attendance'}</p>
-                <p className="text-2xl font-bold text-purple-600">{analyticsData.averageAttendance}</p>
+                <p className="text-2xl font-bold text-accent">{analyticsData.averageAttendance}</p>
               </div>
-              <Target className="w-8 h-8 text-purple-600/60" />
+              <Target className="w-8 h-8 text-accent/60" />
             </div>
           </CardContent>
         </Card>
@@ -258,9 +258,9 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'الفعاليات المكتملة' : 'Completed Events'}</p>
-                <p className="text-2xl font-bold text-orange-600">{analyticsData.completedEvents}</p>
+                <p className="text-2xl font-bold text-warning">{analyticsData.completedEvents}</p>
               </div>
-              <Trophy className="w-8 h-8 text-orange-600/60" />
+              <Trophy className="w-8 h-8 text-warning/60" />
             </div>
           </CardContent>
         </Card>
@@ -354,7 +354,7 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
                             <span className="font-medium">{type.type}</span>
                             <Badge variant="outline">{type.count} {isRTL ? 'فعالية' : 'events'}</Badge>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="w-full bg-muted rounded-full h-2">
                             <div 
                               className="h-2 rounded-full transition-all duration-500"
                               style={{ 

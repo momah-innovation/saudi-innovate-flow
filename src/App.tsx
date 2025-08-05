@@ -189,7 +189,7 @@ const App = () => {
                                     تقنيات ذكية لإدارة الطاقة والأمان في المباني
                                   </p>
                                   <div className="flex justify-between items-center">
-                                    <span className="badge bg-yellow-100 text-yellow-800">قيد المراجعة</span>
+                                    <span className="badge badge-warning">قيد المراجعة</span>
                                     <span className="text-sm text-muted-foreground">الموعد النهائي: 15 أيام</span>
                                   </div>
                                 </div>
@@ -210,7 +210,7 @@ const App = () => {
                                   <p className="text-muted-foreground text-sm mb-3">
                                     تعاون في البحث والتطوير والابتكار التقني
                                   </p>
-                                  <span className="badge bg-purple-100 text-purple-800">شريك أكاديمي</span>
+                                  <span className="badge badge-expert">شريك أكاديمي</span>
                                 </div>
                               </div>
                             </div>
