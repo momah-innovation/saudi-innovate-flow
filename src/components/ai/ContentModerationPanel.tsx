@@ -261,7 +261,7 @@ export const ContentModerationPanel: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
-                <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4`} />
+                <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
                 <Input
                   placeholder="البحث في المحتوى..."
                   value={searchTerm}
@@ -311,8 +311,8 @@ export const ContentModerationPanel: React.FC = () => {
               </div>
             ) : filteredLogs.length === 0 ? (
               <div className="text-center py-8">
-                <Shield className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-                <p className="text-gray-500">لا توجد سجلات للعرض</p>
+                <Shield className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                <p className="text-muted-foreground">{t('no_records_to_display')}</p>
               </div>
             ) : (
               filteredLogs.map((log) => (
@@ -368,7 +368,7 @@ export const ContentModerationPanel: React.FC = () => {
                             size="sm"
                             variant="outline"
                             onClick={() => updateLogStatus(log.id, 'approved')}
-                            className="text-green-600 hover:text-green-700"
+                            className="text-success hover:text-success/80"
                           >
                             <CheckCircle className={`h-4 w-4 ${me('1')}`} />
                             موافقة

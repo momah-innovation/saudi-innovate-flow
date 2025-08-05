@@ -237,13 +237,13 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h4 className="font-semibold mb-3 flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <CheckCircle className="h-4 w-4 text-success" />
                     نقاط القوة
                   </h4>
                   <ul className="space-y-2">
                     {evaluation.strengths.map((strength, index) => (
                       <li key={index} className="text-sm flex items-start gap-2">
-                        <Star className="h-3 w-3 text-green-600 mt-1 flex-shrink-0" />
+                        <Star className="h-3 w-3 text-success mt-1 flex-shrink-0" />
                         {strength}
                       </li>
                     ))}
@@ -268,13 +268,13 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
               {/* Recommendations */}
               <div>
                 <h4 className="font-semibold mb-3 flex items-center gap-2">
-                  <Lightbulb className="h-4 w-4 text-blue-600" />
+                  <Lightbulb className="h-4 w-4 text-primary" />
                   التوصيات
                 </h4>
                 <ul className="space-y-2">
                   {evaluation.recommendations.map((recommendation, index) => (
                     <li key={index} className="text-sm flex items-start gap-2">
-                      <TrendingUp className="h-3 w-3 text-blue-600 mt-1 flex-shrink-0" />
+                      <TrendingUp className="h-3 w-3 text-primary mt-1 flex-shrink-0" />
                       {recommendation}
                     </li>
                   ))}
