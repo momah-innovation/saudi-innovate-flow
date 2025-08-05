@@ -87,20 +87,20 @@ const StakeholderDashboard = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
-      case 'planning': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'completed': return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
-      case 'on_hold': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'active': return 'bg-success-light text-success border-success-border';
+      case 'planning': return 'bg-info-light text-info border-info-border';
+      case 'completed': return 'bg-complete-light text-complete border-complete-border';
+      case 'on_hold': return 'bg-warning-light text-warning border-warning-border';
+      default: return 'bg-muted text-muted-foreground border-border';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
-      case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
-      case 'low': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'high': return 'bg-priority-high-light text-priority-high border-priority-high-border';
+      case 'medium': return 'bg-priority-medium-light text-priority-medium border-priority-medium-border';
+      case 'low': return 'bg-priority-low-light text-priority-low border-priority-low-border';
+      default: return 'bg-muted text-muted-foreground border-border';
     }
   };
 
@@ -143,8 +143,8 @@ const StakeholderDashboard = () => {
           <div className="flex items-center gap-2">
             {trend && (
               <div className={`flex items-center gap-1 text-xs ${
-                trend === 'up' ? 'text-green-600' : 
-                trend === 'down' ? 'text-red-600' : 'text-gray-600'
+                trend === 'up' ? 'text-trend-up' : 
+                trend === 'down' ? 'text-trend-down' : 'text-trend-stable'
               }`}>
                 {trend === 'up' && <ArrowUp className="h-3 w-3" />}
                 {trend === 'down' && <ArrowDown className="h-3 w-3" />}
@@ -313,19 +313,19 @@ const StakeholderDashboard = () => {
                     <div className="space-y-3">
                       <div className="flex justify-between">
                         <span className="text-sm text-muted-foreground">{isRTL ? 'المشاريع في الموعد' : 'Projects On Time'}</span>
-                        <span className="font-medium text-green-600">9/12</span>
+                        <span className="font-medium text-success">9/12</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-sm text-muted-foreground">{isRTL ? 'ضمن الميزانية' : 'Within Budget'}</span>
-                        <span className="font-medium text-green-600">10/12</span>
+                        <span className="font-medium text-success">10/12</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-sm text-muted-foreground">{isRTL ? 'المخاطر المحددة' : 'Identified Risks'}</span>
-                        <span className="font-medium text-yellow-600">3</span>
+                        <span className="font-medium text-warning">3</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-sm text-muted-foreground">{isRTL ? 'الإجراءات المطلوبة' : 'Actions Required'}</span>
-                        <span className="font-medium text-red-600">2</span>
+                        <span className="font-medium text-destructive">2</span>
                       </div>
                     </div>
                   </CardContent>
@@ -395,9 +395,9 @@ const StakeholderDashboard = () => {
                     <CardContent className="p-4">
                       <div className="flex items-start gap-3">
                         <Bell className={`h-5 w-5 mt-0.5 ${
-                          notification.type === 'success' ? 'text-green-500' :
-                          notification.type === 'warning' ? 'text-yellow-500' :
-                          'text-blue-500'
+                          notification.type === 'success' ? 'text-success' :
+                          notification.type === 'warning' ? 'text-warning' :
+                          'text-info'
                         }`} />
                         <div className="flex-1">
                           <h4 className="font-medium">

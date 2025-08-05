@@ -30,9 +30,9 @@ export default function Dashboard() {
       change: '+12%',
       changeType: 'increase' as const,
       icon: Target,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
-      borderColor: 'border-blue-200'
+      color: 'text-info',
+      bgColor: 'bg-info-light',
+      borderColor: 'border-info-border'
     },
     {
       title: 'Submitted Ideas',
@@ -41,9 +41,9 @@ export default function Dashboard() {
       change: '+8%',
       changeType: 'increase' as const,
       icon: Lightbulb,
-      color: 'text-yellow-600',
-      bgColor: 'bg-yellow-50',
-      borderColor: 'border-yellow-200'
+      color: 'text-warning',
+      bgColor: 'bg-warning-light',
+      borderColor: 'border-warning-border'
     },
     {
       title: 'Upcoming Events',
@@ -52,9 +52,9 @@ export default function Dashboard() {
       change: '+3',
       changeType: 'increase' as const,
       icon: Calendar,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
-      borderColor: 'border-green-200'
+      color: 'text-success',
+      bgColor: 'bg-success-light',
+      borderColor: 'border-success-border'
     },
     {
       title: 'Active Innovators',
@@ -63,9 +63,9 @@ export default function Dashboard() {
       change: '+15%',
       changeType: 'increase' as const,
       icon: Users,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50',
-      borderColor: 'border-purple-200'
+      color: 'text-primary',
+      bgColor: 'bg-primary/5',
+      borderColor: 'border-primary/20'
     }
   ];
 
@@ -110,7 +110,7 @@ export default function Dashboard() {
       descriptionAr: 'إطلاق تحدي ابتكار جديد',
       icon: Target,
       href: '/challenges/create',
-      color: 'bg-blue-500 hover:bg-blue-600'
+      color: 'bg-info hover:bg-info-hover'
     },
     {
       title: 'Submit Idea',
@@ -119,7 +119,7 @@ export default function Dashboard() {
       descriptionAr: 'شارك حلك المبتكر',
       icon: Lightbulb,
       href: '/ideas/submit',
-      color: 'bg-yellow-500 hover:bg-yellow-600'
+      color: 'bg-warning hover:bg-warning-hover'
     },
     {
       title: 'Browse Events',
@@ -128,7 +128,7 @@ export default function Dashboard() {
       descriptionAr: 'اكتشف الفعاليات القادمة',
       icon: Calendar,
       href: '/events',
-      color: 'bg-green-500 hover:bg-green-600'
+      color: 'bg-success hover:bg-success-hover'
     },
     {
       title: 'Join Community',
@@ -137,7 +137,7 @@ export default function Dashboard() {
       descriptionAr: 'تواصل مع المبتكرين',
       icon: Users,
       href: '/community',
-      color: 'bg-purple-500 hover:bg-purple-600'
+      color: 'bg-primary hover:bg-primary-hover'
     }
   ];
 

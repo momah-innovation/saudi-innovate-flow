@@ -52,34 +52,125 @@ export default {
 					DEFAULT: "hsl(var(--card))",
 					foreground: "hsl(var(--card-foreground))",
 				},
-				// Semantic status colors
+				// === COMPREHENSIVE SEMANTIC COLOR SYSTEM ===
 				success: {
 					DEFAULT: "hsl(var(--success))",
 					foreground: "hsl(var(--success-foreground))",
 					light: "hsl(var(--success-light))",
 					border: "hsl(var(--success-border))",
+					muted: "hsl(var(--success-muted))",
 				},
 				warning: {
 					DEFAULT: "hsl(var(--warning))",
 					foreground: "hsl(var(--warning-foreground))",
 					light: "hsl(var(--warning-light))",
 					border: "hsl(var(--warning-border))",
+					muted: "hsl(var(--warning-muted))",
 				},
 				info: {
 					DEFAULT: "hsl(var(--info))",
 					foreground: "hsl(var(--info-foreground))",
 					light: "hsl(var(--info-light))",
 					border: "hsl(var(--info-border))",
+					muted: "hsl(var(--info-muted))",
 				},
 				complete: {
 					DEFAULT: "hsl(var(--complete))",
 					foreground: "hsl(var(--complete-foreground))",
 					light: "hsl(var(--complete-light))",
+					border: "hsl(var(--complete-border))",
 				},
 				scheduled: {
 					DEFAULT: "hsl(var(--scheduled))",
 					foreground: "hsl(var(--scheduled-foreground))",
 					light: "hsl(var(--scheduled-light))",
+					border: "hsl(var(--scheduled-border))",
+				},
+				active: {
+					DEFAULT: "hsl(var(--active))",
+					foreground: "hsl(var(--active-foreground))",
+					light: "hsl(var(--active-light))",
+					border: "hsl(var(--active-border))",
+				},
+				inactive: {
+					DEFAULT: "hsl(var(--inactive))",
+					foreground: "hsl(var(--inactive-foreground))",
+					light: "hsl(var(--inactive-light))",
+					border: "hsl(var(--inactive-border))",
+				},
+				pending: {
+					DEFAULT: "hsl(var(--pending))",
+					foreground: "hsl(var(--pending-foreground))",
+					light: "hsl(var(--pending-light))",
+					border: "hsl(var(--pending-border))",
+				},
+				// Priority system
+				priority: {
+					high: "hsl(var(--priority-high))",
+					"high-foreground": "hsl(var(--priority-high-foreground))",
+					"high-light": "hsl(var(--priority-high-light))",
+					"high-border": "hsl(var(--priority-high-border))",
+					medium: "hsl(var(--priority-medium))",
+					"medium-foreground": "hsl(var(--priority-medium-foreground))",
+					"medium-light": "hsl(var(--priority-medium-light))",
+					"medium-border": "hsl(var(--priority-medium-border))",
+					low: "hsl(var(--priority-low))",
+					"low-foreground": "hsl(var(--priority-low-foreground))",
+					"low-light": "hsl(var(--priority-low-light))",
+					"low-border": "hsl(var(--priority-low-border))",
+				},
+				// Trend indicators
+				trend: {
+					up: "hsl(var(--trend-up))",
+					"up-foreground": "hsl(var(--trend-up-foreground))",
+					down: "hsl(var(--trend-down))",
+					"down-foreground": "hsl(var(--trend-down-foreground))",
+					stable: "hsl(var(--trend-stable))",
+					"stable-foreground": "hsl(var(--trend-stable-foreground))",
+				},
+				// Innovation categories
+				innovation: {
+					DEFAULT: "hsl(var(--innovation))",
+					foreground: "hsl(var(--innovation-foreground))",
+					light: "hsl(var(--innovation-light))",
+					border: "hsl(var(--innovation-border))",
+				},
+				technology: {
+					DEFAULT: "hsl(var(--technology))",
+					foreground: "hsl(var(--technology-foreground))",
+					light: "hsl(var(--technology-light))",
+					border: "hsl(var(--technology-border))",
+				},
+				sustainability: {
+					DEFAULT: "hsl(var(--sustainability))",
+					foreground: "hsl(var(--sustainability-foreground))",
+					light: "hsl(var(--sustainability-light))",
+					border: "hsl(var(--sustainability-border))",
+				},
+				social: {
+					DEFAULT: "hsl(var(--social))",
+					foreground: "hsl(var(--social-foreground))",
+					light: "hsl(var(--social-light))",
+					border: "hsl(var(--social-border))",
+				},
+				// Role-based colors
+				partner: {
+					DEFAULT: "hsl(var(--partner))",
+					foreground: "hsl(var(--partner-foreground))",
+					light: "hsl(var(--partner-light))",
+					border: "hsl(var(--partner-border))",
+				},
+				stakeholder: {
+					DEFAULT: "hsl(var(--stakeholder))",
+					foreground: "hsl(var(--stakeholder-foreground))",
+					light: "hsl(var(--stakeholder-light))",
+					border: "hsl(var(--stakeholder-border))",
+				},
+				expert: {
+					DEFAULT: "hsl(var(--expert))",
+					foreground: "hsl(var(--expert-foreground))",
+					light: "hsl(var(--expert-light))",
+					border: "hsl(var(--expert-border))",
 				},
 			},
 			backgroundImage: {

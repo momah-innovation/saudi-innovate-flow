@@ -28,32 +28,115 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 280 84% 12%;
     
-    /* Enhanced Semantic Colors */
+    /* === ENHANCED SEMANTIC COLOR SYSTEM === */
+    /* Status Colors */
     --success: 142 76% 36%;
     --success-foreground: 355 7% 97%;
     --success-hover: 142 76% 32%;
     --success-light: 142 76% 95%;
     --success-border: 142 76% 85%;
+    --success-muted: 142 76% 90%;
     
     --warning: 43 96% 56%;
     --warning-foreground: 25 5% 11%;
     --warning-hover: 43 96% 52%;
     --warning-light: 43 96% 95%;
     --warning-border: 43 96% 85%;
+    --warning-muted: 43 96% 90%;
     
     --info: 217 91% 60%;
     --info-foreground: 210 40% 98%;
     --info-hover: 217 91% 56%;
     --info-light: 217 91% 95%;
     --info-border: 217 91% 85%;
+    --info-muted: 217 91% 90%;
     
+    /* Specialized Status Colors */
     --complete: 142 76% 36%;
     --complete-foreground: 355 7% 97%;
     --complete-light: 142 76% 95%;
+    --complete-border: 142 76% 85%;
     
     --scheduled: 217 91% 60%;
     --scheduled-foreground: 210 40% 98%;
     --scheduled-light: 217 91% 95%;
+    --scheduled-border: 217 91% 85%;
+    
+    --active: 142 76% 36%;
+    --active-foreground: 355 7% 97%;
+    --active-light: 142 76% 95%;
+    --active-border: 142 76% 85%;
+    
+    --inactive: 220 13% 69%;
+    --inactive-foreground: 220 9% 46%;
+    --inactive-light: 220 13% 95%;
+    --inactive-border: 220 13% 85%;
+    
+    --pending: 43 96% 56%;
+    --pending-foreground: 25 5% 11%;
+    --pending-light: 43 96% 95%;
+    --pending-border: 43 96% 85%;
+    
+    /* Priority Colors */
+    --priority-high: 0 84% 60%;
+    --priority-high-foreground: 355 7% 97%;
+    --priority-high-light: 0 84% 95%;
+    --priority-high-border: 0 84% 85%;
+    
+    --priority-medium: 43 96% 56%;
+    --priority-medium-foreground: 25 5% 11%;
+    --priority-medium-light: 43 96% 95%;
+    --priority-medium-border: 43 96% 85%;
+    
+    --priority-low: 142 76% 36%;
+    --priority-low-foreground: 355 7% 97%;
+    --priority-low-light: 142 76% 95%;
+    --priority-low-border: 142 76% 85%;
+    
+    /* Trend Colors */
+    --trend-up: 142 76% 36%;
+    --trend-up-foreground: 355 7% 97%;
+    --trend-down: 0 84% 60%;
+    --trend-down-foreground: 355 7% 97%;
+    --trend-stable: 220 13% 69%;
+    --trend-stable-foreground: 220 9% 46%;
+    
+    /* Innovation Category Colors */
+    --innovation: 280 84% 12%;
+    --innovation-foreground: 210 40% 98%;
+    --innovation-light: 280 84% 95%;
+    --innovation-border: 280 84% 85%;
+    
+    --technology: 217 91% 60%;
+    --technology-foreground: 210 40% 98%;
+    --technology-light: 217 91% 95%;
+    --technology-border: 217 91% 85%;
+    
+    --sustainability: 142 76% 36%;
+    --sustainability-foreground: 355 7% 97%;
+    --sustainability-light: 142 76% 95%;
+    --sustainability-border: 142 76% 85%;
+    
+    --social: 340 82% 52%;
+    --social-foreground: 355 7% 97%;
+    --social-light: 340 82% 95%;
+    --social-border: 340 82% 85%;
+    
+    /* Partner & Stakeholder Colors */
+    --partner: 280 84% 12%;
+    --partner-foreground: 210 40% 98%;
+    --partner-light: 280 84% 95%;
+    --partner-border: 280 84% 85%;
+    
+    --stakeholder: 217 91% 60%;
+    --stakeholder-foreground: 210 40% 98%;
+    --stakeholder-light: 217 91% 95%;
+    --stakeholder-border: 217 91% 85%;
+    
+    --expert: 142 76% 36%;
+    --expert-foreground: 355 7% 97%;
+    --expert-light: 142 76% 95%;
+    --expert-border: 142 76% 85%;
     
     /* === REFINED SPACING TOKENS === */
     --space-px: 1px;
