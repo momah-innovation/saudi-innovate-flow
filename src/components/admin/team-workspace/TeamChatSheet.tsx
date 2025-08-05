@@ -12,6 +12,7 @@ import {
   Phone, Video, MoreHorizontal, Pin, Search, Settings
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface TeamChatSheetProps {
   open: boolean;
@@ -30,6 +31,7 @@ interface Message {
 
 export function TeamChatSheet({ open, onOpenChange, teamMembers }: TeamChatSheetProps) {
   const { user } = useAuth();
+  const { start, end } = useRTLAware();
   const [currentChannel, setCurrentChannel] = useState('general');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
@@ -175,7 +177,7 @@ export function TeamChatSheet({ open, onOpenChange, teamMembers }: TeamChatSheet
                           </AvatarFallback>
                         </Avatar>
                         {onlineMembers.includes(member.id) && (
-                          <div className="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-background" />
+                          <div className={`absolute -bottom-0.5 ${end('0.5')} w-2 h-2 bg-green-500 rounded-full border border-background`} />
                         )}
                       </div>
                       <span className="text-sm">{member.profiles?.display_name || 'مستخدم'}</span>
@@ -277,7 +279,7 @@ export function TeamChatSheet({ open, onOpenChange, teamMembers }: TeamChatSheet
                   <Button 
                     size="sm" 
                     variant="ghost" 
-                    className="absolute left-2 top-1/2 transform -translate-y-1/2"
+                    className={`absolute ${start('2')} top-1/2 transform -translate-y-1/2`}
                   >
                     <Smile className="h-4 w-4" />
                   </Button>

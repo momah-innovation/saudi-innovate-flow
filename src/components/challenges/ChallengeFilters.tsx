@@ -22,6 +22,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { challengesPageConfig, getFilterOptions } from '@/config/challengesPageConfig';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 export interface FilterState {
   search: string;
@@ -56,6 +57,7 @@ export const ChallengeFilters = ({
   dynamicMaxParticipants = 1000
 }: ChallengeFiltersProps) => {
   const { isRTL } = useDirection();
+  const { me, ms } = useRTLAware();
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
@@ -125,7 +127,7 @@ export const ChallengeFilters = ({
         animateFilters && "animate-pulse"
       )}
     >
-      <option.icon className="w-3 h-3 mr-1" />
+      <option.icon className={`w-3 h-3 ${me('1')}`} />
       {option.label}
     </Button>
   );
@@ -311,7 +313,7 @@ export const ChallengeFilters = ({
               >
                 <SlidersHorizontal className="w-3.5 h-3.5" />
                 <ChevronDown className={cn(
-                  "w-3.5 h-3.5 ml-1 transition-transform duration-200",
+                  `w-3.5 h-3.5 ${ms('1')} transition-transform duration-200`,
                   isAdvancedOpen && "rotate-180"
                 )} />
               </Button>
@@ -395,7 +397,7 @@ export const ChallengeFilters = ({
                 onClick={onClearFilters}
                 className="text-muted-foreground hover:text-destructive transition-colors duration-200"
               >
-                <X className="w-4 h-4 mr-2" />
+                <X className={`w-4 h-4 ${me('2')}`} />
                 {isRTL ? 'مسح الكل' : 'Clear all'}
               </Button>
             </div>

@@ -32,6 +32,7 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { TestProfileCalculation } from '@/components/admin/TestProfileCalculation';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface ProfileData {
   // Basic Information
@@ -107,6 +108,7 @@ export const ProfileSetup = () => {
   const { user, userProfile, updateProfile } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { start, ps } = useRTLAware();
 
   useEffect(() => {
     console.log('ProfileSetup useEffect triggered:', {
@@ -329,26 +331,26 @@ export const ProfileSetup = () => {
               <div className="space-y-2">
                 <Label htmlFor="phone">رقم الهاتف</Label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Phone className={`absolute ${start('3')} top-3 h-4 w-4 text-muted-foreground`} />
                   <Input
                     id="phone"
                     value={profileData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     placeholder="+966 50 123 4567"
-                    className="pl-10"
+                     className={ps('10')}
                   />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="location">الموقع</Label>
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <MapPin className={`absolute ${start('3')} top-3 h-4 w-4 text-muted-foreground`} />
                   <Input
                     id="location"
                     value={profileData.location}
                     onChange={(e) => handleInputChange('location', e.target.value)}
                     placeholder="الرياض، المملكة العربية السعودية"
-                    className="pl-10"
+                     className={ps('10')}
                   />
                 </div>
               </div>
@@ -357,13 +359,13 @@ export const ProfileSetup = () => {
             <div className="space-y-2">
               <Label htmlFor="website">الموقع الإلكتروني</Label>
               <div className="relative">
-                <Globe className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Globe className={`absolute ${start('3')} top-3 h-4 w-4 text-muted-foreground`} />
                 <Input
                   id="website"
                   value={profileData.website}
                   onChange={(e) => handleInputChange('website', e.target.value)}
                   placeholder="https://example.com"
-                  className="pl-10"
+                  className={ps('10')}
                 />
               </div>
             </div>

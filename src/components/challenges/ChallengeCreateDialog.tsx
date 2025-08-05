@@ -19,6 +19,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 import { cn } from '@/lib/utils';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface ChallengeCreateDialogProps {
   open: boolean;
@@ -33,6 +34,7 @@ export function ChallengeCreateDialog({
 }: ChallengeCreateDialogProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { me } = useRTLAware();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     title_ar: '',
@@ -417,7 +419,7 @@ export function ChallengeCreateDialog({
                   challengesPageConfig.ui.effects.hoverScale
                 )}
               >
-                <CheckCircle className="h-4 w-4 mr-2" />
+                <CheckCircle className={`h-4 w-4 ${me('2')}`} />
                 إنشاء التحدي
               </Button>
             )}

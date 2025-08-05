@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Brain, Lightbulb, Star, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
 import { useAIFeatures } from '@/hooks/useAIFeatures';
 import { useToast } from '@/hooks/use-toast';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface IdeaEvaluationProps {
   ideaId?: string;
@@ -43,6 +44,7 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
   const [feedback, setFeedback] = useState('');
   const { isFeatureEnabled, getFeatureConfig } = useAIFeatures();
   const { toast } = useToast();
+  const { me } = useRTLAware();
 
   const handleEvaluate = async () => {
     if (!isFeatureEnabled('idea_evaluation')) {
@@ -163,12 +165,12 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
               <Button onClick={handleEvaluate} disabled={loading} className="mb-4">
                 {loading ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                    <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-white ${me('2')}`} />
                     جاري التقييم...
                   </>
                 ) : (
                   <>
-                    <Brain className="h-4 w-4 mr-2" />
+                    <Brain className={`h-4 w-4 ${me('2')}`} />
                     تقييم الفكرة
                   </>
                 )}

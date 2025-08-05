@@ -47,7 +47,7 @@ export function TeamWorkspaceContent({
   const { t } = useTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
-  const { me, start, ps } = useRTLAware();
+  const { me, start, ps, end } = useRTLAware();
   const [loading, setLoading] = useState(true);
   const [selectedMember, setSelectedMember] = useState<any>(null);
   const [selectedProject, setSelectedProject] = useState<any>(null);
@@ -805,7 +805,7 @@ export function TeamWorkspaceContent({
                       {member.profiles?.display_name?.charAt(0) || 'U'}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-background"></div>
+                  <div className={`absolute -bottom-1 ${end('1')} w-4 h-4 bg-success rounded-full border-2 border-background`}></div>
                 </div>
                 <div className="flex-1">
                   <CardTitle className="text-base group-hover:text-primary transition-colors">

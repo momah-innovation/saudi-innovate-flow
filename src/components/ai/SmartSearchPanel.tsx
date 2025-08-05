@@ -23,6 +23,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { aiService } from '@/services/AIService';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface SearchResult {
   id: string;
@@ -64,6 +65,7 @@ export const SmartSearchPanel: React.FC = () => {
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [popularQueries, setPopularQueries] = useState<string[]>([]);
   const { toast } = useToast();
+  const { start, me, ps } = useRTLAware();
 
   useEffect(() => {
     loadSearchHistory();
@@ -221,13 +223,13 @@ export const SmartSearchPanel: React.FC = () => {
           {/* Search Input */}
           <div className="flex gap-2">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4`} />
               <Input
                 placeholder="ابحث عن الأفكار والتحديات والفرص..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyPress={handleKeyPress}
-                className="pl-10"
+                className={ps('10')}
               />
             </div>
             <Button onClick={performSearch} disabled={loading}>
@@ -257,7 +259,7 @@ export const SmartSearchPanel: React.FC = () => {
                         }}
                         className="text-xs h-7"
                       >
-                        <Clock className="h-3 w-3 mr-1" />
+                        <Clock className={`h-3 w-3 ${me('1')}`} />
                         {historyQuery}
                       </Button>
                     ))}
@@ -280,7 +282,7 @@ export const SmartSearchPanel: React.FC = () => {
                         }}
                         className="text-xs h-7"
                       >
-                        <TrendingUp className="h-3 w-3 mr-1" />
+                        <TrendingUp className={`h-3 w-3 ${me('1')}`} />
                         {popularQuery}
                       </Button>
                     ))}
@@ -387,7 +389,7 @@ export const SmartSearchPanel: React.FC = () => {
                   العثور على {results.length} نتيجة للبحث "{query}"
                 </h3>
                 <Badge variant="secondary" className="text-xs">
-                  <Zap className="h-3 w-3 mr-1" />
+                  <Zap className={`h-3 w-3 ${me('1')}`} />
                   بحث ذكي
                 </Badge>
               </div>
@@ -444,7 +446,7 @@ export const SmartSearchPanel: React.FC = () => {
                               <span>{new Date(result.createdAt).toLocaleDateString('ar')}</span>
                             </div>
                             <Button variant="ghost" size="sm">
-                              <Eye className="h-4 w-4 mr-1" />
+                              <Eye className={`h-4 w-4 ${me('1')}`} />
                               عرض التفاصيل
                             </Button>
                           </div>

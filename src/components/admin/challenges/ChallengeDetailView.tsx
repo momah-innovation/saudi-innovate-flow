@@ -196,7 +196,7 @@ export function ChallengeDetailView({
               </div>
             </div>
             <Button onClick={() => onEdit(challenge)} size="sm">
-              <Edit className={`w-4 h-4 ${me('2')}`} />
+              <Edit className="w-4 h-4" />
               تعديل
             </Button>
           </div>
@@ -606,7 +606,7 @@ export function ChallengeDetailView({
                 إغلاق
               </Button>
               <Button onClick={() => onEdit(challenge)}>
-                <Edit className="w-4 h-4 mr-2" />
+                <Edit className={`w-4 h-4 ${me('2')}`} />
                 تعديل التحدي
               </Button>
             </div>

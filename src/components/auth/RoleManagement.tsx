@@ -28,6 +28,7 @@ import {
   Building2,
   ChevronDown
 } from 'lucide-react';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 // Role hierarchy definition
 export const ROLE_HIERARCHY = {
@@ -182,6 +183,7 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
   ]);
 
   const { toast } = useToast();
+  const { me } = useRTLAware();
 
   const handleRoleChange = async (userId: string, newRole: UserRole) => {
     try {
@@ -292,7 +294,7 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
             </div>
             <Select value={filterRole} onValueChange={(value) => setFilterRole(value as UserRole | 'all')}>
               <SelectTrigger className="w-full sm:w-48">
-                <Filter className="h-4 w-4 mr-2" />
+                <Filter className={`h-4 w-4 ${me('2')}`} />
                 <SelectValue placeholder="تصفية حسب الدور" />
               </SelectTrigger>
               <SelectContent>

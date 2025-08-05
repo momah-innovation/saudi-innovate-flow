@@ -63,7 +63,7 @@ export const ChallengeCard = ({
   const { isRTL } = useDirection();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const { flexRow, textStart, textEnd, ml, mr, left, right } = useRTLAware();
+  const { flexRow, textStart, textEnd, ml, mr, left, right, me } = useRTLAware();
 
   // Get mappings from config
   const statusMapping = getStatusMapping(challenge.status);
@@ -293,18 +293,18 @@ export const ChallengeCard = ({
         {/* Status Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           <Badge className={getStatusColor(challenge.status)}>
-            <StatusIcon className="w-3 h-3 mr-1" />
+            <StatusIcon className={`w-3 h-3 ${me('1')}`} />
             {getStatusText(challenge.status)}
           </Badge>
           {challenge.trending && (
             <Badge className={challengesPageConfig.badges.trending}>
-              <TrendingUp className="w-3 h-3 mr-1" />
+              <TrendingUp className={`w-3 h-3 ${me('1')}`} />
               {isRTL ? 'رائج' : 'Trending'}
             </Badge>
           )}
           {isNew && (
             <Badge className={challengesPageConfig.badges.new}>
-              <Star className="w-3 h-3 mr-1" />
+              <Star className={`w-3 h-3 ${me('1')}`} />
               {isRTL ? 'جديد' : 'New'}
             </Badge>
           )}
@@ -336,7 +336,7 @@ export const ChallengeCard = ({
         {isUrgent && (
           <div className="absolute bottom-3 left-3">
             <Badge className={`${challengesPageConfig.badges.urgent} animate-pulse`}>
-              <AlertCircle className="w-3 h-3 mr-1" />
+              <AlertCircle className={`w-3 h-3 ${me('1')}`} />
               {daysLeft} {isRTL ? 'أيام' : 'days'}
             </Badge>
           </div>
@@ -455,7 +455,7 @@ export const ChallengeCard = ({
             className={`flex-1 ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} ${challengesPageConfig.ui.colors.text.accent} border-0 shadow-md ${challengesPageConfig.ui.effects.hoverScale}`}
             disabled={challenge.status !== 'active' && challenge.status !== 'published'}
           >
-            <Zap className="w-4 h-4 mr-2" />
+            <Zap className={`w-4 h-4 ${me('2')}`} />
             {challenge.status !== 'active' && challenge.status !== 'published' ? 
               (isRTL ? 'غير متاح' : 'Unavailable') :
               (isRTL ? 'شارك الآن' : 'Participate')

@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Sparkles, TrendingUp, Users, Lightbulb, ArrowRight } from 'lucide-react';
 import { useAIFeatures } from '@/hooks/useAIFeatures';
 import { supabase } from '@/integrations/supabase/client';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface Recommendation {
   id: string;
@@ -31,6 +32,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState(true);
   const { isFeatureEnabled } = useAIFeatures();
+  const { me } = useRTLAware();
 
   useEffect(() => {
     if (isFeatureEnabled('smart_partner_matching')) {
@@ -243,7 +245,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
             
             <div className="pt-4 border-t">
               <Button variant="outline" className="w-full" onClick={loadRecommendations}>
-                <Sparkles className="h-4 w-4 mr-2" />
+                <Sparkles className={`h-4 w-4 ${me('2')}`} />
                 تحديث التوصيات
               </Button>
             </div>

@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 export const PasswordReset = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +16,7 @@ export const PasswordReset = () => {
   const [isEmailSent, setIsEmailSent] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { start, ps } = useRTLAware();
 
   const handlePasswordReset = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,7 +107,7 @@ export const PasswordReset = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
       {/* Back to Auth Button */}
-      <div className="fixed top-4 left-4 z-50">
+      <div className={`fixed top-4 ${start('4')} z-50`}>
         <Button
           variant="ghost"
           size="sm"
@@ -133,12 +135,12 @@ export const PasswordReset = () => {
             <div className="space-y-2">
               <Label htmlFor="email">البريد الإلكتروني</Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Mail className={`absolute ${start('3')} top-3 h-4 w-4 text-muted-foreground`} />
                 <Input
                   id="email"
                   type="email"
                   placeholder="أدخل بريدك الإلكتروني"
-                  className="pl-10"
+                  className={ps('10')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
