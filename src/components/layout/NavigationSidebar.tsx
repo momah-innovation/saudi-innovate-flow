@@ -544,10 +544,10 @@ export function NavigationSidebar() {
         isRTL && "border-l border-r-0"
       )}
     >
-      <SidebarContent className={cn(isRTL && "text-right")}>
-        {/* Render groups in priority order */}
-        {groupOrder.map(groupKey => {
-          const items = groupedItems[groupKey];
+       <SidebarContent className={cn(isRTL && "text-end")}>
+         {/* Render groups in priority order */}
+         {groupOrder.map(groupKey => {
+           const items = groupedItems[groupKey];
           if (!items || items.length === 0) return null;
           return renderGroup(groupKey, items);
         })}

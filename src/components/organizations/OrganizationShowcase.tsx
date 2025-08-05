@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TeamProfileCard } from '@/components/teams/TeamProfileCard';
 import { PartnerProfileCard } from '@/components/partners/PartnerProfileCard';
 import { SectorProfileCard } from '@/components/sectors/SectorProfileCard';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { toast } from 'sonner';
 
 interface Team {
@@ -55,6 +56,7 @@ export function OrganizationShowcase() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState<string>('all');
   const [activeTab, setActiveTab] = useState('teams');
+  const { ps } = useRTLAware();
 
   useEffect(() => {
     loadData();
@@ -175,7 +177,7 @@ export function OrganizationShowcase() {
             placeholder="Search organizations..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className={ps('10')}
           />
         </div>
         <Select value={filterType} onValueChange={setFilterType}>

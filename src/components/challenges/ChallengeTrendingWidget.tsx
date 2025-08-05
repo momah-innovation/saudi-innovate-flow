@@ -153,7 +153,7 @@ export const ChallengeTrendingWidget = ({
         <CardTitle className="flex items-center gap-2">
           <TrendingUp className={`w-5 h-5 ${challengesPageConfig.ui.colors.stats.orange}`} />
           {isRTL ? 'التحديات الرائجة' : 'Trending Challenges'}
-          <Badge variant="secondary" className="ml-auto">
+          <Badge variant="secondary" className={ms('auto')}>
             {trendingChallenges.length}
           </Badge>
         </CardTitle>

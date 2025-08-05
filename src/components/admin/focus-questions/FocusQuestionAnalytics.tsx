@@ -7,6 +7,8 @@ import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useTranslation } from "@/hooks/useAppTranslation";
+import { useRTLAware } from "@/hooks/useRTLAware";
 import { 
   BarChart3, 
   TrendingUp, 
@@ -53,6 +55,8 @@ export function FocusQuestionAnalytics() {
   const [timeRange, setTimeRange] = useState("all");
   const { toast } = useToast();
   const { timeRangeOptions } = useSystemLists();
+  const { t } = useTranslation();
+  const { textStart } = useRTLAware();
 
   useEffect(() => {
     fetchAnalytics();
@@ -371,10 +375,10 @@ export function FocusQuestionAnalytics() {
                         </span>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-lg font-bold text-primary">{question.responseRate}%</div>
-                      <Progress value={question.responseRate} className="w-16 h-1 mt-1" />
-                    </div>
+                     <div className={textStart}>
+                       <div className="text-lg font-bold text-primary">{question.responseRate}%</div>
+                       <Progress value={question.responseRate} className="w-16 h-1 mt-1" />
+                     </div>
                   </div>
                 ))}
               </CardContent>

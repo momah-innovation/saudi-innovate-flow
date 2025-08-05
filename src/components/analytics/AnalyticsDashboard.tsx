@@ -191,15 +191,15 @@ export function AnalyticsDashboard() {
       title: t('total_users'),
       value: analyticsData?.total_users || 0,
       icon: Users,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50'
+      color: 'text-primary',
+      bgColor: 'bg-primary/10'
     },
     {
       title: t('total_challenges'),
       value: analyticsData?.total_challenges || 0,
       icon: Target,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50'
+      color: 'text-success',
+      bgColor: 'bg-success/10'
     },
     {
       title: t('total_ideas'),
@@ -383,15 +383,15 @@ export function AnalyticsDashboard() {
                     </span>
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-sm text-muted-foreground">{t('participants')}</div>
-                  <div className="text-lg font-semibold">{challenge.total_participants}</div>
-                  {challenge.approval_rate !== null && (
-                    <div className="text-sm text-green-600">
-                      {challenge.approval_rate}% {t('approval_rate')}
-                    </div>
-                  )}
-                </div>
+                 <div className="text-end">
+                   <div className="text-sm text-muted-foreground">{t('participants')}</div>
+                   <div className="text-lg font-semibold">{challenge.total_participants}</div>
+                   {challenge.approval_rate !== null && (
+                     <div className="text-sm text-success">
+                       {challenge.approval_rate}% {t('approval_rate')}
+                     </div>
+                   )}
+                 </div>
               </div>
             ))}
           </div>
@@ -419,15 +419,15 @@ export function AnalyticsDashboard() {
                     {user.department}
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-lg font-semibold">{user.total_events}</div>
-                  <div className="text-sm text-muted-foreground">{t('total_activities')}</div>
-                  <div className="flex gap-4 mt-1 text-xs text-muted-foreground">
-                    <span>{user.challenge_participations} {t('challenges')}</span>
-                    <span>{user.idea_submissions} {t('ideas')}</span>
-                    <span>{user.comments_made} {t('comments')}</span>
-                  </div>
-                </div>
+                 <div className="text-end">
+                   <div className="text-lg font-semibold">{user.total_events}</div>
+                   <div className="text-sm text-muted-foreground">{t('total_activities')}</div>
+                   <div className="flex gap-4 mt-1 text-xs text-muted-foreground">
+                     <span>{user.challenge_participations} {t('challenges')}</span>
+                     <span>{user.idea_submissions} {t('ideas')}</span>
+                     <span>{user.comments_made} {t('comments')}</span>
+                   </div>
+                 </div>
               </div>
             ))}
           </div>

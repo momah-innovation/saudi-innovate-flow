@@ -204,7 +204,7 @@ export const DashboardHero = ({
                   <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                     <action.icon className="w-5 h-5 text-white" />
                   </div>
-                  <div className="text-left">
+                  <div className="text-start">
                     <h3 className="font-semibold text-sm text-white">{action.title}</h3>
                   </div>
                 </button>

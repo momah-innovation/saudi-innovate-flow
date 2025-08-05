@@ -160,14 +160,14 @@ export const GeographicAnalytics = ({ opportunityId }: GeographicAnalyticsProps)
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="text-right">
-                    <p className="font-medium text-sm">{country.percentage}%</p>
-                    {index === 0 && (
-                      <div className="flex items-center gap-1 text-xs text-green-600">
-                        <TrendingUp className="w-3 h-3" />
-                        {isRTL ? 'الأعلى' : 'Top'}
-                      </div>
-                    )}
+                   <div className="text-end">
+                     <p className="font-medium text-sm">{country.percentage}%</p>
+                     {index === 0 && (
+                       <div className="flex items-center gap-1 text-xs text-success">
+                         <TrendingUp className="w-3 h-3" />
+                         {isRTL ? 'الأعلى' : 'Top'}
+                       </div>
+                     )}
                   </div>
                 </div>
               </div>

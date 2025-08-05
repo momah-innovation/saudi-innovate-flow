@@ -93,15 +93,15 @@ export const EnhancedPartnerDashboardHero = ({
               </div>
               
               <div className="space-y-4">
-                <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight", isRTL && "text-right")}>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">
-                    {t('partnerDashboardWelcome')}
-                  </span>
-                </h1>
-                
-                <p className={cn("text-xl text-white/80 max-w-2xl leading-relaxed", isRTL && "text-right")}>
-                  {t('partnerDashboardDescription')}
-                </p>
+                 <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight", isRTL && "text-end")}>
+                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">
+                     {t('partnerDashboardWelcome')}
+                   </span>
+                 </h1>
+                 
+                 <p className={cn("text-xl text-white/80 max-w-2xl leading-relaxed", isRTL && "text-end")}>
+                   {t('partnerDashboardDescription')}
+                 </p>
               </div>
             </div>
 

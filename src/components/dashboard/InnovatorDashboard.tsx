@@ -329,9 +329,9 @@ export const InnovatorDashboard = () => {
                 <div className="space-y-1 flex-1">
                   <CardTitle className="text-lg leading-tight">{challenge.title}</CardTitle>
                   {challenge.title_ar && (
-                    <CardDescription className="text-right" dir="rtl">
-                      {challenge.title_ar}
-                    </CardDescription>
+                     <CardDescription className="text-end" dir="rtl">
+                       {challenge.title_ar}
+                     </CardDescription>
                   )}
                 </div>
                 <div className={`flex items-center gap-1 ${ms('2')}`}>
