@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from "@/hooks/useAppTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { 
   Search, 
   Filter, 
@@ -63,6 +64,7 @@ export function FocusQuestionFilters({
   activeFiltersCount
 }: FocusQuestionFiltersProps) {
   const { t, isRTL } = useTranslation();
+  const { me, start, ps } = useRTLAware();
   const { focusQuestionTypes } = useSystemLists();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -137,7 +139,7 @@ export function FocusQuestionFilters({
                 onClick={onClearFilters}
                 className="h-8 px-2"
               >
-                <RotateCcw className="w-4 h-4 mr-1" />
+                <RotateCcw className={`w-4 h-4 ${me('1')}`} />
                 مسح
               </Button>
             </div>
@@ -148,12 +150,12 @@ export function FocusQuestionFilters({
       <CardContent className="space-y-4">
         {/* Search Bar */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground`} />
           <Input
             placeholder="البحث في الأسئلة المحورية..."
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-10"
+            className={ps('10')}
             dir="rtl"
           />
         </div>
@@ -167,7 +169,7 @@ export function FocusQuestionFilters({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-auto p-0 ml-1 hover:bg-transparent"
+                  className={`h-auto p-0 ${me('1')} hover:bg-transparent`}
                   onClick={() => {
                     if (filter.key === 'type') onQuestionTypeChange('all');
                     if (filter.key === 'sensitivity') onSensitivityChange('all');

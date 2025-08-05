@@ -35,6 +35,7 @@ export function ExpertDetailView({
 }: ExpertDetailViewProps) {
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
+  const { me } = useRTLAware();
   
   const [relatedData, setRelatedData] = useState({
     assignments: [],

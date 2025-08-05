@@ -7,6 +7,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useAppTranslation";
+import { useRTLAware } from '@/hooks/useRTLAware';
+import { RTLFlex } from '@/components/ui/rtl-layout';
 import { supabase } from "@/integrations/supabase/client";
 import { 
   HelpCircle, 
@@ -64,6 +66,7 @@ export function FocusQuestionDetailView({
 }: FocusQuestionDetailViewProps) {
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
+  const { me } = useRTLAware();
   
   const [relatedData, setRelatedData] = useState({
     ideas: [],
@@ -247,7 +250,7 @@ export function FocusQuestionDetailView({
               </div>
             </div>
             <Button onClick={() => onEdit(question)} size="sm">
-              <Edit className="w-4 h-4 mr-2" />
+              <Edit className={`w-4 h-4 ${me('2')}`} />
               تعديل
             </Button>
           </div>
@@ -335,11 +338,11 @@ export function FocusQuestionDetailView({
                   <div>
                     <h4 className="font-semibold mb-2" dir="rtl">التحدي المرتبط</h4>
                     <div className="p-3 border rounded-lg">
-                      <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <RTLFlex className="gap-2">
                         <Target className="w-4 h-4" />
                         <span className="font-medium" dir="rtl">{question.challenge.title_ar}</span>
                         <Badge variant="outline">{question.challenge.status}</Badge>
-                      </div>
+                      </RTLFlex>
                     </div>
                   </div>
                 )}
@@ -347,16 +350,16 @@ export function FocusQuestionDetailView({
                 <div>
                   <h4 className="font-semibold mb-2" dir="rtl">تواريخ التعديل</h4>
                   <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <RTLFlex className="gap-2">
                       <Calendar className="w-4 h-4" />
                       <span dir="rtl">تاريخ الإنشاء: </span>
                       <span dir="ltr">{format(new Date(question.created_at), 'PPp')}</span>
-                    </div>
-                    <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    </RTLFlex>
+                    <RTLFlex className="gap-2">
                       <Activity className="w-4 h-4" />
                       <span dir="rtl">آخر تحديث: </span>
                       <span dir="ltr">{format(new Date(question.updated_at), 'PPp')}</span>
-                    </div>
+                    </RTLFlex>
                   </div>
                 </div>
               </div>

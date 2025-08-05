@@ -67,6 +67,7 @@ interface SystemLists {
 
 export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: ChallengeWizardV2Props) {
   const { toast } = useToast();
+  const { me } = useRTLAware();
   const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels, challengeTypes } = useSystemLists();
   const [loading, setLoading] = useState(false);
   const [systemLists, setSystemLists] = useState<SystemLists>({
