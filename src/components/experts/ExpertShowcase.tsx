@@ -155,7 +155,7 @@ export const ExpertShowcase = ({
                     variant="outline" 
                     onClick={() => onFilterByExpert(featuredExpert.id)}
                   >
-                    <Filter className={cn("w-4 h-4", me("2"))} />
+                    <Filter className="w-4 h-4 mr-2" />
                      {isRTL ? 'تحدياته' : 'Their Challenges'}
                    </Button>
                  </div>
@@ -180,9 +180,9 @@ export const ExpertShowcase = ({
                {showAll ? (isRTL ? 'عرض أقل' : 'Show Less') : (isRTL ? 'عرض الكل' : 'Show All')}
              </Button>
              <Button onClick={onViewAll}>
-               <Search className={cn("w-4 h-4", me("2"))} />
+               <Search className="w-4 h-4 mr-2" />
                {isRTL ? 'استكشف الخبراء' : 'Browse Experts'}
-               <ArrowRight className={cn("w-4 h-4", ms("2"))} />
+               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
         </div>

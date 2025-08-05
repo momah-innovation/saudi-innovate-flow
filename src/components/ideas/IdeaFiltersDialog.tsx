@@ -173,7 +173,7 @@ export function IdeaFiltersDialog({
               <Filter className="w-5 h-5" />
               {isRTL ? 'تصفية الأفكار' : 'Filter Ideas'}
               {getActiveFiltersCount() > 0 && (
-                <Badge variant="secondary" className={cn(ms("2"))}>
+                <Badge variant="secondary" className="ml-2">
                   {getActiveFiltersCount()}
                 </Badge>
               )}

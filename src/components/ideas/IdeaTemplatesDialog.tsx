@@ -195,7 +195,7 @@ export function IdeaTemplatesDialog({
                         </CardTitle>
                         <Badge className={getCategoryColor(template.category)} variant="secondary">
                           {getCategoryIcon(template.category)}
-                           <span className={cn(ms("1"))}>{getCategoryName(template.category)}</span>
+                           <span className="ml-1">{getCategoryName(template.category)}</span>
                          </Badge>
                        </div>
                        <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
@@ -214,7 +214,7 @@ export function IdeaTemplatesDialog({
                          <div className="flex flex-wrap gap-1">
                            {template.template_data.sections.slice(0, 3).map((section: string, index: number) => (
                              <Badge key={index} variant="outline" className="text-xs">
-                               <CheckCircle className={cn("w-3 h-3", me("1"))} />
+                               <CheckCircle className="w-3 h-3 mr-1" />
                               {section.replace('_', ' ')}
                             </Badge>
                           ))}

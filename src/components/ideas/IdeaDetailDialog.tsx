@@ -257,7 +257,7 @@ export function IdeaDetailDialog({
                 </Badge>
                  {idea.featured && (
                    <Badge className="bg-yellow-500 text-white border-0">
-                     <Star className={cn("w-3 h-3", me("1"))} />
+                     <Star className="w-3 h-3 mr-1" />
                      {isRTL ? 'مميزة' : 'Featured'}
                    </Badge>
                  )}
@@ -300,7 +300,7 @@ export function IdeaDetailDialog({
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-              <div className={cn("absolute bottom-4", start("4"), end("4"))}>
+              <div className="absolute bottom-4 left-4 right-4">
                 <div className="flex items-center justify-between text-white">
                   <div className="flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-1">
