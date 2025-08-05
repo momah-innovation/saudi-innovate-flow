@@ -579,13 +579,13 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
                 <div className="space-y-4">
                   {milestones.map((milestone, index) => (
                     <div key={milestone.id} className="flex items-start gap-3">
-                      <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center ${
-                        milestone.status === 'achieved' 
-                          ? 'bg-green-500 border-green-500 text-white' 
-                          : milestone.status === 'missed'
-                          ? 'bg-red-500 border-red-500 text-white'
-                          : 'border-muted bg-background'
-                      }`}>
+                       <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center ${
+                         milestone.status === 'achieved' 
+                           ? 'bg-success border-success text-success-foreground' 
+                           : milestone.status === 'missed'
+                           ? 'bg-destructive border-destructive text-destructive-foreground'
+                           : 'border-muted bg-background'
+                       }`}>
                         <span className="text-xs font-bold">{index + 1}</span>
                       </div>
                       

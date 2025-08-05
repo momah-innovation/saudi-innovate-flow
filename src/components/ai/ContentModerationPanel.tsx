@@ -143,13 +143,13 @@ export const ContentModerationPanel: React.FC = () => {
 
   const getStatusIcon = (status: string, flagged: boolean) => {
     if (flagged && status === 'requires_review') {
-      return <AlertTriangle className="h-4 w-4 text-red-500" />;
+      return <AlertTriangle className="h-4 w-4 text-destructive" />;
     }
     if (status === 'approved') {
-      return <CheckCircle className="h-4 w-4 text-green-500" />;
+      return <CheckCircle className="h-4 w-4 text-success" />;
     }
     if (status === 'rejected') {
-      return <Ban className="h-4 w-4 text-red-500" />;
+      return <Ban className="h-4 w-4 text-destructive" />;
     }
     return <Clock className="h-4 w-4 text-yellow-500" />;
   };

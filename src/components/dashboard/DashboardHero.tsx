@@ -225,19 +225,19 @@ export const DashboardHero = ({
                     </h3>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="text-center p-3 bg-green-500/30 rounded-lg border border-green-400/50 backdrop-blur-sm">
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                        <CheckCircle className="w-4 h-4 text-white" />
-                      </div>
-                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'واجهة البرمجة' : 'API'}</p>
-                      <p className="text-xs text-green-200">{language === 'ar' ? 'متاح' : 'Online'}</p>
-                    </div>
-                    
-                    <div className="text-center p-3 bg-green-500/30 rounded-lg border border-green-400/50 backdrop-blur-sm">
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                        <Wifi className="w-4 h-4 text-white" />
-                      </div>
-                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'الشبكة' : 'Network'}</p>
+                     <div className="text-center p-3 bg-success/30 rounded-lg border border-success/50 backdrop-blur-sm">
+                       <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
+                         <CheckCircle className="w-4 h-4 text-white" />
+                       </div>
+                       <p className="text-xs font-medium text-white">{language === 'ar' ? 'واجهة البرمجة' : 'API'}</p>
+                       <p className="text-xs text-success-foreground/80">{language === 'ar' ? 'متاح' : 'Online'}</p>
+                     </div>
+                     
+                     <div className="text-center p-3 bg-success/30 rounded-lg border border-success/50 backdrop-blur-sm">
+                       <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
+                         <Wifi className="w-4 h-4 text-white" />
+                       </div>
+                       <p className="text-xs font-medium text-white">{language === 'ar' ? 'الشبكة' : 'Network'}</p>
                       <p className="text-xs text-green-200">{language === 'ar' ? 'مستقر' : 'Stable'}</p>
                     </div>
                     
