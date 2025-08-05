@@ -160,7 +160,7 @@ export const EventStatsWidget = ({ className = "" }: EventStatsWidgetProps) => {
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center">
-              <BarChart3 className="w-3 h-3 text-white" />
+              <BarChart3 className="w-3 h-3 text-primary-foreground" />
             </div>
             {isRTL ? 'إحصائيات الفعاليات' : 'Event Stats'}
           </div>
@@ -176,7 +176,7 @@ export const EventStatsWidget = ({ className = "" }: EventStatsWidgetProps) => {
       <CardContent className="p-4 space-y-4">
         {/* Main Stats Grid */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-white/70 rounded-lg p-3 border border-primary/10">
+          <div className="bg-primary/70 rounded-lg p-3 border border-primary/10">
             <div className="flex items-center gap-2 mb-1">
               <Calendar className="w-4 h-4 text-primary" />
               <span className="text-xs font-medium text-muted-foreground">
@@ -186,7 +186,7 @@ export const EventStatsWidget = ({ className = "" }: EventStatsWidgetProps) => {
             <div className="text-xl font-bold text-primary">{stats.totalEvents}</div>
           </div>
 
-          <div className="bg-white/70 rounded-lg p-3 border border-success/10">
+          <div className="bg-success/70 rounded-lg p-3 border border-success/10">
             <div className="flex items-center gap-2 mb-1">
               <Users className="w-4 h-4 text-success" />
               <span className="text-xs font-medium text-muted-foreground">
@@ -196,7 +196,7 @@ export const EventStatsWidget = ({ className = "" }: EventStatsWidgetProps) => {
             <div className="text-xl font-bold text-success">{stats.totalParticipants}</div>
           </div>
 
-          <div className="bg-white/70 rounded-lg p-3 border border-warning/10">
+          <div className="bg-warning/70 rounded-lg p-3 border border-warning/10">
             <div className="flex items-center gap-2 mb-1">
               <Clock className="w-4 h-4 text-warning" />
               <span className="text-xs font-medium text-muted-foreground">
@@ -206,7 +206,7 @@ export const EventStatsWidget = ({ className = "" }: EventStatsWidgetProps) => {
             <div className="text-xl font-bold text-warning">{stats.todayEvents}</div>
           </div>
 
-          <div className="bg-white/70 rounded-lg p-3 border border-accent/10">
+          <div className="bg-accent/70 rounded-lg p-3 border border-accent/10">
             <div className="flex items-center gap-2 mb-1">
               <TrendingUp className="w-4 h-4 text-accent" />
               <span className="text-xs font-medium text-muted-foreground">
@@ -219,7 +219,7 @@ export const EventStatsWidget = ({ className = "" }: EventStatsWidgetProps) => {
 
         {/* Progress Indicators */}
         <div className="space-y-3">
-          <div className="bg-white/70 rounded-lg p-3 border border-primary/10">
+          <div className="bg-primary/70 rounded-lg p-3 border border-primary/10">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <Target className="w-4 h-4 text-primary" />
@@ -234,7 +234,7 @@ export const EventStatsWidget = ({ className = "" }: EventStatsWidgetProps) => {
             <Progress value={upcomingPercentage} className="h-2" />
           </div>
 
-          <div className="bg-white/70 rounded-lg p-3 border border-success/10">
+          <div className="bg-success/70 rounded-lg p-3 border border-success/10">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-success" />
@@ -251,7 +251,7 @@ export const EventStatsWidget = ({ className = "" }: EventStatsWidgetProps) => {
         </div>
 
         {/* Quick Insights */}
-        <div className="bg-white/70 rounded-lg p-3 border border-info/10 space-y-2">
+        <div className="bg-info/70 rounded-lg p-3 border border-info/10 space-y-2">
           <div className="flex items-center gap-2 mb-2">
             <Activity className="w-4 h-4 text-info" />
             <span className="text-sm font-medium">

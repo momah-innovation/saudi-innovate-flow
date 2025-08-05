@@ -193,7 +193,7 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
                 >
                   {/* Recommendation Score */}
                   <div className={`absolute top-2 ${end('2')}`}>
-                    <Badge variant="outline" className={cn("text-xs border-0 bg-white/90", scoreColor)}>
+                    <Badge variant="outline" className={cn("text-xs border-0 bg-card/90", scoreColor)}>
                       <Star className={`w-3 h-3 ${me('1')}`} />
                       {Math.round(event.recommendation_score * 100)}%
                     </Badge>

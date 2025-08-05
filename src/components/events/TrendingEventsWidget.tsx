@@ -146,7 +146,7 @@ export const TrendingEventsWidget = ({
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2">
             <div className="w-6 h-6 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center">
-              <Flame className="w-3 h-3 text-white" />
+              <Flame className="w-3 h-3 text-primary-foreground" />
             </div>
             {isRTL ? 'الفعاليات الرائجة' : 'Trending Events'}
           </CardTitle>
@@ -176,7 +176,7 @@ export const TrendingEventsWidget = ({
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-gradient-to-r from-destructive to-warning rounded-full flex items-center justify-center animate-pulse">
-              <Flame className="w-3 h-3 text-white" />
+              <Flame className="w-3 h-3 text-primary-foreground" />
             </div>
             {isRTL ? 'الفعاليات الرائجة' : 'Trending Events'}
           </div>
@@ -208,7 +208,7 @@ export const TrendingEventsWidget = ({
               return (
                 <div 
                   key={event.id}
-                  className="group relative overflow-hidden rounded-lg p-3 bg-white/70 hover:bg-white/90 transition-all duration-300 cursor-pointer border border-warning/10 hover:border-warning/20 hover:shadow-lg"
+                  className="group relative overflow-hidden rounded-lg p-3 bg-card/70 hover:bg-card/90 transition-all duration-300 cursor-pointer border border-warning/10 hover:border-warning/20 hover:shadow-lg"
                   onClick={() => onEventSelect?.(event.id)}
                 >
                   {/* Trending Rank */}
