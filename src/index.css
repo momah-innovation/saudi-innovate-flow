@@ -44,6 +44,23 @@
     --gradient-warning: linear-gradient(135deg, hsl(var(--warning)), hsl(var(--warning) / 0.8));
     --gradient-info: linear-gradient(135deg, hsl(var(--info)), hsl(var(--info) / 0.8));
     --gradient-subtle: linear-gradient(135deg, hsl(var(--muted)), hsl(var(--accent)));
+    
+    /* Enhanced Gradients for Glass Effects */
+    --gradient-hero: linear-gradient(135deg, 
+      hsl(var(--primary)) 0%, 
+      hsl(var(--primary) / 0.8) 50%, 
+      hsl(var(--accent)) 100%);
+    --gradient-glass-light: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.25) 0%, 
+      rgba(255, 255, 255, 0.1) 100%);
+    --gradient-glass-dark: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.1) 0%, 
+      rgba(255, 255, 255, 0.05) 100%);
+    
+    /* Shadow Variables */
+    --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    --shadow-glow: 0 0 20px rgba(255, 255, 255, 0.1);
+    --shadow-elegant: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
   }
 
   .dark {
@@ -88,5 +105,68 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Glass Morphism Components */
+  .glass {
+    @apply bg-glass-100 backdrop-blur-md border border-glass-border-50;
+  }
+  
+  .glass-card {
+    @apply bg-glass-100 backdrop-blur-xl border border-glass-border-100 shadow-glass rounded-lg;
+  }
+  
+  .glass-button {
+    @apply bg-glass-200 backdrop-blur-sm border border-glass-border-100 hover:bg-glass-300 transition-all duration-300;
+  }
+  
+  /* Hero Section Effects */
+  .hero-gradient {
+    @apply bg-gradient-primary relative overflow-hidden;
+  }
+  
+  .floating-element {
+    @apply animate-float;
+  }
+  
+  .glow-effect {
+    @apply animate-glow shadow-glow;
+  }
+  
+  /* Text Effects */
+  .gradient-text {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300;
+  }
+  
+  .gradient-text-primary {
+    @apply text-transparent bg-clip-text bg-gradient-primary;
+  }
+  
+  /* Interactive Effects */
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+  
+  .hover-glow {
+    @apply transition-shadow duration-300 hover:shadow-glow-lg;
+  }
+  
+  .fade-in {
+    @apply animate-fade-in-up;
+  }
+  
+  /* Advanced Containers */
+  .backdrop-container {
+    @apply backdrop-blur-xl bg-gradient-glass border border-glass-border-100 shadow-glass;
+  }
+  
+  .hero-container {
+    @apply relative z-10 bg-gradient-primary;
+  }
+  
+  .floating-bg-element {
+    @apply absolute rounded-full blur-3xl opacity-10 animate-pulse;
   }
 }
