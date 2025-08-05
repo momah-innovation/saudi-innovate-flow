@@ -32,12 +32,28 @@
     --success: 142 76% 36%;
     --success-foreground: 355 7% 97%;
     --success-hover: 142 76% 32%;
+    --success-light: 142 76% 95%;
+    --success-border: 142 76% 85%;
+    
     --warning: 43 96% 56%;
     --warning-foreground: 25 5% 11%;
     --warning-hover: 43 96% 52%;
+    --warning-light: 43 96% 95%;
+    --warning-border: 43 96% 85%;
+    
     --info: 217 91% 60%;
     --info-foreground: 210 40% 98%;
     --info-hover: 217 91% 56%;
+    --info-light: 217 91% 95%;
+    --info-border: 217 91% 85%;
+    
+    --complete: 142 76% 36%;
+    --complete-foreground: 355 7% 97%;
+    --complete-light: 142 76% 95%;
+    
+    --scheduled: 217 91% 60%;
+    --scheduled-foreground: 210 40% 98%;
+    --scheduled-light: 217 91% 95%;
     
     /* === REFINED SPACING TOKENS === */
     --space-px: 1px;

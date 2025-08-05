@@ -12,17 +12,17 @@ interface StatusBadgeProps {
 }
 
 const statusConfig = {
-  active: { color: 'bg-green-100 text-green-800 border-green-200', icon: CheckCircle },
-  inactive: { color: 'bg-gray-100 text-gray-800 border-gray-200', icon: Pause },
-  pending: { color: 'bg-yellow-100 text-yellow-800 border-yellow-200', icon: Clock },
-  completed: { color: 'bg-blue-100 text-blue-800 border-blue-200', icon: CheckCircle },
-  cancelled: { color: 'bg-red-100 text-red-800 border-red-200', icon: XCircle },
-  planning: { color: 'bg-purple-100 text-purple-800 border-purple-200', icon: Clock },
-  scheduled: { color: 'bg-blue-100 text-blue-800 border-blue-200', icon: Clock },
-  ongoing: { color: 'bg-green-100 text-green-800 border-green-200', icon: Play },
-  postponed: { color: 'bg-orange-100 text-orange-800 border-orange-200', icon: Pause },
-  draft: { color: 'bg-gray-100 text-gray-800 border-gray-200', icon: Clock },
-  published: { color: 'bg-green-100 text-green-800 border-green-200', icon: CheckCircle },
+  active: { color: 'bg-success-light text-success border-success-border', icon: CheckCircle },
+  inactive: { color: 'bg-muted text-muted-foreground border-border', icon: Pause },
+  pending: { color: 'bg-warning-light text-warning border-warning-border', icon: Clock },
+  completed: { color: 'bg-complete-light text-complete border-complete-border', icon: CheckCircle },
+  cancelled: { color: 'bg-destructive/10 text-destructive border-destructive/20', icon: XCircle },
+  planning: { color: 'bg-secondary text-secondary-foreground border-border', icon: Clock },
+  scheduled: { color: 'bg-scheduled-light text-scheduled border-scheduled-border', icon: Clock },
+  ongoing: { color: 'bg-success-light text-success border-success-border', icon: Play },
+  postponed: { color: 'bg-warning-light text-warning border-warning-border', icon: Pause },
+  draft: { color: 'bg-muted text-muted-foreground border-border', icon: Clock },
+  published: { color: 'bg-success-light text-success border-success-border', icon: CheckCircle },
 };
 
 export function StatusBadge({ status, customLabel, showIcon = true, size = 'default' }: StatusBadgeProps) {

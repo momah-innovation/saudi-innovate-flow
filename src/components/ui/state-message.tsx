@@ -16,28 +16,28 @@ interface StateMessageProps {
 const stateConfig = {
   loading: {
     icon: Loader2,
-    className: "border-blue-200 bg-blue-50 text-blue-900",
-    iconClassName: "text-blue-600 animate-spin"
+    className: "border-info-border bg-info-light text-info",
+    iconClassName: "text-info animate-spin"
   },
   success: {
     icon: CheckCircle,
-    className: "border-green-200 bg-green-50 text-green-900",
-    iconClassName: "text-green-600"
+    className: "border-success-border bg-success-light text-success",
+    iconClassName: "text-success"
   },
   error: {
     icon: AlertCircle,
-    className: "border-red-200 bg-red-50 text-red-900",
-    iconClassName: "text-red-600"
+    className: "border-destructive bg-destructive/10 text-destructive",
+    iconClassName: "text-destructive"
   },
   warning: {
     icon: AlertTriangle,
-    className: "border-yellow-200 bg-yellow-50 text-yellow-900",
-    iconClassName: "text-yellow-600"
+    className: "border-warning-border bg-warning-light text-warning",
+    iconClassName: "text-warning"
   },
   info: {
     icon: Info,
-    className: "border-blue-200 bg-blue-50 text-blue-900",
-    iconClassName: "text-blue-600"
+    className: "border-info-border bg-info-light text-info",
+    iconClassName: "text-info"
   }
 };
 
