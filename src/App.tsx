@@ -83,7 +83,7 @@ import AccessControlManagement from "./pages/dashboard/AccessControlManagement";
 import { SubscriptionPage } from "./pages/SubscriptionPage";
 import PaddleSubscriptionPage from "./pages/PaddleSubscriptionPage";
 import LogflareAnalyticsPage from "./pages/LogflareAnalyticsPage";
-import { AppShell } from "@/components/layout/AppShell";
+import { ResponsiveAppShell } from "@/components/layout/ResponsiveAppShell";
 
 const queryClient = new QueryClient();
 
@@ -321,7 +321,7 @@ const App = () => (
                     {/* User Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_USER} element={
                       <ProtectedRoute requireProfile>
-                        <AppShell>
+                        <ResponsiveAppShell>
                           <div className="container mx-auto px-4 py-16">
                             <h1 className="text-2xl font-bold mb-6">مساحة عمل المستخدم</h1>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -342,14 +342,14 @@ const App = () => (
                               </div>
                             </div>
                           </div>
-                        </AppShell>
+                        </ResponsiveAppShell>
                       </ProtectedRoute>
                     } />
 
                     {/* Expert Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_EXPERT} element={
                       <ProtectedRoute requireProfile>
-                        <AppShell>
+                        <ResponsiveAppShell>
                           <div className="container mx-auto px-4 py-16">
                             <h1 className="text-2xl font-bold mb-6">مساحة عمل الخبير</h1>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -370,14 +370,14 @@ const App = () => (
                               </div>
                             </div>
                           </div>
-                        </AppShell>
+                        </ResponsiveAppShell>
                       </ProtectedRoute>
                     } />
 
                     {/* Organization Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_ORG} element={
                       <ProtectedRoute requireProfile>
-                        <AppShell>
+                        <ResponsiveAppShell>
                           <div className="container mx-auto px-4 py-16">
                             <h1 className="text-2xl font-bold mb-6">مساحة عمل المؤسسة</h1>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -398,14 +398,14 @@ const App = () => (
                               </div>
                             </div>
                           </div>
-                        </AppShell>
+                        </ResponsiveAppShell>
                       </ProtectedRoute>
                     } />
 
                     {/* Admin Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_ADMIN} element={
                       <ProtectedRoute requireProfile requiredRole="admin">
-                        <AppShell>
+                        <ResponsiveAppShell>
                           <div className="container mx-auto px-4 py-16">
                             <h1 className="text-2xl font-bold mb-6">مساحة عمل الإدارة</h1>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -431,7 +431,7 @@ const App = () => (
                               </div>
                             </div>
                           </div>
-                        </AppShell>
+                        </ResponsiveAppShell>
                       </ProtectedRoute>
                     } />
 
@@ -774,11 +774,11 @@ const App = () => (
                   path="/admin/storage" 
                   element={
                     <ProtectedRoute requireProfile requiredRole="admin">
-                      <AppShell>
+                      <ResponsiveAppShell>
                         <UploaderSettingsProvider>
                           <StorageManagementPage />
                         </UploaderSettingsProvider>
-                      </AppShell>
+                      </ResponsiveAppShell>
                     </ProtectedRoute>
                   } 
                  />
@@ -786,9 +786,9 @@ const App = () => (
                   path="/admin/storage/policies" 
                   element={
                     <ProtectedRoute requireProfile requiredRole="admin">
-                      <AppShell>
+                      <ResponsiveAppShell>
                         <StoragePoliciesPage />
-                      </AppShell>
+                      </ResponsiveAppShell>
                     </ProtectedRoute>
                   } 
                   />
@@ -796,9 +796,9 @@ const App = () => (
                    path="/admin/relationships" 
                    element={
                      <ProtectedRoute requireProfile requiredRole="admin">
-                       <AppShell>
+                        <ResponsiveAppShell>
                          <AdminRelationships />
-                       </AppShell>
+                        </ResponsiveAppShell>
                      </ProtectedRoute>
                    } 
                   />
@@ -806,9 +806,9 @@ const App = () => (
                    path="/admin/evaluations" 
                    element={
                      <ProtectedRoute requireProfile requiredRole="admin">
-                       <AppShell>
+                        <ResponsiveAppShell>
                          <AdminEvaluations />
-                       </AppShell>
+                        </ResponsiveAppShell>
                      </ProtectedRoute>
                    } 
                   />
@@ -817,9 +817,9 @@ const App = () => (
                   path="/design-system" 
                   element={
                     <ProtectedRoute>
-                      <AppShell>
+                      <ResponsiveAppShell>
                         <DesignSystem />
-                      </AppShell>
+                      </ResponsiveAppShell>
                     </ProtectedRoute>
                   } 
                 />
@@ -828,9 +828,9 @@ const App = () => (
                   path="/admin/dashboard" 
                   element={
                     <ProtectedRoute requireProfile requiredRole="admin">
-                      <AppShell>
+                      <ResponsiveAppShell>
                         <AdminDashboard />
-                      </AppShell>
+                      </ResponsiveAppShell>
                     </ProtectedRoute>
                   } 
                 />
@@ -839,9 +839,9 @@ const App = () => (
                   path="/dashboard" 
                   element={
                     <ProtectedRoute requireProfile requiredRole="admin">
-                      <AppShell>
+                      <ResponsiveAppShell>
                         <AdminDashboard />
-                      </AppShell>
+                      </ResponsiveAppShell>
                     </ProtectedRoute>
                   } 
                 />
