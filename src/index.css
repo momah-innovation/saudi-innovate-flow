@@ -499,6 +499,167 @@
     @apply grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))];
   }
 
+  /* Responsive Sidebar System */
+  .sticky-header {
+    @apply h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50;
+  }
+
+  .container-responsive {
+    @apply container flex items-center justify-between px-4 h-full max-w-none;
+  }
+
+  .header-content {
+    @apply flex items-center justify-between px-4 h-full max-w-none;
+  }
+
+  .header-left-section {
+    @apply flex items-center gap-3 min-w-0;
+  }
+
+  .sidebar-trigger {
+    @apply shrink-0 h-7 w-7 hover-scale transition-all duration-200;
+  }
+
+  .logo-section {
+    @apply flex items-center gap-2 min-w-0;
+  }
+
+  .app-logo {
+    @apply h-8 w-8 rounded-md bg-primary flex items-center justify-center shrink-0 shadow-sm hover-scale;
+  }
+
+  .app-logo-icon {
+    @apply text-primary-foreground font-bold text-sm;
+  }
+
+  .app-title-container {
+    @apply hidden sm:block min-w-0;
+  }
+
+  .app-title {
+    @apply font-semibold text-sm truncate transition-colors duration-200 hover:text-primary;
+  }
+
+  .search-section {
+    @apply flex-1 max-w-md mx-4;
+  }
+
+  .search-container {
+    @apply relative;
+  }
+
+  .search-icon {
+    @apply absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors duration-200;
+  }
+
+  .search-input {
+    @apply h-9 transition-all duration-200 focus:ring-2 focus:ring-primary/20 hover:bg-muted/50;
+  }
+
+  .header-right-section {
+    @apply flex items-center gap-2;
+  }
+
+  /* Sidebar Animations */
+  .sidebar-slide-in {
+    @apply transform transition-transform duration-300 ease-out;
+  }
+
+  .sidebar-slide-out {
+    @apply transform transition-transform duration-300 ease-out;
+  }
+
+  /* Notification Animations */
+  .notification-slide-in {
+    @apply transform transition-all duration-300 ease-out;
+  }
+
+  /* Responsive Sidebar Utilities */
+  .sidebar-mini {
+    @apply w-16 transition-all duration-300;
+  }
+
+  .sidebar-full {
+    @apply w-64 transition-all duration-300;
+  }
+
+  .sidebar-overlay {
+    @apply fixed inset-0 z-40 bg-background/80 backdrop-blur-sm;
+  }
+
+  /* RTL Support Classes */
+  .rtl-flip {
+    @apply transform scale-x-[-1];
+  }
+
+  .rtl-aware-padding {
+    @apply px-3;
+  }
+
+  .rtl-aware-margin {
+    @apply mx-2;
+  }
+
+  /* Slide Animations for Sheets */
+  .slide-in-right {
+    @apply animate-slide-left;
+  }
+
+  .slide-out-right {
+    @apply animate-slide-right;
+  }
+
+  .slide-in-left {
+    @apply animate-slide-right;
+  }
+
+  .slide-out-left {
+    @apply animate-slide-left;
+  }
+
+  /* Enhanced Interactive States */
+  .interactive-scale {
+    @apply transition-all duration-200 hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .interactive-glow {
+    @apply transition-all duration-300 hover:shadow-glow-primary/50;
+  }
+
+  .interactive-lift {
+    @apply transition-all duration-200 hover:-translate-y-0.5 hover:shadow-raised;
+  }
+
+  /* Status and State Classes */
+  .state-active {
+    @apply bg-primary text-primary-foreground shadow-md;
+  }
+
+  .state-inactive {
+    @apply text-muted-foreground hover:text-foreground hover:bg-muted;
+  }
+
+  .state-loading {
+    @apply pointer-events-none opacity-70 animate-pulse;
+  }
+
+  /* Animation Variants */
+  .fade-in {
+    @apply animate-fade-in-up;
+  }
+
+  .fade-in-delay {
+    @apply animate-fade-in-up animation-delay-150;
+  }
+
+  .scale-in {
+    @apply animate-scale-in;
+  }
+
+  .bounce-in {
+    @apply animate-bounce-in;
+  }
+
   .flex-center {
     @apply flex items-center justify-center;
   }
