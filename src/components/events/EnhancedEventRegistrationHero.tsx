@@ -81,7 +81,7 @@ export const EnhancedEventRegistrationHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className={cn("absolute -top-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse", end('40'))} />
+        <div className={cn("absolute -top-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse", end('40'))} />
         <div className={cn("absolute -bottom-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-1000", start('40'))} />
         <div className={cn("absolute top-20 w-64 h-64 bg-accent/5 rounded-full blur-2xl animate-bounce", start('1/3'))} />
       </div>
@@ -93,17 +93,17 @@ export const EnhancedEventRegistrationHero = ({
             {/* Header with animation */}
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                <div className="p-3 bg-primary/10 backdrop-blur-sm rounded-xl border border-primary/20">
                   <Sparkles className="w-6 h-6 text-primary/70" />
                 </div>
-                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                <Badge variant="secondary" className="bg-primary/10 text-primary-foreground border-primary/20 backdrop-blur-sm">
                   <Star className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'منصة تسجيل الفعاليات' : 'Event Registration Platform'}
                 </Badge>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
                   {isRTL ? (
                     <>
                       سجل في <span className="text-transparent bg-clip-text bg-gradient-text">الفعاليات</span> المميزة
@@ -134,13 +134,13 @@ export const EnhancedEventRegistrationHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
-                      isActive && "bg-white/10 border-white/20 scale-105"
+                      "bg-primary/5 backdrop-blur-sm border-primary/10 transition-all duration-500",
+                      isActive && "bg-primary/10 border-primary/20 scale-105"
                     )}
                   >
                     <CardContent className="p-4 text-center">
                       <Icon className={cn("w-6 h-6 mx-auto mb-2 transition-colors", stat.color)} />
-                      <div className="text-2xl font-bold text-white">{stat.value}</div>
+                      <div className="text-2xl font-bold text-primary-foreground">{stat.value}</div>
                       <div className="text-sm text-white/70">{stat.label}</div>
                     </CardContent>
                   </Card>
@@ -154,7 +154,7 @@ export const EnhancedEventRegistrationHero = ({
                 <Button
                   onClick={onRegisterEvent}
                   size="lg"
-                  className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  className="bg-gradient-primary text-primary-foreground hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
                   <Plus className={`w-5 h-5 ${me('2')}`} />
                   {isRTL ? 'سجل في فعالية' : 'Register for Event'}
@@ -165,7 +165,7 @@ export const EnhancedEventRegistrationHero = ({
                 onClick={onShowFilters}
                 variant="outline"
                 size="lg"
-                className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
+                className="border-primary/30 text-primary-foreground hover:bg-primary/10 backdrop-blur-sm"
               >
                 <Filter className={`w-5 h-5 ${me('2')}`} />
                 {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
@@ -174,7 +174,7 @@ export const EnhancedEventRegistrationHero = ({
               <Button
                 variant="ghost"
                 size="lg"
-                className="text-white hover:bg-white/10"
+                className="text-primary-foreground hover:bg-primary/10"
               >
                 <Play className={`w-5 h-5 ${me('2')}`} />
                 {isRTL ? 'شاهد الفيديو' : 'Watch Demo'}
@@ -185,7 +185,7 @@ export const EnhancedEventRegistrationHero = ({
           {/* Enhanced Featured Event */}
           <div className="space-y-6">
             {featuredEvent ? (
-              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+              <Card className="bg-primary/10 backdrop-blur-xl border-primary/20 shadow-2xl">
                 <CardContent className="p-0">
                   {/* Event Image */}
                   <div className="relative h-48 overflow-hidden rounded-t-lg">
