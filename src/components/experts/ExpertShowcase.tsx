@@ -8,6 +8,7 @@ import {
   BookOpen, Target, TrendingUp, Crown
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { useState } from 'react';
 
 interface Expert {
@@ -40,6 +41,7 @@ export const ExpertShowcase = ({
   onFilterByExpert 
 }: ExpertShowcaseProps) => {
   const { isRTL } = useDirection();
+  const { me, ms } = useRTLAware();
   const [showAll, setShowAll] = useState(false);
   
   // Get featured expert (highest rated available expert)
@@ -153,34 +155,34 @@ export const ExpertShowcase = ({
                     variant="outline" 
                     onClick={() => onFilterByExpert(featuredExpert.id)}
                   >
-                    <Filter className="w-4 h-4 mr-2" />
-                    {isRTL ? 'تحدياته' : 'Their Challenges'}
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+                    <Filter className={cn("w-4 h-4", me("2"))} />
+                     {isRTL ? 'تحدياته' : 'Their Challenges'}
+                   </Button>
+                 </div>
+               </div>
+             </div>
+           </CardContent>
+         </Card>
+       )}
 
-      {/* Expert Grid */}
-      <div>
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-2xl font-bold">{isRTL ? 'شبكة الخبراء' : 'Expert Network'}</h2>
-            <p className="text-muted-foreground">
-              {isRTL ? 'تعرف على الخبراء المرشدين في التحديات' : 'Meet the expert mentors guiding our challenges'}
-            </p>
-          </div>
-          
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={() => setShowAll(!showAll)}>
-              {showAll ? (isRTL ? 'عرض أقل' : 'Show Less') : (isRTL ? 'عرض الكل' : 'Show All')}
-            </Button>
-            <Button onClick={onViewAll}>
-              <Search className="w-4 h-4 mr-2" />
-              {isRTL ? 'استكشف الخبراء' : 'Browse Experts'}
-              <ArrowRight className="w-4 h-4 ml-2" />
+       {/* Expert Grid */}
+       <div>
+         <div className="flex items-center justify-between mb-6">
+           <div>
+             <h2 className="text-2xl font-bold">{isRTL ? 'شبكة الخبراء' : 'Expert Network'}</h2>
+             <p className="text-muted-foreground">
+               {isRTL ? 'تعرف على الخبراء المرشدين في التحديات' : 'Meet the expert mentors guiding our challenges'}
+             </p>
+           </div>
+           
+           <div className="flex gap-2">
+             <Button variant="outline" onClick={() => setShowAll(!showAll)}>
+               {showAll ? (isRTL ? 'عرض أقل' : 'Show Less') : (isRTL ? 'عرض الكل' : 'Show All')}
+             </Button>
+             <Button onClick={onViewAll}>
+               <Search className={cn("w-4 h-4", me("2"))} />
+               {isRTL ? 'استكشف الخبراء' : 'Browse Experts'}
+               <ArrowRight className={cn("w-4 h-4", ms("2"))} />
             </Button>
           </div>
         </div>

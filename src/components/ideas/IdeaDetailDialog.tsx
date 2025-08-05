@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -254,12 +255,12 @@ export function IdeaDetailDialog({
                   {getMaturityIcon(idea.maturity_level)}
                   {idea.maturity_level}
                 </Badge>
-                {idea.featured && (
-                  <Badge className="bg-yellow-500 text-white border-0">
-                    <Star className="w-3 h-3 mr-1" />
-                    {isRTL ? 'مميزة' : 'Featured'}
-                  </Badge>
-                )}
+                 {idea.featured && (
+                   <Badge className="bg-yellow-500 text-white border-0">
+                     <Star className={cn("w-3 h-3", me("1"))} />
+                     {isRTL ? 'مميزة' : 'Featured'}
+                   </Badge>
+                 )}
                 {idea.challenges && (
                   <Badge variant="secondary">{idea.challenges.title_ar}</Badge>
                 )}
@@ -299,7 +300,7 @@ export function IdeaDetailDialog({
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4">
+              <div className={cn("absolute bottom-4", start("4"), end("4"))}>
                 <div className="flex items-center justify-between text-white">
                   <div className="flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-1">

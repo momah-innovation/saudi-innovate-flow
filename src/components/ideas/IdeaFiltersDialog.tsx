@@ -7,6 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   Filter, X, RotateCcw, Target, Star, TrendingUp, 
@@ -172,7 +173,7 @@ export function IdeaFiltersDialog({
               <Filter className="w-5 h-5" />
               {isRTL ? 'تصفية الأفكار' : 'Filter Ideas'}
               {getActiveFiltersCount() > 0 && (
-                <Badge variant="secondary" className="ml-2">
+                <Badge variant="secondary" className={cn(ms("2"))}>
                   {getActiveFiltersCount()}
                 </Badge>
               )}

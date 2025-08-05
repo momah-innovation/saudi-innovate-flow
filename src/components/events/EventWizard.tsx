@@ -30,6 +30,8 @@ import {
 } from "lucide-react";
 import { updateEventPartners, updateEventStakeholders, updateEventFocusQuestions, updateEventChallenges } from "@/lib/relationshipHelpers";
 import { EventFormData, SystemLists } from "@/types";
+import { useRTLAware } from "@/hooks/useRTLAware";
+import { cn } from "@/lib/utils";
 
 interface Event {
   id: string;
@@ -71,6 +73,7 @@ interface EventWizardProps {
 }
 
 export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps) {
+  const { me, ms } = useRTLAware();
   const [currentStep, setCurrentStep] = useState(1);
   const [stepErrors, setStepErrors] = useState<{[key: number]: string[]}>({});
   const totalSteps = 5;
@@ -757,47 +760,38 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                       {formData.campaign_id
                         ? campaigns.find((campaign) => campaign.id === formData.campaign_id)?.title_ar
                         : "اختر الحملة..."}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-full p-0">
-                    <Command>
-                      <CommandInput placeholder="البحث في الحملات..." />
-                      <CommandList>
-                        <CommandEmpty>لا توجد حملة.</CommandEmpty>
-                        <CommandGroup>
-                          <CommandItem
-                            value=""
-                            onSelect={() => {
-                              setFormData({ ...formData, campaign_id: "" });
-                              setOpenCampaign(false);
-                            }}
-                          >
-                            <Check className="mr-2 h-4 w-4 opacity-0" />
-                            لا شيء
-                          </CommandItem>
-                          {campaigns.map((campaign) => (
-                            <CommandItem
-                              key={campaign.id}
-                              value={campaign.title_ar}
-                              onSelect={() => {
-                                setFormData({ ...formData, campaign_id: campaign.id });
-                                setOpenCampaign(false);
-                              }}
-                            >
-                              <Check
-                                className={`mr-2 h-4 w-4 ${
-                                  formData.campaign_id === campaign.id ? "opacity-100" : "opacity-0"
-                                }`}
-                              />
-                              {campaign.title_ar}
+                       <ChevronsUpDown className={cn("h-4 w-4 shrink-0 opacity-50", ms("2"))} />
+                     </Button>
+                   </PopoverTrigger>
+                   <PopoverContent className="w-[300px] p-0">
+                     <Command>
+                       <CommandInput placeholder={isRTL ? "ابحث عن حملة..." : "Search campaign..."} />
+                       <CommandEmpty>{isRTL ? "لم يتم العثور على حملات." : "No campaigns found."}</CommandEmpty>
+                       <CommandGroup>
+                         <CommandList>
+                           {campaigns.map((campaign) => (
+                             <CommandItem
+                               key={campaign.id}
+                               value={campaign.id}
+                               onSelect={(currentValue) => {
+                                 setFormData({ ...formData, campaign_id: currentValue === formData.campaign_id ? "" : currentValue });
+                                 setOpenCampaign(false);
+                               }}
+                             >
+                              <Check className={cn("h-4 w-4", me("2"), {
+                                "opacity-100": formData.campaign_id === campaign.id,
+                                "opacity-0": formData.campaign_id !== campaign.id
+                              })} />
+                               {campaign.title_ar}
                             </CommandItem>
                           ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
+                             </CommandItem>
+                           ))}
+                         </CommandList>
+                       </CommandGroup>
+                     </Command>
+                   </PopoverContent>
+                 </Popover>
               </div>
 
               <div>
@@ -1265,51 +1259,33 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
                 >
                   <Icon className="h-4 w-4" />
                 </div>
-                <div className="ml-2 text-sm font-medium">{stepTitles[i]}</div>
-                {step < totalSteps && (
-                  <div
-                    className={`w-8 h-px mx-2 ${
-                      isCompleted ? "bg-primary" : "bg-muted"
-                    }`}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
+                 <div className={cn("text-sm font-medium", ms("2"))}>{stepTitles[i]}</div>
+                 {step < totalSteps && <div className="w-8 h-px bg-muted" />}
+               </div>
+             ))}
+           </div>
 
-        <div className="mb-4">
-          <h3 className="text-lg font-medium">{stepTitles[currentStep - 1]}</h3>
-          <p className="text-sm text-muted-foreground">
-            الخطوة {currentStep} من {totalSteps}
-          </p>
-        </div>
-
-        {renderStepContent()}
-
-        {/* Navigation buttons */}
-        <div className="flex justify-between pt-6">
-            <Button
-              variant="outline"
-              onClick={prevStep}
-              disabled={currentStep === 1}
-            >
-              <ChevronLeft className="mr-2 h-4 w-4" />
-              السابق
-            </Button>
-
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={onClose}>
-              إلغاء
-            </Button>
-            {currentStep === totalSteps ? (
-              <Button onClick={handleSave} disabled={isLoading}>
-                {isLoading ? "جاري الحفظ..." : event ? "تحديث الحدث" : "إنشاء الحدث"}
-              </Button>
-            ) : (
-              <Button onClick={nextStep}>
-                التالي
-                <ChevronRight className="ml-2 h-4 w-4" />
+           <div className="flex gap-3">
+             {currentStep > 1 && (
+               <Button 
+                 type="button" 
+                 variant="outline" 
+                 onClick={prevStep}
+                 disabled={isLoading}
+               >
+                 <ChevronLeft className={cn("h-4 w-4", me("2"))} />
+                 السابق
+               </Button>
+             )}
+             
+             {currentStep < totalSteps ? (
+               <Button 
+                 type="button" 
+                 onClick={nextStep}
+                 disabled={isLoading}
+               >
+                 التالي
+                 <ChevronRight className={cn("h-4 w-4", ms("2"))} />
               </Button>
             )}
           </div>

@@ -202,13 +202,13 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute top-4 right-4">
-                  <Badge className="bg-green-500 text-white border-0">
-                    <CheckCircle className="w-3 h-3 mr-1" />
-                    {isRTL ? 'منفذة' : 'Implemented'}
-                  </Badge>
-                </div>
-                <div className="absolute bottom-4 left-4 right-4">
+                 <div className={cn("absolute top-4", end("4"))}>
+                   <Badge className="bg-green-500 text-white border-0">
+                     <CheckCircle className={cn("w-3 h-3", me("1"))} />
+                     {isRTL ? 'منفذة' : 'Implemented'}
+                   </Badge>
+                 </div>
+                 <div className={cn("absolute bottom-4", start("4"), end("4"))}>
                   <h3 className="text-white font-semibold line-clamp-2">{story.title}</h3>
                 </div>
               </div>

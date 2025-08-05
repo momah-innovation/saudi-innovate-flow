@@ -361,7 +361,7 @@ export function SmartRecommendations({
                     <div className="flex items-center gap-2 mt-2">
                       <Badge className={getRecommendationColor(recommendation.recommendation_type)} variant="secondary">
                         {getRecommendationIcon(recommendation.recommendation_type)}
-                        <span className="ml-1">{getRecommendationLabel(recommendation.recommendation_type)}</span>
+                        <span className={cn(ms("1"))}>{getRecommendationLabel(recommendation.recommendation_type)}</span>
                       </Badge>
                       <Badge variant="outline" className="text-xs">
                         {Math.round(recommendation.confidence_score)}/10
