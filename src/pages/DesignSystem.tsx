@@ -141,6 +141,7 @@ const DesignSystem = () => {
     <div className="group relative">
       <div 
         className={cn("h-16 w-full rounded-lg border cursor-pointer transition-all hover:scale-105", className)}
+        style={name === "Primary" ? { backgroundColor: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" } : undefined}
         onClick={() => copyToClipboard(className, name)}
       >
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-primary/30 backdrop-blur-sm rounded-lg border border-primary/50">
