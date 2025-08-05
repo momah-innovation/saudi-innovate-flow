@@ -200,7 +200,7 @@ export const WizardFileUploader = forwardRef<WizardFileUploaderRef, WizardFileUp
           <div className="h-px bg-border flex-1" />
           <div className={cn(
             "flex items-center gap-2 px-3 py-1 rounded-full text-xs",
-            currentStep === 'complete' ? "bg-green-500 text-white" : "bg-muted text-muted-foreground"
+            currentStep === 'complete' ? "bg-success text-success-foreground" : "bg-muted text-muted-foreground"
           )}>
             3. Complete
           </div>

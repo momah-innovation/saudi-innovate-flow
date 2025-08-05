@@ -423,7 +423,7 @@ export function UnsplashImageBrowser({
                 
                 {/* Search Suggestions */}
                 {showSuggestions && (searchSuggestions.length > 0 || recentSearches.length > 0) && (
-                  <div className="absolute top-full left-0 right-0 bg-white border rounded-md shadow-lg z-50 mt-1">
+                  <div className="absolute top-full left-0 right-0 bg-background border rounded-md shadow-lg z-50 mt-1">
                     <ScrollArea className="max-h-64">
                       {searchSuggestions.length > 0 && (
                         <div className="p-2">
@@ -789,7 +789,7 @@ export function UnsplashImageBrowser({
                         }
                         setSelectedImageIds(newSelected)
                       }}
-                      className="bg-white"
+                      className="bg-background"
                     />
                   </div>
                 )}

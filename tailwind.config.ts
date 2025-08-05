@@ -172,6 +172,17 @@ export default {
 					light: "hsl(var(--expert-light))",
 					border: "hsl(var(--expert-border))",
 				},
+				// Overlay system for modals, tooltips, etc.
+				overlay: {
+					background: "hsl(var(--overlay-background))",
+					foreground: "hsl(var(--overlay-foreground))",
+					light: "hsl(var(--overlay-light))",
+					dark: "hsl(var(--overlay-dark))",
+					text: "hsl(var(--overlay-text))",
+					"text-muted": "hsl(var(--overlay-text-muted))",
+					button: "hsl(var(--overlay-button))",
+					"button-hover": "hsl(var(--overlay-button-hover))",
+				},
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',

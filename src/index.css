@@ -253,16 +253,30 @@
     --button-padding-y: var(--space-2);
     --button-font-size: var(--font-size-sm);
     --button-border-radius: var(--radius-md);
-    
+
     --card-padding: var(--space-6);
     --card-border-radius: var(--radius-lg);
     --card-shadow: var(--shadow-sm);
-    
+
     --input-padding-x: var(--space-3);
     --input-padding-y: var(--space-2);
     --input-border-radius: var(--radius-md);
     --input-font-size: var(--font-size-sm);
     
+    /* === OVERLAY & HIGH CONTRAST TOKENS === */
+    --overlay-background: 0 0% 0%;
+    --overlay-foreground: 0 0% 100%;
+    --overlay-light: 0 0% 100%;
+    --overlay-dark: 0 0% 0%;
+    
+    /* High contrast text for overlays */
+    --overlay-text: 0 0% 100%;
+    --overlay-text-muted: 0 0% 70%;
+    
+    /* Interactive overlay elements */
+    --overlay-button: 0 0% 100%;
+    --overlay-button-hover: 0 0% 90%;
+
     /* === SEMANTIC GRADIENTS === */
     --gradient-primary: linear-gradient(135deg, hsl(280 84% 12%), hsl(280 84% 20%));
     --gradient-primary-hover: linear-gradient(135deg, hsl(280 84% 8%), hsl(280 84% 16%));
