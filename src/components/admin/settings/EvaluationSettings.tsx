@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTranslation } from "@/hooks/useAppTranslation";
+import { useRTLAware } from "@/hooks/useRTLAware";
 
 interface EvaluationSettingsProps {
   settings: any;
@@ -10,22 +12,25 @@ interface EvaluationSettingsProps {
 }
 
 export function EvaluationSettings({ settings, onSettingChange }: EvaluationSettingsProps) {
+  const { t } = useTranslation();
+  const { textStart, flexRowReverse } = useRTLAware();
+  
   return (
-    <div className="space-y-6 rtl:text-right ltr:text-left">
+    <div className={`space-y-6 ${textStart}`}>
       <Card>
-        <CardHeader className="rtl:text-right ltr:text-left">
-          <CardTitle>إعدادات التقييم العامة</CardTitle>
-          <CardDescription>التحكم في آلية تقييم الأفكار والتحديات</CardDescription>
+        <CardHeader className={textStart}>
+          <CardTitle>{t('general_evaluation_settings')}</CardTitle>
+          <CardDescription>{t('evaluation_mechanism_control')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${textStart}`}>
             <div className="space-y-2">
-              <Label htmlFor="evalScale">مقياس التقييم</Label>
+              <Label htmlFor="evalScale">{t('evaluation_scale')}</Label>
               <Select 
                 value={settings.evaluationScale || "10"} 
                 onValueChange={(value) => onSettingChange('evaluationScale', value)}
               >
-                <SelectTrigger className="rtl:text-right ltr:text-left">
+                <SelectTrigger className={textStart}>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -37,7 +42,7 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="evalRequiredFields">عدد المعايير المطلوبة</Label>
+              <Label htmlFor="evalRequiredFields">{t('required_criteria_count')}</Label>
               <Input
                 id="evalRequiredFields"
                 type="number"
@@ -45,15 +50,15 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
                 onChange={(e) => onSettingChange('evaluationRequiredFields', parseInt(e.target.value))}
                 min="1"
                 max="10"
-                className="rtl:text-right ltr:text-left"
+                className={textStart}
               />
             </div>
           </div>
 
-          <div className="flex items-center justify-between rtl:flex-row-reverse">
-            <div className="space-y-0.5 rtl:text-right ltr:text-left">
-              <Label className="text-base">إجبار التعليقات</Label>
-              <p className="text-sm text-muted-foreground">مطالبة المقيمين بكتابة تعليقات</p>
+          <div className={`flex items-center justify-between ${flexRowReverse}`}>
+            <div className={`space-y-0.5 ${textStart}`}>
+              <Label className="text-base">{t('require_comments')}</Label>
+              <p className="text-sm text-muted-foreground">{t('require_evaluator_comments')}</p>
             </div>
             <Switch 
               checked={settings.evaluationRequireComments !== false}
