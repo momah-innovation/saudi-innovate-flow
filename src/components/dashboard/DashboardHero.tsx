@@ -125,13 +125,13 @@ export const DashboardHero = ({
     <div className="relative overflow-hidden">
       {/* Role-specific background */}
       <div className={`absolute inset-0 bg-gradient-to-r ${roleConfig.gradient}`}>
-        <div className="absolute inset-0 bg-background/10" />
+        <div className="absolute inset-0 bg-black/10" />
       </div>
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className={`absolute -top-40 -${end('40')} w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse`} />
-        <div className={`absolute -bottom-40 -${start('40')} w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse delay-1000`} />
+        <div className={`absolute -top-40 -${end('40')} w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse`} />
+        <div className={`absolute -bottom-40 -${start('40')} w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000`} />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -141,17 +141,17 @@ export const DashboardHero = ({
             {/* Header with role-specific styling */}
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-primary/10 backdrop-blur-sm rounded-xl border border-primary/20">
-                  <roleConfig.icon className="w-6 h-6 text-primary-foreground" />
+                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                  <roleConfig.icon className="w-6 h-6 text-white" />
                 </div>
-                <Badge variant="secondary" className="bg-primary/10 text-primary-foreground border-primary/20 backdrop-blur-sm">
+                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                   <Star className={`w-3 h-3 ${me('1')}`} />
                   {roleConfig.title}
                 </Badge>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   {language === 'ar' ? (
                     <>
                       مرحباً <span className="text-accent">{userProfile?.display_name || 'المستخدم'}</span>
@@ -163,7 +163,7 @@ export const DashboardHero = ({
                   )}
                 </h1>
                 
-                <p className="text-xl text-primary-foreground/80 max-w-2xl leading-relaxed">
+                <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
                   {roleConfig.subtitle}
                 </p>
               </div>
@@ -179,14 +179,14 @@ export const DashboardHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-primary/5 backdrop-blur-sm border-primary/10 transition-all duration-500",
-                      isActive && "bg-primary/10 border-primary/20 scale-105"
+                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
+                      isActive && "bg-white/10 border-white/20 scale-105"
                     )}
                   >
                     <CardContent className="p-4 text-center">
-                      <Icon className="w-6 h-6 mx-auto mb-2 text-primary-foreground" />
-                      <div className="text-2xl font-bold text-primary-foreground">{stat.value}</div>
-                      <div className="text-sm text-primary-foreground/70">{stat.label}</div>
+                      <Icon className="w-6 h-6 mx-auto mb-2 text-white" />
+                      <div className="text-2xl font-bold text-white">{stat.value}</div>
+                      <div className="text-sm text-white/70">{stat.label}</div>
                     </CardContent>
                   </Card>
                 );
@@ -199,13 +199,13 @@ export const DashboardHero = ({
                 <button
                   key={index}
                   onClick={() => onNavigate(action.path)}
-                  className="flex items-center gap-3 p-4 bg-primary/10 backdrop-blur-sm rounded-lg border border-primary/20 hover:bg-primary/20 transition-all"
+                  className="flex items-center gap-3 p-4 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 hover:bg-white/20 transition-all"
                 >
-                  <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
-                    <action.icon className="w-5 h-5 text-primary-foreground" />
+                  <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                    <action.icon className="w-5 h-5 text-white" />
                   </div>
                   <div className="text-start">
-                    <h3 className="font-semibold text-sm text-primary-foreground">{action.title}</h3>
+                    <h3 className="font-semibold text-sm text-white">{action.title}</h3>
                   </div>
                 </button>
               ))}
@@ -216,28 +216,28 @@ export const DashboardHero = ({
           {(userRole === 'admin' || userRole === 'super_admin') && (
             <div className="space-y-6">
               {/* System Health Card */}
-              <Card className="bg-primary/10 backdrop-blur-xl border-primary/20 shadow-2xl">
+              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
                 <CardContent className="p-6 space-y-4">
                   <div className="flex items-center gap-2 mb-4">
-                    <Server className="w-5 h-5 text-primary-foreground" />
-                    <h3 className="text-lg font-bold text-primary-foreground">
+                    <Server className="w-5 h-5 text-white" />
+                    <h3 className="text-lg font-bold text-white">
                       {language === 'ar' ? 'حالة النظام' : 'System Health'}
                     </h3>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                      <div className="text-center p-3 bg-success/30 rounded-lg border border-success/50 backdrop-blur-sm">
                        <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
-                         <CheckCircle className="w-4 h-4 text-primary-foreground" />
+                         <CheckCircle className="w-4 h-4 text-white" />
                        </div>
-                       <p className="text-xs font-medium text-primary-foreground">{language === 'ar' ? 'واجهة البرمجة' : 'API'}</p>
+                       <p className="text-xs font-medium text-white">{language === 'ar' ? 'واجهة البرمجة' : 'API'}</p>
                        <p className="text-xs text-success-foreground/80">{language === 'ar' ? 'متاح' : 'Online'}</p>
                      </div>
                      
                      <div className="text-center p-3 bg-success/30 rounded-lg border border-success/50 backdrop-blur-sm">
                        <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
-                         <Wifi className="w-4 h-4 text-primary-foreground" />
+                         <Wifi className="w-4 h-4 text-white" />
                        </div>
-                        <p className="text-xs font-medium text-primary-foreground">{language === 'ar' ? 'الشبكة' : 'Network'}</p>
+                        <p className="text-xs font-medium text-white">{language === 'ar' ? 'الشبكة' : 'Network'}</p>
                        <p className="text-xs text-success-foreground/80">{language === 'ar' ? 'مستقر' : 'Stable'}</p>
                      </div>
                     
@@ -245,7 +245,7 @@ export const DashboardHero = ({
                        <div className="w-8 h-8 bg-warning rounded-full flex items-center justify-center mx-auto mb-2">
                          <AlertCircle className="w-4 w-4 text-primary-foreground" />
                        </div>
-                       <p className="text-xs font-medium text-primary-foreground">{language === 'ar' ? 'التخزين' : 'Storage'}</p>
+                       <p className="text-xs font-medium text-white">{language === 'ar' ? 'التخزين' : 'Storage'}</p>
                        <p className="text-xs text-warning-foreground/80">68%</p>
                      </div>
                     
@@ -253,7 +253,7 @@ export const DashboardHero = ({
                        <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
                          <Shield className="w-4 h-4 text-primary-foreground" />
                        </div>
-                       <p className="text-xs font-medium text-primary-foreground">{language === 'ar' ? 'الأمان' : 'Security'}</p>
+                       <p className="text-xs font-medium text-white">{language === 'ar' ? 'الأمان' : 'Security'}</p>
                        <p className="text-xs text-success-foreground/80">{language === 'ar' ? 'محمي' : 'Secure'}</p>
                      </div>
                   </div>
@@ -261,37 +261,37 @@ export const DashboardHero = ({
               </Card>
 
               {/* Resource Usage Card */}
-              <Card className="bg-primary/10 backdrop-blur-xl border-primary/20 shadow-2xl">
+              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
                 <CardContent className="p-6 space-y-4">
                   <div className="flex items-center gap-2 mb-4">
-                    <Activity className="w-5 h-5 text-primary-foreground" />
-                    <h3 className="text-lg font-bold text-primary-foreground">
+                    <Activity className="w-5 h-5 text-white" />
+                    <h3 className="text-lg font-bold text-white">
                       {language === 'ar' ? 'استخدام الموارد' : 'Resource Usage'}
                     </h3>
                   </div>
                   <div className="space-y-3">
                     <div>
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-primary-foreground/80">{language === 'ar' ? 'ملفات النظام' : 'System Files'}</span>
-                        <span className="text-sm font-medium text-primary-foreground">2,847</span>
+                        <span className="text-sm text-white/80">{language === 'ar' ? 'ملفات النظام' : 'System Files'}</span>
+                        <span className="text-sm font-medium text-white">2,847</span>
                       </div>
-                      <Progress value={65} className="h-2 bg-primary/20 [&>div]:bg-gradient-primary" />
+                      <Progress value={65} className="h-2 bg-white/20 [&>div]:bg-gradient-primary" />
                     </div>
                     
                     <div>
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-primary-foreground/80">{language === 'ar' ? 'أحداث الأمان' : 'Security Events'}</span>
-                        <span className="text-sm font-medium text-primary-foreground">12</span>
+                        <span className="text-sm text-white/80">{language === 'ar' ? 'أحداث الأمان' : 'Security Events'}</span>
+                        <span className="text-sm font-medium text-white">12</span>
                       </div>
-                      <Progress value={20} className="h-2 bg-primary/20 [&>div]:bg-gradient-primary" />
+                      <Progress value={20} className="h-2 bg-white/20 [&>div]:bg-gradient-primary" />
                     </div>
                     
                     <div>
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-primary-foreground/80">{language === 'ar' ? 'مساحة التخزين' : 'Storage Space'}</span>
-                        <span className="text-sm font-medium text-primary-foreground">1.2 GB</span>
+                        <span className="text-sm text-white/80">{language === 'ar' ? 'مساحة التخزين' : 'Storage Space'}</span>
+                        <span className="text-sm font-medium text-white">1.2 GB</span>
                       </div>
-                      <Progress value={68} className="h-2 bg-primary/20 [&>div]:bg-gradient-warning" />
+                      <Progress value={68} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-orange-400 [&>div]:to-orange-500" />
                     </div>
                   </div>
                 </CardContent>
@@ -302,10 +302,10 @@ export const DashboardHero = ({
           {/* Progress Section - Only for innovators */}
           {userRole === 'innovator' && (
             <div className="space-y-6">
-              <Card className="bg-primary/10 backdrop-blur-xl border-primary/20 shadow-2xl">
+              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
                 <CardContent className="p-6 space-y-6">
                   <div className="text-center">
-                    <h3 className="text-xl font-bold text-primary-foreground mb-2">
+                    <h3 className="text-xl font-bold text-white mb-2">
                       {language === 'ar' ? 'مستوى الابتكار' : 'Innovation Level'}
                     </h3>
                     <div className="text-3xl font-bold text-accent mb-4">
@@ -313,22 +313,22 @@ export const DashboardHero = ({
                     </div>
                     <Progress 
                       value={stats.innovationScore} 
-                      className="h-3 bg-primary/20"
+                      className="h-3 bg-white/20"
                     />
                   </div>
 
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-primary-foreground/80">{language === 'ar' ? 'أفكار مقدمة' : 'Ideas Submitted'}</span>
-                      <span className="text-primary-foreground font-semibold">{stats.totalIdeas}</span>
+                      <span className="text-white/80">{language === 'ar' ? 'أفكار مقدمة' : 'Ideas Submitted'}</span>
+                      <span className="text-white font-semibold">{stats.totalIdeas}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-primary-foreground/80">{language === 'ar' ? 'نقاط مكتسبة' : 'Points Earned'}</span>
-                      <span className="text-primary-foreground font-semibold">{stats.totalPoints}</span>
+                      <span className="text-white/80">{language === 'ar' ? 'نقاط مكتسبة' : 'Points Earned'}</span>
+                      <span className="text-white font-semibold">{stats.totalPoints}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-primary-foreground/80">{language === 'ar' ? 'تحديات نشطة' : 'Active Challenges'}</span>
-                      <span className="text-primary-foreground font-semibold">{stats.activeChallenges}</span>
+                      <span className="text-white/80">{language === 'ar' ? 'تحديات نشطة' : 'Active Challenges'}</span>
+                      <span className="text-white font-semibold">{stats.activeChallenges}</span>
                     </div>
                   </div>
                 </CardContent>

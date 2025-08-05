@@ -353,15 +353,15 @@ export default function UserDashboard() {
         {!['admin', 'super_admin', 'expert', 'partner'].includes(primaryRole) && (
           <div>
         {/* Hero Banner */}
-        <div className="relative overflow-hidden rounded-lg bg-gradient-to-r from-primary to-primary-foreground text-primary-foreground">
-          <div className="absolute inset-0 bg-background/20"></div>
+        <div className="relative overflow-hidden rounded-lg bg-gradient-to-r from-innovation to-innovation-foreground text-white">
+          <div className="absolute inset-0 bg-black/20"></div>
           <div className="relative p-6 md:p-8">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold mb-2">
                   {currentLanguage === 'ar' ? `مرحباً ${userProfile?.display_name || 'المبتكر'}` : `Welcome ${userProfile?.display_name || 'Innovator'}`}
                 </h1>
-                <p className="text-primary-foreground/80">
+                <p className="text-white/80">
                   {currentLanguage === 'ar' 
                     ? `نقاط الابتكار: ${stats.totalRewards} | النتيجة: ${stats.innovationScore}/100`
                     : `Innovation Points: ${stats.totalRewards} | Score: ${stats.innovationScore}/100`}

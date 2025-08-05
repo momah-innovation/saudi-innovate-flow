@@ -315,11 +315,11 @@ export const EnhancedEventDetailDialog = ({
 
             {/* Event Title Overlay */}
             <div className={cn("absolute bottom-4 text-right", end('4'))}>
-              <h1 className="text-2xl font-bold text-primary-foreground mb-2">
+              <h1 className="text-2xl font-bold text-white mb-2">
                 {event.title_ar}
               </h1>
               <div className="flex items-center gap-2 text-white/90">
-                <Badge variant="outline" className="bg-primary/20 text-primary-foreground border-primary/30">
+                <Badge variant="outline" className="bg-white/20 text-white border-white/30">
                   {event.event_type}
                 </Badge>
                 {averageRating > 0 && (

@@ -290,7 +290,7 @@ export const DashboardOverview = () => {
                           <div className={cn(
                             "p-2 rounded-lg bg-gradient-to-r",
                             action.color,
-                            "text-primary-foreground group-hover:scale-110 transition-transform"
+                            "text-white group-hover:scale-110 transition-transform"
                           )}>
                             <IconComponent className="w-5 h-5" />
                           </div>

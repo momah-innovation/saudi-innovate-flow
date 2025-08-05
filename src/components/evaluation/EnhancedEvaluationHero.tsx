@@ -142,7 +142,7 @@ export const EnhancedEvaluationHero = ({
                 <Button
                   onClick={onCreateEvaluation}
                   size="lg"
-                  className="bg-gradient-primary text-primary-foreground hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
                   <Plus className={`w-5 h-5 ${me('2')}`} />
                   {isRTL ? 'تقييم جديد' : 'New Evaluation'}
@@ -198,7 +198,7 @@ export const EnhancedEvaluationHero = ({
                 </div>
 
                 <div className="p-6 space-y-4">
-                  <h3 className="text-xl font-bold text-primary-foreground">
+                  <h3 className="text-xl font-bold text-white">
                     {isRTL ? 'لوحة التقييم التفاعلية' : 'Interactive Evaluation Dashboard'}
                   </h3>
 
@@ -219,11 +219,11 @@ export const EnhancedEvaluationHero = ({
 
                   <Progress 
                     value={(completedEvaluations / Math.max(totalEvaluations, 1)) * 100} 
-                    className="h-2 bg-primary/20"
+                    className="h-2 bg-white/20"
                   />
 
                   <Button 
-                    className="w-full bg-gradient-primary hover:opacity-90 text-primary-foreground"
+                    className="w-full bg-gradient-primary hover:opacity-90 text-white"
                   >
                     {isRTL ? 'عرض التقييمات' : 'View Evaluations'}
                     <ArrowRight className={`w-4 h-4 ${ms('2')}`} />
@@ -234,10 +234,10 @@ export const EnhancedEvaluationHero = ({
 
             {/* Quick Stats Cards */}
             <div className="grid grid-cols-2 gap-4">
-              <Card className="bg-primary/5 backdrop-blur-sm border-primary/10 hover:bg-primary/10 transition-all cursor-pointer">
+              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
                   <Clock className="w-8 h-8 hero-stats-score mx-auto mb-2" />
-                  <div className="text-sm font-medium text-primary-foreground">
+                  <div className="text-sm font-medium text-white">
                     {isRTL ? 'في الانتظار' : 'Pending Review'}
                   </div>
                   <div className="text-xs text-white/70">
@@ -246,10 +246,10 @@ export const EnhancedEvaluationHero = ({
                 </CardContent>
               </Card>
 
-              <Card className="bg-primary/5 backdrop-blur-sm border-primary/10 hover:bg-primary/10 transition-all cursor-pointer">
+              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
                   <FileText className="w-8 h-8 hero-stats-ideas mx-auto mb-2" />
-                  <div className="text-sm font-medium text-primary-foreground">
+                  <div className="text-sm font-medium text-white">
                     {isRTL ? 'التقارير' : 'Reports'}
                   </div>
                   <div className="text-xs text-white/70">

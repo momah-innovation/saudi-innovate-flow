@@ -20,7 +20,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
 import { cn } from '@/lib/utils';
 import { useRTLAware } from '@/hooks/useRTLAware';
-import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface ChallengeCreateDialogProps {
   open: boolean;
@@ -36,7 +35,6 @@ export function ChallengeCreateDialog({
   const { user } = useAuth();
   const { toast } = useToast();
   const { me } = useRTLAware();
-  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     title_ar: '',
@@ -79,8 +77,8 @@ export function ChallengeCreateDialog({
       if (error) throw error;
 
       toast({
-        title: t('challenge_created_success') || "تم إنشاء التحدي بنجاح",
-        description: t('challenge_created_desc', { title: formData.title_ar }) || `تم إنشاء التحدي "${formData.title_ar}" بنجاح`,
+        title: "تم إنشاء التحدي بنجاح",
+        description: `تم إنشاء التحدي "${formData.title_ar}" بنجاح`,
       });
 
       onOpenChange(false);
@@ -111,8 +109,8 @@ export function ChallengeCreateDialog({
       setCurrentStep(1);
     } catch (error) {
       toast({
-        title: t('error') || "خطأ",
-        description: t('challenge_creation_failed') || "فشل في إنشاء التحدي",
+        title: "خطأ",
+        description: "فشل في إنشاء التحدي",
         variant: "destructive",
       });
     }
@@ -388,7 +386,7 @@ export function ChallengeCreateDialog({
           </div>
 
           {/* Navigation Buttons */}
-          <div className="flex justify-between pt-4 border-t border-muted/20">
+          <div className="flex justify-between pt-4 border-t border-white/10">
             <Button 
               variant="outline" 
               onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}

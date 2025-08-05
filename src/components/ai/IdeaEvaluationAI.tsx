@@ -99,13 +99,13 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
       onEvaluationComplete?.(mockEvaluation);
       
       toast({
-        title: t('evaluation_completed') || 'تم التقييم',
-        description: t('idea_evaluation_success') || 'تم تقييم الفكرة بنجاح باستخدام الذكاء الاصطناعي',
+        title: 'تم التقييم',
+        description: 'تم تقييم الفكرة بنجاح باستخدام الذكاء الاصطناعي',
       });
     } catch (error) {
       toast({
-        title: t('error') || 'خطأ',
-        description: t('evaluation_failed') || 'فشل في تقييم الفكرة، يرجى المحاولة مرة أخرى',
+        title: 'خطأ',
+        description: 'فشل في تقييم الفكرة، يرجى المحاولة مرة أخرى',
         variant: 'destructive',
       });
     } finally {
@@ -131,10 +131,10 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Brain className="h-5 w-5" />
-            {t('ai_evaluation') || 'تقييم الذكاء الاصطناعي'}
+            تقييم الذكاء الاصطناعي
           </CardTitle>
           <CardDescription>
-            {t('idea_evaluation_unavailable') || 'ميزة تقييم الأفكار غير متاحة حالياً'}
+            ميزة تقييم الأفكار غير متاحة حالياً
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -167,8 +167,8 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
               <Button onClick={handleEvaluate} disabled={loading} className="mb-4">
                 {loading ? (
                   <>
-                     <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-muted border-t-primary ${me('2')}`} />
-                    {t('evaluating') || 'جاري التقييم...'}
+                    <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-white ${me('2')}`} />
+                    جاري التقييم...
                   </>
                 ) : (
                   <>

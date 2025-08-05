@@ -131,7 +131,7 @@ export const EventSocialShare = ({
       icon: Mail,
       url: shareUrls.email,
       color: 'bg-muted hover:bg-muted/90',
-      textColor: 'text-primary-foreground'
+      textColor: 'text-white'
     }
   ];
 

@@ -237,7 +237,7 @@ export const EventCalendarView = ({
                       <div
                         key={event.id}
                         className={cn(
-                          "text-xs p-1 rounded text-primary-foreground truncate cursor-pointer",
+                          "text-xs p-1 rounded text-white truncate cursor-pointer",
                           getEventTypeColor(event.event_type)
                         )}
                         onClick={(e) => {
@@ -303,7 +303,7 @@ export const EventCalendarView = ({
                           )}
                         </div>
                       </div>
-                      <Badge variant="outline" className={cn(ms('2'), getEventTypeColor(event.event_type), "text-primary-foreground")}>
+                      <Badge variant="outline" className={cn(ms('2'), getEventTypeColor(event.event_type), "text-white")}>
                         {event.event_type}
                       </Badge>
                     </div>

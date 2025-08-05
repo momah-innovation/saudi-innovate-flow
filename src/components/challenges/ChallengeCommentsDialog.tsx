@@ -18,7 +18,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { useRTLAware } from '@/hooks/useRTLAware';
-import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface ChallengeCommentsDialogProps {
   open: boolean;
@@ -34,7 +33,6 @@ export function ChallengeCommentsDialog({
   const { user } = useAuth();
   const { toast } = useToast();
   const { ms, ps, me } = useRTLAware();
-  const { t } = useTranslation();
   const [comments, setComments] = useState<any[]>([]);
   const [newComment, setNewComment] = useState('');
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
@@ -67,8 +65,8 @@ export function ChallengeCommentsDialog({
       setComments(data || []);
     } catch (error) {
       toast({
-        title: t('error') || "خطأ",
-        description: t('failed_load_comments') || "فشل في تحميل التعليقات",
+        title: "خطأ",
+        description: "فشل في تحميل التعليقات",
         variant: "destructive",
       });
     } finally {
@@ -104,8 +102,8 @@ export function ChallengeCommentsDialog({
       setNewComment('');
       
       toast({
-        title: t('comment_added') || "تم إضافة التعليق",
-        description: t('comment_added_success') || "تم إضافة تعليقك بنجاح",
+        title: "تم إضافة التعليق",
+        description: "تم إضافة تعليقك بنجاح",
       });
     } catch (error) {
       toast({
@@ -365,7 +363,7 @@ export function ChallengeCommentsDialog({
         </ScrollArea>
 
         {/* Add Comment */}
-        <div className="border-t pt-4 space-y-3 border-muted/20">
+        <div className="border-t pt-4 space-y-3 border-white/10">
           <Textarea
             placeholder="شاركنا رأيك أو اطرح سؤالاً..."
             value={newComment}

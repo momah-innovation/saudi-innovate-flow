@@ -83,10 +83,10 @@ export const EnhancedPartnerDashboardHero = ({
             {/* Header with animation */}
             <div className="space-y-6">
               <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
-                <div className="p-3 bg-primary/10 backdrop-blur-sm rounded-xl border border-primary/20">
+                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
                   <Sparkles className="w-6 h-6 text-yellow-300" />
                 </div>
-                <Badge variant="secondary" className="bg-primary/10 text-primary-foreground border-primary/20 backdrop-blur-sm">
+                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                   <Star className={cn("w-3 h-3", isRTL ? "ml-1" : "mr-1")} />
                   {t('partnerDashboard')}
                 </Badge>
@@ -115,8 +115,8 @@ export const EnhancedPartnerDashboardHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-primary/5 backdrop-blur-sm border-primary/10 transition-all duration-500",
-                      isActive && "bg-primary/10 border-primary/20 scale-105"
+                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
+                      isActive && "bg-white/10 border-white/20 scale-105"
                     )}
                   >
                     <CardContent className="p-4 text-center">
@@ -144,7 +144,7 @@ export const EnhancedPartnerDashboardHero = ({
                 onClick={onShowOpportunities}
                 variant="outline"
                 size="lg"
-                className="border-primary/30 text-primary-foreground hover:bg-primary/10 backdrop-blur-sm"
+                className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
               >
                 <Filter className={cn("w-5 h-5", isRTL ? "ml-2" : "mr-2")} />
                 {t('exploreOpportunities')}
@@ -164,7 +164,7 @@ export const EnhancedPartnerDashboardHero = ({
 
           {/* Enhanced Partnership Overview */}
           <div className="space-y-6">
-            <Card className="bg-primary/10 backdrop-blur-xl border-primary/20 shadow-2xl">
+            <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
               <CardContent className="p-6 space-y-6">
                 <div className="text-center">
                   <h3 className="text-xl font-bold text-white mb-2">

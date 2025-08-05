@@ -73,7 +73,7 @@ export const EventRegistrationHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className={`absolute -top-40 ${end('-40')} w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse`} />
+        <div className={`absolute -top-40 ${end('-40')} w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse`} />
         <div className={`absolute -bottom-40 ${start('-40')} w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-1000`} />
         <div className={`absolute top-20 ${start('1/3')} w-64 h-64 bg-accent/5 rounded-full blur-2xl animate-bounce`} />
       </div>
@@ -85,17 +85,17 @@ export const EventRegistrationHero = ({
             {/* Header */}
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-primary/10 backdrop-blur-sm rounded-xl border border-primary/20">
+                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
                   <Sparkles className="w-6 h-6 text-accent" />
                 </div>
-                <Badge variant="secondary" className="bg-primary/10 text-primary-foreground border-primary/20 backdrop-blur-sm">
+                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                   <Calendar className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'تسجيل الفعالية' : 'Event Registration'}
                 </Badge>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   {eventTitle}
                 </h1>
                 
@@ -118,13 +118,13 @@ export const EventRegistrationHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-primary/5 backdrop-blur-sm border-primary/10 transition-all duration-500",
-                      isActive && "bg-primary/10 border-primary/20 scale-105"
+                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
+                      isActive && "bg-white/10 border-white/20 scale-105"
                     )}
                   >
                     <CardContent className="p-4 text-center">
                       <Icon className={cn("w-6 h-6 mx-auto mb-2 transition-colors", stat.color)} />
-                      <div className="text-lg font-bold text-primary-foreground truncate">{stat.value}</div>
+                      <div className="text-lg font-bold text-white truncate">{stat.value}</div>
                       <div className="text-sm text-white/70">{stat.label}</div>
                     </CardContent>
                   </Card>
@@ -141,7 +141,7 @@ export const EventRegistrationHero = ({
               
               <Progress 
                 value={registrationPercentage} 
-                className="h-3 bg-primary/20"
+                className="h-3 bg-white/20"
               />
 
               <div className="flex flex-wrap gap-4">
@@ -150,7 +150,7 @@ export const EventRegistrationHero = ({
                   size="lg"
                   disabled={isRegistered || registeredCount >= maxCapacity}
                   className={cn(
-                    "bg-gradient-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105",
+                    "bg-gradient-primary text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105",
                     isRegistered 
                       ? "opacity-50 cursor-not-allowed" 
                       : registeredCount >= maxCapacity
@@ -179,7 +179,7 @@ export const EventRegistrationHero = ({
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-primary/30 text-primary-foreground hover:bg-primary/10 backdrop-blur-sm"
+                  className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
                 >
                   <Star className={`w-5 h-5 ${me('2')}`} />
                   {isRTL ? 'المزيد من التفاصيل' : 'More Details'}
@@ -190,7 +190,7 @@ export const EventRegistrationHero = ({
 
           {/* Event Preview Card */}
           <div className="space-y-6">
-            <Card className="bg-primary/10 backdrop-blur-xl border-primary/20 shadow-2xl">
+            <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
               <CardContent className="p-0">
                 {/* Event Image */}
                 <div className="relative h-48 overflow-hidden rounded-t-lg">
@@ -234,7 +234,7 @@ export const EventRegistrationHero = ({
                   </div>
 
                   <Button 
-                    className="w-full bg-gradient-primary hover:opacity-90 text-primary-foreground"
+                    className="w-full bg-gradient-primary hover:opacity-90 text-white"
                   >
                     {isRTL ? 'عرض جدول الفعالية' : 'View Event Schedule'}
                     <ArrowRight className={`w-4 h-4 ${ms('2')}`} />

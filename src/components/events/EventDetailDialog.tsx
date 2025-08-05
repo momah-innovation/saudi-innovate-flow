@@ -160,10 +160,10 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
 
             {/* Action Buttons */}
             <div className={`absolute top-4 ${start('4')} flex gap-2`}>
-              <Button variant="secondary" size="sm" className="bg-card/80 hover:bg-card">
+              <Button variant="secondary" size="sm" className="bg-white/80 hover:bg-white">
                 <Bookmark className="w-4 h-4" />
               </Button>
-              <Button variant="secondary" size="sm" className="bg-card/80 hover:bg-card">
+              <Button variant="secondary" size="sm" className="bg-white/80 hover:bg-white">
                 <Share2 className="w-4 h-4" />
               </Button>
             </div>

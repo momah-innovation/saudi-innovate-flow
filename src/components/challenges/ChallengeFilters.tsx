@@ -173,7 +173,7 @@ export const ChallengeFilters = ({
                       onChange={(e) => updateFilter('search', e.target.value)}
                       onFocus={handleSearchFocus}
                       onBlur={handleSearchBlur}
-                      className={cn(`h-10 text-sm transition-all duration-300 ${challengesPageConfig.ui.glassMorphism.medium} border-muted/20 focus:border-primary focus:ring-primary`, ps('8'))}
+                      className={cn(`h-10 text-sm transition-all duration-300 ${challengesPageConfig.ui.glassMorphism.medium} border-white/20 focus:border-primary focus:ring-primary`, ps('8'))}
                       title={t('search_challenges') || 'البحث في التحديات...'}
                       autoFocus={searchExpanded && !filters.search}
                     />
