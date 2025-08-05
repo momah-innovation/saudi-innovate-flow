@@ -139,9 +139,9 @@ export function AvatarUpload({
         </Avatar>
         
         {showUploadButton && (
-          <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+          <div className="absolute inset-0 bg-background/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                onClick={() => fileInputRef.current?.click()}>
-            <Camera className="h-4 w-4 text-white" />
+            <Camera className="h-4 w-4 text-primary-foreground" />
           </div>
         )}
       </div>
