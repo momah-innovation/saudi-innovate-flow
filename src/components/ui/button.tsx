@@ -24,7 +24,7 @@ const buttonVariants = cva(
         "hero-ghost": "text-white hover:bg-white/10 backdrop-blur-sm",
         "hero-outline": "border border-white/40 text-white hover:bg-white hover:text-foreground backdrop-blur-sm bg-white/5 transition-all duration-300",
         // Action button variants for consistent styling
-        "action-edit": "border border-input bg-background hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200",
+        "action-edit": "border border-input bg-background hover:bg-info/10 hover:text-info hover:border-info/20",
         "action-delete": "border border-destructive/20 bg-background hover:bg-destructive hover:text-destructive-foreground text-destructive",
         "action-view": "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
       },
