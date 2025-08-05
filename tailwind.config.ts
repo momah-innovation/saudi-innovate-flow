@@ -19,25 +19,63 @@ export default {
 		},
 		extend: {
 			colors: {
-				border: "hsl(var(--border))",
-				input: "hsl(var(--input))",
-				ring: "hsl(var(--ring))",
-				background: "hsl(var(--background))",
-				foreground: "hsl(var(--foreground))",
+				// 🌍 Global theme colors
+				border: "hsl(var(--global-border))",
+				input: "hsl(var(--global-input))",
+				ring: "hsl(var(--global-ring))",
+				background: "hsl(var(--global-background))",
+				foreground: "hsl(var(--global-foreground))",
 				primary: {
-					DEFAULT: "hsl(var(--primary))",
-					foreground: "hsl(var(--primary-foreground))",
-					light: "hsl(var(--primary-light))",
-					dark: "hsl(var(--primary-dark))",
-					glow: "hsl(var(--primary) / 0.3)",
+					DEFAULT: "hsl(var(--global-primary))",
+					foreground: "hsl(var(--global-primary-foreground))",
+					light: "hsl(var(--global-primary-light))",
+					dark: "hsl(var(--global-primary-dark))",
+					glow: "hsl(var(--global-primary-glow) / 0.3)",
 				},
-				// Hero overlay semantic colors
-				"hero-overlay": "hsl(var(--hero-overlay))",
-				"hero-overlay-light": "hsl(var(--hero-overlay-light))",
-				"hero-text": "hsl(var(--hero-text))",
-				"hero-text-muted": "hsl(var(--hero-text-muted))",
-				"hero-border": "hsl(var(--hero-border))",
-				"hero-accent": "hsl(var(--hero-accent))",
+				secondary: {
+					DEFAULT: "hsl(var(--global-secondary))",
+					foreground: "hsl(var(--global-secondary-foreground))",
+				},
+				muted: {
+					DEFAULT: "hsl(var(--global-muted))",
+					foreground: "hsl(var(--global-muted-foreground))",
+				},
+				accent: {
+					DEFAULT: "hsl(var(--global-accent))",
+					foreground: "hsl(var(--global-accent-foreground))",
+				},
+				destructive: {
+					DEFAULT: "hsl(var(--global-destructive))",
+					foreground: "hsl(var(--global-destructive-foreground))",
+				},
+				card: {
+					DEFAULT: "hsl(var(--global-card))",
+					foreground: "hsl(var(--global-card-foreground))",
+				},
+				popover: {
+					DEFAULT: "hsl(var(--global-popover))",
+					foreground: "hsl(var(--global-popover-foreground))",
+				},
+				// Semantic status colors
+				success: {
+					DEFAULT: "hsl(var(--global-success))",
+					foreground: "hsl(var(--global-success-foreground))",
+				},
+				warning: {
+					DEFAULT: "hsl(var(--global-warning))",
+					foreground: "hsl(var(--global-warning-foreground))",
+				},
+				info: {
+					DEFAULT: "hsl(var(--global-info))",
+					foreground: "hsl(var(--global-info-foreground))",
+				},
+				// Glass morphism colors
+				glass: {
+					bg: "hsl(var(--global-glass-bg))",
+					border: "hsl(var(--global-glass-border))",
+					text: "hsl(var(--global-glass-text))",
+					"text-muted": "hsl(var(--global-glass-text-muted))",
+				},
 				secondary: {
 					DEFAULT: "hsl(var(--secondary))",
 					foreground: "hsl(var(--secondary-foreground))",

@@ -1,143 +1,101 @@
+@import url('./styles/foundation-tokens.css');
+@import url('./styles/specialized-themes.css');
+@import url('./styles/component-themes.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
+/* 🌍 GLOBAL THEMES */
+@layer themes {
   :root {
-    /* Core Theme Colors - Modern Innovation Theme */
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* 🎨 Light Innovation Theme (Default) */
+    --global-background: 0 0% 100%;
+    --global-foreground: 222.2 84% 4.9%;
+    --global-card: 0 0% 100%;
+    --global-card-foreground: 222.2 84% 4.9%;
+    --global-popover: 0 0% 100%;
+    --global-popover-foreground: 222.2 84% 4.9%;
     
-    /* Primary Brand Colors - Deep Blue Innovation Theme */
-    --primary: 240 73% 15%;
-    --primary-foreground: 0 0% 100%;
-    --primary-light: 240 73% 25%;
-    --primary-dark: 240 73% 10%;
+    /* Primary Brand Colors - Deep Blue Innovation */
+    --global-primary: 240 73% 15%;
+    --global-primary-foreground: 0 0% 100%;
+    --global-primary-light: 240 73% 25%;
+    --global-primary-dark: 240 73% 10%;
+    --global-primary-glow: 240 73% 15%;
     
-    /* Secondary Colors - Complementary Grays */
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 240 73% 25%;
-    --accent-foreground: 0 0% 100%;
+    /* Secondary Colors */
+    --global-secondary: 210 40% 96%;
+    --global-secondary-foreground: 222.2 84% 4.9%;
+    --global-muted: 210 40% 96%;
+    --global-muted-foreground: 215.4 16.3% 46.9%;
+    --global-accent: 240 73% 25%;
+    --global-accent-foreground: 0 0% 100%;
     
     /* Status Colors */
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
+    --global-destructive: 0 84.2% 60.2%;
+    --global-destructive-foreground: 0 0% 100%;
+    --global-success: 142 76% 36%;
+    --global-success-foreground: 0 0% 100%;
+    --global-warning: 43 96% 56%;
+    --global-warning-foreground: 0 0% 0%;
+    --global-info: 217 91% 60%;
+    --global-info-foreground: 0 0% 100%;
     
     /* Interactive Elements */
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 240 73% 15%;
+    --global-border: 214.3 31.8% 91.4%;
+    --global-input: 214.3 31.8% 91.4%;
+    --global-ring: 240 73% 15%;
     
-    /* Chart Colors */
-    --chart-1: 240 73% 15%;
-    --chart-2: 200 65% 45%;
-    --chart-3: 280 60% 50%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 340 75% 55%;
-    
-    --radius: 0.5rem;
-    
-    /* Semantic Status Colors */
-    --success: 142 76% 36%;
-    --success-foreground: 0 0% 100%;
-    --warning: 43 96% 56%;
-    --warning-foreground: 0 0% 0%;
-    --info: 217 91% 60%;
-    --info-foreground: 0 0% 100%;
-    
-    /* Hero Overlay Colors - For glass morphism effects */
-    --hero-overlay: 240 73% 15%;
-    --hero-overlay-light: 0 0% 100%;
-    --hero-text: 0 0% 100%;
-    --hero-text-muted: 0 0% 90%;
-    --hero-border: 0 0% 100%;
-    --hero-accent: 0 0% 100%;
-    
-    /* Semantic Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
-    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(var(--success) / 0.8));
-    --gradient-warning: linear-gradient(135deg, hsl(var(--warning)), hsl(var(--warning) / 0.8));
-    --gradient-info: linear-gradient(135deg, hsl(var(--info)), hsl(var(--info) / 0.8));
-    --gradient-subtle: linear-gradient(135deg, hsl(var(--muted)), hsl(var(--accent)));
-    
-    /* Enhanced Gradients for Glass Effects */
-    --gradient-hero: linear-gradient(135deg, 
-      hsl(var(--primary)) 0%, 
-      hsl(var(--primary-light)) 50%, 
-      hsl(var(--accent)) 100%);
-    --gradient-glass-light: linear-gradient(135deg, 
-      hsl(var(--hero-overlay-light) / 0.25) 0%, 
-      hsl(var(--hero-overlay-light) / 0.1) 100%);
-    --gradient-glass-dark: linear-gradient(135deg, 
-      hsl(var(--hero-overlay-light) / 0.1) 0%, 
-      hsl(var(--hero-overlay-light) / 0.05) 100%);
-    
-    /* Shadow Variables */
-    --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    --shadow-glow: 0 0 20px hsl(var(--hero-overlay-light) / 0.1);
-    --shadow-elegant: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+    /* Glass Morphism */
+    --global-glass-bg: 0 0% 100%;
+    --global-glass-border: 0 0% 100%;
+    --global-glass-text: 0 0% 100%;
+    --global-glass-text-muted: 0 0% 90%;
   }
 
-  .dark {
-    /* Dark Mode Core Colors */
-    --background: 222.2 84% 4.9%;
-    --foreground: 0 0% 100%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 0 0% 100%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 0 0% 100%;
+  /* 🌙 Dark Innovation Theme */
+  .theme-dark,
+  [data-theme="dark"] {
+    --global-background: 222.2 84% 4.9%;
+    --global-foreground: 0 0% 100%;
+    --global-card: 222.2 84% 4.9%;
+    --global-card-foreground: 0 0% 100%;
+    --global-popover: 222.2 84% 4.9%;
+    --global-popover-foreground: 0 0% 100%;
     
-    /* Dark Mode Primary Colors */
-    --primary: 240 73% 85%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --primary-light: 240 73% 90%;
-    --primary-dark: 240 73% 75%;
+    --global-primary: 240 73% 85%;
+    --global-primary-foreground: 222.2 84% 4.9%;
+    --global-primary-light: 240 73% 90%;
+    --global-primary-dark: 240 73% 75%;
     
-    /* Dark Mode Secondary Colors */
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 240 73% 85%;
-    --accent-foreground: 222.2 84% 4.9%;
+    --global-secondary: 217.2 32.6% 17.5%;
+    --global-secondary-foreground: 0 0% 100%;
+    --global-muted: 217.2 32.6% 17.5%;
+    --global-muted-foreground: 215 20.2% 65.1%;
+    --global-accent: 240 73% 85%;
+    --global-accent-foreground: 222.2 84% 4.9%;
     
-    /* Dark Mode Status Colors */
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 100%;
-    --success: 142 66% 46%;
-    --success-foreground: 0 0% 0%;
-    --warning: 43 86% 66%;
-    --warning-foreground: 0 0% 0%;
-    --info: 217 81% 70%;
-    --info-foreground: 0 0% 0%;
+    --global-border: 217.2 32.6% 17.5%;
+    --global-input: 217.2 32.6% 17.5%;
+    --global-ring: 240 73% 85%;
     
-    /* Dark Mode Interactive Elements */
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 240 73% 85%;
-    
-    /* Dark Mode Chart Colors */
-    --chart-1: 240 73% 85%;
-    --chart-2: 200 65% 55%;
-    --chart-3: 280 60% 60%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 340 75% 55%;
-    
-    /* Dark Mode Hero Overlay Colors */
-    --hero-overlay: 240 73% 85%;
-    --hero-overlay-light: 0 0% 100%;
-    --hero-text: 0 0% 100%;
-    --hero-text-muted: 0 0% 80%;
-    --hero-border: 0 0% 100%;
-    --hero-accent: 240 73% 85%;
+    --global-glass-bg: 0 0% 100%;
+    --global-glass-border: 0 0% 100%;
+    --global-glass-text: 0 0% 100%;
+    --global-glass-text-muted: 0 0% 80%;
   }
+
+  /* ♿ High Contrast Theme */
+  .theme-high-contrast,
+  [data-theme="high-contrast"] {
+    --global-background: 0 0% 0%;
+    --global-foreground: 0 0% 100%;
+    --global-primary: 60 100% 50%;
+    --global-primary-foreground: 0 0% 0%;
+    --global-border: 0 0% 100%;
+    --global-input: 0 0% 100%;
+  }
+}
 }
 
 @layer base {
