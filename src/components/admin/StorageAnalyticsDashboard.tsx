@@ -108,7 +108,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
             <CardTitle className="text-sm font-medium">{t("storage.total_storage")}</CardTitle>
             <HardDrive className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -121,7 +121,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
             <CardTitle className="text-sm font-medium">{t("storage.total_files")}</CardTitle>
             <Files className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -134,7 +134,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
             <CardTitle className="text-sm font-medium">{t("storage.active_buckets")}</CardTitle>
             <Upload className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -147,7 +147,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
             <CardTitle className="text-sm font-medium">{t("storage.top_uploaders")}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>

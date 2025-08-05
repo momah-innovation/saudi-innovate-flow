@@ -14,6 +14,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from '@/hooks/useSystemLists';
 import { ExpertProfileDialog } from './ExpertProfileDialog';
+import { useRTLAware } from '@/hooks/useRTLAware';
+import { RTLFlex } from '@/components/ui/rtl-layout';
 
 interface Expert {
   id: string;
@@ -58,6 +60,7 @@ interface ChallengeExpert {
 export function ExpertAssignmentManagement() {
   const { toast } = useToast();
   const { assignmentStatusOptions, expertRoleTypes } = useSystemLists();
+  const { me, ms, textEnd, flexRow } = useRTLAware();
   const [activeTab, setActiveTab] = useState("assignments");
   const [maxWorkload, setMaxWorkload] = useState(5);
   const [profileTextareaRows, setProfileTextareaRows] = useState(4);
@@ -482,16 +485,16 @@ export function ExpertAssignmentManagement() {
             Manage expert assignments, roles, and workloads across challenges
           </p>
         </div>
-        <div className="flex gap-2">
+        <RTLFlex gap="2">
           <Button onClick={() => setIsAssignDialogOpen(true)}>
-            <Plus className="h-4 w-4 me-2" />
+            <Plus className={`h-4 w-4 ${me}`} />
             Assign Expert
           </Button>
           <Button variant="outline" onClick={() => setIsBulkAssignDialogOpen(true)}>
-            <Users className="h-4 w-4 me-2" />
+            <Users className={`h-4 w-4 ${me}`} />
             Bulk Assign
           </Button>
-        </div>
+        </RTLFlex>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -691,7 +694,7 @@ export function ExpertAssignmentManagement() {
                           {expert.expertise_areas?.join(', ')} • {expert.experience_years || 0} years
                         </CardDescription>
                       </div>
-                      <div className="text-right">
+                      <div className={textEnd}>
                         <div className="text-2xl font-bold">{workload}/{maxWorkload}</div>
                         <div className="text-sm text-muted-foreground">Active Challenges</div>
                       </div>

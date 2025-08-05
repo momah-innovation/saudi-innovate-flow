@@ -15,6 +15,8 @@ import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, Clock, Shield, Bell, Users, Archive, Settings as SettingsIcon } from "lucide-react";
 import { useTranslation } from "@/hooks/useAppTranslation";
+import { useRTLAware } from '@/hooks/useRTLAware';
+import { RTLFlex } from '@/components/ui/rtl-layout';
 
 interface Challenge {
   id: string;
@@ -45,6 +47,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
   const { t } = useTranslation();
   const { toast } = useToast();
   const { challengeSensitivityLevels } = useSystemLists();
+  const { mr } = useRTLAware();
   const [loading, setLoading] = useState(false);
   
   // System settings
@@ -443,10 +446,10 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
                       onClick={handleArchiveChallenge}
                       disabled={loading}
                       className="w-full"
-                    >
-                      <Archive className="h-4 w-4 mr-2" />
-                      Archive Challenge
-                    </Button>
+                     >
+                       <Archive className={`h-4 w-4 ${mr}`} />
+                       Archive Challenge
+                     </Button>
                   </div>
                 </CardContent>
               </Card>

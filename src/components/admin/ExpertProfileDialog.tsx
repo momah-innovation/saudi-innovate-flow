@@ -6,6 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 import { User, Mail, Phone, Building, MapPin, Calendar, Award, Star, Clock, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useRTLAware } from '@/hooks/useRTLAware';
+import { RTLFlex } from '@/components/ui/rtl-layout';
 
 interface Expert {
   id: string;
@@ -35,6 +37,7 @@ interface ExpertProfileDialogProps {
 
 export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProfileDialogProps) {
   const navigate = useNavigate();
+  const { textEnd } = useRTLAware();
   const [expert, setExpert] = useState<Expert | null>(null);
   const [activeAssignments, setActiveAssignments] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -298,11 +301,11 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
                             Started: {new Date(assignment.challenges.start_date).toLocaleDateString()}
                           </p>
                         )}
-                      </div>
-                      <div className="text-right">
-                        <Badge variant="outline">
-                          {assignment.challenges?.priority_level}
-                        </Badge>
+                       </div>
+                       <div className={textEnd}>
+                         <Badge variant="outline">
+                           {assignment.challenges?.priority_level}
+                         </Badge>
                         <p className="text-xs text-muted-foreground mt-1">
                           {assignment.challenges?.status}
                         </p>

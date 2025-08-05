@@ -368,12 +368,12 @@ export function TeamMemberWizard({
               <div className="space-y-2">
                 <Label>البحث عن مستخدم</Label>
                 <div className="relative">
-                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Search className={`absolute ${start} top-2.5 h-4 w-4 text-muted-foreground`} />
                   <Input
                     placeholder="ابحث بالاسم أو البريد الإلكتروني..."
                     value={userSearchTerm}
                     onChange={(e) => setUserSearchTerm(e.target.value)}
-                    className="pl-8"
+                    className={ps}
                   />
                 </div>
                 {userSearchTerm && (

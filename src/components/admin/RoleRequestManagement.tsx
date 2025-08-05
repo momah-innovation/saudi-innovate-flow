@@ -277,12 +277,12 @@ export default function RoleRequestManagement() {
             <div className="space-y-2">
               <Label>Search</Label>
               <div className="relative">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Search className={`absolute ${start} top-2.5 h-4 w-4 text-muted-foreground`} />
                 <Input
                   placeholder="Name or email..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-8"
+                  className={ps}
                 />
               </div>
             </div>
@@ -325,7 +325,7 @@ export default function RoleRequestManagement() {
       {/* Statistics */}
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
             <CardTitle className="text-sm font-medium">Total Requests</CardTitle>
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -334,7 +334,7 @@ export default function RoleRequestManagement() {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
             <CardTitle className="text-sm font-medium">Pending</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -345,7 +345,7 @@ export default function RoleRequestManagement() {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
             <CardTitle className="text-sm font-medium">Approved</CardTitle>
             <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -356,7 +356,7 @@ export default function RoleRequestManagement() {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
             <CardTitle className="text-sm font-medium">Rejected</CardTitle>
             <XCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
