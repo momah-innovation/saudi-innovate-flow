@@ -143,11 +143,11 @@ const DesignSystem = () => {
         className={cn("h-16 w-full rounded-lg border cursor-pointer transition-all hover:scale-105", className)}
         onClick={() => copyToClipboard(className, name)}
       >
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-primary/20 backdrop-blur-sm rounded-lg">
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-primary/30 backdrop-blur-sm rounded-lg border border-primary/50">
           {copiedToken === className ? (
-            <Check className="h-5 w-5 text-primary-foreground" />
+            <Check className="h-6 w-6 text-white drop-shadow-lg" />
           ) : (
-            <Copy className="h-5 w-5 text-primary-foreground" />
+            <Copy className="h-6 w-6 text-white drop-shadow-lg" />
           )}
         </div>
       </div>
