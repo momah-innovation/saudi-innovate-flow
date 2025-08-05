@@ -11,6 +11,8 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { getInitials, useSystemSettings } from '@/contexts/SystemSettingsContext';
 import { cn } from '@/lib/utils';
 import { useResponsiveSidebar } from '@/contexts/ResponsiveSidebarContext';
+import { useRTLAware } from '@/hooks/useRTLAware';
+import { RTLFlex } from '@/components/ui/rtl-layout';
 
 /**
  * Header - Global header component for desktop, tablet, and mobile
@@ -28,6 +30,7 @@ export function Header() {
   const { isRTL, language } = useDirection();
   const { uiInitialsMaxLength } = useSystemSettings();
   const { toggleSidebar, isOverlay } = useResponsiveSidebar();
+  const { left, right, pl, pr, textStart, textEnd, flexRow } = useRTLAware();
 
   const getUserDisplayName = () => {
     if (!userProfile) return 'User';
@@ -46,14 +49,11 @@ export function Header() {
     <header className="h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
       <div className={cn(
         "container flex items-center justify-between px-4 h-full max-w-none",
-        isRTL && "flex-row-reverse"
+        flexRow
       )}>
         
         {/* Left Section: Logo, Sidebar Toggle, Title */}
-        <div className={cn(
-          "flex items-center gap-3 min-w-0",
-          isRTL && "flex-row-reverse"
-        )}>
+        <RTLFlex className="gap-3 min-w-0">
           {/* Sidebar Toggle */}
           <SidebarTrigger 
             className="shrink-0" 
@@ -61,16 +61,13 @@ export function Header() {
           />
           
           {/* Logo & Title */}
-          <div className={cn(
-            "flex items-center gap-2 min-w-0",
-            isRTL && "flex-row-reverse"
-          )}>
+          <RTLFlex className="gap-2 min-w-0">
             <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center shrink-0">
               <span className="text-primary-foreground font-bold text-sm">🏗️</span>
             </div>
             <div className={cn(
               "hidden sm:block min-w-0",
-              isRTL && "text-right"
+              textStart
             )}>
               <h1 className={cn(
                 "font-semibold text-sm truncate",
@@ -79,15 +76,15 @@ export function Header() {
                 {getSystemTitle()}
               </h1>
             </div>
-          </div>
-        </div>
+          </RTLFlex>
+        </RTLFlex>
 
         {/* Center Section: Search */}
         <div className="flex-1 max-w-md mx-4">
           <div className="relative">
             <Search className={cn(
               "absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground",
-              isRTL ? "right-3" : "left-3"
+              isRTL ? right('3') : left('3')
             )} />
             <Input
               type="search"
@@ -96,7 +93,7 @@ export function Header() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className={cn(
                 "h-9",
-                isRTL ? "pr-10 text-right font-arabic" : "pl-10 font-english"
+                isRTL ? `${pr('10')} ${textEnd} font-arabic` : `${pl('10')} font-english`
               )}
               dir={isRTL ? 'rtl' : 'ltr'}
             />
@@ -104,10 +101,7 @@ export function Header() {
         </div>
 
         {/* Right Section: Actions & User */}
-        <div className={cn(
-          "flex items-center gap-2",
-          isRTL && "flex-row-reverse"
-        )}>
+        <RTLFlex className="gap-2">
           {/* Language Toggle */}
           <LanguageToggle />
           
@@ -116,7 +110,7 @@ export function Header() {
           
           {/* User Menu */}
           <UserMenu />
-        </div>
+        </RTLFlex>
       </div>
     </header>
   );

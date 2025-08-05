@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useAppTranslation";
+import { useRTLAware } from "@/hooks/useRTLAware";
+import { RTLFlex } from "@/components/ui/rtl-layout";
 
 import { 
   Target, 
@@ -202,12 +204,12 @@ export function ChallengeManagementList() {
     <>
       <div className="space-y-6">
         {/* Header */}
-        <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+        <RTLFlex className="flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h2 className="text-2xl font-bold">إدارة التحديات</h2>
             <p className="text-muted-foreground">إنشاء وإدارة التحديات الابتكارية ({filteredChallenges.length})</p>
           </div>
-          <div className="flex items-center gap-2">
+          <RTLFlex className="items-center gap-2">
             {/* Layout Toggle */}
             <div className="flex items-center border rounded-lg p-1">
               <button
@@ -237,11 +239,13 @@ export function ChallengeManagementList() {
               setSelectedChallenge(null);
               setShowWizard(true);
             }}>
-              <Target className="w-4 h-4 mr-2" />
-              تحدي جديد
+              <RTLFlex className="items-center gap-2">
+                <Target className="w-4 h-4" />
+                تحدي جديد
+              </RTLFlex>
             </Button>
-          </div>
-        </div>
+          </RTLFlex>
+        </RTLFlex>
 
         {/* Search and Filters */}
         <div className="flex flex-col sm:flex-row gap-4">

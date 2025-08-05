@@ -13,6 +13,8 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { getStatusMapping, getPriorityMapping, getDifficultyMapping, challengesPageConfig } from '@/config/challengesPageConfig';
+import { useRTLAware } from '@/hooks/useRTLAware';
+import { RTLFlex, RTLLayout } from '@/components/ui/rtl-layout';
 
 interface Challenge {
   id: string;
@@ -61,6 +63,7 @@ export const ChallengeCard = ({
   const { isRTL } = useDirection();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const { flexRow, textStart, textEnd, ml, mr, left, right } = useRTLAware();
 
   // Get mappings from config
   const statusMapping = getStatusMapping(challenge.status);
@@ -128,7 +131,7 @@ export const ChallengeCard = ({
     return (
       <Card className="hover:shadow-md transition-all duration-300 hover-scale animate-fade-in">
         <CardContent className="p-4">
-          <div className="flex items-start gap-4">
+          <RTLFlex className="items-start gap-4">
             {/* Challenge Image */}
             <div className="relative flex-shrink-0">
               <div className={`w-20 h-20 rounded-lg overflow-hidden ${challengesPageConfig.ui.gradients.featured}`}>
@@ -147,7 +150,7 @@ export const ChallengeCard = ({
               
               {/* Status Indicators */}
               {(challenge.trending || isNew) && (
-                <div className="absolute -top-1 -right-1">
+                <div className={cn("absolute -top-1", isRTL ? left('1') : right('1'))}>
                   <Badge variant="secondary" className="text-xs px-1 py-0.5">
                     {challenge.trending ? <TrendingUp className="w-3 h-3" /> : <Star className="w-3 h-3" />}
                   </Badge>
@@ -157,9 +160,9 @@ export const ChallengeCard = ({
 
             {/* Challenge Details */}
             <div className="flex-1 min-w-0">
-              <div className="flex items-start justify-between gap-4">
+              <RTLLayout flexRow className="items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-2">
+                  <RTLFlex className="items-center gap-2 mb-2">
                     <h3 className="font-semibold text-lg truncate">{title}</h3>
                      {isNew && (
                        <Badge variant="secondary" className={challengesPageConfig.badges.new}>
@@ -168,49 +171,49 @@ export const ChallengeCard = ({
                     )}
                      {isUrgent && (
                        <Badge variant="secondary" className={challengesPageConfig.badges.urgent}>
-                         <AlertCircle className="w-3 h-3 mr-1" />
+                         <AlertCircle className={cn("w-3 h-3", isRTL ? ml('1') : mr('1'))} />
                         {isRTL ? 'عاجل' : 'Urgent'}
                       </Badge>
                     )}
-                  </div>
+                  </RTLFlex>
                   <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
                     {description}
                   </p>
 
                   {/* Metrics */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-                    <div className="flex items-center gap-1">
+                    <RTLFlex className="items-center gap-1">
                       <Users className="w-3 h-3 text-muted-foreground" />
                       <span>{challenge.participants || 0}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
+                    </RTLFlex>
+                    <RTLFlex className="items-center gap-1">
                       <Trophy className="w-3 h-3 text-muted-foreground" />
                       <span>{challenge.estimated_budget ? `${(challenge.estimated_budget / 1000).toFixed(0)}k` : 'N/A'}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
+                    </RTLFlex>
+                    <RTLFlex className="items-center gap-1">
                       <Clock className="w-3 h-3 text-muted-foreground" />
                       <span>{daysLeft || 0} {isRTL ? 'يوم' : 'days'}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
+                    </RTLFlex>
+                    <RTLFlex className="items-center gap-1">
                       <Star className="w-3 h-3 text-muted-foreground" />
                       <span>{challenge.success_rate || 85}%</span>
-                    </div>
+                    </RTLFlex>
                   </div>
                 </div>
 
                 {/* Actions */}
-                <div className="flex flex-col items-end gap-3">
-                  <div className="flex items-center gap-2">
+                <RTLLayout className="flex flex-col items-end gap-3">
+                  <RTLFlex className="items-center gap-2">
                     <Badge className={getStatusColor(challenge.status)}>
-                      <StatusIcon className="w-3 h-3 mr-1" />
+                      <StatusIcon className={cn("w-3 h-3", isRTL ? ml('1') : mr('1'))} />
                       {getStatusText(challenge.status)}
                     </Badge>
                     <Badge className={getPriorityColor(challenge.priority_level || 'متوسط')}>
                       {challenge.priority_level || 'متوسط'}
                     </Badge>
-                  </div>
+                  </RTLFlex>
 
-                  <div className="flex items-center gap-1">
+                  <RTLFlex className="items-center gap-1">
                     <IconActionButton
                       icon={<Heart className={cn("w-4 h-4", isLiked && `fill-current ${challengesPageConfig.ui.colors.stats.red}`)} />}
                       tooltip={isRTL ? 'أعجبني' : 'Like'}
@@ -235,26 +238,33 @@ export const ChallengeCard = ({
                       size="sm" 
                       onClick={() => onParticipate(challenge)}
                       disabled={challenge.status !== 'active' && challenge.status !== 'published'}
-                      className={`ml-2 ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} ${challengesPageConfig.ui.colors.text.accent} border-0 shadow-md ${challengesPageConfig.ui.effects.hoverScale}`}
+                      className={cn(
+                        challengesPageConfig.ui.gradients.button, 
+                        challengesPageConfig.ui.gradients.buttonHover,
+                        challengesPageConfig.ui.colors.text.accent,
+                        "border-0 shadow-md",
+                        challengesPageConfig.ui.effects.hoverScale,
+                        isRTL ? mr('2') : ml('2')
+                      )}
                     >
                       {isRTL ? 'شارك' : 'Join'}
                     </Button>
-                  </div>
-                </div>
-              </div>
+                  </RTLFlex>
+                </RTLLayout>
+              </RTLLayout>
 
               {/* Progress Bar */}
               {variant === 'enhanced' && challenge.start_date && challenge.end_date && (
                 <div className="mt-3">
-                  <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                  <RTLLayout flexRow className="justify-between text-xs text-muted-foreground mb-1">
                     <span>{isRTL ? 'التقدم' : 'Progress'}</span>
                     <span>{Math.round(progress)}%</span>
-                  </div>
+                  </RTLLayout>
                   <Progress value={progress} className="h-1.5" />
                 </div>
               )}
             </div>
-          </div>
+          </RTLFlex>
         </CardContent>
       </Card>
     );

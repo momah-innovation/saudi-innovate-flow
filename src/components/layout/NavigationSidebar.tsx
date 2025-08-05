@@ -20,6 +20,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useSidebarPersistence } from '@/contexts/SidebarContext';
+import { useRTLAware } from '@/hooks/useRTLAware';
+import { RTLFlex } from '@/components/ui/rtl-layout';
 
 /**
  * NavigationSidebar - Optimized sidebar navigation with role-based menu items
@@ -35,6 +37,7 @@ export function NavigationSidebar() {
   // const { profile: userProfile } = useProfile();
   const userProfile = null; // Simplified for now
   const [isOldLinksOpen, setIsOldLinksOpen] = React.useState(false);
+  const { flexRow, textStart, textEnd, ml, mr } = useRTLAware();
 
   // Sync sidebar state with persistent storage
   React.useEffect(() => {
@@ -456,7 +459,7 @@ export function NavigationSidebar() {
             className={cn(
               "w-full justify-start",
               isActive && "bg-primary text-primary-foreground",
-              isRTL && "flex-row-reverse"
+              flexRow
             )}
           >
             <NavLink 
@@ -466,15 +469,16 @@ export function NavigationSidebar() {
                 isActive 
                   ? "bg-primary text-primary-foreground" 
                   : "text-muted-foreground hover:text-foreground hover:bg-muted",
-                isRTL && "flex-row-reverse text-right"
+                flexRow,
+                textStart
               )}
             >
-              <item.icon className={cn("h-4 w-4", isRTL && "ml-3 mr-0")} />
+              <item.icon className={cn("h-4 w-4", isRTL && ml('3'))} />
               <span className="flex-1">
                 {isRTL ? item.arabicLabel : item.label}
               </span>
               {item.badge && (
-                <Badge variant="secondary" className={cn("ml-auto text-xs", isRTL && "ml-0 mr-auto")}>
+                <Badge variant="secondary" className={cn("text-xs", isRTL ? mr('auto') : ml('auto'))}>
                   {item.badge}
                 </Badge>
               )}
@@ -493,7 +497,7 @@ export function NavigationSidebar() {
             <SidebarGroupLabel asChild>
               <CollapsibleTrigger className={cn(
                 "flex w-full items-center justify-between text-xs font-medium text-muted-foreground hover:text-foreground",
-                isRTL && "text-right"
+                textStart
               )}>
                 <span>{isRTL ? groupLabels[groupKey]?.ar : groupLabels[groupKey]?.en}</span>
                 <Button variant="ghost" size="sm" className="h-4 w-4 p-0">
