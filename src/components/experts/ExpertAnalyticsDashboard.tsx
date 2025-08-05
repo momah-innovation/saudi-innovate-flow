@@ -9,6 +9,7 @@ import {
   Users, Calendar, BarChart3, Eye, Download
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { cn } from '@/lib/utils';
 
 interface ExpertAnalyticsDashboardProps {
@@ -17,6 +18,7 @@ interface ExpertAnalyticsDashboardProps {
 
 export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboardProps) => {
   const { isRTL } = useDirection();
+  const { me } = useRTLAware();
   
   // Mock data for expert analytics
   const evaluationTrends = [
@@ -85,11 +87,11 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm">
-            <Download className="w-4 h-4 mr-2" />
+            <Download className={`w-4 h-4 ${me('2')}`} />
             {isRTL ? 'تصدير' : 'Export'}
           </Button>
           <Button variant="outline" size="sm">
-            <BarChart3 className="w-4 h-4 mr-2" />
+            <BarChart3 className={`w-4 h-4 ${me('2')}`} />
             {isRTL ? 'تقرير مفصل' : 'Detailed Report'}
           </Button>
         </div>
@@ -117,7 +119,7 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
                     </div>
                     <div className="flex items-center">
                       <TrendingUp className={cn(
-                        "w-4 h-4 mr-1",
+                        `w-4 h-4 ${me('1')}`,
                         metric.change > 0 ? "text-green-500" : "text-red-500"
                       )} />
                       <span className={cn(
@@ -297,7 +299,7 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
                 <div className="flex items-center gap-2">
                   {activity.score && (
                     <Badge variant="outline" className="bg-yellow-50 text-yellow-700">
-                      <Star className="w-3 h-3 mr-1" />
+                      <Star className={`w-3 h-3 ${me('1')}`} />
                       {activity.score}
                     </Badge>
                   )}

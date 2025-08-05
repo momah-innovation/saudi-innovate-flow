@@ -22,6 +22,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { cn } from '@/lib/utils';
 
 interface EnhancedExpertDashboardHeroProps {
@@ -50,6 +51,7 @@ export const EnhancedExpertDashboardHero = ({
   featuredEvaluation
 }: EnhancedExpertDashboardHeroProps) => {
   const { isRTL } = useDirection();
+  const { me, ms, start, end } = useRTLAware();
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
@@ -76,9 +78,9 @@ export const EnhancedExpertDashboardHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-20 left-1/3 w-64 h-64 bg-emerald-400/5 rounded-full blur-2xl animate-bounce" />
+        <div className={`absolute -top-40 ${end('-40')} w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse`} />
+        <div className={`absolute -bottom-40 ${start('-40')} w-96 h-96 bg-blue-400/5 rounded-full blur-3xl animate-pulse delay-1000`} />
+        <div className={`absolute top-20 ${start('1/3')} w-64 h-64 bg-emerald-400/5 rounded-full blur-2xl animate-bounce`} />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -92,7 +94,7 @@ export const EnhancedExpertDashboardHero = ({
                   <Star className="w-6 h-6 text-yellow-300" />
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
-                  <Award className="w-3 h-3 mr-1" />
+                  <Award className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'لوحة تحكم الخبير' : 'Expert Dashboard'}
                 </Badge>
               </div>
@@ -150,7 +152,7 @@ export const EnhancedExpertDashboardHero = ({
                 size="lg"
                 className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
-                <Star className="w-5 h-5 mr-2" />
+                <Star className={`w-5 h-5 ${me('2')}`} />
                 {isRTL ? 'ابدأ التقييم' : 'Start Evaluating'}
               </Button>
               
@@ -160,7 +162,7 @@ export const EnhancedExpertDashboardHero = ({
                 size="lg"
                 className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
               >
-                <Filter className="w-5 h-5 mr-2" />
+                <Filter className={`w-5 h-5 ${me('2')}`} />
                 {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
               </Button>
 
@@ -169,7 +171,7 @@ export const EnhancedExpertDashboardHero = ({
                 size="lg"
                 className="text-white hover:bg-white/10"
               >
-                <Play className="w-5 h-5 mr-2" />
+                <Play className={`w-5 h-5 ${me('2')}`} />
                 {isRTL ? 'شاهد الدليل' : 'Watch Guide'}
               </Button>
             </div>
@@ -191,23 +193,23 @@ export const EnhancedExpertDashboardHero = ({
                       </h3>
                     </div>
                     
-                    <div className="absolute top-4 left-4">
+                    <div className={`absolute top-4 ${start('4')}`}>
                       <Badge className={cn(
                         "border-0 animate-pulse",
                         featuredEvaluation.priority === 'high' ? "bg-red-500/90" :
                         featuredEvaluation.priority === 'medium' ? "bg-orange-500/90" :
                         "bg-blue-500/90"
                       )}>
-                        <AlertCircle className="w-3 h-3 mr-1" />
+                        <AlertCircle className={`w-3 h-3 ${me('1')}`} />
                         {featuredEvaluation.priority === 'high' ? (isRTL ? 'عاجل' : 'Urgent') :
                          featuredEvaluation.priority === 'medium' ? (isRTL ? 'عالي' : 'High') :
                          (isRTL ? 'عادي' : 'Normal')}
                       </Badge>
                     </div>
 
-                    <div className="absolute top-4 right-4">
+                    <div className={`absolute top-4 ${end('4')}`}>
                       <Badge className="bg-emerald-500/90 text-white border-0">
-                        <Clock className="w-3 h-3 mr-1" />
+                        <Clock className={`w-3 h-3 ${me('1')}`} />
                         {featuredEvaluation.daysLeft} {isRTL ? 'أيام متبقية' : 'days left'}
                       </Badge>
                     </div>
@@ -252,7 +254,7 @@ export const EnhancedExpertDashboardHero = ({
                       onClick={onStartEvaluating}
                     >
                       {isRTL ? 'ابدأ التقييم' : 'Start Evaluation'}
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                      <ArrowRight className={`w-4 h-4 ${ms('2')}`} />
                     </Button>
                   </div>
                 </CardContent>

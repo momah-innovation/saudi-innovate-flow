@@ -16,6 +16,7 @@ import {
   Calendar
  } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
 
 interface ExpertProfile {
@@ -51,6 +52,7 @@ interface ExpertCardProps {
 
 export function ExpertCard({ expertProfile, userProfile, className = "" }: ExpertCardProps) {
   const { uiInitialsMaxLength } = useSystemSettings();
+  const { me } = useRTLAware();
   
   const getInitialsWithSettings = (name: string) => {
     return getInitials(name, uiInitialsMaxLength);
@@ -91,13 +93,13 @@ export function ExpertCard({ expertProfile, userProfile, className = "" }: Exper
             )}
             <div className="flex items-center gap-2 mt-2">
               <Badge variant={getAvailabilityColor(expertProfile.availability_status)}>
-                {expertProfile.availability_status === 'available' && <CheckCircle className="w-3 h-3 mr-1" />}
-                {expertProfile.availability_status === 'unavailable' && <XCircle className="w-3 h-3 mr-1" />}
+                {expertProfile.availability_status === 'available' && <CheckCircle className={`w-3 h-3 ${me('1')}`} />}
+                {expertProfile.availability_status === 'unavailable' && <XCircle className={`w-3 h-3 ${me('1')}`} />}
                 {expertProfile.availability_status}
               </Badge>
               {expertProfile.expert_level && (
                 <Badge variant={getExpertLevelColor(expertProfile.expert_level)}>
-                  <Star className="w-3 h-3 mr-1" />
+                  <Star className={`w-3 h-3 ${me('1')}`} />
                   {expertProfile.expert_level} level
                 </Badge>
               )}

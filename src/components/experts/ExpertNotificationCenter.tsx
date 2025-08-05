@@ -24,6 +24,7 @@ import {
   X
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { cn } from '@/lib/utils';
 
 interface Notification {
@@ -39,6 +40,7 @@ interface Notification {
 
 export const ExpertNotificationCenter = () => {
   const { isRTL } = useDirection();
+  const { me } = useRTLAware();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
@@ -424,7 +426,7 @@ export const ExpertNotificationCenter = () => {
             className="w-full"
             onClick={() => setOpen(false)}
           >
-            <MessageSquare className="w-4 h-4 mr-2" />
+            <MessageSquare className={`w-4 h-4 ${me('2')}`} />
             {isRTL ? 'عرض جميع الإشعارات' : 'View All Notifications'}
           </Button>
         </div>

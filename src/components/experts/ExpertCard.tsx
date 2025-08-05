@@ -7,6 +7,7 @@ import {
   ExternalLink, Mail, Linkedin, Twitter 
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface Expert {
   id: string;
@@ -37,6 +38,7 @@ interface ExpertCardProps {
 
 export const ExpertCard = ({ expert, onViewProfile, onContact, compact = false }: ExpertCardProps) => {
   const { isRTL } = useDirection();
+  const { me } = useRTLAware();
 
   const getAvailabilityColor = (availability: string) => {
     switch (availability) {
@@ -194,11 +196,11 @@ export const ExpertCard = ({ expert, onViewProfile, onContact, compact = false }
         {/* Action Buttons */}
         <div className="flex gap-2 pt-2">
           <Button variant="outline" onClick={() => onViewProfile(expert)} className="flex-1">
-            <Users className="w-4 h-4 mr-2" />
+            <Users className={`w-4 h-4 ${me('2')}`} />
             {isRTL ? 'الملف الشخصي' : 'View Profile'}
           </Button>
           <Button onClick={() => onContact(expert)} className="flex-1">
-            <MessageSquare className="w-4 h-4 mr-2" />
+            <MessageSquare className={`w-4 h-4 ${me('2')}`} />
             {isRTL ? 'تواصل' : 'Contact'}
           </Button>
         </div>
