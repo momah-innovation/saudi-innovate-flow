@@ -143,10 +143,10 @@ export const ApplicationsManagementDialog = ({
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'approved': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
-      case 'rejected': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-      case 'under_review': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
-      default: return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+      case 'approved': return 'bg-success/10 text-success dark:bg-success/20 dark:text-success';
+      case 'rejected': return 'bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive';
+      case 'under_review': return 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary';
+      default: return 'bg-warning/10 text-warning dark:bg-warning/20 dark:text-warning';
     }
   };
 

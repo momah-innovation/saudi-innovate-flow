@@ -81,7 +81,7 @@ export const EnhancedIdeasHero = ({
       <div className="absolute inset-0 overflow-hidden">
         <div className={cn("absolute -top-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse", end("-40"))} />
         <div className={cn("absolute -bottom-40 w-96 h-96 bg-warning/5 rounded-full blur-3xl animate-pulse delay-1000", start("-40"))} />
-        <div className={cn("absolute top-20 w-64 h-64 bg-orange-400/5 rounded-full blur-2xl animate-bounce", start("1/3"))} />
+        <div className={cn("absolute top-20 w-64 h-64 bg-warning/5 rounded-full blur-2xl animate-bounce", start("1/3"))} />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -207,7 +207,7 @@ export const EnhancedIdeasHero = ({
                      </div>
 
                      <div className={cn("absolute top-4", end("4"))}>
-                       <Badge className="bg-orange-500/90 text-white border-0">
+                       <Badge className="bg-warning/90 text-white border-0">
                          <TrendingUp className={cn("w-3 h-3", me("1"))} />
                          {isRTL ? 'رائجة' : 'Trending'}
                        </Badge>
@@ -272,7 +272,7 @@ export const EnhancedIdeasHero = ({
             <div className="grid grid-cols-2 gap-4">
               <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <Rocket className="w-8 h-8 text-orange-400 mx-auto mb-2" />
+                  <Rocket className="w-8 h-8 text-warning mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
                     {isRTL ? 'الأفكار الجديدة' : 'New Ideas'}
                   </div>

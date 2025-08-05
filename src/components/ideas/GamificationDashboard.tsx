@@ -187,7 +187,7 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
     switch (level) {
       case 'gold': return 'bg-warning/10 text-warning border-warning/20';
       case 'silver': return 'bg-muted text-muted-foreground border-muted-foreground/20';
-      case 'bronze': return 'bg-orange-500/10 text-orange-500 border-orange-500/20';
+      case 'bronze': return 'bg-warning/10 text-warning border-warning/20';
       case 'platinum': return 'bg-accent/10 text-accent border-accent/20';
       default: return 'bg-primary/10 text-primary border-primary/20';
     }
@@ -325,7 +325,7 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                         index === 0 ? 'bg-warning/10 text-warning' :
                         index === 1 ? 'bg-muted text-muted-foreground' :
-                        index === 2 ? 'bg-orange-100 text-orange-800' :
+                        index === 2 ? 'bg-warning/10 text-warning' :
                         'bg-muted text-muted-foreground'
                       }`}>
                         {index < 3 ? (

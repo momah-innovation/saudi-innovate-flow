@@ -273,19 +273,19 @@ export const AnalyticsImplementationStatus = () => {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'completed': return <CheckCircle className="w-4 h-4 text-green-500" />;
-      case 'in_progress': return <Clock className="w-4 h-4 text-yellow-500" />;
-      case 'pending': return <AlertCircle className="w-4 h-4 text-gray-400" />;
-      default: return <AlertCircle className="w-4 h-4 text-gray-400" />;
+      case 'completed': return <CheckCircle className="w-4 h-4 text-success" />;
+      case 'in_progress': return <Clock className="w-4 h-4 text-warning" />;
+      case 'pending': return <AlertCircle className="w-4 h-4 text-muted-foreground" />;
+      default: return <AlertCircle className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'completed': 
-        return <Badge className="bg-green-100 text-green-800 border-green-200">{isRTL ? 'مكتمل' : 'Completed'}</Badge>;
+        return <Badge className="bg-success/10 text-success border-success/20">{isRTL ? 'مكتمل' : 'Completed'}</Badge>;
       case 'in_progress': 
-        return <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">{isRTL ? 'قيد التنفيذ' : 'In Progress'}</Badge>;
+        return <Badge className="bg-warning/10 text-warning border-warning/20">{isRTL ? 'قيد التنفيذ' : 'In Progress'}</Badge>;
       case 'pending': 
         return <Badge variant="outline">{isRTL ? 'معلق' : 'Pending'}</Badge>;
       default: 

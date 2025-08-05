@@ -306,28 +306,28 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
 
   const getImpactColor = (impact: string) => {
     switch (impact) {
-      case 'high': return 'text-red-600 bg-red-50';
-      case 'medium': return 'text-yellow-600 bg-yellow-50';
-      case 'low': return 'text-green-600 bg-green-50';
-      default: return 'text-gray-600 bg-gray-50';
+      case 'high': return 'text-destructive bg-destructive/5';
+      case 'medium': return 'text-warning bg-warning/5';
+      case 'low': return 'text-success bg-success/5';
+      default: return 'text-muted-foreground bg-muted/5';
     }
   };
 
   const getTrendColor = (trend: string) => {
     switch (trend) {
-      case 'increasing': return 'text-green-600';
-      case 'stable': return 'text-blue-600';
-      case 'declining': return 'text-red-600';
-      default: return 'text-gray-600';
+      case 'increasing': return 'text-success';
+      case 'stable': return 'text-primary';
+      case 'declining': return 'text-destructive';
+      default: return 'text-muted-foreground';
     }
   };
 
   const getRiskColor = (risk: string) => {
     switch (risk) {
-      case 'low': return 'text-green-600 bg-green-50';
-      case 'medium': return 'text-yellow-600 bg-yellow-50';
-      case 'high': return 'text-red-600 bg-red-50';
-      default: return 'text-gray-600 bg-gray-50';
+      case 'low': return 'text-success bg-success/5';
+      case 'medium': return 'text-warning bg-warning/5';
+      case 'high': return 'text-destructive bg-destructive/5';
+      default: return 'text-muted-foreground bg-muted/5';
     }
   };
 
@@ -359,7 +359,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-2">
-              <Brain className="w-5 h-5 text-purple-500" />
+              <Brain className="w-5 h-5 text-accent" />
               <div>
                 <p className="text-2xl font-bold">{advancedData.predictiveMetrics.expectedApplications}</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'طلبات متوقعة' : 'Expected Applications'}</p>
@@ -374,7 +374,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-2">
-              <Gauge className="w-5 h-5 text-blue-500" />
+              <Gauge className="w-5 h-5 text-primary" />
               <div>
                 <p className="text-2xl font-bold">{advancedData.predictiveMetrics.qualityScore}</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'نقاط الجودة' : 'Quality Score'}</p>
@@ -387,7 +387,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-green-500" />
+              <Zap className="w-5 h-5 text-success" />
               <div>
                 <p className="text-2xl font-bold">{advancedData.performanceMetrics.loadTime.toFixed(1)}s</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'وقت التحميل' : 'Load Time'}</p>
@@ -402,7 +402,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-2">
-              <Target className="w-5 h-5 text-orange-500" />
+              <Target className="w-5 h-5 text-warning" />
               <div>
                 <p className="text-2xl font-bold">#{advancedData.competitiveAnalysis.position}</p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'الترتيب' : 'Market Position'}</p>

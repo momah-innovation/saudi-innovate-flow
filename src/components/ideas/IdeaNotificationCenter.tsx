@@ -209,7 +209,7 @@ export function IdeaNotificationCenter({ className }: IdeaNotificationCenterProp
       case 'assignment':
         return <Award className="w-4 h-4 text-accent" />;
       case 'feature':
-        return <Lightbulb className="w-4 h-4 text-orange-500" />;
+        return <Lightbulb className="w-4 h-4 text-warning" />;
       default:
         return <Bell className="w-4 h-4 text-muted-foreground" />;
     }

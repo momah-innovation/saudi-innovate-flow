@@ -101,25 +101,25 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-muted/30 rounded-lg">
         {metric.cost_savings && (
           <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">{metric.cost_savings}</div>
+            <div className="text-2xl font-bold text-success">{metric.cost_savings}</div>
             <div className="text-sm text-muted-foreground">{isRTL ? 'توفير في التكاليف' : 'Cost Savings'}</div>
           </div>
         )}
         {metric.revenue_increase && (
           <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600">{metric.revenue_increase}</div>
+            <div className="text-2xl font-bold text-primary">{metric.revenue_increase}</div>
             <div className="text-sm text-muted-foreground">{isRTL ? 'زيادة الإيرادات' : 'Revenue Increase'}</div>
           </div>
         )}
         {metric.efficiency_gain && (
           <div className="text-center">
-            <div className="text-2xl font-bold text-purple-600">{metric.efficiency_gain}</div>
+            <div className="text-2xl font-bold text-accent">{metric.efficiency_gain}</div>
             <div className="text-sm text-muted-foreground">{isRTL ? 'تحسن الكفاءة' : 'Efficiency Gain'}</div>
           </div>
         )}
         {metric.time_saved && (
           <div className="text-center">
-            <div className="text-2xl font-bold text-orange-600">{metric.time_saved}</div>
+            <div className="text-2xl font-bold text-warning">{metric.time_saved}</div>
             <div className="text-sm text-muted-foreground">{isRTL ? 'توفير الوقت' : 'Time Saved'}</div>
           </div>
         )}
@@ -203,7 +203,7 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                  <div className="absolute top-4 right-4">
-                   <Badge className="bg-green-500 text-white border-0">
+                   <Badge className="bg-success text-white border-0">
                      <CheckCircle className="w-3 h-3 mr-1" />
                      {isRTL ? 'منفذة' : 'Implemented'}
                    </Badge>
@@ -230,19 +230,19 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
                   <div className="flex justify-between text-xs">
                     {story.roi_metrics.cost_savings && (
                       <div className="text-center">
-                        <div className="font-semibold text-green-600">{story.roi_metrics.cost_savings}</div>
+                        <div className="font-semibold text-success">{story.roi_metrics.cost_savings}</div>
                         <div className="text-muted-foreground">{isRTL ? 'توفير' : 'Saved'}</div>
                       </div>
                     )}
                     {story.roi_metrics.efficiency_gain && (
                       <div className="text-center">
-                        <div className="font-semibold text-blue-600">{story.roi_metrics.efficiency_gain}</div>
+                        <div className="font-semibold text-primary">{story.roi_metrics.efficiency_gain}</div>
                         <div className="text-muted-foreground">{isRTL ? 'كفاءة' : 'Efficiency'}</div>
                       </div>
                     )}
                     {story.impact_areas && story.impact_areas.length > 0 && (
                       <div className="text-center">
-                        <div className="font-semibold text-purple-600">{story.impact_areas.length}</div>
+                        <div className="font-semibold text-accent">{story.impact_areas.length}</div>
                         <div className="text-muted-foreground">{isRTL ? 'مجالات' : 'Areas'}</div>
                       </div>
                     )}
