@@ -218,11 +218,11 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
                 <Progress value={getRegistrationPercentage()} className="h-2" />
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   {getRegistrationPercentage() < 70 ? (
-                    <CheckCircle className="w-3 h-3 text-green-600" />
+                    <CheckCircle className="w-3 h-3 text-success" />
                   ) : getRegistrationPercentage() < 90 ? (
-                    <AlertCircle className="w-3 h-3 text-yellow-600" />
+                    <AlertCircle className="w-3 h-3 text-warning" />
                   ) : (
-                    <AlertCircle className="w-3 h-3 text-red-600" />
+                    <AlertCircle className="w-3 h-3 text-destructive" />
                   )}
                   <span>
                     {getRegistrationPercentage() < 70 ? 

@@ -155,16 +155,16 @@ export const EventStatsWidget = ({ className = "" }: EventStatsWidgetProps) => {
   const upcomingPercentage = stats.totalEvents > 0 ? (stats.upcomingEvents / stats.totalEvents) * 100 : 0;
 
   return (
-    <Card className={cn("overflow-hidden border-2 border-blue-200/50 bg-gradient-to-br from-blue-50/50 to-indigo-50/30", className)}>
-      <CardHeader className="pb-3 border-b border-blue-200/30">
+    <Card className={cn("overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10", className)}>
+      <CardHeader className="pb-3 border-b border-primary/20">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+            <div className="w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center">
               <BarChart3 className="w-3 h-3 text-white" />
             </div>
             {isRTL ? 'إحصائيات الفعاليات' : 'Event Stats'}
           </div>
-          <Badge variant="secondary" className="bg-blue-100 text-blue-700 border-blue-300">
+          <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
             {isRTL ? 'مباشر' : 'Live'}
           </Badge>
         </CardTitle>
@@ -261,7 +261,7 @@ export const EventStatsWidget = ({ className = "" }: EventStatsWidgetProps) => {
           
           <div className="space-y-2 text-xs">
             <div className="flex items-center gap-2">
-              <Zap className="w-3 h-3 text-yellow-500" />
+              <Zap className="w-3 h-3 text-warning" />
               <span>
                 {isRTL ? 
                   `متوسط ${stats.averageParticipants} مشارك لكل فعالية` :
@@ -283,7 +283,7 @@ export const EventStatsWidget = ({ className = "" }: EventStatsWidgetProps) => {
             </div>
 
             <div className="flex items-center gap-2">
-              <Calendar className="w-3 h-3 text-blue-500" />
+              <Calendar className="w-3 h-3 text-primary" />
               <span>
                 {isRTL ? 
                   `${stats.thisWeekEvents} فعاليات هذا الأسبوع` :

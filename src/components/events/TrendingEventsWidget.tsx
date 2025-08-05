@@ -134,9 +134,9 @@ export const TrendingEventsWidget = ({
   };
 
   const getTrendingIcon = (rank: number) => {
-    if (rank === 1) return <Flame className="w-4 h-4 text-red-500" />;
+    if (rank === 1) return <Flame className="w-4 h-4 text-destructive" />;
     if (rank === 2) return <TrendingUp className="w-4 h-4 text-orange-500" />;
-    if (rank === 3) return <Star className="w-4 h-4 text-yellow-500" />;
+    if (rank === 3) return <Star className="w-4 h-4 text-warning" />;
     return <Eye className="w-4 h-4 text-gray-500" />;
   };
 

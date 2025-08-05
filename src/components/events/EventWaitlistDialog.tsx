@@ -175,7 +175,7 @@ export const EventWaitlistDialog = ({
             </Label>
             <div className="space-y-2 text-sm text-muted-foreground">
               <div className="flex items-start gap-2">
-                <Bell className="w-4 h-4 mt-0.5 text-blue-500" />
+                <Bell className="w-4 h-4 mt-0.5 text-primary" />
                 <span>
                   {isRTL 
                     ? 'إشعار فوري عند توفر مكان'
@@ -184,7 +184,7 @@ export const EventWaitlistDialog = ({
                 </span>
               </div>
               <div className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 mt-0.5 text-green-500" />
+                <CheckCircle className="w-4 h-4 mt-0.5 text-success" />
                 <span>
                   {isRTL 
                     ? 'أولوية في التسجيل'
@@ -193,7 +193,7 @@ export const EventWaitlistDialog = ({
                 </span>
               </div>
               <div className="flex items-start gap-2">
-                <Users className="w-4 h-4 mt-0.5 text-purple-500" />
+                <Users className="w-4 h-4 mt-0.5 text-accent" />
                 <span>
                   {isRTL 
                     ? 'معرفة موقعك في قائمة الانتظار'

@@ -94,11 +94,11 @@ export const EnhancedEvaluationHero = ({
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
                   {isRTL ? (
                     <>
-                      تقييمات <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">ذكية</span> وشاملة
+                      تقييمات <span className="text-transparent bg-clip-text bg-gradient-text">ذكية</span> وشاملة
                     </>
                   ) : (
                     <>
-                      Smart & <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Comprehensive</span> Evaluations
+                      Smart & <span className="text-transparent bg-clip-text bg-gradient-text">Comprehensive</span> Evaluations
                     </>
                   )}
                 </h1>

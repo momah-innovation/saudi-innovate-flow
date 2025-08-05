@@ -275,7 +275,7 @@ export const DashboardHero = ({
                         <span className="text-sm text-white/80">{language === 'ar' ? 'ملفات النظام' : 'System Files'}</span>
                         <span className="text-sm font-medium text-white">2,847</span>
                       </div>
-                      <Progress value={65} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
+                      <Progress value={65} className="h-2 bg-white/20 [&>div]:bg-gradient-primary" />
                     </div>
                     
                     <div>
@@ -283,7 +283,7 @@ export const DashboardHero = ({
                         <span className="text-sm text-white/80">{language === 'ar' ? 'أحداث الأمان' : 'Security Events'}</span>
                         <span className="text-sm font-medium text-white">12</span>
                       </div>
-                      <Progress value={20} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
+                      <Progress value={20} className="h-2 bg-white/20 [&>div]:bg-gradient-primary" />
                     </div>
                     
                     <div>

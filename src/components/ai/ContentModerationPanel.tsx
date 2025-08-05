@@ -347,7 +347,7 @@ export const ContentModerationPanel: React.FC = () => {
                   <CardContent>
                     <div className="space-y-3">
                       <div>
-                        <p className="text-sm text-gray-600 line-clamp-3">
+                        <p className="text-sm text-muted-foreground line-clamp-3">
                           {log.content_text}
                         </p>
                       </div>

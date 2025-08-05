@@ -153,7 +153,7 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
       <CardHeader className="pb-3 border-b border-accent/20">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+            <div className="w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center">
               <Sparkles className="w-3 h-3 text-white" />
             </div>
             {isRTL ? 'مقترحة لك' : 'For You'}
@@ -171,7 +171,7 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
       <CardContent className="p-4">
         {recommendations.length === 0 ? (
           <div className="text-center py-6">
-            <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 mx-auto mb-3 bg-gradient-primary/20 rounded-full flex items-center justify-center">
               <Sparkles className="w-6 h-6 text-accent" />
             </div>
             <p className="text-muted-foreground text-sm">
@@ -219,7 +219,7 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
 
                     <div className="flex-1 min-w-0 space-y-2">
                       <div>
-                        <h4 className="text-sm font-semibold line-clamp-2 group-hover:text-purple-600 transition-colors leading-tight">
+                        <h4 className="text-sm font-semibold line-clamp-2 group-hover:text-accent transition-colors leading-tight">
                           {event.title_ar}
                         </h4>
                         
@@ -242,8 +242,8 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
 
                       {/* Recommendation Reason */}
                       <div className="flex items-center gap-2">
-                        <div className="p-1 rounded bg-purple-100 bg-opacity-10">
-                          <ReasonIcon className="w-3 h-3 text-purple-600" />
+                        <div className="p-1 rounded bg-accent/10">
+                          <ReasonIcon className="w-3 h-3 text-accent" />
                         </div>
                         <span className="text-xs text-muted-foreground truncate">
                           {event.reason}

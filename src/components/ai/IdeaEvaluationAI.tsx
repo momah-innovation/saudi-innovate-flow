@@ -251,13 +251,13 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
                 </div>
                 <div>
                   <h4 className="font-semibold mb-3 flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                    <AlertTriangle className="h-4 w-4 text-warning" />
                     نقاط التحسين
                   </h4>
                   <ul className="space-y-2">
                     {evaluation.weaknesses.map((weakness, index) => (
                       <li key={index} className="text-sm flex items-start gap-2">
-                        <AlertTriangle className="h-3 w-3 text-yellow-600 mt-1 flex-shrink-0" />
+                        <AlertTriangle className="h-3 w-3 text-warning mt-1 flex-shrink-0" />
                         {weakness}
                       </li>
                     ))}
