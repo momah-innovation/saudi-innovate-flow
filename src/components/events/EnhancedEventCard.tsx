@@ -11,6 +11,8 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { useState } from 'react';
 import { InteractionButtons } from '@/components/ui/interaction-buttons';
+import { useRTLAware } from '@/hooks/useRTLAware';
+import { cn } from '@/lib/utils';
 
 interface Event {
   id: string;
@@ -53,6 +55,7 @@ export const EnhancedEventCard = ({
   const { isRTL } = useDirection();
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(isBookmarked);
+  const { end, me, start } = useRTLAware();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -135,7 +138,7 @@ export const EnhancedEventCard = ({
               </div>
               {/* Format Badge */}
               {event.format === 'virtual' && (
-                <div className="absolute -top-1 -right-1">
+                <div className={cn("absolute -top-1", end('1'))}>
                   <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
                     <Video className="w-3 h-3" />
                   </Badge>
@@ -185,7 +188,7 @@ export const EnhancedEventCard = ({
                       <BookmarkIcon className={`w-4 h-4 ${bookmarked ? 'fill-current text-primary' : ''}`} />
                     </Button>
                     <Button variant="outline" size="sm" onClick={() => onViewDetails(event)}>
-                      <Eye className="w-4 h-4 mr-1" />
+                      <Eye className={`w-4 h-4 ${me('1')}`} />
                       {isRTL ? 'التفاصيل' : 'Details'}
                     </Button>
                     <Button 
@@ -236,13 +239,13 @@ export const EnhancedEventCard = ({
         )}
         
         {/* Overlay Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
+        <div className={cn("absolute top-3 flex flex-col gap-2", start('3'))}>
           <Badge className={getStatusColor(event.status)}>
             {getStatusText(event.status)}
           </Badge>
           {event.format === 'virtual' && (
             <Badge variant="secondary" className="bg-white/90 text-gray-700">
-              <Globe className="w-3 h-3 mr-1" />
+              <Globe className={`w-3 h-3 ${me('1')}`} />
               {isRTL ? 'عبر الإنترنت' : 'Online'}
             </Badge>
           )}
@@ -254,7 +257,7 @@ export const EnhancedEventCard = ({
         </div>
 
         {/* Quick Actions */}
-        <div className="absolute top-3 right-3 flex gap-2">
+        <div className={cn("absolute top-3 flex gap-2", end('3'))}>
           <Button
             variant="secondary"
             size="sm"
@@ -274,7 +277,7 @@ export const EnhancedEventCard = ({
         </div>
 
         {/* Date Badge */}
-        <div className="absolute bottom-3 left-3">
+        <div className={cn("absolute bottom-3", start('3'))}>
           <div className="bg-white/95 rounded-lg p-2 text-center min-w-[3rem]">
             <div className="text-xs font-medium text-muted-foreground">
               {new Date(event.event_date).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', { month: 'short' })}
@@ -359,7 +362,7 @@ export const EnhancedEventCard = ({
         {/* Action Buttons */}
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => onViewDetails(event)} className="flex-1">
-            <Ticket className="w-4 h-4 mr-2" />
+            <Ticket className={`w-4 h-4 ${me('2')}`} />
             {isRTL ? 'التفاصيل' : 'Details'}
           </Button>
           <Button 

@@ -41,6 +41,8 @@ import { PartnersStakeholdersTab } from './tabs/PartnersStakeholdersTab';
 import { RelatedItemsTab } from './tabs/RelatedItemsTab';
 import { AttendeesTab } from './tabs/AttendeesTab';
 import { EventResourcesTab } from './tabs/EventResourcesTab';
+import { useRTLAware } from '@/hooks/useRTLAware';
+import { cn } from '@/lib/utils';
 
 interface Event {
   id: string;
@@ -100,6 +102,7 @@ export const EnhancedEventDetailDialog = ({
   const { isRTL } = useDirection();
   const { user, hasRole } = useAuth();
   const { toast } = useToast();
+  const { end, start, me } = useRTLAware();
   
   const [feedback, setFeedback] = useState<EventFeedback[]>([]);
   const [userFeedback, setUserFeedback] = useState<EventFeedback | null>(null);
@@ -273,10 +276,10 @@ export const EnhancedEventDetailDialog = ({
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
             
             {/* Status Badges Overlay */}
-            <div className="absolute top-4 right-4 flex gap-2">
+            <div className={cn("absolute top-4 flex gap-2", end('4'))}>
               {event.event_category === 'featured' && (
                 <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200">
-                  <Star className="w-3 h-3 mr-1" />
+                  <Star className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'مميز' : 'Featured'}
                 </Badge>
               )}
@@ -287,16 +290,16 @@ export const EnhancedEventDetailDialog = ({
 
             {/* Format Badge */}
             {event.format === 'virtual' && (
-              <div className="absolute bottom-4 left-4">
+              <div className={cn("absolute bottom-4", start('4'))}>
                 <Badge variant="secondary" className="bg-white/90 text-gray-700">
-                  <Globe className="w-3 h-3 mr-1" />
+                  <Globe className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'عبر الإنترنت' : 'Online Event'}
                 </Badge>
               </div>
             )}
 
             {/* Action Buttons */}
-            <div className="absolute top-4 left-4 flex gap-2">
+            <div className={cn("absolute top-4 flex gap-2", start('4'))}>
               <Button 
                 variant="secondary" 
                 size="sm" 
@@ -311,7 +314,7 @@ export const EnhancedEventDetailDialog = ({
             </div>
 
             {/* Event Title Overlay */}
-            <div className="absolute bottom-4 right-4 text-right">
+            <div className={cn("absolute bottom-4 text-right", end('4'))}>
               <h1 className="text-2xl font-bold text-white mb-2">
                 {event.title_ar}
               </h1>
@@ -479,7 +482,7 @@ export const EnhancedEventDetailDialog = ({
                         <span className="text-muted-foreground">{isRTL ? 'الرابط:' : 'Link:'}</span>
                         <Button variant="link" size="sm" className="h-auto p-0" asChild>
                           <a href={event.virtual_link} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="w-3 h-3 mr-1" />
+                            <ExternalLink className={`w-3 h-3 ${me('1')}`} />
                             {isRTL ? 'انضم الآن' : 'Join Now'}
                           </a>
                         </Button>

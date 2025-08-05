@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface EnhancedEventsHeroProps {
   totalEvents: number;
@@ -48,6 +49,7 @@ export const EnhancedEventsHero = ({
 }: EnhancedEventsHeroProps) => {
   const { isRTL } = useDirection();
   const [currentStat, setCurrentStat] = useState(0);
+  const { end, start, me, ms } = useRTLAware();
 
   const stats = [
     { icon: Calendar, value: totalEvents, label: isRTL ? 'فعالية' : 'events', color: 'text-info' },
@@ -73,9 +75,9 @@ export const EnhancedEventsHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-glass-50 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-info/5 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-20 left-1/3 w-64 h-64 bg-primary/5 rounded-full blur-2xl animate-bounce" />
+        <div className={cn("absolute -top-40 w-80 h-80 bg-glass-50 rounded-full blur-3xl animate-pulse", end('40'))} />
+        <div className={cn("absolute -bottom-40 w-96 h-96 bg-info/5 rounded-full blur-3xl animate-pulse delay-1000", start('40'))} />
+        <div className={cn("absolute top-20 w-64 h-64 bg-primary/5 rounded-full blur-2xl animate-bounce", start('1/3'))} />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -89,7 +91,7 @@ export const EnhancedEventsHero = ({
                   <Sparkles className="w-6 h-6 text-warning" />
                 </div>
                 <Badge variant="secondary" className="bg-glass-100 text-white border-glass-border-100 backdrop-blur-sm">
-                  <Star className="w-3 h-3 mr-1" />
+                  <Star className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'منصة الفعاليات المبتكرة' : 'Innovation Events Platform'}
                 </Badge>
               </div>
@@ -148,7 +150,7 @@ export const EnhancedEventsHero = ({
                   size="lg"
                   className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
-                  <Plus className="w-5 h-5 mr-2" />
+                  <Plus className={`w-5 h-5 ${me('2')}`} />
                   {isRTL ? 'إنشاء فعالية جديدة' : 'Create New Event'}
                 </Button>
               )}
@@ -159,7 +161,7 @@ export const EnhancedEventsHero = ({
                 size="lg"
                 className="border-glass-border-200 text-white hover:bg-glass-100 backdrop-blur-sm"
               >
-                <Filter className="w-5 h-5 mr-2" />
+                <Filter className={`w-5 h-5 ${me('2')}`} />
                 {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
               </Button>
 
@@ -168,7 +170,7 @@ export const EnhancedEventsHero = ({
                 size="lg"
                 className="text-white hover:bg-glass-100"
               >
-                <Play className="w-5 h-5 mr-2" />
+                <Play className={`w-5 h-5 ${me('2')}`} />
                 {isRTL ? 'شاهد الفيديو' : 'Watch Demo'}
               </Button>
             </div>
@@ -193,16 +195,16 @@ export const EnhancedEventsHero = ({
                       </div>
                     )}
                     
-                    <div className="absolute top-4 left-4">
+                    <div className={cn("absolute top-4", start('4'))}>
                       <Badge className="bg-destructive/90 text-destructive-foreground border-0 animate-pulse">
-                        <Clock className="w-3 h-3 mr-1" />
+                        <Clock className={`w-3 h-3 ${me('1')}`} />
                         {isRTL ? 'قريباً' : 'Coming Soon'}
                       </Badge>
                     </div>
 
-                    <div className="absolute top-4 right-4">
+                    <div className={cn("absolute top-4", end('4'))}>
                       <Badge className="bg-warning/90 text-warning-foreground border-0">
-                        <TrendingUp className="w-3 h-3 mr-1" />
+                        <TrendingUp className={`w-3 h-3 ${me('1')}`} />
                         {isRTL ? 'مميز' : 'Featured'}
                       </Badge>
                     </div>
@@ -239,7 +241,7 @@ export const EnhancedEventsHero = ({
                       className="w-full bg-gradient-primary hover:opacity-90 text-white"
                     >
                       {isRTL ? 'عرض التفاصيل' : 'View Details'}
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                      <ArrowRight className={`w-4 h-4 ${ms('2')}`} />
                     </Button>
                   </div>
                 </CardContent>
