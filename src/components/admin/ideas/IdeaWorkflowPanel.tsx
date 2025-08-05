@@ -537,7 +537,7 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
                         </div>
                         {assignment.due_date && (
                           <span className="text-sm text-muted-foreground">
-                            <Calendar className="w-4 h-4 inline ml-1" />
+                            <Calendar className="w-4 h-4 inline ms-1" />
                             {format(new Date(assignment.due_date), 'dd/MM/yyyy')}
                           </span>
                         )}
@@ -608,13 +608,13 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
                         <div className="flex items-center gap-4 text-xs text-muted-foreground">
                           {milestone.achieved_date && (
                             <span>
-                              <CheckCircle className="w-3 h-3 inline ml-1" />
+                              <CheckCircle className="w-3 h-3 inline ms-1" />
                               مكتمل في {format(new Date(milestone.achieved_date), 'dd/MM/yyyy')}
                             </span>
                           )}
                           {milestone.target_date && (
                             <span>
-                              <Clock className="w-3 h-3 inline ml-1" />
+                              <Clock className="w-3 h-3 inline ms-1" />
                               الهدف: {format(new Date(milestone.target_date), 'dd/MM/yyyy')}
                             </span>
                           )}

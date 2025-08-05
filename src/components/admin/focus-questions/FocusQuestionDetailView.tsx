@@ -378,25 +378,25 @@ export function FocusQuestionDetailView({
                     <div key={idea.id} className="flex items-start gap-3 p-4 border rounded-lg">
                       <Eye className="w-5 h-5 text-muted-foreground mt-1" />
                       <div className="flex-1 space-y-2" dir="rtl">
-                        <div className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <RTLFlex className="items-start justify-between">
                           <h5 className="font-medium" dir="rtl">{idea.title_ar}</h5>
                           <Badge variant={idea.status === 'approved' ? 'default' : 'secondary'}>
                             {idea.status}
                           </Badge>
-                        </div>
+                        </RTLFlex>
                         {idea.description_ar && (
                           <p className="text-sm text-muted-foreground line-clamp-2" dir="rtl">{idea.description_ar}</p>
                         )}
-                        <div className={`flex items-center gap-4 text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <RTLFlex className="items-center gap-4 text-xs text-muted-foreground">
+                          <RTLFlex className="items-center gap-1">
                             <User className="w-3 h-3" />
                             <span dir="rtl">مبتكر</span>
-                          </div>
-                          <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          </RTLFlex>
+                          <RTLFlex className="items-center gap-1">
                             <Calendar className="w-3 h-3" />
                             <span dir="ltr">{format(new Date(idea.created_at), 'dd/MM/yyyy')}</span>
-                          </div>
-                        </div>
+                          </RTLFlex>
+                        </RTLFlex>
                       </div>
                     </div>
                   ))}

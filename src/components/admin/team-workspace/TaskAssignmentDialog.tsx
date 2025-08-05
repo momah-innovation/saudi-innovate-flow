@@ -341,7 +341,7 @@ export function TaskAssignmentDialog({
             onClick={handleCreateTask}
             disabled={!formData.title || !formData.assigneeId}
           >
-            <Target className="h-4 w-4 mr-2" />
+            <Target className="h-4 w-4 me-2" />
             إنشاء المهمة
           </Button>
         </div>

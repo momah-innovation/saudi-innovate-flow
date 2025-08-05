@@ -238,7 +238,7 @@ export function InviteMemberDialog({ open, onOpenChange }: InviteMemberDialogPro
               onClick={() => setInviteMethod('email')}
               className="flex-1"
             >
-              <Mail className="h-4 w-4 mr-2" />
+              <Mail className="h-4 w-4 me-2" />
               دعوة فردية
             </Button>
             <Button
@@ -246,7 +246,7 @@ export function InviteMemberDialog({ open, onOpenChange }: InviteMemberDialogPro
               onClick={() => setInviteMethod('bulk')}
               className="flex-1"
             >
-              <Users className="h-4 w-4 mr-2" />
+              <Users className="h-4 w-4 me-2" />
               دعوة جماعية
             </Button>
           </div>
@@ -294,7 +294,7 @@ export function InviteMemberDialog({ open, onOpenChange }: InviteMemberDialogPro
                   : !formData.bulkEmails.trim() || !formData.role
               }
             >
-              <UserPlus className="h-4 w-4 mr-2" />
+              <UserPlus className="h-4 w-4 me-2" />
               {inviteMethod === 'email' ? 'إرسال الدعوة' : 'إرسال الدعوات'}
             </Button>
           </div>

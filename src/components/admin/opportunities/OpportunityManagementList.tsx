@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useAppTranslation";
+import { useRTLAware } from "@/hooks/useRTLAware";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -89,6 +90,7 @@ export function OpportunityManagementList({
   const [localSearchTerm, setLocalSearchTerm] = useState("");
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
+  const { me } = useRTLAware();
 
   // Mock data for opportunities
   const mockOpportunities: OpportunityListItem[] = [
@@ -360,12 +362,12 @@ export function OpportunityManagementList({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
               placeholder="البحث في الفرص..."
               value={localSearchTerm}
               onChange={(e) => setLocalSearchTerm(e.target.value)}
-              className="pl-10 w-64"
+              className="ps-10 w-64"
               dir="rtl"
             />
           </div>
@@ -375,7 +377,7 @@ export function OpportunityManagementList({
             size="sm"
             onClick={() => setShowWizard(true)}
           >
-            <Plus className="w-4 h-4 ml-2" />
+            <Plus className={`w-4 h-4 ${me("2")}`} />
             فرصة جديدة
           </Button>
         </div>

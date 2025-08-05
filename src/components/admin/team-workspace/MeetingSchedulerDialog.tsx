@@ -281,7 +281,7 @@ export function MeetingSchedulerDialog({ open, onOpenChange, teamMembers }: Meet
               <div className="flex items-center justify-between">
                 <h3 className="font-medium">جدول الأعمال</h3>
                 <Button size="sm" variant="outline" onClick={addAgendaItem}>
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Plus className="h-4 w-4 me-2" />
                   إضافة عنصر
                 </Button>
               </div>
@@ -321,7 +321,7 @@ export function MeetingSchedulerDialog({ open, onOpenChange, teamMembers }: Meet
                 </div>
 
                 {formData.isRecurring && (
-                  <div className="mr-6">
+                  <div className="me-6">
                     <Select value={formData.recurrenceType} onValueChange={(value) => handleInputChange('recurrenceType', value)}>
                       <SelectTrigger className="w-48">
                         <SelectValue />
@@ -440,7 +440,7 @@ export function MeetingSchedulerDialog({ open, onOpenChange, teamMembers }: Meet
             onClick={handleScheduleMeeting}
             disabled={!formData.title || !formData.date || !formData.startTime || formData.attendees.length === 0}
           >
-            <Calendar className="h-4 w-4 mr-2" />
+            <Calendar className="h-4 w-4 me-2" />
             جدولة الاجتماع
           </Button>
         </div>

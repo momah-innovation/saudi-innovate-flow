@@ -253,7 +253,7 @@ export function TeamManagementContent({
       {/* Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('totalTeams')}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -263,7 +263,7 @@ export function TeamManagementContent({
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('activeTeams')}</CardTitle>
             <CheckCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -273,7 +273,7 @@ export function TeamManagementContent({
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('totalMembers')}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -283,7 +283,7 @@ export function TeamManagementContent({
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('activeProjects')}</CardTitle>
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
