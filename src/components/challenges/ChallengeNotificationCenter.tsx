@@ -24,6 +24,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { getNotificationTypeMapping } from '@/config/challengesPageConfig';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface ChallengeNotification {
   id: string;
@@ -56,6 +57,7 @@ export const ChallengeNotificationCenter = ({
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+  const { end } = useRTLAware();
 
   useEffect(() => {
     if (user) {
@@ -251,7 +253,7 @@ export const ChallengeNotificationCenter = ({
           {unreadCount > 0 && (
             <Badge 
               variant="destructive" 
-              className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs animate-pulse"
+              className={`absolute -top-1 -${end('1')} h-5 w-5 p-0 text-xs animate-pulse`}
             >
               {unreadCount > 99 ? '99+' : unreadCount}
             </Badge>

@@ -20,6 +20,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { aiService } from '@/services/AIService';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface ModerationLog {
   id: string;
@@ -46,6 +47,7 @@ export const ContentModerationPanel: React.FC = () => {
   const [filter, setFilter] = useState<'all' | 'flagged' | 'pending'>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
+  const { ms, start, me } = useRTLAware();
 
   useEffect(() => {
     fetchModerationLogs();
@@ -195,7 +197,7 @@ export const ContentModerationPanel: React.FC = () => {
               <div className="p-2 bg-blue-100 rounded-lg">
                 <Eye className="h-4 w-4 text-blue-600" />
               </div>
-              <div className="ml-4">
+              <div className={ms('4')}>
                 <p className="text-sm font-medium text-muted-foreground">إجمالي المحتوى</p>
                 <p className="text-2xl font-bold">{stats.total}</p>
               </div>
@@ -209,7 +211,7 @@ export const ContentModerationPanel: React.FC = () => {
               <div className="p-2 bg-red-100 rounded-lg">
                 <AlertTriangle className="h-4 w-4 text-red-600" />
               </div>
-              <div className="ml-4">
+              <div className={ms('4')}>
                 <p className="text-sm font-medium text-muted-foreground">محتوى مُبلغ عنه</p>
                 <p className="text-2xl font-bold">{stats.flagged}</p>
               </div>
@@ -223,7 +225,7 @@ export const ContentModerationPanel: React.FC = () => {
               <div className="p-2 bg-yellow-100 rounded-lg">
                 <Clock className="h-4 w-4 text-yellow-600" />
               </div>
-              <div className="ml-4">
+              <div className={ms('4')}>
                 <p className="text-sm font-medium text-muted-foreground">في انتظار المراجعة</p>
                 <p className="text-2xl font-bold">{stats.pending}</p>
               </div>
@@ -237,7 +239,7 @@ export const ContentModerationPanel: React.FC = () => {
               <div className="p-2 bg-green-100 rounded-lg">
                 <CheckCircle className="h-4 w-4 text-green-600" />
               </div>
-              <div className="ml-4">
+              <div className={ms('4')}>
                 <p className="text-sm font-medium text-muted-foreground">محتوى موافق عليه</p>
                 <p className="text-2xl font-bold">{stats.approved}</p>
               </div>
@@ -257,12 +259,12 @@ export const ContentModerationPanel: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4`} />
                 <Input
                   placeholder="البحث في المحتوى..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="ps-10"
+                  className={`${start('10')}`}
                 />
               </div>
             </div>
@@ -366,7 +368,7 @@ export const ContentModerationPanel: React.FC = () => {
                             onClick={() => updateLogStatus(log.id, 'approved')}
                             className="text-green-600 hover:text-green-700"
                           >
-                            <CheckCircle className="h-4 w-4 mr-1" />
+                            <CheckCircle className={`h-4 w-4 ${me('1')}`} />
                             موافقة
                           </Button>
                           <Button
@@ -375,7 +377,7 @@ export const ContentModerationPanel: React.FC = () => {
                             onClick={() => updateLogStatus(log.id, 'rejected')}
                             className="text-red-600 hover:text-red-700"
                           >
-                            <Ban className="h-4 w-4 mr-1" />
+                            <Ban className={`h-4 w-4 ${me('1')}`} />
                             رفض
                           </Button>
                         </div>
@@ -411,12 +413,12 @@ export const ContentModerationPanel: React.FC = () => {
               >
                 {testing ? (
                   <>
-                    <RefreshCw className="h-4 w-4 me-2 animate-spin" />
+                    <RefreshCw className={`h-4 w-4 ${me('2')} animate-spin`} />
                     جاري الفحص...
                   </>
                 ) : (
                   <>
-                    <Shield className="h-4 w-4 me-2" />
+                    <Shield className={`h-4 w-4 ${me('2')}`} />
                     فحص المحتوى
                   </>
                 )}

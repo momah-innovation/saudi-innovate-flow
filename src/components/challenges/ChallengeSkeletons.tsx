@@ -100,7 +100,7 @@ export const ChallengeLoadingState = ({
   <div className={cn("flex flex-col items-center justify-center py-12 space-y-4", className)}>
     <div className="relative">
       <div className="w-16 h-16 border-4 border-primary/20 rounded-full animate-spin">
-        <div className="absolute top-0 left-0 w-16 h-16 border-4 border-transparent border-t-primary rounded-full animate-spin"></div>
+        <div className="absolute top-0 start-0 w-16 h-16 border-4 border-transparent border-t-primary rounded-full animate-spin"></div>
       </div>
     </div>
     
@@ -146,7 +146,7 @@ export const ChallengeEmptyState = ({
           <div className="w-12 h-12 bg-muted rounded-full animate-pulse" />
         )}
       </div>
-      <div className="absolute -top-2 -right-2 w-8 h-8 bg-primary/10 rounded-full animate-ping" />
+      <div className="absolute -top-2 -end-2 w-8 h-8 bg-primary/10 rounded-full animate-ping" />
     </div>
     
     <div className="text-center space-y-2">

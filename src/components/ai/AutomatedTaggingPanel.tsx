@@ -20,6 +20,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { aiService } from '@/services/AIService';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface TagSuggestion {
   id: string;
@@ -55,6 +56,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
     automationRate: 0
   });
   const { toast } = useToast();
+  const { ms, start, me } = useRTLAware();
 
   useEffect(() => {
     fetchTagSuggestions();
@@ -270,7 +272,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
               <div className="p-2 bg-purple-100 rounded-lg">
                 <Sparkles className="h-4 w-4 text-purple-600" />
               </div>
-              <div className="ml-4">
+              <div className={ms('4')}>
                 <p className="text-sm font-medium text-muted-foreground">إجمالي الاقتراحات</p>
                 <p className="text-2xl font-bold">{stats.totalSuggestions}</p>
               </div>
@@ -284,7 +286,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
               <div className="p-2 bg-yellow-100 rounded-lg">
                 <Brain className="h-4 w-4 text-yellow-600" />
               </div>
-              <div className="ml-4">
+              <div className={ms('4')}>
                 <p className="text-sm font-medium text-muted-foreground">في انتظار المراجعة</p>
                 <p className="text-2xl font-bold">{stats.pendingSuggestions}</p>
               </div>
@@ -298,7 +300,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
               <div className="p-2 bg-success/10 rounded-lg">
                 <CheckCircle className="h-4 w-4 text-success" />
               </div>
-              <div className="ml-4">
+              <div className={ms('4')}>
                 <p className="text-sm font-medium text-muted-foreground">علامات موافق عليها</p>
                 <p className="text-2xl font-bold">{stats.approvedTags}</p>
               </div>
@@ -312,7 +314,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
               <div className="p-2 bg-info/10 rounded-lg">
                 <TrendingUp className="h-4 w-4 text-info" />
               </div>
-              <div className="ml-4">
+              <div className={ms('4')}>
                 <p className="text-sm font-medium text-muted-foreground">معدل الأتمتة</p>
                 <div className="space-y-1">
                   <p className="text-2xl font-bold">{stats.automationRate}%</p>
@@ -335,12 +337,12 @@ export const AutomatedTaggingPanel: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
                 <Input
                   placeholder="البحث في الاقتراحات..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="ps-10"
+                  className={`${start('10')}`}
                 />
               </div>
             </div>
@@ -422,7 +424,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                               >
                                 {tag.tag || tag}
                                 {confidence > 0 && (
-                                  <span className="ml-1 text-xs opacity-70">
+                                  <span className={`${ms('1')} text-xs opacity-70`}>
                                     {Math.round(confidence * 100)}%
                                   </span>
                                 )}
@@ -442,7 +444,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                             )}
                             className="text-success-foreground bg-success hover:bg-success/90"
                           >
-                            <CheckCircle className="h-4 w-4 mr-1" />
+                            <CheckCircle className={`h-4 w-4 ${me('1')}`} />
                             موافقة وتطبيق
                           </Button>
                           <Button
@@ -451,7 +453,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                             onClick={() => rejectSuggestion(suggestion.id)}
                             className="text-destructive hover:text-destructive/90"
                           >
-                            <X className="h-4 w-4 mr-1" />
+                            <X className={`h-4 w-4 ${me('1')}`} />
                             رفض
                           </Button>
                         </div>
