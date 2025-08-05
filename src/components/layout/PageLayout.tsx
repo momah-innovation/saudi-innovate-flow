@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { LayoutSelector } from '@/components/ui/layout-selector';
 import { Input } from '@/components/ui/input';
 import { Search, Plus } from 'lucide-react';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -70,6 +71,7 @@ export function PageLayout({
 }: PageLayoutProps) {
   const { isRTL } = useDirection();
   const { t } = useTranslation();
+  const { left, right, pl, pr } = useRTLAware();
   
   const maxWidthClasses = {
     sm: 'max-w-3xl',
@@ -140,9 +142,12 @@ export function PageLayout({
                 {showSearch && (
                   <div className="flex-1">
                     <div className="relative max-w-sm">
-                      <Search className="absolute left-3 top-1/2 h-4 w-4 text-muted-foreground -translate-y-1/2" />
+                      <Search className={cn(
+                        "absolute top-1/2 h-4 w-4 text-muted-foreground -translate-y-1/2",
+                        isRTL ? right('3') : left('3')
+                      )} />
                       <Input
-                        className="pl-10 h-9"
+                        className={cn("h-9", isRTL ? pr('10') : pl('10'))}
                         placeholder={searchPlaceholder || t('search')}
                         value={searchValue}
                         onChange={(e) => onSearchChange?.(e.target.value)}

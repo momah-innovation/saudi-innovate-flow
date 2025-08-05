@@ -230,15 +230,15 @@ const App = () => (
                               <div className="text-3xl font-bold mb-4">مجاناً</div>
                               <ul className="space-y-2 mb-6">
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2 rtl:ml-2 rtl:mr-0"></span>
                                   تقديم الأفكار الأساسية
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2 rtl:ml-2 rtl:mr-0"></span>
                                   عرض التحديات العامة
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2 rtl:ml-2 rtl:mr-0"></span>
                                   الوصول للمجتمع
                                 </li>
                               </ul>
@@ -249,26 +249,26 @@ const App = () => (
                             
                             {/* Professional */}
                             <div className="border-2 border-primary rounded-lg p-6 bg-card relative">
-                              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm">
+                              <div className="absolute -top-3 left-1/2 rtl:right-1/2 rtl:left-auto transform -translate-x-1/2 rtl:translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm">
                                 الأكثر شعبية
                               </div>
                               <h3 className="text-xl font-semibold mb-2">المحترف</h3>
                               <div className="text-3xl font-bold mb-4">199 ريال<span className="text-base font-normal">/شهر</span></div>
                               <ul className="space-y-2 mb-6">
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2 rtl:ml-2 rtl:mr-0"></span>
                                   أفكار غير محدودة
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2 rtl:ml-2 rtl:mr-0"></span>
                                   تحليلات متقدمة
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2 rtl:ml-2 rtl:mr-0"></span>
                                   دعم أولوية
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2 rtl:ml-2 rtl:mr-0"></span>
                                   مساعدة الذكاء الاصطناعي
                                 </li>
                               </ul>
@@ -283,19 +283,19 @@ const App = () => (
                               <div className="text-3xl font-bold mb-4">999 ريال<span className="text-base font-normal">/شهر</span></div>
                               <ul className="space-y-2 mb-6">
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2 rtl:ml-2 rtl:mr-0"></span>
                                   علامة تجارية مخصصة
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2 rtl:ml-2 rtl:mr-0"></span>
                                   أمان متقدم
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2 rtl:ml-2 rtl:mr-0"></span>
                                   دعم مخصص
                                 </li>
                                 <li className="flex items-center">
-                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2 rtl:ml-2 rtl:mr-0"></span>
                                   كل شيء غير محدود
                                 </li>
                               </ul>

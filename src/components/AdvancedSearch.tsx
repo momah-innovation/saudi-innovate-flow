@@ -189,13 +189,16 @@ export function AdvancedSearch({
             {t('search_query') || 'استعلام البحث'}
           </Label>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className={cn(
+              "absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground",
+              isRTL ? "right-3" : "left-3"
+            )} />
             <Input
               id="search-query"
               value={filters.query}
               onChange={(e) => handleFilterChange('query', e.target.value)}
               placeholder={t('search_placeholder') || 'ابحث في العناوين والأوصاف...'}
-              className="pl-10"
+              className={cn(isRTL ? "pr-10" : "pl-10")}
               dir={isRTL ? 'rtl' : 'ltr'}
             />
           </div>
@@ -341,13 +344,13 @@ export function AdvancedSearch({
         {/* Action Buttons */}
         <div className="flex items-center gap-3 pt-4 border-t">
           <Button onClick={handleSearch} className="flex-1 md:flex-none">
-            <Search className="h-4 w-4 mr-2" />
+            <Search className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
             {t('search') || 'بحث'}
           </Button>
           
           {getActiveFiltersCount() > 0 && (
             <Button variant="outline" onClick={handleReset}>
-              <X className="h-4 w-4 mr-2" />
+              <X className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
               {t('clear_filters') || 'مسح المرشحات'}
             </Button>
           )}
