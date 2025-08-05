@@ -10,6 +10,7 @@ import {
 import { useTranslation } from '@/hooks/useAppTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface DashboardHeroProps {
   userProfile?: any;
@@ -34,6 +35,7 @@ export const DashboardHero = ({
   const { t, language } = useTranslation();
   const { isRTL } = useDirection();
   const [currentStat, setCurrentStat] = useState(0);
+  const { end, start, me } = useRTLAware();
 
   // Role-based configurations
   const getRoleConfig = () => {
@@ -128,8 +130,8 @@ export const DashboardHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className={`absolute -top-40 -${end('40')} w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse`} />
+        <div className={`absolute -bottom-40 -${start('40')} w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000`} />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -143,7 +145,7 @@ export const DashboardHero = ({
                   <roleConfig.icon className="w-6 h-6 text-white" />
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
-                  <Star className="w-3 h-3 mr-1" />
+                  <Star className={`w-3 h-3 ${me('1')}`} />
                   {roleConfig.title}
                 </Badge>
               </div>

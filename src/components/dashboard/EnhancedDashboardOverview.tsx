@@ -15,6 +15,7 @@ import { useTranslation } from "@/hooks/useAppTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { useDirection } from "@/components/ui/direction-provider";
 import { toast } from "sonner";
+import { useRTLAware } from "@/hooks/useRTLAware";
 
 interface DashboardStats {
   activeChallenges: number;
@@ -67,6 +68,7 @@ export const EnhancedDashboardOverview = () => {
   const { t, language } = useTranslation();
   const currentLanguage = language;
   const { isRTL } = useDirection();
+  const { end } = useRTLAware();
   const [stats, setStats] = useState<DashboardStats>({
     activeChallenges: 0,
     submittedIdeas: 0,
@@ -570,7 +572,7 @@ export const EnhancedDashboardOverview = () => {
               achievements.map((achievement) => (
                 <Card key={achievement.id} className="relative overflow-hidden">
                   <div 
-                    className="absolute top-0 right-0 w-2 h-full"
+                    className={`absolute top-0 ${end('0')} w-2 h-full`}
                     style={{ backgroundColor: achievement.badge_color }}
                   ></div>
                   <CardContent className="p-6">
