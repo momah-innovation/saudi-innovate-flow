@@ -74,25 +74,25 @@ const DesignSystem = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Simple Header */}
-      <div className="border-b">
-        <div className="container mx-auto px-6 py-6">
+      {/* Hero Header with Primary Theme */}
+      <div className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 border-b">
+        <div className="container mx-auto px-6 py-12">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold">Design System</h1>
-              <p className="text-muted-foreground mt-1">
+              <h1 className="text-4xl font-bold text-primary-foreground mb-2">Design System</h1>
+              <p className="text-primary-foreground/80 text-lg">
                 Explore tokens, components, and design patterns
               </p>
             </div>
             
             <div className="flex items-center gap-4">
-              <p className="text-muted-foreground">Theme customization has been simplified to use shadcn/ui defaults only.</p>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setTheme({ 
                   colorScheme: theme.colorScheme === 'dark' ? 'light' : 'dark' 
                 })}
+                className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
               >
                 {theme.colorScheme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </Button>
