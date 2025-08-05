@@ -50,10 +50,10 @@ export const EnhancedEventsHero = ({
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    { icon: Calendar, value: totalEvents, label: isRTL ? 'فعالية' : 'events', color: 'text-blue-400' },
-    { icon: Clock, value: upcomingEvents, label: isRTL ? 'قادمة' : 'upcoming', color: 'text-green-400' },
-    { icon: TrendingUp, value: todayEvents, label: isRTL ? 'اليوم' : 'today', color: 'text-purple-400' },
-    { icon: Users, value: `${Math.floor(totalEvents * 45)}+`, label: isRTL ? 'مشارك' : 'participants', color: 'text-yellow-400' }
+    { icon: Calendar, value: totalEvents, label: isRTL ? 'فعالية' : 'events', color: 'text-info' },
+    { icon: Clock, value: upcomingEvents, label: isRTL ? 'قادمة' : 'upcoming', color: 'text-success' },
+    { icon: TrendingUp, value: todayEvents, label: isRTL ? 'اليوم' : 'today', color: 'text-primary' },
+    { icon: Users, value: `${Math.floor(totalEvents * 45)}+`, label: isRTL ? 'مشارك' : 'participants', color: 'text-warning' }
   ];
 
   useEffect(() => {
@@ -73,9 +73,9 @@ export const EnhancedEventsHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-20 left-1/3 w-64 h-64 bg-purple-400/5 rounded-full blur-2xl animate-bounce" />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-glass-50 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-info/5 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-20 left-1/3 w-64 h-64 bg-primary/5 rounded-full blur-2xl animate-bounce" />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -85,10 +85,10 @@ export const EnhancedEventsHero = ({
             {/* Header with animation */}
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <Sparkles className="w-6 h-6 text-yellow-300" />
+                <div className="p-3 bg-glass-100 backdrop-blur-sm rounded-xl border border-glass-border-100">
+                  <Sparkles className="w-6 h-6 text-warning" />
                 </div>
-                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                <Badge variant="secondary" className="bg-glass-100 text-white border-glass-border-100 backdrop-blur-sm">
                   <Star className="w-3 h-3 mr-1" />
                   {isRTL ? 'منصة الفعاليات المبتكرة' : 'Innovation Events Platform'}
                 </Badge>
@@ -98,11 +98,11 @@ export const EnhancedEventsHero = ({
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   {isRTL ? (
                     <>
-                      استكشف <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">الفعاليات</span> الملهمة
+                      استكشف <span className="gradient-text-warning">الفعاليات</span> الملهمة
                     </>
                   ) : (
                     <>
-                      Discover <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Inspiring</span> Events
+                      Discover <span className="gradient-text-warning">Inspiring</span> Events
                     </>
                   )}
                 </h1>
@@ -126,8 +126,8 @@ export const EnhancedEventsHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
-                      isActive && "bg-white/10 border-white/20 scale-105"
+                      "bg-glass-50 backdrop-blur-sm border-glass-border-50 transition-all duration-500",
+                      isActive && "bg-glass-100 border-glass-border-100 scale-105"
                     )}
                   >
                     <CardContent className="p-4 text-center">
@@ -157,7 +157,7 @@ export const EnhancedEventsHero = ({
                 onClick={onShowFilters}
                 variant="outline"
                 size="lg"
-                className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
+                className="border-glass-border-200 text-white hover:bg-glass-100 backdrop-blur-sm"
               >
                 <Filter className="w-5 h-5 mr-2" />
                 {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
@@ -166,7 +166,7 @@ export const EnhancedEventsHero = ({
               <Button
                 variant="ghost"
                 size="lg"
-                className="text-white hover:bg-white/10"
+                className="text-white hover:bg-glass-100"
               >
                 <Play className="w-5 h-5 mr-2" />
                 {isRTL ? 'شاهد الفيديو' : 'Watch Demo'}
@@ -177,7 +177,7 @@ export const EnhancedEventsHero = ({
           {/* Enhanced Featured Event */}
           <div className="space-y-6">
             {featuredEvent ? (
-              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+              <Card className="bg-glass-100 backdrop-blur-xl border-glass-border-100 shadow-glass-lg">
                 <CardContent className="p-0">
                   {/* Event Image */}
                   <div className="relative h-48 overflow-hidden rounded-t-lg">
@@ -194,14 +194,14 @@ export const EnhancedEventsHero = ({
                     )}
                     
                     <div className="absolute top-4 left-4">
-                      <Badge className="bg-red-500/90 text-white border-0 animate-pulse">
+                      <Badge className="bg-destructive/90 text-destructive-foreground border-0 animate-pulse">
                         <Clock className="w-3 h-3 mr-1" />
                         {isRTL ? 'قريباً' : 'Coming Soon'}
                       </Badge>
                     </div>
 
                     <div className="absolute top-4 right-4">
-                      <Badge className="bg-orange-500/90 text-white border-0">
+                      <Badge className="bg-warning/90 text-warning-foreground border-0">
                         <TrendingUp className="w-3 h-3 mr-1" />
                         {isRTL ? 'مميز' : 'Featured'}
                       </Badge>
@@ -217,13 +217,13 @@ export const EnhancedEventsHero = ({
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-purple-300">
+                        <div className="text-2xl font-bold text-primary">
                           {featuredEvent.participants}
                         </div>
                         <div className="text-sm text-white/70">{isRTL ? 'مشارك' : 'participants'}</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-yellow-300">
+                        <div className="text-2xl font-bold text-warning">
                           {new Date(featuredEvent.date).toLocaleDateString('ar-SA', { day: 'numeric', month: 'short' })}
                         </div>
                         <div className="text-sm text-white/70">{isRTL ? 'التاريخ' : 'date'}</div>
@@ -245,7 +245,7 @@ export const EnhancedEventsHero = ({
                 </CardContent>
               </Card>
             ) : (
-              <Card className="bg-white/5 backdrop-blur-xl border-white/10 border-dashed">
+              <Card className="bg-glass-50 backdrop-blur-xl border-glass-border-50 border-dashed">
                 <CardContent className="p-8 text-center">
                   <Calendar className="w-16 h-16 mx-auto text-white/40 mb-4" />
                   <h3 className="text-lg font-semibold text-white/80 mb-2">
@@ -260,9 +260,9 @@ export const EnhancedEventsHero = ({
 
             {/* Quick Action Cards */}
             <div className="grid grid-cols-2 gap-4">
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+              <Card className="bg-glass-50 backdrop-blur-sm border-glass-border-50 hover:bg-glass-100 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <Calendar className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+                  <Calendar className="w-8 h-8 text-info mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
                     {isRTL ? 'الفعاليات القادمة' : 'Upcoming'}
                   </div>
@@ -272,9 +272,9 @@ export const EnhancedEventsHero = ({
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+              <Card className="bg-glass-50 backdrop-blur-sm border-glass-border-50 hover:bg-glass-100 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <MapPin className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
+                  <MapPin className="w-8 h-8 text-warning mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
                     {isRTL ? 'الأماكن' : 'Venues'}
                   </div>
