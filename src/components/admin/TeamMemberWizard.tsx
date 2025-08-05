@@ -323,8 +323,8 @@ export function TeamMemberWizard({
         if (error) throw error;
 
         toast({
-          title: "تم الإضافة بنجاح",
-          description: "تم إضافة عضو جديد إلى فريق الابتكار"
+          title: t('added_successfully'),
+          description: t('new_team_member_added')
         });
       }
 
@@ -334,8 +334,8 @@ export function TeamMemberWizard({
     } catch (error) {
       // Failed to save team member
       toast({
-        title: "خطأ",
-        description: "فشل في حفظ بيانات عضو الفريق",
+        title: t('error'),
+        description: t('failed_to_save_team_member'),
         variant: "destructive"
       });
     } finally {
@@ -557,7 +557,7 @@ export function TeamMemberWizard({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Users className="w-5 h-5" />
-            {editingMember ? "تعديل عضو الفريق" : "إضافة عضو فريق جديد"}
+            {editingMember ? t('edit_team_member') : t('add_new_team_member')}
           </DialogTitle>
         </DialogHeader>
 
@@ -607,16 +607,16 @@ export function TeamMemberWizard({
           
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              إلغاء
+              {t('cancel')}
             </Button>
             <Button 
               onClick={handleNext}
               disabled={loading}
             >
               {loading ? (
-                "جاري الحفظ..."
+                t('saving')
               ) : currentStep === steps.length - 1 ? (
-                editingMember ? "تحديث العضو" : "إضافة العضو"
+                editingMember ? t('update_member') : t('add_member')
               ) : (
                 "التالي"
               )}

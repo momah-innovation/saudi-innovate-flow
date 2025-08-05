@@ -195,12 +195,12 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case 'legend': return 'text-purple-600';
-      case 'expert': return 'text-red-600';
-      case 'advanced': return 'text-orange-600';
-      case 'intermediate': return 'text-blue-600';
-      case 'beginner': return 'text-green-600';
-      default: return 'text-gray-600';
+      case 'legend': return 'text-secondary';
+      case 'expert': return 'text-destructive';
+      case 'advanced': return 'text-warning';
+      case 'intermediate': return 'text-info';
+      case 'beginner': return 'text-success';
+      default: return 'text-muted-foreground';
     }
   };
 

@@ -120,11 +120,11 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
                     <div className="flex items-center">
                       <TrendingUp className={cn(
                         `w-4 h-4 ${me('1')}`,
-                        metric.change > 0 ? "text-green-500" : "text-red-500"
+                        metric.change > 0 ? "text-success" : "text-destructive"
                       )} />
                       <span className={cn(
                         "text-sm font-medium",
-                        metric.change > 0 ? "text-green-500" : "text-red-500"
+                        metric.change > 0 ? "text-success" : "text-destructive"
                       )}>
                         {metric.change > 0 ? '+' : ''}{metric.change}%
                       </span>

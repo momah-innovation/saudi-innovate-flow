@@ -32,6 +32,7 @@ import {
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { CampaignFormData, SystemLists } from "@/types";
 import { useRTLAware } from "@/hooks/useRTLAware";
+import { useTranslation } from "@/hooks/useAppTranslation";
 import { RTLFlex } from "@/components/ui/rtl-layout";
 
 // Use the centralized CampaignFormData type
@@ -50,6 +51,7 @@ export function CampaignWizard({
   onSuccess 
 }: CampaignWizardProps) {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const { generalStatusOptions, campaignThemeOptions } = useSystemLists();
   const { mr, ml, isRTL } = useRTLAware();
   const [currentStep, setCurrentStep] = useState(0);
@@ -392,8 +394,8 @@ export function CampaignWizard({
       await Promise.all(linkPromises);
 
       toast({
-        title: "نجح الحفظ",
-        description: editingCampaign ? "تم تحديث الحملة بنجاح" : "تم إنشاء الحملة بنجاح"
+        title: t('save_successful'),
+        description: editingCampaign ? t('campaign_updated_successfully') : t('campaign_created_successfully')
       });
 
       onSuccess();
@@ -401,8 +403,8 @@ export function CampaignWizard({
     } catch (error) {
       // Failed to save campaign
       toast({
-        title: "خطأ في الحفظ",
-        description: "فشل في حفظ الحملة. يرجى المحاولة مرة أخرى",
+        title: t('save_error'),
+        description: t('campaign_save_failed'),
         variant: "destructive"
       });
     } finally {
@@ -979,12 +981,12 @@ export function CampaignWizard({
 
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                إلغاء
+                {t('cancel')}
               </Button>
               
               {currentStep === steps.length - 1 ? (
                 <Button onClick={handleSubmit} disabled={loading}>
-                  {loading ? "جاري الحفظ..." : (editingCampaign ? "تحديث الحملة" : "إنشاء الحملة")}
+                  {loading ? t('saving') : (editingCampaign ? t('update_campaign') : t('create_campaign'))}
                 </Button>
               ) : (
                 <Button onClick={handleNext}>

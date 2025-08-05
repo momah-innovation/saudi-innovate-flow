@@ -220,11 +220,11 @@ export const EnhancedEventDetailDialog = ({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'upcoming':
-      case 'scheduled': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'ongoing': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
-      case 'completed': return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
-      case 'cancelled': return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'scheduled': return 'badge-info';
+      case 'ongoing': return 'badge-success';
+      case 'completed': return 'badge-secondary';
+      case 'cancelled': return 'badge-error';
+      default: return 'badge-secondary';
     }
   };
 
@@ -377,9 +377,9 @@ export const EnhancedEventDetailDialog = ({
                   {getRegistrationPercentage() < 70 ? (
                     <CheckCircle className="w-3 h-3 text-green-600" />
                   ) : getRegistrationPercentage() < 90 ? (
-                    <AlertCircle className="w-3 h-3 text-yellow-600" />
+                    <AlertCircle className="w-3 h-3 text-warning" />
                   ) : (
-                    <AlertCircle className="w-3 h-3 text-red-600" />
+                    <AlertCircle className="w-3 h-3 text-destructive" />
                   )}
                   <span>
                     {getRegistrationPercentage() < 70 ? 
@@ -508,7 +508,7 @@ export const EnhancedEventDetailDialog = ({
                   
                   {event.end_time && (
                     <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-destructive rounded-full"></div>
                       <div>
                         <div className="font-medium">{isRTL ? 'نهاية الفعالية' : 'Event End'}</div>
                         <div className="text-sm text-muted-foreground">

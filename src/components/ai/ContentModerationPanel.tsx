@@ -377,10 +377,10 @@ export const ContentModerationPanel: React.FC = () => {
                             size="sm"
                             variant="outline"
                             onClick={() => updateLogStatus(log.id, 'rejected')}
-                            className="text-red-600 hover:text-red-700"
+                            className="text-destructive hover:text-destructive/80"
                           >
                             <Ban className={`h-4 w-4 ${me('1')}`} />
-                            رفض
+                            {t('reject')}
                           </Button>
                         </div>
                       )}

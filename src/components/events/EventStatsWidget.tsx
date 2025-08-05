@@ -251,9 +251,9 @@ export const EventStatsWidget = ({ className = "" }: EventStatsWidgetProps) => {
         </div>
 
         {/* Quick Insights */}
-        <div className="bg-white/70 rounded-lg p-3 border border-indigo-100/50 space-y-2">
+        <div className="bg-white/70 rounded-lg p-3 border border-info/10 space-y-2">
           <div className="flex items-center gap-2 mb-2">
-            <Activity className="w-4 h-4 text-indigo-600" />
+            <Activity className="w-4 h-4 text-info" />
             <span className="text-sm font-medium">
               {isRTL ? 'رؤى سريعة' : 'Quick Insights'}
             </span>

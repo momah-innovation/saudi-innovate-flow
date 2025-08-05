@@ -119,9 +119,9 @@ export const ComprehensiveEventDialog = ({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'مجدول':
-      case 'scheduled': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
+      case 'scheduled': return 'badge-info';
       case 'جاري':
-      case 'ongoing': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
+      case 'ongoing': return 'badge-success';
       case 'مكتمل':
       case 'completed': return 'badge-secondary';
       case 'ملغي':
@@ -238,7 +238,7 @@ export const ComprehensiveEventDialog = ({
                     onClick={() => toggleLike()}
                     disabled={interactionsLoading}
                   >
-                    <Heart className={`w-4 h-4 ${interactions?.isLiked ? 'fill-current text-red-500' : ''}`} />
+                    <Heart className={`w-4 h-4 ${interactions?.isLiked ? 'fill-current text-destructive' : ''}`} />
                     <span className={ms('1')}>{interactions?.likes_count || 0}</span>
                   </Button>
                   <EventSocialShare 

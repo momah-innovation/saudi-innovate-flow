@@ -302,12 +302,12 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
   const getTypeColor = (type: string) => {
     switch (type) {
       case 'campaign': return 'bg-blue-100 text-blue-800';
-      case 'challenge': return 'bg-purple-100 text-purple-800';
-      case 'event': return 'bg-green-100 text-green-800';
-      case 'stakeholder': return 'bg-orange-100 text-orange-800';
-      case 'partner': return 'bg-cyan-100 text-cyan-800';
-      case 'idea': return 'bg-yellow-100 text-yellow-800';
-      case 'expert': return 'bg-pink-100 text-pink-800';
+      case 'challenge': return 'badge-secondary';
+      case 'event': return 'badge-success';
+      case 'stakeholder': return 'badge-warning';
+      case 'partner': return 'badge-info';
+      case 'idea': return 'badge-warning';
+      case 'expert': return 'badge-secondary';
       default: return 'bg-gray-100 text-gray-800';
     }
   };

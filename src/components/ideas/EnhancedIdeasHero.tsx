@@ -59,7 +59,7 @@ export const EnhancedIdeasHero = ({
     { icon: Lightbulb, value: totalIdeas, label: isRTL ? 'فكرة' : 'ideas', color: 'text-yellow-400' },
     { icon: Award, value: publishedIdeas, label: isRTL ? 'منشورة' : 'published', color: 'text-green-400' },
     { icon: Users, value: `${Math.floor(totalViews / 1000)}K+`, label: isRTL ? 'مشاهدة' : 'views', color: 'text-blue-400' },
-    { icon: TrendingUp, value: `${Math.floor(totalLikes / 100)}K+`, label: isRTL ? 'إعجاب' : 'likes', color: 'text-pink-400' }
+    { icon: TrendingUp, value: `${Math.floor(totalLikes / 100)}K+`, label: isRTL ? 'إعجاب' : 'likes', color: 'text-secondary' }
   ];
 
   useEffect(() => {
@@ -229,7 +229,7 @@ export const EnhancedIdeasHero = ({
                         <div className="text-sm text-white/70">{isRTL ? 'مشاهدة' : 'views'}</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-pink-300">
+                        <div className="text-2xl font-bold text-secondary">
                           {featuredIdea.likes}
                         </div>
                         <div className="text-sm text-white/70">{isRTL ? 'إعجاب' : 'likes'}</div>

@@ -74,8 +74,8 @@ export const EventRegistrationHero = ({
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className={`absolute -top-40 ${end('-40')} w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse`} />
-        <div className={`absolute -bottom-40 ${start('-40')} w-96 h-96 bg-emerald-400/5 rounded-full blur-3xl animate-pulse delay-1000`} />
-        <div className={`absolute top-20 ${start('1/3')} w-64 h-64 bg-teal-400/5 rounded-full blur-2xl animate-bounce`} />
+        <div className={`absolute -bottom-40 ${start('-40')} w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-1000`} />
+        <div className={`absolute top-20 ${start('1/3')} w-64 h-64 bg-accent/5 rounded-full blur-2xl animate-bounce`} />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -199,7 +199,7 @@ export const EventRegistrationHero = ({
                   </div>
                   
                   <div className={`absolute top-4 ${start('4')}`}>
-                    <Badge className="bg-emerald-500/90 text-white border-0">
+                    <Badge className="bg-success/90 text-primary-foreground border-0">
                       <Clock className={`w-3 h-3 ${me('1')}`} />
                       {new Date(eventDate).toLocaleDateString('ar-SA')}
                     </Badge>
@@ -207,7 +207,7 @@ export const EventRegistrationHero = ({
 
                   {isRegistered && (
                     <div className={`absolute top-4 ${end('4')}`}>
-                      <Badge className="bg-green-500/90 text-white border-0">
+                      <Badge className="bg-success/90 text-primary-foreground border-0">
                         <CheckCircle className={`w-3 h-3 ${me('1')}`} />
                         {isRTL ? 'مسجل' : 'Registered'}
                       </Badge>
@@ -220,13 +220,13 @@ export const EventRegistrationHero = ({
                 <div className="p-6 space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-emerald-300">
+                      <div className="text-2xl font-bold text-success">
                         {Math.round(registrationPercentage)}%
                       </div>
                       <div className="text-sm text-white/70">{isRTL ? 'مُسجل' : 'filled'}</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-yellow-300">
+                      <div className="text-2xl font-bold text-accent">
                         {Math.max(0, Math.ceil((new Date(registrationDeadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))}
                       </div>
                       <div className="text-sm text-white/70">{isRTL ? 'يوم متبقي' : 'days left'}</div>
