@@ -42,6 +42,7 @@ import { EventResourcesTab } from './tabs/EventResourcesTab';
 import { InteractionButtons } from '@/components/ui/interaction-buttons';
 import { EventSocialShare } from './EventSocialShare';
 import { useRTLAware } from '@/hooks/useRTLAware';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface Event {
   id: string;
@@ -85,6 +86,7 @@ export const ComprehensiveEventDialog = ({
   const { user, hasRole } = useAuth();
   const [activeTab, setActiveTab] = useState('details');
   const { ms, me } = useRTLAware();
+  const { t } = useTranslation();
   
   const { 
     partners, 
@@ -121,18 +123,18 @@ export const ComprehensiveEventDialog = ({
       case 'جاري':
       case 'ongoing': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
       case 'مكتمل':
-      case 'completed': return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'completed': return 'badge-secondary';
       case 'ملغي':
-      case 'cancelled': return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'cancelled': return 'badge-error';
+      default: return 'badge-secondary';
     }
   };
 
   const getStatusText = (status: string) => {
-    if (status === 'مجدول') return isRTL ? 'مجدول' : 'Scheduled';
-    if (status === 'جاري') return isRTL ? 'جاري' : 'Ongoing';
-    if (status === 'مكتمل') return isRTL ? 'مكتمل' : 'Completed';
-    if (status === 'ملغي') return isRTL ? 'ملغي' : 'Cancelled';
+    if (status === 'مجدول') return t('scheduled') || 'مجدول';
+    if (status === 'جاري') return t('ongoing') || 'جاري';
+    if (status === 'مكتمل') return t('completed') || 'مكتمل';
+    if (status === 'ملغي') return t('cancelled') || 'ملغي';
     return status;
   };
 
@@ -207,14 +209,14 @@ export const ComprehensiveEventDialog = ({
                     {event.format === 'virtual' && (
                       <Badge variant="secondary" className="flex items-center gap-1">
                         <Globe className="w-3 h-3" />
-                        {isRTL ? 'عبر الإنترنت' : 'Online'}
+                        {t('online') || 'عبر الإنترنت'}
                       </Badge>
                     )}
                     {event.format === 'hybrid' && (
                       <Badge variant="secondary" className="flex items-center gap-1">
                         <MapPin className="w-3 h-3" />
                         <Video className="w-3 h-3" />
-                        {isRTL ? 'مختلط' : 'Hybrid'}
+                        {t('hybrid') || 'مختلط'}
                       </Badge>
                     )}
                   </div>
@@ -262,7 +264,7 @@ export const ComprehensiveEventDialog = ({
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-muted-foreground" />
-                  <span className="truncate">{event.location || (event.format === 'virtual' ? (isRTL ? 'عبر الإنترنت' : 'Online') : 'TBD')}</span>
+                  <span className="truncate">{event.location || (event.format === 'virtual' ? (t('online') || 'عبر الإنترنت') : 'TBD')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4 text-muted-foreground" />
@@ -274,14 +276,14 @@ export const ComprehensiveEventDialog = ({
               {event.max_participants && (
                 <div className="mt-4">
                   <div className="flex justify-between text-sm text-muted-foreground mb-2">
-                    <span>{isRTL ? 'حالة التسجيل' : 'Registration Status'}</span>
-                    <span>{Math.round(getRegistrationPercentage())}% {isRTL ? 'ممتلئ' : 'full'}</span>
+                     <span>{t('registration_status') || 'حالة التسجيل'}</span>
+                     <span>{Math.round(getRegistrationPercentage())}% {t('full') || 'ممتلئ'}</span>
                   </div>
                   <Progress value={getRegistrationPercentage()} className="h-2" />
                   {getRegistrationPercentage() > 80 && (
                     <p className="text-xs text-orange-600 mt-1 flex items-center gap-1">
                       <AlertCircle className="w-3 h-3" />
-                      {isRTL ? 'أماكن محدودة متبقية' : 'Limited spots remaining'}
+                      {t('limited_spots_remaining') || 'أماكن محدودة متبقية'}
                     </p>
                   )}
                 </div>
@@ -293,35 +295,35 @@ export const ComprehensiveEventDialog = ({
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className={`grid w-full grid-cols-${visibleTabs.length}`}>
-            <TabsTrigger value="details">
-              {isRTL ? 'التفاصيل' : 'Details'}
-            </TabsTrigger>
-            <TabsTrigger value="registration">
-              {isRTL ? 'التسجيل' : 'Registration'}
-            </TabsTrigger>
-            <TabsTrigger value="feedback">
-              {isRTL ? 'التقييمات' : 'Feedback'}
-            </TabsTrigger>
-            {canShowParticipants && (
-              <TabsTrigger value="attendees">
-                {isRTL ? 'الحضور' : 'Attendees'}
-              </TabsTrigger>
-            )}
-            {canShowPartners && (
-              <TabsTrigger value="partners">
-                {isRTL ? 'الشركاء' : 'Partners'}
-              </TabsTrigger>
-            )}
-            {canShowRelated && (
-              <TabsTrigger value="related">
-                {isRTL ? 'ذات صلة' : 'Related'}
-              </TabsTrigger>
-            )}
-            {canShowResources && (
-              <TabsTrigger value="resources">
-                {isRTL ? 'الموارد' : 'Resources'}
-              </TabsTrigger>
-            )}
+             <TabsTrigger value="details">
+               {t('details') || 'التفاصيل'}
+             </TabsTrigger>
+             <TabsTrigger value="registration">
+               {t('registration') || 'التسجيل'}
+             </TabsTrigger>
+             <TabsTrigger value="feedback">
+               {t('feedback') || 'التقييمات'}
+             </TabsTrigger>
+             {canShowParticipants && (
+               <TabsTrigger value="attendees">
+                 {t('attendees') || 'الحضور'}
+               </TabsTrigger>
+             )}
+             {canShowPartners && (
+               <TabsTrigger value="partners">
+                 {t('partners') || 'الشركاء'}
+               </TabsTrigger>
+             )}
+             {canShowRelated && (
+               <TabsTrigger value="related">
+                 {t('related') || 'ذات صلة'}
+               </TabsTrigger>
+             )}
+             {canShowResources && (
+               <TabsTrigger value="resources">
+                 {t('resources') || 'الموارد'}
+               </TabsTrigger>
+             )}
           </TabsList>
 
           {/* Details Tab */}
@@ -332,12 +334,12 @@ export const ComprehensiveEventDialog = ({
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Calendar className="w-5 h-5" />
-                    {isRTL ? 'معلومات الفعالية' : 'Event Information'}
+                    {t('event_information') || 'معلومات الفعالية'}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <h4 className="font-medium mb-1">{isRTL ? 'الوصف' : 'Description'}</h4>
+                    <h4 className="font-medium mb-1">{t('description') || 'الوصف'}</h4>
                     <p className="text-sm text-muted-foreground">{event.description_ar}</p>
                   </div>
                   <Separator />

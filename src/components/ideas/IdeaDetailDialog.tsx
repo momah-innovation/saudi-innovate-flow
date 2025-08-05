@@ -10,6 +10,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useRTLAware } from '@/hooks/useRTLAware';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { 
   Heart, MessageSquare, Share2, Flag, Eye, Star, Trophy, Target, 
   Rocket, Zap, FileText, BarChart3, User, Plus, Bookmark,
@@ -94,6 +95,7 @@ export function IdeaDetailDialog({
   const { isRTL } = useDirection();
   const { toast } = useToast();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [comments, setComments] = useState<IdeaComment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(false);
@@ -162,8 +164,8 @@ export function IdeaDetailDialog({
         .eq('id', idea.id);
 
       toast({
-        title: isRTL ? 'تم إضافة التعليق' : 'Comment added',
-        description: isRTL ? 'تم إضافة تعليقك بنجاح' : 'Your comment has been added successfully'
+        title: t('comment_added') || 'تم إضافة التعليق',
+        description: t('comment_added_successfully') || 'تم إضافة تعليقك بنجاح'
       });
 
       setNewComment('');
@@ -172,7 +174,7 @@ export function IdeaDetailDialog({
     } catch (error) {
       console.error('Error adding comment:', error);
       toast({
-        title: isRTL ? 'خطأ في إضافة التعليق' : 'Error adding comment',
+        title: t('error_adding_comment') || 'خطأ في إضافة التعليق',
         variant: 'destructive'
       });
     } finally {
@@ -196,8 +198,8 @@ export function IdeaDetailDialog({
     } else {
       navigator.clipboard.writeText(window.location.href);
       toast({
-        title: isRTL ? 'تم نسخ الرابط' : 'Link copied',
-        description: isRTL ? 'تم نسخ رابط الفكرة إلى الحافظة' : 'Idea link copied to clipboard'
+        title: t('link_copied') || 'تم نسخ الرابط',
+        description: t('link_copied_description') || 'تم نسخ رابط الفكرة إلى الحافظة'
       });
     }
   };
@@ -210,18 +212,18 @@ export function IdeaDetailDialog({
       case 'rejected': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
       case 'in_development': return 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400';
       case 'implemented': return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
+      default: return 'badge-secondary';
     }
   };
 
   const getStatusText = (status: string) => {
     const statusMap = {
-      pending: isRTL ? 'في الانتظار' : 'Pending',
-      under_review: isRTL ? 'قيد المراجعة' : 'Under Review',
-      approved: isRTL ? 'موافق عليها' : 'Approved',
-      rejected: isRTL ? 'مرفوضة' : 'Rejected',
-      in_development: isRTL ? 'قيد التطوير' : 'In Development',
-      implemented: isRTL ? 'منفذة' : 'Implemented'
+      pending: t('pending') || 'في الانتظار',
+      under_review: t('under_review') || 'قيد المراجعة',
+      approved: t('approved') || 'موافق عليها',
+      rejected: t('rejected') || 'مرفوضة',
+      in_development: t('in_development') || 'قيد التطوير',
+      implemented: t('implemented') || 'منفذة'
     };
     return statusMap[status as keyof typeof statusMap] || status;
   };
@@ -258,7 +260,7 @@ export function IdeaDetailDialog({
                  {idea.featured && (
                    <Badge className="bg-yellow-500 text-white border-0">
                      <Star className="w-3 h-3 mr-1" />
-                     {isRTL ? 'مميزة' : 'Featured'}
+                     {t('featured') || 'مميزة'}
                    </Badge>
                  )}
                 {idea.challenges && (
@@ -323,7 +325,7 @@ export function IdeaDetailDialog({
                     className={`gap-1 ${isLiked ? 'text-red-500' : ''}`}
                   >
                     <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
-                    {isRTL ? 'إعجاب' : 'Like'}
+                    {t('like') || 'إعجاب'}
                   </Button>
                 </div>
               </div>
@@ -337,7 +339,7 @@ export function IdeaDetailDialog({
               <div>
                 <h4 className="font-semibold mb-3 flex items-center gap-2">
                   <FileText className="w-4 h-4" />
-                  {isRTL ? 'الوصف' : 'Description'}
+                  {t('description') || 'الوصف'}
                 </h4>
                 <p className="text-muted-foreground bg-muted/50 p-4 rounded-lg leading-relaxed">
                   {idea.description_ar}
@@ -349,7 +351,7 @@ export function IdeaDetailDialog({
                 <div>
                   <h4 className="font-semibold mb-3 flex items-center gap-2">
                     <Zap className="w-4 h-4" />
-                    {isRTL ? 'نهج الحل' : 'Solution Approach'}
+                    {t('solution_approach') || 'نهج الحل'}
                   </h4>
                   <p className="text-muted-foreground bg-muted/50 p-4 rounded-lg leading-relaxed">
                     {idea.solution_approach}
@@ -362,7 +364,7 @@ export function IdeaDetailDialog({
                 <div>
                   <h4 className="font-semibold mb-3 flex items-center gap-2">
                     <Rocket className="w-4 h-4" />
-                    {isRTL ? 'خطة التنفيذ' : 'Implementation Plan'}
+                    {t('implementation_plan') || 'خطة التنفيذ'}
                   </h4>
                   <p className="text-muted-foreground bg-muted/50 p-4 rounded-lg leading-relaxed">
                     {idea.implementation_plan}
@@ -375,7 +377,7 @@ export function IdeaDetailDialog({
                 <div>
                   <h4 className="font-semibold mb-3 flex items-center gap-2">
                     <Target className="w-4 h-4" />
-                    {isRTL ? 'التأثير المتوقع' : 'Expected Impact'}
+                    {t('expected_impact') || 'التأثير المتوقع'}
                   </h4>
                   <p className="text-muted-foreground bg-muted/50 p-4 rounded-lg leading-relaxed">
                     {idea.expected_impact}
@@ -390,52 +392,52 @@ export function IdeaDetailDialog({
               <div>
                 <h4 className="font-semibold mb-4 flex items-center gap-2">
                   <BarChart3 className="w-4 h-4" />
-                  {isRTL ? 'نتائج التقييم' : 'Evaluation Scores'}
+                  {t('evaluation_scores') || 'نتائج التقييم'}
                 </h4>
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'الجدوى الفنية' : 'Technical Feasibility'}</span>
-                      <span className="font-semibold">{idea.feasibility_score}/10</span>
-                    </div>
-                    <Progress value={idea.feasibility_score * 10} className="h-3" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'التأثير' : 'Impact'}</span>
-                      <span className="font-semibold">{idea.impact_score}/10</span>
-                    </div>
-                    <Progress value={idea.impact_score * 10} className="h-3" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'الابتكار' : 'Innovation'}</span>
-                      <span className="font-semibold">{idea.innovation_score}/10</span>
-                    </div>
-                    <Progress value={idea.innovation_score * 10} className="h-3" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span>{isRTL ? 'التوافق الاستراتيجي' : 'Strategic Alignment'}</span>
-                      <span className="font-semibold">{idea.alignment_score}/10</span>
-                    </div>
-                    <Progress value={idea.alignment_score * 10} className="h-3" />
-                  </div>
-                  <div className="border-t pt-3">
-                    <div className="flex justify-between text-lg mb-2">
-                      <span className="font-semibold">{isRTL ? 'النتيجة الإجمالية' : 'Overall Score'}</span>
-                      <span className="font-bold text-primary">{idea.overall_score}/10</span>
-                    </div>
-                    <Progress value={idea.overall_score * 10} className="h-4" />
-                  </div>
-                </div>
-              </div>
+                     <span>{t('technical_feasibility') || 'الجدوى الفنية'}</span>
+                     <span className="font-semibold">{idea.feasibility_score}/10</span>
+                   </div>
+                   <Progress value={idea.feasibility_score * 10} className="h-3" />
+                 </div>
+                 <div>
+                   <div className="flex justify-between text-sm mb-2">
+                     <span>{t('impact') || 'التأثير'}</span>
+                     <span className="font-semibold">{idea.impact_score}/10</span>
+                   </div>
+                   <Progress value={idea.impact_score * 10} className="h-3" />
+                 </div>
+                 <div>
+                   <div className="flex justify-between text-sm mb-2">
+                     <span>{t('innovation') || 'الابتكار'}</span>
+                     <span className="font-semibold">{idea.innovation_score}/10</span>
+                   </div>
+                   <Progress value={idea.innovation_score * 10} className="h-3" />
+                 </div>
+                 <div>
+                   <div className="flex justify-between text-sm mb-2">
+                     <span>{t('strategic_alignment') || 'التوافق الاستراتيجي'}</span>
+                     <span className="font-semibold">{idea.alignment_score}/10</span>
+                   </div>
+                   <Progress value={idea.alignment_score * 10} className="h-3" />
+                 </div>
+                 <div className="border-t pt-3">
+                   <div className="flex justify-between text-lg mb-2">
+                     <span className="font-semibold">{t('overall_score') || 'النتيجة الإجمالية'}</span>
+                     <span className="font-bold text-primary">{idea.overall_score}/10</span>
+                   </div>
+                   <Progress value={idea.overall_score * 10} className="h-4" />
+                 </div>
+               </div>
+             </div>
 
-              {/* Innovator Info */}
-              <div>
-                <h4 className="font-semibold mb-4 flex items-center gap-2">
-                  <User className="w-4 h-4" />
-                  {isRTL ? 'معلومات المبتكر' : 'Innovator Info'}
+             {/* Innovator Info */}
+             <div>
+               <h4 className="font-semibold mb-4 flex items-center gap-2">
+                 <User className="w-4 h-4" />
+                 {t('innovator_info') || 'معلومات المبتكر'}
                 </h4>
                 <div className="bg-gradient-to-br from-muted/50 to-muted/30 p-4 rounded-lg border">
                   <div className="flex items-center gap-3 mb-4">
@@ -449,18 +451,18 @@ export function IdeaDetailDialog({
                       <p className="font-medium text-lg">
                         {isRTL ? idea.profile?.name_ar : idea.profile?.name || 'Anonymous'}
                       </p>
-                      <p className="text-sm text-muted-foreground">
-                        {isRTL ? 'مبتكر' : 'Innovator'}
+                     <p className="text-sm text-muted-foreground">
+                       {t('innovator') || 'مبتكر'}
                       </p>
                     </div>
                   </div>
                   <div className="text-sm text-muted-foreground space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span>{isRTL ? 'تاريخ التقديم:' : 'Submitted:'}</span>
-                      <span>{new Date(idea.created_at).toLocaleDateString()}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>{isRTL ? 'آخر تحديث:' : 'Last Updated:'}</span>
+                     <div className="flex justify-between items-center">
+                       <span>{t('submitted') || 'تاريخ التقديم:'}</span>
+                       <span>{new Date(idea.created_at).toLocaleDateString()}</span>
+                     </div>
+                     <div className="flex justify-between items-center">
+                       <span>{t('last_updated') || 'آخر تحديث:'}</span>
                       <span>{new Date(idea.updated_at).toLocaleDateString()}</span>
                     </div>
                   </div>
