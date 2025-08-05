@@ -5,7 +5,7 @@ import { Card } from './card';
 import { cn } from '@/lib/utils';
 
 export interface EmptyStateProps {
-  icon?: React.ComponentType<{ className?: string }>;
+  icon?: React.ComponentType<{ className?: string }> | React.ReactNode;
   title: string;
   description?: string;
   action?: {
@@ -21,17 +21,28 @@ export interface EmptyStateProps {
 }
 
 export function EmptyState({
-  icon: Icon = FileX,
+  icon: IconOrElement = FileX,
   title,
   description,
   action,
   secondaryAction,
   className
 }: EmptyStateProps) {
+  const renderIcon = () => {
+    if (React.isValidElement(IconOrElement)) {
+      return IconOrElement;
+    }
+    if (typeof IconOrElement === 'function') {
+      const Icon = IconOrElement as React.ComponentType<{ className?: string }>;
+      return <Icon className="w-8 h-8 text-muted-foreground" />;
+    }
+    return <FileX className="w-8 h-8 text-muted-foreground" />;
+  };
+
   return (
     <Card className={cn("flex flex-col items-center justify-center p-12 text-center", className)}>
       <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
-        <Icon className="w-8 h-8 text-muted-foreground" />
+        {renderIcon()}
       </div>
       
       <h3 className="text-lg font-semibold text-foreground mb-2">{title}</h3>
