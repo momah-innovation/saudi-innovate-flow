@@ -1,189 +1,240 @@
-# 🎨 Multi-Layered Design System Architecture
+# Ruwād Innovation Platform - Design System Documentation
 
 ## Overview
-A comprehensive design system supporting global themes, specialized feature themes, and component-level theming for a scalable application with 397+ components.
 
-## 🏗️ Architecture Layers
+The Ruwād Innovation Platform design system is a comprehensive, multi-layered theming architecture built for Saudi Arabia's innovation ecosystem. It supports 8 user roles, 12 modules, and 400+ components with professional government branding aligned with Saudi Vision 2030.
+
+## Architecture Layers
 
 ### Layer 1: Foundation Tokens
-Base design tokens that remain consistent across all themes.
+**File:** `src/styles/foundation-tokens.css`
 
-### Layer 2: Global Themes  
-Application-wide themes (light/dark mode, brand themes).
+Core design tokens including:
+- **Saudi Vision 2030 Colors**: Government hierarchy, vision gold, brand identity
+- **Typography**: Arabic-first typography with Noto Sans Arabic and Inter
+- **Spacing**: Professional government spacing scale (4px to 256px)
+- **Shadows**: Corporate shadow system with brand-aligned colors
+- **Borders**: Government-standard border radius and styles
+- **RTL/LTR Support**: Bidirectional design tokens
+
+### Layer 2: Global Themes
+**File:** `src/styles/global-themes.css`
+
+System-wide themes:
+- **Light Theme**: Professional government interface
+- **Dark Theme**: Executive dashboard mode
+- **High Contrast**: WCAG 2.1 AAA accessibility compliance
+- **Executive**: Premium leadership interface
+- **Operational**: Efficient workflow management
+- **Citizen**: Accessible public services
+- **Color-Blind Friendly**: Enhanced accessibility
+- **Print**: Optimized for document output
 
 ### Layer 3: Specialized Themes
-Feature-specific themes (admin, events, challenges, etc.).
+**File:** `src/styles/specialized-themes.css`
 
-### Layer 4: Component Themes
-Individual component styling overrides.
+Feature-specific themes for different platform modules:
 
-### Layer 5: State Themes
-Dynamic themes based on user roles, context, or preferences.
+#### Enhanced Professional Themes
+- **Executive** (`theme-executive`): Premium leadership interface with gold accents
+- **Operational** (`theme-operational`): Blue-focused workflow management
+- **Citizen** (`theme-citizen`): Green-focused accessible public interface
+- **Innovation** (`theme-innovation`): Purple-focused research & development
+- **Partnerships** (`theme-partnerships`): Blue-cyan collaboration focus
+- **Analytics** (`theme-analytics`): Data visualization optimized
+- **Achievements** (`theme-achievements`): Gold-orange success & recognition
 
----
+#### Legacy Themes (Maintained for Compatibility)
+- **Admin** (`theme-admin`): Professional data-focused interface
+- **Events** (`theme-events`): Vibrant engaging event management
+- **Challenges** (`theme-challenges`): Competitive energetic design
+- **Ideas** (`theme-ideas`): Creative inspiring innovation
+- **Evaluation** (`theme-evaluation`): Analytical precise assessment
+- **Partners** (`theme-partners`): Professional trustworthy partnerships
+- **Opportunities** (`theme-opportunities`): Growth-focused success
+- **Experts** (`theme-experts`): Knowledge authority-focused
 
-## 🎯 Theme Hierarchy
+### Layer 4: Component Variants
+**File:** `src/styles/component-variants.css`
 
-```
-Foundation Tokens (spacing, typography, shadows)
-    ↓
-Global Themes (light/dark, brand)
-    ↓
-Specialized Themes (admin, events, challenges)
-    ↓
-Component Themes (button variants, card styles)
-    ↓
-State Themes (role-based, contextual)
-```
+Component-specific styling variations:
 
----
+#### Button Variants
+- `.btn-executive`: Premium gradient with government colors
+- `.btn-operational`: Professional blue workflow buttons
+- `.btn-citizen`: Accessible green public service buttons
+- `.btn-innovation`: Creative purple research buttons
 
-## 🔧 Implementation Strategy
+#### Card Variants
+- `.card-executive`: Premium glass morphism with gradients
+- `.card-operational`: Clean professional workflow cards
+- `.card-citizen`: Accessible rounded public service cards
+- `.card-innovation`: Creative gradient research cards
+- `.card-analytics`: Data-focused visualization cards
 
-### 1. CSS Custom Properties Structure
-```css
-:root {
-  /* Foundation Tokens */
-  --spacing-*
-  --typography-*
-  --shadows-*
-  --radius-*
-  
-  /* Global Theme Tokens */
-  --global-*
-  
-  /* Specialized Theme Tokens */
-  --admin-*
-  --events-*
-  --challenges-*
-  
-  /* Component Theme Tokens */
-  --button-*
-  --card-*
-  --input-*
-}
-```
+#### Badge Variants
+- Status badges: `.badge-status-active/pending/inactive`
+- Priority badges: `.badge-priority-high/medium/low`
+- Theme-specific: `.badge-executive`
 
-### 2. Tailwind Configuration
-Multi-theme support with dynamic class generation.
+#### Input Variants
+- `.input-executive`: Premium focus states
+- `.input-operational`: Professional workflow inputs
+- `.input-citizen`: Accessible public service inputs
 
-### 3. Theme Provider System
-React context for theme management and switching.
+#### Navigation Variants
+- `.nav-executive`: Premium leadership navigation
+- `.nav-operational`: Clean workflow navigation
+- `.nav-citizen`: Accessible public navigation
 
-### 4. Component Theming API
-Standardized approach for component-level theming.
+#### Glass Morphism Variants
+- `.glass-executive`: Premium executive glass effects
+- `.glass-operational`: Professional glass components
+- `.glass-innovation`: Creative research glass effects
 
----
+#### Hero Section Variants
+- `.hero-executive`: Premium 60vh leadership sections
+- `.hero-operational`: Professional 50vh workflow sections
+- `.hero-citizen`: Accessible 40vh public sections
 
-## 📝 Usage Examples
+### Layer 5: Component Themes
+**File:** `src/styles/component-themes.css`
 
-### Global Theme Switching
+Legacy component-specific themes maintained for backward compatibility.
+
+## Usage Guidelines
+
+### Theme Selection
 ```tsx
-const { setGlobalTheme } = useTheme()
-setGlobalTheme('dark-innovation')
+import { useTheme } from '@/hooks/useTheme';
+
+const { setSpecializedTheme, globalTheme, setGlobalTheme } = useTheme();
+
+// Set professional themes
+setSpecializedTheme('executive');  // For leadership interfaces
+setSpecializedTheme('operational'); // For workflow management
+setSpecializedTheme('citizen');     // For public services
+setSpecializedTheme('innovation');  // For R&D interfaces
+
+// Set global modes
+setGlobalTheme('dark');             // Dark mode
+setGlobalTheme('high-contrast');    // Accessibility mode
 ```
 
-### Specialized Theme Application
+### Component Variants
 ```tsx
-<div className="theme-admin">
-  <AdminDashboard />
+// Executive-level components
+<Button className="btn-executive">Premium Action</Button>
+<Card className="card-executive">Leadership Content</Card>
+
+// Operational workflow components
+<Button className="btn-operational">Process Action</Button>
+<Card className="card-operational">Workflow Content</Card>
+
+// Public service components
+<Button className="btn-citizen">Public Action</Button>
+<Card className="card-citizen">Citizen Content</Card>
+
+// Research & development
+<Button className="btn-innovation">Innovation Action</Button>
+<Card className="card-innovation">Research Content</Card>
+```
+
+### Status Indicators
+```tsx
+<Badge className="badge-status-active">Active</Badge>
+<Badge className="badge-priority-high">High Priority</Badge>
+<Badge className="badge-executive">Executive Level</Badge>
+```
+
+### Glass Morphism Effects
+```tsx
+<div className="glass-executive">
+  Premium glass effect for executive interfaces
+</div>
+
+<div className="glass-innovation">
+  Creative glass effect for research interfaces
 </div>
 ```
 
-### Component Theme Override
-```tsx
-<Button theme="admin-primary" variant="elevated">
-  Admin Action
-</Button>
+## Professional Enhancement Features
+
+### Saudi Vision 2030 Integration
+- Government hierarchy color schemes
+- Arabic-first typography support
+- Cultural design patterns
+- Official brand compliance
+
+### Accessibility Excellence
+- WCAG 2.1 AAA compliance
+- High contrast themes
+- Color-blind friendly variants
+- RTL/LTR bidirectional support
+- Screen reader optimization
+
+### Enterprise Performance
+- Optimized CSS layers for performance
+- Component-level theme caching
+- Minimal runtime overhead
+- Progressive enhancement
+
+### Multi-Tenant Support
+- Role-based theme switching
+- Department-specific branding
+- Permission-level styling
+- Hierarchical theme inheritance
+
+## Theme Showcase
+
+The interactive theme showcase is available at `/design-system` and includes:
+- Live theme switching
+- Component variant demonstrations
+- Accessibility testing tools
+- Performance monitoring
+- Export capabilities
+
+## Technical Implementation
+
+### CSS Architecture
+```css
+/* Layer priority (highest to lowest) */
+@layer component-variants;    /* Component-specific styles */
+@layer specialized-themes;    /* Feature themes */
+@layer global-themes;         /* System themes */
+@layer foundation-tokens;     /* Base tokens */
 ```
 
----
+### Theme Context
+```tsx
+interface ThemeContextType {
+  globalTheme: GlobalTheme;
+  specializedTheme: SpecializedTheme;
+  setGlobalTheme: (theme: GlobalTheme) => void;
+  setSpecializedTheme: (theme: SpecializedTheme) => void;
+  // ... additional theme utilities
+}
+```
 
-## 🎨 Theme Definitions
+### Performance Optimization
+- CSS-in-JS avoided for optimal performance
+- Native CSS custom properties
+- Minimal JavaScript theme switching
+- Efficient cascade utilization
 
-### Global Themes
-- **Light Innovation**: Modern, clean, high contrast
-- **Dark Innovation**: Dark mode with accent colors
-- **Accessibility**: High contrast, larger text
-- **Print**: Optimized for printing
+## Browser Support
 
-### Specialized Themes
-- **Admin**: Professional, data-focused
-- **Events**: Vibrant, engaging
-- **Challenges**: Competitive, energetic
-- **Ideas**: Creative, inspiring
-- **Evaluation**: Analytical, precise
+- Modern browsers (Chrome 88+, Firefox 85+, Safari 14+)
+- Progressive enhancement for older browsers
+- Graceful degradation of advanced features
+- Mobile-first responsive design
 
----
+## Maintenance & Updates
 
-## 🔄 Theme Switching Patterns
+The design system follows semantic versioning and includes:
+- Automated visual regression testing
+- Component documentation generation
+- Theme migration utilities
+- Backward compatibility guarantees
 
-### Automatic Switching
-- System preference detection
-- Time-based switching
-- Role-based defaults
-
-### Manual Switching
-- User preference controls
-- Context-aware suggestions
-- Quick theme picker
-
----
-
-## 📊 Performance Considerations
-
-### CSS Organization
-- Minimal CSS-in-JS usage
-- Efficient custom property updates
-- Lazy loading of specialized themes
-
-### Bundle Optimization
-- Tree-shaking unused themes
-- Critical CSS extraction
-- Progressive theme loading
-
----
-
-## 🧪 Testing Strategy
-
-### Theme Consistency
-- Visual regression testing
-- Contrast ratio validation
-- Cross-browser compatibility
-
-### Accessibility
-- WCAG compliance testing
-- Screen reader compatibility
-- Keyboard navigation testing
-
----
-
-## 📈 Scalability
-
-### Adding New Themes
-1. Define theme tokens
-2. Create CSS custom properties
-3. Update Tailwind configuration
-4. Add theme provider support
-
-### Component Integration
-1. Use semantic tokens
-2. Support theme props
-3. Implement fallbacks
-4. Document usage patterns
-
----
-
-## 🛠️ Developer Experience
-
-### Theme Development Tools
-- Theme preview component
-- Token visualization
-- Live theme editor
-- Export/import functionality
-
-### Documentation
-- Interactive theme guide
-- Component examples
-- Best practices
-- Migration guides
+For detailed implementation examples and live demonstrations, visit the theme showcase at `/design-system`.

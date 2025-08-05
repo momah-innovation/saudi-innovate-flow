@@ -176,7 +176,6 @@
     --experts-gradient-primary: linear-gradient(135deg, hsl(var(--experts-primary)), hsl(var(--experts-accent)));
     --experts-gradient-knowledge: linear-gradient(135deg, hsl(var(--experts-accent)), hsl(var(--experts-secondary)));
   }
-  
   /* 🏛️ GOVERNMENT EXECUTIVE THEME - Premium Leadership Interface */
   .theme-executive,
   [data-theme="executive"] {
@@ -350,6 +349,7 @@
     --border-radius-start: var(--border-radius-end);
     --border-radius-end: var(--border-radius-start);
   }
+}
 
 /* 🔄 THEME TRANSITION ANIMATIONS */
 @layer transitions {
