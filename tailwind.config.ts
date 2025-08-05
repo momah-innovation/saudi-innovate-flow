@@ -163,6 +163,13 @@ export default {
 				'7xl': ['4.5rem', { lineHeight: '1' }],
 				'8xl': ['6rem', { lineHeight: '1' }],
 				'9xl': ['8rem', { lineHeight: '1' }],
+				'fluid-sm': ['clamp(0.875rem, 2vw, 1rem)', { lineHeight: '1.5' }],
+				'fluid-base': ['clamp(1rem, 2.5vw, 1.125rem)', { lineHeight: '1.6' }],
+				'fluid-lg': ['clamp(1.125rem, 3vw, 1.25rem)', { lineHeight: '1.6' }],
+				'fluid-xl': ['clamp(1.25rem, 3.5vw, 1.5rem)', { lineHeight: '1.4' }],
+				'fluid-2xl': ['clamp(1.5rem, 4vw, 2rem)', { lineHeight: '1.3' }],
+				'fluid-3xl': ['clamp(2rem, 5vw, 3rem)', { lineHeight: '1.2' }],
+				'fluid-4xl': ['clamp(2.5rem, 6vw, 4rem)', { lineHeight: '1.1' }],
 			},
 			zIndex: {
 				'60': '60',
