@@ -13,6 +13,8 @@ import {
   Clock, CheckCircle, AlertTriangle, Plus
 } from 'lucide-react';
 import { useTranslation } from '@/hooks/useAppTranslation';
+import { useRTLAware } from '@/hooks/useRTLAware';
+import { RTLFlex } from '@/components/ui/rtl-layout';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -52,6 +54,7 @@ export function TeamManagementContent({
   const { t } = useTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { mr, ml, isRTL } = useRTLAware();
   const [loading, setLoading] = useState(true);
   const [innovationTeams, setInnovationTeams] = useState<InnovationTeam[]>([]);
   const [editingTeam, setEditingTeam] = useState<any>(null);
@@ -193,14 +196,14 @@ export function TeamManagementContent({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => handleEditTeam(team)}>
-                <Edit className="h-4 w-4 mr-2" />
+                <Edit className={`h-4 w-4 ${mr("2")}`} />
                 {t('edit')}
               </DropdownMenuItem>
               <DropdownMenuItem 
                 className="text-destructive"
                 onClick={() => handleRemoveTeam(team.id)}
               >
-                <UserX className="h-4 w-4 mr-2" />
+                <UserX className={`h-4 w-4 ${mr("2")}`} />
                 {t('remove')}
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -234,9 +237,9 @@ export function TeamManagementContent({
           <span className="text-sm font-medium">{t('status')}</span>
           <Badge variant={team.status === 'active' ? 'default' : 'secondary'}>
             {team.status === 'active' ? (
-              <CheckCircle className="h-3 w-3 mr-1" />
+              <CheckCircle className={`h-3 w-3 ${mr("1")}`} />
             ) : (
-              <AlertTriangle className="h-3 w-3 mr-1" />
+              <AlertTriangle className={`h-3 w-3 ${mr("1")}`} />
             )}
             {team.status}
           </Badge>

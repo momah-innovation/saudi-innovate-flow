@@ -10,6 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Edit, Trash2, Users, Building, Network, Mail, Search, Filter, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useRTLAware } from "@/hooks/useRTLAware";
+import { RTLFlex } from "@/components/ui/rtl-layout";
 
 interface Deputy {
   id: string;
@@ -73,6 +75,7 @@ export function OrganizationalStructureManagement() {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const { toast } = useToast();
+  const { mr, ml, pl, left, isRTL } = useRTLAware();
 
   // States for dialogs and editing
   const [isDeputyDialogOpen, setIsDeputyDialogOpen] = useState(false);
@@ -257,18 +260,18 @@ export function OrganizationalStructureManagement() {
             <h2 className="text-xl font-semibold">Deputies</h2>
             <div className="flex gap-2">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                <Search className={`absolute ${left("3")} top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4`} />
                 <Input
                   placeholder="Search deputies..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-9 w-64"
+                  className={`${pl("9")} w-64`}
                 />
               </div>
               <Dialog open={isDeputyDialogOpen} onOpenChange={setIsDeputyDialogOpen}>
                 <DialogTrigger asChild>
                   <Button onClick={() => { setEditingDeputy(null); setDeputyForm({ name: "", name_ar: "", deputy_minister: "", contact_email: "", sector_id: "" }); }}>
-                    <Plus className="w-4 h-4 mr-2" />
+                    <Plus className={`w-4 h-4 ${mr("2")}`} />
                     Add Deputy
                   </Button>
                 </DialogTrigger>
@@ -378,7 +381,7 @@ export function OrganizationalStructureManagement() {
             <Dialog open={isDepartmentDialogOpen} onOpenChange={setIsDepartmentDialogOpen}>
               <DialogTrigger asChild>
                 <Button onClick={() => { setEditingDepartment(null); setDepartmentForm({ name: "", name_ar: "", department_head: "", budget_allocation: 0, deputy_id: "" }); }}>
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className={`w-4 h-4 ${mr("2")}`} />
                   Add Department
                 </Button>
               </DialogTrigger>
