@@ -2166,4 +2166,402 @@
   .keyboard-navigation {
     @apply focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2;
   }
+
+  /* Design System Specific Utilities */
+  .design-token-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4;
+  }
+
+  .color-swatch {
+    @apply h-16 w-full rounded-lg border cursor-pointer transition-all hover:scale-105 group relative;
+  }
+
+  .color-swatch-overlay {
+    @apply absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity;
+  }
+
+  .component-showcase {
+    @apply bg-card border rounded-lg p-6 space-y-4;
+  }
+
+  .component-preview {
+    @apply bg-muted/50 border rounded-lg p-4 relative min-h-[100px] flex items-center justify-center;
+  }
+
+  .component-code {
+    @apply bg-muted/80 border rounded text-xs p-3 font-mono overflow-x-auto;
+  }
+
+  .design-tab {
+    @apply flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap;
+  }
+
+  .design-tab-active {
+    @apply bg-primary/90 text-primary-foreground font-medium;
+  }
+
+  .token-label {
+    @apply text-sm font-medium;
+  }
+
+  .token-description {
+    @apply text-xs text-muted-foreground;
+  }
+
+  .token-value {
+    @apply text-xs bg-muted px-2 py-1 rounded font-mono;
+  }
+
+  /* Interactive Demo Utilities */
+  .demo-container {
+    @apply relative bg-gradient-subtle border rounded-lg p-6 min-h-[200px] overflow-hidden;
+  }
+
+  .demo-controls {
+    @apply absolute top-4 right-4 flex gap-2;
+  }
+
+  .demo-code-toggle {
+    @apply absolute bottom-4 left-4;
+  }
+
+  .demo-playground {
+    @apply bg-background border rounded-lg p-4 space-y-4;
+  }
+
+  .demo-property-control {
+    @apply flex items-center justify-between p-2 border rounded text-sm;
+  }
+
+  .demo-live-preview {
+    @apply border-2 border-dashed border-primary/20 rounded-lg p-8 bg-primary/5;
+  }
+
+  .interactive-example {
+    @apply transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-1;
+  }
+
+  .code-snippet {
+    @apply bg-slate-900 text-slate-100 p-4 rounded-lg font-mono text-sm overflow-x-auto;
+  }
+
+  .syntax-highlight {
+    @apply text-blue-300;
+  }
+
+  .syntax-string {
+    @apply text-green-300;
+  }
+
+  .syntax-keyword {
+    @apply text-purple-300;
+  }
+
+  .syntax-comment {
+    @apply text-gray-400 italic;
+  }
+
+  /* Widget & Analytics Utilities */
+  .widget-container {
+    @apply bg-card border rounded-lg shadow-sm hover:shadow-md transition-shadow;
+  }
+
+  .widget-header {
+    @apply flex items-center justify-between p-4 border-b;
+  }
+
+  .widget-content {
+    @apply p-4;
+  }
+
+  .widget-metric {
+    @apply text-center space-y-2;
+  }
+
+  .widget-metric-value {
+    @apply text-3xl font-bold;
+  }
+
+  .widget-metric-label {
+    @apply text-sm text-muted-foreground uppercase tracking-wide;
+  }
+
+  .widget-trend {
+    @apply flex items-center gap-1 text-xs;
+  }
+
+  .widget-trend-up {
+    @apply text-success bg-success/10 px-2 py-1 rounded-full;
+  }
+
+  .widget-trend-down {
+    @apply text-destructive bg-destructive/10 px-2 py-1 rounded-full;
+  }
+
+  .widget-progress {
+    @apply w-full bg-muted rounded-full h-2 overflow-hidden;
+  }
+
+  .widget-progress-bar {
+    @apply h-full transition-all duration-500 ease-out;
+  }
+
+  .widget-circular-progress {
+    @apply relative w-16 h-16;
+  }
+
+  .widget-activity-indicator {
+    @apply w-2 h-2 rounded-full animate-pulse;
+  }
+
+  .widget-realtime-badge {
+    @apply inline-flex items-center gap-1 text-xs bg-success/10 text-success px-2 py-1 rounded-full;
+  }
+
+  /* Status & State Indicators */
+  .status-indicator {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium;
+  }
+
+  .status-online {
+    @apply bg-success/10 text-success border border-success/20;
+  }
+
+  .status-offline {
+    @apply bg-muted text-muted-foreground border border-muted/20;
+  }
+
+  .status-away {
+    @apply bg-warning/10 text-warning border border-warning/20;
+  }
+
+  .status-busy {
+    @apply bg-destructive/10 text-destructive border border-destructive/20;
+  }
+
+  .activity-dot {
+    @apply w-2 h-2 rounded-full;
+  }
+
+  .activity-pulse {
+    @apply animate-pulse;
+  }
+
+  .activity-glow {
+    @apply shadow-glow-sm;
+  }
+
+  /* Interactive State Utilities */
+  .interactive-hover {
+    @apply transition-all duration-200 hover:bg-accent hover:text-accent-foreground;
+  }
+
+  .interactive-press {
+    @apply active:scale-95 active:bg-accent/80;
+  }
+
+  .interactive-focus {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  }
+
+  .interactive-disabled {
+    @apply opacity-50 cursor-not-allowed pointer-events-none;
+  }
+
+  .interactive-selected {
+    @apply bg-primary/10 text-primary border-primary;
+  }
+
+  .interactive-dragging {
+    @apply opacity-75 scale-105 shadow-lg z-50;
+  }
+
+  .interactive-drop-zone {
+    @apply border-2 border-dashed border-primary/50 bg-primary/5 rounded-lg;
+  }
+
+  .interactive-drop-active {
+    @apply border-primary bg-primary/10;
+  }
+
+  /* Advanced Layout Patterns */
+  .layout-dashboard {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-min;
+  }
+
+  .layout-kanban {
+    @apply flex gap-6 overflow-x-auto pb-4 min-h-screen;
+  }
+
+  .layout-kanban-column {
+    @apply flex-shrink-0 w-80 bg-muted/50 rounded-lg p-4 space-y-4;
+  }
+
+  .layout-timeline {
+    @apply relative space-y-8 before:absolute before:left-4 before:top-0 before:h-full before:w-0.5 before:bg-border;
+  }
+
+  .layout-timeline-item {
+    @apply relative pl-12;
+  }
+
+  .layout-timeline-marker {
+    @apply absolute left-0 top-0 w-8 h-8 bg-background border-2 border-primary rounded-full flex items-center justify-center;
+  }
+
+  .layout-gallery {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px];
+  }
+
+  .layout-gallery-item {
+    @apply relative overflow-hidden rounded-lg group cursor-pointer;
+  }
+
+  .layout-gallery-overlay {
+    @apply absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center;
+  }
+
+  /* Documentation Utilities */
+  .docs-section {
+    @apply space-y-6 py-8 border-b last:border-b-0;
+  }
+
+  .docs-heading {
+    @apply text-2xl font-bold mb-4;
+  }
+
+  .docs-subheading {
+    @apply text-lg font-semibold mb-3;
+  }
+
+  .docs-description {
+    @apply text-muted-foreground mb-6;
+  }
+
+  .docs-example {
+    @apply border rounded-lg overflow-hidden;
+  }
+
+  .docs-example-preview {
+    @apply p-6 bg-background border-b;
+  }
+
+  .docs-example-code {
+    @apply bg-muted/50 p-4 text-sm font-mono overflow-x-auto;
+  }
+
+  .docs-table {
+    @apply w-full border-collapse border border-border rounded-lg overflow-hidden;
+  }
+
+  .docs-table-header {
+    @apply bg-muted/50 font-medium text-left p-3 border-b border-border;
+  }
+
+  .docs-table-cell {
+    @apply p-3 border-b border-border last:border-b-0;
+  }
+
+  .docs-callout {
+    @apply border-l-4 border-primary bg-primary/5 p-4 rounded-r-lg;
+  }
+
+  .docs-callout-warning {
+    @apply border-warning bg-warning/5;
+  }
+
+  .docs-callout-error {
+    @apply border-destructive bg-destructive/5;
+  }
+
+  .docs-callout-success {
+    @apply border-success bg-success/5;
+  }
+
+  /* Advanced Animation Sequences */
+  .animation-sequence-1 {
+    @apply animate-fade-in-up [animation-delay:0ms];
+  }
+
+  .animation-sequence-2 {
+    @apply animate-fade-in-up [animation-delay:100ms];
+  }
+
+  .animation-sequence-3 {
+    @apply animate-fade-in-up [animation-delay:200ms];
+  }
+
+  .animation-sequence-4 {
+    @apply animate-fade-in-up [animation-delay:300ms];
+  }
+
+  .animation-sequence-5 {
+    @apply animate-fade-in-up [animation-delay:400ms];
+  }
+
+  .stagger-fast > * {
+    animation-delay: calc(50ms * var(--index, 0));
+  }
+
+  .stagger-medium > * {
+    animation-delay: calc(100ms * var(--index, 0));
+  }
+
+  .stagger-slow > * {
+    animation-delay: calc(200ms * var(--index, 0));
+  }
+
+  .reveal-on-scroll {
+    @apply opacity-0 translate-y-8 transition-all duration-700;
+  }
+
+  .reveal-on-scroll.revealed {
+    @apply opacity-100 translate-y-0;
+  }
+
+  /* System Theme Utilities */
+  .theme-system {
+    @apply [color-scheme:light] dark:[color-scheme:dark];
+  }
+
+  .theme-preview-grid {
+    @apply grid grid-cols-3 gap-2 p-4 rounded-lg border;
+  }
+
+  .theme-preview-color {
+    @apply w-full h-8 rounded;
+  }
+
+  .color-scheme-light {
+    @apply bg-white text-black;
+  }
+
+  .color-scheme-dark {
+    @apply bg-black text-white;
+  }
+
+  .color-scheme-auto {
+    @apply bg-background text-foreground;
+  }
+
+  /* Performance Optimization Classes */
+  .perf-optimized {
+    @apply transform-gpu will-change-transform;
+  }
+
+  .perf-contain {
+    contain: layout style paint;
+  }
+
+  .perf-layer {
+    @apply isolate;
+  }
+
+  .perf-critical {
+    @apply [content-visibility:auto] [contain-intrinsic-size:0_200px];
+  }
+
+  .perf-defer {
+    @apply [loading:lazy];
+  }
 }
