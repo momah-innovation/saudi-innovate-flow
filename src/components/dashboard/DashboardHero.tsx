@@ -141,17 +141,17 @@ export const DashboardHero = ({
             {/* Header with role-specific styling */}
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <roleConfig.icon className="w-6 h-6 text-white" />
+                <div className="p-3 bg-primary/10 backdrop-blur-sm rounded-xl border border-primary/20">
+                  <roleConfig.icon className="w-6 h-6 text-primary-foreground" />
                 </div>
-                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                <Badge variant="secondary" className="bg-primary/10 text-primary-foreground border-primary/20 backdrop-blur-sm">
                   <Star className={`w-3 h-3 ${me('1')}`} />
                   {roleConfig.title}
                 </Badge>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
                   {language === 'ar' ? (
                     <>
                       مرحباً <span className="text-accent">{userProfile?.display_name || 'المستخدم'}</span>
