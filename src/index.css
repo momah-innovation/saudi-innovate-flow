@@ -2,6 +2,8 @@
 @import url('./styles/global-themes.css');
 @import url('./styles/specialized-themes.css');
 @import url('./styles/component-themes.css');
+@import url('./styles/enhanced-specialized-themes.css');
+@import url('./styles/component-variants.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -111,11 +113,11 @@
 @layer components {
   /* Glass Morphism Components */
   .glass {
-    @apply bg-glass-100 backdrop-blur-md border border-glass-border-50;
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
   }
   
   .glass-card {
-    @apply bg-glass-100 backdrop-blur-xl border border-glass-border-100 shadow-glass rounded-lg;
+    @apply bg-white/10 backdrop-blur-xl border border-white/30 shadow-lg rounded-lg;
   }
   
   .glass-card-elevated {

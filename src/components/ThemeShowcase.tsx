@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Palette, Monitor, Sun, Moon, Contrast, Printer } from 'lucide-react';
+import { Crown, Building2, Users, Lightbulb, BarChart3, Handshake, Trophy, Rocket, Palette, Monitor, Sun, Moon, Contrast, Printer } from 'lucide-react';
 
 export function ThemeShowcase() {
   const {
@@ -31,17 +31,27 @@ export function ThemeShowcase() {
     { value: 'print', label: 'Print', icon: <Printer className="w-4 h-4" /> },
   ];
 
-  const specializedThemes: { value: SpecializedTheme; label: string; description: string }[] = [
-    { value: null, label: 'Default', description: 'Standard application theme' },
-    { value: 'admin', label: 'Admin', description: 'Professional, data-focused interface' },
-    { value: 'events', label: 'Events', description: 'Vibrant, engaging event theme' },
-    { value: 'challenges', label: 'Challenges', description: 'Competitive, energetic design' },
-    { value: 'ideas', label: 'Ideas', description: 'Creative, inspiring innovation theme' },
-    { value: 'evaluation', label: 'Evaluation', description: 'Analytical, precise assessment theme' },
-    { value: 'partners', label: 'Partners', description: 'Professional, trustworthy partnership theme' },
-    { value: 'opportunities', label: 'Opportunities', description: 'Growth-focused success theme' },
-    { value: 'experts', label: 'Experts', description: 'Knowledge, authority-focused theme' },
+  const specializedThemes: { value: SpecializedTheme; label: string; description: string; icon: any; color: string }[] = [
+    { value: null, label: 'Default', description: 'Standard application theme', icon: Palette, color: 'from-gray-500 to-gray-700' },
+    { value: 'admin', label: 'Admin', description: 'Professional, data-focused interface', icon: Building2, color: 'from-slate-600 to-blue-600' },
+    { value: 'events', label: 'Events', description: 'Vibrant, engaging event theme', icon: Trophy, color: 'from-orange-500 to-red-500' },
+    { value: 'challenges', label: 'Challenges', description: 'Competitive, energetic design', icon: Crown, color: 'from-teal-500 to-green-500' },
+    { value: 'ideas', label: 'Ideas', description: 'Creative, inspiring innovation theme', icon: Lightbulb, color: 'from-purple-500 to-indigo-500' },
+    { value: 'evaluation', label: 'Evaluation', description: 'Analytical, precise assessment theme', icon: BarChart3, color: 'from-blue-500 to-cyan-500' },
+    { value: 'partners', label: 'Partners', description: 'Professional, trustworthy partnership theme', icon: Handshake, color: 'from-green-500 to-emerald-500' },
+    { value: 'opportunities', label: 'Opportunities', description: 'Growth-focused success theme', icon: Rocket, color: 'from-yellow-500 to-orange-500' },
+    { value: 'experts', label: 'Experts', description: 'Knowledge, authority-focused theme', icon: Users, color: 'from-indigo-500 to-purple-500' },
   ];
+
+  const enhancedThemes = [
+    { id: 'executive', name: 'Executive', icon: Crown, color: 'from-slate-800 to-amber-600', description: 'Premium leadership interface' },
+    { id: 'operational', name: 'Operational', icon: Building2, color: 'from-blue-600 to-blue-800', description: 'Efficient workflow management' },
+    { id: 'citizen', name: 'Citizen', icon: Users, color: 'from-emerald-600 to-teal-600', description: 'Accessible public interface' },
+    { id: 'innovation', name: 'Innovation', icon: Lightbulb, color: 'from-purple-600 to-violet-600', description: 'Research & development' },
+    { id: 'partnerships', name: 'Partnerships', icon: Handshake, color: 'from-blue-500 to-cyan-500', description: 'Collaboration focus' },
+    { id: 'analytics', name: 'Analytics', icon: BarChart3, color: 'from-blue-600 to-green-600', description: 'Data visualization' },
+    { id: 'achievements', name: 'Achievements', icon: Trophy, color: 'from-yellow-500 to-orange-500', description: 'Success & recognition' },
+  ] as const;
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
@@ -57,13 +67,141 @@ export function ThemeShowcase() {
         </p>
       </div>
 
-      <Tabs defaultValue="global" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+      <Tabs defaultValue="enhanced" className="w-full">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="enhanced">Enhanced Themes</TabsTrigger>
           <TabsTrigger value="global">Global Themes</TabsTrigger>
-          <TabsTrigger value="specialized">Specialized Themes</TabsTrigger>
-          <TabsTrigger value="components">Component Examples</TabsTrigger>
+          <TabsTrigger value="specialized">Legacy Themes</TabsTrigger>
+          <TabsTrigger value="components">Component Showcase</TabsTrigger>
           <TabsTrigger value="settings">Theme Settings</TabsTrigger>
         </TabsList>
+
+        {/* Enhanced Themes Tab */}
+        <TabsContent value="enhanced" className="space-y-6">
+          <div className="text-center space-y-4 mb-8">
+            <div className="flex items-center justify-center gap-3">
+              <Rocket className="w-8 h-8 text-primary" />
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Professional Design System
+              </h2>
+            </div>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Enhanced themes for the Ruwād Innovation Platform with Saudi Vision 2030 integration
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {enhancedThemes.map((theme) => {
+              const Icon = theme.icon;
+              const isActive = false; // Theme selection logic to be implemented
+              
+              return (
+                <Card 
+                  key={theme.id}
+                  className={`cursor-pointer transition-all duration-300 hover:scale-105 ${
+                    isActive ? 'ring-2 ring-primary shadow-lg' : 'hover:shadow-md'
+                  }`}
+                  onClick={() => setSpecializedTheme(theme.id as any)}
+                >
+                  <CardContent className="p-6 text-center space-y-4">
+                    <div className={`w-16 h-16 mx-auto rounded-full bg-gradient-to-br ${theme.color} flex items-center justify-center`}>
+                      <Icon className="w-8 h-8 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg">{theme.name}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {theme.description}
+                      </p>
+                    </div>
+                    {isActive && (
+                      <Badge className="bg-primary text-primary-foreground">
+                        Active
+                      </Badge>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+
+          {/* Component Showcase for Active Theme */}
+          <Card className="mt-8">
+            <CardHeader>
+              <CardTitle>Component Showcase</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Buttons */}
+              <div className="space-y-4">
+                <h4 className="font-semibold">Button Variants</h4>
+                <div className="flex flex-wrap gap-4">
+                  <Button className="btn-executive">Executive Button</Button>
+                  <Button className="btn-operational">Operational Button</Button>
+                  <Button className="btn-citizen">Citizen Button</Button>
+                  <Button className="btn-innovation">Innovation Button</Button>
+                </div>
+              </div>
+
+              {/* Cards */}
+              <div className="space-y-4">
+                <h4 className="font-semibold">Card Variants</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <Card className="card-executive">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Crown className="w-5 h-5" />
+                        <span className="font-semibold">Executive</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">Premium interface</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="card-operational">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Building2 className="w-5 h-5" />
+                        <span className="font-semibold">Operational</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">Workflow focus</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="card-citizen">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Users className="w-5 h-5" />
+                        <span className="font-semibold">Citizen</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">Public interface</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="card-innovation">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Lightbulb className="w-5 h-5" />
+                        <span className="font-semibold">Innovation</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">Creative design</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+
+              {/* Badges */}
+              <div className="space-y-4">
+                <h4 className="font-semibold">Badge Variants</h4>
+                <div className="flex flex-wrap gap-2">
+                  <Badge className="badge-executive">Executive</Badge>
+                  <Badge className="badge-status-active">Active</Badge>
+                  <Badge className="badge-status-pending">Pending</Badge>
+                  <Badge className="badge-priority-high">High Priority</Badge>
+                  <Badge className="badge-priority-medium">Medium</Badge>
+                  <Badge className="badge-priority-low">Low Priority</Badge>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         {/* Global Themes Tab */}
         <TabsContent value="global" className="space-y-6">
