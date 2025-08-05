@@ -56,7 +56,7 @@ export function AdminEvaluationsHero({
       <Card className="hover-scale">
         <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('pending_reviews')}</CardTitle>
-          <Clock className="h-4 w-4 icon-warning" />
+          <Clock className="h-4 w-4 text-warning" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-warning">{pendingEvaluations}</div>
@@ -70,7 +70,7 @@ export function AdminEvaluationsHero({
       <Card className="hover-scale">
         <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('average_score')}</CardTitle>
-          <Star className="h-4 w-4 icon-warning" />
+          <Star className="h-4 w-4 text-warning" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-success">{averageScore}/10</div>
@@ -84,7 +84,7 @@ export function AdminEvaluationsHero({
       <Card className="hover-scale">
         <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
           <CardTitle className="text-sm font-medium">{t('active_evaluators')}</CardTitle>
-          <Users className="h-4 w-4 icon-info" />
+          <Users className="h-4 w-4 text-info" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-primary">{activeEvaluators}</div>
@@ -112,7 +112,7 @@ export function AdminEvaluationsHero({
               </div>
             </div>
             <div className="text-center">
-              <div className="text-xl font-bold text-innovation">{topPerformingIdeas}</div>
+              <div className="text-xl font-bold text-accent">{topPerformingIdeas}</div>
               <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                 <Star className="h-3 w-3" />
                 {t('top_rated_8_plus')}
@@ -126,7 +126,7 @@ export function AdminEvaluationsHero({
       <Card className="md:col-span-2 lg:col-span-2">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Timer className="h-5 w-5 icon-warning" />
+            <Timer className="h-5 w-5 text-warning" />
             {t('review_status')}
           </CardTitle>
         </CardHeader>

@@ -41,16 +41,16 @@ interface Campaign {
 }
 
 const statusConfig = {
-  planning: { label: 'قيد التخطيط', variant: 'secondary' as const },
-  active: { label: 'نشط', variant: 'default' as const },
-  paused: { label: 'متوقف', variant: 'destructive' as const },
-  completed: { label: 'مكتمل', variant: 'outline' as const }
+  planning: { labelKey: 'status_planning', variant: 'secondary' as const },
+  active: { labelKey: 'status_active', variant: 'default' as const },
+  paused: { labelKey: 'status_paused', variant: 'destructive' as const },
+  completed: { labelKey: 'status_completed', variant: 'outline' as const }
 };
 
 const priorityConfig = {
-  low: { label: 'منخفض', variant: 'secondary' as const },
-  medium: { label: 'متوسط', variant: 'default' as const },
-  high: { label: 'عالي', variant: 'destructive' as const }
+  low: { labelKey: 'priority_low', variant: 'secondary' as const },
+  medium: { labelKey: 'priority_medium', variant: 'default' as const },
+  high: { labelKey: 'priority_high', variant: 'destructive' as const }
 };
 
 interface CampaignsManagementProps {
@@ -61,7 +61,7 @@ interface CampaignsManagementProps {
 }
 
 export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: CampaignsManagementProps) {
-  const { language } = useTranslation();
+  const { t } = useTranslation();
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);
@@ -112,7 +112,7 @@ export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAdd
             subtitle={campaign.description_ar}
             badges={[
               {
-                label: statusConfig[campaign.status as keyof typeof statusConfig]?.label || campaign.status,
+                label: t(statusConfig[campaign.status as keyof typeof statusConfig]?.labelKey) || t(campaign.status),
                 variant: statusConfig[campaign.status as keyof typeof statusConfig]?.variant || 'secondary'
               },
               ...(campaign.sector ? [{
@@ -120,46 +120,46 @@ export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAdd
                 variant: 'secondary' as const
               }] : []),
               ...(campaign.priority ? [{
-                label: priorityConfig[campaign.priority as keyof typeof priorityConfig]?.label || campaign.priority,
+                label: t(priorityConfig[campaign.priority as keyof typeof priorityConfig]?.labelKey) || t(campaign.priority),
                 variant: priorityConfig[campaign.priority as keyof typeof priorityConfig]?.variant || 'secondary'
               }] : [])
             ]}
             metadata={[
               {
                 icon: <Calendar className="w-4 h-4" />,
-                label: 'تاريخ البداية',
+                label: t('start_date'),
                 value: new Date(campaign.start_date).toLocaleDateString('ar-SA')
               },
               ...(campaign.target_participants ? [{
                 icon: <Users className="w-4 h-4" />,
-                label: 'المشاركون',
+                label: t('participants'),
                 value: `${campaign.registered_participants || 0}/${campaign.target_participants}`
               }] : []),
               ...(campaign.target_ideas ? [{
                 icon: <Target className="w-4 h-4" />,
-                label: 'الأفكار',
+                label: t('ideas'),
                 value: `${campaign.submitted_ideas || 0}/${campaign.target_ideas}`
               }] : []),
               ...(campaign.budget ? [{
                 icon: <DollarSign className="w-4 h-4" />,
-                label: 'الميزانية',
-                value: `${campaign.budget.toLocaleString()} ريال`
+                label: t('budget'),
+                value: `${campaign.budget.toLocaleString()} ${t('currency_sar')}`
               }] : [])
             ]}
             actions={[
               {
                 type: 'view' as const,
-                label: 'عرض',
+                label: t('view'),
                 onClick: () => handleView(campaign)
               },
               {
                 type: 'edit' as const,
-                label: 'تعديل',
+                label: t('edit'),
                 onClick: () => handleEdit(campaign)
               },
               {
                 type: 'delete' as const,
-                label: 'حذف',
+                label: t('delete'),
                 onClick: () => handleDelete(campaign)
               }
             ]}

@@ -190,7 +190,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <SettingsIcon className="h-5 w-5" />
-            Challenge Settings: {challenge.title_ar}
+            {t('challenge_settings')}: {challenge.title_ar}
           </DialogTitle>
         </DialogHeader>
 
@@ -205,39 +205,39 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="access" className="flex items-center gap-2">
                 <Shield className="h-4 w-4" />
-                Access Control
+                {t('access_control')}
               </TabsTrigger>
               <TabsTrigger value="notifications" className="flex items-center gap-2">
                 <Bell className="h-4 w-4" />
-                Notifications
+                {t('notifications')}
               </TabsTrigger>
               <TabsTrigger value="workflow" className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
-                Workflow
+                {t('workflow')}
               </TabsTrigger>
               <TabsTrigger value="advanced" className="flex items-center gap-2">
                 <Archive className="h-4 w-4" />
-                Advanced
+                {t('advanced')}
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="access" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Visibility & Access</CardTitle>
+                  <CardTitle>{t('visibility_access')}</CardTitle>
                   <CardDescription>
-                    Configure who can view and participate in this challenge
+                    {t('configure_challenge_access')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="visibility">Sensitivity Level</Label>
+                    <Label htmlFor="visibility">{t('sensitivity_level')}</Label>
                     <Select
                       value={settings.visibility}
                       onValueChange={(value) => setSettings(prev => ({ ...prev, visibility: value }))}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select sensitivity level" />
+                        <SelectValue placeholder={t('select_sensitivity_level')} />
                       </SelectTrigger>
                       <SelectContent>
                         {challengeSensitivityLevels.map((level) => (

@@ -16,6 +16,7 @@ import { useSystemLists } from '@/hooks/useSystemLists';
 import { ExpertProfileDialog } from './ExpertProfileDialog';
 import { useRTLAware } from '@/hooks/useRTLAware';
 import { RTLFlex } from '@/components/ui/rtl-layout';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface Expert {
   id: string;
@@ -58,6 +59,7 @@ interface ChallengeExpert {
 }
 
 export function ExpertAssignmentManagement() {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const { assignmentStatusOptions, expertRoleTypes } = useSystemLists();
   const { me, ms, textEnd, flexRow } = useRTLAware();
@@ -253,8 +255,8 @@ export function ExpertAssignmentManagement() {
   const handleAssignExpert = async () => {
     if (!selectedChallenge || !selectedExpert || !selectedRole) {
       toast({
-        title: "Missing Information",
-        description: "Please select challenge, expert, and role.",
+        title: t('missing_information'),
+        description: t('please_select_challenge_expert_role'),
         variant: "destructive",
       });
       return;
@@ -274,8 +276,8 @@ export function ExpertAssignmentManagement() {
       if (error) throw error;
 
       toast({
-        title: "Expert Assigned",
-        description: "Expert has been successfully assigned to the challenge.",
+        title: t('expert_assigned'),
+        description: t('expert_assigned_successfully'),
       });
 
       setIsAssignDialogOpen(false);
@@ -284,8 +286,8 @@ export function ExpertAssignmentManagement() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: "Error",
-        description: "Failed to assign expert. Please try again.",
+        title: t('error'),
+        description: t('failed_to_assign_expert'),
         variant: "destructive",
       });
     }
@@ -469,7 +471,7 @@ export function ExpertAssignmentManagement() {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">Loading expert assignments...</p>
+          <p className="mt-2 text-muted-foreground">{t('loading_expert_assignments')}...</p>
         </div>
       </div>
     );
@@ -480,19 +482,19 @@ export function ExpertAssignmentManagement() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Expert Assignment Management</h1>
+          <h1 className="text-3xl font-bold">{t('expert_assignment_management')}</h1>
           <p className="text-muted-foreground">
-            Manage expert assignments, roles, and workloads across challenges
+            {t('manage_expert_assignments_description')}
           </p>
         </div>
         <RTLFlex gap="2">
           <Button onClick={() => setIsAssignDialogOpen(true)}>
             <Plus className={`h-4 w-4 ${me}`} />
-            Assign Expert
+            {t('assign_expert')}
           </Button>
           <Button variant="outline" onClick={() => setIsBulkAssignDialogOpen(true)}>
             <Users className={`h-4 w-4 ${me}`} />
-            Bulk Assign
+            {t('bulk_assign')}
           </Button>
         </RTLFlex>
       </div>

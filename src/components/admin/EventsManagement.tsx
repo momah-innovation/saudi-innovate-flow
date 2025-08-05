@@ -25,7 +25,7 @@ interface EventsManagementProps {
 }
 
 export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: EventsManagementProps) {
-  const { language } = useTranslation();
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [viewEvent, setViewEvent] = useState<any>(null);
@@ -67,8 +67,8 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: 'خطأ في تحميل الفعاليات',
-        description: 'حدث خطأ أثناء تحميل الفعاليات',
+        title: t('error_loading_events'),
+        description: t('error_loading_events_description'),
         variant: 'destructive'
       });
     } finally {
@@ -110,15 +110,15 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
       if (error) throw error;
 
       toast({
-        title: 'تم حذف الفعالية بنجاح',
-        description: `تم حذف فعالية "${event.title_ar}" بنجاح`,
+        title: t('event_deleted_successfully'),
+        description: t('event_deleted_description', { title: event.title_ar }),
       });
 
       loadEvents(); // Reload events
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: 'خطأ في حذف الفعالية',
+        title: t('error_deleting_event'),
         variant: 'destructive'
       });
     }
@@ -134,15 +134,15 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
       if (error) throw error;
 
       toast({
-        title: 'تم تحديث حالة الفعالية',
-        description: `تم تغيير حالة الفعالية إلى ${newStatus}`,
+        title: t('event_status_updated'),
+        description: t('event_status_changed_to', { status: t(newStatus) }),
       });
 
       loadEvents(); // Reload events
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: 'خطأ في تحديث الحالة',
+        title: t('error_updating_status'),
         variant: 'destructive'
       });
     }
@@ -156,11 +156,11 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
 
   // Calculate metrics for hero
   const totalEvents = events.length;
-  const activeEvents = events.filter(e => e.status === 'جاري').length;
+  const activeEvents = events.filter(e => e.status === 'ongoing' || e.status === 'جاري').length;
   const totalParticipants = events.reduce((sum, e) => sum + (e.registered_participants || 0), 0);
   const totalRevenue = events.reduce((sum, e) => sum + (e.budget || 0), 0);
-  const upcomingEvents = events.filter(e => e.status === 'مجدول').length;
-  const completedEvents = events.filter(e => e.status === 'مكتمل').length;
+  const upcomingEvents = events.filter(e => e.status === 'upcoming' || e.status === 'مجدول').length;
+  const completedEvents = events.filter(e => e.status === 'completed' || e.status === 'مكتمل').length;
 
   return (
     <>
@@ -178,7 +178,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
         {loading ? [
           <div key="loading" className="text-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">جاري تحميل الفعاليات...</p>
+            <p className="text-muted-foreground">{t('loading_events')}...</p>
           </div>
         ] : filteredEvents.length > 0 ? 
           filteredEvents.map((event) => (
@@ -198,8 +198,8 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
           )) : [
           <div key="empty" className="text-center py-12">
             <Calendar className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-            <p className="text-lg font-medium mb-2">لا توجد فعاليات</p>
-            <p className="text-muted-foreground">لا توجد فعاليات تطابق البحث الحالي</p>
+            <p className="text-lg font-medium mb-2">{t('no_events')}</p>
+            <p className="text-muted-foreground">{t('no_events_match_search')}</p>
           </div>
         ]}
       </ViewLayouts>

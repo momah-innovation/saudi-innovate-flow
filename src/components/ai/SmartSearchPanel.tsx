@@ -45,13 +45,13 @@ interface SearchFilter {
   minRelevance: number;
 }
 
-const ENTITY_TYPES = [
-  { value: 'idea', label: 'الأفكار', icon: Lightbulb },
-  { value: 'challenge', label: 'التحديات', icon: Target },
-  { value: 'opportunity', label: 'الفرص', icon: Star },
-  { value: 'event', label: 'الفعاليات', icon: Calendar },
-  { value: 'partner', label: 'الشركاء', icon: Users },
-];
+  const ENTITY_TYPES = [
+    { value: 'idea', labelKey: 'ideas', icon: Lightbulb },
+    { value: 'challenge', labelKey: 'challenges', icon: Target },
+    { value: 'opportunity', labelKey: 'opportunities', icon: Star },
+    { value: 'event', labelKey: 'events', icon: Calendar },
+    { value: 'partner', labelKey: 'partners', icon: Users },
+  ];
 
 export const SmartSearchPanel: React.FC = () => {
   const [query, setQuery] = useState('');
@@ -152,16 +152,16 @@ export const SmartSearchPanel: React.FC = () => {
 
       if (processedResults.length === 0) {
         toast({
-          title: 'لا توجد نتائج',
-          description: 'لم يتم العثور على نتائج مطابقة لبحثك',
+        title: t('no_results'),
+        description: t('no_matching_results'),
           variant: 'destructive',
         });
       }
     } catch (error) {
       console.error('Error performing search:', error);
       toast({
-        title: 'خطأ في البحث',
-        description: 'فشل في تنفيذ البحث، يرجى المحاولة مرة أخرى',
+        title: t('search_error'),
+        description: t('search_failed_try_again'),
         variant: 'destructive',
       });
     } finally {
@@ -199,13 +199,13 @@ export const SmartSearchPanel: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
-          <Brain className="h-6 w-6 text-white" />
+        <div className="w-12 h-12 rounded-lg bg-gradient-primary flex items-center justify-center">
+          <Brain className="h-6 w-6 text-primary-foreground" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold">البحث الذكي</h1>
+          <h1 className="text-2xl font-bold">{t('smart_search')}</h1>
           <p className="text-muted-foreground">
-            البحث الدلالي المتقدم بالذكاء الاصطناعي
+            {t('advanced_semantic_search_ai')}
           </p>
         </div>
       </div>
@@ -215,10 +215,10 @@ export const SmartSearchPanel: React.FC = () => {
         <CardHeader>
           <div className="flex items-center gap-2">
             <Search className="h-5 w-5" />
-            <CardTitle>البحث الدلالي</CardTitle>
+            <CardTitle>{t('semantic_search')}</CardTitle>
           </div>
           <CardDescription>
-            ابحث باستخدام المعنى والسياق، وليس فقط الكلمات المفتاحية
+            {t('semantic_search_description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -227,7 +227,7 @@ export const SmartSearchPanel: React.FC = () => {
             <div className="flex-1 relative">
               <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
               <Input
-                placeholder="ابحث عن الأفكار والتحديات والفرص..."
+                placeholder={t('search_ideas_challenges_placeholder')}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyPress={handleKeyPress}
@@ -248,7 +248,7 @@ export const SmartSearchPanel: React.FC = () => {
             <div className="space-y-3">
               {searchHistory.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-medium mb-2">البحث السابق:</h4>
+                  <h4 className="text-sm font-medium mb-2">{t('recent_searches')}:</h4>
                   <div className="flex flex-wrap gap-1">
                     {searchHistory.slice(0, 5).map((historyQuery, index) => (
                       <Button
@@ -271,7 +271,7 @@ export const SmartSearchPanel: React.FC = () => {
 
               {popularQueries.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-medium mb-2">البحث الشائع:</h4>
+                  <h4 className="text-sm font-medium mb-2">{t('popular_searches')}:</h4>
                   <div className="flex flex-wrap gap-1">
                     {popularQueries.map((popularQuery, index) => (
                       <Button
@@ -327,7 +327,7 @@ export const SmartSearchPanel: React.FC = () => {
                           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2"
                         >
                           <IconComponent className="h-4 w-4" />
-                          {entityType.label}
+                          {t(entityType.labelKey)}
                         </label>
                       </div>
                     );
@@ -380,7 +380,7 @@ export const SmartSearchPanel: React.FC = () => {
         <div className="lg:col-span-3 space-y-4">
           {loading ? (
             <div className="text-center py-12">
-              <Brain className="h-12 w-12 animate-pulse mx-auto mb-4 text-blue-500" />
+              <Brain className="h-12 w-12 animate-pulse mx-auto mb-4 text-primary" />
               <p className="text-lg font-medium">جاري البحث الذكي...</p>
               <p className="text-sm text-muted-foreground">تحليل المحتوى والعثور على أفضل النتائج</p>
             </div>
@@ -409,9 +409,9 @@ export const SmartSearchPanel: React.FC = () => {
                               <h4 className="font-medium text-lg">{result.title}</h4>
                             </div>
                             <div className="flex items-center gap-2">
-                              <Badge variant="outline" className="text-xs">
-                                {ENTITY_TYPES.find(et => et.value === result.type)?.label || result.type}
-                              </Badge>
+                             <Badge variant="outline" className="text-xs">
+                               {t(ENTITY_TYPES.find(et => et.value === result.type)?.labelKey || result.type)}
+                             </Badge>
                               <Badge 
                                 variant="secondary" 
                                 className={`text-xs ${getRelevanceColor(result.relevanceScore)}`}

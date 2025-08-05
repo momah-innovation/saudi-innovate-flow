@@ -126,37 +126,37 @@ export function AdvancedSearch({
 
   const statusOptions = {
     challenges: [
-      { value: 'draft', label: 'Draft', labelAr: 'مسودة' },
-      { value: 'active', label: 'Active', labelAr: 'نشط' },
-      { value: 'completed', label: 'Completed', labelAr: 'مكتمل' },
-      { value: 'cancelled', label: 'Cancelled', labelAr: 'ملغي' }
+      { value: 'draft', labelKey: 'status_draft' },
+      { value: 'active', labelKey: 'status_active' },
+      { value: 'completed', labelKey: 'status_completed' },
+      { value: 'cancelled', labelKey: 'status_cancelled' }
     ],
     ideas: [
-      { value: 'draft', label: 'Draft', labelAr: 'مسودة' },
-      { value: 'submitted', label: 'Submitted', labelAr: 'مقدم' },
-      { value: 'under_review', label: 'Under Review', labelAr: 'قيد المراجعة' },
-      { value: 'approved', label: 'Approved', labelAr: 'معتمد' },
-      { value: 'rejected', label: 'Rejected', labelAr: 'مرفوض' }
+      { value: 'draft', labelKey: 'status_draft' },
+      { value: 'submitted', labelKey: 'status_submitted' },
+      { value: 'under_review', labelKey: 'status_under_review' },
+      { value: 'approved', labelKey: 'status_approved' },
+      { value: 'rejected', labelKey: 'status_rejected' }
     ],
     events: [
-      { value: 'upcoming', label: 'Upcoming', labelAr: 'قادم' },
-      { value: 'registration_open', label: 'Registration Open', labelAr: 'التسجيل مفتوح' },
-      { value: 'registration_closed', label: 'Registration Closed', labelAr: 'التسجيل مغلق' },
-      { value: 'ongoing', label: 'Ongoing', labelAr: 'جاري' },
-      { value: 'completed', label: 'Completed', labelAr: 'مكتمل' }
+      { value: 'upcoming', labelKey: 'status_upcoming' },
+      { value: 'registration_open', labelKey: 'status_registration_open' },
+      { value: 'registration_closed', labelKey: 'status_registration_closed' },
+      { value: 'ongoing', labelKey: 'status_ongoing' },
+      { value: 'completed', labelKey: 'status_completed' }
     ],
     opportunities: [
-      { value: 'open', label: 'Open', labelAr: 'مفتوح' },
-      { value: 'closed', label: 'Closed', labelAr: 'مغلق' },
-      { value: 'paused', label: 'Paused', labelAr: 'متوقف مؤقتاً' }
+      { value: 'open', labelKey: 'status_open' },
+      { value: 'closed', labelKey: 'status_closed' },
+      { value: 'paused', labelKey: 'status_paused' }
     ]
   };
 
   const priorityOptions = [
-    { value: 'low', label: 'Low Priority', labelAr: 'أولوية منخفضة' },
-    { value: 'medium', label: 'Medium Priority', labelAr: 'أولوية متوسطة' },
-    { value: 'high', label: 'High Priority', labelAr: 'أولوية عالية' },
-    { value: 'urgent', label: 'Urgent', labelAr: 'طارئ' }
+    { value: 'low', labelKey: 'priority_low' },
+    { value: 'medium', labelKey: 'priority_medium' },
+    { value: 'high', labelKey: 'priority_high' },
+    { value: 'urgent', labelKey: 'priority_urgent' }
   ];
 
   return (
@@ -227,7 +227,7 @@ export function AdvancedSearch({
                     </SelectItem>
                     {statusOptions[searchType]?.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
-                        {language === 'ar' ? option.labelAr : option.label}
+                        {t(option.labelKey)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -252,7 +252,7 @@ export function AdvancedSearch({
                     </SelectItem>
                     {priorityOptions.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
-                        {language === 'ar' ? option.labelAr : option.label}
+                        {t(option.labelKey)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -335,7 +335,7 @@ export function AdvancedSearch({
                 {t('tags') || 'العلامات'}
               </Label>
               <div className="text-sm text-muted-foreground">
-                Tag selector will be available in the next phase
+                {t('tag_selector_coming_soon')}
               </div>
             </div>
           </div>
