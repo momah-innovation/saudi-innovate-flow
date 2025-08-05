@@ -29,6 +29,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { useRTLAware } from '@/hooks/useRTLAware';
+import { cn } from '@/lib/utils';
 
 // Role hierarchy definition
 export const ROLE_HIERARCHY = {
@@ -183,7 +184,7 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
   ]);
 
   const { toast } = useToast();
-  const { me } = useRTLAware();
+  const { me, ps, start } = useRTLAware();
 
   const handleRoleChange = async (userId: string, newRole: UserRole) => {
     try {
@@ -283,12 +284,12 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Search className={cn("absolute top-3 h-4 w-4 text-muted-foreground", start('3'))} />
                 <Input
                   placeholder="بحث بالاسم أو البريد الإلكتروني..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className={ps('10')}
                 />
               </div>
             </div>

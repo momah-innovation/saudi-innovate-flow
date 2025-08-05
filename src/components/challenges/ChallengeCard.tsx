@@ -63,7 +63,7 @@ export const ChallengeCard = ({
   const { isRTL } = useDirection();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const { flexRow, textStart, textEnd, ml, mr, left, right, me } = useRTLAware();
+  const { flexRow, textStart, textEnd, ml, mr, left, right, me, start, end, ms } = useRTLAware();
 
   // Get mappings from config
   const statusMapping = getStatusMapping(challenge.status);
@@ -149,8 +149,8 @@ export const ChallengeCard = ({
               </div>
               
               {/* Status Indicators */}
-              {(challenge.trending || isNew) && (
-                <div className={cn("absolute -top-1", isRTL ? left('1') : right('1'))}>
+               {(challenge.trending || isNew) && (
+                <div className={cn("absolute -top-1", end('1'))}>
                   <Badge variant="secondary" className="text-xs px-1 py-0.5">
                     {challenge.trending ? <TrendingUp className="w-3 h-3" /> : <Star className="w-3 h-3" />}
                   </Badge>
@@ -171,7 +171,7 @@ export const ChallengeCard = ({
                     )}
                      {isUrgent && (
                        <Badge variant="secondary" className={challengesPageConfig.badges.urgent}>
-                         <AlertCircle className={cn("w-3 h-3", isRTL ? ml('1') : mr('1'))} />
+                         <AlertCircle className={cn("w-3 h-3", me('1'))} />
                         {isRTL ? 'عاجل' : 'Urgent'}
                       </Badge>
                     )}
@@ -205,7 +205,7 @@ export const ChallengeCard = ({
                 <RTLLayout className="flex flex-col items-end gap-3">
                   <RTLFlex className="items-center gap-2">
                     <Badge className={getStatusColor(challenge.status)}>
-                      <StatusIcon className={cn("w-3 h-3", isRTL ? ml('1') : mr('1'))} />
+                      <StatusIcon className={cn("w-3 h-3", me('1'))} />
                       {getStatusText(challenge.status)}
                     </Badge>
                     <Badge className={getPriorityColor(challenge.priority_level || 'متوسط')}>
@@ -244,7 +244,7 @@ export const ChallengeCard = ({
                         challengesPageConfig.ui.colors.text.accent,
                         "border-0 shadow-md",
                         challengesPageConfig.ui.effects.hoverScale,
-                        isRTL ? mr('2') : ml('2')
+                        ms('2')
                       )}
                     >
                       {isRTL ? 'شارك' : 'Join'}
@@ -291,7 +291,7 @@ export const ChallengeCard = ({
         <div className={`absolute inset-0 ${challengesPageConfig.ui.colors.background.overlay} bg-gradient-to-t from-black/60 via-transparent to-transparent`} />
         
         {/* Status Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
+        <div className={cn("absolute top-3 flex flex-col gap-2", start('3'))}>
           <Badge className={getStatusColor(challenge.status)}>
             <StatusIcon className={`w-3 h-3 ${me('1')}`} />
             {getStatusText(challenge.status)}
@@ -311,7 +311,7 @@ export const ChallengeCard = ({
         </div>
 
         {/* Quick Actions */}
-        <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className={cn("absolute top-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity", end('3'))}>
           <IconActionButton
             icon={<Heart className={cn("w-4 h-4", isLiked && `fill-current ${challengesPageConfig.ui.colors.stats.red}`)} />}
             tooltip={isRTL ? 'أعجبني' : 'Like'}
@@ -334,7 +334,7 @@ export const ChallengeCard = ({
 
         {/* Urgency Indicator */}
         {isUrgent && (
-          <div className="absolute bottom-3 left-3">
+          <div className={cn("absolute bottom-3", start('3'))}>
             <Badge className={`${challengesPageConfig.badges.urgent} animate-pulse`}>
               <AlertCircle className={`w-3 h-3 ${me('1')}`} />
               {daysLeft} {isRTL ? 'أيام' : 'days'}
@@ -343,7 +343,7 @@ export const ChallengeCard = ({
         )}
 
         {/* Prize */}
-        <div className="absolute bottom-3 right-3">
+        <div className={cn("absolute bottom-3", end('3'))}>
           <div className={`${challengesPageConfig.ui.glassMorphism.heavy} rounded-lg p-2 text-center min-w-[4rem]`}>
             <div className="text-xs font-medium text-muted-foreground">
               {isRTL ? 'الجائزة' : 'Prize'}

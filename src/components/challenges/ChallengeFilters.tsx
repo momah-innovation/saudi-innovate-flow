@@ -57,7 +57,7 @@ export const ChallengeFilters = ({
   dynamicMaxParticipants = 1000
 }: ChallengeFiltersProps) => {
   const { isRTL } = useDirection();
-  const { me, ms } = useRTLAware();
+  const { me, ms, start, end, ps } = useRTLAware();
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
@@ -158,8 +158,9 @@ export const ChallengeFilters = ({
                 ) : (
                   // Expanded state - full search input
                   <div className="relative animate-fade-in">
-                    <Search className={cn(
-                      "absolute left-2 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 transition-colors duration-200 cursor-pointer",
+                     <Search className={cn(
+                      "absolute top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 transition-colors duration-200 cursor-pointer",
+                      start('2'),
                       searchFocused ? "text-primary" : "text-muted-foreground"
                     )} 
                     onClick={handleSearchClick}
@@ -170,7 +171,7 @@ export const ChallengeFilters = ({
                       onChange={(e) => updateFilter('search', e.target.value)}
                       onFocus={handleSearchFocus}
                       onBlur={handleSearchBlur}
-                      className={`pl-8 h-10 text-sm transition-all duration-300 ${challengesPageConfig.ui.glassMorphism.medium} border-white/20 focus:border-primary focus:ring-primary`}
+                      className={cn(`h-10 text-sm transition-all duration-300 ${challengesPageConfig.ui.glassMorphism.medium} border-white/20 focus:border-primary focus:ring-primary`, ps('8'))}
                       title={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
                       autoFocus={searchExpanded && !filters.search}
                     />
@@ -179,7 +180,7 @@ export const ChallengeFilters = ({
                         variant="ghost"
                         size="sm"
                         onClick={() => updateFilter('search', '')}
-                        className="absolute right-1 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-muted rounded-sm"
+                        className={cn("absolute top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-muted rounded-sm", end('1'))}
                         title={isRTL ? 'مسح البحث' : 'Clear search'}
                       >
                         <X className="h-3 w-3" />

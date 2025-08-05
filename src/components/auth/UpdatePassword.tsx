@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useRTLAware } from '@/hooks/useRTLAware';
+import { cn } from '@/lib/utils';
 
 export const UpdatePassword = () => {
   const [password, setPassword] = useState('');
@@ -19,7 +20,7 @@ export const UpdatePassword = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { ps, pe } = useRTLAware();
+  const { ps, pe, start, end } = useRTLAware();
 
   useEffect(() => {
     // Check if we have access token from email link
@@ -147,7 +148,7 @@ export const UpdatePassword = () => {
             <div className="space-y-2">
               <Label htmlFor="password">كلمة المرور الجديدة</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Lock className={cn("absolute top-3 h-4 w-4 text-muted-foreground", start('3'))} />
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -161,7 +162,7 @@ export const UpdatePassword = () => {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                  className={cn("absolute top-0 h-full px-3 py-2 hover:bg-transparent", end('0'))}
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -172,7 +173,7 @@ export const UpdatePassword = () => {
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">تأكيد كلمة المرور</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Lock className={cn("absolute top-3 h-4 w-4 text-muted-foreground", start('3'))} />
                 <Input
                   id="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
@@ -186,7 +187,7 @@ export const UpdatePassword = () => {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                  className={cn("absolute top-0 h-full px-3 py-2 hover:bg-transparent", end('0'))}
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}

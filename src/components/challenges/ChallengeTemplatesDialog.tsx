@@ -73,7 +73,7 @@ export const ChallengeTemplatesDialog = ({
 }: ChallengeTemplatesDialogProps) => {
   const { isRTL } = useDirection();
   const { toast } = useToast();
-  const { me, ps } = useRTLAware();
+  const { me, ps, start } = useRTLAware();
   const [templates, setTemplates] = useState<ChallengeTemplate[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -347,7 +347,7 @@ export const ChallengeTemplatesDialog = ({
         {/* Filters */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div className="relative">
-            <Search className={cn("absolute left-3 top-3 w-4 h-4", challengesPageConfig.ui.colors.text.muted)} />
+            <Search className={cn("absolute top-3 w-4 h-4", start('3'), challengesPageConfig.ui.colors.text.muted)} />
             <Input
               placeholder={isRTL ? 'البحث في القوالب...' : 'Search templates...'}
               value={searchQuery}
