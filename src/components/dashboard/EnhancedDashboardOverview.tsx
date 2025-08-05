@@ -264,7 +264,7 @@ export const EnhancedDashboardOverview = () => {
     <div className="space-y-6">
       {/* Hero Section */}
       <div className="relative overflow-hidden rounded-lg bg-gradient-to-r from-primary to-primary-foreground text-primary-foreground">
-        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-background/20"></div>
         <div className="relative p-6 md:p-8">
           <div className="flex items-center justify-between">
             <div>
@@ -475,8 +475,8 @@ export const EnhancedDashboardOverview = () => {
                     alt="Analytics" 
                     className="w-full h-full object-cover rounded-lg opacity-80"
                   />
-                  <div className="absolute inset-0 bg-black/40 rounded-lg flex items-center justify-center">
-                    <p className="text-white font-medium">
+                  <div className="absolute inset-0 bg-background/40 rounded-lg flex items-center justify-center">
+                    <p className="text-primary-foreground font-medium">
                       {currentLanguage === 'ar' ? 'مخططات تفاعلية قادمة' : 'Interactive Charts Coming Soon'}
                     </p>
                   </div>
@@ -495,8 +495,8 @@ export const EnhancedDashboardOverview = () => {
                     alt="Metrics" 
                     className="w-full h-full object-cover rounded-lg opacity-80"
                   />
-                  <div className="absolute inset-0 bg-black/40 rounded-lg flex items-center justify-center">
-                    <p className="text-white font-medium">
+                  <div className="absolute inset-0 bg-background/40 rounded-lg flex items-center justify-center">
+                    <p className="text-primary-foreground font-medium">
                       {currentLanguage === 'ar' ? 'تتبع مؤشرات الأداء الرئيسية' : 'KPI Tracking Dashboard'}
                     </p>
                   </div>

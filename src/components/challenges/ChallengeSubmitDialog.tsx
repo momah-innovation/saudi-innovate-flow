@@ -661,7 +661,7 @@ export const ChallengeSubmitDialog = ({
                 className="transition-all duration-200"
               >
                 {loading ? (
-                  <div className={`w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin ${me('2')}`} />
+                  <div className={`w-4 h-4 border-2 border-muted border-t-primary rounded-full animate-spin ${me('2')}`} />
                 ) : (
                   <Send className={`w-4 h-4 ${me('2')}`} />
                 )}

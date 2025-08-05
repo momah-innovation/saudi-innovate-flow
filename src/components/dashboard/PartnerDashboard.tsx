@@ -53,14 +53,14 @@ export function PartnerDashboard({ userProfile, canManageOpportunities, canViewP
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-success to-success-dark text-white rounded-lg p-6">
+      <div className="bg-gradient-to-r from-success to-success-dark text-success-foreground rounded-lg p-6">
         <div className="flex items-center gap-3 mb-2">
           <Handshake className="w-6 h-6" />
           <h2 className="text-xl font-bold">
             {language === 'ar' ? 'لوحة الشريك' : 'Partner Dashboard'}
           </h2>
         </div>
-        <p className="text-white/80">
+        <p className="text-success-foreground/80">
           {language === 'ar' 
             ? `أهلاً بك ${userProfile?.display_name} - إدارة الشراكات والفرص`
             : `Welcome ${userProfile?.display_name} - Managing partnerships and opportunities`}

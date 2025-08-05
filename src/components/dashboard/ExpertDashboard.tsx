@@ -54,14 +54,14 @@ export function ExpertDashboard({ userProfile, canEvaluateIdeas, canAccessExpert
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-accent to-primary text-white rounded-lg p-6">
+      <div className="bg-gradient-to-r from-accent to-primary text-primary-foreground rounded-lg p-6">
         <div className="flex items-center gap-3 mb-2">
           <Brain className="w-6 h-6" />
           <h2 className="text-xl font-bold">
             {language === 'ar' ? 'لوحة الخبير' : 'Expert Dashboard'}
           </h2>
         </div>
-        <p className="text-white/80">
+        <p className="text-primary-foreground/80">
           {language === 'ar' 
             ? `مرحباً ${userProfile?.display_name} - دورك كخبير في تقييم الأفكار`
             : `Welcome ${userProfile?.display_name} - Your role as an expert in evaluating ideas`}
