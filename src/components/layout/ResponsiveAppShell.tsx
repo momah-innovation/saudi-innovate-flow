@@ -1,6 +1,6 @@
 import { ReactNode, Suspense } from 'react';
 import { SidebarProvider } from '@/components/ui/sidebar';
-import { ResponsiveSystemHeader } from './ResponsiveSystemHeader';
+import { Header } from './Header';
 import { ResponsiveNavigationSidebar } from './ResponsiveNavigationSidebar';
 import { LoadingSpinner } from '@/components/ui/loading';
 import { useDirection } from '@/components/ui/direction-provider';
@@ -32,7 +32,7 @@ function ResponsiveAppShellContent({ children }: ResponsiveAppShellProps) {
           !isOverlay && isOpen && isMiniMode && (isRTL ? "mr-16" : "ml-16")
         )}>
           {/* Global Header */}
-          <ResponsiveSystemHeader />
+          <Header />
           
           {/* Page Content with Loading */}
           <main className="flex-1 overflow-auto bg-background">

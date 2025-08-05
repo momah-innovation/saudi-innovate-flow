@@ -1,6 +1,6 @@
 import { ReactNode, Suspense } from 'react';
 import { SidebarProvider } from '@/components/ui/sidebar';
-import { SystemHeader } from './SystemHeader';
+import { Header } from './Header';
 import { NavigationSidebar } from './NavigationSidebar';
 import { LoadingSpinner } from '@/components/ui/loading';
 import { useDirection } from '@/components/ui/direction-provider';
@@ -37,7 +37,7 @@ export function AppShell({ children }: AppShellProps) {
           {/* Main Content Area */}
           <div className="flex-1 flex flex-col min-w-0">
             {/* Global Header */}
-            <SystemHeader />
+            <Header />
             
             {/* Page Content with Loading */}
             <main className="flex-1 overflow-auto">

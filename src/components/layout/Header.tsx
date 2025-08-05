@@ -1,31 +1,33 @@
 import { useState } from 'react';
-import { Search, Menu } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { NotificationCenter } from '@/components/notifications/NotificationCenter';
+import { ResponsiveNotificationCenter } from '@/components/notifications/ResponsiveNotificationCenter';
 import { UserMenu } from './UserMenu';
 import { LanguageToggle } from '@/components/ui/language-toggle';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDirection } from '@/components/ui/direction-provider';
 import { getInitials, useSystemSettings } from '@/contexts/SystemSettingsContext';
 import { cn } from '@/lib/utils';
+import { useResponsiveSidebar } from '@/contexts/ResponsiveSidebarContext';
 
 /**
- * SystemHeader - Global header component with improved UX and performance
+ * Header - Global header component for desktop, tablet, and mobile
  * Features:
+ * - RTL/LTR support with proper positioning
  * - Responsive design (mobile drawer trigger, desktop sidebar trigger)
- * - Global search functionality
- * - User controls and notifications
- * - Language switching
- * - Optimized for RTL
+ * - Global search functionality with RTL placeholder support
+ * - Coordinated notifications that respect sidebar position
+ * - User controls and language switching
+ * - Smooth animations and hover effects
  */
-export function SystemHeader() {
+export function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const { userProfile } = useAuth();
   const { isRTL, language } = useDirection();
   const { uiInitialsMaxLength } = useSystemSettings();
+  const { toggleSidebar, isOverlay } = useResponsiveSidebar();
 
   const getUserDisplayName = () => {
     if (!userProfile) return 'User';
@@ -53,7 +55,10 @@ export function SystemHeader() {
           isRTL && "flex-row-reverse"
         )}>
           {/* Sidebar Toggle */}
-          <SidebarTrigger className="shrink-0" />
+          <SidebarTrigger 
+            className="shrink-0" 
+            onClick={toggleSidebar}
+          />
           
           {/* Logo & Title */}
           <div className={cn(
@@ -67,7 +72,10 @@ export function SystemHeader() {
               "hidden sm:block min-w-0",
               isRTL && "text-right"
             )}>
-              <h1 className={`font-semibold text-sm truncate ${language === 'ar' ? 'font-arabic' : 'font-english'}`}>
+              <h1 className={cn(
+                "font-semibold text-sm truncate",
+                language === 'ar' ? 'font-arabic' : 'font-english'
+              )}>
                 {getSystemTitle()}
               </h1>
             </div>
@@ -104,7 +112,7 @@ export function SystemHeader() {
           <LanguageToggle />
           
           {/* Notifications */}
-          <NotificationCenter />
+          <ResponsiveNotificationCenter />
           
           {/* User Menu */}
           <UserMenu />

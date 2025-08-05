@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Header } from '@/components/ui/header';
+import { Header } from './Header';
 import { NavigationSidebar } from './NavigationSidebar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb';
