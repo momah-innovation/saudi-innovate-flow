@@ -21,6 +21,7 @@ import {
   Search,
   X
 } from "lucide-react";
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface TeamMemberData {
   id?: string;
@@ -65,6 +66,7 @@ export function TeamMemberWizard({
   const { toast } = useToast();
   const { t } = useTranslation();
   const { teamRoleOptions, teamSpecializationOptions } = useSystemLists();
+  const { start, ps } = useRTLAware();
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -368,12 +370,12 @@ export function TeamMemberWizard({
               <div className="space-y-2">
                 <Label>البحث عن مستخدم</Label>
                 <div className="relative">
-                  <Search className={`absolute ${start} top-2.5 h-4 w-4 text-muted-foreground`} />
+                  <Search className={`absolute ${start('3')} top-2.5 h-4 w-4 text-muted-foreground`} />
                   <Input
                     placeholder="ابحث بالاسم أو البريد الإلكتروني..."
                     value={userSearchTerm}
                     onChange={(e) => setUserSearchTerm(e.target.value)}
-                    className={ps}
+                    className={ps('10')}
                   />
                 </div>
                 {userSearchTerm && (

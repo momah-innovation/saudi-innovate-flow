@@ -17,6 +17,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from "@/hooks/useSystemLists";
 import type { Challenge, Department, Deputy, Sector, Domain, SubDomain, Service, Partner, Expert, FocusQuestion } from "@/types";
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface ChallengeFormData {
   id?: string;
@@ -548,7 +549,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                          variant="outline"
                          className="w-full justify-start font-normal text-right"
                        >
-                         <CalendarIcon className="ml-2 h-4 w-4" />
+                          <CalendarIcon className={`${me('2')} h-4 w-4`} />
                          {startDate ? format(startDate, "PPP", { locale: ar }) : <span>اختر التاريخ</span>}
                        </Button>
                     </PopoverTrigger>
@@ -571,7 +572,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                          variant="outline"
                          className="w-full justify-start font-normal text-right"
                        >
-                         <CalendarIcon className="ml-2 h-4 w-4" />
+                         <CalendarIcon className={`${me('2')} h-4 w-4`} />
                          {endDate ? format(endDate, "PPP", { locale: ar }) : <span>اختر التاريخ</span>}
                        </Button>
                     </PopoverTrigger>

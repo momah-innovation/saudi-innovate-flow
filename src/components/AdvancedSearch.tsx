@@ -18,6 +18,8 @@ import {
   SlidersHorizontal
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useRTLAware } from '@/hooks/useRTLAware';
+import { RTLFlex } from '@/components/ui/rtl-layout';
 
 interface SearchFilters {
   query: string;
@@ -53,6 +55,7 @@ export function AdvancedSearch({
   className
 }: AdvancedSearchProps) {
   const { t, language, isRTL } = useTranslation();
+  const { start, ps, me } = useRTLAware();
   
   const [filters, setFilters] = useState<SearchFilters>({
     query: '',
@@ -189,16 +192,13 @@ export function AdvancedSearch({
             {t('search_query') || 'استعلام البحث'}
           </Label>
           <div className="relative">
-            <Search className={cn(
-              "absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground",
-              isRTL ? "right-3" : "left-3"
-            )} />
+            <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground`} />
             <Input
               id="search-query"
               value={filters.query}
               onChange={(e) => handleFilterChange('query', e.target.value)}
               placeholder={t('search_placeholder') || 'ابحث في العناوين والأوصاف...'}
-              className={cn(isRTL ? "pr-10" : "pl-10")}
+              className={ps('10')}
               dir={isRTL ? 'rtl' : 'ltr'}
             />
           </div>
@@ -342,19 +342,19 @@ export function AdvancedSearch({
         )}
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-3 pt-4 border-t">
+        <RTLFlex className="gap-3 pt-4 border-t">
           <Button onClick={handleSearch} className="flex-1 md:flex-none">
-            <Search className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
+            <Search className={`h-4 w-4 ${me('2')}`} />
             {t('search') || 'بحث'}
           </Button>
           
           {getActiveFiltersCount() > 0 && (
             <Button variant="outline" onClick={handleReset}>
-              <X className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
+              <X className={`h-4 w-4 ${me('2')}`} />
               {t('clear_filters') || 'مسح المرشحات'}
             </Button>
           )}
-        </div>
+        </RTLFlex>
       </CardContent>
     </Card>
   );

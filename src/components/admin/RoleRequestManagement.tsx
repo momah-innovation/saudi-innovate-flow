@@ -17,6 +17,7 @@ import { useToast } from '@/hooks/use-toast';
 import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
 import { useSystemLists } from '@/hooks/useSystemLists';
 import { ExpertProfileView } from '@/components/experts/ExpertProfileCard';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface RoleRequest {
   id: string;
@@ -50,6 +51,7 @@ export default function RoleRequestManagement() {
   const { toast } = useToast();
   const { uiInitialsMaxLength } = useSystemSettings();
   const { roleRequestStatusOptions } = useSystemLists();
+  const { start, ps, flexRow } = useRTLAware();
   const [roleRequests, setRoleRequests] = useState<RoleRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState<RoleRequest | null>(null);
@@ -277,12 +279,12 @@ export default function RoleRequestManagement() {
             <div className="space-y-2">
               <Label>Search</Label>
               <div className="relative">
-                <Search className={`absolute ${start} top-2.5 h-4 w-4 text-muted-foreground`} />
+                <Search className={`absolute ${start('3')} top-2.5 h-4 w-4 text-muted-foreground`} />
                 <Input
                   placeholder="Name or email..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className={ps}
+                  className={ps('10')}
                 />
               </div>
             </div>

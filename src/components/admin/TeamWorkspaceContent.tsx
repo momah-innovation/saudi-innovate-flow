@@ -23,6 +23,8 @@ import {
   PieChart, LineChart
 } from 'lucide-react';
 import { useTranslation } from '@/hooks/useAppTranslation';
+import { useRTLAware } from '@/hooks/useRTLAware';
+import { RTLFlex } from '@/components/ui/rtl-layout';
 import { CreateProjectDialog } from './team-workspace/CreateProjectDialog';
 import { InviteMemberDialog } from './team-workspace/InviteMemberDialog';
 import { TaskAssignmentDialog } from './team-workspace/TaskAssignmentDialog';
@@ -45,6 +47,7 @@ export function TeamWorkspaceContent({
   const { t } = useTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { me, start, ps } = useRTLAware();
   const [loading, setLoading] = useState(true);
   const [selectedMember, setSelectedMember] = useState<any>(null);
   const [selectedProject, setSelectedProject] = useState<any>(null);
@@ -219,7 +222,7 @@ export function TeamWorkspaceContent({
               </SelectContent>
             </Select>
             <Button onClick={createQuickTask} className="w-full">
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className={`h-4 w-4 ${me('2')}`} />
               إنشاء المهمة
             </Button>
           </div>
@@ -723,10 +726,10 @@ export function TeamWorkspaceContent({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground`} />
             <Input
               placeholder="البحث في أعضاء الفريق..."
-              className="pl-10 w-64"
+              className={`${ps('10')} w-64`}
             />
           </div>
           <Select defaultValue="all">

@@ -3,10 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 export function TestPrivilegeElevation() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
+  const { me } = useRTLAware();
 
   const testElevation = async () => {
     setLoading(true);
@@ -46,7 +48,7 @@ export function TestPrivilegeElevation() {
           disabled={loading}
           className="w-full"
         >
-          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {loading && <Loader2 className={`${me('2')} h-4 w-4 animate-spin`} />}
           Call Elevate Privileges Function
         </Button>
         
