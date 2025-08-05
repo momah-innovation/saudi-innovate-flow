@@ -219,7 +219,7 @@ export const EnhancedEventRegistrationHero = ({
                   </div>
 
                   <div className="p-6 space-y-4">
-                    <h3 className="text-xl font-bold text-white">
+                    <h3 className="text-xl font-bold text-primary-foreground">
                       {featuredEvent.title}
                     </h3>
 
@@ -245,11 +245,11 @@ export const EnhancedEventRegistrationHero = ({
 
                     <Progress 
                       value={(featuredEvent.participants / featuredEvent.capacity) * 100} 
-                      className="h-2 bg-white/20"
+                      className="h-2 bg-primary/20"
                     />
 
                     <Button 
-                      className="w-full bg-gradient-primary hover:opacity-90 text-white"
+                      className="w-full bg-gradient-primary hover:opacity-90 text-primary-foreground"
                     >
                       {isRTL ? 'سجل الآن' : 'Register Now'}
                       <ArrowRight className={`w-4 h-4 ${ms('2')}`} />
@@ -258,7 +258,7 @@ export const EnhancedEventRegistrationHero = ({
                 </CardContent>
               </Card>
             ) : (
-              <Card className="bg-white/5 backdrop-blur-xl border-white/10 border-dashed">
+              <Card className="bg-primary/5 backdrop-blur-xl border-primary/10 border-dashed">
                 <CardContent className="p-8 text-center">
                   <Calendar className="w-16 h-16 mx-auto text-white/40 mb-4" />
                   <h3 className="text-lg font-semibold text-white/80 mb-2">
@@ -273,10 +273,10 @@ export const EnhancedEventRegistrationHero = ({
 
             {/* Quick Action Cards */}
             <div className="grid grid-cols-2 gap-4">
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+              <Card className="bg-primary/5 backdrop-blur-sm border-primary/10 hover:bg-primary/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
                   <Target className="w-8 h-8 text-primary mx-auto mb-2" />
-                  <div className="text-sm font-medium text-white">
+                  <div className="text-sm font-medium text-primary-foreground">
                     {isRTL ? 'فعاليات اليوم' : "Today's Events"}
                   </div>
                   <div className="text-xs text-white/70">
@@ -285,10 +285,10 @@ export const EnhancedEventRegistrationHero = ({
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+              <Card className="bg-primary/5 backdrop-blur-sm border-primary/10 hover:bg-primary/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
                   <Award className="w-8 h-8 text-accent mx-auto mb-2" />
-                  <div className="text-sm font-medium text-white">
+                  <div className="text-sm font-medium text-primary-foreground">
                     {isRTL ? 'شهاداتي' : 'My Certificates'}
                   </div>
                   <div className="text-xs text-white/70">

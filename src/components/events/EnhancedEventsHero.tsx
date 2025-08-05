@@ -90,14 +90,14 @@ export const EnhancedEventsHero = ({
                 <div className="p-3 bg-glass-100 backdrop-blur-sm rounded-xl border border-glass-border-100">
                   <Sparkles className="w-6 h-6 text-warning" />
                 </div>
-                <Badge variant="secondary" className="bg-glass-100 text-white border-glass-border-100 backdrop-blur-sm">
+                <Badge variant="secondary" className="bg-glass-100 text-primary-foreground border-glass-border-100 backdrop-blur-sm">
                   <Star className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'منصة الفعاليات المبتكرة' : 'Innovation Events Platform'}
                 </Badge>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
                   {isRTL ? (
                     <>
                       استكشف <span className="gradient-text-warning">الفعاليات</span> الملهمة
@@ -134,7 +134,7 @@ export const EnhancedEventsHero = ({
                   >
                     <CardContent className="p-4 text-center">
                       <Icon className={cn("w-6 h-6 mx-auto mb-2 transition-colors", stat.color)} />
-                      <div className="text-2xl font-bold text-white">{stat.value}</div>
+                      <div className="text-2xl font-bold text-primary-foreground">{stat.value}</div>
                       <div className="text-sm text-white/70">{stat.label}</div>
                     </CardContent>
                   </Card>
@@ -148,7 +148,7 @@ export const EnhancedEventsHero = ({
                 <Button
                   onClick={onCreateEvent}
                   size="lg"
-                  className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  className="bg-gradient-primary text-primary-foreground hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
                   <Plus className={`w-5 h-5 ${me('2')}`} />
                   {isRTL ? 'إنشاء فعالية جديدة' : 'Create New Event'}
@@ -159,7 +159,7 @@ export const EnhancedEventsHero = ({
                 onClick={onShowFilters}
                 variant="outline"
                 size="lg"
-                className="border-glass-border-200 text-white hover:bg-glass-100 backdrop-blur-sm"
+                className="border-glass-border-200 text-primary-foreground hover:bg-glass-100 backdrop-blur-sm"
               >
                 <Filter className={`w-5 h-5 ${me('2')}`} />
                 {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
@@ -168,7 +168,7 @@ export const EnhancedEventsHero = ({
               <Button
                 variant="ghost"
                 size="lg"
-                className="text-white hover:bg-glass-100"
+                className="text-primary-foreground hover:bg-glass-100"
               >
                 <Play className={`w-5 h-5 ${me('2')}`} />
                 {isRTL ? 'شاهد الفيديو' : 'Watch Demo'}
@@ -213,7 +213,7 @@ export const EnhancedEventsHero = ({
                   </div>
 
                   <div className="p-6 space-y-4">
-                    <h3 className="text-xl font-bold text-white">
+                    <h3 className="text-xl font-bold text-primary-foreground">
                       {featuredEvent.title_ar}
                     </h3>
 
@@ -234,11 +234,11 @@ export const EnhancedEventsHero = ({
 
                     <Progress 
                       value={(featuredEvent.participants / 500) * 100} 
-                      className="h-2 bg-white/20"
+                      className="h-2 bg-primary/20"
                     />
 
                     <Button 
-                      className="w-full bg-gradient-primary hover:opacity-90 text-white"
+                      className="w-full bg-gradient-primary hover:opacity-90 text-primary-foreground"
                     >
                       {isRTL ? 'عرض التفاصيل' : 'View Details'}
                       <ArrowRight className={`w-4 h-4 ${ms('2')}`} />
@@ -265,7 +265,7 @@ export const EnhancedEventsHero = ({
               <Card className="bg-glass-50 backdrop-blur-sm border-glass-border-50 hover:bg-glass-100 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
                   <Calendar className="w-8 h-8 text-info mx-auto mb-2" />
-                  <div className="text-sm font-medium text-white">
+                  <div className="text-sm font-medium text-primary-foreground">
                     {isRTL ? 'الفعاليات القادمة' : 'Upcoming'}
                   </div>
                   <div className="text-xs text-white/70">
@@ -277,7 +277,7 @@ export const EnhancedEventsHero = ({
               <Card className="bg-glass-50 backdrop-blur-sm border-glass-border-50 hover:bg-glass-100 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
                   <MapPin className="w-8 h-8 text-warning mx-auto mb-2" />
-                  <div className="text-sm font-medium text-white">
+                  <div className="text-sm font-medium text-primary-foreground">
                     {isRTL ? 'الأماكن' : 'Venues'}
                   </div>
                   <div className="text-xs text-white/70">

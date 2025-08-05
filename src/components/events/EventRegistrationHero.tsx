@@ -73,7 +73,7 @@ export const EventRegistrationHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className={`absolute -top-40 ${end('-40')} w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse`} />
+        <div className={`absolute -top-40 ${end('-40')} w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse`} />
         <div className={`absolute -bottom-40 ${start('-40')} w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-1000`} />
         <div className={`absolute top-20 ${start('1/3')} w-64 h-64 bg-accent/5 rounded-full blur-2xl animate-bounce`} />
       </div>
@@ -85,17 +85,17 @@ export const EventRegistrationHero = ({
             {/* Header */}
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                <div className="p-3 bg-primary/10 backdrop-blur-sm rounded-xl border border-primary/20">
                   <Sparkles className="w-6 h-6 text-accent" />
                 </div>
-                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                <Badge variant="secondary" className="bg-primary/10 text-primary-foreground border-primary/20 backdrop-blur-sm">
                   <Calendar className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'تسجيل الفعالية' : 'Event Registration'}
                 </Badge>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
                   {eventTitle}
                 </h1>
                 

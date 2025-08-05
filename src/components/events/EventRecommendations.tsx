@@ -154,7 +154,7 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center">
-              <Sparkles className="w-3 h-3 text-white" />
+              <Sparkles className="w-3 h-3 text-primary-foreground" />
             </div>
             {isRTL ? 'مقترحة لك' : 'For You'}
           </div>
