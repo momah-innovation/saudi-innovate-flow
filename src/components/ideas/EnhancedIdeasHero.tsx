@@ -91,10 +91,10 @@ export const EnhancedIdeasHero = ({
             {/* Header with animation */}
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                <div className="p-3 bg-primary/10 backdrop-blur-sm rounded-xl border border-primary/20">
                   <Sparkles className="w-6 h-6 text-warning/70" />
                 </div>
-                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                 <Badge variant="secondary" className="bg-primary/10 text-primary-foreground border-primary/20 backdrop-blur-sm">
                    <Star className={cn("w-3 h-3", me("1"))} />
                    {isRTL ? 'منصة الأفكار الإبداعية' : 'Creative Ideas Platform'}
                  </Badge>
@@ -132,8 +132,8 @@ export const EnhancedIdeasHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
-                      isActive && "bg-white/10 border-white/20 scale-105"
+                      "bg-primary/5 backdrop-blur-sm border-primary/10 transition-all duration-500",
+                      isActive && "bg-primary/10 border-primary/20 scale-105"
                     )}
                   >
                     <CardContent className="p-4 text-center">
@@ -163,7 +163,7 @@ export const EnhancedIdeasHero = ({
                  onClick={onShowFilters}
                  variant="outline"
                  size="lg"
-                 className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
+                 className="border-primary/30 text-primary-foreground hover:bg-primary/10 backdrop-blur-sm"
                >
                  <Filter className={cn("w-5 h-5", me("2"))} />
                  {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
@@ -183,7 +183,7 @@ export const EnhancedIdeasHero = ({
           {/* Enhanced Featured Idea */}
           <div className="space-y-6">
             {featuredIdea ? (
-              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+              <Card className="bg-primary/10 backdrop-blur-xl border-primary/20 shadow-2xl">
                 <CardContent className="p-0">
                   {/* Idea Image */}
                   <div className="relative h-48 overflow-hidden rounded-t-lg">
@@ -255,7 +255,7 @@ export const EnhancedIdeasHero = ({
                 </CardContent>
               </Card>
             ) : (
-              <Card className="bg-white/5 backdrop-blur-xl border-white/10 border-dashed">
+              <Card className="bg-primary/5 backdrop-blur-xl border-primary/10 border-dashed">
                 <CardContent className="p-8 text-center">
                   <Lightbulb className="w-16 h-16 mx-auto text-white/40 mb-4" />
                   <h3 className="text-lg font-semibold text-white/80 mb-2">
@@ -270,7 +270,7 @@ export const EnhancedIdeasHero = ({
 
             {/* Quick Action Cards */}
             <div className="grid grid-cols-2 gap-4">
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+              <Card className="bg-primary/5 backdrop-blur-sm border-primary/10 hover:bg-primary/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
                   <Rocket className="w-8 h-8 text-warning mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
@@ -282,7 +282,7 @@ export const EnhancedIdeasHero = ({
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+              <Card className="bg-primary/5 backdrop-blur-sm border-primary/10 hover:bg-primary/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
                   <Target className="w-8 h-8 text-warning mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">

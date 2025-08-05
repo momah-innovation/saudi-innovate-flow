@@ -83,10 +83,10 @@ export const EnhancedPartnerDashboardHero = ({
             {/* Header with animation */}
             <div className="space-y-6">
               <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
-                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                <div className="p-3 bg-primary/10 backdrop-blur-sm rounded-xl border border-primary/20">
                   <Sparkles className="w-6 h-6 text-yellow-300" />
                 </div>
-                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                <Badge variant="secondary" className="bg-primary/10 text-primary-foreground border-primary/20 backdrop-blur-sm">
                   <Star className={cn("w-3 h-3", isRTL ? "ml-1" : "mr-1")} />
                   {t('partnerDashboard')}
                 </Badge>
