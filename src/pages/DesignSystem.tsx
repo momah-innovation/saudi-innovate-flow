@@ -12,7 +12,7 @@ import {
   Send, MessageCircle, MoreVertical, HelpCircle,
   GripVertical, Move, Maximize2, Minimize2, Share,
   Menu, ArrowRight, ArrowLeft, Languages, ThumbsUp,
-  ExternalLink
+  ExternalLink, TrendingUp
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -31,6 +31,10 @@ import { FileUploader } from '@/components/ui/file-uploader-advanced';
 import { CommandPalette, useCommandPalette } from '@/components/ui/command-palette';
 import { StarRating, FeedbackForm } from '@/components/ui/feedback';
 import { ProductTour, useProductTour } from '@/components/ui/product-tour';
+import { SimpleLineChart, SimpleBarChart, SimpleDonutChart, MetricCard, AnalyticsOverview } from '@/components/ui/charts';
+import { SplitView, ResizablePanel, MasonryLayout } from '@/components/ui/layout-components';
+import { AdvancedSearch } from '@/components/ui/advanced-search';
+import { CalendarView } from '@/components/ui/calendar-scheduler';
 
 import { cn } from '@/lib/utils';
 
@@ -79,6 +83,48 @@ const DesignSystem = () => {
   ];
   
   const { isOpen: isCommandOpen, open: openCommand, close: closeCommand, updateRecent } = useCommandPalette(commandActions);
+
+  // Sample data for new components
+  const chartData = [
+    { label: 'Jan', value: 65 },
+    { label: 'Feb', value: 78 },
+    { label: 'Mar', value: 82 },
+    { label: 'Apr', value: 95 }
+  ];
+
+  const searchFilters = [
+    { id: 'status', label: 'Status', type: 'select' as const, options: [
+      { value: 'active', label: 'Active' },
+      { value: 'completed', label: 'Completed' },
+      { value: 'draft', label: 'Draft' }
+    ]},
+    { id: 'category', label: 'Category', type: 'multiselect' as const, options: [
+      { value: 'innovation', label: 'Innovation' },
+      { value: 'tech', label: 'Technology' },
+      { value: 'design', label: 'Design' }
+    ]}
+  ];
+
+  const calendarEvents = [
+    {
+      id: '1',
+      title: 'Innovation Workshop',
+      startDate: new Date(2024, 11, 15, 9, 0),
+      endDate: new Date(2024, 11, 15, 11, 0),
+      color: 'hsl(var(--primary))',
+      attendees: 25,
+      location: 'Conference Room A'
+    },
+    {
+      id: '2', 
+      title: 'Design Review',
+      startDate: new Date(2024, 11, 18, 14, 0),
+      endDate: new Date(2024, 11, 18, 15, 30),
+      color: 'hsl(var(--success))',
+      attendees: 8,
+      type: 'meeting' as const
+    }
+  ];
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -12129,6 +12175,87 @@ const DesignSystem = () => {
                       showLikeDislike
                     />
                   </div>
+                </ComponentShowcase>
+
+                {/* Data Visualization */}
+                <ComponentShowcase title="Data Visualization & Charts">
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <SimpleLineChart data={chartData} />
+                      <SimpleBarChart data={chartData} />
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <MetricCard
+                        title="Total Users"
+                        value="2,847"
+                        change={{ value: 12, period: "last month", trend: "up" }}
+                        icon={Users}
+                        data={[45, 52, 38, 67, 73, 89, 95]}
+                      />
+                      <MetricCard
+                        title="Active Challenges"
+                        value="23"
+                        change={{ value: 8, period: "last week", trend: "up" }}
+                        icon={Target}
+                      />
+                      <MetricCard
+                        title="Success Rate"
+                        value="94.2%"
+                        change={{ value: 2, period: "last quarter", trend: "up" }}
+                        icon={TrendingUp}
+                      />
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                {/* Advanced Search */}
+                <ComponentShowcase title="Advanced Search & Filtering">
+                  <AdvancedSearch
+                    onSearch={(query) => toast({ title: `Searching for: ${query}` })}
+                    onFiltersChange={(filters) => toast({ title: 'Filters updated', description: JSON.stringify(filters) })}
+                    onSortChange={(sort) => toast({ title: 'Sort updated', description: sort ? `${sort.field} ${sort.direction}` : 'Cleared' })}
+                    filters={searchFilters}
+                    sortOptions={[
+                      { field: 'title', label: 'Title' },
+                      { field: 'created', label: 'Created Date' },
+                      { field: 'status', label: 'Status' }
+                    ]}
+                    placeholder="Search challenges, ideas, events..."
+                  />
+                </ComponentShowcase>
+
+                {/* Layout Components */}
+                <ComponentShowcase title="Advanced Layout Components">
+                  <div className="space-y-6">
+                    <div className="h-64">
+                      <SplitView
+                        leftPanel={
+                          <Card className="h-full p-4">
+                            <h4 className="font-medium mb-2">Left Panel</h4>
+                            <p className="text-sm text-muted-foreground">Resizable panel content. Drag the splitter to resize.</p>
+                          </Card>
+                        }
+                        rightPanel={
+                          <Card className="h-full p-4">
+                            <h4 className="font-medium mb-2">Right Panel</h4>
+                            <p className="text-sm text-muted-foreground">This panel adjusts automatically. Try collapsing with the button.</p>
+                          </Card>
+                        }
+                        defaultSplit={30}
+                      />
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                {/* Calendar Scheduler */}
+                <ComponentShowcase title="Calendar & Event Scheduler">
+                  <CalendarView
+                    events={calendarEvents}
+                    onEventClick={(event) => toast({ title: event.title, description: `Event on ${event.startDate.toLocaleDateString()}` })}
+                    onDateClick={(date) => toast({ title: 'Date selected', description: date.toLocaleDateString() })}
+                    onEventCreate={(date) => toast({ title: 'Create event', description: `New event on ${date.toLocaleDateString()}` })}
+                  />
                 </ComponentShowcase>
               </div>
             </div>
