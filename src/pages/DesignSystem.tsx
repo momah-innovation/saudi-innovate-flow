@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ResponsiveAppShell } from '@/components/layout/ResponsiveAppShell';
 import { 
   Palette, Eye, Type, Layout, Zap, Copy, Check, 
   Sun, Moon, ChevronDown, ChevronRight, ChevronLeft, Star,
@@ -73,7 +74,8 @@ const DesignSystem = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <ResponsiveAppShell>
+      <div className="min-h-screen bg-background">
       {/* Simple Header */}
       <div className="border-b">
         <div className="container mx-auto px-6 py-6">
@@ -11904,7 +11906,8 @@ const DesignSystem = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+      </div>
+    </ResponsiveAppShell>
   );
 };
 
