@@ -70,7 +70,7 @@ import ReportsPage from "./pages/ReportsPage";
 import SystemAnalyticsPage from "./pages/SystemAnalyticsPage";
 import HelpPage from "./pages/HelpPage";
 import SavedItemsPage from "./pages/SavedItems";
-import DesignSystem from "./pages/DesignSystem";
+import DesignSystemPage from "./pages/DesignSystemPage";
 import EvaluationManagement from "./pages/EvaluationManagement";
 import Opportunities from "./pages/Opportunities";
 import OpportunitiesManagement from "./pages/OpportunitiesManagement";
@@ -822,7 +822,7 @@ const App = () => {
                   element={
                     <ProtectedRoute>
                       <ResponsiveAppShell>
-                        <DesignSystem />
+                        <DesignSystemPage />
                       </ResponsiveAppShell>
                     </ProtectedRoute>
                   } 

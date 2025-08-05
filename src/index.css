@@ -92,10 +92,10 @@
     --global-foreground: 0 0% 100%;
     --global-primary: 60 100% 50%;
     --global-primary-foreground: 0 0% 0%;
-    --global-border: 0 0% 100%;
-    --global-input: 0 0% 100%;
+    --global-glass-border: 0 0% 100%;
+    --global-glass-text: 0 0% 100%;
+    --global-glass-text-muted: 0 0% 80%;
   }
-}
 }
 
 @layer base {
