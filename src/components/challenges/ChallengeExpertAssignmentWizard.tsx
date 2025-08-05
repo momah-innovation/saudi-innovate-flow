@@ -46,7 +46,7 @@ export const ChallengeExpertAssignmentWizard = ({
 }: ChallengeExpertAssignmentWizardProps) => {
   const { isRTL } = useDirection();
   const { toast } = useToast();
-  const { me, ps } = useRTLAware();
+  const { me, ps, start } = useRTLAware();
   
   const [experts, setExperts] = useState<Expert[]>([]);
   const [selectedExperts, setSelectedExperts] = useState<string[]>([]);
@@ -168,7 +168,7 @@ export const ChallengeExpertAssignmentWizard = ({
 
             {/* Search */}
             <div className="relative mb-4">
-              <Search className={cn("w-4 h-4 absolute left-3 top-3", challengesPageConfig.ui.colors.text.muted)} />
+              <Search className={cn(`w-4 h-4 absolute ${start('3')} top-3`, challengesPageConfig.ui.colors.text.muted)} />
               <Input
                 placeholder={isRTL ? 'البحث في الخبراء...' : 'Search experts...'}
                 value={searchQuery}

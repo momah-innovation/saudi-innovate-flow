@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '
 import { Separator } from '@/components/ui/separator';
 import { CalendarIcon, Filter, X, MapPin, Clock, Users, DollarSign } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { format } from 'date-fns';
 
 interface FilterState {
@@ -41,6 +42,7 @@ export const EventAdvancedFilters = ({
   onClearFilters
 }: EventAdvancedFiltersProps) => {
   const { isRTL } = useDirection();
+  const { me } = useRTLAware();
 
   const eventTypes = [
     { value: 'workshop', label: isRTL ? 'ورشة عمل' : 'Workshop' },
@@ -202,7 +204,7 @@ export const EventAdvancedFilters = ({
               <Popover>
                 <PopoverTrigger asChild>
                   <Button variant="outline" className="w-full justify-start text-left">
-                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    <CalendarIcon className={`${me('2')} h-4 w-4`} />
                     {filters.dateRange.from ? (
                       filters.dateRange.to ? (
                         <>
@@ -280,7 +282,7 @@ export const EventAdvancedFilters = ({
           {/* Actions */}
           <div className="flex gap-3 pt-4">
             <Button onClick={onClearFilters} variant="outline" className="flex-1">
-              <X className="w-4 h-4 mr-2" />
+              <X className={`w-4 h-4 ${me('2')}`} />
               {isRTL ? 'مسح الكل' : 'Clear All'}
             </Button>
             <Button onClick={() => onOpenChange(false)} className="flex-1">

@@ -23,6 +23,7 @@ import {
   ChevronDown,
   ChevronUp
 } from "lucide-react";
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface Event {
   id: string;
@@ -48,6 +49,7 @@ export function EventBulkActions({
   onRefresh 
 }: EventBulkActionsProps) {
   const { t } = useTranslation();
+  const { me, ms } = useRTLAware();
   const { generalStatusOptions } = useSystemLists();
   const [isLoading, setIsLoading] = useState(false);
   const [bulkAction, setBulkAction] = useState("");
@@ -293,7 +295,7 @@ export function EventBulkActions({
                 onClick={handleSelectAll}
                 className="mt-2"
               >
-                <Square className="mr-2 h-4 w-4" />
+                <Square className={`${me('2')} h-4 w-4`} />
                 Select All ({events.length})
               </Button>
             </CardContent>
@@ -312,7 +314,7 @@ export function EventBulkActions({
               <CardTitle className="text-lg flex items-center gap-2">
                 <CheckSquare className="h-5 w-5" />
                 Bulk Actions
-                <Badge variant="secondary" className="ml-2">
+                <Badge variant="secondary" className={ms('2')}>
                   {selectedEvents.length} selected
                 </Badge>
               </CardTitle>
@@ -346,11 +348,11 @@ export function EventBulkActions({
             onClick={handleSelectAll}
           >
             {allSelected ? (
-              <CheckSquare className="mr-2 h-4 w-4" />
+              <CheckSquare className={`${me('2')} h-4 w-4`} />
             ) : someSelected ? (
-              <Square className="mr-2 h-4 w-4 opacity-50" />
+              <Square className={`${me('2')} h-4 w-4 opacity-50`} />
             ) : (
-              <Square className="mr-2 h-4 w-4" />
+              <Square className={`${me('2')} h-4 w-4`} />
             )}
             {allSelected ? t('selectAll') : t('selectAll')}
           </Button>
@@ -416,7 +418,7 @@ export function EventBulkActions({
                 disabled={!newStatus || isLoading}
                 className="w-full mt-2"
               >
-                <Edit className="mr-2 h-4 w-4" />
+                <Edit className={`${me('2')} h-4 w-4`} />
                 {isLoading ? "Updating..." : `Update ${selectedEvents.length} Events`}
               </Button>
             </div>
@@ -427,7 +429,7 @@ export function EventBulkActions({
               onClick={handleExportEvents}
               className="w-full"
             >
-              <Download className="mr-2 h-4 w-4" />
+              <Download className={`${me('2')} h-4 w-4`} />
               Export {selectedEvents.length} Events
             </Button>
           )}
@@ -438,7 +440,7 @@ export function EventBulkActions({
               disabled={isLoading}
               className="w-full"
             >
-              <Copy className="mr-2 h-4 w-4" />
+              <Copy className={`${me('2')} h-4 w-4`} />
               {isLoading ? "Duplicating..." : `Duplicate ${selectedEvents.length} Events`}
             </Button>
           )}
@@ -447,7 +449,7 @@ export function EventBulkActions({
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="destructive" className="w-full">
-                  <Trash2 className="mr-2 h-4 w-4" />
+                  <Trash2 className={`${me('2')} h-4 w-4`} />
                   Delete {selectedEvents.length} Events
                 </Button>
               </AlertDialogTrigger>

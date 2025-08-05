@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { CalendarIcon, MapPin, Users, Clock, Bookmark, Ticket } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface Event {
   id: string;
@@ -34,6 +35,7 @@ interface EventCardProps {
 
 export const EventCard = ({ event, onViewDetails, onRegister, viewMode = 'cards' }: EventCardProps) => {
   const { isRTL } = useDirection();
+  const { me } = useRTLAware();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -109,7 +111,7 @@ export const EventCard = ({ event, onViewDetails, onRegister, viewMode = 'cards'
           <Badge variant="outline">{event.event_type}</Badge>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={() => onViewDetails(event)}>
-              <Ticket className="h-4 w-4 mr-2" />
+              <Ticket className={`h-4 w-4 ${me('2')}`} />
               {isRTL ? 'التفاصيل' : 'Details'}
             </Button>
             <Button 

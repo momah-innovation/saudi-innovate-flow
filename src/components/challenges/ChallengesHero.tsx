@@ -54,7 +54,7 @@ export const ChallengesHero = ({
   const { isRTL } = useDirection();
   const { user, hasRole } = useAuth();
   const [currentStat, setCurrentStat] = useState(0);
-  const { me, ms } = useRTLAware();
+  const { me, ms, start, end } = useRTLAware();
   
   // Check if user can create challenges
   const canCreateChallenges = user && (
@@ -88,9 +88,9 @@ export const ChallengesHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse" />
-        <div className={`absolute -bottom-40 -left-40 w-96 h-96 ${challengesPageConfig.ui.colors.background.overlay} rounded-full blur-3xl animate-pulse delay-1000`} />
-        <div className={`absolute top-20 left-1/3 w-64 h-64 ${challengesPageConfig.ui.colors.background.overlay} rounded-full blur-2xl animate-bounce`} />
+        <div className={`absolute -top-40 ${end('-40')} w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse`} />
+        <div className={`absolute -bottom-40 ${start('-40')} w-96 h-96 ${challengesPageConfig.ui.colors.background.overlay} rounded-full blur-3xl animate-pulse delay-1000`} />
+        <div className={`absolute top-20 ${start('1/3')} w-64 h-64 ${challengesPageConfig.ui.colors.background.overlay} rounded-full blur-2xl animate-bounce`} />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -208,14 +208,14 @@ export const ChallengesHero = ({
                       </div>
                     )}
                     
-                    <div className="absolute top-4 left-4">
+                    <div className={`absolute top-4 ${start('4')}`}>
                       <Badge className={`${challengesPageConfig.ui.gradients.danger} ${challengesPageConfig.ui.colors.text.accent} border-0 animate-pulse`}>
                         <Clock className={`w-3 h-3 ${me('1')}`} />
                         {featuredChallenge.daysLeft} {isRTL ? 'أيام متبقية' : 'days left'}
                       </Badge>
                     </div>
 
-                    <div className="absolute top-4 right-4">
+                    <div className={`absolute top-4 ${end('4')}`}>
                       <Badge className={`${challengesPageConfig.ui.gradients.warning} ${challengesPageConfig.ui.colors.text.accent} border-0`}>
                         <TrendingUp className={`w-3 h-3 ${me('1')}`} />
                         {isRTL ? 'رائج' : 'Trending'}

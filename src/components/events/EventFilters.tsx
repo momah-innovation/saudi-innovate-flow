@@ -21,6 +21,7 @@ import {
   Clock
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 export interface EventFilterState {
   search: string;
@@ -49,6 +50,7 @@ export const EventFilters = ({
   activeFiltersCount 
 }: EventFiltersProps) => {
   const { isRTL } = useDirection();
+  const { me, ms, ps, start } = useRTLAware();
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 
   const updateFilter = (key: keyof EventFilterState, value: any) => {
@@ -113,12 +115,12 @@ export const EventFilters = ({
       {/* Search and Basic Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4`} />
           <Input
             placeholder={isRTL ? 'البحث في الفعاليات...' : 'Search events...'}
             value={filters.search}
             onChange={(e) => updateFilter('search', e.target.value)}
-            className="pl-10"
+            className={ps('10')}
           />
         </div>
 
@@ -153,9 +155,9 @@ export const EventFilters = ({
           onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
           className="w-full sm:w-auto"
         >
-          <SlidersHorizontal className="w-4 h-4 mr-2" />
+          <SlidersHorizontal className={`w-4 h-4 ${me('2')}`} />
           {isRTL ? 'فلاتر متقدمة' : 'Advanced Filters'}
-          <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${isAdvancedOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-4 h-4 ${ms('2')} transition-transform ${isAdvancedOpen ? 'rotate-180' : ''}`} />
         </Button>
       </div>
 

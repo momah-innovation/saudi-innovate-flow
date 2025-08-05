@@ -12,6 +12,7 @@ import {
   Users
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { cn } from '@/lib/utils';
 
 interface CalendarEvent {
@@ -60,6 +61,7 @@ export const EventCalendarView = ({
   className = "" 
 }: EventCalendarViewProps) => {
   const { isRTL } = useDirection();
+  const { ms } = useRTLAware();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -301,7 +303,7 @@ export const EventCalendarView = ({
                           )}
                         </div>
                       </div>
-                      <Badge variant="outline" className={cn("ml-2", getEventTypeColor(event.event_type), "text-white")}>
+                      <Badge variant="outline" className={cn(ms('2'), getEventTypeColor(event.event_type), "text-white")}>
                         {event.event_type}
                       </Badge>
                     </div>

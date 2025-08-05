@@ -24,6 +24,7 @@ import {
   Info
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEventDetails } from '@/hooks/useEventDetails';
 import { useEventInteractions } from '@/hooks/useEventInteractions';
@@ -73,6 +74,7 @@ interface EventDetailDialogProps {
 
 export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: EventDetailDialogProps) => {
   const { isRTL } = useDirection();
+  const { me, start, end } = useRTLAware();
   const { user, hasRole } = useAuth();
 
   // Use comprehensive hooks for data
@@ -134,10 +136,10 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
             </div>
             
             {/* Status Badges Overlay */}
-            <div className="absolute top-4 right-4 flex gap-2">
+            <div className={`absolute top-4 ${end('4')} flex gap-2`}>
               {event.event_category === 'featured' && (
                 <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200">
-                  <Star className="w-3 h-3 mr-1" />
+                  <Star className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'مميز' : 'Featured'}
                 </Badge>
               )}
@@ -148,16 +150,16 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
 
             {/* Online Badge */}
             {event.format === 'virtual' && (
-              <div className="absolute bottom-4 left-4">
+              <div className={`absolute bottom-4 ${start('4')}`}>
                 <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
-                  <Globe className="w-3 h-3 mr-1" />
+                  <Globe className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'عبر الإنترنت' : 'Online Event'}
                 </Badge>
               </div>
             )}
 
             {/* Action Buttons */}
-            <div className="absolute top-4 left-4 flex gap-2">
+            <div className={`absolute top-4 ${start('4')} flex gap-2`}>
               <Button variant="secondary" size="sm" className="bg-white/80 hover:bg-white">
                 <Bookmark className="w-4 h-4" />
               </Button>

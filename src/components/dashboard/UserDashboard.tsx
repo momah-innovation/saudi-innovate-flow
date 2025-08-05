@@ -75,7 +75,7 @@ export default function UserDashboard() {
   const currentLanguage = language;
   const { isRTL } = useDirection();
   const navigate = useNavigate();
-  const { me } = useRTLAware();
+  const { me, end } = useRTLAware();
   
   const primaryRole = getPrimaryRole();
   
@@ -580,7 +580,7 @@ export default function UserDashboard() {
                 achievements.map((achievement) => (
                   <Card key={achievement.id} className="relative overflow-hidden">
                     <div 
-                      className="absolute top-0 right-0 w-2 h-full"
+                      className={`absolute top-0 ${end('0')} w-2 h-full`}
                       style={{ backgroundColor: achievement.badge_color }}
                     ></div>
                     <CardContent className="p-6">

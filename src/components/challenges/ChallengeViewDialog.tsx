@@ -57,7 +57,7 @@ export function ChallengeViewDialog({
   const { user, hasRole } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { me } = useRTLAware();
+  const { me, start, end } = useRTLAware();
   
   const [submissions, setSubmissions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -315,14 +315,14 @@ export function ChallengeViewDialog({
           <div className={`absolute inset-0 ${challengesPageConfig.ui.colors.background.overlay} bg-gradient-to-t from-black/60 to-transparent`} />
           
           {/* Status Badge */}
-          <div className="absolute top-4 right-4">
+          <div className={`absolute top-4 ${end('4')}`}>
             <Badge className={`${challengesPageConfig.ui.gradients.success} ${challengesPageConfig.ui.colors.text.accent}`}>
               {challenge.status}
             </Badge>
           </div>
 
           {/* Action Buttons */}
-          <div className="absolute top-4 left-4 flex gap-2">
+          <div className={`absolute top-4 ${start('4')} flex gap-2`}>
             <Button
               size="sm"
               variant="secondary"
@@ -345,7 +345,7 @@ export function ChallengeViewDialog({
           </div>
 
           {/* Title and Key Info */}
-          <div className={`absolute bottom-4 left-4 right-4 ${challengesPageConfig.ui.colors.text.accent}`}>
+          <div className={`absolute bottom-4 ${start('4')} ${end('4')} ${challengesPageConfig.ui.colors.text.accent}`}>
             <h2 className="text-2xl font-bold mb-2">{challenge.title_ar}</h2>
             <div className="flex flex-wrap gap-4 text-sm">
               {daysRemaining !== null && (
