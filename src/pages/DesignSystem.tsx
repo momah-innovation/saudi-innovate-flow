@@ -145,9 +145,9 @@ const DesignSystem = () => {
       >
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-primary/30 backdrop-blur-sm rounded-lg border border-primary/50">
           {copiedToken === className ? (
-            <Check className="h-6 w-6 text-white drop-shadow-lg" />
+            <Check className="h-6 w-6 text-overlay-text drop-shadow-lg" />
           ) : (
-            <Copy className="h-6 w-6 text-white drop-shadow-lg" />
+            <Copy className="h-6 w-6 text-overlay-text drop-shadow-lg" />
           )}
         </div>
       </div>

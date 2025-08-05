@@ -108,7 +108,7 @@ export const StatCard: Story = {
       <Card>
         <CardContent className="p-6">
           <div className="flex items-center space-x-2">
-            <MessageSquare className="h-4 w-4 text-blue-600" />
+            <MessageSquare className="h-4 w-4 text-info" />
             <div className="text-sm font-medium">Total Ideas</div>
           </div>
           <div className="text-2xl font-bold">1,234</div>
@@ -118,7 +118,7 @@ export const StatCard: Story = {
       <Card>
         <CardContent className="p-6">
           <div className="flex items-center space-x-2">
-            <Users className="h-4 w-4 text-green-600" />
+            <Users className="h-4 w-4 text-success" />
             <div className="text-sm font-medium">Active Users</div>
           </div>
           <div className="text-2xl font-bold">856</div>
