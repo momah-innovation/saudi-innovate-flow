@@ -323,8 +323,8 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
                   {leaderboard.slice(0, 5).map((entry, index) => (
                     <div key={entry.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                        index === 0 ? 'bg-yellow-100 text-yellow-800' :
-                        index === 1 ? 'bg-gray-100 text-gray-800' :
+                        index === 0 ? 'bg-warning/10 text-warning' :
+                        index === 1 ? 'bg-muted text-muted-foreground' :
                         index === 2 ? 'bg-orange-100 text-orange-800' :
                         'bg-muted text-muted-foreground'
                       }`}>

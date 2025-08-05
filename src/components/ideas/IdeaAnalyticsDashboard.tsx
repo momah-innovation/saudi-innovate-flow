@@ -346,11 +346,11 @@ export function IdeaAnalyticsDashboard({ className }: IdeaAnalyticsDashboardProp
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">إجمالي الأفكار</p>
-                <p className="text-3xl font-bold text-blue-600">{analytics.overview.totalIdeas}</p>
+                <p className="text-3xl font-bold text-primary">{analytics.overview.totalIdeas}</p>
                 <p className="text-xs text-muted-foreground mt-1">جميع الأفكار المقدمة</p>
               </div>
-              <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                <Lightbulb className="w-6 h-6 text-blue-600" />
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                <Lightbulb className="w-6 h-6 text-primary" />
               </div>
             </div>
           </CardContent>
@@ -361,7 +361,7 @@ export function IdeaAnalyticsDashboard({ className }: IdeaAnalyticsDashboardProp
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">الأفكار المعتمدة</p>
-                <p className="text-3xl font-bold text-green-600">{analytics.overview.approvedIdeas}</p>
+                <p className="text-3xl font-bold text-success">{analytics.overview.approvedIdeas}</p>
                 <p className="text-xs text-muted-foreground mt-1">
                   {analytics.overview.totalIdeas > 0 ? 
                     `${((analytics.overview.approvedIdeas / analytics.overview.totalIdeas) * 100).toFixed(1)}%` : 
@@ -369,8 +369,8 @@ export function IdeaAnalyticsDashboard({ className }: IdeaAnalyticsDashboardProp
                   } من الإجمالي
                 </p>
               </div>
-              <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center">
-                <CheckCircle className="w-6 h-6 text-green-600" />
+              <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center">
+                <CheckCircle className="w-6 h-6 text-success" />
               </div>
             </div>
           </CardContent>
@@ -381,15 +381,15 @@ export function IdeaAnalyticsDashboard({ className }: IdeaAnalyticsDashboardProp
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">معدل التنفيذ</p>
-                <p className="text-3xl font-bold text-purple-600">
+                <p className="text-3xl font-bold text-accent">
                   {analytics.overview.implementationRate.toFixed(1)}%
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
                   {analytics.overview.implementedIdeas} من {analytics.overview.totalIdeas} أفكار
                 </p>
               </div>
-              <div className="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center">
-                <Trophy className="w-6 h-6 text-purple-600" />
+              <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+                <Trophy className="w-6 h-6 text-accent" />
               </div>
             </div>
           </CardContent>
@@ -400,13 +400,13 @@ export function IdeaAnalyticsDashboard({ className }: IdeaAnalyticsDashboardProp
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">متوسط التقييم</p>
-                <p className="text-3xl font-bold text-yellow-600">
+                <p className="text-3xl font-bold text-warning">
                   {analytics.overview.averageScore.toFixed(1)}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">من 10 نقاط</p>
               </div>
-              <div className="w-12 h-12 bg-yellow-500/10 rounded-lg flex items-center justify-center">
-                <Star className="w-6 h-6 text-yellow-600" />
+              <div className="w-12 h-12 bg-warning/10 rounded-lg flex items-center justify-center">
+                <Star className="w-6 h-6 text-warning" />
               </div>
             </div>
           </CardContent>
@@ -498,7 +498,7 @@ export function IdeaAnalyticsDashboard({ className }: IdeaAnalyticsDashboardProp
                             {challenge.ideas} فكرة
                           </span>
                           <div className="flex items-center gap-1">
-                            <Star className="w-3 h-3 fill-current text-yellow-500" />
+                            <Star className="w-3 h-3 fill-current text-warning" />
                             <span className="text-xs">
                               {challenge.avgScore.toFixed(1)}
                             </span>

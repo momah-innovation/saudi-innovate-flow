@@ -253,12 +253,12 @@ export function SmartRecommendations({
 
   const getRecommendationColor = (type: string) => {
     switch (type) {
-      case 'high_potential': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
-      case 'trending': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
-      case 'popular': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'similar_interests': return 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400';
-      case 'expert_recommended': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'high_potential': return 'bg-warning/10 text-warning border-warning/20';
+      case 'trending': return 'bg-destructive/10 text-destructive border-destructive/20';
+      case 'popular': return 'bg-primary/10 text-primary border-primary/20';
+      case 'similar_interests': return 'bg-accent/10 text-accent border-accent/20';
+      case 'expert_recommended': return 'bg-success/10 text-success border-success/20';
+      default: return 'bg-muted text-muted-foreground border-muted-foreground/20';
     }
   };
 

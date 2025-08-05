@@ -233,11 +233,11 @@ export default function AdminDashboard() {
                       <div className="text-sm text-muted-foreground">Total Users</div>
                     </div>
                     <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <div className="text-2xl font-bold text-green-600">{dashboardData.activeUsers}</div>
+                      <div className="text-2xl font-bold text-success">{dashboardData.activeUsers}</div>
                       <div className="text-sm text-muted-foreground">Active Users</div>
                     </div>
                     <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <div className="text-2xl font-bold text-blue-600">{dashboardData.totalUsers - dashboardData.activeUsers}</div>
+                      <div className="text-2xl font-bold text-primary">{dashboardData.totalUsers - dashboardData.activeUsers}</div>
                       <div className="text-sm text-muted-foreground">Inactive Users</div>
                     </div>
                   </div>
@@ -259,11 +259,11 @@ export default function AdminDashboard() {
                       <div className="text-sm text-muted-foreground">Used Storage</div>
                     </div>
                     <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <div className="text-2xl font-bold text-green-600">{dashboardData.activePolicies}</div>
+                      <div className="text-2xl font-bold text-success">{dashboardData.activePolicies}</div>
                       <div className="text-sm text-muted-foreground">Active Policies</div>
                     </div>
                     <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <div className="text-2xl font-bold text-blue-600">24</div>
+                      <div className="text-2xl font-bold text-primary">24</div>
                       <div className="text-sm text-muted-foreground">Storage Buckets</div>
                     </div>
                   </div>
@@ -281,11 +281,11 @@ export default function AdminDashboard() {
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <div className="text-2xl font-bold text-red-600">{dashboardData.securityAlerts}</div>
+                      <div className="text-2xl font-bold text-destructive">{dashboardData.securityAlerts}</div>
                       <div className="text-sm text-muted-foreground">Security Alerts</div>
                     </div>
                     <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <div className="text-2xl font-bold text-green-600">{dashboardData.uptime}%</div>
+                      <div className="text-2xl font-bold text-success">{dashboardData.uptime}%</div>
                       <div className="text-sm text-muted-foreground">System Uptime</div>
                     </div>
                     <div className="text-center p-4 bg-muted/30 rounded-lg">

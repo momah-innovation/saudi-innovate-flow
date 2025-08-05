@@ -199,15 +199,15 @@ export function IdeaNotificationCenter({ className }: IdeaNotificationCenterProp
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'status_change':
-        return <CheckCircle className="w-4 h-4 text-blue-500" />;
+        return <CheckCircle className="w-4 h-4 text-primary" />;
       case 'comment':
-        return <MessageSquare className="w-4 h-4 text-green-500" />;
+        return <MessageSquare className="w-4 h-4 text-success" />;
       case 'like':
-        return <Heart className="w-4 h-4 text-red-500" />;
+        return <Heart className="w-4 h-4 text-destructive" />;
       case 'evaluation':
-        return <Star className="w-4 h-4 text-yellow-500" />;
+        return <Star className="w-4 h-4 text-warning" />;
       case 'assignment':
-        return <Award className="w-4 h-4 text-purple-500" />;
+        return <Award className="w-4 h-4 text-accent" />;
       case 'feature':
         return <Lightbulb className="w-4 h-4 text-orange-500" />;
       default:

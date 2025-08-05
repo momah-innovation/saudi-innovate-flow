@@ -80,7 +80,7 @@ export const EnhancedIdeasHero = ({
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className={cn("absolute -top-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse", end("-40"))} />
-        <div className={cn("absolute -bottom-40 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl animate-pulse delay-1000", start("-40"))} />
+        <div className={cn("absolute -bottom-40 w-96 h-96 bg-warning/5 rounded-full blur-3xl animate-pulse delay-1000", start("-40"))} />
         <div className={cn("absolute top-20 w-64 h-64 bg-orange-400/5 rounded-full blur-2xl animate-bounce", start("1/3"))} />
       </div>
 
@@ -92,7 +92,7 @@ export const EnhancedIdeasHero = ({
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <Sparkles className="w-6 h-6 text-yellow-300" />
+                  <Sparkles className="w-6 h-6 text-warning/70" />
                 </div>
                  <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                    <Star className={cn("w-3 h-3", me("1"))} />
@@ -200,7 +200,7 @@ export const EnhancedIdeasHero = ({
                     )}
                     
                      <div className={cn("absolute top-4", start("4"))}>
-                       <Badge className="bg-yellow-500/90 text-white border-0 animate-pulse">
+                       <Badge className="bg-warning/90 text-warning-foreground border-0 animate-pulse">
                          <Star className={cn("w-3 h-3", me("1"))} />
                          {isRTL ? 'فكرة مميزة' : 'Featured'}
                        </Badge>
@@ -223,7 +223,7 @@ export const EnhancedIdeasHero = ({
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-blue-300">
+                        <div className="text-2xl font-bold text-primary/70">
                           {featuredIdea.views}
                         </div>
                         <div className="text-sm text-white/70">{isRTL ? 'مشاهدة' : 'views'}</div>
@@ -284,7 +284,7 @@ export const EnhancedIdeasHero = ({
 
               <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <Target className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
+                  <Target className="w-8 h-8 text-warning mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
                     {isRTL ? 'قيد التطوير' : 'In Development'}
                   </div>

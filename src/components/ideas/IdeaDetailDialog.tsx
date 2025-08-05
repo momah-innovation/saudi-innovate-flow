@@ -206,11 +206,11 @@ export function IdeaDetailDialog({
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
-      case 'under_review': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'approved': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
-      case 'rejected': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
-      case 'in_development': return 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400';
+      case 'pending': return 'bg-warning/10 text-warning border-warning/20';
+      case 'under_review': return 'bg-primary/10 text-primary border-primary/20';
+      case 'approved': return 'bg-success/10 text-success border-success/20';
+      case 'rejected': return 'bg-destructive/10 text-destructive border-destructive/20';
+      case 'in_development': return 'bg-accent/10 text-accent border-accent/20';
       case 'implemented': return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400';
       default: return 'badge-secondary';
     }
@@ -258,7 +258,7 @@ export function IdeaDetailDialog({
                   {idea.maturity_level}
                 </Badge>
                  {idea.featured && (
-                   <Badge className="bg-yellow-500 text-white border-0">
+                   <Badge className="bg-warning text-warning-foreground border-0">
                      <Star className="w-3 h-3 mr-1" />
                      {t('featured') || 'مميزة'}
                    </Badge>
@@ -278,7 +278,7 @@ export function IdeaDetailDialog({
                 variant="outline" 
                 size="sm"
                 onClick={() => onBookmark?.(idea.id)}
-                className={isBookmarked ? 'text-yellow-500 border-yellow-200' : ''}
+                className={isBookmarked ? 'text-warning border-warning/20' : ''}
               >
                 <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
               </Button>
@@ -322,7 +322,7 @@ export function IdeaDetailDialog({
                     variant="secondary" 
                     size="sm"
                     onClick={() => onLike?.(idea)}
-                    className={`gap-1 ${isLiked ? 'text-red-500' : ''}`}
+                    className={`gap-1 ${isLiked ? 'text-destructive' : ''}`}
                   >
                     <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
                     {t('like') || 'إعجاب'}
