@@ -12,7 +12,7 @@ import {
   Send, MessageCircle, MoreVertical, HelpCircle,
   GripVertical, Move, Maximize2, Minimize2, Share,
   Menu, ArrowRight, ArrowLeft, Languages, ThumbsUp,
-  ExternalLink, TrendingUp, FileText, Image as ImageIcon
+  ExternalLink, TrendingUp, FileText, Image as ImageIcon, Code
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -263,6 +263,10 @@ const DesignSystem = () => {
             <TabsTrigger value="branding" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Award className="h-3 w-3" />
               Brand
+            </TabsTrigger>
+            <TabsTrigger value="css-vs-tailwind" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
+              <Code className="h-3 w-3" />
+              CSS vs Tailwind
             </TabsTrigger>
             <TabsTrigger value="enhanced" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap bg-primary/90 text-primary-foreground">
               <Sparkles className="h-3 w-3" />
@@ -12225,6 +12229,263 @@ const DesignSystem = () => {
                       </ul>
                     </Card>
 
+                  </div>
+                </ComponentShowcase>
+
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* CSS vs Tailwind Comparison Tab */}
+          <TabsContent value="css-vs-tailwind" className="space-y-8">
+            <div>
+              <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">CSS vs Tailwind Comparison</h2>
+              <p className="text-muted-foreground mb-8 text-lg">
+                Explore how the same designs can be achieved using traditional CSS and Tailwind CSS, with our design tokens.
+              </p>
+
+              <div className="space-y-8">
+
+                {/* Button Styling Comparison */}
+                <ComponentShowcase title="Button Styling Approaches">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+                    {/* CSS Approach */}
+                    <Card className="p-6">
+                      <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                        <FileText className="w-5 h-5 text-primary" />
+                        Traditional CSS
+                      </h4>
+                      
+                      <div className="space-y-4">
+                        <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2 rounded-lg font-medium transition-colors">
+                          CSS Styled Button
+                        </Button>
+                        
+                        <div className="bg-muted/50 p-4 rounded-lg">
+                          <p className="text-sm font-medium mb-2">CSS Code:</p>
+                          <pre className="text-xs text-muted-foreground overflow-x-auto">
+{`.primary-button {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.primary-button:hover {
+  background-color: hsl(var(--primary) / 0.9);
+}`}
+                          </pre>
+                        </div>
+                      </div>
+                    </Card>
+
+                    {/* Tailwind Approach */}
+                    <Card className="p-6">
+                      <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                        <Zap className="w-5 h-5 text-accent" />
+                        Tailwind CSS
+                      </h4>
+                      
+                      <div className="space-y-4">
+                        <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2 rounded-lg font-medium transition-colors">
+                          Tailwind Styled Button
+                        </Button>
+                        
+                        <div className="bg-muted/50 p-4 rounded-lg">
+                          <p className="text-sm font-medium mb-2">Tailwind Classes:</p>
+                          <pre className="text-xs text-muted-foreground overflow-x-auto">
+{`<button class="
+  bg-primary 
+  hover:bg-primary/90 
+  text-primary-foreground 
+  px-6 py-2 
+  rounded-lg 
+  font-medium 
+  transition-colors
+">
+  Tailwind Styled Button
+</button>`}
+                          </pre>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+
+                  {/* Pros and Cons */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                    <Card className="p-6 border-l-4 border-l-primary">
+                      <h5 className="font-semibold mb-3 text-primary">CSS Advantages</h5>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
+                          <span>Better separation of concerns</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
+                          <span>Reusable component classes</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
+                          <span>Complex animations easier</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
+                          <span>Traditional developer familiarity</span>
+                        </li>
+                      </ul>
+                    </Card>
+
+                    <Card className="p-6 border-l-4 border-l-accent">
+                      <h5 className="font-semibold mb-3 text-accent">Tailwind Advantages</h5>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
+                          <span>Faster development speed</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
+                          <span>Consistent design system</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
+                          <span>Smaller bundle size (purged)</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
+                          <span>No CSS naming conflicts</span>
+                        </li>
+                      </ul>
+                    </Card>
+                  </div>
+                </ComponentShowcase>
+
+                {/* Design Tokens Integration */}
+                <ComponentShowcase title="Design Tokens Integration">
+                  <div className="space-y-8">
+                    
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                      <Card className="p-6">
+                        <h4 className="font-semibold text-lg mb-4">CSS Custom Properties</h4>
+                        <div className="space-y-4">
+                          <div className="p-4 bg-primary/10 rounded-lg border border-primary/20">
+                            <p className="text-primary font-medium">Using Design Tokens</p>
+                          </div>
+                          <div className="bg-muted/50 p-4 rounded-lg">
+                            <pre className="text-xs text-muted-foreground overflow-x-auto">
+{`:root {
+  --primary: 263 70% 50%;
+  --accent: 270 95% 75%;
+  --background: 0 0% 100%;
+}
+
+.token-box {
+  background: hsl(var(--primary) / 0.1);
+  border: 1px solid hsl(var(--primary) / 0.2);
+  color: hsl(var(--primary));
+}`}
+                            </pre>
+                          </div>
+                        </div>
+                      </Card>
+
+                      <Card className="p-6">
+                        <h4 className="font-semibold text-lg mb-4">Tailwind Configuration</h4>
+                        <div className="space-y-4">
+                          <div className="p-4 bg-primary/10 rounded-lg border border-primary/20">
+                            <p className="text-primary font-medium">Using Design Tokens</p>
+                          </div>
+                          <div className="bg-muted/50 p-4 rounded-lg">
+                            <pre className="text-xs text-muted-foreground overflow-x-auto">
+{`// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: 'hsl(var(--primary))',
+        accent: 'hsl(var(--accent))',
+        background: 'hsl(var(--background))'
+      }
+    }
+  }
+}
+
+// Usage: bg-primary/10 border-primary/20`}
+                            </pre>
+                          </div>
+                        </div>
+                      </Card>
+                    </div>
+
+                    <Card className="p-6 bg-gradient-to-r from-primary/5 to-accent/5">
+                      <h4 className="font-semibold text-lg mb-4">Best Practice: Hybrid Approach</h4>
+                      <p className="text-muted-foreground mb-4">
+                        Our design system uses both approaches strategically for optimal developer experience and maintainability.
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="text-center p-4 bg-background/50 rounded-lg">
+                          <Palette className="w-8 h-8 text-primary mx-auto mb-2" />
+                          <h5 className="font-medium mb-1">Design Tokens</h5>
+                          <p className="text-xs text-muted-foreground">CSS variables for consistency</p>
+                        </div>
+                        <div className="text-center p-4 bg-background/50 rounded-lg">
+                          <Layout className="w-8 h-8 text-accent mx-auto mb-2" />
+                          <h5 className="font-medium mb-1">Utility Classes</h5>
+                          <p className="text-xs text-muted-foreground">Tailwind for rapid development</p>
+                        </div>
+                        <div className="text-center p-4 bg-background/50 rounded-lg">
+                          <Target className="w-8 h-8 text-secondary mx-auto mb-2" />
+                          <h5 className="font-medium mb-1">Component CSS</h5>
+                          <p className="text-xs text-muted-foreground">Complex components in CSS</p>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                </ComponentShowcase>
+
+                {/* Performance Comparison */}
+                <ComponentShowcase title="Performance & Bundle Size">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <Card className="p-6 text-center">
+                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <TrendingUp className="w-8 h-8 text-primary" />
+                      </div>
+                      <h4 className="font-semibold mb-2">Traditional CSS</h4>
+                      <div className="space-y-2 text-sm text-muted-foreground">
+                        <p>Bundle: 45-120KB</p>
+                        <p>Runtime: Fast</p>
+                        <p>Dev Speed: Medium</p>
+                      </div>
+                      <Progress value={75} className="mt-4" />
+                    </Card>
+
+                    <Card className="p-6 text-center">
+                      <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Zap className="w-8 h-8 text-accent" />
+                      </div>
+                      <h4 className="font-semibold mb-2">Tailwind CSS</h4>
+                      <div className="space-y-2 text-sm text-muted-foreground">
+                        <p>Bundle: 8-25KB (purged)</p>
+                        <p>Runtime: Fast</p>
+                        <p>Dev Speed: Very Fast</p>
+                      </div>
+                      <Progress value={95} className="mt-4" />
+                    </Card>
+
+                    <Card className="p-6 text-center">
+                      <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Target className="w-8 h-8 text-success" />
+                      </div>
+                      <h4 className="font-semibold mb-2">Hybrid Approach</h4>
+                      <div className="space-y-2 text-sm text-muted-foreground">
+                        <p>Bundle: 15-35KB</p>
+                        <p>Runtime: Fast</p>
+                        <p>Dev Speed: Fast</p>
+                      </div>
+                      <Progress value={90} className="mt-4" />
+                    </Card>
                   </div>
                 </ComponentShowcase>
 
