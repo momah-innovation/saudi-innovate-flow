@@ -18,6 +18,7 @@ import { ar } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 const challengeSchema = z.object({
   title_ar: z.string().min(10, 'العنوان يجب أن يكون 10 أحرف على الأقل'),
@@ -54,6 +55,7 @@ export function ChallengeForm({
   const [aiSuggestionsEnabled, setAiSuggestionsEnabled] = useState(false);
   const [generatingContent, setGeneratingContent] = useState(false);
   const { toast } = useToast();
+  const { ps, textStart, ms, me } = useRTLAware();
 
   const form = useForm<ChallengeFormData>({
     resolver: zodResolver(challengeSchema),
@@ -389,7 +391,7 @@ export function ChallengeForm({
                           <Button
                             variant="outline"
                             className={cn(
-                              'w-full pl-3 text-left font-normal',
+                              `w-full ${ps('3')} ${textStart} font-normal`,
                               !field.value && 'text-muted-foreground'
                             )}
                           >
@@ -398,7 +400,7 @@ export function ChallengeForm({
                             ) : (
                               <span>اختر التاريخ</span>
                             )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            <CalendarIcon className={`h-4 w-4 opacity-50 ${ms('auto')}`} />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
@@ -430,7 +432,7 @@ export function ChallengeForm({
                           <Button
                             variant="outline"
                             className={cn(
-                              'w-full pl-3 text-left font-normal',
+                              `w-full ${ps('3')} ${textStart} font-normal`,
                               !field.value && 'text-muted-foreground'
                             )}
                           >
@@ -439,7 +441,7 @@ export function ChallengeForm({
                             ) : (
                               <span>اختر التاريخ</span>
                             )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            <CalendarIcon className={`h-4 w-4 opacity-50 ${ms('auto')}`} />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
@@ -591,7 +593,7 @@ export function ChallengeForm({
                 onClick={onCancel}
                 disabled={loading}
               >
-                <X className="h-4 w-4 mr-2" />
+                <X className={`h-4 w-4 ${me('2')}`} />
                 إلغاء
               </Button>
               <Button 

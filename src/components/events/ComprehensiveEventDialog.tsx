@@ -41,6 +41,7 @@ import { RelatedItemsTab } from './tabs/RelatedItemsTab';
 import { EventResourcesTab } from './tabs/EventResourcesTab';
 import { InteractionButtons } from '@/components/ui/interaction-buttons';
 import { EventSocialShare } from './EventSocialShare';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface Event {
   id: string;
@@ -83,6 +84,7 @@ export const ComprehensiveEventDialog = ({
   const { isRTL } = useDirection();
   const { user, hasRole } = useAuth();
   const [activeTab, setActiveTab] = useState('details');
+  const { ms, me } = useRTLAware();
   
   const { 
     partners, 
@@ -235,7 +237,7 @@ export const ComprehensiveEventDialog = ({
                     disabled={interactionsLoading}
                   >
                     <Heart className={`w-4 h-4 ${interactions?.isLiked ? 'fill-current text-red-500' : ''}`} />
-                    <span className="ml-1">{interactions?.likes_count || 0}</span>
+                    <span className={ms('1')}>{interactions?.likes_count || 0}</span>
                   </Button>
                   <EventSocialShare 
                     event={event}
@@ -342,19 +344,19 @@ export const ComprehensiveEventDialog = ({
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <span className="font-medium">{isRTL ? 'النوع:' : 'Type:'}</span>
-                      <span className="ml-2">{event.event_type}</span>
+                      <span className={ms('2')}>{event.event_type}</span>
                     </div>
                     <div>
                       <span className="font-medium">{isRTL ? 'الصيغة:' : 'Format:'}</span>
-                      <span className="ml-2">{event.format}</span>
+                      <span className={ms('2')}>{event.format}</span>
                     </div>
                     <div>
                       <span className="font-medium">{isRTL ? 'الفئة:' : 'Category:'}</span>
-                      <span className="ml-2">{event.event_category}</span>
+                      <span className={ms('2')}>{event.event_category}</span>
                     </div>
                     <div>
                       <span className="font-medium">{isRTL ? 'الرؤية:' : 'Visibility:'}</span>
-                      <span className="ml-2">{event.event_visibility}</span>
+                      <span className={ms('2')}>{event.event_visibility}</span>
                     </div>
                   </div>
                   {event.virtual_link && (
@@ -364,7 +366,7 @@ export const ComprehensiveEventDialog = ({
                         <h4 className="font-medium mb-2">{isRTL ? 'رابط الحضور الافتراضي' : 'Virtual Meeting Link'}</h4>
                         <Button variant="outline" size="sm" asChild>
                           <a href={event.virtual_link} target="_blank" rel="noopener noreferrer">
-                            <Video className="w-4 h-4 mr-2" />
+                            <Video className={`w-4 h-4 ${me('2')}`} />
                             {isRTL ? 'انضم للاجتماع' : 'Join Meeting'}
                           </a>
                         </Button>
