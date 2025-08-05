@@ -21,19 +21,19 @@ export function ExpertDashboard({ userProfile, canEvaluateIdeas, canAccessExpert
       title: language === 'ar' ? 'الأفكار المراجعة' : 'Ideas Reviewed',
       value: '24',
       icon: FileText,
-      color: 'text-blue-600'
+      color: 'text-primary'
     },
     {
       title: language === 'ar' ? 'قيد المراجعة' : 'Pending Review',
       value: '5',
       icon: Clock,
-      color: 'text-orange-600'
+      color: 'text-warning'
     },
     {
       title: language === 'ar' ? 'التقييم المتوسط' : 'Average Rating',
       value: '4.6',
       icon: Star,
-      color: 'text-yellow-600'
+      color: 'text-success'
     }
   ];
 
@@ -54,7 +54,7 @@ export function ExpertDashboard({ userProfile, canEvaluateIdeas, canAccessExpert
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg p-6">
+      <div className="bg-gradient-to-r from-accent to-primary text-white rounded-lg p-6">
         <div className="flex items-center gap-3 mb-2">
           <Brain className="w-6 h-6" />
           <h2 className="text-xl font-bold">

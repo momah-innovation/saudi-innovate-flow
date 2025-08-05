@@ -19,6 +19,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { cn } from '@/lib/utils';
 
 interface DashboardStats {
@@ -33,6 +34,7 @@ interface DashboardStats {
 
 export const DashboardOverview = () => {
   const { isRTL } = useDirection();
+  const { t } = useTranslation();
   const { user, hasRole } = useAuth();
   const [stats, setStats] = useState<DashboardStats>({
     totalIdeas: 0,
@@ -90,56 +92,56 @@ export const DashboardOverview = () => {
 
   const quickActions = [
     {
-      title: isRTL ? 'إضافة فكرة جديدة' : 'Submit New Idea',
-      description: isRTL ? 'شارك فكرتك المبتكرة' : 'Share your innovative idea',
+      title: t('submit_new_idea'),
+      description: t('share_innovative_idea'),
       icon: Lightbulb,
       href: '/ideas/submit',
-      color: 'from-blue-500 to-purple-600',
+      color: 'from-primary to-primary-dark',
     },
     {
-      title: isRTL ? 'تصفح التحديات' : 'Browse Challenges',
-      description: isRTL ? 'اكتشف التحديات الجديدة' : 'Discover new challenges',
+      title: t('browse_challenges'),
+      description: t('discover_new_challenges'),
       icon: Target,
       href: '/challenges',
-      color: 'from-green-500 to-teal-600',
+      color: 'from-success to-success-dark',
     },
     {
-      title: isRTL ? 'الفعاليات القادمة' : 'Upcoming Events',
-      description: isRTL ? 'انضم للفعاليات' : 'Join upcoming events',
+      title: t('upcoming_events'),
+      description: t('join_upcoming_events'),
       icon: Calendar,
       href: '/events',
-      color: 'from-orange-500 to-red-600',
+      color: 'from-warning to-warning-dark',
     },
     {
-      title: isRTL ? 'شراكات جديدة' : 'New Partnerships',
-      description: isRTL ? 'استكشف الشراكات' : 'Explore partnerships',
+      title: t('new_partnerships'),
+      description: t('explore_partnerships'),
       icon: Users,
       href: '/partners',
-      color: 'from-purple-500 to-pink-600',
+      color: 'from-accent to-accent-dark',
     },
   ];
 
   const recentActivities = [
     {
       type: 'idea',
-      title: isRTL ? 'تم قبول فكرة نظام إدارة المواعيد' : 'Appointment Management System Idea Accepted',
-      time: isRTL ? 'منذ ساعتين' : '2 hours ago',
+      title: t('appointment_system_idea_accepted'),
+      time: t('two_hours_ago'),
       icon: Lightbulb,
-      color: 'text-blue-600',
+      color: 'text-primary',
     },
     {
       type: 'challenge',
-      title: isRTL ? 'تحدي جديد: المدن الذكية' : 'New Challenge: Smart Cities',
-      time: isRTL ? 'منذ 4 ساعات' : '4 hours ago',
+      title: t('new_challenge_smart_cities'),
+      time: t('four_hours_ago'),
       icon: Target,
-      color: 'text-green-600',
+      color: 'text-success',
     },
     {
       type: 'event',
-      title: isRTL ? 'ورشة عمل الذكاء الاصطناعي' : 'AI Workshop Registration Open',
-      time: isRTL ? 'أمس' : 'Yesterday',
+      title: t('ai_workshop_registration'),
+      time: t('yesterday'),
       icon: Calendar,
-      color: 'text-orange-600',
+      color: 'text-warning',
     },
   ];
 
@@ -164,107 +166,101 @@ export const DashboardOverview = () => {
       {/* Welcome Section */}
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          {isRTL 
-            ? `أهلاً بك${user ? ' ' + (user.user_metadata?.name || 'مبتكر') : ''} في منصة رواد` 
-            : `Welcome${user ? ' ' + (user.user_metadata?.name || 'Innovator') : ''} to Ruwad Platform`
-          }
+          {t('welcome_to_platform', { name: user?.user_metadata?.name || t('innovator') })}
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          {isRTL 
-            ? 'اكتشف الفرص، شارك الأفكار، وكن جزءاً من مستقبل الابتكار في المملكة العربية السعودية'
-            : 'Discover opportunities, share ideas, and be part of the innovation future in Saudi Arabia'
-          }
+          {t('platform_description')}
         </p>
       </div>
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="border-l-4 border-l-blue-500 bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/50 dark:to-blue-900/30">
+        <Card className="border-l-4 border-l-primary bg-gradient-to-br from-primary/5 to-primary/10">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-2xl font-bold text-blue-700 dark:text-blue-300">
+                <CardTitle className="text-2xl font-bold text-primary">
                   {stats.totalIdeas}
                 </CardTitle>
                 <CardDescription className="font-medium">
-                  {isRTL ? 'إجمالي الأفكار' : 'Total Ideas'}
+                  {t('total_ideas')}
                 </CardDescription>
               </div>
-              <Lightbulb className="w-8 h-8 text-blue-500" />
+              <Lightbulb className="w-8 h-8 text-primary" />
             </div>
           </CardHeader>
           {user && (
             <CardContent className="pt-0">
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'أفكارك: ' : 'Your ideas: '}{stats.userIdeas}
+                {t('your_ideas_count', { count: stats.userIdeas })}
               </div>
             </CardContent>
           )}
         </Card>
 
-        <Card className="border-l-4 border-l-green-500 bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-950/50 dark:to-green-900/30">
+        <Card className="border-l-4 border-l-success bg-gradient-to-br from-success/5 to-success/10">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-2xl font-bold text-green-700 dark:text-green-300">
+                <CardTitle className="text-2xl font-bold text-success">
                   {stats.totalChallenges}
                 </CardTitle>
                 <CardDescription className="font-medium">
-                  {isRTL ? 'التحديات النشطة' : 'Active Challenges'}
+                  {t('active_challenges')}
                 </CardDescription>
               </div>
-              <Target className="w-8 h-8 text-green-500" />
+              <Target className="w-8 h-8 text-success" />
             </div>
           </CardHeader>
           {user && (
             <CardContent className="pt-0">
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'مشاركاتك: ' : 'Your participations: '}{stats.userChallenges}
+                {t('your_participations_count', { count: stats.userChallenges })}
               </div>
             </CardContent>
           )}
         </Card>
 
-        <Card className="border-l-4 border-l-orange-500 bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/50 dark:to-orange-900/30">
+        <Card className="border-l-4 border-l-warning bg-gradient-to-br from-warning/5 to-warning/10">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-2xl font-bold text-orange-700 dark:text-orange-300">
+                <CardTitle className="text-2xl font-bold text-warning">
                   {stats.totalEvents}
                 </CardTitle>
                 <CardDescription className="font-medium">
-                  {isRTL ? 'الفعاليات القادمة' : 'Upcoming Events'}
+                  {t('upcoming_events')}
                 </CardDescription>
               </div>
-              <Calendar className="w-8 h-8 text-orange-500" />
+              <Calendar className="w-8 h-8 text-warning" />
             </div>
           </CardHeader>
           {user && (
             <CardContent className="pt-0">
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'تسجيلاتك: ' : 'Your registrations: '}{stats.userEvents}
+                {t('your_registrations_count', { count: stats.userEvents })}
               </div>
             </CardContent>
           )}
         </Card>
 
-        <Card className="border-l-4 border-l-purple-500 bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-950/50 dark:to-purple-900/30">
+        <Card className="border-l-4 border-l-accent bg-gradient-to-br from-accent/5 to-accent/10">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-2xl font-bold text-purple-700 dark:text-purple-300">
+                <CardTitle className="text-2xl font-bold text-accent-foreground">
                   {stats.totalUsers}
                 </CardTitle>
                 <CardDescription className="font-medium">
-                  {isRTL ? 'المبتكرون النشطون' : 'Active Innovators'}
+                  {t('active_innovators')}
                 </CardDescription>
               </div>
-              <Users className="w-8 h-8 text-purple-500" />
+              <Users className="w-8 h-8 text-accent-foreground" />
             </div>
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-sm text-muted-foreground">
-              {isRTL ? 'انضم للمجتمع' : 'Join the community'}
+              {t('join_community')}
             </div>
           </CardContent>
         </Card>
@@ -277,10 +273,10 @@ export const DashboardOverview = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Zap className="w-5 h-5" />
-                {isRTL ? 'إجراءات سريعة' : 'Quick Actions'}
+                {t('quick_actions')}
               </CardTitle>
               <CardDescription>
-                {isRTL ? 'ابدأ رحلتك في الابتكار' : 'Start your innovation journey'}
+                {t('start_innovation_journey')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -323,7 +319,7 @@ export const DashboardOverview = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BarChart3 className="w-5 h-5" />
-                {isRTL ? 'النشاطات الأخيرة' : 'Recent Activities'}
+                {t('recent_activities')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -348,7 +344,7 @@ export const DashboardOverview = () => {
                 })}
               </div>
               <Button variant="outline" className="w-full mt-4">
-                {isRTL ? 'عرض جميع النشاطات' : 'View All Activities'}
+                {t('view_all_activities')}
               </Button>
             </CardContent>
           </Card>
@@ -361,17 +357,17 @@ export const DashboardOverview = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Star className="w-5 h-5" />
-              {isRTL ? 'تقدمك في المنصة' : 'Your Platform Progress'}
+              {t('platform_progress')}
             </CardTitle>
             <CardDescription>
-              {isRTL ? 'استمر في المشاركة وتحقيق الإنجازات' : 'Keep participating and achieving milestones'}
+              {t('keep_participating_achieving')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span>{isRTL ? 'مستوى النشاط' : 'Activity Level'}</span>
+                  <span>{t('activity_level')}</span>
                   <span>65%</span>
                 </div>
                 <Progress value={65} className="h-2" />
@@ -380,28 +376,28 @@ export const DashboardOverview = () => {
               <div className="grid md:grid-cols-3 gap-4 pt-4">
                 <div className="text-center">
                   <Badge variant="secondary" className="mb-2">
-                    {isRTL ? 'المبتكر النشط' : 'Active Innovator'}
+                    {t('active_innovator')}
                   </Badge>
                   <p className="text-sm text-muted-foreground">
-                    {isRTL ? 'شارك في 5+ أنشطة' : 'Participated in 5+ activities'}
+                    {t('participated_5_activities')}
                   </p>
                 </div>
                 
                 <div className="text-center">
                   <Badge variant="outline" className="mb-2">
-                    {isRTL ? 'متحدي' : 'Challenger'}
+                    {t('challenger')}
                   </Badge>
                   <p className="text-sm text-muted-foreground">
-                    {isRTL ? 'شارك في تحديين' : 'Joined 2 challenges'}
+                    {t('joined_2_challenges')}
                   </p>
                 </div>
                 
                 <div className="text-center">
                   <Badge variant="outline" className="mb-2">
-                    {isRTL ? 'المتعلم' : 'Learner'}
+                    {t('learner')}
                   </Badge>
                   <p className="text-sm text-muted-foreground">
-                    {isRTL ? 'حضر 3 فعاليات' : 'Attended 3 events'}
+                    {t('attended_3_events')}
                   </p>
                 </div>
               </div>
