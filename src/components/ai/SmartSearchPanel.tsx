@@ -24,6 +24,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { aiService } from '@/services/AIService';
 import { useRTLAware } from '@/hooks/useRTLAware';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface SearchResult {
   id: string;
@@ -66,6 +67,7 @@ export const SmartSearchPanel: React.FC = () => {
   const [popularQueries, setPopularQueries] = useState<string[]>([]);
   const { toast } = useToast();
   const { start, me, ps } = useRTLAware();
+  const { t } = useTranslation();
 
   useEffect(() => {
     loadSearchHistory();
@@ -188,9 +190,9 @@ export const SmartSearchPanel: React.FC = () => {
   };
 
   const getRelevanceColor = (score: number) => {
-    if (score >= 0.8) return 'text-green-600';
-    if (score >= 0.6) return 'text-yellow-600';
-    return 'text-gray-600';
+    if (score >= 0.8) return 'text-success';
+    if (score >= 0.6) return 'text-warning';
+    return 'text-muted-foreground';
   };
 
   return (
@@ -223,7 +225,7 @@ export const SmartSearchPanel: React.FC = () => {
           {/* Search Input */}
           <div className="flex gap-2">
             <div className="flex-1 relative">
-              <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4`} />
+              <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
               <Input
                 placeholder="ابحث عن الأفكار والتحديات والفرص..."
                 value={query}
@@ -403,7 +405,7 @@ export const SmartSearchPanel: React.FC = () => {
                         <div className="space-y-3">
                           <div className="flex items-start justify-between">
                             <div className="flex items-center gap-2">
-                              <IconComponent className="h-5 w-5 text-gray-500" />
+                              <IconComponent className="h-5 w-5 text-muted-foreground" />
                               <h4 className="font-medium text-lg">{result.title}</h4>
                             </div>
                             <div className="flex items-center gap-2">
@@ -419,7 +421,7 @@ export const SmartSearchPanel: React.FC = () => {
                             </div>
                           </div>
 
-                          <p className="text-gray-600 line-clamp-2">
+                          <p className="text-muted-foreground line-clamp-2">
                             {result.description}
                           </p>
 
@@ -459,13 +461,13 @@ export const SmartSearchPanel: React.FC = () => {
             </>
           ) : query ? (
             <div className="text-center py-12">
-              <Search className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+              <Search className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
               <p className="text-lg font-medium">لم يتم العثور على نتائج</p>
               <p className="text-sm text-muted-foreground">جرب تعديل كلمات البحث أو المرشحات</p>
             </div>
           ) : (
             <div className="text-center py-12">
-              <Brain className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+              <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
               <p className="text-lg font-medium">ابدأ البحث الذكي</p>
               <p className="text-sm text-muted-foreground">استخدم البحث الدلالي للعثور على المحتوى ذي الصلة</p>
             </div>

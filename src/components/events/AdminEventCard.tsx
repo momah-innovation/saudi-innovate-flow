@@ -28,6 +28,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useRTLAware } from '@/hooks/useRTLAware';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface Event {
   id: string;
@@ -70,6 +71,7 @@ export const AdminEventCard = ({
 }: AdminEventCardProps) => {
   const { isRTL } = useDirection();
   const { start, end, me } = useRTLAware();
+  const { t } = useTranslation();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -78,18 +80,18 @@ export const AdminEventCard = ({
       case 'جاري':
       case 'ongoing': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
       case 'مكتمل':
-      case 'completed': return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'completed': return 'badge-secondary';
       case 'ملغي':
-      case 'cancelled': return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'cancelled': return 'badge-error';
+      default: return 'badge-secondary';
     }
   };
 
   const getStatusText = (status: string) => {
-    if (status === 'مجدول') return isRTL ? 'مجدول' : 'Scheduled';
-    if (status === 'جاري') return isRTL ? 'جاري' : 'Ongoing';
-    if (status === 'مكتمل') return isRTL ? 'مكتمل' : 'Completed';
-    if (status === 'ملغي') return isRTL ? 'ملغي' : 'Cancelled';
+    if (status === 'مجدول') return t('scheduled') || 'مجدول';
+    if (status === 'جاري') return t('ongoing') || 'جاري';
+    if (status === 'مكتمل') return t('completed') || 'مكتمل';
+    if (status === 'ملغي') return t('cancelled') || 'ملغي';
     return status;
   };
 
@@ -123,10 +125,10 @@ export const AdminEventCard = ({
   const isHighCapacity = getRegistrationPercentage() > 80;
 
   const statusActions = [
-    { value: 'مجدول', label: isRTL ? 'مجدول' : 'Scheduled' },
-    { value: 'جاري', label: isRTL ? 'جاري' : 'Ongoing' },
-    { value: 'مكتمل', label: isRTL ? 'مكتمل' : 'Completed' },
-    { value: 'ملغي', label: isRTL ? 'ملغي' : 'Cancelled' }
+    { value: 'مجدول', label: t('scheduled') || 'مجدول' },
+    { value: 'جاري', label: t('ongoing') || 'جاري' },
+    { value: 'مكتمل', label: t('completed') || 'مكتمل' },
+    { value: 'ملغي', label: t('cancelled') || 'ملغي' }
   ];
 
   if (viewMode === 'list') {
@@ -188,7 +190,7 @@ export const AdminEventCard = ({
                 </div>
                 <div className="flex items-center gap-1">
                   <MapPin className="w-3 h-3" />
-                  <span className="truncate">{event.location || (event.format === 'virtual' ? (isRTL ? 'عبر الإنترنت' : 'Online') : 'TBD')}</span>
+                   <span className="truncate">{event.location || (event.format === 'virtual' ? (t('online') || 'عبر الإنترنت') : 'TBD')}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Users className="w-3 h-3" />
@@ -225,8 +227,8 @@ export const AdminEventCard = ({
                     </DropdownMenuItem>
                   ))}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => onDelete(event)} className="text-destructive">
-                    {isRTL ? 'حذف' : 'Delete'}
+                   <DropdownMenuItem onClick={() => onDelete(event)} className="text-destructive">
+                    {t('delete') || 'حذف'}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -259,15 +261,15 @@ export const AdminEventCard = ({
             {getStatusText(event.status)}
           </Badge>
           {event.format === 'virtual' && (
-            <Badge variant="secondary" className="bg-white/90 text-gray-700">
-              <Globe className={`w-3 h-3 ${me('1')}`} />
-              {isRTL ? 'عبر الإنترنت' : 'Online'}
-            </Badge>
+             <Badge variant="secondary" className="bg-background/90 text-muted-foreground">
+               <Globe className={`w-3 h-3 ${me('1')}`} />
+               {t('online') || 'عبر الإنترنت'}
+             </Badge>
           )}
           {isHighCapacity && (
-            <Badge className="bg-orange-100 text-orange-800 border-orange-200">
-              {isRTL ? 'أماكن محدودة' : 'Limited'}
-            </Badge>
+             <Badge className="badge-warning">
+               {t('limited_spots') || 'أماكن محدودة'}
+             </Badge>
           )}
         </div>
 
@@ -278,20 +280,20 @@ export const AdminEventCard = ({
               <Button
                 variant="secondary"
                 size="sm"
-                className="bg-white/90 hover:bg-white"
+                className="bg-background/90 hover:bg-background"
               >
                 <MoreHorizontal className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onView(event)}>
-                <Eye className={`w-4 h-4 ${me('2')}`} />
-                {isRTL ? 'عرض' : 'View'}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onEdit(event)}>
-                <Edit className={`w-4 h-4 ${me('2')}`} />
-                {isRTL ? 'تعديل' : 'Edit'}
-              </DropdownMenuItem>
+               <DropdownMenuItem onClick={() => onView(event)}>
+                 <Eye className={`w-4 h-4 ${me('2')}`} />
+                 {t('view') || 'عرض'}
+               </DropdownMenuItem>
+               <DropdownMenuItem onClick={() => onEdit(event)}>
+                 <Edit className={`w-4 h-4 ${me('2')}`} />
+                 {t('edit') || 'تعديل'}
+               </DropdownMenuItem>
               <DropdownMenuSeparator />
               {onStatusChange && statusActions.map((action) => (
                 <DropdownMenuItem key={action.value} onClick={() => onStatusChange(event, action.value)}>
@@ -299,16 +301,16 @@ export const AdminEventCard = ({
                 </DropdownMenuItem>
               ))}
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => onDelete(event)} className="text-destructive">
-                {isRTL ? 'حذف' : 'Delete'}
-              </DropdownMenuItem>
+               <DropdownMenuItem onClick={() => onDelete(event)} className="text-destructive">
+                 {t('delete') || 'حذف'}
+               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
 
         {/* Date Badge */}
         <div className={cn("absolute bottom-3", start('3'))}>
-          <div className="bg-white/95 rounded-lg p-2 text-center min-w-[3rem]">
+          <div className="bg-background/95 rounded-lg p-2 text-center min-w-[3rem]">
             <div className="text-xs font-medium text-muted-foreground">
               {new Date(event.event_date).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', { month: 'short' })}
             </div>
@@ -342,26 +344,26 @@ export const AdminEventCard = ({
           </div>
           <div className="flex items-center gap-2">
             <MapPin className="w-4 h-4" />
-            <span className="truncate">{event.location || (event.format === 'virtual' ? (isRTL ? 'عبر الإنترنت' : 'Online') : 'TBD')}</span>
+            <span className="truncate">{event.location || (event.format === 'virtual' ? (t('online') || 'عبر الإنترنت') : 'TBD')}</span>
           </div>
         </div>
 
         {/* Registration Progress */}
         {event.max_participants && (
           <div className="mt-3">
-            <div className="flex justify-between text-sm text-muted-foreground mb-2">
-              <span>{isRTL ? 'التسجيل' : 'Registration'}</span>
-              <span>{event.registered_participants}/{event.max_participants}</span>
-            </div>
+             <div className="flex justify-between text-sm text-muted-foreground mb-2">
+               <span>{t('registration') || 'التسجيل'}</span>
+               <span>{event.registered_participants}/{event.max_participants}</span>
+             </div>
             <Progress value={getRegistrationPercentage()} className="h-2" />
             <div className="flex justify-between text-xs text-muted-foreground mt-1">
-              <span>{Math.round(getRegistrationPercentage())}% {isRTL ? 'ممتلئ' : 'full'}</span>
-              {isHighCapacity && (
-                <span className="text-orange-600 flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3" />
-                  {isRTL ? 'أماكن محدودة' : 'Limited spots'}
-                </span>
-              )}
+               <span>{Math.round(getRegistrationPercentage())}% {t('full') || 'ممتلئ'}</span>
+               {isHighCapacity && (
+                 <span className="text-warning flex items-center gap-1">
+                   <AlertCircle className="w-3 h-3" />
+                   {t('limited_spots') || 'أماكن محدودة'}
+                 </span>
+               )}
             </div>
           </div>
         )}
@@ -369,48 +371,48 @@ export const AdminEventCard = ({
 
       <CardContent className="pt-0">
         {/* Stats Grid */}
-        <div className="grid grid-cols-3 gap-3 mb-4">
-          <div className="text-center p-2 bg-muted/50 rounded-lg">
-            <div className="text-lg font-bold text-foreground">{event.registered_participants}</div>
-            <div className="text-xs text-muted-foreground">{isRTL ? 'مسجل' : 'Registered'}</div>
-          </div>
-          <div className="text-center p-2 bg-muted/50 rounded-lg">
-            <div className="text-lg font-bold text-foreground">{event.actual_participants}</div>
-            <div className="text-xs text-muted-foreground">{isRTL ? 'حضر' : 'Attended'}</div>
-          </div>
-          <div className="text-center p-2 bg-muted/50 rounded-lg">
-            <div className="text-lg font-bold text-foreground">
-              {event.budget ? `${(event.budget / 1000).toFixed(0)}K` : (isRTL ? 'مجاني' : 'Free')}
-            </div>
-            <div className="text-xs text-muted-foreground">{isRTL ? 'الميزانية' : 'Budget'}</div>
-          </div>
-        </div>
+         <div className="grid grid-cols-3 gap-3 mb-4">
+           <div className="text-center p-2 bg-muted/50 rounded-lg">
+             <div className="text-lg font-bold text-foreground">{event.registered_participants}</div>
+             <div className="text-xs text-muted-foreground">{t('registered') || 'مسجل'}</div>
+           </div>
+           <div className="text-center p-2 bg-muted/50 rounded-lg">
+             <div className="text-lg font-bold text-foreground">{event.actual_participants}</div>
+             <div className="text-xs text-muted-foreground">{t('attended') || 'حضر'}</div>
+           </div>
+           <div className="text-center p-2 bg-muted/50 rounded-lg">
+             <div className="text-lg font-bold text-foreground">
+               {event.budget ? `${(event.budget / 1000).toFixed(0)}K` : (t('free') || 'مجاني')}
+             </div>
+             <div className="text-xs text-muted-foreground">{t('budget') || 'الميزانية'}</div>
+           </div>
+         </div>
 
         {/* Performance Indicators */}
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
-          <div className="flex items-center gap-1">
-            {getRegistrationPercentage() > 90 ? (
-              <CheckCircle2 className="w-3 h-3 text-green-600" />
-            ) : getRegistrationPercentage() > 70 ? (
-              <TrendingUp className="w-3 h-3 text-orange-600" />
-            ) : (
-              <AlertCircle className="w-3 h-3 text-red-600" />
-            )}
-            <span>{isRTL ? 'معدل التسجيل' : 'Registration rate'}</span>
-          </div>
+           <div className="flex items-center gap-1">
+             {getRegistrationPercentage() > 90 ? (
+               <CheckCircle2 className="w-3 h-3 text-success" />
+             ) : getRegistrationPercentage() > 70 ? (
+               <TrendingUp className="w-3 h-3 text-warning" />
+             ) : (
+               <AlertCircle className="w-3 h-3 text-destructive" />
+             )}
+             <span>{t('registration_rate') || 'معدل التسجيل'}</span>
+           </div>
           <span className="font-medium">{Math.round(getRegistrationPercentage())}%</span>
         </div>
 
         {/* Action Buttons */}
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => onView(event)} className="flex-1">
-            <Eye className={`w-4 h-4 ${me('2')}`} />
-            {isRTL ? 'عرض' : 'View'}
-          </Button>
-          <Button onClick={() => onEdit(event)} className="flex-1">
-            <Edit className={`w-4 h-4 ${me('2')}`} />
-            {isRTL ? 'تعديل' : 'Edit'}
-          </Button>
+           <Button variant="outline" onClick={() => onView(event)} className="flex-1">
+             <Eye className={`w-4 h-4 ${me('2')}`} />
+             {t('view') || 'عرض'}
+           </Button>
+           <Button onClick={() => onEdit(event)} className="flex-1">
+             <Edit className={`w-4 h-4 ${me('2')}`} />
+             {t('edit') || 'تعديل'}
+           </Button>
         </div>
       </CardContent>
     </Card>

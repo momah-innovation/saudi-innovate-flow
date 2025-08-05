@@ -23,6 +23,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { challengesPageConfig, getFilterOptions } from '@/config/challengesPageConfig';
 import { useRTLAware } from '@/hooks/useRTLAware';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 export interface FilterState {
   search: string;
@@ -58,6 +59,7 @@ export const ChallengeFilters = ({
 }: ChallengeFiltersProps) => {
   const { isRTL } = useDirection();
   const { me, ms, start, end, ps } = useRTLAware();
+  const { t } = useTranslation();
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
@@ -166,13 +168,13 @@ export const ChallengeFilters = ({
                     onClick={handleSearchClick}
                     />
                     <Input
-                      placeholder={isRTL ? 'البحث...' : 'Search...'}
+                      placeholder={t('search') || 'البحث...'}
                       value={filters.search}
                       onChange={(e) => updateFilter('search', e.target.value)}
                       onFocus={handleSearchFocus}
                       onBlur={handleSearchBlur}
                       className={cn(`h-10 text-sm transition-all duration-300 ${challengesPageConfig.ui.glassMorphism.medium} border-white/20 focus:border-primary focus:ring-primary`, ps('8'))}
-                      title={isRTL ? 'البحث في التحديات...' : 'Search challenges...'}
+                      title={t('search_challenges') || 'البحث في التحديات...'}
                       autoFocus={searchExpanded && !filters.search}
                     />
                     {filters.search && (
@@ -181,7 +183,7 @@ export const ChallengeFilters = ({
                         size="sm"
                         onClick={() => updateFilter('search', '')}
                         className={cn("absolute top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-muted rounded-sm", end('1'))}
-                        title={isRTL ? 'مسح البحث' : 'Clear search'}
+                        title={t('clear_search') || 'مسح البحث'}
                       >
                         <X className="h-3 w-3" />
                       </Button>
@@ -205,7 +207,7 @@ export const ChallengeFilters = ({
                        ? `${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.colors.text.accent} border-0` 
                       : `${challengesPageConfig.ui.glassMorphism.medium} border-primary/20 ${challengesPageConfig.ui.effects.interactive}`
                   )}
-                    title={isRTL ? option.labelAr : option.label}
+                    title={t(option.value) || option.labelAr}
                   >
                     <option.icon className="w-3.5 h-3.5" />
                   </Button>
@@ -217,16 +219,16 @@ export const ChallengeFilters = ({
               <Select value={filters.status} onValueChange={(value) => updateFilter('status', value)}>
                 <SelectTrigger 
                   className="h-8 text-sm transition-all duration-200 hover:border-primary/50"
-                  title={isRTL ? 'حالة التحدي' : 'Challenge Status'}
+                  title={t('challenge_status') || 'حالة التحدي'}
                 >
-                  <SelectValue placeholder={isRTL ? 'الحالة' : 'Status'} />
+                  <SelectValue placeholder={t('status') || 'الحالة'} />
                 </SelectTrigger>
                 <SelectContent className="z-50 bg-background border shadow-md">
                   {statusOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       <div className="flex items-center gap-2">
                         {option.icon && <option.icon className="w-3.5 h-3.5" />}
-                        {isRTL ? option.labelAr : option.label}
+                        {t(option.value) || option.labelAr}
                       </div>
                     </SelectItem>
                   ))}
@@ -239,14 +241,14 @@ export const ChallengeFilters = ({
               <Select value={filters.category} onValueChange={(value) => updateFilter('category', value)}>
                 <SelectTrigger 
                   className="h-8 text-sm transition-all duration-200 hover:border-primary/50"
-                  title={isRTL ? 'فئة التحدي' : 'Challenge Category'}
+                  title={t('challenge_category') || 'فئة التحدي'}
                 >
-                  <SelectValue placeholder={isRTL ? 'الفئة' : 'Category'} />
+                  <SelectValue placeholder={t('category') || 'الفئة'} />
                 </SelectTrigger>
                 <SelectContent className="z-50 bg-background border shadow-md">
                   {categoryOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
-                      {isRTL ? option.labelAr : option.label}
+                      {t(option.value) || option.labelAr}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -258,14 +260,14 @@ export const ChallengeFilters = ({
               <Select value={filters.difficulty} onValueChange={(value) => updateFilter('difficulty', value)}>
                 <SelectTrigger 
                   className="h-8 text-sm transition-all duration-200 hover:border-primary/50"
-                  title={isRTL ? 'مستوى الصعوبة' : 'Difficulty Level'}
+                  title={t('difficulty_level') || 'مستوى الصعوبة'}
                 >
-                  <SelectValue placeholder={isRTL ? 'المستوى' : 'Level'} />
+                  <SelectValue placeholder={t('level') || 'المستوى'} />
                 </SelectTrigger>
                 <SelectContent className="z-50 bg-background border shadow-md">
                   {difficultyOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
-                      {isRTL ? option.labelAr : option.label}
+                      {t(option.value) || option.labelAr}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -277,7 +279,7 @@ export const ChallengeFilters = ({
               <Select value={filters.sortBy} onValueChange={(value) => updateFilter('sortBy', value)}>
                 <SelectTrigger 
                   className="h-8 min-w-[90px] text-sm transition-all duration-200 hover:border-primary/50"
-                  title={isRTL ? 'ترتيب حسب' : 'Sort by'}
+                  title={t('sort_by') || 'ترتيب حسب'}
                 >
                   <SelectValue placeholder="Sort" />
                 </SelectTrigger>
@@ -286,7 +288,7 @@ export const ChallengeFilters = ({
                     <SelectItem key={option.value} value={option.value}>
                       <div className="flex items-center gap-2">
                         {option.icon && <option.icon className="w-3.5 h-3.5" />}
-                        {isRTL ? option.labelAr : option.label}
+                        {t(option.value) || option.labelAr}
                       </div>
                     </SelectItem>
                   ))}
@@ -310,7 +312,7 @@ export const ChallengeFilters = ({
                 size="sm"
                 onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
                 className="h-8 px-2 transition-all duration-200 hover:bg-muted/80"
-                title={isRTL ? 'فلاتر متقدمة' : 'Advanced Filters'}
+                title={t('advanced_filters') || 'فلاتر متقدمة'}
               >
                 <SlidersHorizontal className="w-3.5 h-3.5" />
                 <ChevronDown className={cn(
@@ -332,7 +334,7 @@ export const ChallengeFilters = ({
               <div className="space-y-3">
                 <label className="text-sm font-medium flex items-center gap-2">
                   <Award className="w-4 h-4" />
-                  {isRTL ? 'نطاق الجائزة (ر.س)' : 'Prize Range (SAR)'}
+                  {t('prize_range_sar') || 'نطاق الجائزة (ر.س)'}
                 </label>
                 <div className="px-3">
                   <Slider
@@ -354,7 +356,7 @@ export const ChallengeFilters = ({
               <div className="space-y-3">
                 <label className="text-sm font-medium flex items-center gap-2">
                   <Users className="w-4 h-4" />
-                  {isRTL ? 'نطاق المشاركين' : 'Participants Range'}
+                  {t('participants_range') || 'نطاق المشاركين'}
                 </label>
                 <div className="px-3">
                   <Slider
@@ -389,7 +391,7 @@ export const ChallengeFilters = ({
                     animateFilters && "animate-pulse"
                   )}
                 >
-                  {activeFiltersCount} {isRTL ? 'فلتر نشط' : 'active filters'}
+                  {activeFiltersCount} {t('active_filters') || 'فلتر نشط'}
                 </Badge>
               </div>
               <Button
@@ -399,7 +401,7 @@ export const ChallengeFilters = ({
                 className="text-muted-foreground hover:text-destructive transition-colors duration-200"
               >
                 <X className={`w-4 h-4 ${me('2')}`} />
-                {isRTL ? 'مسح الكل' : 'Clear all'}
+                {t('clear_all') || 'مسح الكل'}
               </Button>
             </div>
           </CardContent>
