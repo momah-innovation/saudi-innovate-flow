@@ -88,5 +88,29 @@
   }
   body {
     @apply bg-background text-foreground;
-  }
+}
+
+/* Language-specific font handling */
+.lang-ar {
+  font-family: 'Noto Sans Arabic', 'Arial', sans-serif;
+}
+
+.lang-en {
+  font-family: 'Inter', 'Arial', sans-serif;
+}
+
+/* RTL-specific styles */
+.rtl {
+  direction: rtl;
+}
+
+.ltr {
+  direction: ltr;
+}
+
+/* Global animation settings */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }

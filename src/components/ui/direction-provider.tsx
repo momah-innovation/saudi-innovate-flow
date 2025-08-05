@@ -69,7 +69,7 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
     const savedLanguage = localStorage.getItem('ui-language') as Language;
     const savedDirection = localStorage.getItem('ui-direction') as Direction;
     
-    // Determine initial language
+    // Determine initial language - only support Arabic and English
     const initialLanguage = i18nextLng || savedLanguage;
     
     if (savedDirection) {
@@ -79,17 +79,23 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
     if (initialLanguage && (initialLanguage === 'ar' || initialLanguage === 'en')) {
       setLanguageState(initialLanguage);
       document.documentElement.lang = initialLanguage;
+      // Auto-detect direction based on language
+      const autoDirection = initialLanguage === 'ar' ? 'rtl' : 'ltr';
+      setDirection(autoDirection);
       // Ensure both localStorage keys are in sync
       localStorage.setItem('ui-language', initialLanguage);
       localStorage.setItem('i18nextLng', initialLanguage);
     } else if (defaultConfig.autoDetect) {
+      // Auto-detect from browser, but only support Arabic/English
       const browserLang = navigator.language.split('-')[0] as Language;
-      if (browserLang === 'en') {
-        setLanguage(browserLang);  // Only switch to English if explicitly detected
-      } else {
-        setLanguage('ar');  // Default to Arabic for all other cases
-      }
+      const supportedLang = browserLang === 'en' ? 'en' : 'ar'; // Default to Arabic for unsupported languages
+      setLanguage(supportedLang);
     }
+    
+    // Apply global direction classes
+    document.documentElement.dir = direction;
+    document.documentElement.classList.remove('ltr', 'rtl');
+    document.documentElement.classList.add(direction);
   }, []);
 
   return (
