@@ -12,6 +12,7 @@ import {
   Star
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
@@ -35,6 +36,7 @@ interface EventRecommendationsProps {
 
 export const EventRecommendations = ({ onEventSelect, className = "" }: EventRecommendationsProps) => {
   const { isRTL } = useDirection();
+  const { me, ms, end } = useRTLAware();
   const { user } = useAuth();
   const [recommendations, setRecommendations] = useState<RecommendedEvent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -157,7 +159,7 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
             {isRTL ? 'مقترحة لك' : 'For You'}
           </div>
           <Badge variant="secondary" className="bg-purple-100 text-purple-700 border-purple-300">
-            <Star className="w-3 h-3 mr-1" />
+            <Star className={`w-3 h-3 ${me('1')}`} />
             {isRTL ? 'مخصص' : 'Personal'}
           </Badge>
         </CardTitle>
@@ -190,9 +192,9 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
                   onClick={() => onEventSelect(event.id)}
                 >
                   {/* Recommendation Score */}
-                  <div className="absolute top-2 right-2">
+                  <div className={`absolute top-2 ${end('2')}`}>
                     <Badge variant="outline" className={cn("text-xs border-0 bg-white/90", scoreColor)}>
-                      <Star className="w-3 h-3 mr-1" />
+                      <Star className={`w-3 h-3 ${me('1')}`} />
                       {Math.round(event.recommendation_score * 100)}%
                     </Badge>
                   </div>
@@ -269,7 +271,7 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
                 onClick={() => onEventSelect('all-recommendations')}
               >
                 {isRTL ? `عرض جميع التوصيات (${recommendations.length})` : `View All Recommendations (${recommendations.length})`}
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className={`w-4 h-4 ${ms('2')}`} />
               </Button>
             )}
           </div>

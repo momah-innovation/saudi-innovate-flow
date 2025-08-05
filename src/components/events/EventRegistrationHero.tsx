@@ -17,6 +17,7 @@ import {
   Timer
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { cn } from '@/lib/utils';
 
 interface EventRegistrationHeroProps {
@@ -43,6 +44,7 @@ export const EventRegistrationHero = ({
   eventType = 'conference'
 }: EventRegistrationHeroProps) => {
   const { isRTL } = useDirection();
+  const { me, start, end } = useRTLAware();
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
@@ -71,9 +73,9 @@ export const EventRegistrationHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-20 left-1/3 w-64 h-64 bg-teal-400/5 rounded-full blur-2xl animate-bounce" />
+        <div className={`absolute -top-40 ${end('-40')} w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse`} />
+        <div className={`absolute -bottom-40 ${start('-40')} w-96 h-96 bg-emerald-400/5 rounded-full blur-3xl animate-pulse delay-1000`} />
+        <div className={`absolute top-20 ${start('1/3')} w-64 h-64 bg-teal-400/5 rounded-full blur-2xl animate-bounce`} />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -87,7 +89,7 @@ export const EventRegistrationHero = ({
                   <Sparkles className="w-6 h-6 text-yellow-300" />
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
-                  <Calendar className="w-3 h-3 mr-1" />
+                  <Calendar className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'تسجيل الفعالية' : 'Event Registration'}
                 </Badge>
               </div>

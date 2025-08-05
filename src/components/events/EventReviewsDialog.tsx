@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -58,6 +59,7 @@ export const EventReviewsDialog = ({
   onOpenChange 
 }: EventReviewsDialogProps) => {
   const { isRTL } = useDirection();
+  const { me } = useRTLAware();
   const { toast } = useToast();
   const { user } = useAuth();
   const [reviews, setReviews] = useState<EventReview[]>([]);
@@ -268,12 +270,12 @@ export const EventReviewsDialog = ({
                 >
                   {submitting ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                      <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-white ${me('2')}`} />
                       {isRTL ? 'جاري الإرسال...' : 'Submitting...'}
                     </>
                   ) : (
                     <>
-                      <Send className="w-4 h-4 mr-2" />
+                      <Send className={`w-4 h-4 ${me('2')}`} />
                       {userReview 
                         ? (isRTL ? 'تحديث التقييم' : 'Update Review')
                         : (isRTL ? 'إرسال التقييم' : 'Submit Review')

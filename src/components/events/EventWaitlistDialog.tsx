@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -45,6 +46,7 @@ export const EventWaitlistDialog = ({
   onSuccess 
 }: EventWaitlistDialogProps) => {
   const { isRTL } = useDirection();
+  const { me } = useRTLAware();
   const { toast } = useToast();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -227,12 +229,12 @@ export const EventWaitlistDialog = ({
           <Button onClick={handleJoinWaitlist} disabled={loading}>
             {loading ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-white ${me('2')}`} />
                 {isRTL ? 'جاري الانضمام...' : 'Joining...'}
               </>
             ) : (
               <>
-                <Clock className="w-4 h-4 mr-2" />
+                <Clock className={`w-4 h-4 ${me('2')}`} />
                 {isRTL ? 'انضم لقائمة الانتظار' : 'Join Waitlist'}
               </>
             )}

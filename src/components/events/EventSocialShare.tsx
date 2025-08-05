@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { 
   Share2, 
   Copy, 
@@ -42,6 +43,7 @@ export const EventSocialShare = ({
   className = "" 
 }: EventSocialShareProps) => {
   const { isRTL } = useDirection();
+  const { me } = useRTLAware();
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
 
@@ -142,7 +144,7 @@ export const EventSocialShare = ({
       <DialogTrigger asChild>
         {trigger || (
           <Button variant="outline" size="sm" className={className}>
-            <Share2 className="w-4 h-4 mr-2" />
+            <Share2 className={`w-4 h-4 ${me('2')}`} />
             {isRTL ? 'مشاركة' : 'Share'}
           </Button>
         )}
