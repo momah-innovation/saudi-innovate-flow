@@ -174,7 +174,7 @@ export const EventSocialShare = ({
           {/* Native Share (mobile) */}
           {navigator.share && (
             <Button onClick={handleNativeShare} className="w-full" variant="outline">
-              <Share2 className="w-4 h-4 mr-2" />
+              <Share2 className={`w-4 h-4 ${me('2')}`} />
               {isRTL ? 'مشاركة' : 'Share'}
             </Button>
           )}
@@ -219,7 +219,7 @@ export const EventSocialShare = ({
                     className={`${platform.color} ${platform.textColor} border-0 justify-start`}
                     onClick={() => handleSocialShare(platform.url)}
                   >
-                    <IconComponent className="w-4 h-4 mr-2" />
+                    <IconComponent className={`w-4 h-4 ${me('2')}`} />
                     {platform.name}
                   </Button>
                 );

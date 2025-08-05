@@ -44,7 +44,7 @@ export const EventRegistrationHero = ({
   eventType = 'conference'
 }: EventRegistrationHeroProps) => {
   const { isRTL } = useDirection();
-  const { me, start, end } = useRTLAware();
+  const { me, ms, start, end } = useRTLAware();
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
@@ -160,17 +160,17 @@ export const EventRegistrationHero = ({
                 >
                   {isRegistered ? (
                     <>
-                      <CheckCircle className="w-5 h-5 mr-2" />
+                      <CheckCircle className={`w-5 h-5 ${me('2')}`} />
                       {isRTL ? 'مسجل بالفعل' : 'Already Registered'}
                     </>
                   ) : registeredCount >= maxCapacity ? (
                     <>
-                      <Clock className="w-5 h-5 mr-2" />
+                      <Clock className={`w-5 h-5 ${me('2')}`} />
                       {isRTL ? 'الفعالية مكتملة' : 'Event Full'}
                     </>
                   ) : (
                     <>
-                      <Zap className="w-5 h-5 mr-2" />
+                      <Zap className={`w-5 h-5 ${me('2')}`} />
                       {isRTL ? 'سجل الآن' : 'Register Now'}
                     </>
                   )}
@@ -181,7 +181,7 @@ export const EventRegistrationHero = ({
                   size="lg"
                   className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
                 >
-                  <Star className="w-5 h-5 mr-2" />
+                  <Star className={`w-5 h-5 ${me('2')}`} />
                   {isRTL ? 'المزيد من التفاصيل' : 'More Details'}
                 </Button>
               </div>
@@ -198,17 +198,17 @@ export const EventRegistrationHero = ({
                     <Calendar className="w-16 h-16 text-white/60" />
                   </div>
                   
-                  <div className="absolute top-4 left-4">
+                  <div className={`absolute top-4 ${start('4')}`}>
                     <Badge className="bg-emerald-500/90 text-white border-0">
-                      <Clock className="w-3 h-3 mr-1" />
+                      <Clock className={`w-3 h-3 ${me('1')}`} />
                       {new Date(eventDate).toLocaleDateString('ar-SA')}
                     </Badge>
                   </div>
 
                   {isRegistered && (
-                    <div className="absolute top-4 right-4">
+                    <div className={`absolute top-4 ${end('4')}`}>
                       <Badge className="bg-green-500/90 text-white border-0">
-                        <CheckCircle className="w-3 h-3 mr-1" />
+                        <CheckCircle className={`w-3 h-3 ${me('1')}`} />
                         {isRTL ? 'مسجل' : 'Registered'}
                       </Badge>
                     </div>
@@ -237,7 +237,7 @@ export const EventRegistrationHero = ({
                     className="w-full bg-gradient-primary hover:opacity-90 text-white"
                   >
                     {isRTL ? 'عرض جدول الفعالية' : 'View Event Schedule'}
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <ArrowRight className={`w-4 h-4 ${ms('2')}`} />
                   </Button>
                 </div>
               </CardContent>
