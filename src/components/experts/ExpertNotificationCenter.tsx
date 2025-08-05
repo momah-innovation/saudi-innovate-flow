@@ -104,13 +104,13 @@ export const ExpertNotificationCenter = () => {
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'urgent':
-        return <AlertCircle className="w-4 h-4 text-red-500" />;
+        return <AlertCircle className="w-4 h-4 text-destructive" />;
       case 'assignment':
-        return <Target className="w-4 h-4 text-blue-500" />;
+        return <Target className="w-4 h-4 text-primary" />;
       case 'deadline':
-        return <Clock className="w-4 h-4 text-orange-500" />;
+        return <Clock className="w-4 h-4 text-warning" />;
       case 'achievement':
-        return <Award className="w-4 h-4 text-yellow-500" />;
+        return <Award className="w-4 h-4 text-accent" />;
       case 'system':
         return <Settings className="w-4 h-4 text-gray-500" />;
       default:
@@ -326,7 +326,7 @@ export const ExpertNotificationCenter = () => {
                       <div className="flex items-start justify-between">
                         <div className="flex-1 space-y-1">
                           <div className="flex items-center gap-2">
-                            <AlertCircle className="w-4 h-4 text-red-500" />
+                            <AlertCircle className="w-4 h-4 text-destructive" />
                             <Badge variant="destructive" className="text-xs">
                               {isRTL ? 'عاجل' : 'Urgent'}
                             </Badge>
@@ -361,7 +361,7 @@ export const ExpertNotificationCenter = () => {
                       <div className="flex items-start justify-between">
                         <div className="flex-1 space-y-1">
                           <div className="flex items-center gap-2">
-                            <Target className="w-4 h-4 text-blue-500" />
+                            <Target className="w-4 h-4 text-primary" />
                             <Badge variant="outline" className="text-xs">
                               {isRTL ? 'تكليف' : 'Assignment'}
                             </Badge>
@@ -396,8 +396,8 @@ export const ExpertNotificationCenter = () => {
                       <div className="flex items-start justify-between">
                         <div className="flex-1 space-y-1">
                           <div className="flex items-center gap-2">
-                            <Award className="w-4 h-4 text-yellow-500" />
-                            <Badge variant="outline" className="text-xs bg-yellow-50 text-yellow-700">
+                            <Award className="w-4 h-4 text-accent" />
+                            <Badge variant="outline" className="text-xs bg-accent/5 text-accent">
                               {isRTL ? 'إنجاز' : 'Achievement'}
                             </Badge>
                           </div>

@@ -127,7 +127,7 @@ export const EventWaitlistDialog = ({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Clock className="w-5 h-5 text-orange-500" />
+            <Clock className="w-5 h-5 text-warning" />
             {isRTL ? 'الانضمام لقائمة الانتظار' : 'Join Waitlist'}
           </DialogTitle>
           <DialogDescription>
@@ -153,12 +153,12 @@ export const EventWaitlistDialog = ({
               </div>
               
               {isFull ? (
-                <div className="flex items-center gap-2 text-red-600">
+                <div className="flex items-center gap-2 text-destructive">
                   <AlertCircle className="w-4 h-4" />
                   <span>{isRTL ? 'الفعالية ممتلئة حالياً' : 'Event is currently full'}</span>
                 </div>
               ) : (
-                <div className="flex items-center gap-2 text-orange-600">
+                <div className="flex items-center gap-2 text-warning">
                   <CheckCircle className="w-4 h-4" />
                   <span>
                     {spotsRemaining} {isRTL ? 'أماكن متبقية' : 'spots remaining'}

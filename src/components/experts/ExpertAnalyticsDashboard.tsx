@@ -45,7 +45,7 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
       unit: isRTL ? 'أيام' : 'days',
       change: -12,
       icon: Clock,
-      color: 'text-green-500'
+      color: 'text-success'
     },
     { 
       title: isRTL ? 'معدل جودة التقييم' : 'Evaluation Quality',
@@ -53,7 +53,7 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
       unit: '/10',
       change: 5,
       icon: Star,
-      color: 'text-yellow-500'
+      color: 'text-accent'
     },
     { 
       title: isRTL ? 'معدل الإنجاز' : 'Completion Rate',
@@ -61,7 +61,7 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
       unit: '%',
       change: 8,
       icon: Target,
-      color: 'text-blue-500'
+      color: 'text-primary'
     },
     { 
       title: isRTL ? 'تقييم الأقران' : 'Peer Rating',
@@ -69,7 +69,7 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
       unit: '/5',
       change: 3,
       icon: Users,
-      color: 'text-purple-500'
+      color: 'text-secondary'
     }
   ];
 

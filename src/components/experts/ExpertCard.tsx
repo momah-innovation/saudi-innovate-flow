@@ -42,10 +42,10 @@ export const ExpertCard = ({ expert, onViewProfile, onContact, compact = false }
 
   const getAvailabilityColor = (availability: string) => {
     switch (availability) {
-      case 'available': return 'bg-green-100 text-green-800 border-green-200';
-      case 'busy': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'unavailable': return 'bg-red-100 text-red-800 border-red-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'available': return 'bg-success/10 text-success border-success/20';
+      case 'busy': return 'bg-warning/10 text-warning border-warning/20';
+      case 'unavailable': return 'bg-destructive/10 text-destructive border-destructive/20';
+      default: return 'bg-muted/10 text-muted-foreground border-muted/20';
     }
   };
 
@@ -80,7 +80,7 @@ export const ExpertCard = ({ expert, onViewProfile, onContact, compact = false }
                   {getAvailabilityText(expert.availability)}
                 </Badge>
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Star className="w-3 h-3 fill-current text-yellow-500" />
+                  <Star className="w-3 h-3 fill-current text-accent" />
                   <span>{expert.rating}</span>
                 </div>
               </div>
@@ -120,7 +120,7 @@ export const ExpertCard = ({ expert, onViewProfile, onContact, compact = false }
             
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 fill-current text-yellow-500" />
+                <Star className="w-4 h-4 fill-current text-accent" />
                 <span>{expert.rating}/5</span>
               </div>
               <div className="flex items-center gap-1">

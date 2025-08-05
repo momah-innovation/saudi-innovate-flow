@@ -48,10 +48,10 @@ export const EventRegistrationHero = ({
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    { icon: Users, value: registeredCount, label: isRTL ? 'مسجل' : 'registered', color: 'text-blue-400' },
-    { icon: MapPin, value: eventLocation, label: isRTL ? 'الموقع' : 'location', color: 'text-green-400' },
-    { icon: Timer, value: new Date(registrationDeadline).toLocaleDateString('ar-SA'), label: isRTL ? 'آخر موعد' : 'deadline', color: 'text-orange-400' },
-    { icon: Award, value: eventType, label: isRTL ? 'النوع' : 'type', color: 'text-purple-400' }
+    { icon: Users, value: registeredCount, label: isRTL ? 'مسجل' : 'registered', color: 'text-primary' },
+    { icon: MapPin, value: eventLocation, label: isRTL ? 'الموقع' : 'location', color: 'text-success' },
+    { icon: Timer, value: new Date(registrationDeadline).toLocaleDateString('ar-SA'), label: isRTL ? 'آخر موعد' : 'deadline', color: 'text-warning' },
+    { icon: Award, value: eventType, label: isRTL ? 'النوع' : 'type', color: 'text-accent' }
   ];
 
   useEffect(() => {
@@ -86,7 +86,7 @@ export const EventRegistrationHero = ({
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <Sparkles className="w-6 h-6 text-yellow-300" />
+                  <Sparkles className="w-6 h-6 text-accent" />
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                   <Calendar className={`w-3 h-3 ${me('1')}`} />

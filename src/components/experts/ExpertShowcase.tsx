@@ -65,32 +65,32 @@ export const ExpertShowcase = ({
       <Card className="bg-gradient-overlay border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Crown className="w-5 h-5 text-purple-600" />
+            <Crown className="w-5 h-5 text-accent" />
              {t('expert_network') || 'شبكة الخبراء'}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">{experts.length}</div>
+              <div className="text-2xl font-bold text-accent">{experts.length}</div>
               <div className="text-sm text-muted-foreground">
                 {t('total_experts') || 'إجمالي الخبراء'}
               </div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">{availableCount}</div>
+              <div className="text-2xl font-bold text-success">{availableCount}</div>
               <div className="text-sm text-muted-foreground">
                 {t('available_now') || 'متاحون الآن'}
               </div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">{totalExperience}+</div>
+              <div className="text-2xl font-bold text-primary">{totalExperience}+</div>
               <div className="text-sm text-muted-foreground">
                 {t('years_experience') || 'سنوات خبرة'}
               </div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-orange-600">4.8</div>
+              <div className="text-2xl font-bold text-warning">4.8</div>
               <div className="text-sm text-muted-foreground">
                 {t('avg_rating') || 'تقييم متوسط'}
               </div>
@@ -130,7 +130,7 @@ export const ExpertShowcase = ({
                 
                 <div className="flex items-center gap-4 mb-4">
                   <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-current text-yellow-500" />
+                    <Star className="w-4 h-4 fill-current text-accent" />
                     <span className="font-semibold">{featuredExpert.rating}/5</span>
                   </div>
                   <div className="flex items-center gap-1">

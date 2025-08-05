@@ -55,10 +55,10 @@ export const EnhancedExpertDashboardHero = ({
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    { icon: Target, value: assignedChallenges, label: isRTL ? 'تحدي مُكلف' : 'assigned', color: 'text-blue-400' },
-    { icon: Clock, value: pendingEvaluations, label: isRTL ? 'في الانتظار' : 'pending', color: 'text-orange-400' },
-    { icon: CheckCircle, value: completedEvaluations, label: isRTL ? 'مكتمل' : 'completed', color: 'text-green-400' },
-    { icon: Star, value: `${averageRating.toFixed(1)}/10`, label: isRTL ? 'متوسط التقييم' : 'avg rating', color: 'text-yellow-400' }
+    { icon: Target, value: assignedChallenges, label: isRTL ? 'تحدي مُكلف' : 'assigned', color: 'text-primary' },
+    { icon: Clock, value: pendingEvaluations, label: isRTL ? 'في الانتظار' : 'pending', color: 'text-warning' },
+    { icon: CheckCircle, value: completedEvaluations, label: isRTL ? 'مكتمل' : 'completed', color: 'text-success' },
+    { icon: Star, value: `${averageRating.toFixed(1)}/10`, label: isRTL ? 'متوسط التقييم' : 'avg rating', color: 'text-accent' }
   ];
 
   useEffect(() => {
@@ -79,8 +79,8 @@ export const EnhancedExpertDashboardHero = ({
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className={`absolute -top-40 ${end('-40')} w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse`} />
-        <div className={`absolute -bottom-40 ${start('-40')} w-96 h-96 bg-blue-400/5 rounded-full blur-3xl animate-pulse delay-1000`} />
-        <div className={`absolute top-20 ${start('1/3')} w-64 h-64 bg-emerald-400/5 rounded-full blur-2xl animate-bounce`} />
+        <div className={`absolute -bottom-40 ${start('-40')} w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-1000`} />
+        <div className={`absolute top-20 ${start('1/3')} w-64 h-64 bg-success/5 rounded-full blur-2xl animate-bounce`} />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -91,7 +91,7 @@ export const EnhancedExpertDashboardHero = ({
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <Star className="w-6 h-6 text-yellow-300" />
+                  <Star className="w-6 h-6 text-accent" />
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                   <Award className={`w-3 h-3 ${me('1')}`} />
@@ -186,7 +186,7 @@ export const EnhancedExpertDashboardHero = ({
                   <div className="relative h-48 overflow-hidden rounded-t-lg bg-gradient-overlay flex items-center justify-center">
                     <div className="text-center space-y-4">
                       <div className="p-4 bg-white/10 rounded-full">
-                        <Sparkles className="w-16 h-16 text-yellow-300" />
+                        <Sparkles className="w-16 h-16 text-accent" />
                       </div>
                       <h3 className="text-lg font-semibold text-white">
                         {isRTL ? 'تقييم مميز' : 'Featured Evaluation'}
@@ -229,13 +229,13 @@ export const EnhancedExpertDashboardHero = ({
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-emerald-300">
+                        <div className="text-2xl font-bold text-success">
                           {featuredEvaluation.daysLeft}
                         </div>
                         <div className="text-sm text-white/70">{isRTL ? 'أيام متبقية' : 'days left'}</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-yellow-300">
+                        <div className="text-2xl font-bold text-accent">
                           {featuredEvaluation.priority === 'high' ? '★★★' : 
                            featuredEvaluation.priority === 'medium' ? '★★☆' : '★☆☆'}
                         </div>
@@ -277,7 +277,7 @@ export const EnhancedExpertDashboardHero = ({
             <div className="grid grid-cols-2 gap-4">
               <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <Calendar className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+                  <Calendar className="w-8 h-8 text-primary mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
                     {isRTL ? 'هذا الأسبوع' : 'This Week'}
                   </div>
@@ -289,7 +289,7 @@ export const EnhancedExpertDashboardHero = ({
 
               <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <Trophy className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
+                  <Trophy className="w-8 h-8 text-accent mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
                     {isRTL ? 'الإنجازات' : 'Achievements'}
                   </div>

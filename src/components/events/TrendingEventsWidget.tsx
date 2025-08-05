@@ -135,9 +135,9 @@ export const TrendingEventsWidget = ({
 
   const getTrendingIcon = (rank: number) => {
     if (rank === 1) return <Flame className="w-4 h-4 text-destructive" />;
-    if (rank === 2) return <TrendingUp className="w-4 h-4 text-orange-500" />;
+    if (rank === 2) return <TrendingUp className="w-4 h-4 text-warning" />;
     if (rank === 3) return <Star className="w-4 h-4 text-warning" />;
-    return <Eye className="w-4 h-4 text-gray-500" />;
+    return <Eye className="w-4 h-4 text-muted-foreground" />;
   };
 
   if (loading) {
@@ -171,16 +171,16 @@ export const TrendingEventsWidget = ({
   }
 
   return (
-    <Card className={cn("overflow-hidden border-2 border-orange-200/50 bg-gradient-to-br from-orange-50/50 to-red-50/30", className)}>
-      <CardHeader className="pb-3 border-b border-orange-200/30">
+    <Card className={cn("overflow-hidden border-2 border-warning/20 bg-gradient-to-br from-warning/5 to-destructive/5", className)}>
+      <CardHeader className="pb-3 border-b border-warning/20">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center animate-pulse">
+            <div className="w-6 h-6 bg-gradient-to-r from-destructive to-warning rounded-full flex items-center justify-center animate-pulse">
               <Flame className="w-3 h-3 text-white" />
             </div>
             {isRTL ? 'الفعاليات الرائجة' : 'Trending Events'}
           </div>
-          <Badge variant="secondary" className="bg-orange-100 text-orange-700 border-orange-300">
+          <Badge variant="secondary" className="bg-warning/10 text-warning border-warning/20">
             {isRTL ? 'مباشر' : 'Live'}
           </Badge>
         </CardTitle>
@@ -208,7 +208,7 @@ export const TrendingEventsWidget = ({
               return (
                 <div 
                   key={event.id}
-                  className="group relative overflow-hidden rounded-lg p-3 bg-white/70 hover:bg-white/90 transition-all duration-300 cursor-pointer border border-orange-100/50 hover:border-orange-200 hover:shadow-lg"
+                  className="group relative overflow-hidden rounded-lg p-3 bg-white/70 hover:bg-white/90 transition-all duration-300 cursor-pointer border border-warning/10 hover:border-warning/20 hover:shadow-lg"
                   onClick={() => onEventSelect?.(event.id)}
                 >
                   {/* Trending Rank */}
@@ -239,10 +239,10 @@ export const TrendingEventsWidget = ({
                             <Calendar className="w-3 h-3" />
                             <span className="font-medium">{formatDate(event.event_date)}</span>
                           </div>
-                          {event.format === 'virtual' ? (
-                            <Badge variant="outline" className="px-1.5 py-0.5 text-xs border-green-300 text-green-700 bg-green-50">
-                              {isRTL ? 'عبر الإنترنت' : 'Online'}
-                            </Badge>
+                           {event.format === 'virtual' ? (
+                             <Badge variant="outline" className="px-1.5 py-0.5 text-xs border-success/20 text-success bg-success/5">
+                               {isRTL ? 'عبر الإنترنت' : 'Online'}
+                             </Badge>
                           ) : (
                             <div className="flex items-center gap-1">
                               <MapPin className="w-3 h-3" />
@@ -273,7 +273,7 @@ export const TrendingEventsWidget = ({
                       {/* Event Type Badge */}
                       <Badge 
                         variant="outline" 
-                        className="text-xs px-2 py-0.5 border-orange-200 text-orange-700 bg-orange-50"
+                        className="text-xs px-2 py-0.5 border-warning/20 text-warning bg-warning/5"
                       >
                         {event.event_type}
                       </Badge>
@@ -286,7 +286,7 @@ export const TrendingEventsWidget = ({
             <Button 
               variant="outline" 
               size="sm" 
-              className="w-full mt-4 border-orange-200 text-orange-700 hover:bg-orange-50"
+              className="w-full mt-4 border-warning/20 text-warning hover:bg-warning/5"
               onClick={() => onEventSelect?.('all')}
             >
               {isRTL ? 'عرض جميع الفعاليات الرائجة' : 'View All Trending Events'}

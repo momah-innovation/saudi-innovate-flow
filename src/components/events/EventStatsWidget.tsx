@@ -176,73 +176,73 @@ export const EventStatsWidget = ({ className = "" }: EventStatsWidgetProps) => {
       <CardContent className="p-4 space-y-4">
         {/* Main Stats Grid */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-white/70 rounded-lg p-3 border border-blue-100/50">
+          <div className="bg-white/70 rounded-lg p-3 border border-primary/10">
             <div className="flex items-center gap-2 mb-1">
-              <Calendar className="w-4 h-4 text-blue-600" />
+              <Calendar className="w-4 h-4 text-primary" />
               <span className="text-xs font-medium text-muted-foreground">
                 {isRTL ? 'إجمالي الفعاليات' : 'Total Events'}
               </span>
             </div>
-            <div className="text-xl font-bold text-blue-600">{stats.totalEvents}</div>
+            <div className="text-xl font-bold text-primary">{stats.totalEvents}</div>
           </div>
 
-          <div className="bg-white/70 rounded-lg p-3 border border-green-100/50">
+          <div className="bg-white/70 rounded-lg p-3 border border-success/10">
             <div className="flex items-center gap-2 mb-1">
-              <Users className="w-4 h-4 text-green-600" />
+              <Users className="w-4 h-4 text-success" />
               <span className="text-xs font-medium text-muted-foreground">
                 {isRTL ? 'المشاركون' : 'Participants'}
               </span>
             </div>
-            <div className="text-xl font-bold text-green-600">{stats.totalParticipants}</div>
+            <div className="text-xl font-bold text-success">{stats.totalParticipants}</div>
           </div>
 
-          <div className="bg-white/70 rounded-lg p-3 border border-orange-100/50">
+          <div className="bg-white/70 rounded-lg p-3 border border-warning/10">
             <div className="flex items-center gap-2 mb-1">
-              <Clock className="w-4 h-4 text-orange-600" />
+              <Clock className="w-4 h-4 text-warning" />
               <span className="text-xs font-medium text-muted-foreground">
                 {isRTL ? 'اليوم' : 'Today'}
               </span>
             </div>
-            <div className="text-xl font-bold text-orange-600">{stats.todayEvents}</div>
+            <div className="text-xl font-bold text-warning">{stats.todayEvents}</div>
           </div>
 
-          <div className="bg-white/70 rounded-lg p-3 border border-purple-100/50">
+          <div className="bg-white/70 rounded-lg p-3 border border-accent/10">
             <div className="flex items-center gap-2 mb-1">
-              <TrendingUp className="w-4 h-4 text-purple-600" />
+              <TrendingUp className="w-4 h-4 text-accent" />
               <span className="text-xs font-medium text-muted-foreground">
                 {isRTL ? 'القادمة' : 'Upcoming'}
               </span>
             </div>
-            <div className="text-xl font-bold text-purple-600">{stats.upcomingEvents}</div>
+            <div className="text-xl font-bold text-accent">{stats.upcomingEvents}</div>
           </div>
         </div>
 
         {/* Progress Indicators */}
         <div className="space-y-3">
-          <div className="bg-white/70 rounded-lg p-3 border border-blue-100/50">
+          <div className="bg-white/70 rounded-lg p-3 border border-primary/10">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <Target className="w-4 h-4 text-blue-600" />
+                <Target className="w-4 h-4 text-primary" />
                 <span className="text-sm font-medium">
                   {isRTL ? 'الفعاليات القادمة' : 'Upcoming Events'}
                 </span>
               </div>
-              <span className="text-sm font-bold text-blue-600">
+              <span className="text-sm font-bold text-primary">
                 {Math.round(upcomingPercentage)}%
               </span>
             </div>
             <Progress value={upcomingPercentage} className="h-2" />
           </div>
 
-          <div className="bg-white/70 rounded-lg p-3 border border-green-100/50">
+          <div className="bg-white/70 rounded-lg p-3 border border-success/10">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-green-600" />
+                <MapPin className="w-4 h-4 text-success" />
                 <span className="text-sm font-medium">
                   {isRTL ? 'الفعاليات الافتراضية' : 'Virtual Events'}
                 </span>
               </div>
-              <span className="text-sm font-bold text-green-600">
+              <span className="text-sm font-bold text-success">
                 {Math.round(onlinePercentage)}%
               </span>
             </div>

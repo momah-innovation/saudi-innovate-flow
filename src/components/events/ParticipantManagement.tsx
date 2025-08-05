@@ -289,7 +289,7 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="flex items-center p-4">
-            <Users className="h-8 w-8 text-blue-600" />
+            <Users className="h-8 w-8 text-primary" />
             <div className={ms('4')}>
               <p className="text-sm font-medium text-muted-foreground">Total Registered</p>
               <p className="text-2xl font-bold">{participants.length}</p>
@@ -302,7 +302,7 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
         
         <Card>
           <CardContent className="flex items-center p-4">
-            <UserCheck className="h-8 w-8 text-green-600" />
+            <UserCheck className="h-8 w-8 text-success" />
             <div className={ms('4')}>
               <p className="text-sm font-medium text-muted-foreground">Confirmed</p>
               <p className="text-2xl font-bold">{confirmedCount}</p>
@@ -312,7 +312,7 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
         
         <Card>
           <CardContent className="flex items-center p-4">
-            <CheckCircle className="h-8 w-8 text-emerald-600" />
+            <CheckCircle className="h-8 w-8 text-success" />
             <div className={ms('4')}>
               <p className="text-sm font-medium text-muted-foreground">Attended</p>
               <p className="text-2xl font-bold">{attendedCount}</p>
@@ -322,7 +322,7 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
         
         <Card>
           <CardContent className="flex items-center p-4">
-            <UserX className="h-8 w-8 text-red-600" />
+            <UserX className="h-8 w-8 text-destructive" />
             <div className={ms('4')}>
               <p className="text-sm font-medium text-muted-foreground">No Show</p>
               <p className="text-2xl font-bold">{noShowCount}</p>

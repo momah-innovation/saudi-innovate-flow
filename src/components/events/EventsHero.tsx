@@ -68,7 +68,7 @@ export const EventsHero = ({
                     <CalendarIcon className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-blue-600 transition-colors">
+                    <div className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
                       {totalEvents}
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -84,7 +84,7 @@ export const EventsHero = ({
                     <TrendingUp className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-green-600 transition-colors">
+                    <div className="text-2xl font-bold text-foreground group-hover:text-success transition-colors">
                       {upcomingEvents}
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -100,7 +100,7 @@ export const EventsHero = ({
                     <Users className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-orange-600 transition-colors">
+                    <div className="text-2xl font-bold text-foreground group-hover:text-warning transition-colors">
                       {todayEvents}
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -116,7 +116,7 @@ export const EventsHero = ({
                     <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-purple-600 transition-colors">
+                    <div className="text-2xl font-bold text-foreground group-hover:text-accent transition-colors">
                       12
                     </div>
                     <div className="text-sm text-muted-foreground">
