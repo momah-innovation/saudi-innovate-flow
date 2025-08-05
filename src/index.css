@@ -206,7 +206,7 @@
   }
 
   .hero-content {
-    @apply backdrop-blur-sm bg-glass-100 border border-glass-border-100 rounded-2xl p-8;
+    @apply backdrop-blur-sm bg-hero-overlay-light/10 border border-hero-border/10 rounded-2xl p-8;
   }
   
   .floating-element {
@@ -388,7 +388,7 @@
   
   /* Advanced Containers */
   .backdrop-container {
-    @apply backdrop-blur-xl bg-gradient-glass border border-glass-border-100 shadow-glass;
+    @apply backdrop-blur-xl bg-gradient-glass-light border border-hero-border/10 shadow-glass;
   }
   
   .hero-container {
@@ -401,6 +401,11 @@
 
   .section-divider {
     @apply h-px bg-gradient-to-r from-transparent via-border to-transparent;
+  }
+
+  /* Glass Morphism Utilities */
+  .glass-hero {
+    @apply bg-hero-overlay-light/10 backdrop-blur-xl border border-hero-border/20;
   }
 
   /* Form Utilities */
