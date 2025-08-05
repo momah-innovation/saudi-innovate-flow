@@ -13,13 +13,22 @@ interface ResponsiveAppShellProps {
 
 function ResponsiveAppShellContent({ children }: ResponsiveAppShellProps) {
   const { isRTL } = useDirection();
-  const { isOpen, isMiniMode, isOverlay } = useResponsiveSidebar();
+  const { isOpen, isMiniMode, isOverlay, sidePosition } = useResponsiveSidebar();
+  
+  // Debug logging
+  console.log('ResponsiveAppShell RTL Debug:', { isRTL, sidePosition, isOpen, isMiniMode, isOverlay });
   
   return (
-    <div className={cn(
-      "min-h-screen flex w-full bg-background transition-all duration-300",
-      isRTL ? "flex-row-reverse" : "flex-row"
-    )}>
+    <div 
+      className={cn(
+        "min-h-screen flex w-full bg-background transition-all duration-300",
+        isRTL ? "flex-row-reverse" : "flex-row"
+      )}
+      dir={isRTL ? 'rtl' : 'ltr'}
+      style={{
+        direction: isRTL ? 'rtl' : 'ltr'
+      }}
+    >
       {/* Navigation Sidebar */}
       <ResponsiveNavigationSidebar />
       

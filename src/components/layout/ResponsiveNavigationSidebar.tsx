@@ -37,6 +37,19 @@ export function ResponsiveNavigationSidebar() {
   const { isRTL: translationRTL } = useTranslation();
   const [isOldLinksOpen, setIsOldLinksOpen] = React.useState(false);
 
+  // Debug logging for RTL issues
+  console.log('ResponsiveNavigationSidebar RTL Debug:', { 
+    isRTL, 
+    translationRTL, 
+    sidePosition, 
+    isOpen, 
+    isMiniMode, 
+    isOverlay,
+    isMobile,
+    isTablet,
+    isDesktop
+  });
+
   // Menu items remain the same as original
   const menuItems = useMemo(() => {
     const baseItems = [
