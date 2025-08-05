@@ -36,9 +36,7 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
 
   const setDirection = (newDirection: Direction) => {
     setDirectionState(newDirection);
-    document.documentElement.dir = newDirection;
-    document.documentElement.className = document.documentElement.className.replace(/\b(ltr|rtl)\b/g, '');
-    document.documentElement.classList.add(newDirection);
+    // Don't set document direction - let AppShell handle it
     localStorage.setItem('ui-direction', newDirection);
   };
 
@@ -47,7 +45,7 @@ export function DirectionProvider({ children }: { children: ReactNode }) {
     setLanguageState(newLanguage);
     const newDirection = RTL_LANGUAGES.includes(newLanguage) ? 'rtl' : 'ltr';
     setDirection(newDirection);
-    document.documentElement.lang = newLanguage;
+    // Don't set document lang - let AppShell handle it
     
     // Save to both localStorage keys for full compatibility
     localStorage.setItem('ui-language', newLanguage);
