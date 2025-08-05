@@ -332,11 +332,15 @@ export function ResponsiveNavigationSidebar() {
       variant="sidebar"
       collapsible={isMiniMode ? "icon" : "offcanvas"}
       className={cn(
-        "transition-all duration-300 ease-in-out z-40",
+        "transition-all duration-300 ease-in-out z-40 border-r border-sidebar-border",
         isMiniMode && "w-16",
-        !isOpen && isDesktop && "w-0",
-        isOpen && !isMiniMode && "w-64"
+        !isOpen && isDesktop && "w-0 border-r-0",
+        isOpen && !isMiniMode && "w-64",
+        isRTL && "border-r-0 border-l border-sidebar-border"
       )}
+      style={{
+        [isRTL ? 'right' : 'left']: 0,
+      }}
     >
       {sidebarContent}
     </Sidebar>

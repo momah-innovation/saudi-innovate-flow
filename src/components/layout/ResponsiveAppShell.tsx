@@ -16,49 +16,42 @@ function ResponsiveAppShellContent({ children }: ResponsiveAppShellProps) {
   const { isOpen, isMiniMode, isOverlay } = useResponsiveSidebar();
   
   return (
-    <SidebarProvider defaultOpen={isOpen}>
-      <div className={cn(
-        "min-h-screen flex w-full bg-background transition-all duration-300",
-        isRTL && "flex-row-reverse"
-      )}>
-        {/* Navigation Sidebar */}
-        <ResponsiveNavigationSidebar />
+    <div className={cn(
+      "min-h-screen flex w-full bg-background transition-all duration-300",
+      isRTL ? "flex-row-reverse" : "flex-row"
+    )}>
+      {/* Navigation Sidebar */}
+      <ResponsiveNavigationSidebar />
+      
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Global Header */}
+        <Header />
         
-        {/* Main Content Area */}
-        <div className={cn(
-          "flex-1 flex flex-col min-w-0 transition-all duration-300",
-          // Adjust margin based on sidebar state and position
-          !isOverlay && isOpen && !isMiniMode && (isRTL ? "mr-64" : "ml-64"),
-          !isOverlay && isOpen && isMiniMode && (isRTL ? "mr-16" : "ml-16")
-        )}>
-          {/* Global Header */}
-          <Header />
-          
-          {/* Page Content with Loading */}
-          <main className="flex-1 overflow-auto bg-background">
-            <Suspense 
-              fallback={
-                <div className="flex items-center justify-center min-h-[50vh]">
-                  <LoadingSpinner />
-                </div>
-              }
-            >
-              <div className="animate-fade-in">
-                {children}
+        {/* Page Content with Loading */}
+        <main className="flex-1 overflow-auto bg-background">
+          <Suspense 
+            fallback={
+              <div className="flex items-center justify-center min-h-[50vh]">
+                <LoadingSpinner />
               </div>
-            </Suspense>
-          </main>
-        </div>
-
-        {/* Overlay backdrop for mobile */}
-        {isOverlay && isOpen && (
-          <div 
-            className="fixed inset-0 z-30 bg-background/80 backdrop-blur-sm animate-fade-in"
-            onClick={() => useResponsiveSidebar().setIsOpen(false)}
-          />
-        )}
+            }
+          >
+            <div className="animate-fade-in">
+              {children}
+            </div>
+          </Suspense>
+        </main>
       </div>
-    </SidebarProvider>
+
+      {/* Overlay backdrop for mobile */}
+      {isOverlay && isOpen && (
+        <div 
+          className="fixed inset-0 z-30 bg-background/80 backdrop-blur-sm animate-fade-in"
+          onClick={() => useResponsiveSidebar().setIsOpen(false)}
+        />
+      )}
+    </div>
   );
 }
 
@@ -76,9 +69,11 @@ function ResponsiveAppShellContent({ children }: ResponsiveAppShellProps) {
 export function ResponsiveAppShell({ children }: ResponsiveAppShellProps) {
   return (
     <ResponsiveSidebarProvider>
-      <ResponsiveAppShellContent>
-        {children}
-      </ResponsiveAppShellContent>
+      <SidebarProvider>
+        <ResponsiveAppShellContent>
+          {children}
+        </ResponsiveAppShellContent>
+      </SidebarProvider>
     </ResponsiveSidebarProvider>
   );
 }
