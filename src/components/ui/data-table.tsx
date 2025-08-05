@@ -181,7 +181,7 @@ export function DataTable<T extends Record<string, any>>({
 // Common column renderers
 export const badgeRenderer = (variants: Record<string, string>) => 
   (value: string) => (
-    <Badge className={variants[value] || 'bg-gray-100 text-gray-800'}>
+    <Badge className={variants[value] || 'bg-muted text-muted-foreground'}>
       {value}
     </Badge>
   );

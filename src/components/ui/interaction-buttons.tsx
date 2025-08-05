@@ -233,7 +233,7 @@ export const InteractionButtons = ({
         size="sm"
         onClick={handleLike}
         disabled={loading}
-        className={`flex items-center gap-1 ${liked ? 'text-red-500 hover:text-red-600' : 'text-muted-foreground hover:text-red-500'}`}
+        className={`flex items-center gap-1 ${liked ? 'text-destructive hover:text-destructive/80' : 'text-muted-foreground hover:text-destructive'}`}
       >
         <Heart className={`w-4 h-4 ${liked ? 'fill-current' : ''}`} />
         {likesCount > 0 && <span className="text-xs">{likesCount}</span>}
@@ -245,7 +245,7 @@ export const InteractionButtons = ({
         size="sm"
         onClick={handleBookmark}
         disabled={loading}
-        className={`flex items-center gap-1 ${bookmarked ? 'text-blue-500 hover:text-blue-600' : 'text-muted-foreground hover:text-blue-500'}`}
+        className={`flex items-center gap-1 ${bookmarked ? 'text-info hover:text-info-hover' : 'text-muted-foreground hover:text-info'}`}
       >
         <Bookmark className={`w-4 h-4 ${bookmarked ? 'fill-current' : ''}`} />
       </Button>
@@ -268,7 +268,7 @@ export const InteractionButtons = ({
         variant="ghost"
         size="sm"
         onClick={handleShare}
-        className="flex items-center gap-1 text-muted-foreground hover:text-green-500"
+        className="flex items-center gap-1 text-muted-foreground hover:text-success"
       >
         <Share2 className="w-4 h-4" />
       </Button>

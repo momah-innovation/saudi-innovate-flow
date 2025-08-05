@@ -195,14 +195,14 @@ export function CoreTeamCard({
                 <AvatarFallback>{avatarFallback}</AvatarFallback>
               </Avatar>
               {data.cic_role === 'leader' && (
-                <Crown className="absolute -top-1 -right-1 h-4 w-4 text-yellow-500" />
+                <Crown className="absolute -top-1 -right-1 h-4 w-4 text-warning" />
               )}
             </div>
             <div>
               <CardTitle className="text-base flex items-center gap-2">
                 {displayName}
                 {data.performance_score && data.performance_score >= 90 && (
-                  <Star className="h-4 w-4 text-yellow-500" />
+                  <Star className="h-4 w-4 text-warning" />
                 )}
               </CardTitle>
               <CardDescription className="text-sm">

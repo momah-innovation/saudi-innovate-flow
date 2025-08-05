@@ -165,7 +165,7 @@ export function CoreTeamDetailDialog({
               <label className="text-sm font-medium text-muted-foreground">الدور في الفريق</label>
               <div className="mt-1 flex items-center gap-2">
                 <Badge variant="outline">{data.cic_role || data.role || 'غير محدد'}</Badge>
-                {data.cic_role === 'leader' && <Crown className="h-4 w-4 text-yellow-500" />}
+                {data.cic_role === 'leader' && <Crown className="h-4 w-4 text-warning" />}
               </div>
             </div>
             
@@ -529,14 +529,14 @@ export function CoreTeamDetailDialog({
                   </AvatarFallback>
                 </Avatar>
                 {data.cic_role === 'leader' && (
-                  <Crown className="absolute -top-1 -right-1 h-5 w-5 text-yellow-500" />
+                  <Crown className="absolute -top-1 -right-1 h-5 w-5 text-warning" />
                 )}
               </div>
               <div>
                 <DialogTitle className="text-xl flex items-center gap-2">
                   {displayName}
                   {data.performance_score && data.performance_score >= 90 && (
-                    <Star className="h-5 w-5 text-yellow-500" />
+                    <Star className="h-5 w-5 text-warning" />
                   )}
                 </DialogTitle>
                 <DialogDescription className="flex items-center gap-2">

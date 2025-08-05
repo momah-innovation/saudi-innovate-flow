@@ -174,7 +174,7 @@ export const UserCard = ({ user, actions, onSelect, selected }: {
     subtitle={user.position || user.role}
     image={user.avatar_url}
     badges={[
-      { label: user.status, color: user.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }
+      { label: user.status, color: user.status === 'active' ? 'bg-active-light text-active' : 'bg-inactive-light text-inactive' }
     ]}
     metadata={[
       { label: 'Email', value: user.email },

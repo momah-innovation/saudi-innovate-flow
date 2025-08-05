@@ -20,9 +20,9 @@ export function MetricCard({ title, value, subtitle, icon, trend, className, onC
   const getTrendIcon = (direction: 'up' | 'down' | 'neutral') => {
     switch (direction) {
       case 'up':
-        return <TrendingUp className="w-4 h-4 text-green-600" />;
+        return <TrendingUp className="w-4 h-4 text-trend-up" />;
       case 'down':
-        return <TrendingDown className="w-4 h-4 text-red-600" />;
+        return <TrendingDown className="w-4 h-4 text-trend-down" />;
       default:
         return <Minus className="w-4 h-4 text-muted-foreground" />;
     }
@@ -31,9 +31,9 @@ export function MetricCard({ title, value, subtitle, icon, trend, className, onC
   const getTrendColor = (direction: 'up' | 'down' | 'neutral') => {
     switch (direction) {
       case 'up':
-        return 'text-green-600';
+        return 'text-trend-up';
       case 'down':
-        return 'text-red-600';
+        return 'text-trend-down';
       default:
         return 'text-muted-foreground';
     }

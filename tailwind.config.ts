@@ -70,6 +70,7 @@ export default {
 				info: {
 					DEFAULT: "hsl(var(--info))",
 					foreground: "hsl(var(--info-foreground))",
+					hover: "hsl(var(--info-hover))",
 					light: "hsl(var(--info-light))",
 					border: "hsl(var(--info-border))",
 					muted: "hsl(var(--info-muted))",

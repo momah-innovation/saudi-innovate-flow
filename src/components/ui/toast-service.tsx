@@ -25,7 +25,7 @@ class ToastService {
       title: options?.title || "Success",
       description: message,
       duration: options?.duration || 4000,
-      className: "border-green-200 bg-green-50 text-green-900",
+      className: "border-success-border bg-success-light text-success",
     });
   }
 
@@ -43,7 +43,7 @@ class ToastService {
       title: options?.title || "Warning",
       description: message,
       duration: options?.duration || 5000,
-      className: "border-yellow-200 bg-yellow-50 text-yellow-900",
+      className: "border-warning-border bg-warning-light text-warning-foreground",
     });
   }
 
@@ -52,7 +52,7 @@ class ToastService {
       title: options?.title || "Info",
       description: message,
       duration: options?.duration || 4000,
-      className: "border-blue-200 bg-blue-50 text-blue-900",
+      className: "border-info-border bg-info-light text-info-foreground",
     });
   }
 
@@ -61,7 +61,7 @@ class ToastService {
       title: options?.title || "Loading",
       description: message,
       duration: options?.duration || 0, // No auto-dismiss
-      className: "border-gray-200 bg-gray-50 text-gray-900",
+      className: "border-border bg-muted text-foreground",
     });
   }
 

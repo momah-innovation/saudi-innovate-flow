@@ -23,9 +23,9 @@ const variantMap = {
   primary: "text-primary",
   secondary: "text-secondary-foreground",
   destructive: "text-destructive",
-  success: "text-green-600",
-  warning: "text-yellow-600",
-  info: "text-blue-600",
+  success: "text-success",
+  warning: "text-warning",
+  info: "text-info",
 };
 
 export function Icon({ 

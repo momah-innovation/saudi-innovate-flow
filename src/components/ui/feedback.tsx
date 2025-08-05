@@ -59,7 +59,7 @@ export function StarRating({
                 className={cn(
                   sizeClasses[size],
                   isFilled
-                    ? "fill-yellow-400 text-yellow-400"
+                    ? "fill-warning text-warning"
                     : "text-muted-foreground"
                 )}
               />

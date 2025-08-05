@@ -466,7 +466,7 @@ export function UnsplashImageBrowser({
                   </div>
                 )}
               </div>
-              <Button type="submit" disabled={loading} className="bg-green-600 hover:bg-green-700">
+              <Button type="submit" disabled={loading} className="bg-success hover:bg-success-hover text-success-foreground">
                 {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Search'}
               </Button>
             </form>
@@ -503,7 +503,7 @@ export function UnsplashImageBrowser({
                     variant={viewMode === 'grid' ? 'default' : 'ghost'}
                     size="sm"
                     onClick={() => setViewMode('grid')}
-                    className={`rounded-r-none ${viewMode === 'grid' ? 'bg-green-600 hover:bg-green-700' : ''}`}
+                    className={`rounded-r-none ${viewMode === 'grid' ? 'bg-success hover:bg-success-hover text-success-foreground' : ''}`}
                   >
                     <Grid className="h-4 w-4" />
                   </Button>
@@ -516,7 +516,7 @@ export function UnsplashImageBrowser({
                     variant={viewMode === 'masonry' ? 'default' : 'ghost'}
                     size="sm"
                     onClick={() => setViewMode('masonry')}
-                    className={`rounded-none ${viewMode === 'masonry' ? 'bg-green-600 hover:bg-green-700' : ''}`}
+                    className={`rounded-none ${viewMode === 'masonry' ? 'bg-success hover:bg-success-hover text-success-foreground' : ''}`}
                   >
                     <Grid3X3 className="h-4 w-4" />
                   </Button>
@@ -529,7 +529,7 @@ export function UnsplashImageBrowser({
                     variant={viewMode === 'list' ? 'default' : 'ghost'}
                     size="sm"
                     onClick={() => setViewMode('list')}
-                    className={`rounded-l-none ${viewMode === 'list' ? 'bg-green-600 hover:bg-green-700' : ''}`}
+                    className={`rounded-l-none ${viewMode === 'list' ? 'bg-success hover:bg-success-hover text-success-foreground' : ''}`}
                   >
                     <List className="h-4 w-4" />
                   </Button>
@@ -716,7 +716,7 @@ export function UnsplashImageBrowser({
                   size="sm" 
                   onClick={confirmBulkSelection}
                   disabled={selectedImageIds.size === 0}
-                  className="bg-green-600 hover:bg-green-700"
+                  className="bg-success hover:bg-success-hover text-success-foreground"
                 >
                   Confirm Selection
                 </Button>
@@ -949,7 +949,7 @@ export function UnsplashImageBrowser({
                         setShowPreview(false)
                       }
                     }}
-                    className="bg-green-600 hover:bg-green-700"
+                    className="bg-success hover:bg-success-hover text-success-foreground"
                   >
                     Select This Image
                   </Button>

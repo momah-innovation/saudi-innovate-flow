@@ -313,8 +313,8 @@ export const WizardFileUploader = forwardRef<WizardFileUploaderRef, WizardFileUp
 
         {currentStep === 'complete' && (
           <div className="text-center space-y-4">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-              <CheckCircle className="w-8 h-8 text-green-600" />
+            <div className="w-16 h-16 bg-success-light rounded-full flex items-center justify-center mx-auto">
+              <CheckCircle className="w-8 h-8 text-success" />
             </div>
             <div>
               <h3 className="text-lg font-medium">Upload Complete!</h3>

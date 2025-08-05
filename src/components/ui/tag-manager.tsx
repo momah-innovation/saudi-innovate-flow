@@ -324,7 +324,7 @@ export const TagManager: React.FC = () => {
 
         {/* Tags Grid */}
         {error && (
-          <div className="text-red-500 text-sm">{error}</div>
+          <div className="text-destructive text-sm">{error}</div>
         )}
 
         <div className="grid gap-3">
