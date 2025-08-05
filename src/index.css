@@ -1,4 +1,5 @@
 @import url('./styles/foundation-tokens.css');
+@import url('./styles/global-themes.css');
 @import url('./styles/specialized-themes.css');
 @import url('./styles/component-themes.css');
 @tailwind base;

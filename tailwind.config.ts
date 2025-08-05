@@ -19,145 +19,78 @@ export default {
 		},
 		extend: {
 			colors: {
-				// 🌍 Global theme colors
-				border: "hsl(var(--global-border))",
-				input: "hsl(var(--global-input))",
-				ring: "hsl(var(--global-ring))",
-				background: "hsl(var(--global-background))",
-				foreground: "hsl(var(--global-foreground))",
+				// 🏛️ Government Semantic Colors
+				border: "hsl(var(--border))",
+				input: "hsl(var(--input))",
+				ring: "hsl(var(--ring))",
+				background: "hsl(var(--background))",
+				foreground: "hsl(var(--foreground))",
+				
+				// Core semantic tokens
 				primary: {
-					DEFAULT: "hsl(var(--global-primary))",
-					foreground: "hsl(var(--global-primary-foreground))",
-					light: "hsl(var(--global-primary-light))",
-					dark: "hsl(var(--global-primary-dark))",
-					glow: "hsl(var(--global-primary-glow) / 0.3)",
-				},
-				secondary: {
-					DEFAULT: "hsl(var(--global-secondary))",
-					foreground: "hsl(var(--global-secondary-foreground))",
-				},
-				muted: {
-					DEFAULT: "hsl(var(--global-muted))",
-					foreground: "hsl(var(--global-muted-foreground))",
-				},
-				accent: {
-					DEFAULT: "hsl(var(--global-accent))",
-					foreground: "hsl(var(--global-accent-foreground))",
-				},
-				destructive: {
-					DEFAULT: "hsl(var(--global-destructive))",
-					foreground: "hsl(var(--global-destructive-foreground))",
-				},
-				card: {
-					DEFAULT: "hsl(var(--global-card))",
-					foreground: "hsl(var(--global-card-foreground))",
-				},
-				popover: {
-					DEFAULT: "hsl(var(--global-popover))",
-					foreground: "hsl(var(--global-popover-foreground))",
-				},
-				// Semantic status colors
-				success: {
-					DEFAULT: "hsl(var(--global-success))",
-					foreground: "hsl(var(--global-success-foreground))",
-				},
-				warning: {
-					DEFAULT: "hsl(var(--global-warning))",
-					foreground: "hsl(var(--global-warning-foreground))",
-				},
-				info: {
-					DEFAULT: "hsl(var(--global-info))",
-					foreground: "hsl(var(--global-info-foreground))",
-				},
-				// Glass morphism colors
-				glass: {
-					bg: "hsl(var(--global-glass-bg))",
-					border: "hsl(var(--global-glass-border))",
-					text: "hsl(var(--global-glass-text))",
-					"text-muted": "hsl(var(--global-glass-text-muted))",
+					DEFAULT: "hsl(var(--primary))",
+					foreground: "hsl(var(--primary-foreground))",
 				},
 				secondary: {
 					DEFAULT: "hsl(var(--secondary))",
 					foreground: "hsl(var(--secondary-foreground))",
-					glow: "hsl(var(--secondary) / 0.3)",
-					light: "hsl(var(--secondary) / 0.1)",
-				},
-				destructive: {
-					DEFAULT: "hsl(var(--destructive))",
-					foreground: "hsl(var(--destructive-foreground))",
-					glow: "hsl(var(--destructive) / 0.3)",
-					light: "hsl(var(--destructive) / 0.1)",
 				},
 				muted: {
 					DEFAULT: "hsl(var(--muted))",
 					foreground: "hsl(var(--muted-foreground))",
-					light: "hsl(var(--muted) / 0.5)",
 				},
 				accent: {
 					DEFAULT: "hsl(var(--accent))",
 					foreground: "hsl(var(--accent-foreground))",
-					glow: "hsl(var(--accent) / 0.3)",
-					light: "hsl(var(--accent) / 0.1)",
+				},
+				destructive: {
+					DEFAULT: "hsl(var(--destructive))",
+					foreground: "hsl(var(--destructive-foreground))",
+				},
+				
+				// Extended semantic colors
+				success: {
+					DEFAULT: "hsl(var(--success))",
+					foreground: "hsl(var(--success-foreground))",
+				},
+				warning: {
+					DEFAULT: "hsl(var(--warning))",
+					foreground: "hsl(var(--warning-foreground))",
+				},
+				info: {
+					DEFAULT: "hsl(var(--info))",
+					foreground: "hsl(var(--info-foreground))",
+				},
+				
+				// Card and popover
+				card: {
+					DEFAULT: "hsl(var(--card))",
+					foreground: "hsl(var(--card-foreground))",
 				},
 				popover: {
 					DEFAULT: "hsl(var(--popover))",
 					foreground: "hsl(var(--popover-foreground))",
 				},
-				card: {
-					DEFAULT: "hsl(var(--card))",
-					foreground: "hsl(var(--card-foreground))",
-					elevated: "hsl(var(--card) / 0.95)",
-					glass: "hsl(var(--card) / 0.6)",
+				
+				// 🇸🇦 Saudi Vision 2030 Brand Colors
+				"saudi-green": "hsl(var(--saudi-green))",
+				"saudi-gold": "hsl(var(--saudi-gold))",
+				"saudi-navy": "hsl(var(--saudi-navy))",
+				"saudi-sand": "hsl(var(--saudi-sand))",
+				"saudi-pearl": "hsl(var(--saudi-pearl))",
+				
+				// Government hierarchy colors
+				executive: {
+					primary: "hsl(var(--executive-primary))",
+					secondary: "hsl(var(--executive-secondary))",
 				},
-				// Semantic status colors
-				success: {
-					DEFAULT: "hsl(var(--success))",
-					foreground: "hsl(var(--success-foreground))",
-					glow: "hsl(var(--success) / 0.3)",
-					light: "hsl(var(--success) / 0.1)",
-					dark: "hsl(var(--success) / 0.9)",
+				operational: {
+					primary: "hsl(var(--operational-primary))", 
+					secondary: "hsl(var(--operational-secondary))",
 				},
-				warning: {
-					DEFAULT: "hsl(var(--warning))",
-					foreground: "hsl(var(--warning-foreground))",
-					glow: "hsl(var(--warning) / 0.3)",
-					light: "hsl(var(--warning) / 0.1)",
-					dark: "hsl(var(--warning) / 0.9)",
-				},
-				info: {
-					DEFAULT: "hsl(var(--info))",
-					foreground: "hsl(var(--info-foreground))",
-					glow: "hsl(var(--info) / 0.3)",
-					light: "hsl(var(--info) / 0.1)",
-					dark: "hsl(var(--info) / 0.9)",
-				},
-				// Glass morphism colors
-				glass: {
-					50: "rgba(255, 255, 255, 0.05)",
-					100: "rgba(255, 255, 255, 0.10)",
-					200: "rgba(255, 255, 255, 0.20)",
-					300: "rgba(255, 255, 255, 0.30)",
-					400: "rgba(255, 255, 255, 0.40)",
-					500: "rgba(255, 255, 255, 0.50)",
-					600: "rgba(255, 255, 255, 0.60)",
-					700: "rgba(255, 255, 255, 0.70)",
-					800: "rgba(255, 255, 255, 0.80)",
-					900: "rgba(255, 255, 255, 0.90)",
-					"border-50": "rgba(255, 255, 255, 0.10)",
-					"border-100": "rgba(255, 255, 255, 0.20)",
-					"border-200": "rgba(255, 255, 255, 0.30)",
-					"border-300": "rgba(255, 255, 255, 0.40)",
-				},
-				// Dark glass variants
-				"glass-dark": {
-					50: "rgba(0, 0, 0, 0.05)",
-					100: "rgba(0, 0, 0, 0.10)",
-					200: "rgba(0, 0, 0, 0.20)",
-					300: "rgba(0, 0, 0, 0.30)",
-					400: "rgba(0, 0, 0, 0.40)",
-					500: "rgba(0, 0, 0, 0.50)",
-					"border-50": "rgba(0, 0, 0, 0.10)",
-					"border-100": "rgba(0, 0, 0, 0.20)",
+				citizen: {
+					primary: "hsl(var(--citizen-primary))",
+					secondary: "hsl(var(--citizen-secondary))",
 				},
 			},
 			backgroundImage: {

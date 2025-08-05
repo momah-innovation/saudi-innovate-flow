@@ -1,94 +1,161 @@
-/* 🏗️ FOUNDATION TOKENS - Never change across themes */
+/* 🏗️ FOUNDATION TOKENS - Saudi Vision 2030 Government Standards */
 @layer foundation {
   :root {
-    /* 📏 Spacing System */
+    /* 🇸🇦 Saudi Vision 2030 Color Palette */
+    --saudi-green: 0 100% 25%;        /* Official Saudi Green */
+    --saudi-gold: 45 100% 50%;        /* Traditional Gold */
+    --saudi-navy: 220 100% 20%;       /* Government Navy */
+    --saudi-sand: 35 25% 85%;         /* Desert Sand */
+    --saudi-pearl: 0 0% 95%;          /* Pearl White */
+    
+    /* 🏛️ Government Grade Colors */
+    --executive-primary: 220 100% 20%;    /* Navy Blue */
+    --executive-secondary: 45 100% 50%;   /* Gold */
+    --operational-primary: 200 80% 45%;   /* Professional Blue */
+    --operational-secondary: 150 60% 45%; /* Balanced Green */
+    --citizen-primary: 210 40% 60%;       /* Accessible Blue */
+    --citizen-secondary: 25 40% 65%;      /* Warm Beige */
+
+    /* 📏 Enhanced Spacing System - Government Standards */
     --space-0: 0;
-    --space-1: 0.25rem;    /* 4px */
-    --space-2: 0.5rem;     /* 8px */
-    --space-3: 0.75rem;    /* 12px */
-    --space-4: 1rem;       /* 16px */
-    --space-5: 1.25rem;    /* 20px */
-    --space-6: 1.5rem;     /* 24px */
-    --space-8: 2rem;       /* 32px */
-    --space-10: 2.5rem;    /* 40px */
-    --space-12: 3rem;      /* 48px */
-    --space-16: 4rem;      /* 64px */
-    --space-20: 5rem;      /* 80px */
-    --space-24: 6rem;      /* 96px */
-    --space-32: 8rem;      /* 128px */
-    --space-40: 10rem;     /* 160px */
-    --space-48: 12rem;     /* 192px */
-    --space-56: 14rem;     /* 224px */
-    --space-64: 16rem;     /* 256px */
+    --space-0_5: 0.125rem;  /* 2px - Micro spacing */
+    --space-1: 0.25rem;     /* 4px */
+    --space-1_5: 0.375rem;  /* 6px */
+    --space-2: 0.5rem;      /* 8px */
+    --space-2_5: 0.625rem;  /* 10px */
+    --space-3: 0.75rem;     /* 12px */
+    --space-3_5: 0.875rem;  /* 14px */
+    --space-4: 1rem;        /* 16px */
+    --space-5: 1.25rem;     /* 20px */
+    --space-6: 1.5rem;      /* 24px */
+    --space-7: 1.75rem;     /* 28px */
+    --space-8: 2rem;        /* 32px */
+    --space-9: 2.25rem;     /* 36px */
+    --space-10: 2.5rem;     /* 40px */
+    --space-11: 2.75rem;    /* 44px */
+    --space-12: 3rem;       /* 48px */
+    --space-14: 3.5rem;     /* 56px */
+    --space-16: 4rem;       /* 64px */
+    --space-18: 4.5rem;     /* 72px */
+    --space-20: 5rem;       /* 80px */
+    --space-24: 6rem;       /* 96px */
+    --space-28: 7rem;       /* 112px */
+    --space-32: 8rem;       /* 128px */
+    --space-36: 9rem;       /* 144px */
+    --space-40: 10rem;      /* 160px */
+    --space-44: 11rem;      /* 176px */
+    --space-48: 12rem;      /* 192px */
+    --space-52: 13rem;      /* 208px */
+    --space-56: 14rem;      /* 224px */
+    --space-60: 15rem;      /* 240px */
+    --space-64: 16rem;      /* 256px */
+    --space-72: 18rem;      /* 288px */
+    --space-80: 20rem;      /* 320px */
+    --space-96: 24rem;      /* 384px */
 
-    /* 📐 Border Radius System */
+    /* 📐 Government-Grade Border Radius */
     --radius-none: 0;
-    --radius-xs: 0.125rem;   /* 2px */
-    --radius-sm: 0.25rem;    /* 4px */
-    --radius-base: 0.5rem;   /* 8px */
-    --radius-md: 0.75rem;    /* 12px */
-    --radius-lg: 1rem;       /* 16px */
-    --radius-xl: 1.5rem;     /* 24px */
-    --radius-2xl: 2rem;      /* 32px */
-    --radius-full: 9999px;
+    --radius-xs: 0.125rem;   /* 2px - Subtle */
+    --radius-sm: 0.25rem;    /* 4px - Minimal */
+    --radius-base: 0.375rem; /* 6px - Standard */
+    --radius-md: 0.5rem;     /* 8px - Moderate */
+    --radius-lg: 0.75rem;    /* 12px - Prominent */
+    --radius-xl: 1rem;       /* 16px - Bold */
+    --radius-2xl: 1.25rem;   /* 20px - Strong */
+    --radius-3xl: 1.5rem;    /* 24px - Dramatic */
+    --radius-full: 9999px;   /* Full round */
 
-    /* 🔤 Typography Scale */
-    --text-xs: 0.75rem;      /* 12px */
-    --text-sm: 0.875rem;     /* 14px */
-    --text-base: 1rem;       /* 16px */
-    --text-lg: 1.125rem;     /* 18px */
-    --text-xl: 1.25rem;      /* 20px */
-    --text-2xl: 1.5rem;      /* 24px */
-    --text-3xl: 1.875rem;    /* 30px */
-    --text-4xl: 2.25rem;     /* 36px */
-    --text-5xl: 3rem;        /* 48px */
-    --text-6xl: 3.75rem;     /* 60px */
-    --text-7xl: 4.5rem;      /* 72px */
-    --text-8xl: 6rem;        /* 96px */
-    --text-9xl: 8rem;        /* 128px */
+    /* 🔤 Arabic-English Typography Scale */
+    --text-2xs: 0.625rem;    /* 10px - Micro text */
+    --text-xs: 0.75rem;      /* 12px - Small annotations */
+    --text-sm: 0.875rem;     /* 14px - Secondary text */
+    --text-base: 1rem;       /* 16px - Body text */
+    --text-md: 1.0625rem;    /* 17px - Enhanced readability */
+    --text-lg: 1.125rem;     /* 18px - Emphasized text */
+    --text-xl: 1.25rem;      /* 20px - Small headers */
+    --text-2xl: 1.5rem;      /* 24px - Section headers */
+    --text-3xl: 1.875rem;    /* 30px - Page headers */
+    --text-4xl: 2.25rem;     /* 36px - Major headers */
+    --text-5xl: 3rem;        /* 48px - Hero text */
+    --text-6xl: 3.75rem;     /* 60px - Display large */
+    --text-7xl: 4.5rem;      /* 72px - Display extra large */
+    --text-8xl: 6rem;        /* 96px - Display huge */
+    --text-9xl: 8rem;        /* 128px - Display massive */
+    
+    /* 🌐 Arabic Typography Adjustments */
+    --text-arabic-xs: 0.8125rem;    /* 13px - Arabic small */
+    --text-arabic-sm: 0.9375rem;    /* 15px - Arabic secondary */
+    --text-arabic-base: 1.0625rem;  /* 17px - Arabic body */
+    --text-arabic-lg: 1.1875rem;    /* 19px - Arabic emphasized */
+    --text-arabic-xl: 1.3125rem;    /* 21px - Arabic headers */
 
-    /* 📏 Line Heights */
+    /* 📏 Enhanced Line Heights - Multilingual Support */
     --leading-none: 1;
-    --leading-tight: 1.25;
-    --leading-snug: 1.375;
-    --leading-normal: 1.5;
-    --leading-relaxed: 1.625;
-    --leading-loose: 2;
+    --leading-tight: 1.2;      /* Tighter for headers */
+    --leading-snug: 1.35;      /* Compact text */
+    --leading-normal: 1.5;     /* Standard reading */
+    --leading-relaxed: 1.625;  /* Comfortable reading */
+    --leading-loose: 1.75;     /* Spacious reading */
+    --leading-extra-loose: 2;  /* Maximum spacing */
+    
+    /* Arabic-specific line heights */
+    --leading-arabic-tight: 1.4;    /* Arabic headers */
+    --leading-arabic-normal: 1.6;   /* Arabic body */
+    --leading-arabic-relaxed: 1.8;  /* Arabic comfortable */
 
-    /* 🔤 Font Weights */
-    --font-thin: 100;
-    --font-extralight: 200;
-    --font-light: 300;
-    --font-normal: 400;
-    --font-medium: 500;
-    --font-semibold: 600;
-    --font-bold: 700;
-    --font-extrabold: 800;
-    --font-black: 900;
+    /* 🔤 Professional Font Weights */
+    --font-thin: 100;          /* Ultra light */
+    --font-extralight: 200;    /* Extra light */
+    --font-light: 300;         /* Light */
+    --font-normal: 400;        /* Regular/Normal */
+    --font-medium: 500;        /* Medium weight */
+    --font-semibold: 600;      /* Semi-bold */
+    --font-bold: 700;          /* Bold */
+    --font-extrabold: 800;     /* Extra bold */
+    --font-black: 900;         /* Black/Heavy */
 
-    /* 🌫️ Shadow System */
-    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    --shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    --shadow-2xl: 0 50px 100px -20px rgba(0, 0, 0, 0.25);
-    --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    /* 🌫️ Government-Grade Shadow System */
+    --shadow-xs: 0 1px 2px 0 hsla(0, 0%, 0%, 0.05);
+    --shadow-sm: 0 2px 4px 0 hsla(0, 0%, 0%, 0.06), 0 1px 2px 0 hsla(0, 0%, 0%, 0.04);
+    --shadow-base: 0 4px 8px 0 hsla(0, 0%, 0%, 0.08), 0 2px 4px 0 hsla(0, 0%, 0%, 0.04);
+    --shadow-md: 0 8px 16px 0 hsla(0, 0%, 0%, 0.1), 0 4px 8px 0 hsla(0, 0%, 0%, 0.06);
+    --shadow-lg: 0 16px 32px 0 hsla(0, 0%, 0%, 0.12), 0 8px 16px 0 hsla(0, 0%, 0%, 0.08);
+    --shadow-xl: 0 24px 48px 0 hsla(0, 0%, 0%, 0.15), 0 12px 24px 0 hsla(0, 0%, 0%, 0.1);
+    --shadow-2xl: 0 32px 64px 0 hsla(0, 0%, 0%, 0.18), 0 16px 32px 0 hsla(0, 0%, 0%, 0.12);
+    --shadow-inner: inset 0 2px 4px 0 hsla(0, 0%, 0%, 0.06);
+    
+    /* Premium shadows with brand colors */
+    --shadow-saudi-green: 0 8px 32px 0 hsla(var(--saudi-green), 0.15);
+    --shadow-saudi-gold: 0 8px 32px 0 hsla(var(--saudi-gold), 0.2);
+    --shadow-executive: 0 12px 48px 0 hsla(var(--executive-primary), 0.2);
 
-    /* ⚡ Transitions */
-    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    /* ⚡ Professional Transitions */
+    --transition-instant: 75ms cubic-bezier(0.4, 0, 0.2, 1);    /* Instant feedback */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);      /* Quick interactions */
+    --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);      /* Standard transitions */
+    --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);    /* Smooth animations */
+    --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);      /* Deliberate animations */
+    --transition-slowest: 600ms cubic-bezier(0.4, 0, 0.2, 1);   /* Emphasis animations */
+    
+    /* Specialized easing curves */
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);               /* Default */
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);                    /* Deceleration */
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);                     /* Acceleration */
+    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);     /* Playful bounce */
 
-    /* 📱 Breakpoints (for CSS containers) */
-    --breakpoint-sm: 640px;
-    --breakpoint-md: 768px;
-    --breakpoint-lg: 1024px;
-    --breakpoint-xl: 1280px;
-    --breakpoint-2xl: 1536px;
+    /* 📱 Government Device Breakpoints */
+    --breakpoint-xs: 375px;    /* Mobile small */
+    --breakpoint-sm: 640px;    /* Mobile large */
+    --breakpoint-md: 768px;    /* Tablet */
+    --breakpoint-lg: 1024px;   /* Desktop small */
+    --breakpoint-xl: 1280px;   /* Desktop */
+    --breakpoint-2xl: 1536px;  /* Desktop large */
+    --breakpoint-3xl: 1920px;  /* Wide desktop */
+    --breakpoint-4xl: 2560px;  /* Ultra-wide */
 
-    /* 🎯 Z-Index Scale */
+    /* 🎯 Government-Grade Z-Index Scale */
+    --z-base: 0;
+    --z-background: -1;
     --z-dropdown: 1000;
     --z-sticky: 1020;
     --z-fixed: 1030;
@@ -97,6 +164,35 @@
     --z-popover: 1060;
     --z-tooltip: 1070;
     --z-toast: 1080;
+    --z-notification: 1090;
     --z-top: 9999;
+    
+    /* 🏛️ Government Hierarchy Levels */
+    --hierarchy-executive: 9000;    /* Executive level */
+    --hierarchy-operational: 8000;  /* Operational level */
+    --hierarchy-citizen: 7000;      /* Citizen level */
+  }
+  
+  /* 🇸🇦 Arabic RTL Support */
+  [dir="rtl"] {
+    --text-align-start: right;
+    --text-align-end: left;
+    --border-start: border-right;
+    --border-end: border-left;
+    --margin-start: margin-right;
+    --margin-end: margin-left;
+    --padding-start: padding-right;
+    --padding-end: padding-left;
+  }
+  
+  [dir="ltr"] {
+    --text-align-start: left;
+    --text-align-end: right;
+    --border-start: border-left;
+    --border-end: border-right;
+    --margin-start: margin-left;
+    --margin-end: margin-right;
+    --padding-start: padding-left;
+    --padding-end: padding-right;
   }
 }
