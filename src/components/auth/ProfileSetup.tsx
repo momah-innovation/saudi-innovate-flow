@@ -573,17 +573,17 @@ export const ProfileSetup = () => {
         </Card>
         
         {/* SIMPLE TEST - THIS SHOULD ALWAYS SHOW */}
-        <div className="mt-4 p-4 bg-red-100 border-2 border-red-500 rounded-lg">
-          <h2 className="text-xl font-bold text-red-700">🚨 TEST: Can you see this red box?</h2>
+        <div className="mt-4 p-4 bg-destructive/10 border-2 border-destructive rounded-lg">
+          <h2 className="text-xl font-bold text-destructive">🚨 TEST: Can you see this red box?</h2>
           <p>If you can see this, the page is updating correctly.</p>
           <p>User logged in: {user ? 'YES' : 'NO'}</p>
           <p>Current time: {new Date().toLocaleTimeString()}</p>
         </div>
         
         {/* Always show debug info for troubleshooting */}
-        <Card className="mt-4 border-red-200">
+        <Card className="mt-4 border-destructive/20">
           <CardHeader>
-            <CardTitle className="text-red-600">🐛 Debug: Role Detection</CardTitle>
+            <CardTitle className="text-destructive">🐛 Debug: Role Detection</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2 text-sm">

@@ -205,62 +205,62 @@ export function AnalyticsDashboard() {
       title: t('total_ideas'),
       value: analyticsData?.total_ideas || 0,
       icon: Lightbulb,
-      color: 'text-yellow-600',
-      bgColor: 'bg-yellow-50'
+      color: 'text-warning',
+      bgColor: 'bg-warning/10'
     },
     {
       title: t('total_events'),
       value: analyticsData?.total_events || 0,
       icon: Calendar,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50'
+      color: 'text-accent-foreground',
+      bgColor: 'bg-accent/10'
     },
     {
       title: t('total_partners'),
       value: analyticsData?.total_partners || 0,
       icon: Handshake,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50'
+      color: 'text-secondary-foreground',
+      bgColor: 'bg-secondary/10'
     },
     {
       title: t('implemented_ideas'),
       value: analyticsData?.implemented_ideas || 0,
       icon: CheckCircle,
-      color: 'text-emerald-600',
-      bgColor: 'bg-emerald-50'
+      color: 'text-success',
+      bgColor: 'bg-success/10'
     },
     {
       title: t('idea_implementation_rate'),
       value: `${analyticsData?.idea_implementation_rate || 0}%`,
       icon: TrendingUp,
-      color: 'text-rose-600',
-      bgColor: 'bg-rose-50'
+      color: 'text-primary',
+      bgColor: 'bg-primary/10'
     },
     {
       title: t('budget_utilized'),
       value: formatNumber(analyticsData?.total_budget_utilized || 0),
       icon: BarChart3,
-      color: 'text-indigo-600',
-      bgColor: 'bg-indigo-50'
+      color: 'text-muted-foreground',
+      bgColor: 'bg-muted/10'
     }
   ];
 
   const getPriorityBadgeColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'bg-red-100 text-red-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'high': return 'bg-destructive/10 text-destructive';
+      case 'medium': return 'bg-warning/10 text-warning';
+      case 'low': return 'bg-success/10 text-success';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'bg-green-100 text-green-800';
-      case 'active': return 'bg-blue-100 text-blue-800';
-      case 'planning': return 'bg-yellow-100 text-yellow-800';
-      case 'on_hold': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'completed': return 'bg-success/10 text-success';
+      case 'active': return 'bg-primary/10 text-primary';
+      case 'planning': return 'bg-warning/10 text-warning';
+      case 'on_hold': return 'bg-muted text-muted-foreground';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -315,7 +315,7 @@ export function AnalyticsDashboard() {
                 </div>
                 <div>
                   <span className="text-muted-foreground">{t('implemented')}</span>
-                  <p className="text-lg font-semibold text-green-600">
+                  <p className="text-lg font-semibold text-success">
                     {analyticsData?.implemented_ideas || 0}
                   </p>
                 </div>
@@ -347,7 +347,7 @@ export function AnalyticsDashboard() {
                 </div>
                 <div>
                   <span className="text-muted-foreground">{t('completed')}</span>
-                  <p className="text-lg font-semibold text-green-600">
+                  <p className="text-lg font-semibold text-success">
                     {analyticsData?.completed_challenges || 0}
                   </p>
                 </div>
