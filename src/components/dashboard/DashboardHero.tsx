@@ -130,8 +130,8 @@ export const DashboardHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className={`absolute -top-40 -${end('40')} w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse`} />
-        <div className={`absolute -bottom-40 -${start('40')} w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000`} />
+         <div className={`absolute -top-40 -${end('40')} w-80 h-80 bg-hero-overlay-light/5 rounded-full blur-3xl animate-pulse`} />
+        <div className={`absolute -bottom-40 -${start('40')} w-96 h-96 bg-hero-overlay-light/10 rounded-full blur-3xl animate-pulse delay-1000`} />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -140,30 +140,30 @@ export const DashboardHero = ({
           <div className="space-y-8">
             {/* Header with role-specific styling */}
             <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <roleConfig.icon className="w-6 h-6 text-white" />
+               <div className="flex items-center gap-3">
+                <div className="p-3 bg-hero-overlay-light/10 backdrop-blur-sm rounded-xl border border-hero-border/20">
+                  <roleConfig.icon className="w-6 h-6 text-hero-text" />
                 </div>
-                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                <Badge variant="secondary" className="bg-hero-overlay-light/10 text-hero-text border-hero-border/20 backdrop-blur-sm">
                   <Star className={`w-3 h-3 ${me('1')}`} />
                   {roleConfig.title}
                 </Badge>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-hero-text leading-tight">
                   {language === 'ar' ? (
                     <>
-                      مرحباً <span className="text-accent">{userProfile?.display_name || 'المستخدم'}</span>
+                      مرحباً <span className="text-hero-accent">{userProfile?.display_name || 'المستخدم'}</span>
                     </>
                   ) : (
                     <>
-                      Welcome <span className="text-accent">{userProfile?.display_name || 'User'}</span>
+                      Welcome <span className="text-hero-accent">{userProfile?.display_name || 'User'}</span>
                     </>
                   )}
                 </h1>
                 
-                <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
+                <p className="text-xl text-hero-text-muted max-w-2xl leading-relaxed">
                   {roleConfig.subtitle}
                 </p>
               </div>
@@ -179,14 +179,14 @@ export const DashboardHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
-                      isActive && "bg-white/10 border-white/20 scale-105"
+                      "bg-hero-overlay-light/5 backdrop-blur-sm border-hero-border/10 transition-all duration-500",
+                      isActive && "bg-hero-overlay-light/10 border-hero-border/20 scale-105"
                     )}
                   >
                     <CardContent className="p-4 text-center">
-                      <Icon className="w-6 h-6 mx-auto mb-2 text-white" />
-                      <div className="text-2xl font-bold text-white">{stat.value}</div>
-                      <div className="text-sm text-white/70">{stat.label}</div>
+                      <Icon className="w-6 h-6 mx-auto mb-2 text-hero-text" />
+                      <div className="text-2xl font-bold text-hero-text">{stat.value}</div>
+                      <div className="text-sm text-hero-text-muted">{stat.label}</div>
                     </CardContent>
                   </Card>
                 );

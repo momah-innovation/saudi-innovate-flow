@@ -27,10 +27,17 @@ export default {
 				primary: {
 					DEFAULT: "hsl(var(--primary))",
 					foreground: "hsl(var(--primary-foreground))",
+					light: "hsl(var(--primary-light))",
+					dark: "hsl(var(--primary-dark))",
 					glow: "hsl(var(--primary) / 0.3)",
-					light: "hsl(var(--primary) / 0.1)",
-					dark: "hsl(var(--primary) / 0.9)",
 				},
+				// Hero overlay semantic colors
+				"hero-overlay": "hsl(var(--hero-overlay))",
+				"hero-overlay-light": "hsl(var(--hero-overlay-light))",
+				"hero-text": "hsl(var(--hero-text))",
+				"hero-text-muted": "hsl(var(--hero-text-muted))",
+				"hero-border": "hsl(var(--hero-border))",
+				"hero-accent": "hsl(var(--hero-accent))",
 				secondary: {
 					DEFAULT: "hsl(var(--secondary))",
 					foreground: "hsl(var(--secondary-foreground))",
