@@ -177,6 +177,17 @@ export default {
 				'80': '80',
 				'90': '90',
 				'100': '100',
+				'999': '999',
+				'9999': '9999',
+			},
+			screens: {
+				'xs': '475px',
+				'3xl': '1600px',
+				'4xl': '1920px',
+			},
+			maxWidth: {
+				'8xl': '88rem',
+				'9xl': '96rem',
 			},
 			keyframes: {
 				"accordion-down": {
