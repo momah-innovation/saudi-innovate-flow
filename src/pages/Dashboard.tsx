@@ -18,11 +18,11 @@ import {
   Brain
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useRTLAwareClasses } from '@/components/ui/rtl-aware';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 export default function Dashboard() {
   const { t, language, isRTL } = useTranslation();
-  const rtl = useRTLAwareClasses();
+  const rtl = useRTLAware();
 
   const stats = [
     {

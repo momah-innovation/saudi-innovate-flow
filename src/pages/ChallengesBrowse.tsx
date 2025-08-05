@@ -9,7 +9,7 @@ import { ViewLayouts } from '@/components/ui/view-layouts';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAwareClasses } from '@/components/ui/rtl-aware';
+import { useRTLAware } from '@/hooks/useRTLAware';
 import { cn } from '@/lib/utils';
 import { ChallengeCard } from '@/components/challenges/ChallengeCard';
 import { ChallengeTrendingWidget } from '@/components/challenges/ChallengeTrendingWidget';
@@ -42,7 +42,7 @@ const ChallengesBrowse = () => {
   const { toast } = useToast();
   const { ui } = useChallengeDefaults();
   const { user, hasRole } = useAuth();
-  const rtl = useRTLAwareClasses();
+  const rtl = useRTLAware();
   
   // Use enhanced challenges data hook
   const { challenges, loading, stats, refetch } = useChallengesData();
