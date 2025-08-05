@@ -277,6 +277,41 @@
     --overlay-button: 0 0% 100%;
     --overlay-button-hover: 0 0% 90%;
 
+    /* === SPECIALIZED UI TOKENS === */
+    /* Live/Real-time indicators */
+    --live: 0 84% 60%;
+    --live-foreground: 0 0% 100%;
+    --live-background: 0 84% 95%;
+    --live-border: 0 84% 85%;
+
+    /* Hot/Trending indicators */
+    --hot: 14 100% 57%;
+    --hot-foreground: 0 0% 100%;
+    --hot-background: 14 100% 95%;
+    --hot-border: 14 100% 85%;
+
+    /* Category-specific tokens */
+    --category-tech: 217 91% 60%;
+    --category-tech-foreground: 210 40% 98%;
+    --category-tech-background: 217 91% 95%;
+    --category-tech-border: 217 91% 85%;
+
+    --category-health: 142 76% 36%;
+    --category-health-foreground: 355 7% 97%;
+    --category-health-background: 142 76% 95%;
+    --category-health-border: 142 76% 85%;
+
+    --category-finance: 280 84% 12%;
+    --category-finance-foreground: 210 40% 98%;
+    --category-finance-background: 280 84% 95%;
+    --category-finance-border: 280 84% 85%;
+
+    /* Rating/Star indicators */
+    --rating: 43 96% 56%;
+    --rating-foreground: 25 5% 11%;
+    --rating-filled: 43 96% 56%;
+    --rating-empty: 220 13% 69%;
+
     /* === SEMANTIC GRADIENTS === */
     --gradient-primary: linear-gradient(135deg, hsl(280 84% 12%), hsl(280 84% 20%));
     --gradient-primary-hover: linear-gradient(135deg, hsl(280 84% 8%), hsl(280 84% 16%));

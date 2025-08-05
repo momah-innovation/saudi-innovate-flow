@@ -1164,7 +1164,7 @@ const DesignSystem = () => {
                         
                         {/* Landing Hero */}
                         <div className="border rounded-lg overflow-hidden">
-                          <div className="bg-gradient-to-r from-primary to-secondary p-12 text-center text-white">
+                          <div className="bg-gradient-to-r from-primary to-secondary p-12 text-center text-primary-foreground">
                             <h1 className="text-5xl font-bold mb-4">Welcome to Ruwād</h1>
                             <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
                               Empowering innovators to solve tomorrow's challenges with cutting-edge technology and collaborative innovation
@@ -1174,7 +1174,7 @@ const DesignSystem = () => {
                                 Get Started
                                 <ArrowRight className="w-4 h-4 ml-2" />
                               </Button>
-                              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
+                              <Button size="lg" variant="outline" className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-foreground">
                                 <Play className="w-4 h-4 mr-2" />
                                 Watch Demo
                               </Button>
@@ -1320,14 +1320,14 @@ const DesignSystem = () => {
                         </div>
                         
                         {/* Notification Header */}
-                        <div className="border rounded-lg overflow-hidden border-amber-200 bg-amber-50">
-                          <div className="h-14 border-b border-amber-200">
+                        <div className="border rounded-lg overflow-hidden border-warning-border bg-warning-light">
+                          <div className="h-14 border-b border-warning-border">
                             <div className="flex items-center justify-between px-4 h-full">
                               <div className="flex items-center gap-3">
-                                <Bell className="w-5 h-5 text-amber-600" />
-                                <span className="text-sm text-amber-800">System maintenance in 30 minutes</span>
+                                <Bell className="w-5 h-5 text-warning" />
+                                <span className="text-sm text-warning-foreground">System maintenance in 30 minutes</span>
                               </div>
-                              <Button variant="ghost" size="sm" className="text-amber-600">
+                              <Button variant="ghost" size="sm" className="text-warning">
                                 <X className="w-4 h-4" />
                               </Button>
                             </div>
@@ -1335,14 +1335,14 @@ const DesignSystem = () => {
                         </div>
                         
                         {/* Success Header */}
-                        <div className="border rounded-lg overflow-hidden border-green-200 bg-green-50">
-                          <div className="h-14 border-b border-green-200">
+                        <div className="border rounded-lg overflow-hidden border-success-border bg-success-light">
+                          <div className="h-14 border-b border-success-border">
                             <div className="flex items-center justify-between px-4 h-full">
                               <div className="flex items-center gap-3">
-                                <CheckCircle className="w-5 h-5 text-green-600" />
-                                <span className="text-sm text-green-800">Profile updated successfully</span>
+                                <CheckCircle className="w-5 h-5 text-success" />
+                                <span className="text-sm text-success-foreground">Profile updated successfully</span>
                               </div>
-                              <Button variant="ghost" size="sm" className="text-green-600">
+                              <Button variant="ghost" size="sm" className="text-success">
                                 <X className="w-4 h-4" />
                               </Button>
                             </div>
@@ -1509,7 +1509,7 @@ const DesignSystem = () => {
                             </div>
                             <label className="relative inline-flex items-center cursor-pointer">
                               <input type="checkbox" className="sr-only peer" defaultChecked />
-                              <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                              <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-background after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-background after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                             </label>
                           </div>
                           <div className="flex items-center justify-between">
@@ -1519,7 +1519,7 @@ const DesignSystem = () => {
                             </div>
                             <label className="relative inline-flex items-center cursor-pointer">
                               <input type="checkbox" className="sr-only peer" />
-                              <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                              <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-background after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-background after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                             </label>
                           </div>
                         </div>
@@ -2713,7 +2713,7 @@ const DesignSystem = () => {
                         <div className="flex gap-3">
                           <div className="flex flex-col items-center">
                             <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center">
-                              <CheckCircle className="w-4 h-4 text-white" />
+                              <CheckCircle className="w-4 h-4 text-primary-foreground" />
                             </div>
                             <div className="w-0.5 h-12 bg-muted mt-2"></div>
                           </div>
@@ -2726,7 +2726,7 @@ const DesignSystem = () => {
                         <div className="flex gap-3">
                           <div className="flex flex-col items-center">
                             <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                              <Star className="w-4 h-4 text-white" />
+                              <Star className="w-4 h-4 text-primary-foreground" />
                             </div>
                             <div className="w-0.5 h-12 bg-muted mt-2"></div>
                           </div>
@@ -2739,7 +2739,7 @@ const DesignSystem = () => {
                         <div className="flex gap-3">
                           <div className="flex flex-col items-center">
                             <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
-                              <Award className="w-4 h-4 text-white" />
+                              <Award className="w-4 h-4 text-primary-foreground" />
                             </div>
                           </div>
                           <div className="flex-1 pt-1">
@@ -3229,37 +3229,37 @@ const DesignSystem = () => {
                         <div className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center">
                           <span className="text-2xl">🖼️</span>
                         </div>
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
-                          <Eye className="w-6 h-6 text-white" />
+                        <div className="absolute inset-0 bg-overlay-background/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                          <Eye className="w-6 h-6 text-overlay-text" />
                         </div>
                       </div>
                       <div className="relative group cursor-pointer">
                         <div className="aspect-square bg-gradient-to-br from-accent/20 to-innovation/20 rounded-lg flex items-center justify-center">
                           <span className="text-2xl">🌅</span>
                         </div>
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
-                          <Eye className="w-6 h-6 text-white" />
+                        <div className="absolute inset-0 bg-overlay-background/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                          <Eye className="w-6 h-6 text-overlay-text" />
                         </div>
                       </div>
                       <div className="relative group cursor-pointer">
                         <div className="aspect-square bg-gradient-to-br from-success/20 to-warning/20 rounded-lg flex items-center justify-center">
                           <span className="text-2xl">🏙️</span>
                         </div>
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
-                          <Eye className="w-6 h-6 text-white" />
+                        <div className="absolute inset-0 bg-overlay-background/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                          <Eye className="w-6 h-6 text-overlay-text" />
                         </div>
                       </div>
                       <div className="relative group cursor-pointer">
                         <div className="aspect-square bg-gradient-to-br from-expert/20 to-partner/20 rounded-lg flex items-center justify-center">
                           <span className="text-2xl">🔬</span>
                         </div>
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
-                          <Eye className="w-6 h-6 text-white" />
+                        <div className="absolute inset-0 bg-overlay-background/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                          <Eye className="w-6 h-6 text-overlay-text" />
                         </div>
                       </div>
                     </div>
                     
-                    <div className="border rounded-lg p-4 bg-black/5">
+                    <div className="border rounded-lg p-4 bg-overlay-background/5">
                       <div className="flex items-center justify-between mb-4">
                         <h4 className="font-medium">Lightbox Preview</h4>
                         <Button variant="ghost" size="sm">
@@ -3288,20 +3288,20 @@ const DesignSystem = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div>
                       <h4 className="font-medium mb-4">Video Player</h4>
-                      <div className="border rounded-lg overflow-hidden bg-black">
+                      <div className="border rounded-lg overflow-hidden bg-overlay-background">
                         <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                          <div className="text-center text-white">
+                          <div className="text-center text-overlay-text">
                             <Play className="w-16 h-16 mx-auto mb-4 opacity-80" />
                             <p className="text-lg font-medium">Innovation Challenge Demo</p>
                             <p className="text-sm opacity-70">Click to play</p>
                           </div>
                         </div>
-                        <div className="bg-gray-900 p-4 text-white">
+                        <div className="bg-muted p-4 text-foreground">
                           <div className="flex items-center gap-4">
-                            <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                            <Button variant="ghost" size="sm" className="text-foreground hover:bg-accent">
                               <Play className="w-4 h-4" />
                             </Button>
-                            <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                            <Button variant="ghost" size="sm" className="text-foreground hover:bg-accent">
                               <Volume2 className="w-4 h-4" />
                             </Button>
                             <div className="flex-1 flex items-center gap-2">
@@ -3311,7 +3311,7 @@ const DesignSystem = () => {
                               </div>
                               <span className="text-sm">08:45</span>
                             </div>
-                            <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                            <Button variant="ghost" size="sm" className="text-foreground hover:bg-accent">
                               <Settings className="w-4 h-4" />
                             </Button>
                           </div>
@@ -3441,19 +3441,19 @@ const DesignSystem = () => {
                     <div>
                       <h4 className="font-medium mb-4">Avatar Variations</h4>
                       <div className="flex flex-wrap items-center gap-4">
-                        <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white font-medium text-xl">
+                        <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-medium text-xl">
                           JD
                         </div>
-                        <div className="w-14 h-14 bg-secondary rounded-full flex items-center justify-center text-white font-medium">
+                        <div className="w-14 h-14 bg-secondary rounded-full flex items-center justify-center text-secondary-foreground font-medium">
                           SM
                         </div>
-                        <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white font-medium text-sm">
+                        <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-accent-foreground font-medium text-sm">
                           MJ
                         </div>
-                        <div className="w-10 h-10 bg-innovation rounded-full flex items-center justify-center text-white font-medium text-sm">
+                        <div className="w-10 h-10 bg-innovation rounded-full flex items-center justify-center text-innovation-foreground font-medium text-sm">
                           AK
                         </div>
-                        <div className="w-8 h-8 bg-expert rounded-full flex items-center justify-center text-white font-medium text-xs">
+                        <div className="w-8 h-8 bg-expert rounded-full flex items-center justify-center text-expert-foreground font-medium text-xs">
                           TL
                         </div>
                       </div>
@@ -3461,7 +3461,7 @@ const DesignSystem = () => {
                       <div className="mt-6 space-y-3">
                         <div className="flex items-center gap-3">
                           <div className="relative">
-                            <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-medium">
+                            <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-medium">
                               JD
                             </div>
                             <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-success border-2 border-background rounded-full"></div>
@@ -3474,7 +3474,7 @@ const DesignSystem = () => {
                         
                         <div className="flex items-center gap-3">
                           <div className="relative">
-                            <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white font-medium">
+                            <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-secondary-foreground font-medium">
                               SM
                             </div>
                             <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-warning border-2 border-background rounded-full"></div>
@@ -3505,7 +3505,7 @@ const DesignSystem = () => {
                       <div className="space-y-4">
                         <div className="flex items-center gap-4">
                           <div className="relative">
-                            <div className="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-medium text-2xl">
+                            <div className="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-primary-foreground font-medium text-2xl">
                               JD
                             </div>
                             <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-background border border-muted rounded-full flex items-center justify-center cursor-pointer hover:bg-accent">
@@ -3538,11 +3538,11 @@ const DesignSystem = () => {
 
                  <ComponentShowcase title="Video Streaming Controls">
                    <div className="space-y-6">
-                     <div className="border rounded-lg overflow-hidden bg-black">
+                     <div className="border rounded-lg overflow-hidden bg-overlay-background">
                        <div className="relative aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                         <div className="text-center text-white">
-                           <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                             <Play className="w-8 h-8 text-white ml-1" />
+                         <div className="text-center text-overlay-text">
+                           <div className="w-16 h-16 bg-overlay-button/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                             <Play className="w-8 h-8 text-overlay-text ml-1" />
                            </div>
                            <p className="text-lg font-medium">Government Innovation Summit 2024</p>
                            <p className="text-sm opacity-80">Live Stream - 1,247 viewers</p>
@@ -3550,7 +3550,7 @@ const DesignSystem = () => {
                          
                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                            <div className="flex items-center gap-4">
-                             <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                             <Button variant="ghost" size="sm" className="text-overlay-text hover:bg-overlay-button/20">
                                <Play className="w-4 h-4" />
                              </Button>
                              <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
@@ -3573,7 +3573,7 @@ const DesignSystem = () => {
                          </div>
                          
                          <div className="absolute top-4 right-4">
-                           <Badge variant="destructive" className="bg-red-600 text-white">
+                           <Badge variant="destructive" className="bg-live text-live-foreground">
                              ● LIVE
                            </Badge>
                          </div>
@@ -4231,7 +4231,7 @@ const DesignSystem = () => {
                              <p className="text-xs opacity-80">Host</p>
                            </div>
                            <div className="absolute top-2 left-2">
-                             <Badge variant="destructive" className="bg-red-600 text-white text-xs">
+                             <Badge variant="destructive" className="bg-live text-live-foreground text-xs">
                                ● LIVE
                              </Badge>
                            </div>
@@ -6033,7 +6033,7 @@ const DesignSystem = () => {
                               <Badge className="bg-innovation/90 text-innovation-foreground">Featured</Badge>
                             </div>
                             <div className="absolute top-3 right-3">
-                              <Star className="w-5 h-5 text-yellow-300 fill-current" />
+                              <Star className="w-5 h-5 text-rating-filled fill-current" />
                             </div>
                             <div className="absolute bottom-3 left-3 text-white">
                               <div className="flex items-center gap-1 text-sm">
@@ -6196,11 +6196,11 @@ const DesignSystem = () => {
                     <div>
                       <h4 className="font-medium mb-4">Category-specific Challenge Cards</h4>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <Card className="p-4 hover:shadow-lg transition-shadow border-l-4 border-l-blue-500 bg-blue-50/50 dark:bg-blue-950/20">
+                        <Card className="p-4 hover:shadow-lg transition-shadow border-l-4 border-l-category-tech bg-category-tech-background dark:bg-category-tech-background/20">
                           <div className="flex items-start justify-between mb-3">
-                            <Badge className="bg-blue-500/90 text-white">Technology</Badge>
-                            <div className="p-1 bg-blue-100 dark:bg-blue-900 rounded">
-                              <Zap className="w-4 h-4 text-blue-600" />
+                            <Badge className="bg-category-tech text-category-tech-foreground">Technology</Badge>
+                            <div className="p-1 bg-category-tech-background dark:bg-category-tech-background/50 rounded">
+                              <Zap className="w-4 h-4 text-category-tech" />
                             </div>
                           </div>
                           <h3 className="font-semibold mb-2">Neural Network Optimization</h3>
@@ -6208,16 +6208,16 @@ const DesignSystem = () => {
                             Deep learning efficiency improvements
                           </p>
                           <div className="flex items-center justify-between">
-                            <span className="text-sm text-blue-600 font-medium">$45,000</span>
+                            <span className="text-sm text-category-tech font-medium">$45,000</span>
                             <span className="text-xs text-muted-foreground">AI/ML</span>
                           </div>
                         </Card>
 
-                        <Card className="p-4 hover:shadow-lg transition-shadow border-l-4 border-l-green-500 bg-green-50/50 dark:bg-green-950/20">
+                        <Card className="p-4 hover:shadow-lg transition-shadow border-l-4 border-l-category-health bg-category-health-background dark:bg-category-health-background/20">
                           <div className="flex items-start justify-between mb-3">
-                            <Badge className="bg-green-500/90 text-white">Health</Badge>
-                            <div className="p-1 bg-green-100 dark:bg-green-900 rounded">
-                              <Heart className="w-4 h-4 text-green-600" />
+                            <Badge className="bg-category-health text-category-health-foreground">Health</Badge>
+                            <div className="p-1 bg-category-health-background dark:bg-category-health-background/50 rounded">
+                              <Heart className="w-4 h-4 text-category-health" />
                             </div>
                           </div>
                           <h3 className="font-semibold mb-2">Telemedicine Platform</h3>
@@ -6225,16 +6225,16 @@ const DesignSystem = () => {
                             Remote healthcare accessibility
                           </p>
                           <div className="flex items-center justify-between">
-                            <span className="text-sm text-green-600 font-medium">$60,000</span>
+                            <span className="text-sm text-category-health font-medium">$60,000</span>
                             <span className="text-xs text-muted-foreground">Healthcare</span>
                           </div>
                         </Card>
 
-                        <Card className="p-4 hover:shadow-lg transition-shadow border-l-4 border-l-purple-500 bg-purple-50/50 dark:bg-purple-950/20">
+                        <Card className="p-4 hover:shadow-lg transition-shadow border-l-4 border-l-category-finance bg-category-finance-background dark:bg-category-finance-background/20">
                           <div className="flex items-start justify-between mb-3">
-                            <Badge className="bg-purple-500/90 text-white">Finance</Badge>
-                            <div className="p-1 bg-purple-100 dark:bg-purple-900 rounded">
-                              <CreditCard className="w-4 h-4 text-purple-600" />
+                            <Badge className="bg-category-finance text-category-finance-foreground">Finance</Badge>
+                            <div className="p-1 bg-category-finance-background dark:bg-category-finance-background/50 rounded">
+                              <CreditCard className="w-4 h-4 text-category-finance" />
                             </div>
                           </div>
                           <h3 className="font-semibold mb-2">DeFi Trading Platform</h3>
@@ -6242,7 +6242,7 @@ const DesignSystem = () => {
                             Decentralized finance solutions
                           </p>
                           <div className="flex items-center justify-between">
-                            <span className="text-sm text-purple-600 font-medium">$90,000</span>
+                            <span className="text-sm text-category-finance font-medium">$90,000</span>
                             <span className="text-xs text-muted-foreground">Blockchain</span>
                           </div>
                         </Card>
@@ -7547,15 +7547,15 @@ const DesignSystem = () => {
                                    </div>
                                   <div className="flex justify-center gap-6 text-sm">
                                     <div className="text-center">
-                                      <div className="font-bold text-blue-200 drop-shadow-sm">5K+</div>
+                                      <div className="font-bold text-info-foreground drop-shadow-sm">5K+</div>
                                       <div className="text-xs text-white/90">Users</div>
                                     </div>
                                     <div className="text-center">
-                                      <div className="font-bold text-green-200 drop-shadow-sm">200+</div>
+                                      <div className="font-bold text-success-foreground drop-shadow-sm">200+</div>
                                       <div className="text-xs text-white/90">Projects</div>
                                     </div>
                                     <div className="text-center">
-                                      <div className="font-bold text-purple-200 drop-shadow-sm">98%</div>
+                                      <div className="font-bold text-primary-foreground drop-shadow-sm">98%</div>
                                       <div className="text-xs text-white/90">Success</div>
                                     </div>
                                  </div>
@@ -7616,14 +7616,14 @@ const DesignSystem = () => {
                                       <div className="aspect-video bg-gradient-overlay relative">
                                         <div className="absolute bottom-3 left-3 text-white">
                                           <div className="flex items-center gap-1 text-xs mb-1">
-                                            <Calendar className="h-3 w-3 text-purple-200" />
+                                            <Calendar className="h-3 w-3 text-primary-foreground" />
                                            <span>Ends March 30</span>
                                          </div>
                                          <h3 className="font-semibold text-sm drop-shadow-sm">AI for Climate</h3>
                                          <p className="text-xs opacity-95 drop-shadow-sm">$50K prize</p>
                                        </div>
                                        <div className="absolute top-3 right-3">
-                                         <Badge className="bg-red-500/30 text-white text-xs border border-red-300/30">🔥 Hot</Badge>
+                                         <Badge className="bg-hot/30 text-hot-foreground text-xs border border-hot-border/30">🔥 Hot</Badge>
                                        </div>
                                      </div>
                                      <div className="p-3">
@@ -7710,7 +7710,7 @@ const DesignSystem = () => {
                                           <p className="text-sm opacity-95 drop-shadow-sm">$50K prize • Global impact</p>
                                         </div>
                                         <div className="absolute top-4 right-4">
-                                          <Badge className="bg-red-500/30 text-white border-red-300/40">🔥 Trending</Badge>
+                                          <Badge className="bg-hot/30 text-hot-foreground border-hot-border/40">🔥 Trending</Badge>
                                         </div>
                                       </div>
                                       <div className="p-4">
@@ -7727,7 +7727,7 @@ const DesignSystem = () => {
                                       <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/30 bg-white/15 backdrop-blur-sm">
                                         <div className="flex items-center gap-3">
                                           <div className="w-8 h-8 rounded-lg bg-blue-500/40 flex items-center justify-center">
-                                            <Zap className="h-4 w-4 text-yellow-200" />
+                                            <Zap className="h-4 w-4 text-warning-foreground" />
                                           </div>
                                           <div>
                                             <p className="font-medium text-sm text-white drop-shadow-sm">Trending</p>
@@ -7738,7 +7738,7 @@ const DesignSystem = () => {
                                       <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/30 bg-white/15 backdrop-blur-sm">
                                         <div className="flex items-center gap-3">
                                           <div className="w-8 h-8 rounded-lg bg-green-500/40 flex items-center justify-center">
-                                            <Award className="h-4 w-4 text-purple-200" />
+                                            <Award className="h-4 w-4 text-primary-foreground" />
                                           </div>
                                           <div>
                                             <p className="font-medium text-sm text-white drop-shadow-sm">Leaderboard</p>

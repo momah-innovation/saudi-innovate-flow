@@ -184,6 +184,46 @@ export default {
 					button: "hsl(var(--overlay-button))",
 					"button-hover": "hsl(var(--overlay-button-hover))",
 				},
+				// Live/real-time indicators
+				live: {
+					DEFAULT: "hsl(var(--live))",
+					foreground: "hsl(var(--live-foreground))",
+					background: "hsl(var(--live-background))",
+					border: "hsl(var(--live-border))",
+				},
+				// Hot/trending indicators
+				hot: {
+					DEFAULT: "hsl(var(--hot))",
+					foreground: "hsl(var(--hot-foreground))",
+					background: "hsl(var(--hot-background))",
+					border: "hsl(var(--hot-border))",
+				},
+				// Category-specific colors
+				"category-tech": {
+					DEFAULT: "hsl(var(--category-tech))",
+					foreground: "hsl(var(--category-tech-foreground))",
+					background: "hsl(var(--category-tech-background))",
+					border: "hsl(var(--category-tech-border))",
+				},
+				"category-health": {
+					DEFAULT: "hsl(var(--category-health))",
+					foreground: "hsl(var(--category-health-foreground))",
+					background: "hsl(var(--category-health-background))",
+					border: "hsl(var(--category-health-border))",
+				},
+				"category-finance": {
+					DEFAULT: "hsl(var(--category-finance))",
+					foreground: "hsl(var(--category-finance-foreground))",
+					background: "hsl(var(--category-finance-background))",
+					border: "hsl(var(--category-finance-border))",
+				},
+				// Rating system
+				rating: {
+					DEFAULT: "hsl(var(--rating))",
+					foreground: "hsl(var(--rating-foreground))",
+					filled: "hsl(var(--rating-filled))",
+					empty: "hsl(var(--rating-empty))",
+				},
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
