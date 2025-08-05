@@ -122,7 +122,7 @@ export const UpdatePassword = () => {
           <CardContent>
             <Button 
               onClick={() => navigate('/auth')}
-              className="w-full bg-gradient-primary hover:opacity-90 text-white"
+              className="w-full bg-gradient-primary hover:opacity-90 text-primary-foreground"
             >
               {t('login_now')}
             </Button>
@@ -137,7 +137,7 @@ export const UpdatePassword = () => {
       <Card className="w-full max-w-md border-0 shadow-2xl backdrop-blur-sm bg-card/80">
         <CardHeader className="text-center space-y-4">
           <div className="w-16 h-16 rounded-xl bg-gradient-primary flex items-center justify-center mx-auto">
-            <Lock className="h-8 w-8 text-white" />
+            <Lock className="h-8 w-8 text-primary-foreground" />
           </div>
           <CardTitle className="text-2xl">{t('update_password')}</CardTitle>
           <CardDescription>
@@ -199,7 +199,7 @@ export const UpdatePassword = () => {
 
             <Button
               type="submit"
-              className="w-full h-11 bg-gradient-primary hover:opacity-90 text-white"
+              className="w-full h-11 bg-gradient-primary hover:opacity-90 text-primary-foreground"
               disabled={isLoading}
             >
               {isLoading ? t('updating') : t('update_password')}

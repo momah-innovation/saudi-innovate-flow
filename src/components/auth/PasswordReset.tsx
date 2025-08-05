@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useRTLAware } from '@/hooks/useRTLAware';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 export const PasswordReset = () => {
   const [email, setEmail] = useState('');
@@ -17,14 +18,15 @@ export const PasswordReset = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { start, ps } = useRTLAware();
+  const { t } = useTranslation();
 
   const handlePasswordReset = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!email) {
       toast({
-        title: "خطأ في التحقق",
-        description: "يرجى إدخال البريد الإلكتروني",
+        title: t('validation_error'),
+        description: t('please_enter_email'),
         variant: "destructive",
       });
       return;
@@ -39,7 +41,7 @@ export const PasswordReset = () => {
 
       if (error) {
         toast({
-          title: "خطأ في إعادة تعيين كلمة المرور",
+          title: t('password_reset_error'),
           description: error.message,
           variant: "destructive",
         });
@@ -48,8 +50,8 @@ export const PasswordReset = () => {
 
       setIsEmailSent(true);
       toast({
-        title: "تم الإرسال بنجاح",
-        description: "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني",
+        title: t('sent_successfully'),
+        description: t('reset_link_sent_to_email'),
       });
     } catch (error: any) {
       toast({
@@ -122,11 +124,11 @@ export const PasswordReset = () => {
       <Card className="w-full max-w-md border-0 shadow-2xl backdrop-blur-sm bg-card/80">
         <CardHeader className="text-center space-y-4">
           <div className="w-16 h-16 rounded-xl bg-gradient-primary flex items-center justify-center mx-auto">
-            <Mail className="h-8 w-8 text-white" />
+            <Mail className="h-8 w-8 text-primary-foreground" />
           </div>
-          <CardTitle className="text-2xl">إعادة تعيين كلمة المرور</CardTitle>
+          <CardTitle className="text-2xl">{t('reset_password')}</CardTitle>
           <CardDescription>
-            أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور
+            {t('enter_email_reset_instructions')}
           </CardDescription>
         </CardHeader>
 
@@ -150,10 +152,10 @@ export const PasswordReset = () => {
 
             <Button
               type="submit"
-              className="w-full h-11 bg-gradient-primary hover:opacity-90 text-white"
+              className="w-full h-11 bg-gradient-primary hover:opacity-90 text-primary-foreground"
               disabled={isLoading}
             >
-              {isLoading ? "جارٍ الإرسال..." : "إرسال رابط إعادة التعيين"}
+              {isLoading ? t('sending') : t('send_reset_link')}
             </Button>
           </form>
         </CardContent>

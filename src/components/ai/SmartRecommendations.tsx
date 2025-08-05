@@ -56,46 +56,46 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
         {
           id: '1',
           type: 'challenge' as const,
-          title: 'تحدي المدن الذكية الجديد',
-          description: 'تحدي مثالي يتماشى مع خبرتك في التكنولوجيا',
+          title: t('new_smart_cities_challenge'),
+          description: t('perfect_challenge_tech_expertise'),
           confidence_score: 0.89,
-          reason: 'يتطابق مع مهاراتك في الذكاء الاصطناعي وإنترنت الأشياء',
+          reason: t('matches_ai_iot_skills'),
           action_url: '/challenges/smart-cities',
         },
         {
           id: '2',
           type: 'partner' as const,
-          title: 'شراكة مع جامعة الملك عبدالله',
-          description: 'فرصة تعاون في مجال البحث والتطوير',
+          title: t('partnership_kaust'),
+          description: t('research_development_collaboration'),
           confidence_score: 0.84,
-          reason: 'خلفيتك الأكاديمية تتماشى مع أهداف الجامعة',
+          reason: t('academic_background_matches'),
           action_url: '/partners/kaust',
         },
         {
           id: '3',
           type: 'opportunity' as const,
-          title: 'مشروع تطوير تطبيق الخدمات الحكومية',
-          description: 'فرصة لتطوير حلول مبتكرة للخدمات الرقمية',
+          title: t('gov_app_development_project'),
+          description: t('opportunity_innovative_digital_solutions'),
           confidence_score: 0.78,
-          reason: 'خبرتك في تطوير التطبيقات تجعلك مرشحاً مثالياً',
+          reason: t('app_development_expertise_ideal'),
           action_url: '/opportunities/gov-app',
         },
         {
           id: '4',
           type: 'idea' as const,
-          title: 'فكرة مشابهة: نظام إدارة الطوارئ',
-          description: 'قد تستفيد من دراسة هذه الفكرة المشابهة',
+          title: t('similar_idea_emergency_system'),
+          description: t('benefit_studying_similar_idea'),
           confidence_score: 0.72,
-          reason: 'تتشارك نفس المفاهيم التقنية مع فكرتك الحالية',
+          reason: t('shares_technical_concepts'),
           action_url: '/ideas/emergency-management',
         },
         {
           id: '5',
           type: 'challenge' as const,
-          title: 'تحدي الاستدامة البيئية',
-          description: 'تحدي جديد في مجال التكنولوجيا الخضراء',
+          title: t('environmental_sustainability_challenge'),
+          description: t('new_green_technology_challenge'),
           confidence_score: 0.67,
-          reason: 'اهتمامك بالتكنولوجيا المستدامة واضح من نشاطك',
+          reason: t('sustainable_tech_interest_clear'),
           action_url: '/challenges/sustainability',
         },
       ].slice(0, limit);
@@ -130,11 +130,11 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
 
   const getTypeName = (type: string) => {
     switch (type) {
-      case 'challenge': return t('challenge') || 'تحدي';
-      case 'opportunity': return t('opportunity') || 'فرصة';
-      case 'partner': return t('partner') || 'شريك';
-      case 'idea': return t('idea') || 'فكرة';
-      default: return t('recommendation') || 'توصية';
+      case 'challenge': return t('challenge');
+      case 'opportunity': return t('opportunity');
+      case 'partner': return t('partner');
+      case 'idea': return t('idea');
+      default: return t('recommendation');
     }
   };
 
@@ -218,9 +218,9 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
                             {getTypeName(recommendation.type)}
                           </Badge>
                           <div className="flex items-center gap-1">
-                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <div className="w-2 h-2 bg-success rounded-full"></div>
                             <span className="text-xs text-muted-foreground">
-                              {Math.round(recommendation.confidence_score * 100)}% {t('match') || 'تطابق'}
+                              {Math.round(recommendation.confidence_score * 100)}% {t('match')}
                             </span>
                           </div>
                         </div>
@@ -230,7 +230,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
                         <p className="text-xs text-muted-foreground mb-2">
                           {recommendation.description}
                         </p>
-                        <div className="text-xs text-blue-600 bg-blue-50 rounded px-2 py-1">
+                        <div className="text-xs text-info bg-info/10 rounded px-2 py-1">
                           💡 {recommendation.reason}
                         </div>
                       </div>
@@ -248,7 +248,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
             <div className="pt-4 border-t">
               <Button variant="outline" className="w-full" onClick={loadRecommendations}>
                 <Sparkles className={`h-4 w-4 ${me('2')}`} />
-                {t('update_recommendations') || 'تحديث التوصيات'}
+                {t('update_recommendations')}
               </Button>
             </div>
           </div>

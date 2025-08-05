@@ -76,9 +76,9 @@ export const AdminEventCard = ({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'مجدول':
-      case 'scheduled': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
+      case 'scheduled': return 'badge-info';
       case 'جاري':
-      case 'ongoing': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
+      case 'ongoing': return 'badge-success';
       case 'مكتمل':
       case 'completed': return 'badge-secondary';
       case 'ملغي':
@@ -88,10 +88,10 @@ export const AdminEventCard = ({
   };
 
   const getStatusText = (status: string) => {
-    if (status === 'مجدول') return t('scheduled') || 'مجدول';
-    if (status === 'جاري') return t('ongoing') || 'جاري';
-    if (status === 'مكتمل') return t('completed') || 'مكتمل';
-    if (status === 'ملغي') return t('cancelled') || 'ملغي';
+    if (status === 'مجدول') return t('scheduled');
+    if (status === 'جاري') return t('ongoing');
+    if (status === 'مكتمل') return t('completed');
+    if (status === 'ملغي') return t('cancelled');
     return status;
   };
 
@@ -125,10 +125,10 @@ export const AdminEventCard = ({
   const isHighCapacity = getRegistrationPercentage() > 80;
 
   const statusActions = [
-    { value: 'مجدول', label: t('scheduled') || 'مجدول' },
-    { value: 'جاري', label: t('ongoing') || 'جاري' },
-    { value: 'مكتمل', label: t('completed') || 'مكتمل' },
-    { value: 'ملغي', label: t('cancelled') || 'ملغي' }
+    { value: 'مجدول', label: t('scheduled') },
+    { value: 'جاري', label: t('ongoing') },
+    { value: 'مكتمل', label: t('completed') },
+    { value: 'ملغي', label: t('cancelled') }
   ];
 
   if (viewMode === 'list') {
@@ -190,7 +190,7 @@ export const AdminEventCard = ({
                 </div>
                 <div className="flex items-center gap-1">
                   <MapPin className="w-3 h-3" />
-                   <span className="truncate">{event.location || (event.format === 'virtual' ? (t('online') || 'عبر الإنترنت') : 'TBD')}</span>
+                   <span className="truncate">{event.location || (event.format === 'virtual' ? t('online') : 'TBD')}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Users className="w-3 h-3" />
@@ -228,8 +228,8 @@ export const AdminEventCard = ({
                   ))}
                   <DropdownMenuSeparator />
                    <DropdownMenuItem onClick={() => onDelete(event)} className="text-destructive">
-                    {t('delete') || 'حذف'}
-                  </DropdownMenuItem>
+                     {t('delete')}
+                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -262,14 +262,14 @@ export const AdminEventCard = ({
           </Badge>
           {event.format === 'virtual' && (
              <Badge variant="secondary" className="bg-background/90 text-muted-foreground">
-               <Globe className={`w-3 h-3 ${me('1')}`} />
-               {t('online') || 'عبر الإنترنت'}
-             </Badge>
+                <Globe className={`w-3 h-3 ${me('1')}`} />
+                {t('online')}
+              </Badge>
           )}
           {isHighCapacity && (
              <Badge className="badge-warning">
-               {t('limited_spots') || 'أماكن محدودة'}
-             </Badge>
+                {t('limited_spots')}
+              </Badge>
           )}
         </div>
 
@@ -287,13 +287,13 @@ export const AdminEventCard = ({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                <DropdownMenuItem onClick={() => onView(event)}>
-                 <Eye className={`w-4 h-4 ${me('2')}`} />
-                 {t('view') || 'عرض'}
-               </DropdownMenuItem>
-               <DropdownMenuItem onClick={() => onEdit(event)}>
-                 <Edit className={`w-4 h-4 ${me('2')}`} />
-                 {t('edit') || 'تعديل'}
-               </DropdownMenuItem>
+                  <Eye className={`w-4 h-4 ${me('2')}`} />
+                  {t('view')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onEdit(event)}>
+                  <Edit className={`w-4 h-4 ${me('2')}`} />
+                  {t('edit')}
+                </DropdownMenuItem>
               <DropdownMenuSeparator />
               {onStatusChange && statusActions.map((action) => (
                 <DropdownMenuItem key={action.value} onClick={() => onStatusChange(event, action.value)}>
@@ -301,9 +301,9 @@ export const AdminEventCard = ({
                 </DropdownMenuItem>
               ))}
               <DropdownMenuSeparator />
-               <DropdownMenuItem onClick={() => onDelete(event)} className="text-destructive">
-                 {t('delete') || 'حذف'}
-               </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onDelete(event)} className="text-destructive">
+                  {t('delete')}
+                </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -344,7 +344,7 @@ export const AdminEventCard = ({
           </div>
           <div className="flex items-center gap-2">
             <MapPin className="w-4 h-4" />
-            <span className="truncate">{event.location || (event.format === 'virtual' ? (t('online') || 'عبر الإنترنت') : 'TBD')}</span>
+            <span className="truncate">{event.location || (event.format === 'virtual' ? t('online') : 'TBD')}</span>
           </div>
         </div>
 
@@ -352,9 +352,9 @@ export const AdminEventCard = ({
         {event.max_participants && (
           <div className="mt-3">
              <div className="flex justify-between text-sm text-muted-foreground mb-2">
-               <span>{t('registration') || 'التسجيل'}</span>
-               <span>{event.registered_participants}/{event.max_participants}</span>
-             </div>
+                <span>{t('registration')}</span>
+                <span>{event.registered_participants}/{event.max_participants}</span>
+              </div>
             <Progress value={getRegistrationPercentage()} className="h-2" />
             <div className="flex justify-between text-xs text-muted-foreground mt-1">
                <span>{Math.round(getRegistrationPercentage())}% {t('full') || 'ممتلئ'}</span>

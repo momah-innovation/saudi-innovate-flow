@@ -98,9 +98,9 @@ export const DashboardHero = ({
           icon: Lightbulb,
           stats: [
             { icon: Lightbulb, value: stats.totalIdeas.toString(), label: language === 'ar' ? 'أفكاري' : 'My Ideas', color: 'text-primary-foreground' },
-            { icon: Target, value: stats.activeChallenges.toString(), label: language === 'ar' ? 'التحديات' : 'Challenges', color: 'text-white' },
-            { icon: Award, value: stats.totalPoints.toString(), label: language === 'ar' ? 'النقاط' : 'Points', color: 'text-white' },
-            { icon: Trophy, value: `${stats.innovationScore}%`, label: language === 'ar' ? 'نتيجة الابتكار' : 'Innovation Score', color: 'text-white' },
+            { icon: Target, value: stats.activeChallenges.toString(), label: language === 'ar' ? 'التحديات' : 'Challenges', color: 'text-primary-foreground' },
+            { icon: Award, value: stats.totalPoints.toString(), label: language === 'ar' ? 'النقاط' : 'Points', color: 'text-primary-foreground' },
+            { icon: Trophy, value: `${stats.innovationScore}%`, label: language === 'ar' ? 'نتيجة الابتكار' : 'Innovation Score', color: 'text-primary-foreground' },
           ],
           actions: [
             { title: language === 'ar' ? 'تصفح التحديات' : 'Browse Challenges', path: '/challenges', icon: Target },
@@ -154,11 +154,11 @@ export const DashboardHero = ({
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   {language === 'ar' ? (
                     <>
-                      مرحباً <span className="text-yellow-300">{userProfile?.display_name || 'المستخدم'}</span>
+                      مرحباً <span className="text-accent">{userProfile?.display_name || 'المستخدم'}</span>
                     </>
                   ) : (
                     <>
-                      Welcome <span className="text-yellow-300">{userProfile?.display_name || 'User'}</span>
+                      Welcome <span className="text-accent">{userProfile?.display_name || 'User'}</span>
                     </>
                   )}
                 </h1>
@@ -237,25 +237,25 @@ export const DashboardHero = ({
                        <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
                          <Wifi className="w-4 h-4 text-white" />
                        </div>
-                       <p className="text-xs font-medium text-white">{language === 'ar' ? 'الشبكة' : 'Network'}</p>
-                      <p className="text-xs text-green-200">{language === 'ar' ? 'مستقر' : 'Stable'}</p>
-                    </div>
+                        <p className="text-xs font-medium text-white">{language === 'ar' ? 'الشبكة' : 'Network'}</p>
+                       <p className="text-xs text-success-foreground/80">{language === 'ar' ? 'مستقر' : 'Stable'}</p>
+                     </div>
                     
-                    <div className="text-center p-3 bg-orange-500/30 rounded-lg border border-orange-400/50 backdrop-blur-sm">
-                      <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                        <AlertCircle className="w-4 h-4 text-white" />
-                      </div>
-                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'التخزين' : 'Storage'}</p>
-                      <p className="text-xs text-orange-200">68%</p>
-                    </div>
+                     <div className="text-center p-3 bg-warning/30 rounded-lg border border-warning/50 backdrop-blur-sm">
+                       <div className="w-8 h-8 bg-warning rounded-full flex items-center justify-center mx-auto mb-2">
+                         <AlertCircle className="w-4 w-4 text-primary-foreground" />
+                       </div>
+                       <p className="text-xs font-medium text-white">{language === 'ar' ? 'التخزين' : 'Storage'}</p>
+                       <p className="text-xs text-warning-foreground/80">68%</p>
+                     </div>
                     
-                    <div className="text-center p-3 bg-green-500/30 rounded-lg border border-green-400/50 backdrop-blur-sm">
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                        <Shield className="w-4 h-4 text-white" />
-                      </div>
-                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'الأمان' : 'Security'}</p>
-                      <p className="text-xs text-green-200">{language === 'ar' ? 'محمي' : 'Secure'}</p>
-                    </div>
+                     <div className="text-center p-3 bg-success/30 rounded-lg border border-success/50 backdrop-blur-sm">
+                       <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
+                         <Shield className="w-4 h-4 text-primary-foreground" />
+                       </div>
+                       <p className="text-xs font-medium text-white">{language === 'ar' ? 'الأمان' : 'Security'}</p>
+                       <p className="text-xs text-success-foreground/80">{language === 'ar' ? 'محمي' : 'Secure'}</p>
+                     </div>
                   </div>
                 </CardContent>
               </Card>
@@ -308,7 +308,7 @@ export const DashboardHero = ({
                     <h3 className="text-xl font-bold text-white mb-2">
                       {language === 'ar' ? 'مستوى الابتكار' : 'Innovation Level'}
                     </h3>
-                    <div className="text-3xl font-bold text-yellow-300 mb-4">
+                    <div className="text-3xl font-bold text-accent mb-4">
                       {stats.innovationScore}%
                     </div>
                     <Progress 
