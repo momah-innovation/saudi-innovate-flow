@@ -22,6 +22,11 @@ import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { useTheme } from '@/components/ui/theme-provider';
+import { EnhancedBreadcrumb } from '@/components/ui/enhanced-breadcrumb';
+import { StatusIndicator } from '@/components/ui/status-indicator';
+import { NotificationCenter } from '@/components/ui/notification-center';
+import { AdvancedDataTable } from '@/components/ui/advanced-data-table';
+import { MediaGallery } from '@/components/ui/media-gallery';
 
 import { cn } from '@/lib/utils';
 
@@ -29,6 +34,38 @@ const DesignSystem = () => {
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const { toast } = useToast();
   const { theme, setTheme } = useTheme();
+
+  // Sample data for component demonstrations
+  const [notifications, setNotifications] = useState([
+    {
+      id: '1',
+      title: 'New Challenge Available',
+      message: 'A new innovation challenge has been posted that matches your expertise.',
+      type: 'info' as const,
+      timestamp: new Date(),
+      read: false
+    },
+    {
+      id: '2', 
+      title: 'Evaluation Complete',
+      message: 'Your idea evaluation has been completed by the expert panel.',
+      type: 'success' as const,
+      timestamp: new Date(Date.now() - 86400000),
+      read: true
+    }
+  ]);
+
+  const sampleTableData = [
+    { id: 1, name: 'Innovation Challenge 2024', status: 'Active', participants: 45, deadline: '2024-12-31' },
+    { id: 2, name: 'Smart City Solutions', status: 'Draft', participants: 12, deadline: '2024-11-30' },
+    { id: 3, name: 'Sustainability Initiative', status: 'Completed', participants: 89, deadline: '2024-10-15' }
+  ];
+
+  const sampleMedia = [
+    { id: '1', src: '/placeholder.svg', type: 'image' as const, title: 'Innovation Workshop', size: '2.3 MB' },
+    { id: '2', src: '/placeholder.svg', type: 'image' as const, title: 'Team Collaboration', size: '1.8 MB' },
+    { id: '3', src: '/placeholder.svg', type: 'document' as const, title: 'Project Report.pdf', size: '5.2 MB' }
+  ];
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -167,6 +204,10 @@ const DesignSystem = () => {
             <TabsTrigger value="branding" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap">
               <Award className="h-3 w-3" />
               Brand
+            </TabsTrigger>
+            <TabsTrigger value="enhanced" className="flex items-center gap-1 text-xs px-2 py-1 whitespace-nowrap bg-primary/90 text-primary-foreground">
+              <Sparkles className="h-3 w-3" />
+              ✨ New
             </TabsTrigger>
           </TabsList>
 
@@ -11899,6 +11940,140 @@ const DesignSystem = () => {
                   </div>
                 </ComponentShowcase>
 
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Enhanced Components Tab */}
+          <TabsContent value="enhanced" className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-6">✨ Enhanced Components</h2>
+              <p className="text-muted-foreground mb-8">
+                Professional-grade components designed for enterprise innovation platforms.
+              </p>
+
+              <div className="space-y-8">
+                {/* Enhanced Breadcrumb */}
+                <ComponentShowcase title="Enhanced Breadcrumb Navigation">
+                  <div className="space-y-4">
+                    <EnhancedBreadcrumb 
+                      items={[
+                        { label: 'Projects', href: '/projects' },
+                        { label: 'Innovation Lab', href: '/projects/innovation' },
+                        { label: 'Current Challenge' }
+                      ]}
+                    />
+                    
+                    <EnhancedBreadcrumb 
+                      items={[
+                        { label: 'Admin', href: '/admin', icon: Settings },
+                        { label: 'User Management', href: '/admin/users', icon: Users },
+                        { label: 'Role Configuration' }
+                      ]}
+                      showHome={false}
+                    />
+                  </div>
+                </ComponentShowcase>
+
+                {/* Status Indicators */}
+                <ComponentShowcase title="Status Indicators & Progress">
+                  <div className="space-y-4">
+                    <div className="flex flex-wrap gap-3">
+                      <StatusIndicator status="success" label="Completed" />
+                      <StatusIndicator status="pending" label="In Review" />
+                      <StatusIndicator status="warning" label="Attention Required" />
+                      <StatusIndicator status="error" label="Failed" />
+                      <StatusIndicator status="loading" label="Processing" />
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-3">
+                      <StatusIndicator status="success" size="sm" />
+                      <StatusIndicator status="warning" size="lg" showIcon={false} />
+                    </div>
+                  </div>
+                </ComponentShowcase>
+
+                {/* Notification Center */}
+                <ComponentShowcase title="Notification Center">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">
+                      Real-time notification system with status tracking and actions.
+                    </p>
+                    <NotificationCenter
+                      notifications={notifications}
+                      onMarkAsRead={(id) => {
+                        setNotifications(prev => 
+                          prev.map(n => n.id === id ? { ...n, read: true } : n)
+                        );
+                      }}
+                      onMarkAllAsRead={() => {
+                        setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+                      }}
+                      onRemove={(id) => {
+                        setNotifications(prev => prev.filter(n => n.id !== id));
+                      }}
+                    />
+                  </div>
+                </ComponentShowcase>
+
+                {/* Advanced Data Table */}
+                <ComponentShowcase title="Advanced Data Table">
+                  <AdvancedDataTable
+                    data={sampleTableData}
+                    columns={[
+                      { key: 'name', label: 'Challenge Name', sortable: true },
+                      { 
+                        key: 'status', 
+                        label: 'Status', 
+                        render: (value) => (
+                          <StatusIndicator 
+                            status={value === 'Active' ? 'success' : value === 'Draft' ? 'pending' : 'warning'} 
+                            label={value}
+                            size="sm"
+                          />
+                        )
+                      },
+                      { key: 'participants', label: 'Participants', sortable: true },
+                      { key: 'deadline', label: 'Deadline' }
+                    ]}
+                    actions={[
+                      { label: 'Edit', onClick: () => toast({ title: 'Edit clicked' }) },
+                      { label: 'Delete', onClick: () => toast({ title: 'Delete clicked' }), variant: 'destructive' }
+                    ]}
+                    selectable
+                    onSelectionChange={(selected) => console.log('Selected:', selected)}
+                  />
+                </ComponentShowcase>
+
+                {/* Media Gallery */}
+                <ComponentShowcase title="Media Gallery">
+                  <MediaGallery
+                    items={sampleMedia}
+                    columns={3}
+                    onDownload={(item) => toast({ title: `Downloading ${item.title}` })}
+                    onShare={(item) => toast({ title: `Sharing ${item.title}` })}
+                  />
+                </ComponentShowcase>
+
+                {/* Animation Examples */}
+                <ComponentShowcase title="Professional Animations">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Card className="p-4 hover-lift">
+                      <h4 className="font-medium mb-2">Hover Lift Effect</h4>
+                      <p className="text-sm text-muted-foreground">Subtle elevation on hover</p>
+                    </Card>
+                    
+                    <Card className="p-4 animate-scale-in">
+                      <h4 className="font-medium mb-2">Scale In Animation</h4>
+                      <p className="text-sm text-muted-foreground">Smooth entry animation</p>
+                    </Card>
+                    
+                    <Card className="p-4 animate-fade-in-up">
+                      <h4 className="font-medium mb-2">Fade In Up</h4>
+                      <p className="text-sm text-muted-foreground">Elegant slide and fade</p>
+                    </Card>
+                  </div>
+                </ComponentShowcase>
               </div>
             </div>
           </TabsContent>
