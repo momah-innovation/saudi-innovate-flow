@@ -1,5 +1,5 @@
 import { ReactNode, Suspense, useState } from 'react';
-import { SystemHeader } from './SystemHeader';
+import { SystemHeader } from './UnifiedHeader';
 import { NavigationSidebar } from './NavigationSidebar';
 import { LoadingSpinner } from '@/components/ui/loading';
 import { useDirection } from '@/components/ui/direction-provider';
