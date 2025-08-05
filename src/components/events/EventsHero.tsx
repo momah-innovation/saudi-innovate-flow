@@ -65,7 +65,7 @@ export const EventsHero = ({
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <CalendarIcon className="w-6 h-6 text-white" />
+                    <CalendarIcon className="w-6 h-6 text-primary-foreground" />
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
@@ -81,7 +81,7 @@ export const EventsHero = ({
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <TrendingUp className="w-6 h-6 text-white" />
+                    <TrendingUp className="w-6 h-6 text-primary-foreground" />
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-foreground group-hover:text-success transition-colors">
@@ -97,7 +97,7 @@ export const EventsHero = ({
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <Users className="w-6 h-6 text-white" />
+                    <Users className="w-6 h-6 text-primary-foreground" />
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-foreground group-hover:text-warning transition-colors">
@@ -113,7 +113,7 @@ export const EventsHero = ({
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <MapPin className="w-6 h-6 text-white" />
+                    <MapPin className="w-6 h-6 text-primary-foreground" />
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-foreground group-hover:text-accent transition-colors">

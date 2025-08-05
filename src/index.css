@@ -61,7 +61,7 @@
     --hero-accent: 0 0% 100%;
     
     /* Semantic Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8));
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
     --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(var(--success) / 0.8));
     --gradient-warning: linear-gradient(135deg, hsl(var(--warning)), hsl(var(--warning) / 0.8));
     --gradient-info: linear-gradient(135deg, hsl(var(--info)), hsl(var(--info) / 0.8));
@@ -70,18 +70,18 @@
     /* Enhanced Gradients for Glass Effects */
     --gradient-hero: linear-gradient(135deg, 
       hsl(var(--primary)) 0%, 
-      hsl(var(--primary) / 0.8) 50%, 
+      hsl(var(--primary-light)) 50%, 
       hsl(var(--accent)) 100%);
     --gradient-glass-light: linear-gradient(135deg, 
-      rgba(255, 255, 255, 0.25) 0%, 
-      rgba(255, 255, 255, 0.1) 100%);
+      hsl(var(--hero-overlay-light) / 0.25) 0%, 
+      hsl(var(--hero-overlay-light) / 0.1) 100%);
     --gradient-glass-dark: linear-gradient(135deg, 
-      rgba(255, 255, 255, 0.1) 0%, 
-      rgba(255, 255, 255, 0.05) 100%);
+      hsl(var(--hero-overlay-light) / 0.1) 0%, 
+      hsl(var(--hero-overlay-light) / 0.05) 100%);
     
     /* Shadow Variables */
     --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    --shadow-glow: 0 0 20px rgba(255, 255, 255, 0.1);
+    --shadow-glow: 0 0 20px hsl(var(--hero-overlay-light) / 0.1);
     --shadow-elegant: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
   }
 
