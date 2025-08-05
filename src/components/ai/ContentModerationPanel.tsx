@@ -21,6 +21,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { aiService } from '@/services/AIService';
 import { useRTLAware } from '@/hooks/useRTLAware';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface ModerationLog {
   id: string;
@@ -48,6 +49,7 @@ export const ContentModerationPanel: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
   const { ms, start, me } = useRTLAware();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchModerationLogs();
@@ -78,8 +80,8 @@ export const ContentModerationPanel: React.FC = () => {
     } catch (error) {
       console.error('Error fetching moderation logs:', error);
       toast({
-        title: 'خطأ',
-        description: 'فشل في تحميل سجلات الإشراف',
+        title: t('error'),
+        description: t('failed_to_load_moderation_logs'),
         variant: 'destructive',
       });
     } finally {
@@ -178,13 +180,13 @@ export const ContentModerationPanel: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-          <Shield className="h-6 w-6 text-white" />
+        <div className="w-12 h-12 rounded-lg bg-gradient-primary flex items-center justify-center">
+          <Shield className="h-6 w-6 text-primary-foreground" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold">إشراف المحتوى</h1>
+          <h1 className="text-2xl font-bold">{t('content_moderation')}</h1>
           <p className="text-muted-foreground">
-            فحص المحتوى التلقائي وضمان الجودة بالذكاء الاصطناعي
+            {t('automated_content_checking_ai')}
           </p>
         </div>
       </div>
@@ -194,11 +196,11 @@ export const ContentModerationPanel: React.FC = () => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <Eye className="h-4 w-4 text-blue-600" />
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Eye className="h-4 w-4 text-primary" />
               </div>
               <div className={ms('4')}>
-                <p className="text-sm font-medium text-muted-foreground">إجمالي المحتوى</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('total_content')}</p>
                 <p className="text-2xl font-bold">{stats.total}</p>
               </div>
             </div>
@@ -208,11 +210,11 @@ export const ContentModerationPanel: React.FC = () => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <div className="p-2 bg-red-100 rounded-lg">
-                <AlertTriangle className="h-4 w-4 text-red-600" />
+              <div className="p-2 bg-destructive/10 rounded-lg">
+                <AlertTriangle className="h-4 w-4 text-destructive" />
               </div>
               <div className={ms('4')}>
-                <p className="text-sm font-medium text-muted-foreground">محتوى مُبلغ عنه</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('flagged_content')}</p>
                 <p className="text-2xl font-bold">{stats.flagged}</p>
               </div>
             </div>
@@ -222,11 +224,11 @@ export const ContentModerationPanel: React.FC = () => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <div className="p-2 bg-yellow-100 rounded-lg">
-                <Clock className="h-4 w-4 text-yellow-600" />
+              <div className="p-2 bg-warning/10 rounded-lg">
+                <Clock className="h-4 w-4 text-warning" />
               </div>
               <div className={ms('4')}>
-                <p className="text-sm font-medium text-muted-foreground">في انتظار المراجعة</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('pending_review')}</p>
                 <p className="text-2xl font-bold">{stats.pending}</p>
               </div>
             </div>
@@ -236,11 +238,11 @@ export const ContentModerationPanel: React.FC = () => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <CheckCircle className="h-4 w-4 text-green-600" />
+              <div className="p-2 bg-success/10 rounded-lg">
+                <CheckCircle className="h-4 w-4 text-success" />
               </div>
               <div className={ms('4')}>
-                <p className="text-sm font-medium text-muted-foreground">محتوى موافق عليه</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('approved_content')}</p>
                 <p className="text-2xl font-bold">{stats.approved}</p>
               </div>
             </div>
@@ -250,8 +252,8 @@ export const ContentModerationPanel: React.FC = () => {
 
       <Tabs defaultValue="logs" className="space-y-6">
         <TabsList>
-          <TabsTrigger value="logs">سجلات الإشراف</TabsTrigger>
-          <TabsTrigger value="test">اختبار الإشراف</TabsTrigger>
+          <TabsTrigger value="logs">{t('moderation_logs')}</TabsTrigger>
+          <TabsTrigger value="test">{t('test_moderation')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="logs" className="space-y-6">

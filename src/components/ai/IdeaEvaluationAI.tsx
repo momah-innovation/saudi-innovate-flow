@@ -8,6 +8,7 @@ import { Brain, Lightbulb, Star, TrendingUp, AlertTriangle, CheckCircle } from '
 import { useAIFeatures } from '@/hooks/useAIFeatures';
 import { useToast } from '@/hooks/use-toast';
 import { useRTLAware } from '@/hooks/useRTLAware';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface IdeaEvaluationProps {
   ideaId?: string;
@@ -45,12 +46,13 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
   const { isFeatureEnabled, getFeatureConfig } = useAIFeatures();
   const { toast } = useToast();
   const { me } = useRTLAware();
+  const { t } = useTranslation();
 
   const handleEvaluate = async () => {
     if (!isFeatureEnabled('idea_evaluation')) {
       toast({
-        title: 'غير متاح',
-        description: 'ميزة تقييم الأفكار بالذكاء الاصطناعي غير مفعلة',
+        title: t('unavailable'),
+        description: t('ai_idea_evaluation_disabled'),
         variant: 'destructive',
       });
       return;
@@ -68,21 +70,21 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
         market_potential: 80,
         implementation_difficulty: 65,
         strengths: [
-          'حل مبتكر لمشكلة حقيقية',
-          'قابلية تطبيق عالية',
-          'إمكانية توسع جيدة',
-          'تأثير إيجابي على المجتمع'
+          t('innovative_solution_real_problem'),
+          t('high_applicability'),
+          t('good_scalability'),
+          t('positive_social_impact')
         ],
         weaknesses: [
-          'يحتاج لاستثمار أولي كبير',
-          'قد يواجه تحديات تنظيمية',
-          'يتطلب خبرات تقنية متخصصة'
+          t('requires_large_initial_investment'),
+          t('may_face_regulatory_challenges'),
+          t('requires_specialized_technical_expertise')
         ],
         recommendations: [
-          'إجراء دراسة جدوى مفصلة',
-          'البحث عن شركاء استراتيجيين',
-          'تطوير نموذج أولي للاختبار',
-          'دراسة المتطلبات التنظيمية'
+          t('conduct_detailed_feasibility_study'),
+          t('seek_strategic_partners'),
+          t('develop_prototype_testing'),
+          t('study_regulatory_requirements')
         ],
         similar_ideas: [
           { title: 'منصة الخدمات الذكية', similarity_score: 0.75, id: '1' },
