@@ -27,6 +27,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { getCategoryMapping, getDifficultyMapping, getFilterOptions, challengesPageConfig } from '@/config/challengesPageConfig';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface ChallengeTemplate {
   id: string;
@@ -72,6 +73,7 @@ export const ChallengeTemplatesDialog = ({
 }: ChallengeTemplatesDialogProps) => {
   const { isRTL } = useDirection();
   const { toast } = useToast();
+  const { me, ps } = useRTLAware();
   const [templates, setTemplates] = useState<ChallengeTemplate[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -286,7 +288,7 @@ export const ChallengeTemplatesDialog = ({
             </CardTitle>
             {template.is_featured && (
               <Badge variant="secondary" className={challengesPageConfig.badges.featured}>
-                <Star className="w-3 h-3 mr-1" />
+                <Star className={`w-3 h-3 ${me('1')}`} />
                 {isRTL ? 'مميز' : 'Featured'}
               </Badge>
             )}
@@ -304,11 +306,11 @@ export const ChallengeTemplatesDialog = ({
             {template.difficulty}
           </Badge>
           <Badge variant="outline" className={challengesPageConfig.ui.glassMorphism.badge}>
-            <Clock className="w-3 h-3 mr-1" />
+            <Clock className={`w-3 h-3 ${me('1')}`} />
             {template.estimated_duration} {isRTL ? 'يوم' : 'days'}
           </Badge>
           <Badge variant="outline" className={challengesPageConfig.ui.glassMorphism.badge}>
-            <Award className="w-3 h-3 mr-1" />
+            <Award className={`w-3 h-3 ${me('1')}`} />
             {Math.floor(template.suggested_budget / 1000)}K {isRTL ? 'ر.س' : 'SAR'}
           </Badge>
         </div>
@@ -350,7 +352,7 @@ export const ChallengeTemplatesDialog = ({
               placeholder={isRTL ? 'البحث في القوالب...' : 'Search templates...'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className={cn("pl-10", challengesPageConfig.ui.effects.focus)}
+              className={cn(ps('10'), challengesPageConfig.ui.effects.focus)}
             />
           </div>
           

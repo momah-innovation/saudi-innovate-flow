@@ -16,6 +16,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { getPriorityMapping, getCategoryMapping, challengesPageConfig } from '@/config/challengesPageConfig';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface TrendingChallenge {
   id: string;
@@ -43,6 +44,7 @@ export const ChallengeTrendingWidget = ({
   const { isRTL } = useDirection();
   const [trendingChallenges, setTrendingChallenges] = useState<TrendingChallenge[]>([]);
   const [loading, setLoading] = useState(true);
+  const { ms, me } = useRTLAware();
 
   useEffect(() => {
     loadTrendingChallenges();
@@ -192,7 +194,7 @@ export const ChallengeTrendingWidget = ({
                   <div className="flex items-center gap-2 mb-3">
                     <Badge variant="outline" className="text-xs">
                       {getChallengeTypeIcon(challenge.challenge_type)}
-                      <span className="ml-1">{challenge.challenge_type}</span>
+                      <span className={ms('1')}>{challenge.challenge_type}</span>
                     </Badge>
                     <Badge variant="outline" className={`text-xs ${getPriorityColor(challenge.priority_level)}`}>
                       {challenge.priority_level}
@@ -237,9 +239,9 @@ export const ChallengeTrendingWidget = ({
               className="w-full mt-4 group"
               onClick={() => onChallengeSelect?.('all')}
             >
-              <TrendingUp className="w-4 h-4 mr-2 group-hover:text-primary transition-colors" />
+              <TrendingUp className={`w-4 h-4 ${me('2')} group-hover:text-primary transition-colors`} />
               {isRTL ? 'عرض جميع التحديات' : 'View All Challenges'}
-              <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              <ChevronRight className={`w-4 h-4 ${ms('2')} group-hover:translate-x-1 transition-transform`} />
             </Button>
           </div>
         )}

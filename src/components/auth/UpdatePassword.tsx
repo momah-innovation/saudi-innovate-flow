@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 export const UpdatePassword = () => {
   const [password, setPassword] = useState('');
@@ -18,6 +19,7 @@ export const UpdatePassword = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { ps, pe } = useRTLAware();
 
   useEffect(() => {
     // Check if we have access token from email link
@@ -150,7 +152,7 @@ export const UpdatePassword = () => {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="8 أحرف على الأقل"
-                  className="pl-10 pr-10"
+                   className={`${ps('10')} ${pe('10')}`}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -175,7 +177,7 @@ export const UpdatePassword = () => {
                   id="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="أعد إدخال كلمة المرور"
-                  className="pl-10 pr-10"
+                  className={`${ps('10')} ${pe('10')}`}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
