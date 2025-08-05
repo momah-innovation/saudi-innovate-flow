@@ -23,15 +23,17 @@ export const EventsHero = ({
   const { isRTL } = useDirection();
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-primary/20 via-primary/5 to-background rounded-xl p-8 mb-8 border">
-      {/* Dynamic Background with Animation */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-primary/10 animate-pulse" />
-        <div className="absolute top-0 left-0 w-full h-full opacity-30 bg-repeat" 
+    <div className="relative overflow-hidden bg-gradient-to-br from-purple-600 via-purple-700 to-indigo-800 rounded-xl p-8 mb-8">
+      {/* Enhanced Background with Purple Theme */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-indigo-600/20 animate-pulse" />
+        <div className="absolute top-0 left-0 w-full h-full opacity-20 bg-repeat" 
              style={{
-               backgroundImage: "url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23000\" fill-opacity=\"0.1\"%3E%3Cpath d=\"M30 30m-10 0a10 10 0 1 1 20 0a10 10 0 1 1 -20 0\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')"
+               backgroundImage: "url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23fff\" fill-opacity=\"0.1\"%3E%3Cpath d=\"M30 30m-10 0a10 10 0 1 1 20 0a10 10 0 1 1 -20 0\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')"
              }} 
         />
+        {/* Additional gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-purple-900/30 to-transparent" />
       </div>
 
       <div className="relative z-10">
@@ -46,10 +48,10 @@ export const EventsHero = ({
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-orange-500 rounded-full animate-pulse" />
               </div>
               <div>
-                <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                <h1 className="text-4xl font-bold text-white mb-2 bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
                   {isRTL ? 'استكشاف الفعاليات' : 'Discover Events'}
                 </h1>
-                <p className="text-lg text-muted-foreground">
+                <p className="text-lg text-white/80">
                   {isRTL 
                     ? 'اكتشف وسجل في أحدث الفعاليات والأنشطة الابتكارية' 
                     : 'Discover and register for the latest innovation events and activities'
@@ -60,64 +62,64 @@ export const EventsHero = ({
 
             {/* Enhanced Stats Grid with Animation */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <CalendarIcon className="w-6 h-6 text-white" />
+                  <div className="p-3 bg-blue-500/20 rounded-lg shadow-lg group-hover:shadow-blue-500/25 transition-shadow">
+                    <CalendarIcon className="w-6 h-6 text-blue-300" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-blue-600 transition-colors">
+                    <div className="text-2xl font-bold text-white group-hover:text-blue-300 transition-colors">
                       {totalEvents}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-white/70">
                       {isRTL ? 'إجمالي الفعاليات' : 'Total Events'}
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <TrendingUp className="w-6 h-6 text-white" />
+                  <div className="p-3 bg-green-500/20 rounded-lg shadow-lg group-hover:shadow-green-500/25 transition-shadow">
+                    <TrendingUp className="w-6 h-6 text-green-300" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-green-600 transition-colors">
+                    <div className="text-2xl font-bold text-white group-hover:text-green-300 transition-colors">
                       {upcomingEvents}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-white/70">
                       {isRTL ? 'قادمة' : 'Upcoming'}
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <Users className="w-6 h-6 text-white" />
+                  <div className="p-3 bg-orange-500/20 rounded-lg shadow-lg group-hover:shadow-orange-500/25 transition-shadow">
+                    <Users className="w-6 h-6 text-orange-300" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-orange-600 transition-colors">
+                    <div className="text-2xl font-bold text-white group-hover:text-orange-300 transition-colors">
                       {todayEvents}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-white/70">
                       {isRTL ? 'اليوم' : 'Today'}
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <MapPin className="w-6 h-6 text-white" />
+                  <div className="p-3 bg-purple-500/20 rounded-lg shadow-lg group-hover:shadow-purple-500/25 transition-shadow">
+                    <MapPin className="w-6 h-6 text-purple-300" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-purple-600 transition-colors">
+                    <div className="text-2xl font-bold text-white group-hover:text-purple-300 transition-colors">
                       12
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-white/70">
                       {isRTL ? 'مواقع' : 'Venues'}
                     </div>
                   </div>
@@ -141,7 +143,7 @@ export const EventsHero = ({
             <Button 
               variant="outline" 
               onClick={onShowFilters} 
-              className="gap-2 hover:bg-muted/80 transition-all duration-300"
+              className="gap-2 border-white/30 text-white hover:bg-white/10 transition-all duration-300"
               size="lg"
             >
               <Filter className="w-5 h-5" />
@@ -163,7 +165,7 @@ export const EventsHero = ({
             <Badge 
               key={index}
               variant="secondary" 
-              className="hover:bg-primary hover:text-primary-foreground cursor-pointer transition-all duration-300 hover:scale-105 px-4 py-2 text-sm shadow-sm"
+              className="bg-white/10 text-white border-white/20 hover:bg-white/20 cursor-pointer transition-all duration-300 hover:scale-105 px-4 py-2 text-sm shadow-sm"
             >
               <span className="mr-2">{tag.icon}</span>
               {tag.label}
