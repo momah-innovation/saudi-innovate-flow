@@ -253,6 +253,7 @@ export function SectorsManagement() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={`${ps("10")} ${pe("10")}`}
+            dir="rtl"
           />
           {searchTerm && (
             <Button
@@ -265,7 +266,7 @@ export function SectorsManagement() {
             </Button>
           )}
         </div>
-      </div>
+      </RTLFlex>
 
       <div className="grid gap-4">
         {filteredSectors.map((sector) => (

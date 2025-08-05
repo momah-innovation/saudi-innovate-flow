@@ -310,15 +310,15 @@ export function TeamWorkspaceContent({
 
           <div className="flex gap-2">
             <Button size="sm">
-              <MessageSquare className="h-4 w-4 mr-2" />
+              <MessageSquare className="h-4 w-4 me-2" />
               إرسال رسالة
             </Button>
             <Button size="sm" variant="outline">
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="h-4 w-4 me-2" />
               تكليف مهمة
             </Button>
             <Button size="sm" variant="outline">
-              <Eye className="h-4 w-4 mr-2" />
+              <Eye className="h-4 w-4 me-2" />
               عرض المهام
             </Button>
           </div>
@@ -394,15 +394,15 @@ export function TeamWorkspaceContent({
 
           <div className="flex gap-2">
             <Button size="sm">
-              <Eye className="h-4 w-4 mr-2" />
+              <Eye className="h-4 w-4 me-2" />
               عرض التفاصيل
             </Button>
             <Button size="sm" variant="outline">
-              <MessageSquare className="h-4 w-4 mr-2" />
+              <MessageSquare className="h-4 w-4 me-2" />
               مناقشة الفريق
             </Button>
             <Button size="sm" variant="outline">
-              <Share2 className="h-4 w-4 mr-2" />
+              <Share2 className="h-4 w-4 me-2" />
               مشاركة
             </Button>
           </div>
@@ -416,7 +416,7 @@ export function TeamWorkspaceContent({
       {/* Quick Actions Floating Button */}
       <Button
         onClick={() => setShowQuickActions(true)}
-        className="fixed bottom-6 right-6 z-50 rounded-full w-14 h-14 shadow-lg"
+        className="fixed bottom-6 end-6 z-50 rounded-full w-14 h-14 shadow-lg"
         size="icon"
       >
         <Plus className="h-6 w-6" />
@@ -635,7 +635,7 @@ export function TeamWorkspaceContent({
           </SelectContent>
         </Select>
         <Button size="sm" variant="outline">
-          <Filter className="h-4 w-4 mr-2" />
+          <Filter className="h-4 w-4 me-2" />
           فلاتر متقدمة
         </Button>
       </div>
@@ -745,7 +745,7 @@ export function TeamWorkspaceContent({
           </Select>
         </div>
         <Button>
-          <UserPlus className="h-4 w-4 mr-2" />
+          <UserPlus className="h-4 w-4 me-2" />
           دعوة عضو جديد
         </Button>
       </div>
