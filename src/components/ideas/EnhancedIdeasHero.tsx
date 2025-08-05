@@ -56,9 +56,9 @@ export const EnhancedIdeasHero = ({
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    { icon: Lightbulb, value: totalIdeas, label: isRTL ? 'فكرة' : 'ideas', color: 'text-yellow-400' },
-    { icon: Award, value: publishedIdeas, label: isRTL ? 'منشورة' : 'published', color: 'text-green-400' },
-    { icon: Users, value: `${Math.floor(totalViews / 1000)}K+`, label: isRTL ? 'مشاهدة' : 'views', color: 'text-blue-400' },
+    { icon: Lightbulb, value: totalIdeas, label: isRTL ? 'فكرة' : 'ideas', color: 'text-warning' },
+    { icon: Award, value: publishedIdeas, label: isRTL ? 'منشورة' : 'published', color: 'text-success' },
+    { icon: Users, value: `${Math.floor(totalViews / 1000)}K+`, label: isRTL ? 'مشاهدة' : 'views', color: 'text-primary' },
     { icon: TrendingUp, value: `${Math.floor(totalLikes / 100)}K+`, label: isRTL ? 'إعجاب' : 'likes', color: 'text-secondary' }
   ];
 

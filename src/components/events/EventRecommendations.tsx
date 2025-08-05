@@ -116,9 +116,9 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
   };
 
   const getReasonColor = (reason: string) => {
-    if (reason.includes('trending') || reason.includes('رائجة')) return 'text-orange-600';
-    if (reason.includes('interest') || reason.includes('اهتمام')) return 'text-purple-600';
-    if (reason.includes('similar') || reason.includes('مشابه')) return 'text-blue-600';
+    if (reason.includes('trending') || reason.includes('رائجة')) return 'text-warning';
+    if (reason.includes('interest') || reason.includes('اهتمام')) return 'text-accent';
+    if (reason.includes('similar') || reason.includes('مشابه')) return 'text-primary';
     return 'text-primary';
   };
 
@@ -182,8 +182,8 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
           <div className="space-y-3">
             {recommendations.slice(0, 4).map((event, index) => {
               const ReasonIcon = getReasonIcon(event.reason);
-              const scoreColor = event.recommendation_score > 0.8 ? 'text-green-600' : 
-                               event.recommendation_score > 0.6 ? 'text-yellow-600' : 'text-gray-600';
+              const scoreColor = event.recommendation_score > 0.8 ? 'text-success' : 
+                               event.recommendation_score > 0.6 ? 'text-warning' : 'text-muted-foreground';
               
               return (
                 <div 

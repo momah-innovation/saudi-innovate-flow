@@ -38,10 +38,10 @@ export const EnhancedProfileHero = ({
   const [currentBadge, setCurrentBadge] = useState(0);
 
   const profileBadges = [
-    { icon: Award, label: isRTL ? 'مبتكر نشط' : 'Active Innovator', color: 'text-blue-400' },
-    { icon: Star, label: isRTL ? 'عضو مميز' : 'Featured Member', color: 'text-yellow-400' },
-    { icon: Shield, label: isRTL ? 'ملف موثق' : 'Verified Profile', color: 'text-green-400' },
-    { icon: Trophy, label: isRTL ? 'فائز بجوائز' : 'Award Winner', color: 'text-purple-400' }
+    { icon: Award, label: isRTL ? 'مبتكر نشط' : 'Active Innovator', color: 'text-primary' },
+    { icon: Star, label: isRTL ? 'عضو مميز' : 'Featured Member', color: 'text-warning' },
+    { icon: Shield, label: isRTL ? 'ملف موثق' : 'Verified Profile', color: 'text-success' },
+    { icon: Trophy, label: isRTL ? 'فائز بجوائز' : 'Award Winner', color: 'text-accent' }
   ];
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export const EnhancedProfileHero = ({
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
         <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-20 left-1/3 w-64 h-64 bg-cyan-400/5 rounded-full blur-2xl animate-bounce" />
+        <div className="absolute top-20 left-1/3 w-64 h-64 bg-accent/5 rounded-full blur-2xl animate-bounce" />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -72,7 +72,7 @@ export const EnhancedProfileHero = ({
           <div className="text-center space-y-6 mb-12">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                <Sparkles className="w-6 h-6 text-yellow-300" />
+                <Sparkles className="w-6 h-6 text-warning/70" />
               </div>
               <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
                 <User className="w-3 h-3 mr-1" />

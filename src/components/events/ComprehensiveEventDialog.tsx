@@ -281,7 +281,7 @@ export const ComprehensiveEventDialog = ({
                   </div>
                   <Progress value={getRegistrationPercentage()} className="h-2" />
                   {getRegistrationPercentage() > 80 && (
-                    <p className="text-xs text-orange-600 mt-1 flex items-center gap-1">
+                    <p className="text-xs text-warning mt-1 flex items-center gap-1">
                       <AlertCircle className="w-3 h-3" />
                       {t('limited_spots_remaining') || 'أماكن محدودة متبقية'}
                     </p>
@@ -435,13 +435,13 @@ export const ComprehensiveEventDialog = ({
                 )}
 
                 {interactions?.isRegistered ? (
-                  <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
-                    <div className="flex items-center gap-2 text-green-800 dark:text-green-400 mb-2">
+                  <div className="bg-success/10 border border-success/20 rounded-lg p-4">
+                    <div className="flex items-center gap-2 text-success mb-2">
                       <CheckCircle2 className="w-5 h-5" />
-                      <span className="font-medium">{isRTL ? 'مسجل بنجاح!' : 'Successfully Registered!'}</span>
+                      <span className="font-medium">{t('registration_successful') || (isRTL ? 'مسجل بنجاح!' : 'Successfully Registered!')}</span>
                     </div>
-                    <p className="text-sm text-green-700 dark:text-green-300">
-                      {isRTL ? 'أنت مسجل في هذه الفعالية. سيتم إرسال تفاصيل إضافية قريباً.' : 'You are registered for this event. Additional details will be sent soon.'}
+                    <p className="text-sm text-success/80">
+                      {t('registration_details_sent') || (isRTL ? 'أنت مسجل في هذه الفعالية. سيتم إرسال تفاصيل إضافية قريباً.' : 'You are registered for this event. Additional details will be sent soon.')}
                     </p>
                   </div>
                 ) : (

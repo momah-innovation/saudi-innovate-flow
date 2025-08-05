@@ -185,11 +185,11 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
 
   const getAchievementColor = (level: string) => {
     switch (level) {
-      case 'gold': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
-      case 'silver': return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
-      case 'bronze': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400';
-      case 'platinum': return 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400';
-      default: return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
+      case 'gold': return 'bg-warning/10 text-warning border-warning/20';
+      case 'silver': return 'bg-muted text-muted-foreground border-muted-foreground/20';
+      case 'bronze': return 'bg-orange-500/10 text-orange-500 border-orange-500/20';
+      case 'platinum': return 'bg-accent/10 text-accent border-accent/20';
+      default: return 'bg-primary/10 text-primary border-primary/20';
     }
   };
 

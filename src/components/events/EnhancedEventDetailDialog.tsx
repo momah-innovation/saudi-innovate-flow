@@ -278,7 +278,7 @@ export const EnhancedEventDetailDialog = ({
             {/* Status Badges Overlay */}
             <div className={cn("absolute top-4 flex gap-2", end('4'))}>
               {event.event_category === 'featured' && (
-                <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                <Badge variant="secondary" className="bg-warning/10 text-warning border-warning/20">
                   <Star className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'مميز' : 'Featured'}
                 </Badge>
@@ -291,7 +291,7 @@ export const EnhancedEventDetailDialog = ({
             {/* Format Badge */}
             {event.format === 'virtual' && (
               <div className={cn("absolute bottom-4", start('4'))}>
-                <Badge variant="secondary" className="bg-white/90 text-gray-700">
+                <Badge variant="secondary" className="bg-background/90 text-foreground">
                   <Globe className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'عبر الإنترنت' : 'Online Event'}
                 </Badge>
@@ -324,7 +324,7 @@ export const EnhancedEventDetailDialog = ({
                 </Badge>
                 {averageRating > 0 && (
                   <div className="flex items-center gap-1 text-sm">
-                    <Star className="w-4 h-4 fill-current text-yellow-400" />
+                    <Star className="w-4 h-4 fill-current text-warning" />
                     <span>{averageRating.toFixed(1)}</span>
                   </div>
                 )}
@@ -375,7 +375,7 @@ export const EnhancedEventDetailDialog = ({
                 <Progress value={getRegistrationPercentage()} className="h-3" />
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   {getRegistrationPercentage() < 70 ? (
-                    <CheckCircle className="w-3 h-3 text-green-600" />
+                    <CheckCircle className="w-3 h-3 text-success" />
                   ) : getRegistrationPercentage() < 90 ? (
                     <AlertCircle className="w-3 h-3 text-warning" />
                   ) : (
@@ -497,7 +497,7 @@ export const EnhancedEventDetailDialog = ({
                 <h4 className="font-semibold mb-3">{isRTL ? 'الجدول الزمني' : 'Schedule'}</h4>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-success rounded-full"></div>
                     <div>
                       <div className="font-medium">{isRTL ? 'بداية الفعالية' : 'Event Start'}</div>
                       <div className="text-sm text-muted-foreground">
@@ -540,8 +540,8 @@ export const EnhancedEventDetailDialog = ({
                 )}
 
                 {interactions.isRegistered && (
-                  <div className="mb-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
-                    <div className="flex items-center gap-2 text-green-800 dark:text-green-200">
+                  <div className="mb-4 p-4 bg-success/10 rounded-lg border border-success/20">
+                    <div className="flex items-center gap-2 text-success">
                       <CheckCircle className="w-5 h-5" />
                       <span className="font-medium">
                         {isRTL ? 'أنت مسجل في هذه الفعالية' : 'You are registered for this event'}
@@ -607,7 +607,7 @@ export const EnhancedEventDetailDialog = ({
               {feedback.length > 0 && (
                 <div className="text-center p-6 bg-muted/50 rounded-lg">
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <Star className="w-6 h-6 fill-current text-yellow-500" />
+                    <Star className="w-6 h-6 fill-current text-warning" />
                     <span className="text-3xl font-bold">{averageRating.toFixed(1)}</span>
                   </div>
                   <p className="text-muted-foreground">
@@ -636,8 +636,8 @@ export const EnhancedEventDetailDialog = ({
                             <Star 
                               className={`w-6 h-6 ${
                                 star <= rating 
-                                  ? 'fill-current text-yellow-500' 
-                                  : 'text-gray-300'
+                                  ? 'fill-current text-warning' 
+                                  : 'text-muted-foreground'
                               }`} 
                             />
                           </button>
@@ -678,8 +678,8 @@ export const EnhancedEventDetailDialog = ({
                               key={star}
                               className={`w-4 h-4 ${
                                 star <= review.rating 
-                                  ? 'fill-current text-yellow-500' 
-                                  : 'text-gray-300'
+                                  ? 'fill-current text-warning' 
+                                  : 'text-muted-foreground'
                               }`} 
                             />
                           ))}
