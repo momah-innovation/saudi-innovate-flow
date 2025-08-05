@@ -118,21 +118,86 @@
     @apply bg-glass-100 backdrop-blur-xl border border-glass-border-100 shadow-glass rounded-lg;
   }
   
+  .glass-card-elevated {
+    @apply bg-glass-200 backdrop-blur-2xl border border-glass-border-200 shadow-glass-lg rounded-lg;
+  }
+  
   .glass-button {
     @apply bg-glass-200 backdrop-blur-sm border border-glass-border-100 hover:bg-glass-300 transition-all duration-300;
+  }
+
+  .glass-panel {
+    @apply bg-glass-50 backdrop-blur-lg border border-glass-border-50 rounded-xl;
+  }
+
+  .glass-overlay {
+    @apply bg-glass-100 backdrop-blur-xl;
+  }
+  
+  /* Card Variants */
+  .card-elevated {
+    @apply bg-card-elevated shadow-raised border-0;
+  }
+
+  .card-floating {
+    @apply bg-card shadow-floating hover:shadow-depth transition-shadow duration-300;
+  }
+
+  .card-soft {
+    @apply bg-card shadow-soft border border-border/50;
+  }
+
+  .card-interactive {
+    @apply bg-card shadow-soft hover:shadow-raised hover:scale-[1.02] transition-all duration-200 cursor-pointer;
+  }
+
+  .card-glass {
+    @apply bg-card-glass backdrop-blur-xl border border-glass-border-100 shadow-glass;
   }
   
   /* Hero Section Effects */
   .hero-gradient {
     @apply bg-gradient-primary relative overflow-hidden;
   }
+
+  .hero-section {
+    @apply bg-gradient-hero min-h-screen flex items-center justify-center relative overflow-hidden;
+  }
+
+  .hero-content {
+    @apply backdrop-blur-sm bg-glass-100 border border-glass-border-100 rounded-2xl p-8;
+  }
   
   .floating-element {
     @apply animate-float;
   }
+
+  .floating-slow {
+    @apply animate-float animation-duration-[8s];
+  }
+
+  .floating-fast {
+    @apply animate-float animation-duration-[4s];
+  }
   
   .glow-effect {
     @apply animate-glow shadow-glow;
+  }
+
+  .glow-primary {
+    @apply shadow-glow-primary;
+  }
+
+  .glow-success {
+    @apply shadow-glow-success;
+  }
+
+  .glow-warning {
+    @apply shadow-glow-warning;
+  }
+
+  .glow-info {
+    @apply shadow-glow-info;
   }
   
   /* Text Effects */
@@ -143,18 +208,141 @@
   .gradient-text-primary {
     @apply text-transparent bg-clip-text bg-gradient-primary;
   }
+
+  .gradient-text-success {
+    @apply text-transparent bg-clip-text bg-gradient-success;
+  }
+
+  .gradient-text-warning {
+    @apply text-transparent bg-clip-text bg-gradient-warning;
+  }
+
+  .gradient-text-info {
+    @apply text-transparent bg-clip-text bg-gradient-info;
+  }
+
+  .text-glow {
+    @apply drop-shadow-[0_0_8px_rgba(255,255,255,0.3)];
+  }
+
+  .text-shadow {
+    @apply drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)];
+  }
   
   /* Interactive Effects */
   .hover-scale {
     @apply transition-transform duration-300 hover:scale-105;
   }
+
+  .hover-scale-sm {
+    @apply transition-transform duration-200 hover:scale-[1.02];
+  }
+
+  .hover-scale-lg {
+    @apply transition-transform duration-300 hover:scale-110;
+  }
   
   .hover-glow {
     @apply transition-shadow duration-300 hover:shadow-glow-lg;
   }
+
+  .hover-glow-primary {
+    @apply transition-shadow duration-300 hover:shadow-glow-primary;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-floating;
+  }
+
+  .hover-sink {
+    @apply transition-all duration-200 active:scale-95;
+  }
+
+  .hover-brightness {
+    @apply transition-all duration-300 hover:brightness-110;
+  }
+
+  .hover-blur {
+    @apply transition-all duration-300 hover:backdrop-blur-sm;
+  }
   
   .fade-in {
     @apply animate-fade-in-up;
+  }
+
+  .fade-in-slow {
+    @apply animate-fade-in-up animation-duration-[800ms];
+  }
+
+  .scale-in {
+    @apply animate-scale-in;
+  }
+
+  .slide-up {
+    @apply animate-fade-in-up;
+  }
+  
+  /* Loading States */
+  .loading-spinner {
+    @apply animate-spin rounded-full border-2 border-muted border-t-primary;
+  }
+
+  .loading-pulse {
+    @apply animate-pulse bg-muted rounded;
+  }
+
+  .loading-shimmer {
+    @apply animate-shimmer bg-gradient-to-r from-muted via-muted-foreground/10 to-muted;
+  }
+
+  /* Status Indicators */
+  .status-dot {
+    @apply w-2 h-2 rounded-full;
+  }
+
+  .status-success {
+    @apply bg-success;
+  }
+
+  .status-warning {
+    @apply bg-warning;
+  }
+
+  .status-info {
+    @apply bg-info;
+  }
+
+  .status-error {
+    @apply bg-destructive;
+  }
+
+  /* Layout Utilities */
+  .center-all {
+    @apply flex items-center justify-center;
+  }
+
+  .center-vertical {
+    @apply flex items-center;
+  }
+
+  .center-horizontal {
+    @apply flex justify-center;
+  }
+
+  .full-screen {
+    @apply min-h-screen w-full;
+  }
+
+  .container-fluid {
+    @apply max-w-none w-full px-4;
+  }
+
+  .container-narrow {
+    @apply max-w-2xl mx-auto px-4;
+  }
+
+  .container-wide {
+    @apply max-w-7xl mx-auto px-4;
   }
   
   /* Advanced Containers */
@@ -168,5 +356,91 @@
   
   .floating-bg-element {
     @apply absolute rounded-full blur-3xl opacity-10 animate-pulse;
+  }
+
+  .section-divider {
+    @apply h-px bg-gradient-to-r from-transparent via-border to-transparent;
+  }
+
+  /* Form Utilities */
+  .form-group {
+    @apply space-y-2;
+  }
+
+  .form-row {
+    @apply flex gap-4;
+  }
+
+  .form-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+  }
+
+  .form-actions {
+    @apply flex gap-3 justify-end pt-4;
+  }
+
+  /* Navigation Utilities */
+  .nav-link {
+    @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+  }
+
+  .nav-active {
+    @apply text-primary font-medium after:scale-x-100;
+  }
+
+  /* Badge Utilities */
+  .badge-sm {
+    @apply text-xs px-2 py-0.5;
+  }
+
+  .badge-lg {
+    @apply text-sm px-3 py-1;
+  }
+
+  .badge-dot {
+    @apply w-2 h-2 p-0 rounded-full;
+  }
+
+  .badge-glow {
+    @apply shadow-glow;
+  }
+
+  /* Button Utilities */
+  .btn-loading {
+    @apply pointer-events-none opacity-70;
+  }
+
+  .btn-icon-only {
+    @apply aspect-square p-0 center-all;
+  }
+
+  .btn-floating {
+    @apply fixed bottom-6 right-6 z-50 rounded-full shadow-floating hover:shadow-depth;
+  }
+
+  /* Responsive Utilities */
+  .hide-mobile {
+    @apply hidden md:block;
+  }
+
+  .hide-desktop {
+    @apply block md:hidden;
+  }
+
+  .mobile-full {
+    @apply w-full md:w-auto;
+  }
+
+  /* Spacing Utilities */
+  .space-section {
+    @apply py-16 md:py-24;
+  }
+
+  .space-component {
+    @apply py-8 md:py-12;
+  }
+
+  .space-element {
+    @apply py-4 md:py-6;
   }
 }
