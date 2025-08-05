@@ -37,6 +37,7 @@ import {
   FileText,
   Zap
 } from 'lucide-react';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface AdminDashboardProps {
   userProfile: any;
@@ -50,6 +51,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
   const navigate = useNavigate();
   const { getPrimaryRole } = useRoleAccess();
   const systemHealth = useSystemHealth();
+  const { me, ms } = useRTLAware();
   
   
   // Log current role for debugging
@@ -277,15 +279,15 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button onClick={() => navigate('/admin/users')} className="w-full justify-start">
-                  <Users className="w-4 h-4 mr-2" />
+                  <Users className={`w-4 h-4 ${me('2')}`} />
                   {language === 'ar' ? 'إدارة المستخدمين' : 'Manage Users'}
                 </Button>
                 <Button onClick={() => navigate('/admin/challenges')} variant="outline" className="w-full justify-start">
-                  <Target className="w-4 h-4 mr-2" />
+                  <Target className={`w-4 h-4 ${me('2')}`} />
                   {language === 'ar' ? 'إدارة التحديات' : 'Manage Challenges'}
                 </Button>
                 <Button onClick={() => navigate('/admin/evaluations')} variant="outline" className="w-full justify-start">
-                  <BarChart3 className="w-4 h-4 mr-2" />
+                  <BarChart3 className={`w-4 h-4 ${me('2')}`} />
                   {language === 'ar' ? 'تقارير النظام' : 'System Reports'}
                 </Button>
               </CardContent>
@@ -338,7 +340,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                   <CardDescription className="text-sm">{action.description}</CardDescription>
                   <Button variant="ghost" size="sm" className="mt-3 p-0 h-auto">
                     {language === 'ar' ? 'انقر للوصول' : 'Click to access'}
-                    <ArrowRight className="w-3 h-3 ml-1" />
+                    <ArrowRight className={`w-3 h-3 ${ms('1')}`} />
                   </Button>
                 </CardContent>
               </Card>
@@ -362,7 +364,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                   <CardDescription className="text-sm">{action.description}</CardDescription>
                   <Button variant="ghost" size="sm" className="mt-3 p-0 h-auto">
                     {language === 'ar' ? 'انقر للوصول' : 'Click to access'}
-                    <ArrowRight className="w-3 h-3 ml-1" />
+                    <ArrowRight className={`w-3 h-3 ${ms('1')}`} />
                   </Button>
                 </CardContent>
               </Card>
@@ -386,7 +388,7 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
                   <CardDescription className="text-sm">{action.description}</CardDescription>
                   <Button variant="ghost" size="sm" className="mt-3 p-0 h-auto">
                     {language === 'ar' ? 'انقر للوصول' : 'Click to access'}
-                    <ArrowRight className="w-3 h-3 ml-1" />
+                    <ArrowRight className={`w-3 h-3 ${ms('1')}`} />
                   </Button>
                 </CardContent>
               </Card>

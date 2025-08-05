@@ -23,6 +23,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface ChallengesHeroProps {
   totalChallenges: number;
@@ -53,6 +54,7 @@ export const ChallengesHero = ({
   const { isRTL } = useDirection();
   const { user, hasRole } = useAuth();
   const [currentStat, setCurrentStat] = useState(0);
+  const { me, ms } = useRTLAware();
   
   // Check if user can create challenges
   const canCreateChallenges = user && (
@@ -102,7 +104,7 @@ export const ChallengesHero = ({
                   <Sparkles className={`w-6 h-6 ${challengesPageConfig.ui.colors.stats.yellow}`} />
                 </div>
                 <Badge variant="secondary" className={`${challengesPageConfig.ui.glassMorphism.medium} ${challengesPageConfig.ui.colors.text.accent} border ${challengesPageConfig.ui.glassMorphism.light.split(' ').find(c => c.includes('border'))} backdrop-blur-sm`}>
-                  <Star className="w-3 h-3 mr-1" />
+                  <Star className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'منصة التحديات المبتكرة' : 'Innovation Challenges Platform'}
                 </Badge>
               </div>
@@ -163,7 +165,7 @@ export const ChallengesHero = ({
                   size="lg"
                   className="shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
-                  <Plus className="w-5 h-5 mr-2" />
+                  <Plus className={`w-5 h-5 ${me('2')}`} />
                   {isRTL ? 'إنشاء تحدي جديد' : 'Create New Challenge'}
                 </Button>
               )}
@@ -173,7 +175,7 @@ export const ChallengesHero = ({
                 variant="hero-secondary"
                 size="lg"
               >
-                <Filter className="w-5 h-5 mr-2" />
+                <Filter className={`w-5 h-5 ${me('2')}`} />
                 {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
               </Button>
 
@@ -181,7 +183,7 @@ export const ChallengesHero = ({
                 variant="hero-ghost"
                 size="lg"
               >
-                <Play className="w-5 h-5 mr-2" />
+                <Play className={`w-5 h-5 ${me('2')}`} />
                 {isRTL ? 'شاهد الفيديو' : 'Watch Demo'}
               </Button>
             </div>
@@ -208,14 +210,14 @@ export const ChallengesHero = ({
                     
                     <div className="absolute top-4 left-4">
                       <Badge className={`${challengesPageConfig.ui.gradients.danger} ${challengesPageConfig.ui.colors.text.accent} border-0 animate-pulse`}>
-                        <Clock className="w-3 h-3 mr-1" />
+                        <Clock className={`w-3 h-3 ${me('1')}`} />
                         {featuredChallenge.daysLeft} {isRTL ? 'أيام متبقية' : 'days left'}
                       </Badge>
                     </div>
 
                     <div className="absolute top-4 right-4">
                       <Badge className={`${challengesPageConfig.ui.gradients.warning} ${challengesPageConfig.ui.colors.text.accent} border-0`}>
-                        <TrendingUp className="w-3 h-3 mr-1" />
+                        <TrendingUp className={`w-3 h-3 ${me('1')}`} />
                         {isRTL ? 'رائج' : 'Trending'}
                       </Badge>
                     </div>
@@ -252,7 +254,7 @@ export const ChallengesHero = ({
                       className={`w-full ${challengesPageConfig.ui.gradients.button} ${challengesPageConfig.ui.gradients.buttonHover} ${challengesPageConfig.ui.colors.text.accent}`}
                     >
                       {isRTL ? 'اعرض التفاصيل' : 'View Details'}
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                      <ArrowRight className={`w-4 h-4 ${ms('2')}`} />
                     </Button>
                   </div>
                 </CardContent>

@@ -34,6 +34,7 @@ import {
   Eye
 } from 'lucide-react';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
+import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface ChallengeViewDialogProps {
   open: boolean;
@@ -56,6 +57,7 @@ export function ChallengeViewDialog({
   const { user, hasRole } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { me } = useRTLAware();
   
   const [submissions, setSubmissions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -231,7 +233,7 @@ export function ChallengeViewDialog({
             )}
             {submission.score && (
               <Badge variant="secondary">
-                <Star className="h-3 w-3 mr-1" />
+                <Star className={`h-3 w-3 ${me('1')}`} />
                 {submission.score}/10
               </Badge>
             )}
@@ -259,7 +261,7 @@ export function ChallengeViewDialog({
               variant="ghost"
               onClick={() => handleVoteSubmission(submission.id)}
             >
-              <Heart className="h-4 w-4 mr-1" />
+              <Heart className={`h-4 w-4 ${me('1')}`} />
               {isRTL ? 'إعجاب' : 'Like'}
             </Button>
             <Button
@@ -267,19 +269,19 @@ export function ChallengeViewDialog({
               variant="ghost"
               onClick={() => handleBookmarkSubmission(submission.id)}
             >
-              <Bookmark className="h-4 w-4 mr-1" />
+              <Bookmark className={`h-4 w-4 ${me('1')}`} />
               {isRTL ? 'حفظ' : 'Save'}
             </Button>
           </div>
           
           <div className="flex gap-1">
             <Button size="sm" variant="outline">
-              <Eye className="h-4 w-4 mr-1" />
+              <Eye className={`h-4 w-4 ${me('1')}`} />
               {isRTL ? 'عرض' : 'View'}
             </Button>
             {submission.file_url && (
               <Button size="sm" variant="outline">
-                <Download className="h-4 w-4 mr-1" />
+                <Download className={`h-4 w-4 ${me('1')}`} />
                 {isRTL ? 'تحميل' : 'Download'}
               </Button>
             )}
@@ -593,7 +595,7 @@ export function ChallengeViewDialog({
                 onClick={() => onParticipate?.(challenge)}
                 className="flex-1"
               >
-                <Users className="w-4 h-4 mr-2" />
+                <Users className={`w-4 h-4 ${me('2')}`} />
                 {isRTL ? 'انضم للتحدي' : 'Join Challenge'}
               </Button>
             ) : (
@@ -601,7 +603,7 @@ export function ChallengeViewDialog({
                 onClick={() => onSubmit?.(challenge)}
                 className="flex-1"
               >
-                <Send className="w-4 h-4 mr-2" />
+                <Send className={`w-4 h-4 ${me('2')}`} />
                 {isRTL ? 'قدم مشروعك' : 'Submit Project'}
               </Button>
             )}
