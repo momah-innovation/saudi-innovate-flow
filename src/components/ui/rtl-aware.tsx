@@ -45,6 +45,7 @@ export function useRTLAwareClasses() {
   return {
     // Flexbox utilities
     flexRow: isRTL ? 'flex-row-reverse' : 'flex-row',
+    flexRowReverse: isRTL ? 'flex-row' : 'flex-row-reverse',
     
     // Text alignment
     textStart: isRTL ? 'text-right' : 'text-left',
@@ -66,8 +67,52 @@ export function useRTLAwareClasses() {
     roundedL: (size: string) => isRTL ? `rounded-r-${size}` : `rounded-l-${size}`,
     roundedR: (size: string) => isRTL ? `rounded-l-${size}` : `rounded-r-${size}`,
     
+    // Transform classes for icons and elements that should mirror
+    transform: isRTL ? 'scale-x-[-1]' : '',
+    rotate: isRTL ? 'rotate-180' : '',
+    
+    // Space and gap directions
+    spaceX: isRTL ? 'space-x-reverse' : '',
+    
+    // Float and clear
+    float: {
+      left: isRTL ? 'float-right' : 'float-left',
+      right: isRTL ? 'float-left' : 'float-right',
+      start: isRTL ? 'float-right' : 'float-left',
+      end: isRTL ? 'float-left' : 'float-right'
+    },
+    
     // Utilities
     isRTL,
     direction: isRTL ? 'rtl' : 'ltr'
   };
+}
+
+/**
+ * RTL-aware icon wrapper that handles directional icons
+ */
+export function RTLIcon({ 
+  children, 
+  shouldMirror = false,
+  className,
+  ...props 
+}: { 
+  children: React.ReactNode;
+  shouldMirror?: boolean;
+  className?: string;
+  [key: string]: any;
+}) {
+  const { isRTL } = useDirection();
+  
+  return (
+    <span 
+      className={cn(
+        shouldMirror && isRTL && 'scale-x-[-1]',
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </span>
+  );
 }

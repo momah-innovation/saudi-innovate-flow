@@ -18,9 +18,11 @@ import {
   Brain
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useRTLAwareClasses } from '@/components/ui/rtl-aware';
 
 export default function Dashboard() {
   const { t, language, isRTL } = useTranslation();
+  const rtl = useRTLAwareClasses();
 
   const stats = [
     {
@@ -171,11 +173,11 @@ export default function Dashboard() {
 
               <div className="flex items-center justify-center gap-4 mb-12">
                 <Button size="lg" className="px-8">
-                  <Brain className="h-5 w-5 mr-2" />
+                  <Brain className={cn("h-5 w-5", rtl.mr("2"))} />
                   {language === 'ar' ? 'ابدأ الابتكار' : 'Start Innovating'}
                 </Button>
                 <Button variant="outline" size="lg" className="px-8">
-                  <TrendingUp className="h-5 w-5 mr-2" />
+                  <TrendingUp className={cn("h-5 w-5", rtl.mr("2"))} />
                   {language === 'ar' ? 'استكشف التحديات' : 'Explore Challenges'}
                 </Button>
               </div>
@@ -222,7 +224,7 @@ export default function Dashboard() {
               </h2>
               <Button variant="ghost" size="sm">
                 {language === 'ar' ? 'عرض الكل' : 'View All'}
-                <ArrowRight className="h-4 w-4 ml-2" />
+                <ArrowRight className={cn("h-4 w-4", rtl.ml("2"))} />
               </Button>
             </div>
             
@@ -259,7 +261,7 @@ export default function Dashboard() {
                   </CardTitle>
                   <Button variant="ghost" size="sm">
                     {language === 'ar' ? 'عرض الكل' : 'View All'}
-                    <ArrowRight className="h-4 w-4 ml-2" />
+                    <ArrowRight className={cn("h-4 w-4", rtl.ml("2"))} />
                   </Button>
                 </div>
               </CardHeader>
