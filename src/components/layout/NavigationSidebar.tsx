@@ -8,10 +8,8 @@ import {
 } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { 
-  Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent,
-  SidebarGroupLabel, SidebarMenu, SidebarMenuButton,
-  SidebarMenuItem, useSidebar, SidebarRail
-} from '@/components/ui/sidebar';
+  Sheet, SheetContent, SheetHeader, SheetTitle
+} from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 // import { useAuth } from '@/hooks/useAuth';
 // import { useProfile } from '@/hooks/useProfile';
@@ -22,24 +20,22 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { useSidebarPersistence } from '@/contexts/SidebarContext';
 
 /**
- * NavigationSidebar - Optimized sidebar navigation with role-based menu items
+ * NavigationSidebar - Overlay navigation with role-based menu items
  * Now includes new tag management and file system pages with organized grouping
  */
 
-export function NavigationSidebar() {
-  const { state } = useSidebar();
-  const { setIsOpen } = useSidebarPersistence();
+interface NavigationSidebarProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps) {
   const location = useLocation();
   const { isRTL } = useTranslation();
   // const { user } = useAuth();
   // const { profile: userProfile } = useProfile();
   const userProfile = null; // Simplified for now
   const [isOldLinksOpen, setIsOldLinksOpen] = React.useState(false);
-
-  // Sync sidebar state with persistent storage
-  React.useEffect(() => {
-    setIsOpen(state === 'expanded');
-  }, [state, setIsOpen]);
 
   const menuItems = useMemo(() => {
     const baseItems = [
@@ -450,37 +446,29 @@ export function NavigationSidebar() {
       const isActive = location.pathname === item.path;
       
       return (
-        <SidebarMenuItem key={item.id}>
-          <SidebarMenuButton 
-            asChild 
-            className={cn(
-              "w-full justify-start",
-              isActive && "bg-primary text-primary-foreground",
-              isRTL && "flex-row-reverse"
+        <li key={item.id} className="mb-1">
+          <NavLink 
+            to={item.path}
+            onClick={() => onOpenChange(false)} // Close overlay on navigation
+            className={({ isActive }) => cn(
+              "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors w-full",
+              isActive 
+                ? "bg-primary text-primary-foreground" 
+                : "text-muted-foreground hover:text-foreground hover:bg-muted",
+              isRTL && "flex-row-reverse text-right"
             )}
           >
-            <NavLink 
-              to={item.path}
-              className={({ isActive }) => cn(
-                "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
-                isActive 
-                  ? "bg-primary text-primary-foreground" 
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted",
-                isRTL && "flex-row-reverse text-right"
-              )}
-            >
-              <item.icon className={cn("h-4 w-4", isRTL && "ml-3 mr-0")} />
-              <span className="flex-1">
-                {isRTL ? item.arabicLabel : item.label}
-              </span>
-              {item.badge && (
-                <Badge variant="secondary" className={cn("ml-auto text-xs", isRTL && "ml-0 mr-auto")}>
-                  {item.badge}
-                </Badge>
-              )}
-            </NavLink>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
+            <item.icon className={cn("h-4 w-4", isRTL && "ml-3 mr-0")} />
+            <span className="flex-1">
+              {isRTL ? item.arabicLabel : item.label}
+            </span>
+            {item.badge && (
+              <Badge variant="secondary" className={cn("ml-auto text-xs", isRTL && "ml-0 mr-auto")}>
+                {item.badge}
+              </Badge>
+            )}
+          </NavLink>
+        </li>
       );
     });
   };
@@ -489,75 +477,72 @@ export function NavigationSidebar() {
     if (groupKey === 'old') {
       return (
         <Collapsible key={groupKey} open={isOldLinksOpen} onOpenChange={setIsOldLinksOpen}>
-          <SidebarGroup>
-            <SidebarGroupLabel asChild>
-              <CollapsibleTrigger className={cn(
-                "flex w-full items-center justify-between text-xs font-medium text-muted-foreground hover:text-foreground",
-                isRTL && "text-right"
-              )}>
-                <span>{isRTL ? groupLabels[groupKey]?.ar : groupLabels[groupKey]?.en}</span>
-                <Button variant="ghost" size="sm" className="h-4 w-4 p-0">
-                  {isOldLinksOpen ? (
-                    <ChevronDown className="h-3 w-3" />
-                  ) : (
-                    <ChevronRight className="h-3 w-3" />
-                  )}
-                </Button>
-              </CollapsibleTrigger>
-            </SidebarGroupLabel>
+          <div className="mb-4">
+            <CollapsibleTrigger className={cn(
+              "flex w-full items-center justify-between text-xs font-medium text-muted-foreground hover:text-foreground mb-2",
+              isRTL && "text-right"
+            )}>
+              <span>{isRTL ? groupLabels[groupKey]?.ar : groupLabels[groupKey]?.en}</span>
+              <Button variant="ghost" size="sm" className="h-4 w-4 p-0">
+                {isOldLinksOpen ? (
+                  <ChevronDown className="h-3 w-3" />
+                ) : (
+                  <ChevronRight className="h-3 w-3" />
+                )}
+              </Button>
+            </CollapsibleTrigger>
             <CollapsibleContent>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {renderMenuItems(items)}
-                </SidebarMenu>
-              </SidebarGroupContent>
+              <ul className="space-y-1">
+                {renderMenuItems(items)}
+              </ul>
             </CollapsibleContent>
-          </SidebarGroup>
+          </div>
         </Collapsible>
       );
     }
 
     return (
-      <SidebarGroup key={groupKey}>
-        <SidebarGroupLabel className={cn(isRTL && 'text-right')}>
+      <div key={groupKey} className="mb-4">
+        <h4 className={cn("text-xs font-medium text-muted-foreground mb-2", isRTL && 'text-right')}>
           {isRTL ? groupLabels[groupKey]?.ar : groupLabels[groupKey]?.en}
-        </SidebarGroupLabel>
-        <SidebarGroupContent>
-          <SidebarMenu>
-            {renderMenuItems(items)}
-          </SidebarMenu>
-        </SidebarGroupContent>
-      </SidebarGroup>
+        </h4>
+        <ul className="space-y-1">
+          {renderMenuItems(items)}
+        </ul>
+      </div>
     );
   };
 
   return (
-    <Sidebar 
-      variant="sidebar"
-      side={isRTL ? "right" : "left"}
-      className={cn(
-        "border-r",
-        isRTL && "border-l border-r-0"
-      )}
-    >
-      <SidebarContent className={cn(isRTL && "text-right")}>
-        {/* Render groups in priority order */}
-        {groupOrder.map(groupKey => {
-          const items = groupedItems[groupKey];
-          if (!items || items.length === 0) return null;
-          return renderGroup(groupKey, items);
-        })}
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent 
+        side={isRTL ? "right" : "left"}
+        className={cn("w-80 p-0", isRTL && "text-right")}
+      >
+        <SheetHeader className="p-6 border-b">
+          <SheetTitle className={cn("text-left", isRTL && "text-right")}>
+            {isRTL ? 'القائمة الرئيسية' : 'Navigation Menu'}
+          </SheetTitle>
+        </SheetHeader>
+        
+        <div className="p-6 overflow-y-auto h-full">
+          {/* Render groups in priority order */}
+          {groupOrder.map(groupKey => {
+            const items = groupedItems[groupKey];
+            if (!items || items.length === 0) return null;
+            return renderGroup(groupKey, items);
+          })}
 
-        {/* Render remaining groups not in priority order */}
-        {Object.entries(groupedItems).map(([groupKey, items]) => {
-          if (groupOrder.includes(groupKey) || !items || items.length === 0) return null;
-          return renderGroup(groupKey, items);
-        })}
+          {/* Render remaining groups not in priority order */}
+          {Object.entries(groupedItems).map(([groupKey, items]) => {
+            if (groupOrder.includes(groupKey) || !items || items.length === 0) return null;
+            return renderGroup(groupKey, items);
+          })}
 
-        {/* Always render old links section at the bottom */}
-        {groupedItems.old && groupedItems.old.length > 0 && renderGroup('old', groupedItems.old)}
-      </SidebarContent>
-      <SidebarRail />
-    </Sidebar>
+          {/* Always render old links section at the bottom */}
+          {groupedItems.old && groupedItems.old.length > 0 && renderGroup('old', groupedItems.old)}
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 }

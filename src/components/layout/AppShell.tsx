@@ -1,11 +1,9 @@
-import { ReactNode, Suspense } from 'react';
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { ReactNode, Suspense, useState } from 'react';
 import { SystemHeader } from './SystemHeader';
 import { NavigationSidebar } from './NavigationSidebar';
 import { LoadingSpinner } from '@/components/ui/loading';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
-import { useSidebarPersistence } from '@/contexts/SidebarContext';
 
 
 interface AppShellProps {
@@ -15,7 +13,7 @@ interface AppShellProps {
 /**
  * AppShell - Root layout component providing the main application structure
  * Features:
- * - Responsive sidebar navigation
+ * - Overlay navigation sidebar
  * - Global header with search and user controls
  * - RTL support
  * - Loading states
@@ -23,30 +21,28 @@ interface AppShellProps {
  */
 export function AppShell({ children }: AppShellProps) {
   const { isRTL } = useDirection();
-  const { isOpen } = useSidebarPersistence();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   
   return (
-    <SidebarProvider defaultOpen={isOpen}>
-        <div className={cn(
-          "min-h-screen flex w-full bg-background",
-          isRTL && "flex-row-reverse"
-        )}>
-          {/* Navigation Sidebar */}
-          <NavigationSidebar />
-          
-          {/* Main Content Area */}
-          <div className="flex-1 flex flex-col min-w-0">
-            {/* Global Header */}
-            <SystemHeader />
-            
-            {/* Page Content with Loading */}
-            <main className="flex-1 overflow-auto">
-              <Suspense fallback={<LoadingSpinner />}>
-                {children}
-              </Suspense>
-            </main>
-          </div>
-        </div>
-      </SidebarProvider>
+    <div className={cn(
+      "min-h-screen flex w-full bg-background",
+      isRTL && "flex-row-reverse"
+    )}>
+      {/* Navigation Sidebar Overlay */}
+      <NavigationSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
+      
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Global Header */}
+        <SystemHeader onSidebarToggle={() => setSidebarOpen(true)} />
+        
+        {/* Page Content with Loading */}
+        <main className="flex-1 overflow-auto">
+          <Suspense fallback={<LoadingSpinner />}>
+            {children}
+          </Suspense>
+        </main>
+      </div>
+    </div>
   );
 }

@@ -3,7 +3,6 @@ import { Search, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 import { NotificationCenter } from '@/components/notifications/NotificationCenter';
 import { UserMenu } from './UserMenu';
 import { LanguageToggle } from '@/components/ui/language-toggle';
@@ -15,13 +14,17 @@ import { cn } from '@/lib/utils';
 /**
  * SystemHeader - Global header component with improved UX and performance
  * Features:
- * - Responsive design (mobile drawer trigger, desktop sidebar trigger)
+ * - Overlay sidebar trigger
  * - Global search functionality
  * - User controls and notifications
  * - Language switching
  * - Optimized for RTL
  */
-export function SystemHeader() {
+interface SystemHeaderProps {
+  onSidebarToggle: () => void;
+}
+
+export function SystemHeader({ onSidebarToggle }: SystemHeaderProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const { userProfile } = useAuth();
   const { isRTL, language } = useDirection();
@@ -53,7 +56,15 @@ export function SystemHeader() {
           isRTL && "flex-row-reverse"
         )}>
           {/* Sidebar Toggle */}
-          <SidebarTrigger className="shrink-0" />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onSidebarToggle}
+            className="shrink-0"
+            aria-label="Open navigation menu"
+          >
+            <Menu className="h-4 w-4" />
+          </Button>
           
           {/* Logo & Title */}
           <div className={cn(
