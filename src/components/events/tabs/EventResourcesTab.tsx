@@ -70,11 +70,11 @@ export const EventResourcesTab = ({
   });
 
   const getResourceIcon = (type: string, format?: string) => {
-    if (type === 'presentation') return <FileText className="w-5 h-5 text-blue-500" />;
-    if (type === 'video') return <Video className="w-5 h-5 text-red-500" />;
-    if (type === 'image') return <Image className="w-5 h-5 text-green-500" />;
-    if (format?.toLowerCase().includes('pdf')) return <FileText className="w-5 h-5 text-red-500" />;
-    return <File className="w-5 h-5 text-gray-500" />;
+    if (type === 'presentation') return <FileText className="w-5 h-5 text-primary" />;
+    if (type === 'video') return <Video className="w-5 h-5 text-destructive" />;
+    if (type === 'image') return <Image className="w-5 h-5 text-success" />;
+    if (format?.toLowerCase().includes('pdf')) return <FileText className="w-5 h-5 text-destructive" />;
+    return <File className="w-5 h-5 text-muted-foreground" />;
   };
 
   const getResourceTypeText = (type: string) => {
@@ -92,10 +92,10 @@ export const EventResourcesTab = ({
 
   const getAvailabilityColor = (status: string) => {
     switch (status) {
-      case 'available': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
-      case 'coming_soon': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'archived': return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'available': return 'bg-success/10 text-success border-success/20';
+      case 'coming_soon': return 'bg-primary/10 text-primary border-primary/20';
+      case 'archived': return 'bg-muted text-muted-foreground border-muted-foreground/20';
+      default: return 'bg-muted text-muted-foreground border-muted-foreground/20';
     }
   };
 
@@ -406,7 +406,7 @@ export const EventResourcesTab = ({
                       size="sm"
                       variant="ghost"
                       onClick={() => handleDeleteResource(resource.id)}
-                      className="text-red-600 hover:text-red-700"
+                      className="text-destructive hover:text-destructive/80"
                     >
                       <Trash2 className="w-3 h-3" />
                     </Button>

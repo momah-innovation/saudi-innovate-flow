@@ -138,7 +138,7 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
             {/* Status Badges Overlay */}
             <div className={`absolute top-4 ${end('4')} flex gap-2`}>
               {event.event_category === 'featured' && (
-                <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                <Badge variant="secondary" className="bg-warning/10 text-warning border-warning/20">
                   <Star className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'مميز' : 'Featured'}
                 </Badge>
@@ -151,7 +151,7 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
             {/* Online Badge */}
             {event.format === 'virtual' && (
               <div className={`absolute bottom-4 ${start('4')}`}>
-                <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
+                <Badge variant="secondary" className="bg-success/10 text-success border-success/20">
                   <Globe className={`w-3 h-3 ${me('1')}`} />
                   {isRTL ? 'عبر الإنترنت' : 'Online Event'}
                 </Badge>

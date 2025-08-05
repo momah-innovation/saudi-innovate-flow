@@ -153,7 +153,7 @@ export const ContentModerationPanel: React.FC = () => {
     if (status === 'rejected') {
       return <Ban className="h-4 w-4 text-destructive" />;
     }
-    return <Clock className="h-4 w-4 text-yellow-500" />;
+    return <Clock className="h-4 w-4 text-warning" />;
   };
 
   const getStatusColor = (status: string, flagged: boolean) => {
@@ -316,7 +316,7 @@ export const ContentModerationPanel: React.FC = () => {
               </div>
             ) : (
               filteredLogs.map((log) => (
-                <Card key={log.id} className={log.flagged ? 'border-red-200' : ''}>
+                <Card key={log.id} className={log.flagged ? 'border-destructive/20' : ''}>
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -427,7 +427,7 @@ export const ContentModerationPanel: React.FC = () => {
               </Button>
 
               {testResult && (
-                <Alert className={testResult.flagged ? 'border-red-200' : 'border-green-200'}>
+                <Alert className={testResult.flagged ? 'border-destructive/20' : 'border-success/20'}>
                   <AlertTriangle className="h-4 w-4" />
                   <AlertDescription>
                     <div className="space-y-2">

@@ -35,21 +35,21 @@ export const AttendeesTab = ({
 
   const getAttendanceStatusColor = (status: string) => {
     switch (status) {
-      case 'registered': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'checked_in': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
-      case 'checked_out': return 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/20 dark:text-purple-400';
-      case 'no_show': return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400';
-      case 'cancelled': return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'registered': return 'bg-primary/10 text-primary border-primary/20';
+      case 'checked_in': return 'bg-success/10 text-success border-success/20';
+      case 'checked_out': return 'bg-accent/10 text-accent border-accent/20';
+      case 'no_show': return 'bg-destructive/10 text-destructive border-destructive/20';
+      case 'cancelled': return 'bg-muted text-muted-foreground border-muted-foreground/20';
+      default: return 'bg-muted text-muted-foreground border-muted-foreground/20';
     }
   };
 
   const getRegistrationTypeColor = (type: string) => {
     switch (type) {
-      case 'self_registered': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
-      case 'invited': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'admin_added': return 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/20 dark:text-purple-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'self_registered': return 'bg-success/10 text-success border-success/20';
+      case 'invited': return 'bg-primary/10 text-primary border-primary/20';
+      case 'admin_added': return 'bg-accent/10 text-accent border-accent/20';
+      default: return 'bg-muted text-muted-foreground border-muted-foreground/20';
     }
   };
 
@@ -130,16 +130,16 @@ export const AttendeesTab = ({
         </div>
         
         <div className="text-center p-4 bg-muted/50 rounded-lg">
-          <UserCheck className="w-6 h-6 mx-auto mb-2 text-green-600" />
-          <div className="text-2xl font-bold text-green-600">{checkedInCount}</div>
+          <UserCheck className="w-6 h-6 mx-auto mb-2 text-success" />
+          <div className="text-2xl font-bold text-success">{checkedInCount}</div>
           <div className="text-xs text-muted-foreground">
             {isRTL ? 'حضر' : 'Attended'}
           </div>
         </div>
         
         <div className="text-center p-4 bg-muted/50 rounded-lg">
-          <UserX className="w-6 h-6 mx-auto mb-2 text-red-600" />
-          <div className="text-2xl font-bold text-red-600">{noShowCount}</div>
+          <UserX className="w-6 h-6 mx-auto mb-2 text-destructive" />
+          <div className="text-2xl font-bold text-destructive">{noShowCount}</div>
           <div className="text-xs text-muted-foreground">
             {isRTL ? 'لم يحضر' : 'No Show'}
           </div>
@@ -204,13 +204,13 @@ export const AttendeesTab = ({
                     <div className="text-sm text-muted-foreground space-y-1">
                       {participant.check_in_time && (
                         <div className="flex items-center gap-1">
-                          <Clock className="w-3 h-3 text-green-600" />
+                          <Clock className="w-3 h-3 text-success" />
                           {isRTL ? 'دخل: ' : 'Checked in: '}{formatDateTime(participant.check_in_time)}
                         </div>
                       )}
                       {participant.check_out_time && (
                         <div className="flex items-center gap-1">
-                          <Clock className="w-3 h-3 text-purple-600" />
+                          <Clock className="w-3 h-3 text-accent" />
                           {isRTL ? 'خرج: ' : 'Checked out: '}{formatDateTime(participant.check_out_time)}
                         </div>
                       )}

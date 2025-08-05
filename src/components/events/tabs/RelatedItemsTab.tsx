@@ -11,29 +11,29 @@ interface RelatedItemsTabProps {
 export const RelatedItemsTab = ({ relatedChallenges, focusQuestions, campaignInfo }: RelatedItemsTabProps) => {
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'draft': return 'bg-yellow-100 text-yellow-800';
-      case 'completed': return 'bg-blue-100 text-blue-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'active': return 'bg-success/10 text-success';
+      case 'draft': return 'bg-warning/10 text-warning';
+      case 'completed': return 'bg-primary/10 text-primary';
+      case 'cancelled': return 'bg-destructive/10 text-destructive';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'bg-red-100 text-red-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'high': return 'bg-destructive/10 text-destructive';
+      case 'medium': return 'bg-warning/10 text-warning';
+      case 'low': return 'bg-success/10 text-success';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
   const getQuestionTypeColor = (type: string) => {
     switch (type) {
-      case 'strategic': return 'bg-purple-100 text-purple-800';
-      case 'operational': return 'bg-blue-100 text-blue-800';
-      case 'technical': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'strategic': return 'bg-accent/10 text-accent';
+      case 'operational': return 'bg-primary/10 text-primary';
+      case 'technical': return 'bg-orange-500/10 text-orange-500';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 

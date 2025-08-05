@@ -11,31 +11,31 @@ interface PartnersStakeholdersTabProps {
 export const PartnersStakeholdersTab = ({ partners, stakeholders }: PartnersStakeholdersTabProps) => {
   const getPartnerTypeColor = (type: string) => {
     switch (type) {
-      case 'strategic': return 'bg-blue-100 text-blue-800';
-      case 'financial': return 'bg-green-100 text-green-800';
-      case 'technology': return 'bg-purple-100 text-purple-800';
-      case 'academic': return 'bg-yellow-100 text-yellow-800';
-      case 'government': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'strategic': return 'bg-primary/10 text-primary';
+      case 'financial': return 'bg-success/10 text-success';
+      case 'technology': return 'bg-accent/10 text-accent';
+      case 'academic': return 'bg-warning/10 text-warning';
+      case 'government': return 'bg-destructive/10 text-destructive';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
   const getStakeholderTypeColor = (type: string) => {
     switch (type) {
-      case 'government': return 'bg-red-100 text-red-800';
-      case 'private': return 'bg-blue-100 text-blue-800';
-      case 'academic': return 'bg-yellow-100 text-yellow-800';
-      case 'civil_society': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'government': return 'bg-destructive/10 text-destructive';
+      case 'private': return 'bg-primary/10 text-primary';
+      case 'academic': return 'bg-warning/10 text-warning';
+      case 'civil_society': return 'bg-success/10 text-success';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'inactive': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'active': return 'bg-success/10 text-success';
+      case 'pending': return 'bg-warning/10 text-warning';
+      case 'inactive': return 'bg-destructive/10 text-destructive';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 

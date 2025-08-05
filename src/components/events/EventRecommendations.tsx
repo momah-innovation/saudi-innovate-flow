@@ -149,8 +149,8 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
   }
 
   return (
-    <Card className={cn("overflow-hidden border-2 border-purple-200/50 bg-gradient-to-br from-purple-50/50 to-pink-50/30", className)}>
-      <CardHeader className="pb-3 border-b border-purple-200/30">
+    <Card className={cn("overflow-hidden border-2 border-accent/20 bg-gradient-to-br from-accent/5 to-accent/10", className)}>
+      <CardHeader className="pb-3 border-b border-accent/20">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
@@ -158,7 +158,7 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
             </div>
             {isRTL ? 'مقترحة لك' : 'For You'}
           </div>
-          <Badge variant="secondary" className="bg-purple-100 text-purple-700 border-purple-300">
+          <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20">
             <Star className={`w-3 h-3 ${me('1')}`} />
             {isRTL ? 'مخصص' : 'Personal'}
           </Badge>
@@ -172,7 +172,7 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
         {recommendations.length === 0 ? (
           <div className="text-center py-6">
             <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-purple-500" />
+              <Sparkles className="w-6 h-6 text-accent" />
             </div>
             <p className="text-muted-foreground text-sm">
               {isRTL ? 'لا توجد توصيات متاحة' : 'No recommendations available'}
@@ -188,7 +188,7 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
               return (
                 <div 
                   key={event.id}
-                  className="group relative overflow-hidden rounded-lg p-3 bg-white/70 hover:bg-white/90 transition-all duration-300 cursor-pointer border border-purple-100/50 hover:border-purple-200 hover:shadow-lg"
+                  className="group relative overflow-hidden rounded-lg p-3 bg-background/70 hover:bg-background/90 transition-all duration-300 cursor-pointer border border-accent/10 hover:border-accent/20 hover:shadow-lg"
                   onClick={() => onEventSelect(event.id)}
                 >
                   {/* Recommendation Score */}
@@ -203,7 +203,7 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
                     {/* Event Image/Icon */}
                     <div className="flex-shrink-0">
                       {event.image_url ? (
-                        <div className="w-12 h-12 rounded-lg overflow-hidden border border-purple-200/50">
+                        <div className="w-12 h-12 rounded-lg overflow-hidden border border-accent/20">
                           <img 
                             src={event.image_url} 
                             alt={event.title_ar}
@@ -211,8 +211,8 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
                           />
                         </div>
                       ) : (
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center border border-purple-200/50">
-                          <Calendar className="w-6 h-6 text-purple-500" />
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-accent/10 to-accent/20 flex items-center justify-center border border-accent/20">
+                          <Calendar className="w-6 h-6 text-accent" />
                         </div>
                       )}
                     </div>
@@ -253,7 +253,7 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
                       {/* Event Type */}
                       <Badge 
                         variant="outline" 
-                        className="text-xs px-2 py-0.5 border-purple-200 text-purple-700 bg-purple-50"
+                        className="text-xs px-2 py-0.5 border-accent/20 text-accent bg-accent/10"
                       >
                         {event.event_type}
                       </Badge>
@@ -267,7 +267,7 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="w-full mt-4 border-purple-200 text-purple-700 hover:bg-purple-50"
+                className="w-full mt-4 border-accent/20 text-accent hover:bg-accent/10"
                 onClick={() => onEventSelect('all-recommendations')}
               >
                 {isRTL ? `عرض جميع التوصيات (${recommendations.length})` : `View All Recommendations (${recommendations.length})`}
