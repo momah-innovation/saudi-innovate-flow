@@ -12,7 +12,6 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
 import { cn } from '@/lib/utils';
-import { useRTLAware } from '@/hooks/useRTLAware';
 import {
   Users,
   Search,
@@ -46,7 +45,6 @@ export const ChallengeExpertAssignmentWizard = ({
 }: ChallengeExpertAssignmentWizardProps) => {
   const { isRTL } = useDirection();
   const { toast } = useToast();
-  const { me, ps, start } = useRTLAware();
   
   const [experts, setExperts] = useState<Expert[]>([]);
   const [selectedExperts, setSelectedExperts] = useState<string[]>([]);
@@ -168,12 +166,12 @@ export const ChallengeExpertAssignmentWizard = ({
 
             {/* Search */}
             <div className="relative mb-4">
-              <Search className={cn(`w-4 h-4 absolute ${start('3')} top-3`, challengesPageConfig.ui.colors.text.muted)} />
+              <Search className={cn("w-4 h-4 absolute left-3 top-3", challengesPageConfig.ui.colors.text.muted)} />
               <Input
                 placeholder={isRTL ? 'البحث في الخبراء...' : 'Search experts...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className={cn(ps('10'), challengesPageConfig.ui.effects.focus)}
+                className={cn("pl-10", challengesPageConfig.ui.effects.focus)}
               />
             </div>
 
@@ -258,7 +256,7 @@ export const ChallengeExpertAssignmentWizard = ({
                 </div>
               ) : (
                 <>
-                  <Send className={`w-4 h-4 ${me('2')}`} />
+                  <Send className="w-4 h-4 mr-2" />
                   {isRTL ? 'تعيين الخبراء' : 'Assign Experts'}
                 </>
               )}

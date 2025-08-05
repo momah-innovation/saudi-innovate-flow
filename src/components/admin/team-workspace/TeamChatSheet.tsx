@@ -12,8 +12,6 @@ import {
   Phone, Video, MoreHorizontal, Pin, Search, Settings
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface TeamChatSheetProps {
   open: boolean;
@@ -32,8 +30,6 @@ interface Message {
 
 export function TeamChatSheet({ open, onOpenChange, teamMembers }: TeamChatSheetProps) {
   const { user } = useAuth();
-  const { start, end } = useRTLAware();
-  const { t } = useTranslation();
   const [currentChannel, setCurrentChannel] = useState('general');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
@@ -146,15 +142,15 @@ export function TeamChatSheet({ open, onOpenChange, teamMembers }: TeamChatSheet
                       className="w-full justify-start h-auto p-2"
                       onClick={() => setCurrentChannel(channel.id)}
                     >
-                       <div className="text-start">
-                         <div className="flex items-center gap-2">
-                           <Hash className="h-3 w-3" />
-                           <span className="text-sm">{channel.name}</span>
-                         </div>
-                         <p className="text-xs text-muted-foreground">
-                           {channel.members} {t("member")}
-                         </p>
-                       </div>
+                      <div className="text-right">
+                        <div className="flex items-center gap-2">
+                          <Hash className="h-3 w-3" />
+                          <span className="text-sm">{channel.name}</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          {channel.members} عضو
+                        </p>
+                      </div>
                     </Button>
                   ))}
                 </div>
@@ -178,9 +174,9 @@ export function TeamChatSheet({ open, onOpenChange, teamMembers }: TeamChatSheet
                             {member.profiles?.display_name?.charAt(0) || 'U'}
                           </AvatarFallback>
                         </Avatar>
-                         {onlineMembers.includes(member.id) && (
-                           <div className={`absolute -bottom-0.5 ${end('0.5')} w-2 h-2 bg-success rounded-full border border-background`} />
-                         )}
+                        {onlineMembers.includes(member.id) && (
+                          <div className="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-background" />
+                        )}
                       </div>
                       <span className="text-sm">{member.profiles?.display_name || 'مستخدم'}</span>
                     </div>
@@ -276,12 +272,12 @@ export function TeamChatSheet({ open, onOpenChange, teamMembers }: TeamChatSheet
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    className="pe-10"
+                    className="pr-10"
                   />
                   <Button 
                     size="sm" 
                     variant="ghost" 
-                    className={`absolute ${start('2')} top-1/2 transform -translate-y-1/2`}
+                    className="absolute left-2 top-1/2 transform -translate-y-1/2"
                   >
                     <Smile className="h-4 w-4" />
                   </Button>

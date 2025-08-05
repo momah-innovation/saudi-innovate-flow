@@ -209,7 +209,7 @@ export function IdeaDetailView({
               </div>
             </div>
             <Button onClick={() => onEdit(idea)} size="sm">
-              <Edit className="w-4 h-4 me-2" />
+              <Edit className="w-4 h-4 mr-2" />
               تعديل
             </Button>
           </div>

@@ -258,7 +258,7 @@ export function IdeasManagementList({
               setSelectedIdea(null);
               setShowWizard(true);
             }}>
-              <Lightbulb className="w-4 h-4 me-2" />
+              <Lightbulb className="w-4 h-4 mr-2" />
               فكرة جديدة
             </Button>
           </div>

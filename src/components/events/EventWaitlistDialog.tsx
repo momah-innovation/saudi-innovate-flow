@@ -12,7 +12,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -46,7 +45,6 @@ export const EventWaitlistDialog = ({
   onSuccess 
 }: EventWaitlistDialogProps) => {
   const { isRTL } = useDirection();
-  const { me } = useRTLAware();
   const { toast } = useToast();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -127,7 +125,7 @@ export const EventWaitlistDialog = ({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Clock className="w-5 h-5 text-warning" />
+            <Clock className="w-5 h-5 text-orange-500" />
             {isRTL ? 'الانضمام لقائمة الانتظار' : 'Join Waitlist'}
           </DialogTitle>
           <DialogDescription>
@@ -153,12 +151,12 @@ export const EventWaitlistDialog = ({
               </div>
               
               {isFull ? (
-                <div className="flex items-center gap-2 text-destructive">
+                <div className="flex items-center gap-2 text-red-600">
                   <AlertCircle className="w-4 h-4" />
                   <span>{isRTL ? 'الفعالية ممتلئة حالياً' : 'Event is currently full'}</span>
                 </div>
               ) : (
-                <div className="flex items-center gap-2 text-warning">
+                <div className="flex items-center gap-2 text-orange-600">
                   <CheckCircle className="w-4 h-4" />
                   <span>
                     {spotsRemaining} {isRTL ? 'أماكن متبقية' : 'spots remaining'}
@@ -175,7 +173,7 @@ export const EventWaitlistDialog = ({
             </Label>
             <div className="space-y-2 text-sm text-muted-foreground">
               <div className="flex items-start gap-2">
-                <Bell className="w-4 h-4 mt-0.5 text-primary" />
+                <Bell className="w-4 h-4 mt-0.5 text-blue-500" />
                 <span>
                   {isRTL 
                     ? 'إشعار فوري عند توفر مكان'
@@ -184,7 +182,7 @@ export const EventWaitlistDialog = ({
                 </span>
               </div>
               <div className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 mt-0.5 text-success" />
+                <CheckCircle className="w-4 h-4 mt-0.5 text-green-500" />
                 <span>
                   {isRTL 
                     ? 'أولوية في التسجيل'
@@ -193,7 +191,7 @@ export const EventWaitlistDialog = ({
                 </span>
               </div>
               <div className="flex items-start gap-2">
-                <Users className="w-4 h-4 mt-0.5 text-accent" />
+                <Users className="w-4 h-4 mt-0.5 text-purple-500" />
                 <span>
                   {isRTL 
                     ? 'معرفة موقعك في قائمة الانتظار'
@@ -229,12 +227,12 @@ export const EventWaitlistDialog = ({
           <Button onClick={handleJoinWaitlist} disabled={loading}>
             {loading ? (
               <>
-                <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-white ${me('2')}`} />
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
                 {isRTL ? 'جاري الانضمام...' : 'Joining...'}
               </>
             ) : (
               <>
-                <Clock className={`w-4 h-4 ${me('2')}`} />
+                <Clock className="w-4 h-4 mr-2" />
                 {isRTL ? 'انضم لقائمة الانتظار' : 'Join Waitlist'}
               </>
             )}

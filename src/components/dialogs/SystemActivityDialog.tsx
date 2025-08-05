@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, Activity, Clock, CheckCircle, AlertTriangle, User, Database } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface SystemActivity {
   id: string;
@@ -26,7 +25,6 @@ interface SystemActivityDialogProps {
 export function SystemActivityDialog({ isOpen, onClose }: SystemActivityDialogProps) {
   const [activities, setActivities] = useState<SystemActivity[]>([]);
   const [loading, setLoading] = useState(false);
-  const { ms } = useRTLAware();
 
   useEffect(() => {
     if (isOpen) {
@@ -147,7 +145,7 @@ export function SystemActivityDialog({ isOpen, onClose }: SystemActivityDialogPr
       {loading ? (
         <div className="flex items-center justify-center py-12">
           <Loader2 className="h-8 w-8 animate-spin" />
-          <span className={ms('2')}>Loading activities...</span>
+          <span className="ml-2">Loading activities...</span>
         </div>
       ) : (
         <div className="space-y-4">

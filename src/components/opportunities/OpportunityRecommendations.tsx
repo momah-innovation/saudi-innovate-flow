@@ -3,7 +3,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Lightbulb, Clock, Target, ArrowRight } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface OpportunityRecommendationsProps {
   opportunities: any[];
@@ -11,7 +10,6 @@ interface OpportunityRecommendationsProps {
 
 export const OpportunityRecommendations = ({ opportunities }: OpportunityRecommendationsProps) => {
   const { isRTL } = useDirection();
-  const { me } = useRTLAware();
 
   if (!opportunities?.length) return null;
 
@@ -39,12 +37,12 @@ export const OpportunityRecommendations = ({ opportunities }: OpportunityRecomme
           <div key={opportunity.id} className="p-3 rounded-lg border border-muted hover:border-primary/20 transition-colors">
             <div className="space-y-2">
               <div className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                 <h4 className={`font-medium text-sm line-clamp-2 flex-1 ${isRTL ? 'text-end' : 'text-start'}`}>
-                   {opportunity.title_ar}
-                 </h4>
-                 <Badge variant="secondary" className={me('2')}>
-                   {isRTL ? 'جديد' : 'New'}
-                 </Badge>
+                <h4 className={`font-medium text-sm line-clamp-2 flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+                  {opportunity.title_ar}
+                </h4>
+                <Badge variant="secondary" className="ml-2">
+                  {isRTL ? 'جديد' : 'New'}
+                </Badge>
               </div>
               
               <div className={`flex items-center gap-2 text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>

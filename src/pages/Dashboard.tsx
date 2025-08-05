@@ -18,11 +18,9 @@ import {
   Brain
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 export default function Dashboard() {
   const { t, language, isRTL } = useTranslation();
-  const rtl = useRTLAware();
 
   const stats = [
     {
@@ -32,9 +30,9 @@ export default function Dashboard() {
       change: '+12%',
       changeType: 'increase' as const,
       icon: Target,
-      color: 'text-primary',
-      bgColor: 'bg-primary/10',
-      borderColor: 'border-primary/20'
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-50',
+      borderColor: 'border-blue-200'
     },
     {
       title: 'Submitted Ideas',
@@ -43,9 +41,9 @@ export default function Dashboard() {
       change: '+8%',
       changeType: 'increase' as const,
       icon: Lightbulb,
-      color: 'text-warning',
-      bgColor: 'bg-warning/10',
-      borderColor: 'border-warning/20'
+      color: 'text-yellow-600',
+      bgColor: 'bg-yellow-50',
+      borderColor: 'border-yellow-200'
     },
     {
       title: 'Upcoming Events',
@@ -54,9 +52,9 @@ export default function Dashboard() {
       change: '+3',
       changeType: 'increase' as const,
       icon: Calendar,
-      color: 'text-success',
-      bgColor: 'bg-success/10',
-      borderColor: 'border-success/20'
+      color: 'text-green-600',
+      bgColor: 'bg-green-50',
+      borderColor: 'border-green-200'
     },
     {
       title: 'Active Innovators',
@@ -65,9 +63,9 @@ export default function Dashboard() {
       change: '+15%',
       changeType: 'increase' as const,
       icon: Users,
-      color: 'text-accent',
-      bgColor: 'bg-accent/10',
-      borderColor: 'border-accent/20'
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-50',
+      borderColor: 'border-purple-200'
     }
   ];
 
@@ -173,11 +171,11 @@ export default function Dashboard() {
 
               <div className="flex items-center justify-center gap-4 mb-12">
                 <Button size="lg" className="px-8">
-                  <Brain className={cn("h-5 w-5", rtl.mr("2"))} />
+                  <Brain className="h-5 w-5 mr-2" />
                   {language === 'ar' ? 'ابدأ الابتكار' : 'Start Innovating'}
                 </Button>
                 <Button variant="outline" size="lg" className="px-8">
-                  <TrendingUp className={cn("h-5 w-5", rtl.mr("2"))} />
+                  <TrendingUp className="h-5 w-5 mr-2" />
                   {language === 'ar' ? 'استكشف التحديات' : 'Explore Challenges'}
                 </Button>
               </div>
@@ -224,7 +222,7 @@ export default function Dashboard() {
               </h2>
               <Button variant="ghost" size="sm">
                 {language === 'ar' ? 'عرض الكل' : 'View All'}
-                <ArrowRight className={cn("h-4 w-4", rtl.ml("2"))} />
+                <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </div>
             
@@ -261,7 +259,7 @@ export default function Dashboard() {
                   </CardTitle>
                   <Button variant="ghost" size="sm">
                     {language === 'ar' ? 'عرض الكل' : 'View All'}
-                    <ArrowRight className={cn("h-4 w-4", rtl.ml("2"))} />
+                    <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 </div>
               </CardHeader>

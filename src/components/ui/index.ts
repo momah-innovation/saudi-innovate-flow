@@ -1,5 +1,5 @@
-// Header Component (now in layout folder)
-export { Header } from '../layout/Header';
+// Header Component
+export { Header } from './header';
 
 // Core Layout Components
 export { LayoutSelector } from './layout-selector';

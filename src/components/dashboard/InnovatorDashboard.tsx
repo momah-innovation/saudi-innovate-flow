@@ -11,7 +11,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Filter, Clock, Target, AlertTriangle, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
-import { useRTLAware } from "@/hooks/useRTLAware";
 
 interface Challenge {
   id: string;
@@ -40,7 +39,6 @@ export const InnovatorDashboard = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
-  const { start, ms } = useRTLAware();
 
   useEffect(() => {
     fetchChallenges();
@@ -214,12 +212,12 @@ export const InnovatorDashboard = () => {
             <div className="space-y-2">
               <label className="text-sm font-medium">Search</label>
               <div className="relative">
-                <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground`} />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Search challenges..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className={start('10')}
+                  className="pl-10"
                 />
               </div>
             </div>
@@ -329,12 +327,12 @@ export const InnovatorDashboard = () => {
                 <div className="space-y-1 flex-1">
                   <CardTitle className="text-lg leading-tight">{challenge.title}</CardTitle>
                   {challenge.title_ar && (
-                     <CardDescription className="text-end" dir="rtl">
-                       {challenge.title_ar}
-                     </CardDescription>
+                    <CardDescription className="text-right" dir="rtl">
+                      {challenge.title_ar}
+                    </CardDescription>
                   )}
                 </div>
-                <div className={`flex items-center gap-1 ${ms('2')}`}>
+                <div className="flex items-center gap-1 ml-2">
                   {getSensitivityIcon(challenge.sensitivity_level)}
                 </div>
               </div>

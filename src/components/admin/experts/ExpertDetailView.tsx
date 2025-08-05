@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useAppTranslation";
-import { useRTLAware } from '@/hooks/useRTLAware';
 import { supabase } from "@/integrations/supabase/client";
 import { 
   User, 
@@ -35,7 +34,6 @@ export function ExpertDetailView({
 }: ExpertDetailViewProps) {
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
-  const { me } = useRTLAware();
   
   const [relatedData, setRelatedData] = useState({
     assignments: [],
@@ -120,7 +118,7 @@ export function ExpertDetailView({
               </div>
             </div>
             <Button onClick={() => onEdit(expert)} size="sm">
-              <Edit className={`w-4 h-4 ${me('2')}`} />
+              <Edit className="w-4 h-4 mr-2" />
               تعديل
             </Button>
           </div>

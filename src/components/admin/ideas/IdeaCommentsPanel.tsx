@@ -188,7 +188,7 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
   };
 
   const renderComment = (comment: Comment, level: number = 0) => (
-    <div key={comment.id} className={`${level > 0 ? 'me-6 border-e pe-4' : ''} mb-4`}>
+    <div key={comment.id} className={`${level > 0 ? 'mr-6 border-r pr-4' : ''} mb-4`}>
       <div className="flex items-start gap-3">
         <Avatar className="w-8 h-8">
           <AvatarImage src={comment.author?.profile_image_url} />
@@ -219,10 +219,10 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
               size="sm"
               onClick={() => setReplyingTo(comment.id)}
               className="text-xs h-auto p-1"
-             >
-               <Reply className="w-3 h-3 ms-1" />
-               رد
-             </Button>
+            >
+              <Reply className="w-3 h-3 ml-1" />
+              رد
+            </Button>
           </div>
           
           {/* Reply form */}
@@ -241,10 +241,10 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
                   size="sm"
                   onClick={() => handleSubmitReply(comment.id)}
                   disabled={!replyContent.trim() || submitting}
-                 >
-                   <Send className="w-4 h-4 ms-1" />
-                   إرسال الرد
-                 </Button>
+                >
+                  <Send className="w-4 h-4 ml-1" />
+                  إرسال الرد
+                </Button>
                 <Button
                   variant="outline"
                   size="sm"

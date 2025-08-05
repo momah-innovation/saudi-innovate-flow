@@ -332,7 +332,7 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
             onClick={() => setEditingList(listKey)}
             className="w-full"
           >
-            <Plus className="w-4 h-4 me-2" />
+            <Plus className="w-4 h-4 mr-2" />
             إضافة عنصر جديد
           </Button>
         )}
@@ -422,10 +422,10 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
                         size="sm"
                         onClick={() => setEditingList(listKey)}
                         className="w-full h-8"
-                        >
-                          <Plus className="w-3 h-3 me-2" />
-                          إضافة عنصر جديد
-                        </Button>
+                      >
+                        <Plus className="w-3 h-3 rtl:ml-2 ltr:mr-2" />
+                        إضافة عنصر جديد
+                      </Button>
                     )}
                   </div>
                 </AccordionContent>

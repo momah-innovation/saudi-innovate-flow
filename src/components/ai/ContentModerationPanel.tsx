@@ -20,8 +20,6 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { aiService } from '@/services/AIService';
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface ModerationLog {
   id: string;
@@ -48,8 +46,6 @@ export const ContentModerationPanel: React.FC = () => {
   const [filter, setFilter] = useState<'all' | 'flagged' | 'pending'>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
-  const { ms, start, me } = useRTLAware();
-  const { t } = useTranslation();
 
   useEffect(() => {
     fetchModerationLogs();
@@ -80,8 +76,8 @@ export const ContentModerationPanel: React.FC = () => {
     } catch (error) {
       console.error('Error fetching moderation logs:', error);
       toast({
-        title: t('error'),
-        description: t('failed_to_load_moderation_logs'),
+        title: 'خطأ',
+        description: 'فشل في تحميل سجلات الإشراف',
         variant: 'destructive',
       });
     } finally {
@@ -145,15 +141,15 @@ export const ContentModerationPanel: React.FC = () => {
 
   const getStatusIcon = (status: string, flagged: boolean) => {
     if (flagged && status === 'requires_review') {
-      return <AlertTriangle className="h-4 w-4 text-destructive" />;
+      return <AlertTriangle className="h-4 w-4 text-red-500" />;
     }
     if (status === 'approved') {
-      return <CheckCircle className="h-4 w-4 text-success" />;
+      return <CheckCircle className="h-4 w-4 text-green-500" />;
     }
     if (status === 'rejected') {
-      return <Ban className="h-4 w-4 text-destructive" />;
+      return <Ban className="h-4 w-4 text-red-500" />;
     }
-    return <Clock className="h-4 w-4 text-warning" />;
+    return <Clock className="h-4 w-4 text-yellow-500" />;
   };
 
   const getStatusColor = (status: string, flagged: boolean) => {
@@ -180,13 +176,13 @@ export const ContentModerationPanel: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-lg bg-gradient-primary flex items-center justify-center">
-          <Shield className="h-6 w-6 text-primary-foreground" />
+        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+          <Shield className="h-6 w-6 text-white" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold">{t('content_moderation')}</h1>
+          <h1 className="text-2xl font-bold">إشراف المحتوى</h1>
           <p className="text-muted-foreground">
-            {t('automated_content_checking_ai')}
+            فحص المحتوى التلقائي وضمان الجودة بالذكاء الاصطناعي
           </p>
         </div>
       </div>
@@ -196,11 +192,11 @@ export const ContentModerationPanel: React.FC = () => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <Eye className="h-4 w-4 text-primary" />
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Eye className="h-4 w-4 text-blue-600" />
               </div>
-              <div className={ms('4')}>
-                <p className="text-sm font-medium text-muted-foreground">{t('total_content')}</p>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-muted-foreground">إجمالي المحتوى</p>
                 <p className="text-2xl font-bold">{stats.total}</p>
               </div>
             </div>
@@ -210,11 +206,11 @@ export const ContentModerationPanel: React.FC = () => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <div className="p-2 bg-destructive/10 rounded-lg">
-                <AlertTriangle className="h-4 w-4 text-destructive" />
+              <div className="p-2 bg-red-100 rounded-lg">
+                <AlertTriangle className="h-4 w-4 text-red-600" />
               </div>
-              <div className={ms('4')}>
-                <p className="text-sm font-medium text-muted-foreground">{t('flagged_content')}</p>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-muted-foreground">محتوى مُبلغ عنه</p>
                 <p className="text-2xl font-bold">{stats.flagged}</p>
               </div>
             </div>
@@ -224,11 +220,11 @@ export const ContentModerationPanel: React.FC = () => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <div className="p-2 bg-warning/10 rounded-lg">
-                <Clock className="h-4 w-4 text-warning" />
+              <div className="p-2 bg-yellow-100 rounded-lg">
+                <Clock className="h-4 w-4 text-yellow-600" />
               </div>
-              <div className={ms('4')}>
-                <p className="text-sm font-medium text-muted-foreground">{t('pending_review')}</p>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-muted-foreground">في انتظار المراجعة</p>
                 <p className="text-2xl font-bold">{stats.pending}</p>
               </div>
             </div>
@@ -238,11 +234,11 @@ export const ContentModerationPanel: React.FC = () => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <div className="p-2 bg-success/10 rounded-lg">
-                <CheckCircle className="h-4 w-4 text-success" />
+              <div className="p-2 bg-green-100 rounded-lg">
+                <CheckCircle className="h-4 w-4 text-green-600" />
               </div>
-              <div className={ms('4')}>
-                <p className="text-sm font-medium text-muted-foreground">{t('approved_content')}</p>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-muted-foreground">محتوى موافق عليه</p>
                 <p className="text-2xl font-bold">{stats.approved}</p>
               </div>
             </div>
@@ -252,8 +248,8 @@ export const ContentModerationPanel: React.FC = () => {
 
       <Tabs defaultValue="logs" className="space-y-6">
         <TabsList>
-          <TabsTrigger value="logs">{t('moderation_logs')}</TabsTrigger>
-          <TabsTrigger value="test">{t('test_moderation')}</TabsTrigger>
+          <TabsTrigger value="logs">سجلات الإشراف</TabsTrigger>
+          <TabsTrigger value="test">اختبار الإشراف</TabsTrigger>
         </TabsList>
 
         <TabsContent value="logs" className="space-y-6">
@@ -261,12 +257,12 @@ export const ContentModerationPanel: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
-                <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
                   placeholder="البحث في المحتوى..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className={`${start('10')}`}
+                  className="pl-10"
                 />
               </div>
             </div>
@@ -311,12 +307,12 @@ export const ContentModerationPanel: React.FC = () => {
               </div>
             ) : filteredLogs.length === 0 ? (
               <div className="text-center py-8">
-                <Shield className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-muted-foreground">{t('no_records_to_display')}</p>
+                <Shield className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+                <p className="text-gray-500">لا توجد سجلات للعرض</p>
               </div>
             ) : (
               filteredLogs.map((log) => (
-                <Card key={log.id} className={log.flagged ? 'border-destructive/20' : ''}>
+                <Card key={log.id} className={log.flagged ? 'border-red-200' : ''}>
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -347,7 +343,7 @@ export const ContentModerationPanel: React.FC = () => {
                   <CardContent>
                     <div className="space-y-3">
                       <div>
-                        <p className="text-sm text-muted-foreground line-clamp-3">
+                        <p className="text-sm text-gray-600 line-clamp-3">
                           {log.content_text}
                         </p>
                       </div>
@@ -368,19 +364,19 @@ export const ContentModerationPanel: React.FC = () => {
                             size="sm"
                             variant="outline"
                             onClick={() => updateLogStatus(log.id, 'approved')}
-                            className="text-success hover:text-success/80"
+                            className="text-green-600 hover:text-green-700"
                           >
-                            <CheckCircle className={`h-4 w-4 ${me('1')}`} />
+                            <CheckCircle className="h-4 w-4 mr-1" />
                             موافقة
                           </Button>
                           <Button
                             size="sm"
                             variant="outline"
                             onClick={() => updateLogStatus(log.id, 'rejected')}
-                            className="text-destructive hover:text-destructive/80"
+                            className="text-red-600 hover:text-red-700"
                           >
-                            <Ban className={`h-4 w-4 ${me('1')}`} />
-                            {t('reject')}
+                            <Ban className="h-4 w-4 mr-1" />
+                            رفض
                           </Button>
                         </div>
                       )}
@@ -415,19 +411,19 @@ export const ContentModerationPanel: React.FC = () => {
               >
                 {testing ? (
                   <>
-                    <RefreshCw className={`h-4 w-4 ${me('2')} animate-spin`} />
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
                     جاري الفحص...
                   </>
                 ) : (
                   <>
-                    <Shield className={`h-4 w-4 ${me('2')}`} />
+                    <Shield className="h-4 w-4 mr-2" />
                     فحص المحتوى
                   </>
                 )}
               </Button>
 
               {testResult && (
-                <Alert className={testResult.flagged ? 'border-destructive/20' : 'border-success/20'}>
+                <Alert className={testResult.flagged ? 'border-red-200' : 'border-green-200'}>
                   <AlertTriangle className="h-4 w-4" />
                   <AlertDescription>
                     <div className="space-y-2">

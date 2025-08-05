@@ -41,8 +41,8 @@ export function IdeasManagement() {
 
   return (
     <PageLayout
-      title={t('innovative_ideas_management') || "إدارة الأفكار الابتكارية"}
-      description={t('comprehensive_ideas_system') || "نظام شامل لإدارة وتحليل الأفكار الابتكارية"}
+      title="إدارة الأفكار الابتكارية"
+      description="نظام شامل لإدارة وتحليل الأفكار الابتكارية"
       className="space-y-6"
     >
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

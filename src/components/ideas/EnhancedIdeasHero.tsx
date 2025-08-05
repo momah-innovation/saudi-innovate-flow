@@ -20,7 +20,6 @@ import {
   Rocket
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 import { cn } from '@/lib/utils';
 
 interface EnhancedIdeasHeroProps {
@@ -52,14 +51,13 @@ export const EnhancedIdeasHero = ({
   featuredIdea
 }: EnhancedIdeasHeroProps) => {
   const { isRTL } = useDirection();
-  const { me, ms, start, end } = useRTLAware();
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    { icon: Lightbulb, value: totalIdeas, label: isRTL ? 'فكرة' : 'ideas', color: 'text-warning' },
-    { icon: Award, value: publishedIdeas, label: isRTL ? 'منشورة' : 'published', color: 'text-success' },
-    { icon: Users, value: `${Math.floor(totalViews / 1000)}K+`, label: isRTL ? 'مشاهدة' : 'views', color: 'text-primary' },
-    { icon: TrendingUp, value: `${Math.floor(totalLikes / 100)}K+`, label: isRTL ? 'إعجاب' : 'likes', color: 'text-secondary' }
+    { icon: Lightbulb, value: totalIdeas, label: isRTL ? 'فكرة' : 'ideas', color: 'text-yellow-400' },
+    { icon: Award, value: publishedIdeas, label: isRTL ? 'منشورة' : 'published', color: 'text-green-400' },
+    { icon: Users, value: `${Math.floor(totalViews / 1000)}K+`, label: isRTL ? 'مشاهدة' : 'views', color: 'text-blue-400' },
+    { icon: TrendingUp, value: `${Math.floor(totalLikes / 100)}K+`, label: isRTL ? 'إعجاب' : 'likes', color: 'text-pink-400' }
   ];
 
   useEffect(() => {
@@ -79,9 +77,9 @@ export const EnhancedIdeasHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className={cn("absolute -top-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse", end("-40"))} />
-        <div className={cn("absolute -bottom-40 w-96 h-96 bg-warning/5 rounded-full blur-3xl animate-pulse delay-1000", start("-40"))} />
-        <div className={cn("absolute top-20 w-64 h-64 bg-warning/5 rounded-full blur-2xl animate-bounce", start("1/3"))} />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-20 left-1/3 w-64 h-64 bg-orange-400/5 rounded-full blur-2xl animate-bounce" />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -92,12 +90,12 @@ export const EnhancedIdeasHero = ({
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <Sparkles className="w-6 h-6 text-warning/70" />
+                  <Sparkles className="w-6 h-6 text-yellow-300" />
                 </div>
-                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
-                   <Star className={cn("w-3 h-3", me("1"))} />
-                   {isRTL ? 'منصة الأفكار الإبداعية' : 'Creative Ideas Platform'}
-                 </Badge>
+                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                  <Star className="w-3 h-3 mr-1" />
+                  {isRTL ? 'منصة الأفكار الإبداعية' : 'Creative Ideas Platform'}
+                </Badge>
               </div>
               
               <div className="space-y-4">
@@ -154,27 +152,27 @@ export const EnhancedIdeasHero = ({
                   size="lg"
                   className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
-                   <Plus className={cn("w-5 h-5", me("2"))} />
-                   {isRTL ? 'إضافة فكرة جديدة' : 'Submit New Idea'}
-                 </Button>
-               )}
-               
-               <Button
-                 onClick={onShowFilters}
-                 variant="outline"
-                 size="lg"
-                 className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
-               >
-                 <Filter className={cn("w-5 h-5", me("2"))} />
-                 {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
-               </Button>
+                  <Plus className="w-5 h-5 mr-2" />
+                  {isRTL ? 'إضافة فكرة جديدة' : 'Submit New Idea'}
+                </Button>
+              )}
+              
+              <Button
+                onClick={onShowFilters}
+                variant="outline"
+                size="lg"
+                className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
+              >
+                <Filter className="w-5 h-5 mr-2" />
+                {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
+              </Button>
 
-               <Button
-                 variant="ghost"
-                 size="lg"
-                 className="text-white hover:bg-white/10"
-               >
-                 <Play className={cn("w-5 h-5", me("2"))} />
+              <Button
+                variant="ghost"
+                size="lg"
+                className="text-white hover:bg-white/10"
+              >
+                <Play className="w-5 h-5 mr-2" />
                 {isRTL ? 'شاهد الفيديو' : 'Watch Demo'}
               </Button>
             </div>
@@ -199,19 +197,19 @@ export const EnhancedIdeasHero = ({
                       </div>
                     )}
                     
-                     <div className={cn("absolute top-4", start("4"))}>
-                       <Badge className="bg-warning/90 text-warning-foreground border-0 animate-pulse">
-                         <Star className={cn("w-3 h-3", me("1"))} />
-                         {isRTL ? 'فكرة مميزة' : 'Featured'}
-                       </Badge>
-                     </div>
+                    <div className="absolute top-4 left-4">
+                      <Badge className="bg-yellow-500/90 text-white border-0 animate-pulse">
+                        <Star className="w-3 h-3 mr-1" />
+                        {isRTL ? 'فكرة مميزة' : 'Featured'}
+                      </Badge>
+                    </div>
 
-                     <div className={cn("absolute top-4", end("4"))}>
-                       <Badge className="bg-warning/90 text-white border-0">
-                         <TrendingUp className={cn("w-3 h-3", me("1"))} />
-                         {isRTL ? 'رائجة' : 'Trending'}
-                       </Badge>
-                     </div>
+                    <div className="absolute top-4 right-4">
+                      <Badge className="bg-orange-500/90 text-white border-0">
+                        <TrendingUp className="w-3 h-3 mr-1" />
+                        {isRTL ? 'رائجة' : 'Trending'}
+                      </Badge>
+                    </div>
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   </div>
@@ -223,13 +221,13 @@ export const EnhancedIdeasHero = ({
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-primary/70">
+                        <div className="text-2xl font-bold text-blue-300">
                           {featuredIdea.views}
                         </div>
                         <div className="text-sm text-white/70">{isRTL ? 'مشاهدة' : 'views'}</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-secondary">
+                        <div className="text-2xl font-bold text-pink-300">
                           {featuredIdea.likes}
                         </div>
                         <div className="text-sm text-white/70">{isRTL ? 'إعجاب' : 'likes'}</div>
@@ -248,8 +246,8 @@ export const EnhancedIdeasHero = ({
                     <Button 
                       className="w-full bg-gradient-primary hover:opacity-90 text-white"
                     >
-                       {isRTL ? 'اعرض التفاصيل' : 'View Details'}
-                       <ArrowRight className={cn("w-4 h-4", ms("2"))} />
+                      {isRTL ? 'اعرض التفاصيل' : 'View Details'}
+                      <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </div>
                 </CardContent>
@@ -272,7 +270,7 @@ export const EnhancedIdeasHero = ({
             <div className="grid grid-cols-2 gap-4">
               <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <Rocket className="w-8 h-8 text-warning mx-auto mb-2" />
+                  <Rocket className="w-8 h-8 text-orange-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
                     {isRTL ? 'الأفكار الجديدة' : 'New Ideas'}
                   </div>
@@ -284,7 +282,7 @@ export const EnhancedIdeasHero = ({
 
               <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <Target className="w-8 h-8 text-warning mx-auto mb-2" />
+                  <Target className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
                     {isRTL ? 'قيد التطوير' : 'In Development'}
                   </div>

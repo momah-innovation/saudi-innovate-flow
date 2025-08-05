@@ -39,8 +39,6 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { cn } from '@/lib/utils';
 
 interface EventFormData {
   id?: string;
@@ -141,7 +139,6 @@ export const ComprehensiveEventWizard = ({
   const { isRTL } = useDirection();
   const { toast } = useToast();
   const { user } = useAuth();
-  const { end, me } = useRTLAware();
   const [activeTab, setActiveTab] = useState('basic');
   const [formData, setFormData] = useState<EventFormData>(initialFormData);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -464,7 +461,7 @@ export const ComprehensiveEventWizard = ({
                         <Button
                           variant="destructive"
                           size="sm"
-                          className={cn("absolute top-2", end('2'))}
+                          className="absolute top-2 right-2"
                           onClick={() => {
                             setImagePreview('');
                             setFormData(prev => ({ ...prev, image_url: '' }));
@@ -479,7 +476,7 @@ export const ComprehensiveEventWizard = ({
                         <div>
                           <Button variant="outline" asChild>
                             <label htmlFor="image-upload" className="cursor-pointer">
-                              <Upload className={`w-4 h-4 ${me('2')}`} />
+                              <Upload className="w-4 h-4 mr-2" />
                               {isRTL ? 'رفع صورة' : 'Upload Image'}
                             </label>
                           </Button>
@@ -1000,7 +997,7 @@ export const ComprehensiveEventWizard = ({
                           </p>
                         </div>
                         <Button variant="outline" size="sm">
-                          <Plus className={`w-4 h-4 ${me('2')}`} />
+                          <Plus className="w-4 h-4 mr-2" />
                           {isRTL ? 'اختر الملفات' : 'Choose Files'}
                         </Button>
                       </div>

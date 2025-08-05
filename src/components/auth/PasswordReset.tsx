@@ -8,8 +8,6 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { useTranslation } from '@/hooks/useAppTranslation';
 
 export const PasswordReset = () => {
   const [email, setEmail] = useState('');
@@ -17,16 +15,14 @@ export const PasswordReset = () => {
   const [isEmailSent, setIsEmailSent] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { start, ps } = useRTLAware();
-  const { t } = useTranslation();
 
   const handlePasswordReset = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!email) {
       toast({
-        title: t('validation_error'),
-        description: t('please_enter_email'),
+        title: "خطأ في التحقق",
+        description: "يرجى إدخال البريد الإلكتروني",
         variant: "destructive",
       });
       return;
@@ -41,7 +37,7 @@ export const PasswordReset = () => {
 
       if (error) {
         toast({
-          title: t('password_reset_error'),
+          title: "خطأ في إعادة تعيين كلمة المرور",
           description: error.message,
           variant: "destructive",
         });
@@ -50,8 +46,8 @@ export const PasswordReset = () => {
 
       setIsEmailSent(true);
       toast({
-        title: t('sent_successfully'),
-        description: t('reset_link_sent_to_email'),
+        title: "تم الإرسال بنجاح",
+        description: "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني",
       });
     } catch (error: any) {
       toast({
@@ -69,8 +65,8 @@ export const PasswordReset = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
         <Card className="w-full max-w-md border-0 shadow-2xl backdrop-blur-sm bg-card/80">
           <CardHeader className="text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center mx-auto">
-              <CheckCircle className="h-8 w-8 text-success" />
+            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
+              <CheckCircle className="h-8 w-8 text-green-600" />
             </div>
             <CardTitle className="text-2xl">تم الإرسال</CardTitle>
             <CardDescription>
@@ -109,7 +105,7 @@ export const PasswordReset = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
       {/* Back to Auth Button */}
-      <div className={`fixed top-4 ${start('4')} z-50`}>
+      <div className="fixed top-4 left-4 z-50">
         <Button
           variant="ghost"
           size="sm"
@@ -124,11 +120,11 @@ export const PasswordReset = () => {
       <Card className="w-full max-w-md border-0 shadow-2xl backdrop-blur-sm bg-card/80">
         <CardHeader className="text-center space-y-4">
           <div className="w-16 h-16 rounded-xl bg-gradient-primary flex items-center justify-center mx-auto">
-            <Mail className="h-8 w-8 text-primary-foreground" />
+            <Mail className="h-8 w-8 text-white" />
           </div>
-          <CardTitle className="text-2xl">{t('reset_password')}</CardTitle>
+          <CardTitle className="text-2xl">إعادة تعيين كلمة المرور</CardTitle>
           <CardDescription>
-            {t('enter_email_reset_instructions')}
+            أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور
           </CardDescription>
         </CardHeader>
 
@@ -137,12 +133,12 @@ export const PasswordReset = () => {
             <div className="space-y-2">
               <Label htmlFor="email">البريد الإلكتروني</Label>
               <div className="relative">
-                <Mail className={`absolute ${start('3')} top-3 h-4 w-4 text-muted-foreground`} />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="email"
                   type="email"
                   placeholder="أدخل بريدك الإلكتروني"
-                  className={ps('10')}
+                  className="pl-10"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -152,10 +148,10 @@ export const PasswordReset = () => {
 
             <Button
               type="submit"
-              className="w-full h-11 bg-gradient-primary hover:opacity-90 text-primary-foreground"
+              className="w-full h-11 bg-gradient-primary hover:opacity-90 text-white"
               disabled={isLoading}
             >
-              {isLoading ? t('sending') : t('send_reset_link')}
+              {isLoading ? "جارٍ الإرسال..." : "إرسال رابط إعادة التعيين"}
             </Button>
           </form>
         </CardContent>

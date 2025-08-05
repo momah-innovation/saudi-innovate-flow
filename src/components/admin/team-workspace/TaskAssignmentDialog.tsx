@@ -11,7 +11,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
 import { Calendar, Clock, User, Target, Flag, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface TaskAssignmentDialogProps {
   open: boolean;
@@ -26,7 +25,6 @@ export function TaskAssignmentDialog({
   teamMembers, 
   selectedMember 
 }: TaskAssignmentDialogProps) {
-  const { t } = useTranslation();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     title: '',
@@ -48,8 +46,8 @@ export function TaskAssignmentDialog({
     try {
       const assignee = teamMembers.find(m => m.id === formData.assigneeId);
       toast({
-        title: t('task_created_successfully'),
-        description: t('task_assigned_to_member', { name: assignee?.profiles?.display_name, title: formData.title }),
+        title: "تم إنشاء المهمة بنجاح",
+        description: `تم تكليف ${assignee?.profiles?.display_name} بمهمة: ${formData.title}`,
       });
       onOpenChange(false);
       // Reset form
@@ -66,8 +64,8 @@ export function TaskAssignmentDialog({
       });
     } catch (error) {
       toast({
-        title: t('error'),
-        description: t('failed_to_create_task'),
+        title: "خطأ",
+        description: "فشل في إنشاء المهمة",
         variant: "destructive",
       });
     }
@@ -92,10 +90,10 @@ export function TaskAssignmentDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Target className="h-5 w-5" />
-            {t('assign_new_task')}
+            تكليف مهمة جديدة
           </DialogTitle>
           <DialogDescription>
-            {t('create_assign_task_description')}
+            قم بإنشاء وتكليف مهمة جديدة لأحد أعضاء الفريق
           </DialogDescription>
         </DialogHeader>
 
@@ -320,14 +318,14 @@ export function TaskAssignmentDialog({
 
             {/* Workload Warning */}
             {selectedMemberData && (selectedMemberData.current_workload || 65) > 80 && (
-              <Card className="border-warning/20 bg-warning/5">
+              <Card className="border-yellow-200 bg-yellow-50">
                 <CardContent className="p-4">
-                  <div className="flex items-center gap-2 text-warning">
+                  <div className="flex items-center gap-2 text-yellow-700">
                     <Flag className="h-4 w-4" />
-                    <span className="text-sm font-medium">{t('workload_warning')}</span>
+                    <span className="text-sm font-medium">تنبيه عبء العمل</span>
                   </div>
-                  <p className="text-sm text-warning mt-1">
-                    {t('high_workload_warning')}
+                  <p className="text-sm text-yellow-600 mt-1">
+                    هذا العضو لديه عبء عمل عالي حالياً. قد يؤثر ذلك على الأداء.
                   </p>
                 </CardContent>
               </Card>
@@ -337,14 +335,14 @@ export function TaskAssignmentDialog({
 
         <div className="flex justify-between">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            {t('cancel')}
+            إلغاء
           </Button>
           <Button 
             onClick={handleCreateTask}
             disabled={!formData.title || !formData.assigneeId}
           >
-            <Target className="h-4 w-4 me-2" />
-            {t('create_task')}
+            <Target className="h-4 w-4 mr-2" />
+            إنشاء المهمة
           </Button>
         </div>
       </DialogContent>

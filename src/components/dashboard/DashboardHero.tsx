@@ -10,7 +10,6 @@ import {
 import { useTranslation } from '@/hooks/useAppTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface DashboardHeroProps {
   userProfile?: any;
@@ -35,7 +34,6 @@ export const DashboardHero = ({
   const { t, language } = useTranslation();
   const { isRTL } = useDirection();
   const [currentStat, setCurrentStat] = useState(0);
-  const { end, start, me } = useRTLAware();
 
   // Role-based configurations
   const getRoleConfig = () => {
@@ -98,9 +96,9 @@ export const DashboardHero = ({
           icon: Lightbulb,
           stats: [
             { icon: Lightbulb, value: stats.totalIdeas.toString(), label: language === 'ar' ? 'أفكاري' : 'My Ideas', color: 'text-primary-foreground' },
-            { icon: Target, value: stats.activeChallenges.toString(), label: language === 'ar' ? 'التحديات' : 'Challenges', color: 'text-primary-foreground' },
-            { icon: Award, value: stats.totalPoints.toString(), label: language === 'ar' ? 'النقاط' : 'Points', color: 'text-primary-foreground' },
-            { icon: Trophy, value: `${stats.innovationScore}%`, label: language === 'ar' ? 'نتيجة الابتكار' : 'Innovation Score', color: 'text-primary-foreground' },
+            { icon: Target, value: stats.activeChallenges.toString(), label: language === 'ar' ? 'التحديات' : 'Challenges', color: 'text-white' },
+            { icon: Award, value: stats.totalPoints.toString(), label: language === 'ar' ? 'النقاط' : 'Points', color: 'text-white' },
+            { icon: Trophy, value: `${stats.innovationScore}%`, label: language === 'ar' ? 'نتيجة الابتكار' : 'Innovation Score', color: 'text-white' },
           ],
           actions: [
             { title: language === 'ar' ? 'تصفح التحديات' : 'Browse Challenges', path: '/challenges', icon: Target },
@@ -130,8 +128,8 @@ export const DashboardHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-         <div className={`absolute -top-40 -${end('40')} w-80 h-80 bg-hero-overlay-light/5 rounded-full blur-3xl animate-pulse`} />
-        <div className={`absolute -bottom-40 -${start('40')} w-96 h-96 bg-hero-overlay-light/10 rounded-full blur-3xl animate-pulse delay-1000`} />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000" />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -140,30 +138,30 @@ export const DashboardHero = ({
           <div className="space-y-8">
             {/* Header with role-specific styling */}
             <div className="space-y-6">
-               <div className="flex items-center gap-3">
-                <div className="p-3 bg-hero-overlay-light/10 backdrop-blur-sm rounded-xl border border-hero-border/20">
-                  <roleConfig.icon className="w-6 h-6 text-hero-text" />
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                  <roleConfig.icon className="w-6 h-6 text-white" />
                 </div>
-                <Badge variant="secondary" className="bg-hero-overlay-light/10 text-hero-text border-hero-border/20 backdrop-blur-sm">
-                  <Star className={`w-3 h-3 ${me('1')}`} />
+                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                  <Star className="w-3 h-3 mr-1" />
                   {roleConfig.title}
                 </Badge>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-hero-text leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   {language === 'ar' ? (
                     <>
-                      مرحباً <span className="text-hero-accent">{userProfile?.display_name || 'المستخدم'}</span>
+                      مرحباً <span className="text-yellow-300">{userProfile?.display_name || 'المستخدم'}</span>
                     </>
                   ) : (
                     <>
-                      Welcome <span className="text-hero-accent">{userProfile?.display_name || 'User'}</span>
+                      Welcome <span className="text-yellow-300">{userProfile?.display_name || 'User'}</span>
                     </>
                   )}
                 </h1>
                 
-                <p className="text-xl text-hero-text-muted max-w-2xl leading-relaxed">
+                <p className="text-xl text-white/80 max-w-2xl leading-relaxed">
                   {roleConfig.subtitle}
                 </p>
               </div>
@@ -179,14 +177,14 @@ export const DashboardHero = ({
                   <Card 
                     key={index}
                     className={cn(
-                      "bg-hero-overlay-light/5 backdrop-blur-sm border-hero-border/10 transition-all duration-500",
-                      isActive && "bg-hero-overlay-light/10 border-hero-border/20 scale-105"
+                      "bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-500",
+                      isActive && "bg-white/10 border-white/20 scale-105"
                     )}
                   >
                     <CardContent className="p-4 text-center">
-                      <Icon className="w-6 h-6 mx-auto mb-2 text-hero-text" />
-                      <div className="text-2xl font-bold text-hero-text">{stat.value}</div>
-                      <div className="text-sm text-hero-text-muted">{stat.label}</div>
+                      <Icon className="w-6 h-6 mx-auto mb-2 text-white" />
+                      <div className="text-2xl font-bold text-white">{stat.value}</div>
+                      <div className="text-sm text-white/70">{stat.label}</div>
                     </CardContent>
                   </Card>
                 );
@@ -199,13 +197,13 @@ export const DashboardHero = ({
                 <button
                   key={index}
                   onClick={() => onNavigate(action.path)}
-                  className="flex items-center gap-3 p-4 bg-hero-overlay-light/10 backdrop-blur-sm rounded-lg border border-hero-border/20 hover:bg-hero-overlay-light/20 transition-all"
+                  className="flex items-center gap-3 p-4 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 hover:bg-white/20 transition-all"
                 >
-                  <div className="w-10 h-10 bg-hero-overlay-light/20 rounded-lg flex items-center justify-center">
-                    <action.icon className="w-5 h-5 text-hero-text" />
+                  <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                    <action.icon className="w-5 h-5 text-white" />
                   </div>
-                  <div className="text-start">
-                    <h3 className="font-semibold text-sm text-hero-text">{action.title}</h3>
+                  <div className="text-left">
+                    <h3 className="font-semibold text-sm text-white">{action.title}</h3>
                   </div>
                 </button>
               ))}
@@ -216,82 +214,82 @@ export const DashboardHero = ({
           {(userRole === 'admin' || userRole === 'super_admin') && (
             <div className="space-y-6">
               {/* System Health Card */}
-              <Card className="bg-hero-overlay-light/10 backdrop-blur-xl border-hero-border/20 shadow-2xl">
+              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
                 <CardContent className="p-6 space-y-4">
                   <div className="flex items-center gap-2 mb-4">
-                    <Server className="w-5 h-5 text-hero-text" />
-                    <h3 className="text-lg font-bold text-hero-text">
+                    <Server className="w-5 h-5 text-white" />
+                    <h3 className="text-lg font-bold text-white">
                       {language === 'ar' ? 'حالة النظام' : 'System Health'}
                     </h3>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                     <div className="text-center p-3 bg-success/30 rounded-lg border border-success/50 backdrop-blur-sm">
-                       <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
-                         <CheckCircle className="w-4 h-4 text-hero-text" />
-                       </div>
-                       <p className="text-xs font-medium text-hero-text">{language === 'ar' ? 'واجهة البرمجة' : 'API'}</p>
-                       <p className="text-xs text-success-foreground/80">{language === 'ar' ? 'متاح' : 'Online'}</p>
-                     </div>
-                     
-                     <div className="text-center p-3 bg-success/30 rounded-lg border border-success/50 backdrop-blur-sm">
-                       <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
-                         <Wifi className="w-4 h-4 text-hero-text" />
-                       </div>
-                        <p className="text-xs font-medium text-hero-text">{language === 'ar' ? 'الشبكة' : 'Network'}</p>
-                       <p className="text-xs text-success-foreground/80">{language === 'ar' ? 'مستقر' : 'Stable'}</p>
-                     </div>
+                    <div className="text-center p-3 bg-green-500/30 rounded-lg border border-green-400/50 backdrop-blur-sm">
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <CheckCircle className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'واجهة البرمجة' : 'API'}</p>
+                      <p className="text-xs text-green-200">{language === 'ar' ? 'متاح' : 'Online'}</p>
+                    </div>
                     
-                     <div className="text-center p-3 bg-warning/30 rounded-lg border border-warning/50 backdrop-blur-sm">
-                       <div className="w-8 h-8 bg-warning rounded-full flex items-center justify-center mx-auto mb-2">
-                         <AlertCircle className="w-4 w-4 text-primary-foreground" />
-                       </div>
-                       <p className="text-xs font-medium text-hero-text">{language === 'ar' ? 'التخزين' : 'Storage'}</p>
-                       <p className="text-xs text-warning-foreground/80">68%</p>
-                     </div>
+                    <div className="text-center p-3 bg-green-500/30 rounded-lg border border-green-400/50 backdrop-blur-sm">
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <Wifi className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'الشبكة' : 'Network'}</p>
+                      <p className="text-xs text-green-200">{language === 'ar' ? 'مستقر' : 'Stable'}</p>
+                    </div>
                     
-                     <div className="text-center p-3 bg-success/30 rounded-lg border border-success/50 backdrop-blur-sm">
-                       <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center mx-auto mb-2">
-                         <Shield className="w-4 h-4 text-primary-foreground" />
-                       </div>
-                       <p className="text-xs font-medium text-hero-text">{language === 'ar' ? 'الأمان' : 'Security'}</p>
-                       <p className="text-xs text-success-foreground/80">{language === 'ar' ? 'محمي' : 'Secure'}</p>
-                     </div>
+                    <div className="text-center p-3 bg-orange-500/30 rounded-lg border border-orange-400/50 backdrop-blur-sm">
+                      <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <AlertCircle className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'التخزين' : 'Storage'}</p>
+                      <p className="text-xs text-orange-200">68%</p>
+                    </div>
+                    
+                    <div className="text-center p-3 bg-green-500/30 rounded-lg border border-green-400/50 backdrop-blur-sm">
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <Shield className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-xs font-medium text-white">{language === 'ar' ? 'الأمان' : 'Security'}</p>
+                      <p className="text-xs text-green-200">{language === 'ar' ? 'محمي' : 'Secure'}</p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
 
               {/* Resource Usage Card */}
-              <Card className="bg-hero-overlay-light/10 backdrop-blur-xl border-hero-border/20 shadow-2xl">
+              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
                 <CardContent className="p-6 space-y-4">
                   <div className="flex items-center gap-2 mb-4">
-                    <Activity className="w-5 h-5 text-hero-text" />
-                    <h3 className="text-lg font-bold text-hero-text">
+                    <Activity className="w-5 h-5 text-white" />
+                    <h3 className="text-lg font-bold text-white">
                       {language === 'ar' ? 'استخدام الموارد' : 'Resource Usage'}
                     </h3>
                   </div>
                   <div className="space-y-3">
                     <div>
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-hero-text-muted">{language === 'ar' ? 'ملفات النظام' : 'System Files'}</span>
-                        <span className="text-sm font-medium text-hero-text">2,847</span>
+                        <span className="text-sm text-white/80">{language === 'ar' ? 'ملفات النظام' : 'System Files'}</span>
+                        <span className="text-sm font-medium text-white">2,847</span>
                       </div>
-                      <Progress value={65} className="h-2 bg-hero-overlay-light/20 [&>div]:bg-gradient-primary" />
+                      <Progress value={65} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
                     </div>
                     
                     <div>
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-hero-text-muted">{language === 'ar' ? 'أحداث الأمان' : 'Security Events'}</span>
-                        <span className="text-sm font-medium text-hero-text">12</span>
+                        <span className="text-sm text-white/80">{language === 'ar' ? 'أحداث الأمان' : 'Security Events'}</span>
+                        <span className="text-sm font-medium text-white">12</span>
                       </div>
-                      <Progress value={20} className="h-2 bg-hero-overlay-light/20 [&>div]:bg-gradient-primary" />
+                      <Progress value={20} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-green-500" />
                     </div>
                     
                     <div>
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-hero-text-muted">{language === 'ar' ? 'مساحة التخزين' : 'Storage Space'}</span>
-                        <span className="text-sm font-medium text-hero-text">1.2 GB</span>
+                        <span className="text-sm text-white/80">{language === 'ar' ? 'مساحة التخزين' : 'Storage Space'}</span>
+                        <span className="text-sm font-medium text-white">1.2 GB</span>
                       </div>
-                      <Progress value={68} className="h-2 bg-hero-overlay-light/20 [&>div]:bg-gradient-to-r [&>div]:from-orange-400 [&>div]:to-orange-500" />
+                      <Progress value={68} className="h-2 bg-white/20 [&>div]:bg-gradient-to-r [&>div]:from-orange-400 [&>div]:to-orange-500" />
                     </div>
                   </div>
                 </CardContent>
@@ -302,33 +300,33 @@ export const DashboardHero = ({
           {/* Progress Section - Only for innovators */}
           {userRole === 'innovator' && (
             <div className="space-y-6">
-              <Card className="bg-hero-overlay-light/10 backdrop-blur-xl border-hero-border/20 shadow-2xl">
+              <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
                 <CardContent className="p-6 space-y-6">
                   <div className="text-center">
-                    <h3 className="text-xl font-bold text-hero-text mb-2">
+                    <h3 className="text-xl font-bold text-white mb-2">
                       {language === 'ar' ? 'مستوى الابتكار' : 'Innovation Level'}
                     </h3>
-                    <div className="text-3xl font-bold text-hero-accent mb-4">
+                    <div className="text-3xl font-bold text-yellow-300 mb-4">
                       {stats.innovationScore}%
                     </div>
                     <Progress 
                       value={stats.innovationScore} 
-                      className="h-3 bg-hero-overlay-light/20"
+                      className="h-3 bg-white/20"
                     />
                   </div>
 
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-hero-text-muted">{language === 'ar' ? 'أفكار مقدمة' : 'Ideas Submitted'}</span>
-                      <span className="text-hero-text font-semibold">{stats.totalIdeas}</span>
+                      <span className="text-white/80">{language === 'ar' ? 'أفكار مقدمة' : 'Ideas Submitted'}</span>
+                      <span className="text-white font-semibold">{stats.totalIdeas}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-hero-text-muted">{language === 'ar' ? 'نقاط مكتسبة' : 'Points Earned'}</span>
-                      <span className="text-hero-text font-semibold">{stats.totalPoints}</span>
+                      <span className="text-white/80">{language === 'ar' ? 'نقاط مكتسبة' : 'Points Earned'}</span>
+                      <span className="text-white font-semibold">{stats.totalPoints}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-hero-text-muted">{language === 'ar' ? 'تحديات نشطة' : 'Active Challenges'}</span>
-                      <span className="text-hero-text font-semibold">{stats.activeChallenges}</span>
+                      <span className="text-white/80">{language === 'ar' ? 'تحديات نشطة' : 'Active Challenges'}</span>
+                      <span className="text-white font-semibold">{stats.activeChallenges}</span>
                     </div>
                   </div>
                 </CardContent>

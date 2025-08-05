@@ -12,7 +12,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface UserInvitationWizardProps {
   open: boolean;
@@ -25,7 +24,6 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
   const { toast } = useToast();
   const { availableUserRoles } = useSystemLists();
   const [loading, setLoading] = useState(false);
-  const { me } = useRTLAware();
   const [formData, setFormData] = useState({
     email: '',
     name: '',
@@ -259,7 +257,7 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
               onClick={handleSendInvitation}
               disabled={loading || !formData.email || !formData.name}
             >
-              {loading && <Send className={`h-4 w-4 animate-spin ${me('2')}`} />}
+              {loading && <Send className="h-4 w-4 animate-spin mr-2" />}
               Send Invitation
             </Button>
           </div>

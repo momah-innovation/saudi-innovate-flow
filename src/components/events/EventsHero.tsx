@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CalendarIcon, Users, MapPin, TrendingUp, Plus, Filter } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface EventsHeroProps {
   totalEvents: number;
@@ -22,14 +21,13 @@ export const EventsHero = ({
   canCreateEvent = true
 }: EventsHeroProps) => {
   const { isRTL } = useDirection();
-  const { me, start, end } = useRTLAware();
 
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-primary/20 via-primary/5 to-background rounded-xl p-8 mb-8 border">
       {/* Dynamic Background with Animation */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-primary/10 animate-pulse" />
-        <div className={`absolute top-0 ${start('0')} w-full h-full opacity-30 bg-repeat`} 
+        <div className="absolute top-0 left-0 w-full h-full opacity-30 bg-repeat" 
              style={{
                backgroundImage: "url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23000\" fill-opacity=\"0.1\"%3E%3Cpath d=\"M30 30m-10 0a10 10 0 1 1 20 0a10 10 0 1 1 -20 0\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')"
              }} 
@@ -45,7 +43,7 @@ export const EventsHero = ({
                 <div className="p-4 bg-primary/10 rounded-full ring-4 ring-primary/5">
                   <CalendarIcon className="w-10 h-10 text-primary" />
                 </div>
-                <div className={`absolute -top-1 ${end('-1')} w-4 h-4 bg-orange-500 rounded-full animate-pulse`} />
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-orange-500 rounded-full animate-pulse" />
               </div>
               <div>
                 <h1 className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
@@ -65,10 +63,10 @@ export const EventsHero = ({
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <CalendarIcon className="w-6 h-6 text-primary-foreground" />
+                    <CalendarIcon className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
+                    <div className="text-2xl font-bold text-foreground group-hover:text-blue-600 transition-colors">
                       {totalEvents}
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -81,10 +79,10 @@ export const EventsHero = ({
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <TrendingUp className="w-6 h-6 text-primary-foreground" />
+                    <TrendingUp className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-success transition-colors">
+                    <div className="text-2xl font-bold text-foreground group-hover:text-green-600 transition-colors">
                       {upcomingEvents}
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -97,10 +95,10 @@ export const EventsHero = ({
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <Users className="w-6 h-6 text-primary-foreground" />
+                    <Users className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-warning transition-colors">
+                    <div className="text-2xl font-bold text-foreground group-hover:text-orange-600 transition-colors">
                       {todayEvents}
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -113,10 +111,10 @@ export const EventsHero = ({
               <div className="group bg-background/90 backdrop-blur-sm rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-gradient-primary rounded-lg shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                    <MapPin className="w-6 h-6 text-primary-foreground" />
+                    <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-foreground group-hover:text-accent transition-colors">
+                    <div className="text-2xl font-bold text-foreground group-hover:text-purple-600 transition-colors">
                       12
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -167,7 +165,7 @@ export const EventsHero = ({
               variant="secondary" 
               className="hover:bg-primary hover:text-primary-foreground cursor-pointer transition-all duration-300 hover:scale-105 px-4 py-2 text-sm shadow-sm"
             >
-              <span className={me('2')}>{tag.icon}</span>
+              <span className="mr-2">{tag.icon}</span>
               {tag.label}
             </Badge>
           ))}

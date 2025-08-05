@@ -17,7 +17,6 @@ import { challengesPageConfig } from '@/config/challengesPageConfig';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface ChallengeCommentsDialogProps {
   open: boolean;
@@ -32,7 +31,6 @@ export function ChallengeCommentsDialog({
 }: ChallengeCommentsDialogProps) {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { ms, ps, me } = useRTLAware();
   const [comments, setComments] = useState<any[]>([]);
   const [newComment, setNewComment] = useState('');
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
@@ -218,7 +216,7 @@ export function ChallengeCommentsDialog({
   };
 
   const renderComment = (comment: any, isReply = false) => (
-    <div key={comment.id} className={`space-y-3 ${isReply ? `${ms('8')} ${ps('4')} border-l-2 border-muted` : ''}`}>
+    <div key={comment.id} className={`space-y-3 ${isReply ? 'ml-8 pl-4 border-l-2 border-muted' : ''}`}>
       <div className="flex gap-3">
         <Avatar className="h-8 w-8">
           <AvatarImage src={comment.profiles?.profile_image_url} />
@@ -234,13 +232,13 @@ export function ChallengeCommentsDialog({
             </span>
             {comment.is_expert_comment && (
               <Badge variant="secondary" className="text-xs">
-                <Star className={`h-3 w-3 ${me('1')}`} />
+                <Star className="h-3 w-3 mr-1" />
                 خبير
               </Badge>
             )}
             {comment.is_pinned && (
               <Badge variant="outline" className="text-xs">
-                <Pin className={`h-3 w-3 ${me('1')}`} />
+                <Pin className="h-3 w-3 mr-1" />
                 مثبت
               </Badge>
             )}
@@ -258,7 +256,7 @@ export function ChallengeCommentsDialog({
               onClick={() => handleLikeComment(comment.id)}
               className="h-auto p-1 text-xs"
             >
-              <ThumbsUp className={`h-3 w-3 ${me('1')}`} />
+              <ThumbsUp className="h-3 w-3 mr-1" />
               {comment.likes_count || 0}
             </Button>
             
@@ -269,7 +267,7 @@ export function ChallengeCommentsDialog({
                 onClick={() => setReplyingTo(comment.id)}
                 className="h-auto p-1 text-xs"
               >
-                <Reply className={`h-3 w-3 ${me('1')}`} />
+                <Reply className="h-3 w-3 mr-1" />
                 رد
               </Button>
             )}
@@ -281,7 +279,7 @@ export function ChallengeCommentsDialog({
                 onClick={() => handleDeleteComment(comment.id)}
                 className={`h-auto p-1 text-xs ${challengesPageConfig.ui.colors.stats.red} hover:${challengesPageConfig.ui.colors.stats.red.replace('500', '600')}`}
               >
-                <Trash2 className={`h-3 w-3 ${me('1')}`} />
+                <Trash2 className="h-3 w-3 mr-1" />
                 حذف
               </Button>
             )}
@@ -381,7 +379,7 @@ export function ChallengeCommentsDialog({
                 challengesPageConfig.ui.effects.hoverScale
               )}
             >
-              <Send className={`h-4 w-4 ${me('2')}`} />
+              <Send className="h-4 w-4 mr-2" />
               إرسال التعليق
             </Button>
           </div>

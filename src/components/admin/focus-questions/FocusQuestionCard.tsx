@@ -2,8 +2,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from "@/hooks/useAppTranslation";
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { RTLFlex } from '@/components/ui/rtl-layout';
 import { 
   HelpCircle, 
   Target, 
@@ -59,7 +57,6 @@ export function FocusQuestionCard({
   compact = false 
 }: FocusQuestionCardProps) {
   const { t, isRTL, getDynamicText } = useTranslation();
-  const { me } = useRTLAware();
 
   const getTypeLabel = (type: string) => {
     const labels = {
@@ -109,16 +106,16 @@ export function FocusQuestionCard({
                 <Badge variant="outline" className="text-xs">
                   {getTypeLabel(question.question_type)}
                 </Badge>
-                 {question.is_sensitive && (
-                   <Badge variant="destructive" className="text-xs">
-                     <Shield className={`w-3 h-3 ${me('1')}`} />
-                     حساس
-                   </Badge>
-                 )}
-                 <Badge variant="secondary" className="text-xs">
-                   <Hash className={`w-3 h-3 ${me('1')}`} />
-                   {question.order_sequence}
-                 </Badge>
+                {question.is_sensitive && (
+                  <Badge variant="destructive" className="text-xs">
+                    <Shield className="w-3 h-3 mr-1" />
+                    حساس
+                  </Badge>
+                )}
+                <Badge variant="secondary" className="text-xs">
+                  <Hash className="w-3 h-3 mr-1" />
+                  {question.order_sequence}
+                </Badge>
               </div>
             </div>
           </div>
@@ -135,11 +132,11 @@ export function FocusQuestionCard({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem onClick={() => onView(question)}>
-                <Eye className={`w-4 h-4 ${me('2')}`} />
+                <Eye className="w-4 h-4 mr-2" />
                 عرض التفاصيل
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onEdit(question)}>
-                <Edit className={`w-4 h-4 ${me('2')}`} />
+                <Edit className="w-4 h-4 mr-2" />
                 تعديل
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -147,7 +144,7 @@ export function FocusQuestionCard({
                 onClick={() => onDelete(question)}
                 className="text-destructive focus:text-destructive"
               >
-                <Trash2 className={`w-4 h-4 ${me('2')}`} />
+                <Trash2 className="w-4 h-4 mr-2" />
                 حذف
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -185,26 +182,26 @@ export function FocusQuestionCard({
 
             {/* Metadata */}
             <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <RTLFlex className="gap-1">
+              <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Calendar className="w-3 h-3" />
                 <span>تم الإنشاء: {format(new Date(question.created_at), 'dd/MM/yyyy')}</span>
-              </RTLFlex>
+              </div>
               {question.updated_at !== question.created_at && (
-                <RTLFlex className="gap-1">
+                <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <span>آخر تحديث: {format(new Date(question.updated_at), 'dd/MM/yyyy')}</span>
-                </RTLFlex>
+                </div>
               )}
             </div>
 
             {/* Quick Actions */}
-            <RTLFlex className="gap-2 pt-2 border-t">
+            <div className="flex items-center gap-2 pt-2 border-t">
               <Button 
                 variant="outline" 
                 size="sm" 
                 onClick={() => onView(question)}
                 className="flex-1"
               >
-                <Eye className={`w-4 h-4 ${me('2')}`} />
+                <Eye className="w-4 h-4 mr-2" />
                 عرض
               </Button>
               <Button 
@@ -213,12 +210,12 @@ export function FocusQuestionCard({
                 onClick={() => onEdit(question)}
                 className="flex-1"
               >
-                <Edit className={`w-4 h-4 ${me('2')}`} />
+                <Edit className="w-4 h-4 mr-2" />
                 تعديل
               </Button>
-             </RTLFlex>
-           </div>
-         </CardContent>
+            </div>
+          </div>
+        </CardContent>
       )}
     </Card>
   );

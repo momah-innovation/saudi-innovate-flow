@@ -120,8 +120,8 @@ export const EmailVerification = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-subtle p-4">
         <Card className="w-full max-w-md border-0 shadow-2xl backdrop-blur-sm bg-card/80">
           <CardHeader className="text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center mx-auto">
-              <CheckCircle className="h-8 w-8 text-success" />
+            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
+              <CheckCircle className="h-8 w-8 text-green-600" />
             </div>
             <CardTitle className="text-2xl">تم التحقق بنجاح</CardTitle>
             <CardDescription>

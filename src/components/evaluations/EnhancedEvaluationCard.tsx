@@ -11,7 +11,6 @@ import {
   Calendar,
   User
 } from 'lucide-react';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface EvaluationCardData {
   id: string;
@@ -44,7 +43,6 @@ export function EnhancedEvaluationCard({
   onEdit,
   onDelete
 }: EnhancedEvaluationCardProps) {
-  const { me } = useRTLAware();
   const getScoreColor = (score: number) => {
     if (score >= 8) return 'score-excellent border-success/20';
     if (score >= 6) return 'score-good border-warning/20';
@@ -169,7 +167,7 @@ export function EnhancedEvaluationCard({
           
           <div className="flex items-center gap-1">
             <Button variant="outline" size="sm" onClick={() => onView(evaluation)}>
-              <Eye className={`w-3 h-3 ${me('1')}`} />
+              <Eye className="w-3 h-3 mr-1" />
               View
             </Button>
             <Button variant="ghost" size="sm" onClick={() => onEdit(evaluation)}>

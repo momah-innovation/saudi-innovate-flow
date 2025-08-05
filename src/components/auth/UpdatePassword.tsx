@@ -7,9 +7,6 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { useTranslation } from '@/hooks/useAppTranslation';
-import { cn } from '@/lib/utils';
 
 export const UpdatePassword = () => {
   const [password, setPassword] = useState('');
@@ -18,11 +15,9 @@ export const UpdatePassword = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isUpdated, setIsUpdated] = useState(false);
-  const { t } = useTranslation();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { ps, pe, start, end } = useRTLAware();
 
   useEffect(() => {
     // Check if we have access token from email link
@@ -41,8 +36,8 @@ export const UpdatePassword = () => {
   const validateForm = (): boolean => {
     if (!password || !confirmPassword) {
       toast({
-        title: t('validation_error'),
-        description: t('please_fill_all_fields'),
+        title: "خطأ في التحقق",
+        description: "يرجى ملء جميع الحقول",
         variant: "destructive",
       });
       return false;
@@ -50,8 +45,8 @@ export const UpdatePassword = () => {
 
     if (password !== confirmPassword) {
       toast({
-        title: t('validation_error'),
-        description: t('passwords_dont_match'),
+        title: "خطأ في التحقق",
+        description: "كلمات المرور غير متطابقة",
         variant: "destructive",
       });
       return false;
@@ -59,8 +54,8 @@ export const UpdatePassword = () => {
 
     if (password.length < 8) {
       toast({
-        title: t('validation_error'),
-        description: t('password_min_length'),
+        title: "خطأ في التحقق",
+        description: "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
         variant: "destructive",
       });
       return false;
@@ -83,7 +78,7 @@ export const UpdatePassword = () => {
 
       if (error) {
         toast({
-          title: t('password_update_error'),
+          title: "خطأ في تحديث كلمة المرور",
           description: error.message,
           variant: "destructive",
         });
@@ -92,13 +87,13 @@ export const UpdatePassword = () => {
 
       setIsUpdated(true);
       toast({
-        title: t('updated_successfully'),
-        description: t('password_updated_successfully'),
+        title: "تم التحديث بنجاح",
+        description: "تم تحديث كلمة المرور بنجاح",
       });
     } catch (error: any) {
       toast({
-        title: t('system_error'),
-        description: error.message || t('unexpected_error'),
+        title: "خطأ في النظام",
+        description: error.message || "حدث خطأ غير متوقع",
         variant: "destructive",
       });
     } finally {
@@ -111,20 +106,20 @@ export const UpdatePassword = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
         <Card className="w-full max-w-md border-0 shadow-2xl backdrop-blur-sm bg-card/80">
           <CardHeader className="text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center mx-auto">
-              <CheckCircle className="h-8 w-8 text-success" />
+            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
+              <CheckCircle className="h-8 w-8 text-green-600" />
             </div>
-            <CardTitle className="text-2xl">{t('updated_successfully')}</CardTitle>
+            <CardTitle className="text-2xl">تم التحديث بنجاح</CardTitle>
             <CardDescription>
-              {t('password_updated_login_message')}
+              تم تحديث كلمة المرور بنجاح. يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Button 
               onClick={() => navigate('/auth')}
-              className="w-full bg-gradient-primary hover:opacity-90 text-primary-foreground"
+              className="w-full bg-gradient-primary hover:opacity-90 text-white"
             >
-              {t('login_now')}
+              تسجيل الدخول الآن
             </Button>
           </CardContent>
         </Card>
@@ -137,25 +132,25 @@ export const UpdatePassword = () => {
       <Card className="w-full max-w-md border-0 shadow-2xl backdrop-blur-sm bg-card/80">
         <CardHeader className="text-center space-y-4">
           <div className="w-16 h-16 rounded-xl bg-gradient-primary flex items-center justify-center mx-auto">
-            <Lock className="h-8 w-8 text-primary-foreground" />
+            <Lock className="h-8 w-8 text-white" />
           </div>
-          <CardTitle className="text-2xl">{t('update_password')}</CardTitle>
+          <CardTitle className="text-2xl">تحديث كلمة المرور</CardTitle>
           <CardDescription>
-            {t('enter_new_password_below')}
+            أدخل كلمة المرور الجديدة أدناه
           </CardDescription>
         </CardHeader>
 
         <CardContent>
           <form onSubmit={handleUpdatePassword} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="password">{t('new_password')}</Label>
+              <Label htmlFor="password">كلمة المرور الجديدة</Label>
               <div className="relative">
-                <Lock className={cn("absolute top-3 h-4 w-4 text-muted-foreground", start('3'))} />
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder={t('min_8_characters')}
-                   className={`${ps('10')} ${pe('10')}`}
+                  placeholder="8 أحرف على الأقل"
+                  className="pl-10 pr-10"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -164,7 +159,7 @@ export const UpdatePassword = () => {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className={cn("absolute top-0 h-full px-3 py-2 hover:bg-transparent", end('0'))}
+                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -173,14 +168,14 @@ export const UpdatePassword = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">{t('confirm_password')}</Label>
+              <Label htmlFor="confirmPassword">تأكيد كلمة المرور</Label>
               <div className="relative">
-                <Lock className={cn("absolute top-3 h-4 w-4 text-muted-foreground", start('3'))} />
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
-                  placeholder={t('re_enter_password')}
-                  className={`${ps('10')} ${pe('10')}`}
+                  placeholder="أعد إدخال كلمة المرور"
+                  className="pl-10 pr-10"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
@@ -189,7 +184,7 @@ export const UpdatePassword = () => {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className={cn("absolute top-0 h-full px-3 py-2 hover:bg-transparent", end('0'))}
+                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -199,10 +194,10 @@ export const UpdatePassword = () => {
 
             <Button
               type="submit"
-              className="w-full h-11 bg-gradient-primary hover:opacity-90 text-primary-foreground"
+              className="w-full h-11 bg-gradient-primary hover:opacity-90 text-white"
               disabled={isLoading}
             >
-              {isLoading ? t('updating') : t('update_password')}
+              {isLoading ? "جارٍ التحديث..." : "تحديث كلمة المرور"}
             </Button>
           </form>
         </CardContent>

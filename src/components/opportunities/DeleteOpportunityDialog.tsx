@@ -14,7 +14,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useTranslation } from '@/hooks/useAppTranslation';
 import { Trash2, AlertTriangle } from 'lucide-react';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface DeleteOpportunityDialogProps {
   opportunity: any;
@@ -30,7 +29,6 @@ export const DeleteOpportunityDialog = ({
   onSuccess
 }: DeleteOpportunityDialogProps) => {
   const { isRTL } = useDirection();
-  const { me } = useRTLAware();
   const { t } = useTranslation();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -103,7 +101,7 @@ export const DeleteOpportunityDialog = ({
             disabled={loading}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            <Trash2 className={`w-4 h-4 ${me("2")}`} />
+            <Trash2 className="w-4 h-4 mr-2" />
             {loading ? (isRTL ? 'جاري الحذف...' : 'Deleting...') : (isRTL ? 'حذف' : 'Delete')}
           </AlertDialogAction>
         </AlertDialogFooter>

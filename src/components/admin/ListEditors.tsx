@@ -6,8 +6,6 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Plus, Trash2, Edit, RotateCcw } from 'lucide-react';
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { RTLFlex } from '@/components/ui/rtl-layout';
 
 // Simple List Editor Component
 interface SimpleListEditorProps {
@@ -20,7 +18,6 @@ interface SimpleListEditorProps {
 }
 
 export function SimpleListEditor({ title, description, items, onChange, onReset, placeholder }: SimpleListEditorProps) {
-  const { ml } = useRTLAware();
   const [newItem, setNewItem] = useState('');
 
   const addItem = () => {
@@ -105,7 +102,6 @@ interface RoleEditorProps {
 }
 
 export function RoleEditor({ title, description, roles, onChange, onReset }: RoleEditorProps) {
-  const { ml } = useRTLAware();
   const [editingRole, setEditingRole] = useState<Role | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState({ value: '', label: '', description: '' });
@@ -153,7 +149,7 @@ export function RoleEditor({ title, description, roles, onChange, onReset }: Rol
             <RotateCcw className="h-4 w-4" />
           </Button>
           <Button variant="outline" size="sm" onClick={() => openEditDialog()}>
-            <Plus className={`h-4 w-4 ${ml}`} />
+            <Plus className="h-4 w-4 mr-1" />
             Add Role
           </Button>
         </div>

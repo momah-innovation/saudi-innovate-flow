@@ -187,13 +187,13 @@ export function AdminFocusQuestionWizard({
     } catch (error: any) {
       // Handle specific database errors using toast notifications
       if (error?.message?.includes('duplicate')) {
-        setErrors({ question_text_ar: t('duplicate_question_exists') || "يوجد سؤال مماثل بالفعل" });
+        setErrors({ question_text_ar: "يوجد سؤال مماثل بالفعل" });
       } else if (error?.message?.includes('constraint')) {
-        setErrors({ general: t('constraint_error') || "خطأ في القيود المدخلة" });
+        setErrors({ general: "خطأ في القيود المدخلة" });
       } else {
         toast({
-          title: t('error'),
-          description: error?.message || t('failed_to_save_focus_question') || "فشل في حفظ السؤال المحوري",
+          title: "خطأ",
+          description: error?.message || "فشل في حفظ السؤال المحوري",
           variant: "destructive",
         });
       }
@@ -336,8 +336,8 @@ export function AdminFocusQuestionWizard({
     },
     {
       id: "question-settings",
-      title: t('question_settings') || "إعدادات السؤال",
-      description: t('privacy_security_settings') || "إعدادات الخصوصية والأمان",
+      title: "إعدادات السؤال",
+      description: "إعدادات الخصوصية والأمان",
       content: (
         <div className="space-y-6">
           <div className="flex items-center space-x-2 space-x-reverse">
@@ -366,7 +366,7 @@ export function AdminFocusQuestionWizard({
         setErrors({});
         setIsLoading(false);
       }}
-      title={question ? t('edit_focus_question') || "تعديل السؤال المحوري" : t('add_new_focus_question') || "إضافة سؤال محوري جديد"}
+      title={question ? "تعديل السؤال المحوري" : "إضافة سؤال محوري جديد"}
       steps={steps}
       onComplete={handleSave}
       showProgress={true}

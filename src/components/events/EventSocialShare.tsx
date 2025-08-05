@@ -11,7 +11,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 import { 
   Share2, 
   Copy, 
@@ -43,7 +42,6 @@ export const EventSocialShare = ({
   className = "" 
 }: EventSocialShareProps) => {
   const { isRTL } = useDirection();
-  const { me } = useRTLAware();
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
 
@@ -102,35 +100,35 @@ export const EventSocialShare = ({
       name: 'WhatsApp',
       icon: MessageCircle,
       url: shareUrls.whatsapp,
-      color: 'bg-success hover:bg-success/90',
-      textColor: 'text-success-foreground'
+      color: 'bg-green-500 hover:bg-green-600',
+      textColor: 'text-white'
     },
     {
       name: 'Facebook',
       icon: Facebook,
       url: shareUrls.facebook,
-      color: 'bg-info hover:bg-info/90',
-      textColor: 'text-info-foreground'
+      color: 'bg-blue-600 hover:bg-blue-700',
+      textColor: 'text-white'
     },
     {
       name: 'Twitter',
       icon: Twitter,
       url: shareUrls.twitter,
-      color: 'bg-primary hover:bg-primary/90',
-      textColor: 'text-primary-foreground'
+      color: 'bg-sky-500 hover:bg-sky-600',
+      textColor: 'text-white'
     },
     {
       name: 'LinkedIn',
       icon: Linkedin,
       url: shareUrls.linkedin,
-      color: 'bg-accent hover:bg-accent/90',
-      textColor: 'text-accent-foreground'
+      color: 'bg-blue-700 hover:bg-blue-800',
+      textColor: 'text-white'
     },
     {
       name: 'Email',
       icon: Mail,
       url: shareUrls.email,
-      color: 'bg-muted hover:bg-muted/90',
+      color: 'bg-gray-600 hover:bg-gray-700',
       textColor: 'text-white'
     }
   ];
@@ -144,7 +142,7 @@ export const EventSocialShare = ({
       <DialogTrigger asChild>
         {trigger || (
           <Button variant="outline" size="sm" className={className}>
-            <Share2 className={`w-4 h-4 ${me('2')}`} />
+            <Share2 className="w-4 h-4 mr-2" />
             {isRTL ? 'مشاركة' : 'Share'}
           </Button>
         )}
@@ -174,7 +172,7 @@ export const EventSocialShare = ({
           {/* Native Share (mobile) */}
           {navigator.share && (
             <Button onClick={handleNativeShare} className="w-full" variant="outline">
-              <Share2 className={`w-4 h-4 ${me('2')}`} />
+              <Share2 className="w-4 h-4 mr-2" />
               {isRTL ? 'مشاركة' : 'Share'}
             </Button>
           )}
@@ -219,7 +217,7 @@ export const EventSocialShare = ({
                     className={`${platform.color} ${platform.textColor} border-0 justify-start`}
                     onClick={() => handleSocialShare(platform.url)}
                   >
-                    <IconComponent className={`w-4 h-4 ${me('2')}`} />
+                    <IconComponent className="w-4 h-4 mr-2" />
                     {platform.name}
                   </Button>
                 );

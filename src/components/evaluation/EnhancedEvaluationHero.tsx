@@ -20,7 +20,6 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface EnhancedEvaluationHeroProps {
   totalEvaluations: number;
@@ -43,7 +42,6 @@ export const EnhancedEvaluationHero = ({
 }: EnhancedEvaluationHeroProps) => {
   const { isRTL } = useDirection();
   const [currentStat, setCurrentStat] = useState(0);
-  const { me, start, end, ms } = useRTLAware();
 
   const stats = [
     { icon: ClipboardCheck, value: totalEvaluations, label: isRTL ? 'تقييم' : 'evaluations', color: 'hero-stats-ideas' },
@@ -69,9 +67,9 @@ export const EnhancedEvaluationHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className={cn("absolute -top-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse", end('40'))} />
-        <div className={cn("absolute -bottom-40 w-96 h-96 hero-bg-accent rounded-full blur-3xl animate-pulse delay-1000", start('40'))} />
-        <div className={cn("absolute top-20 w-64 h-64 hero-bg-secondary rounded-full blur-2xl animate-bounce", start('1/3'))} />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 hero-bg-accent rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-20 left-1/3 w-64 h-64 hero-bg-secondary rounded-full blur-2xl animate-bounce" />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -85,7 +83,7 @@ export const EnhancedEvaluationHero = ({
                   <Sparkles className="w-6 h-6 icon-sparkle" />
                 </div>
                 <Badge variant="secondary" className="bg-primary/10 text-primary-foreground border-primary/20 backdrop-blur-sm">
-                  <Star className={`w-3 h-3 ${me('1')}`} />
+                  <Star className="w-3 h-3 mr-1" />
                   {isRTL ? 'مركز التقييم المتقدم' : 'Advanced Evaluation Center'}
                 </Badge>
               </div>
@@ -94,11 +92,11 @@ export const EnhancedEvaluationHero = ({
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
                   {isRTL ? (
                     <>
-                      تقييمات <span className="text-transparent bg-clip-text bg-gradient-text">ذكية</span> وشاملة
+                      تقييمات <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">ذكية</span> وشاملة
                     </>
                   ) : (
                     <>
-                      Smart & <span className="text-transparent bg-clip-text bg-gradient-text">Comprehensive</span> Evaluations
+                      Smart & <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Comprehensive</span> Evaluations
                     </>
                   )}
                 </h1>
@@ -144,7 +142,7 @@ export const EnhancedEvaluationHero = ({
                   size="lg"
                   className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
-                  <Plus className={`w-5 h-5 ${me('2')}`} />
+                  <Plus className="w-5 h-5 mr-2" />
                   {isRTL ? 'تقييم جديد' : 'New Evaluation'}
                 </Button>
               )}
@@ -155,7 +153,7 @@ export const EnhancedEvaluationHero = ({
                 size="lg"
                 className="border-primary/30 text-primary-foreground hover:bg-primary/10 backdrop-blur-sm"
               >
-                <Filter className={`w-5 h-5 ${me('2')}`} />
+                <Filter className="w-5 h-5 mr-2" />
                 {isRTL ? 'فلاتر متقدمة' : 'Advanced Filters'}
               </Button>
 
@@ -164,7 +162,7 @@ export const EnhancedEvaluationHero = ({
                 size="lg"
                 className="text-primary-foreground hover:bg-primary/10"
               >
-                <Play className={`w-5 h-5 ${me('2')}`} />
+                <Play className="w-5 h-5 mr-2" />
                 {isRTL ? 'دليل التقييم' : 'Evaluation Guide'}
               </Button>
             </div>
@@ -180,16 +178,16 @@ export const EnhancedEvaluationHero = ({
                     <BarChart3 className="w-16 h-16 text-white/60" />
                   </div>
                   
-                  <div className={cn("absolute top-4", start('4'))}>
+                  <div className="absolute top-4 left-4">
                     <Badge className="badge-success text-success-foreground animate-pulse">
-                      <TrendingUp className={`w-3 h-3 ${me('1')}`} />
+                      <TrendingUp className="w-3 h-3 mr-1" />
                       {isRTL ? 'تحليلات مباشرة' : 'Live Analytics'}
                     </Badge>
                   </div>
 
-                  <div className={cn("absolute top-4", end('4'))}>
+                  <div className="absolute top-4 right-4">
                     <Badge className="badge-info text-info-foreground">
-                      <Users className={`w-3 h-3 ${me('1')}`} />
+                      <Users className="w-3 h-3 mr-1" />
                       {isRTL ? 'تقييم جماعي' : 'Collaborative'}
                     </Badge>
                   </div>
@@ -226,7 +224,7 @@ export const EnhancedEvaluationHero = ({
                     className="w-full bg-gradient-primary hover:opacity-90 text-white"
                   >
                     {isRTL ? 'عرض التقييمات' : 'View Evaluations'}
-                    <ArrowRight className={`w-4 h-4 ${ms('2')}`} />
+                    <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>
               </CardContent>

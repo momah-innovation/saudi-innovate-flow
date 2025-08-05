@@ -7,8 +7,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Brain, Lightbulb, Star, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
 import { useAIFeatures } from '@/hooks/useAIFeatures';
 import { useToast } from '@/hooks/use-toast';
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface IdeaEvaluationProps {
   ideaId?: string;
@@ -45,14 +43,12 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
   const [feedback, setFeedback] = useState('');
   const { isFeatureEnabled, getFeatureConfig } = useAIFeatures();
   const { toast } = useToast();
-  const { me } = useRTLAware();
-  const { t } = useTranslation();
 
   const handleEvaluate = async () => {
     if (!isFeatureEnabled('idea_evaluation')) {
       toast({
-        title: t('unavailable'),
-        description: t('ai_idea_evaluation_disabled'),
+        title: 'غير متاح',
+        description: 'ميزة تقييم الأفكار بالذكاء الاصطناعي غير مفعلة',
         variant: 'destructive',
       });
       return;
@@ -70,21 +66,21 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
         market_potential: 80,
         implementation_difficulty: 65,
         strengths: [
-          t('innovative_solution_real_problem'),
-          t('high_applicability'),
-          t('good_scalability'),
-          t('positive_social_impact')
+          'حل مبتكر لمشكلة حقيقية',
+          'قابلية تطبيق عالية',
+          'إمكانية توسع جيدة',
+          'تأثير إيجابي على المجتمع'
         ],
         weaknesses: [
-          t('requires_large_initial_investment'),
-          t('may_face_regulatory_challenges'),
-          t('requires_specialized_technical_expertise')
+          'يحتاج لاستثمار أولي كبير',
+          'قد يواجه تحديات تنظيمية',
+          'يتطلب خبرات تقنية متخصصة'
         ],
         recommendations: [
-          t('conduct_detailed_feasibility_study'),
-          t('seek_strategic_partners'),
-          t('develop_prototype_testing'),
-          t('study_regulatory_requirements')
+          'إجراء دراسة جدوى مفصلة',
+          'البحث عن شركاء استراتيجيين',
+          'تطوير نموذج أولي للاختبار',
+          'دراسة المتطلبات التنظيمية'
         ],
         similar_ideas: [
           { title: 'منصة الخدمات الذكية', similarity_score: 0.75, id: '1' },
@@ -114,9 +110,9 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-success';
-    if (score >= 60) return 'text-warning';
-    return 'text-destructive';
+    if (score >= 80) return 'text-green-600';
+    if (score >= 60) return 'text-yellow-600';
+    return 'text-red-600';
   };
 
   const getScoreIcon = (score: number) => {
@@ -167,12 +163,12 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
               <Button onClick={handleEvaluate} disabled={loading} className="mb-4">
                 {loading ? (
                   <>
-                    <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-white ${me('2')}`} />
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
                     جاري التقييم...
                   </>
                 ) : (
                   <>
-                    <Brain className={`h-4 w-4 ${me('2')}`} />
+                    <Brain className="h-4 w-4 mr-2" />
                     تقييم الفكرة
                   </>
                 )}
@@ -237,13 +233,13 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h4 className="font-semibold mb-3 flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-success" />
+                    <CheckCircle className="h-4 w-4 text-green-600" />
                     نقاط القوة
                   </h4>
                   <ul className="space-y-2">
                     {evaluation.strengths.map((strength, index) => (
                       <li key={index} className="text-sm flex items-start gap-2">
-                        <Star className="h-3 w-3 text-success mt-1 flex-shrink-0" />
+                        <Star className="h-3 w-3 text-green-600 mt-1 flex-shrink-0" />
                         {strength}
                       </li>
                     ))}
@@ -251,13 +247,13 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
                 </div>
                 <div>
                   <h4 className="font-semibold mb-3 flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4 text-warning" />
+                    <AlertTriangle className="h-4 w-4 text-yellow-600" />
                     نقاط التحسين
                   </h4>
                   <ul className="space-y-2">
                     {evaluation.weaknesses.map((weakness, index) => (
                       <li key={index} className="text-sm flex items-start gap-2">
-                        <AlertTriangle className="h-3 w-3 text-warning mt-1 flex-shrink-0" />
+                        <AlertTriangle className="h-3 w-3 text-yellow-600 mt-1 flex-shrink-0" />
                         {weakness}
                       </li>
                     ))}
@@ -268,13 +264,13 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
               {/* Recommendations */}
               <div>
                 <h4 className="font-semibold mb-3 flex items-center gap-2">
-                  <Lightbulb className="h-4 w-4 text-primary" />
+                  <Lightbulb className="h-4 w-4 text-blue-600" />
                   التوصيات
                 </h4>
                 <ul className="space-y-2">
                   {evaluation.recommendations.map((recommendation, index) => (
                     <li key={index} className="text-sm flex items-start gap-2">
-                      <TrendingUp className="h-3 w-3 text-primary mt-1 flex-shrink-0" />
+                      <TrendingUp className="h-3 w-3 text-blue-600 mt-1 flex-shrink-0" />
                       {recommendation}
                     </li>
                   ))}

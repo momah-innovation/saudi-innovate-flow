@@ -11,9 +11,6 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { useState } from 'react';
 import { InteractionButtons } from '@/components/ui/interaction-buttons';
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { cn } from '@/lib/utils';
-import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface Event {
   id: string;
@@ -56,39 +53,37 @@ export const EnhancedEventCard = ({
   const { isRTL } = useDirection();
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(isBookmarked);
-  const { end, me, start } = useRTLAware();
-  const { t } = useTranslation();
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'upcoming':
-      case 'scheduled': return 'badge-info';
-      case 'ongoing': return 'badge-success';
-      case 'completed': return 'badge-secondary';
-      case 'cancelled': return 'badge-error';
-      default: return 'badge-secondary';
+      case 'scheduled': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
+      case 'ongoing': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
+      case 'completed': return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'cancelled': return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
     }
   };
 
   const getStatusText = (status: string) => {
     switch (status) {
       case 'upcoming':
-      case 'scheduled': return t('upcoming') || 'قادم';
-      case 'ongoing': return t('ongoing') || 'جاري';
-      case 'completed': return t('completed') || 'مكتمل';
-      case 'cancelled': return t('cancelled') || 'ملغي';
+      case 'scheduled': return isRTL ? 'قادم' : 'Upcoming';
+      case 'ongoing': return isRTL ? 'جاري' : 'Ongoing';
+      case 'completed': return isRTL ? 'مكتمل' : 'Completed';
+      case 'cancelled': return isRTL ? 'ملغي' : 'Cancelled';
       default: return status;
     }
   };
 
   const getEventTypeColor = (type: string) => {
     switch (type) {
-      case 'workshop': return 'badge-partner';
-      case 'conference': return 'badge-expert';
-      case 'webinar': return 'badge-info';
-      case 'meetup': return 'badge-warning';
-      case 'hackathon': return 'badge-success';
-      default: return 'badge-secondary';
+      case 'workshop': return 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/20 dark:text-purple-400';
+      case 'conference': return 'bg-indigo-100 text-indigo-800 border-indigo-200 dark:bg-indigo-900/20 dark:text-indigo-400';
+      case 'webinar': return 'bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-900/20 dark:text-cyan-400';
+      case 'meetup': return 'bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/20 dark:text-orange-400';
+      case 'hackathon': return 'bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
     }
   };
 
@@ -140,7 +135,7 @@ export const EnhancedEventCard = ({
               </div>
               {/* Format Badge */}
               {event.format === 'virtual' && (
-                <div className={cn("absolute -top-1", end('1'))}>
+                <div className="absolute -top-1 -right-1">
                   <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
                     <Video className="w-3 h-3" />
                   </Badge>
@@ -155,8 +150,8 @@ export const EnhancedEventCard = ({
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="font-semibold truncate text-foreground">{event.title_ar}</h3>
                     {isEventSoon() && (
-                       <Badge variant="secondary" className="text-xs badge-warning">
-                         {t('soon') || 'قريباً'}
+                      <Badge variant="secondary" className="text-xs bg-orange-100 text-orange-800 border-orange-200">
+                        {isRTL ? 'قريباً' : 'Soon'}
                       </Badge>
                     )}
                   </div>
@@ -174,7 +169,7 @@ export const EnhancedEventCard = ({
                     </div>
                     <div className="flex items-center gap-1">
                       <MapPin className="w-3 h-3" />
-                       <span className="truncate">{event.location || (event.format === 'virtual' ? (t('online') || 'عبر الإنترنت') : 'TBD')}</span>
+                      <span className="truncate">{event.location || (event.format === 'virtual' ? (isRTL ? 'عبر الإنترنت' : 'Online') : 'TBD')}</span>
                     </div>
                   </div>
                 </div>
@@ -190,18 +185,18 @@ export const EnhancedEventCard = ({
                       <BookmarkIcon className={`w-4 h-4 ${bookmarked ? 'fill-current text-primary' : ''}`} />
                     </Button>
                     <Button variant="outline" size="sm" onClick={() => onViewDetails(event)}>
-                      <Eye className={`w-4 h-4 ${me('1')}`} />
-                       {t('details') || 'التفاصيل'}
+                      <Eye className="w-4 h-4 mr-1" />
+                      {isRTL ? 'التفاصيل' : 'Details'}
                     </Button>
                     <Button 
                       size="sm" 
                       onClick={() => onRegister(event)}
                       disabled={event.status === 'completed' || isEventFull}
                     >
-                       {isEventFull ? 
-                         (t('full') || 'ممتلئ') :
-                         (t('register') || 'تسجيل')
-                       }
+                      {isEventFull ? 
+                        (isRTL ? 'ممتلئ' : 'Full') :
+                        (isRTL ? 'تسجيل' : 'Register')
+                      }
                     </Button>
                   </div>
                 </div>
@@ -211,7 +206,7 @@ export const EnhancedEventCard = ({
               {event.max_participants && (
                 <div className="mt-2">
                   <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                    <span>{event.registered_participants}/{event.max_participants} {t('registered') || 'مسجل'}</span>
+                    <span>{event.registered_participants}/{event.max_participants} {isRTL ? 'مسجل' : 'registered'}</span>
                     <span>{Math.round(getRegistrationPercentage())}%</span>
                   </div>
                   <Progress value={getRegistrationPercentage()} className="h-1.5" />
@@ -241,29 +236,29 @@ export const EnhancedEventCard = ({
         )}
         
         {/* Overlay Badges */}
-        <div className={cn("absolute top-3 flex flex-col gap-2", start('3'))}>
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
           <Badge className={getStatusColor(event.status)}>
             {getStatusText(event.status)}
           </Badge>
           {event.format === 'virtual' && (
-             <Badge variant="secondary" className="bg-background/90 text-muted-foreground">
-               <Globe className={`w-3 h-3 ${me('1')}`} />
-               {t('online') || 'عبر الإنترنت'}
-             </Badge>
+            <Badge variant="secondary" className="bg-white/90 text-gray-700">
+              <Globe className="w-3 h-3 mr-1" />
+              {isRTL ? 'عبر الإنترنت' : 'Online'}
+            </Badge>
           )}
-           {isEventSoon() && (
-             <Badge className="badge-warning">
-               {t('soon') || 'قريباً'}
+          {isEventSoon() && (
+            <Badge className="bg-orange-100 text-orange-800 border-orange-200">
+              {isRTL ? 'قريباً' : 'Soon'}
             </Badge>
           )}
         </div>
 
         {/* Quick Actions */}
-        <div className={cn("absolute top-3 flex gap-2", end('3'))}>
+        <div className="absolute top-3 right-3 flex gap-2">
           <Button
             variant="secondary"
             size="sm"
-             className="bg-background/90 hover:bg-background"
+            className="bg-white/90 hover:bg-white"
             onClick={handleBookmark}
           >
             <BookmarkIcon className={`w-4 h-4 ${bookmarked ? 'fill-current text-primary' : ''}`} />
@@ -271,16 +266,16 @@ export const EnhancedEventCard = ({
           <Button
             variant="secondary"
             size="sm"
-            className="bg-background/90 hover:bg-background"
+            className="bg-white/90 hover:bg-white"
             onClick={() => setLiked(!liked)}
           >
-            <Heart className={`w-4 h-4 ${liked ? 'fill-current text-destructive' : ''}`} />
+            <Heart className={`w-4 h-4 ${liked ? 'fill-current text-red-500' : ''}`} />
           </Button>
         </div>
 
         {/* Date Badge */}
-        <div className={cn("absolute bottom-3", start('3'))}>
-          <div className="bg-background/95 rounded-lg p-2 text-center min-w-[3rem]">
+        <div className="absolute bottom-3 left-3">
+          <div className="bg-white/95 rounded-lg p-2 text-center min-w-[3rem]">
             <div className="text-xs font-medium text-muted-foreground">
               {new Date(event.event_date).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', { month: 'short' })}
             </div>
@@ -314,7 +309,7 @@ export const EnhancedEventCard = ({
           </div>
           <div className="flex items-center gap-2">
             <MapPinIcon className="w-4 h-4" />
-            <span className="truncate">{event.location || (event.format === 'virtual' ? (t('online') || 'عبر الإنترنت') : 'TBD')}</span>
+            <span className="truncate">{event.location || (event.format === 'virtual' ? (isRTL ? 'عبر الإنترنت' : 'Online') : 'TBD')}</span>
           </div>
         </div>
 
@@ -322,14 +317,14 @@ export const EnhancedEventCard = ({
         {event.max_participants && (
           <div className="mt-3">
             <div className="flex justify-between text-sm text-muted-foreground mb-2">
-              <span>{t('registration') || 'التسجيل'}</span>
+              <span>{isRTL ? 'التسجيل' : 'Registration'}</span>
               <span>{event.registered_participants}/{event.max_participants}</span>
             </div>
             <Progress value={getRegistrationPercentage()} className="h-2" />
             <div className="flex justify-between text-xs text-muted-foreground mt-1">
-               <span>{Math.round(getRegistrationPercentage())}% {t('full') || 'ممتلئ'}</span>
-               {getRegistrationPercentage() > 80 && (
-                 <span className="text-warning">{t('limited_spots') || 'أماكن محدودة'}</span>
+              <span>{Math.round(getRegistrationPercentage())}% {isRTL ? 'ممتلئ' : 'full'}</span>
+              {getRegistrationPercentage() > 80 && (
+                <span className="text-orange-600">{isRTL ? 'أماكن محدودة' : 'Limited spots'}</span>
               )}
             </div>
           </div>
@@ -341,13 +336,13 @@ export const EnhancedEventCard = ({
         <div className="grid grid-cols-2 gap-3 mb-4">
           <div className="text-center p-2 bg-muted/50 rounded-lg">
             <div className="text-lg font-bold text-foreground">{event.registered_participants}</div>
-            <div className="text-xs text-muted-foreground">{t('registered') || 'مسجل'}</div>
+            <div className="text-xs text-muted-foreground">{isRTL ? 'مسجل' : 'registered'}</div>
           </div>
           <div className="text-center p-2 bg-muted/50 rounded-lg">
             <div className="text-lg font-bold text-foreground">
-               {event.budget ? `${event.budget.toLocaleString()} ${t('currency_sar') || 'ر.س'}` : (t('free') || 'مجاني')}
-             </div>
-             <div className="text-xs text-muted-foreground">{t('price') || 'السعر'}</div>
+              {event.budget ? `${event.budget.toLocaleString()} ${isRTL ? 'ر.س' : 'SAR'}` : (isRTL ? 'مجاني' : 'Free')}
+            </div>
+            <div className="text-xs text-muted-foreground">{isRTL ? 'السعر' : 'price'}</div>
           </div>
         </div>
 
@@ -364,20 +359,20 @@ export const EnhancedEventCard = ({
         {/* Action Buttons */}
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => onViewDetails(event)} className="flex-1">
-            <Ticket className={`w-4 h-4 ${me('2')}`} />
-            {t('details') || 'التفاصيل'}
+            <Ticket className="w-4 h-4 mr-2" />
+            {isRTL ? 'التفاصيل' : 'Details'}
           </Button>
           <Button 
             onClick={() => onRegister(event)}
             className="flex-1"
             disabled={event.status === 'completed' || isEventFull}
           >
-             {isEventFull ? 
-               (t('full') || 'ممتلئ') :
-               event.status === 'completed' ?
-               (t('ended') || 'انتهى') :
-               (t('register') || 'تسجيل')
-             }
+            {isEventFull ? 
+              (isRTL ? 'ممتلئ' : 'Full') :
+              event.status === 'completed' ?
+              (isRTL ? 'انتهى' : 'Ended') :
+              (isRTL ? 'تسجيل' : 'Register')
+            }
           </Button>
         </div>
       </CardContent>

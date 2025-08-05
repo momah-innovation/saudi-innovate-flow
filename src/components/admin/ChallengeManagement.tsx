@@ -5,13 +5,10 @@ import { ChallengeManagementList } from "./challenges/ChallengeManagementList";
 import { ChallengeAnalytics } from "./challenges/ChallengeAnalytics";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useTranslation } from "@/hooks/useAppTranslation";
-import { useRTLAware } from "@/hooks/useRTLAware";
-import { RTLFlex } from "@/components/ui/rtl-layout";
 
 export function ChallengeManagement() {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("challenges");
-  const { flexRow } = useRTLAware();
 
   return (
     <PageLayout
@@ -21,17 +18,13 @@ export function ChallengeManagement() {
     >
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="challenges">
-            <RTLFlex className="items-center gap-2">
-              <Target className="w-4 h-4" />
-              التحديات
-            </RTLFlex>
+          <TabsTrigger value="challenges" className="flex items-center gap-2">
+            <Target className="w-4 h-4" />
+            التحديات
           </TabsTrigger>
-          <TabsTrigger value="analytics">
-            <RTLFlex className="items-center gap-2">
-              <BarChart3 className="w-4 h-4" />
-              التحليلات
-            </RTLFlex>
+          <TabsTrigger value="analytics" className="flex items-center gap-2">
+            <BarChart3 className="w-4 h-4" />
+            التحليلات
           </TabsTrigger>
         </TabsList>
 

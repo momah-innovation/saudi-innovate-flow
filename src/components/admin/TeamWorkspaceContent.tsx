@@ -23,8 +23,6 @@ import {
   PieChart, LineChart
 } from 'lucide-react';
 import { useTranslation } from '@/hooks/useAppTranslation';
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { RTLFlex } from '@/components/ui/rtl-layout';
 import { CreateProjectDialog } from './team-workspace/CreateProjectDialog';
 import { InviteMemberDialog } from './team-workspace/InviteMemberDialog';
 import { TaskAssignmentDialog } from './team-workspace/TaskAssignmentDialog';
@@ -47,7 +45,6 @@ export function TeamWorkspaceContent({
   const { t } = useTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
-  const { me, start, ps, end } = useRTLAware();
   const [loading, setLoading] = useState(true);
   const [selectedMember, setSelectedMember] = useState<any>(null);
   const [selectedProject, setSelectedProject] = useState<any>(null);
@@ -222,7 +219,7 @@ export function TeamWorkspaceContent({
               </SelectContent>
             </Select>
             <Button onClick={createQuickTask} className="w-full">
-              <Plus className={`h-4 w-4 ${me('2')}`} />
+              <Plus className="h-4 w-4 mr-2" />
               إنشاء المهمة
             </Button>
           </div>
@@ -310,15 +307,15 @@ export function TeamWorkspaceContent({
 
           <div className="flex gap-2">
             <Button size="sm">
-              <MessageSquare className="h-4 w-4 me-2" />
+              <MessageSquare className="h-4 w-4 mr-2" />
               إرسال رسالة
             </Button>
             <Button size="sm" variant="outline">
-              <Plus className="h-4 w-4 me-2" />
+              <Plus className="h-4 w-4 mr-2" />
               تكليف مهمة
             </Button>
             <Button size="sm" variant="outline">
-              <Eye className="h-4 w-4 me-2" />
+              <Eye className="h-4 w-4 mr-2" />
               عرض المهام
             </Button>
           </div>
@@ -394,15 +391,15 @@ export function TeamWorkspaceContent({
 
           <div className="flex gap-2">
             <Button size="sm">
-              <Eye className="h-4 w-4 me-2" />
+              <Eye className="h-4 w-4 mr-2" />
               عرض التفاصيل
             </Button>
             <Button size="sm" variant="outline">
-              <MessageSquare className="h-4 w-4 me-2" />
+              <MessageSquare className="h-4 w-4 mr-2" />
               مناقشة الفريق
             </Button>
             <Button size="sm" variant="outline">
-              <Share2 className="h-4 w-4 me-2" />
+              <Share2 className="h-4 w-4 mr-2" />
               مشاركة
             </Button>
           </div>
@@ -416,7 +413,7 @@ export function TeamWorkspaceContent({
       {/* Quick Actions Floating Button */}
       <Button
         onClick={() => setShowQuickActions(true)}
-        className="fixed bottom-6 end-6 z-50 rounded-full w-14 h-14 shadow-lg"
+        className="fixed bottom-6 right-6 z-50 rounded-full w-14 h-14 shadow-lg"
         size="icon"
       >
         <Plus className="h-6 w-6" />
@@ -635,7 +632,7 @@ export function TeamWorkspaceContent({
           </SelectContent>
         </Select>
         <Button size="sm" variant="outline">
-          <Filter className="h-4 w-4 me-2" />
+          <Filter className="h-4 w-4 mr-2" />
           فلاتر متقدمة
         </Button>
       </div>
@@ -726,10 +723,10 @@ export function TeamWorkspaceContent({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="relative">
-            <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground`} />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="البحث في أعضاء الفريق..."
-              className={`${ps('10')} w-64`}
+              className="pl-10 w-64"
             />
           </div>
           <Select defaultValue="all">
@@ -745,7 +742,7 @@ export function TeamWorkspaceContent({
           </Select>
         </div>
         <Button>
-          <UserPlus className="h-4 w-4 me-2" />
+          <UserPlus className="h-4 w-4 mr-2" />
           دعوة عضو جديد
         </Button>
       </div>
@@ -805,7 +802,7 @@ export function TeamWorkspaceContent({
                       {member.profiles?.display_name?.charAt(0) || 'U'}
                     </AvatarFallback>
                   </Avatar>
-                  <div className={`absolute -bottom-1 ${end('1')} w-4 h-4 bg-success rounded-full border-2 border-background`}></div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-background"></div>
                 </div>
                 <div className="flex-1">
                   <CardTitle className="text-base group-hover:text-primary transition-colors">

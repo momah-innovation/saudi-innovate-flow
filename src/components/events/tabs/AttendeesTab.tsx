@@ -1,7 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 import { Calendar, Clock, UserCheck, UserX, Users, Download } from 'lucide-react';
 
 interface EventParticipant {
@@ -31,25 +30,24 @@ export const AttendeesTab = ({
   onCancelRegistration 
 }: AttendeesTabProps) => {
   const { isRTL } = useDirection();
-  const { me, ms } = useRTLAware();
 
   const getAttendanceStatusColor = (status: string) => {
     switch (status) {
-      case 'registered': return 'bg-primary/10 text-primary border-primary/20';
-      case 'checked_in': return 'bg-success/10 text-success border-success/20';
-      case 'checked_out': return 'bg-accent/10 text-accent border-accent/20';
-      case 'no_show': return 'bg-destructive/10 text-destructive border-destructive/20';
-      case 'cancelled': return 'bg-muted text-muted-foreground border-muted-foreground/20';
-      default: return 'bg-muted text-muted-foreground border-muted-foreground/20';
+      case 'registered': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
+      case 'checked_in': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
+      case 'checked_out': return 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/20 dark:text-purple-400';
+      case 'no_show': return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400';
+      case 'cancelled': return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
     }
   };
 
   const getRegistrationTypeColor = (type: string) => {
     switch (type) {
-      case 'self_registered': return 'bg-success/10 text-success border-success/20';
-      case 'invited': return 'bg-primary/10 text-primary border-primary/20';
-      case 'admin_added': return 'bg-accent/10 text-accent border-accent/20';
-      default: return 'bg-muted text-muted-foreground border-muted-foreground/20';
+      case 'self_registered': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
+      case 'invited': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
+      case 'admin_added': return 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/20 dark:text-purple-400';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
     }
   };
 
@@ -130,16 +128,16 @@ export const AttendeesTab = ({
         </div>
         
         <div className="text-center p-4 bg-muted/50 rounded-lg">
-          <UserCheck className="w-6 h-6 mx-auto mb-2 text-success" />
-          <div className="text-2xl font-bold text-success">{checkedInCount}</div>
+          <UserCheck className="w-6 h-6 mx-auto mb-2 text-green-600" />
+          <div className="text-2xl font-bold text-green-600">{checkedInCount}</div>
           <div className="text-xs text-muted-foreground">
             {isRTL ? 'حضر' : 'Attended'}
           </div>
         </div>
         
         <div className="text-center p-4 bg-muted/50 rounded-lg">
-          <UserX className="w-6 h-6 mx-auto mb-2 text-destructive" />
-          <div className="text-2xl font-bold text-destructive">{noShowCount}</div>
+          <UserX className="w-6 h-6 mx-auto mb-2 text-red-600" />
+          <div className="text-2xl font-bold text-red-600">{noShowCount}</div>
           <div className="text-xs text-muted-foreground">
             {isRTL ? 'لم يحضر' : 'No Show'}
           </div>
@@ -158,13 +156,13 @@ export const AttendeesTab = ({
         <h4 className="font-semibold flex items-center gap-2">
           <Users className="w-4 h-4" />
           {isRTL ? 'قائمة الحضور' : 'Attendee List'}
-          <Badge variant="secondary" className={ms('2')}>
+          <Badge variant="secondary" className="ml-2">
             {participants.length}
           </Badge>
         </h4>
         
         <Button variant="outline" size="sm">
-          <Download className={`w-4 h-4 ${me('2')}`} />
+          <Download className="w-4 h-4 mr-2" />
           {isRTL ? 'تصدير القائمة' : 'Export List'}
         </Button>
       </div>
@@ -204,13 +202,13 @@ export const AttendeesTab = ({
                     <div className="text-sm text-muted-foreground space-y-1">
                       {participant.check_in_time && (
                         <div className="flex items-center gap-1">
-                          <Clock className="w-3 h-3 text-success" />
+                          <Clock className="w-3 h-3 text-green-600" />
                           {isRTL ? 'دخل: ' : 'Checked in: '}{formatDateTime(participant.check_in_time)}
                         </div>
                       )}
                       {participant.check_out_time && (
                         <div className="flex items-center gap-1">
-                          <Clock className="w-3 h-3 text-accent" />
+                          <Clock className="w-3 h-3 text-purple-600" />
                           {isRTL ? 'خرج: ' : 'Checked out: '}{formatDateTime(participant.check_out_time)}
                         </div>
                       )}

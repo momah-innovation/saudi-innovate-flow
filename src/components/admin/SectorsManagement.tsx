@@ -8,8 +8,6 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Label } from "@/components/ui/label";
 import { Plus, Edit, Trash2, Building, Search, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useRTLAware } from "@/hooks/useRTLAware";
-import { RTLFlex } from "@/components/ui/rtl-layout";
 
 interface Sector {
   id: string;
@@ -33,7 +31,6 @@ export function SectorsManagement() {
   // Search and filter states
   const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
-  const { me, ms, ps, pe, start, end, isRTL } = useRTLAware();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -180,7 +177,7 @@ export function SectorsManagement() {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={() => { resetForm(); setEditingSector(null); }}>
-              <Plus className={`w-4 h-4 ${me("2")}`} />
+              <Plus className="w-4 h-4 mr-2" />
               Add Sector
             </Button>
           </DialogTrigger>
@@ -245,28 +242,27 @@ export function SectorsManagement() {
       </div>
 
       {/* Search and Filters */}
-      <RTLFlex className="flex-col sm:flex-row gap-4 items-center">
+      <div className="flex flex-col sm:flex-row gap-4 items-center">
         <div className="relative flex-1">
-          <Search className={`absolute ${start("3")} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
             placeholder="Search sectors by name, description, or Vision 2030 alignment..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className={`${ps("10")} ${pe("10")}`}
-            dir="rtl"
+            className="pl-10 pr-10"
           />
           {searchTerm && (
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setSearchTerm("")}
-              className={`absolute ${end("1")} top-1/2 transform -translate-y-1/2 h-8 w-8 p-0`}
+              className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
             >
               <X className="h-4 w-4" />
             </Button>
           )}
         </div>
-      </RTLFlex>
+      </div>
 
       <div className="grid gap-4">
         {filteredSectors.map((sector) => (

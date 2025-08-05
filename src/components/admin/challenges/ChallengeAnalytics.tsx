@@ -7,8 +7,6 @@ import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
-import { useTranslation } from "@/hooks/useAppTranslation";
-import { useRTLAware } from "@/hooks/useRTLAware";
 import { 
   BarChart3, 
   TrendingUp, 
@@ -56,8 +54,6 @@ export function ChallengeAnalytics() {
   const [timeRange, setTimeRange] = useState("all");
   const { toast } = useToast();
   const { timeRangeOptions } = useSystemLists();
-  const { t } = useTranslation();
-  const { textStart } = useRTLAware();
 
   useEffect(() => {
     fetchAnalytics();
@@ -84,8 +80,8 @@ export function ChallengeAnalytics() {
     } catch (error) {
       console.error('Error fetching analytics:', error);
       toast({
-        title: t("error"),
-        description: t("failed_to_load_analytics"),
+        title: "خطأ",
+        description: "فشل في تحميل بيانات التحليلات",
         variant: "destructive"
       });
     } finally {
@@ -420,10 +416,10 @@ export function ChallengeAnalytics() {
                         </span>
                       </div>
                     </div>
-                     <div className={textStart}>
-                       <div className="text-lg font-bold text-primary">{challenge.completion}%</div>
-                       <Progress value={challenge.completion} className="w-16 h-1 mt-1" />
-                     </div>
+                    <div className="text-right">
+                      <div className="text-lg font-bold text-primary">{challenge.completion}%</div>
+                      <Progress value={challenge.completion} className="w-16 h-1 mt-1" />
+                    </div>
                   </div>
                 ))}
               </CardContent>

@@ -24,7 +24,6 @@ import {
   X
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 import { cn } from '@/lib/utils';
 
 interface Notification {
@@ -40,7 +39,6 @@ interface Notification {
 
 export const ExpertNotificationCenter = () => {
   const { isRTL } = useDirection();
-  const { me } = useRTLAware();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
@@ -104,13 +102,13 @@ export const ExpertNotificationCenter = () => {
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'urgent':
-        return <AlertCircle className="w-4 h-4 text-destructive" />;
+        return <AlertCircle className="w-4 h-4 text-red-500" />;
       case 'assignment':
-        return <Target className="w-4 h-4 text-primary" />;
+        return <Target className="w-4 h-4 text-blue-500" />;
       case 'deadline':
-        return <Clock className="w-4 h-4 text-warning" />;
+        return <Clock className="w-4 h-4 text-orange-500" />;
       case 'achievement':
-        return <Award className="w-4 h-4 text-accent" />;
+        return <Award className="w-4 h-4 text-yellow-500" />;
       case 'system':
         return <Settings className="w-4 h-4 text-gray-500" />;
       default:
@@ -326,7 +324,7 @@ export const ExpertNotificationCenter = () => {
                       <div className="flex items-start justify-between">
                         <div className="flex-1 space-y-1">
                           <div className="flex items-center gap-2">
-                            <AlertCircle className="w-4 h-4 text-destructive" />
+                            <AlertCircle className="w-4 h-4 text-red-500" />
                             <Badge variant="destructive" className="text-xs">
                               {isRTL ? 'عاجل' : 'Urgent'}
                             </Badge>
@@ -361,7 +359,7 @@ export const ExpertNotificationCenter = () => {
                       <div className="flex items-start justify-between">
                         <div className="flex-1 space-y-1">
                           <div className="flex items-center gap-2">
-                            <Target className="w-4 h-4 text-primary" />
+                            <Target className="w-4 h-4 text-blue-500" />
                             <Badge variant="outline" className="text-xs">
                               {isRTL ? 'تكليف' : 'Assignment'}
                             </Badge>
@@ -396,8 +394,8 @@ export const ExpertNotificationCenter = () => {
                       <div className="flex items-start justify-between">
                         <div className="flex-1 space-y-1">
                           <div className="flex items-center gap-2">
-                            <Award className="w-4 h-4 text-accent" />
-                            <Badge variant="outline" className="text-xs bg-accent/5 text-accent">
+                            <Award className="w-4 h-4 text-yellow-500" />
+                            <Badge variant="outline" className="text-xs bg-yellow-50 text-yellow-700">
                               {isRTL ? 'إنجاز' : 'Achievement'}
                             </Badge>
                           </div>
@@ -426,7 +424,7 @@ export const ExpertNotificationCenter = () => {
             className="w-full"
             onClick={() => setOpen(false)}
           >
-            <MessageSquare className={`w-4 h-4 ${me('2')}`} />
+            <MessageSquare className="w-4 h-4 mr-2" />
             {isRTL ? 'عرض جميع الإشعارات' : 'View All Notifications'}
           </Button>
         </div>

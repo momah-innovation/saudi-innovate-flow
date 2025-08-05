@@ -37,18 +37,18 @@ export const AdminEventsHero = ({
       value: totalEvents,
       icon: Calendar,
       trend: isRTL ? '+12% من الشهر الماضي' : '+12% from last month',
-      color: 'bg-primary',
-      bgColor: 'bg-primary/10',
-      textColor: 'text-primary'
+      color: 'bg-blue-500',
+      bgColor: 'bg-blue-50 dark:bg-blue-900/20',
+      textColor: 'text-blue-600 dark:text-blue-400'
     },
     {
       title: isRTL ? 'الفعاليات النشطة' : 'Active Events',
       value: activeEvents,
       icon: TrendingUp,
       trend: isRTL ? `${activeEvents} جارية الآن` : `${activeEvents} ongoing now`,
-      color: 'bg-success',
-      bgColor: 'bg-success/10',
-      textColor: 'text-success'
+      color: 'bg-green-500',
+      bgColor: 'bg-green-50 dark:bg-green-900/20',
+      textColor: 'text-green-600 dark:text-green-400'
     },
     {
       title: isRTL ? 'إجمالي المشاركين' : 'Total Participants',

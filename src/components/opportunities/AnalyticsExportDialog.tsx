@@ -7,7 +7,6 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Download, FileText, Calendar, BarChart3, TrendingUp } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface AnalyticsExportDialogProps {
   opportunityId: string;
@@ -20,7 +19,6 @@ export const AnalyticsExportDialog = ({
 }: AnalyticsExportDialogProps) => {
   const { toast } = useToast();
   const { isRTL } = useDirection();
-  const { me } = useRTLAware();
   const [isExporting, setIsExporting] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -165,7 +163,7 @@ export const AnalyticsExportDialog = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
-          <Download className={`w-4 h-4 ${me("2")}`} />
+          <Download className="w-4 h-4 mr-2" />
           {isRTL ? 'تصدير' : 'Export'}
         </Button>
       </DialogTrigger>
@@ -199,7 +197,7 @@ export const AnalyticsExportDialog = ({
                 className="w-full"
                 size="sm"
               >
-                <FileText className={`w-4 h-4 ${me("2")}`} />
+                <FileText className="w-4 h-4 mr-2" />
                 {isRTL ? 'تصدير الموجز' : 'Export Summary'}
               </Button>
             </CardContent>
@@ -227,7 +225,7 @@ export const AnalyticsExportDialog = ({
                 className="w-full"
                 size="sm"
               >
-                <Download className={`w-4 h-4 ${me("2")}`} />
+                <Download className="w-4 h-4 mr-2" />
                 {isRTL ? 'تصدير مفصل' : 'Export Detailed'}
               </Button>
             </CardContent>

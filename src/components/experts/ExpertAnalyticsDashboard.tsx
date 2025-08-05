@@ -9,7 +9,6 @@ import {
   Users, Calendar, BarChart3, Eye, Download
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 import { cn } from '@/lib/utils';
 
 interface ExpertAnalyticsDashboardProps {
@@ -18,7 +17,6 @@ interface ExpertAnalyticsDashboardProps {
 
 export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboardProps) => {
   const { isRTL } = useDirection();
-  const { me } = useRTLAware();
   
   // Mock data for expert analytics
   const evaluationTrends = [
@@ -45,7 +43,7 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
       unit: isRTL ? 'أيام' : 'days',
       change: -12,
       icon: Clock,
-      color: 'text-success'
+      color: 'text-green-500'
     },
     { 
       title: isRTL ? 'معدل جودة التقييم' : 'Evaluation Quality',
@@ -53,7 +51,7 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
       unit: '/10',
       change: 5,
       icon: Star,
-      color: 'text-accent'
+      color: 'text-yellow-500'
     },
     { 
       title: isRTL ? 'معدل الإنجاز' : 'Completion Rate',
@@ -61,7 +59,7 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
       unit: '%',
       change: 8,
       icon: Target,
-      color: 'text-primary'
+      color: 'text-blue-500'
     },
     { 
       title: isRTL ? 'تقييم الأقران' : 'Peer Rating',
@@ -69,7 +67,7 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
       unit: '/5',
       change: 3,
       icon: Users,
-      color: 'text-secondary'
+      color: 'text-purple-500'
     }
   ];
 
@@ -87,11 +85,11 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm">
-            <Download className={`w-4 h-4 ${me('2')}`} />
+            <Download className="w-4 h-4 mr-2" />
             {isRTL ? 'تصدير' : 'Export'}
           </Button>
           <Button variant="outline" size="sm">
-            <BarChart3 className={`w-4 h-4 ${me('2')}`} />
+            <BarChart3 className="w-4 h-4 mr-2" />
             {isRTL ? 'تقرير مفصل' : 'Detailed Report'}
           </Button>
         </div>
@@ -119,12 +117,12 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
                     </div>
                     <div className="flex items-center">
                       <TrendingUp className={cn(
-                        `w-4 h-4 ${me('1')}`,
-                        metric.change > 0 ? "text-success" : "text-destructive"
+                        "w-4 h-4 mr-1",
+                        metric.change > 0 ? "text-green-500" : "text-red-500"
                       )} />
                       <span className={cn(
                         "text-sm font-medium",
-                        metric.change > 0 ? "text-success" : "text-destructive"
+                        metric.change > 0 ? "text-green-500" : "text-red-500"
                       )}>
                         {metric.change > 0 ? '+' : ''}{metric.change}%
                       </span>
@@ -299,7 +297,7 @@ export const ExpertAnalyticsDashboard = ({ className }: ExpertAnalyticsDashboard
                 <div className="flex items-center gap-2">
                   {activity.score && (
                     <Badge variant="outline" className="bg-yellow-50 text-yellow-700">
-                      <Star className={`w-3 h-3 ${me('1')}`} />
+                      <Star className="w-3 h-3 mr-1" />
                       {activity.score}
                     </Badge>
                   )}

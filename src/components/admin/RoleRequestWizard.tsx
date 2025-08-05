@@ -10,7 +10,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserPlus, Send } from "lucide-react";
 import { useSystemLists } from "@/hooks/useSystemLists";
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 // Function to get role rejection wait days from system settings
 const getRoleRejectionWaitDays = async (): Promise<number> => {
@@ -64,7 +63,6 @@ interface RoleRequestWizardProps {
 export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestSubmitted }: RoleRequestWizardProps) {
   const { user } = useAuth();
   const { requestableUserRoles, roleRequestJustifications } = useSystemLists();
-  const { mr } = useRTLAware();
   const [selectedRole, setSelectedRole] = useState("");
   const [reason, setReason] = useState("");
   const [justification, setJustification] = useState("");
@@ -303,7 +301,7 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
               onClick={handleSubmitRequest}
               disabled={loading || !selectedRole || !reason || !justification || availableRoles.length === 0}
             >
-              {loading && <Send className={`h-4 w-4 animate-spin ${mr}`} />}
+              {loading && <Send className="h-4 w-4 animate-spin mr-2" />}
               Submit Request
             </Button>
           </div>

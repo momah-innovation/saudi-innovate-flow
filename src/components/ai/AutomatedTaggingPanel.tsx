@@ -19,9 +19,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useTranslation } from '@/hooks/useAppTranslation';
 import { aiService } from '@/services/AIService';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface TagSuggestion {
   id: string;
@@ -56,9 +54,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
     approvedTags: 0,
     automationRate: 0
   });
-  const { t } = useTranslation();
   const { toast } = useToast();
-  const { ms, start, me } = useRTLAware();
 
   useEffect(() => {
     fetchTagSuggestions();
@@ -89,8 +85,8 @@ export const AutomatedTaggingPanel: React.FC = () => {
     } catch (error) {
       console.error('Error fetching tag suggestions:', error);
       toast({
-        title: t('error'),
-        description: t('failed_to_load_tag_suggestions'),
+        title: 'خطأ',
+        description: 'فشل في تحميل اقتراحات العلامات',
         variant: 'destructive',
       });
     } finally {
@@ -128,8 +124,8 @@ export const AutomatedTaggingPanel: React.FC = () => {
       await aiService.suggestTags(entityId, entityType, content);
       
       toast({
-        title: t('tags_generated'),
-        description: t('tag_suggestions_created_successfully'),
+        title: 'تم إنتاج العلامات',
+        description: 'تم إنشاء اقتراحات العلامات بنجاح',
       });
 
       fetchTagSuggestions();
@@ -137,8 +133,8 @@ export const AutomatedTaggingPanel: React.FC = () => {
     } catch (error) {
       console.error('Error generating tags:', error);
       toast({
-        title: t('error'),
-        description: t('failed_to_generate_tags'),
+        title: 'خطأ',
+        description: 'فشل في إنتاج العلامات',
         variant: 'destructive',
       });
     } finally {
@@ -169,16 +165,16 @@ export const AutomatedTaggingPanel: React.FC = () => {
       ));
 
       toast({
-        title: t('approved'),
-        description: t('tags_applied_to_content'),
+        title: 'تم الموافقة',
+        description: 'تم تطبيق العلامات على المحتوى',
       });
 
       fetchStats();
     } catch (error) {
       console.error('Error approving suggestion:', error);
       toast({
-        title: t('error'),
-        description: t('failed_to_apply_tags'),
+        title: 'خطأ',
+        description: 'فشل في تطبيق العلامات',
         variant: 'destructive',
       });
     }
@@ -198,16 +194,16 @@ export const AutomatedTaggingPanel: React.FC = () => {
       ));
 
       toast({
-        title: t('rejected'),
-        description: t('tag_suggestion_rejected'),
+        title: 'تم الرفض',
+        description: 'تم رفض اقتراح العلامات',
       });
 
       fetchStats();
     } catch (error) {
       console.error('Error rejecting suggestion:', error);
       toast({
-        title: t('error'),
-        description: t('failed_to_reject_suggestion'),
+        title: 'خطأ',
+        description: 'فشل في رفض الاقتراح',
         variant: 'destructive',
       });
     }
@@ -225,16 +221,16 @@ export const AutomatedTaggingPanel: React.FC = () => {
       // This would fetch entities that need tagging and process them
       // For now, we'll simulate the process
       toast({
-        title: t('process_started'),
-        description: t('running_automatic_tagging'),
+        title: 'بدء العملية',
+        description: 'جاري تشغيل العلامات التلقائية للمحتوى الجديد...',
       });
 
       // Simulate processing delay
       await new Promise(resolve => setTimeout(resolve, 3000));
 
       toast({
-        title: t('process_completed'),
-        description: t('automatic_tagging_successful'),
+        title: 'تمت العملية',
+        description: 'تم تشغيل العلامات التلقائية بنجاح',
       });
 
       fetchTagSuggestions();
@@ -242,8 +238,8 @@ export const AutomatedTaggingPanel: React.FC = () => {
     } catch (error) {
       console.error('Error running bulk tagging:', error);
       toast({
-        title: t('error'),
-        description: t('failed_to_run_automatic_tagging'),
+        title: 'خطأ',
+        description: 'فشل في تشغيل العلامات التلقائية',
         variant: 'destructive',
       });
     } finally {
@@ -259,9 +255,9 @@ export const AutomatedTaggingPanel: React.FC = () => {
           <Tags className="h-6 w-6 text-info-foreground" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold">{t('automated_tagging_system')}</h1>
+          <h1 className="text-2xl font-bold">نظام العلامات التلقائي</h1>
           <p className="text-muted-foreground">
-            {t('automated_tagging_description')}
+            إنتاج وإدارة العلامات التلقائية بالذكاء الاصطناعي
           </p>
         </div>
       </div>
@@ -271,11 +267,11 @@ export const AutomatedTaggingPanel: React.FC = () => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <div className="p-2 bg-accent/10 rounded-lg">
-                <Sparkles className="h-4 w-4 text-accent-foreground" />
+              <div className="p-2 bg-purple-100 rounded-lg">
+                <Sparkles className="h-4 w-4 text-purple-600" />
               </div>
-              <div className={ms('4')}>
-                <p className="text-sm font-medium text-muted-foreground">{t('total_suggestions')}</p>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-muted-foreground">إجمالي الاقتراحات</p>
                 <p className="text-2xl font-bold">{stats.totalSuggestions}</p>
               </div>
             </div>
@@ -285,11 +281,11 @@ export const AutomatedTaggingPanel: React.FC = () => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <div className="p-2 bg-warning/10 rounded-lg">
-                <Brain className="h-4 w-4 text-warning" />
+              <div className="p-2 bg-yellow-100 rounded-lg">
+                <Brain className="h-4 w-4 text-yellow-600" />
               </div>
-              <div className={ms('4')}>
-                <p className="text-sm font-medium text-muted-foreground">{t('pending_review')}</p>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-muted-foreground">في انتظار المراجعة</p>
                 <p className="text-2xl font-bold">{stats.pendingSuggestions}</p>
               </div>
             </div>
@@ -302,8 +298,8 @@ export const AutomatedTaggingPanel: React.FC = () => {
               <div className="p-2 bg-success/10 rounded-lg">
                 <CheckCircle className="h-4 w-4 text-success" />
               </div>
-              <div className={ms('4')}>
-                <p className="text-sm font-medium text-muted-foreground">{t('approved_tags')}</p>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-muted-foreground">علامات موافق عليها</p>
                 <p className="text-2xl font-bold">{stats.approvedTags}</p>
               </div>
             </div>
@@ -316,8 +312,8 @@ export const AutomatedTaggingPanel: React.FC = () => {
               <div className="p-2 bg-info/10 rounded-lg">
                 <TrendingUp className="h-4 w-4 text-info" />
               </div>
-              <div className={ms('4')}>
-                <p className="text-sm font-medium text-muted-foreground">{t('automation_rate')}</p>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-muted-foreground">معدل الأتمتة</p>
                 <div className="space-y-1">
                   <p className="text-2xl font-bold">{stats.automationRate}%</p>
                   <Progress value={stats.automationRate} className="h-1" />
@@ -330,8 +326,8 @@ export const AutomatedTaggingPanel: React.FC = () => {
 
       <Tabs defaultValue="suggestions" className="space-y-6">
         <TabsList>
-          <TabsTrigger value="suggestions">{t('tag_suggestions')}</TabsTrigger>
-          <TabsTrigger value="bulk">{t('bulk_run')}</TabsTrigger>
+          <TabsTrigger value="suggestions">اقتراحات العلامات</TabsTrigger>
+          <TabsTrigger value="bulk">تشغيل شامل</TabsTrigger>
         </TabsList>
 
         <TabsContent value="suggestions" className="space-y-6">
@@ -339,12 +335,12 @@ export const AutomatedTaggingPanel: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
-                <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
-                  placeholder={t('search_suggestions') || 'البحث في الاقتراحات...'}
+                  placeholder="البحث في الاقتراحات..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className={`${start('10')}`}
+                  className="pl-10"
                 />
               </div>
             </div>
@@ -353,11 +349,11 @@ export const AutomatedTaggingPanel: React.FC = () => {
                 <SelectValue placeholder="نوع المحتوى" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{t('all_types') || 'جميع الأنواع'}</SelectItem>
-                <SelectItem value="idea">{t('ideas') || 'الأفكار'}</SelectItem>
-                <SelectItem value="challenge">{t('challenges') || 'التحديات'}</SelectItem>
-                <SelectItem value="opportunity">{t('opportunities') || 'الفرص'}</SelectItem>
-                <SelectItem value="event">{t('events') || 'الفعاليات'}</SelectItem>
+                <SelectItem value="all">جميع الأنواع</SelectItem>
+                <SelectItem value="idea">الأفكار</SelectItem>
+                <SelectItem value="challenge">التحديات</SelectItem>
+                <SelectItem value="opportunity">الفرص</SelectItem>
+                <SelectItem value="event">الفعاليات</SelectItem>
               </SelectContent>
             </Select>
             <Button
@@ -426,7 +422,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                               >
                                 {tag.tag || tag}
                                 {confidence > 0 && (
-                                  <span className={`${ms('1')} text-xs opacity-70`}>
+                                  <span className="ml-1 text-xs opacity-70">
                                     {Math.round(confidence * 100)}%
                                   </span>
                                 )}
@@ -446,7 +442,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                             )}
                             className="text-success-foreground bg-success hover:bg-success/90"
                           >
-                            <CheckCircle className={`h-4 w-4 ${me('1')}`} />
+                            <CheckCircle className="h-4 w-4 mr-1" />
                             موافقة وتطبيق
                           </Button>
                           <Button
@@ -455,7 +451,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                             onClick={() => rejectSuggestion(suggestion.id)}
                             className="text-destructive hover:text-destructive/90"
                           >
-                            <X className={`h-4 w-4 ${me('1')}`} />
+                            <X className="h-4 w-4 mr-1" />
                             رفض
                           </Button>
                         </div>
@@ -495,7 +491,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                 <Card>
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-3">
-                      <Brain className="h-8 w-8 text-primary" />
+                      <Brain className="h-8 w-8 text-purple-500" />
                       <div>
                         <h3 className="font-medium">محتوى غير مُعلم</h3>
                         <p className="text-sm text-muted-foreground">
@@ -515,12 +511,12 @@ export const AutomatedTaggingPanel: React.FC = () => {
               >
                 {processing ? (
                   <>
-                    <RefreshCw className="h-4 w-4 me-2 animate-spin" />
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
                     جاري المعالجة...
                   </>
                 ) : (
                   <>
-                    <Sparkles className="h-4 w-4 me-2" />
+                    <Sparkles className="h-4 w-4 mr-2" />
                     بدء العلامات التلقائية الشاملة
                   </>
                 )}

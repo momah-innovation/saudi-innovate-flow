@@ -18,7 +18,6 @@ import { AdminRelationshipsHero } from '@/components/admin/AdminRelationshipsHer
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface RelationshipData {
   id: string;
@@ -45,7 +44,6 @@ export function RelationshipOverview({
   const [relationships, setRelationships] = useState<RelationshipData[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
-  const { ml } = useRTLAware();
 
   useEffect(() => {
     loadRelationships();
@@ -214,7 +212,7 @@ export function RelationshipOverview({
             
             <div className="flex items-center gap-1">
               <Button variant="outline" size="sm">
-                <Eye className={`w-3 h-3 ${ml}`} />
+                <Eye className="w-3 h-3 mr-1" />
                 View
               </Button>
               <Button variant="ghost" size="sm">

@@ -34,7 +34,6 @@ import {
   Eye
 } from 'lucide-react';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface ChallengeViewDialogProps {
   open: boolean;
@@ -57,7 +56,6 @@ export function ChallengeViewDialog({
   const { user, hasRole } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { me, start, end } = useRTLAware();
   
   const [submissions, setSubmissions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -233,7 +231,7 @@ export function ChallengeViewDialog({
             )}
             {submission.score && (
               <Badge variant="secondary">
-                <Star className={`h-3 w-3 ${me('1')}`} />
+                <Star className="h-3 w-3 mr-1" />
                 {submission.score}/10
               </Badge>
             )}
@@ -261,7 +259,7 @@ export function ChallengeViewDialog({
               variant="ghost"
               onClick={() => handleVoteSubmission(submission.id)}
             >
-              <Heart className={`h-4 w-4 ${me('1')}`} />
+              <Heart className="h-4 w-4 mr-1" />
               {isRTL ? 'إعجاب' : 'Like'}
             </Button>
             <Button
@@ -269,19 +267,19 @@ export function ChallengeViewDialog({
               variant="ghost"
               onClick={() => handleBookmarkSubmission(submission.id)}
             >
-              <Bookmark className={`h-4 w-4 ${me('1')}`} />
+              <Bookmark className="h-4 w-4 mr-1" />
               {isRTL ? 'حفظ' : 'Save'}
             </Button>
           </div>
           
           <div className="flex gap-1">
             <Button size="sm" variant="outline">
-              <Eye className={`h-4 w-4 ${me('1')}`} />
+              <Eye className="h-4 w-4 mr-1" />
               {isRTL ? 'عرض' : 'View'}
             </Button>
             {submission.file_url && (
               <Button size="sm" variant="outline">
-                <Download className={`h-4 w-4 ${me('1')}`} />
+                <Download className="h-4 w-4 mr-1" />
                 {isRTL ? 'تحميل' : 'Download'}
               </Button>
             )}
@@ -315,14 +313,14 @@ export function ChallengeViewDialog({
           <div className={`absolute inset-0 ${challengesPageConfig.ui.colors.background.overlay} bg-gradient-to-t from-black/60 to-transparent`} />
           
           {/* Status Badge */}
-          <div className={`absolute top-4 ${end('4')}`}>
+          <div className="absolute top-4 right-4">
             <Badge className={`${challengesPageConfig.ui.gradients.success} ${challengesPageConfig.ui.colors.text.accent}`}>
               {challenge.status}
             </Badge>
           </div>
 
           {/* Action Buttons */}
-          <div className={`absolute top-4 ${start('4')} flex gap-2`}>
+          <div className="absolute top-4 left-4 flex gap-2">
             <Button
               size="sm"
               variant="secondary"
@@ -345,7 +343,7 @@ export function ChallengeViewDialog({
           </div>
 
           {/* Title and Key Info */}
-          <div className={`absolute bottom-4 ${start('4')} ${end('4')} ${challengesPageConfig.ui.colors.text.accent}`}>
+          <div className={`absolute bottom-4 left-4 right-4 ${challengesPageConfig.ui.colors.text.accent}`}>
             <h2 className="text-2xl font-bold mb-2">{challenge.title_ar}</h2>
             <div className="flex flex-wrap gap-4 text-sm">
               {daysRemaining !== null && (
@@ -595,7 +593,7 @@ export function ChallengeViewDialog({
                 onClick={() => onParticipate?.(challenge)}
                 className="flex-1"
               >
-                <Users className={`w-4 h-4 ${me('2')}`} />
+                <Users className="w-4 h-4 mr-2" />
                 {isRTL ? 'انضم للتحدي' : 'Join Challenge'}
               </Button>
             ) : (
@@ -603,7 +601,7 @@ export function ChallengeViewDialog({
                 onClick={() => onSubmit?.(challenge)}
                 className="flex-1"
               >
-                <Send className={`w-4 h-4 ${me('2')}`} />
+                <Send className="w-4 h-4 mr-2" />
                 {isRTL ? 'قدم مشروعك' : 'Submit Project'}
               </Button>
             )}

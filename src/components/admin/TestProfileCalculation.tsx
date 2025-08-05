@@ -4,13 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 export function TestProfileCalculation() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const { user } = useAuth();
-  const { me } = useRTLAware();
 
   const testCalculation = async () => {
     if (!user) {
@@ -55,7 +53,7 @@ export function TestProfileCalculation() {
           disabled={loading || !user}
           className="w-full"
         >
-          {loading && <Loader2 className={`${me('2')} h-4 w-4 animate-spin`} />}
+          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Calculate Profile Completion
         </Button>
         

@@ -24,7 +24,6 @@ import {
   Eye,
   Brain
 } from 'lucide-react';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface ImplementationItem {
   category: string;
@@ -38,7 +37,6 @@ interface ImplementationItem {
 
 export const AnalyticsImplementationStatus = () => {
   const { isRTL } = useDirection();
-  const { ms, me } = useRTLAware();
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const implementationItems: ImplementationItem[] = [
@@ -273,19 +271,19 @@ export const AnalyticsImplementationStatus = () => {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'completed': return <CheckCircle className="w-4 h-4 text-success" />;
-      case 'in_progress': return <Clock className="w-4 h-4 text-warning" />;
-      case 'pending': return <AlertCircle className="w-4 h-4 text-muted-foreground" />;
-      default: return <AlertCircle className="w-4 h-4 text-muted-foreground" />;
+      case 'completed': return <CheckCircle className="w-4 h-4 text-green-500" />;
+      case 'in_progress': return <Clock className="w-4 h-4 text-yellow-500" />;
+      case 'pending': return <AlertCircle className="w-4 h-4 text-gray-400" />;
+      default: return <AlertCircle className="w-4 h-4 text-gray-400" />;
     }
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'completed': 
-        return <Badge className="bg-success/10 text-success border-success/20">{isRTL ? 'مكتمل' : 'Completed'}</Badge>;
+        return <Badge className="bg-green-100 text-green-800 border-green-200">{isRTL ? 'مكتمل' : 'Completed'}</Badge>;
       case 'in_progress': 
-        return <Badge className="bg-warning/10 text-warning border-warning/20">{isRTL ? 'قيد التنفيذ' : 'In Progress'}</Badge>;
+        return <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">{isRTL ? 'قيد التنفيذ' : 'In Progress'}</Badge>;
       case 'pending': 
         return <Badge variant="outline">{isRTL ? 'معلق' : 'Pending'}</Badge>;
       default: 
@@ -333,7 +331,7 @@ export const AnalyticsImplementationStatus = () => {
             className="flex items-center gap-2"
           >
             {category.name}
-            <Badge variant="secondary" className={ms("1")}>
+            <Badge variant="secondary" className="ml-1">
               {category.count}
             </Badge>
           </Button>
@@ -362,13 +360,13 @@ export const AnalyticsImplementationStatus = () => {
                   {getStatusBadge(item.status)}
                   {item.supabaseIntegrated && (
                     <Badge variant="outline" className="text-blue-600 border-blue-200">
-                      <Database className={`w-3 h-3 ${me("1")}`} />
+                      <Database className="w-3 h-3 mr-1" />
                       Supabase
                     </Badge>
                   )}
                   {item.realTimeEnabled && (
                     <Badge variant="outline" className="text-purple-600 border-purple-200">
-                      <Zap className={`w-3 h-3 ${me("1")}`} />
+                      <Zap className="w-3 h-3 mr-1" />
                       {isRTL ? 'مباشر' : 'Real-time'}
                     </Badge>
                   )}

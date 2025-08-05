@@ -315,10 +315,10 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
                       <span className="font-medium">{category.name}</span>
                     </div>
                     <div className="flex items-center gap-4">
-                       <div className="text-end">
-                         <div className="font-semibold">{category.count}</div>
-                         <div className="text-sm text-muted-foreground">{category.percentage}%</div>
-                       </div>
+                      <div className="text-right">
+                        <div className="font-semibold">{category.count}</div>
+                        <div className="text-sm text-muted-foreground">{category.percentage}%</div>
+                      </div>
                       <div className="w-20">
                         <Progress value={category.percentage} className="h-2" />
                       </div>

@@ -8,7 +8,6 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useAppTranslation";
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 import { supabase } from "@/integrations/supabase/client";
 import { 
@@ -43,7 +42,6 @@ export function ChallengeDetailView({
 }: ChallengeDetailViewProps) {
   const { toast } = useToast();
   const { t, isRTL } = useTranslation();
-  const { me } = useRTLAware();
   
   const [relatedData, setRelatedData] = useState({
     experts: [],
@@ -196,7 +194,7 @@ export function ChallengeDetailView({
               </div>
             </div>
             <Button onClick={() => onEdit(challenge)} size="sm">
-              <Edit className="w-4 h-4" />
+              <Edit className="w-4 h-4 mr-2" />
               تعديل
             </Button>
           </div>
@@ -606,7 +604,7 @@ export function ChallengeDetailView({
                 إغلاق
               </Button>
               <Button onClick={() => onEdit(challenge)}>
-                <Edit className={`w-4 h-4 ${me('2')}`} />
+                <Edit className="w-4 h-4 mr-2" />
                 تعديل التحدي
               </Button>
             </div>

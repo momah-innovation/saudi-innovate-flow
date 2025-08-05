@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Header } from './Header';
+import { Header } from '@/components/ui/header';
 import { NavigationSidebar } from './NavigationSidebar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb';
@@ -36,8 +36,8 @@ export function AdminLayout({ children, title, breadcrumbs }: AdminLayoutProps) 
           
           {/* Breadcrumb Navigation */}
           {breadcrumbs && breadcrumbs.length > 0 && (
-             <div className={cn("h-12 border-b bg-muted/20 px-6 flex items-center gap-3", isRTL && "text-end flex-row-reverse")}>
-               <SidebarTrigger className="shrink-0" />
+            <div className={cn("h-12 border-b bg-muted/20 px-6 flex items-center gap-3", isRTL && "text-right flex-row-reverse")}>
+              <SidebarTrigger className="shrink-0" />
               <Breadcrumb>
                 <BreadcrumbList>
                   {breadcrumbs.map((item, index) => (

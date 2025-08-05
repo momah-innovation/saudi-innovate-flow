@@ -12,10 +12,8 @@ import {
   Star
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { cn } from '@/lib/utils';
 
 interface RecommendedEvent {
   id: string;
@@ -36,7 +34,6 @@ interface EventRecommendationsProps {
 
 export const EventRecommendations = ({ onEventSelect, className = "" }: EventRecommendationsProps) => {
   const { isRTL } = useDirection();
-  const { me, ms, end } = useRTLAware();
   const { user } = useAuth();
   const [recommendations, setRecommendations] = useState<RecommendedEvent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -116,9 +113,9 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
   };
 
   const getReasonColor = (reason: string) => {
-    if (reason.includes('trending') || reason.includes('رائجة')) return 'text-warning';
-    if (reason.includes('interest') || reason.includes('اهتمام')) return 'text-accent';
-    if (reason.includes('similar') || reason.includes('مشابه')) return 'text-primary';
+    if (reason.includes('trending') || reason.includes('رائجة')) return 'text-orange-600';
+    if (reason.includes('interest') || reason.includes('اهتمام')) return 'text-purple-600';
+    if (reason.includes('similar') || reason.includes('مشابه')) return 'text-blue-600';
     return 'text-primary';
   };
 
@@ -149,134 +146,96 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
   }
 
   return (
-    <Card className={cn("overflow-hidden border-2 border-accent/20 bg-gradient-to-br from-accent/5 to-accent/10", className)}>
-      <CardHeader className="pb-3 border-b border-accent/20">
-        <CardTitle className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center">
-              <Sparkles className="w-3 h-3 text-white" />
-            </div>
-            {isRTL ? 'مقترحة لك' : 'For You'}
-          </div>
-          <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20">
-            <Star className={`w-3 h-3 ${me('1')}`} />
-            {isRTL ? 'مخصص' : 'Personal'}
-          </Badge>
-        </CardTitle>
-        <p className="text-xs text-muted-foreground">
-          {isRTL ? 'فعاليات مختارة بناءً على اهتماماتك' : 'Events curated based on your interests'}
-        </p>
-      </CardHeader>
+    <div className={`space-y-4 ${className}`}>
+      {/* Section Header */}
+      <div className="flex items-center gap-3">
+        <div className="p-2 bg-primary/10 rounded-lg">
+          <Sparkles className="w-5 h-5 text-primary" />
+        </div>
+        <div>
+          <h2 className="text-xl font-semibold">
+            {isRTL ? 'فعاليات مقترحة لك' : 'Recommended for You'}
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {isRTL ? 'فعاليات مختارة خصيصاً بناءً على اهتماماتك' : 'Events curated based on your interests'}
+          </p>
+        </div>
+      </div>
 
-      <CardContent className="p-4">
-        {recommendations.length === 0 ? (
-          <div className="text-center py-6">
-            <div className="w-12 h-12 mx-auto mb-3 bg-gradient-primary/20 rounded-full flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-accent" />
-            </div>
-            <p className="text-muted-foreground text-sm">
-              {isRTL ? 'لا توجد توصيات متاحة' : 'No recommendations available'}
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {recommendations.slice(0, 4).map((event, index) => {
-              const ReasonIcon = getReasonIcon(event.reason);
-              const scoreColor = event.recommendation_score > 0.8 ? 'text-success' : 
-                               event.recommendation_score > 0.6 ? 'text-warning' : 'text-muted-foreground';
-              
-              return (
-                <div 
-                  key={event.id}
-                  className="group relative overflow-hidden rounded-lg p-3 bg-background/70 hover:bg-background/90 transition-all duration-300 cursor-pointer border border-accent/10 hover:border-accent/20 hover:shadow-lg"
-                  onClick={() => onEventSelect(event.id)}
-                >
-                  {/* Recommendation Score */}
-                  <div className={`absolute top-2 ${end('2')}`}>
-                    <Badge variant="outline" className={cn("text-xs border-0 bg-white/90", scoreColor)}>
-                      <Star className={`w-3 h-3 ${me('1')}`} />
-                      {Math.round(event.recommendation_score * 100)}%
-                    </Badge>
+      {/* Recommendations Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {recommendations.map((event) => {
+          const ReasonIcon = getReasonIcon(event.reason);
+          
+          return (
+            <Card key={event.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer" onClick={() => onEventSelect(event.id)}>
+              {/* Event Image */}
+              <div className="relative h-32 overflow-hidden">
+                {event.image_url ? (
+                  <img 
+                    src={event.image_url} 
+                    alt={event.title_ar}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+                    <Calendar className="w-12 h-12 text-primary/40" />
                   </div>
+                )}
+                
+                {/* Recommendation Badge */}
+                <div className="absolute top-2 left-2">
+                  <Badge className="bg-white/90 text-gray-700 border-0">
+                    <ReasonIcon className={`w-3 h-3 mr-1 ${getReasonColor(event.reason)}`} />
+                    {event.reason}
+                  </Badge>
+                </div>
 
-                  <div className="flex items-start gap-3">
-                    {/* Event Image/Icon */}
-                    <div className="flex-shrink-0">
-                      {event.image_url ? (
-                        <div className="w-12 h-12 rounded-lg overflow-hidden border border-accent/20">
-                          <img 
-                            src={event.image_url} 
-                            alt={event.title_ar}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        </div>
-                      ) : (
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-accent/10 to-accent/20 flex items-center justify-center border border-accent/20">
-                          <Calendar className="w-6 h-6 text-accent" />
-                        </div>
-                      )}
-                    </div>
+                {/* Score Badge */}
+                <div className="absolute top-2 right-2">
+                  <Badge variant="secondary" className="bg-primary/90 text-white border-0">
+                    {Math.round(event.recommendation_score * 100)}%
+                  </Badge>
+                </div>
+              </div>
 
-                    <div className="flex-1 min-w-0 space-y-2">
-                      <div>
-                        <h4 className="text-sm font-semibold line-clamp-2 group-hover:text-accent transition-colors leading-tight">
-                          {event.title_ar}
-                        </h4>
-                        
-                        <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <Calendar className="w-3 h-3" />
-                            <span className="font-medium">
-                              {new Date(event.event_date).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', {
-                                month: 'short',
-                                day: 'numeric'
-                              })}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Users className="w-3 h-3" />
-                            <span>{event.registered_participants}</span>
-                          </div>
-                        </div>
-                      </div>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base line-clamp-2">
+                  {event.title_ar}
+                </CardTitle>
+                <CardDescription className="line-clamp-2 text-xs">
+                  {event.description_ar}
+                </CardDescription>
+              </CardHeader>
 
-                      {/* Recommendation Reason */}
-                      <div className="flex items-center gap-2">
-                        <div className="p-1 rounded bg-accent/10">
-                          <ReasonIcon className="w-3 h-3 text-accent" />
-                        </div>
-                        <span className="text-xs text-muted-foreground truncate">
-                          {event.reason}
-                        </span>
-                      </div>
-
-                      {/* Event Type */}
-                      <Badge 
-                        variant="outline" 
-                        className="text-xs px-2 py-0.5 border-accent/20 text-accent bg-accent/10"
-                      >
-                        {event.event_type}
-                      </Badge>
-                    </div>
+              <CardContent className="pt-0">
+                <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
+                  <div className="flex items-center gap-1">
+                    <Calendar className="w-3 h-3" />
+                    <span>{new Date(event.event_date).toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Users className="w-3 h-3" />
+                    <span>{event.registered_participants}</span>
                   </div>
                 </div>
-              );
-            })}
-            
-            {recommendations.length > 4 && (
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="w-full mt-4 border-accent/20 text-accent hover:bg-accent/10"
-                onClick={() => onEventSelect('all-recommendations')}
-              >
-                {isRTL ? `عرض جميع التوصيات (${recommendations.length})` : `View All Recommendations (${recommendations.length})`}
-                <ArrowRight className={`w-4 h-4 ${ms('2')}`} />
-              </Button>
-            )}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+
+                <Button 
+                  size="sm" 
+                  className="w-full group-hover:bg-primary/90 transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEventSelect(event.id);
+                  }}
+                >
+                  {isRTL ? 'عرض التفاصيل' : 'View Details'}
+                  <ArrowRight className="w-3 h-3 ml-1" />
+                </Button>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+    </div>
   );
 };

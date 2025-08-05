@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRTLAware } from '@/hooks/useRTLAware'
+import { useRTLAwareClasses } from '@/components/ui/rtl-aware'
 import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -41,7 +41,7 @@ const CHART_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#8
 export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps> = ({ className }) => {
   const { analytics, loading, error, refreshAnalytics } = useStorageAnalytics()
   const { t } = useTranslation()
-  const { mr, flexRow } = useRTLAware()
+  const { mr } = useRTLAwareClasses()
 
   const formatBytes = (bytes: number): string => {
     if (bytes === 0) return `0 ${t("storage.bytes")}`
@@ -108,7 +108,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
-          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t("storage.total_storage")}</CardTitle>
             <HardDrive className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -121,7 +121,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
         </Card>
 
         <Card>
-          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t("storage.total_files")}</CardTitle>
             <Files className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -134,7 +134,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
         </Card>
 
         <Card>
-          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t("storage.active_buckets")}</CardTitle>
             <Upload className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -147,7 +147,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
         </Card>
 
         <Card>
-          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t("storage.top_uploaders")}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>

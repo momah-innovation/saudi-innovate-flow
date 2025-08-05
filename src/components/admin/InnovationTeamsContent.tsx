@@ -17,8 +17,6 @@ import { useTranslation } from '@/hooks/useAppTranslation';
 import { TeamMemberWizard } from './TeamMemberWizard';
 import { CoreTeamCard, CoreTeamMemberData, CoreTeamCardAction } from '@/components/ui/core-team-card';
 import { CoreTeamDetailDialog } from '@/components/ui/core-team-detail-dialog';
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { RTLFlex } from '@/components/ui/rtl-layout';
 
 interface InnovationTeamsContentProps {
   activeTab: string;
@@ -40,7 +38,6 @@ export function InnovationTeamsContent({
   const { t } = useTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
-  const { me, flexRow } = useRTLAware();
   const [loading, setLoading] = useState(true);
   const [editingMember, setEditingMember] = useState<any>(null);
   const [selectedMember, setSelectedMember] = useState<any>(null);
@@ -222,12 +219,12 @@ export function InnovationTeamsContent({
     const actions: CoreTeamCardAction[] = [
       {
         label: t('edit'),
-        icon: <Edit className={`h-4 w-4 ${me}`} />,
+        icon: <Edit className="h-4 w-4 me-2" />,
         onClick: () => handleEditMember(member)
       },
       {
         label: t('remove'),
-        icon: <UserX className={`h-4 w-4 ${me}`} />,
+        icon: <UserX className="h-4 w-4 me-2" />,
         onClick: () => handleRemoveMember(member.id),
         variant: 'destructive'
       }
@@ -253,7 +250,7 @@ export function InnovationTeamsContent({
       {/* Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
-          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('totalMembers')}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -263,7 +260,7 @@ export function InnovationTeamsContent({
         </Card>
 
         <Card>
-          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('activeMembers')}</CardTitle>
             <CheckCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -273,7 +270,7 @@ export function InnovationTeamsContent({
         </Card>
 
         <Card>
-          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('avgWorkload')}</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -283,7 +280,7 @@ export function InnovationTeamsContent({
         </Card>
 
         <Card>
-          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('totalAssignments')}</CardTitle>
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>

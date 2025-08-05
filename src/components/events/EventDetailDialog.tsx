@@ -24,7 +24,6 @@ import {
   Info
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEventDetails } from '@/hooks/useEventDetails';
 import { useEventInteractions } from '@/hooks/useEventInteractions';
@@ -74,7 +73,6 @@ interface EventDetailDialogProps {
 
 export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: EventDetailDialogProps) => {
   const { isRTL } = useDirection();
-  const { me, start, end } = useRTLAware();
   const { user, hasRole } = useAuth();
 
   // Use comprehensive hooks for data
@@ -93,11 +91,11 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'upcoming': return 'badge-info';
-      case 'ongoing': return 'badge-success';
-      case 'completed': return 'badge-secondary';
-      case 'cancelled': return 'badge-error';
-      default: return 'badge-secondary';
+      case 'upcoming': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
+      case 'ongoing': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
+      case 'completed': return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'cancelled': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
     }
   };
 
@@ -136,10 +134,10 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
             </div>
             
             {/* Status Badges Overlay */}
-            <div className={`absolute top-4 ${end('4')} flex gap-2`}>
+            <div className="absolute top-4 right-4 flex gap-2">
               {event.event_category === 'featured' && (
-                <Badge variant="secondary" className="bg-warning/10 text-warning border-warning/20">
-                  <Star className={`w-3 h-3 ${me('1')}`} />
+                <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                  <Star className="w-3 h-3 mr-1" />
                   {isRTL ? 'مميز' : 'Featured'}
                 </Badge>
               )}
@@ -150,16 +148,16 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
 
             {/* Online Badge */}
             {event.format === 'virtual' && (
-              <div className={`absolute bottom-4 ${start('4')}`}>
-                <Badge variant="secondary" className="bg-success/10 text-success border-success/20">
-                  <Globe className={`w-3 h-3 ${me('1')}`} />
+              <div className="absolute bottom-4 left-4">
+                <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
+                  <Globe className="w-3 h-3 mr-1" />
                   {isRTL ? 'عبر الإنترنت' : 'Online Event'}
                 </Badge>
               </div>
             )}
 
             {/* Action Buttons */}
-            <div className={`absolute top-4 ${start('4')} flex gap-2`}>
+            <div className="absolute top-4 left-4 flex gap-2">
               <Button variant="secondary" size="sm" className="bg-white/80 hover:bg-white">
                 <Bookmark className="w-4 h-4" />
               </Button>
@@ -218,11 +216,11 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
                 <Progress value={getRegistrationPercentage()} className="h-2" />
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   {getRegistrationPercentage() < 70 ? (
-                    <CheckCircle className="w-3 h-3 text-success" />
+                    <CheckCircle className="w-3 h-3 text-green-600" />
                   ) : getRegistrationPercentage() < 90 ? (
-                    <AlertCircle className="w-3 h-3 text-warning" />
+                    <AlertCircle className="w-3 h-3 text-yellow-600" />
                   ) : (
-                    <AlertCircle className="w-3 h-3 text-destructive" />
+                    <AlertCircle className="w-3 h-3 text-red-600" />
                   )}
                   <span>
                     {getRegistrationPercentage() < 70 ? 

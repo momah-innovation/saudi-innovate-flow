@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Loader2, Server, Database, HardDrive, Cpu, Wifi, Shield, AlertTriangle, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface SystemHealth {
   overall_status: 'healthy' | 'warning' | 'critical';
@@ -29,7 +28,6 @@ interface SystemHealthDialogProps {
 export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps) {
   const [health, setHealth] = useState<SystemHealth | null>(null);
   const [loading, setLoading] = useState(false);
-  const { ms } = useRTLAware();
 
   useEffect(() => {
     if (isOpen) {
@@ -118,7 +116,7 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
       {loading ? (
         <div className="flex items-center justify-center py-12">
           <Loader2 className="h-8 w-8 animate-spin" />
-          <span className={ms('2')}>Checking system health...</span>
+          <span className="ml-2">Checking system health...</span>
         </div>
       ) : health ? (
         <div className="space-y-6">

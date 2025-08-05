@@ -18,8 +18,6 @@ import {
   SlidersHorizontal
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { RTLFlex } from '@/components/ui/rtl-layout';
 
 interface SearchFilters {
   query: string;
@@ -55,7 +53,6 @@ export function AdvancedSearch({
   className
 }: AdvancedSearchProps) {
   const { t, language, isRTL } = useTranslation();
-  const { start, ps, me } = useRTLAware();
   
   const [filters, setFilters] = useState<SearchFilters>({
     query: '',
@@ -126,37 +123,37 @@ export function AdvancedSearch({
 
   const statusOptions = {
     challenges: [
-      { value: 'draft', labelKey: 'status_draft' },
-      { value: 'active', labelKey: 'status_active' },
-      { value: 'completed', labelKey: 'status_completed' },
-      { value: 'cancelled', labelKey: 'status_cancelled' }
+      { value: 'draft', label: 'Draft', labelAr: 'مسودة' },
+      { value: 'active', label: 'Active', labelAr: 'نشط' },
+      { value: 'completed', label: 'Completed', labelAr: 'مكتمل' },
+      { value: 'cancelled', label: 'Cancelled', labelAr: 'ملغي' }
     ],
     ideas: [
-      { value: 'draft', labelKey: 'status_draft' },
-      { value: 'submitted', labelKey: 'status_submitted' },
-      { value: 'under_review', labelKey: 'status_under_review' },
-      { value: 'approved', labelKey: 'status_approved' },
-      { value: 'rejected', labelKey: 'status_rejected' }
+      { value: 'draft', label: 'Draft', labelAr: 'مسودة' },
+      { value: 'submitted', label: 'Submitted', labelAr: 'مقدم' },
+      { value: 'under_review', label: 'Under Review', labelAr: 'قيد المراجعة' },
+      { value: 'approved', label: 'Approved', labelAr: 'معتمد' },
+      { value: 'rejected', label: 'Rejected', labelAr: 'مرفوض' }
     ],
     events: [
-      { value: 'upcoming', labelKey: 'status_upcoming' },
-      { value: 'registration_open', labelKey: 'status_registration_open' },
-      { value: 'registration_closed', labelKey: 'status_registration_closed' },
-      { value: 'ongoing', labelKey: 'status_ongoing' },
-      { value: 'completed', labelKey: 'status_completed' }
+      { value: 'upcoming', label: 'Upcoming', labelAr: 'قادم' },
+      { value: 'registration_open', label: 'Registration Open', labelAr: 'التسجيل مفتوح' },
+      { value: 'registration_closed', label: 'Registration Closed', labelAr: 'التسجيل مغلق' },
+      { value: 'ongoing', label: 'Ongoing', labelAr: 'جاري' },
+      { value: 'completed', label: 'Completed', labelAr: 'مكتمل' }
     ],
     opportunities: [
-      { value: 'open', labelKey: 'status_open' },
-      { value: 'closed', labelKey: 'status_closed' },
-      { value: 'paused', labelKey: 'status_paused' }
+      { value: 'open', label: 'Open', labelAr: 'مفتوح' },
+      { value: 'closed', label: 'Closed', labelAr: 'مغلق' },
+      { value: 'paused', label: 'Paused', labelAr: 'متوقف مؤقتاً' }
     ]
   };
 
   const priorityOptions = [
-    { value: 'low', labelKey: 'priority_low' },
-    { value: 'medium', labelKey: 'priority_medium' },
-    { value: 'high', labelKey: 'priority_high' },
-    { value: 'urgent', labelKey: 'priority_urgent' }
+    { value: 'low', label: 'Low Priority', labelAr: 'أولوية منخفضة' },
+    { value: 'medium', label: 'Medium Priority', labelAr: 'أولوية متوسطة' },
+    { value: 'high', label: 'High Priority', labelAr: 'أولوية عالية' },
+    { value: 'urgent', label: 'Urgent', labelAr: 'طارئ' }
   ];
 
   return (
@@ -192,13 +189,13 @@ export function AdvancedSearch({
             {t('search_query') || 'استعلام البحث'}
           </Label>
           <div className="relative">
-            <Search className={`absolute ${start('3')} top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground`} />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               id="search-query"
               value={filters.query}
               onChange={(e) => handleFilterChange('query', e.target.value)}
               placeholder={t('search_placeholder') || 'ابحث في العناوين والأوصاف...'}
-              className={ps('10')}
+              className="pl-10"
               dir={isRTL ? 'rtl' : 'ltr'}
             />
           </div>
@@ -227,7 +224,7 @@ export function AdvancedSearch({
                     </SelectItem>
                     {statusOptions[searchType]?.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
-                        {t(option.labelKey)}
+                        {language === 'ar' ? option.labelAr : option.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -252,7 +249,7 @@ export function AdvancedSearch({
                     </SelectItem>
                     {priorityOptions.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
-                        {t(option.labelKey)}
+                        {language === 'ar' ? option.labelAr : option.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -335,26 +332,26 @@ export function AdvancedSearch({
                 {t('tags') || 'العلامات'}
               </Label>
               <div className="text-sm text-muted-foreground">
-                {t('tag_selector_coming_soon')}
+                Tag selector will be available in the next phase
               </div>
             </div>
           </div>
         )}
 
         {/* Action Buttons */}
-        <RTLFlex className="gap-3 pt-4 border-t">
+        <div className="flex items-center gap-3 pt-4 border-t">
           <Button onClick={handleSearch} className="flex-1 md:flex-none">
-            <Search className={`h-4 w-4 ${me('2')}`} />
+            <Search className="h-4 w-4 mr-2" />
             {t('search') || 'بحث'}
           </Button>
           
           {getActiveFiltersCount() > 0 && (
             <Button variant="outline" onClick={handleReset}>
-              <X className={`h-4 w-4 ${me('2')}`} />
+              <X className="h-4 w-4 mr-2" />
               {t('clear_filters') || 'مسح المرشحات'}
             </Button>
           )}
-        </RTLFlex>
+        </div>
       </CardContent>
     </Card>
   );

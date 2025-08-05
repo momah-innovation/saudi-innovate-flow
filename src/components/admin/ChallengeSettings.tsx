@@ -15,8 +15,6 @@ import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, Clock, Shield, Bell, Users, Archive, Settings as SettingsIcon } from "lucide-react";
 import { useTranslation } from "@/hooks/useAppTranslation";
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { RTLFlex } from '@/components/ui/rtl-layout';
 
 interface Challenge {
   id: string;
@@ -47,7 +45,6 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
   const { t } = useTranslation();
   const { toast } = useToast();
   const { challengeSensitivityLevels } = useSystemLists();
-  const { mr } = useRTLAware();
   const [loading, setLoading] = useState(false);
   
   // System settings
@@ -190,7 +187,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <SettingsIcon className="h-5 w-5" />
-            {t('challenge_settings')}: {challenge.title_ar}
+            Challenge Settings: {challenge.title_ar}
           </DialogTitle>
         </DialogHeader>
 
@@ -205,39 +202,39 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="access" className="flex items-center gap-2">
                 <Shield className="h-4 w-4" />
-                {t('access_control')}
+                Access Control
               </TabsTrigger>
               <TabsTrigger value="notifications" className="flex items-center gap-2">
                 <Bell className="h-4 w-4" />
-                {t('notifications')}
+                Notifications
               </TabsTrigger>
               <TabsTrigger value="workflow" className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
-                {t('workflow')}
+                Workflow
               </TabsTrigger>
               <TabsTrigger value="advanced" className="flex items-center gap-2">
                 <Archive className="h-4 w-4" />
-                {t('advanced')}
+                Advanced
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="access" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>{t('visibility_access')}</CardTitle>
+                  <CardTitle>Visibility & Access</CardTitle>
                   <CardDescription>
-                    {t('configure_challenge_access')}
+                    Configure who can view and participate in this challenge
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="visibility">{t('sensitivity_level')}</Label>
+                    <Label htmlFor="visibility">Sensitivity Level</Label>
                     <Select
                       value={settings.visibility}
                       onValueChange={(value) => setSettings(prev => ({ ...prev, visibility: value }))}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder={t('select_sensitivity_level')} />
+                        <SelectValue placeholder="Select sensitivity level" />
                       </SelectTrigger>
                       <SelectContent>
                         {challengeSensitivityLevels.map((level) => (
@@ -446,10 +443,10 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
                       onClick={handleArchiveChallenge}
                       disabled={loading}
                       className="w-full"
-                     >
-                       <Archive className={`h-4 w-4 ${mr}`} />
-                       Archive Challenge
-                     </Button>
+                    >
+                      <Archive className="h-4 w-4 mr-2" />
+                      Archive Challenge
+                    </Button>
                   </div>
                 </CardContent>
               </Card>

@@ -7,7 +7,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   Filter, X, RotateCcw, Target, Star, TrendingUp, 

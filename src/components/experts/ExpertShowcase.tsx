@@ -8,9 +8,7 @@ import {
   BookOpen, Target, TrendingUp, Crown
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 import { useState } from 'react';
-import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface Expert {
   id: string;
@@ -42,8 +40,6 @@ export const ExpertShowcase = ({
   onFilterByExpert 
 }: ExpertShowcaseProps) => {
   const { isRTL } = useDirection();
-  const { me, ms } = useRTLAware();
-  const { t } = useTranslation();
   const [showAll, setShowAll] = useState(false);
   
   // Get featured expert (highest rated available expert)
@@ -65,34 +61,34 @@ export const ExpertShowcase = ({
       <Card className="bg-gradient-overlay border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Crown className="w-5 h-5 text-accent" />
-             {t('expert_network') || 'شبكة الخبراء'}
+            <Crown className="w-5 h-5 text-purple-600" />
+            {isRTL ? 'شبكة الخبراء' : 'Expert Network'}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-accent">{experts.length}</div>
+              <div className="text-2xl font-bold text-purple-600">{experts.length}</div>
               <div className="text-sm text-muted-foreground">
-                {t('total_experts') || 'إجمالي الخبراء'}
+                {isRTL ? 'إجمالي الخبراء' : 'Total Experts'}
               </div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-success">{availableCount}</div>
+              <div className="text-2xl font-bold text-green-600">{availableCount}</div>
               <div className="text-sm text-muted-foreground">
-                {t('available_now') || 'متاحون الآن'}
+                {isRTL ? 'متاحون الآن' : 'Available Now'}
               </div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-primary">{totalExperience}+</div>
+              <div className="text-2xl font-bold text-blue-600">{totalExperience}+</div>
               <div className="text-sm text-muted-foreground">
-                {t('years_experience') || 'سنوات خبرة'}
+                {isRTL ? 'سنوات خبرة' : 'Years Experience'}
               </div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-warning">4.8</div>
+              <div className="text-2xl font-bold text-orange-600">4.8</div>
               <div className="text-sm text-muted-foreground">
-                {t('avg_rating') || 'تقييم متوسط'}
+                {isRTL ? 'تقييم متوسط' : 'Avg Rating'}
               </div>
             </div>
           </div>
@@ -106,10 +102,10 @@ export const ExpertShowcase = ({
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2">
                 <Star className="w-5 h-5 text-primary fill-current" />
-                {t('featured_expert') || 'خبير مميز'}
+                {isRTL ? 'خبير مميز' : 'Featured Expert'}
               </CardTitle>
               <Badge className="bg-primary text-white">
-                {t('featured') || 'مميز'}
+                {isRTL ? 'مميز' : 'Featured'}
               </Badge>
             </div>
           </CardHeader>
@@ -130,16 +126,16 @@ export const ExpertShowcase = ({
                 
                 <div className="flex items-center gap-4 mb-4">
                   <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-current text-accent" />
+                    <Star className="w-4 h-4 fill-current text-yellow-500" />
                     <span className="font-semibold">{featuredExpert.rating}/5</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Target className="w-4 h-4 text-primary" />
-                    <span>{featuredExpert.active_challenges} {t('active_challenges') || 'تحديات نشطة'}</span>
+                    <span>{featuredExpert.active_challenges} {isRTL ? 'تحديات نشطة' : 'active challenges'}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <BookOpen className="w-4 h-4 text-primary" />
-                    <span>{featuredExpert.mentored_projects} {t('mentored_projects') || 'مشروع منتور'}</span>
+                    <span>{featuredExpert.mentored_projects} {isRTL ? 'مشروع منتور' : 'mentored projects'}</span>
                   </div>
                 </div>
                 
@@ -151,40 +147,40 @@ export const ExpertShowcase = ({
                 
                 <div className="flex gap-2">
                   <Button onClick={() => onExpertSelect(featuredExpert)}>
-                    {t('view_profile') || 'عرض الملف الشخصي'}
+                    {isRTL ? 'عرض الملف الشخصي' : 'View Profile'}
                   </Button>
                   <Button 
                     variant="outline" 
                     onClick={() => onFilterByExpert(featuredExpert.id)}
                   >
-                     <Filter className="w-4 h-4 mr-2" />
-                      {t('their_challenges') || 'تحدياته'}
-                   </Button>
-                 </div>
-               </div>
-             </div>
-           </CardContent>
-         </Card>
-       )}
+                    <Filter className="w-4 h-4 mr-2" />
+                    {isRTL ? 'تحدياته' : 'Their Challenges'}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
-       {/* Expert Grid */}
-       <div>
-         <div className="flex items-center justify-between mb-6">
-           <div>
-              <h2 className="text-2xl font-bold">{t('expert_network') || 'شبكة الخبراء'}</h2>
-              <p className="text-muted-foreground">
-                {t('meet_expert_mentors') || 'تعرف على الخبراء المرشدين في التحديات'}
-              </p>
-           </div>
-           
-           <div className="flex gap-2">
-             <Button variant="outline" onClick={() => setShowAll(!showAll)}>
-               {showAll ? (t('show_less') || 'عرض أقل') : (t('show_all') || 'عرض الكل')}
-             </Button>
-             <Button onClick={onViewAll}>
-               <Search className="w-4 h-4 mr-2" />
-                {t('browse_experts') || 'استكشف الخبراء'}
-                <ArrowRight className="w-4 h-4 ml-2" />
+      {/* Expert Grid */}
+      <div>
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-2xl font-bold">{isRTL ? 'شبكة الخبراء' : 'Expert Network'}</h2>
+            <p className="text-muted-foreground">
+              {isRTL ? 'تعرف على الخبراء المرشدين في التحديات' : 'Meet the expert mentors guiding our challenges'}
+            </p>
+          </div>
+          
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setShowAll(!showAll)}>
+              {showAll ? (isRTL ? 'عرض أقل' : 'Show Less') : (isRTL ? 'عرض الكل' : 'Show All')}
+            </Button>
+            <Button onClick={onViewAll}>
+              <Search className="w-4 h-4 mr-2" />
+              {isRTL ? 'استكشف الخبراء' : 'Browse Experts'}
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
         </div>
@@ -204,7 +200,7 @@ export const ExpertShowcase = ({
       {/* Quick Access to Expert Categories */}
       <Card>
         <CardHeader>
-          <CardTitle>{t('browse_by_specialization') || 'تصفح حسب التخصص'}</CardTitle>
+          <CardTitle>{isRTL ? 'تصفح حسب التخصص' : 'Browse by Specialization'}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -219,7 +215,7 @@ export const ExpertShowcase = ({
                 <div>
                   <div className="font-medium text-sm">{category}</div>
                   <div className="text-xs text-muted-foreground">
-                    {experts.length} {t('experts') || 'خبراء'}
+                    {experts.length} {isRTL ? 'خبراء' : 'experts'}
                   </div>
                 </div>
               </Button>

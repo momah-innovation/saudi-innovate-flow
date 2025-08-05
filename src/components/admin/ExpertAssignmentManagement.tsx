@@ -14,9 +14,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from '@/hooks/useSystemLists';
 import { ExpertProfileDialog } from './ExpertProfileDialog';
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { RTLFlex } from '@/components/ui/rtl-layout';
-import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface Expert {
   id: string;
@@ -59,10 +56,8 @@ interface ChallengeExpert {
 }
 
 export function ExpertAssignmentManagement() {
-  const { t } = useTranslation();
   const { toast } = useToast();
   const { assignmentStatusOptions, expertRoleTypes } = useSystemLists();
-  const { me, ms, textEnd, flexRow } = useRTLAware();
   const [activeTab, setActiveTab] = useState("assignments");
   const [maxWorkload, setMaxWorkload] = useState(5);
   const [profileTextareaRows, setProfileTextareaRows] = useState(4);
@@ -255,8 +250,8 @@ export function ExpertAssignmentManagement() {
   const handleAssignExpert = async () => {
     if (!selectedChallenge || !selectedExpert || !selectedRole) {
       toast({
-        title: t('missing_information'),
-        description: t('please_select_challenge_expert_role'),
+        title: "Missing Information",
+        description: "Please select challenge, expert, and role.",
         variant: "destructive",
       });
       return;
@@ -276,8 +271,8 @@ export function ExpertAssignmentManagement() {
       if (error) throw error;
 
       toast({
-        title: t('expert_assigned'),
-        description: t('expert_assigned_successfully'),
+        title: "Expert Assigned",
+        description: "Expert has been successfully assigned to the challenge.",
       });
 
       setIsAssignDialogOpen(false);
@@ -286,8 +281,8 @@ export function ExpertAssignmentManagement() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: t('error'),
-        description: t('failed_to_assign_expert'),
+        title: "Error",
+        description: "Failed to assign expert. Please try again.",
         variant: "destructive",
       });
     }
@@ -471,7 +466,7 @@ export function ExpertAssignmentManagement() {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">{t('loading_expert_assignments')}...</p>
+          <p className="mt-2 text-muted-foreground">Loading expert assignments...</p>
         </div>
       </div>
     );
@@ -482,21 +477,21 @@ export function ExpertAssignmentManagement() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">{t('expert_assignment_management')}</h1>
+          <h1 className="text-3xl font-bold">Expert Assignment Management</h1>
           <p className="text-muted-foreground">
-            {t('manage_expert_assignments_description')}
+            Manage expert assignments, roles, and workloads across challenges
           </p>
         </div>
-        <RTLFlex gap="2">
+        <div className="flex gap-2">
           <Button onClick={() => setIsAssignDialogOpen(true)}>
-            <Plus className={`h-4 w-4 ${me}`} />
-            {t('assign_expert')}
+            <Plus className="h-4 w-4 me-2" />
+            Assign Expert
           </Button>
           <Button variant="outline" onClick={() => setIsBulkAssignDialogOpen(true)}>
-            <Users className={`h-4 w-4 ${me}`} />
-            {t('bulk_assign')}
+            <Users className="h-4 w-4 me-2" />
+            Bulk Assign
           </Button>
-        </RTLFlex>
+        </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -696,7 +691,7 @@ export function ExpertAssignmentManagement() {
                           {expert.expertise_areas?.join(', ')} • {expert.experience_years || 0} years
                         </CardDescription>
                       </div>
-                      <div className={textEnd}>
+                      <div className="text-right">
                         <div className="text-2xl font-bold">{workload}/{maxWorkload}</div>
                         <div className="text-sm text-muted-foreground">Active Challenges</div>
                       </div>

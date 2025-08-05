@@ -17,7 +17,6 @@ import {
   Timer
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 import { cn } from '@/lib/utils';
 
 interface EventRegistrationHeroProps {
@@ -44,14 +43,13 @@ export const EventRegistrationHero = ({
   eventType = 'conference'
 }: EventRegistrationHeroProps) => {
   const { isRTL } = useDirection();
-  const { me, ms, start, end } = useRTLAware();
   const [currentStat, setCurrentStat] = useState(0);
 
   const stats = [
-    { icon: Users, value: registeredCount, label: isRTL ? 'مسجل' : 'registered', color: 'text-primary' },
-    { icon: MapPin, value: eventLocation, label: isRTL ? 'الموقع' : 'location', color: 'text-success' },
-    { icon: Timer, value: new Date(registrationDeadline).toLocaleDateString('ar-SA'), label: isRTL ? 'آخر موعد' : 'deadline', color: 'text-warning' },
-    { icon: Award, value: eventType, label: isRTL ? 'النوع' : 'type', color: 'text-accent' }
+    { icon: Users, value: registeredCount, label: isRTL ? 'مسجل' : 'registered', color: 'text-blue-400' },
+    { icon: MapPin, value: eventLocation, label: isRTL ? 'الموقع' : 'location', color: 'text-green-400' },
+    { icon: Timer, value: new Date(registrationDeadline).toLocaleDateString('ar-SA'), label: isRTL ? 'آخر موعد' : 'deadline', color: 'text-orange-400' },
+    { icon: Award, value: eventType, label: isRTL ? 'النوع' : 'type', color: 'text-purple-400' }
   ];
 
   useEffect(() => {
@@ -73,9 +71,9 @@ export const EventRegistrationHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className={`absolute -top-40 ${end('-40')} w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse`} />
-        <div className={`absolute -bottom-40 ${start('-40')} w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-1000`} />
-        <div className={`absolute top-20 ${start('1/3')} w-64 h-64 bg-accent/5 rounded-full blur-2xl animate-bounce`} />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-20 left-1/3 w-64 h-64 bg-teal-400/5 rounded-full blur-2xl animate-bounce" />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -86,10 +84,10 @@ export const EventRegistrationHero = ({
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <Sparkles className="w-6 h-6 text-accent" />
+                  <Sparkles className="w-6 h-6 text-yellow-300" />
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
-                  <Calendar className={`w-3 h-3 ${me('1')}`} />
+                  <Calendar className="w-3 h-3 mr-1" />
                   {isRTL ? 'تسجيل الفعالية' : 'Event Registration'}
                 </Badge>
               </div>
@@ -160,17 +158,17 @@ export const EventRegistrationHero = ({
                 >
                   {isRegistered ? (
                     <>
-                      <CheckCircle className={`w-5 h-5 ${me('2')}`} />
+                      <CheckCircle className="w-5 h-5 mr-2" />
                       {isRTL ? 'مسجل بالفعل' : 'Already Registered'}
                     </>
                   ) : registeredCount >= maxCapacity ? (
                     <>
-                      <Clock className={`w-5 h-5 ${me('2')}`} />
+                      <Clock className="w-5 h-5 mr-2" />
                       {isRTL ? 'الفعالية مكتملة' : 'Event Full'}
                     </>
                   ) : (
                     <>
-                      <Zap className={`w-5 h-5 ${me('2')}`} />
+                      <Zap className="w-5 h-5 mr-2" />
                       {isRTL ? 'سجل الآن' : 'Register Now'}
                     </>
                   )}
@@ -181,7 +179,7 @@ export const EventRegistrationHero = ({
                   size="lg"
                   className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
                 >
-                  <Star className={`w-5 h-5 ${me('2')}`} />
+                  <Star className="w-5 h-5 mr-2" />
                   {isRTL ? 'المزيد من التفاصيل' : 'More Details'}
                 </Button>
               </div>
@@ -198,17 +196,17 @@ export const EventRegistrationHero = ({
                     <Calendar className="w-16 h-16 text-white/60" />
                   </div>
                   
-                  <div className={`absolute top-4 ${start('4')}`}>
-                    <Badge className="bg-success/90 text-primary-foreground border-0">
-                      <Clock className={`w-3 h-3 ${me('1')}`} />
+                  <div className="absolute top-4 left-4">
+                    <Badge className="bg-emerald-500/90 text-white border-0">
+                      <Clock className="w-3 h-3 mr-1" />
                       {new Date(eventDate).toLocaleDateString('ar-SA')}
                     </Badge>
                   </div>
 
                   {isRegistered && (
-                    <div className={`absolute top-4 ${end('4')}`}>
-                      <Badge className="bg-success/90 text-primary-foreground border-0">
-                        <CheckCircle className={`w-3 h-3 ${me('1')}`} />
+                    <div className="absolute top-4 right-4">
+                      <Badge className="bg-green-500/90 text-white border-0">
+                        <CheckCircle className="w-3 h-3 mr-1" />
                         {isRTL ? 'مسجل' : 'Registered'}
                       </Badge>
                     </div>
@@ -220,13 +218,13 @@ export const EventRegistrationHero = ({
                 <div className="p-6 space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-success">
+                      <div className="text-2xl font-bold text-emerald-300">
                         {Math.round(registrationPercentage)}%
                       </div>
                       <div className="text-sm text-white/70">{isRTL ? 'مُسجل' : 'filled'}</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-accent">
+                      <div className="text-2xl font-bold text-yellow-300">
                         {Math.max(0, Math.ceil((new Date(registrationDeadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))}
                       </div>
                       <div className="text-sm text-white/70">{isRTL ? 'يوم متبقي' : 'days left'}</div>
@@ -237,7 +235,7 @@ export const EventRegistrationHero = ({
                     className="w-full bg-gradient-primary hover:opacity-90 text-white"
                   >
                     {isRTL ? 'عرض جدول الفعالية' : 'View Event Schedule'}
-                    <ArrowRight className={`w-4 h-4 ${ms('2')}`} />
+                    <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>
               </CardContent>

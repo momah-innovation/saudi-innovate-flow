@@ -32,7 +32,6 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { TestProfileCalculation } from '@/components/admin/TestProfileCalculation';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface ProfileData {
   // Basic Information
@@ -108,7 +107,6 @@ export const ProfileSetup = () => {
   const { user, userProfile, updateProfile } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { start, ps } = useRTLAware();
 
   useEffect(() => {
     console.log('ProfileSetup useEffect triggered:', {
@@ -331,26 +329,26 @@ export const ProfileSetup = () => {
               <div className="space-y-2">
                 <Label htmlFor="phone">رقم الهاتف</Label>
                 <div className="relative">
-                  <Phone className={`absolute ${start('3')} top-3 h-4 w-4 text-muted-foreground`} />
+                  <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="phone"
                     value={profileData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     placeholder="+966 50 123 4567"
-                     className={ps('10')}
+                    className="pl-10"
                   />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="location">الموقع</Label>
                 <div className="relative">
-                  <MapPin className={`absolute ${start('3')} top-3 h-4 w-4 text-muted-foreground`} />
+                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="location"
                     value={profileData.location}
                     onChange={(e) => handleInputChange('location', e.target.value)}
                     placeholder="الرياض، المملكة العربية السعودية"
-                     className={ps('10')}
+                    className="pl-10"
                   />
                 </div>
               </div>
@@ -359,13 +357,13 @@ export const ProfileSetup = () => {
             <div className="space-y-2">
               <Label htmlFor="website">الموقع الإلكتروني</Label>
               <div className="relative">
-                <Globe className={`absolute ${start('3')} top-3 h-4 w-4 text-muted-foreground`} />
+                <Globe className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="website"
                   value={profileData.website}
                   onChange={(e) => handleInputChange('website', e.target.value)}
                   placeholder="https://example.com"
-                  className={ps('10')}
+                  className="pl-10"
                 />
               </div>
             </div>
@@ -573,17 +571,17 @@ export const ProfileSetup = () => {
         </Card>
         
         {/* SIMPLE TEST - THIS SHOULD ALWAYS SHOW */}
-        <div className="mt-4 p-4 bg-destructive/10 border-2 border-destructive rounded-lg">
-          <h2 className="text-xl font-bold text-destructive">🚨 TEST: Can you see this red box?</h2>
+        <div className="mt-4 p-4 bg-red-100 border-2 border-red-500 rounded-lg">
+          <h2 className="text-xl font-bold text-red-700">🚨 TEST: Can you see this red box?</h2>
           <p>If you can see this, the page is updating correctly.</p>
           <p>User logged in: {user ? 'YES' : 'NO'}</p>
           <p>Current time: {new Date().toLocaleTimeString()}</p>
         </div>
         
         {/* Always show debug info for troubleshooting */}
-        <Card className="mt-4 border-destructive/20">
+        <Card className="mt-4 border-red-200">
           <CardHeader>
-            <CardTitle className="text-destructive">🐛 Debug: Role Detection</CardTitle>
+            <CardTitle className="text-red-600">🐛 Debug: Role Detection</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2 text-sm">

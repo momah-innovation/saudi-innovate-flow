@@ -251,8 +251,8 @@ export const CreateOpportunityDialog = ({
                       <FormControl>
                         <Input
                           {...field}
-                           className="text-end"
-                           placeholder="أدخل العنوان بالعربية"
+                          className="text-right"
+                          placeholder="أدخل العنوان بالعربية"
                         />
                       </FormControl>
                       <FormMessage />
@@ -267,17 +267,17 @@ export const CreateOpportunityDialog = ({
                   name="description_en"
                   render={({ field }) => (
                     <FormItem>
-                       <FormLabel className={isRTL ? 'text-end' : 'text-start'}>
-                         {isRTL ? 'الوصف (بالإنجليزية)' : 'Description (English)'}
-                       </FormLabel>
-                       <FormControl>
-                         <Textarea
-                           {...field}
-                           className={isRTL ? 'text-end' : 'text-start'}
-                           placeholder={isRTL ? 'أدخل الوصف بالإنجليزية' : 'Enter description in English'}
-                           rows={4}
-                         />
-                       </FormControl>
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'الوصف (بالإنجليزية)' : 'Description (English)'}
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          className={isRTL ? 'text-right' : 'text-left'}
+                          placeholder={isRTL ? 'أدخل الوصف بالإنجليزية' : 'Enter description in English'}
+                          rows={4}
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -288,16 +288,16 @@ export const CreateOpportunityDialog = ({
                   name="description_ar"
                   render={({ field }) => (
                     <FormItem>
-                       <FormLabel className={isRTL ? 'text-end' : 'text-start'}>
-                         {isRTL ? 'الوصف (بالعربية)' : 'Description (Arabic)'}
-                       </FormLabel>
-                       <FormControl>
-                         <Textarea
-                           {...field}
-                           className="text-end"
-                           placeholder="أدخل الوصف بالعربية"
-                           rows={4}
-                         />
+                      <FormLabel className={isRTL ? 'text-right' : 'text-left'}>
+                        {isRTL ? 'الوصف (بالعربية)' : 'Description (Arabic)'}
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          className="text-right"
+                          placeholder="أدخل الوصف بالعربية"
+                          rows={4}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

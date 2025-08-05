@@ -10,7 +10,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Calendar, Users, Target, Plus, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface CreateProjectDialogProps {
   open: boolean;
@@ -19,7 +18,6 @@ interface CreateProjectDialogProps {
 }
 
 export function CreateProjectDialog({ open, onOpenChange, teamMembers }: CreateProjectDialogProps) {
-  const { t } = useTranslation();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     title: '',
@@ -50,8 +48,8 @@ export function CreateProjectDialog({ open, onOpenChange, teamMembers }: CreateP
     try {
       // Here you would create the project in the database
       toast({
-        title: t('project_created_successfully'),
-        description: t('project_ready_with_members', { title: formData.title, count: formData.selectedMembers.length }),
+        title: "تم إنشاء المشروع بنجاح",
+        description: `مشروع "${formData.title}" جاهز للعمل مع ${formData.selectedMembers.length} أعضاء`,
       });
       onOpenChange(false);
       // Reset form
@@ -67,8 +65,8 @@ export function CreateProjectDialog({ open, onOpenChange, teamMembers }: CreateP
       setCurrentStep(1);
     } catch (error) {
       toast({
-        title: t('error'),
-        description: t('failed_to_create_project'),
+        title: "خطأ",
+        description: "فشل في إنشاء المشروع",
         variant: "destructive",
       });
     }
@@ -312,11 +310,11 @@ export function CreateProjectDialog({ open, onOpenChange, teamMembers }: CreateP
               <div key={step} className="flex items-center gap-2">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                   step === currentStep ? 'bg-primary text-primary-foreground' :
-                  step < currentStep ? 'bg-success text-success-foreground' : 'bg-muted text-muted-foreground'
+                  step < currentStep ? 'bg-green-500 text-white' : 'bg-muted text-muted-foreground'
                 }`}>
                   {step < currentStep ? '✓' : step}
                 </div>
-                {step < 3 && <div className={`w-12 h-0.5 ${step < currentStep ? 'bg-success' : 'bg-muted'}`} />}
+                {step < 3 && <div className={`w-12 h-0.5 ${step < currentStep ? 'bg-green-500' : 'bg-muted'}`} />}
               </div>
             ))}
           </div>

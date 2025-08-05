@@ -70,7 +70,7 @@ import ReportsPage from "./pages/ReportsPage";
 import SystemAnalyticsPage from "./pages/SystemAnalyticsPage";
 import HelpPage from "./pages/HelpPage";
 import SavedItemsPage from "./pages/SavedItems";
-import DesignSystemPage from "./pages/DesignSystemPage";
+import DesignSystem from "./pages/DesignSystem";
 import EvaluationManagement from "./pages/EvaluationManagement";
 import Opportunities from "./pages/Opportunities";
 import OpportunitiesManagement from "./pages/OpportunitiesManagement";
@@ -83,15 +83,11 @@ import AccessControlManagement from "./pages/dashboard/AccessControlManagement";
 import { SubscriptionPage } from "./pages/SubscriptionPage";
 import PaddleSubscriptionPage from "./pages/PaddleSubscriptionPage";
 import LogflareAnalyticsPage from "./pages/LogflareAnalyticsPage";
-import { ResponsiveAppShell } from "@/components/layout/ResponsiveAppShell";
-import { useRTLAware } from "@/hooks/useRTLAware";
+import { AppShell } from "@/components/layout/AppShell";
 
 const queryClient = new QueryClient();
 
-const App = () => {
-  const { me } = useRTLAware();
-
-  return (
+const App = () => (
   <QueryClientProvider client={queryClient}>
     <I18nextProvider i18n={i18n}>
       <DirectionProvider>
@@ -189,7 +185,7 @@ const App = () => {
                                     تقنيات ذكية لإدارة الطاقة والأمان في المباني
                                   </p>
                                   <div className="flex justify-between items-center">
-                                    <span className="badge badge-warning">قيد المراجعة</span>
+                                    <span className="badge bg-yellow-100 text-yellow-800">قيد المراجعة</span>
                                     <span className="text-sm text-muted-foreground">الموعد النهائي: 15 أيام</span>
                                   </div>
                                 </div>
@@ -210,7 +206,7 @@ const App = () => {
                                   <p className="text-muted-foreground text-sm mb-3">
                                     تعاون في البحث والتطوير والابتكار التقني
                                   </p>
-                                  <span className="badge badge-expert">شريك أكاديمي</span>
+                                  <span className="badge bg-purple-100 text-purple-800">شريك أكاديمي</span>
                                 </div>
                               </div>
                             </div>
@@ -234,15 +230,15 @@ const App = () => {
                               <div className="text-3xl font-bold mb-4">مجاناً</div>
                               <ul className="space-y-2 mb-6">
                                 <li className="flex items-center">
-                                   <span className={`w-4 h-4 bg-success rounded-full ${me('2')}`}></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   تقديم الأفكار الأساسية
                                 </li>
                                 <li className="flex items-center">
-                                   <span className={`w-4 h-4 bg-success rounded-full ${me('2')}`}></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   عرض التحديات العامة
                                 </li>
                                 <li className="flex items-center">
-                                   <span className={`w-4 h-4 bg-success rounded-full ${me('2')}`}></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   الوصول للمجتمع
                                 </li>
                               </ul>
@@ -253,26 +249,26 @@ const App = () => {
                             
                             {/* Professional */}
                             <div className="border-2 border-primary rounded-lg p-6 bg-card relative">
-                              <div className={`absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm`}>
+                              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm">
                                 الأكثر شعبية
                               </div>
                               <h3 className="text-xl font-semibold mb-2">المحترف</h3>
                               <div className="text-3xl font-bold mb-4">199 ريال<span className="text-base font-normal">/شهر</span></div>
                               <ul className="space-y-2 mb-6">
                                 <li className="flex items-center">
-                                   <span className={`w-4 h-4 bg-success rounded-full ${me('2')}`}></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   أفكار غير محدودة
                                 </li>
                                 <li className="flex items-center">
-                                   <span className={`w-4 h-4 bg-success rounded-full ${me('2')}`}></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   تحليلات متقدمة
                                 </li>
                                 <li className="flex items-center">
-                                   <span className={`w-4 h-4 bg-success rounded-full ${me('2')}`}></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   دعم أولوية
                                 </li>
                                 <li className="flex items-center">
-                                   <span className={`w-4 h-4 bg-success rounded-full ${me('2')}`}></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   مساعدة الذكاء الاصطناعي
                                 </li>
                               </ul>
@@ -287,19 +283,19 @@ const App = () => {
                               <div className="text-3xl font-bold mb-4">999 ريال<span className="text-base font-normal">/شهر</span></div>
                               <ul className="space-y-2 mb-6">
                                 <li className="flex items-center">
-                                   <span className={`w-4 h-4 bg-success rounded-full ${me('2')}`}></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   علامة تجارية مخصصة
                                 </li>
                                 <li className="flex items-center">
-                                   <span className={`w-4 h-4 bg-success rounded-full ${me('2')}`}></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   أمان متقدم
                                 </li>
                                 <li className="flex items-center">
-                                   <span className={`w-4 h-4 bg-success rounded-full ${me('2')}`}></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   دعم مخصص
                                 </li>
                                 <li className="flex items-center">
-                                  <span className={`w-4 h-4 bg-success rounded-full ${me('2')}`}></span>
+                                  <span className="w-4 h-4 bg-success rounded-full mr-2"></span>
                                   كل شيء غير محدود
                                 </li>
                               </ul>
@@ -325,7 +321,7 @@ const App = () => {
                     {/* User Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_USER} element={
                       <ProtectedRoute requireProfile>
-                        <ResponsiveAppShell>
+                        <AppShell>
                           <div className="container mx-auto px-4 py-16">
                             <h1 className="text-2xl font-bold mb-6">مساحة عمل المستخدم</h1>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -346,14 +342,14 @@ const App = () => {
                               </div>
                             </div>
                           </div>
-                        </ResponsiveAppShell>
+                        </AppShell>
                       </ProtectedRoute>
                     } />
 
                     {/* Expert Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_EXPERT} element={
                       <ProtectedRoute requireProfile>
-                        <ResponsiveAppShell>
+                        <AppShell>
                           <div className="container mx-auto px-4 py-16">
                             <h1 className="text-2xl font-bold mb-6">مساحة عمل الخبير</h1>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -374,14 +370,14 @@ const App = () => {
                               </div>
                             </div>
                           </div>
-                        </ResponsiveAppShell>
+                        </AppShell>
                       </ProtectedRoute>
                     } />
 
                     {/* Organization Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_ORG} element={
                       <ProtectedRoute requireProfile>
-                        <ResponsiveAppShell>
+                        <AppShell>
                           <div className="container mx-auto px-4 py-16">
                             <h1 className="text-2xl font-bold mb-6">مساحة عمل المؤسسة</h1>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -402,14 +398,14 @@ const App = () => {
                               </div>
                             </div>
                           </div>
-                        </ResponsiveAppShell>
+                        </AppShell>
                       </ProtectedRoute>
                     } />
 
                     {/* Admin Workspace - Enhanced Implementation */}
                     <Route path={ALL_ROUTES.WORKSPACE_ADMIN} element={
                       <ProtectedRoute requireProfile requiredRole="admin">
-                        <ResponsiveAppShell>
+                        <AppShell>
                           <div className="container mx-auto px-4 py-16">
                             <h1 className="text-2xl font-bold mb-6">مساحة عمل الإدارة</h1>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -435,7 +431,7 @@ const App = () => {
                               </div>
                             </div>
                           </div>
-                        </ResponsiveAppShell>
+                        </AppShell>
                       </ProtectedRoute>
                     } />
 
@@ -778,11 +774,11 @@ const App = () => {
                   path="/admin/storage" 
                   element={
                     <ProtectedRoute requireProfile requiredRole="admin">
-                      <ResponsiveAppShell>
+                      <AppShell>
                         <UploaderSettingsProvider>
                           <StorageManagementPage />
                         </UploaderSettingsProvider>
-                      </ResponsiveAppShell>
+                      </AppShell>
                     </ProtectedRoute>
                   } 
                  />
@@ -790,9 +786,9 @@ const App = () => {
                   path="/admin/storage/policies" 
                   element={
                     <ProtectedRoute requireProfile requiredRole="admin">
-                      <ResponsiveAppShell>
+                      <AppShell>
                         <StoragePoliciesPage />
-                      </ResponsiveAppShell>
+                      </AppShell>
                     </ProtectedRoute>
                   } 
                   />
@@ -800,9 +796,9 @@ const App = () => {
                    path="/admin/relationships" 
                    element={
                      <ProtectedRoute requireProfile requiredRole="admin">
-                        <ResponsiveAppShell>
+                       <AppShell>
                          <AdminRelationships />
-                        </ResponsiveAppShell>
+                       </AppShell>
                      </ProtectedRoute>
                    } 
                   />
@@ -810,9 +806,9 @@ const App = () => {
                    path="/admin/evaluations" 
                    element={
                      <ProtectedRoute requireProfile requiredRole="admin">
-                        <ResponsiveAppShell>
+                       <AppShell>
                          <AdminEvaluations />
-                        </ResponsiveAppShell>
+                       </AppShell>
                      </ProtectedRoute>
                    } 
                   />
@@ -821,9 +817,9 @@ const App = () => {
                   path="/design-system" 
                   element={
                     <ProtectedRoute>
-                      <ResponsiveAppShell>
-                        <DesignSystemPage />
-                      </ResponsiveAppShell>
+                      <AppShell>
+                        <DesignSystem />
+                      </AppShell>
                     </ProtectedRoute>
                   } 
                 />
@@ -832,9 +828,9 @@ const App = () => {
                   path="/admin/dashboard" 
                   element={
                     <ProtectedRoute requireProfile requiredRole="admin">
-                      <ResponsiveAppShell>
+                      <AppShell>
                         <AdminDashboard />
-                      </ResponsiveAppShell>
+                      </AppShell>
                     </ProtectedRoute>
                   } 
                 />
@@ -843,9 +839,9 @@ const App = () => {
                   path="/dashboard" 
                   element={
                     <ProtectedRoute requireProfile requiredRole="admin">
-                      <ResponsiveAppShell>
+                      <AppShell>
                         <AdminDashboard />
-                      </ResponsiveAppShell>
+                      </AppShell>
                     </ProtectedRoute>
                   } 
                 />
@@ -869,7 +865,6 @@ const App = () => {
       </DirectionProvider>
     </I18nextProvider>
   </QueryClientProvider>
-  );
-};
+);
 
 export default App;

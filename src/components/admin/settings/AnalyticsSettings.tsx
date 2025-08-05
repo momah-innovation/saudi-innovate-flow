@@ -3,8 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useTranslation } from "@/hooks/useAppTranslation";
-import { useRTLAware } from "@/hooks/useRTLAware";
 
 interface AnalyticsSettingsProps {
   settings: any;
@@ -12,20 +10,17 @@ interface AnalyticsSettingsProps {
 }
 
 export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettingsProps) {
-  const { t } = useTranslation();
-  const { textStart, flexRowReverse } = useRTLAware();
-
   return (
-    <div className={`space-y-6 ${textStart}`}>
+    <div className="space-y-6 rtl:text-right ltr:text-left">
       <Card>
-        <CardHeader className={textStart}>
-          <CardTitle>{t('analytics_settings')}</CardTitle>
-          <CardDescription>{t('analytics_settings_description')}</CardDescription>
+        <CardHeader className="rtl:text-right ltr:text-left">
+          <CardTitle>إعدادات التحليلات</CardTitle>
+          <CardDescription>التحكم في جمع وعرض البيانات التحليلية</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${textStart}`}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
             <div className="space-y-2">
-              <Label htmlFor="dataRetention">{t('data_retention_days')}</Label>
+              <Label htmlFor="dataRetention">مدة الاحتفاظ بالبيانات (بالأيام)</Label>
               <Input
                 id="dataRetention"
                 type="number"
@@ -33,29 +28,29 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
                 onChange={(e) => onSettingChange('analyticsDataRetention', parseInt(e.target.value))}
                 min="30"
                 max="3650"
-                className={textStart}
+                className="rtl:text-right ltr:text-left"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="reportFrequency">{t('report_frequency')}</Label>
+              <Label htmlFor="reportFrequency">تكرار التقارير</Label>
               <Select 
                 value={settings.analyticsReportFrequency || "weekly"}
                 onValueChange={(value) => onSettingChange('analyticsReportFrequency', value)}
               >
-                <SelectTrigger className={textStart}>
+                <SelectTrigger className="rtl:text-right ltr:text-left">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {settings.reportFrequencyOptions?.map(freq => (
                     <SelectItem key={freq} value={freq}>
-                      {t(`frequency_${freq}`)}
+                      {freq === 'daily' ? 'يومي' : freq === 'weekly' ? 'أسبوعي' : freq === 'monthly' ? 'شهري' : freq}
                     </SelectItem>
                   )) || (
                     <>
-                      <SelectItem value="daily">{t('daily')}</SelectItem>
-                      <SelectItem value="weekly">{t('weekly')}</SelectItem>
-                      <SelectItem value="monthly">{t('monthly')}</SelectItem>
+                      <SelectItem value="daily">يومي</SelectItem>
+                      <SelectItem value="weekly">أسبوعي</SelectItem>
+                      <SelectItem value="monthly">شهري</SelectItem>
                     </>
                   )}
                 </SelectContent>
@@ -63,10 +58,10 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
             </div>
           </div>
 
-          <div className={`flex items-center justify-between ${flexRowReverse}`}>
-            <div className={`space-y-0.5 ${textStart}`}>
-              <Label className="text-base">{t('realtime_analytics')}</Label>
-              <p className="text-sm text-muted-foreground">{t('realtime_analytics_description')}</p>
+          <div className="flex items-center justify-between rtl:flex-row-reverse">
+            <div className="space-y-0.5 rtl:text-right ltr:text-left">
+              <Label className="text-base">التحليل في الوقت الفعلي</Label>
+              <p className="text-sm text-muted-foreground">تحديث البيانات التحليلية في الوقت الفعلي</p>
             </div>
             <Switch 
               checked={settings.analyticsRealtimeUpdates !== false}

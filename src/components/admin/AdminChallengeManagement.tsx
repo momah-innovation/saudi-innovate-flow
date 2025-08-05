@@ -80,8 +80,8 @@ export function AdminChallengeManagement() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: t('error'),
-        description: t('failed_to_load_challenges'),
+        title: "خطأ",
+        description: "فشل في تحميل التحديات",
         variant: "destructive"
       });
     } finally {
@@ -100,14 +100,14 @@ export function AdminChallengeManagement() {
       
       setChallenges(prev => prev.filter(c => c.id !== challengeId));
       toast({
-        title: t('success'),
-        description: t('challenge_deleted_successfully')
+        title: "تم بنجاح",
+        description: "تم حذف التحدي بنجاح"
       });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: t('error'),
-        description: t('failed_to_delete_challenge'),
+        title: "خطأ",
+        description: "فشل في حذف التحدي",
         variant: "destructive"
       });
     }
@@ -150,23 +150,23 @@ export function AdminChallengeManagement() {
 
   const getStatusLabel = useCallback((status: string) => {
     const labels = {
-      draft: t('status_draft'),
-      active: t('status_active'),
-      completed: t('status_completed'),
-      cancelled: t('status_cancelled'),
-      on_hold: t('status_on_hold')
+      draft: 'مسودة',
+      active: 'نشط',
+      completed: 'مكتمل',
+      cancelled: 'ملغي',
+      on_hold: 'معلق'
     };
     return labels[status as keyof typeof labels] || status;
-  }, [t]);
+  }, []);
 
   const getPriorityLabel = useCallback((priority: string) => {
     const labels = {
-      high: t('priority_high'),
-      medium: t('priority_medium'),
-      low: t('priority_low')
+      high: 'عالي',
+      medium: 'متوسط',
+      low: 'منخفض'
     };
     return labels[priority as keyof typeof labels] || priority;
-  }, [t]);
+  }, []);
 
   const filteredChallenges = useMemo(() => challenges.filter(challenge => {
     const matchesSearch = challenge.title_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -178,15 +178,15 @@ export function AdminChallengeManagement() {
   const filters = [
     {
       id: 'status',
-      label: t('status'),
+      label: 'الحالة',
       type: 'select' as const,
       options: [
-        { label: t('all'), value: 'all' },
-        { label: t('status_draft'), value: 'draft' },
-        { label: t('status_active'), value: 'active' },
-        { label: t('status_completed'), value: 'completed' },
-        { label: t('status_cancelled'), value: 'cancelled' },
-        { label: t('status_on_hold'), value: 'on_hold' }
+        { label: 'الكل', value: 'all' },
+        { label: 'مسودة', value: 'draft' },
+        { label: 'نشط', value: 'active' },
+        { label: 'مكتمل', value: 'completed' },
+        { label: 'ملغي', value: 'cancelled' },
+        { label: 'معلق', value: 'on_hold' }
       ],
       value: statusFilter,
       onChange: setStatusFilter
@@ -196,11 +196,11 @@ export function AdminChallengeManagement() {
   return (
     <>
       <StandardPageLayout
-        title={t('manage_challenges')}
-        description={t('create_and_manage_innovative_challenges')}
+        title="إدارة التحديات"
+        description="إنشاء وإدارة التحديات الابتكارية"
         itemCount={filteredChallenges.length}
         addButton={{
-          label: t('new_challenge'),
+          label: "تحدي جديد",
           onClick: () => {
             setSelectedChallenge(null);
             setShowWizard(true);
@@ -214,10 +214,10 @@ export function AdminChallengeManagement() {
         emptyState={
           <EmptyState
             icon={<Target className="w-6 h-6 text-muted-foreground" />}
-            title={t('no_challenges')}
-            description={t('start_by_creating_new_challenge')}
+            title="لا توجد تحديات"
+            description="ابدأ بإنشاء تحدي ابتكاري جديد لجذب الأفكار المبدعة"
             action={{
-              label: t('create_new_challenge'),
+              label: "إنشاء تحدي جديد",
               onClick: () => {
                 setSelectedChallenge(null);
                 setShowWizard(true);
@@ -249,46 +249,46 @@ export function AdminChallengeManagement() {
             metadata={[
               ...(challenge.start_date ? [{ 
                 icon: <Calendar className="h-4 w-4" />, 
-                label: t('start_date'), 
+                label: "تاريخ البداية", 
                 value: format(new Date(challenge.start_date), 'PPP') 
               }] : []),
               ...(challenge.end_date ? [{ 
                 icon: <Clock className="h-4 w-4" />, 
-                label: t('end_date'), 
+                label: "تاريخ النهاية", 
                 value: format(new Date(challenge.end_date), 'PPP') 
               }] : []),
               ...(challenge.estimated_budget ? [{ 
                 icon: <DollarSign className="h-4 w-4" />, 
-                label: t('estimated_budget'), 
-                value: `${challenge.estimated_budget.toLocaleString()} ${t('currency')}` 
+                label: "الميزانية المقدرة", 
+                value: `${challenge.estimated_budget.toLocaleString()} ريال` 
               }] : []),
               { 
                 icon: <Lightbulb className="h-4 w-4" />, 
-                label: t('sensitivity_level'), 
+                label: "مستوى الحساسية", 
                 value: challenge.sensitivity_level 
               }
             ]}
             actions={[
               {
                 type: 'view',
-                label: t('view'),
+                label: 'عرض',
                 onClick: () => handleView(challenge)
               },
               {
                 type: 'edit',
-                label: t('edit'),
+                label: 'تعديل',
                 onClick: () => handleEdit(challenge)
               },
               {
                 type: 'settings',
-                label: t('settings'),
+                label: 'إعدادات',
                 onClick: () => handleSettings(challenge)
               },
               {
                 type: 'delete',
-                label: t('delete'),
+                label: 'حذف',
                 onClick: () => {
-                  if (confirm(t('confirm_delete_challenge', { title: challenge.title_ar }))) {
+                  if (confirm(`هل أنت متأكد من حذف "${challenge.title_ar}"؟`)) {
                     handleDelete(challenge.id);
                   }
                 }

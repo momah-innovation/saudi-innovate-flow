@@ -1,12 +1,11 @@
 import { ReactNode, Suspense } from 'react';
 import { SidebarProvider } from '@/components/ui/sidebar';
-import { Header } from './Header';
+import { SystemHeader } from './SystemHeader';
 import { NavigationSidebar } from './NavigationSidebar';
 import { LoadingSpinner } from '@/components/ui/loading';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { useSidebarPersistence } from '@/contexts/SidebarContext';
-import { ResponsiveSidebarProvider } from '@/contexts/ResponsiveSidebarContext';
 
 
 interface AppShellProps {
@@ -27,29 +26,27 @@ export function AppShell({ children }: AppShellProps) {
   const { isOpen } = useSidebarPersistence();
   
   return (
-    <ResponsiveSidebarProvider>
-      <SidebarProvider defaultOpen={isOpen}>
-          <div className={cn(
-            "min-h-screen flex w-full bg-background",
-            isRTL && "flex-row-reverse"
-          )}>
-            {/* Navigation Sidebar */}
-            <NavigationSidebar />
+    <SidebarProvider defaultOpen={isOpen}>
+        <div className={cn(
+          "min-h-screen flex w-full bg-background",
+          isRTL && "flex-row-reverse"
+        )}>
+          {/* Navigation Sidebar */}
+          <NavigationSidebar />
+          
+          {/* Main Content Area */}
+          <div className="flex-1 flex flex-col min-w-0">
+            {/* Global Header */}
+            <SystemHeader />
             
-            {/* Main Content Area */}
-            <div className="flex-1 flex flex-col min-w-0">
-              {/* Global Header */}
-              <Header />
-              
-              {/* Page Content with Loading */}
-              <main className="flex-1 overflow-auto">
-                <Suspense fallback={<LoadingSpinner />}>
-                  {children}
-                </Suspense>
-              </main>
-            </div>
+            {/* Page Content with Loading */}
+            <main className="flex-1 overflow-auto">
+              <Suspense fallback={<LoadingSpinner />}>
+                {children}
+              </Suspense>
+            </main>
           </div>
-        </SidebarProvider>
-    </ResponsiveSidebarProvider>
+        </div>
+      </SidebarProvider>
   );
 }

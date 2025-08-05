@@ -96,20 +96,20 @@ export function TrendingIdeasWidget({ className, onIdeaClick }: TrendingIdeasWid
 
   const getTrendingIcon = (index: number) => {
     switch (index) {
-      case 0: return <Trophy className="w-4 h-4 text-accent" />;
-      case 1: return <Star className="w-4 h-4 text-muted-foreground" />;
-      case 2: return <Zap className="w-4 h-4 text-warning" />;
-      default: return <Flame className="w-4 h-4 text-destructive" />;
+      case 0: return <Trophy className="w-4 h-4 text-yellow-500" />;
+      case 1: return <Star className="w-4 h-4 text-gray-400" />;
+      case 2: return <Zap className="w-4 h-4 text-orange-500" />;
+      default: return <Flame className="w-4 h-4 text-red-500" />;
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'approved': return 'bg-success/10 text-success border-success/20';
-      case 'under_review': return 'bg-primary/10 text-primary border-primary/20';
-      case 'in_development': return 'bg-accent/10 text-accent border-accent/20';
-      case 'implemented': return 'bg-success/10 text-success border-success/20';
-      default: return 'bg-muted/10 text-muted-foreground border-muted/20';
+      case 'approved': return 'bg-emerald-500/10 text-emerald-600 border-emerald-200';
+      case 'under_review': return 'bg-blue-500/10 text-blue-600 border-blue-200';
+      case 'in_development': return 'bg-purple-500/10 text-purple-600 border-purple-200';
+      case 'implemented': return 'bg-green-500/10 text-green-600 border-green-200';
+      default: return 'bg-gray-500/10 text-gray-600 border-gray-200';
     }
   };
 
@@ -242,7 +242,7 @@ export function TrendingIdeasWidget({ className, onIdeaClick }: TrendingIdeasWid
                       </div>
                       {idea.overall_score > 0 && (
                         <div className="flex items-center gap-1">
-                          <Star className="w-3 h-3 fill-current text-accent" />
+                          <Star className="w-3 h-3 fill-current text-yellow-500" />
                           <span>{idea.overall_score.toFixed(1)}</span>
                         </div>
                       )}

@@ -22,7 +22,6 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface EnhancedEventRegistrationHeroProps {
   totalRegistrations: number;
@@ -55,13 +54,12 @@ export const EnhancedEventRegistrationHero = ({
 }: EnhancedEventRegistrationHeroProps) => {
   const { isRTL } = useDirection();
   const [currentStat, setCurrentStat] = useState(0);
-  const { end, start, me, ms } = useRTLAware();
 
   const stats = [
-    { icon: Calendar, value: totalRegistrations, label: isRTL ? 'تسجيل' : 'registrations', color: 'text-primary' },
-    { icon: Clock, value: upcomingEvents, label: isRTL ? 'قادم' : 'upcoming', color: 'text-success' },
-    { icon: Users, value: `${Math.floor(totalParticipants / 1000)}K+`, label: isRTL ? 'مشارك' : 'participants', color: 'text-accent' },
-    { icon: CheckCircle, value: completedEvents, label: isRTL ? 'مكتمل' : 'completed', color: 'text-warning' }
+    { icon: Calendar, value: totalRegistrations, label: isRTL ? 'تسجيل' : 'registrations', color: 'text-blue-400' },
+    { icon: Clock, value: upcomingEvents, label: isRTL ? 'قادم' : 'upcoming', color: 'text-green-400' },
+    { icon: Users, value: `${Math.floor(totalParticipants / 1000)}K+`, label: isRTL ? 'مشارك' : 'participants', color: 'text-purple-400' },
+    { icon: CheckCircle, value: completedEvents, label: isRTL ? 'مكتمل' : 'completed', color: 'text-orange-400' }
   ];
 
   useEffect(() => {
@@ -81,9 +79,9 @@ export const EnhancedEventRegistrationHero = ({
 
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className={cn("absolute -top-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse", end('40'))} />
-        <div className={cn("absolute -bottom-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-1000", start('40'))} />
-        <div className={cn("absolute top-20 w-64 h-64 bg-accent/5 rounded-full blur-2xl animate-bounce", start('1/3'))} />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-20 left-1/3 w-64 h-64 bg-purple-400/5 rounded-full blur-2xl animate-bounce" />
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -94,10 +92,10 @@ export const EnhancedEventRegistrationHero = ({
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <Sparkles className="w-6 h-6 text-primary/70" />
+                  <Sparkles className="w-6 h-6 text-blue-300" />
                 </div>
                 <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
-                  <Star className={`w-3 h-3 ${me('1')}`} />
+                  <Star className="w-3 h-3 mr-1" />
                   {isRTL ? 'منصة تسجيل الفعاليات' : 'Event Registration Platform'}
                 </Badge>
               </div>
@@ -156,7 +154,7 @@ export const EnhancedEventRegistrationHero = ({
                   size="lg"
                   className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
-                  <Plus className={`w-5 h-5 ${me('2')}`} />
+                  <Plus className="w-5 h-5 mr-2" />
                   {isRTL ? 'سجل في فعالية' : 'Register for Event'}
                 </Button>
               )}
@@ -167,7 +165,7 @@ export const EnhancedEventRegistrationHero = ({
                 size="lg"
                 className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
               >
-                <Filter className={`w-5 h-5 ${me('2')}`} />
+                <Filter className="w-5 h-5 mr-2" />
                 {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
               </Button>
 
@@ -176,7 +174,7 @@ export const EnhancedEventRegistrationHero = ({
                 size="lg"
                 className="text-white hover:bg-white/10"
               >
-                <Play className={`w-5 h-5 ${me('2')}`} />
+                <Play className="w-5 h-5 mr-2" />
                 {isRTL ? 'شاهد الفيديو' : 'Watch Demo'}
               </Button>
             </div>
@@ -201,16 +199,16 @@ export const EnhancedEventRegistrationHero = ({
                       </div>
                     )}
                     
-                    <div className={cn("absolute top-4", start('4'))}>
-                      <Badge className="bg-primary/90 text-primary-foreground border-0 animate-pulse">
-                        <Clock className={`w-3 h-3 ${me('1')}`} />
+                    <div className="absolute top-4 left-4">
+                      <Badge className="bg-blue-500/90 text-white border-0 animate-pulse">
+                        <Clock className="w-3 h-3 mr-1" />
                         {featuredEvent.date}
                       </Badge>
                     </div>
 
-                    <div className={cn("absolute top-4", end('4'))}>
-                      <Badge className="bg-accent/90 text-accent-foreground border-0">
-                        <TrendingUp className={`w-3 h-3 ${me('1')}`} />
+                    <div className="absolute top-4 right-4">
+                      <Badge className="bg-purple-500/90 text-white border-0">
+                        <TrendingUp className="w-3 h-3 mr-1" />
                         {isRTL ? 'مميزة' : 'Featured'}
                       </Badge>
                     </div>
@@ -225,13 +223,13 @@ export const EnhancedEventRegistrationHero = ({
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-primary/70">
+                        <div className="text-2xl font-bold text-blue-300">
                           {featuredEvent.participants}
                         </div>
                         <div className="text-sm text-white/70">{isRTL ? 'مشارك' : 'participants'}</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-accent/70">
+                        <div className="text-2xl font-bold text-purple-300">
                           {featuredEvent.capacity}
                         </div>
                         <div className="text-sm text-white/70">{isRTL ? 'سعة' : 'capacity'}</div>
@@ -252,7 +250,7 @@ export const EnhancedEventRegistrationHero = ({
                       className="w-full bg-gradient-primary hover:opacity-90 text-white"
                     >
                       {isRTL ? 'سجل الآن' : 'Register Now'}
-                      <ArrowRight className={`w-4 h-4 ${ms('2')}`} />
+                      <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </div>
                 </CardContent>
@@ -275,7 +273,7 @@ export const EnhancedEventRegistrationHero = ({
             <div className="grid grid-cols-2 gap-4">
               <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <Target className="w-8 h-8 text-primary mx-auto mb-2" />
+                  <Target className="w-8 h-8 text-blue-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
                     {isRTL ? 'فعاليات اليوم' : "Today's Events"}
                   </div>
@@ -287,7 +285,7 @@ export const EnhancedEventRegistrationHero = ({
 
               <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <Award className="w-8 h-8 text-accent mx-auto mb-2" />
+                  <Award className="w-8 h-8 text-purple-400 mx-auto mb-2" />
                   <div className="text-sm font-medium text-white">
                     {isRTL ? 'شهاداتي' : 'My Certificates'}
                   </div>

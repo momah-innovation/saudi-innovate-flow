@@ -19,10 +19,10 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         // Hero button variants for enhanced contrast and theme matching
-        "hero-primary": "bg-gradient-primary text-hero-text hover:opacity-90 shadow-lg border-0 font-semibold",
-        "hero-secondary": "border border-hero-border/30 text-hero-text hover:bg-hero-overlay-light/20 backdrop-blur-sm bg-hero-overlay-light/10",
-        "hero-ghost": "text-hero-text hover:bg-hero-overlay-light/10 backdrop-blur-sm",
-        "hero-outline": "border border-hero-border/40 text-hero-text hover:bg-hero-overlay-light hover:text-hero-overlay backdrop-blur-sm bg-hero-overlay-light/5 transition-all duration-300",
+        "hero-primary": "bg-gradient-primary text-white hover:opacity-90 shadow-lg border-0 font-semibold",
+        "hero-secondary": "border border-white/30 text-white hover:bg-white/20 backdrop-blur-sm bg-white/10",
+        "hero-ghost": "text-white hover:bg-white/10 backdrop-blur-sm",
+        "hero-outline": "border border-white/40 text-white hover:bg-white hover:text-foreground backdrop-blur-sm bg-white/5 transition-all duration-300",
         // Action button variants for consistent styling
         "action-edit": "border border-input bg-background hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200",
         "action-delete": "border border-destructive/20 bg-background hover:bg-destructive hover:text-destructive-foreground text-destructive",

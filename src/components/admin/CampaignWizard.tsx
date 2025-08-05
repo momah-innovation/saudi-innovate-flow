@@ -31,9 +31,6 @@ import {
 } from "lucide-react";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { CampaignFormData, SystemLists } from "@/types";
-import { useRTLAware } from "@/hooks/useRTLAware";
-import { useTranslation } from "@/hooks/useAppTranslation";
-import { RTLFlex } from "@/components/ui/rtl-layout";
 
 // Use the centralized CampaignFormData type
 
@@ -51,9 +48,7 @@ export function CampaignWizard({
   onSuccess 
 }: CampaignWizardProps) {
   const { toast } = useToast();
-  const { t } = useTranslation();
   const { generalStatusOptions, campaignThemeOptions } = useSystemLists();
-  const { mr, ml, isRTL } = useRTLAware();
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -394,8 +389,8 @@ export function CampaignWizard({
       await Promise.all(linkPromises);
 
       toast({
-        title: t('save_successful'),
-        description: editingCampaign ? t('campaign_updated_successfully') : t('campaign_created_successfully')
+        title: "نجح الحفظ",
+        description: editingCampaign ? "تم تحديث الحملة بنجاح" : "تم إنشاء الحملة بنجاح"
       });
 
       onSuccess();
@@ -403,8 +398,8 @@ export function CampaignWizard({
     } catch (error) {
       // Failed to save campaign
       toast({
-        title: t('save_error'),
-        description: t('campaign_save_failed'),
+        title: "خطأ في الحفظ",
+        description: "فشل في حفظ الحملة. يرجى المحاولة مرة أخرى",
         variant: "destructive"
       });
     } finally {
@@ -538,7 +533,7 @@ export function CampaignWizard({
                       ? managers.find(manager => manager.id === formData.campaign_manager_id)?.name_ar || 
                         managers.find(manager => manager.id === formData.campaign_manager_id)?.name
                       : "اختر مدير الحملة"}
-                    <ChevronsUpDown className={`${ml("2")} h-4 w-4 shrink-0 opacity-50`} />
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-full p-0">
@@ -568,7 +563,7 @@ export function CampaignWizard({
                               }}
                             >
                               <Check
-                                className={`${mr("2")} h-4 w-4 ${
+                                className={`mr-2 h-4 w-4 ${
                                   formData.campaign_manager_id === manager.id ? "opacity-100" : "opacity-0"
                                 }`}
                               />
@@ -949,7 +944,7 @@ export function CampaignWizard({
                 }`}>
                   {step.icon}
                 </div>
-                <div className={`${ml("2")} text-sm font-medium`}>{step.title}</div>
+                <div className="ml-2 text-sm font-medium">{step.title}</div>
                 {index < steps.length - 1 && (
                   <div className={`w-8 h-px mx-2 ${
                     index < currentStep ? 'bg-primary' : 'bg-muted'
@@ -981,12 +976,12 @@ export function CampaignWizard({
 
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                {t('cancel')}
+                إلغاء
               </Button>
               
               {currentStep === steps.length - 1 ? (
                 <Button onClick={handleSubmit} disabled={loading}>
-                  {loading ? t('saving') : (editingCampaign ? t('update_campaign') : t('create_campaign'))}
+                  {loading ? "جاري الحفظ..." : (editingCampaign ? "تحديث الحملة" : "إنشاء الحملة")}
                 </Button>
               ) : (
                 <Button onClick={handleNext}>

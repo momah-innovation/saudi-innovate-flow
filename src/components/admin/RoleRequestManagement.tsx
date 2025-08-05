@@ -17,7 +17,6 @@ import { useToast } from '@/hooks/use-toast';
 import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
 import { useSystemLists } from '@/hooks/useSystemLists';
 import { ExpertProfileView } from '@/components/experts/ExpertProfileCard';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface RoleRequest {
   id: string;
@@ -51,7 +50,6 @@ export default function RoleRequestManagement() {
   const { toast } = useToast();
   const { uiInitialsMaxLength } = useSystemSettings();
   const { roleRequestStatusOptions } = useSystemLists();
-  const { start, ps, flexRow } = useRTLAware();
   const [roleRequests, setRoleRequests] = useState<RoleRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState<RoleRequest | null>(null);
@@ -279,12 +277,12 @@ export default function RoleRequestManagement() {
             <div className="space-y-2">
               <Label>Search</Label>
               <div className="relative">
-                <Search className={`absolute ${start('3')} top-2.5 h-4 w-4 text-muted-foreground`} />
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Name or email..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className={ps('10')}
+                  className="pl-8"
                 />
               </div>
             </div>
@@ -327,7 +325,7 @@ export default function RoleRequestManagement() {
       {/* Statistics */}
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
-          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Requests</CardTitle>
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -336,7 +334,7 @@ export default function RoleRequestManagement() {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Pending</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -347,7 +345,7 @@ export default function RoleRequestManagement() {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Approved</CardTitle>
             <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -358,7 +356,7 @@ export default function RoleRequestManagement() {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className={`flex items-center justify-between space-y-0 pb-2 ${flexRow}`}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Rejected</CardTitle>
             <XCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>

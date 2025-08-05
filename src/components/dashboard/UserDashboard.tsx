@@ -23,7 +23,6 @@ import { DashboardHero } from './DashboardHero';
 import { AdminDashboard } from './AdminDashboard';
 import { ExpertDashboard } from './ExpertDashboard';
 import { PartnerDashboard } from './PartnerDashboard';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface DashboardStats {
   totalIdeas: number;
@@ -75,7 +74,6 @@ export default function UserDashboard() {
   const currentLanguage = language;
   const { isRTL } = useDirection();
   const navigate = useNavigate();
-  const { me, end } = useRTLAware();
   
   const primaryRole = getPrimaryRole();
   
@@ -499,19 +497,19 @@ export default function UserDashboard() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Button onClick={() => navigate('/submit-idea')} className="w-full justify-start">
-                    <Plus className={`w-4 h-4 ${me('2')}`} />
+                    <Plus className="w-4 h-4 mr-2" />
                     {currentLanguage === 'ar' ? 'تقديم فكرة جديدة' : 'Submit New Idea'}
                   </Button>
                   <Button onClick={() => navigate('/challenges')} variant="outline" className="w-full justify-start">
-                    <Target className={`w-4 h-4 ${me('2')}`} />
+                    <Target className="w-4 h-4 mr-2" />
                     {currentLanguage === 'ar' ? 'تصفح التحديات' : 'Browse Challenges'}
                   </Button>
                   <Button onClick={() => navigate('/events')} variant="outline" className="w-full justify-start">
-                    <Calendar className={`w-4 h-4 ${me('2')}`} />
+                    <Calendar className="w-4 h-4 mr-2" />
                     {currentLanguage === 'ar' ? 'تصفح الفعاليات' : 'Browse Events'}
                   </Button>
                   <Button onClick={() => navigate('/ideas')} variant="outline" className="w-full justify-start">
-                    <Eye className={`w-4 h-4 ${me('2')}`} />
+                    <Eye className="w-4 h-4 mr-2" />
                     {currentLanguage === 'ar' ? 'عرض أفكاري' : 'View My Ideas'}
                   </Button>
                 </CardContent>
@@ -565,7 +563,7 @@ export default function UserDashboard() {
                         : 'Start your innovation journey by submitting your first idea'}
                     </p>
                     <Button onClick={() => navigate('/submit-idea')}>
-                      <Plus className={`w-4 h-4 ${me('2')}`} />
+                      <Plus className="w-4 h-4 mr-2" />
                       {currentLanguage === 'ar' ? 'قدم فكرتك الأولى' : 'Submit Your First Idea'}
                     </Button>
                   </div>
@@ -580,7 +578,7 @@ export default function UserDashboard() {
                 achievements.map((achievement) => (
                   <Card key={achievement.id} className="relative overflow-hidden">
                     <div 
-                      className={`absolute top-0 ${end('0')} w-2 h-full`}
+                      className="absolute top-0 right-0 w-2 h-full"
                       style={{ backgroundColor: achievement.badge_color }}
                     ></div>
                     <CardContent className="p-6">

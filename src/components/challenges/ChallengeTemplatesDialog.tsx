@@ -27,7 +27,6 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { getCategoryMapping, getDifficultyMapping, getFilterOptions, challengesPageConfig } from '@/config/challengesPageConfig';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface ChallengeTemplate {
   id: string;
@@ -73,7 +72,6 @@ export const ChallengeTemplatesDialog = ({
 }: ChallengeTemplatesDialogProps) => {
   const { isRTL } = useDirection();
   const { toast } = useToast();
-  const { me, ps, start } = useRTLAware();
   const [templates, setTemplates] = useState<ChallengeTemplate[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -288,7 +286,7 @@ export const ChallengeTemplatesDialog = ({
             </CardTitle>
             {template.is_featured && (
               <Badge variant="secondary" className={challengesPageConfig.badges.featured}>
-                <Star className={`w-3 h-3 ${me('1')}`} />
+                <Star className="w-3 h-3 mr-1" />
                 {isRTL ? 'مميز' : 'Featured'}
               </Badge>
             )}
@@ -306,11 +304,11 @@ export const ChallengeTemplatesDialog = ({
             {template.difficulty}
           </Badge>
           <Badge variant="outline" className={challengesPageConfig.ui.glassMorphism.badge}>
-            <Clock className={`w-3 h-3 ${me('1')}`} />
+            <Clock className="w-3 h-3 mr-1" />
             {template.estimated_duration} {isRTL ? 'يوم' : 'days'}
           </Badge>
           <Badge variant="outline" className={challengesPageConfig.ui.glassMorphism.badge}>
-            <Award className={`w-3 h-3 ${me('1')}`} />
+            <Award className="w-3 h-3 mr-1" />
             {Math.floor(template.suggested_budget / 1000)}K {isRTL ? 'ر.س' : 'SAR'}
           </Badge>
         </div>
@@ -347,12 +345,12 @@ export const ChallengeTemplatesDialog = ({
         {/* Filters */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div className="relative">
-            <Search className={cn("absolute top-3 w-4 h-4", start('3'), challengesPageConfig.ui.colors.text.muted)} />
+            <Search className={cn("absolute left-3 top-3 w-4 h-4", challengesPageConfig.ui.colors.text.muted)} />
             <Input
               placeholder={isRTL ? 'البحث في القوالب...' : 'Search templates...'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className={cn(ps('10'), challengesPageConfig.ui.effects.focus)}
+              className={cn("pl-10", challengesPageConfig.ui.effects.focus)}
             />
           </div>
           

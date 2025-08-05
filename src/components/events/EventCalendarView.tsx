@@ -12,7 +12,6 @@ import {
   Users
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 import { cn } from '@/lib/utils';
 
 interface CalendarEvent {
@@ -61,7 +60,6 @@ export const EventCalendarView = ({
   className = "" 
 }: EventCalendarViewProps) => {
   const { isRTL } = useDirection();
-  const { ms } = useRTLAware();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -143,12 +141,12 @@ export const EventCalendarView = ({
 
   const getEventTypeColor = (type: string) => {
     const colors = {
-      'conference': 'bg-info',
-      'workshop': 'bg-accent',
-      'summit': 'bg-success',
-      'expo': 'bg-warning',
-      'forum': 'bg-primary',
-      'default': 'bg-muted'
+      'conference': 'bg-blue-500',
+      'workshop': 'bg-purple-500',
+      'summit': 'bg-green-500',
+      'expo': 'bg-orange-500',
+      'forum': 'bg-cyan-500',
+      'default': 'bg-gray-500'
     };
     return colors[type as keyof typeof colors] || colors.default;
   };
@@ -303,7 +301,7 @@ export const EventCalendarView = ({
                           )}
                         </div>
                       </div>
-                      <Badge variant="outline" className={cn(ms('2'), getEventTypeColor(event.event_type), "text-white")}>
+                      <Badge variant="outline" className={cn("ml-2", getEventTypeColor(event.event_type), "text-white")}>
                         {event.event_type}
                       </Badge>
                     </div>

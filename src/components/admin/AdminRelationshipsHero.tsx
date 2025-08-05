@@ -53,7 +53,7 @@ export function AdminRelationshipsHero({
 
       {/* Active Nodes */}
       <Card className="hover-scale">
-        <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">{t('active_nodes')}</CardTitle>
           <Users className="h-4 w-4 icon-info" />
         </CardHeader>
@@ -67,7 +67,7 @@ export function AdminRelationshipsHero({
 
       {/* Network Density */}
       <Card className="hover-scale">
-        <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">{t('network_density')}</CardTitle>
           <Layers className="h-4 w-4 icon-success" />
         </CardHeader>
@@ -81,7 +81,7 @@ export function AdminRelationshipsHero({
 
       {/* Network Health */}
       <Card className="hover-scale">
-        <CardHeader className={`flex ${flexRow} items-center justify-between space-y-0 pb-2`}>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">{t('network_health')}</CardTitle>
           <Activity className="h-4 w-4 text-innovation" />
         </CardHeader>

@@ -9,8 +9,6 @@ import { ViewLayouts } from '@/components/ui/view-layouts';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { cn } from '@/lib/utils';
 import { ChallengeCard } from '@/components/challenges/ChallengeCard';
 import { ChallengeTrendingWidget } from '@/components/challenges/ChallengeTrendingWidget';
 import { ChallengesHero } from '@/components/challenges/ChallengesHero';
@@ -42,7 +40,6 @@ const ChallengesBrowse = () => {
   const { toast } = useToast();
   const { ui } = useChallengeDefaults();
   const { user, hasRole } = useAuth();
-  const rtl = useRTLAware();
   
   // Use enhanced challenges data hook
   const { challenges, loading, stats, refetch } = useChallengesData();
@@ -573,7 +570,7 @@ const ChallengesBrowse = () => {
                 <TabsTrigger value="all" className="animate-fade-in">
                   {isRTL ? 'جميع التحديات' : 'All Challenges'}
                   {activeTab === 'all' && (
-                     <span className={cn(rtl.ml("2"), challengesPageConfig.ui.glassMorphism.badge, "px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm")}>
+                    <span className={`ml-2 ${challengesPageConfig.ui.glassMorphism.badge} px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm`}>
                       {filteredChallenges.length}
                     </span>
                   )}
@@ -581,7 +578,7 @@ const ChallengesBrowse = () => {
                 <TabsTrigger value="active" className="animate-fade-in">
                   {isRTL ? 'النشطة' : 'Active'}
                   {activeTab === 'active' && (
-                     <span className={cn(rtl.ml("2"), challengesPageConfig.ui.gradients.success, "px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm")}>
+                    <span className={`ml-2 ${challengesPageConfig.ui.gradients.success} px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm`}>
                       {filteredChallenges.filter(c => c.status === 'active').length}
                     </span>
                   )}
@@ -589,7 +586,7 @@ const ChallengesBrowse = () => {
                 <TabsTrigger value="upcoming" className="animate-fade-in">
                   {isRTL ? 'القادمة' : 'Upcoming'}
                   {activeTab === 'upcoming' && (
-                     <span className={cn(rtl.ml("2"), challengesPageConfig.ui.gradients.info, "px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm")}>
+                    <span className={`ml-2 ${challengesPageConfig.ui.gradients.info} px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm`}>
                       {filteredChallenges.filter(c => c.status === 'planning' || c.status === 'upcoming').length}
                     </span>
                   )}
@@ -597,7 +594,7 @@ const ChallengesBrowse = () => {
                 <TabsTrigger value="trending" className="animate-fade-in">
                   {isRTL ? 'الأكثر شعبية' : 'Trending'}
                   {activeTab === 'trending' && (
-                     <span className={cn(rtl.ml("2"), challengesPageConfig.ui.gradients.warning, "px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm")}>
+                    <span className={`ml-2 ${challengesPageConfig.ui.gradients.warning} px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm`}>
                       {filteredChallenges.filter(c => c.trending || c.participants > 200).length}
                     </span>
                   )}

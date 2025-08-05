@@ -21,7 +21,6 @@ import {
   Search,
   X
 } from "lucide-react";
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface TeamMemberData {
   id?: string;
@@ -66,7 +65,6 @@ export function TeamMemberWizard({
   const { toast } = useToast();
   const { t } = useTranslation();
   const { teamRoleOptions, teamSpecializationOptions } = useSystemLists();
-  const { start, ps } = useRTLAware();
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -323,8 +321,8 @@ export function TeamMemberWizard({
         if (error) throw error;
 
         toast({
-          title: t('added_successfully'),
-          description: t('new_team_member_added')
+          title: "تم الإضافة بنجاح",
+          description: "تم إضافة عضو جديد إلى فريق الابتكار"
         });
       }
 
@@ -334,8 +332,8 @@ export function TeamMemberWizard({
     } catch (error) {
       // Failed to save team member
       toast({
-        title: t('error'),
-        description: t('failed_to_save_team_member'),
+        title: "خطأ",
+        description: "فشل في حفظ بيانات عضو الفريق",
         variant: "destructive"
       });
     } finally {
@@ -370,12 +368,12 @@ export function TeamMemberWizard({
               <div className="space-y-2">
                 <Label>البحث عن مستخدم</Label>
                 <div className="relative">
-                  <Search className={`absolute ${start('3')} top-2.5 h-4 w-4 text-muted-foreground`} />
+                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                   <Input
                     placeholder="ابحث بالاسم أو البريد الإلكتروني..."
                     value={userSearchTerm}
                     onChange={(e) => setUserSearchTerm(e.target.value)}
-                    className={ps('10')}
+                    className="pl-8"
                   />
                 </div>
                 {userSearchTerm && (
@@ -557,7 +555,7 @@ export function TeamMemberWizard({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Users className="w-5 h-5" />
-            {editingMember ? t('edit_team_member') : t('add_new_team_member')}
+            {editingMember ? "تعديل عضو الفريق" : "إضافة عضو فريق جديد"}
           </DialogTitle>
         </DialogHeader>
 
@@ -607,16 +605,16 @@ export function TeamMemberWizard({
           
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              {t('cancel')}
+              إلغاء
             </Button>
             <Button 
               onClick={handleNext}
               disabled={loading}
             >
               {loading ? (
-                t('saving')
+                "جاري الحفظ..."
               ) : currentStep === steps.length - 1 ? (
-                editingMember ? t('update_member') : t('add_member')
+                editingMember ? "تحديث العضو" : "إضافة العضو"
               ) : (
                 "التالي"
               )}

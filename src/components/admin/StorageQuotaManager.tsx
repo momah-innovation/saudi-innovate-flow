@@ -23,8 +23,6 @@ import {
 } from '@/components/ui/select'
 import { AlertCircle, Plus, Trash2, RefreshCw, HardDrive } from 'lucide-react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { RTLFlex } from '@/components/ui/rtl-layout';
 
 interface StorageQuotaManagerProps {
   className?: string
@@ -33,7 +31,6 @@ interface StorageQuotaManagerProps {
 export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ className }) => {
   const { quotas, loading, error, setQuota, removeQuota, autoSetupQuotas, refreshQuotas } = useStorageQuotas()
   const { toast } = useToast()
-  const { mr, ml, isRTL } = useRTLAware();
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedBucket, setSelectedBucket] = useState('')
   const [quotaSize, setQuotaSize] = useState('')
@@ -202,7 +199,7 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button size="sm">
-                  <Plus className={`h-4 w-4 ${mr("2")}`} />
+                  <Plus className="h-4 w-4 mr-2" />
                   Add Quota
                 </Button>
               </DialogTrigger>
@@ -255,7 +252,7 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
                     disabled={actionLoading === 'set'}
                     className="w-full"
                   >
-                    {actionLoading === 'set' && <RefreshCw className={`h-4 w-4 ${mr("2")} animate-spin`} />}
+                    {actionLoading === 'set' && <RefreshCw className="h-4 w-4 mr-2 animate-spin" />}
                     Set Quota
                   </Button>
                 </div>
@@ -282,7 +279,7 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
               disabled={actionLoading === 'auto-setup'}
               variant="outline"
             >
-              {actionLoading === 'auto-setup' && <RefreshCw className={`h-4 w-4 ${mr("2")} animate-spin`} />}
+              {actionLoading === 'auto-setup' && <RefreshCw className="h-4 w-4 mr-2 animate-spin" />}
               Auto Setup (5GB Default)
             </Button>
           </div>

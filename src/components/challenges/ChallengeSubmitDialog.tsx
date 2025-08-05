@@ -29,7 +29,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
 import { cn } from '@/lib/utils';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface Challenge {
   id: string;
@@ -79,7 +78,6 @@ export const ChallengeSubmitDialog = ({
   const { isRTL } = useDirection();
   const { toast } = useToast();
   const { user } = useAuth();
-  const { me, ms } = useRTLAware();
   
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -446,7 +444,7 @@ export const ChallengeSubmitDialog = ({
                   {isRTL ? 'أعضاء الفريق' : 'Team Members'}
                 </label>
                 <Button size="sm" variant="outline" onClick={addTeamMember}>
-                  <Users className={`h-4 w-4 ${me('2')}`} />
+                  <Users className="h-4 w-4 mr-2" />
                   {isRTL ? 'إضافة عضو' : 'Add Member'}
                 </Button>
               </div>
@@ -631,7 +629,7 @@ export const ChallengeSubmitDialog = ({
             disabled={currentStep === 1}
             className="transition-all duration-200"
           >
-            <ArrowLeft className={`w-4 h-4 ${me('2')}`} />
+            <ArrowLeft className="w-4 h-4 mr-2" />
             {isRTL ? 'السابق' : 'Previous'}
           </Button>
 
@@ -642,7 +640,7 @@ export const ChallengeSubmitDialog = ({
               disabled={!submissionData.title || !submissionData.description}
             >
               {isRTL ? 'حفظ كمسودة' : 'Save Draft'}
-              <Save className={`w-4 h-4 ${ms('2')}`} />
+              <Save className="w-4 h-4 ml-2" />
             </Button>
 
             {currentStep < totalSteps ? (
@@ -652,7 +650,7 @@ export const ChallengeSubmitDialog = ({
                 className="transition-all duration-200"
               >
                 {isRTL ? 'التالي' : 'Next'}
-                <ArrowRight className={`w-4 h-4 ${ms('2')}`} />
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             ) : (
               <Button
@@ -661,9 +659,9 @@ export const ChallengeSubmitDialog = ({
                 className="transition-all duration-200"
               >
                 {loading ? (
-                  <div className={`w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin ${me('2')}`} />
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
                 ) : (
-                  <Send className={`w-4 h-4 ${me('2')}`} />
+                  <Send className="w-4 h-4 mr-2" />
                 )}
                 {isRTL ? 'تسليم المشروع' : 'Submit Project'}
               </Button>

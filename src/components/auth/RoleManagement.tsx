@@ -28,8 +28,6 @@ import {
   Building2,
   ChevronDown
 } from 'lucide-react';
-import { useRTLAware } from '@/hooks/useRTLAware';
-import { cn } from '@/lib/utils';
 
 // Role hierarchy definition
 export const ROLE_HIERARCHY = {
@@ -184,7 +182,6 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
   ]);
 
   const { toast } = useToast();
-  const { me, ps, start } = useRTLAware();
 
   const handleRoleChange = async (userId: string, newRole: UserRole) => {
     try {
@@ -284,18 +281,18 @@ export const RoleManagement: React.FC<RoleManagementProps> = ({ onRoleUpdate }) 
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <div className="flex-1">
               <div className="relative">
-                <Search className={cn("absolute top-3 h-4 w-4 text-muted-foreground", start('3'))} />
+                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="بحث بالاسم أو البريد الإلكتروني..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className={ps('10')}
+                  className="pl-10"
                 />
               </div>
             </div>
             <Select value={filterRole} onValueChange={(value) => setFilterRole(value as UserRole | 'all')}>
               <SelectTrigger className="w-full sm:w-48">
-                <Filter className={`h-4 w-4 ${me('2')}`} />
+                <Filter className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="تصفية حسب الدور" />
               </SelectTrigger>
               <SelectContent>

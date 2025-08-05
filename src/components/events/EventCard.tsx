@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { CalendarIcon, MapPin, Users, Clock, Bookmark, Ticket } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useRTLAware } from '@/hooks/useRTLAware';
 
 interface Event {
   id: string;
@@ -35,15 +34,14 @@ interface EventCardProps {
 
 export const EventCard = ({ event, onViewDetails, onRegister, viewMode = 'cards' }: EventCardProps) => {
   const { isRTL } = useDirection();
-  const { me } = useRTLAware();
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'upcoming': return 'badge-info';
-      case 'ongoing': return 'badge-success';
-      case 'completed': return 'badge-secondary';
-      case 'cancelled': return 'badge-error';
-      default: return 'badge-secondary';
+      case 'upcoming': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
+      case 'ongoing': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
+      case 'completed': return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'cancelled': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
     }
   };
 
@@ -111,7 +109,7 @@ export const EventCard = ({ event, onViewDetails, onRegister, viewMode = 'cards'
           <Badge variant="outline">{event.event_type}</Badge>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={() => onViewDetails(event)}>
-              <Ticket className={`h-4 w-4 ${me('2')}`} />
+              <Ticket className="h-4 w-4 mr-2" />
               {isRTL ? 'التفاصيل' : 'Details'}
             </Button>
             <Button 

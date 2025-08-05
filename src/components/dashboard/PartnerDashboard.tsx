@@ -20,19 +20,19 @@ export function PartnerDashboard({ userProfile, canManageOpportunities, canViewP
       title: language === 'ar' ? 'الفرص النشطة' : 'Active Opportunities',
       value: '8',
       icon: Target,
-      color: 'text-success'
+      color: 'text-green-600'
     },
     {
       title: language === 'ar' ? 'الشراكات' : 'Partnerships',
       value: '3',
       icon: Handshake,
-      color: 'text-primary'
+      color: 'text-blue-600'
     },
     {
       title: language === 'ar' ? 'معدل النجاح' : 'Success Rate',
       value: '85%',
       icon: TrendingUp,
-      color: 'text-accent-foreground'
+      color: 'text-purple-600'
     }
   ];
 
@@ -53,7 +53,7 @@ export function PartnerDashboard({ userProfile, canManageOpportunities, canViewP
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-success to-success-dark text-white rounded-lg p-6">
+      <div className="bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-lg p-6">
         <div className="flex items-center gap-3 mb-2">
           <Handshake className="w-6 h-6" />
           <h2 className="text-xl font-bold">

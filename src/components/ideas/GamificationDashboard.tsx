@@ -185,22 +185,22 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
 
   const getAchievementColor = (level: string) => {
     switch (level) {
-      case 'gold': return 'bg-warning/10 text-warning border-warning/20';
-      case 'silver': return 'bg-muted text-muted-foreground border-muted-foreground/20';
-      case 'bronze': return 'bg-warning/10 text-warning border-warning/20';
-      case 'platinum': return 'bg-accent/10 text-accent border-accent/20';
-      default: return 'bg-primary/10 text-primary border-primary/20';
+      case 'gold': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
+      case 'silver': return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'bronze': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400';
+      case 'platinum': return 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400';
+      default: return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
     }
   };
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case 'legend': return 'text-secondary';
-      case 'expert': return 'text-destructive';
-      case 'advanced': return 'text-warning';
-      case 'intermediate': return 'text-info';
-      case 'beginner': return 'text-success';
-      default: return 'text-muted-foreground';
+      case 'legend': return 'text-purple-600';
+      case 'expert': return 'text-red-600';
+      case 'advanced': return 'text-orange-600';
+      case 'intermediate': return 'text-blue-600';
+      case 'beginner': return 'text-green-600';
+      default: return 'text-gray-600';
     }
   };
 
@@ -323,9 +323,9 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
                   {leaderboard.slice(0, 5).map((entry, index) => (
                     <div key={entry.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                        index === 0 ? 'bg-warning/10 text-warning' :
-                        index === 1 ? 'bg-muted text-muted-foreground' :
-                        index === 2 ? 'bg-warning/10 text-warning' :
+                        index === 0 ? 'bg-yellow-100 text-yellow-800' :
+                        index === 1 ? 'bg-gray-100 text-gray-800' :
+                        index === 2 ? 'bg-orange-100 text-orange-800' :
                         'bg-muted text-muted-foreground'
                       }`}>
                         {index < 3 ? (
