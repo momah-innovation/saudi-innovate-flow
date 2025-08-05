@@ -43,37 +43,37 @@ export function ResponsiveSystemHeader() {
   };
 
   return (
-    <header className="sticky-header">
+    <header className="h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
       <div className={cn(
-        "container-responsive header-content",
+        "container flex items-center justify-between px-4 h-full max-w-none",
         isRTL && "flex-row-reverse"
       )}>
         
         {/* Left Section: Logo, Sidebar Toggle, Title */}
         <div className={cn(
-          "header-left-section",
+          "flex items-center gap-3 min-w-0",
           isRTL && "flex-row-reverse"
         )}>
           {/* Sidebar Toggle */}
           <SidebarTrigger 
-            className="sidebar-trigger" 
+            className="shrink-0" 
             onClick={toggleSidebar}
           />
           
           {/* Logo & Title */}
           <div className={cn(
-            "logo-section",
+            "flex items-center gap-2 min-w-0",
             isRTL && "flex-row-reverse"
           )}>
-            <div className="app-logo">
-              <span className="app-logo-icon">🏗️</span>
+            <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center shrink-0">
+              <span className="text-primary-foreground font-bold text-sm">🏗️</span>
             </div>
             <div className={cn(
-              "app-title-container",
+              "hidden sm:block min-w-0",
               isRTL && "text-right"
             )}>
               <h1 className={cn(
-                "app-title",
+                "font-semibold text-sm truncate",
                 language === 'ar' ? 'font-arabic' : 'font-english'
               )}>
                 {getSystemTitle()}
@@ -83,10 +83,10 @@ export function ResponsiveSystemHeader() {
         </div>
 
         {/* Center Section: Search */}
-        <div className="search-section">
-          <div className="search-container">
+        <div className="flex-1 max-w-md mx-4">
+          <div className="relative">
             <Search className={cn(
-              "search-icon",
+              "absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground",
               isRTL ? "right-3" : "left-3"
             )} />
             <Input
@@ -95,7 +95,7 @@ export function ResponsiveSystemHeader() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={cn(
-                "search-input",
+                "h-9",
                 isRTL ? "pr-10 text-right font-arabic" : "pl-10 font-english"
               )}
               dir={isRTL ? 'rtl' : 'ltr'}
@@ -105,7 +105,7 @@ export function ResponsiveSystemHeader() {
 
         {/* Right Section: Actions & User */}
         <div className={cn(
-          "header-right-section",
+          "flex items-center gap-2",
           isRTL && "flex-row-reverse"
         )}>
           {/* Language Toggle */}
