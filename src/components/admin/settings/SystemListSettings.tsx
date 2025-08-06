@@ -81,7 +81,7 @@ export function SystemListSettings({ settings, onSettingChange }: SystemListSett
     extendedStatusOptions: settings.extendedStatusOptions || ['planning', 'scheduled', 'ongoing', 'postponed', 'draft', 'published'],
     
     // Classification lists (new)
-    sectorTypes: settings.sectorTypes || ['health', 'education', 'transport', 'environment', 'economy', 'technology', 'finance', 'defense', 'social'],
+    sectorTypes: settings.sectorTypes || ['health', 'education', 'transport', 'environment', 'economy', 'technology', 'finance', 'defense', 'social', 'interior', 'foreign_affairs', 'justice', 'islamic_affairs', 'agriculture', 'energy', 'housing', 'labor', 'commerce', 'tourism', 'culture', 'sports', 'media', 'municipal_affairs', 'water', 'civil_service', 'planning', 'communications', 'public_works'],
     tagCategories: settings.tagCategories || ['innovation', 'digital', 'sustainability', 'efficiency', 'technology', 'business', 'social', 'environmental'],
     sensitivityLevels: settings.sensitivityLevels || ['normal', 'sensitive', 'confidential'],
     

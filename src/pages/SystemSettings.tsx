@@ -43,6 +43,7 @@ import { SecuritySettings } from "@/components/admin/settings/SecuritySettings";
 import { NotificationSettings } from "@/components/admin/settings/NotificationSettings";
 import { IntegrationSettings } from "@/components/admin/settings/IntegrationSettings";
 import { SystemListSettings } from "@/components/admin/settings/SystemListSettings";
+import { SectorManagementSettings } from "@/components/admin/settings/SectorManagementSettings";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useDirection } from "@/components/ui/direction-provider";
 import { useTranslation } from "@/hooks/useAppTranslation";
@@ -140,10 +141,14 @@ const SystemSettings = () => {
 
         {/* Settings Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
-          <TabsList className={`grid w-full grid-cols-8 lg:grid-cols-16 h-auto p-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+          <TabsList className={`grid w-full grid-cols-9 lg:grid-cols-18 h-auto p-1 ${isRTL ? 'text-right' : 'text-left'}`}>
             <TabsTrigger value="general" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Settings className="w-3 h-3" />
               <span className="hidden lg:inline text-xs">{t('general')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="sectors" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Building2 className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">{isRTL ? 'القطاعات' : 'Sectors'}</span>
             </TabsTrigger>
             <TabsTrigger value="challenges" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Target className="w-3 h-3" />
@@ -213,6 +218,13 @@ const SystemSettings = () => {
 
           <TabsContent value="general">
             <GeneralSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="sectors">
+            <SectorManagementSettings 
               settings={settings} 
               onSettingChange={handleSettingChange} 
             />
