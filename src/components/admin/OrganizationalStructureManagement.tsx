@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Edit, Trash2, Users, Building, Network, Mail, Search, Filter, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 interface Deputy {
   id: string;
@@ -73,6 +74,7 @@ export function OrganizationalStructureManagement() {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   // States for dialogs and editing
   const [isDeputyDialogOpen, setIsDeputyDialogOpen] = useState(false);
@@ -142,10 +144,10 @@ export function OrganizationalStructureManagement() {
     try {
       if (editingDeputy) {
         await supabase.from("deputies").update(deputyForm).eq("id", editingDeputy.id);
-        toast({ title: "Success", description: "Deputy updated successfully" });
+        toast({ title: t('success'), description: t('deputyUpdated') });
       } else {
         await supabase.from("deputies").insert([deputyForm]);
-        toast({ title: "Success", description: "Deputy created successfully" });
+        toast({ title: t('success'), description: t('deputyCreated') });
       }
       setIsDeputyDialogOpen(false);
       setEditingDeputy(null);

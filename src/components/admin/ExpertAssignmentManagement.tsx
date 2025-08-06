@@ -13,6 +13,7 @@ import { Calendar, Clock, Plus, Search, Users, UserCheck, Target, AlertCircle, C
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from '@/hooks/useSystemLists';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { ExpertProfileDialog } from './ExpertProfileDialog';
 
 interface Expert {
@@ -57,6 +58,7 @@ interface ChallengeExpert {
 
 export function ExpertAssignmentManagement() {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const { assignmentStatusOptions, expertRoleTypes } = useSystemLists();
   const [activeTab, setActiveTab] = useState("assignments");
   const [maxWorkload, setMaxWorkload] = useState(5);
@@ -250,8 +252,8 @@ export function ExpertAssignmentManagement() {
   const handleAssignExpert = async () => {
     if (!selectedChallenge || !selectedExpert || !selectedRole) {
       toast({
-        title: "Missing Information",
-        description: "Please select challenge, expert, and role.",
+        title: t('missingInformation'),
+        description: t('pleaseSelectChallengeExpertRole'),
         variant: "destructive",
       });
       return;
@@ -271,8 +273,8 @@ export function ExpertAssignmentManagement() {
       if (error) throw error;
 
       toast({
-        title: "Expert Assigned",
-        description: "Expert has been successfully assigned to the challenge.",
+        title: t('expertAssigned'),
+        description: t('expertAssignedSuccessfully'),
       });
 
       setIsAssignDialogOpen(false);
