@@ -34,8 +34,8 @@ serve(async (req) => {
       throw error
     }
 
-    // Group translations by language
-    const translationsByLanguage: Record<string, Record<string, any>> = {}
+    // Group translations by language and category
+    const translationsByLanguage: Record<string, Record<string, Record<string, any>>> = {}
 
     translations?.forEach((translation: SystemTranslation) => {
       const { language_code, translation_key, translation_text, category } = translation
@@ -43,10 +43,14 @@ serve(async (req) => {
       if (!translationsByLanguage[language_code]) {
         translationsByLanguage[language_code] = {}
       }
+      
+      if (!translationsByLanguage[language_code][category]) {
+        translationsByLanguage[language_code][category] = {}
+      }
 
       // Handle nested keys (e.g., "settings.ui.theme")
       const keyParts = translation_key.split('.')
-      let current = translationsByLanguage[language_code]
+      let current = translationsByLanguage[language_code][category]
 
       for (let i = 0; i < keyParts.length - 1; i++) {
         const part = keyParts[i]
@@ -109,47 +113,62 @@ serve(async (req) => {
     // Get request parameters
     const url = new URL(req.url)
     const language = url.searchParams.get('language')
-    const format = url.searchParams.get('format') || 'json'
+    const category = url.searchParams.get('category')
+    const format = url.searchParams.get('format') || 'multiple'
 
-    if (language) {
-      // Return specific language
-      const languageTranslations = translationsByLanguage[language]
-      if (!languageTranslations) {
+    if (language && category) {
+      // Return specific language + category file
+      const categoryTranslations = translationsByLanguage[language]?.[category]
+      if (!categoryTranslations) {
         return new Response(
-          JSON.stringify({ error: `Language '${language}' not found` }),
-          { 
-            status: 404, 
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-          }
+          JSON.stringify({ error: `Category '${category}' not found for language '${language}'` }),
+          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         )
       }
 
       return new Response(
-        JSON.stringify(languageTranslations, null, 2),
+        JSON.stringify(categoryTranslations, null, 2),
         { 
           headers: { 
             ...corsHeaders, 
             'Content-Type': 'application/json',
-            'Content-Disposition': `attachment; filename="${language}.json"`
+            'Content-Disposition': `attachment; filename="${language}-${category}.json"`
           }
         }
       )
     }
 
-    // Return all languages with metadata
+    if (format === 'single') {
+      // Legacy: Return single files per language
+      const flatTranslations: Record<string, Record<string, any>> = {}
+      Object.entries(translationsByLanguage).forEach(([lang, categories]) => {
+        flatTranslations[lang] = {}
+        Object.values(categories).forEach(categoryData => {
+          Object.assign(flatTranslations[lang], categoryData)
+        })
+      })
+
+      return new Response(
+        JSON.stringify({
+          generated_at: new Date().toISOString(),
+          format: 'single',
+          languages: Object.keys(flatTranslations),
+          translations: flatTranslations
+        }, null, 2),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // Default: Return multiple files structure
     return new Response(
       JSON.stringify({
         generated_at: new Date().toISOString(),
+        format: 'multiple',
         languages: Object.keys(translationsByLanguage),
         translation_count: translations?.length || 0,
-        translations: translationsByLanguage
+        structure: translationsByLanguage
       }, null, 2),
-      { 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json'
-        }
-      }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
 
   } catch (error) {
