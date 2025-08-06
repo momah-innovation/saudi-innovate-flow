@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
-interface AllSystemSettings {
+export interface AllSystemSettings {
   // General Settings
   systemName: string;
   systemDescription: string;
@@ -117,6 +117,23 @@ interface AllSystemSettings {
   sensitivityLevels: string[];
   allowCustomValues: boolean;
   sortListsAlphabetically: boolean;
+  
+  // Global Lists
+  supported_languages: string[];
+  ui_themes: string[];
+  currency_codes: string[];
+  time_zones: string[];
+  frequency_options: string[];
+  file_formats: string[];
+  export_formats: string[];
+  color_schemes: string[];
+  font_sizes: string[];
+  notification_channels: string[];
+  communication_methods: string[];
+  log_levels: string[];
+  backup_types: string[];
+  status_types: string[];
+  rating_scales: string[];
 
   // UI Settings
   uiInitialsMaxLength: number;
@@ -308,6 +325,24 @@ const defaultSettings: AllSystemSettings = {
   sensitivityLevels: ['عادي', 'حساس', 'سري', 'سري للغاية'],
   allowCustomValues: true,
   sortListsAlphabetically: false,
+  
+  // Global Lists defaults
+  supported_languages: ["en", "ar", "he", "fa"],
+  ui_themes: ["light", "dark", "auto"],
+  currency_codes: ["SAR", "USD", "EUR", "GBP"],
+  time_zones: ["Asia/Riyadh", "UTC", "Asia/Dubai", "Europe/London"],
+  frequency_options: ["daily", "weekly", "monthly", "yearly"],
+  file_formats: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "jpg", "png"],
+  export_formats: ["csv", "excel", "pdf", "json", "xml"],
+  color_schemes: ["blue", "green", "purple", "orange", "red"],
+  font_sizes: ["small", "medium", "large", "extra-large"],
+  notification_channels: ["email", "sms", "push", "in_app"],
+  communication_methods: ["email", "phone", "video_call", "in_person"],
+  log_levels: ["debug", "info", "warning", "error", "critical"],
+  backup_types: ["full", "incremental", "differential"],
+  status_types: ["active", "inactive", "pending", "completed", "cancelled"],
+  rating_scales: ["1-5", "1-10", "percentage", "letter_grade"],
+  
   uiInitialsMaxLength: 2,
 
   // Additional platform service defaults

@@ -8,18 +8,18 @@ import { Trash2, Plus, List } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useAppTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
+import { useSettings } from "@/contexts/SettingsContext";
+import type { AllSystemSettings } from "@/contexts/SettingsContext";
 
-interface GlobalListSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
-}
+interface GlobalListSettingsProps {}
 
-export function GlobalListSettings({ settings, onSettingChange }: GlobalListSettingsProps) {
+export function GlobalListSettings({}: GlobalListSettingsProps) {
   const { toast } = useToast();
   const { t } = useTranslation();
   const { isRTL } = useDirection();
   const [editingList, setEditingList] = useState<string | null>(null);
   const [newItem, setNewItem] = useState("");
+  const { updateSetting, ...settings } = useSettings();
 
   // Global system lists that don't belong to specific domains
   const globalLists = {
@@ -37,8 +37,8 @@ export function GlobalListSettings({ settings, onSettingChange }: GlobalListSett
     export_formats: settings.export_formats || ["csv", "excel", "pdf", "json", "xml"],
     
     // System-wide classifications
-    sensitivity_levels: settings.sensitivity_levels || ["normal", "sensitive", "confidential", "top_secret"],
-    priority_levels: settings.priority_levels || ["low", "medium", "high", "urgent", "critical"],
+    sensitivity_levels: settings.sensitivityLevels || ["normal", "sensitive", "confidential", "top_secret"],
+    priority_levels: settings.priorityLevels || ["low", "medium", "high", "urgent", "critical"],
     
     // User interface
     color_schemes: settings.color_schemes || ["blue", "green", "purple", "orange", "red"],
@@ -77,7 +77,28 @@ export function GlobalListSettings({ settings, onSettingChange }: GlobalListSett
     rating_scales: isRTL ? "مقاييس التقييم" : "Rating Scales",
   };
 
-  const addItem = (listKey: string) => {
+  // Map UI keys to actual setting keys
+  const settingKeyMap: Record<string, keyof AllSystemSettings> = {
+    supported_languages: 'supported_languages',
+    ui_themes: 'ui_themes',
+    currency_codes: 'currency_codes',
+    time_zones: 'time_zones',
+    frequency_options: 'frequency_options',
+    file_formats: 'file_formats',
+    export_formats: 'export_formats',
+    sensitivity_levels: 'sensitivityLevels',
+    priority_levels: 'priorityLevels',
+    color_schemes: 'color_schemes',
+    font_sizes: 'font_sizes',
+    notification_channels: 'notification_channels',
+    communication_methods: 'communication_methods',
+    log_levels: 'log_levels',
+    backup_types: 'backup_types',
+    status_types: 'status_types',
+    rating_scales: 'rating_scales',
+  };
+
+  const addItem = async (listKey: string) => {
     if (!newItem.trim()) {
       toast({
         title: t('error'),
@@ -97,26 +118,48 @@ export function GlobalListSettings({ settings, onSettingChange }: GlobalListSett
       return;
     }
 
-    const updatedList = [...currentList, newItem.trim()];
-    onSettingChange(listKey, updatedList);
-    setNewItem("");
-    setEditingList(null);
-    
-    toast({
-      title: t('success'),
-      description: t('itemAddedSuccessfully')
-    });
+    try {
+      const updatedList = [...currentList, newItem.trim()];
+      const settingKey = settingKeyMap[listKey] as keyof AllSystemSettings;
+      if (settingKey) {
+        await updateSetting(settingKey, updatedList);
+        setNewItem("");
+        setEditingList(null);
+        
+        toast({
+          title: t('success'),
+          description: t('itemAddedSuccessfully')
+        });
+      }
+    } catch (error) {
+      toast({
+        title: t('error'),
+        description: isRTL ? "فشل في إضافة العنصر" : "Failed to add item",
+        variant: "destructive"
+      });
+    }
   };
 
-  const removeItem = (listKey: string, itemIndex: number) => {
-    const currentList = globalLists[listKey as keyof typeof globalLists] || [];
-    const updatedList = currentList.filter((_, index) => index !== itemIndex);
-    onSettingChange(listKey, updatedList);
-    
-    toast({
-      title: t('success'),
-      description: t('itemRemovedSuccessfully')
-    });
+  const removeItem = async (listKey: string, itemIndex: number) => {
+    try {
+      const currentList = globalLists[listKey as keyof typeof globalLists] || [];
+      const updatedList = currentList.filter((_, index) => index !== itemIndex);
+      const settingKey = settingKeyMap[listKey] as keyof AllSystemSettings;
+      if (settingKey) {
+        await updateSetting(settingKey, updatedList);
+        
+        toast({
+          title: t('success'),
+          description: t('itemRemovedSuccessfully')
+        });
+      }
+    } catch (error) {
+      toast({
+        title: t('error'),
+        description: isRTL ? "فشل في حذف العنصر" : "Failed to remove item",
+        variant: "destructive"
+      });
+    }
   };
 
   const renderList = (listKey: string, items: string[]) => (

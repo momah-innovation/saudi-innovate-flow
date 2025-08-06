@@ -400,10 +400,7 @@ const SystemSettings = () => {
           </TabsContent>
 
           <TabsContent value="global-lists">
-            <GlobalListSettings 
-              settings={settings} 
-              onSettingChange={handleSettingChange} 
-            />
+            <GlobalListSettings />
           </TabsContent>
         </Tabs>
       </div>
