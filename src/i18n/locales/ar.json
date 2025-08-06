@@ -96,7 +96,17 @@
     "expertStatus": "حالات الخبراء",
     "engagementLevels": "مستويات المشاركة",
     "priorityLevels": "مستويات الأولوية",
-    "generalStatus": "الحالات العامة"
+    "generalStatus": "الحالات العامة",
+    "stakeholderTypes": "أنواع المعنيين",
+    "stakeholderStatus": "حالات المعنيين",
+    "userRoles": "أدوار المستخدمين",
+    "organizationStatus": "حالات المنظمات",
+    "roleHierarchy": "التسلسل الهرمي للأدوار",
+    "skillLevels": "مستويات المهارات",
+    "teamAssignmentStatus": "حالات مهام الفريق",
+    "teamMemberStatus": "حالات أعضاء الفريق",
+    "userEngagementStatus": "حالات مشاركة المستخدمين",
+    "workflowStatus": "حالات سير العمل"
   },
   "challengeTypes": {
     "technical": "تقني",
@@ -155,6 +165,84 @@
     "completed": "مكتمل",
     "cancelled": "ملغي",
     "suspended": "معلق"
+  },
+  "stakeholderTypes": {
+    "government": "حكومي",
+    "private": "خاص",
+    "academic": "أكاديمي",
+    "nonprofit": "غير ربحي",
+    "international": "دولي",
+    "private_sector": "القطاع الخاص",
+    "civil_society": "المجتمع المدني",
+    "citizen": "مواطن"
+  },
+  "stakeholderStatus": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "pending": "معلق",
+    "blocked": "محظور"
+  },
+  "userRoles": {
+    "innovator": "مبتكر",
+    "evaluator": "مقيم",
+    "domain_expert": "خبير مجال",
+    "sector_lead": "قائد قطاع",
+    "challenge_manager": "مدير تحدي",
+    "expert_coordinator": "منسق خبراء",
+    "content_manager": "مدير محتوى",
+    "data_analyst": "محلل بيانات",
+    "user_manager": "مدير مستخدمين",
+    "role_manager": "مدير أدوار",
+    "admin": "مشرف"
+  },
+  "organizationStatus": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "pending": "معلق",
+    "suspended": "معلق"
+  },
+  "roleHierarchy": {
+    "admin": "مشرف",
+    "manager": "مدير",
+    "coordinator": "منسق",
+    "specialist": "أخصائي",
+    "member": "عضو"
+  },
+  "skillLevels": {
+    "beginner": "مبتدئ",
+    "intermediate": "متوسط",
+    "advanced": "متقدم",
+    "expert": "خبير",
+    "master": "ماهر"
+  },
+  "teamAssignmentStatus": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "pending": "معلق",
+    "completed": "مكتمل",
+    "cancelled": "ملغي"
+  },
+  "teamMemberStatus": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "available": "متاح",
+    "busy": "مشغول",
+    "on_leave": "في إجازة"
+  },
+  "userEngagementStatus": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "engaged": "منخرط",
+    "disengaged": "غير منخرط",
+    "new": "جديد"
+  },
+  "workflowStatus": {
+    "draft": "مسودة",
+    "in_progress": "قيد التنفيذ",
+    "under_review": "قيد المراجعة",
+    "approved": "معتمد",
+    "rejected": "مرفوض",
+    "completed": "مكتمل"
   },
   "evaluatorTypes": {
     "lead_expert": "خبير رئيسي",

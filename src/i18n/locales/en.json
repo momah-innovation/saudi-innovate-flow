@@ -96,7 +96,17 @@
     "expertStatus": "Expert Status",
     "engagementLevels": "Engagement Levels",
     "priorityLevels": "Priority Levels",
-    "generalStatus": "General Status"
+    "generalStatus": "General Status",
+    "stakeholderTypes": "Stakeholder Types",
+    "stakeholderStatus": "Stakeholder Status",
+    "userRoles": "User Roles",
+    "organizationStatus": "Organization Status",
+    "roleHierarchy": "Role Hierarchy",
+    "skillLevels": "Skill Levels",
+    "teamAssignmentStatus": "Team Assignment Status",
+    "teamMemberStatus": "Team Member Status",
+    "userEngagementStatus": "User Engagement Status",
+    "workflowStatus": "Workflow Status"
   },
   "challengeTypes": {
     "technical": "Technical",
@@ -155,6 +165,84 @@
     "completed": "Completed",
     "cancelled": "Cancelled",
     "suspended": "Suspended"
+  },
+  "stakeholderTypes": {
+    "government": "Government",
+    "private": "Private",
+    "academic": "Academic",
+    "nonprofit": "Non-profit",
+    "international": "International",
+    "private_sector": "Private Sector",
+    "civil_society": "Civil Society",
+    "citizen": "Citizen"
+  },
+  "stakeholderStatus": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "blocked": "Blocked"
+  },
+  "userRoles": {
+    "innovator": "Innovator",
+    "evaluator": "Evaluator",
+    "domain_expert": "Domain Expert",
+    "sector_lead": "Sector Lead",
+    "challenge_manager": "Challenge Manager",
+    "expert_coordinator": "Expert Coordinator",
+    "content_manager": "Content Manager",
+    "data_analyst": "Data Analyst",
+    "user_manager": "User Manager",
+    "role_manager": "Role Manager",
+    "admin": "Admin"
+  },
+  "organizationStatus": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "suspended": "Suspended"
+  },
+  "roleHierarchy": {
+    "admin": "Admin",
+    "manager": "Manager",
+    "coordinator": "Coordinator",
+    "specialist": "Specialist",
+    "member": "Member"
+  },
+  "skillLevels": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert",
+    "master": "Master"
+  },
+  "teamAssignmentStatus": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "teamMemberStatus": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "available": "Available",
+    "busy": "Busy",
+    "on_leave": "On Leave"
+  },
+  "userEngagementStatus": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "engaged": "Engaged",
+    "disengaged": "Disengaged",
+    "new": "New"
+  },
+  "workflowStatus": {
+    "draft": "Draft",
+    "in_progress": "In Progress",
+    "under_review": "Under Review",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "completed": "Completed"
   },
   "evaluatorTypes": {
     "lead_expert": "Lead Expert",
