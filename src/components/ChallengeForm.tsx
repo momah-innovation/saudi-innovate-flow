@@ -80,13 +80,13 @@ export function ChallengeForm({
                 <Target className="h-6 w-6 text-primary" />
               </div>
               <CardTitle className="text-2xl font-bold">
-                {mode === 'create' ? t('create_challenge') || 'إنشاء تحدي جديد' : t('edit_challenge') || 'تعديل التحدي'}
+                {mode === 'create' ? t('challenge_form.create_challenge') : t('challenge_form.edit_challenge')}
               </CardTitle>
             </div>
             <p className="text-muted-foreground">
               {mode === 'create' 
-                ? t('create_challenge_description') || 'قم بإنشاء تحدي جديد لجذب المبتكرين وإيجاد حلول مبتكرة'
-                : t('edit_challenge_description') || 'قم بتحديث تفاصيل التحدي'
+                ? t('challenge_form.create_challenge_description')
+                : t('challenge_form.edit_challenge_description')
               }
             </p>
           </CardHeader>
@@ -97,13 +97,13 @@ export function ChallengeForm({
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="lg:col-span-2 space-y-4">
                   <Label htmlFor="title_ar" className="text-base font-medium">
-                    {t('challenge_title') || 'عنوان التحدي'} *
+                    {t('challenge_form.challenge_title')} *
                   </Label>
                   <Input
                     id="title_ar"
                     value={formData.title_ar}
                     onChange={(e) => handleInputChange('title_ar', e.target.value)}
-                    placeholder={t('challenge_title_placeholder') || 'أدخل عنوان التحدي باللغة العربية'}
+                    placeholder={t('challenge_form.challenge_title_placeholder')}
                     required
                     className="text-lg"
                     dir="rtl"
@@ -112,13 +112,13 @@ export function ChallengeForm({
 
                 <div className="lg:col-span-2 space-y-4">
                   <Label htmlFor="description_ar" className="text-base font-medium">
-                    {t('challenge_description') || 'وصف التحدي'} *
+                    {t('challenge_form.challenge_description')} *
                   </Label>
                   <Textarea
                     id="description_ar"
                     value={formData.description_ar}
                     onChange={(e) => handleInputChange('description_ar', e.target.value)}
-                    placeholder={t('challenge_description_placeholder') || 'اكتب وصفاً مفصلاً للتحدي والأهداف المطلوب تحقيقها'}
+                    placeholder={t('challenge_form.challenge_description_placeholder')}
                     required
                     className="min-h-32 resize-y"
                     dir="rtl"
@@ -131,14 +131,14 @@ export function ChallengeForm({
                 <div className="space-y-4">
                   <Label className="text-base font-medium flex items-center gap-2">
                     <MapPin className="h-4 w-4" />
-                    {t('challenge_type') || 'نوع التحدي'} *
+                    {t('challenge_form.challenge_type')} *
                   </Label>
                   <Select
                     value={formData.challenge_type}
                     onValueChange={(value) => handleInputChange('challenge_type', value)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder={t('select_challenge_type') || 'اختر نوع التحدي'} />
+                      <SelectValue placeholder={t('challenge_form.select_challenge_type')} />
                     </SelectTrigger>
                     <SelectContent>
                       {challengeTypes.map((type) => (
@@ -153,14 +153,14 @@ export function ChallengeForm({
                 <div className="space-y-4">
                   <Label className="text-base font-medium flex items-center gap-2">
                     <Clock className="h-4 w-4" />
-                    {t('priority_level') || 'مستوى الأولوية'} *
+                    {t('challenge_form.priority_level')} *
                   </Label>
                   <Select
                     value={formData.priority_level}
                     onValueChange={(value) => handleInputChange('priority_level', value)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder={t('select_priority') || 'اختر مستوى الأولوية'} />
+                      <SelectValue placeholder={t('challenge_form.select_priority')} />
                     </SelectTrigger>
                     <SelectContent>
                       {priorityLevels.map((priority) => (
@@ -178,20 +178,20 @@ export function ChallengeForm({
                 <div className="space-y-4">
                   <Label className="text-base font-medium flex items-center gap-2">
                     <DollarSign className="h-4 w-4" />
-                    {t('estimated_budget') || 'الميزانية المقدرة'}
+                    {t('challenge_form.estimated_budget')}
                   </Label>
                   <Input
                     type="number"
                     value={formData.estimated_budget}
                     onChange={(e) => handleInputChange('estimated_budget', e.target.value)}
-                    placeholder={t('budget_placeholder') || 'أدخل الميزانية بالريال السعودي'}
+                    placeholder={t('challenge_form.budget_placeholder')}
                   />
                 </div>
 
                 <div className="space-y-4">
                   <Label className="text-base font-medium flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
-                    {t('start_date') || 'تاريخ البداية'}
+                    {t('challenge_form.start_date')}
                   </Label>
                   <Input
                     type="date"
@@ -203,7 +203,7 @@ export function ChallengeForm({
                 <div className="space-y-4">
                   <Label className="text-base font-medium flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
-                    {t('end_date') || 'تاريخ الانتهاء'}
+                    {t('challenge_form.end_date')}
                   </Label>
                   <Input
                     type="date"
@@ -218,13 +218,13 @@ export function ChallengeForm({
                 <div className="space-y-4">
                   <Label className="text-base font-medium flex items-center gap-2">
                     <Users className="h-4 w-4" />
-                    {t('max_participants') || 'العدد الأقصى للمشاركين'}
+                    {t('challenge_form.max_participants')}
                   </Label>
                   <Input
                     type="number"
                     value={formData.max_participants}
                     onChange={(e) => handleInputChange('max_participants', e.target.value)}
-                    placeholder={t('max_participants_placeholder') || 'أدخل العدد الأقصى للمشاركين'}
+                    placeholder={t('challenge_form.max_participants_placeholder')}
                   />
                 </div>
               </div>
@@ -232,17 +232,17 @@ export function ChallengeForm({
               {/* Tags */}
               <div className="space-y-4">
                 <Label className="text-base font-medium">
-                  {t('tags') || 'العلامات'}
+                  {t('challenge_form.tags')}
                 </Label>
               <div className="text-sm text-muted-foreground">
-                Tag selector will be available in the next phase
+                {t('advanced_search.tag_selector_coming_soon')}
               </div>
               </div>
 
               {/* File Upload */}
               <div className="space-y-4">
                 <Label className="text-base font-medium">
-                  {t('challenge_image') || 'صورة التحدي'}
+                  {t('challenge_form.challenge_image')}
                 </Label>
                 <FileUploader
                   uploadType="CHALLENGE_IMAGES"
@@ -265,10 +265,10 @@ export function ChallengeForm({
                   {isLoading ? (
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                      {t('saving') || 'جاري الحفظ...'}
+                      {t('challenge_form.saving')}
                     </div>
                   ) : (
-                    mode === 'create' ? t('create_challenge') || 'إنشاء التحدي' : t('save_changes') || 'حفظ التغييرات'
+                    mode === 'create' ? t('challenge_form.create_challenge') : t('challenge_form.save_changes')
                   )}
                 </Button>
                 
@@ -279,7 +279,7 @@ export function ChallengeForm({
                   disabled={isLoading}
                   className="flex-1 md:flex-none md:px-8"
                 >
-                  {t('cancel') || 'إلغاء'}
+                  {t('challenge_form.cancel')}
                 </Button>
               </div>
             </form>

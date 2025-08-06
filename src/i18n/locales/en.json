@@ -789,5 +789,30 @@
     "search": "Search",
     "clear_filters": "Clear Filters",
     "tag_selector_coming_soon": "Tag selector will be available in the next phase"
+  },
+  "challenge_form": {
+    "create_challenge": "Create New Challenge",
+    "edit_challenge": "Edit Challenge",
+    "create_challenge_description": "Create a new challenge to attract innovators and find innovative solutions",
+    "edit_challenge_description": "Update challenge details",
+    "challenge_title": "Challenge Title",
+    "challenge_title_placeholder": "Enter challenge title in Arabic",
+    "challenge_description": "Challenge Description",
+    "challenge_description_placeholder": "Write a detailed description of the challenge and the goals to be achieved",
+    "challenge_type": "Challenge Type",
+    "select_challenge_type": "Select challenge type",
+    "priority_level": "Priority Level",
+    "select_priority": "Select priority level",
+    "estimated_budget": "Estimated Budget",
+    "budget_placeholder": "Enter budget in Saudi Riyals",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "max_participants": "Maximum Participants",
+    "max_participants_placeholder": "Enter maximum number of participants",
+    "tags": "Tags",
+    "challenge_image": "Challenge Image",
+    "saving": "Saving...",
+    "save_changes": "Save Changes",
+    "cancel": "Cancel"
   }
 }
