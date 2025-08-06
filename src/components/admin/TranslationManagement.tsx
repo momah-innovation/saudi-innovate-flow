@@ -8,10 +8,11 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Languages, Edit, Trash2, Plus, Search, Filter, Download, Upload } from 'lucide-react';
+import { Languages, Edit, Trash2, Plus, Search, Filter, Download, Upload, Zap, FileText, RefreshCw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from '@/hooks/useAppTranslation';
 import { useToast } from '@/hooks/use-toast';
+import { useRuntimeTranslations } from '@/hooks/useRuntimeTranslations';
 
 interface Translation {
   id: string;
@@ -49,6 +50,7 @@ export default function TranslationManagement() {
 
   const { t, language, isRTL } = useTranslation();
   const { toast } = useToast();
+  const { updateTranslation: updateRuntimeTranslation, uploadAllTranslations, isUpdating } = useRuntimeTranslations();
 
   useEffect(() => {
     fetchTranslations();
@@ -266,6 +268,46 @@ export default function TranslationManagement() {
     URL.revokeObjectURL(url);
   };
 
+  // Runtime translation functions
+  const uploadTranslationsToRuntime = async (language: 'en' | 'ar') => {
+    try {
+      // Get current translations for the language
+      const languageTranslations = translations.filter(t => t.language_code === language);
+      
+      // Convert to nested object structure
+      const translationObject: Record<string, any> = {};
+      languageTranslations.forEach(translation => {
+        const keyParts = translation.translation_key.split('.');
+        let current = translationObject;
+        
+        for (let i = 0; i < keyParts.length - 1; i++) {
+          const part = keyParts[i];
+          if (!current[part]) {
+            current[part] = {};
+          }
+          current = current[part];
+        }
+        
+        current[keyParts[keyParts.length - 1]] = translation.translation_text;
+      });
+
+      const success = await uploadAllTranslations(language, translationObject);
+      if (success) {
+        toast({
+          title: "Runtime Upload Success",
+          description: `Uploaded ${languageTranslations.length} translations to runtime for ${language}`,
+        });
+      }
+    } catch (error) {
+      console.error('Error uploading to runtime:', error);
+      toast({
+        title: "Runtime Upload Error",
+        description: "Failed to upload translations to runtime",
+        variant: "destructive",
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -293,6 +335,49 @@ export default function TranslationManagement() {
           </Button>
         </div>
       </div>
+
+      {/* Runtime Translation Management */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Zap className="h-5 w-5 text-blue-500" />
+            Runtime Translation Updates
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-3">
+            <Button 
+              onClick={() => uploadTranslationsToRuntime('en')} 
+              disabled={isUpdating}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              {isUpdating ? (
+                <RefreshCw className="h-4 w-4 animate-spin" />
+              ) : (
+                <FileText className="h-4 w-4" />
+              )}
+              Update English Runtime
+            </Button>
+            <Button 
+              onClick={() => uploadTranslationsToRuntime('ar')} 
+              disabled={isUpdating}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              {isUpdating ? (
+                <RefreshCw className="h-4 w-4 animate-spin" />
+              ) : (
+                <FileText className="h-4 w-4" />
+              )}
+              Update Arabic Runtime
+            </Button>
+          </div>
+          <p className="text-sm text-muted-foreground mt-2">
+            Click to update JSON translation files in real-time using Edge Functions
+          </p>
+        </CardContent>
+      </Card>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
