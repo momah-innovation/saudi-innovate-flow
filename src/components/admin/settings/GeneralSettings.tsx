@@ -5,6 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTranslation } from "@/hooks/useAppTranslation";
+import { useDirection } from "@/components/ui/direction-provider";
 
 interface GeneralSettingsProps {
   settings: any;
@@ -12,32 +14,35 @@ interface GeneralSettingsProps {
 }
 
 export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsProps) {
+  const { t } = useTranslation();
+  const { isRTL } = useDirection();
+  
   return (
-    <div className="space-y-6 rtl:text-right ltr:text-left">
+    <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
       <Card>
-        <CardHeader className="rtl:text-right ltr:text-left">
-          <CardTitle>معلومات النظام الأساسية</CardTitle>
-          <CardDescription>الإعدادات الأساسية للمنصة</CardDescription>
+        <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
+          <CardTitle>{isRTL ? 'معلومات النظام الأساسية' : 'Basic System Information'}</CardTitle>
+          <CardDescription>{isRTL ? 'الإعدادات الأساسية للمنصة' : 'Basic platform settings'}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="space-y-2">
-              <Label htmlFor="systemName">اسم النظام</Label>
+              <Label htmlFor="systemName">{isRTL ? 'اسم النظام' : 'System Name'}</Label>
               <Input
                 id="systemName"
                 value={settings.systemName || ''}
                 onChange={(e) => onSettingChange('systemName', e.target.value)}
-                placeholder="نظام إدارة الابتكار"
-                className="rtl:text-right ltr:text-left"
+                placeholder={isRTL ? "نظام إدارة الابتكار" : "Innovation Management System"}
+                className={isRTL ? 'text-right' : 'text-left'}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="systemLanguage">لغة النظام الافتراضية</Label>
+              <Label htmlFor="systemLanguage">{isRTL ? 'لغة النظام الافتراضية' : 'Default System Language'}</Label>
               <Select 
                 value={settings.systemLanguage || 'ar'} 
                 onValueChange={(value) => onSettingChange('systemLanguage', value)}
               >
-                <SelectTrigger className="rtl:text-right ltr:text-left">
+                <SelectTrigger className={isRTL ? 'text-right' : 'text-left'}>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

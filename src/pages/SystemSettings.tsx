@@ -23,7 +23,10 @@ import {
   UserCheck,
   Save,
   RotateCcw,
-  Loader2
+  Loader2,
+  Bot,
+  Palette,
+  Zap
 } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { GeneralSettings } from "@/components/admin/settings/GeneralSettings";
@@ -47,6 +50,9 @@ import { SectorManagementSettings } from "@/components/admin/settings/SectorMana
 import { OpportunitySettings } from "@/components/admin/settings/OpportunitySettings";
 import { WorkflowSettings } from "@/components/admin/settings/WorkflowSettings";
 import { GlobalListSettings } from "@/components/admin/settings/GlobalListSettings";
+import { AISettings } from "@/components/admin/settings/AISettings";
+import { UISettings } from "@/components/admin/settings/UISettings";
+import { PerformanceSettings } from "@/components/admin/settings/PerformanceSettings";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useDirection } from "@/components/ui/direction-provider";
 import { useTranslation } from "@/hooks/useAppTranslation";
@@ -144,7 +150,7 @@ const SystemSettings = () => {
 
         {/* Settings Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
-          <TabsList className={`grid w-full grid-cols-10 lg:grid-cols-20 h-auto p-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+          <TabsList className={`grid w-full grid-cols-12 lg:grid-cols-23 h-auto p-1 ${isRTL ? 'text-right' : 'text-left'}`}>
             <TabsTrigger value="general" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Settings className="w-3 h-3" />
               <span className="hidden lg:inline text-xs">{t('general')}</span>
@@ -220,6 +226,18 @@ const SystemSettings = () => {
             <TabsTrigger value="integrations" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Database className="w-3 h-3" />
               <span className="hidden lg:inline text-xs">{t('integrations')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="ai" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Bot className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">{isRTL ? 'الذكاء الاصطناعي' : 'AI'}</span>
+            </TabsTrigger>
+            <TabsTrigger value="ui" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Palette className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">{isRTL ? 'واجهة المستخدم' : 'UI'}</span>
+            </TabsTrigger>
+            <TabsTrigger value="performance" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Zap className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">{isRTL ? 'الأداء' : 'Performance'}</span>
             </TabsTrigger>
             <TabsTrigger value="global-lists" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <List className="w-3 h-3" />
@@ -355,6 +373,27 @@ const SystemSettings = () => {
 
           <TabsContent value="integrations">
             <IntegrationSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="ai">
+            <AISettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="ui">
+            <UISettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="performance">
+            <PerformanceSettings 
               settings={settings} 
               onSettingChange={handleSettingChange} 
             />
