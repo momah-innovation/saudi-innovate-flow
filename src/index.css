@@ -290,7 +290,7 @@
     --hot-background: 14 100% 95%;
     --hot-border: 14 100% 85%;
 
-    /* Sector Categories - Based on database settings */
+    /* Sector Categories - Complete Saudi Government Structure */
     --sector-health: 142 76% 47%;         /* Medical green */
     --sector-health-foreground: 355 7% 97%;
     --sector-health-background: 142 76% 95%;
@@ -335,6 +335,101 @@
     --sector-social-foreground: 210 40% 98%;
     --sector-social-background: 198 93% 95%;
     --sector-social-border: 198 93% 85%;
+
+    --sector-interior: 0 84% 60%;         /* Security red */
+    --sector-interior-foreground: 355 7% 97%;
+    --sector-interior-background: 0 84% 95%;
+    --sector-interior-border: 0 84% 85%;
+
+    --sector-foreign-affairs: 260 89% 66%; /* Diplomatic purple */
+    --sector-foreign-affairs-foreground: 210 40% 98%;
+    --sector-foreign-affairs-background: 260 89% 95%;
+    --sector-foreign-affairs-border: 260 89% 85%;
+
+    --sector-justice: 240 21% 15%;        /* Legal navy */
+    --sector-justice-foreground: 355 7% 97%;
+    --sector-justice-background: 240 21% 95%;
+    --sector-justice-border: 240 21% 85%;
+
+    --sector-islamic-affairs: 159 100% 25%; /* Islamic green */
+    --sector-islamic-affairs-foreground: 355 7% 97%;
+    --sector-islamic-affairs-background: 159 100% 95%;
+    --sector-islamic-affairs-border: 159 100% 85%;
+
+    --sector-agriculture: 86 64% 49%;     /* Earth green */
+    --sector-agriculture-foreground: 355 7% 97%;
+    --sector-agriculture-background: 86 64% 95%;
+    --sector-agriculture-border: 86 64% 85%;
+
+    --sector-energy: 30 100% 50%;         /* Energy orange */
+    --sector-energy-foreground: 355 7% 97%;
+    --sector-energy-background: 30 100% 95%;
+    --sector-energy-border: 30 100% 85%;
+
+    --sector-housing: 25 85% 53%;         /* Construction orange */
+    --sector-housing-foreground: 355 7% 97%;
+    --sector-housing-background: 25 85% 95%;
+    --sector-housing-border: 25 85% 85%;
+
+    --sector-labor: 320 65% 64%;          /* Worker magenta */
+    --sector-labor-foreground: 355 7% 97%;
+    --sector-labor-background: 320 65% 95%;
+    --sector-labor-border: 320 65% 85%;
+
+    --sector-commerce: 280 84% 12%;       /* Business purple */
+    --sector-commerce-foreground: 210 40% 98%;
+    --sector-commerce-background: 280 84% 95%;
+    --sector-commerce-border: 280 84% 85%;
+
+    --sector-tourism: 291 64% 42%;        /* Travel purple */
+    --sector-tourism-foreground: 355 7% 97%;
+    --sector-tourism-background: 291 64% 95%;
+    --sector-tourism-border: 291 64% 85%;
+
+    --sector-culture: 340 82% 52%;        /* Cultural pink */
+    --sector-culture-foreground: 355 7% 97%;
+    --sector-culture-background: 340 82% 95%;
+    --sector-culture-border: 340 82% 85%;
+
+    --sector-sports: 120 60% 50%;         /* Athletic green */
+    --sector-sports-foreground: 355 7% 97%;
+    --sector-sports-background: 120 60% 95%;
+    --sector-sports-border: 120 60% 85%;
+
+    --sector-media: 14 91% 60%;           /* Media orange */
+    --sector-media-foreground: 355 7% 97%;
+    --sector-media-background: 14 91% 95%;
+    --sector-media-border: 14 91% 85%;
+
+    --sector-municipal-affairs: 217 71% 53%; /* Municipal blue */
+    --sector-municipal-affairs-foreground: 210 40% 98%;
+    --sector-municipal-affairs-background: 217 71% 95%;
+    --sector-municipal-affairs-border: 217 71% 85%;
+
+    --sector-water: 195 100% 50%;         /* Water blue */
+    --sector-water-foreground: 210 40% 98%;
+    --sector-water-background: 195 100% 95%;
+    --sector-water-border: 195 100% 85%;
+
+    --sector-civil-service: 220 13% 69%;  /* Service gray */
+    --sector-civil-service-foreground: 220 9% 46%;
+    --sector-civil-service-background: 220 13% 95%;
+    --sector-civil-service-border: 220 13% 85%;
+
+    --sector-planning: 81 84% 50%;        /* Planning green */
+    --sector-planning-foreground: 355 7% 97%;
+    --sector-planning-background: 81 84% 95%;
+    --sector-planning-border: 81 84% 85%;
+
+    --sector-communications: 260 89% 66%; /* Telecom purple */
+    --sector-communications-foreground: 210 40% 98%;
+    --sector-communications-background: 260 89% 95%;
+    --sector-communications-border: 260 89% 85%;
+
+    --sector-public-works: 30 67% 54%;    /* Infrastructure brown */
+    --sector-public-works-foreground: 355 7% 97%;
+    --sector-public-works-background: 30 67% 95%;
+    --sector-public-works-border: 30 67% 85%;
 
     /* Rating/Star indicators */
     --rating: 43 96% 56%;

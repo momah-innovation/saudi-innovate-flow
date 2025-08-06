@@ -886,18 +886,37 @@ const DesignSystem = () => {
 
               <Separator className="my-8" />
 
-              {/* Sector Categories - Database-Based */}
-              <h3 className="text-xl font-semibold mb-6">Sector Categories (9 government sectors)</h3>
+              {/* Sector Categories - Complete Saudi Government Structure */}
+              <h3 className="text-xl font-semibold mb-6">Saudi Government Sectors (29 ministries/sectors)</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
-                <ColorToken name="Health" className="bg-sector-health text-sector-health-foreground" description="Medical & healthcare services" />
-                <ColorToken name="Education" className="bg-sector-education text-sector-education-foreground" description="Learning & educational institutions" />
-                <ColorToken name="Transport" className="bg-sector-transport text-sector-transport-foreground" description="Transportation & mobility" />
-                <ColorToken name="Environment" className="bg-sector-environment text-sector-environment-foreground" description="Environmental & sustainability" />
-                <ColorToken name="Economy" className="bg-sector-economy text-sector-economy-foreground" description="Economic development & trade" />
-                <ColorToken name="Technology" className="bg-sector-technology text-sector-technology-foreground" description="Information technology & digital innovation" />
-                <ColorToken name="Finance" className="bg-sector-finance text-sector-finance-foreground" description="Financial services & banking" />
-                <ColorToken name="Defense" className="bg-sector-defense text-sector-defense-foreground" description="Security & defense systems" />
-                <ColorToken name="Social" className="bg-sector-social text-sector-social-foreground" description="Social services & community welfare" />
+                <ColorToken name="Health" className="bg-sector-health text-sector-health-foreground" description="Ministry of Health" />
+                <ColorToken name="Education" className="bg-sector-education text-sector-education-foreground" description="Ministry of Education" />
+                <ColorToken name="Transport" className="bg-sector-transport text-sector-transport-foreground" description="Ministry of Transport" />
+                <ColorToken name="Environment" className="bg-sector-environment text-sector-environment-foreground" description="Ministry of Environment" />
+                <ColorToken name="Economy" className="bg-sector-economy text-sector-economy-foreground" description="Ministry of Economy & Planning" />
+                <ColorToken name="Technology" className="bg-sector-technology text-sector-technology-foreground" description="Ministry of Communications & IT" />
+                <ColorToken name="Finance" className="bg-sector-finance text-sector-finance-foreground" description="Ministry of Finance" />
+                <ColorToken name="Defense" className="bg-sector-defense text-sector-defense-foreground" description="Ministry of Defense" />
+                <ColorToken name="Social" className="bg-sector-social text-sector-social-foreground" description="Ministry of Human Resources" />
+                <ColorToken name="Interior" className="bg-sector-interior text-sector-interior-foreground" description="Ministry of Interior" />
+                <ColorToken name="Foreign Affairs" className="bg-sector-foreign-affairs text-sector-foreign-affairs-foreground" description="Ministry of Foreign Affairs" />
+                <ColorToken name="Justice" className="bg-sector-justice text-sector-justice-foreground" description="Ministry of Justice" />
+                <ColorToken name="Islamic Affairs" className="bg-sector-islamic-affairs text-sector-islamic-affairs-foreground" description="Ministry of Islamic Affairs" />
+                <ColorToken name="Agriculture" className="bg-sector-agriculture text-sector-agriculture-foreground" description="Ministry of Agriculture" />
+                <ColorToken name="Energy" className="bg-sector-energy text-sector-energy-foreground" description="Ministry of Energy" />
+                <ColorToken name="Housing" className="bg-sector-housing text-sector-housing-foreground" description="Ministry of Housing" />
+                <ColorToken name="Labor" className="bg-sector-labor text-sector-labor-foreground" description="Ministry of Human Resources" />
+                <ColorToken name="Commerce" className="bg-sector-commerce text-sector-commerce-foreground" description="Ministry of Commerce" />
+                <ColorToken name="Tourism" className="bg-sector-tourism text-sector-tourism-foreground" description="Ministry of Tourism" />
+                <ColorToken name="Culture" className="bg-sector-culture text-sector-culture-foreground" description="Ministry of Culture" />
+                <ColorToken name="Sports" className="bg-sector-sports text-sector-sports-foreground" description="Ministry of Sports" />
+                <ColorToken name="Media" className="bg-sector-media text-sector-media-foreground" description="Ministry of Media" />
+                <ColorToken name="Municipal Affairs" className="bg-sector-municipal-affairs text-sector-municipal-affairs-foreground" description="Ministry of Municipal Affairs" />
+                <ColorToken name="Water" className="bg-sector-water text-sector-water-foreground" description="Ministry of Environment, Water & Agriculture" />
+                <ColorToken name="Civil Service" className="bg-sector-civil-service text-sector-civil-service-foreground" description="Ministry of Civil Service" />
+                <ColorToken name="Planning" className="bg-sector-planning text-sector-planning-foreground" description="Ministry of Economy & Planning" />
+                <ColorToken name="Communications" className="bg-sector-communications text-sector-communications-foreground" description="Ministry of Communications & IT" />
+                <ColorToken name="Public Works" className="bg-sector-public-works text-sector-public-works-foreground" description="Ministry of Municipal Affairs" />
               </div>
 
               <Separator className="my-8" />

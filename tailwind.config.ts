@@ -198,7 +198,7 @@ export default {
 					background: "hsl(var(--hot-background))",
 					border: "hsl(var(--hot-border))",
 				},
-				// Sector-specific colors - Based on database settings
+				// Sector-specific colors - Complete Saudi Government Structure
 				"sector-health": {
 					DEFAULT: "hsl(var(--sector-health))",
 					foreground: "hsl(var(--sector-health-foreground))",
@@ -252,6 +252,120 @@ export default {
 					foreground: "hsl(var(--sector-social-foreground))",
 					background: "hsl(var(--sector-social-background))",
 					border: "hsl(var(--sector-social-border))",
+				},
+				"sector-interior": {
+					DEFAULT: "hsl(var(--sector-interior))",
+					foreground: "hsl(var(--sector-interior-foreground))",
+					background: "hsl(var(--sector-interior-background))",
+					border: "hsl(var(--sector-interior-border))",
+				},
+				"sector-foreign-affairs": {
+					DEFAULT: "hsl(var(--sector-foreign-affairs))",
+					foreground: "hsl(var(--sector-foreign-affairs-foreground))",
+					background: "hsl(var(--sector-foreign-affairs-background))",
+					border: "hsl(var(--sector-foreign-affairs-border))",
+				},
+				"sector-justice": {
+					DEFAULT: "hsl(var(--sector-justice))",
+					foreground: "hsl(var(--sector-justice-foreground))",
+					background: "hsl(var(--sector-justice-background))",
+					border: "hsl(var(--sector-justice-border))",
+				},
+				"sector-islamic-affairs": {
+					DEFAULT: "hsl(var(--sector-islamic-affairs))",
+					foreground: "hsl(var(--sector-islamic-affairs-foreground))",
+					background: "hsl(var(--sector-islamic-affairs-background))",
+					border: "hsl(var(--sector-islamic-affairs-border))",
+				},
+				"sector-agriculture": {
+					DEFAULT: "hsl(var(--sector-agriculture))",
+					foreground: "hsl(var(--sector-agriculture-foreground))",
+					background: "hsl(var(--sector-agriculture-background))",
+					border: "hsl(var(--sector-agriculture-border))",
+				},
+				"sector-energy": {
+					DEFAULT: "hsl(var(--sector-energy))",
+					foreground: "hsl(var(--sector-energy-foreground))",
+					background: "hsl(var(--sector-energy-background))",
+					border: "hsl(var(--sector-energy-border))",
+				},
+				"sector-housing": {
+					DEFAULT: "hsl(var(--sector-housing))",
+					foreground: "hsl(var(--sector-housing-foreground))",
+					background: "hsl(var(--sector-housing-background))",
+					border: "hsl(var(--sector-housing-border))",
+				},
+				"sector-labor": {
+					DEFAULT: "hsl(var(--sector-labor))",
+					foreground: "hsl(var(--sector-labor-foreground))",
+					background: "hsl(var(--sector-labor-background))",
+					border: "hsl(var(--sector-labor-border))",
+				},
+				"sector-commerce": {
+					DEFAULT: "hsl(var(--sector-commerce))",
+					foreground: "hsl(var(--sector-commerce-foreground))",
+					background: "hsl(var(--sector-commerce-background))",
+					border: "hsl(var(--sector-commerce-border))",
+				},
+				"sector-tourism": {
+					DEFAULT: "hsl(var(--sector-tourism))",
+					foreground: "hsl(var(--sector-tourism-foreground))",
+					background: "hsl(var(--sector-tourism-background))",
+					border: "hsl(var(--sector-tourism-border))",
+				},
+				"sector-culture": {
+					DEFAULT: "hsl(var(--sector-culture))",
+					foreground: "hsl(var(--sector-culture-foreground))",
+					background: "hsl(var(--sector-culture-background))",
+					border: "hsl(var(--sector-culture-border))",
+				},
+				"sector-sports": {
+					DEFAULT: "hsl(var(--sector-sports))",
+					foreground: "hsl(var(--sector-sports-foreground))",
+					background: "hsl(var(--sector-sports-background))",
+					border: "hsl(var(--sector-sports-border))",
+				},
+				"sector-media": {
+					DEFAULT: "hsl(var(--sector-media))",
+					foreground: "hsl(var(--sector-media-foreground))",
+					background: "hsl(var(--sector-media-background))",
+					border: "hsl(var(--sector-media-border))",
+				},
+				"sector-municipal-affairs": {
+					DEFAULT: "hsl(var(--sector-municipal-affairs))",
+					foreground: "hsl(var(--sector-municipal-affairs-foreground))",
+					background: "hsl(var(--sector-municipal-affairs-background))",
+					border: "hsl(var(--sector-municipal-affairs-border))",
+				},
+				"sector-water": {
+					DEFAULT: "hsl(var(--sector-water))",
+					foreground: "hsl(var(--sector-water-foreground))",
+					background: "hsl(var(--sector-water-background))",
+					border: "hsl(var(--sector-water-border))",
+				},
+				"sector-civil-service": {
+					DEFAULT: "hsl(var(--sector-civil-service))",
+					foreground: "hsl(var(--sector-civil-service-foreground))",
+					background: "hsl(var(--sector-civil-service-background))",
+					border: "hsl(var(--sector-civil-service-border))",
+				},
+				"sector-planning": {
+					DEFAULT: "hsl(var(--sector-planning))",
+					foreground: "hsl(var(--sector-planning-foreground))",
+					background: "hsl(var(--sector-planning-background))",
+					border: "hsl(var(--sector-planning-border))",
+				},
+				"sector-communications": {
+					DEFAULT: "hsl(var(--sector-communications))",
+					foreground: "hsl(var(--sector-communications-foreground))",
+					background: "hsl(var(--sector-communications-background))",
+					border: "hsl(var(--sector-communications-border))",
+				},
+				"sector-public-works": {
+					DEFAULT: "hsl(var(--sector-public-works))",
+					foreground: "hsl(var(--sector-public-works-foreground))",
+					background: "hsl(var(--sector-public-works-background))",
+					border: "hsl(var(--sector-public-works-border))",
 				},
 				// Rating system
 				rating: {
