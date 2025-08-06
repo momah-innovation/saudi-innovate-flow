@@ -886,33 +886,18 @@ const DesignSystem = () => {
 
               <Separator className="my-8" />
 
-              {/* Domain Categories - Comprehensive Coverage */}
-              <h3 className="text-xl font-semibold mb-6">Domain Categories (22 sectors)</h3>
+              {/* Sector Categories - Database-Based */}
+              <h3 className="text-xl font-semibold mb-6">Sector Categories (9 government sectors)</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
-                <ColorToken name="Technology" className="bg-category-tech text-category-tech-foreground" description="IT & Software solutions" />
-                <ColorToken name="Healthcare" className="bg-category-health text-category-health-foreground" description="Medical & health services" />
-                <ColorToken name="Finance" className="bg-category-finance text-category-finance-foreground" description="Banking & financial tech" />
-                <ColorToken name="Education" className="bg-category-education text-category-education-foreground" description="Learning & training" />
-                <ColorToken name="Environment" className="bg-category-environment text-category-environment-foreground" description="Green & sustainability" />
-                <ColorToken name="Transportation" className="bg-category-transportation text-category-transportation-foreground" description="Mobility & logistics" />
-                <ColorToken name="Energy" className="bg-category-energy text-category-energy-foreground" description="Power & renewable energy" />
-                <ColorToken name="Manufacturing" className="bg-category-manufacturing text-category-manufacturing-foreground" description="Production & industrial" />
-                <ColorToken name="Agriculture" className="bg-category-agriculture text-category-agriculture-foreground" description="Farming & food production" />
-                <ColorToken name="Defense" className="bg-category-defense text-category-defense-foreground" description="Security & defense systems" />
-                <ColorToken name="Media" className="bg-category-media text-category-media-foreground" description="Entertainment & content" />
-                <ColorToken name="Retail" className="bg-category-retail text-category-retail-foreground" description="Commerce & sales" />
-                <ColorToken name="Real Estate" className="bg-category-realestate text-category-realestate-foreground" description="Property & construction" />
-                <ColorToken name="Legal" className="bg-category-legal text-category-legal-foreground" description="Law & governance" />
-                <ColorToken name="Social Services" className="bg-category-social text-category-social-foreground" description="Community & welfare" />
-                <ColorToken name="Tourism" className="bg-category-tourism text-category-tourism-foreground" description="Travel & hospitality" />
-                <ColorToken name="Sports" className="bg-category-sports text-category-sports-foreground" description="Athletics & recreation" />
-                <ColorToken name="Food & Beverage" className="bg-category-food text-category-food-foreground" description="Culinary & dining" />
-                <ColorToken name="Fashion" className="bg-category-fashion text-category-fashion-foreground" description="Apparel & design" />
-                <ColorToken name="Aerospace" className="bg-category-aerospace text-category-aerospace-foreground" description="Aviation & space tech" />
-                <ColorToken name="Biotechnology" className="bg-category-biotech text-category-biotech-foreground" description="Life sciences & research" />
-                <ColorToken name="Telecommunications" className="bg-category-telecom text-category-telecom-foreground" description="Communication networks" />
-                <ColorToken name="Construction" className="bg-category-construction text-category-construction-foreground" description="Building & infrastructure" />
-                <ColorToken name="Logistics" className="bg-category-logistics text-category-logistics-foreground" description="Supply chain & delivery" />
+                <ColorToken name="Health" className="bg-sector-health text-sector-health-foreground" description="Medical & healthcare services" />
+                <ColorToken name="Education" className="bg-sector-education text-sector-education-foreground" description="Learning & educational institutions" />
+                <ColorToken name="Transport" className="bg-sector-transport text-sector-transport-foreground" description="Transportation & mobility" />
+                <ColorToken name="Environment" className="bg-sector-environment text-sector-environment-foreground" description="Environmental & sustainability" />
+                <ColorToken name="Economy" className="bg-sector-economy text-sector-economy-foreground" description="Economic development & trade" />
+                <ColorToken name="Technology" className="bg-sector-technology text-sector-technology-foreground" description="Information technology & digital innovation" />
+                <ColorToken name="Finance" className="bg-sector-finance text-sector-finance-foreground" description="Financial services & banking" />
+                <ColorToken name="Defense" className="bg-sector-defense text-sector-defense-foreground" description="Security & defense systems" />
+                <ColorToken name="Social" className="bg-sector-social text-sector-social-foreground" description="Social services & community welfare" />
               </div>
 
               <Separator className="my-8" />

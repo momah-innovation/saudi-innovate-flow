@@ -290,126 +290,51 @@
     --hot-background: 14 100% 95%;
     --hot-border: 14 100% 85%;
 
-    /* Category-specific tokens - Comprehensive Domain Coverage */
-    --category-tech: 217 91% 60%;
-    --category-tech-foreground: 210 40% 98%;
-    --category-tech-background: 217 91% 95%;
-    --category-tech-border: 217 91% 85%;
+    /* Sector Categories - Based on database settings */
+    --sector-health: 142 76% 47%;         /* Medical green */
+    --sector-health-foreground: 355 7% 97%;
+    --sector-health-background: 142 76% 95%;
+    --sector-health-border: 142 76% 85%;
 
-    --category-health: 142 76% 36%;
-    --category-health-foreground: 355 7% 97%;
-    --category-health-background: 142 76% 95%;
-    --category-health-border: 142 76% 85%;
+    --sector-education: 271 91% 65%;      /* Purple */
+    --sector-education-foreground: 210 40% 98%;
+    --sector-education-background: 271 91% 95%;
+    --sector-education-border: 271 91% 85%;
 
-    --category-finance: 280 84% 12%;
-    --category-finance-foreground: 210 40% 98%;
-    --category-finance-background: 280 84% 95%;
-    --category-finance-border: 280 84% 85%;
+    --sector-transport: 203 69% 56%;      /* Sky blue */
+    --sector-transport-foreground: 210 40% 98%;
+    --sector-transport-background: 203 69% 95%;
+    --sector-transport-border: 203 69% 85%;
 
-    --category-education: 43 96% 56%;
-    --category-education-foreground: 25 5% 11%;
-    --category-education-background: 43 96% 95%;
-    --category-education-border: 43 96% 85%;
+    --sector-environment: 159 80% 50%;    /* Forest green */
+    --sector-environment-foreground: 355 7% 97%;
+    --sector-environment-background: 159 80% 95%;
+    --sector-environment-border: 159 80% 85%;
 
-    --category-environment: 142 76% 36%;
-    --category-environment-foreground: 355 7% 97%;
-    --category-environment-background: 142 76% 95%;
-    --category-environment-border: 142 76% 85%;
+    --sector-economy: 43 96% 56%;         /* Gold */
+    --sector-economy-foreground: 25 5% 11%;
+    --sector-economy-background: 43 96% 95%;
+    --sector-economy-border: 43 96% 85%;
 
-    --category-transportation: 217 91% 60%;
-    --category-transportation-foreground: 210 40% 98%;
-    --category-transportation-background: 217 91% 95%;
-    --category-transportation-border: 217 91% 85%;
+    --sector-technology: 239 84% 67%;     /* Modern blue */
+    --sector-technology-foreground: 210 40% 98%;
+    --sector-technology-background: 239 84% 95%;
+    --sector-technology-border: 239 84% 85%;
 
-    --category-energy: 43 96% 56%;
-    --category-energy-foreground: 25 5% 11%;
-    --category-energy-background: 43 96% 95%;
-    --category-energy-border: 43 96% 85%;
+    --sector-finance: 45 93% 47%;         /* Finance orange */
+    --sector-finance-foreground: 25 5% 11%;
+    --sector-finance-background: 45 93% 95%;
+    --sector-finance-border: 45 93% 85%;
 
-    --category-manufacturing: 220 13% 69%;
-    --category-manufacturing-foreground: 220 9% 46%;
-    --category-manufacturing-background: 220 13% 95%;
-    --category-manufacturing-border: 220 13% 85%;
+    --sector-defense: 220 9% 46%;         /* Military gray */
+    --sector-defense-foreground: 355 7% 97%;
+    --sector-defense-background: 220 9% 95%;
+    --sector-defense-border: 220 9% 85%;
 
-    --category-agriculture: 142 76% 36%;
-    --category-agriculture-foreground: 355 7% 97%;
-    --category-agriculture-background: 142 76% 95%;
-    --category-agriculture-border: 142 76% 85%;
-
-    --category-defense: 0 84% 60%;
-    --category-defense-foreground: 355 7% 97%;
-    --category-defense-background: 0 84% 95%;
-    --category-defense-border: 0 84% 85%;
-
-    --category-media: 340 82% 52%;
-    --category-media-foreground: 355 7% 97%;
-    --category-media-background: 340 82% 95%;
-    --category-media-border: 340 82% 85%;
-
-    --category-retail: 280 84% 12%;
-    --category-retail-foreground: 210 40% 98%;
-    --category-retail-background: 280 84% 95%;
-    --category-retail-border: 280 84% 85%;
-
-    --category-realestate: 217 91% 60%;
-    --category-realestate-foreground: 210 40% 98%;
-    --category-realestate-background: 217 91% 95%;
-    --category-realestate-border: 217 91% 85%;
-
-    --category-legal: 220 13% 69%;
-    --category-legal-foreground: 220 9% 46%;
-    --category-legal-background: 220 13% 95%;
-    --category-legal-border: 220 13% 85%;
-
-    --category-social: 340 82% 52%;
-    --category-social-foreground: 355 7% 97%;
-    --category-social-background: 340 82% 95%;
-    --category-social-border: 340 82% 85%;
-
-    --category-tourism: 43 96% 56%;
-    --category-tourism-foreground: 25 5% 11%;
-    --category-tourism-background: 43 96% 95%;
-    --category-tourism-border: 43 96% 85%;
-
-    --category-sports: 0 84% 60%;
-    --category-sports-foreground: 355 7% 97%;
-    --category-sports-background: 0 84% 95%;
-    --category-sports-border: 0 84% 85%;
-
-    --category-food: 142 76% 36%;
-    --category-food-foreground: 355 7% 97%;
-    --category-food-background: 142 76% 95%;
-    --category-food-border: 142 76% 85%;
-
-    --category-fashion: 340 82% 52%;
-    --category-fashion-foreground: 355 7% 97%;
-    --category-fashion-background: 340 82% 95%;
-    --category-fashion-border: 340 82% 85%;
-
-    --category-aerospace: 217 91% 60%;
-    --category-aerospace-foreground: 210 40% 98%;
-    --category-aerospace-background: 217 91% 95%;
-    --category-aerospace-border: 217 91% 85%;
-
-    --category-biotech: 142 76% 36%;
-    --category-biotech-foreground: 355 7% 97%;
-    --category-biotech-background: 142 76% 95%;
-    --category-biotech-border: 142 76% 85%;
-
-    --category-telecom: 280 84% 12%;
-    --category-telecom-foreground: 210 40% 98%;
-    --category-telecom-background: 280 84% 95%;
-    --category-telecom-border: 280 84% 85%;
-
-    --category-construction: 43 96% 56%;
-    --category-construction-foreground: 25 5% 11%;
-    --category-construction-background: 43 96% 95%;
-    --category-construction-border: 43 96% 85%;
-
-    --category-logistics: 217 91% 60%;
-    --category-logistics-foreground: 210 40% 98%;
-    --category-logistics-background: 217 91% 95%;
-    --category-logistics-border: 217 91% 85%;
+    --sector-social: 198 93% 60%;         /* Social cyan */
+    --sector-social-foreground: 210 40% 98%;
+    --sector-social-background: 198 93% 95%;
+    --sector-social-border: 198 93% 85%;
 
     /* Rating/Star indicators */
     --rating: 43 96% 56%;
