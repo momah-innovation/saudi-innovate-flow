@@ -82,12 +82,12 @@ export const ProfileManager: React.FC = () => {
       setIsEditing(false);
       
       toast({
-        title: "تم حفظ الملف الشخصي",
-        description: "تم تحديث معلوماتك بنجاح",
+        title: t('profile_saved'),
+        description: t('profile_updated_successfully'),
       });
     } catch (error: any) {
       toast({
-        title: "خطأ في حفظ الملف الشخصي",
+        title: t('profile_save_error'),
         description: error.message,
         variant: "destructive",
       });
@@ -128,12 +128,12 @@ export const ProfileManager: React.FC = () => {
       // Refresh user profile data
 
       toast({
-        title: "تم تحديث الصورة الشخصية",
-        description: "تم رفع صورتك الشخصية بنجاح",
+        title: t('avatar_updated'),
+        description: t('avatar_uploaded_successfully'),
       });
     } catch (error: any) {
       toast({
-        title: "خطأ في رفع الصورة",
+        title: t('avatar_upload_error'),
         description: error.message,
         variant: "destructive",
       });
@@ -147,8 +147,8 @@ export const ProfileManager: React.FC = () => {
     
     // In a real app, you'd save these to a user_preferences table
     toast({
-      title: "تم تحديث الإعدادات",
-      description: "تم حفظ تفضيلاتك",
+      title: t('settings_updated'),
+      description: t('preferences_saved'),
     });
   };
 
@@ -158,7 +158,7 @@ export const ProfileManager: React.FC = () => {
         <CardContent className="pt-6">
           <div className="text-center text-muted-foreground">
             <User className="h-8 w-8 mx-auto mb-2" />
-            <p>لا يمكن العثور على الملف الشخصي</p>
+            <p>{t('profile_not_found')}</p>
           </div>
         </CardContent>
       </Card>
@@ -173,10 +173,10 @@ export const ProfileManager: React.FC = () => {
             <div>
               <CardTitle className="flex items-center gap-2">
                 <User className="h-5 w-5" />
-                الملف الشخصي
+                {t('profile_management')}
               </CardTitle>
               <CardDescription>
-                إدارة معلوماتك الشخصية وتفضيلاتك
+                {t('profile_management_description')}
               </CardDescription>
             </div>
             <Button
@@ -185,7 +185,7 @@ export const ProfileManager: React.FC = () => {
               className="flex items-center gap-2"
             >
               {isEditing ? <Save className="h-4 w-4" /> : <Edit2 className="h-4 w-4" />}
-              {isEditing ? "حفظ" : "تعديل"}
+              {isEditing ? t('save') : t('edit')}
             </Button>
           </div>
         </CardHeader>
@@ -195,26 +195,26 @@ export const ProfileManager: React.FC = () => {
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="personal" className="flex items-center gap-2">
             <User className="w-4 h-4" />
-            المعلومات الشخصية
+            {t('personal_information')}
           </TabsTrigger>
           <TabsTrigger value="professional" className="flex items-center gap-2">
             <Shield className="w-4 h-4" />
-            المعلومات المهنية
+            {t('professional_information')}
           </TabsTrigger>
           <TabsTrigger value="notifications" className="flex items-center gap-2">
             <Bell className="w-4 h-4" />
-            الإشعارات
+            {t('notifications')}
           </TabsTrigger>
           <TabsTrigger value="security" className="flex items-center gap-2">
             <Lock className="w-4 h-4" />
-            الأمان
+            {t('security')}
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="personal" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>الصورة الشخصية</CardTitle>
+              <CardTitle>{t('profile_picture')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-4">
@@ -228,7 +228,7 @@ export const ProfileManager: React.FC = () => {
                   <Label htmlFor="avatar-upload" className="cursor-pointer">
                     <Button variant="outline" size="sm" disabled={avatarUploading}>
                       <Camera className="h-4 w-4 mr-2" />
-                      {avatarUploading ? "جارٍ الرفع..." : "تغيير الصورة"}
+                      {avatarUploading ? t('uploading') : t('change_picture')}
                     </Button>
                   </Label>
                   <input
@@ -240,7 +240,7 @@ export const ProfileManager: React.FC = () => {
                     disabled={avatarUploading}
                   />
                   <p className="text-xs text-muted-foreground">
-                    JPG, PNG أو GIF. أقصى حجم 2MB
+                    {t('max_file_size')}
                   </p>
                 </div>
               </div>
@@ -249,32 +249,32 @@ export const ProfileManager: React.FC = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>المعلومات الأساسية</CardTitle>
+              <CardTitle>{t('basic_information')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name_ar">الاسم (عربي)</Label>
+                  <Label htmlFor="name_ar">{t('name_arabic')}</Label>
                   <Input
                     id="name_ar"
                     value={formData.name_ar}
                     onChange={(e) => setFormData({...formData, name_ar: e.target.value})}
                     disabled={!isEditing}
-                    placeholder="اسمك بالعربية"
+                    placeholder={t('your_name_arabic')}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="name">الاسم (English)</Label>
+                  <Label htmlFor="name">{t('name_english')}</Label>
                   <Input
                     id="name"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                     disabled={!isEditing}
-                    placeholder="Your name in English"
+                    placeholder={t('your_name_english')}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="phone">رقم الهاتف</Label>
+                  <Label htmlFor="phone">{t('phone_number')}</Label>
                   <Input
                     id="phone"
                     value={formData.phone}
@@ -284,25 +284,25 @@ export const ProfileManager: React.FC = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="department">القسم</Label>
+                  <Label htmlFor="department">{t('department')}</Label>
                   <Input
                     id="department"
                     value={formData.department}
                     onChange={(e) => setFormData({...formData, department: e.target.value})}
                     disabled={!isEditing}
-                    placeholder="قسم تقنية المعلومات"
+                    placeholder={t('it_department')}
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="bio">النبذة التعريفية</Label>
+                <Label htmlFor="bio">{t('bio')}</Label>
                 <Textarea
                   id="bio"
                   value={formData.bio}
                   onChange={(e) => setFormData({...formData, bio: e.target.value})}
                   disabled={!isEditing}
-                  placeholder="اكتب نبذة مختصرة عنك..."
+                  placeholder={t('write_bio')}
                   className="min-h-20"
                 />
               </div>
@@ -313,28 +313,28 @@ export const ProfileManager: React.FC = () => {
         <TabsContent value="professional" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>المعلومات المهنية</CardTitle>
+              <CardTitle>{t('professional_information')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="position">المنصب الحالي</Label>
+                  <Label htmlFor="position">{t('current_position')}</Label>
                   <Input
                     id="position"
                     value={formData.position}
                     onChange={(e) => setFormData({...formData, position: e.target.value})}
                     disabled={!isEditing}
-                    placeholder="مدير تقنية المعلومات"
+                    placeholder={t('it_manager')}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="department">القسم/الإدارة</Label>
+                  <Label htmlFor="department">{t('department_administration')}</Label>
                   <Input
                     id="department"
                     value={formData.department}
                     onChange={(e) => setFormData({...formData, department: e.target.value})}
                     disabled={!isEditing}
-                    placeholder="إدارة تقنية المعلومات"
+                    placeholder={t('it_department')}
                   />
                 </div>
               </div>
@@ -345,24 +345,24 @@ export const ProfileManager: React.FC = () => {
         <TabsContent value="notifications" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>تفضيلات الإشعارات</CardTitle>
+              <CardTitle>{t('notification_preferences')}</CardTitle>
               <CardDescription>
-                اختر أنواع الإشعارات التي تريد استلامها
+                {t('notification_preferences_description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {[
-                { key: 'emailNotifications', label: 'إشعارات البريد الإلكتروني', description: 'تلقي الإشعارات عبر البريد الإلكتروني' },
-                { key: 'activityNotifications', label: 'إشعارات النشاط', description: 'إشعارات عن نشاطك وتحديثات الحساب' },
-                { key: 'challengeUpdates', label: 'تحديثات التحديات', description: 'إشعارات عن التحديات الجديدة والمواعيد النهائية' },
-                { key: 'eventReminders', label: 'تذكيرات الفعاليات', description: 'تذكيرات بالفعاليات والمؤتمرات القادمة' },
-                { key: 'marketingEmails', label: 'رسائل تسويقية', description: 'رسائل حول المنتجات والخدمات الجديدة' },
-                { key: 'smsNotifications', label: 'إشعارات SMS', description: 'تلقي الإشعارات عبر الرسائل النصية' }
+                { key: 'emailNotifications', labelKey: 'email_notifications', descriptionKey: 'email_notifications_description' },
+                { key: 'activityNotifications', labelKey: 'activity_notifications', descriptionKey: 'activity_notifications_description' },
+                { key: 'challengeUpdates', labelKey: 'challenge_updates', descriptionKey: 'challenge_updates_description' },
+                { key: 'eventReminders', labelKey: 'event_reminders', descriptionKey: 'event_reminders_description' },
+                { key: 'marketingEmails', labelKey: 'marketing_emails', descriptionKey: 'marketing_emails_description' },
+                { key: 'smsNotifications', labelKey: 'sms_notifications', descriptionKey: 'sms_notifications_description' }
               ].map((setting) => (
                 <div key={setting.key} className="flex items-center justify-between space-x-2">
                   <div className="space-y-0.5">
-                    <label className="text-sm font-medium">{setting.label}</label>
-                    <p className="text-sm text-muted-foreground">{setting.description}</p>
+                    <label className="text-sm font-medium">{t(setting.labelKey)}</label>
+                    <p className="text-sm text-muted-foreground">{t(setting.descriptionKey)}</p>
                   </div>
                   <Switch
                     checked={settings[setting.key as keyof ProfileSettings]}
@@ -377,35 +377,35 @@ export const ProfileManager: React.FC = () => {
         <TabsContent value="security" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>إعدادات الأمان</CardTitle>
+              <CardTitle>{t('security_settings')}</CardTitle>
               <CardDescription>
-                إدارة كلمة المرور وإعدادات الأمان الأخرى
+                {t('security_settings_description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                   <div>
-                    <h4 className="font-medium">كلمة المرور</h4>
-                    <p className="text-sm text-muted-foreground">آخر تغيير منذ 3 أشهر</p>
+                    <h4 className="font-medium">{t('password')}</h4>
+                    <p className="text-sm text-muted-foreground">{t('last_changed_3_months')}</p>
                   </div>
-                  <Button variant="outline">تغيير كلمة المرور</Button>
+                  <Button variant="outline">{t('change_password')}</Button>
                 </div>
 
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                   <div>
-                    <h4 className="font-medium">المصادقة الثنائية</h4>
-                    <p className="text-sm text-muted-foreground">أضف طبقة أمان إضافية لحسابك</p>
+                    <h4 className="font-medium">{t('two_factor_auth')}</h4>
+                    <p className="text-sm text-muted-foreground">{t('two_factor_description')}</p>
                   </div>
-                  <Badge variant="outline">قريباً</Badge>
+                  <Badge variant="outline">{t('coming_soon')}</Badge>
                 </div>
 
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                   <div>
-                    <h4 className="font-medium">جلسات نشطة</h4>
-                    <p className="text-sm text-muted-foreground">إدارة الأجهزة المتصلة بحسابك</p>
+                    <h4 className="font-medium">{t('active_sessions')}</h4>
+                    <p className="text-sm text-muted-foreground">{t('active_sessions_description')}</p>
                   </div>
-                  <Button variant="outline">عرض الجلسات</Button>
+                  <Button variant="outline">{t('view_sessions')}</Button>
                 </div>
               </div>
             </CardContent>
@@ -434,7 +434,7 @@ export const ProfileManager: React.FC = () => {
                   }
                 }}
               >
-                إلغاء
+                {t('cancel')}
               </Button>
               <Button
                 onClick={handleSaveProfile}
@@ -446,7 +446,7 @@ export const ProfileManager: React.FC = () => {
                 ) : (
                   <CheckCircle className="h-4 w-4" />
                 )}
-                {loading ? "جارٍ الحفظ..." : "حفظ التغييرات"}
+                {loading ? t('loading') : t('save')}
               </Button>
             </div>
           </CardContent>

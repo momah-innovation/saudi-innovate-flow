@@ -9,8 +9,8 @@ export default function ProfileManagementPage() {
   return (
     <AppShell>
       <PageLayout
-        title="إدارة الملف الشخصي"
-        description="إدارة معلوماتك الشخصية وتفضيلاتك وإعدادات الأمان"
+        title={t('profile_management')}
+        description={t('profile_management_description')}
         className="space-y-6"
       >
         <ProfileManager />
