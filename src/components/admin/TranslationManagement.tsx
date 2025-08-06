@@ -64,9 +64,15 @@ const TranslationManagement = () => {
         console.warn(`Could not load existing ${language}.json, will create from database only`, err);
       }
 
-      // 3. Convert database translations to nested structure
+      // 3. Convert database translations to nested structure - FILTER OUT CHARACTER ARRAYS
       const dbTranslationsNested: Record<string, any> = {};
       dbTranslations?.forEach(({ translation_key, translation_text }) => {
+        // Skip any keys that look like character array indices (security.0, security.1, etc.)
+        if (/\.\d+$/.test(translation_key)) {
+          console.log(`[DEBUG] Skipping character array key: ${translation_key}`);
+          return;
+        }
+        
         const keys = translation_key.split('.');
         let current = dbTranslationsNested;
         
@@ -83,6 +89,7 @@ const TranslationManagement = () => {
       });
 
       console.log(`[DEBUG] DB translations converted, ${Object.keys(dbTranslationsNested).length} top-level keys`);
+      console.log(`[DEBUG] DB security object:`, dbTranslationsNested.security);
 
       // 4. AGGRESSIVE cleanup of character arrays from static translations
       const cleanTranslations = (obj: any, path: string = ''): any => {
