@@ -767,5 +767,27 @@
     "title": "404",
     "message": "Page Not Found",
     "path_label": "Path"
+  },
+  "advanced_search": {
+    "title": "Advanced Search",
+    "filters_active": "filters active",
+    "search_query": "Search Query",
+    "search_placeholder": "Search in titles and descriptions...",
+    "status": "Status",
+    "select_status": "Select status",
+    "all_statuses": "All Statuses",
+    "priority": "Priority",
+    "select_priority": "Select priority",
+    "all_priorities": "All Priorities",
+    "date_range": "Date Range",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "budget_range": "Budget Range",
+    "minimum_budget": "Minimum",
+    "maximum_budget": "Maximum",
+    "tags": "Tags",
+    "search": "Search",
+    "clear_filters": "Clear Filters",
+    "tag_selector_coming_soon": "Tag selector will be available in the next phase"
   }
 }

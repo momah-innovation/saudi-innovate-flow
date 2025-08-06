@@ -767,5 +767,27 @@
     "title": "404",
     "message": "الصفحة غير موجودة",
     "path_label": "المسار"
+  },
+  "advanced_search": {
+    "title": "البحث المتقدم",
+    "filters_active": "مرشحات نشطة",
+    "search_query": "استعلام البحث",
+    "search_placeholder": "ابحث في العناوين والأوصاف...",
+    "status": "الحالة",
+    "select_status": "اختر الحالة",
+    "all_statuses": "جميع الحالات",
+    "priority": "الأولوية",
+    "select_priority": "اختر الأولوية",
+    "all_priorities": "جميع الأولويات",
+    "date_range": "نطاق التاريخ",
+    "start_date": "تاريخ البداية",
+    "end_date": "تاريخ الانتهاء",
+    "budget_range": "نطاق الميزانية",
+    "minimum_budget": "الحد الأدنى",
+    "maximum_budget": "الحد الأقصى",
+    "tags": "العلامات",
+    "search": "بحث",
+    "clear_filters": "مسح المرشحات",
+    "tag_selector_coming_soon": "محدد العلامات سيكون متاحاً في المرحلة القادمة"
   }
 }

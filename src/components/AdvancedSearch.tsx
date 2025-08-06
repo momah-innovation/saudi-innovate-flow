@@ -162,12 +162,12 @@ export function AdvancedSearch({
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <Search className="h-5 w-5" />
-            {t('advanced_search') || 'البحث المتقدم'}
+            {t('advanced_search.title')}
           </CardTitle>
           <div className="flex items-center gap-2">
             {getActiveFiltersCount() > 0 && (
               <Badge variant="secondary" className="text-xs">
-                {getActiveFiltersCount()} {t('filters_active') || 'مرشحات نشطة'}
+                {getActiveFiltersCount()} {t('advanced_search.filters_active')}
               </Badge>
             )}
             <Button
@@ -186,7 +186,7 @@ export function AdvancedSearch({
         {/* Main Search Query */}
         <div className="space-y-2">
           <Label htmlFor="search-query" className="text-sm font-medium">
-            {t('search_query') || 'استعلام البحث'}
+            {t('advanced_search.search_query')}
           </Label>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -194,7 +194,7 @@ export function AdvancedSearch({
               id="search-query"
               value={filters.query}
               onChange={(e) => handleFilterChange('query', e.target.value)}
-              placeholder={t('search_placeholder') || 'ابحث في العناوين والأوصاف...'}
+              placeholder={t('advanced_search.search_placeholder')}
               className="pl-10"
               dir={isRTL ? 'rtl' : 'ltr'}
             />
@@ -209,18 +209,18 @@ export function AdvancedSearch({
               <div className="space-y-2">
                 <Label className="text-sm font-medium flex items-center gap-2">
                   <Filter className="h-4 w-4" />
-                  {t('status') || 'الحالة'}
+                  {t('advanced_search.status')}
                 </Label>
                 <Select
                   value={filters.status}
                   onValueChange={(value) => handleFilterChange('status', value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder={t('select_status') || 'اختر الحالة'} />
+                    <SelectValue placeholder={t('advanced_search.select_status')} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">
-                      {t('all_statuses') || 'جميع الحالات'}
+                      {t('advanced_search.all_statuses')}
                     </SelectItem>
                     {statusOptions[searchType]?.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
@@ -234,18 +234,18 @@ export function AdvancedSearch({
               <div className="space-y-2">
                 <Label className="text-sm font-medium flex items-center gap-2">
                   <MapPin className="h-4 w-4" />
-                  {t('priority') || 'الأولوية'}
+                  {t('advanced_search.priority')}
                 </Label>
                 <Select
                   value={filters.priority}
                   onValueChange={(value) => handleFilterChange('priority', value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder={t('select_priority') || 'اختر الأولوية'} />
+                    <SelectValue placeholder={t('advanced_search.select_priority')} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">
-                      {t('all_priorities') || 'جميع الأولويات'}
+                      {t('advanced_search.all_priorities')}
                     </SelectItem>
                     {priorityOptions.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
@@ -261,12 +261,12 @@ export function AdvancedSearch({
             <div className="space-y-2">
               <Label className="text-sm font-medium flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                {t('date_range') || 'نطاق التاريخ'}
+                {t('advanced_search.date_range')}
               </Label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <Label htmlFor="start-date" className="text-xs text-muted-foreground">
-                    {t('start_date') || 'تاريخ البداية'}
+                    {t('advanced_search.start_date')}
                   </Label>
                   <Input
                     id="start-date"
@@ -277,7 +277,7 @@ export function AdvancedSearch({
                 </div>
                 <div className="space-y-1">
                   <Label htmlFor="end-date" className="text-xs text-muted-foreground">
-                    {t('end_date') || 'تاريخ الانتهاء'}
+                    {t('advanced_search.end_date')}
                   </Label>
                   <Input
                     id="end-date"
@@ -294,12 +294,12 @@ export function AdvancedSearch({
               <div className="space-y-2">
                 <Label className="text-sm font-medium flex items-center gap-2">
                   <DollarSign className="h-4 w-4" />
-                  {t('budget_range') || 'نطاق الميزانية'}
+                  {t('advanced_search.budget_range')}
                 </Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <Label htmlFor="min-budget" className="text-xs text-muted-foreground">
-                      {t('minimum_budget') || 'الحد الأدنى'}
+                      {t('advanced_search.minimum_budget')}
                     </Label>
                     <Input
                       id="min-budget"
@@ -311,7 +311,7 @@ export function AdvancedSearch({
                   </div>
                   <div className="space-y-1">
                     <Label htmlFor="max-budget" className="text-xs text-muted-foreground">
-                      {t('maximum_budget') || 'الحد الأقصى'}
+                      {t('advanced_search.maximum_budget')}
                     </Label>
                     <Input
                       id="max-budget"
@@ -329,10 +329,10 @@ export function AdvancedSearch({
             <div className="space-y-2">
               <Label className="text-sm font-medium flex items-center gap-2">
                 <Tag className="h-4 w-4" />
-                {t('tags') || 'العلامات'}
+                {t('advanced_search.tags')}
               </Label>
               <div className="text-sm text-muted-foreground">
-                Tag selector will be available in the next phase
+                {t('advanced_search.tag_selector_coming_soon')}
               </div>
             </div>
           </div>
@@ -342,13 +342,13 @@ export function AdvancedSearch({
         <div className="flex items-center gap-3 pt-4 border-t">
           <Button onClick={handleSearch} className="flex-1 md:flex-none">
             <Search className="h-4 w-4 mr-2" />
-            {t('search') || 'بحث'}
+            {t('advanced_search.search')}
           </Button>
           
           {getActiveFiltersCount() > 0 && (
             <Button variant="outline" onClick={handleReset}>
               <X className="h-4 w-4 mr-2" />
-              {t('clear_filters') || 'مسح المرشحات'}
+              {t('advanced_search.clear_filters')}
             </Button>
           )}
         </div>
