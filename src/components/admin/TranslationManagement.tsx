@@ -26,8 +26,6 @@ const TranslationManagement = () => {
   // Generate and download JSON file from database translations merged with existing static translations
   const downloadTranslationsJSON = async (language: 'en' | 'ar') => {
     try {
-      console.log(`[DEBUG] Starting download for ${language}`);
-      
       // 1. Fetch database translations
       const { data: dbTranslations, error } = await supabase
         .from('system_translations')
@@ -35,44 +33,22 @@ const TranslationManagement = () => {
         .eq('language_code', language);
 
       if (error) throw error;
-      console.log(`[DEBUG] Fetched ${dbTranslations?.length} database translations`);
 
-      // 2. Load existing static translations - DEBUG THIS
+      // 2. Load existing static translations
       let existingTranslations = {};
       try {
-        console.log(`[DEBUG] Attempting to fetch /src/i18n/locales/${language}.json`);
         const staticResponse = await fetch(`/src/i18n/locales/${language}.json`);
-        console.log(`[DEBUG] Static fetch response:`, staticResponse.status, staticResponse.statusText);
-        
         if (staticResponse.ok) {
           const staticData = await staticResponse.json();
-          console.log(`[DEBUG] Loaded static ${language} translations:`, Object.keys(staticData).length, 'top-level keys');
-          console.log(`[DEBUG] Raw security object from static file:`, JSON.stringify(staticData.security, null, 2));
           existingTranslations = staticData || {};
-        } else {
-          console.log(`[DEBUG] Failed to load static ${language}.json:`, staticResponse.status);
-          // Try without leading slash
-          console.log(`[DEBUG] Trying without leading slash: src/i18n/locales/${language}.json`);
-          const altResponse = await fetch(`src/i18n/locales/${language}.json`);
-          if (altResponse.ok) {
-            const altData = await altResponse.json();
-            console.log(`[DEBUG] Alternative fetch worked, got ${Object.keys(altData).length} keys`);
-            existingTranslations = altData || {};
-          }
         }
       } catch (err) {
-        console.warn(`Could not load existing ${language}.json, will create from database only`, err);
+        console.warn(`Could not load existing ${language}.json, will create from database only`);
       }
 
-      // 3. Convert database translations to nested structure - FILTER OUT CHARACTER ARRAYS
+      // 3. Convert database translations to nested structure
       const dbTranslationsNested: Record<string, any> = {};
       dbTranslations?.forEach(({ translation_key, translation_text }) => {
-        // Skip any keys that look like character array indices (security.0, security.1, etc.)
-        if (/\.\d+$/.test(translation_key)) {
-          console.log(`[DEBUG] Skipping character array key: ${translation_key}`);
-          return;
-        }
-        
         const keys = translation_key.split('.');
         let current = dbTranslationsNested;
         
@@ -84,103 +60,25 @@ const TranslationManagement = () => {
           current = current[key];
         }
         
-        // Ensure we're setting a string value, not accidentally creating an array
         current[keys[keys.length - 1]] = String(translation_text);
       });
 
-      console.log(`[DEBUG] DB translations converted, ${Object.keys(dbTranslationsNested).length} top-level keys`);
-      console.log(`[DEBUG] DB security object:`, dbTranslationsNested.security);
-
-      // 4. AGGRESSIVE cleanup of character arrays from static translations
-      const cleanTranslations = (obj: any, path: string = ''): any => {
-        if (typeof obj === 'string') {
-          return obj;
-        }
-        
-        if (Array.isArray(obj)) {
-          return obj;
-        }
-        
-        if (typeof obj === 'object' && obj !== null) {
-          const keys = Object.keys(obj);
-          
-          // Check if this object has character array keys (0,1,2,3...) mixed with real properties
-          const numericKeys = keys.filter(k => /^\d+$/.test(k)).map(k => parseInt(k)).sort((a, b) => a - b);
-          const nonNumericKeys = keys.filter(k => !/^\d+$/.test(k));
-          
-          // If we have sequential numeric keys starting from 0, it's likely a character array
-          const hasCharArray = numericKeys.length > 0 && 
-                               numericKeys[0] === 0 && 
-                               numericKeys.every((val, idx) => val === idx) &&
-                               numericKeys.length < 50; // Reasonable limit for string length
-          
-          if (hasCharArray) {
-            console.log(`[DEBUG] Found character array at ${path}:`, numericKeys.length, 'chars +', nonNumericKeys.length, 'properties');
-            
-            // Extract the string from character array
-            const chars = [];
-            for (let i = 0; i < numericKeys.length; i++) {
-              if (obj[i] !== undefined) {
-                chars.push(obj[i]);
-              }
-            }
-            const reconstructedString = chars.join('');
-            console.log(`[DEBUG] Reconstructed string: "${reconstructedString}"`);
-            
-            // If there are non-numeric keys, create a clean object with both the string value and properties
-            if (nonNumericKeys.length > 0) {
-              const cleaned: any = {};
-              
-              // Add all non-numeric properties, cleaned recursively
-              for (const key of nonNumericKeys) {
-                cleaned[key] = cleanTranslations(obj[key], path ? `${path}.${key}` : key);
-              }
-              
-              console.log(`[DEBUG] Mixed object at ${path}: string="${reconstructedString}" + ${nonNumericKeys.length} properties`);
-              return cleaned; // Return just the properties, the character array title is corrupted anyway
-            } else {
-              // Pure character array, just return the string
-              console.log(`[DEBUG] Pure character array at ${path}: "${reconstructedString}"`);
-              return reconstructedString;
-            }
-          }
-          
-          // Regular object, clean recursively
-          const cleaned: any = {};
-          for (const key in obj) {
-            cleaned[key] = cleanTranslations(obj[key], path ? `${path}.${key}` : key);
-          }
-          return cleaned;
-        }
-        
-        return obj;
-      };
-
-      console.log(`[DEBUG] Starting cleanup of static translations...`);
-      const cleanedExisting = cleanTranslations(existingTranslations);
-      console.log(`[DEBUG] Cleanup complete. Sample after cleanup:`, cleanedExisting.security);
-
-      // 5. Deep merge - but database should NOT override cleaned static translations
+      // 4. Deep merge existing translations with database translations (database takes precedence)
       const mergeTranslations = (existing: any, db: any): any => {
         const result = { ...existing };
         
         for (const key in db) {
           if (typeof db[key] === 'object' && db[key] !== null && !Array.isArray(db[key])) {
-            // If it's an object, recursively merge
             result[key] = mergeTranslations(existing[key] || {}, db[key]);
           } else {
-            // Only add if not already present in cleaned static
-            if (!(key in result)) {
-              result[key] = db[key];
-            }
+            result[key] = db[key];
           }
         }
         
         return result;
       };
 
-      const finalTranslations = mergeTranslations(cleanedExisting, dbTranslationsNested);
-      console.log(`[DEBUG] Final merge complete. Security object final:`, finalTranslations.security);
+      const finalTranslations = mergeTranslations(existingTranslations, dbTranslationsNested);
 
       // 5. Create and download file
       const blob = new Blob([JSON.stringify(finalTranslations, null, 2)], {
