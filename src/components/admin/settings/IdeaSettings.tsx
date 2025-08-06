@@ -1,9 +1,14 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Plus, X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useAppTranslation";
+import { useDirection } from "@/components/ui/direction-provider";
 
 interface IdeaSettingsProps {
   settings: any;
@@ -11,423 +16,222 @@ interface IdeaSettingsProps {
 }
 
 export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
-  const parseJsonValue = (value: any) => {
-    if (typeof value === 'string') {
-      try {
-        return JSON.parse(value);
-      } catch {
-        return value;
-      }
+  const { toast } = useToast();
+  const { t } = useTranslation();
+  const { isRTL } = useDirection();
+  const [newAttachmentType, setNewAttachmentType] = useState("");
+  const [newAssignmentType, setNewAssignmentType] = useState("");
+  
+  const allowedAttachmentTypes = settings.idea_allowed_attachment_types || ["pdf", "doc", "docx", "ppt", "pptx", "jpg", "jpeg", "png", "gif"];
+  const assignmentTypes = settings.idea_assignment_types || ["reviewer", "evaluator", "implementer", "observer"];
+
+  const addAttachmentType = () => {
+    if (newAttachmentType.trim() && !allowedAttachmentTypes.includes(newAttachmentType)) {
+      const updatedTypes = [...allowedAttachmentTypes, newAttachmentType.trim()];
+      onSettingChange('idea_allowed_attachment_types', updatedTypes);
+      setNewAttachmentType("");
+      toast({
+        title: t('success'),
+        description: "تم إضافة نوع المرفق بنجاح"
+      });
     }
-    return value;
   };
 
-  const handleNumberChange = (key: string, value: string) => {
-    const numValue = parseInt(value) || 0;
-    onSettingChange(key, numValue.toString());
+  const removeAttachmentType = (typeToRemove: string) => {
+    const updatedTypes = allowedAttachmentTypes.filter((type: string) => type !== typeToRemove);
+    onSettingChange('idea_allowed_attachment_types', updatedTypes);
+    toast({
+      title: t('success'),
+      description: "تم حذف نوع المرفق بنجاح"
+    });
+  };
+
+  const addAssignmentType = () => {
+    if (newAssignmentType.trim() && !assignmentTypes.includes(newAssignmentType)) {
+      const updatedTypes = [...assignmentTypes, newAssignmentType.trim()];
+      onSettingChange('idea_assignment_types', updatedTypes);
+      setNewAssignmentType("");
+      toast({
+        title: t('success'),
+        description: "تم إضافة نوع المهمة بنجاح"
+      });
+    }
+  };
+
+  const removeAssignmentType = (typeToRemove: string) => {
+    const updatedTypes = assignmentTypes.filter((type: string) => type !== typeToRemove);
+    onSettingChange('idea_assignment_types', updatedTypes);
+    toast({
+      title: t('success'),
+      description: "تم حذف نوع المهمة بنجاح"
+    });
   };
 
   return (
-    <div className="space-y-6 rtl:text-right ltr:text-left">
-      {/* Idea Submission Settings */}
+    <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
       <Card>
-        <CardHeader className="rtl:text-right ltr:text-left">
-          <CardTitle>إعدادات تقديم الأفكار</CardTitle>
-          <CardDescription>التحكم في كيفية تقديم الأفكار الجديدة</CardDescription>
+        <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
+          <CardTitle>{t('systemLists.ideaAttachmentTypes')}</CardTitle>
+          <CardDescription>إدارة أنواع المرفقات المسموحة للأفكار</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 rtl:text-right ltr:text-left">
+          <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <Input
+              value={newAttachmentType}
+              onChange={(e) => setNewAttachmentType(e.target.value)}
+              placeholder="أضف نوع مرفق جديد (مثل: pdf)"
+              className={isRTL ? 'text-right' : 'text-left'}
+            />
+            <Button onClick={addAttachmentType} size="sm">
+              <Plus className="w-4 h-4" />
+            </Button>
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            {allowedAttachmentTypes.map((type: string, index: number) => (
+              <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                <span>.{type}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-auto p-0 hover:bg-transparent"
+                  onClick={() => removeAttachmentType(type)}
+                >
+                  <X className="w-3 h-3" />
+                </Button>
+              </Badge>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
+          <CardTitle>{t('systemLists.ideaAssignmentTypes')}</CardTitle>
+          <CardDescription>إدارة أنواع مهام الأفكار المتاحة في النظام</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <Input
+              value={newAssignmentType}
+              onChange={(e) => setNewAssignmentType(e.target.value)}
+              placeholder="أضف نوع مهمة جديد"
+              className={isRTL ? 'text-right' : 'text-left'}
+            />
+            <Button onClick={addAssignmentType} size="sm">
+              <Plus className="w-4 h-4" />
+            </Button>
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            {assignmentTypes.map((type: string, index: number) => (
+              <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                <span>{t(`ideaAssignmentTypes.${type}`) || type}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-auto p-0 hover:bg-transparent"
+                  onClick={() => removeAssignmentType(type)}
+                >
+                  <X className="w-3 h-3" />
+                </Button>
+              </Badge>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
+          <CardTitle>إعدادات الأفكار</CardTitle>
+          <CardDescription>التحكم في إنشاء وإدارة الأفكار</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="space-y-2">
-              <Label htmlFor="ideaMaxTitleLength">الحد الأقصى لطول العنوان</Label>
+              <Label htmlFor="maxIdeasPerUser">الحد الأقصى للأفكار لكل مستخدم</Label>
               <Input
-                id="ideaMaxTitleLength"
+                id="maxIdeasPerUser"
                 type="number"
-                min="10"
+                value={settings.maxIdeasPerUser || 50}
+                onChange={(e) => onSettingChange('maxIdeasPerUser', parseInt(e.target.value))}
+                min="1"
                 max="500"
-                value={parseJsonValue(settings.idea_max_title_length) || 200}
-                onChange={(e) => handleNumberChange('idea_max_title_length', e.target.value)}
-                className="rtl:text-right ltr:text-left"
+                className={isRTL ? 'text-right' : 'text-left'}
               />
             </div>
-
+            
             <div className="space-y-2">
-              <Label htmlFor="ideaMaxDescLength">الحد الأقصى لطول الوصف</Label>
+              <Label htmlFor="ideaMinLength">الحد الأدنى لطول وصف الفكرة (عدد الأحرف)</Label>
               <Input
-                id="ideaMaxDescLength"
+                id="ideaMinLength"
                 type="number"
-                min="100"
-                max="10000"
-                value={parseJsonValue(settings.idea_max_description_length) || 5000}
-                onChange={(e) => handleNumberChange('idea_max_description_length', e.target.value)}
-                className="rtl:text-right ltr:text-left"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="ideaMinDescLength">الحد الأدنى لطول الوصف</Label>
-              <Input
-                id="ideaMinDescLength"
-                type="number"
+                value={settings.ideaMinLength || 50}
+                onChange={(e) => onSettingChange('ideaMinLength', parseInt(e.target.value))}
                 min="10"
-                max="500"
-                value={parseJsonValue(settings.idea_min_description_length) || 50}
-                onChange={(e) => handleNumberChange('idea_min_description_length', e.target.value)}
-                className="rtl:text-right ltr:text-left"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex items-center justify-between rtl:flex-row-reverse">
-              <div className="space-y-0.5 rtl:text-right ltr:text-left">
-                <Label className="text-base">السماح بالتقديمات المجهولة</Label>
-                <p className="text-sm text-muted-foreground">السماح بتقديم أفكار بدون الكشف عن الهوية</p>
-              </div>
-              <Switch
-                checked={settings.idea_allow_anonymous_submissions || false}
-                onCheckedChange={(checked) => onSettingChange('idea_allow_anonymous_submissions', checked)}
-              />
-            </div>
-
-            <div className="flex items-center justify-between rtl:flex-row-reverse">
-              <div className="space-y-0.5 rtl:text-right ltr:text-left">
-                <Label className="text-base">الحفظ التلقائي للمسودات</Label>
-                <p className="text-sm text-muted-foreground">حفظ تلقائي لمسودات الأفكار أثناء الكتابة</p>
-              </div>
-              <Switch
-                checked={settings.idea_auto_save_drafts !== false}
-                onCheckedChange={(checked) => onSettingChange('idea_auto_save_drafts', checked)}
+                max="200"
+                className={isRTL ? 'text-right' : 'text-left'}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="ideaDraftExpiry">مدة انتهاء صلاحية المسودات (بالأيام)</Label>
+              <Label htmlFor="maxAttachments">الحد الأقصى للمرفقات لكل فكرة</Label>
               <Input
-                id="ideaDraftExpiry"
+                id="maxAttachments"
                 type="number"
-                min="1"
-                max="365"
-                value={parseJsonValue(settings.idea_draft_expiry_days) || 30}
-                onChange={(e) => handleNumberChange('idea_draft_expiry_days', e.target.value)}
-                className="rtl:text-right ltr:text-left"
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Idea Workflow Settings */}
-      <Card>
-        <CardHeader className="rtl:text-right ltr:text-left">
-          <CardTitle>إعدادات سير العمل</CardTitle>
-          <CardDescription>التحكم في مراحل معالجة الأفكار</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
-            <div className="space-y-2">
-              <Label htmlFor="ideaDefaultStatus">الحالة الافتراضية للأفكار الجديدة</Label>
-              <Select 
-                value={parseJsonValue(settings.idea_default_status) || 'draft'} 
-                onValueChange={(value) => onSettingChange('idea_default_status', JSON.stringify(value))}
-              >
-                <SelectTrigger className="rtl:text-right ltr:text-left">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="draft">مسودة</SelectItem>
-                  <SelectItem value="submitted">مقدمة</SelectItem>
-                  <SelectItem value="under_review">قيد المراجعة</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="ideaAssignmentDays">المدة الافتراضية للتكليفات (بالأيام)</Label>
-              <Input
-                id="ideaAssignmentDays"
-                type="number"
-                min="1"
-                max="90"
-                value={parseJsonValue(settings.idea_assignment_due_date_days) || 7}
-                onChange={(e) => handleNumberChange('idea_assignment_due_date_days', e.target.value)}
-                className="rtl:text-right ltr:text-left"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex items-center justify-between rtl:flex-row-reverse">
-              <div className="space-y-0.5 rtl:text-right ltr:text-left">
-                <Label className="text-base">الموافقة التلقائية على الأفكار</Label>
-                <p className="text-sm text-muted-foreground">قبول الأفكار تلقائياً عند التقديم</p>
-              </div>
-              <Switch
-                checked={settings.idea_auto_approve_submissions || false}
-                onCheckedChange={(checked) => onSettingChange('idea_auto_approve_submissions', checked)}
-              />
-            </div>
-
-            <div className="flex items-center justify-between rtl:flex-row-reverse">
-              <div className="space-y-0.5 rtl:text-right ltr:text-left">
-                <Label className="text-base">إجبار اختيار السؤال المحوري</Label>
-                <p className="text-sm text-muted-foreground">مطالبة اختيار سؤال محوري عند تقديم الفكرة</p>
-              </div>
-              <Switch
-                checked={settings.idea_require_focus_question !== false}
-                onCheckedChange={(checked) => onSettingChange('idea_require_focus_question', checked)}
-              />
-            </div>
-
-            <div className="flex items-center justify-between rtl:flex-row-reverse">
-              <div className="space-y-0.5 rtl:text-right ltr:text-left">
-                <Label className="text-base">إشعارات سير العمل</Label>
-                <p className="text-sm text-muted-foreground">إرسال إشعارات عند تغيير حالة الأفكار</p>
-              </div>
-              <Switch
-                checked={settings.idea_workflow_notifications_enabled !== false}
-                onCheckedChange={(checked) => onSettingChange('idea_workflow_notifications_enabled', checked)}
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Idea Evaluation Settings */}
-      <Card>
-        <CardHeader className="rtl:text-right ltr:text-left">
-          <CardTitle>إعدادات التقييم</CardTitle>
-          <CardDescription>التحكم في آلية تقييم الأفكار</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
-            <div className="space-y-2">
-              <Label htmlFor="ideaEvalScale">أقصى درجة للتقييم</Label>
-              <Select 
-                value={parseJsonValue(settings.idea_evaluation_scale_max) || '10'} 
-                onValueChange={(value) => onSettingChange('idea_evaluation_scale_max', JSON.stringify(value))}
-              >
-                <SelectTrigger className="rtl:text-right ltr:text-left">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="5">5 درجات</SelectItem>
-                  <SelectItem value="10">10 درجات</SelectItem>
-                  <SelectItem value="100">100 درجة</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex items-center justify-between rtl:flex-row-reverse">
-              <div className="space-y-0.5 rtl:text-right ltr:text-left">
-                <Label className="text-base">إجبار التعليقات في التقييم</Label>
-                <p className="text-sm text-muted-foreground">مطالبة كتابة تعليق مع كل تقييم</p>
-              </div>
-              <Switch
-                checked={settings.idea_evaluation_require_comments || false}
-                onCheckedChange={(checked) => onSettingChange('idea_evaluation_require_comments', checked)}
-              />
-            </div>
-
-            <div className="flex items-center justify-between rtl:flex-row-reverse">
-              <div className="space-y-0.5 rtl:text-right ltr:text-left">
-                <Label className="text-base">السماح بتقييمات متعددة</Label>
-                <p className="text-sm text-muted-foreground">السماح لأكثر من مقيم بتقييم نفس الفكرة</p>
-              </div>
-              <Switch
-                checked={settings.idea_evaluation_multiple_allowed !== false}
-                onCheckedChange={(checked) => onSettingChange('idea_evaluation_multiple_allowed', checked)}
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Idea Collaboration Settings */}
-      <Card>
-        <CardHeader className="rtl:text-right ltr:text-left">
-          <CardTitle>إعدادات التعاون</CardTitle>
-          <CardDescription>إدارة العمل التعاوني على الأفكار</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between rtl:flex-row-reverse">
-            <div className="space-y-0.5 rtl:text-right ltr:text-left">
-              <Label className="text-base">تفعيل التعاون</Label>
-              <p className="text-sm text-muted-foreground">السماح بالعمل التعاوني على الأفكار</p>
-            </div>
-            <Switch
-              checked={settings.idea_collaboration_enabled !== false}
-              onCheckedChange={(checked) => onSettingChange('idea_collaboration_enabled', checked)}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
-            <div className="space-y-2">
-              <Label htmlFor="ideaMaxCollaborators">الحد الأقصى للمتعاونين</Label>
-              <Input
-                id="ideaMaxCollaborators"
-                type="number"
-                min="1"
-                max="20"
-                value={parseJsonValue(settings.idea_max_collaborators) || 5}
-                onChange={(e) => handleNumberChange('idea_max_collaborators', e.target.value)}
-                className="rtl:text-right ltr:text-left"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="ideaInviteExpiry">انتهاء صلاحية دعوات التعاون (بالساعات)</Label>
-              <Input
-                id="ideaInviteExpiry"
-                type="number"
-                min="1"
-                max="168"
-                value={parseJsonValue(settings.idea_collaboration_invite_expiry_hours) || 48}
-                onChange={(e) => handleNumberChange('idea_collaboration_invite_expiry_hours', e.target.value)}
-                className="rtl:text-right ltr:text-left"
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between rtl:flex-row-reverse">
-            <div className="space-y-0.5 rtl:text-right ltr:text-left">
-              <Label className="text-base">تتبع الإصدارات</Label>
-              <p className="text-sm text-muted-foreground">حفظ تاريخ التغييرات على الأفكار</p>
-            </div>
-            <Switch
-              checked={settings.idea_version_tracking_enabled !== false}
-              onCheckedChange={(checked) => onSettingChange('idea_version_tracking_enabled', checked)}
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Comments & Attachments Settings */}
-      <Card>
-        <CardHeader className="rtl:text-right ltr:text-left">
-          <CardTitle>إعدادات التعليقات والمرفقات</CardTitle>
-          <CardDescription>التحكم في التعليقات والملفات المرفقة</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between rtl:flex-row-reverse">
-            <div className="space-y-0.5 rtl:text-right ltr:text-left">
-              <Label className="text-base">تفعيل التعليقات</Label>
-              <p className="text-sm text-muted-foreground">السماح بالتعليق على الأفكار</p>
-            </div>
-            <Switch
-              checked={settings.idea_comments_enabled !== false}
-              onCheckedChange={(checked) => onSettingChange('idea_comments_enabled', checked)}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
-            <div className="space-y-2">
-              <Label htmlFor="ideaCommentsMaxLength">الحد الأقصى لطول التعليق</Label>
-              <Input
-                id="ideaCommentsMaxLength"
-                type="number"
-                min="50"
-                max="5000"
-                value={parseJsonValue(settings.idea_comments_max_length) || 1000}
-                onChange={(e) => handleNumberChange('idea_comments_max_length', e.target.value)}
-                className="rtl:text-right ltr:text-left"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="ideaMaxAttachments">الحد الأقصى للمرفقات</Label>
-              <Input
-                id="ideaMaxAttachments"
-                type="number"
+                value={settings.maxAttachments || 5}
+                onChange={(e) => onSettingChange('maxAttachments', parseInt(e.target.value))}
                 min="0"
-                max="50"
-                value={parseJsonValue(settings.idea_max_attachments_per_idea) || 10}
-                onChange={(e) => handleNumberChange('idea_max_attachments_per_idea', e.target.value)}
-                className="rtl:text-right ltr:text-left"
+                max="20"
+                className={isRTL ? 'text-right' : 'text-left'}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="maxAttachmentSize">الحد الأقصى لحجم المرفق (بالميجابايت)</Label>
+              <Input
+                id="maxAttachmentSize"
+                type="number"
+                value={settings.maxAttachmentSize || 10}
+                onChange={(e) => onSettingChange('maxAttachmentSize', parseInt(e.target.value))}
+                min="1"
+                max="100"
+                className={isRTL ? 'text-right' : 'text-left'}
               />
             </div>
           </div>
 
-          <div className="flex items-center justify-between rtl:flex-row-reverse">
-            <div className="space-y-0.5 rtl:text-right ltr:text-left">
-              <Label className="text-base">تفعيل المرفقات</Label>
-              <p className="text-sm text-muted-foreground">السماح بإرفاق ملفات مع الأفكار</p>
+          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <Label className="text-base">السماح بالأفكار المجهولة</Label>
+              <p className="text-sm text-muted-foreground">السماح بتقديم أفكار بدون الكشف عن الهوية</p>
             </div>
-            <Switch
-              checked={settings.idea_attachments_enabled !== false}
-              onCheckedChange={(checked) => onSettingChange('idea_attachments_enabled', checked)}
+            <Switch 
+              checked={settings.allowAnonymousIdeas || false}
+              onCheckedChange={(checked) => onSettingChange('allowAnonymousIdeas', checked)}
             />
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Display Settings */}
-      <Card>
-        <CardHeader className="rtl:text-right ltr:text-left">
-          <CardTitle>إعدادات العرض</CardTitle>
-          <CardDescription>تخصيص واجهة عرض الأفكار</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
-            <div className="space-y-2">
-              <Label htmlFor="ideaItemsPerPage">عدد الأفكار في الصفحة</Label>
-              <Select 
-                value={parseJsonValue(settings.idea_items_per_page) || '12'} 
-                onValueChange={(value) => onSettingChange('idea_items_per_page', JSON.stringify(value))}
-              >
-                <SelectTrigger className="rtl:text-right ltr:text-left">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="6">6</SelectItem>
-                  <SelectItem value="12">12</SelectItem>
-                  <SelectItem value="24">24</SelectItem>
-                  <SelectItem value="48">48</SelectItem>
-                </SelectContent>
-              </Select>
+          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <Label className="text-base">مراجعة الأفكار تلقائياً</Label>
+              <p className="text-sm text-muted-foreground">مطالبة مراجعة إدارية قبل نشر الأفكار</p>
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="ideaDefaultViewMode">وضع العرض الافتراضي</Label>
-              <Select 
-                value={parseJsonValue(settings.idea_default_view_mode) || 'cards'} 
-                onValueChange={(value) => onSettingChange('idea_default_view_mode', JSON.stringify(value))}
-              >
-                <SelectTrigger className="rtl:text-right ltr:text-left">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="cards">بطاقات</SelectItem>
-                  <SelectItem value="list">قائمة</SelectItem>
-                  <SelectItem value="grid">شبكة</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <Switch 
+              checked={settings.requireIdeaReview !== false}
+              onCheckedChange={(checked) => onSettingChange('requireIdeaReview', checked)}
+            />
           </div>
 
-          <div className="space-y-4">
-            <div className="flex items-center justify-between rtl:flex-row-reverse">
-              <div className="space-y-0.5 rtl:text-right ltr:text-left">
-                <Label className="text-base">معاينة عند التمرير</Label>
-                <p className="text-sm text-muted-foreground">عرض معاينة سريعة عند التمرير فوق بطاقات الأفكار</p>
-              </div>
-              <Switch
-                checked={settings.idea_show_preview_on_hover !== false}
-                onCheckedChange={(checked) => onSettingChange('idea_show_preview_on_hover', checked)}
-              />
+          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <Label className="text-base">تفعيل التعاون في الأفكار</Label>
+              <p className="text-sm text-muted-foreground">السماح بالعمل التعاوني على تطوير الأفكار</p>
             </div>
-
-            <div className="flex items-center justify-between rtl:flex-row-reverse">
-              <div className="space-y-0.5 rtl:text-right ltr:text-left">
-                <Label className="text-base">تفعيل المرشحات المتقدمة</Label>
-                <p className="text-sm text-muted-foreground">عرض خيارات تصفية إضافية</p>
-              </div>
-              <Switch
-                checked={settings.idea_enable_advanced_filters !== false}
-                onCheckedChange={(checked) => onSettingChange('idea_enable_advanced_filters', checked)}
-              />
-            </div>
+            <Switch 
+              checked={settings.enableIdeaCollaboration !== false}
+              onCheckedChange={(checked) => onSettingChange('enableIdeaCollaboration', checked)}
+            />
           </div>
         </CardContent>
       </Card>

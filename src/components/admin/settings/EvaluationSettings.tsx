@@ -1,8 +1,14 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Plus, X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useAppTranslation";
+import { useDirection } from "@/components/ui/direction-provider";
 
 interface EvaluationSettingsProps {
   settings: any;
@@ -10,54 +16,247 @@ interface EvaluationSettingsProps {
 }
 
 export function EvaluationSettings({ settings, onSettingChange }: EvaluationSettingsProps) {
+  const { toast } = useToast();
+  const { t } = useTranslation();
+  const { isRTL } = useDirection();
+  const [newEvaluatorType, setNewEvaluatorType] = useState("");
+  const [newExpertRoleType, setNewExpertRoleType] = useState("");
+  
+  const evaluatorTypes = settings.evaluator_types || ["lead_expert", "evaluator", "reviewer", "subject_matter_expert", "external_consultant"];
+  const expertRoleTypes = settings.expert_role_types || ["خبير رئيسي", "مقيم", "مراجع", "خبير موضوع", "مستشار خارجي"];
+
+  const addEvaluatorType = () => {
+    if (newEvaluatorType.trim() && !evaluatorTypes.includes(newEvaluatorType)) {
+      const updatedTypes = [...evaluatorTypes, newEvaluatorType.trim()];
+      onSettingChange('evaluator_types', updatedTypes);
+      setNewEvaluatorType("");
+      toast({
+        title: t('success'),
+        description: "تم إضافة نوع المقيم بنجاح"
+      });
+    }
+  };
+
+  const removeEvaluatorType = (typeToRemove: string) => {
+    const updatedTypes = evaluatorTypes.filter((type: string) => type !== typeToRemove);
+    onSettingChange('evaluator_types', updatedTypes);
+    toast({
+      title: t('success'),
+      description: "تم حذف نوع المقيم بنجاح"
+    });
+  };
+
+  const addExpertRoleType = () => {
+    if (newExpertRoleType.trim() && !expertRoleTypes.includes(newExpertRoleType)) {
+      const updatedTypes = [...expertRoleTypes, newExpertRoleType.trim()];
+      onSettingChange('expert_role_types', updatedTypes);
+      setNewExpertRoleType("");
+      toast({
+        title: t('success'),
+        description: "تم إضافة دور الخبير بنجاح"
+      });
+    }
+  };
+
+  const removeExpertRoleType = (typeToRemove: string) => {
+    const updatedTypes = expertRoleTypes.filter((type: string) => type !== typeToRemove);
+    onSettingChange('expert_role_types', updatedTypes);
+    toast({
+      title: t('success'),
+      description: "تم حذف دور الخبير بنجاح"
+    });
+  };
+
   return (
-    <div className="space-y-6 rtl:text-right ltr:text-left">
+    <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
       <Card>
-        <CardHeader className="rtl:text-right ltr:text-left">
-          <CardTitle>إعدادات التقييم العامة</CardTitle>
-          <CardDescription>التحكم في آلية تقييم الأفكار والتحديات</CardDescription>
+        <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
+          <CardTitle>{t('systemLists.evaluatorTypes')}</CardTitle>
+          <CardDescription>إدارة أنواع المقيمين المتاحة في النظام</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
+          <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <Input
+              value={newEvaluatorType}
+              onChange={(e) => setNewEvaluatorType(e.target.value)}
+              placeholder="أضف نوع مقيم جديد"
+              className={isRTL ? 'text-right' : 'text-left'}
+            />
+            <Button onClick={addEvaluatorType} size="sm">
+              <Plus className="w-4 h-4" />
+            </Button>
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            {evaluatorTypes.map((type: string, index: number) => (
+              <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                <span>{t(`evaluatorTypes.${type}`) || type}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-auto p-0 hover:bg-transparent"
+                  onClick={() => removeEvaluatorType(type)}
+                >
+                  <X className="w-3 h-3" />
+                </Button>
+              </Badge>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
+          <CardTitle>{t('systemLists.expertRoleTypes')}</CardTitle>
+          <CardDescription>إدارة أدوار الخبراء المتاحة في النظام</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <Input
+              value={newExpertRoleType}
+              onChange={(e) => setNewExpertRoleType(e.target.value)}
+              placeholder="أضف دور خبير جديد"
+              className={isRTL ? 'text-right' : 'text-left'}
+            />
+            <Button onClick={addExpertRoleType} size="sm">
+              <Plus className="w-4 h-4" />
+            </Button>
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            {expertRoleTypes.map((type: string, index: number) => (
+              <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                <span>{t(`expertRoleTypes.${type}`) || type}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-auto p-0 hover:bg-transparent"
+                  onClick={() => removeExpertRoleType(type)}
+                >
+                  <X className="w-3 h-3" />
+                </Button>
+              </Badge>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
+          <CardTitle>إعدادات التقييم</CardTitle>
+          <CardDescription>التحكم في نظام التقييم والمراجعة</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="space-y-2">
-              <Label htmlFor="evalScale">مقياس التقييم</Label>
-              <Select 
-                value={settings.evaluationScale || "10"} 
-                onValueChange={(value) => onSettingChange('evaluationScale', value)}
-              >
-                <SelectTrigger className="rtl:text-right ltr:text-left">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="5">1-5</SelectItem>
-                  <SelectItem value="10">1-10</SelectItem>
-                  <SelectItem value="100">1-100</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="minEvaluatorsPerIdea">الحد الأدنى للمقيمين لكل فكرة</Label>
+              <Input
+                id="minEvaluatorsPerIdea"
+                type="number"
+                value={settings.minEvaluatorsPerIdea || 2}
+                onChange={(e) => onSettingChange('minEvaluatorsPerIdea', parseInt(e.target.value))}
+                min="1"
+                max="10"
+                className={isRTL ? 'text-right' : 'text-left'}
+              />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="evalRequiredFields">عدد المعايير المطلوبة</Label>
+              <Label htmlFor="maxEvaluatorsPerIdea">الحد الأقصى للمقيمين لكل فكرة</Label>
               <Input
-                id="evalRequiredFields"
+                id="maxEvaluatorsPerIdea"
                 type="number"
-                value={settings.evaluationRequiredFields || 5}
-                onChange={(e) => onSettingChange('evaluationRequiredFields', parseInt(e.target.value))}
+                value={settings.maxEvaluatorsPerIdea || 5}
+                onChange={(e) => onSettingChange('maxEvaluatorsPerIdea', parseInt(e.target.value))}
                 min="1"
-                max="10"
-                className="rtl:text-right ltr:text-left"
+                max="20"
+                className={isRTL ? 'text-right' : 'text-left'}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="evaluationTimeLimit">المهلة الزمنية للتقييم (بالأيام)</Label>
+              <Input
+                id="evaluationTimeLimit"
+                type="number"
+                value={settings.evaluationTimeLimit || 7}
+                onChange={(e) => onSettingChange('evaluationTimeLimit', parseInt(e.target.value))}
+                min="1"
+                max="30"
+                className={isRTL ? 'text-right' : 'text-left'}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="minEvaluationScore">الحد الأدنى لدرجة التقييم</Label>
+              <Input
+                id="minEvaluationScore"
+                type="number"
+                value={settings.minEvaluationScore || 1}
+                onChange={(e) => onSettingChange('minEvaluationScore', parseInt(e.target.value))}
+                min="1"
+                max="5"
+                className={isRTL ? 'text-right' : 'text-left'}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="maxEvaluationScore">الحد الأقصى لدرجة التقييم</Label>
+              <Input
+                id="maxEvaluationScore"
+                type="number"
+                value={settings.maxEvaluationScore || 10}
+                onChange={(e) => onSettingChange('maxEvaluationScore', parseInt(e.target.value))}
+                min="5"
+                max="100"
+                className={isRTL ? 'text-right' : 'text-left'}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="passingScore">الدرجة المطلوبة للنجاح</Label>
+              <Input
+                id="passingScore"
+                type="number"
+                value={settings.passingScore || 70}
+                onChange={(e) => onSettingChange('passingScore', parseInt(e.target.value))}
+                min="1"
+                max="100"
+                className={isRTL ? 'text-right' : 'text-left'}
               />
             </div>
           </div>
 
-          <div className="flex items-center justify-between rtl:flex-row-reverse">
-            <div className="space-y-0.5 rtl:text-right ltr:text-left">
-              <Label className="text-base">إجبار التعليقات</Label>
-              <p className="text-sm text-muted-foreground">مطالبة المقيمين بكتابة تعليقات</p>
+          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <Label className="text-base">التقييم المجهول</Label>
+              <p className="text-sm text-muted-foreground">إخفاء هوية المقيمين عن بعضهم البعض</p>
             </div>
             <Switch 
-              checked={settings.evaluationRequireComments !== false}
-              onCheckedChange={(checked) => onSettingChange('evaluationRequireComments', checked)}
+              checked={settings.enableAnonymousEvaluation !== false}
+              onCheckedChange={(checked) => onSettingChange('enableAnonymousEvaluation', checked)}
+            />
+          </div>
+
+          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <Label className="text-base">التقييم التعاوني</Label>
+              <p className="text-sm text-muted-foreground">السماح للمقيمين بمناقشة التقييمات</p>
+            </div>
+            <Switch 
+              checked={settings.enableCollaborativeEvaluation || false}
+              onCheckedChange={(checked) => onSettingChange('enableCollaborativeEvaluation', checked)}
+            />
+          </div>
+
+          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <Label className="text-base">التقييم الإجباري للتعليقات</Label>
+              <p className="text-sm text-muted-foreground">مطالبة المقيمين بكتابة تعليقات مفصلة</p>
+            </div>
+            <Switch 
+              checked={settings.requireEvaluationComments !== false}
+              onCheckedChange={(checked) => onSettingChange('requireEvaluationComments', checked)}
             />
           </div>
         </CardContent>
