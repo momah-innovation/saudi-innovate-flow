@@ -393,49 +393,38 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
         .select('setting_key, setting_value, data_type, is_localizable, setting_category');
 
       if (error) throw error;
-      
-      // Get current language preference  
-      const currentLanguage = localStorage.getItem('language') || 'ar';
 
       const processedSettings = settings?.reduce((acc, setting) => {
         let value = setting.setting_value;
         
-        // Handle different data types
+        // Handle different data types - store unified values, let i18n handle translation
         if (setting.data_type === 'boolean') {
           value = value === true || value === 'true';
         } else if (setting.data_type === 'number') {
           value = typeof value === 'number' ? value : Number(value) || 0;
-        } else if (setting.data_type === 'array' && setting.is_localizable) {
-          // Handle i18n arrays - extract for current language
-          if (typeof value === 'object' && value !== null) {
-            if (value[currentLanguage]) {
-              value = value[currentLanguage];
-            } else if (value['en']) {
-              value = value['en']; // Fallback to English
-            } else if (Array.isArray(value)) {
-              // Already an array, keep as is
-            } else {
-              value = [];
-            }
-          } else if (typeof value === 'string' && (value.startsWith('[') || value.startsWith('{'))) {
+        } else if (setting.data_type === 'array') {
+          // For arrays, store unified values (translation keys)
+          if (typeof value === 'string' && (value.startsWith('[') || value.startsWith('{'))) {
             try {
               const parsed = JSON.parse(value);
-              if (parsed[currentLanguage]) {
-                value = parsed[currentLanguage];
-              } else if (parsed['en']) {
+              // If it's the old i18n format with language keys, extract the English version
+              if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed) && parsed['en']) {
                 value = parsed['en'];
+              } else if (Array.isArray(parsed)) {
+                value = parsed;
               } else {
-                value = Array.isArray(parsed) ? parsed : [];
+                value = [];
               }
             } catch (e) {
               value = [];
             }
+          } else if (Array.isArray(value)) {
+            // Already an array, keep as is
+          } else {
+            value = [];
           }
-        } else if (setting.is_localizable && typeof value === 'object' && value !== null) {
-          // Handle i18n strings
-          value = value[currentLanguage] || value['en'] || value;
         } else if (typeof value === 'string' && (value.startsWith('[') || value.startsWith('{'))) {
-          // Handle JSON arrays/objects
+          // Handle JSON values
           try {
             value = JSON.parse(value);
           } catch (e) {

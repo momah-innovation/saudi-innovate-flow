@@ -20,11 +20,8 @@ export function GlobalListSettings({}: GlobalListSettingsProps) {
   const [editingList, setEditingList] = useState<string | null>(null);
   const [newItem, setNewItem] = useState("");
   const { updateSetting, ...settings } = useSettings();
-  
-  // Get current language for i18n
-  const currentLanguage = localStorage.getItem('language') || 'ar';
-  
-  // Global system lists that don't belong to specific domains
+
+  // Global system lists that don't belong to specific domains - store unified values
   const globalLists = {
     // Language and localization
     supported_languages: settings.supported_languages || ["en", "ar", "he", "fa"],
@@ -62,7 +59,7 @@ export function GlobalListSettings({}: GlobalListSettingsProps) {
 
   const listLabels = {
     supported_languages: isRTL ? "اللغات المدعومة" : "Supported Languages",
-    ui_themes: isRTL ? "مظاهر الواجهة" : "UI Themes",
+    ui_themes: isRTL ? "مظاهر الواجهة" : "UI Themes", 
     currency_codes: isRTL ? "رموز العملات" : "Currency Codes",
     time_zones: isRTL ? "المناطق الزمنية" : "Time Zones",
     frequency_options: isRTL ? "خيارات التكرار" : "Frequency Options",
@@ -78,6 +75,16 @@ export function GlobalListSettings({}: GlobalListSettingsProps) {
     backup_types: isRTL ? "أنواع النسخ الاحتياطي" : "Backup Types",
     status_types: isRTL ? "أنواع الحالة" : "Status Types",
     rating_scales: isRTL ? "مقاييس التقييم" : "Rating Scales",
+  };
+
+  // Helper function to get translated item using i18n
+  const getTranslatedItem = (item: string, listKey: string) => {
+    // For most items, use the translation key pattern
+    const translationKey = `${listKey}.${item}`;
+    const translated = t(translationKey);
+    
+    // If translation exists (not the same as key), use it; otherwise use the original item
+    return translated !== translationKey ? translated : item;
   };
 
   // Map UI keys to actual setting keys
@@ -182,7 +189,7 @@ export function GlobalListSettings({}: GlobalListSettingsProps) {
         <div className="space-y-2">
           {items.map((item, index) => (
             <div key={index} className={`flex items-center justify-between p-2 bg-muted rounded-lg ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <span className="flex-1">{item}</span>
+              <span className="flex-1">{getTranslatedItem(item, listKey)}</span>
               <Button
                 variant="ghost"
                 size="sm"
