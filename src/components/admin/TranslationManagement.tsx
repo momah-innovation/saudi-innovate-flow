@@ -53,13 +53,14 @@ const TranslationManagement = () => {
         
         for (let i = 0; i < keys.length - 1; i++) {
           const key = keys[i];
-          if (!(key in current) || typeof current[key] !== 'object') {
+          if (!(key in current) || typeof current[key] !== 'object' || Array.isArray(current[key])) {
             current[key] = {};
           }
           current = current[key];
         }
         
-        current[keys[keys.length - 1]] = translation_text;
+        // Ensure we're setting a string value, not accidentally creating an array
+        current[keys[keys.length - 1]] = String(translation_text);
       });
 
       // 4. Deep merge existing translations with database translations (database takes precedence)
