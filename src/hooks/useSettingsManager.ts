@@ -171,14 +171,14 @@ export const useSettingsManager = () => {
         case 'boolean':
           return setting.setting_value === 'true' || setting.setting_value === true;
         case 'number':
-          return parseFloat(setting.setting_value);
+          return parseFloat(String(setting.setting_value));
         case 'array':
         case 'object':
           return typeof setting.setting_value === 'string' 
             ? JSON.parse(setting.setting_value) 
             : setting.setting_value;
         default:
-          return setting.setting_value;
+          return typeof setting.setting_value === 'string' ? setting.setting_value : String(setting.setting_value);
       }
     } catch (e) {
       console.warn(`Failed to parse setting ${key}:`, e);

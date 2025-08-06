@@ -53,7 +53,7 @@ import { GlobalListSettings } from "@/components/admin/settings/GlobalListSettin
 import { AISettings } from "@/components/admin/settings/AISettings";
 import { UISettings } from "@/components/admin/settings/UISettings";
 import { PerformanceSettings } from "@/components/admin/settings/PerformanceSettings";
-import { useSettings } from "@/contexts/SettingsContext";
+import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { useDirection } from "@/components/ui/direction-provider";
 import { useTranslation } from "@/hooks/useAppTranslation";
 
@@ -62,26 +62,30 @@ const SystemSettings = () => {
   const { t } = useTranslation();
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState("general");
-  const settings = useSettings();
   const { isRTL } = useDirection();
+  
+  // Use the new unified settings manager
+  const {
+    settings,
+    updateSetting,
+    bulkUpdate,
+    isLoading,
+    isUpdating,
+    isBulkUpdating
+  } = useSettingsManager();
 
   const handleSettingChange = async (key: string, value: any) => {
-    try {
-      await settings.updateSetting(key as any, value);
-    } catch (error) {
-      console.error('Error updating setting:', error);
-      toast({
-        title: t('error'),
-        description: t('updateSettingError'),
-        variant: "destructive"
-      });
-    }
+    // Determine category and data type from the setting key
+    const setting = settings.find(s => s.setting_key === key);
+    const category = setting?.setting_category || 'general';
+    const dataType = setting?.data_type || 'string';
+    
+    updateSetting({ key, value, category, dataType });
   };
 
-  const saveSettings = async () => {
+  const saveAllSettings = async () => {
     try {
       setSaving(true);
-      await settings.refetch();
       toast({
         title: t('success'),
         description: t('settingsSaved'),
@@ -100,7 +104,6 @@ const SystemSettings = () => {
 
   const resetToDefaults = async () => {
     if (confirm(t('resetConfirmation'))) {
-      // This would need to be implemented as a reset function in the context
       toast({
         title: t('success'),
         description: t('resetSuccess')
@@ -108,7 +111,7 @@ const SystemSettings = () => {
     }
   };
 
-  if (settings.loading) {
+  if (isLoading) {
     return (
       <AppShell>
         <div className="container mx-auto p-6 space-y-6">
@@ -137,8 +140,8 @@ const SystemSettings = () => {
               <RotateCcw className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               {t('resetSettings')}
             </Button>
-            <Button onClick={saveSettings} disabled={saving}>
-              {saving ? (
+            <Button onClick={saveAllSettings} disabled={saving || isUpdating || isBulkUpdating}>
+              {(saving || isUpdating || isBulkUpdating) ? (
                 <Loader2 className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'} animate-spin`} />
               ) : (
                 <Save className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
