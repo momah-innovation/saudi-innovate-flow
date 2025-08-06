@@ -755,6 +755,24 @@
     "cancel": "Cancel",
     "save": "Save"
   },
+  "settings": {
+    "array_editor": "Array Editor",
+    "object_editor": "Object Editor", 
+    "open_editor": "Open Editor",
+    "close_editor": "Close Editor",
+    "items": "items",
+    "properties": "properties",
+    "enabled": "Enabled",
+    "modified": "Modified",
+    "shared": "Shared",
+    "affects": "Affects",
+    "revert": "Revert",
+    "save": "Save",
+    "no_settings": "No settings found for the selected criteria",
+    "delete": {
+      "confirm": "Are you sure you want to delete this setting?"
+    }
+  },
   "system_settings_page": {
     "title": "System Settings",
     "description": "Configure and manage system-wide settings",

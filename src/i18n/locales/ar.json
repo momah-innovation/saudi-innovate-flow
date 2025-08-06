@@ -755,6 +755,24 @@
     "cancel": "إلغاء",
     "save": "حفظ"
   },
+  "settings": {
+    "array_editor": "محرر المصفوفة",
+    "object_editor": "محرر الكائن",
+    "open_editor": "فتح المحرر", 
+    "close_editor": "إغلاق المحرر",
+    "items": "عناصر",
+    "properties": "خصائص", 
+    "enabled": "مفعل",
+    "modified": "معدل",
+    "shared": "مشترك",
+    "affects": "يؤثر على",
+    "revert": "تراجع",
+    "save": "حفظ",
+    "no_settings": "لم يتم العثور على إعدادات للمعايير المحددة",
+    "delete": {
+      "confirm": "هل أنت متأكد من حذف هذا الإعداد؟"
+    }
+  },
   "system_settings_page": {
     "title": "إعدادات النظام",
     "description": "تكوين وإدارة إعدادات النظام",
