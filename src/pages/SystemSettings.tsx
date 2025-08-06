@@ -17,18 +17,18 @@ const SystemSettings = () => {
   const categories = [
     { key: "all", label: t('all'), icon: Database },
     { key: "general", label: t('general'), icon: Settings },
-    { key: "challenges", label: isRTL ? 'التحديات' : 'Challenges', icon: Settings },
-    { key: "ideas", label: isRTL ? 'الأفكار' : 'Ideas', icon: Settings },
-    { key: "events", label: isRTL ? 'الفعاليات' : 'Events', icon: Settings },
-    { key: "campaigns", label: isRTL ? 'الحملات' : 'Campaigns', icon: Settings },
-    { key: "partners", label: isRTL ? 'الشركاء' : 'Partners', icon: Settings },
-    { key: "opportunities", label: isRTL ? 'الفرص' : 'Opportunities', icon: Settings },
-    { key: "analytics", label: isRTL ? 'التحليلات' : 'Analytics', icon: Settings },
+    { key: "challenges", label: t('system_settings_page.challenges'), icon: Settings },
+    { key: "ideas", label: t('system_settings_page.ideas'), icon: Settings },
+    { key: "events", label: t('system_settings_page.events'), icon: Settings },
+    { key: "campaigns", label: t('system_settings_page.campaigns'), icon: Settings },
+    { key: "partners", label: t('system_settings_page.partners'), icon: Settings },
+    { key: "opportunities", label: t('system_settings_page.opportunities'), icon: Settings },
+    { key: "analytics", label: t('system_settings_page.analytics'), icon: Settings },
     { key: "security", label: t('security'), icon: Settings },
-    { key: "ai", label: isRTL ? 'الذكاء الاصطناعي' : 'AI', icon: Bot },
-    { key: "ui", label: isRTL ? 'واجهة المستخدم' : 'UI', icon: Palette },
-    { key: "performance", label: isRTL ? 'الأداء' : 'Performance', icon: Zap },
-    { key: "translations", label: isRTL ? 'إدارة الترجمات' : 'Translation Management', icon: Languages },
+    { key: "ai", label: t('system_settings_page.ai'), icon: Bot },
+    { key: "ui", label: t('system_settings_page.ui'), icon: Palette },
+    { key: "performance", label: t('system_settings_page.performance'), icon: Zap },
+    { key: "translations", label: t('system_settings_page.translation_management'), icon: Languages },
   ];
 
   return (
@@ -48,10 +48,7 @@ const SystemSettings = () => {
               {t('system_settings_page.title')}
             </CardTitle>
             <CardDescription>
-              {isRTL 
-                ? 'إدارة شاملة لجميع إعدادات النظام مع دعم كامل للغة العربية والترجمة والتحديث المباشر للقاعدة' 
-                : 'Comprehensive management of all system settings with full Arabic support, internationalization, and live database updates'
-              }
+              {t('systemSettingsDescription')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -95,10 +92,7 @@ const SystemSettings = () => {
               {t('system_settings_page.shared_settings')}
             </CardTitle>
             <CardDescription>
-              {isRTL 
-                ? 'الإعدادات التي تؤثر على أنظمة متعددة ويتم توحيدها لضمان الاتساق'
-                : 'Settings that affect multiple systems and are unified to ensure consistency'
-              }
+              {t('sharedSettingsDescription')}
             </CardDescription>
           </CardHeader>
           <CardContent>

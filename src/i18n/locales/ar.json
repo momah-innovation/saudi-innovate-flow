@@ -1,6 +1,7 @@
 {
   "systemSettings": "إعدادات النظام",
   "systemSettingsDescription": "تكوين إعدادات النظام العامة",
+  "sharedSettingsDescription": "الإعدادات التي تؤثر على أنظمة متعددة ويتم توحيدها لضمان الاتساق",
   "general": "عام",
   "security": "الأمان",
   "notifications": "الإشعارات",
@@ -1203,5 +1204,20 @@
     "next": "التالي",
     "previous": "السابق",
     "cancel": "إلغاء"
+  },
+  "system_settings_page": {
+    "title": "إدارة إعدادات النظام",
+    "shared_settings": "الإعدادات المشتركة",
+    "challenges": "التحديات",
+    "ideas": "الأفكار",
+    "events": "الفعاليات", 
+    "campaigns": "الحملات",
+    "partners": "الشركاء",
+    "opportunities": "الفرص",
+    "analytics": "التحليلات",
+    "ai": "الذكاء الاصطناعي",
+    "ui": "واجهة المستخدم",
+    "performance": "الأداء",
+    "translation_management": "إدارة الترجمات"
   }
 }

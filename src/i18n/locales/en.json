@@ -1,6 +1,7 @@
 {
   "systemSettings": "System Settings",
   "systemSettingsDescription": "Configure global system settings",
+  "sharedSettingsDescription": "Settings that affect multiple systems and are unified to ensure consistency",
   "general": "General",
   "security": "Security",
   "notifications": "Notifications",
@@ -1203,5 +1204,20 @@
     "next": "Next",
     "previous": "Previous",
     "cancel": "Cancel"
+  },
+  "system_settings_page": {
+    "title": "System Settings Management",
+    "shared_settings": "Shared Settings",
+    "challenges": "Challenges",
+    "ideas": "Ideas", 
+    "events": "Events",
+    "campaigns": "Campaigns",
+    "partners": "Partners",
+    "opportunities": "Opportunities",
+    "analytics": "Analytics",
+    "ai": "AI",
+    "ui": "UI",
+    "performance": "Performance",
+    "translation_management": "Translation Management"
   }
 }
