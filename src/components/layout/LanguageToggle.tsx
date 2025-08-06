@@ -1,9 +1,11 @@
 import { Languages } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useTranslation } from '@/hooks/useAppTranslation';
 
 export function LanguageToggle() {
   const { language, setLanguage } = useDirection();
+  const { t } = useTranslation();
 
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'ar' : 'en');
@@ -15,11 +17,11 @@ export function LanguageToggle() {
       size="sm" 
       className="h-9 w-9 p-0"
       onClick={toggleLanguage}
-      title={language === 'en' ? 'Switch to Arabic' : 'التبديل إلى الإنجليزية'}
+      title={t('switch_language')}
     >
       <Languages className="h-4 w-4" />
       <span className="sr-only">
-        {language === 'en' ? 'Switch to Arabic' : 'التبديل إلى الإنجليزية'}
+        {t('switch_language')}
       </span>
     </Button>
   );

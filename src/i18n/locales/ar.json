@@ -379,5 +379,16 @@
     "evaluator": "مقيم",
     "implementer": "منفذ",
     "observer": "مراقب"
-  }
+  },
+  "toggle_theme": "تبديل المظهر",
+  "open_navigation": "فتح قائمة التنقل",
+  "toggle_direction": "تبديل اتجاه النص",
+  "switch_language": "تبديل اللغة",
+  "just_now": "الآن",
+  "minutes_ago": "منذ {{count}} دقيقة",
+  "minutes_ago_plural": "منذ {{count}} دقائق",
+  "hours_ago": "منذ {{count}} ساعة",
+  "hours_ago_plural": "منذ {{count}} ساعات", 
+  "days_ago": "منذ {{count}} يوم",
+  "days_ago_plural": "منذ {{count}} أيام"
 }

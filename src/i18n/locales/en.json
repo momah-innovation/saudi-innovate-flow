@@ -379,5 +379,16 @@
     "evaluator": "Evaluator",
     "implementer": "Implementer",
     "observer": "Observer"
-  }
+  },
+  "toggle_theme": "Toggle theme",
+  "open_navigation": "Open navigation menu",
+  "toggle_direction": "Toggle text direction",
+  "switch_language": "Switch language",
+  "just_now": "Just now",
+  "minutes_ago": "{{count}} minute ago",
+  "minutes_ago_plural": "{{count}} minutes ago",
+  "hours_ago": "{{count}} hour ago", 
+  "hours_ago_plural": "{{count}} hours ago",
+  "days_ago": "{{count}} day ago",
+  "days_ago_plural": "{{count}} days ago"
 }

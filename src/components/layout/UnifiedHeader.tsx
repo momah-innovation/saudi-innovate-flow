@@ -208,40 +208,18 @@ export function UnifiedHeader({
             <>
               {/* Language Toggle */}
               {showLanguageSwitch && (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="gap-2 hover:bg-accent hover:text-accent-foreground transition-colors">
-                      <Languages className="h-4 w-4" />
-                      <span className={cn('hidden sm:inline', isRTL && 'font-arabic')}>
-                        {supportedLanguages.find(l => l.code === language)?.nativeLabel}
-                      </span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent 
-                    align={isRTL ? 'start' : 'end'}
-                    className="min-w-[180px]"
-                  >
-                    {supportedLanguages.map((lang) => (
-                      <DropdownMenuItem
-                        key={lang.code}
-                        onClick={() => setLanguage(lang.code as any)}
-                        className={cn(
-                          'flex items-center justify-between transition-colors',
-                          language === lang.code && 'bg-accent text-accent-foreground'
-                        )}
-                      >
-                        <span>{lang.nativeLabel}</span>
-                        <span className="text-muted-foreground text-sm">{lang.label}</span>
-                      </DropdownMenuItem>
-                    ))}
-                    <DropdownMenuItem
-                      onClick={toggleDirection}
-                      className="border-t mt-1 pt-1"
-                    >
-                      {t('toggle_direction')} ({isRTL ? 'LTR' : 'RTL'})
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="h-9 w-9 p-0"
+                  onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
+                  title={t('switch_language')}
+                >
+                  <Languages className="h-4 w-4" />
+                  <span className="sr-only">
+                    {t('switch_language')}
+                  </span>
+                </Button>
               )}
 
               {/* Theme Toggle */}
@@ -249,9 +227,9 @@ export function UnifiedHeader({
                 <Button 
                   variant="ghost" 
                   size="sm" 
+                  className="h-9 w-9 p-0"
                   onClick={toggleTheme}
-                  className="hover:bg-accent hover:text-accent-foreground transition-colors"
-                  aria-label={t('toggle_theme')}
+                  title={t('toggle_theme')}
                 >
                   {theme.colorScheme === 'dark' ? (
                     <Sun className="h-4 w-4" />
@@ -355,6 +333,8 @@ export function UnifiedHeader({
 
       <div className={cn('flex items-center gap-2', isRTL && 'flex-row-reverse')}>
         {renderSystemControls()}
+        {showNotifications && <NotificationCenter />}
+        {showUserMenu && <UserMenu />}
       </div>
     </header>
   );
@@ -362,38 +342,28 @@ export function UnifiedHeader({
   const renderSystemControls = () => (
     <>
       {showLanguageSwitch && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="gap-2">
-              <Languages className="h-4 w-4" />
-              <span className={cn('hidden sm:inline', isRTL && 'font-arabic')}>
-                {supportedLanguages.find(l => l.code === language)?.nativeLabel}
-              </span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent 
-            align={isRTL ? 'start' : 'end'}
-            className="min-w-[180px]"
-          >
-            {supportedLanguages.map((lang) => (
-              <DropdownMenuItem
-                key={lang.code}
-                onClick={() => setLanguage(lang.code as any)}
-                className={cn(
-                  'flex items-center justify-between',
-                  language === lang.code && 'bg-accent'
-                )}
-              >
-                <span>{lang.nativeLabel}</span>
-                <span className="text-muted-foreground text-sm">{lang.label}</span>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="h-9 w-9 p-0"
+          onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
+          title={t('switch_language')}
+        >
+          <Languages className="h-4 w-4" />
+          <span className="sr-only">
+            {t('switch_language')}
+          </span>
+        </Button>
       )}
 
       {showThemeSwitch && (
-        <Button variant="ghost" size="sm" onClick={toggleTheme}>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="h-9 w-9 p-0"
+          onClick={toggleTheme}
+          title={t('toggle_theme')}
+        >
           {theme.colorScheme === 'dark' ? (
             <Sun className="h-4 w-4" />
           ) : (
