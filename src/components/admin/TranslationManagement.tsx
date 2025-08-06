@@ -84,23 +84,45 @@ const TranslationManagement = () => {
         if (typeof obj === 'object' && obj !== null) {
           const keys = Object.keys(obj);
           
-          // More aggressive detection: if ALL keys are numeric and sequential
-          const numericKeys = keys.filter(k => /^\d+$/.test(k)).map(k => parseInt(k));
-          const isCharArray = numericKeys.length === keys.length && 
-                              numericKeys.length > 0 && 
-                              numericKeys.every((val, idx) => val === idx);
+          // Check if this object has character array keys (0,1,2,3...) mixed with real properties
+          const numericKeys = keys.filter(k => /^\d+$/.test(k)).map(k => parseInt(k)).sort((a, b) => a - b);
+          const nonNumericKeys = keys.filter(k => !/^\d+$/.test(k));
           
-          if (isCharArray) {
-            // Convert character array back to string
+          // If we have sequential numeric keys starting from 0, it's likely a character array
+          const hasCharArray = numericKeys.length > 0 && 
+                               numericKeys[0] === 0 && 
+                               numericKeys.every((val, idx) => val === idx) &&
+                               numericKeys.length < 50; // Reasonable limit for string length
+          
+          if (hasCharArray) {
+            console.log(`[DEBUG] Found character array at ${path}:`, numericKeys.length, 'chars +', nonNumericKeys.length, 'properties');
+            
+            // Extract the string from character array
             const chars = [];
-            for (let i = 0; i < keys.length; i++) {
+            for (let i = 0; i < numericKeys.length; i++) {
               if (obj[i] !== undefined) {
                 chars.push(obj[i]);
               }
             }
-            const result = chars.join('');
-            console.log(`[DEBUG] Fixed character array at ${path}: "${result}"`);
-            return result;
+            const reconstructedString = chars.join('');
+            console.log(`[DEBUG] Reconstructed string: "${reconstructedString}"`);
+            
+            // If there are non-numeric keys, create a clean object with both the string value and properties
+            if (nonNumericKeys.length > 0) {
+              const cleaned: any = {};
+              
+              // Add all non-numeric properties, cleaned recursively
+              for (const key of nonNumericKeys) {
+                cleaned[key] = cleanTranslations(obj[key], path ? `${path}.${key}` : key);
+              }
+              
+              console.log(`[DEBUG] Mixed object at ${path}: string="${reconstructedString}" + ${nonNumericKeys.length} properties`);
+              return cleaned; // Return just the properties, the character array title is corrupted anyway
+            } else {
+              // Pure character array, just return the string
+              console.log(`[DEBUG] Pure character array at ${path}: "${reconstructedString}"`);
+              return reconstructedString;
+            }
           }
           
           // Regular object, clean recursively
