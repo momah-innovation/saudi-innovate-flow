@@ -76,8 +76,8 @@ export default function TranslationManagement() {
     } catch (error) {
       console.error('Error fetching translations:', error);
       toast({
-        title: "خطأ في تحميل الترجمات",
-        description: "فشل في تحميل الترجمات من قاعدة البيانات",
+        title: t('error'),
+        description: language === 'ar' ? "فشل في تحميل الترجمات من قاعدة البيانات" : "Failed to load translations from database",
         variant: "destructive"
       });
     } finally {
@@ -280,7 +280,7 @@ export default function TranslationManagement() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Languages className="w-6 h-6" />
-          <h1 className="text-2xl font-bold">إدارة الترجمات</h1>
+          <h1 className="text-2xl font-bold">{t('translationManagement')}</h1>
         </div>
         <div className="flex gap-2">
           <Button onClick={exportTranslations} variant="outline">
