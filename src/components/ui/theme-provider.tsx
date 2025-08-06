@@ -21,6 +21,7 @@ interface ThemeContextType {
 const defaultTheme: ThemeConfig = {
   variant: 'default',
   colorScheme: 'auto',
+  primaryColor: 'hsl(280 84% 12%)', // Match index.css primary color
   borderRadius: 'md',
   animations: true,
   compactMode: false
@@ -117,26 +118,26 @@ export function useTheme() {
   return context;
 }
 
-// Theme presets
+// Theme presets - aligned with design system colors
 export const themePresets = {
   default: {
     variant: 'default' as ThemeVariant,
-    primaryColor: 'hsl(222.2 84% 4.9%)',
+    primaryColor: 'hsl(280 84% 12%)', // Match index.css --primary
     borderRadius: 'md' as const
   },
   modern: {
     variant: 'modern' as ThemeVariant,
-    primaryColor: 'hsl(262.1 83.3% 57.8%)',
+    primaryColor: 'hsl(217 91% 60%)', // Use info color for modern theme
     borderRadius: 'lg' as const
   },
   minimal: {
     variant: 'minimal' as ThemeVariant,
-    primaryColor: 'hsl(0 0% 9%)',
+    primaryColor: 'hsl(220 13% 69%)', // Use inactive color for minimal
     borderRadius: 'sm' as const
   },
   vibrant: {
     variant: 'vibrant' as ThemeVariant,
-    primaryColor: 'hsl(346.8 77.2% 49.8%)',
+    primaryColor: 'hsl(340 82% 52%)', // Use social color for vibrant
     borderRadius: 'xl' as const
   }
 };

@@ -770,81 +770,158 @@ const DesignSystem = () => {
 
           {/* Colors Tab */}
           <TabsContent value="colors" className="space-y-8">
-            {/* Primary Colors */}
+            {/* Overview Stats */}
+            <Card className="p-6 bg-gradient-to-br from-primary/5 to-innovation/5 border-primary/20">
+              <h2 className="text-3xl font-bold mb-2">Complete Color System</h2>
+              <p className="text-muted-foreground mb-6">Comprehensive design tokens with consistent semantic naming</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">16</div>
+                  <div className="text-sm text-muted-foreground">Core Colors</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-success">24</div>
+                  <div className="text-sm text-muted-foreground">Status Variants</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-innovation">12</div>
+                  <div className="text-sm text-muted-foreground">Role Colors</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-warning">8</div>
+                  <div className="text-sm text-muted-foreground">Special Tokens</div>
+                </div>
+              </div>
+            </Card>
+            
+            {/* Core System Colors */}
             <div>
-              <h2 className="text-2xl font-bold mb-6">Semantic Color Tokens</h2>
+              <h3 className="text-2xl font-bold mb-6">Core System Colors</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
+                <ColorToken name="Primary" className="bg-primary text-primary-foreground" description="Main brand color (280° 84% 12%)" />
+                <ColorToken name="Secondary" className="bg-secondary text-secondary-foreground" description="Supporting backgrounds" />
+                <ColorToken name="Accent" className="bg-accent text-accent-foreground" description="Highlight interactions" />
+                <ColorToken name="Muted" className="bg-muted text-muted-foreground" description="Subtle backgrounds" />
+                <ColorToken name="Background" className="bg-background text-foreground border" description="Page background" />
+                <ColorToken name="Foreground" className="bg-foreground text-background" description="Primary text" />
+                <ColorToken name="Card" className="bg-card text-card-foreground border" description="Card backgrounds" />
+                <ColorToken name="Popover" className="bg-popover text-popover-foreground border" description="Overlay content" />
+              </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-                <ColorToken 
-                  name="Primary" 
-                  className="bg-primary text-primary-foreground" 
-                  description="Main brand color"
-                />
-                <ColorToken 
-                  name="Secondary" 
-                  className="bg-secondary text-secondary-foreground" 
-                  description="Supporting brand color"
-                />
-                <ColorToken 
-                  name="Accent" 
-                  className="bg-accent text-accent-foreground" 
-                  description="Highlight and interaction"
-                />
-                <ColorToken 
-                  name="Muted" 
-                  className="bg-muted text-muted-foreground" 
-                  description="Subtle backgrounds"
-                />
+              <Separator className="my-8" />
+
+              {/* Status & Feedback Colors */}
+              <h3 className="text-xl font-semibold mb-6">Status & Feedback Colors</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
+                <ColorToken name="Success" className="bg-success text-success-foreground" description="Positive outcomes" />
+                <ColorToken name="Warning" className="bg-warning text-warning-foreground" description="Caution states" />
+                <ColorToken name="Destructive" className="bg-destructive text-destructive-foreground" description="Errors & deletion" />
+                <ColorToken name="Info" className="bg-info text-info-foreground" description="Information states" />
+                <ColorToken name="Complete" className="bg-complete text-complete-foreground" description="Finished states" />
+                <ColorToken name="Scheduled" className="bg-scheduled text-scheduled-foreground" description="Upcoming events" />
+                <ColorToken name="Active" className="bg-active text-active-foreground" description="Live & active" />
+                <ColorToken name="Inactive" className="bg-inactive text-inactive-foreground" description="Disabled states" />
+                <ColorToken name="Pending" className="bg-pending text-pending-foreground" description="Awaiting action" />
+              </div>
+              
+              {/* Light variants grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
+                <ColorToken name="Success Light" className="bg-success-light text-success border-success-border" description="Success backgrounds" />
+                <ColorToken name="Warning Light" className="bg-warning-light text-warning border-warning-border" description="Warning backgrounds" />
+                <ColorToken name="Info Light" className="bg-info-light text-info border-info-border" description="Info backgrounds" />
+                <ColorToken name="Complete Light" className="bg-complete-light text-complete border-complete-border" description="Complete backgrounds" />
               </div>
 
               <Separator className="my-8" />
 
-              {/* Status Colors */}
-              <h3 className="text-xl font-semibold mb-4">Status Colors</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <ColorToken 
-                  name="Success" 
-                  className="bg-success text-success-foreground" 
-                  description="Positive actions"
-                />
-                <ColorToken 
-                  name="Warning" 
-                  className="bg-warning text-warning-foreground" 
-                  description="Caution states"
-                />
-                <ColorToken 
-                  name="Destructive" 
-                  className="bg-destructive text-destructive-foreground" 
-                  description="Danger and errors"
-                />
-                <ColorToken 
-                  name="Innovation" 
-                  className="bg-innovation text-innovation-foreground" 
-                  description="Creative highlights"
-                />
+              {/* Priority System */}
+              <h3 className="text-xl font-semibold mb-6">Priority System</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <ColorToken name="High Priority" className="bg-priority-high text-priority-high-foreground" description="Urgent items" />
+                <ColorToken name="Medium Priority" className="bg-priority-medium text-priority-medium-foreground" description="Standard items" />
+                <ColorToken name="Low Priority" className="bg-priority-low text-priority-low-foreground" description="Optional items" />
+              </div>
+
+              <Separator className="my-8" />
+
+              {/* Innovation Categories */}
+              <h3 className="text-xl font-semibold mb-6">Innovation Categories</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <ColorToken name="Innovation" className="bg-innovation text-innovation-foreground" description="Creative solutions" />
+                <ColorToken name="Technology" className="bg-technology text-technology-foreground" description="Tech solutions" />
+                <ColorToken name="Sustainability" className="bg-sustainability text-sustainability-foreground" description="Green solutions" />
+                <ColorToken name="Social" className="bg-social text-social-foreground" description="Social impact" />
               </div>
 
               <Separator className="my-8" />
 
               {/* Role-based Colors */}
-              <h3 className="text-xl font-semibold mb-4">Role-based Colors</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <ColorToken 
-                  name="Expert" 
-                  className="bg-expert text-expert-foreground" 
-                  description="Expert designation"
-                />
-                <ColorToken 
-                  name="Partner" 
-                  className="bg-partner text-partner-foreground" 
-                  description="Partner branding"
-                />
-                <ColorToken 
-                  name="Innovator" 
-                  className="bg-innovator text-innovator-foreground" 
-                  description="Innovator identity"
-                />
+              <h3 className="text-xl font-semibold mb-6">Role-based Colors</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <ColorToken name="Expert" className="bg-expert text-expert-foreground" description="Expert designation" />
+                <ColorToken name="Partner" className="bg-partner text-partner-foreground" description="Partner branding" />
+                <ColorToken name="Stakeholder" className="bg-stakeholder text-stakeholder-foreground" description="Stakeholder identity" />
               </div>
+
+              <Separator className="my-8" />
+
+              {/* Trend Indicators */}
+              <h3 className="text-xl font-semibold mb-6">Trend & Direction</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <ColorToken name="Trend Up" className="bg-trend-up text-trend-up-foreground" description="Positive trends" />
+                <ColorToken name="Trend Down" className="bg-trend-down text-trend-down-foreground" description="Negative trends" />
+                <ColorToken name="Trend Stable" className="bg-trend-stable text-trend-stable-foreground" description="Stable metrics" />
+              </div>
+
+              <Separator className="my-8" />
+
+              {/* Special Indicators */}
+              <h3 className="text-xl font-semibold mb-6">Special Indicators</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <ColorToken name="Live" className="bg-live text-live-foreground" description="Real-time indicators" />
+                <ColorToken name="Hot" className="bg-hot text-hot-foreground" description="Trending content" />
+                <ColorToken name="Rating" className="bg-rating text-rating-foreground" description="Rating systems" />
+                <ColorToken name="Overlay" className="bg-overlay-background text-overlay-text" description="Modal overlays" />
+              </div>
+
+              <Separator className="my-8" />
+
+              {/* Category-specific Colors */}
+              <h3 className="text-xl font-semibold mb-6">Domain Categories</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <ColorToken name="Tech Category" className="bg-category-tech text-category-tech-foreground" description="Technology domain" />
+                <ColorToken name="Health Category" className="bg-category-health text-category-health-foreground" description="Healthcare domain" />
+                <ColorToken name="Finance Category" className="bg-category-finance text-category-finance-foreground" description="Financial domain" />
+              </div>
+
+              <Separator className="my-8" />
+
+              {/* Usage Guidelines */}
+              <Card className="p-6 bg-muted/20">
+                <h3 className="text-xl font-semibold mb-4">Usage Guidelines</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-medium mb-3 text-success">✅ Best Practices</h4>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li>• Use semantic color names (bg-success instead of bg-green-500)</li>
+                      <li>• Always pair backgrounds with their foreground colors</li>
+                      <li>• Use light variants for subtle backgrounds</li>
+                      <li>• Test colors in both light and dark modes</li>
+                      <li>• Maintain WCAG AA contrast ratios</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-medium mb-3 text-destructive">❌ Avoid</h4>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li>• Hardcoded color values in components</li>
+                      <li>• Using direct Tailwind colors (bg-red-500)</li>
+                      <li>• Mixing semantic and utility color classes</li>
+                      <li>• Creating custom colors outside the system</li>
+                      <li>• Ignoring color accessibility standards</li>
+                    </ul>
+                  </div>
+                </div>
+              </Card>
             </div>
           </TabsContent>
 
