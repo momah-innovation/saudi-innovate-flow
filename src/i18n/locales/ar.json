@@ -386,8 +386,28 @@
       "campaigns": "الحملات",
       "challenge": "إعدادات التحديات",
       "Challenge Management": "إدارة التحديات",
-      "challenge_management": "إدارة التحديات", 
-      "challenges": "التحديات"
+      "challenge_management": "إدارة التحديات",
+      "challenges": "التحديات",
+      "data": "إدارة البيانات",
+      "evaluations": "التقييمات",
+      "challenge": {
+        "description": "الإعدادات المتعلقة بتكوين وإدارة التحديات"
+      },
+      "Challenge Management": {
+        "description": "إعدادات إدارة ومراقبة التحديات المتقدمة"
+      },
+      "challenge_management": {
+        "description": "إعدادات إدارة وتنسيق التحديات"
+      },
+      "challenges": {
+        "description": "إعدادات وتكوينات التحديات العامة"
+      },
+      "data": {
+        "description": "إعدادات إدارة البيانات وتكوين التصدير"
+      },
+      "evaluations": {
+        "description": "معايير التقييم وإعدادات التقييم"
+      }
     },
     "challenge_priority_levels": {
       "label": "مستويات أولوية التحديات",
@@ -444,6 +464,22 @@
     "allow_anonymous_submissions": {
       "label": "السماح بالتقديمات المجهولة",
       "description": "تمكين تقديم الأفكار المجهولة"
+    },
+    "challenge_filter_status_options": {
+      "label": "خيارات حالة فلترة التحديات",
+      "description": "تكوين خيارات الحالة لفلترة التحديات"
+    },
+    "require_approval_for_publish": {
+      "label": "طلب موافقة للنشر",
+      "description": "طلب موافقة قبل نشر التحديات"
+    },
+    "data_export_formats": {
+      "label": "تنسيقات تصدير البيانات",
+      "description": "تكوين تنسيقات تصدير البيانات المتاحة"
+    },
+    "evaluation_criteria": {
+      "label": "معايير التقييم",
+      "description": "تكوين معايير تقييم التقديمات"
     }
   },
   "toggle_theme": "تبديل المظهر",

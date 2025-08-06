@@ -386,8 +386,28 @@
       "campaigns": "Campaigns",
       "challenge": "Challenge Settings",
       "Challenge Management": "Challenge Management",
-      "challenge_management": "Challenge Management",
-      "challenges": "Challenges"
+      "challenge_management": "Challenge Management", 
+      "challenges": "Challenges",
+      "data": "Data Management",
+      "evaluations": "Evaluations",
+      "challenge": {
+        "description": "Settings related to challenge configuration and management"
+      },
+      "Challenge Management": {
+        "description": "Advanced challenge management and oversight settings"
+      },
+      "challenge_management": {
+        "description": "Challenge management and coordination settings"
+      },
+      "challenges": {
+        "description": "General challenge settings and configurations"
+      },
+      "data": {
+        "description": "Data management and export configuration settings"
+      },
+      "evaluations": {
+        "description": "Evaluation criteria and assessment settings"
+      }
     },
     "challenge_priority_levels": {
       "label": "Challenge Priority Levels",
@@ -442,8 +462,24 @@
       "description": "Maximum number of submissions allowed per challenge"
     },
     "allow_anonymous_submissions": {
-      "label": "Allow Anonymous Submissions",
+      "label": "Allow Anonymous Submissions", 
       "description": "Enable anonymous idea submissions"
+    },
+    "challenge_filter_status_options": {
+      "label": "Challenge Filter Status Options",
+      "description": "Configure status options for challenge filtering"
+    },
+    "require_approval_for_publish": {
+      "label": "Require Approval for Publishing",
+      "description": "Require approval before publishing challenges"
+    },
+    "data_export_formats": {
+      "label": "Data Export Formats",
+      "description": "Configure available data export formats"
+    },
+    "evaluation_criteria": {
+      "label": "Evaluation Criteria",
+      "description": "Configure criteria for evaluating submissions"
     }
   },
   "toggle_theme": "Toggle theme",
