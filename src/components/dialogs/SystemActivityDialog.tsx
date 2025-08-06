@@ -3,6 +3,7 @@ import { DetailModal } from '@/components/ui/detail-modal';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, Activity, Clock, CheckCircle, AlertTriangle, User, Database } from 'lucide-react';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { supabase } from '@/integrations/supabase/client';
 
 interface SystemActivity {
@@ -25,6 +26,7 @@ interface SystemActivityDialogProps {
 export function SystemActivityDialog({ isOpen, onClose }: SystemActivityDialogProps) {
   const [activities, setActivities] = useState<SystemActivity[]>([]);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isOpen) {
@@ -138,14 +140,14 @@ export function SystemActivityDialog({ isOpen, onClose }: SystemActivityDialogPr
     <DetailModal
       isOpen={isOpen}
       onClose={onClose}
-      title="System Activity"
-      subtitle="Recent system activities and logs"
+      title={t('system_activity_dialog.title')}
+      subtitle={t('system_activity_dialog.subtitle')}
       maxWidth="4xl"
     >
       {loading ? (
         <div className="flex items-center justify-center py-12">
           <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Loading activities...</span>
+          <span className="ml-2">{t('system_activity_dialog.loading_activities')}</span>
         </div>
       ) : (
         <div className="space-y-4">
@@ -154,7 +156,7 @@ export function SystemActivityDialog({ isOpen, onClose }: SystemActivityDialogPr
               <CardContent className="flex items-center justify-center py-12">
                 <div className="text-center">
                   <Database className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">No recent activities found</p>
+                  <p className="text-muted-foreground">{t('system_activity_dialog.no_recent_activities')}</p>
                 </div>
               </CardContent>
             </Card>
@@ -188,7 +190,7 @@ export function SystemActivityDialog({ isOpen, onClose }: SystemActivityDialogPr
                         {activity.user_id && (
                           <div className="flex items-center gap-2">
                             <User className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-muted-foreground">User:</span>
+                            <span className="text-muted-foreground">{t('system_activity_dialog.user')}:</span>
                             <span className="font-mono">{activity.user_id.slice(0, 8)}...</span>
                           </div>
                         )}
@@ -196,7 +198,7 @@ export function SystemActivityDialog({ isOpen, onClose }: SystemActivityDialogPr
                         {activity.resource_type && (
                           <div className="flex items-center gap-2">
                             <Database className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-muted-foreground">Resource:</span>
+                            <span className="text-muted-foreground">{t('system_activity_dialog.resource')}:</span>
                             <span>{activity.resource_type}</span>
                           </div>
                         )}
