@@ -32,7 +32,7 @@ export function EventSettings({ settings, onSettingChange }: EventSettingsProps)
       setNewEventType("");
       toast({
         title: t('success'),
-        description: "تم إضافة نوع الفعالية بنجاح"
+        description: t('itemAddedSuccessfully')
       });
     }
   };
@@ -42,7 +42,7 @@ export function EventSettings({ settings, onSettingChange }: EventSettingsProps)
     onSettingChange('event_types', updatedTypes);
     toast({
       title: t('success'),
-      description: "تم حذف نوع الفعالية بنجاح"
+      description: t('itemRemovedSuccessfully')
     });
   };
 
@@ -53,7 +53,7 @@ export function EventSettings({ settings, onSettingChange }: EventSettingsProps)
       setNewEventCategory("");
       toast({
         title: t('success'),
-        description: "تم إضافة فئة الفعالية بنجاح"
+        description: t('itemAddedSuccessfully')
       });
     }
   };
@@ -63,7 +63,7 @@ export function EventSettings({ settings, onSettingChange }: EventSettingsProps)
     onSettingChange('event_categories', updatedCategories);
     toast({
       title: t('success'),
-      description: "تم حذف فئة الفعالية بنجاح"
+      description: t('itemRemovedSuccessfully')
     });
   };
 

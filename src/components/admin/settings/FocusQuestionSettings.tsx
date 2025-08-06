@@ -30,7 +30,7 @@ export function FocusQuestionSettings({ settings, onSettingChange }: FocusQuesti
       setNewQuestionType("");
       toast({
         title: t('success'),
-        description: "تم إضافة نوع السؤال المحوري بنجاح"
+        description: t('itemAddedSuccessfully')
       });
     }
   };
@@ -40,7 +40,7 @@ export function FocusQuestionSettings({ settings, onSettingChange }: FocusQuesti
     onSettingChange('focus_question_types', updatedTypes);
     toast({
       title: t('success'),
-      description: "تم حذف نوع السؤال المحوري بنجاح"
+      description: t('itemRemovedSuccessfully')
     });
   };
 

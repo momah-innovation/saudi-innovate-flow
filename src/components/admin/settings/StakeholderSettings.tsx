@@ -32,7 +32,7 @@ export function StakeholderSettings({ settings, onSettingChange }: StakeholderSe
       setNewStakeholderCategory("");
       toast({
         title: t('success'),
-        description: "تم إضافة فئة المعنيين بنجاح"
+        description: t('itemAddedSuccessfully')
       });
     }
   };
@@ -42,7 +42,7 @@ export function StakeholderSettings({ settings, onSettingChange }: StakeholderSe
     onSettingChange('stakeholder_categories', updatedCategories);
     toast({
       title: t('success'),
-      description: "تم حذف فئة المعنيين بنجاح"
+      description: t('itemRemovedSuccessfully')
     });
   };
 
@@ -53,7 +53,7 @@ export function StakeholderSettings({ settings, onSettingChange }: StakeholderSe
       setNewRelationshipType("");
       toast({
         title: t('success'),
-        description: "تم إضافة نوع العلاقة بنجاح"
+        description: t('itemAddedSuccessfully')
       });
     }
   };
@@ -63,7 +63,7 @@ export function StakeholderSettings({ settings, onSettingChange }: StakeholderSe
     onSettingChange('relationship_types', updatedTypes);
     toast({
       title: t('success'),
-      description: "تم حذف نوع العلاقة بنجاح"
+      description: t('itemRemovedSuccessfully')
     });
   };
 

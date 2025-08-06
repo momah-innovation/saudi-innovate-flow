@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useAppTranslation";
@@ -20,8 +21,12 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
   const { t } = useTranslation();
   const { isRTL } = useDirection();
   const [newChallengeType, setNewChallengeType] = useState("");
+  const [newPriorityLevel, setNewPriorityLevel] = useState("");
+  const [newStatusOption, setNewStatusOption] = useState("");
   
   const challengeTypes = settings.challenge_types || ["تقنية", "استدامة", "صحة", "تعليم", "حوكمة"];
+  const priorityLevels = settings.priority_levels || ["منخفض", "متوسط", "عالي", "عاجل"];
+  const challengeStatusOptions = settings.challenge_status_options || ["مسودة", "منشور", "نشط", "مغلق", "مؤرشف"];
 
   const addChallengeType = () => {
     if (newChallengeType.trim() && !challengeTypes.includes(newChallengeType)) {
@@ -30,7 +35,7 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
       setNewChallengeType("");
       toast({
         title: t('success'),
-        description: "تم إضافة نوع التحدي بنجاح"
+        description: t('itemAddedSuccessfully')
       });
     }
   };
@@ -40,7 +45,49 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
     onSettingChange('challenge_types', updatedTypes);
     toast({
       title: t('success'),
-      description: "تم حذف نوع التحدي بنجاح"
+      description: t('itemRemovedSuccessfully')
+    });
+  };
+
+  const addPriorityLevel = () => {
+    if (newPriorityLevel.trim() && !priorityLevels.includes(newPriorityLevel)) {
+      const updatedLevels = [...priorityLevels, newPriorityLevel.trim()];
+      onSettingChange('priority_levels', updatedLevels);
+      setNewPriorityLevel("");
+      toast({
+        title: t('success'),
+        description: t('itemAddedSuccessfully')
+      });
+    }
+  };
+
+  const removePriorityLevel = (levelToRemove: string) => {
+    const updatedLevels = priorityLevels.filter((level: string) => level !== levelToRemove);
+    onSettingChange('priority_levels', updatedLevels);
+    toast({
+      title: t('success'),
+      description: t('itemRemovedSuccessfully')
+    });
+  };
+
+  const addStatusOption = () => {
+    if (newStatusOption.trim() && !challengeStatusOptions.includes(newStatusOption)) {
+      const updatedOptions = [...challengeStatusOptions, newStatusOption.trim()];
+      onSettingChange('challenge_status_options', updatedOptions);
+      setNewStatusOption("");
+      toast({
+        title: t('success'),
+        description: t('itemAddedSuccessfully')
+      });
+    }
+  };
+
+  const removeStatusOption = (optionToRemove: string) => {
+    const updatedOptions = challengeStatusOptions.filter((option: string) => option !== optionToRemove);
+    onSettingChange('challenge_status_options', updatedOptions);
+    toast({
+      title: t('success'),
+      description: t('itemRemovedSuccessfully')
     });
   };
 
@@ -73,6 +120,78 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
                   size="sm"
                   className="h-auto p-0 hover:bg-transparent"
                   onClick={() => removeChallengeType(type)}
+                >
+                  <X className="w-3 h-3" />
+                </Button>
+              </Badge>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
+          <CardTitle>{t('systemLists.priorityLevels')}</CardTitle>
+          <CardDescription>إدارة مستويات أولوية التحديات</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <Input
+              value={newPriorityLevel}
+              onChange={(e) => setNewPriorityLevel(e.target.value)}
+              placeholder="أضف مستوى أولوية جديد"
+              className={isRTL ? 'text-right' : 'text-left'}
+            />
+            <Button onClick={addPriorityLevel} size="sm">
+              <Plus className="w-4 h-4" />
+            </Button>
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            {priorityLevels.map((level: string, index: number) => (
+              <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                <span>{t(`priorityLevels.${level}`) || level}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-auto p-0 hover:bg-transparent"
+                  onClick={() => removePriorityLevel(level)}
+                >
+                  <X className="w-3 h-3" />
+                </Button>
+              </Badge>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
+          <CardTitle>{t('systemLists.challengeStatusOptions')}</CardTitle>
+          <CardDescription>إدارة خيارات حالة التحديات</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <Input
+              value={newStatusOption}
+              onChange={(e) => setNewStatusOption(e.target.value)}
+              placeholder="أضف حالة تحدي جديدة"
+              className={isRTL ? 'text-right' : 'text-left'}
+            />
+            <Button onClick={addStatusOption} size="sm">
+              <Plus className="w-4 h-4" />
+            </Button>
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            {challengeStatusOptions.map((option: string, index: number) => (
+              <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                <span>{t(`challengeStatusOptions.${option}`) || option}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-auto p-0 hover:bg-transparent"
+                  onClick={() => removeStatusOption(option)}
                 >
                   <X className="w-3 h-3" />
                 </Button>
