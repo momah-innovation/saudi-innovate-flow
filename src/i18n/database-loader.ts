@@ -8,8 +8,8 @@ interface DatabaseTranslations {
 
 interface SystemTranslation {
   translation_key: string;
-  language_code: string;
-  translation_text: string;
+  text_en: string;
+  text_ar: string;
   category: string;
 }
 
@@ -36,13 +36,9 @@ export class DatabaseTranslationLoader {
     try {
       console.log('Loading translations from database...');
       
-      const query = supabase.from('system_translations').select('*');
-      
-      if (language) {
-        query.eq('language_code', language);
-      }
-
-      const { data: translations, error } = await query;
+      const { data: translations, error } = await supabase
+        .from('system_translations')
+        .select('translation_key, text_en, text_ar');
 
       if (error) {
         console.error('Error loading translations:', error);
@@ -50,28 +46,38 @@ export class DatabaseTranslationLoader {
       }
 
       // Process translations into nested object structure
-      const processedTranslations: DatabaseTranslations = {};
+      const processedTranslations: DatabaseTranslations = {
+        en: {},
+        ar: {}
+      };
 
       translations?.forEach((translation: SystemTranslation) => {
-        const { language_code, translation_key, translation_text } = translation;
+        const { translation_key, text_en, text_ar } = translation;
         
-        if (!processedTranslations[language_code]) {
-          processedTranslations[language_code] = {};
-        }
-
-        // Handle nested keys (e.g., "settings.ui.theme")
+        // Handle nested keys for both languages (e.g., "settings.ui.theme")
         const keyParts = translation_key.split('.');
-        let current = processedTranslations[language_code];
-
+        
+        // Process English
+        let currentEn = processedTranslations.en;
         for (let i = 0; i < keyParts.length - 1; i++) {
           const part = keyParts[i];
-          if (!current[part]) {
-            current[part] = {};
+          if (!currentEn[part]) {
+            currentEn[part] = {};
           }
-          current = current[part];
+          currentEn = currentEn[part];
         }
-
-        current[keyParts[keyParts.length - 1]] = translation_text;
+        currentEn[keyParts[keyParts.length - 1]] = text_en;
+        
+        // Process Arabic
+        let currentAr = processedTranslations.ar;
+        for (let i = 0; i < keyParts.length - 1; i++) {
+          const part = keyParts[i];
+          if (!currentAr[part]) {
+            currentAr[part] = {};
+          }
+          currentAr = currentAr[part];
+        }
+        currentAr[keyParts[keyParts.length - 1]] = text_ar;
       });
 
       // Merge with base static translations

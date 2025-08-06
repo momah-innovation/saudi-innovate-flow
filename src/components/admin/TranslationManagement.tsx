@@ -14,8 +14,8 @@ import { Badge } from '@/components/ui/badge';
 interface SystemTranslation {
   id: string;
   translation_key: string;
-  language_code: string;
-  translation_text: string;
+  text_en: string;
+  text_ar: string;
   category: string;
 }
 
@@ -29,8 +29,7 @@ const TranslationManagement = () => {
       // 1. Fetch database translations
       const { data: dbTranslations, error } = await supabase
         .from('system_translations')
-        .select('translation_key, translation_text, category')
-        .eq('language_code', language);
+        .select(`translation_key, text_${language}, category`);
 
       if (error) throw error;
 
@@ -48,8 +47,9 @@ const TranslationManagement = () => {
 
       // 3. Convert database translations to nested structure
       const dbTranslationsNested: Record<string, any> = {};
-      dbTranslations?.forEach(({ translation_key, translation_text }) => {
-        const keys = translation_key.split('.');
+      dbTranslations?.forEach((record) => {
+        const translationText = record[`text_${language}`];
+        const keys = record.translation_key.split('.');
         let current = dbTranslationsNested;
         
         for (let i = 0; i < keys.length - 1; i++) {
@@ -60,7 +60,7 @@ const TranslationManagement = () => {
           current = current[key];
         }
         
-        current[keys[keys.length - 1]] = String(translation_text);
+        current[keys[keys.length - 1]] = String(translationText);
       });
 
       // 4. Deep merge existing translations with database translations (database takes precedence)
@@ -133,7 +133,7 @@ const TranslationManagement = () => {
       const { data, error } = await supabase
         .from('system_translations')
         .select('*')
-        .order('category, translation_key, language_code');
+        .order('category, translation_key');
 
       if (error) throw error;
 
@@ -165,23 +165,15 @@ const TranslationManagement = () => {
     }
 
     try {
-      // Insert both Arabic and English translations
+      // Insert both Arabic and English translations in single record
       const { error } = await supabase
         .from('system_translations')
-        .insert([
-          {
-            translation_key: newTranslation.key,
-            language_code: 'ar',
-            translation_text: newTranslation.ar,
-            category: newTranslation.category
-          },
-          {
-            translation_key: newTranslation.key,
-            language_code: 'en',
-            translation_text: newTranslation.en,
-            category: newTranslation.category
-          }
-        ]);
+        .insert({
+          translation_key: newTranslation.key,
+          text_en: newTranslation.en,
+          text_ar: newTranslation.ar,
+          category: newTranslation.category
+        });
 
       if (error) throw error;
 
@@ -202,33 +194,15 @@ const TranslationManagement = () => {
     }
   };
 
-  // Transform translations into pairs for display
+  // Transform translations for display (already in bilingual format)
   const translationPairs = React.useMemo(() => {
-    const grouped = translations.reduce((acc, translation) => {
-      const key = `${translation.category}:${translation.translation_key}`;
-      if (!acc[key]) {
-        acc[key] = {
-          key: translation.translation_key,
-          category: translation.category,
-          ar: '',
-          en: '',
-          id_ar: undefined,
-          id_en: undefined
-        };
-      }
-      
-      if (translation.language_code === 'ar') {
-        acc[key].ar = translation.translation_text;
-        acc[key].id_ar = translation.id;
-      } else if (translation.language_code === 'en') {
-        acc[key].en = translation.translation_text;
-        acc[key].id_en = translation.id;
-      }
-      
-      return acc;
-    }, {} as Record<string, any>);
-
-    return Object.values(grouped);
+    return translations.map(translation => ({
+      key: translation.translation_key,
+      category: translation.category,
+      ar: translation.text_ar,
+      en: translation.text_en,
+      id: translation.id
+    }));
   }, [translations]);
 
   const filteredPairs = translationPairs.filter((pair: any) => {

@@ -10,18 +10,21 @@ export const useOptimizedTranslations = () => {
   
   // Create a memoized translation map for O(1) lookups
   const translationMap = useMemo(() => {
-    const map = new Map<string, string>();
+    const map = new Map<string, { en: string; ar: string }>();
     translations.forEach(translation => {
-      map.set(translation.translation_key, translation.translation_text);
+      map.set(translation.translation_key, {
+        en: translation.text_en,
+        ar: translation.text_ar
+      });
     });
     return map;
   }, [translations]);
 
   // Optimized translation getter with memoized map lookup
   const getOptimizedTranslation = useMemo(() => {
-    return (key: string, fallback?: string): string => {
+    return (key: string, fallback?: string, language: 'en' | 'ar' = 'en'): string => {
       const translation = translationMap.get(key);
-      return translation || fallback || key;
+      return translation?.[language] || fallback || key;
     };
   }, [translationMap]);
 

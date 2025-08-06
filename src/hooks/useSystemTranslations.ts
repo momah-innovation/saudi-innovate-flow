@@ -6,8 +6,8 @@ import { queryKeys } from '@/lib/query/query-keys';
 export interface SystemTranslation {
   id: string;
   translation_key: string;
-  language_code: string;
-  translation_text: string;
+  text_en: string;
+  text_ar: string;
   category: string;
 }
 
@@ -20,11 +20,10 @@ export const useSystemTranslations = () => {
   const { data: translations = [], isLoading } = useQuery({
     queryKey: queryKeys.system.translation(normalizedLanguage),
     queryFn: async () => {
-      console.log('Fetching translations for language:', normalizedLanguage);
+      console.log('Fetching bilingual translations');
       const { data, error } = await supabase
         .from('system_translations')
-        .select('*')
-        .eq('language_code', normalizedLanguage);
+        .select('*');
 
       if (error) {
         console.error('Translation fetch error:', error);
@@ -41,7 +40,8 @@ export const useSystemTranslations = () => {
 
   const getTranslation = (key: string, fallback?: string): string => {
     const translation = translations.find(t => t.translation_key === key);
-    const result = translation?.translation_text || fallback || key;
+    const textField = normalizedLanguage === 'ar' ? 'text_ar' : 'text_en';
+    const result = translation?.[textField] || fallback || key;
     if (!translation && fallback !== key) {
       console.log('Missing translation for key:', key, 'language:', normalizedLanguage);
     }

@@ -14,8 +14,8 @@ import { Label } from '@/components/ui/label';
 interface SystemTranslation {
   id: string;
   translation_key: string;
-  language_code: string;
-  translation_text: string;
+  text_en: string;
+  text_ar: string;
   category: string;
   created_at: string;
   updated_at: string;
@@ -26,16 +26,10 @@ const CATEGORIES = [
   'challenges', 'events', 'partners', 'tags', 'notifications', 'general'
 ];
 
-const LANGUAGES = [
-  { code: 'en', name: 'English' },
-  { code: 'ar', name: 'العربية' }
-];
-
 export const TranslationManager: React.FC = () => {
   const [translations, setTranslations] = useState<SystemTranslation[]>([]);
   const [filteredTranslations, setFilteredTranslations] = useState<SystemTranslation[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedLanguage, setSelectedLanguage] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [editingTranslation, setEditingTranslation] = useState<SystemTranslation | null>(null);
@@ -49,7 +43,7 @@ export const TranslationManager: React.FC = () => {
 
   useEffect(() => {
     filterTranslations();
-  }, [translations, selectedCategory, selectedLanguage, searchTerm]);
+  }, [translations, selectedCategory, searchTerm]);
 
   const loadTranslations = async () => {
     setIsLoading(true);
@@ -80,14 +74,11 @@ export const TranslationManager: React.FC = () => {
       filtered = filtered.filter(t => t.category === selectedCategory);
     }
 
-    if (selectedLanguage !== 'all') {
-      filtered = filtered.filter(t => t.language_code === selectedLanguage);
-    }
-
     if (searchTerm) {
       filtered = filtered.filter(t => 
         t.translation_key.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        t.translation_text.toLowerCase().includes(searchTerm.toLowerCase())
+        t.text_en.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        t.text_ar.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -98,16 +89,16 @@ export const TranslationManager: React.FC = () => {
     try {
       const { data: translations, error } = await supabase
         .from('system_translations')
-        .select('translation_key, translation_text, category')
-        .eq('language_code', language);
+        .select(`translation_key, text_${language}, category`);
 
       if (error) throw error;
 
       // Convert to nested JSON structure
       const jsonStructure: Record<string, any> = {};
       
-      translations?.forEach(({ translation_key, translation_text }) => {
-        const keys = translation_key.split('.');
+      translations?.forEach((record) => {
+        const translationText = record[`text_${language}`];
+        const keys = record.translation_key.split('.');
         let current = jsonStructure;
         
         for (let i = 0; i < keys.length - 1; i++) {
@@ -118,7 +109,7 @@ export const TranslationManager: React.FC = () => {
           current = current[key];
         }
         
-        current[keys[keys.length - 1]] = translation_text;
+        current[keys[keys.length - 1]] = translationText;
       });
 
       // Create and download file
@@ -162,8 +153,8 @@ export const TranslationManager: React.FC = () => {
         // Ensure required fields are present for insert
         const insertData = {
           translation_key: translationData.translation_key!,
-          language_code: translationData.language_code!,
-          translation_text: translationData.translation_text!,
+          text_en: translationData.text_en!,
+          text_ar: translationData.text_ar!,
           category: translationData.category || 'general'
         };
         
@@ -259,11 +250,11 @@ export const TranslationManager: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Existing Database Translation Management */}
+      {/* Bilingual Translation Management */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
-            Translation Management
+            Bilingual Translation Management
             <div className="flex gap-2">
               <Button onClick={loadTranslations} disabled={isLoading} variant="outline">
                 Refresh
@@ -271,7 +262,7 @@ export const TranslationManager: React.FC = () => {
             </div>
           </CardTitle>
           <CardDescription>
-            Manage system translations and generate static files for production
+            Manage bilingual translations (English and Arabic in single records)
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -297,19 +288,6 @@ export const TranslationManager: React.FC = () => {
                 ))}
               </SelectContent>
             </Select>
-            <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
-              <SelectTrigger className="w-32">
-                <SelectValue placeholder="Language" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Languages</SelectItem>
-                {LANGUAGES.map(lang => (
-                  <SelectItem key={lang.code} value={lang.code}>
-                    {lang.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button onClick={() => setEditingTranslation(null)}>
@@ -327,37 +305,41 @@ export const TranslationManager: React.FC = () => {
 
           <div className="space-y-2">
             {filteredTranslations.map((translation) => (
-              <div key={translation.id} className="flex items-center justify-between p-3 border rounded-lg">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
+              <div key={translation.id} className="border rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
                     <code className="text-sm bg-muted px-2 py-1 rounded">
                       {translation.translation_key}
                     </code>
-                    <Badge variant="outline">{translation.language_code}</Badge>
                     <Badge variant="secondary">{translation.category}</Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    {translation.translation_text}
-                  </p>
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        setEditingTranslation(translation);
+                        setIsDialogOpen(true);
+                      }}
+                    >
+                      <Edit2 className="h-3 w-3" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => deleteTranslation(translation.id)}
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      setEditingTranslation(translation);
-                      setIsDialogOpen(true);
-                    }}
-                  >
-                    <Edit2 className="h-3 w-3" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => deleteTranslation(translation.id)}
-                  >
-                    <Trash2 className="h-3 w-3" />
-                  </Button>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="font-medium">EN:</span> {translation.text_en}
+                  </div>
+                  <div dir="rtl">
+                    <span className="font-medium">AR:</span> {translation.text_ar}
+                  </div>
                 </div>
               </div>
             ))}
@@ -387,8 +369,8 @@ const TranslationDialog: React.FC<TranslationDialogProps> = ({
 }) => {
   const [formData, setFormData] = useState({
     translation_key: '',
-    language_code: 'en',
-    translation_text: '',
+    text_en: '',
+    text_ar: '',
     category: 'general'
   });
 
@@ -396,15 +378,15 @@ const TranslationDialog: React.FC<TranslationDialogProps> = ({
     if (translation) {
       setFormData({
         translation_key: translation.translation_key,
-        language_code: translation.language_code,
-        translation_text: translation.translation_text,
+        text_en: translation.text_en,
+        text_ar: translation.text_ar,
         category: translation.category
       });
     } else {
       setFormData({
         translation_key: '',
-        language_code: 'en',
-        translation_text: '',
+        text_en: '',
+        text_ar: '',
         category: 'general'
       });
     }
@@ -416,7 +398,7 @@ const TranslationDialog: React.FC<TranslationDialogProps> = ({
   };
 
   return (
-    <DialogContent>
+    <DialogContent className="max-w-2xl">
       <DialogHeader>
         <DialogTitle>
           {translation ? 'Edit Translation' : 'Add Translation'}
@@ -436,22 +418,6 @@ const TranslationDialog: React.FC<TranslationDialogProps> = ({
         </div>
 
         <div>
-          <Label htmlFor="language_code">Language</Label>
-          <Select value={formData.language_code} onValueChange={(value) => setFormData(prev => ({ ...prev, language_code: value }))}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {LANGUAGES.map(lang => (
-                <SelectItem key={lang.code} value={lang.code}>
-                  {lang.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
           <Label htmlFor="category">Category</Label>
           <Select value={formData.category} onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}>
             <SelectTrigger>
@@ -467,15 +433,29 @@ const TranslationDialog: React.FC<TranslationDialogProps> = ({
           </Select>
         </div>
 
-        <div>
-          <Label htmlFor="translation_text">Translation Text</Label>
-          <Textarea
-            id="translation_text"
-            value={formData.translation_text}
-            onChange={(e) => setFormData(prev => ({ ...prev, translation_text: e.target.value }))}
-            placeholder="Enter the translated text"
-            required
-          />
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="text_en">English Text</Label>
+            <Textarea
+              id="text_en"
+              value={formData.text_en}
+              onChange={(e) => setFormData(prev => ({ ...prev, text_en: e.target.value }))}
+              placeholder="Enter English text"
+              required
+            />
+          </div>
+          
+          <div>
+            <Label htmlFor="text_ar">Arabic Text</Label>
+            <Textarea
+              id="text_ar"
+              value={formData.text_ar}
+              onChange={(e) => setFormData(prev => ({ ...prev, text_ar: e.target.value }))}
+              placeholder="أدخل النص العربي"
+              dir="rtl"
+              required
+            />
+          </div>
         </div>
 
         <div className="flex justify-end gap-2">

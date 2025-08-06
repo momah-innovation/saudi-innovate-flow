@@ -7041,27 +7041,27 @@ export type Database = {
           category: string | null
           created_at: string | null
           id: string
-          language_code: string
+          text_ar: string
+          text_en: string
           translation_key: string
-          translation_text: string
           updated_at: string | null
         }
         Insert: {
           category?: string | null
           created_at?: string | null
           id?: string
-          language_code?: string
+          text_ar: string
+          text_en: string
           translation_key: string
-          translation_text: string
           updated_at?: string | null
         }
         Update: {
           category?: string | null
           created_at?: string | null
           id?: string
-          language_code?: string
+          text_ar?: string
+          text_en?: string
           translation_key?: string
-          translation_text?: string
           updated_at?: string | null
         }
         Relationships: []
