@@ -429,6 +429,8 @@
   "pendingReview": "في انتظار المراجعة",
   "averageScore": "النتيجة المتوسطة",
   "clickAddToStart": "اضغط \"إضافة عنصر\" للبدء",
+  "item": "عنصر",
+  "items": "عناصر",
   "supportedLanguages": "اللغات المدعومة",
   "uiThemes": "موضوعات الواجهة",
   "currencyCodes": "رموز العملات",
@@ -1493,5 +1495,43 @@
       "label": "تتطلب موافقة على الشراكة",
       "description": "تتطلب الشراكات الجديدة موافقة إدارية"
     }
+  },
+  "tags": {
+    "tag_management": "إدارة الوسوم",
+    "manage_system_tags": "إدارة وسوم النظام والفئات",
+    "search_tags": "بحث في الوسوم...",
+    "filter_by_category": "تصفية حسب الفئة",
+    "all_categories": "جميع الفئات",
+    "create_tag": "إنشاء وسم",
+    "edit_tag": "تعديل الوسم",
+    "name_english": "الاسم (الإنجليزية)",
+    "name_arabic": "الاسم (العربية)",
+    "slug": "المعرف",
+    "category": "الفئة",
+    "color": "اللون",
+    "description_english": "الوصف (الإنجليزية)",
+    "description_arabic": "الوصف (العربية)",
+    "tag_updated": "تم تحديث الوسم بنجاح",
+    "tag_created": "تم إنشاء الوسم بنجاح",
+    "tag_deleted": "تم حذف الوسم بنجاح",
+    "confirm_delete": "هل أنت متأكد من حذف هذا الوسم؟",
+    "no_tags_found": "لم يتم العثور على وسوم",
+    "no_tags_available": "لا توجد وسوم متاحة",
+    "used_times": "مستخدم {{count}} مرة",
+    "add_tags": "إضافة وسوم...",
+    "search_or_create": "البحث أو إنشاء وسوم...",
+    "uses": "استخدامات",
+    "create_tag_with_name": "إنشاء \"{{name}}\"",
+    "categories": {
+      "innovation": "الابتكار",
+      "digital": "رقمي",
+      "sustainability": "الاستدامة",
+      "efficiency": "الكفاءة",
+      "technology": "التقنية",
+      "business": "الأعمال",
+      "social": "اجتماعي",
+      "environmental": "بيئي"
+    }
+  }
   }
 }
