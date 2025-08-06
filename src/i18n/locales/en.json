@@ -75,5 +75,114 @@
     "planning": "Ministry of Economy & Planning",
     "communications": "Ministry of Communications & IT",
     "public_works": "Ministry of Municipal Affairs"
+  },
+  "systemLists": {
+    "challengeTypes": "Challenge Types",
+    "evaluatorTypes": "Evaluator Types",
+    "eventCategories": "Event Categories", 
+    "eventTypes": "Event Types",
+    "expertRoleTypes": "Expert Role Types",
+    "focusQuestionTypes": "Focus Question Types",
+    "ideaAttachmentTypes": "Idea Attachment Types",
+    "ideaAssignmentTypes": "Idea Assignment Types",
+    "organizationTypes": "Organization Types",
+    "relationshipTypes": "Relationship Types",
+    "stakeholderCategories": "Stakeholder Categories",
+    "tagCategories": "Tag Categories",
+    "assignmentTypes": "Assignment Types"
+  },
+  "challengeTypes": {
+    "تقنية": "Technology",
+    "استدامة": "Sustainability", 
+    "صحة": "Health",
+    "تعليم": "Education",
+    "حوكمة": "Governance"
+  },
+  "evaluatorTypes": {
+    "lead_expert": "Lead Expert",
+    "evaluator": "Evaluator",
+    "reviewer": "Reviewer",
+    "subject_matter_expert": "Subject Matter Expert",
+    "external_consultant": "External Consultant"
+  },
+  "eventCategories": {
+    "standalone": "Standalone",
+    "campaign_event": "Campaign Event",
+    "training": "Training",
+    "workshop": "Workshop"
+  },
+  "eventTypes": {
+    "workshop": "Workshop",
+    "seminar": "Seminar",
+    "conference": "Conference",
+    "networking": "Networking",
+    "hackathon": "Hackathon",
+    "pitch_session": "Pitch Session",
+    "training": "Training"
+  },
+  "expertRoleTypes": {
+    "خبير رئيسي": "Lead Expert",
+    "مقيم": "Evaluator",
+    "مراجع": "Reviewer",
+    "خبير موضوع": "Subject Matter Expert",
+    "مستشار خارجي": "External Consultant"
+  },
+  "focusQuestionTypes": {
+    "عام": "General",
+    "تقني": "Technical", 
+    "تجاري": "Commercial",
+    "تأثير": "Impact",
+    "تنفيذ": "Implementation",
+    "اجتماعي": "Social",
+    "أخلاقي": "Ethical",
+    "طبي": "Medical",
+    "تنظيمي": "Regulatory"
+  },
+  "organizationTypes": {
+    "operational": "Operational",
+    "strategic": "Strategic",
+    "administrative": "Administrative",
+    "technical": "Technical",
+    "support": "Support"
+  },
+  "relationshipTypes": {
+    "direct": "Direct",
+    "indirect": "Indirect",
+    "collaborative": "Collaborative",
+    "competitive": "Competitive",
+    "supportive": "Supportive"
+  },
+  "stakeholderCategories": {
+    "government": "Government",
+    "private_sector": "Private Sector",
+    "academic": "Academic",
+    "civil_society": "Civil Society",
+    "international": "International",
+    "media": "Media",
+    "experts": "Experts"
+  },
+  "tagCategories": {
+    "innovation": "Innovation",
+    "digital": "Digital",
+    "sustainability": "Sustainability",
+    "efficiency": "Efficiency",
+    "technology": "Technology",
+    "business": "Business",
+    "social": "Social",
+    "environmental": "Environmental"
+  },
+  "assignmentTypes": {
+    "campaign": "Campaign",
+    "event": "Event", 
+    "project": "Project",
+    "content": "Content",
+    "analysis": "Analysis"
+  },
+  "ideaAssignmentTypes": {
+    "reviewer": "Reviewer",
+    "evaluator": "Evaluator",
+    "implementer": "Implementer",
+    "observer": "Observer"
   }
+}
 }

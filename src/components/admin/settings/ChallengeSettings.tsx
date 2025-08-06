@@ -1,9 +1,14 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useSystemLists } from "@/hooks/useSystemLists";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Plus, X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useAppTranslation";
+import { useDirection } from "@/components/ui/direction-provider";
 
 interface ChallengeSettingsProps {
   settings: any;
@@ -11,84 +16,79 @@ interface ChallengeSettingsProps {
 }
 
 export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettingsProps) {
-  const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels } = useSystemLists();
+  const { toast } = useToast();
+  const { t } = useTranslation();
+  const { isRTL } = useDirection();
+  const [newChallengeType, setNewChallengeType] = useState("");
+  
+  const challengeTypes = settings.challenge_types || ["تقنية", "استدامة", "صحة", "تعليم", "حوكمة"];
+
+  const addChallengeType = () => {
+    if (newChallengeType.trim() && !challengeTypes.includes(newChallengeType)) {
+      const updatedTypes = [...challengeTypes, newChallengeType.trim()];
+      onSettingChange('challenge_types', updatedTypes);
+      setNewChallengeType("");
+      toast({
+        title: t('success'),
+        description: "تم إضافة نوع التحدي بنجاح"
+      });
+    }
+  };
+
+  const removeChallengeType = (typeToRemove: string) => {
+    const updatedTypes = challengeTypes.filter((type: string) => type !== typeToRemove);
+    onSettingChange('challenge_types', updatedTypes);
+    toast({
+      title: t('success'),
+      description: "تم حذف نوع التحدي بنجاح"
+    });
+  };
+
   return (
-    <div className="space-y-6 rtl:text-right ltr:text-left">
+    <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
       <Card>
-        <CardHeader className="rtl:text-right ltr:text-left">
-          <CardTitle>الإعدادات الافتراضية للتحديات</CardTitle>
-          <CardDescription>القيم الافتراضية عند إنشاء تحديات جديدة</CardDescription>
+        <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
+          <CardTitle>{t('systemLists.challengeTypes')}</CardTitle>
+          <CardDescription>إدارة أنواع التحديات المتاحة في النظام</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 rtl:text-right ltr:text-left">
-            <div className="space-y-2">
-              <Label htmlFor="defaultStatus">الحالة الافتراضية</Label>
-              <Select 
-                value={settings.defaultStatus || 'draft'} 
-                onValueChange={(value) => onSettingChange('defaultStatus', value)}
-              >
-                <SelectTrigger className="rtl:text-right ltr:text-left">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {challengeStatusOptions.map(status => (
-                    <SelectItem key={status} value={status}>
-                      {status === 'draft' ? 'مسودة' : status === 'published' ? 'منشور' : status === 'active' ? 'نشط' : 
-                       status === 'closed' ? 'مغلق' : status === 'archived' ? 'مؤرشف' : status === 'completed' ? 'مكتمل' : status}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="defaultPriority">الأولوية الافتراضية</Label>
-              <Select 
-                value={settings.defaultPriority || 'medium'} 
-                onValueChange={(value) => onSettingChange('defaultPriority', value)}
-              >
-                <SelectTrigger className="rtl:text-right ltr:text-left">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {challengePriorityLevels.map(priority => (
-                    <SelectItem key={priority} value={priority}>
-                      {priority === 'low' ? 'منخفض' : priority === 'medium' ? 'متوسط' : 'عالي'}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="defaultSensitivity">مستوى الحساسية الافتراضي</Label>
-              <Select 
-                value={settings.defaultSensitivity || 'normal'} 
-                onValueChange={(value) => onSettingChange('defaultSensitivity', value)}
-              >
-                <SelectTrigger className="rtl:text-right ltr:text-left">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {challengeSensitivityLevels.map(level => (
-                    <SelectItem key={level} value={level}>
-                      {level === 'normal' ? 'عادي' : level === 'sensitive' ? 'حساس' : 'سري'}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <Input
+              value={newChallengeType}
+              onChange={(e) => setNewChallengeType(e.target.value)}
+              placeholder="أضف نوع تحدي جديد"
+              className={isRTL ? 'text-right' : 'text-left'}
+            />
+            <Button onClick={addChallengeType} size="sm">
+              <Plus className="w-4 h-4" />
+            </Button>
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            {challengeTypes.map((type: string, index: number) => (
+              <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                <span>{t(`challengeTypes.${type}`) || type}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-auto p-0 hover:bg-transparent"
+                  onClick={() => removeChallengeType(type)}
+                >
+                  <X className="w-3 h-3" />
+                </Button>
+              </Badge>
+            ))}
           </div>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="rtl:text-right ltr:text-left">
-          <CardTitle>حدود وقيود التحديات</CardTitle>
-          <CardDescription>إعدادات الحدود والقيود الخاصة بالتحديات</CardDescription>
+        <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
+          <CardTitle>الإعدادات الافتراضية للتحديات</CardTitle>
+          <CardDescription>القيم الافتراضية عند إنشاء تحديات جديدة</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="space-y-2">
               <Label htmlFor="maxChallengesPerUser">الحد الأقصى للتحديات لكل مستخدم</Label>
               <Input
@@ -98,86 +98,34 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
                 max="100"
                 value={settings.maxChallengesPerUser || 10}
                 onChange={(e) => onSettingChange('maxChallengesPerUser', parseInt(e.target.value))}
-                className="rtl:text-right ltr:text-left"
+                className={isRTL ? 'text-right' : 'text-left'}
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="itemsPerPage">عدد العناصر في الصفحة</Label>
-              <Select 
-                value={(settings.itemsPerPage || 12).toString()} 
-                onValueChange={(value) => onSettingChange('itemsPerPage', parseInt(value))}
-              >
-                <SelectTrigger className="rtl:text-right ltr:text-left">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="6">6</SelectItem>
-                  <SelectItem value="12">12</SelectItem>
-                  <SelectItem value="24">24</SelectItem>
-                  <SelectItem value="48">48</SelectItem>
-                </SelectContent>
-              </Select>
+              <Input
+                id="itemsPerPage"
+                type="number"
+                min="6"
+                max="48"
+                value={settings.itemsPerPage || 12}
+                onChange={(e) => onSettingChange('itemsPerPage', parseInt(e.target.value))}
+                className={isRTL ? 'text-right' : 'text-left'}
+              />
             </div>
           </div>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="rtl:text-right ltr:text-left">
-          <CardTitle>إعدادات واجهة المستخدم</CardTitle>
-          <CardDescription>تخصيص تجربة المستخدم لصفحات التحديات</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="defaultViewMode">وضع العرض الافتراضي</Label>
-            <Select 
-              value={settings.defaultViewMode || 'cards'} 
-              onValueChange={(value) => onSettingChange('defaultViewMode', value)}
-            >
-              <SelectTrigger className="rtl:text-right ltr:text-left">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="cards">بطاقات</SelectItem>
-                <SelectItem value="list">قائمة</SelectItem>
-                <SelectItem value="grid">شبكة</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex items-center justify-between rtl:flex-row-reverse">
-            <div className="space-y-0.5 rtl:text-right ltr:text-left">
-              <Label className="text-base">تفعيل المرشحات المتقدمة</Label>
-              <p className="text-sm text-muted-foreground">عرض خيارات تصفية إضافية</p>
-            </div>
-            <Switch
-              checked={settings.enableAdvancedFilters !== false}
-              onCheckedChange={(checked) => onSettingChange('enableAdvancedFilters', checked)}
-            />
-          </div>
-
-          <div className="flex items-center justify-between rtl:flex-row-reverse">
-            <div className="space-y-0.5 rtl:text-right ltr:text-left">
-              <Label className="text-base">معاينة عند التمرير</Label>
-              <p className="text-sm text-muted-foreground">عرض معاينة سريعة عند التمرير فوق البطاقات</p>
-            </div>
-            <Switch
-              checked={settings.showPreviewOnHover !== false}
-              onCheckedChange={(checked) => onSettingChange('showPreviewOnHover', checked)}
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader className="rtl:text-right ltr:text-left">
+        <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
           <CardTitle>إعدادات سير العمل</CardTitle>
           <CardDescription>تحكم في آلية عمل التحديات والتعاون</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between rtl:flex-row-reverse">
-            <div className="space-y-0.5 rtl:text-right ltr:text-left">
+          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
               <Label className="text-base">مطالبة الموافقة للنشر</Label>
               <p className="text-sm text-muted-foreground">مطالبة موافقة إدارية قبل نشر التحديات</p>
             </div>
@@ -187,8 +135,8 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
             />
           </div>
 
-          <div className="flex items-center justify-between rtl:flex-row-reverse">
-            <div className="space-y-0.5 rtl:text-right ltr:text-left">
+          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
               <Label className="text-base">السماح بالمشاركات المجهولة</Label>
               <p className="text-sm text-muted-foreground">السماح بتقديم أفكار بدون الكشف عن الهوية</p>
             </div>
@@ -198,36 +146,14 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
             />
           </div>
 
-          <div className="flex items-center justify-between rtl:flex-row-reverse">
-            <div className="space-y-0.5 rtl:text-right ltr:text-left">
+          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
               <Label className="text-base">تفعيل التعاون</Label>
               <p className="text-sm text-muted-foreground">السماح بالعمل التعاوني على التحديات</p>
             </div>
             <Switch
               checked={settings.enableCollaboration !== false}
               onCheckedChange={(checked) => onSettingChange('enableCollaboration', checked)}
-            />
-          </div>
-
-          <div className="flex items-center justify-between rtl:flex-row-reverse">
-            <div className="space-y-0.5 rtl:text-right ltr:text-left">
-              <Label className="text-base">تفعيل التعليقات</Label>
-              <p className="text-sm text-muted-foreground">السماح بالتعليق على التحديات والأفكار</p>
-            </div>
-            <Switch
-              checked={settings.enableComments !== false}
-              onCheckedChange={(checked) => onSettingChange('enableComments', checked)}
-            />
-          </div>
-
-          <div className="flex items-center justify-between rtl:flex-row-reverse">
-            <div className="space-y-0.5 rtl:text-right ltr:text-left">
-              <Label className="text-base">تفعيل التقييمات</Label>
-              <p className="text-sm text-muted-foreground">السماح بتقييم التحديات والأفكار</p>
-            </div>
-            <Switch
-              checked={settings.enableRatings !== false}
-              onCheckedChange={(checked) => onSettingChange('enableRatings', checked)}
             />
           </div>
         </CardContent>

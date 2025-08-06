@@ -75,5 +75,114 @@
     "planning": "وزارة الاقتصاد والتخطيط",
     "communications": "وزارة الاتصالات وتقنية المعلومات",
     "public_works": "وزارة الشؤون البلدية والقروية والإسكان"
+  },
+  "systemLists": {
+    "challengeTypes": "أنواع التحديات",
+    "evaluatorTypes": "أنواع المقيمين",
+    "eventCategories": "فئات الفعاليات",
+    "eventTypes": "أنواع الفعاليات",
+    "expertRoleTypes": "أدوار الخبراء",
+    "focusQuestionTypes": "أنواع الأسئلة المحورية",
+    "ideaAttachmentTypes": "أنواع مرفقات الأفكار",
+    "ideaAssignmentTypes": "أنواع مهام الأفكار",
+    "organizationTypes": "أنواع المنظمات",
+    "relationshipTypes": "أنواع العلاقات",
+    "stakeholderCategories": "فئات المعنيين",
+    "tagCategories": "فئات الوسوم",
+    "assignmentTypes": "أنواع المهام"
+  },
+  "challengeTypes": {
+    "تقنية": "تقنية",
+    "استدامة": "استدامة",
+    "صحة": "صحة",
+    "تعليم": "تعليم",
+    "حوكمة": "حوكمة"
+  },
+  "evaluatorTypes": {
+    "lead_expert": "خبير رئيسي",
+    "evaluator": "مقيم",
+    "reviewer": "مراجع",
+    "subject_matter_expert": "خبير موضوع",
+    "external_consultant": "مستشار خارجي"
+  },
+  "eventCategories": {
+    "standalone": "فعالية مستقلة",
+    "campaign_event": "فعالية حملة",
+    "training": "تدريب",
+    "workshop": "ورشة عمل"
+  },
+  "eventTypes": {
+    "workshop": "ورشة عمل",
+    "seminar": "ندوة",
+    "conference": "مؤتمر",
+    "networking": "تواصل",
+    "hackathon": "هاكاثون",
+    "pitch_session": "جلسة عرض",
+    "training": "تدريب"
+  },
+  "expertRoleTypes": {
+    "خبير رئيسي": "خبير رئيسي",
+    "مقيم": "مقيم",
+    "مراجع": "مراجع",
+    "خبير موضوع": "خبير موضوع",
+    "مستشار خارجي": "مستشار خارجي"
+  },
+  "focusQuestionTypes": {
+    "عام": "عام",
+    "تقني": "تقني",
+    "تجاري": "تجاري",
+    "تأثير": "تأثير",
+    "تنفيذ": "تنفيذ",
+    "اجتماعي": "اجتماعي",
+    "أخلاقي": "أخلاقي",
+    "طبي": "طبي",
+    "تنظيمي": "تنظيمي"
+  },
+  "organizationTypes": {
+    "operational": "تشغيلي",
+    "strategic": "استراتيجي",
+    "administrative": "إداري",
+    "technical": "تقني",
+    "support": "دعم"
+  },
+  "relationshipTypes": {
+    "direct": "مباشر",
+    "indirect": "غير مباشر",
+    "collaborative": "تعاوني",
+    "competitive": "تنافسي",
+    "supportive": "داعم"
+  },
+  "stakeholderCategories": {
+    "government": "حكومي",
+    "private_sector": "قطاع خاص",
+    "academic": "أكاديمي",
+    "civil_society": "مجتمع مدني",
+    "international": "دولي",
+    "media": "إعلام",
+    "experts": "خبراء"
+  },
+  "tagCategories": {
+    "innovation": "الابتكار",
+    "digital": "رقمي",
+    "sustainability": "الاستدامة",
+    "efficiency": "الكفاءة",
+    "technology": "التقنية",
+    "business": "الأعمال",
+    "social": "اجتماعي",
+    "environmental": "بيئي"
+  },
+  "assignmentTypes": {
+    "campaign": "حملة",
+    "event": "فعالية",
+    "project": "مشروع",
+    "content": "محتوى",
+    "analysis": "تحليل"
+  },
+  "ideaAssignmentTypes": {
+    "reviewer": "مراجع",
+    "evaluator": "مقيم",
+    "implementer": "منفذ",
+    "observer": "مراقب"
   }
+}
 }
