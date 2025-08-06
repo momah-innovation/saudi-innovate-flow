@@ -1151,11 +1151,11 @@ const DesignSystem = () => {
                               <div className="text-sm text-muted-foreground">Active</div>
                             </div>
                             <div className="text-center">
-                              <div className="text-2xl font-bold text-green-600">8</div>
+                              <div className="text-2xl font-bold text-success">8</div>
                               <div className="text-sm text-muted-foreground">Completed</div>
                             </div>
                             <div className="text-center">
-                              <div className="text-2xl font-bold text-amber-600">4</div>
+                              <div className="text-2xl font-bold text-warning">4</div>
                               <div className="text-sm text-muted-foreground">In Review</div>
                             </div>
                           </div>
@@ -3383,7 +3383,7 @@ const DesignSystem = () => {
                             </Button>
                             <div className="flex-1 flex items-center gap-2">
                               <span className="text-sm">02:30</span>
-                              <div className="flex-1 h-1 bg-gray-600 rounded-full">
+                              <div className="flex-1 h-1 bg-muted rounded-full">
                                 <div className="w-1/3 h-full bg-primary rounded-full"></div>
                               </div>
                               <span className="text-sm">08:45</span>
@@ -3992,7 +3992,7 @@ const DesignSystem = () => {
                 <ComponentShowcase title="Chat Interface">
                   <div className="border rounded-lg overflow-hidden h-96 flex flex-col">
                     <div className="bg-card border-b p-4 flex items-center gap-3">
-                      <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-medium text-sm">
+                       <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-medium text-sm">
                         TC
                       </div>
                       <div>
@@ -4003,7 +4003,7 @@ const DesignSystem = () => {
                     
                     <div className="flex-1 p-4 space-y-4 overflow-y-auto">
                       <div className="flex gap-3">
-                        <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white font-medium text-sm">
+                         <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-secondary-foreground font-medium text-sm">
                           JD
                         </div>
                         <div className="flex-1">
@@ -4018,7 +4018,7 @@ const DesignSystem = () => {
                       </div>
                       
                       <div className="flex gap-3">
-                        <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white font-medium text-sm">
+                         <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-accent-foreground font-medium text-sm">
                           SM
                         </div>
                         <div className="flex-1">
@@ -4042,7 +4042,7 @@ const DesignSystem = () => {
                             <p className="text-sm">Perfect! Let's meet at 4 PM for the final review. Great teamwork everyone! 💪</p>
                           </div>
                         </div>
-                        <div className="w-8 h-8 bg-innovation rounded-full flex items-center justify-center text-white font-medium text-sm">
+                         <div className="w-8 h-8 bg-innovation rounded-full flex items-center justify-center text-innovation-foreground font-medium text-sm">
                           Me
                         </div>
                       </div>
@@ -4297,7 +4297,7 @@ const DesignSystem = () => {
 
                  <ComponentShowcase title="Video Call Interface">
                    <div className="space-y-6">
-                     <Card className="p-4 bg-black text-white">
+                     <Card className="p-4 bg-overlay-background text-overlay-text">
                        <div className="grid grid-cols-2 gap-4 mb-4">
                          <div className="aspect-video bg-gradient-to-br from-primary/30 to-secondary/30 rounded-lg flex items-center justify-center relative">
                            <div className="text-center">
@@ -7780,7 +7780,7 @@ const DesignSystem = () => {
                                       <div className="aspect-video bg-gradient-overlay relative">
                                         <div className="absolute bottom-4 left-4 text-white">
                                           <div className="flex items-center gap-2 text-sm mb-2">
-                                            <Calendar className="h-4 w-4 text-purple-200" />
+                                            <Calendar className="h-4 w-4 text-overlay-text-muted" />
                                             <span>Ends March 30, 2024</span>
                                           </div>
                                           <h3 className="font-semibold text-lg mb-1 drop-shadow-sm">AI for Climate Action</h3>
@@ -7803,7 +7803,7 @@ const DesignSystem = () => {
                                     <div className="grid grid-cols-2 gap-4">
                                       <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/30 bg-white/15 backdrop-blur-sm">
                                         <div className="flex items-center gap-3">
-                                          <div className="w-8 h-8 rounded-lg bg-blue-500/40 flex items-center justify-center">
+                                          <div className="w-8 h-8 rounded-lg bg-info/40 flex items-center justify-center">
                                             <Zap className="h-4 w-4 text-warning-foreground" />
                                           </div>
                                           <div>
@@ -7814,7 +7814,7 @@ const DesignSystem = () => {
                                       </Card>
                                       <Card className="p-4 hover:scale-105 transition-transform cursor-pointer border-white/30 bg-white/15 backdrop-blur-sm">
                                         <div className="flex items-center gap-3">
-                                          <div className="w-8 h-8 rounded-lg bg-green-500/40 flex items-center justify-center">
+                                          <div className="w-8 h-8 rounded-lg bg-success/40 flex items-center justify-center">
                                             <Award className="h-4 w-4 text-primary-foreground" />
                                           </div>
                                           <div>
@@ -11682,7 +11682,7 @@ const DesignSystem = () => {
                           <Badge variant="outline" className="text-xs">Light Background</Badge>
                         </Card>
 
-                        <Card className="p-8 text-center bg-slate-900 border-2 border-slate-700">
+                        <Card className="p-8 text-center bg-overlay-dark border-2 border-overlay-dark">
                           <div className="flex items-center justify-center mb-6">
                             <div className="w-16 h-16 bg-gradient-to-r from-white/20 to-white/10 rounded-2xl flex items-center justify-center border border-white/20 backdrop-blur-sm">
                               <Sparkles className="w-8 h-8 text-white" />
