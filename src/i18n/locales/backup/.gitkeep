@@ -1,0 +1,2 @@
+# This file ensures the backup directory is tracked by git
+# Translation backups will be stored here when updating from database
