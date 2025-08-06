@@ -280,15 +280,18 @@ export default function TranslationManagement() {
         const keyParts = translation.translation_key.split('.');
         let current = translationObject;
         
+        // Navigate to the parent object
         for (let i = 0; i < keyParts.length - 1; i++) {
           const part = keyParts[i];
-          if (!current[part]) {
+          if (!current[part] || typeof current[part] !== 'object') {
             current[part] = {};
           }
           current = current[part];
         }
         
-        current[keyParts[keyParts.length - 1]] = translation.translation_text;
+        // Set the final value (not trying to add properties to it)
+        const finalKey = keyParts[keyParts.length - 1];
+        current[finalKey] = translation.translation_text;
       });
 
       const success = await uploadAllTranslations(language, translationObject);
