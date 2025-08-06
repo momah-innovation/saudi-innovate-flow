@@ -30,6 +30,7 @@ import {
   Check
 } from "lucide-react";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useTranslation } from "@/hooks/useAppTranslation";
 import { CampaignFormData, SystemLists } from "@/types";
 
 // Use the centralized CampaignFormData type
@@ -48,6 +49,7 @@ export function CampaignWizard({
   onSuccess 
 }: CampaignWizardProps) {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const { generalStatusOptions, campaignThemeOptions } = useSystemLists();
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -100,11 +102,11 @@ export function CampaignWizard({
   const [openChallenge, setOpenChallenge] = useState(false);
 
   const steps = [
-    { id: 0, title: "المعلومات الأساسية", icon: <AlertCircle className="w-4 h-4" /> },
-    { id: 1, title: "التفاصيل والأهداف", icon: <Target className="w-4 h-4" /> },
-    { id: 2, title: "التواريخ والميزانية", icon: <Calendar className="w-4 h-4" /> },
-    { id: 3, title: "الهيكل التنظيمي", icon: <Building2 className="w-4 h-4" /> },
-    { id: 4, title: "الروابط والشراكات", icon: <Users className="w-4 h-4" /> }
+    { id: 0, title: t('campaign_wizard.basic_info'), icon: <AlertCircle className="w-4 h-4" /> },
+    { id: 1, title: t('campaign_wizard.details_targets'), icon: <Target className="w-4 h-4" /> },
+    { id: 2, title: t('campaign_wizard.dates_budget'), icon: <Calendar className="w-4 h-4" /> },
+    { id: 3, title: t('campaign_wizard.organizational_structure'), icon: <Building2 className="w-4 h-4" /> },
+    { id: 4, title: t('campaign_wizard.links_partnerships'), icon: <Users className="w-4 h-4" /> }
   ];
 
   useEffect(() => {
