@@ -1239,7 +1239,23 @@
     },
     "category": {
       "campaigns": "Campaigns",
-      "campaigns.description": "Campaign and activity settings"
+      "campaigns.description": "Campaign and activity settings",
+      "partners": "Partners",
+      "partners.description": "Partnership and partner settings",
+      "challenges": "Challenges",
+      "challenges.description": "Challenge and competition settings",
+      "ideas": "Ideas", 
+      "ideas.description": "Idea and innovation settings",
+      "events": "Events",
+      "events.description": "Event and activity settings", 
+      "opportunities": "Opportunities",
+      "opportunities.description": "Opportunity and project settings",
+      "security": "Security",
+      "security.description": "Security and protection settings",
+      "ui": "User Interface",
+      "ui.description": "User interface and design settings",
+      "performance": "Performance", 
+      "performance.description": "Performance and optimization settings"
     },
     "enable_data_export": {
       "description": "Allow authorized users to export system data"
@@ -1432,6 +1448,50 @@
     "enable_data_export": {
       "label": "Enable Data Export",
       "description": "Allow authorized users to export system data"
+    },
+    "enable_partnership_expiry_notifications": {
+      "label": "Enable Partnership Expiry Notifications",
+      "description": "Send notifications when partnerships are about to expire"
+    },
+    "enable_periodic_partner_evaluation": {
+      "label": "Enable Periodic Partner Evaluation",
+      "description": "Conduct periodic evaluations of partner performance"
+    },
+    "max_partners_per_project": {
+      "label": "Max Partners Per Project",
+      "description": "Maximum number of partners allowed per project"
+    },
+    "min_partnership_value": {
+      "label": "Minimum Partnership Value",
+      "description": "Minimum financial value required for partnerships"
+    },
+    "partner_auto_onboarding": {
+      "label": "Partner Auto Onboarding",
+      "description": "Enable automatic onboarding for new partners"
+    },
+    "partner_max_per_project": {
+      "label": "Partner Max Per Project",
+      "description": "Maximum partners allowed per project"
+    },
+    "partner_require_contract": {
+      "label": "Partner Require Contract",
+      "description": "Partnerships require formal contract signing"
+    },
+    "partner_types": {
+      "label": "Partner Types",
+      "description": "List of available partner types"
+    },
+    "partnership_default_duration": {
+      "label": "Partnership Default Duration",
+      "description": "Default duration for new partnerships in months"
+    },
+    "partnership_renewal_period": {
+      "label": "Partnership Renewal Period",
+      "description": "Advance notice period for partnership renewal in days"
+    },
+    "require_partnership_approval": {
+      "label": "Require Partnership Approval",
+      "description": "New partnerships require administrative approval"
     }
   }
 }

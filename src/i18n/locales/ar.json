@@ -1239,7 +1239,23 @@
     },
     "category": {
       "campaigns": "الحملات",
-      "campaigns.description": "إعدادات الحملات والأنشطة"
+      "campaigns.description": "إعدادات الحملات والأنشطة",
+      "partners": "الشركاء", 
+      "partners.description": "إعدادات الشراكات والشركاء",
+      "challenges": "التحديات",
+      "challenges.description": "إعدادات التحديات والمسابقات",
+      "ideas": "الأفكار",
+      "ideas.description": "إعدادات الأفكار والابتكارات",
+      "events": "الفعاليات", 
+      "events.description": "إعدادات الفعاليات والأحداث",
+      "opportunities": "الفرص",
+      "opportunities.description": "إعدادات الفرص والمشاريع",
+      "security": "الأمان",
+      "security.description": "إعدادات الأمان والحماية",
+      "ui": "واجهة المستخدم",
+      "ui.description": "إعدادات واجهة المستخدم والتصميم",
+      "performance": "الأداء",
+      "performance.description": "إعدادات الأداء والتحسين"
     },
     "enable_data_export": {
       "description": "تمكين تصدير البيانات للمستخدمين المخولين"
@@ -1432,6 +1448,50 @@
     "enable_data_export": {
       "label": "تفعيل تصدير البيانات",
       "description": "تمكين تصدير البيانات للمستخدمين المخولين"
+    },
+    "enable_partnership_expiry_notifications": {
+      "label": "تفعيل إشعارات انتهاء الشراكة",
+      "description": "إرسال إشعارات عند اقتراب انتهاء الشراكات"
+    },
+    "enable_periodic_partner_evaluation": {
+      "label": "تفعيل التقييم الدوري للشركاء",
+      "description": "إجراء تقييم دوري لأداء الشركاء"
+    },
+    "max_partners_per_project": {
+      "label": "الحد الأقصى للشركاء لكل مشروع",
+      "description": "الحد الأقصى لعدد الشركاء المسموح لكل مشروع"
+    },
+    "min_partnership_value": {
+      "label": "القيمة الدنيا للشراكة",
+      "description": "القيمة المالية الدنيا المطلوبة للشراكة"
+    },
+    "partner_auto_onboarding": {
+      "label": "التأهيل التلقائي للشركاء",
+      "description": "تمكين التأهيل التلقائي للشركاء الجدد"
+    },
+    "partner_max_per_project": {
+      "label": "الحد الأقصى للشركاء لكل مشروع",
+      "description": "الحد الأقصى لعدد الشركاء المسموح لكل مشروع"
+    },
+    "partner_require_contract": {
+      "label": "يتطلب عقد شراكة",
+      "description": "تتطلب الشراكات توقيع عقد رسمي"
+    },
+    "partner_types": {
+      "label": "أنواع الشركاء",
+      "description": "قائمة بأنواع الشركاء المتاحة"
+    },
+    "partnership_default_duration": {
+      "label": "المدة الافتراضية للشراكة",
+      "description": "المدة الافتراضية للشراكات الجديدة بالشهور"
+    },
+    "partnership_renewal_period": {
+      "label": "فترة تجديد الشراكة",
+      "description": "فترة الإشعار المسبق لتجديد الشراكة بالأيام"
+    },
+    "require_partnership_approval": {
+      "label": "تتطلب موافقة على الشراكة",
+      "description": "تتطلب الشراكات الجديدة موافقة إدارية"
     }
   }
 }
