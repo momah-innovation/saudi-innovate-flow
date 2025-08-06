@@ -1492,6 +1492,18 @@
     "require_partnership_approval": {
       "label": "Require Partnership Approval",
       "description": "New partnerships require administrative approval"
+    },
+    "array": {
+      "item_placeholder": "Enter item value..."
+    },
+    "object": {
+      "item_placeholder": "Enter JSON object..."
+    },
+    "total_items": "Total items",
+    "add_item": "Add Item",
+    "no_items": "No items added yet",
+    "click_add": "Click \"Add Item\" to get started",
+    "unsaved_changes": "You have unsaved changes"
     }
   }
 }
