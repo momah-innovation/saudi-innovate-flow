@@ -293,8 +293,8 @@ export function ExpertAssignmentManagement() {
   const handleBulkAssign = async () => {
     if (bulkSelectedChallenges.length === 0 || bulkSelectedExperts.length === 0) {
       toast({
-        title: "Missing Selection",
-        description: "Please select at least one challenge and one expert.",
+        title: t('expert_assignment_management.missing_selection'),
+        description: t('expert_assignment_management.please_select'),
         variant: "destructive",
       });
       return;
@@ -360,8 +360,8 @@ export function ExpertAssignmentManagement() {
       if (error) throw error;
 
       toast({
-        title: "Assignment Updated",
-        description: "Expert assignment has been successfully updated.",
+        title: t('expert_assignment_management.assignment_updated'),
+        description: t('expert_assignment_management.assignment_updated_desc'),
       });
 
       setIsEditAssignmentDialogOpen(false);
@@ -388,8 +388,8 @@ export function ExpertAssignmentManagement() {
       if (error) throw error;
 
       toast({
-        title: "Assignment Removed",
-        description: "Expert has been removed from the challenge.",
+        title: t('expert_assignment_management.assignment_removed'),
+        description: t('expert_assignment_management.assignment_removed_desc'),
       });
 
       fetchChallengeExperts();
@@ -468,7 +468,7 @@ export function ExpertAssignmentManagement() {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">Loading expert assignments...</p>
+          <p className="mt-2 text-muted-foreground">{t('expert_assignment_management.loading_assignments')}</p>
         </div>
       </div>
     );
@@ -479,19 +479,19 @@ export function ExpertAssignmentManagement() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">{t('expert_assignment_management')}</h1>
+          <h1 className="text-3xl font-bold">{t('expert_assignment_management.title')}</h1>
           <p className="text-muted-foreground">
-            {t('manage_expert_assignments_description')}
+            {t('expert_assignment_management.description')}
           </p>
         </div>
         <div className="flex gap-2">
           <Button onClick={() => setIsAssignDialogOpen(true)}>
             <Plus className="h-4 w-4 me-2" />
-            {t('assign_expert')}
+            {t('expert_assignment_management.assign_expert')}
           </Button>
           <Button variant="outline" onClick={() => setIsBulkAssignDialogOpen(true)}>
             <Users className="h-4 w-4 me-2" />
-            {t('bulk_assign')}
+            {t('expert_assignment_management.bulk_assign')}
           </Button>
         </div>
       </div>
@@ -794,7 +794,7 @@ export function ExpertAssignmentManagement() {
               <Label>Challenge</Label>
               <Select value={selectedChallenge} onValueChange={setSelectedChallenge}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select challenge" />
+                  <SelectValue placeholder={t('expert_assignment_management.select_challenge')} />
                 </SelectTrigger>
                 <SelectContent>
                   {challenges.map((challenge) => (
@@ -810,7 +810,7 @@ export function ExpertAssignmentManagement() {
               <Label>Expert</Label>
               <Select value={selectedExpert} onValueChange={setSelectedExpert}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select expert" />
+                  <SelectValue placeholder={t('expert_assignment_management.select_expert')} />
                 </SelectTrigger>
                 <SelectContent>
                   {experts.map((expert) => (

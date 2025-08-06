@@ -6,6 +6,7 @@ import { TrendingUp, TrendingDown, Users, Lightbulb, CheckCircle, Clock } from "
 import { Badge } from "@/components/ui/badge";
 import { isThisMonth, format, subMonths, isSameMonth } from "date-fns";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useTranslation } from "@/hooks/useAppTranslation";
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1'];
 
@@ -14,6 +15,7 @@ interface IdeaAnalyticsProps {
 }
 
 export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
+  const { t } = useTranslation();
   const { generalStatusOptions, challengeTypes, experienceLevels, sectorTypes, tagCategories } = useSystemLists();
   
   // Mock data query - replace with actual API call
@@ -40,9 +42,9 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
     },
   });
 
-  if (isLoading) return <div>Loading analytics...</div>;
-  if (error) return <div>Error loading analytics</div>;
-  if (!data?.length) return <div>No data available</div>;
+  if (isLoading) return <div>{t('idea_analytics.loading')}</div>;
+  if (error) return <div>{t('idea_analytics.error_loading')}</div>;
+  if (!data?.length) return <div>{t('idea_analytics.no_data')}</div>;
 
   const ideas = data;
 
@@ -134,35 +136,35 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
-          title="Total Ideas"
+          title={t('idea_analytics.total_ideas')}
           value={totalIdeas}
           trend={{
             value: growthRate,
-            label: "this month",
+            label: t('idea_analytics.this_month'),
             direction: growthRate >= 0 ? "up" : "down"
           }}
           icon={<Lightbulb className="w-4 h-4" />}
           className="bg-card"
         />
         <MetricCard
-          title="Implemented"
+          title={t('idea_analytics.implemented')}
           value={implementedIdeas}
           trend={{
             value: implementationRate,
-            label: "success rate",
+            label: t('idea_analytics.success_rate'),
             direction: "up"
           }}
           icon={<CheckCircle className="w-4 h-4" />}
           className="bg-card"
         />
         <MetricCard
-          title="Pending Review"
+          title={t('idea_analytics.pending_review')}
           value={pendingIdeas}
           icon={<Clock className="w-4 h-4" />}
           className="bg-card"
         />
         <MetricCard
-          title="Average Score"
+          title={t('idea_analytics.average_score')}
           value={Math.round(averageScore)}
           icon={<TrendingUp className="w-4 h-4" />}
           className="bg-card"
@@ -174,8 +176,8 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
         {/* Status Distribution */}
         <Card>
           <CardHeader>
-            <CardTitle>Status Distribution</CardTitle>
-            <CardDescription>Ideas by current status</CardDescription>
+            <CardTitle>{t('idea_analytics.status_distribution')}</CardTitle>
+            <CardDescription>{t('idea_analytics.status_distribution_desc')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -198,15 +200,15 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
         {/* Score Distribution */}
         <Card>
           <CardHeader>
-            <CardTitle>Score Distribution</CardTitle>
-            <CardDescription>Ideas by score ranges</CardDescription>
+            <CardTitle>{t('idea_analytics.score_distribution')}</CardTitle>
+            <CardDescription>{t('idea_analytics.score_distribution_desc')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {scoreDistribution.map((item, index) => (
                 <div key={item.range} className="flex items-center justify-between">
                   <span className="text-sm">{item.range}</span>
-                  <Badge variant="secondary">{item.count} ideas</Badge>
+                  <Badge variant="secondary">{item.count} {t('idea_analytics.ideas')}</Badge>
                 </div>
               ))}
             </div>
@@ -219,8 +221,8 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
         {/* Monthly Trends */}
         <Card>
           <CardHeader>
-            <CardTitle>Monthly Trends</CardTitle>
-            <CardDescription>Ideas submitted and implemented over time</CardDescription>
+            <CardTitle>{t('idea_analytics.monthly_trends')}</CardTitle>
+            <CardDescription>{t('idea_analytics.monthly_trends_desc')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -228,8 +230,8 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
                 <div key={item.month} className="flex items-center justify-between">
                   <span className="text-sm">{item.month}</span>
                   <div className="flex gap-2">
-                    <Badge variant="outline">{item.ideas} submitted</Badge>
-                    <Badge variant="secondary">{item.implemented} implemented</Badge>
+                    <Badge variant="outline">{item.ideas} {t('idea_analytics.submitted')}</Badge>
+                    <Badge variant="secondary">{item.implemented} {t('idea_analytics.implemented_lower')}</Badge>
                   </div>
                 </div>
               ))}
@@ -240,15 +242,15 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
         {/* Category Distribution */}
         <Card>
           <CardHeader>
-            <CardTitle>Category Distribution</CardTitle>
-            <CardDescription>Ideas by category</CardDescription>
+            <CardTitle>{t('idea_analytics.category_distribution')}</CardTitle>
+            <CardDescription>{t('idea_analytics.category_distribution_desc')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {categoryData.map((item, index) => (
                 <div key={item.category} className="flex items-center justify-between">
                   <span className="text-sm capitalize">{item.category}</span>
-                  <Badge variant="outline">{item.count} ideas</Badge>
+                  <Badge variant="outline">{item.count} {t('idea_analytics.ideas')}</Badge>
                 </div>
               ))}
             </div>
@@ -259,8 +261,8 @@ export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
       {/* Maturity Level Analysis */}
       <Card>
         <CardHeader>
-          <CardTitle>Maturity Level Distribution</CardTitle>
-          <CardDescription>Ideas by development maturity</CardDescription>
+          <CardTitle>{t('idea_analytics.maturity_level_distribution')}</CardTitle>
+          <CardDescription>{t('idea_analytics.maturity_level_desc')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

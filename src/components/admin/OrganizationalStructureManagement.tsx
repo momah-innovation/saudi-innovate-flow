@@ -241,17 +241,17 @@ export function OrganizationalStructureManagement() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Organizational Structure Management</h1>
-        <p className="text-muted-foreground">Manage deputies, departments, domains, sub-domains, and services</p>
+        <h1 className="text-3xl font-bold">{t('organizational_structure.title')}</h1>
+        <p className="text-muted-foreground">{t('organizational_structure.description')}</p>
       </div>
 
       <Tabs defaultValue="deputies" className="space-y-4">
         <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="deputies">Deputies</TabsTrigger>
-          <TabsTrigger value="departments">Departments</TabsTrigger>
-          <TabsTrigger value="domains">Domains</TabsTrigger>
-          <TabsTrigger value="subdomains">Sub-domains</TabsTrigger>
-          <TabsTrigger value="services">Services</TabsTrigger>
+          <TabsTrigger value="deputies">{t('organizational_structure.deputies')}</TabsTrigger>
+          <TabsTrigger value="departments">{t('organizational_structure.departments')}</TabsTrigger>
+          <TabsTrigger value="domains">{t('organizational_structure.domains')}</TabsTrigger>
+          <TabsTrigger value="subdomains">{t('organizational_structure.sub_domains')}</TabsTrigger>
+          <TabsTrigger value="services">{t('organizational_structure.services')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="deputies">
@@ -260,18 +260,18 @@ export function OrganizationalStructureManagement() {
             <div className="flex gap-2">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                <Input
-                  placeholder="Search deputies..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-9 w-64"
-                />
+                  <Input
+                    placeholder={t('organizational_structure.search_deputies')}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-9 w-64"
+                  />
               </div>
               <Dialog open={isDeputyDialogOpen} onOpenChange={setIsDeputyDialogOpen}>
                 <DialogTrigger asChild>
                   <Button onClick={() => { setEditingDeputy(null); setDeputyForm({ name: "", name_ar: "", deputy_minister: "", contact_email: "", sector_id: "" }); }}>
                     <Plus className="w-4 h-4 mr-2" />
-                    Add Deputy
+                    {t('organizational_structure.add_deputy')}
                   </Button>
                 </DialogTrigger>
                 <DialogContent>
@@ -385,9 +385,9 @@ export function OrganizationalStructureManagement() {
                 </Button>
               </DialogTrigger>
               <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>{editingDepartment ? "Edit Department" : "Add New Department"}</DialogTitle>
-                </DialogHeader>
+                  <DialogHeader>
+                    <DialogTitle>{editingDepartment ? t('organizational_structure.edit_department') : t('organizational_structure.add_new_department')}</DialogTitle>
+                  </DialogHeader>
                 <form onSubmit={handleDepartmentSubmit} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>

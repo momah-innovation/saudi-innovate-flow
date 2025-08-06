@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useTranslation } from "@/hooks/useAppTranslation";
 
 interface UserInvitationWizardProps {
   open: boolean;
@@ -22,6 +23,7 @@ interface UserInvitationWizardProps {
 export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: UserInvitationWizardProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const { availableUserRoles } = useSystemLists();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -46,8 +48,8 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
   const handleSendInvitation = async () => {
     if (!formData.email || !formData.name) {
       toast({
-        title: "Validation Error",
-        description: "Email and name are required fields.",
+        title: t('user_invitation_wizard.validation_error'),
+        description: t('user_invitation_wizard.email_name_required'),
         variant: "destructive",
       });
       return;
@@ -55,8 +57,8 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
 
     if (!user) {
       toast({
-        title: "Authentication Error",
-        description: "You must be logged in to send invitations.",
+        title: t('user_invitation_wizard.authentication_error'),
+        description: t('user_invitation_wizard.must_be_logged_in'),
         variant: "destructive",
       });
       return;
@@ -93,10 +95,10 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
       const inviteLink = `${window.location.origin}/auth?invite=${tokenData}`;
       
       toast({
-        title: "Invitation Sent",
+        title: t('user_invitation_wizard.invitation_sent'),
         description: formData.send_email 
-          ? `Invitation email sent to ${formData.email}` 
-          : `Invitation created. Share this link: ${inviteLink}`,
+          ? `${t('user_invitation_wizard.email_sent')} ${formData.email}` 
+          : `${t('user_invitation_wizard.invitation_created')} ${inviteLink}`,
       });
 
       // Reset form
@@ -132,20 +134,20 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <UserPlus className="h-5 w-5" />
-            Invite New User
+            {t('user_invitation_wizard.title')}
           </DialogTitle>
           <DialogDescription>
-            Send an invitation to a new user to join the platform
+            {t('user_invitation_wizard.description')}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Basic Information */}
           <div className="space-y-4">
-            <h4 className="font-medium">Basic Information</h4>
+            <h4 className="font-medium">{t('user_invitation_wizard.basic_information')}</h4>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Email Address *</Label>
+                <Label>{t('user_invitation_wizard.email_address')} *</Label>
                 <Input
                   type="email"
                   value={formData.email}
@@ -154,7 +156,7 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
                 />
               </div>
               <div className="space-y-2">
-                <Label>Full Name *</Label>
+                <Label>{t('user_invitation_wizard.full_name')} *</Label>
                 <Input
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
@@ -164,7 +166,7 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Name (Arabic)</Label>
+                <Label>{t('user_invitation_wizard.name_arabic')}</Label>
                 <Input
                   value={formData.name_ar}
                   onChange={(e) => setFormData(prev => ({ ...prev, name_ar: e.target.value }))}
@@ -173,7 +175,7 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
                 />
               </div>
               <div className="space-y-2">
-                <Label>Department</Label>
+                <Label>{t('user_invitation_wizard.department')}</Label>
                 <Input
                   value={formData.department}
                   onChange={(e) => setFormData(prev => ({ ...prev, department: e.target.value }))}
@@ -182,7 +184,7 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
               </div>
             </div>
             <div className="space-y-2">
-              <Label>Position/Title</Label>
+              <Label>{t('user_invitation_wizard.position_title')}</Label>
               <Input
                 value={formData.position}
                 onChange={(e) => setFormData(prev => ({ ...prev, position: e.target.value }))}
