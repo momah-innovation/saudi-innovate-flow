@@ -43,3 +43,6 @@ verify_jwt = false
 
 [functions.ai-semantic-search]
 verify_jwt = false
+
+[functions.update-translations]
+verify_jwt = false

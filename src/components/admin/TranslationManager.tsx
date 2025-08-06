@@ -7,9 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Download, Upload, RefreshCw, Search, Plus, Edit2, Trash2 } from 'lucide-react';
+import { Download, Upload, RefreshCw, Search, Plus, Edit2, Trash2, FileText, Zap } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { useRuntimeTranslations } from '@/hooks/useRuntimeTranslations';
 
 interface SystemTranslation {
   id: string;
@@ -43,6 +44,7 @@ export const TranslationManager: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   
   const { toast } = useToast();
+  const { updateTranslation: updateRuntimeTranslation, uploadAllTranslations, isUpdating } = useRuntimeTranslations();
 
   useEffect(() => {
     loadTranslations();
@@ -220,8 +222,95 @@ export const TranslationManager: React.FC = () => {
     }
   };
 
+  // Runtime translation functions
+  const uploadTranslationsToRuntime = async (language: 'en' | 'ar') => {
+    try {
+      // Get current translations for the language
+      const languageTranslations = translations.filter(t => t.language_code === language);
+      
+      // Convert to nested object structure
+      const translationObject: Record<string, any> = {};
+      languageTranslations.forEach(translation => {
+        const keyParts = translation.translation_key.split('.');
+        let current = translationObject;
+        
+        for (let i = 0; i < keyParts.length - 1; i++) {
+          const part = keyParts[i];
+          if (!current[part]) {
+            current[part] = {};
+          }
+          current = current[part];
+        }
+        
+        current[keyParts[keyParts.length - 1]] = translation.translation_text;
+      });
+
+      const success = await uploadAllTranslations(language, translationObject);
+      if (success) {
+        toast({
+          title: "Runtime Upload Success",
+          description: `Uploaded ${languageTranslations.length} translations to runtime for ${language}`,
+        });
+      }
+    } catch (error) {
+      console.error('Error uploading to runtime:', error);
+      toast({
+        title: "Runtime Upload Error",
+        description: "Failed to upload translations to runtime",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
+      {/* Runtime Translation Management */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Zap className="h-5 w-5 text-blue-500" />
+            Runtime Translation Updates
+          </CardTitle>
+          <CardDescription>
+            Update translation files during runtime without redeployment
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-3">
+            <Button 
+              onClick={() => uploadTranslationsToRuntime('en')} 
+              disabled={isUpdating}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              {isUpdating ? (
+                <RefreshCw className="h-4 w-4 animate-spin" />
+              ) : (
+                <FileText className="h-4 w-4" />
+              )}
+              Update English Runtime
+            </Button>
+            <Button 
+              onClick={() => uploadTranslationsToRuntime('ar')} 
+              disabled={isUpdating}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              {isUpdating ? (
+                <RefreshCw className="h-4 w-4 animate-spin" />
+              ) : (
+                <FileText className="h-4 w-4" />
+              )}
+              Update Arabic Runtime
+            </Button>
+          </div>
+          <p className="text-sm text-muted-foreground mt-2">
+            Click to update JSON translation files in real-time using Edge Functions
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* Existing Database Translation Management */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
