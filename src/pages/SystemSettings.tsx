@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Settings, Database, List, Bot, Palette, Zap, Filter } from "lucide-react";
+import { Settings, Database, List, Bot, Palette, Zap, Filter, Languages } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { UnifiedSettingsManager } from "@/components/admin/settings/UnifiedSettingsManager";
+import TranslationManagement from "@/components/admin/TranslationManagement";
 import { useDirection } from "@/components/ui/direction-provider";
 import { useTranslation } from "@/hooks/useAppTranslation";
 
@@ -27,6 +28,7 @@ const SystemSettings = () => {
     { key: "ai", label: isRTL ? 'الذكاء الاصطناعي' : 'AI', icon: Bot },
     { key: "ui", label: isRTL ? 'واجهة المستخدم' : 'UI', icon: Palette },
     { key: "performance", label: isRTL ? 'الأداء' : 'Performance', icon: Zap },
+    { key: "translations", label: isRTL ? 'إدارة الترجمات' : 'Translation Management', icon: Languages },
   ];
 
   return (
@@ -71,10 +73,14 @@ const SystemSettings = () => {
               {/* Unified Settings Manager for each category */}
               {categories.map((category) => (
                 <TabsContent key={category.key} value={category.key}>
-                  <UnifiedSettingsManager 
-                    category={category.key === 'all' ? undefined : category.key}
-                    showSharedOnly={false}
-                  />
+                  {category.key === 'translations' ? (
+                    <TranslationManagement />
+                  ) : (
+                    <UnifiedSettingsManager 
+                      category={category.key === 'all' ? undefined : category.key}
+                      showSharedOnly={false}
+                    />
+                  )}
                 </TabsContent>
               ))}
             </Tabs>
