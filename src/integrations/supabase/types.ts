@@ -6611,6 +6611,42 @@ export type Database = {
           },
         ]
       }
+      shared_setting_concepts: {
+        Row: {
+          applies_to_systems: string[] | null
+          concept_description: string | null
+          concept_name: string
+          created_at: string | null
+          data_type: string | null
+          default_value: string | null
+          id: string
+          unified_key: string
+          validation_rules: Json | null
+        }
+        Insert: {
+          applies_to_systems?: string[] | null
+          concept_description?: string | null
+          concept_name: string
+          created_at?: string | null
+          data_type?: string | null
+          default_value?: string | null
+          id?: string
+          unified_key: string
+          validation_rules?: Json | null
+        }
+        Update: {
+          applies_to_systems?: string[] | null
+          concept_description?: string | null
+          concept_name?: string
+          created_at?: string | null
+          data_type?: string | null
+          default_value?: string | null
+          id?: string
+          unified_key?: string
+          validation_rules?: Json | null
+        }
+        Relationships: []
+      }
       smart_search_index: {
         Row: {
           content_vector: Json | null
