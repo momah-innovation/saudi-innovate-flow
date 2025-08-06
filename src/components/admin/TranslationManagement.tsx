@@ -348,36 +348,36 @@ export default function TranslationManagement() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-3">
-            <Button 
-              onClick={() => uploadTranslationsToRuntime('en')} 
-              disabled={isUpdating}
-              variant="outline"
-              className="flex items-center gap-2"
-            >
-              {isUpdating ? (
-                <RefreshCw className="h-4 w-4 animate-spin" />
-              ) : (
+          <div className="space-y-3">
+            <div className="bg-yellow-50 border border-yellow-200 p-3 rounded-md">
+              <p className="text-sm text-yellow-800">
+                <strong>Note:</strong> Edge Functions cannot write to static JSON files. 
+                Consider using the database-driven translation system instead, which is already working.
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <Button 
+                onClick={() => uploadTranslationsToRuntime('en')} 
+                disabled={true}
+                variant="outline"
+                className="flex items-center gap-2 opacity-50"
+              >
                 <FileText className="h-4 w-4" />
-              )}
-              Update English Runtime
-            </Button>
-            <Button 
-              onClick={() => uploadTranslationsToRuntime('ar')} 
-              disabled={isUpdating}
-              variant="outline"
-              className="flex items-center gap-2"
-            >
-              {isUpdating ? (
-                <RefreshCw className="h-4 w-4 animate-spin" />
-              ) : (
+                Update English Runtime (Not Available)
+              </Button>
+              <Button 
+                onClick={() => uploadTranslationsToRuntime('ar')} 
+                disabled={true}
+                variant="outline"
+                className="flex items-center gap-2 opacity-50"
+              >
                 <FileText className="h-4 w-4" />
-              )}
-              Update Arabic Runtime
-            </Button>
+                Update Arabic Runtime (Not Available)
+              </Button>
+            </div>
           </div>
           <p className="text-sm text-muted-foreground mt-2">
-            Click to update JSON translation files in real-time using Edge Functions
+            Runtime JSON file updates are not possible with Edge Functions. The database-driven system is recommended.
           </p>
         </CardContent>
       </Card>
