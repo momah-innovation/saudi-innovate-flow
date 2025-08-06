@@ -23,22 +23,33 @@ const TranslationManagement = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  // Generate and download JSON file from database translations
+  // Generate and download JSON file from database translations merged with existing static translations
   const downloadTranslationsJSON = async (language: 'en' | 'ar') => {
     try {
-      const { data: translations, error } = await supabase
+      // 1. Fetch database translations
+      const { data: dbTranslations, error } = await supabase
         .from('system_translations')
         .select('translation_key, translation_text, category')
         .eq('language_code', language);
 
       if (error) throw error;
 
-      // Convert to nested JSON structure
-      const jsonStructure: Record<string, any> = {};
-      
-      translations?.forEach(({ translation_key, translation_text }) => {
+      // 2. Load existing static translations
+      let existingTranslations = {};
+      try {
+        const staticResponse = await fetch(`/src/i18n/locales/${language}.json`);
+        if (staticResponse.ok) {
+          existingTranslations = await staticResponse.json();
+        }
+      } catch (err) {
+        console.warn(`Could not load existing ${language}.json, will create from database only`);
+      }
+
+      // 3. Convert database translations to nested structure
+      const dbTranslationsNested: Record<string, any> = {};
+      dbTranslations?.forEach(({ translation_key, translation_text }) => {
         const keys = translation_key.split('.');
-        let current = jsonStructure;
+        let current = dbTranslationsNested;
         
         for (let i = 0; i < keys.length - 1; i++) {
           const key = keys[i];
@@ -51,8 +62,27 @@ const TranslationManagement = () => {
         current[keys[keys.length - 1]] = translation_text;
       });
 
-      // Create and download file
-      const blob = new Blob([JSON.stringify(jsonStructure, null, 2)], {
+      // 4. Deep merge existing translations with database translations (database takes precedence)
+      const mergeTranslations = (existing: any, db: any): any => {
+        const result = { ...existing };
+        
+        for (const key in db) {
+          if (typeof db[key] === 'object' && db[key] !== null && !Array.isArray(db[key])) {
+            // If it's an object, recursively merge
+            result[key] = mergeTranslations(existing[key] || {}, db[key]);
+          } else {
+            // If it's a primitive value, database takes precedence
+            result[key] = db[key];
+          }
+        }
+        
+        return result;
+      };
+
+      const finalTranslations = mergeTranslations(existingTranslations, dbTranslationsNested);
+
+      // 5. Create and download file
+      const blob = new Blob([JSON.stringify(finalTranslations, null, 2)], {
         type: 'application/json'
       });
       const url = URL.createObjectURL(blob);
@@ -64,9 +94,12 @@ const TranslationManagement = () => {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
+      const dbCount = dbTranslations?.length || 0;
+      const staticKeys = Object.keys(existingTranslations).length;
+      
       toast({
         title: "Success",
-        description: `${language.toUpperCase()} translations downloaded successfully`,
+        description: `${language.toUpperCase()} translations downloaded successfully (${staticKeys} static + ${dbCount} database keys)`,
       });
     } catch (error) {
       console.error('Download error:', error);
@@ -234,9 +267,9 @@ const TranslationManagement = () => {
               <div className="flex items-start space-x-3">
                 <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5" />
                 <div className="text-sm">
-                  <p className="font-medium text-amber-800 dark:text-amber-200">Manual Process Required</p>
+                  <p className="font-medium text-amber-800 dark:text-amber-200">Complete Translation Files</p>
                   <p className="text-amber-700 dark:text-amber-300">
-                    After downloading, manually replace the JSON files in <code>src/i18n/locales/</code> to update static translations.
+                    Downloads merge existing static translations with database translations. Database values take precedence for updated keys.
                   </p>
                 </div>
               </div>
