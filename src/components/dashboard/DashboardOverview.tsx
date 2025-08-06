@@ -16,6 +16,7 @@ import {
   Star
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -33,6 +34,7 @@ interface DashboardStats {
 
 export const DashboardOverview = () => {
   const { isRTL } = useDirection();
+  const { t } = useTranslation();
   const { user, hasRole } = useAuth();
   const [stats, setStats] = useState<DashboardStats>({
     totalIdeas: 0,
@@ -90,29 +92,29 @@ export const DashboardOverview = () => {
 
   const quickActions = [
     {
-      title: isRTL ? 'إضافة فكرة جديدة' : 'Submit New Idea',
-      description: isRTL ? 'شارك فكرتك المبتكرة' : 'Share your innovative idea',
+      title: t('dashboard_overview.submit_new_idea'),
+      description: t('dashboard_overview.share_innovative_idea'),
       icon: Lightbulb,
       href: '/ideas/submit',
       color: 'from-blue-500 to-purple-600',
     },
     {
-      title: isRTL ? 'تصفح التحديات' : 'Browse Challenges',
-      description: isRTL ? 'اكتشف التحديات الجديدة' : 'Discover new challenges',
+      title: t('dashboard_overview.browse_challenges'),
+      description: t('dashboard_overview.discover_new_challenges'),
       icon: Target,
       href: '/challenges',
       color: 'from-green-500 to-teal-600',
     },
     {
-      title: isRTL ? 'الفعاليات القادمة' : 'Upcoming Events',
-      description: isRTL ? 'انضم للفعاليات' : 'Join upcoming events',
+      title: t('dashboard_overview.upcoming_events_action'),
+      description: t('dashboard_overview.join_upcoming_events'),
       icon: Calendar,
       href: '/events',
       color: 'from-orange-500 to-red-600',
     },
     {
-      title: isRTL ? 'شراكات جديدة' : 'New Partnerships',
-      description: isRTL ? 'استكشف الشراكات' : 'Explore partnerships',
+      title: t('dashboard_overview.new_partnerships'),
+      description: t('dashboard_overview.explore_partnerships'),
       icon: Users,
       href: '/partners',
       color: 'from-purple-500 to-pink-600',
@@ -122,22 +124,22 @@ export const DashboardOverview = () => {
   const recentActivities = [
     {
       type: 'idea',
-      title: isRTL ? 'تم قبول فكرة نظام إدارة المواعيد' : 'Appointment Management System Idea Accepted',
-      time: isRTL ? 'منذ ساعتين' : '2 hours ago',
+      title: t('dashboard_overview.appointment_management_accepted'),
+      time: t('dashboard_overview.hours_ago_2'),
       icon: Lightbulb,
       color: 'text-blue-600',
     },
     {
       type: 'challenge',
-      title: isRTL ? 'تحدي جديد: المدن الذكية' : 'New Challenge: Smart Cities',
-      time: isRTL ? 'منذ 4 ساعات' : '4 hours ago',
+      title: t('dashboard_overview.new_challenge_smart_cities'),
+      time: t('dashboard_overview.hours_ago_4'),
       icon: Target,
       color: 'text-green-600',
     },
     {
       type: 'event',
-      title: isRTL ? 'ورشة عمل الذكاء الاصطناعي' : 'AI Workshop Registration Open',
-      time: isRTL ? 'أمس' : 'Yesterday',
+      title: t('dashboard_overview.ai_workshop_registration'),
+      time: t('dashboard_overview.yesterday'),
       icon: Calendar,
       color: 'text-orange-600',
     },
@@ -164,16 +166,13 @@ export const DashboardOverview = () => {
       {/* Welcome Section */}
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          {isRTL 
-            ? `أهلاً بك${user ? ' ' + (user.user_metadata?.name || 'مبتكر') : ''} في منصة رواد` 
-            : `Welcome${user ? ' ' + (user.user_metadata?.name || 'Innovator') : ''} to Ruwad Platform`
+          {user ? 
+            t('dashboard_overview.welcome_message_with_name', { name: user.user_metadata?.name || (isRTL ? 'مبتكر' : 'Innovator') }) : 
+            t('dashboard_overview.welcome_message')
           }
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          {isRTL 
-            ? 'اكتشف الفرص، شارك الأفكار، وكن جزءاً من مستقبل الابتكار في المملكة العربية السعودية'
-            : 'Discover opportunities, share ideas, and be part of the innovation future in Saudi Arabia'
-          }
+          {t('dashboard_overview.platform_description')}
         </p>
       </div>
 
@@ -187,7 +186,7 @@ export const DashboardOverview = () => {
                   {stats.totalIdeas}
                 </CardTitle>
                 <CardDescription className="font-medium">
-                  {isRTL ? 'إجمالي الأفكار' : 'Total Ideas'}
+                  {t('dashboard_overview.total_ideas')}
                 </CardDescription>
               </div>
               <Lightbulb className="w-8 h-8 text-blue-500" />
@@ -196,7 +195,7 @@ export const DashboardOverview = () => {
           {user && (
             <CardContent className="pt-0">
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'أفكارك: ' : 'Your ideas: '}{stats.userIdeas}
+                {t('dashboard_overview.your_ideas', { count: stats.userIdeas })}
               </div>
             </CardContent>
           )}
@@ -210,7 +209,7 @@ export const DashboardOverview = () => {
                   {stats.totalChallenges}
                 </CardTitle>
                 <CardDescription className="font-medium">
-                  {isRTL ? 'التحديات النشطة' : 'Active Challenges'}
+                  {t('dashboard_overview.active_challenges')}
                 </CardDescription>
               </div>
               <Target className="w-8 h-8 text-green-500" />
@@ -219,7 +218,7 @@ export const DashboardOverview = () => {
           {user && (
             <CardContent className="pt-0">
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'مشاركاتك: ' : 'Your participations: '}{stats.userChallenges}
+                {t('dashboard_overview.your_participations', { count: stats.userChallenges })}
               </div>
             </CardContent>
           )}
@@ -233,7 +232,7 @@ export const DashboardOverview = () => {
                   {stats.totalEvents}
                 </CardTitle>
                 <CardDescription className="font-medium">
-                  {isRTL ? 'الفعاليات القادمة' : 'Upcoming Events'}
+                  {t('dashboard_overview.upcoming_events')}
                 </CardDescription>
               </div>
               <Calendar className="w-8 h-8 text-orange-500" />
@@ -242,7 +241,7 @@ export const DashboardOverview = () => {
           {user && (
             <CardContent className="pt-0">
               <div className="text-sm text-muted-foreground">
-                {isRTL ? 'تسجيلاتك: ' : 'Your registrations: '}{stats.userEvents}
+                {t('dashboard_overview.your_registrations', { count: stats.userEvents })}
               </div>
             </CardContent>
           )}
@@ -256,7 +255,7 @@ export const DashboardOverview = () => {
                   {stats.totalUsers}
                 </CardTitle>
                 <CardDescription className="font-medium">
-                  {isRTL ? 'المبتكرون النشطون' : 'Active Innovators'}
+                  {t('dashboard_overview.active_innovators')}
                 </CardDescription>
               </div>
               <Users className="w-8 h-8 text-purple-500" />
@@ -264,7 +263,7 @@ export const DashboardOverview = () => {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-sm text-muted-foreground">
-              {isRTL ? 'انضم للمجتمع' : 'Join the community'}
+              {t('dashboard_overview.join_community')}
             </div>
           </CardContent>
         </Card>
@@ -277,10 +276,10 @@ export const DashboardOverview = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Zap className="w-5 h-5" />
-                {isRTL ? 'إجراءات سريعة' : 'Quick Actions'}
+                {t('dashboard_overview.quick_actions')}
               </CardTitle>
               <CardDescription>
-                {isRTL ? 'ابدأ رحلتك في الابتكار' : 'Start your innovation journey'}
+                {t('dashboard_overview.start_innovation_journey')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -323,7 +322,7 @@ export const DashboardOverview = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BarChart3 className="w-5 h-5" />
-                {isRTL ? 'النشاطات الأخيرة' : 'Recent Activities'}
+                {t('dashboard_overview.recent_activities')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -348,7 +347,7 @@ export const DashboardOverview = () => {
                 })}
               </div>
               <Button variant="outline" className="w-full mt-4">
-                {isRTL ? 'عرض جميع النشاطات' : 'View All Activities'}
+                {t('dashboard_overview.view_all_activities')}
               </Button>
             </CardContent>
           </Card>
@@ -361,17 +360,17 @@ export const DashboardOverview = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Star className="w-5 h-5" />
-              {isRTL ? 'تقدمك في المنصة' : 'Your Platform Progress'}
+              {t('dashboard_overview.platform_progress')}
             </CardTitle>
             <CardDescription>
-              {isRTL ? 'استمر في المشاركة وتحقيق الإنجازات' : 'Keep participating and achieving milestones'}
+              {t('dashboard_overview.keep_participating')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span>{isRTL ? 'مستوى النشاط' : 'Activity Level'}</span>
+                  <span>{t('dashboard_overview.activity_level')}</span>
                   <span>65%</span>
                 </div>
                 <Progress value={65} className="h-2" />
@@ -380,28 +379,28 @@ export const DashboardOverview = () => {
               <div className="grid md:grid-cols-3 gap-4 pt-4">
                 <div className="text-center">
                   <Badge variant="secondary" className="mb-2">
-                    {isRTL ? 'المبتكر النشط' : 'Active Innovator'}
+                    {t('dashboard_overview.active_innovator')}
                   </Badge>
                   <p className="text-sm text-muted-foreground">
-                    {isRTL ? 'شارك في 5+ أنشطة' : 'Participated in 5+ activities'}
+                    {t('dashboard_overview.participated_5_activities')}
                   </p>
                 </div>
                 
                 <div className="text-center">
                   <Badge variant="outline" className="mb-2">
-                    {isRTL ? 'متحدي' : 'Challenger'}
+                    {t('dashboard_overview.challenger')}
                   </Badge>
                   <p className="text-sm text-muted-foreground">
-                    {isRTL ? 'شارك في تحديين' : 'Joined 2 challenges'}
+                    {t('dashboard_overview.joined_2_challenges')}
                   </p>
                 </div>
                 
                 <div className="text-center">
                   <Badge variant="outline" className="mb-2">
-                    {isRTL ? 'المتعلم' : 'Learner'}
+                    {t('dashboard_overview.learner')}
                   </Badge>
                   <p className="text-sm text-muted-foreground">
-                    {isRTL ? 'حضر 3 فعاليات' : 'Attended 3 events'}
+                    {t('dashboard_overview.attended_3_events')}
                   </p>
                 </div>
               </div>
