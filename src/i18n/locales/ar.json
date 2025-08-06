@@ -762,5 +762,10 @@
     "ui": "واجهة المستخدم",
     "translations": "الترجمات",
     "shared_settings": "الإعدادات المشتركة"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "الصفحة غير موجودة",
+    "path_label": "المسار"
   }
 }

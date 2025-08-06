@@ -762,5 +762,10 @@
     "ui": "UI",
     "translations": "Translations",
     "shared_settings": "Shared Settings"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "Page Not Found",
+    "path_label": "Path"
   }
 }
