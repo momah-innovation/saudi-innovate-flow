@@ -1219,5 +1219,99 @@
     "ui": "UI",
     "performance": "Performance",
     "translation_management": "Translation Management"
+  },
+  "settings": {
+    "enable_data_export": {
+      "description": "Allow authorized users to export system data"
+    },
+    "enable_real_time_analytics": {
+      "label": "Enable Real-time Analytics",
+      "description": "Enable real-time analytics and statistics"
+    },
+    "enable_user_behavior_tracking": {
+      "label": "User Behavior Tracking",
+      "description": "Track and analyze user behavior to improve experience"
+    },
+    "max_dashboard_widgets": {
+      "label": "Maximum Dashboard Widgets",
+      "description": "Maximum number of widgets allowed on dashboard"
+    },
+    "report_frequency_options": {
+      "label": "Report Frequency Options",
+      "description": "Available options for report generation frequency"
+    },
+    "report_generation_frequency": {
+      "label": "Report Generation Frequency",
+      "description": "How often automated reports are generated"
+    },
+    "time_range_options": {
+      "label": "Time Range Options",
+      "description": "Available time range options for analytics"
+    },
+    "category": {
+      "api_settings": "API Settings",
+      "api_settings.description": "API configuration and rate limiting settings",
+      "assignment": "Assignment Settings",
+      "assignment.description": "Expert and evaluator assignment configuration",
+      "authentication": "Authentication Settings",
+      "authentication.description": "Security and authentication configuration",
+      "campaigns.description": "Campaign and activity settings"
+    },
+    "api_rate_limit_per_hour": {
+      "label": "API Rate Limit Per Hour",
+      "description": "Number of API requests allowed per user per hour"
+    },
+    "assignment_status_options": {
+      "label": "Assignment Status Options",
+      "description": "Available statuses for expert assignments"
+    },
+    "auth_password_min_length": {
+      "label": "Minimum Password Length",
+      "description": "Minimum number of characters required for passwords"
+    },
+    "allow_open_campaign_registration": {
+      "label": "Allow Open Campaign Registration",
+      "description": "Enable users to register for campaigns without approval"
+    },
+    "campaign_budget_limit": {
+      "label": "Campaign Budget Limit",
+      "description": "Maximum budget allowed per campaign"
+    },
+    "campaign_default_duration": {
+      "label": "Default Campaign Duration",
+      "description": "Default duration for new campaigns in days"
+    },
+    "campaign_max_budget": {
+      "label": "Maximum Campaign Budget",
+      "description": "Maximum budget that can be allocated to a single campaign"
+    },
+    "campaign_max_duration": {
+      "label": "Maximum Campaign Duration",
+      "description": "Maximum duration allowed for a single campaign in days"
+    },
+    "campaign_min_duration": {
+      "label": "Minimum Campaign Duration",
+      "description": "Minimum duration required for a single campaign in days"
+    },
+    "campaign_require_approval": {
+      "label": "Campaigns Require Approval",
+      "description": "New campaigns require admin approval before activation"
+    },
+    "campaign_status_options": {
+      "label": "Campaign Status Options",
+      "description": "Available statuses for campaigns in the system"
+    },
+    "campaign_types": {
+      "label": "Campaign Types",
+      "description": "Available campaign types in the system"
+    },
+    "enable_automatic_notifications": {
+      "label": "Enable Automatic Notifications",
+      "description": "Send automatic notifications to users for important events"
+    },
+    "enable_campaign_analytics": {
+      "label": "Enable Campaign Analytics",
+      "description": "Enable collection and display of detailed campaign analytics"
+    }
   }
 }

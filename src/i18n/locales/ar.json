@@ -1219,5 +1219,99 @@
     "ui": "واجهة المستخدم",
     "performance": "الأداء",
     "translation_management": "إدارة الترجمات"
+  },
+  "settings": {
+    "enable_data_export": {
+      "description": "تمكين تصدير البيانات للمستخدمين المخولين"
+    },
+    "enable_real_time_analytics": {
+      "label": "تفعيل التحليلات الفورية",
+      "description": "تمكين التحليلات والإحصائيات في الوقت الحقيقي"
+    },
+    "enable_user_behavior_tracking": {
+      "label": "تتبع سلوك المستخدمين",
+      "description": "تتبع وتحليل سلوك المستخدمين لتحسين التجربة"
+    },
+    "max_dashboard_widgets": {
+      "label": "أقصى عدد عناصر لوحة التحكم",
+      "description": "الحد الأقصى لعدد العناصر المسموح بها في لوحة التحكم"
+    },
+    "report_frequency_options": {
+      "label": "خيارات تكرار التقارير",
+      "description": "الخيارات المتاحة لتكرار إنشاء التقارير"
+    },
+    "report_generation_frequency": {
+      "label": "تكرار إنشاء التقارير",
+      "description": "معدل إنشاء التقارير التلقائية"
+    },
+    "time_range_options": {
+      "label": "خيارات النطاق الزمني",
+      "description": "الخيارات المتاحة للفترات الزمنية في التحليلات"
+    },
+    "category": {
+      "api_settings": "إعدادات واجهة البرمجة",
+      "api_settings.description": "إعدادات واجهة برمجة التطبيقات والحدود",
+      "assignment": "إعدادات التكليف",
+      "assignment.description": "إعدادات تكليف الخبراء والمقيمين",
+      "authentication": "إعدادات المصادقة",
+      "authentication.description": "إعدادات الأمان والمصادقة",
+      "campaigns.description": "إعدادات الحملات والأنشطة"
+    },
+    "api_rate_limit_per_hour": {
+      "label": "حد معدل الطلبات في الساعة",
+      "description": "عدد الطلبات المسموح بها لكل مستخدم في الساعة الواحدة"
+    },
+    "assignment_status_options": {
+      "label": "خيارات حالة التكليف",
+      "description": "الحالات المتاحة لتكليفات الخبراء"
+    },
+    "auth_password_min_length": {
+      "label": "الحد الأدنى لطول كلمة المرور",
+      "description": "عدد الأحرف المطلوب كحد أدنى لكلمة المرور"
+    },
+    "allow_open_campaign_registration": {
+      "label": "السماح بالتسجيل المفتوح في الحملات",
+      "description": "تمكين المستخدمين من التسجيل في الحملات دون موافقة مسبقة"
+    },
+    "campaign_budget_limit": {
+      "label": "حد ميزانية الحملة",
+      "description": "الحد الأقصى للميزانية المسموح بها للحملة الواحدة"
+    },
+    "campaign_default_duration": {
+      "label": "المدة الافتراضية للحملة",
+      "description": "المدة الافتراضية للحملات الجديدة بالأيام"
+    },
+    "campaign_max_budget": {
+      "label": "أقصى ميزانية للحملة",
+      "description": "الحد الأقصى للميزانية التي يمكن تخصيصها لحملة واحدة"
+    },
+    "campaign_max_duration": {
+      "label": "أقصى مدة للحملة",
+      "description": "أقصى مدة مسموح بها للحملة الواحدة بالأيام"
+    },
+    "campaign_min_duration": {
+      "label": "أدنى مدة للحملة",
+      "description": "أقل مدة مطلوبة للحملة الواحدة بالأيام"
+    },
+    "campaign_require_approval": {
+      "label": "تتطلب الحملات موافقة",
+      "description": "تتطلب الحملات الجديدة موافقة من المدير قبل التفعيل"
+    },
+    "campaign_status_options": {
+      "label": "خيارات حالة الحملة",
+      "description": "الحالات المتاحة للحملات في النظام"
+    },
+    "campaign_types": {
+      "label": "أنواع الحملات",
+      "description": "الأنواع المتاحة للحملات في النظام"
+    },
+    "enable_automatic_notifications": {
+      "label": "تفعيل الإشعارات التلقائية",
+      "description": "إرسال إشعارات تلقائية للمستخدمين عند الأحداث المهمة"
+    },
+    "enable_campaign_analytics": {
+      "label": "تفعيل تحليلات الحملات",
+      "description": "تمكين جمع وعرض تحليلات مفصلة للحملات"
+    }
   }
 }
