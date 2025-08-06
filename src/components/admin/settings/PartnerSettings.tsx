@@ -22,7 +22,7 @@ export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsPr
   const { isRTL } = useDirection();
   const [newPartnerType, setNewPartnerType] = useState("");
   
-  const partnerTypes = settings.partner_type_options || ["حكومي", "خاص", "أكاديمي", "غير ربحي", "دولي"];
+  const partnerTypes = settings.partner_type_options || ["government", "private", "academic", "nonprofit", "international"];
 
   const addPartnerType = () => {
     if (newPartnerType.trim() && !partnerTypes.includes(newPartnerType)) {
@@ -68,7 +68,7 @@ export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsPr
           <div className="flex flex-wrap gap-2">
             {partnerTypes.map((type: string, index: number) => (
               <Badge key={index} variant="secondary" className="flex items-center gap-1">
-                <span>{type}</span>
+                <span>{t(`partnerTypes.${type}`) || type}</span>
                 <Button
                   variant="ghost"
                   size="sm"

@@ -89,14 +89,72 @@
     "relationshipTypes": "أنواع العلاقات",
     "stakeholderCategories": "فئات المعنيين",
     "tagCategories": "فئات الوسوم",
-    "assignmentTypes": "أنواع المهام"
+    "assignmentTypes": "أنواع المهام",
+    "partnerTypes": "أنواع الشركاء",
+    "partnershipTypes": "أنواع الشراكات",
+    "partnerStatus": "حالات الشركاء",
+    "expertStatus": "حالات الخبراء",
+    "engagementLevels": "مستويات المشاركة",
+    "priorityLevels": "مستويات الأولوية",
+    "generalStatus": "الحالات العامة"
   },
   "challengeTypes": {
-    "تقنية": "تقنية",
-    "استدامة": "استدامة",
-    "صحة": "صحة",
-    "تعليم": "تعليم",
-    "حوكمة": "حوكمة"
+    "technical": "تقني",
+    "sustainability": "استدامة",
+    "health": "صحة",
+    "education": "تعليم",
+    "governance": "حوكمة",
+    "innovation": "ابتكار",
+    "digital_transformation": "التحول الرقمي",
+    "smart_cities": "المدن الذكية"
+  },
+  "partnerTypes": {
+    "government": "حكومي",
+    "private": "خاص",
+    "academic": "أكاديمي",
+    "nonprofit": "غير ربحي",
+    "international": "دولي"
+  },
+  "partnershipTypes": {
+    "collaborator": "متعاون",
+    "sponsor": "راعي",
+    "technical_partner": "شريك تقني",
+    "strategic_partner": "شريك استراتيجي",
+    "implementation_partner": "شريك تنفيذ"
+  },
+  "partnerStatus": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "pending": "معلق",
+    "blocked": "محظور"
+  },
+  "expertStatus": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "available": "متاح",
+    "busy": "مشغول",
+    "unavailable": "غير متاح"
+  },
+  "engagementLevels": {
+    "high": "عالي",
+    "medium": "متوسط",
+    "low": "منخفض",
+    "none": "معدوم"
+  },
+  "priorityLevels": {
+    "low": "منخفض",
+    "medium": "متوسط",
+    "high": "عالي",
+    "urgent": "عاجل",
+    "critical": "حرج"
+  },
+  "generalStatus": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "pending": "معلق",
+    "completed": "مكتمل",
+    "cancelled": "ملغي",
+    "suspended": "معلق"
   },
   "evaluatorTypes": {
     "lead_expert": "خبير رئيسي",
@@ -121,22 +179,22 @@
     "training": "تدريب"
   },
   "expertRoleTypes": {
-    "خبير رئيسي": "خبير رئيسي",
-    "مقيم": "مقيم",
-    "مراجع": "مراجع",
-    "خبير موضوع": "خبير موضوع",
-    "مستشار خارجي": "مستشار خارجي"
+    "lead_expert": "خبير رئيسي",
+    "evaluator": "مقيم",
+    "reviewer": "مراجع",
+    "subject_matter_expert": "خبير موضوع",
+    "external_consultant": "مستشار خارجي"
   },
   "focusQuestionTypes": {
-    "عام": "عام",
-    "تقني": "تقني",
-    "تجاري": "تجاري",
-    "تأثير": "تأثير",
-    "تنفيذ": "تنفيذ",
-    "اجتماعي": "اجتماعي",
-    "أخلاقي": "أخلاقي",
-    "طبي": "طبي",
-    "تنظيمي": "تنظيمي"
+    "general": "عام",
+    "technical": "تقني",
+    "business": "تجاري",
+    "impact": "تأثير",
+    "implementation": "تنفيذ",
+    "social": "اجتماعي",
+    "ethical": "أخلاقي",
+    "medical": "طبي",
+    "regulatory": "تنظيمي"
   },
   "organizationTypes": {
     "operational": "تشغيلي",

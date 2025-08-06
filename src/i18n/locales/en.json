@@ -89,14 +89,72 @@
     "relationshipTypes": "Relationship Types",
     "stakeholderCategories": "Stakeholder Categories",
     "tagCategories": "Tag Categories",
-    "assignmentTypes": "Assignment Types"
+    "assignmentTypes": "Assignment Types",
+    "partnerTypes": "Partner Types",
+    "partnershipTypes": "Partnership Types",
+    "partnerStatus": "Partner Status",
+    "expertStatus": "Expert Status",
+    "engagementLevels": "Engagement Levels",
+    "priorityLevels": "Priority Levels",
+    "generalStatus": "General Status"
   },
   "challengeTypes": {
-    "تقنية": "Technology",
-    "استدامة": "Sustainability", 
-    "صحة": "Health",
-    "تعليم": "Education",
-    "حوكمة": "Governance"
+    "technical": "Technical",
+    "sustainability": "Sustainability",
+    "health": "Health",
+    "education": "Education",
+    "governance": "Governance",
+    "innovation": "Innovation",
+    "digital_transformation": "Digital Transformation",
+    "smart_cities": "Smart Cities"
+  },
+  "partnerTypes": {
+    "government": "Government",
+    "private": "Private",
+    "academic": "Academic",
+    "nonprofit": "Non-profit",
+    "international": "International"
+  },
+  "partnershipTypes": {
+    "collaborator": "Collaborator",
+    "sponsor": "Sponsor",
+    "technical_partner": "Technical Partner",
+    "strategic_partner": "Strategic Partner",
+    "implementation_partner": "Implementation Partner"
+  },
+  "partnerStatus": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "blocked": "Blocked"
+  },
+  "expertStatus": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "available": "Available",
+    "busy": "Busy",
+    "unavailable": "Unavailable"
+  },
+  "engagementLevels": {
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low",
+    "none": "None"
+  },
+  "priorityLevels": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "urgent": "Urgent",
+    "critical": "Critical"
+  },
+  "generalStatus": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "suspended": "Suspended"
   },
   "evaluatorTypes": {
     "lead_expert": "Lead Expert",
@@ -121,22 +179,22 @@
     "training": "Training"
   },
   "expertRoleTypes": {
-    "خبير رئيسي": "Lead Expert",
-    "مقيم": "Evaluator",
-    "مراجع": "Reviewer",
-    "خبير موضوع": "Subject Matter Expert",
-    "مستشار خارجي": "External Consultant"
+    "lead_expert": "Lead Expert",
+    "evaluator": "Evaluator",
+    "reviewer": "Reviewer",
+    "subject_matter_expert": "Subject Matter Expert",
+    "external_consultant": "External Consultant"
   },
   "focusQuestionTypes": {
-    "عام": "General",
-    "تقني": "Technical", 
-    "تجاري": "Commercial",
-    "تأثير": "Impact",
-    "تنفيذ": "Implementation",
-    "اجتماعي": "Social",
-    "أخلاقي": "Ethical",
-    "طبي": "Medical",
-    "تنظيمي": "Regulatory"
+    "general": "General",
+    "technical": "Technical",
+    "business": "Business",
+    "impact": "Impact",
+    "implementation": "Implementation",
+    "social": "Social",
+    "ethical": "Ethical",
+    "medical": "Medical",
+    "regulatory": "Regulatory"
   },
   "organizationTypes": {
     "operational": "Operational",
