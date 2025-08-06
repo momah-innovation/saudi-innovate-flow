@@ -479,62 +479,62 @@ export function ExpertAssignmentManagement() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Expert Assignment Management</h1>
+          <h1 className="text-3xl font-bold">{t('expert_assignment_management')}</h1>
           <p className="text-muted-foreground">
-            Manage expert assignments, roles, and workloads across challenges
+            {t('manage_expert_assignments_description')}
           </p>
         </div>
         <div className="flex gap-2">
           <Button onClick={() => setIsAssignDialogOpen(true)}>
             <Plus className="h-4 w-4 me-2" />
-            Assign Expert
+            {t('assign_expert')}
           </Button>
           <Button variant="outline" onClick={() => setIsBulkAssignDialogOpen(true)}>
             <Users className="h-4 w-4 me-2" />
-            Bulk Assign
+            {t('bulk_assign')}
           </Button>
         </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
-          <TabsTrigger value="assignments">Expert Assignments</TabsTrigger>
-          <TabsTrigger value="workload">Workload Overview</TabsTrigger>
-          <TabsTrigger value="availability">Availability Tracking</TabsTrigger>
+          <TabsTrigger value="assignments">{t('expert_assignments')}</TabsTrigger>
+          <TabsTrigger value="workload">{t('workload_overview')}</TabsTrigger>
+          <TabsTrigger value="availability">{t('availability_tracking')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="assignments" className="space-y-4">
           {/* Filters */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Filters</CardTitle>
+              <CardTitle className="text-lg">{t('filters')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 md:grid-cols-4">
                 <div className="space-y-2">
-                  <Label>Search Expert</Label>
+                  <Label>{t('search_expert')}</Label>
                   <Input
-                    placeholder="Expert name..."
+                    placeholder={t('expert_name_placeholder')}
                     value={expertFilter}
                     onChange={(e) => setExpertFilter(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Search Challenge</Label>
+                  <Label>{t('search_challenge')}</Label>
                   <Input
-                    placeholder="Challenge title..."
+                    placeholder={t('challenge_title_placeholder')}
                     value={challengeFilter}
                     onChange={(e) => setChallengeFilter(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Role</Label>
+                  <Label>{t('expert_role')}</Label>
                   <Select value={roleFilter} onValueChange={setRoleFilter}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Roles</SelectItem>
+                      <SelectItem value="all">{t('all_roles')}</SelectItem>
                       {expertRoleTypes.map((role) => (
                         <SelectItem key={role} value={role}>
                           {role.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
@@ -544,13 +544,13 @@ export function ExpertAssignmentManagement() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Status</Label>
+                  <Label>{t('status')}</Label>
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="all">{t('all_status')}</SelectItem>
                       {assignmentStatusOptions.map((status) => (
                         <SelectItem key={status} value={status}>
                           {status.charAt(0).toUpperCase() + status.slice(1)}
