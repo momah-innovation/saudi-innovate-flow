@@ -198,7 +198,7 @@ export default {
 					background: "hsl(var(--hot-background))",
 					border: "hsl(var(--hot-border))",
 				},
-				// Category-specific colors
+				// Category-specific colors - Comprehensive Domain Coverage
 				"category-tech": {
 					DEFAULT: "hsl(var(--category-tech))",
 					foreground: "hsl(var(--category-tech-foreground))",
@@ -216,6 +216,132 @@ export default {
 					foreground: "hsl(var(--category-finance-foreground))",
 					background: "hsl(var(--category-finance-background))",
 					border: "hsl(var(--category-finance-border))",
+				},
+				"category-education": {
+					DEFAULT: "hsl(var(--category-education))",
+					foreground: "hsl(var(--category-education-foreground))",
+					background: "hsl(var(--category-education-background))",
+					border: "hsl(var(--category-education-border))",
+				},
+				"category-environment": {
+					DEFAULT: "hsl(var(--category-environment))",
+					foreground: "hsl(var(--category-environment-foreground))",
+					background: "hsl(var(--category-environment-background))",
+					border: "hsl(var(--category-environment-border))",
+				},
+				"category-transportation": {
+					DEFAULT: "hsl(var(--category-transportation))",
+					foreground: "hsl(var(--category-transportation-foreground))",
+					background: "hsl(var(--category-transportation-background))",
+					border: "hsl(var(--category-transportation-border))",
+				},
+				"category-energy": {
+					DEFAULT: "hsl(var(--category-energy))",
+					foreground: "hsl(var(--category-energy-foreground))",
+					background: "hsl(var(--category-energy-background))",
+					border: "hsl(var(--category-energy-border))",
+				},
+				"category-manufacturing": {
+					DEFAULT: "hsl(var(--category-manufacturing))",
+					foreground: "hsl(var(--category-manufacturing-foreground))",
+					background: "hsl(var(--category-manufacturing-background))",
+					border: "hsl(var(--category-manufacturing-border))",
+				},
+				"category-agriculture": {
+					DEFAULT: "hsl(var(--category-agriculture))",
+					foreground: "hsl(var(--category-agriculture-foreground))",
+					background: "hsl(var(--category-agriculture-background))",
+					border: "hsl(var(--category-agriculture-border))",
+				},
+				"category-defense": {
+					DEFAULT: "hsl(var(--category-defense))",
+					foreground: "hsl(var(--category-defense-foreground))",
+					background: "hsl(var(--category-defense-background))",
+					border: "hsl(var(--category-defense-border))",
+				},
+				"category-media": {
+					DEFAULT: "hsl(var(--category-media))",
+					foreground: "hsl(var(--category-media-foreground))",
+					background: "hsl(var(--category-media-background))",
+					border: "hsl(var(--category-media-border))",
+				},
+				"category-retail": {
+					DEFAULT: "hsl(var(--category-retail))",
+					foreground: "hsl(var(--category-retail-foreground))",
+					background: "hsl(var(--category-retail-background))",
+					border: "hsl(var(--category-retail-border))",
+				},
+				"category-realestate": {
+					DEFAULT: "hsl(var(--category-realestate))",
+					foreground: "hsl(var(--category-realestate-foreground))",
+					background: "hsl(var(--category-realestate-background))",
+					border: "hsl(var(--category-realestate-border))",
+				},
+				"category-legal": {
+					DEFAULT: "hsl(var(--category-legal))",
+					foreground: "hsl(var(--category-legal-foreground))",
+					background: "hsl(var(--category-legal-background))",
+					border: "hsl(var(--category-legal-border))",
+				},
+				"category-social": {
+					DEFAULT: "hsl(var(--category-social))",
+					foreground: "hsl(var(--category-social-foreground))",
+					background: "hsl(var(--category-social-background))",
+					border: "hsl(var(--category-social-border))",
+				},
+				"category-tourism": {
+					DEFAULT: "hsl(var(--category-tourism))",
+					foreground: "hsl(var(--category-tourism-foreground))",
+					background: "hsl(var(--category-tourism-background))",
+					border: "hsl(var(--category-tourism-border))",
+				},
+				"category-sports": {
+					DEFAULT: "hsl(var(--category-sports))",
+					foreground: "hsl(var(--category-sports-foreground))",
+					background: "hsl(var(--category-sports-background))",
+					border: "hsl(var(--category-sports-border))",
+				},
+				"category-food": {
+					DEFAULT: "hsl(var(--category-food))",
+					foreground: "hsl(var(--category-food-foreground))",
+					background: "hsl(var(--category-food-background))",
+					border: "hsl(var(--category-food-border))",
+				},
+				"category-fashion": {
+					DEFAULT: "hsl(var(--category-fashion))",
+					foreground: "hsl(var(--category-fashion-foreground))",
+					background: "hsl(var(--category-fashion-background))",
+					border: "hsl(var(--category-fashion-border))",
+				},
+				"category-aerospace": {
+					DEFAULT: "hsl(var(--category-aerospace))",
+					foreground: "hsl(var(--category-aerospace-foreground))",
+					background: "hsl(var(--category-aerospace-background))",
+					border: "hsl(var(--category-aerospace-border))",
+				},
+				"category-biotech": {
+					DEFAULT: "hsl(var(--category-biotech))",
+					foreground: "hsl(var(--category-biotech-foreground))",
+					background: "hsl(var(--category-biotech-background))",
+					border: "hsl(var(--category-biotech-border))",
+				},
+				"category-telecom": {
+					DEFAULT: "hsl(var(--category-telecom))",
+					foreground: "hsl(var(--category-telecom-foreground))",
+					background: "hsl(var(--category-telecom-background))",
+					border: "hsl(var(--category-telecom-border))",
+				},
+				"category-construction": {
+					DEFAULT: "hsl(var(--category-construction))",
+					foreground: "hsl(var(--category-construction-foreground))",
+					background: "hsl(var(--category-construction-background))",
+					border: "hsl(var(--category-construction-border))",
+				},
+				"category-logistics": {
+					DEFAULT: "hsl(var(--category-logistics))",
+					foreground: "hsl(var(--category-logistics-foreground))",
+					background: "hsl(var(--category-logistics-background))",
+					border: "hsl(var(--category-logistics-border))",
 				},
 				// Rating system
 				rating: {

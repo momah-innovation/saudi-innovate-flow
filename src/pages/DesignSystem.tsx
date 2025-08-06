@@ -788,8 +788,8 @@ const DesignSystem = () => {
                   <div className="text-sm text-muted-foreground">Role Colors</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-warning">8</div>
-                  <div className="text-sm text-muted-foreground">Special Tokens</div>
+                  <div className="text-2xl font-bold text-warning">22</div>
+                  <div className="text-sm text-muted-foreground">Domain Tokens</div>
                 </div>
               </div>
             </Card>
@@ -886,12 +886,33 @@ const DesignSystem = () => {
 
               <Separator className="my-8" />
 
-              {/* Category-specific Colors */}
-              <h3 className="text-xl font-semibold mb-6">Domain Categories</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <ColorToken name="Tech Category" className="bg-category-tech text-category-tech-foreground" description="Technology domain" />
-                <ColorToken name="Health Category" className="bg-category-health text-category-health-foreground" description="Healthcare domain" />
-                <ColorToken name="Finance Category" className="bg-category-finance text-category-finance-foreground" description="Financial domain" />
+              {/* Domain Categories - Comprehensive Coverage */}
+              <h3 className="text-xl font-semibold mb-6">Domain Categories (22 sectors)</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
+                <ColorToken name="Technology" className="bg-category-tech text-category-tech-foreground" description="IT & Software solutions" />
+                <ColorToken name="Healthcare" className="bg-category-health text-category-health-foreground" description="Medical & health services" />
+                <ColorToken name="Finance" className="bg-category-finance text-category-finance-foreground" description="Banking & financial tech" />
+                <ColorToken name="Education" className="bg-category-education text-category-education-foreground" description="Learning & training" />
+                <ColorToken name="Environment" className="bg-category-environment text-category-environment-foreground" description="Green & sustainability" />
+                <ColorToken name="Transportation" className="bg-category-transportation text-category-transportation-foreground" description="Mobility & logistics" />
+                <ColorToken name="Energy" className="bg-category-energy text-category-energy-foreground" description="Power & renewable energy" />
+                <ColorToken name="Manufacturing" className="bg-category-manufacturing text-category-manufacturing-foreground" description="Production & industrial" />
+                <ColorToken name="Agriculture" className="bg-category-agriculture text-category-agriculture-foreground" description="Farming & food production" />
+                <ColorToken name="Defense" className="bg-category-defense text-category-defense-foreground" description="Security & defense systems" />
+                <ColorToken name="Media" className="bg-category-media text-category-media-foreground" description="Entertainment & content" />
+                <ColorToken name="Retail" className="bg-category-retail text-category-retail-foreground" description="Commerce & sales" />
+                <ColorToken name="Real Estate" className="bg-category-realestate text-category-realestate-foreground" description="Property & construction" />
+                <ColorToken name="Legal" className="bg-category-legal text-category-legal-foreground" description="Law & governance" />
+                <ColorToken name="Social Services" className="bg-category-social text-category-social-foreground" description="Community & welfare" />
+                <ColorToken name="Tourism" className="bg-category-tourism text-category-tourism-foreground" description="Travel & hospitality" />
+                <ColorToken name="Sports" className="bg-category-sports text-category-sports-foreground" description="Athletics & recreation" />
+                <ColorToken name="Food & Beverage" className="bg-category-food text-category-food-foreground" description="Culinary & dining" />
+                <ColorToken name="Fashion" className="bg-category-fashion text-category-fashion-foreground" description="Apparel & design" />
+                <ColorToken name="Aerospace" className="bg-category-aerospace text-category-aerospace-foreground" description="Aviation & space tech" />
+                <ColorToken name="Biotechnology" className="bg-category-biotech text-category-biotech-foreground" description="Life sciences & research" />
+                <ColorToken name="Telecommunications" className="bg-category-telecom text-category-telecom-foreground" description="Communication networks" />
+                <ColorToken name="Construction" className="bg-category-construction text-category-construction-foreground" description="Building & infrastructure" />
+                <ColorToken name="Logistics" className="bg-category-logistics text-category-logistics-foreground" description="Supply chain & delivery" />
               </div>
 
               <Separator className="my-8" />
@@ -3630,15 +3651,15 @@ const DesignSystem = () => {
                              <Button variant="ghost" size="sm" className="text-overlay-text hover:bg-overlay-button/20">
                                <Play className="w-4 h-4" />
                              </Button>
-                             <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                              <Button variant="ghost" size="sm" className="text-overlay-text hover:bg-overlay-button-hover">
                                <Volume2 className="w-4 h-4" />
                              </Button>
                              <div className="flex-1 flex items-center gap-2">
-                               <span className="text-xs text-white">12:34</span>
-                               <div className="flex-1 h-1 bg-white/30 rounded-full">
-                                 <div className="w-1/3 h-full bg-white rounded-full"></div>
-                               </div>
-                               <span className="text-xs text-white">45:20</span>
+                                <span className="text-xs text-overlay-text">12:34</span>
+                                <div className="flex-1 h-1 bg-overlay-light/30 rounded-full">
+                                  <div className="w-1/3 h-full bg-overlay-text rounded-full"></div>
+                                </div>
+                                <span className="text-xs text-overlay-text">45:20</span>
                              </div>
                              <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
                                <Settings className="w-4 h-4" />
@@ -3710,7 +3731,7 @@ const DesignSystem = () => {
                      <Card className="p-6">
                        <div className="flex items-center gap-4">
                          <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                           <span className="text-white font-bold text-lg">IP</span>
+                           <span className="text-overlay-text font-bold text-lg">IP</span>
                          </div>
                          <div className="flex-1">
                            <h4 className="font-medium">Innovation Podcast</h4>
@@ -4194,7 +4215,7 @@ const DesignSystem = () => {
                   <div className="space-y-6">
                     <div className="space-y-4">
                       <div className="flex gap-3">
-                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-medium text-sm">
+                         <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-medium text-sm">
                           JD
                         </div>
                         <div className="flex-1">
@@ -4220,7 +4241,7 @@ const DesignSystem = () => {
                           </div>
                           
                           <div className="ml-8 mt-3 flex gap-3">
-                            <div className="w-6 h-6 bg-secondary rounded-full flex items-center justify-center text-white font-medium text-xs">
+                            <div className="w-6 h-6 bg-secondary rounded-full flex items-center justify-center text-secondary-foreground font-medium text-xs">
                               S
                             </div>
                             <div className="flex-1">
@@ -4239,7 +4260,7 @@ const DesignSystem = () => {
                       </div>
                       
                       <div className="flex gap-3">
-                        <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white font-medium text-sm">
+                         <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-accent-foreground font-medium text-sm">
                           MK
                         </div>
                         <div className="flex-1">
@@ -4269,7 +4290,7 @@ const DesignSystem = () => {
                     <div className="border-t pt-4">
                       <h4 className="font-medium mb-3">Add Comment</h4>
                       <div className="flex gap-3">
-                        <div className="w-8 h-8 bg-innovation rounded-full flex items-center justify-center text-white font-medium text-sm">
+                        <div className="w-8 h-8 bg-innovation rounded-full flex items-center justify-center text-innovation-foreground font-medium text-sm">
                           Me
                         </div>
                         <div className="flex-1 space-y-3">
@@ -4301,7 +4322,7 @@ const DesignSystem = () => {
                        <div className="grid grid-cols-2 gap-4 mb-4">
                          <div className="aspect-video bg-gradient-to-br from-primary/30 to-secondary/30 rounded-lg flex items-center justify-center relative">
                            <div className="text-center">
-                             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                              <div className="w-16 h-16 bg-overlay-light/20 rounded-full flex items-center justify-center mx-auto mb-2">
                                <User className="w-8 h-8" />
                              </div>
                              <p className="text-sm font-medium">Dr. Sarah Chen</p>
