@@ -39,7 +39,8 @@ const TranslationManagement = () => {
       try {
         const staticResponse = await fetch(`/src/i18n/locales/${language}.json`);
         if (staticResponse.ok) {
-          existingTranslations = await staticResponse.json();
+          const staticData = await staticResponse.json();
+          existingTranslations = staticData || {};
         }
       } catch (err) {
         console.warn(`Could not load existing ${language}.json, will create from database only`);
@@ -80,7 +81,45 @@ const TranslationManagement = () => {
         return result;
       };
 
-      const finalTranslations = mergeTranslations(existingTranslations, dbTranslationsNested);
+      // 5. Clean up any character arrays that might exist in static translations
+      const cleanTranslations = (obj: any): any => {
+        if (typeof obj === 'string') {
+          return obj;
+        }
+        
+        if (Array.isArray(obj)) {
+          return obj;
+        }
+        
+        if (typeof obj === 'object' && obj !== null) {
+          // Check if this object looks like a character array (numeric keys 0,1,2...)
+          const keys = Object.keys(obj);
+          const isCharArray = keys.length > 0 && keys.every((key, index) => key === index.toString());
+          
+          if (isCharArray && keys.length < 100) { // Reasonable limit for strings
+            // Convert character array back to string
+            const chars = [];
+            for (let i = 0; i < keys.length; i++) {
+              if (obj[i] !== undefined) {
+                chars.push(obj[i]);
+              }
+            }
+            return chars.join('');
+          }
+          
+          // Regular object, clean recursively
+          const cleaned: any = {};
+          for (const key in obj) {
+            cleaned[key] = cleanTranslations(obj[key]);
+          }
+          return cleaned;
+        }
+        
+        return obj;
+      };
+
+      const cleanedExisting = cleanTranslations(existingTranslations);
+      const finalTranslations = mergeTranslations(cleanedExisting, dbTranslationsNested);
 
       // 5. Create and download file
       const blob = new Blob([JSON.stringify(finalTranslations, null, 2)], {
