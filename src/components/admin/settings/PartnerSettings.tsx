@@ -22,12 +22,12 @@ export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsPr
   const { isRTL } = useDirection();
   const [newPartnerType, setNewPartnerType] = useState("");
   
-  const partnerTypes = settings.partner_types || ["sponsor", "collaborator", "vendor", "consultant", "academic", "government"];
+  const partnerTypes = settings.partner_type_options || ["حكومي", "خاص", "أكاديمي", "غير ربحي", "دولي"];
 
   const addPartnerType = () => {
     if (newPartnerType.trim() && !partnerTypes.includes(newPartnerType)) {
       const updatedTypes = [...partnerTypes, newPartnerType.trim()];
-      onSettingChange('partner_types', updatedTypes);
+      onSettingChange('partner_type_options', updatedTypes);
       setNewPartnerType("");
       toast({
         title: t('success'),
@@ -38,7 +38,7 @@ export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsPr
 
   const removePartnerType = (typeToRemove: string) => {
     const updatedTypes = partnerTypes.filter((type: string) => type !== typeToRemove);
-    onSettingChange('partner_types', updatedTypes);
+    onSettingChange('partner_type_options', updatedTypes);
     toast({
       title: t('success'),
       description: "تم حذف نوع الشريك بنجاح"
@@ -68,7 +68,7 @@ export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsPr
           <div className="flex flex-wrap gap-2">
             {partnerTypes.map((type: string, index: number) => (
               <Badge key={index} variant="secondary" className="flex items-center gap-1">
-                <span>{t(`partnerTypes.${type}`) || type}</span>
+                <span>{type}</span>
                 <Button
                   variant="ghost"
                   size="sm"
