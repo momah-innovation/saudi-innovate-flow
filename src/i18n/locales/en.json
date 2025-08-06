@@ -1255,7 +1255,9 @@
       "assignment.description": "Expert and evaluator assignment configuration",
       "authentication": "Authentication Settings",
       "authentication.description": "Security and authentication configuration",
-      "campaigns.description": "Campaign and activity settings"
+      "campaigns.description": "Campaign and activity settings",
+      "ai": "Artificial Intelligence",
+      "ai.description": "AI features and intelligence configuration settings"
     },
     "api_rate_limit_per_hour": {
       "label": "API Rate Limit Per Hour",
@@ -1312,6 +1314,46 @@
     "enable_campaign_analytics": {
       "label": "Enable Campaign Analytics",
       "description": "Enable collection and display of detailed campaign analytics"
+    },
+    "ai_features": {
+      "label": "AI Features",
+      "description": "AI-powered features available in the system"
+    },
+    "ai_models": {
+      "label": "AI Models",
+      "description": "Available AI models for processing"
+    },
+    "ai_request_limit": {
+      "label": "AI Request Limit",
+      "description": "Maximum number of AI requests per user"
+    },
+    "ai_response_timeout": {
+      "label": "AI Response Timeout",
+      "description": "Timeout for AI responses in seconds"
+    },
+    "creativity_level": {
+      "label": "Creativity Level",
+      "description": "AI creativity and randomness level"
+    },
+    "default_ai_model": {
+      "label": "Default AI Model",
+      "description": "Default AI model to use"
+    },
+    "enable_ai": {
+      "label": "Enable AI",
+      "description": "Enable or disable AI features"
+    },
+    "enable_content_moderation": {
+      "label": "Enable Content Moderation",
+      "description": "Automatic content moderation for user submissions"
+    },
+    "enable_idea_generation": {
+      "label": "Enable Idea Generation",
+      "description": "Allow AI to generate new ideas"
+    },
+    "enable_trend_analysis": {
+      "label": "Enable Trend Analysis",
+      "description": "Analyze trends using AI"
     }
   }
 }
