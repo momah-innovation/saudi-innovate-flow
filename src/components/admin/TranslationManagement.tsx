@@ -34,16 +34,21 @@ const TranslationManagement = () => {
 
       if (error) throw error;
 
-      // 2. Load existing static translations
+      // 2. Load existing static translations - DEBUG THIS
       let existingTranslations = {};
       try {
         const staticResponse = await fetch(`/src/i18n/locales/${language}.json`);
         if (staticResponse.ok) {
           const staticData = await staticResponse.json();
+          console.log(`[DEBUG] Loaded static ${language} translations:`, Object.keys(staticData).length, 'top-level keys');
+          console.log(`[DEBUG] Sample static data:`, Object.keys(staticData).slice(0, 5));
+          console.log(`[DEBUG] Security object:`, staticData.security);
           existingTranslations = staticData || {};
+        } else {
+          console.log(`[DEBUG] Failed to load static ${language}.json:`, staticResponse.status);
         }
       } catch (err) {
-        console.warn(`Could not load existing ${language}.json, will create from database only`);
+        console.warn(`Could not load existing ${language}.json, will create from database only`, err);
       }
 
       // 3. Convert database translations to nested structure
@@ -64,25 +69,10 @@ const TranslationManagement = () => {
         current[keys[keys.length - 1]] = String(translation_text);
       });
 
-      // 4. Deep merge existing translations with database translations (database takes precedence)
-      const mergeTranslations = (existing: any, db: any): any => {
-        const result = { ...existing };
-        
-        for (const key in db) {
-          if (typeof db[key] === 'object' && db[key] !== null && !Array.isArray(db[key])) {
-            // If it's an object, recursively merge
-            result[key] = mergeTranslations(existing[key] || {}, db[key]);
-          } else {
-            // If it's a primitive value, database takes precedence
-            result[key] = db[key];
-          }
-        }
-        
-        return result;
-      };
+      console.log(`[DEBUG] DB translations converted, ${Object.keys(dbTranslationsNested).length} top-level keys`);
 
-      // 5. Clean up any character arrays that might exist in static translations
-      const cleanTranslations = (obj: any): any => {
+      // 4. AGGRESSIVE cleanup of character arrays from static translations
+      const cleanTranslations = (obj: any, path: string = ''): any => {
         if (typeof obj === 'string') {
           return obj;
         }
@@ -92,11 +82,15 @@ const TranslationManagement = () => {
         }
         
         if (typeof obj === 'object' && obj !== null) {
-          // Check if this object looks like a character array (numeric keys 0,1,2...)
           const keys = Object.keys(obj);
-          const isCharArray = keys.length > 0 && keys.every((key, index) => key === index.toString());
           
-          if (isCharArray && keys.length < 100) { // Reasonable limit for strings
+          // More aggressive detection: if ALL keys are numeric and sequential
+          const numericKeys = keys.filter(k => /^\d+$/.test(k)).map(k => parseInt(k));
+          const isCharArray = numericKeys.length === keys.length && 
+                              numericKeys.length > 0 && 
+                              numericKeys.every((val, idx) => val === idx);
+          
+          if (isCharArray) {
             // Convert character array back to string
             const chars = [];
             for (let i = 0; i < keys.length; i++) {
@@ -104,13 +98,15 @@ const TranslationManagement = () => {
                 chars.push(obj[i]);
               }
             }
-            return chars.join('');
+            const result = chars.join('');
+            console.log(`[DEBUG] Fixed character array at ${path}: "${result}"`);
+            return result;
           }
           
           // Regular object, clean recursively
           const cleaned: any = {};
           for (const key in obj) {
-            cleaned[key] = cleanTranslations(obj[key]);
+            cleaned[key] = cleanTranslations(obj[key], path ? `${path}.${key}` : key);
           }
           return cleaned;
         }
@@ -118,8 +114,31 @@ const TranslationManagement = () => {
         return obj;
       };
 
+      console.log(`[DEBUG] Starting cleanup of static translations...`);
       const cleanedExisting = cleanTranslations(existingTranslations);
+      console.log(`[DEBUG] Cleanup complete. Sample after cleanup:`, cleanedExisting.security);
+
+      // 5. Deep merge - but database should NOT override cleaned static translations
+      const mergeTranslations = (existing: any, db: any): any => {
+        const result = { ...existing };
+        
+        for (const key in db) {
+          if (typeof db[key] === 'object' && db[key] !== null && !Array.isArray(db[key])) {
+            // If it's an object, recursively merge
+            result[key] = mergeTranslations(existing[key] || {}, db[key]);
+          } else {
+            // Only add if not already present in cleaned static
+            if (!(key in result)) {
+              result[key] = db[key];
+            }
+          }
+        }
+        
+        return result;
+      };
+
       const finalTranslations = mergeTranslations(cleanedExisting, dbTranslationsNested);
+      console.log(`[DEBUG] Final merge complete. Security object final:`, finalTranslations.security);
 
       // 5. Create and download file
       const blob = new Blob([JSON.stringify(finalTranslations, null, 2)], {
