@@ -26,6 +26,8 @@ const TranslationManagement = () => {
   // Generate and download JSON file from database translations merged with existing static translations
   const downloadTranslationsJSON = async (language: 'en' | 'ar') => {
     try {
+      console.log(`[DEBUG] Starting download for ${language}`);
+      
       // 1. Fetch database translations
       const { data: dbTranslations, error } = await supabase
         .from('system_translations')
@@ -33,19 +35,30 @@ const TranslationManagement = () => {
         .eq('language_code', language);
 
       if (error) throw error;
+      console.log(`[DEBUG] Fetched ${dbTranslations?.length} database translations`);
 
       // 2. Load existing static translations - DEBUG THIS
       let existingTranslations = {};
       try {
+        console.log(`[DEBUG] Attempting to fetch /src/i18n/locales/${language}.json`);
         const staticResponse = await fetch(`/src/i18n/locales/${language}.json`);
+        console.log(`[DEBUG] Static fetch response:`, staticResponse.status, staticResponse.statusText);
+        
         if (staticResponse.ok) {
           const staticData = await staticResponse.json();
           console.log(`[DEBUG] Loaded static ${language} translations:`, Object.keys(staticData).length, 'top-level keys');
-          console.log(`[DEBUG] Sample static data:`, Object.keys(staticData).slice(0, 5));
-          console.log(`[DEBUG] Security object:`, staticData.security);
+          console.log(`[DEBUG] Raw security object from static file:`, JSON.stringify(staticData.security, null, 2));
           existingTranslations = staticData || {};
         } else {
           console.log(`[DEBUG] Failed to load static ${language}.json:`, staticResponse.status);
+          // Try without leading slash
+          console.log(`[DEBUG] Trying without leading slash: src/i18n/locales/${language}.json`);
+          const altResponse = await fetch(`src/i18n/locales/${language}.json`);
+          if (altResponse.ok) {
+            const altData = await altResponse.json();
+            console.log(`[DEBUG] Alternative fetch worked, got ${Object.keys(altData).length} keys`);
+            existingTranslations = altData || {};
+          }
         }
       } catch (err) {
         console.warn(`Could not load existing ${language}.json, will create from database only`, err);
