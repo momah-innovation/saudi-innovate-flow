@@ -121,28 +121,28 @@ export function StakeholderWizard({
     setErrors({});
   }, [stakeholder, isOpen]);
 
-  const validateStep = (step: number): boolean => {
+    const validateStep = (step: number): boolean => {
     const newErrors: Record<string, string> = {};
 
     if (step === 0) {
       // Basic Information validation
       if (!formData.name.trim()) {
-        newErrors.name = "الاسم مطلوب";
+        newErrors.name = t('stakeholder_wizard.name_required');
       }
       if (!formData.organization.trim()) {
-        newErrors.organization = "المؤسسة مطلوبة";
+        newErrors.organization = t('stakeholder_wizard.organization_required');
       }
       if (!formData.position.trim()) {
-        newErrors.position = "المنصب مطلوب";
+        newErrors.position = t('stakeholder_wizard.position_required');
       }
     }
 
     if (step === 1) {
       // Contact Information validation
       if (!formData.email.trim()) {
-        newErrors.email = "البريد الإلكتروني مطلوب";
+        newErrors.email = t('stakeholder_wizard.email_required');
       } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-        newErrors.email = "يرجى إدخال بريد إلكتروني صحيح";
+        newErrors.email = t('stakeholder_wizard.email_invalid');
       }
     }
 
@@ -181,8 +181,8 @@ export function StakeholderWizard({
         if (error) throw error;
 
         toast({
-          title: "نجح",
-          description: "تم تحديث صاحب المصلحة بنجاح",
+          title: t('stakeholder_wizard.success'),
+          description: t('stakeholder_wizard.stakeholder_updated'),
         });
       } else {
         // Create new stakeholder
@@ -193,8 +193,8 @@ export function StakeholderWizard({
         if (error) throw error;
 
         toast({
-          title: "نجح",
-          description: "تم إنشاء صاحب المصلحة بنجاح",
+          title: t('stakeholder_wizard.success'),
+          description: t('stakeholder_wizard.stakeholder_created'),
         });
       }
 
@@ -204,8 +204,8 @@ export function StakeholderWizard({
     } catch (error) {
       console.error("Error saving stakeholder:", error);
       toast({
-        title: "خطأ",
-        description: "فشل في حفظ صاحب المصلحة. يرجى المحاولة مرة أخرى.",
+        title: t('stakeholder_wizard.error'),
+        description: t('stakeholder_wizard.save_failed'),
         variant: "destructive",
       });
       return false;
@@ -225,67 +225,69 @@ export function StakeholderWizard({
     }
   };
 
+  const { t } = useTranslation();
+
   const steps = [
     {
       id: "basic-info",
-      title: "المعلومات الأساسية",
-      description: "أدخل التفاصيل الأساسية لصاحب المصلحة",
+      title: t('stakeholder_wizard.basic_info'),
+      description: t('stakeholder_wizard.basic_info_desc'),
       content: (
         <div className="space-y-6">
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">الاسم *</Label>
+              <Label htmlFor="name">{t('stakeholder_wizard.name')} *</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => updateFormData("name", e.target.value)}
-                placeholder="أدخل اسم صاحب المصلحة"
+                placeholder={t('stakeholder_wizard.name')}
                 className={errors.name ? "border-destructive" : ""}
                 dir="rtl"
               />
               {errors.name && (
-                <p className="text-sm text-destructive">{errors.name}</p>
+                <p className="text-sm text-destructive">{t('stakeholder_wizard.name_required')}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="organization">المؤسسة *</Label>
+              <Label htmlFor="organization">{t('stakeholder_wizard.organization')} *</Label>
               <Input
                 id="organization"
                 value={formData.organization}
                 onChange={(e) => updateFormData("organization", e.target.value)}
-                placeholder="أدخل اسم المؤسسة"
+                placeholder={t('stakeholder_wizard.organization')}
                 className={errors.organization ? "border-destructive" : ""}
                 dir="rtl"
               />
               {errors.organization && (
-                <p className="text-sm text-destructive">{errors.organization}</p>
+                <p className="text-sm text-destructive">{t('stakeholder_wizard.organization_required')}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="position">المنصب *</Label>
+              <Label htmlFor="position">{t('stakeholder_wizard.position')} *</Label>
               <Input
                 id="position"
                 value={formData.position}
                 onChange={(e) => updateFormData("position", e.target.value)}
-                placeholder="أدخل المنصب/الدور"
+                placeholder={t('stakeholder_wizard.position')}
                 className={errors.position ? "border-destructive" : ""}
                 dir="rtl"
               />
               {errors.position && (
-                <p className="text-sm text-destructive">{errors.position}</p>
+                <p className="text-sm text-destructive">{t('stakeholder_wizard.position_required')}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="stakeholder_type">نوع صاحب المصلحة</Label>
+              <Label htmlFor="stakeholder_type">{t('stakeholder_wizard.stakeholder_type')}</Label>
               <Select
                 value={formData.stakeholder_type}
                 onValueChange={(value) => updateFormData("stakeholder_type", value)}
               >
                 <SelectTrigger id="stakeholder_type">
-                  <SelectValue placeholder="اختر نوع صاحب المصلحة" />
+                  <SelectValue placeholder={t('stakeholder_wizard.select_stakeholder_type')} />
                 </SelectTrigger>
                 <SelectContent>
                   {stakeholderTypes.map((type) => (
@@ -433,7 +435,7 @@ export function StakeholderWizard({
     <MultiStepForm
       isOpen={isOpen}
       onClose={onClose}
-      title={stakeholder ? "تحرير صاحب المصلحة" : "إضافة صاحب مصلحة جديد"}
+      title={stakeholder ? t('stakeholder_wizard.edit_stakeholder') : t('stakeholder_wizard.add_new_stakeholder')}
       steps={steps}
       onComplete={handleComplete}
     />

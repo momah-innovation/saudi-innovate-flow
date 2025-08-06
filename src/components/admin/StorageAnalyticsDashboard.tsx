@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRTLAwareClasses } from '@/components/ui/rtl-aware'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from '@/hooks/useAppTranslation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
@@ -101,7 +101,7 @@ export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps>
         </div>
         <Button onClick={refreshAnalytics} variant="outline">
           <RefreshCw className={`h-4 w-4 ${mr('2')}`} />
-          {t("refresh")}
+          {t("common.refresh")}
         </Button>
       </div>
 
