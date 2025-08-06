@@ -20,7 +20,10 @@ export function GlobalListSettings({}: GlobalListSettingsProps) {
   const [editingList, setEditingList] = useState<string | null>(null);
   const [newItem, setNewItem] = useState("");
   const { updateSetting, ...settings } = useSettings();
-
+  
+  // Get current language for i18n
+  const currentLanguage = localStorage.getItem('language') || 'ar';
+  
   // Global system lists that don't belong to specific domains
   const globalLists = {
     // Language and localization

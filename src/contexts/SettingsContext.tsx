@@ -388,31 +388,59 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
     try {
       setSettings(prev => ({ ...prev, loading: true, error: null }));
       
-      const { data, error } = await supabase
+      const { data: settings, error } = await supabase
         .from('system_settings')
-        .select('*');
-      
+        .select('setting_key, setting_value, data_type, is_localizable, setting_category');
+
       if (error) throw error;
       
-      const processedSettings = data?.reduce((acc, setting) => {
+      // Get current language preference  
+      const currentLanguage = localStorage.getItem('language') || 'ar';
+
+      const processedSettings = settings?.reduce((acc, setting) => {
         let value = setting.setting_value;
         
-        // Handle JSON arrays
-        if (typeof value === 'string' && (value.startsWith('[') || value.startsWith('{'))) {
+        // Handle different data types
+        if (setting.data_type === 'boolean') {
+          value = value === true || value === 'true';
+        } else if (setting.data_type === 'number') {
+          value = typeof value === 'number' ? value : Number(value) || 0;
+        } else if (setting.data_type === 'array' && setting.is_localizable) {
+          // Handle i18n arrays - extract for current language
+          if (typeof value === 'object' && value !== null) {
+            if (value[currentLanguage]) {
+              value = value[currentLanguage];
+            } else if (value['en']) {
+              value = value['en']; // Fallback to English
+            } else if (Array.isArray(value)) {
+              // Already an array, keep as is
+            } else {
+              value = [];
+            }
+          } else if (typeof value === 'string' && (value.startsWith('[') || value.startsWith('{'))) {
+            try {
+              const parsed = JSON.parse(value);
+              if (parsed[currentLanguage]) {
+                value = parsed[currentLanguage];
+              } else if (parsed['en']) {
+                value = parsed['en'];
+              } else {
+                value = Array.isArray(parsed) ? parsed : [];
+              }
+            } catch (e) {
+              value = [];
+            }
+          }
+        } else if (setting.is_localizable && typeof value === 'object' && value !== null) {
+          // Handle i18n strings
+          value = value[currentLanguage] || value['en'] || value;
+        } else if (typeof value === 'string' && (value.startsWith('[') || value.startsWith('{'))) {
+          // Handle JSON arrays/objects
           try {
             value = JSON.parse(value);
           } catch (e) {
             // Keep as string if parsing fails
           }
-        }
-        
-        // Convert string booleans
-        if (value === 'true') value = true;
-        if (value === 'false') value = false;
-        
-        // Convert string numbers
-        if (typeof value === 'string' && !isNaN(Number(value)) && value !== '') {
-          value = Number(value);
         }
 
         const key = setting.setting_key.replace(/^(challenge_|system_|notification_|security_|integration_)/, '');
@@ -462,8 +490,10 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
         .from('system_settings')
         .upsert({
           setting_key: prefixedKey,
-          setting_value: Array.isArray(value) ? JSON.stringify(value) : value.toString(),
+          setting_value: Array.isArray(value) || typeof value === 'object' ? value : value.toString(),
           setting_category: category,
+          data_type: Array.isArray(value) ? 'array' : typeof value === 'boolean' ? 'boolean' : typeof value === 'number' ? 'number' : 'string',
+          is_localizable: false, // Will be updated manually for i18n lists
           updated_at: new Date().toISOString()
         }, { onConflict: 'setting_key' });
 

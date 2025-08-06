@@ -6961,8 +6961,11 @@ export type Database = {
       system_settings: {
         Row: {
           created_at: string
+          data_type: string | null
           description: string | null
           id: string
+          is_localizable: boolean | null
+          is_public: boolean | null
           setting_category: string
           setting_key: string
           setting_value: Json
@@ -6971,8 +6974,11 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          data_type?: string | null
           description?: string | null
           id?: string
+          is_localizable?: boolean | null
+          is_public?: boolean | null
           setting_category: string
           setting_key: string
           setting_value: Json
@@ -6981,8 +6987,11 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          data_type?: string | null
           description?: string | null
           id?: string
+          is_localizable?: boolean | null
+          is_public?: boolean | null
           setting_category?: string
           setting_key?: string
           setting_value?: Json
