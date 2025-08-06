@@ -94,8 +94,8 @@ export function CampaignSettings({ settings, onSettingChange }: CampaignSettings
               <Input
                 id="maxCampaignsPerUser"
                 type="number"
-                value={settings.maxCampaignsPerUser || 5}
-                onChange={(e) => onSettingChange('maxCampaignsPerUser', parseInt(e.target.value))}
+                value={settings.max_campaigns_per_user || 5}
+                onChange={(e) => onSettingChange('max_campaigns_per_user', parseInt(e.target.value))}
                 min="1"
                 max="50"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -107,8 +107,8 @@ export function CampaignSettings({ settings, onSettingChange }: CampaignSettings
               <Input
                 id="campaignMinDuration"
                 type="number"
-                value={settings.campaignMinDuration || 7}
-                onChange={(e) => onSettingChange('campaignMinDuration', parseInt(e.target.value))}
+                value={settings.campaign_min_duration || 7}
+                onChange={(e) => onSettingChange('campaign_min_duration', parseInt(e.target.value))}
                 min="1"
                 max="30"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -120,8 +120,8 @@ export function CampaignSettings({ settings, onSettingChange }: CampaignSettings
               <Input
                 id="campaignMaxDuration"
                 type="number"
-                value={settings.campaignMaxDuration || 365}
-                onChange={(e) => onSettingChange('campaignMaxDuration', parseInt(e.target.value))}
+                value={settings.campaign_max_duration || 365}
+                onChange={(e) => onSettingChange('campaign_max_duration', parseInt(e.target.value))}
                 min="1"
                 max="1095"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -133,8 +133,8 @@ export function CampaignSettings({ settings, onSettingChange }: CampaignSettings
               <Input
                 id="maxParticipantsPerCampaign"
                 type="number"
-                value={settings.maxParticipantsPerCampaign || 1000}
-                onChange={(e) => onSettingChange('maxParticipantsPerCampaign', parseInt(e.target.value))}
+                value={settings.max_participants_per_campaign || 1000}
+                onChange={(e) => onSettingChange('max_participants_per_campaign', parseInt(e.target.value))}
                 min="1"
                 max="10000"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -146,8 +146,8 @@ export function CampaignSettings({ settings, onSettingChange }: CampaignSettings
               <Input
                 id="campaignBudgetLimit"
                 type="number"
-                value={settings.campaignBudgetLimit || 1000000}
-                onChange={(e) => onSettingChange('campaignBudgetLimit', parseInt(e.target.value))}
+                value={settings.campaign_budget_limit || 1000000}
+                onChange={(e) => onSettingChange('campaign_budget_limit', parseInt(e.target.value))}
                 min="0"
                 className={isRTL ? 'text-right' : 'text-left'}
               />
@@ -158,8 +158,8 @@ export function CampaignSettings({ settings, onSettingChange }: CampaignSettings
               <Input
                 id="registrationDeadlineBuffer"
                 type="number"
-                value={settings.registrationDeadlineBuffer || 3}
-                onChange={(e) => onSettingChange('registrationDeadlineBuffer', parseInt(e.target.value))}
+                value={settings.registration_deadline_buffer || 3}
+                onChange={(e) => onSettingChange('registration_deadline_buffer', parseInt(e.target.value))}
                 min="0"
                 max="30"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -173,8 +173,8 @@ export function CampaignSettings({ settings, onSettingChange }: CampaignSettings
               <p className="text-sm text-muted-foreground">السماح بالتسجيل المفتوح في الحملات</p>
             </div>
             <Switch 
-              checked={settings.allowOpenCampaignRegistration !== false}
-              onCheckedChange={(checked) => onSettingChange('allowOpenCampaignRegistration', checked)}
+              checked={settings.allow_open_campaign_registration !== false}
+              onCheckedChange={(checked) => onSettingChange('allow_open_campaign_registration', checked)}
             />
           </div>
 
@@ -184,8 +184,8 @@ export function CampaignSettings({ settings, onSettingChange }: CampaignSettings
               <p className="text-sm text-muted-foreground">مطالبة مراجعة إدارية قبل نشر الحملات</p>
             </div>
             <Switch 
-              checked={settings.requireCampaignReview !== false}
-              onCheckedChange={(checked) => onSettingChange('requireCampaignReview', checked)}
+              checked={settings.require_campaign_review !== false}
+              onCheckedChange={(checked) => onSettingChange('require_campaign_review', checked)}
             />
           </div>
 
@@ -195,8 +195,8 @@ export function CampaignSettings({ settings, onSettingChange }: CampaignSettings
               <p className="text-sm text-muted-foreground">تسجيل وتتبع مؤشرات أداء الحملات</p>
             </div>
             <Switch 
-              checked={settings.enableCampaignAnalytics !== false}
-              onCheckedChange={(checked) => onSettingChange('enableCampaignAnalytics', checked)}
+              checked={settings.enable_campaign_analytics !== false}
+              onCheckedChange={(checked) => onSettingChange('enable_campaign_analytics', checked)}
             />
           </div>
 
@@ -206,8 +206,8 @@ export function CampaignSettings({ settings, onSettingChange }: CampaignSettings
               <p className="text-sm text-muted-foreground">إرسال إشعارات تلقائية للمشاركين</p>
             </div>
             <Switch 
-              checked={settings.enableAutomaticNotifications !== false}
-              onCheckedChange={(checked) => onSettingChange('enableAutomaticNotifications', checked)}
+              checked={settings.enable_automatic_notifications !== false}
+              onCheckedChange={(checked) => onSettingChange('enable_automatic_notifications', checked)}
             />
           </div>
         </CardContent>

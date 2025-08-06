@@ -95,8 +95,8 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
               <Input
                 id="dataRetentionDays"
                 type="number"
-                value={settings.dataRetentionDays || 365}
-                onChange={(e) => onSettingChange('dataRetentionDays', parseInt(e.target.value))}
+                value={settings.data_retention_days || 365}
+                onChange={(e) => onSettingChange('data_retention_days', parseInt(e.target.value))}
                 min="30"
                 max="3650"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -108,8 +108,8 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
               <Input
                 id="reportGenerationFrequency"
                 type="number"
-                value={settings.reportGenerationFrequency || 24}
-                onChange={(e) => onSettingChange('reportGenerationFrequency', parseInt(e.target.value))}
+                value={settings.report_generation_frequency || 24}
+                onChange={(e) => onSettingChange('report_generation_frequency', parseInt(e.target.value))}
                 min="1"
                 max="168"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -121,8 +121,8 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
               <Input
                 id="maxDashboardWidgets"
                 type="number"
-                value={settings.maxDashboardWidgets || 12}
-                onChange={(e) => onSettingChange('maxDashboardWidgets', parseInt(e.target.value))}
+                value={settings.max_dashboard_widgets || 12}
+                onChange={(e) => onSettingChange('max_dashboard_widgets', parseInt(e.target.value))}
                 min="4"
                 max="50"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -134,8 +134,8 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
               <Input
                 id="chartRefreshInterval"
                 type="number"
-                value={settings.chartRefreshInterval || 300}
-                onChange={(e) => onSettingChange('chartRefreshInterval', parseInt(e.target.value))}
+                value={settings.chart_refresh_interval || 300}
+                onChange={(e) => onSettingChange('chart_refresh_interval', parseInt(e.target.value))}
                 min="30"
                 max="3600"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -149,8 +149,8 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
               <p className="text-sm text-muted-foreground">جمع بيانات تفاعل المستخدمين لتحسين التجربة</p>
             </div>
             <Switch 
-              checked={settings.enableUserBehaviorTracking !== false}
-              onCheckedChange={(checked) => onSettingChange('enableUserBehaviorTracking', checked)}
+              checked={settings.enable_user_behavior_tracking !== false}
+              onCheckedChange={(checked) => onSettingChange('enable_user_behavior_tracking', checked)}
             />
           </div>
 
@@ -160,8 +160,8 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
               <p className="text-sm text-muted-foreground">عرض البيانات التحليلية فور حدوثها</p>
             </div>
             <Switch 
-              checked={settings.enableRealTimeAnalytics !== false}
-              onCheckedChange={(checked) => onSettingChange('enableRealTimeAnalytics', checked)}
+              checked={settings.enable_real_time_analytics !== false}
+              onCheckedChange={(checked) => onSettingChange('enable_real_time_analytics', checked)}
             />
           </div>
 
@@ -171,8 +171,8 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
               <p className="text-sm text-muted-foreground">إنتاج وإرسال التقارير بشكل تلقائي</p>
             </div>
             <Switch 
-              checked={settings.enableAutomaticReports !== false}
-              onCheckedChange={(checked) => onSettingChange('enableAutomaticReports', checked)}
+              checked={settings.enable_automatic_reports !== false}
+              onCheckedChange={(checked) => onSettingChange('enable_automatic_reports', checked)}
             />
           </div>
 
@@ -182,8 +182,8 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
               <p className="text-sm text-muted-foreground">السماح بتصدير البيانات التحليلية</p>
             </div>
             <Switch 
-              checked={settings.enableDataExport !== false}
-              onCheckedChange={(checked) => onSettingChange('enableDataExport', checked)}
+              checked={settings.enable_data_export !== false}
+              onCheckedChange={(checked) => onSettingChange('enable_data_export', checked)}
             />
           </div>
 
@@ -193,8 +193,8 @@ export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettin
               <p className="text-sm text-muted-foreground">إزالة المعلومات الشخصية من التحليلات</p>
             </div>
             <Switch 
-              checked={settings.enableDataAnonymization !== false}
-              onCheckedChange={(checked) => onSettingChange('enableDataAnonymization', checked)}
+              checked={settings.enable_data_anonymization !== false}
+              onCheckedChange={(checked) => onSettingChange('enable_data_anonymization', checked)}
             />
           </div>
         </CardContent>

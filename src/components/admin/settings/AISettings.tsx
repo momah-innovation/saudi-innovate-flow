@@ -168,8 +168,8 @@ export function AISettings({ settings, onSettingChange }: AISettingsProps) {
                 type="number"
                 min="1"
                 max="100000"
-                value={settings.aiRequestLimit || 1000}
-                onChange={(e) => onSettingChange('aiRequestLimit', parseInt(e.target.value))}
+                value={settings.ai_request_limit || 1000}
+                onChange={(e) => onSettingChange('ai_request_limit', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
             </div>
@@ -183,8 +183,8 @@ export function AISettings({ settings, onSettingChange }: AISettingsProps) {
                 type="number"
                 min="5"
                 max="300"
-                value={settings.aiResponseTimeout || 30}
-                onChange={(e) => onSettingChange('aiResponseTimeout', parseInt(e.target.value))}
+                value={settings.ai_response_timeout || 30}
+                onChange={(e) => onSettingChange('ai_response_timeout', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
             </div>
@@ -194,8 +194,8 @@ export function AISettings({ settings, onSettingChange }: AISettingsProps) {
                 {isRTL ? 'النموذج الافتراضي' : 'Default AI Model'}
               </Label>
               <Select 
-                value={settings.defaultAIModel || 'gpt-4'} 
-                onValueChange={(value) => onSettingChange('defaultAIModel', value)}
+                value={settings.default_ai_model || 'gpt-4'} 
+                onValueChange={(value) => onSettingChange('default_ai_model', value)}
               >
                 <SelectTrigger className={isRTL ? 'text-right' : 'text-left'}>
                   <SelectValue />
@@ -213,8 +213,8 @@ export function AISettings({ settings, onSettingChange }: AISettingsProps) {
                 {isRTL ? 'مستوى الإبداع' : 'Creativity Level'}
               </Label>
               <Select 
-                value={settings.creativityLevel || 'balanced'} 
-                onValueChange={(value) => onSettingChange('creativityLevel', value)}
+                value={settings.creativity_level || 'balanced'} 
+                onValueChange={(value) => onSettingChange('creativity_level', value)}
               >
                 <SelectTrigger className={isRTL ? 'text-right' : 'text-left'}>
                   <SelectValue />
@@ -238,8 +238,8 @@ export function AISettings({ settings, onSettingChange }: AISettingsProps) {
               </p>
             </div>
             <Switch
-              checked={settings.enableAI !== false}
-              onCheckedChange={(checked) => onSettingChange('enableAI', checked)}
+              checked={settings.enable_ai !== false}
+              onCheckedChange={(checked) => onSettingChange('enable_ai', checked)}
             />
           </div>
 
@@ -253,8 +253,8 @@ export function AISettings({ settings, onSettingChange }: AISettingsProps) {
               </p>
             </div>
             <Switch
-              checked={settings.enableIdeaGeneration !== false}
-              onCheckedChange={(checked) => onSettingChange('enableIdeaGeneration', checked)}
+              checked={settings.enable_idea_generation !== false}
+              onCheckedChange={(checked) => onSettingChange('enable_idea_generation', checked)}
             />
           </div>
 
@@ -268,8 +268,8 @@ export function AISettings({ settings, onSettingChange }: AISettingsProps) {
               </p>
             </div>
             <Switch
-              checked={settings.enableContentModeration !== false}
-              onCheckedChange={(checked) => onSettingChange('enableContentModeration', checked)}
+              checked={settings.enable_content_moderation !== false}
+              onCheckedChange={(checked) => onSettingChange('enable_content_moderation', checked)}
             />
           </div>
 
@@ -283,8 +283,8 @@ export function AISettings({ settings, onSettingChange }: AISettingsProps) {
               </p>
             </div>
             <Switch
-              checked={settings.enableTrendAnalysis || false}
-              onCheckedChange={(checked) => onSettingChange('enableTrendAnalysis', checked)}
+              checked={settings.enable_trend_analysis || false}
+              onCheckedChange={(checked) => onSettingChange('enable_trend_analysis', checked)}
             />
           </div>
         </CardContent>
