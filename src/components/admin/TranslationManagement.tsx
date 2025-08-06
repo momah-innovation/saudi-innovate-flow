@@ -42,7 +42,7 @@ const TranslationManagement = () => {
         
         for (let i = 0; i < keys.length - 1; i++) {
           const key = keys[i];
-          if (!(key in current)) {
+          if (!(key in current) || typeof current[key] !== 'object') {
             current[key] = {};
           }
           current = current[key];
@@ -83,8 +83,6 @@ const TranslationManagement = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [isAddingTranslation, setIsAddingTranslation] = useState(false);
-  const [editingTranslation, setEditingTranslation] = useState<SystemTranslation | null>(null);
   
   const [newTranslation, setNewTranslation] = useState({
     key: '',
@@ -121,6 +119,54 @@ const TranslationManagement = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAddTranslation = async () => {
+    if (!newTranslation.key || !newTranslation.category || !newTranslation.ar || !newTranslation.en) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      // Insert both Arabic and English translations
+      const { error } = await supabase
+        .from('system_translations')
+        .insert([
+          {
+            translation_key: newTranslation.key,
+            language_code: 'ar',
+            translation_text: newTranslation.ar,
+            category: newTranslation.category
+          },
+          {
+            translation_key: newTranslation.key,
+            language_code: 'en',
+            translation_text: newTranslation.en,
+            category: newTranslation.category
+          }
+        ]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Translation added successfully"
+      });
+
+      setNewTranslation({ key: '', category: '', ar: '', en: '' });
+      fetchTranslations();
+    } catch (error) {
+      console.error('Error adding translation:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add translation",
+        variant: "destructive"
+      });
     }
   };
 
@@ -174,9 +220,9 @@ const TranslationManagement = () => {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* JSON Download Section */}
-        <Card className="lg:col-span-1">
+        <Card>
           <CardHeader>
             <CardTitle className="text-lg">📁 JSON Download</CardTitle>
             <CardDescription>
@@ -216,89 +262,165 @@ const TranslationManagement = () => {
           </CardContent>
         </Card>
 
-        {/* Database Translation Management */}
-        <Card className="lg:col-span-2">
+        {/* Add New Translation */}
+        <Card>
           <CardHeader>
-            <CardTitle>Database Translations</CardTitle>
+            <CardTitle className="text-lg">➕ Add Translation</CardTitle>
             <CardDescription>
-              Manage dynamic translations stored in the database (recommended)
+              Add new translation keys with both Arabic and English text
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {/* Filters */}
-              <div className="flex gap-4 items-center">
-                <div className="flex-1">
-                  <Input
-                    placeholder="Search translations..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger className="w-48">
-                    <SelectValue placeholder="Filter by category" />
+          <CardContent className="space-y-4">
+            <div className="space-y-3">
+              <div>
+                <Label htmlFor="new-key">Translation Key</Label>
+                <Input
+                  id="new-key"
+                  placeholder="e.g., settings.ui.theme"
+                  value={newTranslation.key}
+                  onChange={(e) => setNewTranslation(prev => ({ ...prev, key: e.target.value }))}
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="new-category">Category</Label>
+                <Select value={newTranslation.category} onValueChange={(value) => setNewTranslation(prev => ({ ...prev, category: value }))}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
-                    {categories.map(category => (
+                    {categories.length > 0 ? categories.map(category => (
                       <SelectItem key={category} value={category}>
                         {category}
                       </SelectItem>
-                    ))}
+                    )) : (
+                      <>
+                        <SelectItem value="settings">Settings</SelectItem>
+                        <SelectItem value="navigation">Navigation</SelectItem>
+                        <SelectItem value="ui">UI</SelectItem>
+                        <SelectItem value="forms">Forms</SelectItem>
+                        <SelectItem value="errors">Errors</SelectItem>
+                      </>
+                    )}
                   </SelectContent>
                 </Select>
               </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-4">
-                <div className="text-center p-4 bg-muted rounded-lg">
-                  <div className="text-2xl font-bold">{translationPairs.length}</div>
-                  <p className="text-sm text-muted-foreground">Total Keys</p>
-                </div>
-                <div className="text-center p-4 bg-muted rounded-lg">
-                  <div className="text-2xl font-bold">{categories.length}</div>
-                  <p className="text-sm text-muted-foreground">Categories</p>
-                </div>
-                <div className="text-center p-4 bg-muted rounded-lg">
-                  <div className="text-2xl font-bold">
-                    {filteredPairs.filter((p: any) => p.ar && p.en).length}
-                  </div>
-                  <p className="text-sm text-muted-foreground">Complete</p>
-                </div>
+              <div>
+                <Label htmlFor="new-english">English Text</Label>
+                <Textarea
+                  id="new-english"
+                  placeholder="English translation"
+                  value={newTranslation.en}
+                  onChange={(e) => setNewTranslation(prev => ({ ...prev, en: e.target.value }))}
+                />
               </div>
 
-              {/* Translation List */}
-              <div className="space-y-2 max-h-96 overflow-y-auto">
-                {filteredPairs.map((pair: any, index) => (
-                  <div key={`${pair.category}:${pair.key}`} className="border rounded-lg p-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <Badge variant="secondary">{pair.category}</Badge>
-                        <code className="text-sm bg-muted px-2 py-1 rounded">{pair.key}</code>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="font-medium">EN:</span> {pair.en || '—'}
-                      </div>
-                      <div>
-                        <span className="font-medium">AR:</span> {pair.ar || '—'}
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              <div>
+                <Label htmlFor="new-arabic">Arabic Text</Label>
+                <Textarea
+                  id="new-arabic"
+                  placeholder="النص العربي"
+                  value={newTranslation.ar}
+                  onChange={(e) => setNewTranslation(prev => ({ ...prev, ar: e.target.value }))}
+                />
               </div>
 
-              {filteredPairs.length === 0 && !loading && (
-                <div className="text-center py-8 text-muted-foreground">
-                  No translations found
-                </div>
-              )}
+              <Button 
+                onClick={handleAddTranslation}
+                className="w-full"
+                disabled={!newTranslation.key || !newTranslation.category || !newTranslation.en || !newTranslation.ar}
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Add Translation
+              </Button>
             </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Database Translation Management */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Database Translations</CardTitle>
+          <CardDescription>
+            Manage dynamic translations stored in the database (recommended)
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {/* Filters */}
+            <div className="flex gap-4 items-center">
+              <div className="flex-1">
+                <Input
+                  placeholder="Search translations..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="Filter by category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {categories.map(category => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center p-4 bg-muted rounded-lg">
+                <div className="text-2xl font-bold">{translationPairs.length}</div>
+                <p className="text-sm text-muted-foreground">Total Keys</p>
+              </div>
+              <div className="text-center p-4 bg-muted rounded-lg">
+                <div className="text-2xl font-bold">{categories.length}</div>
+                <p className="text-sm text-muted-foreground">Categories</p>
+              </div>
+              <div className="text-center p-4 bg-muted rounded-lg">
+                <div className="text-2xl font-bold">
+                  {filteredPairs.filter((p: any) => p.ar && p.en).length}
+                </div>
+                <p className="text-sm text-muted-foreground">Complete</p>
+              </div>
+            </div>
+
+            {/* Translation List */}
+            <div className="space-y-2 max-h-96 overflow-y-auto">
+              {filteredPairs.map((pair: any, index) => (
+                <div key={`${pair.category}:${pair.key}`} className="border rounded-lg p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary">{pair.category}</Badge>
+                      <code className="text-sm bg-muted px-2 py-1 rounded">{pair.key}</code>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="font-medium">EN:</span> {pair.en || '—'}
+                    </div>
+                    <div>
+                      <span className="font-medium">AR:</span> {pair.ar || '—'}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {filteredPairs.length === 0 && !loading && (
+              <div className="text-center py-8 text-muted-foreground">
+                No translations found
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
