@@ -95,8 +95,8 @@ export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsPr
               <Input
                 id="maxPartnersPerProject"
                 type="number"
-                value={settings.maxPartnersPerProject || 5}
-                onChange={(e) => onSettingChange('maxPartnersPerProject', parseInt(e.target.value))}
+                value={settings.max_partners_per_project || 5}
+                onChange={(e) => onSettingChange('max_partners_per_project', parseInt(e.target.value))}
                 min="1"
                 max="20"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -108,8 +108,8 @@ export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsPr
               <Input
                 id="partnershipDefaultDuration"
                 type="number"
-                value={settings.partnershipDefaultDuration || 12}
-                onChange={(e) => onSettingChange('partnershipDefaultDuration', parseInt(e.target.value))}
+                value={settings.partnership_default_duration || 12}
+                onChange={(e) => onSettingChange('partnership_default_duration', parseInt(e.target.value))}
                 min="1"
                 max="60"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -121,8 +121,8 @@ export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsPr
               <Input
                 id="minPartnershipValue"
                 type="number"
-                value={settings.minPartnershipValue || 10000}
-                onChange={(e) => onSettingChange('minPartnershipValue', parseInt(e.target.value))}
+                value={settings.min_partnership_value || 10000}
+                onChange={(e) => onSettingChange('min_partnership_value', parseInt(e.target.value))}
                 min="0"
                 className={isRTL ? 'text-right' : 'text-left'}
               />
@@ -133,8 +133,8 @@ export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsPr
               <Input
                 id="partnershipRenewalPeriod"
                 type="number"
-                value={settings.partnershipRenewalPeriod || 30}
-                onChange={(e) => onSettingChange('partnershipRenewalPeriod', parseInt(e.target.value))}
+                value={settings.partnership_renewal_period || 30}
+                onChange={(e) => onSettingChange('partnership_renewal_period', parseInt(e.target.value))}
                 min="7"
                 max="90"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -148,8 +148,8 @@ export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsPr
               <p className="text-sm text-muted-foreground">مطالبة موافقة إدارية على الشراكات الجديدة</p>
             </div>
             <Switch 
-              checked={settings.requirePartnershipApproval !== false}
-              onCheckedChange={(checked) => onSettingChange('requirePartnershipApproval', checked)}
+              checked={settings.require_partnership_approval !== false}
+              onCheckedChange={(checked) => onSettingChange('require_partnership_approval', checked)}
             />
           </div>
 
@@ -159,8 +159,8 @@ export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsPr
               <p className="text-sm text-muted-foreground">إجراء تقييم دوري لأداء الشركاء</p>
             </div>
             <Switch 
-              checked={settings.enablePeriodicPartnerEvaluation !== false}
-              onCheckedChange={(checked) => onSettingChange('enablePeriodicPartnerEvaluation', checked)}
+              checked={settings.enable_periodic_partner_evaluation !== false}
+              onCheckedChange={(checked) => onSettingChange('enable_periodic_partner_evaluation', checked)}
             />
           </div>
 
@@ -170,8 +170,8 @@ export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsPr
               <p className="text-sm text-muted-foreground">إرسال إشعارات قبل انتهاء مدة الشراكة</p>
             </div>
             <Switch 
-              checked={settings.enablePartnershipExpiryNotifications !== false}
-              onCheckedChange={(checked) => onSettingChange('enablePartnershipExpiryNotifications', checked)}
+              checked={settings.enable_partnership_expiry_notifications !== false}
+              onCheckedChange={(checked) => onSettingChange('enable_partnership_expiry_notifications', checked)}
             />
           </div>
         </CardContent>
