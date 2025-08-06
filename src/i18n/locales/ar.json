@@ -1275,7 +1275,9 @@
       "authentication.description": "إعدادات الأمان والمصادقة",
       "campaigns.description": "إعدادات الحملات والأنشطة",
       "ai": "الذكاء الاصطناعي",
-      "ai.description": "إعدادات ميزات الذكاء الاصطناعي والذكاء"
+      "ai.description": "إعدادات ميزات الذكاء الاصطناعي والذكاء",
+      "analytics": "التحليلات",
+      "analytics.description": "إعدادات التحليلات والتقارير"
     },
     "api_rate_limit_per_hour": {
       "label": "حد معدل الطلبات في الساعة",
@@ -1372,6 +1374,46 @@
     "enable_trend_analysis": {
       "label": "تفعيل تحليل الاتجاهات",
       "description": "تحليل الاتجاهات باستخدام الذكاء الاصطناعي"
+    },
+    "analytics_data_retention": {
+      "label": "الاحتفاظ ببيانات التحليلات",
+      "description": "مدة الاحتفاظ ببيانات التحليلات"
+    },
+    "analytics_realtime_updates": {
+      "label": "تحديثات التحليلات في الوقت الفعلي",
+      "description": "تفعيل تحديثات التحليلات في الوقت الفعلي"
+    },
+    "analytics_report_frequency": {
+      "label": "تكرار تقارير التحليلات",
+      "description": "معدل إنتاج تقارير التحليلات"
+    },
+    "analytics_update_frequency": {
+      "label": "تكرار تحديث التحليلات",
+      "description": "معدل تحديث بيانات التحليلات"
+    },
+    "chart_color_palette": {
+      "label": "لوحة ألوان المخططات",
+      "description": "لوحة الألوان للمخططات والرسوم البيانية"
+    },
+    "chart_refresh_interval": {
+      "label": "فترة تحديث المخططات",
+      "description": "معدل تحديث بيانات المخططات"
+    },
+    "chart_visualization_colors": {
+      "label": "ألوان تمثيل المخططات",
+      "description": "الألوان المستخدمة في تمثيل المخططات"
+    },
+    "data_retention_days": {
+      "label": "أيام الاحتفاظ بالبيانات",
+      "description": "عدد الأيام للاحتفاظ بالبيانات"
+    },
+    "enable_automatic_reports": {
+      "label": "تفعيل التقارير التلقائية",
+      "description": "إنتاج التقارير تلقائياً"
+    },
+    "enable_data_anonymization": {
+      "label": "تفعيل إخفاء هوية البيانات",
+      "description": "إخفاء هوية البيانات الحساسة في التقارير"
     }
   }
 }

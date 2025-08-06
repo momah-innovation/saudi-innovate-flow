@@ -1275,7 +1275,9 @@
       "authentication.description": "Security and authentication configuration",
       "campaigns.description": "Campaign and activity settings",
       "ai": "Artificial Intelligence",
-      "ai.description": "AI features and intelligence configuration settings"
+      "ai.description": "AI features and intelligence configuration settings",
+      "analytics": "Analytics",
+      "analytics.description": "Analytics and reporting configuration"
     },
     "api_rate_limit_per_hour": {
       "label": "API Rate Limit Per Hour",
@@ -1372,6 +1374,46 @@
     "enable_trend_analysis": {
       "label": "Enable Trend Analysis",
       "description": "Analyze trends using AI"
+    },
+    "analytics_data_retention": {
+      "label": "Analytics Data Retention",
+      "description": "Data retention period for analytics"
+    },
+    "analytics_realtime_updates": {
+      "label": "Analytics Realtime Updates",
+      "description": "Enable real-time analytics updates"
+    },
+    "analytics_report_frequency": {
+      "label": "Analytics Report Frequency",
+      "description": "Frequency of analytics report generation"
+    },
+    "analytics_update_frequency": {
+      "label": "Analytics Update Frequency",
+      "description": "Frequency of analytics data updates"
+    },
+    "chart_color_palette": {
+      "label": "Chart Color Palette",
+      "description": "Color palette for charts and graphs"
+    },
+    "chart_refresh_interval": {
+      "label": "Chart Refresh Interval",
+      "description": "Chart data refresh interval"
+    },
+    "chart_visualization_colors": {
+      "label": "Chart Visualization Colors",
+      "description": "Colors used in chart visualizations"
+    },
+    "data_retention_days": {
+      "label": "Data Retention Days",
+      "description": "Number of days to retain data"
+    },
+    "enable_automatic_reports": {
+      "label": "Enable Automatic Reports",
+      "description": "Generate reports automatically"
+    },
+    "enable_data_anonymization": {
+      "label": "Enable Data Anonymization",
+      "description": "Anonymize sensitive data in reports"
     }
   }
 }
