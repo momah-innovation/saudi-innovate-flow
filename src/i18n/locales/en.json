@@ -753,5 +753,14 @@
     "archive_challenge": "Archive Challenge",
     "cancel": "Cancel",
     "save": "Save"
+  },
+  "system_settings_page": {
+    "title": "System Settings",
+    "description": "Configure and manage system-wide settings",
+    "general": "General",
+    "ai": "AI",
+    "ui": "UI",
+    "translations": "Translations",
+    "shared_settings": "Shared Settings"
   }
 }

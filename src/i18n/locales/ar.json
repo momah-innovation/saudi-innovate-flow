@@ -753,5 +753,14 @@
     "archive_challenge": "أرشفة التحدي",
     "cancel": "إلغاء",
     "save": "حفظ"
+  },
+  "system_settings_page": {
+    "title": "إعدادات النظام",
+    "description": "تكوين وإدارة إعدادات النظام",
+    "general": "عام",
+    "ai": "الذكاء الاصطناعي",
+    "ui": "واجهة المستخدم",
+    "translations": "الترجمات",
+    "shared_settings": "الإعدادات المشتركة"
   }
 }

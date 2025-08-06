@@ -45,7 +45,7 @@ const SystemSettings = () => {
           <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
             <CardTitle className="flex items-center gap-2">
               <Database className="w-5 h-5" />
-              {isRTL ? 'إدارة إعدادات النظام' : 'Unified Settings Management'}
+              {t('system_settings_page.title')}
             </CardTitle>
             <CardDescription>
               {isRTL 
@@ -92,7 +92,7 @@ const SystemSettings = () => {
           <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
             <CardTitle className="flex items-center gap-2">
               <List className="w-5 h-5" />
-              {isRTL ? 'الإعدادات المشتركة' : 'Shared Settings'}
+              {t('system_settings_page.shared_settings')}
             </CardTitle>
             <CardDescription>
               {isRTL 
