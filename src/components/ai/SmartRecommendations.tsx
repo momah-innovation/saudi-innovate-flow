@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, TrendingUp, Users, Lightbulb, ArrowRight } from 'lucide-react';
 import { useAIFeatures } from '@/hooks/useAIFeatures';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Recommendation {
@@ -31,6 +32,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState(true);
   const { isFeatureEnabled } = useAIFeatures();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isFeatureEnabled('smart_partner_matching')) {
@@ -126,11 +128,11 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
 
   const getTypeName = (type: string) => {
     switch (type) {
-      case 'challenge': return 'تحدي';
-      case 'opportunity': return 'فرصة';
-      case 'partner': return 'شريك';
-      case 'idea': return 'فكرة';
-      default: return 'توصية';
+      case 'challenge': return t('smart_recommendations.type_challenge');
+      case 'opportunity': return t('smart_recommendations.type_opportunity');
+      case 'partner': return t('smart_recommendations.type_partner');
+      case 'idea': return t('smart_recommendations.type_idea');
+      default: return t('smart_recommendations.type_idea');
     }
   };
 
@@ -140,17 +142,17 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Sparkles className="h-5 w-5" />
-            التوصيات الذكية
+            {t('smart_recommendations.title')}
           </CardTitle>
           <CardDescription>
-            ميزة التوصيات الذكية غير متاحة حالياً
+            {t('smart_recommendations.feature_disabled')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
             <Sparkles className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
             <p className="text-muted-foreground">
-              يرجى تفعيل ميزة التوصيات الذكية من إعداداتك
+              {t('smart_recommendations.enable_feature')}
             </p>
           </div>
         </CardContent>
@@ -163,10 +165,10 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="h-5 w-5" />
-          التوصيات الذكية
+          {t('smart_recommendations.title')}
         </CardTitle>
         <CardDescription>
-          اكتشف الفرص والتحديات المناسبة لك بناءً على نشاطك واهتماماتك
+          {t('smart_recommendations.description')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -188,10 +190,10 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
           <div className="text-center py-8">
             <Sparkles className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
             <p className="text-muted-foreground">
-              لا توجد توصيات متاحة حالياً
+              {t('smart_recommendations.no_recommendations')}
             </p>
             <Button variant="outline" className="mt-4" onClick={loadRecommendations}>
-              إعادة المحاولة
+              {t('smart_recommendations.retry')}
             </Button>
           </div>
         ) : (
@@ -216,7 +218,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
                           <div className="flex items-center gap-1">
                             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                             <span className="text-xs text-muted-foreground">
-                              {Math.round(recommendation.confidence_score * 100)}% تطابق
+                              {Math.round(recommendation.confidence_score * 100)}% {t('smart_recommendations.match_percentage')}
                             </span>
                           </div>
                         </div>
@@ -244,7 +246,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
             <div className="pt-4 border-t">
               <Button variant="outline" className="w-full" onClick={loadRecommendations}>
                 <Sparkles className="h-4 w-4 mr-2" />
-                تحديث التوصيات
+                {t('smart_recommendations.refresh_recommendations')}
               </Button>
             </div>
           </div>

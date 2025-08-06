@@ -6,6 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
 import { Brain, Lightbulb, Star, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
 import { useAIFeatures } from '@/hooks/useAIFeatures';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { useToast } from '@/hooks/use-toast';
 
 interface IdeaEvaluationProps {
@@ -42,13 +43,14 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState('');
   const { isFeatureEnabled, getFeatureConfig } = useAIFeatures();
+  const { t } = useTranslation();
   const { toast } = useToast();
 
   const handleEvaluate = async () => {
     if (!isFeatureEnabled('idea_evaluation')) {
       toast({
-        title: 'غير متاح',
-        description: 'ميزة تقييم الأفكار بالذكاء الاصطناعي غير مفعلة',
+        title: t('idea_evaluation_ai.feature_unavailable'),
+        description: t('idea_evaluation_ai.feature_not_enabled'),
         variant: 'destructive',
       });
       return;
@@ -95,13 +97,13 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
       onEvaluationComplete?.(mockEvaluation);
       
       toast({
-        title: 'تم التقييم',
-        description: 'تم تقييم الفكرة بنجاح باستخدام الذكاء الاصطناعي',
+        title: t('idea_evaluation_ai.evaluation_complete'),
+        description: t('idea_evaluation_ai.evaluation_success'),
       });
     } catch (error) {
       toast({
-        title: 'خطأ',
-        description: 'فشل في تقييم الفكرة، يرجى المحاولة مرة أخرى',
+        title: t('idea_evaluation_ai.evaluation_error'),
+        description: t('idea_evaluation_ai.evaluation_failed'),
         variant: 'destructive',
       });
     } finally {
@@ -127,17 +129,17 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Brain className="h-5 w-5" />
-            تقييم الذكاء الاصطناعي
+            {t('idea_evaluation_ai.title')}
           </CardTitle>
           <CardDescription>
-            ميزة تقييم الأفكار غير متاحة حالياً
+            {t('idea_evaluation_ai.feature_disabled')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
             <Brain className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
             <p className="text-muted-foreground">
-              يرجى تفعيل ميزة تقييم الأفكار من إعداداتك
+              {t('idea_evaluation_ai.enable_feature')}
             </p>
           </div>
         </CardContent>
@@ -151,10 +153,10 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Brain className="h-5 w-5" />
-            تقييم الذكاء الاصطناعي
+            {t('idea_evaluation_ai.title')}
           </CardTitle>
           <CardDescription>
-            احصل على تقييم مفصل لفكرتك باستخدام الذكاء الاصطناعي
+            {t('idea_evaluation_ai.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -164,17 +166,17 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
                 {loading ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                    جاري التقييم...
+                    {t('idea_evaluation_ai.evaluating')}
                   </>
                 ) : (
                   <>
                     <Brain className="h-4 w-4 mr-2" />
-                    تقييم الفكرة
+                    {t('idea_evaluation_ai.evaluate_idea')}
                   </>
                 )}
               </Button>
               <p className="text-sm text-muted-foreground">
-                انقر لبدء تقييم شامل لفكرتك
+                {t('idea_evaluation_ai.click_to_evaluate')}
               </p>
             </div>
           ) : (
@@ -186,7 +188,7 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
                     {evaluation.overall_score}%
                   </span>
                 </div>
-                <p className="text-muted-foreground">النتيجة الإجمالية</p>
+                <p className="text-muted-foreground">{t('idea_evaluation_ai.overall_score')}</p>
               </div>
 
               {/* Score Breakdown */}
@@ -234,7 +236,7 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
                 <div>
                   <h4 className="font-semibold mb-3 flex items-center gap-2">
                     <CheckCircle className="h-4 w-4 text-green-600" />
-                    نقاط القوة
+                    {t('idea_evaluation_ai.strengths')}
                   </h4>
                   <ul className="space-y-2">
                     {evaluation.strengths.map((strength, index) => (
@@ -248,7 +250,7 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
                 <div>
                   <h4 className="font-semibold mb-3 flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                    نقاط التحسين
+                    {t('idea_evaluation_ai.improvement_areas')}
                   </h4>
                   <ul className="space-y-2">
                     {evaluation.weaknesses.map((weakness, index) => (
@@ -265,7 +267,7 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
               <div>
                 <h4 className="font-semibold mb-3 flex items-center gap-2">
                   <Lightbulb className="h-4 w-4 text-blue-600" />
-                  التوصيات
+                  {t('idea_evaluation_ai.recommendations')}
                 </h4>
                 <ul className="space-y-2">
                   {evaluation.recommendations.map((recommendation, index) => (
@@ -280,13 +282,13 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
               {/* Similar Ideas */}
               {evaluation.similar_ideas.length > 0 && (
                 <div>
-                  <h4 className="font-semibold mb-3">أفكار مشابهة</h4>
+                  <h4 className="font-semibold mb-3">{t('idea_evaluation_ai.similar_ideas')}</h4>
                   <div className="space-y-2">
                     {evaluation.similar_ideas.map((idea, index) => (
                       <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
                         <span className="text-sm">{idea.title}</span>
                         <Badge variant="outline">
-                          {Math.round(idea.similarity_score * 100)}% تشابه
+                          {Math.round(idea.similarity_score * 100)}% {t('idea_evaluation_ai.similarity')}
                         </Badge>
                       </div>
                     ))}
@@ -296,7 +298,7 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
 
               {/* Suggested Tags */}
               <div>
-                <h4 className="font-semibold mb-3">التصنيفات المقترحة</h4>
+                <h4 className="font-semibold mb-3">{t('idea_evaluation_ai.suggested_tags')}</h4>
                 <div className="flex flex-wrap gap-2">
                   {evaluation.tags_suggestions.map((tag, index) => (
                     <Badge key={index} variant="secondary">
@@ -308,15 +310,15 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
 
               {/* Feedback Section */}
               <div className="space-y-3">
-                <h4 className="font-semibold">هل كان التقييم مفيداً؟</h4>
+                <h4 className="font-semibold">{t('idea_evaluation_ai.feedback_question')}</h4>
                 <Textarea
-                  placeholder="شاركنا رأيك حول دقة التقييم..."
+                  placeholder={t('idea_evaluation_ai.feedback_placeholder')}
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
                   className="min-h-[80px]"
                 />
                 <Button variant="outline" size="sm">
-                  إرسال التعليق
+                  {t('idea_evaluation_ai.send_feedback')}
                 </Button>
               </div>
             </div>
