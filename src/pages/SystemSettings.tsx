@@ -44,6 +44,9 @@ import { NotificationSettings } from "@/components/admin/settings/NotificationSe
 import { IntegrationSettings } from "@/components/admin/settings/IntegrationSettings";
 import { SystemListSettings } from "@/components/admin/settings/SystemListSettings";
 import { SectorManagementSettings } from "@/components/admin/settings/SectorManagementSettings";
+import { OpportunitySettings } from "@/components/admin/settings/OpportunitySettings";
+import { WorkflowSettings } from "@/components/admin/settings/WorkflowSettings";
+import { GlobalListSettings } from "@/components/admin/settings/GlobalListSettings";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useDirection } from "@/components/ui/direction-provider";
 import { useTranslation } from "@/hooks/useAppTranslation";
@@ -141,7 +144,7 @@ const SystemSettings = () => {
 
         {/* Settings Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
-          <TabsList className={`grid w-full grid-cols-9 lg:grid-cols-18 h-auto p-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+          <TabsList className={`grid w-full grid-cols-10 lg:grid-cols-20 h-auto p-1 ${isRTL ? 'text-right' : 'text-left'}`}>
             <TabsTrigger value="general" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Settings className="w-3 h-3" />
               <span className="hidden lg:inline text-xs">{t('general')}</span>
@@ -152,51 +155,59 @@ const SystemSettings = () => {
             </TabsTrigger>
             <TabsTrigger value="challenges" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Target className="w-3 h-3" />
-              <span className="hidden lg:inline text-xs">التحديات</span>
+              <span className="hidden lg:inline text-xs">{isRTL ? 'التحديات' : 'Challenges'}</span>
             </TabsTrigger>
             <TabsTrigger value="ideas" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Lightbulb className="w-3 h-3" />
-              <span className="hidden lg:inline text-xs">الأفكار</span>
+              <span className="hidden lg:inline text-xs">{isRTL ? 'الأفكار' : 'Ideas'}</span>
             </TabsTrigger>
             <TabsTrigger value="evaluations" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <ClipboardCheck className="w-3 h-3" />
-              <span className="hidden lg:inline text-xs">التقييمات</span>
+              <span className="hidden lg:inline text-xs">{isRTL ? 'التقييمات' : 'Evaluations'}</span>
             </TabsTrigger>
             <TabsTrigger value="campaigns" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Megaphone className="w-3 h-3" />
-              <span className="hidden lg:inline text-xs">الحملات</span>
+              <span className="hidden lg:inline text-xs">{isRTL ? 'الحملات' : 'Campaigns'}</span>
             </TabsTrigger>
             <TabsTrigger value="focus-questions" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <HelpCircle className="w-3 h-3" />
-              <span className="hidden lg:inline text-xs">الأسئلة المحورية</span>
+              <span className="hidden lg:inline text-xs">{isRTL ? 'الأسئلة المحورية' : 'Focus Questions'}</span>
             </TabsTrigger>
             <TabsTrigger value="events" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Calendar className="w-3 h-3" />
-              <span className="hidden lg:inline text-xs">الفعاليات</span>
+              <span className="hidden lg:inline text-xs">{isRTL ? 'الفعاليات' : 'Events'}</span>
             </TabsTrigger>
             <TabsTrigger value="stakeholders" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Users className="w-3 h-3" />
-              <span className="hidden lg:inline text-xs">المعنيين</span>
+              <span className="hidden lg:inline text-xs">{isRTL ? 'المعنيين' : 'Stakeholders'}</span>
             </TabsTrigger>
             <TabsTrigger value="teams" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <UserCheck className="w-3 h-3" />
-              <span className="hidden lg:inline text-xs">فرق الابتكار</span>
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <BarChart3 className="w-3 h-3" />
-              <span className="hidden lg:inline text-xs">التحليلات</span>
+              <span className="hidden lg:inline text-xs">{isRTL ? 'فرق الابتكار' : 'Innovation Teams'}</span>
             </TabsTrigger>
             <TabsTrigger value="partners" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Building2 className="w-3 h-3" />
-              <span className="hidden lg:inline text-xs">الشركاء</span>
+              <span className="hidden lg:inline text-xs">{isRTL ? 'الشركاء' : 'Partners'}</span>
             </TabsTrigger>
             <TabsTrigger value="organizational" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <TrendingUp className="w-3 h-3" />
-              <span className="hidden lg:inline text-xs">الهيكل التنظيمي</span>
+              <span className="hidden lg:inline text-xs">{isRTL ? 'الهيكل التنظيمي' : 'Organizational'}</span>
             </TabsTrigger>
             <TabsTrigger value="user-management" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Users className="w-3 h-3" />
-              <span className="hidden lg:inline text-xs">إدارة المستخدمين</span>
+              <span className="hidden lg:inline text-xs">{isRTL ? 'إدارة المستخدمين' : 'User Management'}</span>
+            </TabsTrigger>
+            <TabsTrigger value="opportunities" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <FileText className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">{isRTL ? 'الفرص' : 'Opportunities'}</span>
+            </TabsTrigger>
+            <TabsTrigger value="workflows" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <PieChart className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">{isRTL ? 'سير العمل' : 'Workflows'}</span>
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <BarChart3 className="w-3 h-3" />
+              <span className="hidden lg:inline text-xs">{isRTL ? 'التحليلات' : 'Analytics'}</span>
             </TabsTrigger>
             <TabsTrigger value="security" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Shield className="w-3 h-3" />
@@ -210,9 +221,9 @@ const SystemSettings = () => {
               <Database className="w-3 h-3" />
               <span className="hidden lg:inline text-xs">{t('integrations')}</span>
             </TabsTrigger>
-            <TabsTrigger value="lists" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <TabsTrigger value="global-lists" className={`flex items-center gap-1 h-12 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
               <List className="w-3 h-3" />
-              <span className="hidden lg:inline text-xs">{t('lists')}</span>
+              <span className="hidden lg:inline text-xs">{isRTL ? 'القوائم العامة' : 'Global Lists'}</span>
             </TabsTrigger>
           </TabsList>
 
@@ -314,6 +325,20 @@ const SystemSettings = () => {
             />
           </TabsContent>
 
+          <TabsContent value="opportunities">
+            <OpportunitySettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
+          <TabsContent value="workflows">
+            <WorkflowSettings 
+              settings={settings} 
+              onSettingChange={handleSettingChange} 
+            />
+          </TabsContent>
+
           <TabsContent value="security">
             <SecuritySettings 
               settings={settings} 
@@ -335,8 +360,8 @@ const SystemSettings = () => {
             />
           </TabsContent>
 
-          <TabsContent value="lists">
-            <SystemListSettings 
+          <TabsContent value="global-lists">
+            <GlobalListSettings 
               settings={settings} 
               onSettingChange={handleSettingChange} 
             />
