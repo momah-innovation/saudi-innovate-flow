@@ -3,7 +3,8 @@ import { useTranslation as useI18nextTranslation } from 'react-i18next';
 export function useTranslation() {
   const { t, i18n } = useI18nextTranslation();
   
-  const language = i18n.language as 'en' | 'ar';
+  // Normalize language code to match database (en-US -> en, ar-SA -> ar)
+  const language = i18n.language.split('-')[0] as 'en' | 'ar';
   const isRTL = language === 'ar';
   
   const getDynamicText = (textAr: string, textEn?: string | null): string => {
