@@ -381,6 +381,71 @@
     "implementer": "منفذ",
     "observer": "مراقب"
   },
+  "settings": {
+    "category": {
+      "campaigns": "الحملات",
+      "challenge": "إعدادات التحديات",
+      "Challenge Management": "إدارة التحديات",
+      "challenge_management": "إدارة التحديات", 
+      "challenges": "التحديات"
+    },
+    "challenge_priority_levels": {
+      "label": "مستويات أولوية التحديات",
+      "description": "تكوين مستويات الأولوية للتحديات"
+    },
+    "challenge_sensitivity_levels": {
+      "label": "مستويات حساسية التحديات",
+      "description": "تكوين مستويات الحساسية للتحديات"
+    },
+    "challenge_status_options": {
+      "label": "خيارات حالة التحديات",
+      "description": "تكوين خيارات الحالة المتاحة للتحديات"
+    },
+    "challenge_types": {
+      "label": "أنواع التحديات",
+      "description": "تكوين أنواع التحديات المتاحة"
+    },
+    "challenge_details_description_rows": {
+      "label": "صفوف وصف التحدي",
+      "description": "عدد الصفوف لمنطقة نص وصف التحدي"
+    },
+    "challenge_details_vision_rows": {
+      "label": "صفوف رؤية التحدي",
+      "description": "عدد الصفوف لمنطقة نص رؤية التحدي"
+    },
+    "focus_question_textarea_rows": {
+      "label": "صفوف منطقة نص السؤال المحوري",
+      "description": "عدد الصفوف لمنطقة نص السؤال المحوري"
+    },
+    "challenge_default_duration_days": {
+      "label": "المدة الافتراضية للتحدي (أيام)",
+      "description": "المدة الافتراضية للتحديات بالأيام"
+    },
+    "challenge_default_submission_limit": {
+      "label": "حد التقديم الافتراضي",
+      "description": "الحد الافتراضي لتقديم الأفكار لكل تحدي"
+    },
+    "challenge_digital_maturity_score_max": {
+      "label": "الحد الأقصى لنقاط النضج الرقمي",
+      "description": "القيمة القصوى لتقييم النضج الرقمي"
+    },
+    "challenge_digital_maturity_score_min": {
+      "label": "الحد الأدنى لنقاط النضج الرقمي",
+      "description": "القيمة الدنيا لتقييم النضج الرقمي"
+    },
+    "challenge_max_budget": {
+      "label": "الحد الأقصى لميزانية التحدي",
+      "description": "الحد الأقصى للميزانية المسموح بها للتحديات"
+    },
+    "challenge_max_submissions_per_challenge": {
+      "label": "الحد الأقصى للتقديمات لكل تحدي",
+      "description": "الحد الأقصى لعدد التقديمات المسموح بها لكل تحدي"
+    },
+    "allow_anonymous_submissions": {
+      "label": "السماح بالتقديمات المجهولة",
+      "description": "تمكين تقديم الأفكار المجهولة"
+    }
+  },
   "toggle_theme": "تبديل المظهر",
   "open_navigation": "فتح قائمة التنقل",
   "toggle_direction": "تبديل اتجاه النص",

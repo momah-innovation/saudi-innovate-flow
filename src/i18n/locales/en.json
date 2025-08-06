@@ -381,6 +381,71 @@
     "implementer": "Implementer",
     "observer": "Observer"
   },
+  "settings": {
+    "category": {
+      "campaigns": "Campaigns",
+      "challenge": "Challenge Settings",
+      "Challenge Management": "Challenge Management",
+      "challenge_management": "Challenge Management",
+      "challenges": "Challenges"
+    },
+    "challenge_priority_levels": {
+      "label": "Challenge Priority Levels",
+      "description": "Configure priority levels for challenges"
+    },
+    "challenge_sensitivity_levels": {
+      "label": "Challenge Sensitivity Levels", 
+      "description": "Configure sensitivity levels for challenges"
+    },
+    "challenge_status_options": {
+      "label": "Challenge Status Options",
+      "description": "Configure available status options for challenges"
+    },
+    "challenge_types": {
+      "label": "Challenge Types",
+      "description": "Configure available challenge types"
+    },
+    "challenge_details_description_rows": {
+      "label": "Challenge Description Rows",
+      "description": "Number of rows for challenge description textarea"
+    },
+    "challenge_details_vision_rows": {
+      "label": "Challenge Vision Rows", 
+      "description": "Number of rows for challenge vision textarea"
+    },
+    "focus_question_textarea_rows": {
+      "label": "Focus Question Textarea Rows",
+      "description": "Number of rows for focus question textarea"
+    },
+    "challenge_default_duration_days": {
+      "label": "Default Challenge Duration (Days)",
+      "description": "Default duration for challenges in days"
+    },
+    "challenge_default_submission_limit": {
+      "label": "Default Submission Limit",
+      "description": "Default limit for idea submissions per challenge"
+    },
+    "challenge_digital_maturity_score_max": {
+      "label": "Digital Maturity Score Maximum",
+      "description": "Maximum value for digital maturity scoring"
+    },
+    "challenge_digital_maturity_score_min": {
+      "label": "Digital Maturity Score Minimum", 
+      "description": "Minimum value for digital maturity scoring"
+    },
+    "challenge_max_budget": {
+      "label": "Maximum Challenge Budget",
+      "description": "Maximum budget allowed for challenges"
+    },
+    "challenge_max_submissions_per_challenge": {
+      "label": "Maximum Submissions Per Challenge",
+      "description": "Maximum number of submissions allowed per challenge"
+    },
+    "allow_anonymous_submissions": {
+      "label": "Allow Anonymous Submissions",
+      "description": "Enable anonymous idea submissions"
+    }
+  },
   "toggle_theme": "Toggle theme",
   "open_navigation": "Open navigation menu",
   "toggle_direction": "Toggle text direction",
