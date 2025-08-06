@@ -131,8 +131,8 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
       if (error) throw error;
 
       toast({
-        title: t('settingsUpdated'),
-        description: "Challenge settings have been successfully updated.",
+        title: t('challenge_settings.settings_updated'),
+        description: t('challenge_settings.settings_updated_description'),
       });
       
       onUpdate();
@@ -140,8 +140,8 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
     } catch (error) {
       console.error('Error updating challenge settings:', error);
       toast({
-        title: "Error",
-        description: "Failed to update challenge settings. Please try again.",
+        title: t('challenge_settings.error'),
+        description: t('challenge_settings.error_update_description'),
         variant: "destructive",
       });
     } finally {
@@ -163,8 +163,8 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
       if (error) throw error;
 
       toast({
-        title: t('challengeArchived'),
-        description: "Challenge has been successfully archived.",
+        title: t('challenge_settings.challenge_archived'),
+        description: t('challenge_settings.challenge_archived_description'),
       });
       
       onUpdate();
@@ -172,8 +172,8 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
     } catch (error) {
       console.error('Error archiving challenge:', error);
       toast({
-        title: "Error",
-        description: "Failed to archive challenge. Please try again.",
+        title: t('challenge_settings.error'),
+        description: t('challenge_settings.error_archive_description'),
         variant: "destructive",
       });
     } finally {
@@ -187,7 +187,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <SettingsIcon className="h-5 w-5" />
-            Challenge Settings: {challenge.title_ar}
+            {t('challenge_settings.title')}: {challenge.title_ar}
           </DialogTitle>
         </DialogHeader>
 
@@ -202,60 +202,60 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="access" className="flex items-center gap-2">
                 <Shield className="h-4 w-4" />
-                Access Control
+                {t('challenge_settings.access_control')}
               </TabsTrigger>
               <TabsTrigger value="notifications" className="flex items-center gap-2">
                 <Bell className="h-4 w-4" />
-                Notifications
+                {t('challenge_settings.notifications')}
               </TabsTrigger>
               <TabsTrigger value="workflow" className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
-                Workflow
+                {t('challenge_settings.workflow')}
               </TabsTrigger>
               <TabsTrigger value="advanced" className="flex items-center gap-2">
                 <Archive className="h-4 w-4" />
-                Advanced
+                {t('challenge_settings.advanced')}
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="access" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Visibility & Access</CardTitle>
+                  <CardTitle>{t('challenge_settings.visibility_access')}</CardTitle>
                   <CardDescription>
-                    Configure who can view and participate in this challenge
+                    {t('challenge_settings.visibility_access_description')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="visibility">Sensitivity Level</Label>
+                    <Label htmlFor="visibility">{t('challenge_settings.sensitivity_level')}</Label>
                     <Select
                       value={settings.visibility}
                       onValueChange={(value) => setSettings(prev => ({ ...prev, visibility: value }))}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select sensitivity level" />
+                        <SelectValue placeholder={t('challenge_settings.sensitivity_placeholder')} />
                       </SelectTrigger>
                       <SelectContent>
                         {challengeSensitivityLevels.map((level) => (
                           <SelectItem key={level} value={level}>
                             {level.charAt(0).toUpperCase() + level.slice(1)}
-                            {level === 'normal' && ' - Public access'}
-                            {level === 'sensitive' && ' - Team members only'}
-                            {level === 'confidential' && ' - Admins only'}
+                            {level === 'normal' && ` - ${t('challenge_settings.public_access')}`}
+                            {level === 'sensitive' && ` - ${t('challenge_settings.team_members_only')}`}
+                            {level === 'confidential' && ` - ${t('challenge_settings.admins_only')}`}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label htmlFor="anonymous">Allow Anonymous Submissions</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Allow users to submit ideas without registration
-                      </p>
-                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="anonymous">{t('challenge_settings.allow_anonymous')}</Label>
+                        <p className="text-sm text-muted-foreground">
+                          {t('challenge_settings.allow_anonymous_description')}
+                        </p>
+                      </div>
                     <Switch
                       id="anonymous"
                       checked={settings.allowAnonymousSubmissions}
@@ -265,13 +265,13 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
                     />
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label htmlFor="approval">Require Submission Approval</Label>
-                      <p className="text-sm text-muted-foreground">
-                        All submissions must be approved before being visible
-                      </p>
-                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="approval">{t('challenge_settings.require_approval')}</Label>
+                        <p className="text-sm text-muted-foreground">
+                          {t('challenge_settings.require_approval_description')}
+                        </p>
+                      </div>
                     <Switch
                       id="approval"
                       checked={settings.requireApproval}
@@ -287,19 +287,19 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
             <TabsContent value="notifications" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Notification Preferences</CardTitle>
+                  <CardTitle>{t('challenge_settings.notification_preferences')}</CardTitle>
                   <CardDescription>
-                    Configure email and system notifications for this challenge
+                    {t('challenge_settings.notification_preferences_description')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label htmlFor="email-notifications">Email Notifications</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Send email updates about challenge activity
-                      </p>
-                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="email-notifications">{t('challenge_settings.email_notifications')}</Label>
+                        <p className="text-sm text-muted-foreground">
+                          {t('challenge_settings.email_notifications_description')}
+                        </p>
+                      </div>
                     <Switch
                       id="email-notifications"
                       checked={settings.emailNotifications}
@@ -309,13 +309,13 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
                     />
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label htmlFor="submission-alerts">New Submission Alerts</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Get notified when new ideas are submitted
-                      </p>
-                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="submission-alerts">{t('challenge_settings.submission_alerts')}</Label>
+                        <p className="text-sm text-muted-foreground">
+                          {t('challenge_settings.submission_alerts_description')}
+                        </p>
+                      </div>
                     <Switch
                       id="submission-alerts"
                       checked={settings.submissionAlerts}
@@ -325,13 +325,13 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
                     />
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label htmlFor="deadline-reminders">Deadline Reminders</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Send reminders before challenge deadlines
-                      </p>
-                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="deadline-reminders">{t('challenge_settings.deadline_reminders')}</Label>
+                        <p className="text-sm text-muted-foreground">
+                          {t('challenge_settings.deadline_reminders_description')}
+                        </p>
+                      </div>
                     <Switch
                       id="deadline-reminders"
                       checked={settings.deadlineReminders}
@@ -347,14 +347,14 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
             <TabsContent value="workflow" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Workflow Configuration</CardTitle>
+                  <CardTitle>{t('challenge_settings.workflow_configuration')}</CardTitle>
                   <CardDescription>
-                    Configure automated workflows and limits for this challenge
+                    {t('challenge_settings.workflow_configuration_description')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="evaluation-deadline">Evaluation Deadline</Label>
+                    <Label htmlFor="evaluation-deadline">{t('challenge_settings.evaluation_deadline')}</Label>
                     <Input
                       id="evaluation-deadline"
                       type="date"
@@ -364,7 +364,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="max-submissions">Max Submissions Per User</Label>
+                    <Label htmlFor="max-submissions">{t('challenge_settings.max_submissions_per_user')}</Label>
                     <Input
                       id="max-submissions"
                       type="number"
@@ -377,9 +377,9 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
 
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <Label htmlFor="auto-archive">Auto-archive When Complete</Label>
+                      <Label htmlFor="auto-archive">{t('challenge_settings.auto_archive')}</Label>
                       <p className="text-sm text-muted-foreground">
-                        Automatically archive challenge when end date is reached
+                        {t('challenge_settings.auto_archive_description')}
                       </p>
                     </div>
                     <Switch
@@ -397,27 +397,27 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
             <TabsContent value="advanced" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Advanced Settings</CardTitle>
+                  <CardTitle>{t('challenge_settings.advanced_settings')}</CardTitle>
                   <CardDescription>
-                    Additional configuration options and challenge management
+                    {t('challenge_settings.advanced_settings_description')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="tags">Challenge Tags</Label>
+                    <Label htmlFor="tags">{t('challenge_settings.challenge_tags')}</Label>
                     <Input
                       id="tags"
-                      placeholder="ai, innovation, automation (comma-separated)"
+                      placeholder={t('challenge_settings.tags_placeholder')}
                       value={settings.tags}
                       onChange={(e) => setSettings(prev => ({ ...prev, tags: e.target.value }))}
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="custom-fields">Custom Metadata</Label>
+                    <Label htmlFor="custom-fields">{t('challenge_settings.custom_metadata')}</Label>
                     <Textarea
                       id="custom-fields"
-                      placeholder="Additional custom fields or metadata (JSON format)"
+                      placeholder={t('challenge_settings.custom_metadata_placeholder')}
                       value={settings.customFields}
                       onChange={(e) => setSettings(prev => ({ ...prev, customFields: e.target.value }))}
                     />
@@ -426,13 +426,13 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
                   <Separator />
 
                   <div className="space-y-4">
-                    <h4 className="text-sm font-medium text-destructive">Danger Zone</h4>
+                    <h4 className="text-sm font-medium text-destructive">{t('challenge_settings.danger_zone')}</h4>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="archive-reason">Archive Reason (Optional)</Label>
+                      <Label htmlFor="archive-reason">{t('challenge_settings.archive_reason')}</Label>
                       <Textarea
                         id="archive-reason"
-                        placeholder="Reason for archiving this challenge..."
+                        placeholder={t('challenge_settings.archive_reason_placeholder')}
                         value={settings.archiveReason}
                         onChange={(e) => setSettings(prev => ({ ...prev, archiveReason: e.target.value }))}
                       />
@@ -445,7 +445,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
                       className="w-full"
                     >
                       <Archive className="h-4 w-4 mr-2" />
-                      Archive Challenge
+                      {t('challenge_settings.archive_challenge')}
                     </Button>
                   </div>
                 </CardContent>
@@ -455,10 +455,10 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
 
           <div className="flex gap-2 justify-end">
             <Button variant="outline" onClick={onClose}>
-              Cancel
+              {t('challenge_settings.cancel')}
             </Button>
             <Button onClick={handleSave} disabled={loading}>
-              {loading ? t('savingText') : t('saveSettings')}
+              {loading ? t('savingText') : t('challenge_settings.save')}
             </Button>
           </div>
         </div>
