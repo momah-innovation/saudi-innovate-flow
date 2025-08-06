@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/hooks/useAppTranslation';
 import { aiService } from '@/services/AIService';
 
 interface ModerationLog {
@@ -46,6 +47,7 @@ export const ContentModerationPanel: React.FC = () => {
   const [filter, setFilter] = useState<'all' | 'flagged' | 'pending'>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchModerationLogs();
@@ -76,8 +78,8 @@ export const ContentModerationPanel: React.FC = () => {
     } catch (error) {
       console.error('Error fetching moderation logs:', error);
       toast({
-        title: 'خطأ',
-        description: 'فشل في تحميل سجلات الإشراف',
+        title: t('content_moderation.error'),
+        description: t('content_moderation.failed_load_logs'),
         variant: 'destructive',
       });
     } finally {
@@ -97,14 +99,14 @@ export const ContentModerationPanel: React.FC = () => {
       setTestResult(result);
       
       toast({
-        title: 'تم الاختبار',
-        description: 'تم فحص المحتوى بنجاح',
+        title: t('content_moderation.test_completed'),
+        description: t('content_moderation.content_tested_success'),
       });
     } catch (error) {
       console.error('Error testing content moderation:', error);
       toast({
-        title: 'خطأ',
-        description: 'فشل في فحص المحتوى',
+        title: t('content_moderation.error'),
+        description: t('content_moderation.failed_test_content'),
         variant: 'destructive',
       });
     } finally {
@@ -126,14 +128,14 @@ export const ContentModerationPanel: React.FC = () => {
       ));
 
       toast({
-        title: 'تم التحديث',
-        description: 'تم تحديث حالة المحتوى',
+        title: t('content_moderation.status_updated'),
+        description: t('content_moderation.content_status_updated'),
       });
     } catch (error) {
       console.error('Error updating log status:', error);
       toast({
-        title: 'خطأ',
-        description: 'فشل في تحديث الحالة',
+        title: t('content_moderation.error'),
+        description: t('content_moderation.failed_update_status'),
         variant: 'destructive',
       });
     }
@@ -180,9 +182,9 @@ export const ContentModerationPanel: React.FC = () => {
           <Shield className="h-6 w-6 text-white" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold">إشراف المحتوى</h1>
+          <h1 className="text-2xl font-bold">{t('content_moderation.title')}</h1>
           <p className="text-muted-foreground">
-            فحص المحتوى التلقائي وضمان الجودة بالذكاء الاصطناعي
+            {t('content_moderation.description')}
           </p>
         </div>
       </div>
@@ -196,7 +198,7 @@ export const ContentModerationPanel: React.FC = () => {
                 <Eye className="h-4 w-4 text-blue-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-muted-foreground">إجمالي المحتوى</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('content_moderation.total_content')}</p>
                 <p className="text-2xl font-bold">{stats.total}</p>
               </div>
             </div>
@@ -210,7 +212,7 @@ export const ContentModerationPanel: React.FC = () => {
                 <AlertTriangle className="h-4 w-4 text-red-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-muted-foreground">محتوى مُبلغ عنه</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('content_moderation.flagged_content')}</p>
                 <p className="text-2xl font-bold">{stats.flagged}</p>
               </div>
             </div>
@@ -224,7 +226,7 @@ export const ContentModerationPanel: React.FC = () => {
                 <Clock className="h-4 w-4 text-yellow-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-muted-foreground">في انتظار المراجعة</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('content_moderation.pending_review')}</p>
                 <p className="text-2xl font-bold">{stats.pending}</p>
               </div>
             </div>
@@ -238,7 +240,7 @@ export const ContentModerationPanel: React.FC = () => {
                 <CheckCircle className="h-4 w-4 text-green-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-muted-foreground">محتوى موافق عليه</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('content_moderation.approved_content')}</p>
                 <p className="text-2xl font-bold">{stats.approved}</p>
               </div>
             </div>
@@ -248,8 +250,8 @@ export const ContentModerationPanel: React.FC = () => {
 
       <Tabs defaultValue="logs" className="space-y-6">
         <TabsList>
-          <TabsTrigger value="logs">سجلات الإشراف</TabsTrigger>
-          <TabsTrigger value="test">اختبار الإشراف</TabsTrigger>
+          <TabsTrigger value="logs">{t('content_moderation.moderation_logs')}</TabsTrigger>
+          <TabsTrigger value="test">{t('content_moderation.test_moderation')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="logs" className="space-y-6">
@@ -259,7 +261,7 @@ export const ContentModerationPanel: React.FC = () => {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
-                  placeholder="البحث في المحتوى..."
+                  placeholder={t('content_moderation.search_content')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -272,21 +274,21 @@ export const ContentModerationPanel: React.FC = () => {
                 onClick={() => setFilter('all')}
                 size="sm"
               >
-                الكل
+                {t('content_moderation.all')}
               </Button>
               <Button
                 variant={filter === 'flagged' ? 'default' : 'outline'}
                 onClick={() => setFilter('flagged')}
                 size="sm"
               >
-                مُبلغ عنه
+                {t('content_moderation.flagged')}
               </Button>
               <Button
                 variant={filter === 'pending' ? 'default' : 'outline'}
                 onClick={() => setFilter('pending')}
                 size="sm"
               >
-                في الانتظار
+                {t('content_moderation.pending')}
               </Button>
               <Button
                 variant="outline"
@@ -303,12 +305,12 @@ export const ContentModerationPanel: React.FC = () => {
             {loading ? (
               <div className="text-center py-8">
                 <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
-                <p>جاري تحميل السجلات...</p>
+                <p>{t('content_moderation.loading_logs')}</p>
               </div>
             ) : filteredLogs.length === 0 ? (
               <div className="text-center py-8">
                 <Shield className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-                <p className="text-gray-500">لا توجد سجلات للعرض</p>
+                <p className="text-gray-500">{t('content_moderation.no_logs')}</p>
               </div>
             ) : (
               filteredLogs.map((log) => (
@@ -324,14 +326,14 @@ export const ContentModerationPanel: React.FC = () => {
                           variant={getStatusColor(log.status, log.flagged)}
                           className="text-xs"
                         >
-                          {log.status === 'approved' && 'موافق عليه'}
-                          {log.status === 'rejected' && 'مرفوض'}
-                          {log.status === 'requires_review' && 'يتطلب مراجعة'}
-                          {log.status === 'pending' && 'في الانتظار'}
+                          {log.status === 'approved' && t('content_moderation.approved')}
+                          {log.status === 'rejected' && t('content_moderation.rejected')}
+                          {log.status === 'requires_review' && t('content_moderation.requires_review')}
+                          {log.status === 'pending' && t('content_moderation.pending')}
                         </Badge>
                         {log.confidence_score && (
                           <Badge variant="secondary" className="text-xs">
-                            ثقة: {Math.round(log.confidence_score * 100)}%
+                            {t('content_moderation.confidence')}: {Math.round(log.confidence_score * 100)}%
                           </Badge>
                         )}
                       </div>
@@ -367,7 +369,7 @@ export const ContentModerationPanel: React.FC = () => {
                             className="text-green-600 hover:text-green-700"
                           >
                             <CheckCircle className="h-4 w-4 mr-1" />
-                            موافقة
+                            {t('content_moderation.approve')}
                           </Button>
                           <Button
                             size="sm"
@@ -376,7 +378,7 @@ export const ContentModerationPanel: React.FC = () => {
                             className="text-red-600 hover:text-red-700"
                           >
                             <Ban className="h-4 w-4 mr-1" />
-                            رفض
+                            {t('content_moderation.reject')}
                           </Button>
                         </div>
                       )}
@@ -391,14 +393,14 @@ export const ContentModerationPanel: React.FC = () => {
         <TabsContent value="test" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>اختبار فحص المحتوى</CardTitle>
+              <CardTitle>{t('content_moderation.test_content_title')}</CardTitle>
               <CardDescription>
-                قم بإدخال محتوى لاختبار نظام الإشراف التلقائي
+                {t('content_moderation.test_content_description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
-                placeholder="أدخل المحتوى المراد فحصه..."
+                placeholder={t('content_moderation.test_content_placeholder')}
                 value={testContent}
                 onChange={(e) => setTestContent(e.target.value)}
                 rows={4}
@@ -412,12 +414,12 @@ export const ContentModerationPanel: React.FC = () => {
                 {testing ? (
                   <>
                     <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                    جاري الفحص...
+                    {t('content_moderation.testing')}
                   </>
                 ) : (
                   <>
                     <Shield className="h-4 w-4 mr-2" />
-                    فحص المحتوى
+                    {t('content_moderation.test_content_button')}
                   </>
                 )}
               </Button>
@@ -428,18 +430,18 @@ export const ContentModerationPanel: React.FC = () => {
                   <AlertDescription>
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <strong>النتيجة:</strong>
+                        <strong>{t('content_moderation.result')}</strong>
                         <Badge variant={testResult.flagged ? 'destructive' : 'default'}>
-                          {testResult.flagged ? 'مُبلغ عنه' : 'آمن'}
+                          {testResult.flagged ? t('content_moderation.flagged') : t('content_moderation.safe')}
                         </Badge>
                         <Badge variant="secondary">
-                          ثقة: {Math.round(testResult.confidence * 100)}%
+                          {t('content_moderation.confidence')}: {Math.round(testResult.confidence * 100)}%
                         </Badge>
                       </div>
                       
                       {testResult.categories && testResult.categories.length > 0 && (
                         <div>
-                          <strong>الفئات المكتشفة:</strong>
+                          <strong>{t('content_moderation.detected_categories')}</strong>
                           <div className="flex flex-wrap gap-1 mt-1">
                             {testResult.categories.map((category: string, index: number) => (
                               <Badge key={index} variant="outline" className="text-xs">
@@ -452,7 +454,7 @@ export const ContentModerationPanel: React.FC = () => {
                       
                       {testResult.reason && (
                         <div>
-                          <strong>السبب:</strong> {testResult.reason}
+                          <strong>{t('content_moderation.reason')}</strong> {testResult.reason}
                         </div>
                       )}
                     </div>
