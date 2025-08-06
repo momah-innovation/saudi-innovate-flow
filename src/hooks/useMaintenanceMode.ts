@@ -1,7 +1,7 @@
 import { useSettings } from '@/contexts/SettingsContext';
 
 export const useMaintenanceMode = () => {
-  const { maintenanceMode, systemName } = useSettings();
+  const { maintenance_mode: maintenanceMode, system_name: systemName } = useSettings();
   
   return {
     isMaintenanceMode: maintenanceMode,

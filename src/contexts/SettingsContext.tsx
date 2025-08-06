@@ -2,29 +2,29 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import { supabase } from '@/integrations/supabase/client';
 
 export interface AllSystemSettings {
-  // General Settings
-  systemName: string;
-  systemDescription: string;
-  systemLanguage: string;
-  maintenanceMode: boolean;
-  allowPublicRegistration: boolean;
-  maxFileUploadSize: number;
-  autoArchiveAfterDays: number;
+  // General Settings - snake_case to match database
+  system_name: string;
+  system_description: string;
+  system_language: string;
+  maintenance_mode: boolean;
+  allow_public_registration: boolean;
+  max_file_upload_size: number;
+  auto_archive_after_days: number;
 
-  // Challenge Settings
-  defaultStatus: string;
-  defaultPriority: string;
-  defaultSensitivity: string;
-  maxChallengesPerUser: number;
-  itemsPerPage: number;
-  defaultViewMode: string;
-  enableAdvancedFilters: boolean;
-  showPreviewOnHover: boolean;
-  requireApprovalForPublish: boolean;
-  allowAnonymousSubmissions: boolean;
-  enableCollaboration: boolean;
-  enableComments: boolean;
-  enableRatings: boolean;
+  // Challenge Settings - snake_case to match database
+  challenge_default_status: string;
+  challenge_default_priority: string;
+  challenge_default_sensitivity: string;
+  max_challenges_per_user: number;
+  items_per_page: number;
+  challenge_default_view_mode: string;
+  challenge_enable_advanced_filters: boolean;
+  challenge_show_preview_on_hover: boolean;
+  require_approval_for_publish: boolean;
+  allow_anonymous_submissions: boolean;
+  enable_collaboration: boolean;
+  challenge_enable_comments: boolean;
+  challenge_enable_ratings: boolean;
 
   // Idea Settings
   idea_max_title_length: number;
@@ -67,14 +67,14 @@ export interface AllSystemSettings {
   idea_enable_advanced_filters: boolean;
   idea_sort_default: string;
 
-  // Security Settings
-  sessionTimeout: number;
-  maxLoginAttempts: number;
-  enableDataEncryption: boolean;
-  enableAccessLogs: boolean;
-  passwordPolicy: string;
-  dataRetentionPolicy: string;
-  passwordMinLength: number;
+  // Security Settings - snake_case to match database
+  session_timeout: number;
+  max_login_attempts: number;
+  enable_data_encryption: boolean;
+  enable_access_logs: boolean;
+  password_policy: string;
+  data_retention_policy: string;
+  password_min_length: number;
 
   // Notification Settings
   emailNotifications: boolean;
@@ -214,26 +214,29 @@ interface SettingsProviderProps {
 }
 
 const defaultSettings: AllSystemSettings = {
-  systemName: "نظام إدارة الابتكار",
-  systemDescription: "منصة شاملة لإدارة التحديات والأفكار الابتكارية",
-  systemLanguage: "ar",
-  maintenanceMode: false,
-  allowPublicRegistration: true,
-  maxFileUploadSize: 10,
-  autoArchiveAfterDays: 365,
-  defaultStatus: 'draft',
-  defaultPriority: 'medium',
-  defaultSensitivity: 'normal',
-  maxChallengesPerUser: 10,
-  itemsPerPage: 12,
-  defaultViewMode: 'cards',
-  enableAdvancedFilters: true,
-  showPreviewOnHover: true,
-  requireApprovalForPublish: true,
-  allowAnonymousSubmissions: false,
-  enableCollaboration: true,
-  enableComments: true,
-  enableRatings: true,
+  // System Settings - using i18n keys
+  system_name: "system.name",
+  system_description: "system.description", 
+  system_language: "ar",
+  maintenance_mode: false,
+  allow_public_registration: true,
+  max_file_upload_size: 10,
+  auto_archive_after_days: 365,
+  
+  // Challenge Settings
+  challenge_default_status: "challenge.status.draft",
+  challenge_default_priority: 'medium',
+  challenge_default_sensitivity: 'normal',
+  max_challenges_per_user: 10,
+  items_per_page: 12,
+  challenge_default_view_mode: 'cards',
+  challenge_enable_advanced_filters: true,
+  challenge_show_preview_on_hover: true,
+  require_approval_for_publish: true,
+  allow_anonymous_submissions: false,
+  enable_collaboration: true,
+  challenge_enable_comments: true,
+  challenge_enable_ratings: true,
   
   // Idea Settings
   idea_max_title_length: 200,
@@ -282,13 +285,13 @@ const defaultSettings: AllSystemSettings = {
   idea_enable_advanced_filters: true,
   idea_sort_default: 'created_at_desc',
 
-  sessionTimeout: 60,
-  maxLoginAttempts: 5,
-  enableDataEncryption: true,
-  enableAccessLogs: true,
-  passwordPolicy: 'كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل، حرف كبير، حرف صغير، رقم، ورمز خاص',
-  dataRetentionPolicy: 'يتم الاحتفاظ بالبيانات الشخصية لمدة 5 سنوات من آخر نشاط للمستخدم',
-  passwordMinLength: 8,
+  session_timeout: 60,
+  max_login_attempts: 5,
+  enable_data_encryption: true,
+  enable_access_logs: true,
+  password_policy: 'security.password_policy',
+  data_retention_policy: 'security.data_retention_policy',
+  password_min_length: 8,
   emailNotifications: true,
   systemNotifications: true,
   mobileNotifications: false,

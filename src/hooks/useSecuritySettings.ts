@@ -2,28 +2,28 @@ import { useSettings } from '@/contexts/SettingsContext';
 
 export const useSecuritySettings = () => {
   const { 
-    sessionTimeout,
-    maxLoginAttempts,
-    enableDataEncryption,
-    enableAccessLogs,
-    passwordPolicy,
-    dataRetentionPolicy,
-    passwordMinLength
+    session_timeout,
+    max_login_attempts,
+    enable_data_encryption,
+    enable_access_logs,
+    password_policy,
+    data_retention_policy,
+    password_min_length
   } = useSettings();
   
   return {
     session: {
-      timeout: sessionTimeout,
-      maxLoginAttempts,
+      timeout: session_timeout,
+      maxLoginAttempts: max_login_attempts,
     },
     password: {
-      minLength: passwordMinLength,
-      policy: passwordPolicy,
+      minLength: password_min_length,
+      policy: password_policy,
     },
     data: {
-      enableEncryption: enableDataEncryption,
-      enableAccessLogs,
-      retentionPolicy: dataRetentionPolicy,
+      enableEncryption: enable_data_encryption,
+      enableAccessLogs: enable_access_logs,
+      retentionPolicy: data_retention_policy,
     }
   };
 };
