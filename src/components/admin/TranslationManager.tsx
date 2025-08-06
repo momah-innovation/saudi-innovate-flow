@@ -7,10 +7,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Download, Upload, RefreshCw, Search, Plus, Edit2, Trash2, FileText, Zap } from 'lucide-react';
+import { Download, Search, Plus, Edit2, Trash2, FileText, AlertTriangle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { useRuntimeTranslations } from '@/hooks/useRuntimeTranslations';
 
 interface SystemTranslation {
   id: string;
@@ -39,12 +38,10 @@ export const TranslationManager: React.FC = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isGenerating, setIsGenerating] = useState(false);
   const [editingTranslation, setEditingTranslation] = useState<SystemTranslation | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   
   const { toast } = useToast();
-  const { updateTranslation: updateRuntimeTranslation, uploadAllTranslations, isUpdating } = useRuntimeTranslations();
 
   useEffect(() => {
     loadTranslations();
@@ -97,65 +94,57 @@ export const TranslationManager: React.FC = () => {
     setFilteredTranslations(filtered);
   };
 
-  const generateStaticFiles = async () => {
-    setIsGenerating(true);
+  const downloadTranslationsJSON = async (language: 'en' | 'ar') => {
     try {
-      // Call the edge function to generate files
-      const response = await fetch(
-        `https://jxpbiljkoibvqxzdkgod.supabase.co/functions/v1/generate-translation-files`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cGJpbGprb2lidnF4emRrZ29kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0NzEzMDksImV4cCI6MjA2OTA0NzMwOX0.ls7b6Dh5Go0nQYP6Sjv1c_IxPXEv8MC5RQEpH91Z_V8`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      const { data: translations, error } = await supabase
+        .from('system_translations')
+        .select('translation_key, translation_text, category')
+        .eq('language_code', language);
 
-      if (!response.ok) {
-        throw new Error('Failed to generate translation files');
-      }
+      if (error) throw error;
 
-      const result = await response.json();
+      // Convert to nested JSON structure
+      const jsonStructure: Record<string, any> = {};
       
-      // Download generated files
-      for (const language of ['en', 'ar']) {
-        const langResponse = await fetch(
-          `https://jxpbiljkoibvqxzdkgod.supabase.co/functions/v1/generate-translation-files?language=${language}`,
-          {
-            headers: {
-              'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cGJpbGprb2lidnF4emRrZ29kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0NzEzMDksImV4cCI6MjA2OTA0NzMwOX0.ls7b6Dh5Go0nQYP6Sjv1c_IxPXEv8MC5RQEpH91Z_V8`,
-            },
-          }
-        );
+      translations?.forEach(({ translation_key, translation_text }) => {
+        const keys = translation_key.split('.');
+        let current = jsonStructure;
         
-        if (langResponse.ok) {
-          const blob = await langResponse.blob();
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.style.display = 'none';
-          a.href = url;
-          a.download = `${language}.json`;
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(url);
-          document.body.removeChild(a);
+        for (let i = 0; i < keys.length - 1; i++) {
+          const key = keys[i];
+          if (!(key in current)) {
+            current[key] = {};
+          }
+          current = current[key];
         }
-      }
+        
+        current[keys[keys.length - 1]] = translation_text;
+      });
+
+      // Create and download file
+      const blob = new Blob([JSON.stringify(jsonStructure, null, 2)], {
+        type: 'application/json'
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${language}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
 
       toast({
         title: "Success",
-        description: `Generated translation files for ${result.languages?.length || 0} languages`,
+        description: `${language.toUpperCase()} translations downloaded successfully`,
       });
     } catch (error) {
-      console.error('Error generating files:', error);
+      console.error('Download error:', error);
       toast({
         title: "Error",
-        description: "Failed to generate translation files",
+        description: `Failed to download ${language.toUpperCase()} translations`,
         variant: "destructive",
       });
-    } finally {
-      setIsGenerating(false);
     }
   };
 
@@ -222,91 +211,51 @@ export const TranslationManager: React.FC = () => {
     }
   };
 
-  // Runtime translation functions
-  const uploadTranslationsToRuntime = async (language: 'en' | 'ar') => {
-    try {
-      // Get current translations for the language
-      const languageTranslations = translations.filter(t => t.language_code === language);
-      
-      // Convert to nested object structure
-      const translationObject: Record<string, any> = {};
-      languageTranslations.forEach(translation => {
-        const keyParts = translation.translation_key.split('.');
-        let current = translationObject;
-        
-        for (let i = 0; i < keyParts.length - 1; i++) {
-          const part = keyParts[i];
-          if (!current[part]) {
-            current[part] = {};
-          }
-          current = current[part];
-        }
-        
-        current[keyParts[keyParts.length - 1]] = translation.translation_text;
-      });
-
-      const success = await uploadAllTranslations(language, translationObject);
-      if (success) {
-        toast({
-          title: "Runtime Upload Success",
-          description: `Uploaded ${languageTranslations.length} translations to runtime for ${language}`,
-        });
-      }
-    } catch (error) {
-      console.error('Error uploading to runtime:', error);
-      toast({
-        title: "Runtime Upload Error",
-        description: "Failed to upload translations to runtime",
-        variant: "destructive",
-      });
-    }
-  };
-
   return (
     <div className="space-y-6">
-      {/* Runtime Translation Management */}
+      {/* JSON Download Section */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Zap className="h-5 w-5 text-blue-500" />
-            Runtime Translation Updates
+            <FileText className="h-5 w-5 text-blue-500" />
+            JSON Download
           </CardTitle>
           <CardDescription>
-            Update translation files during runtime without redeployment
+            Download translation JSON files for manual deployment
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-3">
-            <Button 
-              onClick={() => uploadTranslationsToRuntime('en')} 
-              disabled={isUpdating}
-              variant="outline"
-              className="flex items-center gap-2"
-            >
-              {isUpdating ? (
-                <RefreshCw className="h-4 w-4 animate-spin" />
-              ) : (
-                <FileText className="h-4 w-4" />
-              )}
-              Update English Runtime
-            </Button>
-            <Button 
-              onClick={() => uploadTranslationsToRuntime('ar')} 
-              disabled={isUpdating}
-              variant="outline"
-              className="flex items-center gap-2"
-            >
-              {isUpdating ? (
-                <RefreshCw className="h-4 w-4 animate-spin" />
-              ) : (
-                <FileText className="h-4 w-4" />
-              )}
-              Update Arabic Runtime
-            </Button>
+          <div className="space-y-4">
+            <div className="p-4 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+              <div className="flex items-start space-x-3">
+                <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-medium text-amber-800 dark:text-amber-200">Manual Process Required</p>
+                  <p className="text-amber-700 dark:text-amber-300">
+                    After downloading, manually replace the JSON files in <code>src/i18n/locales/</code> to update static translations.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <Button 
+                onClick={() => downloadTranslationsJSON('en')}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <Download className="h-4 w-4" />
+                Download English JSON
+              </Button>
+              <Button 
+                onClick={() => downloadTranslationsJSON('ar')}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <Download className="h-4 w-4" />
+                Download Arabic JSON
+              </Button>
+            </div>
           </div>
-          <p className="text-sm text-muted-foreground mt-2">
-            Click to update JSON translation files in real-time using Edge Functions
-          </p>
         </CardContent>
       </Card>
 
@@ -316,20 +265,7 @@ export const TranslationManager: React.FC = () => {
           <CardTitle className="flex items-center justify-between">
             Translation Management
             <div className="flex gap-2">
-              <Button 
-                onClick={generateStaticFiles} 
-                disabled={isGenerating}
-                variant="outline"
-              >
-                {isGenerating ? (
-                  <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-                ) : (
-                  <Download className="h-4 w-4 mr-2" />
-                )}
-                Generate Files
-              </Button>
               <Button onClick={loadTranslations} disabled={isLoading} variant="outline">
-                <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
                 Refresh
               </Button>
             </div>
@@ -499,44 +435,36 @@ const TranslationDialog: React.FC<TranslationDialogProps> = ({
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="language_code">Language</Label>
-            <Select 
-              value={formData.language_code} 
-              onValueChange={(value) => setFormData(prev => ({ ...prev, language_code: value }))}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {LANGUAGES.map(lang => (
-                  <SelectItem key={lang.code} value={lang.code}>
-                    {lang.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+        <div>
+          <Label htmlFor="language_code">Language</Label>
+          <Select value={formData.language_code} onValueChange={(value) => setFormData(prev => ({ ...prev, language_code: value }))}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {LANGUAGES.map(lang => (
+                <SelectItem key={lang.code} value={lang.code}>
+                  {lang.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-          <div>
-            <Label htmlFor="category">Category</Label>
-            <Select 
-              value={formData.category} 
-              onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {CATEGORIES.map(category => (
-                  <SelectItem key={category} value={category}>
-                    {category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+        <div>
+          <Label htmlFor="category">Category</Label>
+          <Select value={formData.category} onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {CATEGORIES.map(category => (
+                <SelectItem key={category} value={category}>
+                  {category}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div>
@@ -545,8 +473,7 @@ const TranslationDialog: React.FC<TranslationDialogProps> = ({
             id="translation_text"
             value={formData.translation_text}
             onChange={(e) => setFormData(prev => ({ ...prev, translation_text: e.target.value }))}
-            placeholder="Enter the translation..."
-            rows={3}
+            placeholder="Enter the translated text"
             required
           />
         </div>
