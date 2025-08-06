@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, Globe, Settings, Trash2, Save } from "lucide-react";
+import { AlertTriangle, Globe, Settings, Trash2, Save, Edit, Check, X } from "lucide-react";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { useTranslation } from "@/hooks/useAppTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 import { useSystemTranslations } from "@/hooks/useSystemTranslations";
+import { ArrayEditor } from "./ArrayEditor";
+import { ObjectEditor } from "./ObjectEditor";
 
 interface UnifiedSettingsManagerProps {
   category?: string;
@@ -23,6 +24,8 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
 }) => {
   const { isRTL } = useDirection();
   const { getTranslation } = useSystemTranslations();
+  const [expandedArrays, setExpandedArrays] = useState<Set<string>>(new Set());
+  const [pendingChanges, setPendingChanges] = useState<Record<string, any>>({});
   const {
     settings,
     updateSetting,
@@ -51,28 +54,77 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
   }, {} as Record<string, typeof filteredSettings>);
 
   const handleSettingChange = (key: string, value: any, category: string, dataType: string) => {
-    updateSetting({ key, value, category, dataType });
+    // Store pending change
+    setPendingChanges(prev => ({ ...prev, [key]: { value, category, dataType } }));
+  };
+
+  const handleSaveSetting = (key: string) => {
+    const change = pendingChanges[key];
+    if (change) {
+      updateSetting({ key, value: change.value, category: change.category, dataType: change.dataType });
+      setPendingChanges(prev => {
+        const newChanges = { ...prev };
+        delete newChanges[key];
+        return newChanges;
+      });
+    }
+  };
+
+  const handleRevertSetting = (key: string) => {
+    setPendingChanges(prev => {
+      const newChanges = { ...prev };
+      delete newChanges[key];
+      return newChanges;
+    });
   };
 
   const handleDeleteSetting = (key: string) => {
     if (confirm(getTranslation('settings.delete.confirm', 'Are you sure you want to delete this setting?'))) {
       deleteSetting(key);
+      // Also remove from pending changes
+      setPendingChanges(prev => {
+        const newChanges = { ...prev };
+        delete newChanges[key];
+        return newChanges;
+      });
     }
   };
 
+  const toggleArrayEditor = (key: string) => {
+    setExpandedArrays(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(key)) {
+        newSet.delete(key);
+      } else {
+        newSet.add(key);
+      }
+      return newSet;
+    });
+  };
+
   const renderSettingInput = (setting: any) => {
-    const value = getSettingValue(setting.setting_key, setting.default_value);
+    const originalValue = getSettingValue(setting.setting_key, setting.default_value);
+    const pendingChange = pendingChanges[setting.setting_key];
+    const currentValue = pendingChange?.value ?? originalValue;
+    const hasChanges = pendingChange !== undefined;
     const label = getSettingLabel(setting.setting_key);
     const description = getSettingDescription(setting.setting_key);
     const isShared = isSharedSetting(setting.setting_key);
     const affectedSystems = getAffectedSystems(setting.setting_key);
+    const isArrayExpanded = expandedArrays.has(setting.setting_key);
 
     return (
-      <div key={setting.id} className={`space-y-3 p-4 border rounded-lg ${isRTL ? 'text-right' : 'text-left'}`}>
+      <div key={setting.id} className={`space-y-3 p-4 border rounded-lg transition-colors ${hasChanges ? 'border-amber-200 bg-amber-50/50' : ''} ${isRTL ? 'text-right' : 'text-left'}`}>
         <div className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
           <div className="flex-1">
             <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Label className="font-medium">{label}</Label>
+              {hasChanges && (
+                <Badge variant="outline" className="flex items-center gap-1 text-amber-600 border-amber-600">
+                  <Edit className="w-3 h-3" />
+                  {getTranslation('settings.modified', 'Modified')}
+                </Badge>
+              )}
               {isShared && (
                 <Badge variant="secondary" className="flex items-center gap-1">
                   <Globe className="w-3 h-3" />
@@ -100,14 +152,38 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
             )}
           </div>
           
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => handleDeleteSetting(setting.setting_key)}
-            className="text-red-500 hover:text-red-700"
-          >
-            <Trash2 className="w-4 h-4" />
-          </Button>
+          <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            {hasChanges && (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleRevertSetting(setting.setting_key)}
+                  className="text-orange-500 hover:text-orange-700 gap-1"
+                >
+                  <X className="w-4 h-4" />
+                  {getTranslation('settings.revert', 'Revert')}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleSaveSetting(setting.setting_key)}
+                  className="text-green-600 hover:text-green-700 gap-1"
+                >
+                  <Check className="w-4 h-4" />
+                  {getTranslation('settings.save', 'Save')}
+                </Button>
+              </>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleDeleteSetting(setting.setting_key)}
+              className="text-red-500 hover:text-red-700"
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
 
         {/* Setting Input Based on Type */}
@@ -116,7 +192,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
             <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
               <span className="text-sm">{getTranslation('settings.enabled', 'Enabled')}</span>
               <Switch
-                checked={value || false}
+                checked={currentValue || false}
                 onCheckedChange={(checked) => 
                   handleSettingChange(setting.setting_key, checked, setting.setting_category, setting.data_type)
                 }
@@ -125,30 +201,100 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
           ) : setting.data_type === 'number' ? (
             <Input
               type="number"
-              value={value || 0}
+              value={currentValue || 0}
               onChange={(e) => 
                 handleSettingChange(setting.setting_key, parseFloat(e.target.value), setting.setting_category, setting.data_type)
               }
               className={isRTL ? 'text-right' : 'text-left'}
             />
           ) : setting.data_type === 'array' ? (
-            <Textarea
-              value={Array.isArray(value) ? JSON.stringify(value, null, 2) : value || '[]'}
-              onChange={(e) => {
-                try {
-                  const parsed = JSON.parse(e.target.value);
-                  handleSettingChange(setting.setting_key, parsed, setting.setting_category, setting.data_type);
-                } catch (err) {
-                  // Invalid JSON, don't update
-                }
-              }}
-              rows={4}
-              className={`font-mono ${isRTL ? 'text-right' : 'text-left'}`}
-              placeholder={getTranslation('settings.array.placeholder', 'Enter JSON array...')}
-            />
+            <div className="space-y-2">
+              <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <span className="text-sm font-medium">
+                  {getTranslation('settings.array_editor', 'Array Editor')}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => toggleArrayEditor(setting.setting_key)}
+                  className="gap-1"
+                >
+                  <Edit className="w-4 h-4" />
+                  {isArrayExpanded 
+                    ? getTranslation('settings.close_editor', 'Close Editor')
+                    : getTranslation('settings.open_editor', 'Open Editor')
+                  }
+                </Button>
+              </div>
+              
+              {isArrayExpanded ? (
+                <ArrayEditor
+                  value={Array.isArray(currentValue) ? currentValue : []}
+                  onChange={(newValue) => 
+                    handleSettingChange(setting.setting_key, newValue, setting.setting_category, setting.data_type)
+                  }
+                  onSave={() => handleSaveSetting(setting.setting_key)}
+                  title={label}
+                  description={description}
+                  itemType="string"
+                  isRTL={isRTL}
+                />
+              ) : (
+                <div className="p-3 bg-muted rounded text-sm">
+                  <code className="text-xs">
+                    {Array.isArray(currentValue) 
+                      ? `[${currentValue.length} ${getTranslation('settings.items', 'items')}]`
+                      : '[]'
+                    }
+                  </code>
+                </div>
+              )}
+            </div>
+          ) : setting.data_type === 'object' ? (
+            <div className="space-y-2">
+              <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <span className="text-sm font-medium">
+                  {getTranslation('settings.object_editor', 'Object Editor')}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => toggleArrayEditor(setting.setting_key)}
+                  className="gap-1"
+                >
+                  <Edit className="w-4 h-4" />
+                  {isArrayExpanded 
+                    ? getTranslation('settings.close_editor', 'Close Editor')
+                    : getTranslation('settings.open_editor', 'Open Editor')
+                  }
+                </Button>
+              </div>
+              
+              {isArrayExpanded ? (
+                <ObjectEditor
+                  value={typeof currentValue === 'object' && currentValue !== null ? currentValue : {}}
+                  onChange={(newValue) => 
+                    handleSettingChange(setting.setting_key, newValue, setting.setting_category, setting.data_type)
+                  }
+                  onSave={() => handleSaveSetting(setting.setting_key)}
+                  title={label}
+                  description={description}
+                  isRTL={isRTL}
+                />
+              ) : (
+                <div className="p-3 bg-muted rounded text-sm">
+                  <code className="text-xs">
+                    {typeof currentValue === 'object' && currentValue !== null
+                      ? `{${Object.keys(currentValue).length} ${getTranslation('settings.properties', 'properties')}}`
+                      : '{}'
+                    }
+                  </code>
+                </div>
+              )}
+            </div>
           ) : (
             <Input
-              value={value || ''}
+              value={currentValue || ''}
               onChange={(e) => 
                 handleSettingChange(setting.setting_key, e.target.value, setting.setting_category, setting.data_type)
               }
