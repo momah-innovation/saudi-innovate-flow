@@ -9,7 +9,6 @@ import { AlertTriangle, Globe, Settings, Trash2, Save, Edit, Check, X } from "lu
 import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { useTranslation } from "@/hooks/useAppTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
-import { useSystemTranslations } from "@/hooks/useSystemTranslations";
 import { ArrayEditor } from "./ArrayEditor";
 import { ObjectEditor } from "./ObjectEditor";
 
@@ -23,7 +22,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
   showSharedOnly = false 
 }) => {
   const { isRTL } = useDirection();
-  const { getTranslation } = useSystemTranslations();
+  const { t } = useTranslation();
   const [expandedArrays, setExpandedArrays] = useState<Set<string>>(new Set());
   const [pendingChanges, setPendingChanges] = useState<Record<string, any>>({});
   const {
@@ -79,7 +78,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
   };
 
   const handleDeleteSetting = (key: string) => {
-    if (confirm(getTranslation('settings.delete.confirm', 'Are you sure you want to delete this setting?'))) {
+    if (confirm(t('settings.delete.confirm'))) {
       deleteSetting(key);
       // Also remove from pending changes
       setPendingChanges(prev => {
@@ -107,8 +106,8 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
     const pendingChange = pendingChanges[setting.setting_key];
     const currentValue = pendingChange?.value ?? originalValue;
     const hasChanges = pendingChange !== undefined;
-    const label = getSettingLabel(setting.setting_key);
-    const description = getSettingDescription(setting.setting_key);
+    const label = t(`settings.${setting.setting_key}.label`) || getSettingLabel(setting.setting_key);
+    const description = t(`settings.${setting.setting_key}.description`) || getSettingDescription(setting.setting_key);
     const isShared = isSharedSetting(setting.setting_key);
     const affectedSystems = getAffectedSystems(setting.setting_key);
     const isArrayExpanded = expandedArrays.has(setting.setting_key);
@@ -122,13 +121,13 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
               {hasChanges && (
                 <Badge variant="outline" className="flex items-center gap-1 text-amber-600 border-amber-600">
                   <Edit className="w-3 h-3" />
-                  {getTranslation('settings.modified', 'Modified')}
+                  {t('settings.modified')}
                 </Badge>
               )}
               {isShared && (
                 <Badge variant="secondary" className="flex items-center gap-1">
                   <Globe className="w-3 h-3" />
-                  {getTranslation('settings.shared', 'Shared')}
+                  {t('settings.shared')}
                 </Badge>
               )}
               {setting.data_type && (
@@ -146,7 +145,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
               <div className={`flex items-center gap-1 mt-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <AlertTriangle className="w-3 h-3 text-amber-500" />
                 <span className="text-xs text-muted-foreground">
-                  {getTranslation('settings.affects', 'Affects')}: {affectedSystems.join(', ')}
+                  {t('settings.affects')}: {affectedSystems.join(', ')}
                 </span>
               </div>
             )}
@@ -162,7 +161,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
                   className="text-orange-500 hover:text-orange-700 gap-1"
                 >
                   <X className="w-4 h-4" />
-                  {getTranslation('settings.revert', 'Revert')}
+                  {t('settings.revert')}
                 </Button>
                 <Button
                   variant="ghost"
@@ -171,7 +170,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
                   className="text-green-600 hover:text-green-700 gap-1"
                 >
                   <Check className="w-4 h-4" />
-                  {getTranslation('settings.save', 'Save')}
+                  {t('settings.save')}
                 </Button>
               </>
             )}
@@ -190,7 +189,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
         <div className="space-y-2">
           {setting.data_type === 'boolean' ? (
             <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <span className="text-sm">{getTranslation('settings.enabled', 'Enabled')}</span>
+              <span className="text-sm">{t('settings.enabled')}</span>
               <Switch
                 checked={currentValue || false}
                 onCheckedChange={(checked) => 
@@ -211,7 +210,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
             <div className="space-y-2">
               <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <span className="text-sm font-medium">
-                  {getTranslation('settings.array_editor', 'Array Editor')}
+                  {t('settings.array_editor')}
                 </span>
                 <Button
                   variant="outline"
@@ -221,8 +220,8 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
                 >
                   <Edit className="w-4 h-4" />
                   {isArrayExpanded 
-                    ? getTranslation('settings.close_editor', 'Close Editor')
-                    : getTranslation('settings.open_editor', 'Open Editor')
+                    ? t('settings.close_editor')
+                    : t('settings.open_editor')
                   }
                 </Button>
               </div>
@@ -243,7 +242,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
                 <div className="p-3 bg-muted rounded text-sm">
                   <code className="text-xs">
                     {Array.isArray(currentValue) 
-                      ? `[${currentValue.length} ${getTranslation('settings.items', 'items')}]`
+                      ? `[${currentValue.length} ${t('settings.items')}]`
                       : '[]'
                     }
                   </code>
@@ -254,7 +253,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
             <div className="space-y-2">
               <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <span className="text-sm font-medium">
-                  {getTranslation('settings.object_editor', 'Object Editor')}
+                  {t('settings.object_editor')}
                 </span>
                 <Button
                   variant="outline"
@@ -264,8 +263,8 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
                 >
                   <Edit className="w-4 h-4" />
                   {isArrayExpanded 
-                    ? getTranslation('settings.close_editor', 'Close Editor')
-                    : getTranslation('settings.open_editor', 'Open Editor')
+                    ? t('settings.close_editor')
+                    : t('settings.open_editor')
                   }
                 </Button>
               </div>
@@ -285,7 +284,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
                 <div className="p-3 bg-muted rounded text-sm">
                   <code className="text-xs">
                     {typeof currentValue === 'object' && currentValue !== null
-                      ? `{${Object.keys(currentValue).length} ${getTranslation('settings.properties', 'properties')}}`
+                      ? `{${Object.keys(currentValue).length} ${t('settings.properties')}}`
                       : '{}'
                     }
                   </code>
@@ -317,10 +316,10 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
           <CardHeader>
             <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Settings className="w-5 h-5" />
-              {getTranslation(`settings.category.${categoryName}`, categoryName)}
+              {t(`settings.category.${categoryName}`) || categoryName}
             </CardTitle>
             <CardDescription>
-              {getTranslation(`settings.category.${categoryName}.description`, `Settings for ${categoryName}`)}
+              {t(`settings.category.${categoryName}.description`) || `Settings for ${categoryName}`}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -333,7 +332,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
         <Card>
           <CardContent className="text-center py-8">
             <p className="text-muted-foreground">
-              {getTranslation('settings.no_settings', 'No settings found for the selected criteria')}
+              {t('settings.no_settings')}
             </p>
           </CardContent>
         </Card>
