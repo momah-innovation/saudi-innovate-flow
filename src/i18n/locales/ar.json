@@ -755,24 +755,6 @@
     "cancel": "إلغاء",
     "save": "حفظ"
   },
-  "settings": {
-    "array_editor": "محرر المصفوفة",
-    "object_editor": "محرر الكائن",
-    "open_editor": "فتح المحرر", 
-    "close_editor": "إغلاق المحرر",
-    "items": "عناصر",
-    "properties": "خصائص", 
-    "enabled": "مفعل",
-    "modified": "معدل",
-    "shared": "مشترك",
-    "affects": "يؤثر على",
-    "revert": "تراجع",
-    "save": "حفظ",
-    "no_settings": "لم يتم العثور على إعدادات للمعايير المحددة",
-    "delete": {
-      "confirm": "هل أنت متأكد من حذف هذا الإعداد؟"
-    }
-  },
   "system_settings_page": {
     "title": "إعدادات النظام",
     "description": "تكوين وإدارة إعدادات النظام",
@@ -1239,6 +1221,26 @@
     "translation_management": "إدارة الترجمات"
   },
   "settings": {
+    "array_editor": "محرر المصفوفة",
+    "object_editor": "محرر الكائن",
+    "open_editor": "فتح المحرر", 
+    "close_editor": "إغلاق المحرر",
+    "items": "عناصر",
+    "properties": "خصائص", 
+    "enabled": "مفعل",
+    "modified": "معدل",
+    "shared": "مشترك",
+    "affects": "يؤثر على",
+    "revert": "تراجع",
+    "save": "حفظ",
+    "no_settings": "لم يتم العثور على إعدادات للمعايير المحددة",
+    "delete": {
+      "confirm": "هل أنت متأكد من حذف هذا الإعداد؟"
+    },
+    "category": {
+      "campaigns": "الحملات",
+      "campaigns.description": "إعدادات الحملات والأنشطة"
+    },
     "enable_data_export": {
       "description": "تمكين تصدير البيانات للمستخدمين المخولين"
     },
@@ -1414,6 +1416,22 @@
     "enable_data_anonymization": {
       "label": "تفعيل إخفاء هوية البيانات",
       "description": "إخفاء هوية البيانات الحساسة في التقارير"
+    },
+    "max_participants_per_campaign": {
+      "label": "الحد الأقصى للمشاركين في الحملة",
+      "description": "الحد الأقصى لعدد المشاركين المسموح لكل حملة"
+    },
+    "registration_deadline_buffer": {
+      "label": "فترة إغلاق التسجيل",
+      "description": "الأيام قبل بدء الحملة لإغلاق التسجيل"
+    },
+    "require_campaign_review": {
+      "label": "تتطلب مراجعة الحملة",
+      "description": "تتطلب مراجعة قبل موافقة الحملة"
+    },
+    "enable_data_export": {
+      "label": "تفعيل تصدير البيانات",
+      "description": "تمكين تصدير البيانات للمستخدمين المخولين"
     }
   }
 }
