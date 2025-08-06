@@ -38,6 +38,15 @@ export const cacheInvalidation = {
   onUserUpdate: (queryClient: QueryClient, userId: string) => {
     queryClient.invalidateQueries({ queryKey: queryKeys.user.profile(userId) });
     queryClient.invalidateQueries({ queryKey: queryKeys.user.preferences(userId) });
+  },
+  
+  // Invalidate translations after updates
+  onTranslationUpdate: (queryClient: QueryClient, language?: string) => {
+    if (language) {
+      queryClient.invalidateQueries({ queryKey: queryKeys.system.translation(language) });
+    } else {
+      queryClient.invalidateQueries({ queryKey: queryKeys.system.translations() });
+    }
   }
 };
 

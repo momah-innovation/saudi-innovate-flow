@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from '@/hooks/useAppTranslation';
+import { queryKeys } from '@/lib/query/query-keys';
 
 export interface SystemTranslation {
   id: string;
@@ -17,7 +18,7 @@ export const useSystemTranslations = () => {
   const normalizedLanguage = language.split('-')[0];
 
   const { data: translations = [], isLoading } = useQuery({
-    queryKey: ['system-translations', normalizedLanguage],
+    queryKey: queryKeys.system.translation(normalizedLanguage),
     queryFn: async () => {
       console.log('Fetching translations for language:', normalizedLanguage);
       const { data, error } = await supabase
@@ -32,6 +33,10 @@ export const useSystemTranslations = () => {
       console.log('Fetched translations:', data?.length || 0, 'items');
       return data as SystemTranslation[];
     },
+    staleTime: 10 * 60 * 1000, // 10 minutes - translations don't change often
+    gcTime: 30 * 60 * 1000, // 30 minutes cache time
+    refetchOnWindowFocus: false, // Don't refetch on focus for translations
+    refetchOnMount: false, // Only refetch if data is stale
   });
 
   const getTranslation = (key: string, fallback?: string): string => {

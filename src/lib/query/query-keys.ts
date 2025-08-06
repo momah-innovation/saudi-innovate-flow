@@ -52,6 +52,8 @@ export const queryKeys = {
     sectors: () => [...queryKeys.system.all, 'sectors'] as const,
     domains: () => [...queryKeys.system.all, 'domains'] as const,
     partners: () => [...queryKeys.system.all, 'partners'] as const,
-    experts: () => [...queryKeys.system.all, 'experts'] as const
+    experts: () => [...queryKeys.system.all, 'experts'] as const,
+    translations: () => [...queryKeys.system.all, 'translations'] as const,
+    translation: (language: string) => [...queryKeys.system.translations(), language] as const
   }
 };
