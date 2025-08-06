@@ -209,14 +209,14 @@ export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettin
         <CardContent className="space-y-4">
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="space-y-2">
-              <Label htmlFor="maxChallengesPerUser">الحد الأقصى للتحديات لكل مستخدم</Label>
+              <Label htmlFor="max_challenges_per_user">{t('settings.max_challenges_per_user.label')}</Label>
               <Input
-                id="maxChallengesPerUser"
+                id="max_challenges_per_user"
                 type="number"
                 min="1"
                 max="100"
-                value={settings.maxChallengesPerUser || 10}
-                onChange={(e) => onSettingChange('maxChallengesPerUser', parseInt(e.target.value))}
+                value={settings.max_challenges_per_user || 10}
+                onChange={(e) => onSettingChange('max_challenges_per_user', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
             </div>

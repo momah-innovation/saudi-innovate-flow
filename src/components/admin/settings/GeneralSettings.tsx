@@ -27,20 +27,20 @@ export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsPr
         <CardContent className="space-y-4">
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="space-y-2">
-              <Label htmlFor="systemName">{isRTL ? 'اسم النظام' : 'System Name'}</Label>
+              <Label htmlFor="system_name">{t('settings.system_name.label')}</Label>
               <Input
-                id="systemName"
-                value={settings.systemName || ''}
-                onChange={(e) => onSettingChange('systemName', e.target.value)}
-                placeholder={isRTL ? "نظام إدارة الابتكار" : "Innovation Management System"}
+                id="system_name"
+                value={settings.system_name || ''}
+                onChange={(e) => onSettingChange('system_name', e.target.value)}
+                placeholder={t('system.name')}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="systemLanguage">{isRTL ? 'لغة النظام الافتراضية' : 'Default System Language'}</Label>
+              <Label htmlFor="system_language">{isRTL ? 'لغة النظام الافتراضية' : 'Default System Language'}</Label>
               <Select 
-                value={settings.systemLanguage || 'ar'} 
-                onValueChange={(value) => onSettingChange('systemLanguage', value)}
+                value={settings.system_language || 'ar'} 
+                onValueChange={(value) => onSettingChange('system_language', value)}
               >
                 <SelectTrigger className={isRTL ? 'text-right' : 'text-left'}>
                   <SelectValue />
@@ -54,12 +54,12 @@ export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsPr
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="systemDescription">وصف النظام</Label>
+            <Label htmlFor="system_description">{t('settings.system_description.label')}</Label>
             <Textarea
-              id="systemDescription"
-              value={settings.systemDescription || ''}
-              onChange={(e) => onSettingChange('systemDescription', e.target.value)}
-              placeholder="منصة شاملة لإدارة التحديات والأفكار الابتكارية"
+              id="system_description"
+              value={settings.system_description || ''}
+              onChange={(e) => onSettingChange('system_description', e.target.value)}
+              placeholder={t('system.description')}
               rows={3}
               className="rtl:text-right ltr:text-left"
             />
@@ -75,48 +75,48 @@ export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsPr
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between rtl:flex-row-reverse">
             <div className="space-y-0.5 rtl:text-right ltr:text-left">
-              <Label className="text-base">وضع الصيانة</Label>
-              <p className="text-sm text-muted-foreground">منع وصول المستخدمين العاديين للنظام</p>
+              <Label className="text-base">{t('settings.maintenance_mode.label')}</Label>
+              <p className="text-sm text-muted-foreground">{isRTL ? 'منع وصول المستخدمين العاديين للنظام' : 'Prevent normal user access to system'}</p>
             </div>
             <Switch
-              checked={settings.maintenanceMode || false}
-              onCheckedChange={(checked) => onSettingChange('maintenanceMode', checked)}
+              checked={settings.maintenance_mode || false}
+              onCheckedChange={(checked) => onSettingChange('maintenance_mode', checked)}
             />
           </div>
 
           <div className="flex items-center justify-between rtl:flex-row-reverse">
             <div className="space-y-0.5 rtl:text-right ltr:text-left">
-              <Label className="text-base">السماح بالتسجيل العام</Label>
-              <p className="text-sm text-muted-foreground">السماح للمستخدمين الجدد بالتسجيل بدون دعوة</p>
+              <Label className="text-base">{isRTL ? 'السماح بالتسجيل العام' : 'Allow Public Registration'}</Label>
+              <p className="text-sm text-muted-foreground">{isRTL ? 'السماح للمستخدمين الجدد بالتسجيل بدون دعوة' : 'Allow new users to register without invitation'}</p>
             </div>
             <Switch
-              checked={settings.allowPublicRegistration !== false}
-              onCheckedChange={(checked) => onSettingChange('allowPublicRegistration', checked)}
+              checked={settings.allow_public_registration !== false}
+              onCheckedChange={(checked) => onSettingChange('allow_public_registration', checked)}
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rtl:text-right ltr:text-left">
             <div className="space-y-2">
-              <Label htmlFor="maxFileUploadSize">الحد الأقصى لحجم الملف (MB)</Label>
+              <Label htmlFor="max_file_upload_size">{isRTL ? 'الحد الأقصى لحجم الملف (MB)' : 'Max File Upload Size (MB)'}</Label>
               <Input
-                id="maxFileUploadSize"
+                id="max_file_upload_size"
                 type="number"
                 min="1"
                 max="100"
-                value={settings.maxFileUploadSize || 10}
-                onChange={(e) => onSettingChange('maxFileUploadSize', parseInt(e.target.value))}
+                value={settings.max_file_upload_size || 10}
+                onChange={(e) => onSettingChange('max_file_upload_size', parseInt(e.target.value))}
                 className="rtl:text-right ltr:text-left"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="autoArchiveAfterDays">الأرشفة التلقائية بعد (أيام)</Label>
+              <Label htmlFor="auto_archive_after_days">{isRTL ? 'الأرشفة التلقائية بعد (أيام)' : 'Auto Archive After (days)'}</Label>
               <Input
-                id="autoArchiveAfterDays"
+                id="auto_archive_after_days"
                 type="number"
                 min="30"
                 max="3650"
-                value={settings.autoArchiveAfterDays || 365}
-                onChange={(e) => onSettingChange('autoArchiveAfterDays', parseInt(e.target.value))}
+                value={settings.auto_archive_after_days || 365}
+                onChange={(e) => onSettingChange('auto_archive_after_days', parseInt(e.target.value))}
                 className="rtl:text-right ltr:text-left"
               />
             </div>

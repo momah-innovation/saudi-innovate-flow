@@ -91,27 +91,27 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
         <CardContent className="space-y-4">
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="space-y-2">
-              <Label htmlFor="sessionTimeout">انتهاء الجلسة (دقيقة)</Label>
+              <Label htmlFor="session_timeout">{t('settings.session_timeout.label')}</Label>
               <Input
-                id="sessionTimeout"
+                id="session_timeout"
                 type="number"
                 min="5"
                 max="480"
-                value={settings.sessionTimeout || 60}
-                onChange={(e) => onSettingChange('sessionTimeout', parseInt(e.target.value))}
+                value={settings.session_timeout || 60}
+                onChange={(e) => onSettingChange('session_timeout', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="maxLoginAttempts">الحد الأقصى لمحاولات تسجيل الدخول</Label>
+              <Label htmlFor="max_login_attempts">{isRTL ? 'الحد الأقصى لمحاولات تسجيل الدخول' : 'Max Login Attempts'}</Label>
               <Input
-                id="maxLoginAttempts"
+                id="max_login_attempts"
                 type="number"
                 min="3"
                 max="10"
-                value={settings.maxLoginAttempts || 5}
-                onChange={(e) => onSettingChange('maxLoginAttempts', parseInt(e.target.value))}
+                value={settings.max_login_attempts || 5}
+                onChange={(e) => onSettingChange('max_login_attempts', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
             </div>
