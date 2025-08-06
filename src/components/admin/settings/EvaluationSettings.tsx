@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,6 +9,7 @@ import { Plus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useAppTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
+import { supabase } from "@/integrations/supabase/client";
 
 interface EvaluationSettingsProps {
   settings: any;
@@ -21,9 +22,76 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
   const { isRTL } = useDirection();
   const [newEvaluatorType, setNewEvaluatorType] = useState("");
   const [newExpertRoleType, setNewExpertRoleType] = useState("");
+  const [systemSettings, setSystemSettings] = useState<any>({});
+
+  useEffect(() => {
+    fetchSystemSettings();
+  }, []);
+
+  const fetchSystemSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_key, setting_value')
+        .in('setting_key', [
+          'evaluation_evaluator_types',
+          'evaluation_expert_role_types',
+          'evaluation_min_evaluators_per_idea',
+          'evaluation_max_evaluators_per_idea',
+          'evaluation_time_limit_days',
+          'evaluation_min_score',
+          'evaluation_max_score',
+          'evaluation_passing_score',
+          'evaluation_enable_anonymous',
+          'evaluation_enable_collaborative',
+          'evaluation_require_comments'
+        ]);
+
+      if (error) throw error;
+
+      const settingsObj = data?.reduce((acc, setting) => {
+        acc[setting.setting_key] = setting.setting_value;
+        return acc;
+      }, {} as any) || {};
+
+      setSystemSettings(settingsObj);
+    } catch (error) {
+      console.error('Error fetching system settings:', error);
+    }
+  };
+
+  const updateSystemSetting = async (key: string, value: any) => {
+    try {
+      const { error } = await supabase
+        .from('system_settings')
+        .upsert({ 
+          setting_key: key, 
+          setting_value: value,
+          setting_category: 'evaluations',
+          updated_at: new Date().toISOString()
+        });
+
+      if (error) throw error;
+
+      setSystemSettings(prev => ({ ...prev, [key]: value }));
+      onSettingChange(key, value);
+      
+      toast({
+        title: t('success'),
+        description: t('settingUpdated')
+      });
+    } catch (error) {
+      console.error('Error updating setting:', error);
+      toast({
+        title: t('error'),
+        description: t('updateSettingError'),
+        variant: "destructive"
+      });
+    }
+  };
   
-  const evaluatorTypes = settings.evaluator_types || ["lead_expert", "evaluator", "reviewer", "subject_matter_expert", "external_consultant"];
-  const expertRoleTypes = settings.expert_role_types || ["خبير رئيسي", "مقيم", "مراجع", "خبير موضوع", "مستشار خارجي"];
+  const evaluatorTypes = systemSettings.evaluation_evaluator_types || ["lead_expert", "evaluator", "reviewer", "subject_matter_expert", "external_consultant"];
+  const expertRoleTypes = systemSettings.evaluation_expert_role_types || ["خبير رئيسي", "مقيم", "مراجع", "خبير موضوع", "مستشار خارجي"];
 
   const addEvaluatorType = () => {
     if (newEvaluatorType.trim() && !evaluatorTypes.includes(newEvaluatorType)) {
