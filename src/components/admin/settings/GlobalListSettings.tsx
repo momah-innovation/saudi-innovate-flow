@@ -21,15 +21,15 @@ export function GlobalListSettings({}: GlobalListSettingsProps) {
   const [newItem, setNewItem] = useState("");
   const { updateSetting, ...settings } = useSettings();
 
-  // Global system lists that don't belong to specific domains - store unified values
+  // Global system lists with standardized English values for setting_key.setting_value translation
   const globalLists = {
     // Language and localization
-    supported_languages: settings.supported_languages || ["en", "ar", "he", "fa"],
+    supported_languages: settings.supported_languages || ["english", "arabic", "hebrew", "persian"],
     ui_themes: settings.ui_themes || ["light", "dark", "auto"],
     currency_codes: settings.currency_codes || ["SAR", "USD", "EUR", "GBP"],
     
     // Time and frequency
-    time_zones: settings.time_zones || ["Asia/Riyadh", "UTC", "Asia/Dubai", "Europe/London"],
+    time_zones: settings.time_zones || ["asia_riyadh", "utc", "asia_dubai", "europe_london"],
     frequency_options: settings.frequency_options || ["daily", "weekly", "monthly", "yearly"],
     
     // File and data formats
@@ -42,7 +42,7 @@ export function GlobalListSettings({}: GlobalListSettingsProps) {
     
     // User interface
     color_schemes: settings.color_schemes || ["blue", "green", "purple", "orange", "red"],
-    font_sizes: settings.font_sizes || ["small", "medium", "large", "extra-large"],
+    font_sizes: settings.font_sizes || ["small", "medium", "large", "extra_large"],
     
     // Communication
     notification_channels: settings.notification_channels || ["email", "sms", "push", "in_app"],
@@ -54,37 +54,42 @@ export function GlobalListSettings({}: GlobalListSettingsProps) {
     
     // Generic classifications
     status_types: settings.status_types || ["active", "inactive", "pending", "completed", "cancelled"],
-    rating_scales: settings.rating_scales || ["1-5", "1-10", "percentage", "letter_grade"],
+    rating_scales: settings.rating_scales || ["one_to_five", "one_to_ten", "percentage", "letter_grade"],
   };
 
   const listLabels = {
-    supported_languages: isRTL ? "اللغات المدعومة" : "Supported Languages",
-    ui_themes: isRTL ? "مظاهر الواجهة" : "UI Themes", 
-    currency_codes: isRTL ? "رموز العملات" : "Currency Codes",
-    time_zones: isRTL ? "المناطق الزمنية" : "Time Zones",
-    frequency_options: isRTL ? "خيارات التكرار" : "Frequency Options",
-    file_formats: isRTL ? "تنسيقات الملفات" : "File Formats",
-    export_formats: isRTL ? "تنسيقات التصدير" : "Export Formats",
-    sensitivity_levels: isRTL ? "مستويات الحساسية" : "Sensitivity Levels",
-    priority_levels: isRTL ? "مستويات الأولوية" : "Priority Levels",
-    color_schemes: isRTL ? "أنظمة الألوان" : "Color Schemes",
-    font_sizes: isRTL ? "أحجام الخط" : "Font Sizes",
-    notification_channels: isRTL ? "قنوات الإشعارات" : "Notification Channels",
-    communication_methods: isRTL ? "طرق التواصل" : "Communication Methods",
-    log_levels: isRTL ? "مستويات السجل" : "Log Levels",
-    backup_types: isRTL ? "أنواع النسخ الاحتياطي" : "Backup Types",
-    status_types: isRTL ? "أنواع الحالة" : "Status Types",
-    rating_scales: isRTL ? "مقاييس التقييم" : "Rating Scales",
+    supported_languages: t('settings.supported_languages') || "Supported Languages",
+    ui_themes: t('settings.ui_themes') || "UI Themes", 
+    currency_codes: t('settings.currency_codes') || "Currency Codes",
+    time_zones: t('settings.time_zones') || "Time Zones",
+    frequency_options: t('settings.frequency_options') || "Frequency Options",
+    file_formats: t('settings.file_formats') || "File Formats",
+    export_formats: t('settings.export_formats') || "Export Formats",
+    sensitivity_levels: t('settings.sensitivity_levels') || "Sensitivity Levels",
+    priority_levels: t('settings.priority_levels') || "Priority Levels",
+    color_schemes: t('settings.color_schemes') || "Color Schemes",
+    font_sizes: t('settings.font_sizes') || "Font Sizes",
+    notification_channels: t('settings.notification_channels') || "Notification Channels",
+    communication_methods: t('settings.communication_methods') || "Communication Methods",
+    log_levels: t('settings.log_levels') || "Log Levels",
+    backup_types: t('settings.backup_types') || "Backup Types",
+    status_types: t('settings.status_types') || "Status Types",
+    rating_scales: t('settings.rating_scales') || "Rating Scales",
   };
 
-  // Helper function to get translated item using i18n
+  // Helper function to get translated item using setting_key.setting_value pattern
   const getTranslatedItem = (item: string, listKey: string) => {
-    // For most items, use the translation key pattern
+    // Use setting_key.setting_value pattern: e.g., "ui_themes.dark", "status_types.active"
     const translationKey = `${listKey}.${item}`;
     const translated = t(translationKey);
     
-    // If translation exists (not the same as key), use it; otherwise use the original item
-    return translated !== translationKey ? translated : item;
+    // If translation exists (different from key), use it; otherwise use formatted English
+    if (translated !== translationKey) {
+      return translated;
+    }
+    
+    // Fallback: format English value (replace underscores with spaces, capitalize)
+    return item.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   };
 
   // Map UI keys to actual setting keys
