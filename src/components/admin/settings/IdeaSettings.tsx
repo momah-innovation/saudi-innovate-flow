@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,6 +9,7 @@ import { Plus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useAppTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
+import { supabase } from "@/integrations/supabase/client";
 
 interface IdeaSettingsProps {
   settings: any;
@@ -21,50 +22,99 @@ export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
   const { isRTL } = useDirection();
   const [newAttachmentType, setNewAttachmentType] = useState("");
   const [newAssignmentType, setNewAssignmentType] = useState("");
+  const [systemSettings, setSystemSettings] = useState<any>({});
+
+  useEffect(() => {
+    fetchSystemSettings();
+  }, []);
+
+  const fetchSystemSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_key, setting_value')
+        .in('setting_key', [
+          'idea_allowed_attachment_types',
+          'idea_assignment_types',
+          'idea_max_per_user',
+          'idea_min_description_length',
+          'idea_max_attachments',
+          'idea_max_attachment_size_mb',
+          'idea_allow_anonymous',
+          'idea_require_review',
+          'idea_enable_collaboration'
+        ]);
+
+      if (error) throw error;
+
+      const settingsObj = data?.reduce((acc, setting) => {
+        acc[setting.setting_key] = setting.setting_value;
+        return acc;
+      }, {} as any) || {};
+
+      setSystemSettings(settingsObj);
+    } catch (error) {
+      console.error('Error fetching system settings:', error);
+    }
+  };
+
+  const updateSystemSetting = async (key: string, value: any) => {
+    try {
+      const { error } = await supabase
+        .from('system_settings')
+        .upsert({ 
+          setting_key: key, 
+          setting_value: value,
+          setting_category: 'ideas',
+          updated_at: new Date().toISOString()
+        });
+
+      if (error) throw error;
+
+      setSystemSettings(prev => ({ ...prev, [key]: value }));
+      onSettingChange(key, value);
+      
+      toast({
+        title: t('success'),
+        description: t('settingUpdated')
+      });
+    } catch (error) {
+      console.error('Error updating setting:', error);
+      toast({
+        title: t('error'),
+        description: t('updateSettingError'),
+        variant: "destructive"
+      });
+    }
+  };
   
-  const allowedAttachmentTypes = settings.idea_allowed_attachment_types || ["pdf", "doc", "docx", "ppt", "pptx", "jpg", "jpeg", "png", "gif"];
-  const assignmentTypes = settings.idea_assignment_types || ["reviewer", "evaluator", "implementer", "observer"];
+  const allowedAttachmentTypes = systemSettings.idea_allowed_attachment_types || ["pdf", "doc", "docx", "ppt", "pptx", "jpg", "jpeg", "png", "gif"];
+  const assignmentTypes = systemSettings.idea_assignment_types || ["reviewer", "evaluator", "implementer", "observer"];
 
   const addAttachmentType = () => {
     if (newAttachmentType.trim() && !allowedAttachmentTypes.includes(newAttachmentType)) {
       const updatedTypes = [...allowedAttachmentTypes, newAttachmentType.trim()];
-      onSettingChange('idea_allowed_attachment_types', updatedTypes);
+      updateSystemSetting('idea_allowed_attachment_types', updatedTypes);
       setNewAttachmentType("");
-      toast({
-        title: t('success'),
-        description: "تم إضافة نوع المرفق بنجاح"
-      });
     }
   };
 
   const removeAttachmentType = (typeToRemove: string) => {
     const updatedTypes = allowedAttachmentTypes.filter((type: string) => type !== typeToRemove);
-    onSettingChange('idea_allowed_attachment_types', updatedTypes);
-    toast({
-      title: t('success'),
-      description: "تم حذف نوع المرفق بنجاح"
-    });
+    updateSystemSetting('idea_allowed_attachment_types', updatedTypes);
   };
 
   const addAssignmentType = () => {
     if (newAssignmentType.trim() && !assignmentTypes.includes(newAssignmentType)) {
       const updatedTypes = [...assignmentTypes, newAssignmentType.trim()];
-      onSettingChange('idea_assignment_types', updatedTypes);
+      updateSystemSetting('idea_assignment_types', updatedTypes);
       setNewAssignmentType("");
-      toast({
-        title: t('success'),
-        description: "تم إضافة نوع المهمة بنجاح"
-      });
     }
   };
 
   const removeAssignmentType = (typeToRemove: string) => {
     const updatedTypes = assignmentTypes.filter((type: string) => type !== typeToRemove);
-    onSettingChange('idea_assignment_types', updatedTypes);
-    toast({
-      title: t('success'),
-      description: "تم حذف نوع المهمة بنجاح"
-    });
+    updateSystemSetting('idea_assignment_types', updatedTypes);
   };
 
   return (
@@ -149,12 +199,12 @@ export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
         <CardContent className="space-y-4">
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="space-y-2">
-              <Label htmlFor="maxIdeasPerUser">الحد الأقصى للأفكار لكل مستخدم</Label>
+              <Label htmlFor="maxIdeasPerUser">{t('ideas.maxIdeasPerUser')}</Label>
               <Input
                 id="maxIdeasPerUser"
                 type="number"
-                value={settings.maxIdeasPerUser || 50}
-                onChange={(e) => onSettingChange('maxIdeasPerUser', parseInt(e.target.value))}
+                value={systemSettings.idea_max_per_user || 50}
+                onChange={(e) => updateSystemSetting('idea_max_per_user', parseInt(e.target.value))}
                 min="1"
                 max="500"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -162,12 +212,12 @@ export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="ideaMinLength">الحد الأدنى لطول وصف الفكرة (عدد الأحرف)</Label>
+              <Label htmlFor="ideaMinLength">{t('ideas.minDescriptionLength')}</Label>
               <Input
                 id="ideaMinLength"
                 type="number"
-                value={settings.ideaMinLength || 50}
-                onChange={(e) => onSettingChange('ideaMinLength', parseInt(e.target.value))}
+                value={systemSettings.idea_min_description_length || 50}
+                onChange={(e) => updateSystemSetting('idea_min_description_length', parseInt(e.target.value))}
                 min="10"
                 max="200"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -175,12 +225,12 @@ export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="maxAttachments">الحد الأقصى للمرفقات لكل فكرة</Label>
+              <Label htmlFor="maxAttachments">{t('ideas.maxAttachments')}</Label>
               <Input
                 id="maxAttachments"
                 type="number"
-                value={settings.maxAttachments || 5}
-                onChange={(e) => onSettingChange('maxAttachments', parseInt(e.target.value))}
+                value={systemSettings.idea_max_attachments || 5}
+                onChange={(e) => updateSystemSetting('idea_max_attachments', parseInt(e.target.value))}
                 min="0"
                 max="20"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -188,12 +238,12 @@ export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="maxAttachmentSize">الحد الأقصى لحجم المرفق (بالميجابايت)</Label>
+              <Label htmlFor="maxAttachmentSize">{t('ideas.maxAttachmentSize')}</Label>
               <Input
                 id="maxAttachmentSize"
                 type="number"
-                value={settings.maxAttachmentSize || 10}
-                onChange={(e) => onSettingChange('maxAttachmentSize', parseInt(e.target.value))}
+                value={systemSettings.idea_max_attachment_size_mb || 10}
+                onChange={(e) => updateSystemSetting('idea_max_attachment_size_mb', parseInt(e.target.value))}
                 min="1"
                 max="100"
                 className={isRTL ? 'text-right' : 'text-left'}
@@ -203,34 +253,34 @@ export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
 
           <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
-              <Label className="text-base">السماح بالأفكار المجهولة</Label>
-              <p className="text-sm text-muted-foreground">السماح بتقديم أفكار بدون الكشف عن الهوية</p>
+              <Label className="text-base">{t('ideas.allowAnonymous')}</Label>
+              <p className="text-sm text-muted-foreground">{t('ideas.allowAnonymousDescription')}</p>
             </div>
             <Switch 
-              checked={settings.allowAnonymousIdeas || false}
-              onCheckedChange={(checked) => onSettingChange('allowAnonymousIdeas', checked)}
+              checked={systemSettings.idea_allow_anonymous || false}
+              onCheckedChange={(checked) => updateSystemSetting('idea_allow_anonymous', checked)}
             />
           </div>
 
           <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
-              <Label className="text-base">مراجعة الأفكار تلقائياً</Label>
-              <p className="text-sm text-muted-foreground">مطالبة مراجعة إدارية قبل نشر الأفكار</p>
+              <Label className="text-base">{t('ideas.requireReview')}</Label>
+              <p className="text-sm text-muted-foreground">{t('ideas.requireReviewDescription')}</p>
             </div>
             <Switch 
-              checked={settings.requireIdeaReview !== false}
-              onCheckedChange={(checked) => onSettingChange('requireIdeaReview', checked)}
+              checked={systemSettings.idea_require_review !== false}
+              onCheckedChange={(checked) => updateSystemSetting('idea_require_review', checked)}
             />
           </div>
 
           <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
-              <Label className="text-base">تفعيل التعاون في الأفكار</Label>
-              <p className="text-sm text-muted-foreground">السماح بالعمل التعاوني على تطوير الأفكار</p>
+              <Label className="text-base">{t('ideas.enableCollaboration')}</Label>
+              <p className="text-sm text-muted-foreground">{t('ideas.enableCollaborationDescription')}</p>
             </div>
             <Switch 
-              checked={settings.enableIdeaCollaboration !== false}
-              onCheckedChange={(checked) => onSettingChange('enableIdeaCollaboration', checked)}
+              checked={systemSettings.idea_enable_collaboration !== false}
+              onCheckedChange={(checked) => updateSystemSetting('idea_enable_collaboration', checked)}
             />
           </div>
         </CardContent>
