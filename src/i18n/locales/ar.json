@@ -244,6 +244,56 @@
     "rejected": "مرفوض",
     "completed": "مكتمل"
   },
+  "ideaPredefinedTags": {
+    "artificial_intelligence": "الذكاء الاصطناعي",
+    "big_data": "البيانات الضخمة",
+    "internet_of_things": "إنترنت الأشياء",
+    "blockchain": "البلوك تشين",
+    "cybersecurity": "الأمن السيبراني",
+    "digital_transformation": "التحول الرقمي",
+    "mobile_applications": "التطبيقات المحمولة",
+    "cloud_computing": "الحوسبة السحابية",
+    "augmented_reality": "الواقع المعزز",
+    "virtual_reality": "الواقع الافتراضي",
+    "renewable_energy": "الطاقة المتجددة",
+    "sustainability": "الاستدامة",
+    "elearning": "التعليم الإلكتروني",
+    "digital_health": "الصحة الرقمية",
+    "ecommerce": "التجارة الإلكترونية",
+    "smart_cities": "المدن الذكية",
+    "smart_transportation": "النقل الذكي",
+    "smart_agriculture": "الزراعة الذكية",
+    "industry_4_0": "الصناعة 4.0",
+    "robotics": "الروبوتات"
+  },
+  "influenceLevels": {
+    "high": "عالي",
+    "medium": "متوسط",
+    "low": "منخفض"
+  },
+  "roleRequestStatus": {
+    "pending": "معلق",
+    "approved": "موافق عليه",
+    "rejected": "مرفوض",
+    "withdrawn": "مسحوب"
+  },
+  "stakeholderInfluenceLevels": {
+    "high": "عالي",
+    "medium": "متوسط",
+    "low": "منخفض"
+  },
+  "stakeholderInterestLevels": {
+    "high": "عالي",
+    "medium": "متوسط",
+    "low": "منخفض"
+  },
+  "stakeholderRoles": {
+    "strategic_partner": "شريك استراتيجي",
+    "developer": "مطور",
+    "service_provider": "مقدم خدمات",
+    "consultant": "مستشار",
+    "implementer": "مطبق"
+  },
   "evaluatorTypes": {
     "lead_expert": "خبير رئيسي",
     "evaluator": "مقيم",

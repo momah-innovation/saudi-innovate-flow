@@ -244,6 +244,56 @@
     "rejected": "Rejected",
     "completed": "Completed"
   },
+  "ideaPredefinedTags": {
+    "artificial_intelligence": "Artificial Intelligence",
+    "big_data": "Big Data",
+    "internet_of_things": "Internet of Things",
+    "blockchain": "Blockchain",
+    "cybersecurity": "Cybersecurity",
+    "digital_transformation": "Digital Transformation",
+    "mobile_applications": "Mobile Applications",
+    "cloud_computing": "Cloud Computing",
+    "augmented_reality": "Augmented Reality",
+    "virtual_reality": "Virtual Reality",
+    "renewable_energy": "Renewable Energy",
+    "sustainability": "Sustainability",
+    "elearning": "E-Learning",
+    "digital_health": "Digital Health",
+    "ecommerce": "E-Commerce",
+    "smart_cities": "Smart Cities",
+    "smart_transportation": "Smart Transportation",
+    "smart_agriculture": "Smart Agriculture",
+    "industry_4_0": "Industry 4.0",
+    "robotics": "Robotics"
+  },
+  "influenceLevels": {
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
+  "roleRequestStatus": {
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "withdrawn": "Withdrawn"
+  },
+  "stakeholderInfluenceLevels": {
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
+  "stakeholderInterestLevels": {
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
+  "stakeholderRoles": {
+    "strategic_partner": "Strategic Partner",
+    "developer": "Developer",
+    "service_provider": "Service Provider",
+    "consultant": "Consultant",
+    "implementer": "Implementer"
+  },
   "evaluatorTypes": {
     "lead_expert": "Lead Expert",
     "evaluator": "Evaluator",
