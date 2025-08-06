@@ -154,7 +154,7 @@ export function OrganizationalStructureManagement() {
       setDeputyForm({ name: "", name_ar: "", deputy_minister: "", contact_email: "", sector_id: "" });
       fetchAllData();
     } catch (error) {
-      toast({ title: "Error", description: "Failed to save deputy", variant: "destructive" });
+      toast({ title: t('error'), description: t('failedToSaveDeputy'), variant: "destructive" });
     }
   };
 
@@ -276,7 +276,7 @@ export function OrganizationalStructureManagement() {
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle>{editingDeputy ? "Edit Deputy" : "Add New Deputy"}</DialogTitle>
+                    <DialogTitle>{editingDeputy ? t('editDeputy') : t('addNewDeputy')}</DialogTitle>
                   </DialogHeader>
                   <form onSubmit={handleDeputySubmit} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
@@ -301,7 +301,7 @@ export function OrganizationalStructureManagement() {
                       <Label>Sector</Label>
                       <Select value={deputyForm.sector_id} onValueChange={(value) => setDeputyForm({...deputyForm, sector_id: value})}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select sector" />
+                          <SelectValue placeholder={t('selectSector')} />
                         </SelectTrigger>
                         <SelectContent>
                           {sectors.map((sector) => (
