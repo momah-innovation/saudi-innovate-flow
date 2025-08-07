@@ -1305,7 +1305,7 @@ const ChallengeDetails = () => {
       <ChallengeExpertAssignmentWizard
         open={expertDialogOpen}
         onOpenChange={setExpertDialogOpen}
-        challenge={{ id: challengeId, title_ar: challenge?.title_ar || 'التحدي' }}
+        challenge={{ id: challengeId }}
         onAssignmentComplete={() => {
           fetchAssignedExperts();
         }}

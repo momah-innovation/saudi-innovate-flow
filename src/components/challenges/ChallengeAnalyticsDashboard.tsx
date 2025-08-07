@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { logger } from '@/utils/error-handler';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -76,7 +75,7 @@ export const ChallengeAnalyticsDashboard = ({
       const totalPrizes = challenges?.reduce((sum, c) => sum + (c.estimated_budget || 0), 0) || 0;
 
       // Category breakdown
-      const categoryBreakdown = challenges?.reduce((acc: Array<{ category: string; count: number; percentage: number }>, challenge) => {
+      const categoryBreakdown = challenges?.reduce((acc: any[], challenge) => {
         const category = challenge.challenge_type || 'other';
         const existing = acc.find(item => item.category === category);
         if (existing) {
@@ -137,7 +136,7 @@ export const ChallengeAnalyticsDashboard = ({
       });
 
     } catch (error) {
-      logger.error('Error loading analytics', error);
+      console.error('Error loading analytics:', error);
     } finally {
       setLoading(false);
     }
@@ -173,7 +172,7 @@ export const ChallengeAnalyticsDashboard = ({
     title: string;
     value: string | number;
     change?: string;
-    icon: React.ComponentType<{ className?: string }>;
+    icon: any;
     color?: string;
     trend?: "up" | "down";
   }) => (
@@ -196,8 +195,8 @@ export const ChallengeAnalyticsDashboard = ({
               </div>
             )}
           </div>
-          <div className="p-3 rounded-lg bg-primary/10">
-            <Icon className="w-6 h-6 text-primary" />
+          <div className={`p-3 rounded-lg bg-${color}-100 dark:bg-${color}-900/20`}>
+            <Icon className={`w-6 h-6 text-${color}-600`} />
           </div>
         </div>
       </CardContent>

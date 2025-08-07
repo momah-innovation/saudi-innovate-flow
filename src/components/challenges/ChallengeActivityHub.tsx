@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { logger } from '@/utils/error-handler';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -143,7 +142,7 @@ export const ChallengeActivityHub = ({
       setActivities(mockActivities);
       
     } catch (error) {
-      logger.error('Error loading collaboration data', error);
+      console.error('Error loading collaboration data:', error);
     } finally {
       setLoading(false);
     }
@@ -202,7 +201,7 @@ export const ChallengeActivityHub = ({
     </div>
   );
 
-  const ParticipantItem = ({ participant }: { participant: { profiles?: { display_name?: string; avatar_url?: string }; id: string; registration_date: string; participation_type: string } }) => (
+  const ParticipantItem = ({ participant }: { participant: any }) => (
     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
       <Avatar className="w-10 h-10">
         <AvatarImage src={participant.profiles?.avatar_url} />
@@ -229,7 +228,7 @@ export const ChallengeActivityHub = ({
     </div>
   );
 
-  const SubmissionItem = ({ submission }: { submission: { id: string; title_ar: string; description_ar?: string; status?: string; submitted_by?: string; created_at: string; profiles?: { display_name?: string; avatar_url?: string } } }) => (
+  const SubmissionItem = ({ submission }: { submission: any }) => (
     <Card className="hover:shadow-md transition-shadow">
       <CardContent className="p-4">
         <div className="flex items-start gap-3">
