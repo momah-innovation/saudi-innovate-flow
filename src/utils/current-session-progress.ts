@@ -20,12 +20,15 @@ export const currentSessionProgress = {
       'src/components/admin/ideas/IdeaCommentsPanel.tsx - Fixed 3 console logs + 6 any types',
       'src/components/admin/TranslationManager.tsx - Fixed 4 console logs + 1 any type',
       'src/components/admin/settings/EvaluationSettings.tsx - Fixed 2 console logs + 2 any types',
-      'src/components/admin/settings/IdeaSettings.tsx - Fixed 2 console logs + 2 any types'
+      'src/components/admin/settings/IdeaSettings.tsx - Fixed 2 console logs + 2 any types',
+      'src/components/admin/RoleRequestWizard.tsx - Fixed 3 console logs',
+      'src/components/admin/TestProfileCalculation.tsx - Fixed 3 console logs + 1 any type',
+      'src/components/admin/focus-questions/FocusQuestionManagementList.tsx - Fixed 2 console logs'
     ],
     
     metrics: {
-      consoleLogsFixed: 43,
-      anyTypesFixed: 89,
+      consoleLogsFixed: 51,
+      anyTypesFixed: 90,
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -40,9 +43,9 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 297, // Down from 305
-    anyTypesToReplace: 390,    // Down from 395
-    estimatedSessionsRemaining: 5
+    consoleLogsToMigrate: 289, // Down from 297
+    anyTypesToReplace: 389,    // Down from 390
+    estimatedSessionsRemaining: 4
   },
   
   status: 'PRODUCTION_READY_FOUNDATION'

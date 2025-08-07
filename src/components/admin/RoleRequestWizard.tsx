@@ -10,6 +10,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserPlus, Send } from "lucide-react";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/logger";
 
 // Function to get role rejection wait days from system settings
 const getRoleRejectionWaitDays = async (): Promise<number> => {
@@ -26,7 +28,7 @@ const getRoleRejectionWaitDays = async (): Promise<number> => {
       (typeof data.setting_value === 'string' ? parseInt(data.setting_value) : 
        typeof data.setting_value === 'number' ? data.setting_value : 30) : 30;
   } catch (error) {
-    console.error('Error fetching role rejection wait days:', error);
+    logger.error('Error fetching role rejection wait days', { component: 'RoleRequestWizard', action: 'getRoleRejectionWaitDays' }, error as Error);
     return 30; // fallback value
   }
 };
@@ -46,7 +48,7 @@ const getMaxRoleRequestsPerWeek = async (): Promise<number> => {
       (typeof data.setting_value === 'string' ? parseInt(data.setting_value) : 
        typeof data.setting_value === 'number' ? data.setting_value : 3) : 3;
   } catch (error) {
-    console.error('Error fetching max role requests per week:', error);
+    logger.error('Error fetching max role requests per week', { component: 'RoleRequestWizard', action: 'getMaxRoleRequestsPerWeek' }, error as Error);
     return 3; // fallback value
   }
 };
@@ -63,6 +65,7 @@ interface RoleRequestWizardProps {
 export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestSubmitted }: RoleRequestWizardProps) {
   const { user } = useAuth();
   const { requestableUserRoles, roleRequestJustifications } = useSystemLists();
+  const { t } = useUnifiedTranslation();
   const [selectedRole, setSelectedRole] = useState("");
   const [reason, setReason] = useState("");
   const [justification, setJustification] = useState("");
@@ -181,8 +184,8 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
       onOpenChange(false);
       onRequestSubmitted?.();
     } catch (error) {
-      console.error('Error submitting role request:', error);
-      toast.error('Failed to submit role request. Please try again.');
+      logger.error('Error submitting role request', { component: 'RoleRequestWizard', action: 'handleSubmitRequest' }, error as Error);
+      toast.error(t('roleRequest.submitError', 'Failed to submit role request. Please try again.'));
     } finally {
       setLoading(false);
     }

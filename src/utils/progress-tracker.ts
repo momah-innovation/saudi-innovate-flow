@@ -147,4 +147,12 @@ progressTracker.initializeComponent('src/components/admin/settings/IdeaSettings.
 progressTracker.markComponentCompleted('src/components/admin/TranslationManager.tsx', 4, 1);
 progressTracker.markComponentCompleted('src/components/admin/settings/EvaluationSettings.tsx', 2, 2);
 progressTracker.markComponentCompleted('src/components/admin/settings/IdeaSettings.tsx', 2, 2);
+
+// Mark new files completed  
+progressTracker.initializeComponent('src/components/admin/RoleRequestWizard.tsx', 3, 0);
+progressTracker.initializeComponent('src/components/admin/TestProfileCalculation.tsx', 3, 1);
+progressTracker.initializeComponent('src/components/admin/focus-questions/FocusQuestionManagementList.tsx', 2, 0);
+progressTracker.markComponentCompleted('src/components/admin/RoleRequestWizard.tsx', 3, 0);
+progressTracker.markComponentCompleted('src/components/admin/TestProfileCalculation.tsx', 3, 1);
+progressTracker.markComponentCompleted('src/components/admin/focus-questions/FocusQuestionManagementList.tsx', 2, 0);
 progressTracker.logProgress();

@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { ViewLayouts } from "@/components/ui/view-layouts";
+import { logger } from "@/utils/logger";
 
 import { 
   HelpCircle, 
@@ -75,10 +76,10 @@ export function FocusQuestionManagementList() {
       if (error) throw error;
       setFocusQuestions(data || []);
     } catch (error) {
-      console.error('Error fetching focus questions:', error);
+      logger.error('Error fetching focus questions', { component: 'FocusQuestionManagementList', action: 'fetchFocusQuestions' }, error as Error);
       toast({
-        title: "خطأ",
-        description: "فشل في تحميل الأسئلة المحورية",
+        title: t('error', 'Error'),
+        description: t('focusQuestions.loadError', 'Failed to load focus questions'),
         variant: "destructive"
       });
     } finally {
@@ -101,10 +102,10 @@ export function FocusQuestionManagementList() {
         description: "تم حذف السؤال المحوري بنجاح"
       });
     } catch (error) {
-      console.error('Error deleting focus question:', error);
+      logger.error('Error deleting focus question', { component: 'FocusQuestionManagementList', action: 'handleDelete' }, error as Error);
       toast({
-        title: "خطأ",
-        description: "فشل في حذف السؤال المحوري",
+        title: t('error', 'Error'),
+        description: t('focusQuestions.deleteError', 'Failed to delete focus question'),
         variant: "destructive"
       });
     }
