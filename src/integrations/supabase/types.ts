@@ -8246,6 +8246,10 @@ export type Database = {
         Args: { user_id: string; resource_type: string; resource_name: string }
         Returns: string
       }
+      get_user_permissions: {
+        Args: { _user_id: string }
+        Returns: Json
+      }
       get_user_subscription_status: {
         Args: { p_user_id: string }
         Returns: {
@@ -8258,10 +8262,24 @@ export type Database = {
           features: Json
         }[]
       }
+      has_any_role: {
+        Args: {
+          _user_id: string
+          _roles: Database["public"]["Enums"]["app_role"][]
+        }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _user_id: string
           _role: Database["public"]["Enums"]["app_role"]
+        }
+        Returns: boolean
+      }
+      has_role_or_higher: {
+        Args: {
+          _user_id: string
+          _minimum_role: Database["public"]["Enums"]["app_role"]
         }
         Returns: boolean
       }
@@ -8370,6 +8388,10 @@ export type Database = {
       update_weekly_capacity: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      user_can_perform_action: {
+        Args: { _user_id: string; _action: string }
+        Returns: boolean
       }
       user_has_access_to_challenge: {
         Args: { challenge_id: string }
