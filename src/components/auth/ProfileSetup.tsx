@@ -81,7 +81,9 @@ export const ProfileSetup = () => {
   const specializationsData = getSettingValue('specializations', []) as string[];
   const experienceLevelsData = getSettingValue('experience_levels', []) as string[];
   const EXPERIENCE_LEVELS = experienceLevelsData.map((level, index) => {
-    const values = ['junior', 'mid', 'senior', 'expert'];
+    const { getSettingValue } = useSettingsManager();
+    const experienceLevelsKeys = getSettingValue('professional_experience_levels', ['junior', 'mid', 'senior', 'expert']) as string[];
+    const values = experienceLevelsKeys;
     return { value: values[index] || 'junior', label: level };
   });
 
