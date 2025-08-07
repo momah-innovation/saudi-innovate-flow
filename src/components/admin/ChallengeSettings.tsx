@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { useSystemLists } from "@/hooks/useSystemLists";
+import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, Clock, Shield, Bell, Users, Archive, Settings as SettingsIcon } from "lucide-react";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
@@ -45,7 +45,8 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
 }) => {
   const { t } = useUnifiedTranslation();
   const { toast } = useToast();
-  const { challengeSensitivityLevels } = useSystemLists();
+  const { getSettingValue } = useSettingsManager();
+  const challengeSensitivityLevels = getSettingValue('sensitivity_levels', []) as string[];
   const [loading, setLoading] = useState(false);
   
   // System settings

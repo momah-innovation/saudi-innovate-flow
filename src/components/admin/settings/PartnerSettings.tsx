@@ -1,15 +1,10 @@
-import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Plus, X } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
-import { supabase } from "@/integrations/supabase/client";
+import { ArraySettingsEditor } from "./ArraySettingsEditor";
 
 interface PartnerSettingsProps {
   settings: any;
@@ -17,71 +12,19 @@ interface PartnerSettingsProps {
 }
 
 export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsProps) {
-  const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   const { isRTL } = useDirection();
-  const [newPartnerType, setNewPartnerType] = useState("");
-  
-  const partnerTypes = settings.partner_type_options || ["government", "private", "academic", "nonprofit", "international"];
 
-  const addPartnerType = () => {
-    if (newPartnerType.trim() && !partnerTypes.includes(newPartnerType)) {
-      const updatedTypes = [...partnerTypes, newPartnerType.trim()];
-      onSettingChange('partner_type_options', updatedTypes);
-      setNewPartnerType("");
-      toast({
-        title: t('success'),
-        description: "تم إضافة نوع الشريك بنجاح"
-      });
-    }
-  };
-
-  const removePartnerType = (typeToRemove: string) => {
-    const updatedTypes = partnerTypes.filter((type: string) => type !== typeToRemove);
-    onSettingChange('partner_type_options', updatedTypes);
-    toast({
-      title: t('success'),
-      description: "تم حذف نوع الشريك بنجاح"
-    });
-  };
 
   return (
     <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
-      <Card>
-        <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
-          <CardTitle>{t('systemLists.partnerTypes')}</CardTitle>
-          <CardDescription>إدارة أنواع الشركاء المتاحة</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <Input
-              value={newPartnerType}
-              onChange={(e) => setNewPartnerType(e.target.value)}
-              placeholder="أضف نوع شريك جديد"
-              className={isRTL ? 'text-right' : 'text-left'}
-            />
-            <Button onClick={addPartnerType} size="sm">
-              <Plus className="w-4 h-4" />
-            </Button>
-          </div>
-          
-          <div className="flex flex-wrap gap-2">
-            {partnerTypes.map((type: string, index: number) => (
-              <Badge key={index} variant="secondary" className="flex items-center gap-1">
-                <span>{t(`partnerTypes.${type}`) || type}</span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-auto p-0 hover:bg-transparent"
-                  onClick={() => removePartnerType(type)}
-                >
-                  <X className="w-3 h-3" />
-                </Button>
-              </Badge>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <ArraySettingsEditor
+        settingKey="partner_type_options"
+        title={t('systemLists.partnerTypes')}
+        description="إدارة أنواع الشركاء المتاحة"
+        translationPrefix="partnerTypes"
+        category="partners"
+      />
 
       <Card>
         <CardHeader className={isRTL ? 'text-right' : 'text-left'}>

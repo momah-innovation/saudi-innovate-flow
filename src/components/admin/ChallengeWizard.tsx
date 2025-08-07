@@ -16,7 +16,7 @@ import { CalendarIcon, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useSystemLists } from "@/hooks/useSystemLists";
+import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { ChallengeFormSchema } from '@/schemas/validation';
 import type { Challenge, Department, Deputy, Sector, Domain, SubDomain, Service, Partner, Expert } from "@/types";
 
@@ -67,7 +67,10 @@ interface SystemLists {
 
 export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: ChallengeWizardProps) {
   const { toast } = useToast();
-  const { challengeStatusOptions, challengePriorityLevels, challengeSensitivityLevels } = useSystemLists();
+  const { getSettingValue } = useSettingsManager();
+  const challengeStatusOptions = getSettingValue('challenge_statuses', []) as string[];
+  const challengePriorityLevels = getSettingValue('priority_levels', []) as string[];
+  const challengeSensitivityLevels = getSettingValue('sensitivity_levels', []) as string[];
   
   const [loading, setLoading] = useState(false);
   const [systemLists, setSystemLists] = useState<SystemLists>({
