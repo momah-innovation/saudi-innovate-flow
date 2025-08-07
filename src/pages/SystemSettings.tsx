@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,11 +8,61 @@ import { UnifiedSettingsManager } from "@/components/admin/settings/UnifiedSetti
 import TranslationManagement from "@/components/admin/TranslationManagement";
 import { useDirection } from "@/components/ui/direction-provider";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
-
+import { useAuth } from "@/contexts/AuthContext";
+import { useRoleAccess } from "@/hooks/useRoleAccess";
+import { usePerformanceMonitor } from "@/hooks/performance/use-optimization";
+import { logger } from "@/utils/logger";
 const SystemSettings = () => {
   const { t } = useUnifiedTranslation();
   const [activeTab, setActiveTab] = useState("all");
   const { isRTL } = useDirection();
+  
+  // Authentication and permissions
+  const { userProfile, hasRole } = useAuth();
+  const { permissions } = useRoleAccess();
+  
+  // Performance monitoring
+  const performanceMonitor = usePerformanceMonitor('SystemSettings');
+  
+  // Track admin access to system settings
+  useEffect(() => {
+    if (userProfile && permissions.canManageSystem) {
+      // Log admin access for security audit
+      logger.info('Admin system settings accessed', {
+        userId: userProfile.id,
+        component: 'SystemSettings',
+        action: 'page_access'
+      });
+    }
+  }, [userProfile, permissions.canManageSystem]);
+  
+  // Track tab changes for analytics
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    // Simple analytics tracking
+    logger.info('System settings tab changed', {
+      userId: userProfile?.id,
+      component: 'SystemSettings',
+      action: 'tab_change',
+      type: tab
+    });
+  };
+  
+  // Early return if no permissions
+  if (!permissions.canManageSystem) {
+    return (
+      <AppShell>
+        <div className="container mx-auto p-6">
+          <Card>
+            <CardContent className="p-6 text-center">
+              <h2 className="text-2xl font-bold mb-2">{t('accessDenied', 'Access Denied')}</h2>
+              <p className="text-muted-foreground">{t('adminPermissionRequired', 'System administrator permissions required')}</p>
+            </CardContent>
+          </Card>
+        </div>
+      </AppShell>
+    );
+  }
 
   const categories = [
     { key: "all", label: t('all'), icon: Database },
@@ -53,7 +103,7 @@ const SystemSettings = () => {
           </CardHeader>
           <CardContent>
             {/* Category Filter Tabs */}
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
               <TabsList className={`grid w-full grid-cols-4 lg:grid-cols-8 xl:grid-cols-13 ${isRTL ? 'text-right' : 'text-left'}`}>
                 {categories.map((category) => (
                   <TabsTrigger 
