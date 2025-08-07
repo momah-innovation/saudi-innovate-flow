@@ -1,0 +1,51 @@
+-- Add missing basic translation keys used throughout the system
+INSERT INTO system_translations (translation_key, text_en, text_ar, category) VALUES
+-- Basic success messages
+('success', 'Success', 'نجح', 'general'),
+('itemAddedSuccessfully', 'Item added successfully', 'تم إضافة العنصر بنجاح', 'general'),
+('itemRemovedSuccessfully', 'Item removed successfully', 'تم حذف العنصر بنجاح', 'general'),
+('error', 'Error', 'خطأ', 'general'),
+('loading', 'Loading...', 'جاري التحميل...', 'general'),
+('save', 'Save', 'حفظ', 'general'),
+('cancel', 'Cancel', 'إلغاء', 'general'),
+('delete', 'Delete', 'حذف', 'general'),
+('edit', 'Edit', 'تعديل', 'general'),
+('add', 'Add', 'إضافة', 'general'),
+('remove', 'Remove', 'إزالة', 'general'),
+('update', 'Update', 'تحديث', 'general'),
+('confirm', 'Confirm', 'تأكيد', 'general'),
+('search', 'Search', 'بحث', 'general'),
+('filter', 'Filter', 'تصفية', 'general'),
+('sort', 'Sort', 'ترتيب', 'general'),
+('view', 'View', 'عرض', 'general'),
+('close', 'Close', 'إغلاق', 'general'),
+('back', 'Back', 'رجوع', 'general'),
+('next', 'Next', 'التالي', 'general'),
+('previous', 'Previous', 'السابق', 'general'),
+('submit', 'Submit', 'إرسال', 'general'),
+('reset', 'Reset', 'إعادة تعيين', 'general'),
+('clear', 'Clear', 'مسح', 'general'),
+('select', 'Select', 'اختيار', 'general'),
+('selectAll', 'Select All', 'اختيار الكل', 'general'),
+('deselectAll', 'Deselect All', 'إلغاء اختيار الكل', 'general'),
+('enable', 'Enable', 'تفعيل', 'general'),
+('disable', 'Disable', 'تعطيل', 'general'),
+('enabled', 'Enabled', 'مفعل', 'general'),
+('disabled', 'Disabled', 'معطل', 'general'),
+('active', 'Active', 'نشط', 'general'),
+('inactive', 'Inactive', 'غير نشط', 'general'),
+('draft', 'Draft', 'مسودة', 'general'),
+('published', 'Published', 'منشور', 'general'),
+('pending', 'Pending', 'في الانتظار', 'general'),
+('approved', 'Approved', 'معتمد', 'general'),
+('rejected', 'Rejected', 'مرفوض', 'general'),
+('completed', 'Completed', 'مكتمل', 'general'),
+('inProgress', 'In Progress', 'قيد التقدم', 'general')
+
+-- Handle conflicts by updating existing records
+ON CONFLICT (translation_key) 
+DO UPDATE SET 
+  text_en = EXCLUDED.text_en,
+  text_ar = EXCLUDED.text_ar,
+  category = EXCLUDED.category,
+  updated_at = NOW();
