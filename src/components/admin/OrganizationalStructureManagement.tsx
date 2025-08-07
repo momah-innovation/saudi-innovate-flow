@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Edit, Trash2, Users, Building, Network, Mail, Search, Filter, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from "@/utils/error-handler";
 
 interface Deputy {
   id: string;

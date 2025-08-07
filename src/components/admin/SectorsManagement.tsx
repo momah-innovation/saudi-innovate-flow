@@ -8,6 +8,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Label } from "@/components/ui/label";
 import { Plus, Edit, Trash2, Building, Search, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from "@/utils/error-handler";
 
 interface Sector {
   id: string;
@@ -31,6 +33,7 @@ export function SectorsManagement() {
   // Search and filter states
   const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -68,6 +71,10 @@ export function SectorsManagement() {
     }
   };
 
+  const isFormValid = () => {
+    return formData.name.trim().length > 0;
+  };
+
   const handleSaveSector = async () => {
     if (!isFormValid()) return;
 
@@ -78,10 +85,10 @@ export function SectorsManagement() {
         const { error } = await supabase
           .from('sectors')
           .update({
+            name: formData.name,
             name_ar: formData.name_ar,
-            name_en: formData.name_en,
-            description_ar: formData.description_ar,
-            description_en: formData.description_en,
+            description: formData.description,
+            vision_2030_alignment: formData.vision_2030_alignment,
             updated_at: new Date().toISOString()
           })
           .eq('id', editingSector.id);
@@ -119,18 +126,29 @@ export function SectorsManagement() {
     }
   };
 
-  const handleDeleteSector = async (sector: SystemSector) => {
+  const handleEdit = (sector: Sector) => {
+    setEditingSector(sector);
+    setFormData({
+      name: sector.name,
+      name_ar: sector.name_ar || "",
+      description: sector.description || "",
+      vision_2030_alignment: sector.vision_2030_alignment || ""
+    });
+    setIsDialogOpen(true);
+  };
+
+  const handleDelete = async (sectorId: string) => {
     try {
       const { error } = await supabase
         .from('sectors')
         .delete()
-        .eq('id', sector.id);
+        .eq('id', sectorId);
 
       if (error) throw error;
 
       toast({
-        title: t('sectors.delete_success'),
-        description: t('sectors.delete_success_description')
+        title: "Success",
+        description: "Sector deleted successfully"
       });
 
       fetchSectors();
@@ -180,7 +198,7 @@ export function SectorsManagement() {
               </DialogDescription>
             </DialogHeader>
             
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={(e) => { e.preventDefault(); handleSaveSector(); }} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="name">Name (English)</Label>

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Loader2, Eye, Edit, Filter, Search, FileCheck, Star } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/error-handler";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { AdminEvaluationsHero } from "@/components/admin/AdminEvaluationsHero";
 import { ViewLayouts } from "@/components/ui/view-layouts";

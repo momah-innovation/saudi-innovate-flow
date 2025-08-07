@@ -18,6 +18,8 @@ import { AdminRelationshipsHero } from '@/components/admin/AdminRelationshipsHer
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/error-handler';
 
 interface RelationshipData {
   id: string;
