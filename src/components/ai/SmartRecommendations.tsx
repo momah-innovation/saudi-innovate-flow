@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, TrendingUp, Users, Lightbulb, ArrowRight } from 'lucide-react';
 import { useAIFeatures } from '@/hooks/useAIFeatures';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Recommendation {
@@ -32,7 +32,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState(true);
   const { isFeatureEnabled } = useAIFeatures();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   useEffect(() => {
     if (isFeatureEnabled('smart_partner_matching')) {

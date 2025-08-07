@@ -11,7 +11,7 @@ import {
   BarChart3, PieChart, LineChart, Globe, Shield, Cpu, ArrowUp, ArrowDown, Minus
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { useDirection } from "@/components/ui/direction-provider";
 import { toast } from "sonner";
@@ -64,7 +64,7 @@ interface Trend {
 
 export const EnhancedDashboardOverview = () => {
   const { userProfile } = useAuth();
-  const { t, language } = useTranslation();
+  const { t, language } = useUnifiedTranslation();
   const currentLanguage = language;
   const { isRTL } = useDirection();
   const [stats, setStats] = useState<DashboardStats>({

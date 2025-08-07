@@ -16,7 +16,7 @@ import {
   Star
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -34,7 +34,7 @@ interface DashboardStats {
 
 export const DashboardOverview = () => {
   const { isRTL } = useDirection();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { user, hasRole } = useAuth();
   const [stats, setStats] = useState<DashboardStats>({
     totalIdeas: 0,

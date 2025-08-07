@@ -5,7 +5,7 @@ import { LoadingSpinner } from '@/components/ui/loading';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useTheme } from '@/components/ui/theme-provider';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { useSystemSettings } from '@/contexts/SystemSettingsContext';
 import { cn } from '@/lib/utils';
 
@@ -58,7 +58,7 @@ export function AppShell({ children }: AppShellProps) {
   const auth = useAuth();
   const direction = useDirection();
   const theme = useTheme();
-  const translation = useTranslation();
+  const translation = useUnifiedTranslation();
   const systemSettings = useSystemSettings();
   
   // Local state

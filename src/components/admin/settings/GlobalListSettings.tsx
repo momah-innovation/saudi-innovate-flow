@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Trash2, Plus, List } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 import { useSettings } from "@/contexts/SettingsContext";
 import type { AllSystemSettings } from "@/contexts/SettingsContext";
@@ -15,7 +15,7 @@ interface GlobalListSettingsProps {}
 
 export function GlobalListSettings({}: GlobalListSettingsProps) {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const [editingList, setEditingList] = useState<string | null>(null);
   const [newItem, setNewItem] = useState("");

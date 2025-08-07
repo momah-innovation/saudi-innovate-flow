@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -42,7 +42,7 @@ export function ParticipantRegistration({ event, onRegistrationChange }: Partici
   const [registering, setRegistering] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   useEffect(() => {
     if (user) {

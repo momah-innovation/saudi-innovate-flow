@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -18,7 +18,7 @@ interface PartnerSettingsProps {
 
 export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsProps) {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const [newPartnerType, setNewPartnerType] = useState("");
   

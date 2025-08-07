@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, X, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 
 interface PerformanceSettingsProps {
@@ -18,7 +18,7 @@ interface PerformanceSettingsProps {
 
 export function PerformanceSettings({ settings, onSettingChange }: PerformanceSettingsProps) {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const [newCacheStrategy, setNewCacheStrategy] = useState("");
   

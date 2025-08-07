@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 
 interface GeneralSettingsProps {
@@ -14,7 +14,7 @@ interface GeneralSettingsProps {
 }
 
 export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   
   return (

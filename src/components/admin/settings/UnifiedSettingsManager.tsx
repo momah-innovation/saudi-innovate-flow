@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, Globe, Settings, Trash2, Save, Edit, Check, X } from "lucide-react";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 import { ArrayEditor } from "./ArrayEditor";
 import { ObjectEditor } from "./ObjectEditor";
@@ -22,7 +22,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
   showSharedOnly = false 
 }) => {
   const { isRTL } = useDirection();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [expandedArrays, setExpandedArrays] = useState<Set<string>>(new Set());
   const [pendingChanges, setPendingChanges] = useState<Record<string, any>>({});
   const {

@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Star, Brain, FileText, Clock, Award } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { useNavigate } from 'react-router-dom';
 
 interface ExpertDashboardProps {
@@ -13,7 +13,7 @@ interface ExpertDashboardProps {
 }
 
 export function ExpertDashboard({ userProfile, canEvaluateIdeas, canAccessExpertTools }: ExpertDashboardProps) {
-  const { t, language } = useTranslation();
+  const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
 
   const expertStats = [

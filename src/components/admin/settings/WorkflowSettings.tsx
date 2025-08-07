@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, X, PieChart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 
 interface WorkflowSettingsProps {
@@ -19,7 +19,7 @@ interface WorkflowSettingsProps {
 
 export function WorkflowSettings({ settings, onSettingChange }: WorkflowSettingsProps) {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const [newWorkflowStep, setNewWorkflowStep] = useState("");
   const [newApprovalLevel, setNewApprovalLevel] = useState("");

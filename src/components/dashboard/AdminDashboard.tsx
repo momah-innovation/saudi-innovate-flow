@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { useRoleAccess } from '@/hooks/useRoleAccess';
 
 import { useSystemHealth } from '@/hooks/useSystemHealth';
@@ -46,7 +46,7 @@ interface AdminDashboardProps {
 }
 
 export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, canViewAnalytics }: AdminDashboardProps) {
-  const { t, language } = useTranslation();
+  const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
   const { getPrimaryRole } = useRoleAccess();
   const systemHealth = useSystemHealth();

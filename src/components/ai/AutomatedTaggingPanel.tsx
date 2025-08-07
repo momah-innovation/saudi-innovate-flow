@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { aiService } from '@/services/AIService';
 
 interface TagSuggestion {
@@ -56,7 +56,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
     automationRate: 0
   });
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   useEffect(() => {
     fetchTagSuggestions();

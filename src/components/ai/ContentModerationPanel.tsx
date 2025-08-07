@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { aiService } from '@/services/AIService';
 
 interface ModerationLog {
@@ -47,7 +47,7 @@ export const ContentModerationPanel: React.FC = () => {
   const [filter, setFilter] = useState<'all' | 'flagged' | 'pending'>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   useEffect(() => {
     fetchModerationLogs();

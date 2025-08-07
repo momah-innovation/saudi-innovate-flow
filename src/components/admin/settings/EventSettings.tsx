@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 
 interface EventSettingsProps {
@@ -17,7 +17,7 @@ interface EventSettingsProps {
 
 export function EventSettings({ settings, onSettingChange }: EventSettingsProps) {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const [newEventType, setNewEventType] = useState("");
   const [newEventCategory, setNewEventCategory] = useState("");

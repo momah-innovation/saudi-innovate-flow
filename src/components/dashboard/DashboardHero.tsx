@@ -7,7 +7,7 @@ import {
   Shield, BarChart3, Brain, FileText, Clock, Handshake, Briefcase, TrendingUp,
   Server, Activity, CheckCircle, Wifi, AlertCircle
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 
@@ -31,7 +31,7 @@ export const DashboardHero = ({
   userRole = 'innovator',
   rolePermissions 
 }: DashboardHeroProps) => {
-  const { t, language } = useTranslation();
+  const { t, language } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const [currentStat, setCurrentStat] = useState(0);
 

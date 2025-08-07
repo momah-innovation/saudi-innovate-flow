@@ -3,7 +3,7 @@ import { DetailModal } from '@/components/ui/detail-modal';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, Activity, Clock, CheckCircle, AlertTriangle, User, Database } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { supabase } from '@/integrations/supabase/client';
 
 interface SystemActivity {
@@ -26,7 +26,7 @@ interface SystemActivityDialogProps {
 export function SystemActivityDialog({ isOpen, onClose }: SystemActivityDialogProps) {
   const [activities, setActivities] = useState<SystemActivity[]>([]);
   const [loading, setLoading] = useState(false);
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   useEffect(() => {
     if (isOpen) {

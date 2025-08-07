@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { 
   TrendingUp, 
   Users, 
@@ -70,7 +70,7 @@ interface ChallengePerformance {
 }
 
 export function AnalyticsDashboard() {
-  const { t, getDynamicText, formatNumber } = useTranslation();
+  const { t, getDynamicText, formatNumber } = useUnifiedTranslation();
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
   const [userEngagement, setUserEngagement] = useState<UserEngagement[]>([]);
   const [challengePerformance, setChallengePerformance] = useState<ChallengePerformance[]>([]);

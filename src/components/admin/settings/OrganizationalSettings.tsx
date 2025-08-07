@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 
 interface OrganizationalSettingsProps {
@@ -17,7 +17,7 @@ interface OrganizationalSettingsProps {
 
 export function OrganizationalSettings({ settings, onSettingChange }: OrganizationalSettingsProps) {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const [newDepartment, setNewDepartment] = useState("");
   const [newPosition, setNewPosition] = useState("");

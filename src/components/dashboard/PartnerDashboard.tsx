@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Handshake, Briefcase, TrendingUp, Target } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { useNavigate } from 'react-router-dom';
 
 interface PartnerDashboardProps {
@@ -12,7 +12,7 @@ interface PartnerDashboardProps {
 }
 
 export function PartnerDashboard({ userProfile, canManageOpportunities, canViewPartnerDashboard }: PartnerDashboardProps) {
-  const { t, language } = useTranslation();
+  const { t, language } = useUnifiedTranslation();
   const navigate = useNavigate();
 
   const partnerStats = [

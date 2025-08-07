@@ -6,7 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
 import { Brain, Lightbulb, Star, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
 import { useAIFeatures } from '@/hooks/useAIFeatures';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { useToast } from '@/hooks/use-toast';
 
 interface IdeaEvaluationProps {
@@ -43,7 +43,7 @@ export const IdeaEvaluationAI: React.FC<IdeaEvaluationProps> = ({
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState('');
   const { isFeatureEnabled, getFeatureConfig } = useAIFeatures();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { toast } = useToast();
 
   const handleEvaluate = async () => {
