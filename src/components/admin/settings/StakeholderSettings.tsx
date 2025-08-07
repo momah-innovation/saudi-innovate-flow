@@ -10,9 +10,18 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 
+interface StakeholderSettingsData {
+  stakeholder_categories: string[];
+  relationship_types: string[];
+  maxStakeholders: number;
+  engagementTrackingDays: number;
+  enableEngagementTracking: boolean;
+  enableStakeholderNotifications: boolean;
+}
+
 interface StakeholderSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
+  settings: StakeholderSettingsData;
+  onSettingChange: (key: string, value: string[] | number | boolean) => void;
 }
 
 export function StakeholderSettings({ settings, onSettingChange }: StakeholderSettingsProps) {

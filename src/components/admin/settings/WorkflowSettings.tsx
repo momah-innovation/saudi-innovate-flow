@@ -12,9 +12,22 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 
+interface WorkflowSettingsData {
+  workflow_steps: string[];
+  approval_levels: string[];
+  defaultWorkflowTimeout: number;
+  maxConcurrentWorkflows: number;
+  escalationTimeHours: number;
+  reminderFrequencyHours: number;
+  enableMultiLevelApproval: boolean;
+  enableAutoEscalation: boolean;
+  enableReminders: boolean;
+  enableParallelApproval: boolean;
+}
+
 interface WorkflowSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
+  settings: WorkflowSettingsData;
+  onSettingChange: (key: string, value: string[] | number | boolean) => void;
 }
 
 export function WorkflowSettings({ settings, onSettingChange }: WorkflowSettingsProps) {

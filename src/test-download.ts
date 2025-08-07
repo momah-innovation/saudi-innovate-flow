@@ -1,9 +1,10 @@
 // Quick test to trigger the download function
 import { downloadOpportunityImages } from './utils/downloadOpportunityImages';
+import { logger } from './utils/logger';
 
-console.log('Starting image download test...');
+logger.info('Starting image download test...');
 downloadOpportunityImages().then(result => {
-  console.log('Download result:', result);
+  logger.info('Download result', { data: result });
 }).catch(error => {
-  console.error('Download error:', error);
+  logger.error('Download error', undefined, error);
 });

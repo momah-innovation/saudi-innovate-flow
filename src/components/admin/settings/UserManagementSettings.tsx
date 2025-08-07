@@ -11,9 +11,21 @@ import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+interface UserManagementSettingsData {
+  user_roles: string[];
+  maxUsers: number;
+  userInactivityDays: number;
+  passwordValidityDays: number;
+  maxConcurrentSessions: number;
+  allowPublicRegistration: boolean;
+  requireEmailVerification: boolean;
+  enableTwoFactorAuth: boolean;
+  enableUserActivityTracking: boolean;
+}
+
 interface UserManagementSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
+  settings: UserManagementSettingsData;
+  onSettingChange: (key: string, value: string[] | number | boolean) => void;
 }
 
 export function UserManagementSettings({ settings, onSettingChange }: UserManagementSettingsProps) {

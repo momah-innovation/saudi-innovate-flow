@@ -218,7 +218,7 @@ describe('Runtime Performance Tests', () => {
       // Each test should validate against these baselines
       Object.entries(baselines).forEach(([metric, threshold]) => {
         expect(threshold).toBeGreaterThan(0)
-        console.log(`Baseline for ${metric}: ${threshold}`)
+        // Performance test baseline logging removed - use test framework reporting
       })
     })
 

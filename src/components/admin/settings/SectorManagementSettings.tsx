@@ -10,9 +10,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
+interface SectorSettings {
+  sectorTypes: string[];
+}
+
 interface SectorManagementSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
+  settings: SectorSettings;
+  onSettingChange: (key: string, value: string[]) => void;
 }
 
 export function SectorManagementSettings({ settings, onSettingChange }: SectorManagementSettingsProps) {

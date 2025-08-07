@@ -11,9 +11,23 @@ import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 import { supabase } from "@/integrations/supabase/client";
 
+interface TeamSettingsData {
+  organization_types: string[];
+  maxTeamSize: number;
+  minTeamSize: number;
+  maxTeamsPerUser: number;
+  maxConcurrentProjects: number;
+  workloadPercentageLimit: number;
+  membershipDuration: number;
+  allowOpenTeamJoining: boolean;
+  enableTeamPerformanceTracking: boolean;
+  enableWeeklyCapacityTracking: boolean;
+  enableCrossTeamCollaboration: boolean;
+}
+
 interface TeamSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
+  settings: TeamSettingsData;
+  onSettingChange: (key: string, value: string[] | number | boolean) => void;
 }
 
 export function TeamSettings({ settings, onSettingChange }: TeamSettingsProps) {

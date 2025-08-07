@@ -11,10 +11,23 @@ import { FileUploader } from '@/components/ui/file-uploader';
 import { Calendar, MapPin, DollarSign, Clock, Target, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+interface ChallengeData {
+  title_ar: string;
+  description_ar: string;
+  challenge_type: string;
+  priority_level: string;
+  estimated_budget: string;
+  start_date: string;
+  end_date: string;
+  max_participants: string;
+  tags: string[];
+  image_url: string;
+}
+
 interface ChallengeFormProps {
-  onSubmit: (data: any) => void;
+  onSubmit: (data: ChallengeData) => void;
   onCancel: () => void;
-  initialData?: any;
+  initialData?: Partial<ChallengeData>;
   isLoading?: boolean;
   mode?: 'create' | 'edit';
 }
@@ -42,7 +55,7 @@ export function ChallengeForm({
     ...initialData
   });
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: keyof ChallengeData, value: string | string[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 

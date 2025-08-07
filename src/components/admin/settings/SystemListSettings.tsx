@@ -9,9 +9,25 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 
+interface SystemListsData {
+  challenge_types: string[];
+  priority_levels: string[];
+  status_options: string[];
+  event_types: string[];
+  event_categories: string[];
+  stakeholder_categories: string[];
+  relationship_types: string[];
+  team_specializations: string[];
+  expert_roles: string[];
+  idea_assignment_types: string[];
+  evaluator_types: string[];
+  campaign_themes: string[];
+  analytics_metrics: string[];
+}
+
 interface SystemListSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
+  settings: SystemListsData;
+  onSettingChange: (key: string, value: string[]) => void;
 }
 
 export function SystemListSettings({ settings, onSettingChange }: SystemListSettingsProps) {

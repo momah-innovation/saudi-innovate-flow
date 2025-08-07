@@ -69,7 +69,7 @@ export function AdvancedSearch({
 
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const handleFilterChange = (key: keyof SearchFilters, value: any) => {
+  const handleFilterChange = (key: keyof SearchFilters, value: string | string[]) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 

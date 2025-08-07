@@ -11,9 +11,22 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 
+interface UISettingsData {
+  ui_themes: string[];
+  component_variants: string[];
+  defaultTheme: string;
+  defaultDirection: string;
+  sidebarWidth: number;
+  maxContentWidth: number;
+  enableDarkMode: boolean;
+  enableThemeCustomization: boolean;
+  enableCollapsibleSidebar: boolean;
+  enableAnimations: boolean;
+}
+
 interface UISettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
+  settings: UISettingsData;
+  onSettingChange: (key: string, value: string[] | string | number | boolean) => void;
 }
 
 export function UISettings({ settings, onSettingChange }: UISettingsProps) {
