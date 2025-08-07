@@ -21,7 +21,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { supabase } from '@/integrations/supabase/client';
 
 interface FileActionsDropdownProps {
@@ -46,7 +46,7 @@ export function FileActionsDropdown({
   onShowInfo
 }: FileActionsDropdownProps) {
   const { toast } = useToast();
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCopyUrl = async () => {

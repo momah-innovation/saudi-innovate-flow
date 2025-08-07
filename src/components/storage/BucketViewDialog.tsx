@@ -15,7 +15,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { format } from 'date-fns';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 
 interface BucketViewDialogProps {
   bucket: any | null;
@@ -32,7 +32,7 @@ export function BucketViewDialog({
   onViewFiles, 
   onOpenSettings 
 }: BucketViewDialogProps) {
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   if (!bucket) return null;
 
   const formatSize = (size?: number) => {

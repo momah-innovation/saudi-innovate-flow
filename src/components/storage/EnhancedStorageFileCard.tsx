@@ -3,7 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { FileActionsDropdown } from './FileActionsDropdown';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import {
   FileIcon,
   FileImage,
@@ -41,7 +41,7 @@ export function EnhancedStorageFileCard({
   onSelectionChange,
   showSelection = false
 }: EnhancedStorageFileCardProps) {
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   const [imageError, setImageError] = useState(false);
 
   const formatFileSize = (bytes: number) => {

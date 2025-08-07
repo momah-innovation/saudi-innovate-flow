@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { 
   Building2, 
   DollarSign, 
@@ -57,7 +57,7 @@ export const EditOpportunityDialog = ({
   onSuccess
 }: EditOpportunityDialogProps) => {
   const { isRTL } = useDirection();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);

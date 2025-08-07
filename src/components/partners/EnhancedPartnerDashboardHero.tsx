@@ -20,7 +20,7 @@ import {
   Building
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { cn } from '@/lib/utils';
 
 interface PartnerDashboardHeroProps {
@@ -44,7 +44,7 @@ export const EnhancedPartnerDashboardHero = ({
   onShowOpportunities
 }: PartnerDashboardHeroProps) => {
   const { isRTL } = useDirection();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [currentStat, setCurrentStat] = useState(0);
 
   const partnerStats = [

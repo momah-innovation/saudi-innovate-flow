@@ -8,7 +8,7 @@ import { useUploaderSettingsContext } from '@/contexts/UploaderSettingsContext';
 import { RTLAware } from '@/components/ui/rtl-aware';
 import { Upload, Settings } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 
 interface FixedStorageUploadTabProps {
   onFilesUploaded: () => void;
@@ -16,7 +16,7 @@ interface FixedStorageUploadTabProps {
 
 export function FixedStorageUploadTab({ onFilesUploaded }: FixedStorageUploadTabProps) {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   
   const { 

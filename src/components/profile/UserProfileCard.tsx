@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { User, Mail, Phone, Building, MapPin, Edit } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 
 interface UserProfileCardProps {
   onEdit?: () => void;
@@ -12,7 +12,7 @@ interface UserProfileCardProps {
 
 export function UserProfileCard({ onEdit }: UserProfileCardProps) {
   const { userProfile, user } = useAuth();
-  const { t, getDynamicText } = useTranslation();
+  const { t, getDynamicText } = useUnifiedTranslation();
 
   if (!user || !userProfile) {
     return (

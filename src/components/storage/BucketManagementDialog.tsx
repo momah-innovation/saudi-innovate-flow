@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator'
 import { AlertTriangle, Database, Globe, Lock, Settings, Shield, Trash2 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
-import { useTranslation } from '@/hooks/useAppTranslation'
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 
 interface BucketManagementDialogProps {
   bucket: any | null

@@ -17,7 +17,7 @@ import {
   Calendar, DollarSign, Users, FileText, 
   Target, Clock, Send, Building
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { toast } from 'sonner';
 
 interface OpportunityItem {
@@ -42,7 +42,7 @@ export function OpportunityDetailDialog({
   open,
   onOpenChange
 }: OpportunityDetailDialogProps) {
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   const [showApplication, setShowApplication] = useState(false);
   const [applicationData, setApplicationData] = useState({
     contribution_amount: '',

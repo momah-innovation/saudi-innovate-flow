@@ -14,7 +14,7 @@ import {
   Calendar, DollarSign, Users, FileText, 
   Target, TrendingUp, MessageSquare, Edit
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 
 interface Partnership {
   id: string;
@@ -40,7 +40,7 @@ export function PartnershipDetailDialog({
   onOpenChange,
   onEdit
 }: PartnershipDetailDialogProps) {
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
 
   if (!partnership) return null;
 

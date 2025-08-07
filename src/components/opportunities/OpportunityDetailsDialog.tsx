@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { ShareOpportunityDialog } from './ShareOpportunityDialog';
 import { BookmarkOpportunityButton } from './BookmarkOpportunityButton';
 import { LikeOpportunityButton } from './LikeOpportunityButton';
@@ -68,7 +68,7 @@ export const OpportunityDetailsDialog = ({
   onOpenChange
 }: OpportunityDetailsDialogProps) => {
   const { isRTL } = useDirection();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [opportunity, setOpportunity] = useState<OpportunityDetails | null>(null);
   const [loading, setLoading] = useState(false);
   const [viewStartTime, setViewStartTime] = useState<number>(Date.now());

@@ -15,7 +15,7 @@ import {
   Eye, Filter, Download, Calendar, 
   Search, DollarSign, Building
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 
 interface Application {
   id: string;
@@ -43,7 +43,7 @@ export function PartnershipApplicationsTable({
   loading = false,
   onViewApplication
 }: PartnershipApplicationsTableProps) {
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 

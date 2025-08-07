@@ -8,7 +8,7 @@ import { CompactSearchAndFilters } from "@/components/ui/compact-search-filters"
 import { BulkActions } from "@/components/ui/bulk-actions";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
 
 // Use unified ViewMode from layout-selector
 export type FilterConfig = {
@@ -110,7 +110,7 @@ export function StandardPageLayout({
 }: StandardPageLayoutProps) {
   const [currentLayout, setCurrentLayout] = useState<ViewMode>(defaultLayout);
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   
   const hasSelectedItems = selectedItems.length > 0;
   const showLayoutSelector = supportedLayouts.length > 1;

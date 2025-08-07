@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Database, Eye, Settings, Trash2, MoreVertical, FolderOpen } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { format } from 'date-fns'
-import { useTranslation } from '@/hooks/useAppTranslation'
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 
 interface StorageBucket {
   id: string
