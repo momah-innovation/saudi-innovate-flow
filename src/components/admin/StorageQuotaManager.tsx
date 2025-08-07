@@ -28,9 +28,14 @@ interface StorageQuotaManagerProps {
   className?: string
 }
 
+import { useSettingsManager } from '@/hooks/useSettingsManager';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+
 export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ className }) => {
   const { quotas, loading, error, setQuota, removeQuota, autoSetupQuotas, refreshQuotas } = useStorageQuotas()
   const { toast } = useToast()
+  const { t } = useUnifiedTranslation(); 
+  const { getSettingValue } = useSettingsManager();
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedBucket, setSelectedBucket] = useState('')
   const [quotaSize, setQuotaSize] = useState('')
@@ -64,7 +69,8 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
   const formatBytes = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes'
     const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+    const fileSizeUnits = getSettingValue('file_size_units', []) as string[];
+    const sizes = fileSizeUnits;
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }

@@ -102,9 +102,9 @@ export function OpportunityWizard({
 
   // Currency options from settings
   const currencyOptionsData = getSettingValue('currency_options', []) as string[];
+  const currencyCodesData = getSettingValue('currency_codes', []) as string[];
   const currencyOptions = currencyOptionsData.map((currency, index) => {
-    const codes = ['SAR', 'USD', 'EUR'];
-    return { value: codes[index] || 'SAR', label: currency };
+    return { value: currencyCodesData[index] || 'SAR', label: currency };
   });
 
   useEffect(() => {

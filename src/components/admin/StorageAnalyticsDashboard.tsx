@@ -36,17 +36,20 @@ interface StorageAnalyticsDashboardProps {
   className?: string
 }
 
-const CHART_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D']
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 
 export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps> = ({ className }) => {
   const { analytics, loading, error, refreshAnalytics } = useStorageAnalytics()
   const { t } = useUnifiedTranslation()
   const { mr } = useRTLAwareClasses()
+  const { getSettingValue } = useSettingsManager();
+  const CHART_COLORS = getSettingValue('chart_colors', []) as string[];
+  const fileSizeUnits = getSettingValue('file_size_units', []) as string[];
 
   const formatBytes = (bytes: number): string => {
     if (bytes === 0) return `0 ${t("storage.bytes")}`
     const k = 1024
-    const sizes = [t("storage.bytes"), 'KB', 'MB', t("storage.gb"), 'TB']
+    const sizes = fileSizeUnits.map(unit => t(`storage.${unit.toLowerCase()}`) || unit);
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
