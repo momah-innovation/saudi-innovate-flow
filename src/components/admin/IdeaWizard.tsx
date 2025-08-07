@@ -328,18 +328,20 @@ export function IdeaWizard({
 
       onSave();
       onClose();
-    } catch (error: any) {
+    } catch (error: Error | unknown) {
       // Failed to save idea - show error to user
       
       // Handle specific database errors
-      if (error?.message?.includes('duplicate')) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      
+      if (errorMessage.includes('duplicate')) {
         setErrors({ title_ar: "يوجد فكرة بنفس العنوان بالفعل" });
-      } else if (error?.message?.includes('constraint')) {
+      } else if (errorMessage.includes('constraint')) {
         setErrors({ general: "خطأ في القيود المدخلة" });
       } else {
         toast({
           title: "خطأ",
-          description: error?.message || "فشل في حفظ الفكرة",
+          description: errorMessage || "فشل في حفظ الفكرة",
           variant: "destructive",
         });
       }

@@ -62,12 +62,17 @@ export const currentSessionProgress = {
       'src/pages/TeamWorkspace.tsx - Fixed 2 console logs',
       'src/components/ai/AIPreferencesPanel.tsx - Fixed 1 any type + enhanced translation',
       'src/components/ai/ContentModerationPanel.tsx - Fixed 3 console logs + 1 any type',
-      'src/components/analytics/LogflareAnalyticsDashboard.tsx - Fixed 2 console logs + 1 any type'
+      'src/components/analytics/LogflareAnalyticsDashboard.tsx - Fixed 2 console logs + 1 any type',
+      'src/components/admin/ChallengeSettings.tsx - Fixed 1 any type',
+      'src/components/admin/ChallengeWizard.tsx - Fixed 8 any types',
+      'src/components/admin/EventsManagement.tsx - Fixed 4 any types + enhanced logging',
+      'src/components/admin/IdeaWizard.tsx - Fixed 1 any type',
+      'src/components/admin/StakeholdersManagement.tsx - Fixed 3 any types'
     ],
     
     metrics: {
-      consoleLogsFixed: 159, // 155 + 4 more AI/Analytics components fixed
-      anyTypesFixed: 107,    // 105 + 2 more any types fixed
+      consoleLogsFixed: 159, // Same as before
+      anyTypesFixed: 124,    // 107 + 17 more any types fixed in Admin components
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -83,12 +88,12 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 181, // Down from 185 (4 more AI/Analytics fixed)
-    anyTypesToReplace: 372,    // Down from 374 (2 more any types fixed)
+    consoleLogsToMigrate: 181, // Same as before  
+    anyTypesToReplace: 355,    // Down from 372 (17 more any types fixed)
     estimatedSessionsRemaining: 2
   },
   
-  status: 'AI_ANALYTICS_PHASE_COMPLETE'
+  status: 'ADMIN_COMPONENTS_PHASE_ONGOING'
 };
 
 export default currentSessionProgress;

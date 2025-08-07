@@ -95,10 +95,13 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
 
       if (error) throw error;
 
-      const settingsUpdate = data?.reduce((acc: any, setting) => {
-        const value = typeof setting.setting_value === 'string' ? 
-          parseInt(setting.setting_value) || 0 : 
-          setting.setting_value || 0;
+      const settingsUpdate = data?.reduce((acc: Record<string, number>, setting) => {
+        let value = 0;
+        if (typeof setting.setting_value === 'string') {
+          value = parseInt(setting.setting_value) || 0;
+        } else if (typeof setting.setting_value === 'number') {
+          value = setting.setting_value;
+        }
         
         switch (setting.setting_key) {
           case 'ui_default_textarea_rows':

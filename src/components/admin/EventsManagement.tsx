@@ -10,7 +10,7 @@ import { AdminEventCard } from '@/components/events/AdminEventCard';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 // Temporarily use any[] to avoid type conflicts
-import { logger, errorHandler } from '@/utils/error-handler';
+import { logger } from '@/utils/logger';
 import { 
   Calendar, 
   Clock,
@@ -26,12 +26,30 @@ interface EventsManagementProps {
   onAddDialogChange: (open: boolean) => void;
 }
 
+interface EventData {
+  id: string;
+  title_ar: string;
+  status: string;
+  event_type?: string;
+  image_url?: string;
+  registered_participants?: number;
+  budget?: number;
+  description_ar?: string;
+  event_category?: string;
+  event_visibility?: string;
+  event_date?: string;
+  start_time?: string;
+  end_time?: string;
+  format?: string;
+  actual_participants?: number;
+}
+
 export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: EventsManagementProps) {
   const { language } = useUnifiedTranslation();
   const { toast } = useToast();
-  const [selectedEvent, setSelectedEvent] = useState<any>(null);
-  const [viewEvent, setViewEvent] = useState<any>(null);
-  const [events, setEvents] = useState<any[]>([]);
+  const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
+  const [viewEvent, setViewEvent] = useState<EventData | null>(null);
+  const [events, setEvents] = useState<EventData[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Load events from Supabase
@@ -67,7 +85,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
 
       setEvents(eventsWithCounts);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      logger.error('Error loading events', { component: 'EventsManagement', action: 'loadEvents' }, error as Error);
       toast({
         title: 'خطأ في تحميل الفعاليات',
         description: 'حدث خطأ أثناء تحميل الفعاليات',
@@ -93,17 +111,20 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
     return imageMap[eventType] || imageMap.default;
   };
 
-  const handleEdit = (event: any) => {
+  const handleEdit = (event: EventData) => {
+    logger.info('Editing event', { component: 'EventsManagement', action: 'handleEdit', data: { eventId: event.id } });
     setSelectedEvent(event);
     onAddDialogChange(true);
   };
 
-  const handleView = (event: any) => {
+  const handleView = (event: EventData) => {
+    logger.info('Viewing event', { component: 'EventsManagement', action: 'handleView', data: { eventId: event.id } });
     setViewEvent(event);
   };
 
-  const handleDelete = async (event: any) => {
+  const handleDelete = async (event: EventData) => {
     try {
+      logger.info('Deleting event', { component: 'EventsManagement', action: 'handleDelete', data: { eventId: event.id } });
       const { error } = await supabase
         .from('events')
         .delete()
@@ -118,7 +139,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
 
       loadEvents(); // Reload events
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      logger.error('Error deleting event', { component: 'EventsManagement', action: 'handleDelete' }, error as Error);
       toast({
         title: 'خطأ في حذف الفعالية',
         variant: 'destructive'
@@ -126,8 +147,9 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
     }
   };
 
-  const handleStatusChange = async (event: any, newStatus: string) => {
+  const handleStatusChange = async (event: EventData, newStatus: string) => {
     try {
+      logger.info('Changing event status', { component: 'EventsManagement', action: 'handleStatusChange', data: { eventId: event.id, newStatus } });
       const { error } = await supabase
         .from('events')
         .update({ status: newStatus })
@@ -142,7 +164,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
 
       loadEvents(); // Reload events
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      logger.error('Error updating event status', { component: 'EventsManagement', action: 'handleStatusChange' }, error as Error);
       toast({
         title: 'خطأ في تحديث الحالة',
         variant: 'destructive'
@@ -188,8 +210,16 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
               key={event.id}
               event={{
                 ...event,
+                description_ar: event.description_ar || '',
+                event_type: event.event_type || 'conference',
                 event_category: event.event_category || 'standalone',
-                event_visibility: event.event_visibility || 'public'
+                event_visibility: event.event_visibility || 'public',
+                event_date: event.event_date || new Date().toISOString(),
+                start_time: event.start_time || '09:00',
+                end_time: event.end_time || '17:00',
+                format: event.format || 'in-person',
+                actual_participants: event.actual_participants || 0,
+                registered_participants: event.registered_participants || 0
               }}
               viewMode={viewMode}
               onEdit={handleEdit}
@@ -222,7 +252,19 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
 
       {/* View Event Dialog */}
       <ComprehensiveEventDialog
-        event={viewEvent}
+        event={viewEvent ? { 
+          ...viewEvent, 
+          description_ar: viewEvent.description_ar || '',
+          event_type: viewEvent.event_type || 'conference',
+          event_category: viewEvent.event_category || 'standalone',
+          event_visibility: viewEvent.event_visibility || 'public',
+          event_date: viewEvent.event_date || new Date().toISOString(),
+          start_time: viewEvent.start_time || '09:00',
+          end_time: viewEvent.end_time || '17:00',
+          format: viewEvent.format || 'in-person',
+          actual_participants: viewEvent.actual_participants || 0,
+          registered_participants: viewEvent.registered_participants || 0
+        } : null}
         open={!!viewEvent}
         onOpenChange={(open) => !open && setViewEvent(null)}
         isAdmin={true}

@@ -55,14 +55,14 @@ interface ChallengeWizardProps {
 }
 
 interface SystemLists {
-  departments: any[];
-  deputies: any[];
-  sectors: any[];
-  domains: any[];
-  subDomains: any[];
-  services: any[];
-  partners: any[];
-  experts: any[];
+  departments: Array<{ id: string; name: string; name_ar: string; }>;
+  deputies: Array<{ id: string; name: string; name_ar: string; }>;
+  sectors: Array<{ id: string; name: string; name_ar: string; }>;
+  domains: Array<{ id: string; name: string; name_ar: string; }>;
+  subDomains: Array<{ id: string; name: string; name_ar: string; }>;
+  services: Array<{ id: string; name: string; name_ar: string; }>;
+  partners: Array<{ id: string; name: string; name_ar: string; }>;
+  experts: Array<{ id: string; user_id: string; expertise_areas?: string[]; }>;
 }
 
 export function ChallengeWizard({ isOpen, onClose, onSuccess, challenge }: ChallengeWizardProps) {

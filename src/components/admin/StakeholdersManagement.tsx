@@ -105,25 +105,41 @@ interface StakeholdersManagementProps {
   onAddDialogChange: (open: boolean) => void;
 }
 
+interface StakeholderData {
+  id: string;
+  name: string;
+  organization: string;
+  position: string;
+  email: string;
+  phone: string;
+  stakeholder_type: string;
+  influence_level: string;
+  interest_level: string;
+  engagement_status: string;
+  notes: string;
+  projects_count: number;
+  last_interaction: string;
+}
+
 export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: StakeholdersManagementProps) {
   const { language } = useUnifiedTranslation();
-  const [selectedStakeholder, setSelectedStakeholder] = useState<any>(null);
+  const [selectedStakeholder, setSelectedStakeholder] = useState<StakeholderData | null>(null);
   const [showViewDialog, setShowViewDialog] = useState(false);
-  const [stakeholderToDelete, setStakeholderToDelete] = useState<any>(null);
+  const [stakeholderToDelete, setStakeholderToDelete] = useState<StakeholderData | null>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
-  const handleEdit = (stakeholder: any) => {
+  const handleEdit = (stakeholder: StakeholderData) => {
     setSelectedStakeholder(stakeholder);
     onAddDialogChange(true);
   };
 
-  const handleView = (stakeholder: any) => {
+  const handleView = (stakeholder: StakeholderData) => {
     // Implement stakeholder view functionality
     setSelectedStakeholder(stakeholder);
     setShowViewDialog(true);
   };
 
-  const handleDelete = (stakeholder: any) => {
+  const handleDelete = (stakeholder: StakeholderData) => {
     // Implement stakeholder deletion with confirmation
     setStakeholderToDelete(stakeholder);
     setShowDeleteConfirmation(true);
