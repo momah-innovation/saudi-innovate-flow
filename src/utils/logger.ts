@@ -14,6 +14,10 @@ export interface LogContext {
   key?: string;
   ideaId?: string;
   query?: string;
+  expertId?: string;
+  partnerId?: string;
+  challengeId?: string;
+  filters?: any;
   data?: Record<string, any>;
 }
 

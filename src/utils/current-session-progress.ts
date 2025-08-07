@@ -87,11 +87,16 @@ export const currentSessionProgress = {
       'src/components/dialogs/SystemActivityDialog.tsx - Fixed 1 console log',
       'src/components/dialogs/SystemHealthDialog.tsx - Fixed 1 console log',
       'src/components/ideas/IdeaDetailDialog.tsx - Fixed 3 console logs',
-      'src/components/ideas/IdeaFiltersDialog.tsx - Fixed 1 console log'
+      'src/components/ideas/IdeaFiltersDialog.tsx - Fixed 1 console log',
+      'src/components/admin/experts/ExpertDetailView.tsx - Fixed 1 console log',
+      'src/components/admin/opportunities/OpportunityManagementList.tsx - Fixed 1 console log',
+      'src/components/admin/partners/PartnerDetailView.tsx - Fixed 1 console log',
+      'src/components/challenges/ChallengeViewDialog.tsx - Fixed 3 console logs',
+      'src/components/dev/performance-dashboard.tsx - Fixed 1 console log'
     ],
     
     metrics: {
-      consoleLogsFixed: 177, // 170 + 7 more console logs fixed in dashboard/dialogs/ideas components
+      consoleLogsFixed: 184, // 177 + 7 more console logs fixed in admin/challenges/dev components  
       anyTypesFixed: 148,    // No new any types, but console logs migrated
       buildErrors: 0,
       healthScore: 100,
@@ -103,17 +108,18 @@ export const currentSessionProgress = {
       'Centralized logger usage across 63 files',
       'Proper TypeScript interfaces',
       'Progress tracking system',
-      'Complete Events System modernization'
+      'Complete Events System modernization',
+      'Admin/Challenges/Dev Components enhanced'
     ]
   },
   
   remaining: {
-    consoleLogsToMigrate: 163, // Down from 170 (7 more console logs migrated)  
+    consoleLogsToMigrate: 156, // Down from 163 (7 more console logs migrated)  
     anyTypesToReplace: 331,    // Same as before
     estimatedSessionsRemaining: 2
   },
   
-  status: 'DASHBOARD_DIALOGS_IDEAS_PHASE_COMPLETE'
+  status: 'ADMIN_CHALLENGES_DEV_PHASE_COMPLETE'
 };
 
 export default currentSessionProgress;

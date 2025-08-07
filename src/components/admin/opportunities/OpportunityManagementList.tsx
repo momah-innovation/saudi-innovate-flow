@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/logger";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -206,10 +207,14 @@ export function OpportunityManagementList({
       
       setOpportunities(filteredOpportunities);
     } catch (error) {
-      console.error('Error fetching opportunities:', error);
+      logger.error('Failed to fetch opportunities list', { 
+        component: 'OpportunityManagementList', 
+        action: 'fetchOpportunities',
+        filters 
+      }, error as Error);
       toast({
-        title: "خطأ",
-        description: "فشل في جلب قائمة الفرص",
+        title: t('error', 'Error'),
+        description: t('opportunities.fetch_error', 'Failed to fetch opportunities list'),
         variant: "destructive",
       });
     } finally {

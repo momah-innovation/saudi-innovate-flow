@@ -12,7 +12,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { ChallengeFocusQuestionWizard } from './ChallengeFocusQuestionWizard';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 import {
   Users,
   Calendar,
@@ -75,6 +77,7 @@ export function ChallengeViewDialog({
   const { isRTL } = useDirection();
   const { user, hasRole } = useAuth();
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const navigate = useNavigate();
   
   const [submissions, setSubmissions] = useState<any[]>([]);
@@ -122,10 +125,14 @@ export function ChallengeViewDialog({
       if (error) throw error;
       setSubmissions(data || []);
     } catch (error) {
-      console.error('Error fetching submissions:', error);
+      logger.error('Failed to fetch challenge submissions', { 
+        component: 'ChallengeViewDialog', 
+        action: 'fetchSubmissions',
+        challengeId: challenge.id 
+      }, error as Error);
       toast({
-        title: "Error",
-        description: "Failed to load submissions",
+        title: t('error', 'Error'),
+        description: t('challenges.submissions_error', 'Failed to load submissions'),
         variant: "destructive"
       });
     } finally {
@@ -146,7 +153,12 @@ export function ChallengeViewDialog({
       
       setIsParticipating(!!data);
     } catch (error) {
-      console.error('Error checking participation:', error);
+      logger.error('Failed to check participation status', { 
+        component: 'ChallengeViewDialog', 
+        action: 'checkParticipationStatus',
+        challengeId: challenge.id,
+        userId: user.id 
+      }, error as Error);
     }
   };
 
@@ -163,7 +175,12 @@ export function ChallengeViewDialog({
       
       setIsBookmarked(!!data);
     } catch (error) {
-      console.error('Error checking bookmark:', error);
+      logger.error('Failed to check bookmark status', { 
+        component: 'ChallengeViewDialog', 
+        action: 'checkBookmarkStatus',
+        challengeId: challenge.id,
+        userId: user.id 
+      }, error as Error);
     }
   };
 

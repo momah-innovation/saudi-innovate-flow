@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/logger";
 import { 
   User, 
   Star,
@@ -70,7 +71,11 @@ export function ExpertDetailView({
         }
       });
     } catch (error) {
-      console.error('Error fetching expert data:', error);
+      logger.error('Failed to fetch expert related data', { 
+        component: 'ExpertDetailView', 
+        action: 'fetchRelatedData',
+        expertId: expert.id 
+      }, error as Error);
     } finally {
       setLoading(false);
     }

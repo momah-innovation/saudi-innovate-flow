@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { phase8Tracker, PerformanceReport } from '@/utils/performance-tracker';
 import { trackMemoryUsage } from '@/utils/bundle-analyzer';
 import { Activity, Zap, Package, Code, TrendingUp } from 'lucide-react';
+import { logger } from '@/utils/logger';
 
 interface PerformanceDashboardProps {
   isOpen: boolean;
@@ -31,7 +32,10 @@ export const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
       setReport(newReport);
       trackMemoryUsage();
     } catch (error) {
-      console.error('Failed to generate performance report:', error);
+      logger.error('Failed to generate performance report', { 
+        component: 'PerformanceDashboard', 
+        action: 'generateReport' 
+      }, error as Error);
     } finally {
       setIsLoading(false);
     }

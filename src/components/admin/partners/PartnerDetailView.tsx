@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/logger";
 import { 
   Building, 
   Globe,
@@ -68,7 +69,11 @@ export function PartnerDetailView({
         }
       });
     } catch (error) {
-      console.error('Error fetching partner data:', error);
+      logger.error('Failed to fetch partner related data', { 
+        component: 'PartnerDetailView', 
+        action: 'fetchRelatedData',
+        partnerId: partner.id 
+      }, error as Error);
     } finally {
       setLoading(false);
     }
