@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/logger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface ChallengeUpdate {
   id: string;
@@ -23,6 +25,7 @@ export const useRealTimeChallenges = ({
   const { user } = useAuth();
   const { toast } = useToast();
   const [isConnected, setIsConnected] = useState(false);
+  const { t } = useUnifiedTranslation();
 
   useEffect(() => {
     if (!user) return;
@@ -38,22 +41,25 @@ export const useRealTimeChallenges = ({
           table: 'challenge_participants'
         },
         async (payload) => {
-          console.log('Participants change:', payload);
+          logger.info('Challenge participants change', { 
+            eventType: payload.eventType,
+            challengeId: (payload.new as any)?.challenge_id 
+          });
           
           if (payload.eventType === 'INSERT') {
             // Get updated participant count
             const { count } = await supabase
               .from('challenge_participants')
               .select('*', { count: 'exact' })
-              .eq('challenge_id', payload.new.challenge_id);
+              .eq('challenge_id', (payload.new as any).challenge_id);
 
-            onParticipantUpdate?.(payload.new.challenge_id, count || 0);
+            onParticipantUpdate?.((payload.new as any).challenge_id, count || 0);
 
             // Show notification if it's not the current user
-            if (payload.new.user_id !== user.id) {
+            if ((payload.new as any).user_id !== user.id) {
               toast({
-                title: 'New Participant!',
-                description: 'Someone just joined a challenge you\'re interested in.',
+                title: t('new_participant', 'New Participant!'),
+                description: t('challenge_participant_joined', 'Someone just joined a challenge you\'re interested in.'),
               });
             }
           }
@@ -72,17 +78,21 @@ export const useRealTimeChallenges = ({
           table: 'challenges'
         },
         (payload) => {
-          console.log('Challenge change:', payload);
+          logger.info('Challenge status change', { 
+            challengeId: payload.new?.id,
+            oldStatus: payload.old?.status,
+            newStatus: payload.new?.status 
+          });
           
-          if (payload.old.status !== payload.new.status) {
+          if ((payload.old as any).status !== (payload.new as any).status) {
             const update: ChallengeUpdate = {
-              id: `${payload.new.id}-${Date.now()}`,
-              challenge_id: payload.new.id,
+              id: `${(payload.new as any).id}-${Date.now()}`,
+              challenge_id: (payload.new as any).id,
               type: 'status_change',
               data: {
-                old_status: payload.old.status,
-                new_status: payload.new.status,
-                title: payload.new.title_ar
+                old_status: (payload.old as any).status,
+                new_status: (payload.new as any).status,
+                title: (payload.new as any).title_ar
               },
               created_at: new Date().toISOString()
             };
@@ -90,8 +100,8 @@ export const useRealTimeChallenges = ({
             onChallengeUpdate?.(update);
 
             toast({
-              title: 'Challenge Updated',
-              description: `Challenge status changed to ${payload.new.status}`,
+              title: t('challenge_updated', 'Challenge Updated'),
+              description: t('challenge_status_changed', 'Challenge status changed to {{status}}', { status: (payload.new as any).status }),
             });
           }
         }
@@ -109,25 +119,28 @@ export const useRealTimeChallenges = ({
           table: 'challenge_submissions'
         },
         (payload) => {
-          console.log('New submission:', payload);
+          logger.info('New challenge submission', { 
+            challengeId: payload.new?.challenge_id,
+            submittedBy: payload.new?.submitted_by 
+          });
           
           const update: ChallengeUpdate = {
-            id: `${payload.new.id}-${Date.now()}`,
-            challenge_id: payload.new.challenge_id,
+            id: `${(payload.new as any).id}-${Date.now()}`,
+            challenge_id: (payload.new as any).challenge_id,
             type: 'submission',
             data: {
-              title: payload.new.title_ar,
-              submitted_by: payload.new.submitted_by
+              title: (payload.new as any).title_ar,
+              submitted_by: (payload.new as any).submitted_by
             },
-            created_at: payload.new.created_at
+            created_at: (payload.new as any).created_at
           };
 
           onChallengeUpdate?.(update);
 
-          if (payload.new.submitted_by !== user.id) {
+          if ((payload.new as any).submitted_by !== user.id) {
             toast({
-              title: 'New Submission!',
-              description: 'A new project has been submitted to a challenge.',
+              title: t('new_submission', 'New Submission!'),
+              description: t('challenge_new_submission', 'A new project has been submitted to a challenge.'),
             });
           }
         }

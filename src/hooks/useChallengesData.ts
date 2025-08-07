@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/logger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export interface Challenge {
   id: string;
@@ -39,23 +41,24 @@ export const useChallengesData = () => {
     totalPrizes: 0,
   });
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
 
   const fetchChallenges = async () => {
     try {
       setLoading(true);
 
-      // Debug: Check user authentication
+      // Check user authentication
       const { data: { user } } = await supabase.auth.getUser();
-      console.log('Current user:', user?.id);
+      logger.debug('Fetching challenges for user', { userId: user?.id });
       
-      // Debug: Check user roles if authenticated
+      // Check user roles if authenticated
       if (user) {
         const { data: roles } = await supabase
           .from('user_roles')
           .select('role')
           .eq('user_id', user.id)
           .eq('is_active', true);
-        console.log('User roles:', roles);
+        logger.debug('User roles loaded', { userId: user.id, roles: roles?.map(r => r.role) });
       }
 
       // Fetch challenges with participant counts (all sensitivity levels based on user permissions)
@@ -72,8 +75,10 @@ export const useChallengesData = () => {
         throw challengesError;
       }
 
-      console.log('Fetched challenges count:', challengesData?.length);
-      console.log('Sample challenge data:', challengesData?.[0]);
+      logger.info('Challenges data fetched', { 
+        count: challengesData?.length,
+        sampleId: challengesData?.[0]?.id 
+      });
 
       // Fetch submissions count for each challenge
       const challengeIds = challengesData?.map(c => c.id) || [];
@@ -137,8 +142,10 @@ export const useChallengesData = () => {
         };
       });
 
-      console.log('Transformed challenges:', transformedChallenges.length);
-      console.log('Challenge sensitivity levels:', transformedChallenges.map(c => ({ id: c.id, sensitivity: c.sensitivity_level })));
+      logger.info('Challenges transformation completed', { 
+        transformedCount: transformedChallenges.length,
+        sensitivityLevels: transformedChallenges.map(c => ({ id: c.id, sensitivity: c.sensitivity_level }))
+      });
       
       setChallenges(transformedChallenges);
 
@@ -158,8 +165,8 @@ export const useChallengesData = () => {
     } catch (error) {
       console.error('Error fetching challenges:', error);
       toast({
-        title: 'خطأ في جلب البيانات',
-        description: 'حدث خطأ أثناء جلب بيانات التحديات',
+        title: t('fetch_error', 'خطأ في جلب البيانات'),
+        description: t('challenges_fetch_error', 'حدث خطأ أثناء جلب بيانات التحديات'),
         variant: 'destructive',
       });
     } finally {

@@ -4,6 +4,7 @@
  */
 
 import { useCallback, useMemo, useRef, useEffect } from 'react';
+import { logger } from '@/utils/logger';
 
 /**
  * Hook for optimized callback with dependency tracking
@@ -29,7 +30,7 @@ export function useExpensiveMemo<T>(
     const end = performance.now();
     
     if (debugName && process.env.NODE_ENV === 'development') {
-      console.log(`${debugName} computation time: ${end - start}ms`);
+      logger.performance(`${debugName} computation`, end - start, { debugName });
     }
     
     return result;
@@ -50,7 +51,12 @@ export function useRenderTracker(componentName: string, props?: Record<string, a
     lastRenderTime.current = now;
     
     if (process.env.NODE_ENV === 'development') {
-      console.log(`${componentName} render #${renderCount.current} (${timeSinceLastRender}ms since last)`, props);
+      logger.debug(`${componentName} render #${renderCount.current}`, { 
+        component: componentName, 
+        renderCount: renderCount.current, 
+        timeSinceLastRender,
+        props 
+      });
     }
   });
   
@@ -73,7 +79,8 @@ export function usePerformanceMonitor(componentName: string) {
     
     if (process.env.NODE_ENV === 'development') {
       const avgRenderTime = renderTimes.current.reduce((a, b) => a + b, 0) / renderTimes.current.length;
-      console.log(`${componentName} performance:`, {
+      logger.performance(`${componentName} performance`, avgRenderTime, {
+        component: componentName,
         mountTime: mountTime.current,
         renderTime,
         avgRenderTime,
@@ -86,7 +93,7 @@ export function usePerformanceMonitor(componentName: string) {
     return () => {
       if (process.env.NODE_ENV === 'development') {
         const totalTime = Date.now() - mountTime.current;
-        console.log(`${componentName} unmounted after ${totalTime}ms`);
+        logger.performance(`${componentName} unmounted`, totalTime, { component: componentName });
       }
     };
   }, [componentName]);

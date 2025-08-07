@@ -4,6 +4,8 @@ import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
 import { useUploaderSettings } from '@/hooks/useUploaderSettings'
 import { UPLOAD_CONFIGS } from '@/utils/uploadConfigs'
+import { logger } from '@/utils/logger'
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation'
 
 export interface FileUploadConfig {
   uploadType: string
@@ -41,6 +43,7 @@ export const useFileUploader = () => {
   const { toast } = useToast()
   const { globalSettings, getUploadConfig, loading: settingsLoading } = useUploaderSettings()
   const [isUploading, setIsUploading] = useState(false)
+  const { t } = useUnifiedTranslation()
 
   // Helper function to resolve configuration with database settings
   const resolveUploadConfig = useCallback((config: FileUploadConfig): FileUploadConfig => {
@@ -191,11 +194,11 @@ export const useFileUploader = () => {
       }
 
     } catch (error) {
-      console.error('Upload error:', error)
+      logger.error('File upload failed', { operation: 'uploadFiles', uploadType: resolvedConfig.uploadType }, error as Error)
       const errorMessage = error instanceof Error ? error.message : 'Upload failed'
       
       toast({
-        title: 'Upload failed',
+        title: t('upload_failed', 'Upload failed'),
         description: errorMessage,
         variant: 'destructive'
       })
@@ -250,7 +253,7 @@ export const useFileUploader = () => {
             })
         }
       } catch (error) {
-        console.warn('Failed to log file access:', error)
+        logger.warn('Failed to log file access', { relativePath, trackAccess }, error as Error)
       }
     }
     
@@ -283,7 +286,7 @@ export const useFileUploader = () => {
           .move(tempPath, finalPath)
 
         if (moveError) {
-          console.error('Move error:', moveError)
+          logger.error('File move operation failed', { operation: 'moveFile', tempPath, finalPath }, moveError)
           continue
         }
 
@@ -311,7 +314,10 @@ export const useFileUploader = () => {
           .eq('id', resolvedFinalConfig.entityId)
 
         if (updateError) {
-          console.error('Database update error:', updateError)
+          logger.error('Database update failed during file commit', { 
+            tableName: resolvedFinalConfig.tableName, 
+            entityId: resolvedFinalConfig.entityId 
+          }, updateError);
         }
       }
 
@@ -321,7 +327,7 @@ export const useFileUploader = () => {
       }
 
     } catch (error) {
-      console.error('Commit error:', error)
+      logger.error('File commit operation failed', { operation: 'commitTemporaryFiles' }, error as Error)
       return {
         success: false,
         errors: [{ file: 'Commit', error: error instanceof Error ? error.message : 'Failed to commit files' }]
@@ -341,15 +347,18 @@ export const useFileUploader = () => {
       })
 
       if (error) {
-        console.error('Cleanup edge function error:', error)
+        logger.error('Cleanup edge function failed', { tempSessionId }, error)
         return
       }
 
       if (data?.success) {
-        console.log(`Cleanup completed: ${data.cleanedFiles} files removed`)
+        logger.info('Temporary files cleanup completed', { 
+          tempSessionId, 
+          cleanedFiles: data.cleanedFiles 
+        })
       }
     } catch (error) {
-      console.error('Cleanup error:', error)
+      logger.error('File cleanup failed', { tempSessionId }, error as Error)
     }
   }, [supabase, globalSettings])
 

@@ -29,6 +29,32 @@ export interface LogContext {
   selectedTypes?: string[];
   filters?: any;
   data?: Record<string, any>;
+  debugName?: string;
+  renderCount?: number;
+  mountTime?: number;
+  transformedCount?: number;
+  roles?: string[];
+  count?: number;
+  sensitivityLevels?: any[];
+  sampleId?: string;
+  timeSinceLastRender?: number;
+  props?: Record<string, any>;
+  renderTime?: number;
+  avgRenderTime?: number;
+  recommendationId?: string;
+  uploadType?: string;
+  relativePath?: string;
+  trackAccess?: boolean;
+  tempPath?: string;
+  finalPath?: string;
+  tableName?: string;
+  entityId?: string;
+  tempSessionId?: string;
+  cleanedFiles?: number;
+  eventType?: string;
+  oldStatus?: string;
+  newStatus?: string;
+  submittedBy?: string;
 }
 
 export enum LogLevel {

@@ -116,11 +116,16 @@ export const currentSessionProgress = {
       'src/components/opportunities/AdvancedPerformanceMetrics.tsx - Fixed 1 console log',
       'src/components/opportunities/ApplicationsAnalytics.tsx - Fixed 1 console log',
       'src/components/opportunities/ShareOpportunityDialog.tsx - Fixed 2 console logs',
-      'src/components/organizations/OrganizationShowcase.tsx - Fixed 1 console log'
+      'src/components/organizations/OrganizationShowcase.tsx - Fixed 1 console log',
+      'src/hooks/performance/use-optimization.ts - Fixed 4 console logs',
+      'src/hooks/useChallengesData.ts - Fixed 6 console logs + enhanced translation',
+      'src/hooks/useFileUploader.ts - Fixed 5 console logs + enhanced translation',
+      'src/hooks/useRealTimeAnalytics.ts - Fixed 4 console logs',
+      'src/hooks/useRealTimeChallenges.ts - Fixed 3 console logs + enhanced translation'
     ],
     
     metrics: {
-      consoleLogsFixed: 230, // 221 + 9 more console logs fixed in ideas/opportunities/organizations components  
+      consoleLogsFixed: 252, // 230 + 22 more console logs fixed in hooks
       anyTypesFixed: 148,    // No new any types, but console logs migrated
       buildErrors: 0,
       healthScore: 100,
@@ -138,12 +143,12 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 110, // Down from 119 (9 more console logs migrated)  
-    anyTypesToReplace: 331,    // Same as before
+    consoleLogsToMigrate: 88, // Down from 110 (22 more console logs migrated)  
+    anyTypesToReplace: 331,   // Same as before
     estimatedSessionsRemaining: 1
   },
   
-  status: 'IDEAS_OPPORTUNITIES_ORGANIZATIONS_PHASE_COMPLETE'
+  status: 'HOOKS_PHASE_COMPLETE'
 };
 
 export default currentSessionProgress;

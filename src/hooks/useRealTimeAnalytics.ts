@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 
 interface RealTimeAnalyticsProps {
   opportunityId: string;
@@ -31,7 +32,10 @@ export const useRealTimeAnalytics = ({ opportunityId, onAnalyticsUpdate }: RealT
           filter: `opportunity_id=eq.${opportunityId}`
         },
         (payload) => {
-          console.log('Real-time analytics update:', payload);
+          logger.debug('Real-time analytics update received', { 
+            opportunityId, 
+            eventType: payload.eventType 
+          });
           
           if (payload.eventType === 'UPDATE' && payload.new) {
             const newAnalytics = {
@@ -60,7 +64,7 @@ export const useRealTimeAnalytics = ({ opportunityId, onAnalyticsUpdate }: RealT
           filter: `opportunity_id=eq.${opportunityId}`
         },
         (payload) => {
-          console.log('New application:', payload);
+          logger.info('New application received', { opportunityId, userId: payload.new?.user_id });
           // Trigger analytics refresh
           refreshAnalytics();
         }
@@ -79,7 +83,10 @@ export const useRealTimeAnalytics = ({ opportunityId, onAnalyticsUpdate }: RealT
           filter: `opportunity_id=eq.${opportunityId}`
         },
         (payload) => {
-          console.log('Likes update:', payload);
+          logger.debug('Likes update received', { 
+            opportunityId, 
+            eventType: payload.eventType 
+          });
           refreshAnalytics();
         }
       )
@@ -97,7 +104,7 @@ export const useRealTimeAnalytics = ({ opportunityId, onAnalyticsUpdate }: RealT
           filter: `opportunity_id=eq.${opportunityId}`
         },
         (payload) => {
-          console.log('New share:', payload);
+          logger.info('New share received', { opportunityId, userId: payload.new?.user_id });
           refreshAnalytics();
         }
       )
@@ -136,7 +143,7 @@ export const useRealTimeAnalytics = ({ opportunityId, onAnalyticsUpdate }: RealT
         onAnalyticsUpdate?.(updatedAnalytics);
       }
     } catch (error) {
-      console.error('Error refreshing analytics:', error);
+      logger.error('Analytics refresh failed', { opportunityId }, error as Error);
     }
   };
 
