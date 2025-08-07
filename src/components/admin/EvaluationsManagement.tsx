@@ -141,7 +141,7 @@ export function EvaluationsManagement({
       }
 
     } catch (error) {
-      console.error("Error fetching evaluations:", error);
+      logger.error("Error fetching evaluations", error);
       toast({
         title: "Error",
         description: "Failed to fetch evaluations",

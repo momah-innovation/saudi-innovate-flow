@@ -128,7 +128,7 @@ export function OrganizationalStructureManagement() {
       setServices(servicesRes.data || []);
       setSectors(sectorsRes.data || []);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      logger.error("Error fetching data", error);
       toast({
         title: "Error",
         description: "Failed to fetch organizational data",

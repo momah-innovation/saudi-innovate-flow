@@ -64,87 +64,78 @@ export function SectorsManagement() {
       if (error) throw error;
       setSectors(data || []);
     } catch (error) {
-      console.error("Error fetching sectors:", error);
+      logger.error("Error fetching sectors", error);
+    }
+  };
+
+  const handleSaveSector = async () => {
+    if (!isFormValid()) return;
+
+    try {
+      setIsLoading(true);
+      
+      if (editingSector) {
+        const { error } = await supabase
+          .from('sectors')
+          .update({
+            name_ar: formData.name_ar,
+            name_en: formData.name_en,
+            description_ar: formData.description_ar,
+            description_en: formData.description_en,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', editingSector.id);
+
+        if (error) throw error;
+        
+        toast({
+          title: t('sectors.update_success'),
+          description: t('sectors.update_success_description')
+        });
+      } else {
+        const { error } = await supabase
+          .from('sectors')
+          .insert([formData]);
+
+        if (error) throw error;
+        
+        toast({
+          title: t('sectors.create_success'),
+          description: t('sectors.create_success_description')
+        });
+      }
+
+      fetchSectors();
+      resetForm();
+    } catch (error) {
+      logger.error("Error saving sector", error);
       toast({
-        title: "Error",
-        description: "Failed to fetch sectors",
-        variant: "destructive",
+        title: t('sectors.save_error'),
+        description: t('sectors.save_error_description'),
+        variant: 'destructive'
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      if (editingSector) {
-        const { error } = await supabase
-          .from("sectors")
-          .update(formData)
-          .eq("id", editingSector.id);
-
-        if (error) throw error;
-        toast({
-          title: "Success",
-          description: "Sector updated successfully",
-        });
-      } else {
-        const { error } = await supabase
-          .from("sectors")
-          .insert([formData]);
-
-        if (error) throw error;
-        toast({
-          title: "Success",
-          description: "Sector created successfully",
-        });
-      }
-
-      setIsDialogOpen(false);
-      setEditingSector(null);
-      resetForm();
-      fetchSectors();
-    } catch (error) {
-      console.error("Error saving sector:", error);
-      toast({
-        title: "Error",
-        description: "Failed to save sector",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleEdit = (sector: Sector) => {
-    setEditingSector(sector);
-    setFormData({
-      name: sector.name,
-      name_ar: sector.name_ar || "",
-      description: sector.description || "",
-      vision_2030_alignment: sector.vision_2030_alignment || ""
-    });
-    setIsDialogOpen(true);
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this sector?")) return;
-
+  const handleDeleteSector = async (sector: SystemSector) => {
     try {
       const { error } = await supabase
-        .from("sectors")
+        .from('sectors')
         .delete()
-        .eq("id", id);
+        .eq('id', sector.id);
 
       if (error) throw error;
-      
+
       toast({
-        title: "Success",
-        description: "Sector deleted successfully",
+        title: t('sectors.delete_success'),
+        description: t('sectors.delete_success_description')
       });
+
       fetchSectors();
     } catch (error) {
-      console.error("Error deleting sector:", error);
+      logger.error("Error deleting sector", error);
       toast({
         title: "Error",
         description: "Failed to delete sector",

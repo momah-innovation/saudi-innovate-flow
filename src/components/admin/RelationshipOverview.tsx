@@ -83,7 +83,7 @@ export function RelationshipOverview({
       
       setRelationships(mockRelationships);
     } catch (error) {
-      console.error('Error loading relationships:', error);
+      logger.error('Error loading relationships', error);
       toast({
         title: 'Error loading relationships',
         description: 'Failed to fetch relationship data',
