@@ -35,6 +35,8 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { useEventInteractions } from '@/hooks/useEventInteractions';
 import { useEventDetails } from '@/hooks/useEventDetails';
 import { PartnersStakeholdersTab } from './tabs/PartnersStakeholdersTab';
@@ -147,7 +149,11 @@ export const EnhancedEventDetailDialog = ({
       if (error) throw error;
       setResources(data || []);
     } catch (error) {
-      console.error('Error loading event resources:', error);
+      logger.error('Error loading event resources', { 
+        component: 'EnhancedEventDetailDialog', 
+        action: 'loadEventResources',
+        data: { eventId: event?.id }
+      }, error as Error);
     }
   };
 
@@ -171,7 +177,11 @@ export const EnhancedEventDetailDialog = ({
         setFeedbackText(usersFeedback.feedback_text || '');
       }
     } catch (error) {
-      console.error('Error loading feedback:', error);
+      logger.error('Error loading feedback', { 
+        component: 'EnhancedEventDetailDialog', 
+        action: 'loadEventFeedback',
+        data: { eventId: event.id }
+      }, error as Error);
     }
   };
 
@@ -205,7 +215,11 @@ export const EnhancedEventDetailDialog = ({
 
       loadEventFeedback();
     } catch (error) {
-      console.error('Error submitting feedback:', error);
+      logger.error('Error submitting feedback', { 
+        component: 'EnhancedEventDetailDialog', 
+        action: 'submitFeedback',
+        data: { eventId: event.id, rating, userId: user?.id }
+      }, error as Error);
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'حدث خطأ أثناء إرسال التقييم' : 'Failed to submit feedback',

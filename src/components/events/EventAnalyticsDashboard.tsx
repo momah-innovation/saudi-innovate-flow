@@ -5,6 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import {
   BarChart3,
   Users,
@@ -168,7 +170,10 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
       });
 
     } catch (error) {
-      console.error('Error loading analytics data:', error);
+      logger.error('Error loading analytics data', { 
+        component: 'EventAnalyticsDashboard', 
+        action: 'loadAnalyticsData'
+      }, error as Error);
     } finally {
       setLoading(false);
     }

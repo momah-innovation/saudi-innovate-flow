@@ -15,6 +15,8 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface RecommendedEvent {
   id: string;
@@ -100,7 +102,11 @@ export const EventRecommendations = ({ onEventSelect, className = "" }: EventRec
         setRecommendations(formattedRecommendations);
       }
     } catch (error) {
-      console.error('Error loading recommendations:', error);
+      logger.error('Error loading recommendations', { 
+        component: 'EventRecommendations', 
+        action: 'loadRecommendations',
+        userId: user?.id
+      }, error as Error);
     } finally {
       setLoading(false);
     }

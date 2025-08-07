@@ -39,6 +39,8 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface EventFormData {
   id?: string;
@@ -205,7 +207,10 @@ export const ComprehensiveEventWizard = ({
       setAvailableSectors(sectors || []);
 
     } catch (error) {
-      console.error('Error loading initial data:', error);
+      logger.error('Error loading initial data', { 
+        component: 'ComprehensiveEventWizard', 
+        action: 'loadInitialData'
+      }, error as Error);
     }
   };
 
@@ -242,7 +247,11 @@ export const ComprehensiveEventWizard = ({
         title: isRTL ? 'تم رفع الصورة بنجاح' : 'Image uploaded successfully',
       });
     } catch (error) {
-      console.error('Error uploading image:', error);
+      logger.error('Error uploading image', { 
+        component: 'ComprehensiveEventWizard', 
+        action: 'handleImageUpload',
+        data: { fileName: file?.name }
+      }, error as Error);
       toast({
         title: isRTL ? 'خطأ في رفع الصورة' : 'Error uploading image',
         variant: 'destructive'
@@ -337,7 +346,11 @@ export const ComprehensiveEventWizard = ({
       onSave(eventData);
       onClose();
     } catch (error) {
-      console.error('Error saving event:', error);
+      logger.error('Error saving event', { 
+        component: 'ComprehensiveEventWizard', 
+        action: 'handleSave',
+        data: { eventId: formData.id, isEditing: !!formData.id }
+      }, error as Error);
       toast({
         title: isRTL ? 'خطأ في حفظ الفعالية' : 'Error saving event',
         variant: 'destructive'

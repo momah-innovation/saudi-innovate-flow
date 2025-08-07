@@ -14,6 +14,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { 
   Clock, 
   Users, 
@@ -104,7 +106,11 @@ export const EventWaitlistDialog = ({
       setNotes('');
 
     } catch (error) {
-      console.error('Error joining waitlist:', error);
+      logger.error('Error joining waitlist', { 
+        component: 'EventWaitlistDialog', 
+        action: 'handleJoinWaitlist',
+        data: { eventId: event.id, userId: user?.id }
+      }, error as Error);
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'فشل في الانضمام لقائمة الانتظار' : 'Failed to join waitlist',

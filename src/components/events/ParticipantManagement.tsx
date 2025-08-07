@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/logger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -89,7 +91,11 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
       if (error) throw error;
       setParticipants((data as any) || []);
     } catch (error) {
-      console.error('Error fetching participants:', error);
+      logger.error('Error fetching participants', { 
+        component: 'ParticipantManagement', 
+        action: 'fetchParticipants',
+        data: { eventId }
+      }, error as Error);
       toast({
         title: "Error",
         description: "Failed to load participants",
@@ -144,7 +150,11 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
       
       fetchParticipants();
     } catch (error) {
-      console.error('Error updating participant status:', error);
+      logger.error('Error updating participant status', { 
+        component: 'ParticipantManagement', 
+        action: 'updateParticipantStatus',
+        data: { participantId, newStatus }
+      }, error as Error);
       toast({
         title: "Error",
         description: "Failed to update participant status",
@@ -179,7 +189,11 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
       setSelectedParticipants([]);
       fetchParticipants();
     } catch (error) {
-      console.error('Error bulk updating participants:', error);
+      logger.error('Error bulk updating participants', { 
+        component: 'ParticipantManagement', 
+        action: 'bulkUpdateStatus',
+        data: { selectedParticipants, newStatus }
+      }, error as Error);
       toast({
         title: "Error",
         description: "Failed to update participants",

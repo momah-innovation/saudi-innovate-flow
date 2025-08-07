@@ -12,6 +12,8 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/logger";
 import { 
   Check,
   ChevronsUpDown,
@@ -486,7 +488,11 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
       onSave();
       onClose();
     } catch (error) {
-      console.error('Error saving event:', error);
+      logger.error('Error saving event', { 
+        component: 'EventWizard', 
+        action: 'handleSave',
+        data: { eventId: event?.id, isEditing: !!event?.id }
+      }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في حفظ الحدث",

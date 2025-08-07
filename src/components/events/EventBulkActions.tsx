@@ -9,6 +9,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/logger";
 import { 
   Edit, 
   Trash2, 
@@ -95,7 +96,11 @@ export function EventBulkActions({
       setNewStatus("");
       onRefresh();
     } catch (error) {
-      console.error('Error updating events:', error);
+      logger.error('Error updating events', { 
+        component: 'EventBulkActions', 
+        action: 'handleBulkStatusUpdate',
+        data: { selectedEvents, newStatus }
+      }, error as Error);
       toast({
         title: "Error",
         description: "Failed to update events",
@@ -137,7 +142,11 @@ export function EventBulkActions({
       setBulkAction("");
       onRefresh();
     } catch (error) {
-      console.error('Error deleting events:', error);
+      logger.error('Error deleting events', { 
+        component: 'EventBulkActions', 
+        action: 'handleBulkDelete',
+        data: { selectedEvents }
+      }, error as Error);
       toast({
         title: "Error",
         description: "Failed to delete events",
@@ -252,7 +261,11 @@ export function EventBulkActions({
       setBulkAction("");
       onRefresh();
     } catch (error) {
-      console.error('Error duplicating events:', error);
+      logger.error('Error duplicating events', { 
+        component: 'EventBulkActions', 
+        action: 'handleDuplicateEvents',
+        data: { selectedEvents }
+      }, error as Error);
       toast({
         title: "Error",
         description: "Failed to duplicate events",

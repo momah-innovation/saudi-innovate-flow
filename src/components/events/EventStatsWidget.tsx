@@ -16,6 +16,8 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface EventStats {
   totalEvents: number;
@@ -106,7 +108,10 @@ export const EventStatsWidget = ({ className = "" }: EventStatsWidgetProps) => {
       });
 
     } catch (error) {
-      console.error('Error loading event stats:', error);
+      logger.error('Error loading event stats', { 
+        component: 'EventStatsWidget', 
+        action: 'loadEventStats'
+      }, error as Error);
     } finally {
       setLoading(false);
     }

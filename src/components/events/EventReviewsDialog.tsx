@@ -16,6 +16,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { 
   Star, 
   MessageCircle,
@@ -100,7 +102,11 @@ export const EventReviewsDialog = ({
       }
 
     } catch (error) {
-      console.error('Error loading reviews:', error);
+      logger.error('Error loading reviews', { 
+        component: 'EventReviewsDialog', 
+        action: 'loadReviews',
+        data: { eventId: event.id }
+      }, error as Error);
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'فشل في تحميل التقييمات' : 'Failed to load reviews',
@@ -157,7 +163,11 @@ export const EventReviewsDialog = ({
       loadReviews();
 
     } catch (error) {
-      console.error('Error submitting review:', error);
+      logger.error('Error submitting review', { 
+        component: 'EventReviewsDialog', 
+        action: 'handleSubmitReview',
+        data: { eventId: event.id, rating: newRating, userId: user?.id }
+      }, error as Error);
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'فشل في إرسال التقييم' : 'Failed to submit review',
