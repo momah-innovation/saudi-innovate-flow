@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 
 interface UseEnhancedViewTrackingProps {
   opportunityId: string;
@@ -51,7 +52,7 @@ export const useEnhancedViewTracking = ({
         timestamp: Date.now()
       });
     } catch (error) {
-      console.error('Error tracking behavior:', error);
+      logger.error('Error tracking behavior', { component: 'useEnhancedViewTracking', action: 'trackBehavior', opportunityId, actionType }, error as Error);
     }
   }, [opportunityId, enabled]);
 
@@ -77,7 +78,7 @@ export const useEnhancedViewTracking = ({
         }
       });
     } catch (error) {
-      console.error('Error tracking journey step:', error);
+      logger.error('Error tracking journey step', { component: 'useEnhancedViewTracking', action: 'trackJourneyStep', opportunityId, stepName }, error as Error);
     }
   }, [opportunityId, enabled]);
 
@@ -128,7 +129,7 @@ export const useEnhancedViewTracking = ({
         
         viewTrackedRef.current = true;
       } catch (error) {
-        console.error('Error initializing tracking:', error);
+        logger.error('Error initializing tracking', { component: 'useEnhancedViewTracking', action: 'initializeTracking', opportunityId }, error as Error);
       }
     };
 
@@ -159,7 +160,7 @@ export const useEnhancedViewTracking = ({
           }
         });
       } catch (error) {
-        console.error('Error tracking time spent:', error);
+        logger.error('Error tracking time spent', { component: 'useEnhancedViewTracking', action: 'trackTimeSpent', opportunityId }, error as Error);
       }
     };
 

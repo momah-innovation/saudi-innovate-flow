@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 
 export interface EventPartner {
   id: string;
@@ -101,7 +102,7 @@ export function useEventDetails(eventId: string | null) {
         loadCampaignInfo()
       ]);
     } catch (error) {
-      console.error('Error loading event details:', error);
+      logger.error('Error loading event details', { component: 'useEventDetails', action: 'loadEventDetails', eventId }, error as Error);
     } finally {
       setLoading(false);
     }
@@ -137,7 +138,7 @@ export function useEventDetails(eventId: string | null) {
 
       setPartners(partnersData);
     } catch (error) {
-      console.error('Error loading partners:', error);
+      logger.error('Error loading partners', { component: 'useEventDetails', action: 'loadPartners', eventId }, error as Error);
       setPartners([]);
     }
   };
@@ -174,7 +175,7 @@ export function useEventDetails(eventId: string | null) {
 
       setStakeholders(stakeholdersData);
     } catch (error) {
-      console.error('Error loading stakeholders:', error);
+      logger.error('Error loading stakeholders', { component: 'useEventDetails', action: 'loadStakeholders', eventId }, error as Error);
       setStakeholders([]);
     }
   };
@@ -184,7 +185,7 @@ export function useEventDetails(eventId: string | null) {
       // Simplified - just return empty for now since tables may not be linked
       setRelatedChallenges([]);
     } catch (error) {
-      console.error('Error loading related challenges:', error);
+      logger.error('Error loading related challenges', { component: 'useEventDetails', action: 'loadRelatedChallenges', eventId }, error as Error);
       setRelatedChallenges([]);
     }
   };
@@ -194,7 +195,7 @@ export function useEventDetails(eventId: string | null) {
       // Simplified - just return empty for now since tables may not be linked  
       setFocusQuestions([]);
     } catch (error) {
-      console.error('Error loading focus questions:', error);
+      logger.error('Error loading focus questions', { component: 'useEventDetails', action: 'loadFocusQuestions', eventId }, error as Error);
       setFocusQuestions([]);
     }
   };
@@ -218,7 +219,7 @@ export function useEventDetails(eventId: string | null) {
 
       setParticipants(data || []);
     } catch (error) {
-      console.error('Error loading participants:', error);
+      logger.error('Error loading participants', { component: 'useEventDetails', action: 'loadParticipants', eventId }, error as Error);
       setParticipants([]);
     }
   };
@@ -248,7 +249,7 @@ export function useEventDetails(eventId: string | null) {
 
       setCampaignInfo(campaignData);
     } catch (error) {
-      console.error('Error loading campaign info:', error);
+      logger.error('Error loading campaign info', { component: 'useEventDetails', action: 'loadCampaignInfo', eventId }, error as Error);
       setCampaignInfo(null);
     }
   };

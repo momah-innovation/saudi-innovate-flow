@@ -77,6 +77,8 @@ export interface LogContext {
   bookmarkId?: string;
   fileRecordId?: string;
   versionId?: string;
+  actionType?: string;
+  stepName?: string;
 }
 
 export enum LogLevel {

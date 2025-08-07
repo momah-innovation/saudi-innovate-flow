@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 
 interface SystemSettingsContextType {
   uiInitialsMaxLength: number;
@@ -83,7 +84,7 @@ export const SystemSettingsProvider: React.FC<SystemSettingsProviderProps> = ({ 
         error: null,
       });
     } catch (error) {
-      console.error('Error loading system settings:', error);
+      logger.error('Error loading system settings', { component: 'SystemSettingsContext', action: 'fetchSettings' }, error as Error);
       setSettings(prev => ({
         ...prev,
         loading: false,

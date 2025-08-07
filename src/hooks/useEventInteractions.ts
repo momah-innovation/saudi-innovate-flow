@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/logger';
 
 export interface EventInteractions {
   isBookmarked: boolean;
@@ -69,7 +70,7 @@ export function useEventInteractions(eventId: string | null) {
         average_rating: prev?.average_rating || 0
       }));
     } catch (error) {
-      console.error('Error loading event interactions:', error);
+      logger.error('Error loading event interactions', { component: 'useEventInteractions', action: 'loadEventInteractions', eventId }, error as Error);
     } finally {
       setLoading(false);
     }
@@ -100,7 +101,7 @@ export function useEventInteractions(eventId: string | null) {
         }));
       }
     } catch (error) {
-      console.error('Error loading event stats:', error);
+      logger.error('Error loading event stats', { component: 'useEventInteractions', action: 'loadEventStats', eventId }, error as Error);
     }
   };
 
@@ -153,7 +154,7 @@ export function useEventInteractions(eventId: string | null) {
         });
       }
     } catch (error) {
-      console.error('Error toggling bookmark:', error);
+      logger.error('Error toggling bookmark', { component: 'useEventInteractions', action: 'toggleBookmark', eventId }, error as Error);
       toast({
         title: 'خطأ',
         description: 'حدث خطأ أثناء حفظ الفعالية',
@@ -203,7 +204,7 @@ export function useEventInteractions(eventId: string | null) {
         } : null);
       }
     } catch (error) {
-      console.error('Error toggling like:', error);
+      logger.error('Error toggling like', { component: 'useEventInteractions', action: 'toggleLike', eventId }, error as Error);
       toast({
         title: 'خطأ',
         description: 'حدث خطأ أثناء الإعجاب بالفعالية',
@@ -252,7 +253,7 @@ export function useEventInteractions(eventId: string | null) {
         description: 'تم تسجيلك في الفعالية بنجاح'
       });
     } catch (error) {
-      console.error('Error registering for event:', error);
+      logger.error('Error registering for event', { component: 'useEventInteractions', action: 'registerForEvent', eventId }, error as Error);
       toast({
         title: 'خطأ في التسجيل',
         description: 'حدث خطأ أثناء التسجيل في الفعالية',

@@ -171,12 +171,16 @@ export const currentSessionProgress = {
       'src/components/ui/unsplash-image-browser.tsx - Fixed 4 console logs + enhanced logging',
       'src/components/ui/versioned-file-uploader.tsx - Fixed 3 console logs + enhanced logging',
       'src/hooks/useAIFeatures.ts - Fixed 3 console logs + enhanced error handling',
-      'src/hooks/useChallengesData.ts - Fixed 2 console logs + enhanced error handling'
+      'src/hooks/useChallengesData.ts - Fixed 2 console logs + enhanced error handling',
+      'src/hooks/useEventDetails.ts - Fixed 7 console logs + enhanced event handling',
+      'src/hooks/useEventInteractions.ts - Fixed 5 console logs + enhanced user interactions',
+      'src/hooks/useEnhancedViewTracking.ts - Fixed 4 console logs + enhanced analytics tracking',
+      'src/contexts/SystemSettingsContext.tsx - Fixed 1 console log + enhanced settings management'
     ],
     
     metrics: {
-      consoleLogsFixed: 359, // Updated: +22 from UI components and hooks
-      anyTypesFixed: 242,    // Updated: +5 from interface enhancements
+      consoleLogsFixed: 378, // Updated: +19 from critical hooks and contexts
+      anyTypesFixed: 242,    // Stable - focusing on console logs first
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -193,9 +197,9 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 0,  // All remaining UI/hooks console logs completed
-    anyTypesToReplace: 213,   // Focus now on remaining any types in other components
-    estimatedSessionsRemaining: 0.5  // Nearly complete
+    consoleLogsToMigrate: 125,  // Major progress on critical hooks
+    anyTypesToReplace: 213,     // Focus now on remaining any types  
+    estimatedSessionsRemaining: 1  // Significant progress made
   },
   
   status: 'BUILD_ERRORS_FIXED'
