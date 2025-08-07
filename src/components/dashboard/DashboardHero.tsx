@@ -7,7 +7,7 @@ import {
   Shield, BarChart3, Brain, FileText, Clock, Handshake, Briefcase, TrendingUp,
   Server, Activity, CheckCircle, Wifi, AlertCircle
 } from 'lucide-react';
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 

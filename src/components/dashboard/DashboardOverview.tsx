@@ -16,7 +16,7 @@ import {
   Star
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';

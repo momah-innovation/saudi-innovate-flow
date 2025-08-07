@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useRoleAccess } from '@/hooks/useRoleAccess';
 
 import { useSystemHealth } from '@/hooks/useSystemHealth';

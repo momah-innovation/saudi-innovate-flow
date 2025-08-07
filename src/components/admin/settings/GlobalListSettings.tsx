@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Trash2, Plus, List } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 import { useSettings } from "@/contexts/SettingsContext";
 import type { AllSystemSettings } from "@/contexts/SettingsContext";

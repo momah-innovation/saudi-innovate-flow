@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, Globe, Settings, Trash2, Save, Edit, Check, X } from "lucide-react";
 import { useSettingsManager } from "@/hooks/useSettingsManager";
-import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 import { ArrayEditor } from "./ArrayEditor";
 import { ObjectEditor } from "./ObjectEditor";
