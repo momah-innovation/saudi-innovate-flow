@@ -72,20 +72,20 @@ const SystemSettings = () => {
   }
 
   const categories = [
-    { key: "all", label: t('all'), icon: Database },
-    { key: "general", label: t('general'), icon: Settings },
-    { key: "challenges", label: t('system_settings_page.challenges'), icon: Settings },
-    { key: "ideas", label: t('system_settings_page.ideas'), icon: Settings },
-    { key: "events", label: t('system_settings_page.events'), icon: Settings },
-    { key: "campaigns", label: t('system_settings_page.campaigns'), icon: Settings },
-    { key: "partners", label: t('system_settings_page.partners'), icon: Settings },
-    { key: "opportunities", label: t('system_settings_page.opportunities'), icon: Settings },
-    { key: "analytics", label: t('system_settings_page.analytics'), icon: Settings },
-    { key: "security", label: t('security'), icon: Settings },
-    { key: "ai", label: t('system_settings_page.ai'), icon: Bot },
-    { key: "ui", label: t('system_settings_page.ui'), icon: Palette },
-    { key: "performance", label: t('system_settings_page.performance'), icon: Zap },
-    { key: "translations", label: t('system_settings_page.translation_management'), icon: Languages },
+    { key: "all", label: t('all', 'All'), icon: Database },
+    { key: "general", label: t('general', 'General'), icon: Settings },
+    { key: "challenges", label: t('system_settings_page.challenges', 'Challenges'), icon: Settings },
+    { key: "ideas", label: t('system_settings_page.ideas', 'Ideas'), icon: Settings },
+    { key: "events", label: t('system_settings_page.events', 'Events'), icon: Settings },
+    { key: "campaigns", label: t('system_settings_page.campaigns', 'Campaigns'), icon: Settings },
+    { key: "partners", label: t('system_settings_page.partners', 'Partners'), icon: Settings },
+    { key: "opportunities", label: t('system_settings_page.opportunities', 'Opportunities'), icon: Settings },
+    { key: "analytics", label: t('system_settings_page.analytics', 'Analytics'), icon: Settings },
+    { key: "security", label: t('security', 'Security'), icon: Settings },
+    { key: "ai", label: t('system_settings_page.ai', 'AI'), icon: Bot },
+    { key: "ui", label: t('system_settings_page.ui', 'UI'), icon: Palette },
+    { key: "performance", label: t('system_settings_page.performance', 'Performance'), icon: Zap },
+    { key: "translations", label: t('system_settings_page.translation_management', 'Translation Management'), icon: Languages },
   ];
 
   return (
@@ -93,8 +93,8 @@ const SystemSettings = () => {
       <div className={`container mx-auto p-6 space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
         {/* Header */}
         <div className={isRTL ? 'text-right' : 'text-left'}>
-          <h1 className="text-3xl font-bold">{t('systemSettings')}</h1>
-          <p className="text-muted-foreground">{t('systemSettingsDescription')}</p>
+          <h1 className="text-3xl font-bold">{t('systemSettings', 'System Settings')}</h1>
+          <p className="text-muted-foreground">{t('systemSettingsDescription', 'Manage and configure system-wide settings and preferences')}</p>
         </div>
 
         {/* Settings Management */}
@@ -102,10 +102,10 @@ const SystemSettings = () => {
           <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
             <CardTitle className="flex items-center gap-2">
               <Database className="w-5 h-5" />
-              {t('system_settings_page.title')}
+              {t('system_settings_page.title', 'System Configuration')}
             </CardTitle>
             <CardDescription>
-              {t('systemSettingsDescription')}
+              {t('systemSettingsDescription', 'Manage and configure system-wide settings and preferences')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -146,10 +146,10 @@ const SystemSettings = () => {
           <CardHeader className={isRTL ? 'text-right' : 'text-left'}>
             <CardTitle className="flex items-center gap-2">
               <List className="w-5 h-5" />
-              {t('system_settings_page.shared_settings')}
+              {t('system_settings_page.shared_settings', 'Shared Settings')}
             </CardTitle>
             <CardDescription>
-              {t('sharedSettingsDescription')}
+              {t('sharedSettingsDescription', 'Settings that are shared across multiple system components')}
             </CardDescription>
           </CardHeader>
           <CardContent>
