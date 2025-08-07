@@ -24,6 +24,7 @@ import {
   File
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 
 export interface FilterOptions {
   fileType: string;
@@ -58,36 +59,44 @@ export function StorageFilters({
   activeFilterCount
 }: StorageFiltersProps) {
   const { t, isRTL } = useUnifiedTranslation();
+  const { getSettingValue } = useSettingsManager();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const fileTypeOptionsData = getSettingValue('file_type_options', []) as string[];
+  const fileSizeCategoriesData = getSettingValue('file_size_categories', []) as string[];
+  const sortOptionsData = getSettingValue('sort_options', []) as string[];
+  const dateRangeOptionsData = getSettingValue('date_range_options', []) as string[];
 
   const fileTypeOptions = [
     { value: 'all', label: t('all_types'), icon: File },
-    { value: 'image', label: t('images'), icon: FileImage },
-    { value: 'document', label: t('documents'), icon: FileText },
-    { value: 'video', label: t('videos'), icon: FileVideo },
-    { value: 'audio', label: t('audio'), icon: FileAudio },
+    ...fileTypeOptionsData.map(type => ({ 
+      value: type.toLowerCase(), 
+      label: type, 
+      icon: type === 'صورة' ? FileImage : type === 'مستند' ? FileText : type === 'فيديو' ? FileVideo : type === 'صوت' ? FileAudio : File 
+    }))
   ];
 
   const sizeRangeOptions = [
     { value: 'all', label: t('any_size') },
-    { value: 'small', label: t('small_1mb') },
-    { value: 'medium', label: t('medium_1_10mb') },
-    { value: 'large', label: t('large_10mb') },
+    ...fileSizeCategoriesData.map(size => ({ 
+      value: size.toLowerCase().replace(/[^a-z]/g, ''), 
+      label: size 
+    }))
   ];
 
   const dateRangeOptions = [
     { value: 'all', label: t('any_date') },
-    { value: 'today', label: t('today') },
-    { value: 'week', label: t('this_week') },
-    { value: 'month', label: t('this_month') },
-    { value: 'year', label: t('this_year') },
+    ...dateRangeOptionsData.map(range => ({ 
+      value: range.toLowerCase().replace(/[^a-z]/g, ''), 
+      label: range 
+    }))
   ];
 
   const sortOptions = [
-    { value: 'name', label: t('name') },
-    { value: 'size', label: t('size') },
-    { value: 'date', label: t('date_modified') },
-    { value: 'type', label: t('file_type') },
+    ...sortOptionsData.map(sort => ({ 
+      value: sort.toLowerCase().replace(/[^a-z]/g, ''), 
+      label: sort 
+    }))
   ];
 
   return (
