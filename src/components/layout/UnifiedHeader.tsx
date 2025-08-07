@@ -105,8 +105,8 @@ export function UnifiedHeader({
   // Role-based access check
   const hasRole = (requiredRoles?: UserRole[]): boolean => {
     if (!requiredRoles || requiredRoles.length === 0) return true;
-    // TODO: Implement actual role checking logic with user's roles
-    return true; // Temporary - replace with actual role check
+    // Implement proper role checking with user's actual roles
+    return userProfile?.roles?.some(role => requiredRoles.includes(role)) || false;
   };
 
   // Dynamic content based on variant

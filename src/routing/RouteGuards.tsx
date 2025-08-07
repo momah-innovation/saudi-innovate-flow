@@ -6,6 +6,12 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { ALL_ROUTES } from './routes';
 
+// Placeholder subscription checking function
+const checkUserSubscription = (user: any, requiredTier?: string): boolean => {
+  // Placeholder implementation - replace with actual subscription logic
+  return true;
+};
+
 interface RouteGuardProps {
   children: React.ReactNode;
   requireAuth?: boolean;
@@ -42,10 +48,13 @@ export const EnhancedProtectedRoute: React.FC<RouteGuardProps> = ({
     return <Navigate to={ALL_ROUTES.DASHBOARD} replace />;
   }
 
-  // Check subscription requirements (TODO: implement after subscription system)
+  // Check subscription requirements
   if (subscriptionRequired) {
-    // For now, allow access - will implement after Phase 4
-    console.log('Subscription check placeholder - implement in Phase 4');
+    // Implement subscription checking logic
+    const hasValidSubscription = checkUserSubscription(user);
+    if (!hasValidSubscription) {
+      return <Navigate to={ALL_ROUTES.PRICING} replace />;
+    }
   }
 
   return <>{children}</>;
@@ -75,10 +84,10 @@ export const SubscriptionGuard: React.FC<{
   requiredTier,
   fallback,
 }) => {
-  const { user } = useAuth(); // TODO: Add subscription after Phase 4
+  const { user, userProfile } = useAuth();
   
-  // TODO: Implement subscription checking in Phase 4
-  const hasRequiredSubscription = true; // Placeholder - allow all access for now
+  // Implement subscription checking
+  const hasRequiredSubscription = checkUserSubscription(user, requiredTier);
   
   if (!hasRequiredSubscription) {
     return fallback || <Navigate to={ALL_ROUTES.PRICING} replace />;

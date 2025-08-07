@@ -78,6 +78,10 @@ export function EvaluationsManagement({
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [filterType, setFilterType] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const [evaluationToDelete, setEvaluationToDelete] = useState<Evaluation | null>(null);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   const { expertRoleTypes } = useSystemLists();
@@ -240,8 +244,21 @@ export function EvaluationsManagement({
                 const originalEval = evaluations.find(e => e.id === evalData.id);
                 if (originalEval) handleViewEvaluation(originalEval);
               }}
-              onEdit={(evalData) => {/* TODO: Implement edit functionality */}}
-              onDelete={(evalData) => {/* TODO: Implement delete functionality */}}
+              onEdit={(evalData) => {
+                const originalEval = evaluations.find(e => e.id === evalData.id);
+                if (originalEval) {
+                  setSelectedEvaluation(originalEval);
+                  setIsEditMode(true);
+                  setShowDialog(true);
+                }
+              }}
+              onDelete={(evalData) => {
+                const originalEval = evaluations.find(e => e.id === evalData.id);
+                if (originalEval) {
+                  setEvaluationToDelete(originalEval);
+                  setShowDeleteConfirmation(true);
+                }
+              }}
             />
           )) : [
           <div key="empty" className="text-center py-12">

@@ -65,6 +65,9 @@ export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAdd
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showViewDialog, setShowViewDialog] = useState(false);
+  const [campaignToDelete, setCampaignToDelete] = useState<Campaign | null>(null);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   useEffect(() => {
     loadCampaigns();
@@ -94,11 +97,15 @@ export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAdd
   };
 
   const handleView = (campaign: Campaign) => {
-    // TODO: Implement campaign view functionality
+    // Implement campaign view functionality
+    setSelectedCampaign(campaign);
+    setShowViewDialog(true);
   };
 
   const handleDelete = (campaign: Campaign) => {
-    // TODO: Implement campaign deletion
+    // Implement campaign deletion with confirmation
+    setCampaignToDelete(campaign);
+    setShowDeleteConfirmation(true);
   };
 
   return (

@@ -108,6 +108,9 @@ interface StakeholdersManagementProps {
 export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: StakeholdersManagementProps) {
   const { language } = useUnifiedTranslation();
   const [selectedStakeholder, setSelectedStakeholder] = useState<any>(null);
+  const [showViewDialog, setShowViewDialog] = useState(false);
+  const [stakeholderToDelete, setStakeholderToDelete] = useState<any>(null);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const handleEdit = (stakeholder: any) => {
     setSelectedStakeholder(stakeholder);
@@ -115,11 +118,15 @@ export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, on
   };
 
   const handleView = (stakeholder: any) => {
-    // TODO: Implement stakeholder view functionality
+    // Implement stakeholder view functionality
+    setSelectedStakeholder(stakeholder);
+    setShowViewDialog(true);
   };
 
   const handleDelete = (stakeholder: any) => {
-    // TODO: Implement stakeholder deletion
+    // Implement stakeholder deletion with confirmation
+    setStakeholderToDelete(stakeholder);
+    setShowDeleteConfirmation(true);
   };
 
   return (
