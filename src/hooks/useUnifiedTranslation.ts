@@ -61,70 +61,47 @@ export function useUnifiedTranslation() {
   }, [dbTranslations]);
 
   /**
-   * Primary translation function with multiple fallback strategies
-   * Compatible with i18next interpolation patterns
+   * Primary translation function - NEW UNIFIED SYSTEM ONLY
    * 1. Database translation (preferred)
-   * 2. i18next static translation
-   * 3. Provided fallback
-   * 4. Translation key itself
+   * 2. Provided fallback
+   * 3. Translation key itself
    */
-  const t = (key: string, fallbackOrOptions?: string | any): string => {
+  const t = (key: string, fallback?: string, interpolationOptions?: Record<string, any>): string => {
     try {
-      // Handle different parameter patterns for backward compatibility
-      let fallback: string | undefined;
-      let interpolationOptions: any = {};
-      
-      if (typeof fallbackOrOptions === 'string') {
-        fallback = fallbackOrOptions;
-      } else if (typeof fallbackOrOptions === 'object' && fallbackOrOptions !== null) {
-        interpolationOptions = fallbackOrOptions;
-        fallback = interpolationOptions.defaultValue;
-      }
-
       // Strategy 1: Database translation (highest priority)
       const dbTranslation = translationMap.get(key);
       if (dbTranslation) {
         const text = dbTranslation[language];
         if (text && text.trim() !== '') {
-          // Simple interpolation for database translations
           return interpolateText(text, interpolationOptions);
         }
       }
 
-      // Strategy 2: i18next static translation with full interpolation support
-      const i18nextResult = i18nextT(key, fallbackOrOptions);
-      if (i18nextResult && i18nextResult !== key && typeof i18nextResult === 'string' && i18nextResult.trim() !== '') {
-        return i18nextResult;
-      }
-
-      // Strategy 3: Provided fallback
+      // Strategy 2: Provided fallback
       if (fallback && fallback.trim() !== '') {
         return interpolateText(fallback, interpolationOptions);
       }
 
-      // Strategy 4: Return key as last resort
+      // Strategy 3: Return key as last resort
       return key;
     } catch (error) {
       console.warn(`Translation error for key "${key}":`, error);
-      return (typeof fallbackOrOptions === 'string' ? fallbackOrOptions : key);
+      return fallback || key;
     }
   };
 
   /**
    * Simple interpolation function for database translations
    */
-  const interpolateText = (text: string, options: any): string => {
+  const interpolateText = (text: string, options?: Record<string, any>): string => {
     if (!options || typeof options !== 'object') return text;
     
     let result = text;
     
-    // Handle common interpolation patterns
+    // Handle {{key}} interpolation patterns only
     Object.keys(options).forEach(key => {
-      if (key !== 'defaultValue' && options[key] !== undefined) {
-        // Replace {{key}} patterns
+      if (options[key] !== undefined) {
         result = result.replace(new RegExp(`{{${key}}}`, 'g'), String(options[key]));
-        // Replace {key} patterns  
-        result = result.replace(new RegExp(`{${key}}`, 'g'), String(options[key]));
       }
     });
     
