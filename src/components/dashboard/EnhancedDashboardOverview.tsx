@@ -13,6 +13,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/logger";
 import { useDirection } from "@/components/ui/direction-provider";
 import { toast } from "sonner";
 
@@ -113,7 +114,7 @@ export const EnhancedDashboardOverview = () => {
         loadTrends()
       ]);
     } catch (error) {
-      console.error('Error loading dashboard data:', error);
+      logger.error('Error loading dashboard data', { component: 'EnhancedDashboardOverview', action: 'loadDashboardData' }, error as Error);
       toast.error('خطأ في تحميل بيانات لوحة القيادة');
     } finally {
       setLoading(false);

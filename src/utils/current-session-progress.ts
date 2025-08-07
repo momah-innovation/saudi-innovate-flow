@@ -72,12 +72,17 @@ export const currentSessionProgress = {
       'src/components/admin/settings/ObjectEditor.tsx - Fixed 3 any types',
       'src/components/admin/settings/UnifiedSettingsManager.tsx - Fixed 2 any types',
       'src/components/admin/experts/ExpertDetailView.tsx - Fixed 1 any type',
-      'src/components/admin/partners/PartnerDetailView.tsx - Fixed 2 any types'
+      'src/components/admin/partners/PartnerDetailView.tsx - Fixed 2 any types',
+      'src/components/admin/ideas/IdeaDetailView.tsx - Fixed 1 console log',
+      'src/components/admin/ideas/IdeasManagementList.tsx - Fixed 1 console log',
+      'src/components/dashboard/DashboardOverview.tsx - Fixed 1 console log',
+      'src/components/dashboard/EnhancedDashboardOverview.tsx - Fixed 1 console log',
+      'src/components/dashboard/InnovatorDashboard.tsx - Fixed 2 console logs'
     ],
     
     metrics: {
-      consoleLogsFixed: 159, // Same as before
-      anyTypesFixed: 148,    // 124 + 24 more any types fixed in settings/experts/partners
+      consoleLogsFixed: 162, // 159 + 3 more console logs fixed in dashboard components
+      anyTypesFixed: 148,    // No new any types, but console logs migrated
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -93,12 +98,12 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 181, // Same as before  
-    anyTypesToReplace: 331,    // Down from 355 (24 more any types fixed)
+    consoleLogsToMigrate: 178, // Down from 181 (3 more console logs migrated)  
+    anyTypesToReplace: 331,    // Same as before
     estimatedSessionsRemaining: 2
   },
   
-  status: 'ADMIN_SETTINGS_PHASE_COMPLETE'
+  status: 'DASHBOARD_COMPONENTS_PHASE_COMPLETE'
 };
 
 export default currentSessionProgress;

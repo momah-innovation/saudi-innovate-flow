@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Filter, Clock, Target, AlertTriangle, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { logger } from "@/utils/logger";
 
 interface Challenge {
   id: string;
@@ -54,7 +55,7 @@ export const InnovatorDashboard = () => {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error fetching challenges:', error);
+        logger.error('Error fetching challenges', { component: 'InnovatorDashboard', action: 'fetchChallenges' }, error as Error);
         toast({
           title: "Error Loading Challenges",
           description: "Could not load available challenges. Please try again.",
@@ -65,7 +66,7 @@ export const InnovatorDashboard = () => {
 
       setChallenges((challengesData as any) || []);
     } catch (error) {
-      console.error('Error in fetchChallenges:', error);
+      logger.error('Error in fetchChallenges', { component: 'InnovatorDashboard', action: 'fetchChallenges' }, error as Error);
       // Show some sample challenges for demo purposes
       setChallenges([
         {

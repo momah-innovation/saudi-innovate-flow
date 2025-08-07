@@ -12,6 +12,7 @@ export interface LogContext {
   duration?: number;
   language?: string;
   key?: string;
+  ideaId?: string;
   data?: Record<string, any>;
 }
 

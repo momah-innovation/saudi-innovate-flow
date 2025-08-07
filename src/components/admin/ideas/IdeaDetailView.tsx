@@ -7,6 +7,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/logger";
 import { 
   Lightbulb, 
   Target, 
@@ -106,7 +107,7 @@ export function IdeaDetailView({
         analytics
       });
     } catch (error) {
-      console.error('Error fetching related data:', error);
+      logger.error('Error fetching related data', { component: 'IdeaDetailView', action: 'fetchRelatedData', ideaId: idea.id }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في تحميل البيانات المرتبطة",

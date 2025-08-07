@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/logger";
 import { BulkActionsPanel } from "./BulkActionsPanel";
 import { IdeaCommentsPanel } from "./IdeaCommentsPanel";
 import { IdeaWorkflowPanel } from "./IdeaWorkflowPanel";
@@ -143,7 +144,7 @@ export function IdeasManagementList({
       if (error) throw error;
       setIdeas(data || []);
     } catch (error) {
-      console.error('Error fetching ideas:', error);
+      logger.error('Error fetching ideas', { component: 'IdeasManagementList', action: 'fetchIdeas' }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في تحميل الأفكار",

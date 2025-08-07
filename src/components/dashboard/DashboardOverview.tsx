@@ -21,6 +21,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
+import { logger } from '@/utils/logger';
 
 interface DashboardStats {
   totalIdeas: number;
@@ -84,7 +85,7 @@ export const DashboardOverview = () => {
         ...userStats,
       });
     } catch (error) {
-      console.error('Error loading dashboard stats:', error);
+      logger.error('Error loading dashboard stats', { component: 'DashboardOverview', action: 'loadDashboardStats' }, error as Error);
     } finally {
       setLoading(false);
     }
