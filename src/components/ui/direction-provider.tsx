@@ -1,5 +1,5 @@
 import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
-import { useTranslation as useI18nextTranslation } from 'react-i18next';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 type Direction = 'ltr' | 'rtl';
 type Language = 'ar' | 'en';  // Arabic first
@@ -30,7 +30,7 @@ const RTL_LANGUAGES: Language[] = ['ar'];
 const DirectionContext = createContext<DirectionContextType | undefined>(undefined);
 
 export function DirectionProvider({ children }: { children: ReactNode }) {
-  const { i18n } = useI18nextTranslation();
+  const { i18n } = useUnifiedTranslation();
   const [direction, setDirectionState] = useState<Direction>(defaultConfig.direction);
   const [language, setLanguageState] = useState<Language>(defaultConfig.language);
 

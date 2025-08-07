@@ -36,7 +36,7 @@ import {
 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { RTLAware } from '@/components/ui/rtl-aware';
-import { useTranslation } from 'react-i18next';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface EnhancedStorageQuotasTabProps {
   onQuotasChanged?: () => void;
@@ -45,7 +45,7 @@ interface EnhancedStorageQuotasTabProps {
 export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuotasTabProps) {
   const { quotas, loading, error, setQuota, removeQuota, autoSetupQuotas, refreshQuotas } = useStorageQuotas();
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedBucket, setSelectedBucket] = useState('');
   const [quotaSize, setQuotaSize] = useState('');
