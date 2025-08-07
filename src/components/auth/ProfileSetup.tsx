@@ -32,6 +32,8 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { TestProfileCalculation } from '@/components/admin/TestProfileCalculation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface ProfileData {
   // Basic Information
@@ -107,24 +109,29 @@ export const ProfileSetup = () => {
   const { user, userProfile, updateProfile } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t } = useUnifiedTranslation();
 
   useEffect(() => {
-    console.log('ProfileSetup useEffect triggered:', {
-      hasUser: !!user,
-      userProfile,
-      profileCompletion: userProfile?.profile_completion_percentage,
-      userRoles: userProfile?.user_roles?.map(r => r.role)
+    logger.info('ProfileSetup useEffect triggered', { 
+      component: 'ProfileSetup',
+      action: 'useEffect',
+      data: {
+        hasUser: !!user,
+        userProfile: !!userProfile,
+        profileCompletion: userProfile?.profile_completion_percentage,
+        userRoles: userProfile?.user_roles?.map(r => r.role)
+      }
     });
 
     if (!user) {
-      console.log('ProfileSetup: No user, redirecting to auth');
+      logger.info('ProfileSetup: No user, redirecting to auth', { component: 'ProfileSetup', action: 'redirectToAuth' });
       navigate('/auth');
       return;
     }
     
     // Load existing profile data if it exists
     if (userProfile && userProfile.id && userProfile.profile_completion_percentage >= 80) {
-      console.log('ProfileSetup: Profile complete, redirecting to dashboard');
+      logger.info('ProfileSetup: Profile complete, redirecting to dashboard', { component: 'ProfileSetup', action: 'redirectToDashboard' });
       navigate('/dashboard');
       return;
     }
@@ -163,7 +170,7 @@ export const ProfileSetup = () => {
   const totalSteps = 4;
   const progress = (currentStep / totalSteps) * 100;
 
-  const handleInputChange = (field: keyof ProfileData, value: any) => {
+  const handleInputChange = (field: keyof ProfileData, value: string | ProfileData['experienceLevel']) => {
     setProfileData(prev => ({ ...prev, [field]: value }));
   };
 

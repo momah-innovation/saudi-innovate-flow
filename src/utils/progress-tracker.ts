@@ -161,4 +161,12 @@ progressTracker.markComponentCompleted('src/components/admin/focus-questions/Foc
 progressTracker.markComponentCompleted('src/components/ai/AutomatedTaggingPanel.tsx', 7, 3);
 progressTracker.markComponentCompleted('src/components/admin/StakeholderWizard.tsx', 1, 0);
 progressTracker.markComponentCompleted('src/components/admin/TestPrivilegeElevation.tsx', 2, 1);
+
+// Mark additional files completed
+progressTracker.initializeComponent('src/components/auth/ProfileSetup.tsx', 3, 1);
+progressTracker.initializeComponent('src/components/auth/ProtectedRoute.tsx', 5, 0);
+progressTracker.initializeComponent('src/components/dashboard/AdminDashboard.tsx', 1, 1);
+progressTracker.markComponentCompleted('src/components/auth/ProfileSetup.tsx', 3, 1);
+progressTracker.markComponentCompleted('src/components/auth/ProtectedRoute.tsx', 5, 0);
+progressTracker.markComponentCompleted('src/components/dashboard/AdminDashboard.tsx', 1, 1);
 progressTracker.logProgress();

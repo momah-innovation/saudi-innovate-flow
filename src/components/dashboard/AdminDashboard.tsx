@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useRoleAccess } from '@/hooks/useRoleAccess';
-
+import { logger } from '@/utils/logger';
 import { useSystemHealth } from '@/hooks/useSystemHealth';
 import { 
   AdminPageWrapper, 
@@ -38,8 +38,17 @@ import {
   Zap
 } from 'lucide-react';
 
+interface UserProfile {
+  id: string;
+  name: string;
+  position?: string;
+  organization?: string;
+  profile_completion_percentage: number;
+  user_roles?: Array<{ role: string }>;
+}
+
 interface AdminDashboardProps {
-  userProfile: any;
+  userProfile: UserProfile;
   canManageUsers: boolean;
   canManageSystem: boolean;
   canViewAnalytics: boolean;
@@ -55,7 +64,11 @@ export function AdminDashboard({ userProfile, canManageUsers, canManageSystem, c
   // Log current role for debugging
   useEffect(() => {
     const role = getPrimaryRole();
-    console.log('Admin Dashboard - Current role:', role);
+    logger.info('Admin Dashboard initialized', { 
+      component: 'AdminDashboard', 
+      action: 'init',
+      data: { currentRole: role }
+    });
   }, [getPrimaryRole]);
 
   const adminActions = [
