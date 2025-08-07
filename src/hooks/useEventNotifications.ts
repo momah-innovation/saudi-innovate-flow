@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/logger';
 
 interface EventNotification {
   id: string;
@@ -47,7 +48,7 @@ export const useEventNotifications = () => {
       setUnreadCount(unread);
 
     } catch (error) {
-      console.error('Error loading notifications:', error);
+      logger.error('Failed to load event notifications', { component: 'useEventNotifications', action: 'loadNotifications' }, error as Error);
     } finally {
       setLoading(false);
     }
@@ -106,7 +107,7 @@ export const useEventNotifications = () => {
       setUnreadCount(prev => Math.max(0, prev - 1));
 
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      logger.error('Failed to mark notification as read', { component: 'useEventNotifications', action: 'markAsRead', notificationId }, error as Error);
     }
   };
 
@@ -128,7 +129,7 @@ export const useEventNotifications = () => {
       setUnreadCount(0);
 
     } catch (error) {
-      console.error('Error marking all notifications as read:', error);
+      logger.error('Failed to mark all notifications as read', { component: 'useEventNotifications', action: 'markAllAsRead' }, error as Error);
     }
   };
 
@@ -150,7 +151,7 @@ export const useEventNotifications = () => {
       setNotifications(prev => prev.filter(n => n.id !== notificationId));
 
     } catch (error) {
-      console.error('Error deleting notification:', error);
+      logger.error('Failed to delete notification', { component: 'useEventNotifications', action: 'deleteNotification', notificationId }, error as Error);
     }
   };
 

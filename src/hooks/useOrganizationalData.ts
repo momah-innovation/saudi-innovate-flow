@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/logger';
 
 interface Department {
   id: string;
@@ -38,7 +39,7 @@ interface TeamMember {
   id: string;
   user_id: string;
   status: string;
-  [key: string]: any; // Allow any additional fields from the table
+  [key: string]: unknown; // Allow additional fields from the table
 }
 
 export function useOrganizationalData() {
@@ -61,7 +62,7 @@ export function useOrganizationalData() {
       if (error) throw error;
       setDepartments(data || []);
     } catch (error) {
-      console.error('Error fetching departments:', error);
+      logger.error('Failed to fetch departments', { component: 'useOrganizationalData', action: 'fetchDepartments' }, error as Error);
     }
   };
 
@@ -75,7 +76,7 @@ export function useOrganizationalData() {
       if (error) throw error;
       setDeputies(data || []);
     } catch (error) {
-      console.error('Error fetching deputies:', error);
+      logger.error('Failed to fetch deputies', { component: 'useOrganizationalData', action: 'fetchDeputies' }, error as Error);
     }
   };
 
@@ -89,7 +90,7 @@ export function useOrganizationalData() {
       if (error) throw error;
       setSectors(data || []);
     } catch (error) {
-      console.error('Error fetching sectors:', error);
+      logger.error('Failed to fetch sectors', { component: 'useOrganizationalData', action: 'fetchSectors' }, error as Error);
     }
   };
 
@@ -104,7 +105,7 @@ export function useOrganizationalData() {
       if (error) throw error;
       setCampaigns(data || []);
     } catch (error) {
-      console.error('Error fetching campaigns:', error);
+      logger.error('Failed to fetch campaigns', { component: 'useOrganizationalData', action: 'fetchCampaigns' }, error as Error);
     }
   };
 
@@ -119,7 +120,7 @@ export function useOrganizationalData() {
       if (error) throw error;
       setChallenges(data || []);
     } catch (error) {
-      console.error('Error fetching challenges:', error);
+      logger.error('Failed to fetch challenges', { component: 'useOrganizationalData', action: 'fetchChallenges' }, error as Error);
     }
   };
 
@@ -134,7 +135,7 @@ export function useOrganizationalData() {
       if (error) throw error;
       setTeamMembers(data || []);
     } catch (error) {
-      console.error('Error fetching team members:', error);
+      logger.error('Failed to fetch team members', { component: 'useOrganizationalData', action: 'fetchTeamMembers' }, error as Error);
     }
   };
 
@@ -150,7 +151,7 @@ export function useOrganizationalData() {
         fetchTeamMembers()
       ]);
     } catch (error) {
-      console.error('Error fetching organizational data:', error);
+      logger.error('Failed to fetch organizational data', { component: 'useOrganizationalData', action: 'fetchOrganizationalData' }, error as Error);
       toast({
         title: 'Error loading data',
         description: 'Failed to load organizational data',

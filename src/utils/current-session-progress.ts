@@ -175,12 +175,17 @@ export const currentSessionProgress = {
       'src/hooks/useEventDetails.ts - Fixed 7 console logs + enhanced event handling',
       'src/hooks/useEventInteractions.ts - Fixed 5 console logs + enhanced user interactions',
       'src/hooks/useEnhancedViewTracking.ts - Fixed 4 console logs + enhanced analytics tracking',
-      'src/contexts/SystemSettingsContext.tsx - Fixed 1 console log + enhanced settings management'
+      'src/contexts/SystemSettingsContext.tsx - Fixed 1 console log + enhanced settings management',
+      'src/hooks/useEventNotifications.ts - Fixed 4 console logs + enhanced event notifications',
+      'src/hooks/useStorageAnalytics.ts - Fixed 7 console logs + enhanced storage analytics',
+      'src/hooks/useOrganizationalData.ts - Fixed 7 console logs + enhanced organizational data',
+      'src/hooks/useParticipants.ts - Fixed 4 console logs + enhanced participant management',
+      'src/components/ui/wizard-file-uploader.tsx - Fixed 2 console logs + enhanced file uploading'
     ],
     
     metrics: {
-      consoleLogsFixed: 378, // Updated: +19 from critical hooks and contexts
-      anyTypesFixed: 242,    // Stable - focusing on console logs first
+      consoleLogsFixed: 402, // Updated: +24 from event/storage hooks
+      anyTypesFixed: 244,    // Updated: +2 from participant management
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -197,8 +202,8 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 125,  // Major progress on critical hooks
-    anyTypesToReplace: 213,     // Focus now on remaining any types  
+    consoleLogsToMigrate: 101,  // Excellent progress on event/storage hooks
+    anyTypesToReplace: 409,     // Focus now on remaining any types (bulk found)
     estimatedSessionsRemaining: 1  // Significant progress made
   },
   

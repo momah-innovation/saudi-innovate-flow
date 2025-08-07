@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
 import { Upload, X, FileText, Image, FileIcon, CheckCircle, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { logger } from '@/utils/logger'
 
 export interface WizardFileUploaderProps {
   config: Omit<FileUploadConfig, 'isTemporary' | 'tempSessionId'>
@@ -94,7 +95,7 @@ export const WizardFileUploader = forwardRef<WizardFileUploaderRef, WizardFileUp
         throw new Error(result.errors?.[0]?.error || 'Upload failed')
       }
     } catch (error) {
-      console.error('Upload error:', error)
+      logger.error('File upload error', { component: 'WizardFileUploader', action: 'uploadFiles' }, error as Error)
       toast({
         title: "Upload failed",
         description: error instanceof Error ? error.message : "Failed to upload files",
@@ -128,7 +129,7 @@ export const WizardFileUploader = forwardRef<WizardFileUploaderRef, WizardFileUp
         throw new Error(result.errors?.[0]?.error || 'Commit failed')
       }
     } catch (error) {
-      console.error('Commit error:', error)
+      logger.error('File commit error', { component: 'WizardFileUploader', action: 'commitFiles' }, error as Error)
       toast({
         title: "Commit failed",
         description: error instanceof Error ? error.message : "Failed to commit files",

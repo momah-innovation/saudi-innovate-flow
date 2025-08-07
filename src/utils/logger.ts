@@ -79,6 +79,8 @@ export interface LogContext {
   versionId?: string;
   actionType?: string;
   stepName?: string;
+  participantId?: string;
+  newStatus?: string;
 }
 
 export enum LogLevel {

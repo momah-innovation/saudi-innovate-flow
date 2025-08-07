@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
+import { logger } from '@/utils/logger'
 
 export interface StorageAnalytics {
   totalStorage: number
@@ -76,7 +77,7 @@ export const useStorageAnalytics = () => {
       if (error) throw error
       return data || []
     } catch (err) {
-      console.error('Failed to fetch bucket stats:', err)
+      logger.error('Failed to fetch bucket statistics', { component: 'useStorageAnalytics', action: 'fetchBucketStats' }, err as Error)
       return []
     }
   }
@@ -109,7 +110,7 @@ export const useStorageAnalytics = () => {
         total_size: stats.total_size
       }))
     } catch (err) {
-      console.error('Failed to fetch upload trends:', err)
+      logger.error('Failed to fetch upload trends', { component: 'useStorageAnalytics', action: 'fetchUploadTrends' }, err as Error)
       return []
     }
   }
@@ -147,7 +148,7 @@ export const useStorageAnalytics = () => {
         .sort((a, b) => b.upload_count - a.upload_count)
         .slice(0, limit)
     } catch (err) {
-      console.error('Failed to fetch top uploaders:', err)
+      logger.error('Failed to fetch top uploaders', { component: 'useStorageAnalytics', action: 'fetchTopUploaders' }, err as Error)
       return []
     }
   }
@@ -183,7 +184,7 @@ export const useStorageAnalytics = () => {
         }))
         .sort((a, b) => b.file_count - a.file_count)
     } catch (err) {
-      console.error('Failed to fetch file types:', err)
+      logger.error('Failed to fetch file types distribution', { component: 'useStorageAnalytics', action: 'fetchFileTypes' }, err as Error)
       return []
     }
   }
@@ -214,7 +215,7 @@ export const useStorageAnalytics = () => {
         access_count
       }))
     } catch (err) {
-      console.error('Failed to fetch access patterns:', err)
+      logger.error('Failed to fetch access patterns', { component: 'useStorageAnalytics', action: 'fetchAccessPatterns' }, err as Error)
       return Array.from({ length: 24 }, (_, i) => ({ hour: i, access_count: 0 }))
     }
   }
@@ -247,7 +248,7 @@ export const useStorageAnalytics = () => {
         details: activity.event_details
       }))
     } catch (err) {
-      console.error('Failed to fetch recent activity:', err)
+      logger.error('Failed to fetch recent activity', { component: 'useStorageAnalytics', action: 'fetchRecentActivity' }, err as Error)
       return []
     }
   }
@@ -291,7 +292,7 @@ export const useStorageAnalytics = () => {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch analytics'
       setError(errorMessage)
-      console.error('Storage analytics fetch error:', err)
+      logger.error('Storage analytics fetch error', { component: 'useStorageAnalytics', action: 'fetchAllAnalytics' }, err as Error)
     } finally {
       setLoading(false)
     }

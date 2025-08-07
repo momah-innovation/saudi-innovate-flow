@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/logger';
 
 export interface EventParticipant {
   id: string;
@@ -58,7 +59,7 @@ export function useParticipants(eventId: string | null) {
 
       setParticipants(data || []);
     } catch (error) {
-      console.error('Error fetching participants:', error);
+      logger.error('Failed to fetch participants', { component: 'useParticipants', action: 'fetchParticipants', eventId }, error as Error);
       toast({
         title: 'خطأ في تحميل المشاركين',
         description: 'حدث خطأ أثناء تحميل قائمة المشاركين',
@@ -71,7 +72,7 @@ export function useParticipants(eventId: string | null) {
 
   const updateParticipantStatus = async (participantId: string, newStatus: string) => {
     try {
-      const updates: any = { attendance_status: newStatus };
+      const updates: Record<string, unknown> = { attendance_status: newStatus };
       
       // Add timestamps based on status
       if (newStatus === 'checked_in') {
@@ -101,7 +102,7 @@ export function useParticipants(eventId: string | null) {
         description: 'تم تحديث حالة المشارك بنجاح'
       });
     } catch (error) {
-      console.error('Error updating participant status:', error);
+      logger.error('Failed to update participant status', { component: 'useParticipants', action: 'updateParticipantStatus', participantId, newStatus }, error as Error);
       toast({
         title: 'خطأ في التحديث',
         description: 'حدث خطأ أثناء تحديث حالة المشارك',
@@ -132,7 +133,7 @@ export function useParticipants(eventId: string | null) {
         description: 'تم تسجيل المشارك في الفعالية'
       });
     } catch (error) {
-      console.error('Error registering participant:', error);
+      logger.error('Failed to register participant', { component: 'useParticipants', action: 'registerParticipant', eventId }, error as Error);
       toast({
         title: 'خطأ في التسجيل',
         description: 'حدث خطأ أثناء تسجيل المشارك',
@@ -157,7 +158,7 @@ export function useParticipants(eventId: string | null) {
         description: 'تم إلغاء تسجيل المشارك من الفعالية'
       });
     } catch (error) {
-      console.error('Error canceling registration:', error);
+      logger.error('Failed to cancel registration', { component: 'useParticipants', action: 'cancelRegistration', eventId }, error as Error);
       toast({
         title: 'خطأ في الإلغاء',
         description: 'حدث خطأ أثناء إلغاء التسجيل',
