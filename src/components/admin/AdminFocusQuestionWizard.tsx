@@ -11,6 +11,7 @@ import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { logger } from "@/utils/error-handler";
 
 interface Challenge {
   id: string;
@@ -110,7 +111,7 @@ export function AdminFocusQuestionWizard({
       if (error) throw error;
       setChallenges(data || []);
     } catch (error) {
-      console.error('Error fetching challenges:', error);
+      logger.error('Error fetching challenges', error);
     }
   };
 
@@ -184,16 +185,17 @@ export function AdminFocusQuestionWizard({
 
       onSave();
       onClose();
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Handle specific database errors using toast notifications
-      if (error?.message?.includes('duplicate')) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      if (errorMessage.includes('duplicate')) {
         setErrors({ question_text_ar: "يوجد سؤال مماثل بالفعل" });
-      } else if (error?.message?.includes('constraint')) {
+      } else if (errorMessage.includes('constraint')) {
         setErrors({ general: "خطأ في القيود المدخلة" });
       } else {
         toast({
           title: "خطأ",
-          description: error?.message || "فشل في حفظ السؤال المحوري",
+          description: errorMessage || "فشل في حفظ السؤال المحوري",
           variant: "destructive",
         });
       }

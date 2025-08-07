@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink, Calendar, DollarSign, Users, Target, AlertTriangle, Clock } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/error-handler';
 
 interface Assignment {
   id: string;
@@ -31,7 +32,7 @@ interface AssignmentDetailData {
   estimated_budget?: number;
   created_at: string;
   // Add other common fields as needed
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface AssignmentDetailViewProps {
@@ -87,7 +88,7 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
       if (error) throw error;
       setData(assignmentData as AssignmentDetailData);
     } catch (error) {
-      console.error('Error fetching assignment data:', error);
+      logger.error('Error fetching assignment data', error);
       toast({
         title: t('error'),
         description: t('failedToFetchData'),
@@ -260,7 +261,7 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
         },
         ...(data.actual_budget ? [{
           label: t('actualBudget'),
-          value: formatBudget(data.actual_budget)
+          value: formatBudget(data.actual_budget as number)
         }] : [])
       ]
     }] : []),

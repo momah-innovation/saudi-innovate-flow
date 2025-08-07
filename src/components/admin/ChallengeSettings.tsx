@@ -15,6 +15,7 @@ import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, Clock, Shield, Bell, Users, Archive, Settings as SettingsIcon } from "lucide-react";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/error-handler";
 
 interface Challenge {
   id: string;
@@ -138,39 +139,33 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
       onUpdate();
       onClose();
     } catch (error) {
-      console.error('Error updating challenge settings:', error);
-      toast({
-        title: t('challenge_settings.error'),
-        description: t('challenge_settings.error_update_description'),
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
+      logger.error('Error updating challenge settings', error);
     }
   };
 
   const handleArchiveChallenge = async () => {
-    setLoading(true);
     try {
+      setLoading(true);
+      
       const { error } = await supabase
         .from('challenges')
-        .update({
+        .update({ 
           status: 'archived',
-          // Add archive reason if needed
+          updated_at: new Date().toISOString()
         })
         .eq('id', challenge.id);
 
       if (error) throw error;
 
       toast({
-        title: t('challenge_settings.challenge_archived'),
-        description: t('challenge_settings.challenge_archived_description'),
+        title: t('admin.challenges.settings.archived_success_title'),
+        description: t('admin.challenges.settings.archived_success_description'),
       });
-      
+
       onUpdate();
       onClose();
     } catch (error) {
-      console.error('Error archiving challenge:', error);
+      logger.error('Error archiving challenge', error);
       toast({
         title: t('challenge_settings.error'),
         description: t('challenge_settings.error_archive_description'),

@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 import { User, Mail, Phone, Building, MapPin, Calendar, Award, Star, Clock, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/error-handler";
 
 interface Expert {
   id: string;
@@ -93,7 +94,7 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
       });
       setActiveAssignments(assignmentsData || []);
     } catch (error) {
-      console.error('Error fetching expert details:', error);
+      logger.error('Error fetching expert details', error);
     } finally {
       setLoading(false);
     }

@@ -7,6 +7,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/error-handler";
 
 import { 
   HelpCircle, 
@@ -82,20 +83,33 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
       if (error) throw error;
       setFocusQuestions(data || []);
     } catch (error) {
-      console.error('Error fetching focus questions:', error);
-      toast({
-        title: "خطأ",
-        description: "فشل في تحميل الأسئلة المحورية",
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
+      logger.error('Error fetching focus questions', error);
     }
   };
 
-  const handleEdit = (question: FocusQuestion) => {
-    setSelectedQuestion(question);
-    onAddDialogChange(true);
+  const handleDeleteQuestion = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('focus_questions')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: t('focus_questions.delete_success'),
+        description: t('focus_questions.delete_success_description')
+      });
+
+      fetchFocusQuestions();
+    } catch (error) {
+      toast({
+        title: t('focus_questions.delete_error'),
+        description: t('focus_questions.delete_error_description'),
+        variant: 'destructive'
+      });
+      logger.error('Error deleting focus question', error);
+    }
   };
 
   const handleView = (question: FocusQuestion) => {
@@ -103,30 +117,13 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
     setShowDetailView(true);
   };
 
-  const handleDelete = async (question: FocusQuestion) => {
-    if (!confirm(`هل أنت متأكد من حذف "${question.question_text_ar}"؟`)) return;
-    
-    try {
-      const { error } = await supabase
-        .from('focus_questions')
-        .delete()
-        .eq('id', question.id);
-      
-      if (error) throw error;
-      
-      setFocusQuestions(prev => prev.filter(q => q.id !== question.id));
-      toast({
-        title: "تم بنجاح",
-        description: "تم حذف السؤال المحوري بنجاح"
-      });
-    } catch (error) {
-      console.error('Error deleting focus question:', error);
-      toast({
-        title: "خطأ",
-        description: "فشل في حذف السؤال المحوري",
-        variant: "destructive"
-      });
-    }
+  const handleEdit = (question: FocusQuestion) => {
+    setSelectedQuestion(question);
+    onAddDialogChange(true);
+  };
+
+  const handleDelete = (question: FocusQuestion) => {
+    handleDeleteQuestion(question.id);
   };
 
   const getTypeLabel = (type: string) => {

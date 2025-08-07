@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { logger } from "@/utils/error-handler";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { Team } from "@/types";
@@ -166,18 +167,16 @@ export function TeamWizard({
       };
 
       if (team?.id) {
-        // Update existing team - For now, use any table until teams table is created
-        // TODO: Replace with proper teams table when database is updated
-        console.log('Update team data:', teamData);
+        // Update existing team - placeholder until teams table is created
+        logger.info('Update team data', teamData);
         
         toast({
-          title: "نجح التحديث",
-          description: "تم تحديث الفريق بنجاح",
+          title: t('team.update_success'),
+          description: t('team.update_success_description'),
         });
       } else {
-        // Create new team - For now, use any table until teams table is created
-        // TODO: Replace with proper teams table when database is updated
-        console.log('Create team data:', teamData);
+        // Create new team - placeholder until teams table is created  
+        logger.info('Create team data', teamData);
         
         toast({
           title: "نجح الإنشاء",
@@ -187,17 +186,18 @@ export function TeamWizard({
 
       onSave();
       onClose();
-    } catch (error: any) {
-      console.error('Failed to save team:', error);
+    } catch (error: unknown) {
+      logger.error('Failed to save team', error);
       
-      if (error?.message?.includes('duplicate')) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      if (errorMessage.includes('duplicate')) {
         setErrors({ name: "يوجد فريق بنفس الاسم بالفعل" });
-      } else if (error?.message?.includes('constraint')) {
+      } else if (errorMessage.includes('constraint')) {
         setErrors({ general: "خطأ في القيود المدخلة" });
       } else {
         toast({
           title: "خطأ",
-          description: error?.message || "فشل في حفظ الفريق",
+          description: errorMessage || "فشل في حفظ الفريق",
           variant: "destructive",
         });
       }

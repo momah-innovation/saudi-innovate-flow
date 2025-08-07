@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { logger } from "@/utils/error-handler";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { Opportunity } from "@/types";
@@ -192,21 +193,21 @@ export function OpportunityWizard({
     
     try {
       // Mock save operation for now
-      console.log('Saving opportunity:', formData);
-      
+      logger.info('Saving opportunity', formData);
+
+      // For now, show success since the opportunity table doesn't exist yet
       toast({
-        title: opportunity ? "نجح التحديث" : "نجح الإنشاء",
-        description: opportunity ? "تم تحديث الفرصة بنجاح" : "تم إنشاء الفرصة بنجاح",
+        title: t('opportunity.save_success'),
+        description: t('opportunity.save_success_description'),
       });
 
       onSave();
-      onClose();
-    } catch (error: any) {
-      console.error('Failed to save opportunity:', error);
+    } catch (error) {
+      logger.error('Failed to save opportunity', error);
       
       toast({
         title: "خطأ",
-        description: error?.message || "فشل في حفظ الفرصة",
+        description: error instanceof Error ? error.message : "فشل في حفظ الفرصة",
         variant: "destructive",
       });
     } finally {
