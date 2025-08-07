@@ -56,14 +56,19 @@ export function useUnifiedTranslation() {
   // Create optimized translation map
   const translationMap = useMemo(() => {
     const map = new Map<string, { en: string; ar: string }>();
+    console.log('🔍 Building translation map from DB data:', { 
+      totalTranslations: dbTranslations.length,
+      firstFew: dbTranslations.slice(0, 3).map(t => ({ key: t.translation_key, en: t.text_en, ar: t.text_ar }))
+    });
     dbTranslations.forEach(translation => {
       map.set(translation.translation_key, {
         en: translation.text_en,
         ar: translation.text_ar
       });
     });
+    console.log('✅ Translation map built:', { mapSize: map.size, language });
     return map;
-  }, [dbTranslations]);
+  }, [dbTranslations, language]);
 
   /**
    * Primary translation function - SUPPORTS BOTH OLD AND NEW PATTERNS TEMPORARILY
