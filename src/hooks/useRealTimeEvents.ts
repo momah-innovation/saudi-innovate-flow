@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/logger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface EventUpdate {
   id: string;
@@ -26,6 +28,7 @@ export const useRealTimeEvents = ({
   const { toast } = useToast();
   const [isConnected, setIsConnected] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState<any[]>([]);
+  const { t } = useUnifiedTranslation();
 
   useEffect(() => {
     if (!user) return;
@@ -41,22 +44,25 @@ export const useRealTimeEvents = ({
           table: 'event_participants'
         },
         async (payload) => {
-          console.log('Event participants change:', payload);
+          logger.info('Event participants change', { 
+            eventType: payload.eventType,
+            eventId: (payload.new as any)?.event_id 
+          });
           
           if (payload.eventType === 'INSERT') {
             // Get updated participant count
             const { count } = await supabase
               .from('event_participants')
               .select('*', { count: 'exact' })
-              .eq('event_id', payload.new.event_id);
+              .eq('event_id', (payload.new as any).event_id);
 
-            onParticipantUpdate?.(payload.new.event_id, count || 0);
+            onParticipantUpdate?.((payload.new as any).event_id, count || 0);
 
             // Show notification if it's not the current user
-            if (payload.new.user_id !== user.id) {
+            if ((payload.new as any).user_id !== user.id) {
               toast({
-                title: 'New Registration!',
-                description: 'Someone just registered for an event you\'re interested in.',
+                title: t('new_registration', 'New Registration!'),
+                description: t('event_registration_notification', 'Someone just registered for an event you\'re interested in.'),
               });
             }
           }
@@ -75,17 +81,21 @@ export const useRealTimeEvents = ({
           table: 'events'
         },
         (payload) => {
-          console.log('Event change:', payload);
+          logger.info('Event status change', { 
+            eventId: (payload.new as any)?.id,
+            oldStatus: (payload.old as any)?.status,
+            newStatus: (payload.new as any)?.status 
+          });
           
-          if (payload.old.status !== payload.new.status) {
+          if ((payload.old as any).status !== (payload.new as any).status) {
             const update: EventUpdate = {
-              id: `${payload.new.id}-${Date.now()}`,
-              event_id: payload.new.id,
+              id: `${(payload.new as any).id}-${Date.now()}`,
+              event_id: (payload.new as any).id,
               type: 'status_change',
               data: {
-                old_status: payload.old.status,
-                new_status: payload.new.status,
-                title: payload.new.title_ar
+                old_status: (payload.old as any).status,
+                new_status: (payload.new as any).status,
+                title: (payload.new as any).title_ar
               },
               created_at: new Date().toISOString()
             };
@@ -93,8 +103,8 @@ export const useRealTimeEvents = ({
             onEventUpdate?.(update);
 
             toast({
-              title: 'Event Updated',
-              description: `Event status changed to ${payload.new.status}`,
+              title: t('event_updated', 'Event Updated'),
+              description: t('event_status_changed', 'Event status changed to {{status}}', { status: (payload.new as any).status }),
             });
           }
         }
@@ -111,10 +121,10 @@ export const useRealTimeEvents = ({
         onPresenceUpdate?.(users);
       })
       .on('presence', { event: 'join' }, ({ newPresences }) => {
-        console.log('User joined:', newPresences);
+        logger.debug('User joined event presence', { presenceCount: newPresences.length });
       })
       .on('presence', { event: 'leave' }, ({ leftPresences }) => {
-        console.log('User left:', leftPresences);
+        logger.debug('User left event presence', { presenceCount: leftPresences.length });
       })
       .subscribe(async (status) => {
         if (status === 'SUBSCRIBED') {

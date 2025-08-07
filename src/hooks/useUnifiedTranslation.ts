@@ -3,6 +3,7 @@ import { useTranslation as useI18nextTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { queryKeys } from '@/lib/query/query-keys';
 import { useMemo } from 'react';
+import { logger } from '@/utils/logger';
 
 interface SystemTranslation {
   id: string;
@@ -27,17 +28,20 @@ export function useUnifiedTranslation() {
   const { data: dbTranslations = [], isLoading, error } = useQuery({
     queryKey: queryKeys.system.translation(language),
     queryFn: async () => {
-      console.log('Fetching unified translations from database');
+      logger.debug('Fetching unified translations from database', { language });
       const { data, error } = await supabase
         .from('system_translations')
         .select('*');
 
       if (error) {
-        console.error('Database translation fetch error:', error);
+        logger.error('Database translation fetch failed', { language }, error);
         throw error;
       }
       
-      console.log(`Fetched ${data?.length || 0} database translations`);
+      logger.info('Database translations fetched successfully', { 
+        language, 
+        count: data?.length || 0 
+      });
       return data as SystemTranslation[];
     },
     staleTime: 10 * 60 * 1000, // 10 minutes
@@ -98,7 +102,7 @@ export function useUnifiedTranslation() {
       // Strategy 3: Return key as last resort
       return key;
     } catch (error) {
-      console.warn(`Translation error for key "${key}":`, error);
+      logger.warn('Translation error occurred', { key, language }, error as Error);
       return (typeof fallbackOrOptions === 'string' ? fallbackOrOptions : undefined) || key;
     }
   };
@@ -154,7 +158,7 @@ export function useUnifiedTranslation() {
 
       return fallback || key;
     } catch (error) {
-      console.warn(`Translation error for key "${key}" (${targetLang}):`, error);
+      logger.warn('Translation error with language override', { key, targetLanguage, language }, error as Error);
       return fallback || key;
     }
   };

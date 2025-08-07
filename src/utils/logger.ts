@@ -55,6 +55,10 @@ export interface LogContext {
   oldStatus?: string;
   newStatus?: string;
   submittedBy?: string;
+  presenceCount?: number;
+  bucketName?: string;
+  quotaBytes?: number;
+  targetLanguage?: string;
 }
 
 export enum LogLevel {

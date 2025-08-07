@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/logger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface Idea {
   id: string;
@@ -37,6 +39,7 @@ export function useRealTimeIdeas(): UseRealTimeIdeasReturn {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
 
   const fetchIdeas = async () => {
     try {
@@ -93,15 +96,15 @@ export function useRealTimeIdeas(): UseRealTimeIdeasReturn {
           table: 'ideas'
         },
         (payload) => {
-          console.log('Ideas real-time update:', payload);
+          logger.debug('Ideas real-time update', { eventType: payload.eventType });
           
           if (payload.eventType === 'INSERT') {
             const newIdea = payload.new as Idea;
             if (newIdea.status !== 'draft') {
               setIdeas(prev => [newIdea, ...prev]);
               toast({
-                title: 'فكرة جديدة',
-                description: `تم إضافة فكرة جديدة: ${newIdea.title_ar}`
+                title: t('new_idea', 'فكرة جديدة'),
+                description: t('new_idea_added', 'تم إضافة فكرة جديدة: {{title}}', { title: newIdea.title_ar })
               });
             }
           } else if (payload.eventType === 'UPDATE') {

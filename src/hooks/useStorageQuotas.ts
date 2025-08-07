@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
+import { logger } from '@/utils/logger'
 
 export interface StorageQuota {
   bucket_name: string
@@ -39,7 +40,7 @@ export const useStorageQuotas = () => {
       const { data, error: quotaError } = await supabase.rpc('get_all_storage_quotas')
       
       if (quotaError) {
-        console.error('fetchQuotas: RPC error:', quotaError);
+        logger.error('Storage quotas fetch failed', { operation: 'fetchQuotas' }, quotaError);
         if (quotaError.message?.includes('Admin access required')) {
           throw new Error('Admin access required for storage quota management')
         }
@@ -49,7 +50,7 @@ export const useStorageQuotas = () => {
       setQuotas(data || [])
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch quotas'
-      console.error('fetchQuotas: Error:', err);
+      logger.error('Storage quotas fetch error', { operation: 'fetchQuotas' }, err as Error);
       setError(errorMessage)
     } finally {
       setLoading(false)
@@ -58,27 +59,27 @@ export const useStorageQuotas = () => {
 
   const setQuota = async (bucketName: string, quotaBytes: number) => {
     try {
-      console.log(`Setting quota for ${bucketName}: ${quotaBytes} bytes`);
+      logger.info('Setting storage quota', { bucketName, quotaBytes });
       const { data, error } = await supabase.rpc('manage_storage_quotas', {
         p_bucket_name: bucketName,
         p_quota_bytes: quotaBytes
       })
       
       if (error) {
-        console.error('RPC error setting quota:', error);
+        logger.error('Storage quota setting failed', { bucketName, quotaBytes }, error);
         if (error.message?.includes('Admin access required')) {
           throw new Error('Admin access required for storage quota management')
         }
         throw error
       }
       
-      console.log('Quota set successfully:', data);
+      logger.info('Storage quota set successfully', { bucketName, quotaBytes, data });
       await fetchQuotas()
       return { success: true, data }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to set quota'
-      console.error('Error in setQuota:', err);
-      return { 
+      logger.error('Storage quota setting error', { bucketName, quotaBytes }, err as Error);
+      return {
         success: false, 
         error: errorMessage
       }
@@ -133,24 +134,24 @@ export const useStorageQuotas = () => {
 
   const autoSetupQuotas = async () => {
     try {
-      console.log('Auto setting up storage quotas...');
+      logger.info('Auto setting up storage quotas');
       const { data, error } = await supabase.rpc('auto_setup_storage_quotas')
       
       if (error) {
-        console.error('RPC error auto setup:', error);
+        logger.error('Auto setup RPC failed', { operation: 'autoSetupQuotas' }, error);
         if (error.message?.includes('Admin access required')) {
           throw new Error('Admin access required for auto setup')
         }
         throw error
       }
       
-      console.log('Auto setup completed:', data);
+      logger.info('Auto setup completed successfully', { data });
       await fetchQuotas()
       return { success: true, data }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to auto setup quotas'
-      console.error('Error in autoSetupQuotas:', err);
-      return { 
+      logger.error('Auto setup error', { operation: 'autoSetupQuotas' }, err as Error);
+      return {
         success: false, 
         error: errorMessage
       }

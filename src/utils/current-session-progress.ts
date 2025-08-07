@@ -121,11 +121,15 @@ export const currentSessionProgress = {
       'src/hooks/useChallengesData.ts - Fixed 6 console logs + enhanced translation',
       'src/hooks/useFileUploader.ts - Fixed 5 console logs + enhanced translation',
       'src/hooks/useRealTimeAnalytics.ts - Fixed 4 console logs',
-      'src/hooks/useRealTimeChallenges.ts - Fixed 3 console logs + enhanced translation'
+      'src/hooks/useRealTimeChallenges.tsx - Fixed 3 console logs + enhanced translation',
+      'src/hooks/useRealTimeEvents.ts - Fixed 4 console logs + enhanced translation',
+      'src/hooks/useRealTimeIdeas.ts - Fixed 1 console log + enhanced translation',
+      'src/hooks/useStorageQuotas.ts - Fixed 4 console logs + enhanced logging',
+      'src/hooks/useUnifiedTranslation.ts - Fixed 3 console logs + enhanced logging'
     ],
     
     metrics: {
-      consoleLogsFixed: 252, // 230 + 22 more console logs fixed in hooks
+      consoleLogsFixed: 264, // 252 + 12 more console logs fixed in hooks
       anyTypesFixed: 148,    // No new any types, but console logs migrated
       buildErrors: 0,
       healthScore: 100,
@@ -143,12 +147,12 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 88, // Down from 110 (22 more console logs migrated)  
+    consoleLogsToMigrate: 76, // Down from 88 (12 more console logs migrated in hooks)  
     anyTypesToReplace: 331,   // Same as before
     estimatedSessionsRemaining: 1
   },
   
-  status: 'HOOKS_PHASE_COMPLETE'
+  status: 'CRITICAL_HOOKS_COMPLETE'
 };
 
 export default currentSessionProgress;
