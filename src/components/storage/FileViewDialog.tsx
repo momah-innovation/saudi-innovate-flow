@@ -14,7 +14,7 @@ interface FileViewDialogProps {
 }
 
 export function FileViewDialog({ file, open, onOpenChange }: FileViewDialogProps) {
-  const { t, isRTL } = useTranslation()
+  const { t, isRTL } = useUnifiedTranslation();
   const { toast } = useToast()
 
   if (!file) return null

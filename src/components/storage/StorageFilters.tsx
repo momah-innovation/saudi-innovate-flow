@@ -23,7 +23,7 @@ import {
   FileAudio,
   File
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 
 export interface FilterOptions {
   fileType: string;
@@ -57,7 +57,7 @@ export function StorageFilters({
   onClearFilters,
   activeFilterCount
 }: StorageFiltersProps) {
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const fileTypeOptions = [

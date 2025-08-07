@@ -23,7 +23,7 @@ interface StorageBucketCardProps {
 }
 
 export function StorageBucketCard({ bucket, onView, onSettings, onDelete }: StorageBucketCardProps) {
-  const { t, isRTL } = useTranslation()
+  const { t, isRTL } = useUnifiedTranslation();
   const formatSize = (size?: number) => {
     if (!size) return '0 B'
     if (size < 1024) return `${size} B`

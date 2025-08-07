@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppShell } from '@/components/layout/AppShell';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -20,7 +20,7 @@ import {
 import { cn } from '@/lib/utils';
 
 export default function Dashboard() {
-  const { t, language, isRTL } = useTranslation();
+  const { t, language, isRTL } = useUnifiedTranslation();
 
   const stats = [
     {

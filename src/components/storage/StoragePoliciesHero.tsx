@@ -11,7 +11,7 @@ import {
   Users,
   Settings
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 
 interface StoragePoliciesHeroProps {
   totalBuckets: number;
@@ -34,7 +34,7 @@ export function StoragePoliciesHero({
   lastReview,
   criticalIssues
 }: StoragePoliciesHeroProps) {
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
 
   return (
     <div dir={isRTL ? 'rtl' : 'ltr'} className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 ${isRTL ? 'font-arabic' : 'font-english'}`}>

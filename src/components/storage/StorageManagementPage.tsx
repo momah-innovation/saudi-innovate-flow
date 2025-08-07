@@ -55,11 +55,11 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 
 export function StorageManagementPage() {
   const { toast } = useToast();
-  const { t, language, isRTL } = useTranslation();
+  const { t, language, isRTL } = useUnifiedTranslation();
   const rtlClasses = useRTLAwareClasses();
   const { uploadFiles, isUploading, getFileUrl: getUploaderFileUrl } = useFileUploader();
   const { analytics, loading: analyticsLoading, refreshAnalytics } = useStorageAnalytics();

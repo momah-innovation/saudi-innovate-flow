@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Eye, Download, Trash2, FileImage, FileText, Video, Music, Files } from 'lucide-react'
 import { format } from 'date-fns'
-import { useTranslation } from '@/hooks/useAppTranslation'
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 
 interface StorageFile {
   name: string
@@ -25,7 +25,7 @@ interface StorageFileTableProps {
 }
 
 export function StorageFileTable({ files, onView, onDownload, onDelete }: StorageFileTableProps) {
-  const { t, isRTL } = useTranslation()
+  const { t, isRTL } = useUnifiedTranslation();
   const getFileIcon = (mimetype?: string) => {
     if (!mimetype) return Files
     

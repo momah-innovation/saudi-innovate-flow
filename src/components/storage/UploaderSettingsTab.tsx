@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { ConfigurationDialog } from './ConfigurationDialog'
 import { useToast } from '@/hooks/use-toast'
-import { useTranslation } from '@/hooks/useAppTranslation'
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { useSystemHealth } from '@/hooks/useSystemHealth'
 import { supabase } from '@/integrations/supabase/client'
 import { 
@@ -58,7 +58,7 @@ interface UploaderSettingsTabProps {
 
 export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
   const { toast } = useToast()
-  const { t, isRTL } = useTranslation()
+  const { t, isRTL } = useUnifiedTranslation();
   const healthData = useSystemHealth()
   const [configs, setConfigs] = useState<UploaderConfig[]>([])
   const [allBuckets, setAllBuckets] = useState<any[]>([])

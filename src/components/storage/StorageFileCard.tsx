@@ -25,7 +25,7 @@ interface StorageFileCardProps {
 }
 
 export function StorageFileCard({ file, onView, onDownload, onDelete }: StorageFileCardProps) {
-  const { t, isRTL } = useTranslation()
+  const { t, isRTL } = useUnifiedTranslation();
   const getFileIcon = (mimetype?: string) => {
     if (!mimetype) return Files
     

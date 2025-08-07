@@ -47,7 +47,7 @@ const getCommonFileTypes = (t: any) => [
 ]
 
 export function ConfigurationDialog({ config, open, onOpenChange, onSave }: ConfigurationDialogProps) {
-  const { t, isRTL } = useTranslation()
+  const { t, isRTL } = useUnifiedTranslation();
   const { toast } = useToast()
   const isEditing = Boolean(config)
   const [availableBuckets, setAvailableBuckets] = useState<string[]>([])

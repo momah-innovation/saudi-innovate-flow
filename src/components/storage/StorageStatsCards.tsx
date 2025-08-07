@@ -8,7 +8,7 @@ import {
   Calendar,
   Database
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 
 interface StorageStatsCardsProps {
   stats: {
@@ -25,7 +25,7 @@ interface StorageStatsCardsProps {
 }
 
 export function StorageStatsCards({ stats, files }: StorageStatsCardsProps) {
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return `0 ${t('units.bytes')}`;
     const k = 1024;

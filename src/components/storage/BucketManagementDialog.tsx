@@ -19,7 +19,7 @@ interface BucketManagementDialogProps {
 }
 
 export function BucketManagementDialog({ bucket, open, onOpenChange, onRefresh }: BucketManagementDialogProps) {
-  const { t, isRTL } = useTranslation()
+  const { t, isRTL } = useUnifiedTranslation();
   const { toast } = useToast()
   const [isUpdating, setIsUpdating] = useState(false)
   const [corsEnabled, setCorsEnabled] = useState(true)

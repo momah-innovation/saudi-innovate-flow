@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { 
   HardDrive, 
   Files,
@@ -34,7 +34,7 @@ export function StorageHero({
   recentUploads,
   buckets
 }: StorageHeroProps) {
-  const { t, language, isRTL } = useTranslation();
+  const { t, language, isRTL } = useUnifiedTranslation();
   
   const formatBytes = (bytes: number) => {
     if (bytes === 0) return `0 ${t('units.bytes')}`;

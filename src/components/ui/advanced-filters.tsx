@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Search, Filter, X, ChevronDown, ChevronRight, Calendar, SlidersHorizontal } from "lucide-react";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
 
 export interface FilterOption {
   label: string;
@@ -54,7 +54,7 @@ export function AdvancedFilters({
   quickFilters,
   className
 }: AdvancedFiltersProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const hasActiveFilters = filters.some(filter => 
     filter.value && 
     (Array.isArray(filter.value) ? filter.value.length > 0 : filter.value !== '')
@@ -146,7 +146,7 @@ export function AdvancedFilters({
 }
 
 function FilterField({ filter }: { filter: FilterConfig }) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   
   switch (filter.type) {
     case 'select':

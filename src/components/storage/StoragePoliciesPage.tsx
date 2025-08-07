@@ -9,7 +9,7 @@ import { StoragePoliciesHero } from './StoragePoliciesHero'
 import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
 import { useAuth } from '@/contexts/AuthContext'
-import { useTranslation } from '@/hooks/useAppTranslation'
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { useRTLAwareClasses } from '@/components/ui/rtl-aware'
 import { 
   Shield, 
@@ -50,7 +50,7 @@ const POLICY_COMMANDS = {
 export const StoragePoliciesPage: React.FC = () => {
   const { user } = useAuth()
   const { toast } = useToast()
-  const { t, isRTL } = useTranslation()
+  const { t, isRTL } = useUnifiedTranslation();
   const [buckets, setBuckets] = useState<BucketInfo[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
