@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 import { useUnifiedTranslation } from './useUnifiedTranslation';
 import { useToast } from './use-toast';
 
@@ -179,7 +180,7 @@ export const useSettingsManager = () => {
           return typeof setting.setting_value === 'string' ? setting.setting_value : String(setting.setting_value);
       }
     } catch (e) {
-      console.warn(`Failed to parse setting ${key}:`, e);
+      logger.warn('Failed to parse setting', { component: 'useSettingsManager', action: 'getSettingValue', key }, e as Error);
       return defaultValue;
     }
   };

@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { logger } from '@/utils/logger';
 
 interface UserJourneyTrackerProps {
   opportunityId: string;
@@ -40,7 +42,7 @@ export const useUserJourneyTracker = ({ opportunityId, sessionId }: UserJourneyT
       setPreviousStep(step);
       setStepStartTime(now);
     } catch (error) {
-      console.error('Error tracking journey step:', error);
+      logger.error('Failed to track journey step', { component: 'useUserJourneyTracker', action: 'trackStep', stepName: step }, error as Error);
     }
   };
 

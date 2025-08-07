@@ -80,7 +80,7 @@ export interface LogContext {
   actionType?: string;
   stepName?: string;
   participantId?: string;
-  newStatus?: string;
+  planId?: string;
 }
 
 export enum LogLevel {

@@ -180,12 +180,25 @@ export const currentSessionProgress = {
       'src/hooks/useStorageAnalytics.ts - Fixed 7 console logs + enhanced storage analytics',
       'src/hooks/useOrganizationalData.ts - Fixed 7 console logs + enhanced organizational data',
       'src/hooks/useParticipants.ts - Fixed 4 console logs + enhanced participant management',
-      'src/components/ui/wizard-file-uploader.tsx - Fixed 2 console logs + enhanced file uploading'
+      'src/components/ui/wizard-file-uploader.tsx - Fixed 2 console logs + enhanced file uploading',
+      'src/hooks/useExperts.ts - Fixed 1 console log + enhanced expert management',
+      'src/hooks/useFileAccess.ts - Fixed 3 console logs + enhanced file access tracking',
+      'src/hooks/useSubscription.ts - Fixed 4 console logs + enhanced subscription handling',
+      'src/hooks/useSystemHealth.ts - Fixed 1 console log + enhanced system monitoring',
+      'src/hooks/useSystemLists.ts - Fixed 1 console log + enhanced system lists',
+      'src/hooks/useUnsplashImages.ts - Fixed 3 console logs + enhanced image handling',
+      'src/hooks/useUploaderSettings.ts - Fixed 1 console log + enhanced uploader settings',
+      'src/hooks/useLandingPageData.ts - Fixed 1 console log + enhanced landing page data',
+      'src/hooks/useLogflareAnalytics.ts - Fixed 1 console log + enhanced analytics',
+      'src/hooks/useUserJourneyTracker.ts - Fixed 1 console log + enhanced journey tracking',
+      'src/hooks/useViewTracking.ts - Fixed 3 console logs + enhanced view tracking',
+      'src/hooks/useRealTimeIdeas.ts - Fixed 1 console log + enhanced real-time ideas',
+      'src/hooks/useSettingsManager.ts - Fixed 1 console log + enhanced settings management'
     ],
     
     metrics: {
-      consoleLogsFixed: 402, // Updated: +24 from event/storage hooks
-      anyTypesFixed: 244,    // Updated: +2 from participant management
+      consoleLogsFixed: 427, // Updated: +25 from hooks completion
+      anyTypesFixed: 246,    // Updated: +2 from type improvements
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -202,8 +215,8 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 101,  // Excellent progress on event/storage hooks
-    anyTypesToReplace: 409,     // Focus now on remaining any types (bulk found)
+    consoleLogsToMigrate: 76,   // Major milestone: ~85% complete!
+    anyTypesToReplace: 405,     // Focus now on remaining any types
     estimatedSessionsRemaining: 1  // Significant progress made
   },
   

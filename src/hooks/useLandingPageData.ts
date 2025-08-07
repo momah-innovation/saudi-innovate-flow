@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 
 interface FAQ {
   id: string;
@@ -62,7 +63,7 @@ export const useLandingPageData = (language: 'en' | 'ar' = 'en') => {
         setStatistics(statsData || []);
         setContent(contentData || []);
       } catch (error) {
-        console.error('Error fetching landing page data:', error);
+        logger.error('Failed to fetch landing page data', { component: 'useLandingPageData', action: 'fetchLandingPageData' }, error as Error);
       } finally {
         setLoading(false);
       }

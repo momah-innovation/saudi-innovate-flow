@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 
 interface Expert {
   id: string;
@@ -39,7 +40,7 @@ export function useExperts() {
 
       setExperts(expertsData);
     } catch (error) {
-      console.error('Error loading experts:', error);
+      logger.error('Failed to load experts', { component: 'useExperts', action: 'loadExperts' }, error as Error);
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { logger } from '@/utils/logger';
 
 interface UseViewTrackingProps {
   opportunityId: string;
@@ -49,7 +50,7 @@ export const useViewTracking = ({ opportunityId, enabled = true }: UseViewTracki
 
         tracked.current = true;
       } catch (error) {
-        console.error('Error tracking view:', error);
+        logger.error('Failed to track view', { component: 'useViewTracking', action: 'trackView', opportunityId }, error as Error);
       }
     };
 
@@ -76,7 +77,7 @@ export const useViewTracking = ({ opportunityId, enabled = true }: UseViewTracki
             }
           }
         }).catch(error => {
-          console.error('Error tracking time spent:', error);
+          logger.error('Failed to track time spent', { component: 'useViewTracking', action: 'trackTimeSpent', opportunityId }, error as Error);
         });
       }
     };
@@ -84,7 +85,7 @@ export const useViewTracking = ({ opportunityId, enabled = true }: UseViewTracki
 
   return {
     sessionId: sessionId.current || '',
-    trackCustomEvent: async (action: string, metadata?: any) => {
+    trackCustomEvent: async (action: string, metadata?: Record<string, unknown>) => {
       try {
         await supabase.functions.invoke('track-opportunity-analytics', {
           body: {
@@ -99,7 +100,7 @@ export const useViewTracking = ({ opportunityId, enabled = true }: UseViewTracki
           }
         });
       } catch (error) {
-        console.error('Error tracking custom event:', error);
+        logger.error('Failed to track custom event', { component: 'useViewTracking', action: 'trackCustomEvent' }, error as Error);
       }
     }
   };

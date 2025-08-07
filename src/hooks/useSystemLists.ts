@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 
 interface SystemListsHook {
   challengePriorityLevels: string[];
@@ -409,7 +410,7 @@ export const useSystemLists = (): SystemListsHook => {
           setSettings(prev => ({ ...prev, loading: false }));
         }
       } catch (error) {
-        console.error('Error loading system lists:', error);
+        logger.error('Failed to load system lists', { component: 'useSystemLists', action: 'loadSystemLists' }, error as Error);
         setSettings(prev => ({ ...prev, loading: false }));
       }
     };

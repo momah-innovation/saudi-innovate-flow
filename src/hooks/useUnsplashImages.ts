@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useToast } from '@/hooks/use-toast'
+import { logger } from '@/utils/logger'
 
 export interface UnsplashImage {
   id: string
@@ -69,7 +70,7 @@ export function useUnsplashImages() {
         throw new Error(data.error)
       }
     } catch (error) {
-      console.error('Error searching images:', error)
+      logger.error('Failed to search images', { component: 'useUnsplashImages', action: 'searchImages', query }, error as Error)
       toast({
         title: 'Search Failed',
         description: 'Failed to search images. Please try again.',
@@ -98,7 +99,7 @@ export function useUnsplashImages() {
         throw new Error(data.error)
       }
     } catch (error) {
-      console.error('Error downloading image:', error)
+      logger.error('Failed to download image', { component: 'useUnsplashImages', action: 'downloadImage' }, error as Error)
       toast({
         title: 'Download Failed',
         description: 'Failed to get download URL. Please try again.',
@@ -151,7 +152,7 @@ export function useUnsplashImages() {
 
       return urlData.publicUrl
     } catch (error) {
-      console.error('Error saving image to Supabase:', error)
+      logger.error('Failed to save image to Supabase', { component: 'useUnsplashImages', action: 'saveToSupabase' }, error as Error)
       toast({
         title: 'Save Failed',
         description: 'Failed to save image to storage. Please try again.',

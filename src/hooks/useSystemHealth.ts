@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
+import { logger } from '@/utils/logger'
 
 interface SecurityMetrics {
   totalSecurityEvents: number
@@ -152,7 +153,7 @@ export function useSystemHealth() {
       })
 
     } catch (error) {
-      console.error('Error loading system health:', error)
+      logger.error('Error loading system health', { component: 'useSystemHealth', action: 'loadSystemHealth' }, error as Error)
       setHealthData(prev => ({
         ...prev,
         isLoading: false,

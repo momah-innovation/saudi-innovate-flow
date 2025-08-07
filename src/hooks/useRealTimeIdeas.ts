@@ -66,7 +66,7 @@ export function useRealTimeIdeas(): UseRealTimeIdeasReturn {
       if (fetchError) throw fetchError;
       setIdeas((data as any) || []);
     } catch (err: any) {
-      console.error('Error fetching ideas:', err);
+      logger.error('Failed to fetch ideas', { component: 'useRealTimeIdeas', action: 'fetchIdeas' }, err as Error);
       setError(err.message);
       toast({
         title: 'خطأ في تحميل الأفكار',

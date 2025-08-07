@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
+import { logger } from '@/utils/logger'
 import { UPLOAD_CONFIGS } from '@/utils/uploadConfigs'
 
 interface GlobalSettings {
@@ -166,7 +167,7 @@ export function useUploaderSettings() {
       setUploadConfigs(mergedConfigs)
 
     } catch (err) {
-      console.error('Error loading uploader settings:', err)
+      logger.error('Error loading uploader settings', { component: 'useUploaderSettings', action: 'loadUploaderSettings' }, err as Error)
       setError(err instanceof Error ? err.message : 'Failed to load settings')
       
       // Fallback to hardcoded configs

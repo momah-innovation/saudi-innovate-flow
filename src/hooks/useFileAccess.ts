@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
+import { logger } from '@/utils/logger'
 
 export interface FileAccessLog {
   id: string
@@ -70,7 +71,7 @@ export const useFileAccess = () => {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch access logs'
       setError(errorMessage)
-      console.error('File access logs fetch error:', err)
+      logger.error('File access logs fetch error', { component: 'useFileAccess', action: 'fetchAccessLogs' }, err as Error)
     } finally {
       setLoading(false)
     }
@@ -125,7 +126,7 @@ export const useFileAccess = () => {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch access stats'
       setError(errorMessage)
-      console.error('File access stats fetch error:', err)
+      logger.error('File access stats fetch error', { component: 'useFileAccess', action: 'fetchAccessStats' }, err as Error)
     } finally {
       setLoading(false)
     }
@@ -162,7 +163,7 @@ export const useFileAccess = () => {
       return { success: true }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to log file access'
-      console.error('File access logging error:', err)
+      logger.error('File access logging error', { component: 'useFileAccess', action: 'logFileAccess', fileRecordId }, err as Error)
       return { success: false, error: errorMessage }
     }
   }

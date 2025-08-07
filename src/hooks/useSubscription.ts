@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { logger } from '@/utils/logger';
 import type { Database } from '@/integrations/supabase/types';
 
 type SubscriptionPlan = Database['public']['Tables']['subscription_plans']['Row'];
@@ -13,7 +14,7 @@ interface SubscriptionStatus {
   status: string;
   trialEnd?: string;
   currentPeriodEnd?: string;
-  features: any;
+  features: Record<string, unknown>;
 }
 
 interface UseSubscriptionResult {
@@ -92,7 +93,7 @@ export const useSubscription = (): UseSubscriptionResult => {
         });
       }
     } catch (err) {
-      console.error('Error checking subscription:', err);
+      logger.error('Error checking subscription', { component: 'useSubscription', action: 'checkSubscription' }, err as Error);
       setError(err instanceof Error ? err.message : 'Failed to check subscription');
     } finally {
       setLoading(false);
@@ -111,7 +112,7 @@ export const useSubscription = (): UseSubscriptionResult => {
       if (error) throw error;
       setSubscriptionPlans(data || []);
     } catch (err) {
-      console.error('Error fetching subscription plans:', err);
+      logger.error('Error fetching subscription plans', { component: 'useSubscription', action: 'fetchSubscriptionPlans' }, err as Error);
     }
   };
 
@@ -135,7 +136,7 @@ export const useSubscription = (): UseSubscriptionResult => {
       }
       return null;
     } catch (err) {
-      console.error('Error creating checkout session:', err);
+      logger.error('Error creating checkout session', { component: 'useSubscription', action: 'createCheckoutSession', planId }, err as Error);
       setError(err instanceof Error ? err.message : 'Failed to create checkout session');
       return null;
     }
@@ -156,7 +157,7 @@ export const useSubscription = (): UseSubscriptionResult => {
       await checkSubscription();
       return true;
     } catch (err) {
-      console.error('Error cancelling subscription:', err);
+      logger.error('Error cancelling subscription', { component: 'useSubscription', action: 'cancelSubscription' }, err as Error);
       setError(err instanceof Error ? err.message : 'Failed to cancel subscription');
       return false;
     }

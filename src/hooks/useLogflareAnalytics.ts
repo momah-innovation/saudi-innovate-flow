@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { logger } from '@/utils/logger';
 
 interface LogEntry {
   timestamp: string;
@@ -114,7 +115,7 @@ export const useLogflareAnalytics = () => {
     try {
       await sendLogs([logEntry]);
     } catch (error) {
-      console.error('Failed to log event:', error);
+      logger.error('Failed to log analytics event', { component: 'useLogflareAnalytics', action: 'logEvent' }, error as Error);
     }
   };
 
