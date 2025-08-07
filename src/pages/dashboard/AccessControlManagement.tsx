@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -10,7 +11,7 @@ import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, A
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { supabase } from '@/integrations/supabase/client';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { AppShell } from '@/components/layout/AppShell';
 import { Pencil, Trash2, Plus, Shield, History, Search } from 'lucide-react';
 import { toast } from 'sonner';
@@ -40,19 +41,20 @@ interface AuditLog {
   created_at: string;
 }
 
-const ACCESS_LEVELS = ['none', 'read', 'write', 'admin'];
-const RESOURCE_TYPES = ['page', 'feature', 'action'];
-
-const ROLES: AppRole[] = [
-  'super_admin', 'admin', 'sector_lead', 'department_head', 'domain_expert',
-  'evaluator', 'innovator', 'viewer', 'user_manager', 'role_manager',
-  'challenge_manager', 'expert_coordinator', 'content_manager', 'system_auditor',
-  'data_analyst', 'campaign_manager', 'event_manager', 'stakeholder_manager',
-  'partnership_manager', 'team_lead', 'project_manager', 'research_lead',
-  'innovation_manager', 'external_expert', 'mentor', 'judge', 'facilitator'
-];
-
 export default function AccessControlManagement() {
+  // Use database-driven access levels and resource types  
+  const { getSettingValue } = useSettingsManager();
+  const ACCESS_LEVELS = getSettingValue('access_control_levels', ['none', 'read', 'write', 'admin']) as string[];
+  const RESOURCE_TYPES = getSettingValue('access_control_resource_types', ['page', 'feature', 'action']) as string[];
+
+  const ROLES: AppRole[] = [
+    'super_admin', 'admin', 'sector_lead', 'department_head', 'domain_expert',
+    'evaluator', 'innovator', 'viewer', 'user_manager', 'role_manager',
+    'challenge_manager', 'expert_coordinator', 'content_manager', 'system_auditor',
+    'data_analyst', 'campaign_manager', 'event_manager', 'stakeholder_manager',
+    'partnership_manager', 'team_lead', 'project_manager', 'research_lead',
+    'innovation_manager', 'external_expert', 'mentor', 'judge', 'facilitator'
+  ];
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState<AppRole | ''>('');
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
