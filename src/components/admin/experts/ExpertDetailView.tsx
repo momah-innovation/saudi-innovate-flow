@@ -6,7 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   User, 
@@ -33,7 +33,7 @@ export function ExpertDetailView({
   onRefresh 
 }: ExpertDetailViewProps) {
   const { toast } = useToast();
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   
   const [relatedData, setRelatedData] = useState({
     assignments: [],

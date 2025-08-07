@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { 
   Search, 
@@ -62,7 +62,7 @@ export function FocusQuestionFilters({
   onClearFilters,
   activeFiltersCount
 }: FocusQuestionFiltersProps) {
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   const { focusQuestionTypes } = useSystemLists();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 

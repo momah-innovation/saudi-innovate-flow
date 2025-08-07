@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { 
   Target, 
   Calendar, 
@@ -61,7 +61,7 @@ export function AdminChallengeManagement() {
   const [showDetails, setShowDetails] = useState(false);
   const [selectedChallenge, setSelectedChallenge] = useState<AdminChallenge | null>(null);
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   useEffect(() => {
     fetchChallenges();

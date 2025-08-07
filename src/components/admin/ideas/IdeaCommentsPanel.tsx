@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { MessageSquare, Send, Reply, Edit, Trash, Flag } from "lucide-react";
 import { format } from "date-fns";
@@ -36,7 +36,7 @@ interface IdeaCommentsPanelProps {
 
 export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanelProps) {
   const { toast } = useToast();
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   Building, 
@@ -33,7 +33,7 @@ export function PartnerDetailView({
   onRefresh 
 }: PartnerDetailViewProps) {
   const { toast } = useToast();
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   
   const [relatedData, setRelatedData] = useState({
     active_collaborations: [],

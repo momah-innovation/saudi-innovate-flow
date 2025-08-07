@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { 
@@ -63,7 +63,7 @@ interface IdeaWorkflowPanelProps {
 
 export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: IdeaWorkflowPanelProps) {
   const { toast } = useToast();
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   const { generalStatusOptions, assignmentStatusOptions } = useSystemLists();
   
   const [workflowStates, setWorkflowStates] = useState<WorkflowState[]>([]);

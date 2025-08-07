@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { Trash2, FileEdit, Tag, Users, Archive, AlertTriangle } from "lucide-react";
@@ -17,7 +17,7 @@ interface BulkActionsPanelProps {
 
 export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelection }: BulkActionsPanelProps) {
   const { toast } = useToast();
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   const { generalStatusOptions } = useSystemLists();
   
   const [showStatusDialog, setShowStatusDialog] = useState(false);

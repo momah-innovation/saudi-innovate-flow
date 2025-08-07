@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   HelpCircle, 
@@ -63,7 +63,7 @@ export function FocusQuestionDetailView({
   onRefresh 
 }: FocusQuestionDetailViewProps) {
   const { toast } = useToast();
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   
   const [relatedData, setRelatedData] = useState({
     ideas: [],

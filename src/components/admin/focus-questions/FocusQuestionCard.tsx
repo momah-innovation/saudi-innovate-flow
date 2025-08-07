@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { 
   HelpCircle, 
   Target, 
@@ -56,7 +56,7 @@ export function FocusQuestionCard({
   onDelete,
   compact = false 
 }: FocusQuestionCardProps) {
-  const { t, isRTL, getDynamicText } = useTranslation();
+  const { t, isRTL, getDynamicText } = useUnifiedTranslation();
 
   const getTypeLabel = (type: string) => {
     const labels = {

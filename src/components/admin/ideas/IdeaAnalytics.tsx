@@ -6,7 +6,7 @@ import { TrendingUp, TrendingDown, Users, Lightbulb, CheckCircle, Clock } from "
 import { Badge } from "@/components/ui/badge";
 import { isThisMonth, format, subMonths, isSameMonth } from "date-fns";
 import { useSystemLists } from "@/hooks/useSystemLists";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1'];
 
@@ -15,7 +15,7 @@ interface IdeaAnalyticsProps {
 }
 
 export function IdeaAnalytics({ className }: IdeaAnalyticsProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { generalStatusOptions, challengeTypes, experienceLevels, sectorTypes, tagCategories } = useSystemLists();
   
   // Mock data query - replace with actual API call

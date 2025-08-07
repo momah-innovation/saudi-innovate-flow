@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { BulkActionsPanel } from "./BulkActionsPanel";
 import { IdeaCommentsPanel } from "./IdeaCommentsPanel";
 import { IdeaWorkflowPanel } from "./IdeaWorkflowPanel";
@@ -123,7 +123,7 @@ export function IdeasManagementList({
   }, [filters]);
   const [currentLayout, setCurrentLayout] = useState<'cards' | 'list' | 'grid'>('cards');
   const { toast } = useToast();
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   const { generalStatusOptions } = useSystemLists();
 
   useEffect(() => {

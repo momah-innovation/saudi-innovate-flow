@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -88,7 +88,7 @@ export function OpportunityManagementList({
   const [showWizard, setShowWizard] = useState(false);
   const [localSearchTerm, setLocalSearchTerm] = useState("");
   const { toast } = useToast();
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
 
   // Mock data for opportunities
   const mockOpportunities: OpportunityListItem[] = [

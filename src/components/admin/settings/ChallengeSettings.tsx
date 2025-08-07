@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 
 interface ChallengeSettingsProps {
@@ -18,7 +18,7 @@ interface ChallengeSettingsProps {
 
 export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettingsProps) {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const [newChallengeType, setNewChallengeType] = useState("");
   const [newPriorityLevel, setNewPriorityLevel] = useState("");

@@ -4,10 +4,10 @@ import { Target, BarChart3, Settings } from "lucide-react";
 import { ChallengeManagementList } from "./challenges/ChallengeManagementList";
 import { ChallengeAnalytics } from "./challenges/ChallengeAnalytics";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 export function ChallengeManagement() {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [activeTab, setActiveTab] = useState("challenges");
 
   return (
