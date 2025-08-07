@@ -452,7 +452,7 @@ export function InnovationTeamsContent({
           onAddDialogChange(open);
           if (!open) setEditingMember(null);
         }}
-        editingMember={editingMember as any}
+        editingMember={editingMember}
         onSuccess={() => {
           fetchCoreTeamData();
           setEditingMember(null);

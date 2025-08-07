@@ -37,7 +37,15 @@ interface ExpertProfileDialogProps {
 export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProfileDialogProps) {
   const navigate = useNavigate();
   const [expert, setExpert] = useState<Expert | null>(null);
-  const [activeAssignments, setActiveAssignments] = useState<any[]>([]);
+  interface AssignmentData {
+    id: string;
+    challenge_id?: string;
+    status?: string;
+    title?: string;
+    created_at?: string;
+  }
+  
+  const [activeAssignments, setActiveAssignments] = useState<AssignmentData[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

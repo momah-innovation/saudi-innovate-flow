@@ -326,7 +326,9 @@ export function AdminChallengeManagement() {
           sub_domain_id: selectedChallenge.sub_domain_id || '',
           department_id: selectedChallenge.department_id || '',
           deputy_id: selectedChallenge.deputy_id || '',
-          sector_id: selectedChallenge.sector_id || ''
+          sector_id: selectedChallenge.sector_id || '',
+          domain_id: selectedChallenge.domain_id || '',
+          service_id: selectedChallenge.service_id || ''
         } : undefined}
       />
 

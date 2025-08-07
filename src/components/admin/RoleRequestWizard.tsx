@@ -93,7 +93,7 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
         .from('user_roles')
         .select('role')
         .eq('user_id', user.id)
-        .eq('role', selectedRole as any)
+        .eq('role', selectedRole as 'admin' | 'innovator' | 'expert' | 'partner' | 'evaluator')
         .eq('is_active', true);
 
       if (rolesError) throw rolesError;
