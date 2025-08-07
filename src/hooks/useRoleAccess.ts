@@ -31,6 +31,7 @@ export interface RolePermissions {
 
 export const useRoleAccess = () => {
   const { userProfile, hasRole } = useAuth();
+  const { getSettingValue } = useSettingsManager();
 
   const permissions: RolePermissions = {
     // Admin permissions
@@ -66,7 +67,6 @@ export const useRoleAccess = () => {
     const roles = getUserRoles();
     
     // Priority order for determining primary role
-    const { getSettingValue } = useSettingsManager();
     const rolePriority = getSettingValue('role_priority_order', ['super_admin', 'admin', 'team_member', 'expert', 'partner', 'stakeholder', 'innovator']) as UserRole[];
     
     for (const role of rolePriority) {
