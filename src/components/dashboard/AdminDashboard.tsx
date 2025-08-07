@@ -38,7 +38,7 @@ import {
   Zap
 } from 'lucide-react';
 
-interface UserProfile {
+interface AdminUserProfile {
   id: string;
   name: string;
   position?: string;
@@ -48,7 +48,7 @@ interface UserProfile {
 }
 
 interface AdminDashboardProps {
-  userProfile: UserProfile;
+  userProfile: AdminUserProfile;
   canManageUsers: boolean;
   canManageSystem: boolean;
   canViewAnalytics: boolean;

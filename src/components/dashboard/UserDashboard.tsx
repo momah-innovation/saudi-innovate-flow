@@ -324,7 +324,18 @@ export default function UserDashboard() {
         {/* Role-specific Dashboard Content */}
         {(primaryRole === 'admin' || primaryRole === 'super_admin') && (
           <AdminDashboard 
-            userProfile={userProfile}
+            userProfile={userProfile ? {
+              id: userProfile.id,
+              name: userProfile.name || '',
+              position: userProfile.position,
+              organization: userProfile.organization,
+              profile_completion_percentage: userProfile.profile_completion_percentage,
+              user_roles: userProfile.user_roles
+            } : {
+              id: '',
+              name: '',
+              profile_completion_percentage: 0
+            }}
             canManageUsers={permissions.canManageUsers}
             canManageSystem={permissions.canManageSystem}
             canViewAnalytics={permissions.canViewAnalytics}

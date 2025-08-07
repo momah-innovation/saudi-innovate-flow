@@ -106,7 +106,7 @@ export function UnifiedHeader({
   const hasRole = (requiredRoles?: UserRole[]): boolean => {
     if (!requiredRoles || requiredRoles.length === 0) return true;
     // Implement proper role checking with user's actual roles
-    return userProfile?.roles?.some(role => requiredRoles.includes(role)) || false;
+    return userProfile?.roles?.some(role => requiredRoles.includes(role as UserRole)) || false;
   };
 
   // Dynamic content based on variant

@@ -147,7 +147,7 @@ export const ProfileSetup = () => {
         phone: userProfile.phone || '',
         location: userProfile.location || '',
         website: userProfile.website || '',
-        experienceLevel: userProfile.experience_level || 'mid',
+        experienceLevel: (userProfile.experience_level as 'junior' | 'mid' | 'senior' | 'expert') || 'mid',
         specializations: userProfile.specializations || [],
         bio: userProfile.bio || '',
         languages: userProfile.languages || ['العربية'],
