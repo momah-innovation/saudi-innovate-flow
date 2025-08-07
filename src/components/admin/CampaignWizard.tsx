@@ -29,7 +29,7 @@ import {
   ChevronsUpDown,
   Check
 } from "lucide-react";
-import { useSystemLists } from "@/hooks/useSystemLists";
+import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { CampaignFormData, SystemLists } from "@/types";
 
@@ -50,7 +50,9 @@ export function CampaignWizard({
 }: CampaignWizardProps) {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
-  const { generalStatusOptions, campaignThemeOptions } = useSystemLists();
+  const { getSettingValue } = useSettingsManager();
+  const generalStatusOptions = getSettingValue('workflow_statuses', []) as string[];
+  const campaignThemeOptions = getSettingValue('campaign_theme_options', []) as string[];
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
 

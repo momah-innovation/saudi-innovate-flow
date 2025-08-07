@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
-import { useSystemLists } from "@/hooks/useSystemLists";
+import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { logger } from "@/utils/error-handler";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
@@ -51,7 +51,8 @@ export function OpportunityWizard({
 }: OpportunityWizardProps) {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
-  const { generalStatusOptions } = useSystemLists();
+  const { getSettingValue } = useSettingsManager();
+  const generalStatusOptions = getSettingValue('workflow_statuses', []) as string[];
   
   const [formData, setFormData] = useState<OpportunityFormData>({
     title: "",

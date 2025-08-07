@@ -8,7 +8,7 @@ import { Loader2, Eye, Edit, Filter, Search, FileCheck, Star } from "lucide-reac
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { logger } from "@/utils/error-handler";
-import { useSystemLists } from "@/hooks/useSystemLists";
+import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { AdminEvaluationsHero } from "@/components/admin/AdminEvaluationsHero";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { EnhancedEvaluationCard } from "@/components/evaluations/EnhancedEvaluationCard";
@@ -85,9 +85,9 @@ export function EvaluationsManagement({
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
-  const { expertRoleTypes } = useSystemLists();
-
-  const { evaluatorTypes } = useSystemLists();
+  const { getSettingValue } = useSettingsManager();
+  const expertRoleTypes = getSettingValue('expert_role_types', []) as string[];
+  const evaluatorTypes = getSettingValue('evaluator_types', []) as string[];
 
   useEffect(() => {
     fetchEvaluations();

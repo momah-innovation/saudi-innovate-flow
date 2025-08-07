@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Calendar, Clock, Plus, Search, Users, UserCheck, Target, AlertCircle, CheckCircle2, XCircle, Building, User, Filter, Eye } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useSystemLists } from '@/hooks/useSystemLists';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { ExpertProfileDialog } from './ExpertProfileDialog';
 
@@ -59,7 +59,9 @@ interface ChallengeExpert {
 export function ExpertAssignmentManagement() {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
-  const { assignmentStatusOptions, expertRoleTypes } = useSystemLists();
+  const { getSettingValue } = useSettingsManager();
+  const assignmentStatusOptions = getSettingValue('assignment_status_options', []) as string[];
+  const expertRoleTypes = getSettingValue('expert_role_types', []) as string[];
   const [activeTab, setActiveTab] = useState("assignments");
   const [maxWorkload, setMaxWorkload] = useState(5);
   const [profileTextareaRows, setProfileTextareaRows] = useState(4);

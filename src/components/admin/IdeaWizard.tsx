@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
-import { useSystemLists } from "@/hooks/useSystemLists";
+import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { IdeaFormData, SystemLists } from "@/types";
@@ -78,7 +78,9 @@ export function IdeaWizard({
 }: IdeaWizardProps) {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
-  const { generalStatusOptions, experienceLevels } = useSystemLists();
+  const { getSettingValue } = useSettingsManager();
+  const generalStatusOptions = getSettingValue('workflow_statuses', []) as string[];
+  const experienceLevels = getSettingValue('experience_levels', []) as string[];
   
   const [formData, setFormData] = useState<IdeaFormData>({
     title_ar: "",
@@ -117,7 +119,7 @@ export function IdeaWizard({
   }));
 
   // Maturity options from system lists
-  const { ideaMaturityLevels } = useSystemLists();
+  const ideaMaturityLevels = getSettingValue('idea_maturity_levels', []) as string[];
   
   const maturityOptions = ideaMaturityLevels.map(level => ({ 
     value: level, 

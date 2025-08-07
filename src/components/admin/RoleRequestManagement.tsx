@@ -15,7 +15,7 @@ import { CheckCircle2, XCircle, Clock, Search, UserCheck, MessageSquare, Eye, Us
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { getInitials, useSystemSettings } from '@/contexts/SystemSettingsContext';
-import { useSystemLists } from '@/hooks/useSystemLists';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { ExpertProfileView } from '@/components/experts/ExpertProfileCard';
 
 interface RoleRequest {
@@ -49,7 +49,8 @@ interface RoleRequest {
 export default function RoleRequestManagement() {
   const { toast } = useToast();
   const { uiInitialsMaxLength } = useSystemSettings();
-  const { roleRequestStatusOptions } = useSystemLists();
+  const { getSettingValue } = useSettingsManager();
+  const roleRequestStatusOptions = getSettingValue('role_request_status_options', []) as string[];
   const [roleRequests, setRoleRequests] = useState<RoleRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState<RoleRequest | null>(null);
