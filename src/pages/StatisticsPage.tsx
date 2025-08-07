@@ -16,7 +16,7 @@ import { TrendingStatisticsWidget } from '@/components/statistics/TrendingStatis
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { StatisticsNotificationCenter } from '@/components/statistics/StatisticsNotificationCenter';
 import { 
   BarChart3, TrendingUp, Users, Lightbulb, Target, 
@@ -69,7 +69,7 @@ const COLORS = ['hsl(var(--primary))', 'hsl(var(--secondary))', 'hsl(var(--accen
 
 export default function StatisticsPage() {
   const { isRTL } = useDirection();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { hasRole } = useAuth();
 
   // Check if user has admin or super_admin role

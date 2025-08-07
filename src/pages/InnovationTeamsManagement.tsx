@@ -5,10 +5,10 @@ import { InnovationTeamsContent } from '@/components/admin/InnovationTeamsConten
 import { UserPlus, Users, Zap } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export default function InnovationTeamsManagement() {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [activeTab, setActiveTab] = useState('core-team');
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');

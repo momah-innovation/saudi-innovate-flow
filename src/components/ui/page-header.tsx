@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 interface PageHeaderProps {
   title: string;
@@ -21,7 +21,7 @@ export function PageHeader({
   actionButton, 
   children 
 }: PageHeaderProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   return (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
       <div>

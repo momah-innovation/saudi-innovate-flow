@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Search, Filter, ChevronDown, ChevronRight, X } from "lucide-react";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 interface SearchAndFiltersProps {
   searchTerm: string;
@@ -28,7 +28,7 @@ export function SearchAndFilters({
   children,
   rightContent
 }: SearchAndFiltersProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const defaultPlaceholder = searchPlaceholder || t('searchPlaceholder');
   return (
     <div className="space-y-4">

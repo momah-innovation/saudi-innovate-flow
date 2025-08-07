@@ -5,10 +5,10 @@ import { TeamManagementContent } from '@/components/admin/TeamManagementContent'
 import { UserPlus, Users } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export default function TeamManagement() {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [activeTab, setActiveTab] = useState('teams');
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');

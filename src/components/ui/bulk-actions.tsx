@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, ChevronRight, Users } from "lucide-react";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 interface BulkAction {
   id: string;
@@ -31,7 +31,7 @@ export function BulkActions({
   className
 }: BulkActionsProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   
   const isAllSelected = selectedItems.length === totalItems && totalItems > 0;
   const isIndeterminate = selectedItems.length > 0 && selectedItems.length < totalItems;

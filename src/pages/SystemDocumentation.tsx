@@ -1,6 +1,6 @@
 import { AppShell } from "@/components/layout/AppShell";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useState } from "react";
 import { FileText, Download, BookOpen, Settings, Code, Shield, Database, HelpCircle, ExternalLink, Search } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const SystemDocumentation = () => {
-  const { t, language, isRTL } = useTranslation();
+  const { t, language, isRTL } = useUnifiedTranslation();
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');
 

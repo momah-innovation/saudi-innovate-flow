@@ -1,9 +1,9 @@
 import React from 'react';
 import { TagManager } from '@/components/ui/tag-manager';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export const TagManagement: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   return (
     <div className="container mx-auto py-6">

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useTags } from '@/hooks/useTags';
 
 interface TagSelectorProps {
@@ -25,7 +25,7 @@ export const TagSelector: React.FC<TagSelectorProps> = ({
   className,
   disabled = false
 }) => {
-  const { t, getDynamicText } = useTranslation();
+  const { t, getDynamicText } = useUnifiedTranslation();
   const { tags, searchTags, createTag } = useTags();
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');

@@ -20,11 +20,11 @@ import { AIPreferencesPanel } from '@/components/ai/AIPreferencesPanel';
 import { SmartRecommendations } from '@/components/ai/SmartRecommendations';
 import { IdeaEvaluationAI } from '@/components/ai/IdeaEvaluationAI';
 import { useAIFeatures } from '@/hooks/useAIFeatures';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 const AICenter: React.FC = () => {
   const { features, loading } = useAIFeatures();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   const featureCards = [
     {

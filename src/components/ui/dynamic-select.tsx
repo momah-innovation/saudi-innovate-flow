@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Loader2 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface DynamicSelectOption {
   value: string;
@@ -43,7 +43,7 @@ export function DynamicSelect({
   showAllOption = false,
   allOptionLabel
 }: DynamicSelectProps) {
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
 
   const defaultEmptyMessage = emptyMessage || t('no_options_available');
   const defaultAllLabel = allOptionLabel || t('all');

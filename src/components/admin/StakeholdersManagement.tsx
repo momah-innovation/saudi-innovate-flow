@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ManagementCard } from '@/components/ui/management-card';
 import { ViewLayouts } from '@/components/ui/view-layouts';
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { StakeholderWizard } from './StakeholderWizard';
 import { 
   User,

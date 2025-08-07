@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { useAuth } from '@/contexts/AuthContext';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
@@ -48,7 +48,7 @@ interface RecentEvaluation {
 
 export default function ExpertDashboard() {
   const { userProfile } = useAuth();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { isRTL } = useDirection();
   const navigate = useNavigate();
   

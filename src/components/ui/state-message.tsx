@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle, AlertCircle, Info, AlertTriangle, Loader2 } from "lucide-react";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 type StateType = 'loading' | 'success' | 'error' | 'warning' | 'info';
 
@@ -59,7 +59,7 @@ export function StateMessage({ type, title, message, action, className }: StateM
 
 // Predefined common states
 export const LoadingState = ({ message }: { message?: string }) => {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   return <StateMessage type="loading" message={message || t('loading')} />;
 };
 
@@ -70,7 +70,7 @@ export const ErrorState = ({
   message?: string; 
   action?: ReactNode;
 }) => {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   return <StateMessage type="error" title={t('error')} message={message || t('error')} action={action} />;
 };
 

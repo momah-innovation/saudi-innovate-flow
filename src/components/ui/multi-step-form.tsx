@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 interface FormStep {
   id: string;
@@ -32,7 +32,7 @@ export function MultiStepForm({
   showProgress = true,
   allowSkip = false
 }: MultiStepFormProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [currentStep, setCurrentStep] = useState(0);
   const [isValidating, setIsValidating] = useState(false);
 

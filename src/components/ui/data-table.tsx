@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Search, ArrowUpDown, Filter } from "lucide-react";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 export interface Column<T> {
   key: keyof T;
@@ -54,7 +54,7 @@ export function DataTable<T extends Record<string, any>>({
   className,
   idField = 'id' as keyof T
 }: DataTableProps<T>) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const defaultEmptyMessage = emptyMessage || t('noData');
   const allSelected = data.length > 0 && selectedItems.length === data.length;
   const someSelected = selectedItems.length > 0;

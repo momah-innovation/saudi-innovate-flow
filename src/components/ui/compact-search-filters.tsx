@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, X } from "lucide-react";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 interface FilterConfig {
   id: string;
@@ -34,7 +34,7 @@ export function CompactSearchAndFilters({
   onClearFilters,
   rightContent
 }: CompactSearchAndFiltersProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const defaultPlaceholder = searchPlaceholder || t('search');
   return (
     <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">

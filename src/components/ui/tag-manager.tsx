@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useTags } from '@/hooks/useTags';
 import { toast } from 'sonner';
 
@@ -42,7 +42,7 @@ const TAG_COLORS = [
 ];
 
 export const TagManager: React.FC = () => {
-  const { t, language, getDynamicText } = useTranslation();
+  const { t, language, getDynamicText } = useUnifiedTranslation();
   const { 
     tags, 
     loading, 

@@ -23,7 +23,7 @@ import {
   Share2
 } from 'lucide-react';
 import { format } from 'date-fns';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface Challenge {
   id: string;
@@ -47,7 +47,7 @@ interface Challenge {
 }
 
 export default function Challenges() {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { toast } = useToast();
   const { user, hasRole } = useAuth();
   

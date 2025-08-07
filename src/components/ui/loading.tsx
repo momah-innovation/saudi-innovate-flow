@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 // Loading Spinner
 interface LoadingSpinnerProps {
@@ -75,7 +75,7 @@ export function ProgressBar({
     lg: 'h-3',
   };
 
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   
   return (
     <div className={cn("space-y-2", className)}>
@@ -189,7 +189,7 @@ interface LoadingOverlayProps {
 }
 
 export function LoadingOverlay({ message, className }: LoadingOverlayProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const defaultMessage = message || t('loading');
   
   return (

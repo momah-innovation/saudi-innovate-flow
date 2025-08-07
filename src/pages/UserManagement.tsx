@@ -1,6 +1,6 @@
 import { AppShell } from "@/components/layout/AppShell";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useState } from "react";
 import { UserPlus, Users, Download, Search, MoreHorizontal, Settings, Mail } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -15,7 +15,7 @@ import { ExpertProfileDialog } from "@/components/admin/ExpertProfileDialog";
 import { useSystemLists } from "@/hooks/useSystemLists";
 
 export default function UserManagement() {
-  const { t, language, isRTL } = useTranslation();
+  const { t, language, isRTL } = useUnifiedTranslation();
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('list');
   const [searchValue, setSearchValue] = useState('');
   const [showInviteDialog, setShowInviteDialog] = useState(false);

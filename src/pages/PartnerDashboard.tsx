@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { useAuth } from '@/contexts/AuthContext';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
@@ -68,7 +68,7 @@ interface ApplicationItem {
 
 export default function PartnerDashboard() {
   const { userProfile } = useAuth();
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   const { direction } = useDirection();
   const navigate = useNavigate();
   

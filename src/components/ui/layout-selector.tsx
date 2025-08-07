@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { LayoutGrid, List, Grid, Table, Calendar } from "lucide-react";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 export type ViewMode = 'cards' | 'list' | 'grid' | 'table' | 'calendar';
 
@@ -17,7 +17,7 @@ export function LayoutSelector({
   supportedLayouts = ['cards', 'list', 'grid'],
   className 
 }: LayoutSelectorProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   
   const allLayouts = [
     { value: 'cards' as const, icon: LayoutGrid, labelKey: 'cards' },

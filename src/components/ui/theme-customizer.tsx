@@ -6,10 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTheme, themePresets } from "./theme-provider";
 import { Palette, Settings, Monitor, Sun, Moon } from "lucide-react";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 export function ThemeCustomizer() {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { theme, setTheme, applyTheme } = useTheme();
 
   const handlePresetChange = (presetName: string) => {

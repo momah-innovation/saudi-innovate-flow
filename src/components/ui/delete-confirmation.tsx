@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Trash2 } from "lucide-react";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 interface DeleteConfirmationProps {
   title: string;
@@ -21,7 +21,7 @@ export function DeleteConfirmation({
   buttonSize = "sm",
   buttonVariant = "outline"
 }: DeleteConfirmationProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   
   const defaultTrigger = (
     <Button variant={buttonVariant} size={buttonSize}>

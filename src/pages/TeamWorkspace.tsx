@@ -6,10 +6,10 @@ import { EnhancedTeamWorkspaceHero } from '@/components/team-workspace/EnhancedT
 import { Users, UserPlus, Calendar, Target } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export default function TeamWorkspace() {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [activeView, setActiveView] = useState('dashboard');
   const [viewMode, setViewMode] = useState<'cards' | 'list' | 'grid'>('cards');
   const [searchValue, setSearchValue] = useState('');

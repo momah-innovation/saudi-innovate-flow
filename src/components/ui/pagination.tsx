@@ -1,12 +1,12 @@
 import * as React from "react"
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
-import { useTranslation } from "@/hooks/useAppTranslation"
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation"
 
 import { cn } from "@/lib/utils"
 import { ButtonProps, buttonVariants } from "@/components/ui/button"
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   return (
     <nav
       role="navigation"
@@ -67,7 +67,7 @@ const PaginationPrevious = ({
   className,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   
   return (
     <PaginationLink
@@ -87,7 +87,7 @@ const PaginationNext = ({
   className,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   
   return (
     <PaginationLink
@@ -107,7 +107,7 @@ const PaginationEllipsis = ({
   className,
   ...props
 }: React.ComponentProps<"span">) => {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   
   return (
     <span

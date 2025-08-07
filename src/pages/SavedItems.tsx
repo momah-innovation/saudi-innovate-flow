@@ -14,7 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useBookmarks } from '@/hooks/useBookmarks';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { 
   Heart, Bookmark, Calendar, Target, Users, Award, Settings, Edit3, Trash2,
   Search, Filter, Plus, FolderPlus, Eye, Share2, Download, Star,
@@ -47,7 +47,7 @@ const SavedItemsPage = () => {
   const [opportunityBookmarks, setOpportunityBookmarks] = useState([]);
   const [loadingOpportunities, setLoadingOpportunities] = useState(false);
   const { isRTL } = useDirection();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   
   const [activeTab, setActiveTab] = useState('challenges');
   const [searchTerm, setSearchTerm] = useState('');

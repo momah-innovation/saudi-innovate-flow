@@ -1,10 +1,10 @@
 import { AppShell } from "@/components/layout/AppShell";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ProfileManager } from "@/components/profile/ProfileManager";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 export default function ProfileManagementPage() {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   
   return (
     <AppShell>

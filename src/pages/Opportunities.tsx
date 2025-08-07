@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { LayoutSelector } from '@/components/ui/layout-selector';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { useToast } from '@/hooks/use-toast';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { EnhancedOpportunitiesHero } from '@/components/opportunities/EnhancedOpportunitiesHero';
 import { OpportunityCard } from '@/components/opportunities/OpportunityCard';
@@ -68,7 +68,7 @@ interface OpportunityItem {
 }
 
 export default function Opportunities() {
-  const { t, isRTL, getDynamicText } = useTranslation();
+  const { t, isRTL, getDynamicText } = useUnifiedTranslation();
   const { user, hasRole } = useAuth();
   const { isRTL: direction } = useDirection();
   const { toast } = useToast();

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -38,7 +38,7 @@ export function List({
   className,
   emptyMessage
 }: ListProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const sizeClasses = {
     sm: 'py-1 px-2 text-sm',
     md: 'py-2 px-3',
