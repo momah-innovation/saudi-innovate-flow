@@ -97,7 +97,11 @@ export const TranslationManager: React.FC = () => {
       if (error) throw error;
 
       // Convert to nested JSON structure
-      const jsonStructure: Record<string, any> = {};
+      interface NestedJsonStructure {
+        [key: string]: NestedJsonStructure | string;
+      }
+      
+      const jsonStructure: NestedJsonStructure = {};
       
       translations?.forEach((record) => {
         const translationText = record[`text_${language}`];
@@ -106,10 +110,10 @@ export const TranslationManager: React.FC = () => {
         
         for (let i = 0; i < keys.length - 1; i++) {
           const key = keys[i];
-          if (!(key in current)) {
+          if (!(key in current) || typeof current[key] !== 'object' || current[key] === null || Array.isArray(current[key])) {
             current[key] = {};
           }
-          current = current[key];
+          current = current[key] as NestedJsonStructure;
         }
         
         current[keys[keys.length - 1]] = translationText;

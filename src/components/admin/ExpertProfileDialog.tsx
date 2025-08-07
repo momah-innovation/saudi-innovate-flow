@@ -43,6 +43,14 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
     status?: string;
     title?: string;
     created_at?: string;
+    role_type?: string;
+    challenges?: {
+      title_ar?: string;
+      status?: string;
+      priority_level?: string;
+      start_date?: string;
+      end_date?: string;
+    };
   }
   
   const [activeAssignments, setActiveAssignments] = useState<AssignmentData[]>([]);
@@ -84,7 +92,7 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
         .select(`
           *,
           challenges:challenge_id (
-            title,
+            title_ar,
             status,
             priority_level,
             start_date,
@@ -295,7 +303,7 @@ export function ExpertProfileDialog({ open, onOpenChange, expertId }: ExpertProf
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <h4 className="font-medium group-hover:text-primary transition-colors">
-                            {assignment.challenges?.title}
+                            {assignment.challenges?.title_ar}
                           </h4>
                           <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                         </div>

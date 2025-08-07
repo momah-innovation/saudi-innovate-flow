@@ -190,7 +190,7 @@ export default function RoleRequestManagement() {
           .from('user_roles')
           .insert({
             user_id: selectedRequest.requester_id,
-            role: selectedRequest.requested_role as 'admin' | 'innovator' | 'expert' | 'partner' | 'evaluator',
+            role: selectedRequest.requested_role as 'admin' | 'domain_expert' | 'evaluator' | 'innovator',
             is_active: true,
             granted_by: user.id
           });

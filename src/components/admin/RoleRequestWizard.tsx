@@ -93,7 +93,7 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
         .from('user_roles')
         .select('role')
         .eq('user_id', user.id)
-        .eq('role', selectedRole as 'admin' | 'innovator' | 'expert' | 'partner' | 'evaluator')
+        .eq('role', selectedRole as 'admin' | 'domain_expert' | 'evaluator' | 'innovator')
         .eq('is_active', true);
 
       if (rolesError) throw rolesError;
@@ -108,7 +108,7 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
         .from('role_requests')
         .select('id')
         .eq('requester_id', user.id)
-        .eq('requested_role', selectedRole as any)
+        .eq('requested_role', selectedRole as 'admin' | 'domain_expert' | 'evaluator' | 'innovator')
         .eq('status', 'pending');
 
       if (pendingError) throw pendingError;
@@ -126,7 +126,7 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
         .from('role_requests')
         .select('reviewed_at')
         .eq('requester_id', user.id)
-        .eq('requested_role', selectedRole as any)
+        .eq('requested_role', selectedRole as 'admin' | 'domain_expert' | 'evaluator' | 'innovator')
         .eq('status', 'rejected')
         .gte('reviewed_at', thirtyDaysAgo.toISOString());
 
@@ -166,8 +166,10 @@ export function RoleRequestWizard({ open, onOpenChange, currentRoles, onRequestS
         .from('role_requests')
         .insert({
           requester_id: user.id,
-          requested_role: selectedRole as any,
-          current_roles: currentRoles as any,
+          requested_role: selectedRole as 'admin' | 'domain_expert' | 'evaluator' | 'innovator',
+          current_roles: currentRoles.filter(role => 
+            ['admin', 'domain_expert', 'evaluator', 'innovator'].includes(role)
+          ) as ('admin' | 'domain_expert' | 'evaluator' | 'innovator')[],
           reason: reason,
           justification: justification,
           status: 'pending'

@@ -140,7 +140,11 @@ export const StorageQuotaManager: React.FC<StorageQuotaManagerProps> = ({ classN
     const result = await autoSetupQuotas()
     
     if (result.success) {
-      const data = result.data as any
+      interface AutoSetupData {
+        buckets_configured?: number;
+      }
+      
+      const data = result.data as AutoSetupData
       toast({
         title: 'Auto Setup Complete',
         description: `Successfully configured 5GB quotas for ${data?.buckets_configured || 0} buckets`

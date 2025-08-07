@@ -48,7 +48,11 @@ const TranslationManagement = () => {
       }
 
       // 3. Convert database translations to nested structure
-      const dbTranslationsNested: Record<string, any> = {};
+      interface NestedTranslation {
+        [key: string]: NestedTranslation | string;
+      }
+      
+      const dbTranslationsNested: NestedTranslation = {};
       dbTranslations?.forEach((record) => {
         const translationText = record[`text_${language}`];
         const keys = record.translation_key.split('.');

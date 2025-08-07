@@ -9,7 +9,7 @@ import { AdminEventsHero } from '@/components/events/AdminEventsHero';
 import { AdminEventCard } from '@/components/events/AdminEventCard';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-// Temporarily use any[] to avoid type conflicts
+// Enhanced event management with proper types
 import { logger } from '@/utils/logger';
 import { 
   Calendar, 

@@ -452,7 +452,15 @@ export function InnovationTeamsContent({
           onAddDialogChange(open);
           if (!open) setEditingMember(null);
         }}
-        editingMember={editingMember}
+        editingMember={editingMember ? { 
+          ...editingMember, 
+          specialization: Array.isArray(editingMember.specialization) 
+            ? editingMember.specialization 
+            : editingMember.specialization ? [editingMember.specialization] : [],
+          max_concurrent_projects: editingMember.max_concurrent_projects || 3,
+          current_workload: editingMember.current_workload || 0,
+          performance_rating: editingMember.performance_rating || 4.0
+        } : undefined}
         onSuccess={() => {
           fetchCoreTeamData();
           setEditingMember(null);

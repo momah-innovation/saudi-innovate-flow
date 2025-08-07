@@ -291,7 +291,7 @@ export function TeamWizard({
             <Select 
               value={formData.type} 
               onValueChange={(value) => {
-                setFormData({ ...formData, type: value as any });
+                setFormData({ ...formData, type: value as 'functional' | 'project' | 'cross_functional' });
                 if (errors.type) {
                   setErrors({ ...errors, type: "" });
                 }
@@ -328,7 +328,7 @@ export function TeamWizard({
               <Select 
                 value={formData.status} 
                 onValueChange={(value) => {
-                  setFormData({ ...formData, status: value as any });
+                  setFormData({ ...formData, status: value as 'active' | 'inactive' | 'forming' | 'disbanded' });
                   if (errors.status) {
                     setErrors({ ...errors, status: "" });
                   }

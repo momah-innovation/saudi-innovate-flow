@@ -9,7 +9,15 @@ import { logger } from '@/utils/logger';
 
 export function TestProfileCalculation() {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<Record<string, any> | null>(null);
+  interface TestResult {
+    success?: boolean;
+    message?: string;
+    data?: Record<string, unknown>;
+    error?: string;
+    details?: unknown;
+  }
+  
+  const [result, setResult] = useState<TestResult | null>(null);
   const { user } = useAuth();
   const { t } = useUnifiedTranslation();
 
@@ -37,9 +45,10 @@ export function TestProfileCalculation() {
       
       logger.info('Function response received', { component: 'TestProfileCalculation', action: 'testCalculation', data });
       setResult(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
       logger.error('Request error', { component: 'TestProfileCalculation', action: 'testCalculation' }, err as Error);
-      setResult({ error: err.message, details: err });
+      setResult({ error: errorMessage, details: err });
     } finally {
       setLoading(false);
     }
