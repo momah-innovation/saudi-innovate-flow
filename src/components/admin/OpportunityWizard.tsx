@@ -86,30 +86,26 @@ export function OpportunityWizard({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  // Opportunity type options
-  const typeOptions = [
-    { value: "job", label: "وظيفة" },
-    { value: "internship", label: "تدريب" },
-    { value: "volunteer", label: "تطوع" },
-    { value: "partnership", label: "شراكة" },
-    { value: "grant", label: "منحة" },
-    { value: "competition", label: "مسابقة" },
-  ];
+  // Opportunity type options from settings
+  const opportunityTypeOptionsData = getSettingValue('opportunity_type_options', []) as string[];
+  const typeOptions = opportunityTypeOptionsData.map(type => ({ 
+    value: type.toLowerCase().replace(/[^a-z]/g, ''), 
+    label: type 
+  }));
 
-  // Status options
-  const statusOptions = [
-    { value: "open", label: "مفتوح" },
-    { value: "closed", label: "مغلق" },
-    { value: "on_hold", label: "معلق" },
-    { value: "cancelled", label: "ملغي" },
-  ];
+  // Status options from settings
+  const opportunityStatusOptionsData = getSettingValue('opportunity_status_options', []) as string[];
+  const statusOptions = opportunityStatusOptionsData.map(status => ({ 
+    value: status.toLowerCase().replace(/[^a-z]/g, ''), 
+    label: status 
+  }));
 
-  // Currency options
-  const currencyOptions = [
-    { value: "SAR", label: "ريال سعودي (SAR)" },
-    { value: "USD", label: "دولار أمريكي (USD)" },
-    { value: "EUR", label: "يورو (EUR)" },
-  ];
+  // Currency options from settings
+  const currencyOptionsData = getSettingValue('currency_options', []) as string[];
+  const currencyOptions = currencyOptionsData.map((currency, index) => {
+    const codes = ['SAR', 'USD', 'EUR'];
+    return { value: codes[index] || 'SAR', label: currency };
+  });
 
   useEffect(() => {
     if (isOpen) {

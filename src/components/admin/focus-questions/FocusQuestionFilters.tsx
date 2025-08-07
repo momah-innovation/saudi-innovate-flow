@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { 
   Search, 
@@ -64,6 +65,7 @@ export function FocusQuestionFilters({
 }: FocusQuestionFiltersProps) {
   const { t, isRTL } = useUnifiedTranslation();
   const { focusQuestionTypes } = useSystemLists();
+  const { getSettingValue } = useSettingsManager();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const { questionTypeOptions } = useSystemLists();
@@ -78,20 +80,29 @@ export function FocusQuestionFilters({
     }))
   ];
 
+  // Sensitivity options from settings
+  const sensitivityOptionsData = getSettingValue('question_sensitivity_options', []) as string[];
   const sensitivityOptions = [
     { value: 'all', label: 'جميع المستويات' },
-    { value: 'sensitive', label: 'حساس' },
-    { value: 'normal', label: 'عادي' }
+    ...sensitivityOptionsData.map(sensitivity => ({ 
+      value: sensitivity.toLowerCase(), 
+      label: sensitivity 
+    }))
   ];
 
-  const sortOptions = [
-    { value: 'newest', label: 'الأحدث أولاً' },
-    { value: 'oldest', label: 'الأقدم أولاً' },
-    { value: 'order_asc', label: 'الترتيب (تصاعدي)' },
-    { value: 'order_desc', label: 'الترتيب (تنازلي)' },
-    { value: 'alphabetical', label: 'أبجدي' },
-    { value: 'type', label: 'حسب النوع' }
-  ];
+  // Sort options from settings
+  const sortOptionsData = getSettingValue('question_sort_options', []) as string[];
+  const sortOptions = sortOptionsData.map(sort => {
+    const valueMap: { [key: string]: string } = {
+      'الأحدث أولاً': 'newest',
+      'الأقدم أولاً': 'oldest',
+      'الترتيب (تصاعدي)': 'order_asc',
+      'الترتيب (تنازلي)': 'order_desc',
+      'أبجدي': 'alphabetical',
+      'حسب النوع': 'type'
+    };
+    return { value: valueMap[sort] || sort.toLowerCase(), label: sort };
+  });
 
   const getActiveFilters = () => {
     const filters = [];

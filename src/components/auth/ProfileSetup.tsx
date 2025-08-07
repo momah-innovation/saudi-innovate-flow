@@ -33,6 +33,7 @@ import {
 } from 'lucide-react';
 import { TestProfileCalculation } from '@/components/admin/TestProfileCalculation';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { logger } from '@/utils/logger';
 
 interface UserRole {
@@ -82,14 +83,20 @@ const SPECIALIZATIONS = [
   'القيادة والإدارة'
 ];
 
-const EXPERIENCE_LEVELS = [
-  { value: 'junior', label: 'مبتدئ (1-3 سنوات)' },
-  { value: 'mid', label: 'متوسط (3-7 سنوات)' },
-  { value: 'senior', label: 'كبير (7-15 سنة)' },
-  { value: 'expert', label: 'خبير (+15 سنة)' }
-];
-
 export const ProfileSetup = () => {
+  const { t, isRTL } = useUnifiedTranslation();
+  const { getSettingValue } = useSettingsManager();
+  const { toast } = useToast();
+  const { user, userProfile, updateProfile } = useAuth();
+  const navigate = useNavigate();
+  
+  // Get experience levels from settings
+  const experienceLevelsData = getSettingValue('experience_levels', []) as string[];
+  const EXPERIENCE_LEVELS = experienceLevelsData.map((level, index) => {
+    const values = ['junior', 'mid', 'senior', 'expert'];
+    return { value: values[index] || 'junior', label: level };
+  });
+
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [profileData, setProfileData] = useState<ProfileData>({

@@ -18,6 +18,7 @@ import { ar } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { cn } from '@/lib/utils';
 import { logger } from '@/utils/logger';
 
@@ -55,6 +56,8 @@ export function ChallengeForm({
 }: ChallengeFormProps) {
   const [aiSuggestionsEnabled, setAiSuggestionsEnabled] = useState(false);
   const [generatingContent, setGeneratingContent] = useState(false);
+  const { t, isRTL } = useUnifiedTranslation();
+  const { getSettingValue } = useSettingsManager();
   const { toast } = useToast();
 
   const form = useForm<ChallengeFormData>({
@@ -81,27 +84,25 @@ export function ChallengeForm({
     { value: 'smart_city', label: 'مدينة ذكية' }
   ];
 
-  const priorityLevels = [
-    { value: 'low', label: 'منخفض' },
-    { value: 'medium', label: 'متوسط' },
-    { value: 'high', label: 'عالي' },
-    { value: 'critical', label: 'حرج' }
-  ];
+  // Get settings from database
+  const enhancedPriorityLevelsData = getSettingValue('enhanced_priority_levels', []) as string[];
+  const enhancedStatusOptionsData = getSettingValue('enhanced_status_options', []) as string[];
+  const enhancedSensitivityLevelsData = getSettingValue('enhanced_sensitivity_levels', []) as string[];
 
-  const statusOptions = [
-    { value: 'draft', label: 'مسودة' },
-    { value: 'planning', label: 'قيد التخطيط' },
-    { value: 'active', label: 'نشط' },
-    { value: 'paused', label: 'متوقف' },
-    { value: 'completed', label: 'مكتمل' }
-  ];
+  const priorityLevels = enhancedPriorityLevelsData.map(priority => ({ 
+    value: priority.toLowerCase(), 
+    label: priority 
+  }));
 
-  const sensitivityLevels = [
-    { value: 'normal', label: 'عادي' },
-    { value: 'internal', label: 'داخلي' },
-    { value: 'high', label: 'عالي' },
-    { value: 'confidential', label: 'سري' }
-  ];
+  const statusOptions = enhancedStatusOptionsData.map(status => ({ 
+    value: status.toLowerCase().replace(/\s+/g, '_'), 
+    label: status 
+  }));
+
+  const sensitivityLevels = enhancedSensitivityLevelsData.map(sensitivity => ({ 
+    value: sensitivity.toLowerCase(), 
+    label: sensitivity 
+  }));
 
   const generateAiContent = async () => {
     const title = form.getValues('title_ar');

@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '
 import { Separator } from '@/components/ui/separator';
 import { CalendarIcon, Filter, X, MapPin, Clock, Users, DollarSign } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { format } from 'date-fns';
 
 interface FilterState {
@@ -41,6 +42,7 @@ export const EventAdvancedFilters = ({
   onClearFilters
 }: EventAdvancedFiltersProps) => {
   const { isRTL } = useDirection();
+  const { getSettingValue } = useSettingsManager();
 
   const eventTypes = [
     { value: 'workshop', label: isRTL ? 'ورشة عمل' : 'Workshop' },
@@ -52,32 +54,31 @@ export const EventAdvancedFilters = ({
     { value: 'brainstorm', label: isRTL ? 'عصف ذهني' : 'Brainstorm' }
   ];
 
-  const formats = [
-    { value: 'in_person', label: isRTL ? 'حضوري' : 'In Person' },
-    { value: 'virtual', label: isRTL ? 'افتراضي' : 'Virtual' },
-    { value: 'hybrid', label: isRTL ? 'مختلط' : 'Hybrid' }
-  ];
+  // Get settings from database
+  const eventFormatOptionsData = getSettingValue('event_format_options', []) as string[];
+  const eventStatusOptionsData = getSettingValue('event_status_options', []) as string[];
+  const eventPriceRangesData = getSettingValue('event_price_ranges', []) as string[];
+  const eventCapacityOptionsData = getSettingValue('event_capacity_options', []) as string[];
 
-  const statusOptions = [
-    { value: 'scheduled', label: isRTL ? 'مجدول' : 'Scheduled' },
-    { value: 'ongoing', label: isRTL ? 'جاري' : 'Ongoing' },
-    { value: 'completed', label: isRTL ? 'مكتمل' : 'Completed' },
-    { value: 'cancelled', label: isRTL ? 'ملغي' : 'Cancelled' }
-  ];
+  const formats = eventFormatOptionsData.map(format => ({ 
+    value: format.toLowerCase(), 
+    label: format 
+  }));
 
-  const priceRanges = [
-    { value: 'free', label: isRTL ? 'مجاني' : 'Free' },
-    { value: '1-500', label: isRTL ? '1 - 500 ر.س' : '1 - 500 SAR' },
-    { value: '501-1000', label: isRTL ? '501 - 1000 ر.س' : '501 - 1000 SAR' },
-    { value: '1001+', label: isRTL ? 'أكثر من 1000 ر.س' : '1000+ SAR' }
-  ];
+  const statusOptions = eventStatusOptionsData.map(status => ({ 
+    value: status.toLowerCase(), 
+    label: status 
+  }));
 
-  const capacityOptions = [
-    { value: '1-25', label: isRTL ? '1 - 25 شخص' : '1 - 25 people' },
-    { value: '26-50', label: isRTL ? '26 - 50 شخص' : '26 - 50 people' },
-    { value: '51-100', label: isRTL ? '51 - 100 شخص' : '51 - 100 people' },
-    { value: '101+', label: isRTL ? 'أكثر من 100 شخص' : '100+ people' }
-  ];
+  const priceRanges = eventPriceRangesData.map((range, index) => {
+    const values = ['free', '1-500', '501-1000', '1001+'];
+    return { value: values[index] || 'free', label: range };
+  });
+
+  const capacityOptions = eventCapacityOptionsData.map((capacity, index) => {
+    const values = ['1-25', '26-50', '51-100', '101+'];
+    return { value: values[index] || '1-25', label: capacity };
+  });
 
   const handleTypeChange = (type: string, checked: boolean) => {
     const newTypes = checked 
