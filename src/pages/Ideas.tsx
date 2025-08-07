@@ -27,8 +27,9 @@ import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 import { 
-  Plus, Lightbulb, TrendingUp, Filter, Heart, MessageSquare, 
+  Plus, Lightbulb, TrendingUp, Filter, Heart, MessageSquare,
   Eye, Star, Trophy, Target, Rocket, CheckCircle, Clock,
   Users, Building, Bookmark, Share2, Download, RefreshCw,
   BarChart3, Search, ThumbsUp, ThumbsDown, AlertCircle,
@@ -253,7 +254,7 @@ export default function IdeasPage() {
       setIdeas((data as any) || []);
       
     } catch (error) {
-      console.error('Error loading ideas:', error);
+      logger.error('Error loading ideas', { type: sortBy, status: statusFilter, filters: { maturityFilter } }, error as Error);
       toast({
         title: isRTL ? 'خطأ في تحميل الأفكار' : 'Error loading ideas',
         description: isRTL ? 'حدث خطأ أثناء تحميل الأفكار' : 'An error occurred while loading ideas',
@@ -287,7 +288,7 @@ export default function IdeasPage() {
       if (error) throw error;
       setDrafts(data || []);
     } catch (error) {
-      console.error('Error fetching drafts:', error);
+      logger.error('Error fetching drafts', { userId: userProfile?.id }, error as Error);
       toast({
         title: isRTL ? 'فشل في تحميل المسودات' : 'Failed to load drafts',
         variant: 'destructive'
@@ -307,7 +308,7 @@ export default function IdeasPage() {
       if (error) throw error;
       setChallenges(data || []);
     } catch (error) {
-      console.error('Error fetching challenges:', error);
+      logger.error('Error fetching challenges', {}, error as Error);
     }
   };
 
@@ -322,7 +323,7 @@ export default function IdeasPage() {
       if (error) throw error;
       setTemplates(data || []);
     } catch (error) {
-      console.error('Error loading templates:', error);
+      logger.error('Error loading templates', {}, error as Error);
     }
   };
 

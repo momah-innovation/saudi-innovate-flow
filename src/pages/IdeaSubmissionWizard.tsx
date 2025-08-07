@@ -25,6 +25,7 @@ import { useSettings } from '@/contexts/SettingsContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useDirection } from '@/components/ui/direction-provider';
+import { logger } from '@/utils/logger';
 
 interface IdeaFormData {
   title_ar: string;
@@ -141,7 +142,7 @@ export default function IdeaSubmissionWizard() {
         setPredefinedTags(Array.isArray(tags) ? tags : []);
       }
     } catch (error) {
-      console.error('Error loading predefined tags:', error);
+      logger.error('Error loading predefined tags', {}, error as Error);
     }
   };
 
@@ -164,7 +165,7 @@ export default function IdeaSubmissionWizard() {
       if (challengesResponse.data) setChallenges(challengesResponse.data);
       if (questionsResponse.data) setFocusQuestions(questionsResponse.data);
     } catch (error) {
-      console.error('Error loading challenges and questions:', error);
+      logger.error('Error loading challenges and questions', {}, error as Error);
       toast.error(isRTL ? 'خطأ في تحميل التحديات والأسئلة المحورية' : 'Error loading challenges and focus questions');
     }
   };
@@ -184,7 +185,7 @@ export default function IdeaSubmissionWizard() {
       if (error) throw error;
       setDrafts(data || []);
     } catch (error) {
-      console.error('Error loading drafts:', error);
+      logger.error('Error loading drafts', {}, error as Error);
     }
   };
 
@@ -232,7 +233,7 @@ export default function IdeaSubmissionWizard() {
       
       toast.success(isRTL ? 'تم حفظ المسودة تلقائياً' : 'Draft auto-saved', { duration: 2000 });
     } catch (error) {
-      console.error('Auto-save error:', error);
+      logger.error('Auto-save error', {}, error as Error);
       // Don't show error toast for auto-save failures to avoid spam
     } finally {
       setAutoSaving(false);
@@ -269,7 +270,7 @@ export default function IdeaSubmissionWizard() {
       
       toast.success(isRTL ? 'تم تحميل المسودة بنجاح' : 'Draft loaded successfully');
     } catch (error) {
-      console.error('Error loading draft:', error);
+      logger.error('Error loading draft', {}, error as Error);
       toast.error(isRTL ? 'خطأ في تحميل المسودة' : 'Error loading draft');
     }
   };
@@ -400,7 +401,7 @@ export default function IdeaSubmissionWizard() {
       navigate('/dashboard');
       
     } catch (error) {
-      console.error('Error submitting idea:', error);
+      logger.error('Error submitting idea', {}, error as Error);
       toast.error(isRTL ? 'خطأ في إرسال الفكرة. يرجى المحاولة مرة أخرى.' : 'Error submitting idea. Please try again.');
     } finally {
       setLoading(false);

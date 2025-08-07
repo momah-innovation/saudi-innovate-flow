@@ -7,6 +7,7 @@ import { AppShell } from '@/components/layout/AppShell';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
+import { logger } from '@/utils/logger';
 import { 
   FileText, Plus, Clock, Trash2, 
   Edit, Calendar, AlertCircle 
@@ -64,7 +65,7 @@ export default function IdeaDrafts() {
       if (error) throw error;
       setDrafts(data || []);
     } catch (error) {
-      console.error('Error fetching drafts:', error);
+      logger.error('Error fetching drafts', { userId: userProfile?.id }, error as Error);
       toast.error(isRTL ? 'فشل في تحميل المسودات' : 'Failed to load drafts');
     } finally {
       setLoading(false);
@@ -81,7 +82,7 @@ export default function IdeaDrafts() {
       if (error) throw error;
       setChallenges(data || []);
     } catch (error) {
-      console.error('Error fetching challenges:', error);
+      logger.error('Error fetching challenges', {}, error as Error);
     }
   };
 
@@ -97,8 +98,8 @@ export default function IdeaDrafts() {
       setDrafts(drafts.filter(draft => draft.id !== draftId));
       toast.success(isRTL ? 'تم حذف المسودة بنجاح' : 'Draft deleted successfully');
     } catch (error) {
-      console.error('Error deleting draft:', error);
-      toast.error(isRTL ? 'فشل في حذف المسودة' : 'Failed to delete draft');
+      logger.error('Error deleting draft', { entityId: draftId }, error as Error);
+      toast.error(isRTL ? 'فشل في تحميل المسودات' : 'Failed to delete draft');
     }
   };
 

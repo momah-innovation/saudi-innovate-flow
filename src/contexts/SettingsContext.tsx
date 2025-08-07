@@ -495,7 +495,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
       // Update local state
       setSettings(prev => ({ ...prev, [key]: value }));
     } catch (error) {
-      console.error('Error updating setting:', error);
+      logger.error('Error updating setting', { key }, error as Error);
       throw error;
     }
   };

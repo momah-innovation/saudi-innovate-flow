@@ -20,6 +20,7 @@ import { OpportunityNotificationCenter } from '@/components/opportunities/Opport
 import { OpportunityTemplatesDialog } from '@/components/opportunities/OpportunityTemplatesDialog';
 import { OpportunityAnalyticsDashboard } from '@/components/opportunities/OpportunityAnalyticsDashboard';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 import { useAuth } from '@/contexts/AuthContext';
 import { useBookmarks } from '@/hooks/useBookmarks';
 import { downloadOpportunityImages } from '@/utils/downloadOpportunityImages';
@@ -199,7 +200,7 @@ export default function Opportunities() {
       });
 
     } catch (error) {
-      console.error('Error loading opportunities:', error);
+      logger.error('Error loading opportunities', { type: activeTab }, error as Error);
       toast({
         title: t('error'),
         description: t('errorLoadingData'),
