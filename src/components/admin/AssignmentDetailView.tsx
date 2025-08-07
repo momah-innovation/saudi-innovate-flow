@@ -185,17 +185,17 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
     {
       label: t('status'),
       value: t(data?.status || ''),
-      variant: getStatusColor(data?.status || '') as any
+      variant: getStatusColor(data?.status || '') as 'default' | 'secondary' | 'destructive' | 'outline'
     },
     ...(data?.priority_level ? [{
       label: t('priority'),
       value: t(data.priority_level),
-      variant: getPriorityColor(data.priority_level) as any
+      variant: getPriorityColor(data.priority_level) as 'default' | 'secondary' | 'destructive' | 'outline'
     }] : []),
     ...(data?.sensitivity_level ? [{
       label: t('sensitivity'),
       value: t(data.sensitivity_level),
-      variant: 'outline' as any
+      variant: 'outline'
     }] : [])
   ];
 
@@ -219,7 +219,7 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
         {
           label: t('assignmentStatus'),
           value: (
-            <Badge variant={getStatusColor(assignment.status) as any}>
+            <Badge variant={getStatusColor(assignment.status) as 'default' | 'secondary' | 'destructive' | 'outline'}>
               {t(assignment.status)}
             </Badge>
           )

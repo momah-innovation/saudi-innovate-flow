@@ -81,13 +81,23 @@ export function CampaignWizard({
   });
 
   // Related data
-  const [sectors, setSectors] = useState<any[]>([]);
-  const [deputies, setDeputies] = useState<any[]>([]);
-  const [departments, setDepartments] = useState<any[]>([]);
-  const [challenges, setChallenges] = useState<any[]>([]);
-  const [partners, setPartners] = useState<any[]>([]);
-  const [stakeholders, setStakeholders] = useState<any[]>([]);
-  const [managers, setManagers] = useState<any[]>([]);
+  interface RelatedEntity {
+    id: string;
+    name?: string;
+    name_ar?: string;
+    title?: string;
+    title_ar?: string;
+    email?: string;
+    position?: string;
+  }
+  
+  const [sectors, setSectors] = useState<RelatedEntity[]>([]);
+  const [deputies, setDeputies] = useState<RelatedEntity[]>([]);
+  const [departments, setDepartments] = useState<RelatedEntity[]>([]);
+  const [challenges, setChallenges] = useState<RelatedEntity[]>([]);
+  const [partners, setPartners] = useState<RelatedEntity[]>([]);
+  const [stakeholders, setStakeholders] = useState<RelatedEntity[]>([]);
+  const [managers, setManagers] = useState<RelatedEntity[]>([]);
 
   // Search states
   const [managerSearch, setManagerSearch] = useState("");

@@ -310,7 +310,7 @@ export function AdminChallengeManagement() {
           setShowWizard(false);
           setSelectedChallenge(null);
         }}
-        challenge={selectedChallenge as any}
+        challenge={selectedChallenge}
       />
 
       {selectedChallenge && (

@@ -44,7 +44,7 @@ interface TeamMemberData {
     profile_image_url: string;
   }[];
   role?: string;
-  specialization?: string;
+  specialization?: string | string[];
   current_workload?: number;
   status?: string;
   cic_role?: string;
@@ -96,6 +96,8 @@ interface TeamWorkspaceData {
 interface AssignmentData {
   id: string;
   status: string;
+  assignment_type?: string;
+  role_in_assignment?: string;
   workload_percentage?: number;
 }
 
@@ -659,13 +661,15 @@ export function TeamWorkspaceContent({
                 onClick={() => setSelectedMember(member)}
               >
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={member.profiles?.profile_image_url} />
+                  <AvatarImage src={
+                    Array.isArray(member.profiles) ? member.profiles[0]?.profile_image_url : member.profiles?.profile_image_url
+                  } />
                   <AvatarFallback>
-                    {member.profiles?.display_name?.charAt(0) || 'U'}
+                    {Array.isArray(member.profiles) ? member.profiles[0]?.name?.charAt(0) || 'U' : member.profiles?.name?.charAt(0) || 'U'}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
-                  <p className="font-medium">{member.profiles?.display_name || 'مستخدم'}</p>
+                  <p className="font-medium">{Array.isArray(member.profiles) ? member.profiles[0]?.name || 'مستخدم' : member.profiles?.name || 'مستخدم'}</p>
                   <p className="text-sm text-muted-foreground">{member.role}</p>
                   <Progress value={member.current_workload || 65} className="mt-1 h-1" />
                 </div>
@@ -877,16 +881,18 @@ export function TeamWorkspaceContent({
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <Avatar className="h-14 w-14">
-                    <AvatarImage src={member.profiles?.profile_image_url} />
+                    <AvatarImage src={
+                      Array.isArray(member.profiles) ? member.profiles[0]?.profile_image_url : member.profiles?.profile_image_url
+                    } />
                     <AvatarFallback className="text-lg">
-                      {member.profiles?.display_name?.charAt(0) || 'U'}
+                      {Array.isArray(member.profiles) ? member.profiles[0]?.name?.charAt(0) || 'U' : member.profiles?.name?.charAt(0) || 'U'}
                     </AvatarFallback>
                   </Avatar>
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-background"></div>
                 </div>
                 <div className="flex-1">
                   <CardTitle className="text-base group-hover:text-primary transition-colors">
-                    {member.profiles?.display_name || 'مستخدم'}
+                    {Array.isArray(member.profiles) ? member.profiles[0]?.name || 'مستخدم' : member.profiles?.name || 'مستخدم'}
                   </CardTitle>
                   <CardDescription className="flex items-center gap-2">
                     {member.role}

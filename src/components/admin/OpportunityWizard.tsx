@@ -75,7 +75,13 @@ export function OpportunityWizard({
     currency: "SAR",
   });
 
-  const [departments, setDepartments] = useState<any[]>([]);
+  interface DepartmentData {
+    id: string;
+    name?: string;
+    name_ar?: string;
+  }
+  
+  const [departments, setDepartments] = useState<DepartmentData[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -285,7 +291,7 @@ export function OpportunityWizard({
               <Select 
                 value={formData.type} 
                 onValueChange={(value) => {
-                  setFormData({ ...formData, type: value as any });
+                  setFormData({ ...formData, type: value as OpportunityFormData['type'] });
                   if (errors.type) {
                     setErrors({ ...errors, type: "" });
                   }
@@ -312,7 +318,7 @@ export function OpportunityWizard({
               <Select 
                 value={formData.status} 
                 onValueChange={(value) => {
-                  setFormData({ ...formData, status: value as any });
+                  setFormData({ ...formData, status: value as OpportunityFormData['status'] });
                 }}
               >
                 <SelectTrigger>
