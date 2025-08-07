@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/logger";
 import { supabase } from "@/integrations/supabase/client";
 import { MessageSquare, Send, Reply, Edit, Trash, Flag } from "lucide-react";
 import { format } from "date-fns";
@@ -23,6 +24,11 @@ interface Comment {
   author?: {
     name: string;
     email: string;
+    profile_image_url?: string;
+  } | {
+    id: string;
+    name: string;
+    name_ar: string;
     profile_image_url?: string;
   };
   replies?: Comment[];
@@ -71,20 +77,24 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
       const rootComments: Comment[] = [];
 
       // First pass: create all comments
-      data.forEach((comment: any) => {
+      data.forEach((commentData: any) => {
         const formattedComment: Comment = {
-          ...comment,
-          author: comment.profiles || { name: 'مستخدم غير معروف', email: '' },
+          ...commentData,
+          author: commentData.profiles ? {
+            name: commentData.profiles.name || commentData.profiles.name_ar || 'مستخدم غير معروف',
+            email: commentData.profiles.email || '',
+            profile_image_url: commentData.profiles.profile_image_url
+          } : { name: 'مستخدم غير معروف', email: '' },
           replies: []
         };
-        commentMap.set(comment.id, formattedComment);
+        commentMap.set(commentData.id, formattedComment);
       });
 
       // Second pass: organize into tree
-      data.forEach((comment: any) => {
-        const formattedComment = commentMap.get(comment.id);
-        if (comment.parent_comment_id) {
-          const parent = commentMap.get(comment.parent_comment_id);
+      data.forEach((commentData: any) => {
+        const formattedComment = commentMap.get(commentData.id);
+        if (commentData.parent_comment_id) {
+          const parent = commentMap.get(commentData.parent_comment_id);
           if (parent) {
             parent.replies!.push(formattedComment);
           }
@@ -94,8 +104,8 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
       });
 
       setComments(rootComments);
-    } catch (error: any) {
-      console.error('Error fetching comments:', error);
+    } catch (error) {
+      logger.error('Error fetching comments', { component: 'IdeaCommentsPanel', action: 'fetchComments', data: { ideaId } }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في تحميل التعليقات",
@@ -134,8 +144,8 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
         title: "تم إضافة التعليق",
         description: "تم إضافة تعليقك بنجاح"
       });
-    } catch (error: any) {
-      console.error('Error submitting comment:', error);
+    } catch (error) {
+      logger.error('Error submitting comment', { component: 'IdeaCommentsPanel', action: 'handleSubmitComment', data: { ideaId } }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في إضافة التعليق",
@@ -175,8 +185,8 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
         title: "تم إضافة الرد",
         description: "تم إضافة ردك بنجاح"
       });
-    } catch (error: any) {
-      console.error('Error submitting reply:', error);
+    } catch (error) {
+      logger.error('Error submitting reply', { component: 'IdeaCommentsPanel', action: 'handleSubmitReply', data: { ideaId, parentId } }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في إضافة الرد",

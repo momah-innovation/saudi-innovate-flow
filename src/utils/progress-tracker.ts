@@ -122,6 +122,9 @@ progressTracker.initializeComponent('src/components/admin/challenges/ChallengeWi
 progressTracker.initializeComponent('src/components/admin/challenges/ChallengeDetailView.tsx', 1, 5);
 progressTracker.initializeComponent('src/components/admin/challenges/ChallengeManagementList.tsx', 2, 0);
 progressTracker.initializeComponent('src/components/admin/TeamManagementContent.tsx', 2, 2);
+progressTracker.initializeComponent('src/components/admin/ideas/IdeaWorkflowPanel.tsx', 5, 1);
+progressTracker.initializeComponent('src/components/admin/ideas/BulkActionsPanel.tsx', 4, 4);
+progressTracker.initializeComponent('src/components/admin/ideas/IdeaCommentsPanel.tsx', 3, 6);
 
 // Mark completed fixes
 progressTracker.markComponentCompleted('src/components/admin/TranslationManagement.tsx', 4, 8);
@@ -133,4 +136,7 @@ progressTracker.markComponentCompleted('src/components/admin/challenges/Challeng
 progressTracker.markComponentCompleted('src/components/admin/TeamManagementContent.tsx', 2, 2);
 progressTracker.markComponentCompleted('src/components/admin/challenges/ChallengeDetailView.tsx', 1, 5);
 progressTracker.markComponentCompleted('src/components/admin/challenges/ChallengeManagementList.tsx', 2, 0);
+progressTracker.markComponentCompleted('src/components/admin/ideas/IdeaWorkflowPanel.tsx', 5, 1);
+progressTracker.markComponentCompleted('src/components/admin/ideas/BulkActionsPanel.tsx', 4, 4);
+progressTracker.markComponentCompleted('src/components/admin/ideas/IdeaCommentsPanel.tsx', 3, 6);
 progressTracker.logProgress();

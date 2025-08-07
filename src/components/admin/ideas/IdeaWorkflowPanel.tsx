@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/logger";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { 
@@ -55,6 +56,14 @@ interface Milestone {
   order_sequence: number;
 }
 
+interface TeamMember {
+  id: string;
+  user_id: string;
+  cic_role: string;
+  contact_email: string;
+  status: string;
+}
+
 interface IdeaWorkflowPanelProps {
   ideaId: string;
   currentStatus: string;
@@ -69,7 +78,7 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
   const [workflowStates, setWorkflowStates] = useState<WorkflowState[]>([]);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [milestones, setMilestones] = useState<Milestone[]>([]);
-  const [teamMembers, setTeamMembers] = useState<any[]>([]);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   
   const [newStatus, setNewStatus] = useState("");
   const [statusReason, setStatusReason] = useState("");
@@ -137,8 +146,8 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
       setWorkflowStates(workflowStates || []);
       setAssignments(assignments || []);
       setMilestones(milestones || []);
-    } catch (error: any) {
-      console.error('Error fetching workflow data:', error);
+    } catch (error) {
+      logger.error('Error fetching workflow data', { component: 'IdeaWorkflowPanel', action: 'fetchWorkflowData', data: { ideaId } }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في تحميل بيانات سير العمل",
@@ -161,7 +170,7 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
         setTeamMembers(data || []);
       }
     } catch (error) {
-      console.error('Error fetching team members:', error);
+      logger.error('Error fetching team members', { component: 'IdeaWorkflowPanel', action: 'fetchTeamMembers' }, error as Error);
     }
   };
 
@@ -190,8 +199,8 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
       setStatusReason("");
       await fetchWorkflowData();
       onStatusChange();
-    } catch (error: any) {
-      console.error('Error changing status:', error);
+    } catch (error) {
+      logger.error('Error changing status', { component: 'IdeaWorkflowPanel', action: 'handleStatusChange', data: { ideaId, newStatus } }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في تغيير حالة الفكرة",
@@ -230,8 +239,8 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
       setPriority("medium");
       setAssignmentType("reviewer");
       await fetchWorkflowData();
-    } catch (error: any) {
-      console.error('Error creating assignment:', error);
+    } catch (error) {
+      logger.error('Error creating assignment', { component: 'IdeaWorkflowPanel', action: 'handleAssignment', data: { ideaId, assigneeId } }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في تكليف المراجع",
@@ -260,8 +269,8 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
       });
 
       await fetchWorkflowData();
-    } catch (error: any) {
-      console.error('Error creating milestones:', error);
+    } catch (error) {
+      logger.error('Error creating milestones', { component: 'IdeaWorkflowPanel', action: 'createMilestones', data: { ideaId } }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في إنشاء المعالم",

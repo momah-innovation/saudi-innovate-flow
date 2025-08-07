@@ -14,12 +14,15 @@ export const currentSessionProgress = {
       'src/components/admin/challenges/ChallengeAnalytics.tsx - Fixed 1 console log + 1 any type',
       'src/components/admin/TeamManagementContent.tsx - Fixed 2 console logs + 2 any types',
       'src/components/admin/challenges/ChallengeDetailView.tsx - Fixed 1 console log + 5 any types',
-      'src/components/admin/challenges/ChallengeManagementList.tsx - Fixed 2 console logs'
+      'src/components/admin/challenges/ChallengeManagementList.tsx - Fixed 2 console logs',
+      'src/components/admin/ideas/IdeaWorkflowPanel.tsx - Fixed 5 console logs + 1 any type',
+      'src/components/admin/ideas/BulkActionsPanel.tsx - Fixed 4 console logs + 4 any types',
+      'src/components/admin/ideas/IdeaCommentsPanel.tsx - Fixed 3 console logs + 6 any types'
     ],
     
     metrics: {
-      consoleLogsFixed: 23,
-      anyTypesFixed: 73,
+      consoleLogsFixed: 35,
+      anyTypesFixed: 84,
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -34,9 +37,9 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 317, // Down from 340
-    anyTypesToReplace: 406,    // Down from 479
-    estimatedSessionsRemaining: 6
+    consoleLogsToMigrate: 305, // Down from 340
+    anyTypesToReplace: 395,    // Down from 479
+    estimatedSessionsRemaining: 5
   },
   
   status: 'PRODUCTION_READY_FOUNDATION'

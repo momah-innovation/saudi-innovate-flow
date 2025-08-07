@@ -5,9 +5,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/logger";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { Trash2, FileEdit, Tag, Users, Archive, AlertTriangle } from "lucide-react";
+
+interface IdeaTag {
+  id: string;
+  name: string;
+}
+
+interface TeamMember {
+  id: string;
+  user_id: string;
+  cic_role: string;
+  contact_email: string;
+  status: string;
+}
 
 interface BulkActionsPanelProps {
   selectedItems: string[];
@@ -31,8 +45,8 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
   const [assigneeId, setAssigneeId] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const [availableTags, setAvailableTags] = useState<any[]>([]);
-  const [teamMembers, setTeamMembers] = useState<any[]>([]);
+  const [availableTags, setAvailableTags] = useState<IdeaTag[]>([]);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
   // Status options from system lists
   const statusOptions = generalStatusOptions.map(status => ({ 
@@ -74,8 +88,8 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
       setStatusReason("");
       onItemsUpdate();
       onClearSelection();
-    } catch (error: any) {
-      console.error('Error updating status:', error);
+    } catch (error) {
+      logger.error('Error updating status', { component: 'BulkActionsPanel', action: 'handleBulkStatusChange', data: { selectedItems, newStatus } }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في تحديث حالة الأفكار",
@@ -106,8 +120,8 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
       setShowDeleteDialog(false);
       onItemsUpdate();
       onClearSelection();
-    } catch (error: any) {
-      console.error('Error deleting ideas:', error);
+    } catch (error) {
+      logger.error('Error deleting ideas', { component: 'BulkActionsPanel', action: 'handleBulkDelete', data: { selectedItems } }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في حذف الأفكار",
@@ -153,8 +167,8 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
       setSelectedTags([]);
       onItemsUpdate();
       onClearSelection();
-    } catch (error: any) {
-      console.error('Error adding tags:', error);
+    } catch (error) {
+      logger.error('Error adding tags', { component: 'BulkActionsPanel', action: 'handleBulkTagging', data: { selectedItems, selectedTags } }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في إضافة العلامات",
@@ -195,8 +209,8 @@ export function BulkActionsPanel({ selectedItems, onItemsUpdate, onClearSelectio
       setAssigneeId("");
       onItemsUpdate();
       onClearSelection();
-    } catch (error: any) {
-      console.error('Error assigning ideas:', error);
+    } catch (error) {
+      logger.error('Error assigning ideas', { component: 'BulkActionsPanel', action: 'handleBulkAssignment', data: { selectedItems, assigneeId } }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في تكليف المراجع",
