@@ -22,6 +22,8 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface EventResource {
   id: string;
@@ -130,7 +132,12 @@ export const EventResourcesTab = ({
         size: file.size / (1024 * 1024) // Convert to MB
       };
     } catch (error) {
-      console.error('Error uploading file:', error);
+      logger.error('File upload failed', { 
+        component: 'EventResourcesTab', 
+        action: 'uploadFile',
+        fileName: file.name,
+        fileSize: file.size 
+      }, error as Error);
       toast({
         title: 'خطأ في الرفع',
         description: 'حدث خطأ أثناء رفع الملف',
@@ -188,7 +195,12 @@ export const EventResourcesTab = ({
       });
       onResourcesUpdate?.();
     } catch (error) {
-      console.error('Error adding resource:', error);
+      logger.error('Failed to add event resource', { 
+        component: 'EventResourcesTab', 
+        action: 'handleAddResource',
+        eventId: eventId,
+        resourceType: newResource.resource_type 
+      }, error as Error);
       toast({
         title: 'خطأ',
         description: 'حدث خطأ أثناء إضافة المورد',
@@ -214,7 +226,12 @@ export const EventResourcesTab = ({
       
       onResourcesUpdate?.();
     } catch (error) {
-      console.error('Error downloading resource:', error);
+      logger.error('Failed to download resource', { 
+        component: 'EventResourcesTab', 
+        action: 'handleDownload',
+        resourceId: resource.id,
+        eventId: eventId 
+      }, error as Error);
     }
   };
 
@@ -234,7 +251,12 @@ export const EventResourcesTab = ({
       
       onResourcesUpdate?.();
     } catch (error) {
-      console.error('Error deleting resource:', error);
+      logger.error('Failed to delete event resource', { 
+        component: 'EventResourcesTab', 
+        action: 'handleDeleteResource',
+        resourceId: resourceId,
+        eventId: eventId 
+      }, error as Error);
       toast({
         title: 'خطأ',
         description: 'حدث خطأ أثناء حذف المورد',

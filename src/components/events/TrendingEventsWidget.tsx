@@ -7,7 +7,9 @@ import { Progress } from '@/components/ui/progress';
 import { TrendingUp, Calendar, Users, MapPin, Flame, Eye, Star } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
+import { logger } from '@/utils/logger';
 
 interface TrendingEvent {
   id: string;
@@ -83,7 +85,10 @@ export const TrendingEventsWidget = ({
       setTotalViews(eventsWithCounts.reduce((sum, event) => sum + (event.popularity_score || 0), 0));
       
     } catch (error) {
-      console.error('Error loading trending events:', error);
+      logger.error('Failed to load trending events', { 
+        component: 'TrendingEventsWidget', 
+        action: 'fetchTrendingEvents' 
+      }, error as Error);
     } finally {
       setLoading(false);
     }

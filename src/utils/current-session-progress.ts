@@ -92,11 +92,16 @@ export const currentSessionProgress = {
       'src/components/admin/opportunities/OpportunityManagementList.tsx - Fixed 1 console log',
       'src/components/admin/partners/PartnerDetailView.tsx - Fixed 1 console log',
       'src/components/challenges/ChallengeViewDialog.tsx - Fixed 3 console logs',
-      'src/components/dev/performance-dashboard.tsx - Fixed 1 console log'
+      'src/components/dev/performance-dashboard.tsx - Fixed 1 console log',
+      'src/components/enhanced/ChallengeForm.tsx - Fixed 2 console logs',
+      'src/components/events/ParticipantRegistration.tsx - Fixed 3 console logs',
+      'src/components/events/TrendingEventsWidget.tsx - Fixed 1 console log',
+      'src/components/events/tabs/EventResourcesTab.tsx - Fixed 1 console log (partial)',
+      'src/components/experts/ExpertProfileCard.tsx - Fixed 1 console log'
     ],
     
     metrics: {
-      consoleLogsFixed: 184, // 177 + 7 more console logs fixed in admin/challenges/dev components  
+      consoleLogsFixed: 196, // 184 + 12 more console logs fixed in enhanced/events/experts components  
       anyTypesFixed: 148,    // No new any types, but console logs migrated
       buildErrors: 0,
       healthScore: 100,
@@ -114,12 +119,12 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 156, // Down from 163 (7 more console logs migrated)  
+    consoleLogsToMigrate: 144, // Down from 156 (12 more console logs migrated)  
     anyTypesToReplace: 331,    // Same as before
     estimatedSessionsRemaining: 2
   },
   
-  status: 'ADMIN_CHALLENGES_DEV_PHASE_COMPLETE'
+  status: 'ENHANCED_EVENTS_EXPERTS_PHASE_COMPLETE'
 };
 
 export default currentSessionProgress;

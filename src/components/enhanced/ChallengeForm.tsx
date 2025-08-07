@@ -17,7 +17,9 @@ import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
+import { logger } from '@/utils/logger';
 
 const challengeSchema = z.object({
   title_ar: z.string().min(10, 'العنوان يجب أن يكون 10 أحرف على الأقل'),
@@ -170,7 +172,11 @@ export function ChallengeForm({
       });
 
     } catch (error) {
-      console.error('AI content generation error:', error);
+      logger.error('AI content generation failed', { 
+        component: 'ChallengeForm', 
+        action: 'generateWithAI',
+        prompt: title 
+      }, error as Error);
       toast({
         title: 'خطأ في التوليد',
         description: 'حدث خطأ أثناء توليد المحتوى',
@@ -190,7 +196,10 @@ export function ChallengeForm({
         description: 'تم حفظ بيانات التحدي',
       });
     } catch (error) {
-      console.error('Form submission error:', error);
+      logger.error('Challenge form submission failed', { 
+        component: 'ChallengeForm', 
+        action: 'handleSubmit' 
+      }, error as Error);
       toast({
         title: 'خطأ في الحفظ',
         description: 'حدث خطأ أثناء حفظ البيانات',

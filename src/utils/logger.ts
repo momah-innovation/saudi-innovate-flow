@@ -17,6 +17,12 @@ export interface LogContext {
   expertId?: string;
   partnerId?: string;
   challengeId?: string;
+  eventId?: string;
+  fileName?: string;
+  fileSize?: number;
+  prompt?: string;
+  resourceType?: string;
+  resourceId?: string;
   filters?: any;
   data?: Record<string, any>;
 }

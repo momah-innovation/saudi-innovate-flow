@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from "@/utils/logger";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -65,7 +66,12 @@ export function ParticipantRegistration({ event, onRegistrationChange }: Partici
       if (error && error.code !== 'PGRST116') throw error; // PGRST116 = no rows returned
       setParticipant(data);
     } catch (error) {
-      console.error('Error checking registration status:', error);
+      logger.error('Failed to check registration status', { 
+        component: 'ParticipantRegistration', 
+        action: 'checkRegistrationStatus',
+        eventId: event.id,
+        userId: user?.id 
+      }, error as Error);
       toast({
         title: "Error",
         description: "Failed to check registration status",
@@ -128,7 +134,12 @@ export function ParticipantRegistration({ event, onRegistrationChange }: Partici
       checkRegistrationStatus();
       onRegistrationChange?.();
     } catch (error) {
-      console.error('Error registering for event:', error);
+      logger.error('Failed to register for event', { 
+        component: 'ParticipantRegistration', 
+        action: 'registerForEvent',
+        eventId: event.id,
+        userId: user.id 
+      }, error as Error);
       toast({
         title: "Error",
         description: "Failed to register for event",
@@ -170,7 +181,12 @@ export function ParticipantRegistration({ event, onRegistrationChange }: Partici
       setParticipant(null);
       onRegistrationChange?.();
     } catch (error) {
-      console.error('Error cancelling registration:', error);
+      logger.error('Failed to cancel registration', { 
+        component: 'ParticipantRegistration', 
+        action: 'cancelRegistration',
+        eventId: event.id,
+        userId: user.id 
+      }, error as Error);
       toast({
         title: "Error",
         description: "Failed to cancel registration",

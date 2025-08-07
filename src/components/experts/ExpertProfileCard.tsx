@@ -17,6 +17,8 @@ import {
  } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getInitials, useSystemSettings } from '@/contexts/SystemSettingsContext';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface ExpertProfile {
   id: string;
@@ -249,7 +251,11 @@ export function ExpertProfileView({ userId, className = "" }: ExpertProfileViewP
       setUserProfile(profileResponse.data);
       setExpertProfile(expertResponse.data);
     } catch (error) {
-      console.error('Error fetching expert data:', error);
+      logger.error('Failed to fetch expert profile data', { 
+        component: 'ExpertProfileCard', 
+        action: 'fetchExpertData',
+        userId: userId 
+      }, error as Error);
     } finally {
       setLoading(false);
     }
