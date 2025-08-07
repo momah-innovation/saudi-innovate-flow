@@ -10,9 +10,14 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/logger";
+
+interface SettingsData {
+  [key: string]: any;
+}
 
 interface EvaluationSettingsProps {
-  settings: any;
+  settings: SettingsData;
   onSettingChange: (key: string, value: any) => void;
 }
 
@@ -22,7 +27,7 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
   const { isRTL } = useDirection();
   const [newEvaluatorType, setNewEvaluatorType] = useState("");
   const [newExpertRoleType, setNewExpertRoleType] = useState("");
-  const [systemSettings, setSystemSettings] = useState<any>({});
+  const [systemSettings, setSystemSettings] = useState<SettingsData>({});
 
   useEffect(() => {
     fetchSystemSettings();
@@ -49,14 +54,14 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
 
       if (error) throw error;
 
-      const settingsObj = data?.reduce((acc, setting) => {
+      const settingsObj = data?.reduce((acc: any, setting: any) => {
         acc[setting.setting_key] = setting.setting_value;
         return acc;
-      }, {} as any) || {};
+      }, {} as SettingsData) || {};
 
       setSystemSettings(settingsObj);
     } catch (error) {
-      console.error('Error fetching system settings:', error);
+      logger.error('Error fetching evaluation settings', { component: 'EvaluationSettings', action: 'fetchSystemSettings' }, error as Error);
     }
   };
 
@@ -77,21 +82,21 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
       onSettingChange(key, value);
       
       toast({
-        title: t('success'),
-        description: t('settingUpdated')
+        title: t('success', 'Success'),
+        description: t('settingUpdated', 'Setting updated successfully')
       });
     } catch (error) {
-      console.error('Error updating setting:', error);
+      logger.error('Error updating evaluation setting', { component: 'EvaluationSettings', action: 'updateSystemSetting', key }, error as Error);
       toast({
-        title: t('error'),
-        description: t('updateSettingError'),
+        title: t('error', 'Error'),
+        description: t('updateSettingError', 'Failed to update setting'),
         variant: "destructive"
       });
     }
   };
   
-  const evaluatorTypes = systemSettings.evaluation_evaluator_types || ["lead_expert", "evaluator", "reviewer", "subject_matter_expert", "external_consultant"];
-  const expertRoleTypes = systemSettings.evaluation_expert_role_types || ["خبير رئيسي", "مقيم", "مراجع", "خبير موضوع", "مستشار خارجي"];
+  const evaluatorTypes = (systemSettings.evaluation_evaluator_types as string[]) || ["lead_expert", "evaluator", "reviewer", "subject_matter_expert", "external_consultant"];
+  const expertRoleTypes = (systemSettings.evaluation_expert_role_types as string[]) || ["خبير رئيسي", "مقيم", "مراجع", "خبير موضوع", "مستشار خارجي"];
 
   const addEvaluatorType = () => {
     if (newEvaluatorType.trim() && !evaluatorTypes.includes(newEvaluatorType)) {
@@ -301,7 +306,7 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
               <p className="text-sm text-muted-foreground">إخفاء هوية المقيمين عن بعضهم البعض</p>
             </div>
             <Switch 
-              checked={settings.enableAnonymousEvaluation !== false}
+              checked={Boolean(settings.enableAnonymousEvaluation !== false)}
               onCheckedChange={(checked) => onSettingChange('enableAnonymousEvaluation', checked)}
             />
           </div>

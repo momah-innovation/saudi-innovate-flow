@@ -139,4 +139,12 @@ progressTracker.markComponentCompleted('src/components/admin/challenges/Challeng
 progressTracker.markComponentCompleted('src/components/admin/ideas/IdeaWorkflowPanel.tsx', 5, 1);
 progressTracker.markComponentCompleted('src/components/admin/ideas/BulkActionsPanel.tsx', 4, 4);
 progressTracker.markComponentCompleted('src/components/admin/ideas/IdeaCommentsPanel.tsx', 3, 6);
+
+// Mark new files completed
+progressTracker.initializeComponent('src/components/admin/TranslationManager.tsx', 4, 1);
+progressTracker.initializeComponent('src/components/admin/settings/EvaluationSettings.tsx', 2, 2);
+progressTracker.initializeComponent('src/components/admin/settings/IdeaSettings.tsx', 2, 2);
+progressTracker.markComponentCompleted('src/components/admin/TranslationManager.tsx', 4, 1);
+progressTracker.markComponentCompleted('src/components/admin/settings/EvaluationSettings.tsx', 2, 2);
+progressTracker.markComponentCompleted('src/components/admin/settings/IdeaSettings.tsx', 2, 2);
 progressTracker.logProgress();

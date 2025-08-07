@@ -10,9 +10,14 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/logger";
+
+interface SettingsData {
+  [key: string]: any;
+}
 
 interface IdeaSettingsProps {
-  settings: any;
+  settings: SettingsData;
   onSettingChange: (key: string, value: any) => void;
 }
 
@@ -22,7 +27,7 @@ export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
   const { isRTL } = useDirection();
   const [newAttachmentType, setNewAttachmentType] = useState("");
   const [newAssignmentType, setNewAssignmentType] = useState("");
-  const [systemSettings, setSystemSettings] = useState<any>({});
+  const [systemSettings, setSystemSettings] = useState<SettingsData>({});
 
   useEffect(() => {
     fetchSystemSettings();
@@ -47,14 +52,14 @@ export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
 
       if (error) throw error;
 
-      const settingsObj = data?.reduce((acc, setting) => {
+      const settingsObj = data?.reduce((acc: any, setting: any) => {
         acc[setting.setting_key] = setting.setting_value;
         return acc;
-      }, {} as any) || {};
+      }, {} as SettingsData) || {};
 
       setSystemSettings(settingsObj);
     } catch (error) {
-      console.error('Error fetching system settings:', error);
+      logger.error('Error fetching idea settings', { component: 'IdeaSettings', action: 'fetchSystemSettings' }, error as Error);
     }
   };
 
@@ -75,21 +80,21 @@ export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
       onSettingChange(key, value);
       
       toast({
-        title: t('success'),
-        description: t('settingUpdated')
+        title: t('success', 'Success'),
+        description: t('settingUpdated', 'Setting updated successfully')
       });
     } catch (error) {
-      console.error('Error updating setting:', error);
+      logger.error('Error updating idea setting', { component: 'IdeaSettings', action: 'updateSystemSetting', key }, error as Error);
       toast({
-        title: t('error'),
-        description: t('updateSettingError'),
+        title: t('error', 'Error'),
+        description: t('updateSettingError', 'Failed to update setting'),
         variant: "destructive"
       });
     }
   };
   
-  const allowedAttachmentTypes = systemSettings.idea_allowed_attachment_types || ["pdf", "doc", "docx", "ppt", "pptx", "jpg", "jpeg", "png", "gif"];
-  const assignmentTypes = systemSettings.idea_assignment_types || ["reviewer", "evaluator", "implementer", "observer"];
+  const allowedAttachmentTypes = (systemSettings.idea_allowed_attachment_types as string[]) || ["pdf", "doc", "docx", "ppt", "pptx", "jpg", "jpeg", "png", "gif"];
+  const assignmentTypes = (systemSettings.idea_assignment_types as string[]) || ["reviewer", "evaluator", "implementer", "observer"];
 
   const addAttachmentType = () => {
     if (newAttachmentType.trim() && !allowedAttachmentTypes.includes(newAttachmentType)) {
@@ -257,7 +262,7 @@ export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
               <p className="text-sm text-muted-foreground">{t('ideas.allowAnonymousDescription')}</p>
             </div>
             <Switch 
-              checked={systemSettings.idea_allow_anonymous || false}
+              checked={Boolean(systemSettings.idea_allow_anonymous) || false}
               onCheckedChange={(checked) => updateSystemSetting('idea_allow_anonymous', checked)}
             />
           </div>

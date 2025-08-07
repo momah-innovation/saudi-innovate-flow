@@ -10,6 +10,8 @@ import { useToast } from '@/hooks/use-toast';
 import { Download, Search, Plus, Edit2, Trash2, FileText, AlertTriangle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface SystemTranslation {
   id: string;
@@ -36,6 +38,7 @@ export const TranslationManager: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
 
   useEffect(() => {
     loadTranslations();
@@ -56,10 +59,10 @@ export const TranslationManager: React.FC = () => {
       if (error) throw error;
       setTranslations(data || []);
     } catch (error) {
-      console.error('Error loading translations:', error);
+      logger.error('Error loading translations', { component: 'TranslationManager', action: 'loadTranslations' }, error as Error);
       toast({
-        title: "Error",
-        description: "Failed to load translations",
+        title: t('error', 'Error'),
+        description: t('translations.loadError', 'Failed to load translations'),
         variant: "destructive",
       });
     } finally {
@@ -126,14 +129,14 @@ export const TranslationManager: React.FC = () => {
       URL.revokeObjectURL(url);
 
       toast({
-        title: "Success",
-        description: `${language.toUpperCase()} translations downloaded successfully`,
+        title: t('success', 'Success'),
+        description: t('translations.downloadSuccess', `${language.toUpperCase()} translations downloaded successfully`),
       });
     } catch (error) {
-      console.error('Download error:', error);
+      logger.error('Translation download error', { component: 'TranslationManager', action: 'downloadTranslationsJSON', language }, error as Error);
       toast({
-        title: "Error",
-        description: `Failed to download ${language.toUpperCase()} translations`,
+        title: t('error', 'Error'),
+        description: t('translations.downloadError', `Failed to download ${language.toUpperCase()} translations`),
         variant: "destructive",
       });
     }
@@ -148,7 +151,7 @@ export const TranslationManager: React.FC = () => {
           .eq('id', editingTranslation.id);
         
         if (error) throw error;
-        toast({ title: "Success", description: "Translation updated successfully" });
+        toast({ title: t('success', 'Success'), description: t('translations.updateSuccess', 'Translation updated successfully') });
       } else {
         // Ensure required fields are present for insert
         const insertData = {
@@ -163,17 +166,17 @@ export const TranslationManager: React.FC = () => {
           .insert([insertData]);
         
         if (error) throw error;
-        toast({ title: "Success", description: "Translation created successfully" });
+        toast({ title: t('success', 'Success'), description: t('translations.createSuccess', 'Translation created successfully') });
       }
       
       await loadTranslations();
       setIsDialogOpen(false);
       setEditingTranslation(null);
     } catch (error) {
-      console.error('Error saving translation:', error);
+      logger.error('Error saving translation', { component: 'TranslationManager', action: 'saveTranslation' }, error as Error);
       toast({
-        title: "Error",
-        description: "Failed to save translation",
+        title: t('error', 'Error'),
+        description: t('translations.saveError', 'Failed to save translation'),
         variant: "destructive",
       });
     }
@@ -191,12 +194,12 @@ export const TranslationManager: React.FC = () => {
       if (error) throw error;
       
       await loadTranslations();
-      toast({ title: "Success", description: "Translation deleted successfully" });
+      toast({ title: t('success', 'Success'), description: t('translations.deleteSuccess', 'Translation deleted successfully') });
     } catch (error) {
-      console.error('Error deleting translation:', error);
+      logger.error('Error deleting translation', { component: 'TranslationManager', action: 'deleteTranslation' }, error as Error);
       toast({
-        title: "Error",
-        description: "Failed to delete translation",
+        title: t('error', 'Error'),
+        description: t('translations.deleteError', 'Failed to delete translation'),
         variant: "destructive",
       });
     }
