@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
-import { useSystemLists } from "@/hooks/useSystemLists";
+import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { logger } from "@/utils/logger";
 
 interface FocusQuestion {
@@ -45,20 +45,13 @@ export function ChallengeFocusQuestionWizard({
   });
 
   const isEditing = !!question;
-  const { focusQuestionTypes } = useSystemLists();
+  const { getSettingValue } = useSettingsManager();
 
-  // Question type options
+  // Get focus question types from settings
+  const focusQuestionTypes = getSettingValue('focus_question_types', []) as string[];
   const questionTypes = focusQuestionTypes.map(type => ({ 
     value: type, 
-    label: type === 'general' ? 'عام' :
-           type === 'technical' ? 'تقني' :
-           type === 'business' ? 'أعمال' :
-           type === 'impact' ? 'تأثير' :
-           type === 'implementation' ? 'تنفيذ' :
-           type === 'social' ? 'اجتماعي' :
-           type === 'ethical' ? 'أخلاقي' :
-           type === 'medical' ? 'طبي' :
-           type === 'regulatory' ? 'تنظيمي' : type
+    label: t(`focusQuestionTypes.${type}`) || type
   }));
 
   useEffect(() => {

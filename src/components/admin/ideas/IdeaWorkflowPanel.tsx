@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { logger } from "@/utils/logger";
-import { useSystemLists } from "@/hooks/useSystemLists";
+import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   GitBranch, 
@@ -104,14 +104,13 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
     color: 'gray'
   }));
 
-  const { ideaAssignmentTypes, priorityLevels } = useSystemLists();
+  const { getSettingValue } = useSettingsManager();
   
+  const ideaAssignmentTypes = getSettingValue('idea_assignment_types', []) as string[];
+  const priorityLevels = getSettingValue('priority_levels', []) as string[];
   const assignmentTypes = ideaAssignmentTypes.map(type => ({ 
     value: type, 
-    label: type === 'reviewer' ? 'مراجع' :
-           type === 'evaluator' ? 'مقيم' :
-           type === 'implementer' ? 'منفذ' :
-           type === 'observer' ? 'مراقب' : type
+    label: getTranslation(`ideaAssignmentTypes.${type}`) || type
   }));
 
   // Priorities from system lists

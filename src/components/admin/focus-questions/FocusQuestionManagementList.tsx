@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
-import { useSystemLists } from "@/hooks/useSystemLists";
+import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { logger } from "@/utils/logger";
 
@@ -54,7 +54,9 @@ export function FocusQuestionManagementList() {
   const [showWizard, setShowWizard] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<FocusQuestion | null>(null);
-  const { focusQuestionTypes, sensitivityLevels, questionTypeOptions } = useSystemLists();
+  const { getSettingValue } = useSettingsManager();
+  const focusQuestionTypes = getSettingValue('focus_question_types', []) as string[];
+  const sensitivityLevels = getSettingValue('sensitivity_levels', []) as string[];
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
 
@@ -229,7 +231,7 @@ export function FocusQuestionManagementList() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">جميع الأنواع</SelectItem>
-                {questionTypeOptions.map(type => (
+                {focusQuestionTypes.map(type => (
                   <SelectItem key={type} value={type}>
                     {type === 'open_ended' ? 'سؤال مفتوح' : 
                      type === 'multiple_choice' ? 'متعدد الخيارات' :
