@@ -317,7 +317,16 @@ export function AdminChallengeManagement() {
           estimated_budget: selectedChallenge.estimated_budget || 0,
           actual_budget: selectedChallenge.actual_budget || 0,
           vision_2030_goal: selectedChallenge.vision_2030_goal || '',
-          kpi_alignment: selectedChallenge.kpi_alignment || ''
+          kpi_alignment: selectedChallenge.kpi_alignment || '',
+          collaboration_details: selectedChallenge.collaboration_details || '',
+          internal_team_notes: selectedChallenge.internal_team_notes || '',
+          challenge_owner_id: selectedChallenge.challenge_owner_id || '',
+          assigned_expert_id: selectedChallenge.assigned_expert_id || '',
+          partner_organization_id: selectedChallenge.partner_organization_id || '',
+          sub_domain_id: selectedChallenge.sub_domain_id || '',
+          department_id: selectedChallenge.department_id || '',
+          deputy_id: selectedChallenge.deputy_id || '',
+          sector_id: selectedChallenge.sector_id || ''
         } : undefined}
       />
 
