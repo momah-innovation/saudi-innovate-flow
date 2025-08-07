@@ -66,22 +66,16 @@ export function FocusQuestionFilters({
   const { focusQuestionTypes } = useSystemLists();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const questionTypeOptions = [
+  const { questionTypeOptions } = useSystemLists();
+  const { getTranslation } = useUnifiedTranslation();
+  
+  // Convert to proper option format with translations
+  const typeOptions = [
     { value: 'all', label: 'جميع الأنواع' },
-    { value: 'general', label: 'عام' },
-    { value: 'technical', label: 'تقني' },
-    { value: 'business', label: 'أعمال' },
-    { value: 'impact', label: 'تأثير' },
-    { value: 'implementation', label: 'تنفيذ' },
-    { value: 'social', label: 'اجتماعي' },
-    { value: 'ethical', label: 'أخلاقي' },
-    { value: 'medical', label: 'طبي' },
-    { value: 'regulatory', label: 'تنظيمي' },
-    { value: 'open_ended', label: 'سؤال مفتوح' },
-    { value: 'multiple_choice', label: 'متعدد الخيارات' },
-    { value: 'yes_no', label: 'نعم/لا' },
-    { value: 'rating', label: 'تقييم' },
-    { value: 'ranking', label: 'ترتيب' }
+    ...questionTypeOptions.map(type => ({
+      value: type,
+      label: getTranslation(`question_types.${type}`) || type
+    }))
   ];
 
   const sensitivityOptions = [
@@ -195,7 +189,7 @@ export function FocusQuestionFilters({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {questionTypeOptions.map((option) => (
+                  {typeOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
                     </SelectItem>
@@ -290,7 +284,7 @@ export function FocusQuestionFilters({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {questionTypeOptions.map((option) => (
+                      {typeOptions.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>

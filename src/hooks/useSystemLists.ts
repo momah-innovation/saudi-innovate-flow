@@ -223,7 +223,17 @@ export const useSystemLists = (): SystemListsHook => {
             'available_themes',
             'campaign_themes',
             'opportunity_types',
-            'user_role_types'
+            'user_role_types',
+            'question_types',
+            'attachment_types',
+            'assignment_types',
+            'integration_types',
+            'notification_types',
+            'team_specializations',
+            'team_roles',
+            'file_categories',
+            'workflow_statuses',
+            'visibility_levels'
           ]);
         
         if (data) {
