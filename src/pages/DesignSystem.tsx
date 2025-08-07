@@ -12693,7 +12693,7 @@ module.exports = {
                       { label: 'Delete', onClick: () => toast({ title: 'Delete clicked' }), variant: 'destructive' }
                     ]}
                     selectable
-                    onSelectionChange={(selected) => console.log('Selected:', selected)}
+                    onSelectionChange={(selected) => logger.info('Selection changed', { component: 'DesignSystem', action: 'onSelectionChange', data: { selected } })}
                   />
                 </ComponentShowcase>
 

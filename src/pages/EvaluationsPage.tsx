@@ -14,7 +14,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Star, Clock, CheckCircle, AlertCircle, Eye, FileText, MessageSquare, Download, Filter, Search, Users, TrendingUp, Calendar, Target, BookOpen, ArrowRight, ChevronRight, Plus } from 'lucide-react';
-import { useDirection } from '@/components/ui/direction-provider';
+import { useAuth } from '@/contexts/AuthContext';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -53,7 +55,7 @@ interface Profile {
 }
 
 const EvaluationsPage = () => {
-  const { isRTL } = useDirection();
+  const { t, isRTL } = useUnifiedTranslation();
   const { toast } = useToast();
   const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
   const [ideas, setIdeas] = useState<{ [key: string]: Idea }>({});
@@ -414,8 +416,8 @@ const EvaluationsPage = () => {
         pendingEvaluations={evaluations.filter(e => getStatusFromScore(getOverallScore(e)) === 'pending').length}
         completedEvaluations={evaluations.filter(e => getStatusFromScore(getOverallScore(e)) === 'completed').length}
         averageScore={evaluations.length > 0 ? Math.round(evaluations.reduce((sum, e) => sum + getOverallScore(e), 0) / evaluations.length * 10) / 10 : 0}
-        onCreateEvaluation={() => console.log('Create evaluation')}
-        onShowFilters={() => console.log('Show filters')}
+        onCreateEvaluation={() => logger.info('Create evaluation requested', { component: 'EvaluationsPage', action: 'onCreateEvaluation' })}
+        onShowFilters={() => logger.info('Show filters requested', { component: 'EvaluationsPage', action: 'onShowFilters' })}
       />
       <PageLayout
         title={isRTL ? 'التقييمات' : 'Evaluations'}

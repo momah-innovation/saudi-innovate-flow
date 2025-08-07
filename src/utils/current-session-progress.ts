@@ -36,12 +36,17 @@ export const currentSessionProgress = {
       'src/pages/ChallengesBrowse.tsx - Fixed 25 console logs + 1 any type',
       'src/pages/PartnerDashboard.tsx - Fixed 2 console logs + 1 any type',
       'src/pages/ProfileSetup.tsx - Fixed 3 console logs + 1 any type',
-      'src/pages/PaddleSubscriptionPage.tsx - Fixed 1 console log'
+      'src/pages/PaddleSubscriptionPage.tsx - Fixed 1 console log',
+      'src/pages/DesignSystem.tsx - Fixed 1 console log',
+      'src/pages/EvaluationsPage.tsx - Fixed 2 console logs',
+      'src/pages/EventsBrowse.tsx - Fixed 3 console logs',
+      'src/pages/SavedItems.tsx - Fixed 1 console log',
+      'src/pages/TeamWorkspace.tsx - Fixed 2 console logs'
     ],
     
     metrics: {
-      consoleLogsFixed: 110, // 85 + 25 from ChallengesBrowse
-      anyTypesFixed: 105,    // 102 + 3 new fixes
+      consoleLogsFixed: 119, // 110 + 9 from additional pages
+      anyTypesFixed: 105,    // Same, no new any types fixed in this batch
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -56,8 +61,8 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 230, // Down from 255 (25 more fixed)
-    anyTypesToReplace: 374,    // Down from 377 (3 more fixed)
+    consoleLogsToMigrate: 221, // Down from 230 (9 more fixed)
+    anyTypesToReplace: 374,    // Same as before
     estimatedSessionsRemaining: 3
   },
   

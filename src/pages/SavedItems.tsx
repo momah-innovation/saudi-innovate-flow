@@ -15,6 +15,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useBookmarks } from '@/hooks/useBookmarks';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { 
   Heart, Bookmark, Calendar, Target, Users, Award, Settings, Edit3, Trash2,
   Search, Filter, Plus, FolderPlus, Eye, Share2, Download, Star,
@@ -389,7 +390,7 @@ const SavedItemsPage = () => {
         totalTags={8}
         recentActivity={5}
         onCreateCollection={() => setShowNewCollectionDialog(true)}
-        onShowFilters={() => console.log('Show filters')}
+        onShowFilters={() => logger.info('Show filters requested', { component: 'SavedItems', action: 'onShowFilters' })}
       />
       <PageLayout>
 

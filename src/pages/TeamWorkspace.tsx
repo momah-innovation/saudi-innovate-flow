@@ -7,6 +7,7 @@ import { Users, UserPlus, Calendar, Target } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 export default function TeamWorkspace() {
   const { t } = useUnifiedTranslation();
@@ -70,8 +71,8 @@ export default function TeamWorkspace() {
         activeProjects={8}
         teamMembers={12}
         completedTasks={45}
-        onJoinTeam={() => console.log('Join team')}
-        onShowFilters={() => console.log('Show filters')}
+        onJoinTeam={() => logger.info('Join team requested', { component: 'TeamWorkspace', action: 'onJoinTeam' })}
+        onShowFilters={() => logger.info('Show filters requested', { component: 'TeamWorkspace', action: 'onShowFilters' })}
       />
       <PageLayout 
         title={t('teamWorkspace')}

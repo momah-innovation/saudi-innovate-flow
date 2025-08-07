@@ -185,4 +185,16 @@ progressTracker.markComponentCompleted('src/pages/ChallengesBrowse.tsx', 25, 1);
 progressTracker.markComponentCompleted('src/pages/PartnerDashboard.tsx', 2, 1);
 progressTracker.markComponentCompleted('src/pages/ProfileSetup.tsx', 3, 1);
 progressTracker.markComponentCompleted('src/pages/PaddleSubscriptionPage.tsx', 1, 0);
+
+// Mark new batch of page fixes completed  
+progressTracker.initializeComponent('src/pages/DesignSystem.tsx', 1, 0);
+progressTracker.initializeComponent('src/pages/EvaluationsPage.tsx', 2, 0);
+progressTracker.initializeComponent('src/pages/EventsBrowse.tsx', 3, 0);
+progressTracker.initializeComponent('src/pages/SavedItems.tsx', 1, 0);
+progressTracker.initializeComponent('src/pages/TeamWorkspace.tsx', 2, 0);
+progressTracker.markComponentCompleted('src/pages/DesignSystem.tsx', 1, 0);
+progressTracker.markComponentCompleted('src/pages/EvaluationsPage.tsx', 2, 0);
+progressTracker.markComponentCompleted('src/pages/EventsBrowse.tsx', 3, 0);
+progressTracker.markComponentCompleted('src/pages/SavedItems.tsx', 1, 0);
+progressTracker.markComponentCompleted('src/pages/TeamWorkspace.tsx', 2, 0);
 progressTracker.logProgress();

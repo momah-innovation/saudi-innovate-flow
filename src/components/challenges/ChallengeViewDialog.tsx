@@ -39,14 +39,20 @@ interface Challenge {
   id: string;
   title_ar: string;
   description_ar: string;
-  challenge_type: string;
-  category: string;
+  challenge_type?: string;
+  category?: string;
   participants?: number;
   status: string;
   start_date?: string;
   end_date?: string;
   estimated_budget?: number;
   image_url?: string;
+  location?: string;
+  award_type?: string;
+  priority_level?: string;
+  sensitivity_level?: string;
+  requirements?: any;
+  evaluation_criteria?: any;
 }
 
 interface ChallengeViewDialogProps {

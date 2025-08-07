@@ -56,7 +56,7 @@ interface ChallengeData {
   description_ar: string;
   description_en?: string;
   status: string;
-  category: string;
+  category?: string;
   category_en?: string;
   difficulty?: string;
   estimated_budget?: number;
@@ -66,7 +66,7 @@ interface ChallengeData {
   priority_level?: string;
   start_date?: string;
   end_date?: string;
-  challenge_type: string; // Made required to match external Challenge interface
+  challenge_type?: string; // Made optional to match actual data
   image_url?: string;
 }
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
@@ -348,7 +348,7 @@ interface ChallengeData {
   };
 
   const filteredChallenges = getFilteredChallenges();
-  const tabFilteredChallenges = getTabFilteredChallenges(filteredChallenges);
+  const tabFilteredChallenges = getTabFilteredChallenges(filteredChallenges as any);
   
   logger.info('Challenge data processing completed', { 
     component: 'ChallengesBrowse',
@@ -728,12 +728,12 @@ interface ChallengeData {
             onChallengeClick={handleViewDetails}
             onChallengeSelect={(challengeId) => {
               const challenge = challenges.find(c => c.id === challengeId);
-              if (challenge) handleViewDetails(challenge);
+              if (challenge) handleViewDetails(challenge as any);
             }}
             className="sticky top-4"
           />
           <ChallengeRecommendations
-            onChallengeSelect={handleViewDetails}
+            onChallengeSelect={(challenge: any) => handleViewDetails(challenge)}
             className="sticky top-4"
           />
         </div>
@@ -766,7 +766,7 @@ interface ChallengeData {
 
           {/* Enhanced Submission Dialog */}
           <ChallengeSubmitDialog
-            challenge={selectedChallenge}
+            challenge={selectedChallenge as any}
             open={submissionDialogOpen}
             onOpenChange={setSubmissionDialogOpen}
             onSubmissionComplete={refetch}

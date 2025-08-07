@@ -303,7 +303,7 @@ const EventsBrowse = () => {
           upcomingEvents={upcomingCount}
           todayEvents={todayCount}
           onCreateEvent={user && (hasRole('admin') || hasRole('super_admin') || hasRole('innovation_team_member')) ? 
-            () => console.log('Create event') : 
+            () => logger.info('Create event requested', { component: 'EventsBrowse', action: 'onCreateEvent' }) : 
             () => {}}
           onShowFilters={() => setShowAdvancedFilters(true)}
           canCreateEvent={user && (hasRole('admin') || hasRole('super_admin') || hasRole('innovation_team_member'))}
@@ -349,7 +349,7 @@ const EventsBrowse = () => {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => console.log('Show analytics')}
+                onClick={() => logger.info('Analytics requested', { component: 'EventsBrowse', action: 'showAnalytics' })}
               >
                 <TrendingUp className="w-4 h-4 mr-2" />
                 {isRTL ? 'الإحصائيات' : 'Analytics'}
@@ -360,7 +360,7 @@ const EventsBrowse = () => {
                 supportedLayouts={['cards', 'list', 'grid', 'calendar']}
               />
               {user && (hasRole('admin') || hasRole('super_admin') || hasRole('innovation_team_member')) && (
-                <Button onClick={() => console.log('Create new event')}>
+                <Button onClick={() => logger.info('New event requested', { component: 'EventsBrowse', action: 'createNewEvent' })}>
                   <Plus className="w-4 h-4 mr-2" />
                   {isRTL ? 'فعالية جديدة' : 'New Event'}
                 </Button>
