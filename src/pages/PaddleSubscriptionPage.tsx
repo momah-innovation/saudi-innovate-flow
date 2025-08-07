@@ -4,11 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useSubscription } from '@/hooks/useSubscription';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { CreditCard, Check, Star, Crown, ArrowRight } from 'lucide-react';
 import { AppShell } from '@/components/layout/AppShell';
 
 const PaddleSubscriptionPage = () => {
   const { user } = useAuth();
+  const { t } = useUnifiedTranslation();
   const { subscriptionStatus, createCheckoutSession, loading } = useSubscription();
 
   const plans = [
@@ -70,15 +73,16 @@ const PaddleSubscriptionPage = () => {
   const handleSubscribe = async (planId: string) => {
     try {
       await createCheckoutSession(planId);
+      logger.info('Checkout session created', { component: 'PaddleSubscriptionPage', action: 'handleSubscribe', data: { planId } });
     } catch (error) {
-      console.error('Failed to create checkout session:', error);
+      logger.error('Failed to create checkout session', { component: 'PaddleSubscriptionPage', action: 'handleSubscribe', data: { planId } }, error as Error);
     }
   };
 
   const handleManageSubscription = () => {
     // Implement customer portal functionality
     window.open('/customer-portal', '_blank');
-    console.log('Customer portal accessed');
+    logger.info('Customer portal accessed', { component: 'PaddleSubscriptionPage', action: 'handleManageSubscription' });
   };
 
   return (

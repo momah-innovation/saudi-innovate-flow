@@ -11,6 +11,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from '@/hooks/useSystemLists';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { Loader2 } from 'lucide-react';
 import { AppShell } from '@/components/layout/AppShell';
 
@@ -18,6 +20,7 @@ const ProfileSetup = () => {
   const { user, userProfile, refreshProfile } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
   const { experienceLevels } = useSystemLists();
   const [minExperienceYears, setMinExperienceYears] = useState(0);
   const [maxExperienceYears, setMaxExperienceYears] = useState(50);
@@ -72,7 +75,7 @@ const ProfileSetup = () => {
           setSystemSettings(settings);
         }
       } catch (error) {
-        console.error('Error loading system settings:', error);
+        logger.error('Failed to load system settings', { component: 'ProfileSetup', action: 'loadSystemSettings' }, error as Error);
       }
     };
     
@@ -101,9 +104,13 @@ const ProfileSetup = () => {
     return <Navigate to="/auth" replace />;
   }
 
-  console.log("ProfileSetup - User:", user?.id, "Profile:", userProfile);
+  logger.info('ProfileSetup component loaded', { 
+    component: 'ProfileSetup', 
+    action: 'componentLoad',
+    data: { userId: user?.id, hasProfile: !!userProfile }
+  });
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: string, value: string | boolean) => {
     setProfileData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -173,16 +180,20 @@ const ProfileSetup = () => {
         description: "Your profile has been successfully created.",
       });
 
-      console.log("Profile created successfully, refreshing profile...");
+      logger.info('Profile created successfully', { 
+        component: 'ProfileSetup', 
+        action: 'handleSubmit',
+        data: { userId: user.id, isInnovator: profileData.is_innovator, isExpert: profileData.is_expert }
+      });
       
       // Refresh profile and navigate to dashboard
       await refreshProfile();
       
-      console.log("Profile refreshed, navigating to dashboard...");
+      logger.info('Profile refreshed, navigating to dashboard', { component: 'ProfileSetup', action: 'handleSubmit' });
       navigate('/');
 
-    } catch (error: any) {
-      console.error('Profile creation error:', error);
+    } catch (error) {
+      logger.error('Profile creation failed', { component: 'ProfileSetup', action: 'handleSubmit' }, error as Error);
       toast({
         title: "Profile Creation Failed",
         description: error.message || "An error occurred while creating your profile.",

@@ -32,11 +32,13 @@ import { useChallengesData } from '@/hooks/useChallengesData';
 import { useRealTimeChallenges } from '@/hooks/useRealTimeChallenges';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { Plus, Send, MessageSquare, Users, Eye, BookmarkIcon, TrendingUp, Clock, Calendar, Target, FileText, BarChart3 } from 'lucide-react';
 
 
 const ChallengesBrowse = () => {
-  const { isRTL } = useDirection();
+  const { t, isRTL } = useUnifiedTranslation();
   const { toast } = useToast();
   const { ui } = useChallengeDefaults();
   const { user, hasRole } = useAuth();
@@ -45,7 +47,28 @@ const ChallengesBrowse = () => {
   const { challenges, loading, stats, refetch } = useChallengesData();
   
   // State management
-  const [selectedChallenge, setSelectedChallenge] = useState<any>(null);
+  const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
+
+interface Challenge {
+  id: string;
+  title_ar: string;
+  title_en?: string;
+  description_ar: string;
+  description_en?: string;
+  status: string;
+  category: string;
+  category_en?: string;
+  difficulty?: string;
+  estimated_budget?: number;
+  participants?: number;
+  submissions?: number;
+  trending?: boolean;
+  priority_level?: string;
+  start_date?: string;
+  end_date?: string;
+  challenge_type?: string;
+  image_url?: string;
+}
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [submissionDialogOpen, setSubmissionDialogOpen] = useState(false);
   const [commentsDialogOpen, setCommentsDialogOpen] = useState(false);
@@ -70,11 +93,11 @@ const ChallengesBrowse = () => {
   // Real-time updates
   const { isConnected } = useRealTimeChallenges({
     onChallengeUpdate: (update) => {
-      console.log('Challenge update:', update);
+      logger.info('Challenge updated via real-time', { component: 'ChallengesBrowse', action: 'onChallengeUpdate', data: update });
       refetch();
     },
     onParticipantUpdate: (challengeId, count) => {
-      console.log('Participant update:', challengeId, count);
+      logger.info('Participant count updated', { component: 'ChallengesBrowse', action: 'onParticipantUpdate', key: challengeId, data: { count } });
       refetch();
     }
   });
@@ -119,19 +142,24 @@ const ChallengesBrowse = () => {
 
   // Filter and search logic
   const getFilteredChallenges = () => {
-    console.log('🔍 getFilteredChallenges - Input challenges:', challenges.length);
-    console.log('🔍 Applied filters:', {
-      search: filters.search,
-      status: filters.status,
-      category: filters.category,
-      difficulty: filters.difficulty,
-      prizeRange: filters.prizeRange,
-      participantRange: filters.participantRange,
-      features: filters.features
+    logger.debug('Starting challenge filtering', { 
+      component: 'ChallengesBrowse', 
+      action: 'getFilteredChallenges',
+      data: { 
+        totalChallenges: challenges.length,
+        filters: {
+          search: filters.search,
+          status: filters.status,
+          category: filters.category,
+          difficulty: filters.difficulty,
+          prizeRange: filters.prizeRange,
+          participantRange: filters.participantRange,
+          features: filters.features
+        }
+      }
     });
     
     let filtered = [...challenges];
-    console.log('🔍 Starting with challenges:', filtered.length);
 
     // Apply search filter
     if (filters.search) {
@@ -140,15 +168,22 @@ const ChallengesBrowse = () => {
         (isRTL ? challenge.title_ar : challenge.title_en || challenge.title_ar).toLowerCase().includes(filters.search.toLowerCase()) ||
         (isRTL ? challenge.description_ar : challenge.description_en || challenge.description_ar).toLowerCase().includes(filters.search.toLowerCase())
       );
-      console.log(`🔍 After search filter ("${filters.search}"): ${beforeSearch} → ${filtered.length}`);
+      logger.debug('Applied search filter', { 
+        component: 'ChallengesBrowse',
+        action: 'searchFilter',
+        data: { searchTerm: filters.search, beforeCount: beforeSearch, afterCount: filtered.length }
+      });
     }
 
     // Apply status filter
     if (filters.status !== 'all') {
       const beforeStatus = filtered.length;
       filtered = filtered.filter(challenge => challenge.status === filters.status);
-      console.log(`🔍 After status filter ("${filters.status}"): ${beforeStatus} → ${filtered.length}`);
-      console.log('🔍 Available statuses:', [...new Set(challenges.map(c => c.status))]);
+      logger.debug('Applied status filter', { 
+        component: 'ChallengesBrowse',
+        action: 'statusFilter',
+        data: { status: filters.status, beforeCount: beforeStatus, afterCount: filtered.length, availableStatuses: [...new Set(challenges.map(c => c.status))] }
+      });
     }
 
     // Apply category filter
@@ -158,56 +193,70 @@ const ChallengesBrowse = () => {
         const categoryKey = isRTL ? challenge.category : challenge.category_en || challenge.category;
         return categoryKey.toLowerCase().includes(filters.category.toLowerCase());
       });
-      console.log(`🔍 After category filter ("${filters.category}"): ${beforeCategory} → ${filtered.length}`);
-      console.log('🔍 Available categories:', [...new Set(challenges.map(c => c.category))]);
+      logger.debug('Applied category filter', { 
+        component: 'ChallengesBrowse',
+        action: 'categoryFilter',
+        data: { category: filters.category, beforeCount: beforeCategory, afterCount: filtered.length, availableCategories: [...new Set(challenges.map(c => c.category))] }
+      });
     }
 
     // Apply difficulty filter
     if (filters.difficulty !== 'all') {
       const beforeDifficulty = filtered.length;
-      console.log('🔍 Challenge difficulties before filter:', filtered.map(c => ({ id: c.id.slice(0, 8), difficulty: c.difficulty })));
       filtered = filtered.filter(challenge => challenge.difficulty && challenge.difficulty.toLowerCase() === filters.difficulty.toLowerCase());
-      console.log(`🔍 After difficulty filter ("${filters.difficulty}"): ${beforeDifficulty} → ${filtered.length}`);
-      console.log('🔍 Available difficulties:', [...new Set(challenges.map(c => c.difficulty).filter(Boolean))]);
+      logger.debug('Applied difficulty filter', { 
+        component: 'ChallengesBrowse',
+        action: 'difficultyFilter',
+        data: { 
+          difficulty: filters.difficulty, 
+          beforeCount: beforeDifficulty, 
+          afterCount: filtered.length, 
+          availableDifficulties: [...new Set(challenges.map(c => c.difficulty).filter(Boolean))]
+        }
+      });
     }
 
     // Apply prize range filter
     const beforePrize = filtered.length;
-    console.log('🔍 Prize range filter checking:', {
-      range: filters.prizeRange,
-      sampleBudgets: filtered.slice(0, 5).map(c => ({ id: c.id.slice(0, 8), budget: c.estimated_budget }))
-    });
     filtered = filtered.filter(challenge => {
       const budgetValue = challenge.estimated_budget || 0;
-      const inRange = budgetValue >= filters.prizeRange[0] && budgetValue <= filters.prizeRange[1];
-      if (!inRange) {
-        console.log(`🔍 Filtered out challenge ${challenge.id.slice(0, 8)} - budget ${budgetValue} not in range [${filters.prizeRange[0]}, ${filters.prizeRange[1]}]`);
-      }
-      return inRange;
+      return budgetValue >= filters.prizeRange[0] && budgetValue <= filters.prizeRange[1];
     });
-    console.log(`🔍 After prize range filter [${filters.prizeRange[0]}, ${filters.prizeRange[1]}]: ${beforePrize} → ${filtered.length}`);
+    logger.debug('Applied prize range filter', { 
+      component: 'ChallengesBrowse',
+      action: 'prizeRangeFilter',
+      data: { 
+        prizeRange: filters.prizeRange, 
+        beforeCount: beforePrize, 
+        afterCount: filtered.length
+      }
+    });
 
     // Apply participant range filter
     const beforeParticipants = filtered.length;
-    console.log('🔍 Participant range filter checking:', {
-      range: filters.participantRange,
-      sampleParticipants: filtered.slice(0, 5).map(c => ({ id: c.id.slice(0, 8), participants: c.participants }))
-    });
     filtered = filtered.filter(challenge => {
       const participantCount = challenge.participants || 0;
-      const inRange = participantCount >= filters.participantRange[0] && participantCount <= filters.participantRange[1];
-      if (!inRange) {
-        console.log(`🔍 Filtered out challenge ${challenge.id.slice(0, 8)} - participants ${participantCount} not in range [${filters.participantRange[0]}, ${filters.participantRange[1]}]`);
-      }
-      return inRange;
+      return participantCount >= filters.participantRange[0] && participantCount <= filters.participantRange[1];
     });
-    console.log(`🔍 After participant range filter [${filters.participantRange[0]}, ${filters.participantRange[1]}]: ${beforeParticipants} → ${filtered.length}`);
+    logger.debug('Applied participant range filter', { 
+      component: 'ChallengesBrowse',
+      action: 'participantRangeFilter',
+      data: { 
+        participantRange: filters.participantRange, 
+        beforeCount: beforeParticipants, 
+        afterCount: filtered.length
+      }
+    });
 
     // Apply feature filters
     if (filters.features.includes('trending')) {
       const beforeTrending = filtered.length;
       filtered = filtered.filter(challenge => challenge.trending || challenge.priority_level === 'عالي');
-      console.log(`🔍 After trending filter: ${beforeTrending} → ${filtered.length}`);
+      logger.debug('Applied trending filter', { 
+        component: 'ChallengesBrowse',
+        action: 'trendingFilter',
+        data: { beforeCount: beforeTrending, afterCount: filtered.length }
+      });
     }
     if (filters.features.includes('ending-soon')) {
       const beforeEndingSoon = filtered.length;
@@ -218,7 +267,11 @@ const ChallengesBrowse = () => {
         const daysLeft = Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
         return daysLeft <= 7 && daysLeft > 0;
       });
-      console.log(`🔍 After ending-soon filter: ${beforeEndingSoon} → ${filtered.length}`);
+      logger.debug('Applied ending-soon filter', { 
+        component: 'ChallengesBrowse',
+        action: 'endingSoonFilter',
+        data: { beforeCount: beforeEndingSoon, afterCount: filtered.length }
+      });
     }
 
     // Apply sorting
@@ -254,14 +307,20 @@ const ChallengesBrowse = () => {
       }
     });
 
-    console.log('🔍 Final filtered challenges:', filtered.length);
-    console.log('🔍 Final challenge IDs:', filtered.map(c => c.id.slice(0, 8)));
+    logger.info('Challenge filtering completed', { 
+      component: 'ChallengesBrowse',
+      action: 'getFilteredChallenges',
+      data: { finalCount: filtered.length, originalCount: challenges.length }
+    });
     return filtered;
   };
 
-  const getTabFilteredChallenges = (challenges: any[]) => {
-    console.log('📊 getTabFilteredChallenges - Input challenges:', challenges.length);
-    console.log('📊 Active tab:', activeTab);
+  const getTabFilteredChallenges = (challenges: Challenge[]) => {
+    logger.debug('Starting tab filtering', { 
+      component: 'ChallengesBrowse',
+      action: 'getTabFilteredChallenges',
+      data: { inputCount: challenges.length, activeTab }
+    });
     
     let tabFiltered;
     switch (activeTab) {
@@ -279,14 +338,11 @@ const ChallengesBrowse = () => {
         break;
     }
     
-    console.log('📊 getTabFilteredChallenges - After tab filter:', tabFiltered.length);
-    console.log('📊 Sample challenge data:', tabFiltered.slice(0, 3).map(c => ({ 
-      id: c.id.slice(0, 8), 
-      status: c.status, 
-      participants: c.participants,
-      priority: c.priority_level,
-      title: c.title_ar?.slice(0, 30) + '...'
-    })));
+    logger.debug('Tab filtering completed', { 
+      component: 'ChallengesBrowse',
+      action: 'getTabFilteredChallenges',
+      data: { afterTabFilter: tabFiltered.length, activeTab }
+    });
     
     return tabFiltered;
   };
@@ -294,34 +350,38 @@ const ChallengesBrowse = () => {
   const filteredChallenges = getFilteredChallenges();
   const tabFilteredChallenges = getTabFilteredChallenges(filteredChallenges);
   
-  console.log('🎯 Final counts - filtered:', filteredChallenges.length, 'tabFiltered:', tabFilteredChallenges.length);
+  logger.info('Challenge data processing completed', { 
+    component: 'ChallengesBrowse',
+    action: 'finalCounts',
+    data: { filteredCount: filteredChallenges.length, tabFilteredCount: tabFilteredChallenges.length }
+  });
 
   // Event handlers
-  const handleViewDetails = (challenge: any) => {
+  const handleViewDetails = (challenge: Challenge) => {
     setSelectedChallenge(challenge);
     setDetailDialogOpen(true);
   };
 
-  const handleSubmitToChallenge = (challenge: any) => {
+  const handleSubmitToChallenge = (challenge: Challenge) => {
     setSelectedChallenge(challenge);
     setSubmissionDialogOpen(true);
   };
 
-  const handleViewComments = (challenge: any) => {
+  const handleViewComments = (challenge: Challenge) => {
     setSelectedChallenge(challenge);
     setCommentsDialogOpen(true);
   };
 
-  const handleViewSubmissions = (challenge: any) => {
+  const handleViewSubmissions = (challenge: Challenge) => {
     setSelectedChallenge(challenge);
     setSubmissionsDialogOpen(true);
   };
 
-  const handleParticipate = async (challenge: any) => {
+  const handleParticipate = async (challenge: Challenge) => {
     if (!user) {
       toast({
-        title: isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in',
-        description: isRTL ? 'يجب تسجيل الدخول للمشاركة في التحديات' : 'You need to sign in to participate in challenges',
+        title: t('pleaseSignIn', isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in'),
+        description: t('signInToParticipate', isRTL ? 'يجب تسجيل الدخول للمشاركة في التحديات' : 'You need to sign in to participate in challenges'),
         variant: "destructive",
       });
       return;
@@ -340,29 +400,29 @@ const ChallengesBrowse = () => {
       if (error) throw error;
 
       toast({
-        title: isRTL ? 'تم التسجيل بنجاح' : 'Successfully Registered',
-        description: isRTL ? 
+        title: t('successfullyRegistered', isRTL ? 'تم التسجيل بنجاح' : 'Successfully Registered'),
+        description: t('challengeRegistrationSuccess', isRTL ? 
           `تم تسجيلك في تحدي "${challenge.title_ar}"` : 
-          `You have been registered for "${challenge.title_ar}"`,
+          `You have been registered for "${challenge.title_ar}"`),
       });
       
       // Refresh challenges to update participant count
       refetch();
     } catch (error) {
-      console.error('Participation error:', error);
+      logger.error('Challenge participation failed', { component: 'ChallengesBrowse', action: 'handleParticipate', key: challenge.id }, error as Error);
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في التسجيل' : 'Failed to register',
+        title: t('error', isRTL ? 'خطأ' : 'Error'),
+        description: t('registrationFailed', isRTL ? 'فشل في التسجيل' : 'Failed to register'),
         variant: "destructive",
       });
     }
   };
 
-  const handleBookmark = async (challenge: any) => {
+  const handleBookmark = async (challenge: Challenge) => {
     if (!user) {
       toast({
-        title: isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in',
-        description: isRTL ? 'يجب تسجيل الدخول لحفظ التحديات' : 'You need to sign in to bookmark challenges',
+        title: t('pleaseSignIn', isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in'),
+        description: t('signInToBookmark', isRTL ? 'يجب تسجيل الدخول لحفظ التحديات' : 'You need to sign in to bookmark challenges'),
         variant: "destructive",
       });
       return;
@@ -388,10 +448,10 @@ const ChallengesBrowse = () => {
         if (error) throw error;
 
         toast({
-          title: isRTL ? 'تم إلغاء الحفظ' : 'Bookmark Removed',
-          description: isRTL ? 
+          title: t('bookmarkRemoved', isRTL ? 'تم إلغاء الحفظ' : 'Bookmark Removed'),
+          description: t('challengeBookmarkRemoved', isRTL ? 
             `تم إلغاء حفظ تحدي "${challenge.title_ar}"` : 
-            `Removed "${challenge.title_ar}" from bookmarks`,
+            `Removed "${challenge.title_ar}" from bookmarks`),
         });
       } else {
         // Add bookmark
@@ -405,17 +465,17 @@ const ChallengesBrowse = () => {
         if (error) throw error;
 
         toast({
-          title: isRTL ? 'تم الحفظ' : 'Bookmarked',
-          description: isRTL ? 
+          title: t('bookmarked', isRTL ? 'تم الحفظ' : 'Bookmarked'),
+          description: t('challengeBookmarked', isRTL ? 
             `تم حفظ تحدي "${challenge.title_ar}" في قائمة المفضلة` : 
-            `Challenge "${challenge.title_ar}" saved to bookmarks`,
+            `Challenge "${challenge.title_ar}" saved to bookmarks`),
         });
       }
     } catch (error) {
-      console.error('Bookmark error:', error);
+      logger.error('Challenge bookmark failed', { component: 'ChallengesBrowse', action: 'handleBookmark', key: challenge.id }, error as Error);
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في حفظ التحدي' : 'Failed to bookmark challenge',
+        title: t('error', isRTL ? 'خطأ' : 'Error'),
+        description: t('bookmarkFailed', isRTL ? 'فشل في حفظ التحدي' : 'Failed to bookmark challenge'),
         variant: "destructive",
       });
     }

@@ -175,4 +175,14 @@ progressTracker.markComponentCompleted('src/components/dashboard/AdminDashboard.
 progressTracker.markComponentCompleted('src/components/ui/error-boundary.tsx', 1, 0);
 progressTracker.markComponentCompleted('src/contexts/AuthContext.tsx', 3, 3);
 progressTracker.markComponentCompleted('src/pages/Auth.tsx', 2, 0);
+
+// Mark new batch completed
+progressTracker.initializeComponent('src/pages/ChallengesBrowse.tsx', 25, 1);
+progressTracker.initializeComponent('src/pages/PartnerDashboard.tsx', 2, 1);
+progressTracker.initializeComponent('src/pages/ProfileSetup.tsx', 3, 1);
+progressTracker.initializeComponent('src/pages/PaddleSubscriptionPage.tsx', 1, 0);
+progressTracker.markComponentCompleted('src/pages/ChallengesBrowse.tsx', 25, 1);
+progressTracker.markComponentCompleted('src/pages/PartnerDashboard.tsx', 2, 1);
+progressTracker.markComponentCompleted('src/pages/ProfileSetup.tsx', 3, 1);
+progressTracker.markComponentCompleted('src/pages/PaddleSubscriptionPage.tsx', 1, 0);
 progressTracker.logProgress();

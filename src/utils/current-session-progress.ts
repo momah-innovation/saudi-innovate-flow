@@ -32,12 +32,16 @@ export const currentSessionProgress = {
       'src/components/dashboard/AdminDashboard.tsx - Fixed 1 console log + 1 any type',
       'src/components/ui/error-boundary.tsx - Fixed 1 console log',
       'src/contexts/AuthContext.tsx - Fixed 3 console logs + 3 any types',
-      'src/pages/Auth.tsx - Fixed 2 console logs'
+      'src/pages/Auth.tsx - Fixed 2 console logs',
+      'src/pages/ChallengesBrowse.tsx - Fixed 25 console logs + 1 any type',
+      'src/pages/PartnerDashboard.tsx - Fixed 2 console logs + 1 any type',
+      'src/pages/ProfileSetup.tsx - Fixed 3 console logs + 1 any type',
+      'src/pages/PaddleSubscriptionPage.tsx - Fixed 1 console log'
     ],
     
     metrics: {
-      consoleLogsFixed: 85,
-      anyTypesFixed: 102,
+      consoleLogsFixed: 110, // 85 + 25 from ChallengesBrowse
+      anyTypesFixed: 105,    // 102 + 3 new fixes
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -52,8 +56,8 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 255, // Down from 270
-    anyTypesToReplace: 377,    // Down from 382
+    consoleLogsToMigrate: 230, // Down from 255 (25 more fixed)
+    anyTypesToReplace: 374,    // Down from 377 (3 more fixed)
     estimatedSessionsRemaining: 3
   },
   

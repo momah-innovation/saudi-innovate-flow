@@ -13,6 +13,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { AppShell } from '@/components/layout/AppShell';
@@ -132,11 +133,29 @@ export default function PartnerDashboard() {
         .eq('applicant_user_id', userProfile?.id)
         .order('submitted_at', { ascending: false });
 
-      console.log('Applications loaded:', applicationsData);
-      console.log('Applications error:', applicationsError);
+      logger.info('Partnership applications loaded', { 
+        component: 'PartnerDashboard', 
+        action: 'loadPartnerData',
+        data: { applicationsCount: applicationsData?.length || 0, hasError: !!applicationsError }
+      });
       
       // Transform the applications data to match our interface
-      const transformedApplications: ApplicationItem[] = (applicationsData || []).map((app: any) => ({
+      interface ApplicationRecord {
+        id: string;
+        company_name: string;
+        contact_person: string;
+        contact_email?: string;
+        proposed_contribution: number;
+        status: string; // Keep as string for flexibility
+        submitted_at: string;
+        reviewer_notes?: string;
+        opportunities?: {
+          title_ar: string;
+          opportunity_type: string;
+        } | null;
+      }
+
+      const transformedApplications: ApplicationItem[] = (applicationsData || []).map((app: ApplicationRecord) => ({
         id: app.id,
         company_name: app.company_name,
         contact_person: app.contact_person,
