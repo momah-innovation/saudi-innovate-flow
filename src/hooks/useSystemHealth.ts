@@ -169,8 +169,7 @@ export function useSystemHealth() {
   const formatBytes = (bytes: number) => {
     if (bytes === 0) return '0 Bytes'
     const k = 1024
-    const { getSettingValue } = useSettingsManager();
-    const sizes = getSettingValue('file_size_units_standard', ['Bytes', 'KB', 'MB', 'GB']) as string[];
+    const sizes = ['Bytes', 'KB', 'MB', 'GB']; // Fixed temporarily
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
