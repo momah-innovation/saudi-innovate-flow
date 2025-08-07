@@ -27,6 +27,7 @@ import {
   Save,
   RefreshCw
 } from 'lucide-react'
+import { logger } from '@/utils/logger';
 
 interface UploaderConfig {
   id: string
@@ -107,7 +108,10 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
           // Using database buckets
         }
       } catch (error) {
-        console.error('Both methods failed for uploader settings:', error);
+        logger.error('Both methods failed for uploader settings', { 
+          component: 'UploaderSettingsTab', 
+          action: 'loadSettings' 
+        }, error as Error);
         const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
         buckets = storageB || [];
         // Final fallback completed
@@ -176,11 +180,15 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
         
         // Log orphaned configurations
         if (!bucketExists) {
-          console.warn(`Configuration for missing bucket detected:`, {
-            uploadType: item.setting_key,
-            bucket: config.bucket,
-            configId: item.id
-          })
+          logger.info('Configuration for missing bucket detected', {
+            component: 'UploaderSettingsTab',
+            action: 'validateBuckets',
+            data: {
+              uploadType: item.setting_key,
+              bucket: config.bucket,
+              configId: item.id
+            }
+          });
         }
         
         return {
@@ -200,7 +208,10 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
 
       setConfigs(uploadConfigs)
     } catch (error) {
-      console.error('Error loading uploader settings:', error)
+      logger.error('Error loading uploader settings', { 
+        component: 'UploaderSettingsTab', 
+        action: 'loadSettings' 
+      }, error as Error);
       toast({
         title: t('error'),
         description: t('failed_to_load'),
@@ -224,7 +235,12 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
 
       if (error) throw error
     } catch (error) {
-      console.error('Error updating global setting:', error)
+      logger.error('Error updating global setting', { 
+        component: 'UploaderSettingsTab', 
+        action: 'updateGlobalSetting',
+        key, 
+        value 
+      }, error as Error);
       throw error
     }
   }
@@ -256,7 +272,11 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
         c.id === configId ? { ...c, ...updates } : c
       ))
     } catch (error) {
-      console.error('Error updating upload config:', error)
+      logger.error('Error updating upload config', { 
+        component: 'UploaderSettingsTab', 
+        action: 'updateUploadConfig',
+        data: { configId, updates }
+      }, error as Error);
       throw error
     }
   }
@@ -488,7 +508,11 @@ export function UploaderSettingsTab({ className }: UploaderSettingsTabProps) {
 
       // Auto-configured bucket successfully
     } catch (error) {
-      console.error(`Failed to auto-configure bucket ${bucket.id}:`, error)
+      logger.error('Failed to auto-configure bucket', { 
+        component: 'UploaderSettingsTab', 
+        action: 'autoConfigureBucket',
+        data: { bucketId: bucket.id }
+      }, error as Error);
       throw error
     }
   }

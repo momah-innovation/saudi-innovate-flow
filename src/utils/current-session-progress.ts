@@ -156,12 +156,15 @@ export const currentSessionProgress = {
       'src/components/opportunities/ComprehensiveAnalyticsDashboard.tsx - Fixed 1 console log + enhanced logging',
       'src/components/admin/TeamWorkspaceContent.tsx - Fixed 1 any type + enhanced interfaces',
       'src/components/admin/TestPrivilegeElevation.tsx - Fixed 1 any type + enhanced error handling',
-      'src/components/storage/ConfigurationDialog.tsx - Fixed 2 console logs + enhanced logging'
+      'src/components/storage/StorageManagementPage.tsx - Fixed 4 console logs + enhanced logging',
+      'src/components/storage/UploaderSettingsTab.tsx - Fixed 6 console logs + enhanced logging',
+      'src/components/auth/ProfileSetup.tsx - Fixed 1 any type + 3 UserRole interfaces + enhanced error handling',
+      'src/components/storage/EnhancedStorageQuotasTab.tsx - Fixed 3 console logs + enhanced logging'
     ],
     
     metrics: {
-      consoleLogsFixed: 296,
-      anyTypesFixed: 194,    
+      consoleLogsFixed: 309,
+      anyTypesFixed: 199,    
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -178,8 +181,8 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 44,
-    anyTypesToReplace: 285,
+    consoleLogsToMigrate: 31,
+    anyTypesToReplace: 280,
     estimatedSessionsRemaining: 1
   },
   

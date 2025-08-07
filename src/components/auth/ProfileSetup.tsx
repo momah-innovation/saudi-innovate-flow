@@ -35,6 +35,11 @@ import { TestProfileCalculation } from '@/components/admin/TestProfileCalculatio
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
 
+interface UserRole {
+  role: string;
+  is_active: boolean;
+}
+
 interface ProfileData {
   // Basic Information
   fullName: string;
@@ -251,10 +256,15 @@ export const ProfileSetup = () => {
       });
 
       navigate('/dashboard');
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as Error;
+      logger.error('Error saving profile data', { 
+        component: 'ProfileSetup', 
+        action: 'saveProfile' 
+      }, err);
       toast({
         title: "خطأ في حفظ البيانات",
-        description: error.message || "حدث خطأ غير متوقع",
+        description: err.message || "حدث خطأ غير متوقع",
         variant: "destructive"
       });
     } finally {
@@ -600,7 +610,7 @@ export const ProfileSetup = () => {
                 <div>
                   <p><strong>Roles found:</strong></p>
                   <ul className="list-disc list-inside">
-                    {userProfile.user_roles.map((role: any, index: number) => (
+                    {(userProfile.user_roles as UserRole[]).map((role: UserRole, index: number) => (
                       <li key={index}>
                         {role.role} (active: {role.is_active ? 'Yes' : 'No'})
                       </li>
@@ -608,8 +618,8 @@ export const ProfileSetup = () => {
                   </ul>
                 </div>
               )}
-              <p><strong>Has admin role:</strong> {userProfile?.user_roles?.some((r: any) => r.role === 'admin' && r.is_active) ? 'Yes' : 'No'}</p>
-              <p><strong>Has super_admin role:</strong> {userProfile?.user_roles?.some((r: any) => r.role === 'super_admin' && r.is_active) ? 'Yes' : 'No'}</p>
+              <p><strong>Has admin role:</strong> {(userProfile?.user_roles as UserRole[])?.some((r: UserRole) => r.role === 'admin' && r.is_active) ? 'Yes' : 'No'}</p>
+              <p><strong>Has super_admin role:</strong> {(userProfile?.user_roles as UserRole[])?.some((r: UserRole) => r.role === 'super_admin' && r.is_active) ? 'Yes' : 'No'}</p>
             </div>
           </CardContent>
         </Card>

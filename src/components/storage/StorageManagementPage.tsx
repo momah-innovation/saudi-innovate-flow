@@ -56,6 +56,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 export function StorageManagementPage() {
   const { toast } = useToast();
@@ -158,7 +159,10 @@ export function StorageManagementPage() {
           })) || [];
         }
       } catch (error) {
-        console.error('Error loading buckets:', error);
+        logger.error('Error loading buckets from RPC', { 
+          component: 'StorageManagementPage', 
+          action: 'loadBuckets' 
+        }, error as Error);
         const { data: storageB } = await supabase.storage.listBuckets();
         bucketsData = storageB || [];
       }
@@ -175,7 +179,11 @@ export function StorageManagementPage() {
         });
         
         if (filesError) {
-          console.error(`Error loading files from bucket ${bucket.id}:`, filesError);
+          logger.error('Error loading files from bucket', { 
+            component: 'StorageManagementPage', 
+            action: 'loadFiles',
+            data: { bucketId: bucket.id }
+          }, filesError as Error);
           continue;
         }
         
@@ -196,7 +204,10 @@ export function StorageManagementPage() {
       setFiles(allFiles);
 
     } catch (error) {
-      console.error('Error loading storage data:', error);
+      logger.error('Error loading storage data', { 
+        component: 'StorageManagementPage', 
+        action: 'loadData' 
+      }, error as Error);
       toast({
         title: t('common.error'),
         description: t('storage.failed_to_load'),
@@ -218,7 +229,11 @@ export function StorageManagementPage() {
           file.signedUrl = data.signedUrl;
         }
       } catch (error) {
-        console.error('Error generating signed URL:', error);
+        logger.error('Error generating signed URL', { 
+          component: 'StorageManagementPage', 
+          action: 'generateSignedUrl',
+          data: { bucketId: file.bucket_id, fileName: file.name }
+        }, error as Error);
       }
     } else {
       const { data } = supabase.storage.from(file.bucket_id).getPublicUrl(file.name);

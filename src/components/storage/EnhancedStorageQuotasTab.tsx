@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { logger } from '@/utils/logger';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -62,7 +63,10 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
       const { data, error } = await supabase.rpc('get_basic_storage_info');
       
       if (error) {
-        console.error('Error fetching buckets:', error);
+        logger.error('Error fetching buckets', { 
+          component: 'EnhancedStorageQuotasTab', 
+          action: 'fetchBuckets' 
+        }, error as Error);
         toast({
           title: 'Error',
           description: `Failed to fetch bucket info: ${error.message}`,
@@ -74,7 +78,10 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
       
       setAllBuckets(data || []);
     } catch (err) {
-      console.error('Error fetching buckets:', err);
+      logger.error('Error fetching buckets', { 
+        component: 'EnhancedStorageQuotasTab', 
+        action: 'fetchBuckets' 
+      }, err as Error);
       toast({
         title: 'Error', 
         description: 'Failed to fetch bucket information',
@@ -137,7 +144,11 @@ export function EnhancedStorageQuotasTab({ onQuotasChanged }: EnhancedStorageQuo
       setQuotaSize('');
       onQuotasChanged?.();
     } else {
-      console.error('Failed to set quota:', result.error);
+      logger.error('Failed to set quota', { 
+        component: 'EnhancedStorageQuotasTab', 
+        action: 'setQuota',
+        data: { error: result.error }
+      });
       toast({
         title: 'Error',
         description: result.error,
