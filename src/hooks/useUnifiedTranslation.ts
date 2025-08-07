@@ -61,23 +61,11 @@ export function useUnifiedTranslation() {
   }, [dbTranslations]);
 
   /**
-   * Primary translation function - NEW UNIFIED SYSTEM ONLY
-   * Supports: t(key), t(key, fallback), t(key, fallback, options), t(key, options)
+   * Primary translation function - STANDARDIZED PATTERN ONLY
+   * t(key, fallback, options) - fallback and options are optional
    */
-  const t = (key: string, fallbackOrOptions?: string | Record<string, any>, interpolationOptions?: Record<string, any>): string => {
+  const t = (key: string, fallback?: string, options?: Record<string, any>): string => {
     try {
-      let fallback: string | undefined;
-      let options: Record<string, any> | undefined;
-      
-      // Handle parameter variations
-      if (typeof fallbackOrOptions === 'string') {
-        fallback = fallbackOrOptions;
-        options = interpolationOptions;
-      } else if (typeof fallbackOrOptions === 'object' && fallbackOrOptions !== null) {
-        options = fallbackOrOptions;
-        fallback = undefined;
-      }
-
       // Strategy 1: Database translation (highest priority)
       const dbTranslation = translationMap.get(key);
       if (dbTranslation) {
