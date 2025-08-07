@@ -155,7 +155,7 @@ export default function PartnerDashboard() {
         } | null;
       }
 
-      const transformedApplications: ApplicationItem[] = (applicationsData || []).map((app: ApplicationRecord) => ({
+      const transformedApplications: ApplicationItem[] = (applicationsData || []).map((app: any) => ({
         id: app.id,
         company_name: app.company_name,
         contact_person: app.contact_person,

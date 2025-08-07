@@ -47,9 +47,9 @@ const ChallengesBrowse = () => {
   const { challenges, loading, stats, refetch } = useChallengesData();
   
   // State management
-  const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
+  const [selectedChallenge, setSelectedChallenge] = useState<ChallengeData | null>(null);
 
-interface Challenge {
+interface ChallengeData {
   id: string;
   title_ar: string;
   title_en?: string;
@@ -315,7 +315,7 @@ interface Challenge {
     return filtered;
   };
 
-  const getTabFilteredChallenges = (challenges: Challenge[]) => {
+  const getTabFilteredChallenges = (challenges: ChallengeData[]) => {
     logger.debug('Starting tab filtering', { 
       component: 'ChallengesBrowse',
       action: 'getTabFilteredChallenges',
@@ -357,27 +357,27 @@ interface Challenge {
   });
 
   // Event handlers
-  const handleViewDetails = (challenge: Challenge) => {
+  const handleViewDetails = (challenge: ChallengeData) => {
     setSelectedChallenge(challenge);
     setDetailDialogOpen(true);
   };
 
-  const handleSubmitToChallenge = (challenge: Challenge) => {
+  const handleSubmitToChallenge = (challenge: ChallengeData) => {
     setSelectedChallenge(challenge);
     setSubmissionDialogOpen(true);
   };
 
-  const handleViewComments = (challenge: Challenge) => {
+  const handleViewComments = (challenge: ChallengeData) => {
     setSelectedChallenge(challenge);
     setCommentsDialogOpen(true);
   };
 
-  const handleViewSubmissions = (challenge: Challenge) => {
+  const handleViewSubmissions = (challenge: ChallengeData) => {
     setSelectedChallenge(challenge);
     setSubmissionsDialogOpen(true);
   };
 
-  const handleParticipate = async (challenge: Challenge) => {
+  const handleParticipate = async (challenge: ChallengeData) => {
     if (!user) {
       toast({
         title: t('pleaseSignIn', isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in'),
@@ -418,7 +418,7 @@ interface Challenge {
     }
   };
 
-  const handleBookmark = async (challenge: Challenge) => {
+  const handleBookmark = async (challenge: ChallengeData) => {
     if (!user) {
       toast({
         title: t('pleaseSignIn', isRTL ? 'يرجى تسجيل الدخول' : 'Please sign in'),
