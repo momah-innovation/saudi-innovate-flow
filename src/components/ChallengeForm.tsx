@@ -43,7 +43,7 @@ export function ChallengeForm({
   isLoading = false,
   mode = 'create'
 }: ChallengeFormProps) {
-  const { t, language, isRTL } = useUnifiedTranslation();
+  const { t, language, isRTL, getTranslation } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
   
   const [formData, setFormData] = useState({
@@ -69,14 +69,13 @@ export function ChallengeForm({
     onSubmit(formData);
   };
 
-  const challengeTypes = [
-    { value: 'digital_transformation', label: 'Digital Transformation', labelAr: 'التحول الرقمي' },
-    { value: 'smart_cities', label: 'Smart Cities', labelAr: 'المدن الذكية' },
-    { value: 'education', label: 'Education', labelAr: 'التعليم' },
-    { value: 'healthcare', label: 'Healthcare', labelAr: 'الصحة' },
-    { value: 'environment', label: 'Environment', labelAr: 'البيئة' },
-    { value: 'fintech', label: 'Financial Technology', labelAr: 'التقنية المالية' }
-  ];
+  // Get challenge types from database settings
+  const challengeTypesData = getSettingValue('challenge_form_types', []) as string[];
+  const challengeTypes = challengeTypesData.map(type => ({
+    value: type,
+    label: getTranslation(`challenge_form_types.${type}`) || type,
+    labelAr: getTranslation(`challenge_form_types.${type}`) || type
+  }));
 
   const priorityLevelsData = getSettingValue('priority_levels', []) as string[];
   const priorityLevels = priorityLevelsData.map(priority => ({ 

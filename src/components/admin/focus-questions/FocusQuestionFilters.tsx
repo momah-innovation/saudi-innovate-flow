@@ -73,7 +73,7 @@ export function FocusQuestionFilters({
   
   // Convert to proper option format with translations
   const typeOptions = [
-    { value: 'all', label: 'جميع الأنواع' },
+    { value: 'all', label: getTranslation('filter_options.all_types') || 'جميع الأنواع' },
     ...questionTypeOptions.map(type => ({
       value: type,
       label: getTranslation(`question_types.${type}`) || type
@@ -83,7 +83,7 @@ export function FocusQuestionFilters({
   // Sensitivity options from settings
   const sensitivityOptionsData = getSettingValue('question_sensitivity_options', []) as string[];
   const sensitivityOptions = [
-    { value: 'all', label: 'جميع المستويات' },
+    { value: 'all', label: getTranslation('filter_options.all_levels') || 'جميع المستويات' },
     ...sensitivityOptionsData.map(sensitivity => ({ 
       value: sensitivity.toLowerCase(), 
       label: sensitivity 
