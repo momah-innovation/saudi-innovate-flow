@@ -1,4 +1,5 @@
 import { useAuth } from '@/contexts/AuthContext';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 
 export type UserRole = 'super_admin' | 'admin' | 'team_member' | 'expert' | 'innovator' | 'partner' | 'stakeholder';
 
@@ -65,7 +66,8 @@ export const useRoleAccess = () => {
     const roles = getUserRoles();
     
     // Priority order for determining primary role
-    const rolePriority: UserRole[] = ['super_admin', 'admin', 'team_member', 'expert', 'partner', 'stakeholder', 'innovator'];
+    const { getSettingValue } = useSettingsManager();
+    const rolePriority = getSettingValue('role_priority_order', ['super_admin', 'admin', 'team_member', 'expert', 'partner', 'stakeholder', 'innovator']) as UserRole[];
     
     for (const role of rolePriority) {
       if (roles.includes(role)) {

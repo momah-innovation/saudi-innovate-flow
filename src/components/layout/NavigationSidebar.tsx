@@ -17,6 +17,7 @@ import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { useSidebarPersistence } from '@/contexts/SidebarContext';
 
 /**
@@ -439,7 +440,8 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
   };
 
   // Priority order for groups
-  const groupOrder = ['main', 'discover', 'personal', 'workflow', 'subscription', 'analytics', 'admin', 'system', 'settings'];
+  const { getSettingValue } = useSettingsManager();
+  const groupOrder = getSettingValue('navigation_group_order', ['main', 'discover', 'personal', 'workflow', 'subscription', 'analytics', 'admin', 'system', 'settings']) as string[];
 
   const renderMenuItems = (items: any[]) => {
     return items.map((item) => {

@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
@@ -255,7 +256,8 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
     }
   };
 
-  const COLORS = ['#10B981', '#F59E0B', '#EF4444', '#3B82F6', '#8B5CF6'];
+  const { getSettingValue } = useSettingsManager();
+  const COLORS = getSettingValue('engagement_colors', ['#10B981', '#F59E0B', '#EF4444', '#3B82F6', '#8B5CF6']) as string[];
 
   if (loading) {
     return (

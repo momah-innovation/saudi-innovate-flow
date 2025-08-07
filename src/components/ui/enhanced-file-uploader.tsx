@@ -1,4 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useState, useId, useCallback } from 'react'
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { FileUploadConfig } from '@/hooks/useFileUploader'
 import { UploadedFile, useFileUploader } from '@/hooks/useFileUploader'
 import { FormControl, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -203,7 +204,8 @@ export const EnhancedFileUploader = forwardRef<EnhancedFileUploaderRef, Enhanced
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes'
     const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const { getSettingValue } = useSettingsManager();
+    const sizes = getSettingValue('file_size_units_standard', ['Bytes', 'KB', 'MB', 'GB']) as string[];
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }

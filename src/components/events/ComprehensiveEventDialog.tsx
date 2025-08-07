@@ -30,6 +30,7 @@ import {
   DollarSign
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { useEventDetails } from '@/hooks/useEventDetails';
 import { useEventInteractions } from '@/hooks/useEventInteractions';
 import { useParticipants } from '@/hooks/useParticipants';
@@ -157,7 +158,8 @@ export const ComprehensiveEventDialog = ({
     hasRole('super_admin') || hasRole('event_manager') || event.event_manager_id === user?.id;
 
   // Calculate visible tabs count for grid styling
-  const visibleTabs = ['details', 'registration', 'feedback'];
+  const { getSettingValue } = useSettingsManager();
+  const visibleTabs = getSettingValue('event_dialog_visible_tabs', ['details', 'registration', 'feedback']) as string[];
   if (canShowParticipants) visibleTabs.push('attendees');
   if (canShowPartners) visibleTabs.push('partners');
   if (canShowRelated) visibleTabs.push('related');

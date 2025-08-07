@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -187,7 +188,8 @@ export const VersionedFileUploader: React.FC<VersionedFileUploaderProps> = ({
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes'
     const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const { getSettingValue } = useSettingsManager();
+    const sizes = getSettingValue('file_size_units_standard', ['Bytes', 'KB', 'MB', 'GB']) as string[];
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }

@@ -1,4 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useState, useId } from 'react'
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { FileUploadConfig, useFileUploader, UploadedFile } from '@/hooks/useFileUploader'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
@@ -169,7 +170,8 @@ export const WizardFileUploader = forwardRef<WizardFileUploaderRef, WizardFileUp
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes'
     const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const { getSettingValue } = useSettingsManager();
+    const sizes = getSettingValue('file_size_units_standard', ['Bytes', 'KB', 'MB', 'GB']) as string[];
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }

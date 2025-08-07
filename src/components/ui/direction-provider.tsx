@@ -25,6 +25,8 @@ const defaultConfig: DirectionConfig = {
   autoDetect: true
 };
 
+import { useSettingsManager } from '@/hooks/useSettingsManager';
+
 const RTL_LANGUAGES: Language[] = ['ar'];
 
 const DirectionContext = createContext<DirectionContextType | undefined>(undefined);

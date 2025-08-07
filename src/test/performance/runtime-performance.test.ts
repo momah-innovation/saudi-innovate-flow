@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 
 // Mock performance measurement functions
 const measureComponentRender = async (componentName: string, renderFn: () => Promise<void>) => {
@@ -68,7 +69,8 @@ describe('Runtime Performance Tests', () => {
     })
 
     it('tracks multiple component renders', async () => {
-      const components = ['Component1', 'Component2', 'Component3']
+      const { getSettingValue } = useSettingsManager();
+      const components = getSettingValue('test_component_list', ['Component1', 'Component2', 'Component3']) as string[];
       const renderTimes = await Promise.all(
         components.map(name => 
           measureComponentRender(name, () => Promise.resolve())

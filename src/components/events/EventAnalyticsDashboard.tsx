@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
@@ -204,7 +205,8 @@ export const EventAnalyticsDashboard = ({ className = "" }: EventAnalyticsDashbo
 
   if (!analyticsData) return null;
 
-  const COLORS = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
+  const { getSettingValue } = useSettingsManager();
+  const COLORS = getSettingValue('primary_chart_colors', ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444']) as string[];
 
   return (
     <div className={`space-y-6 ${className}`}>
