@@ -17,6 +17,8 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface StatisticsAnalyticsData {
   totalMetrics: number;
@@ -99,7 +101,10 @@ export const StatisticsAnalyticsDashboard = ({ className }: StatisticsAnalyticsD
 
       setData(analyticsData);
     } catch (error) {
-      console.error('Error loading analytics data:', error);
+      logger.error('Failed to load statistics analytics data', { 
+        component: 'StatisticsAnalyticsDashboard', 
+        action: 'loadAnalyticsData' 
+      }, error as Error);
     } finally {
       setLoading(false);
     }

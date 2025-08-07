@@ -18,6 +18,8 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface StatisticsNotification {
@@ -135,7 +137,11 @@ export const StatisticsNotificationCenter = ({
       setNotifications(mockNotifications);
       setUnreadCount(mockNotifications.filter(n => !n.read).length);
     } catch (error) {
-      console.error('Error loading statistics notifications:', error);
+      logger.error('Failed to load statistics notifications', { 
+        component: 'StatisticsNotificationCenter', 
+        action: 'loadNotifications',
+        userId: user.id 
+      }, error as Error);
     } finally {
       setLoading(false);
     }
@@ -153,7 +159,11 @@ export const StatisticsNotificationCenter = ({
       );
       setUnreadCount(prev => Math.max(0, prev - 1));
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      logger.error('Failed to mark notification as read', { 
+        component: 'StatisticsNotificationCenter', 
+        action: 'markAsRead',
+        notificationId 
+      }, error as Error);
     }
   };
 
@@ -165,7 +175,11 @@ export const StatisticsNotificationCenter = ({
       );
       setUnreadCount(0);
     } catch (error) {
-      console.error('Error marking all notifications as read:', error);
+      logger.error('Failed to mark all notifications as read', { 
+        component: 'StatisticsNotificationCenter', 
+        action: 'markAllAsRead',
+        userId: user?.id 
+      }, error as Error);
     }
   };
 

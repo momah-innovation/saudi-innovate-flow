@@ -26,7 +26,6 @@ export interface LogContext {
   notificationId?: string;
   opportunityId?: string;
   platform?: string;
-  fileName?: string;
   filters?: any;
   data?: Record<string, any>;
 }

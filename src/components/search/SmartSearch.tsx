@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { Search, Filter, Tag, FileText, Lightbulb, Target } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -76,7 +77,11 @@ export function SmartSearch({
           setShowSuggestions(true);
         }
       } catch (error) {
-        console.error('Error loading suggestions:', error);
+        logger.error('Failed to load search suggestions', { 
+          component: 'SmartSearch', 
+          action: 'loadSuggestions',
+          query: debouncedQuery 
+        }, error as Error);
         setSuggestions([]);
       }
     };
@@ -164,7 +169,12 @@ export function SmartSearch({
       });
 
     } catch (error) {
-      console.error('Search error:', error);
+      logger.error('Smart search operation failed', { 
+        component: 'SmartSearch', 
+        action: 'performSearch',
+        query: searchQuery,
+        selectedTypes 
+      }, error as Error);
       onResults([]);
     } finally {
       setIsLoading(false);

@@ -12,6 +12,7 @@ import { Plus, Upload, X } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface UploaderConfig {
   id: string
@@ -126,7 +127,10 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
             // Using database buckets
           }
         } catch (error) {
-          console.error('Both methods failed for config:', error);
+          logger.error('Both configuration methods failed', { 
+            component: 'ConfigurationDialog', 
+            action: 'loadBuckets' 
+          }, error as Error);
           const { data: storageB, error: storageE } = await supabase.storage.listBuckets();
           buckets = storageB || [];
           // Final fallback completed

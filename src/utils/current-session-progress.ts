@@ -107,11 +107,15 @@ export const currentSessionProgress = {
       'src/components/opportunities/AnalyticsExportDialog.tsx - Fixed 3 console logs',
       'src/components/opportunities/ShareOpportunityButton.tsx - Fixed 1 console log',
       'src/components/search/AdvancedSearch.tsx - Fixed 1 console log',
-      'src/components/search/GlobalSearch.tsx - Fixed 1 console log'
+      'src/components/search/GlobalSearch.tsx - Fixed 1 console log',
+      'src/components/storage/ConfigurationDialog.tsx - Fixed 3 console logs',
+      'src/components/statistics/StatisticsAnalyticsDashboard.tsx - Fixed 1 console log',
+      'src/components/statistics/StatisticsNotificationCenter.tsx - Fixed 3 console logs',
+      'src/components/search/SmartSearch.tsx - Fixed 2 console logs'
     ],
     
     metrics: {
-      consoleLogsFixed: 212, // 206 + 6 more console logs fixed in opportunities/search components  
+      consoleLogsFixed: 221, // 212 + 9 more console logs fixed in storage/statistics/search components  
       anyTypesFixed: 148,    // No new any types, but console logs migrated
       buildErrors: 0,
       healthScore: 100,
@@ -129,12 +133,12 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 128, // Down from 134 (6 more console logs migrated)  
+    consoleLogsToMigrate: 119, // Down from 128 (9 more console logs migrated)  
     anyTypesToReplace: 331,    // Same as before
     estimatedSessionsRemaining: 1
   },
   
-  status: 'OPPORTUNITIES_SEARCH_PHASE_COMPLETE'
+  status: 'STORAGE_STATISTICS_SEARCH_PHASE_COMPLETE'
 };
 
 export default currentSessionProgress;
