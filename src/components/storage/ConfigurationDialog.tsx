@@ -141,11 +141,17 @@ export function ConfigurationDialog({ config, open, onOpenChange, onSave }: Conf
           // Buckets loaded successfully
           setAvailableBuckets(bucketNames)
         } else {
-          console.warn('No buckets found for configuration dialog');
+          logger.info('No buckets found for configuration dialog', { 
+            component: 'ConfigurationDialog', 
+            action: 'loadBuckets' 
+          });
           setAvailableBuckets([])
         }
       } catch (error) {
-        console.error('Failed to load buckets:', error)
+        logger.error('Failed to load buckets', { 
+          component: 'ConfigurationDialog', 
+          action: 'loadBuckets' 
+        }, error as Error);
         setAvailableBuckets([])
       }
     }

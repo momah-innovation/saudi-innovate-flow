@@ -30,9 +30,10 @@ export function TestPrivilegeElevation() {
       
       // Function executed successfully
       setResult(data);
-    } catch (err: any) {
-      logger.error('Request error', { component: 'TestPrivilegeElevation', action: 'testElevation' }, err as Error);
-      setResult({ error: err.message, details: err });
+    } catch (err: unknown) {
+      const error = err as Error;
+      logger.error('Request error', { component: 'TestPrivilegeElevation', action: 'testElevation' }, error);
+      setResult({ error: error.message, details: error });
     } finally {
       setLoading(false);
     }

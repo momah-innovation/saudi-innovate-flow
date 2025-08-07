@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { logger } from '@/utils/logger';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -132,7 +133,10 @@ export const ComprehensiveAnalyticsDashboard = () => {
 
       setAnalytics(processedAnalytics);
     } catch (error) {
-      console.error('Error loading comprehensive analytics:', error);
+      logger.error('Error loading comprehensive analytics', { 
+        component: 'ComprehensiveAnalyticsDashboard', 
+        action: 'loadAnalytics' 
+      }, error as Error);
     } finally {
       setLoading(false);
     }

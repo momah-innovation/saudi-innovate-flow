@@ -185,7 +185,10 @@ export function IdeaNotificationCenter({ className }: IdeaNotificationCenterProp
         title: 'تم وضع علامة "مقروء" على جميع الإشعارات',
       });
     } catch (error) {
-      console.error('Error marking all as read:', error);
+      logger.error('Error marking all notifications as read', { 
+        component: 'IdeaNotificationCenter', 
+        action: 'markAllAsRead' 
+      }, error as Error);
     }
   };
 
@@ -202,7 +205,11 @@ export function IdeaNotificationCenter({ className }: IdeaNotificationCenterProp
         prev.filter(notification => notification.id !== notificationId)
       );
     } catch (error) {
-      console.error('Error deleting notification:', error);
+      logger.error('Error deleting notification', { 
+        component: 'IdeaNotificationCenter', 
+        action: 'deleteNotification',
+        notificationId 
+      }, error as Error);
     }
   };
 
