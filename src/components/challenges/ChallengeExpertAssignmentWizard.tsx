@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { logger } from '@/utils/error-handler';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -31,7 +32,7 @@ interface Expert {
 }
 
 interface ChallengeExpertAssignmentWizardProps {
-  challenge: any;
+  challenge: { id: string; title_ar: string };
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onAssignmentComplete?: () => void;
@@ -50,6 +51,7 @@ export const ChallengeExpertAssignmentWizard = ({
   const [selectedExperts, setSelectedExperts] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const [assignmentType] = useState('evaluator'); // Default assignment type
 
   useEffect(() => {
     if (open) {
@@ -78,40 +80,33 @@ export const ChallengeExpertAssignmentWizard = ({
 
       setExperts(expertsWithProfiles);
     } catch (error) {
-      console.error('Error loading experts:', error);
+      logger.error('Error loading experts', error);
       setExperts([]);
     }
-  };
-
-  const handleExpertSelection = (expertId: string) => {
-    setSelectedExperts(prev => {
-      const isSelected = prev.includes(expertId);
-      return isSelected ? prev.filter(id => id !== expertId) : [...prev, expertId];
-    });
   };
 
   const handleAssignExperts = async () => {
     if (selectedExperts.length === 0) {
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
+        title: isRTL ? 'تنبيه' : 'Warning',
         description: isRTL ? 'يرجى اختيار خبير واحد على الأقل' : 'Please select at least one expert',
         variant: 'destructive',
       });
       return;
     }
 
-    setLoading(true);
-
     try {
-      const assignments = selectedExperts.map(expertId => {
-        const expert = experts.find(e => e.id === expertId);
-        return {
-          challenge_id: challenge.id,
-          expert_id: expert?.user_id,
-          role_type: 'evaluator',
-          status: 'active'
-        };
-      });
+      setLoading(true);
+
+      // Create assignment records for each selected expert
+      const assignments = selectedExperts.map(expertId => ({
+        challenge_id: challenge.id,
+        expert_id: expertId,
+        role_type: assignmentType,
+        status: 'active',
+        assignment_date: new Date().toISOString(),
+        notes: `Assigned as ${assignmentType} for challenge: ${challenge.title_ar}`
+      }));
 
       const { error } = await supabase
         .from('challenge_experts')
@@ -120,17 +115,17 @@ export const ChallengeExpertAssignmentWizard = ({
       if (error) throw error;
 
       toast({
-        title: isRTL ? 'تم التعيين بنجاح' : 'Assignment Successful',
+        title: isRTL ? 'تم بنجاح' : 'Success',
         description: isRTL ? 
-          `تم تعيين ${selectedExperts.length} خبير للتحدي` : 
-          `Successfully assigned ${selectedExperts.length} expert(s) to the challenge`,
+          `تم تعيين ${selectedExperts.length} خبير بنجاح` : 
+          `Successfully assigned ${selectedExperts.length} expert(s)`,
       });
 
       onAssignmentComplete?.();
       onOpenChange(false);
       setSelectedExperts([]);
     } catch (error) {
-      console.error('Error assigning experts:', error);
+      logger.error('Error assigning experts', error);
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'فشل في تعيين الخبراء' : 'Failed to assign experts',
@@ -139,6 +134,14 @@ export const ChallengeExpertAssignmentWizard = ({
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleExpertSelection = (expertId: string) => {
+    setSelectedExperts(prev => 
+      prev.includes(expertId) 
+        ? prev.filter(id => id !== expertId)
+        : [...prev, expertId]
+    );
   };
 
   const filteredExperts = experts.filter(expert =>
