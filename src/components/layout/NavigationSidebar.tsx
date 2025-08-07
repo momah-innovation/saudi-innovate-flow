@@ -13,7 +13,7 @@ import {
 import { cn } from '@/lib/utils';
 // import { useAuth } from '@/hooks/useAuth';
 // import { useProfile } from '@/hooks/useProfile';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -31,7 +31,7 @@ interface NavigationSidebarProps {
 
 export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps) {
   const location = useLocation();
-  const { isRTL } = useTranslation();
+  const { isRTL } = useUnifiedTranslation();
   // const { user } = useAuth();
   // const { profile: userProfile } = useProfile();
   const userProfile = null; // Simplified for now

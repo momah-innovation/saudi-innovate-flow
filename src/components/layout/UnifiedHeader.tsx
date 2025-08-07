@@ -17,7 +17,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useTheme } from '@/components/ui/theme-provider';
 import { useSystemLists } from '@/hooks/useSystemLists';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { getInitials, useSystemSettings } from '@/contexts/SystemSettingsContext';
 import { cn } from '@/lib/utils';
 
@@ -99,7 +99,7 @@ export function UnifiedHeader({
   const { isRTL, language, setLanguage, toggleDirection } = useDirection();
   const { theme, setTheme } = useTheme();
   const { supportedLanguages } = useSystemLists();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { uiInitialsMaxLength } = useSystemSettings();
 
   // Role-based access check

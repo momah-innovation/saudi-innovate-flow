@@ -16,7 +16,7 @@ import {
   User, Mail, Phone, MapPin, Globe, Calendar, Shield, 
   Bell, Lock, Camera, Save, Edit2, CheckCircle
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 
 interface ProfileSettings {
   emailNotifications: boolean;
@@ -30,7 +30,7 @@ interface ProfileSettings {
 export const ProfileManager: React.FC = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
-  const { t, language } = useTranslation();
+  const { t, language } = useUnifiedTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [avatarUploading, setAvatarUploading] = useState(false);

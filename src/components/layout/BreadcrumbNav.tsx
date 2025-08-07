@@ -7,7 +7,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Home } from "lucide-react";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 
 interface BreadcrumbNavProps {
@@ -15,7 +15,7 @@ interface BreadcrumbNavProps {
 }
 
 export const BreadcrumbNav = ({ activeTab }: BreadcrumbNavProps) => {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { direction } = useDirection();
   
   const getPageTitle = (tab: string) => {

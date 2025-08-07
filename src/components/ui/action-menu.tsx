@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Edit, Eye, Trash2, Copy, Download, Share } from "lucide-react";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
 
 export interface ActionItem {
   id: string;
@@ -55,7 +55,7 @@ export const getViewEditDeleteActions = (
   onEdit: () => void,
   onDelete: () => void
 ): ActionItem[] => {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   
   return [
     {
@@ -89,7 +89,7 @@ export const getExtendedActions = (
   onDownload?: () => void,
   onShare?: () => void
 ): ActionItem[] => {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   
   return [
     {

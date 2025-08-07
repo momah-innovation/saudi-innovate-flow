@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { BreadcrumbItem } from '@/types/navigation';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { LayoutSelector } from '@/components/ui/layout-selector';
@@ -69,7 +69,7 @@ export function PageLayout({
   spacing = 'md'
 }: PageLayoutProps) {
   const { isRTL } = useDirection();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   
   const maxWidthClasses = {
     sm: 'max-w-3xl',

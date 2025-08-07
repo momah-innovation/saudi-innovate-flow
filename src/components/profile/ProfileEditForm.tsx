@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { Loader2, Save, X } from 'lucide-react';
 
 interface ProfileEditFormProps {
@@ -29,7 +29,7 @@ interface ProfileFormData {
 
 export function ProfileEditForm({ onCancel, onSave }: ProfileEditFormProps) {
   const { userProfile, user, refreshProfile } = useAuth();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
