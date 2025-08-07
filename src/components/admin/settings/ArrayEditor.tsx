@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Trash2, GripVertical, Save, Undo } from "lucide-react";
 import { useDirection } from "@/components/ui/direction-provider";
-import { useSystemTranslations } from "@/hooks/useSystemTranslations";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 interface ArrayEditorProps {
   value: string[] | any[];
@@ -26,7 +26,7 @@ export const ArrayEditor: React.FC<ArrayEditorProps> = ({
   itemType = 'string',
   isRTL = false 
 }) => {
-  const { getTranslation } = useSystemTranslations();
+  const { t: getTranslation } = useUnifiedTranslation();
   const [items, setItems] = useState<any[]>(Array.isArray(value) ? value : []);
   const [hasChanges, setHasChanges] = useState(false);
   const [originalItems, setOriginalItems] = useState<any[]>(Array.isArray(value) ? value : []);

@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, Trash2, Save, Undo, Code, Eye } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useSystemTranslations } from "@/hooks/useSystemTranslations";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 interface ObjectEditorProps {
   value: Record<string, any>;
@@ -25,7 +25,7 @@ export const ObjectEditor: React.FC<ObjectEditorProps> = ({
   description,
   isRTL = false 
 }) => {
-  const { getTranslation } = useSystemTranslations();
+  const { t: getTranslation } = useUnifiedTranslation();
   const [objectData, setObjectData] = useState<Record<string, any>>(
     typeof value === 'object' && value !== null ? value : {}
   );
