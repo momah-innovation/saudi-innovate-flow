@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 
 // Import fallback static translations
 import en from './locales/en.json';
@@ -23,7 +24,7 @@ const EnhancedDatabaseBackend = {
   isLoading: new Set<string>(),
   
   init() {
-    console.log('Enhanced database backend initialized');
+    logger.info('Enhanced database backend initialized', { component: 'EnhancedDatabaseBackend', action: 'init' });
     this.preloadTranslations();
   },
 
@@ -32,7 +33,7 @@ const EnhancedDatabaseBackend = {
       await this.loadFromDatabase('en');
       await this.loadFromDatabase('ar');
     } catch (error) {
-      console.warn('Failed to preload translations:', error);
+      logger.warn('Failed to preload translations', { component: 'EnhancedDatabaseBackend', action: 'preloadTranslations' }, error as Error);
     }
   },
 
@@ -54,14 +55,14 @@ const EnhancedDatabaseBackend = {
     this.isLoading.add(language);
 
     try {
-      console.log(`Loading ${language} translations from database...`);
+      logger.info(`Loading ${language} translations from database`, { component: 'EnhancedDatabaseBackend', action: 'loadFromDatabase', language });
       
       const { data: translations, error } = await supabase
         .from('system_translations')
         .select('translation_key, text_en, text_ar');
 
       if (error) {
-        console.error(`Database error for ${language}:`, error);
+        logger.error(`Database error for ${language}`, { component: 'EnhancedDatabaseBackend', action: 'loadFromDatabase', language }, error as Error);
         throw error;
       }
 
@@ -80,13 +81,14 @@ const EnhancedDatabaseBackend = {
         
         for (let i = 0; i < keyParts.length - 1; i++) {
           const part = keyParts[i];
-          if (!current[part]) {
+          if (!current[part] || typeof current[part] !== 'object') {
             current[part] = {};
           }
           current = current[part];
         }
         
-        current[keyParts[keyParts.length - 1]] = text;
+        const finalKey = keyParts[keyParts.length - 1];
+        current[finalKey] = text;
       });
 
       // Merge with static translations (database takes precedence)
@@ -97,11 +99,11 @@ const EnhancedDatabaseBackend = {
       this.cache.set(cacheKey, mergedTranslations);
       this.cacheExpiry.set(cacheKey, Date.now() + this.cacheDuration);
       
-      console.log(`Loaded ${translations?.length || 0} ${language} translations from database`);
+      logger.info(`Loaded ${translations?.length || 0} ${language} translations from database`, { component: 'EnhancedDatabaseBackend', action: 'loadFromDatabase', language });
       return mergedTranslations;
 
     } catch (error) {
-      console.error(`Failed to load ${language} translations from database:`, error);
+      logger.error(`Failed to load ${language} translations from database`, { component: 'EnhancedDatabaseBackend', action: 'loadFromDatabase', language }, error as Error);
       
       // Return static fallback
       const fallback = fallbackResources[language as keyof typeof fallbackResources];
@@ -131,7 +133,7 @@ const EnhancedDatabaseBackend = {
       const translations = await this.loadFromDatabase(language);
       callback(null, translations);
     } catch (error) {
-      console.error(`Failed to read ${language} translations:`, error);
+      logger.error(`Failed to read ${language} translations`, { component: 'EnhancedDatabaseBackend', action: 'read', language }, error as Error);
       // Fallback to static translations
       const fallback = fallbackResources[language as keyof typeof fallbackResources];
       callback(null, fallback?.translation || {});
@@ -150,7 +152,7 @@ const EnhancedDatabaseBackend = {
   invalidateCache() {
     this.cache.clear();
     this.cacheExpiry.clear();
-    console.log('Translation cache invalidated');
+    logger.info('Translation cache invalidated', { component: 'EnhancedDatabaseBackend', action: 'invalidateCache' });
   }
 };
 
@@ -192,7 +194,7 @@ i18n
     // Additional configuration for reliability
     saveMissing: false,
     missingKeyHandler: (lng: string[], ns: string, key: string) => {
-      console.warn(`Missing translation key: ${key} for language: ${lng[0]}`);
+      logger.warn(`Missing translation key: ${key} for language: ${lng[0]}`, { component: 'EnhancedDatabaseBackend', action: 'missingKeyHandler', key, language: lng[0] });
     }
   });
 

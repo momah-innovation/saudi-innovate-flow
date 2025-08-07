@@ -13,10 +13,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
+import { logger } from '@/utils/logger';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from "@/hooks/useSystemLists";
-import type { Challenge, Department, Deputy, Sector, Domain, SubDomain, Service, Partner, Expert, FocusQuestion } from "@/types";
+import type { Challenge } from "@/types";
 
 interface ChallengeFormData {
   id?: string;
@@ -52,16 +53,24 @@ interface ChallengeWizardV2Props {
   challenge?: ChallengeFormData | null;
 }
 
+interface DatabaseRecord {
+  id: string;
+  name?: string;
+  name_ar?: string;
+  name_en?: string;
+  [key: string]: any;
+}
+
 interface SystemLists {
-  departments: any[];
-  deputies: any[];
-  sectors: any[];
-  domains: any[];
-  subDomains: any[];
-  services: any[];
-  partners: any[];
-  experts: any[];
-  focusQuestions: any[];
+  departments: DatabaseRecord[];
+  deputies: DatabaseRecord[];
+  sectors: DatabaseRecord[];
+  domains: DatabaseRecord[];
+  subDomains: DatabaseRecord[];
+  services: DatabaseRecord[];
+  partners: DatabaseRecord[];
+  experts: DatabaseRecord[];
+  focusQuestions: DatabaseRecord[];
 }
 
 export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: ChallengeWizardV2Props) {
@@ -165,7 +174,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
         focusQuestions: focusQuestionsRes.data || []
       });
     } catch (error) {
-      console.error('خطأ في تحميل القوائم:', error);
+      logger.error('خطأ في تحميل القوائم', { component: 'ChallengeWizardV2', action: 'loadSystemLists' }, error as Error);
     }
   };
 
@@ -309,7 +318,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
       onSuccess();
       onClose();
     } catch (error) {
-      console.error('خطأ في حفظ التحدي:', error);
+      logger.error('خطأ في حفظ التحدي', { component: 'ChallengeWizardV2', action: 'submitForm' }, error as Error);
       toast({
         title: 'خطأ',
         description: 'فشل في حفظ التحدي. يرجى المحاولة مرة أخرى.',
@@ -683,7 +692,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                         }}
                       />
                       <Label htmlFor={`expert-${expert.id}`} className="text-sm">
-                        {expert.expertise_areas?.join(', ') || 'خبير'}
+                        {expert.expertise_areas?.join(', ') || expert.full_name || 'خبير'}
                       </Label>
                     </div>
                   ))}

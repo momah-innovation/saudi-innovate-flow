@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import { Trash2, Plus, Download, AlertTriangle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { logger } from '@/utils/logger';
+import type { TranslationPair, TranslationMergeResult } from '@/types/translation';
 
 interface SystemTranslation {
   id: string;
@@ -42,7 +44,7 @@ const TranslationManagement = () => {
           existingTranslations = staticData || {};
         }
       } catch (err) {
-        console.warn(`Could not load existing ${language}.json, will create from database only`);
+        logger.warn(`Could not load existing ${language}.json, will create from database only`, { component: 'TranslationManagement', action: 'downloadTranslations' });
       }
 
       // 3. Convert database translations to nested structure
@@ -64,12 +66,12 @@ const TranslationManagement = () => {
       });
 
       // 4. Deep merge existing translations with database translations (database takes precedence)
-      const mergeTranslations = (existing: any, db: any): any => {
+      const mergeTranslations = (existing: TranslationMergeResult, db: TranslationMergeResult): TranslationMergeResult => {
         const result = { ...existing };
         
         for (const key in db) {
           if (typeof db[key] === 'object' && db[key] !== null && !Array.isArray(db[key])) {
-            result[key] = mergeTranslations(existing[key] || {}, db[key]);
+            result[key] = mergeTranslations((existing[key] as TranslationMergeResult) || {}, db[key] as TranslationMergeResult);
           } else {
             result[key] = db[key];
           }
@@ -101,7 +103,7 @@ const TranslationManagement = () => {
         description: `${language.toUpperCase()} translations downloaded successfully (${staticKeys} static + ${dbCount} database keys)`,
       });
     } catch (error) {
-      console.error('Download error:', error);
+      logger.error('Download error occurred', { component: 'TranslationManagement', action: 'downloadTranslations', language }, error as Error);
       toast({
         title: "Error",
         description: `Failed to download ${language.toUpperCase()} translations`,
@@ -143,7 +145,7 @@ const TranslationManagement = () => {
       const uniqueCategories = [...new Set((data || []).map(t => t.category))];
       setCategories(uniqueCategories);
     } catch (error) {
-      console.error('Error fetching translations:', error);
+      logger.error('Error fetching translations', { component: 'TranslationManagement', action: 'fetchTranslations' }, error as Error);
       toast({
         title: 'Error',
         description: "Failed to load translations from database",
@@ -185,7 +187,7 @@ const TranslationManagement = () => {
       setNewTranslation({ key: '', category: '', ar: '', en: '' });
       fetchTranslations();
     } catch (error) {
-      console.error('Error adding translation:', error);
+      logger.error('Error adding translation', { component: 'TranslationManagement', action: 'addTranslation', key: newTranslation.key }, error as Error);
       toast({
         title: "Error",
         description: "Failed to add translation",
@@ -205,7 +207,7 @@ const TranslationManagement = () => {
     }));
   }, [translations]);
 
-  const filteredPairs = translationPairs.filter((pair: any) => {
+  const filteredPairs = translationPairs.filter((pair: TranslationPair) => {
     const matchesSearch = searchTerm === '' || 
       pair.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
       pair.ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -391,7 +393,7 @@ const TranslationManagement = () => {
               </div>
               <div className="text-center p-4 bg-muted rounded-lg">
                 <div className="text-2xl font-bold">
-                  {filteredPairs.filter((p: any) => p.ar && p.en).length}
+                  {filteredPairs.filter((p: TranslationPair) => p.ar && p.en).length}
                 </div>
                 <p className="text-sm text-muted-foreground">Complete</p>
               </div>
@@ -399,7 +401,7 @@ const TranslationManagement = () => {
 
             {/* Translation List */}
             <div className="space-y-2 max-h-96 overflow-y-auto">
-              {filteredPairs.map((pair: any, index) => (
+              {filteredPairs.map((pair: TranslationPair, index) => (
                 <div key={`${pair.category}:${pair.key}`} className="border rounded-lg p-3">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
