@@ -169,8 +169,8 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
         domains: domainsRes.data || [],
         subDomains: subDomainsRes.data || [],
         services: servicesRes.data || [],
-        partners: partnersRes.data || [],
-        experts: expertsRes.data || [],
+        partners: (partnersRes.data || []) as any[],
+        experts: (expertsRes.data || []) as any[],
         focusQuestions: focusQuestionsRes.data || []
       });
     } catch (error) {
@@ -692,7 +692,7 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
                         }}
                       />
                       <Label htmlFor={`expert-${expert.id}`} className="text-sm">
-                        {expert.expertise_areas?.join(', ') || expert.full_name || 'خبير'}
+                        {Array.isArray(expert.expertise_areas) ? expert.expertise_areas.join(', ') : expert.full_name || 'خبير'}
                       </Label>
                     </div>
                   ))}

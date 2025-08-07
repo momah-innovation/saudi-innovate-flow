@@ -95,6 +95,9 @@ export function FocusQuestionAnalytics() {
     question_type?: string;
     created_at?: string;
     complexity_level?: string;
+    question_text_ar?: string;
+    ideas?: any[];
+    event_focus_question_links?: any[];
   }
   
   const processAnalyticsData = (questions: QuestionData[]): AnalyticsData => {

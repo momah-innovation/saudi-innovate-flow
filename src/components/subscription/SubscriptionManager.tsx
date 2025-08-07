@@ -21,6 +21,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useSubscription } from '@/hooks/useSubscription';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { logger } from '@/utils/logger';
 
 export const SubscriptionManager = () => {
   const { isRTL } = useDirection();
@@ -42,7 +43,7 @@ export const SubscriptionManager = () => {
         window.open(checkoutUrl, '_blank');
       }
     } catch (error) {
-      console.error('Error creating checkout:', error);
+      logger.error('Error creating checkout', { component: 'SubscriptionManager', action: 'createCheckout' }, error as Error);
     } finally {
       setProcessingPlan(null);
     }

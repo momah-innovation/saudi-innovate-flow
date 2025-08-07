@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
+import { logger } from '@/utils/logger';
 
 interface TeamWorkspaceAnalyticsData {
   totalTeams: number;
@@ -141,7 +142,7 @@ export const TeamWorkspaceAnalyticsDashboard = ({ className }: TeamWorkspaceAnal
 
       setData(analyticsData);
     } catch (error) {
-      console.error('Error loading team workspace analytics:', error);
+      logger.error('Error loading team workspace analytics', { component: 'TeamWorkspaceAnalyticsDashboard', action: 'fetchTeamAnalytics' }, error as Error);
     } finally {
       setLoading(false);
     }

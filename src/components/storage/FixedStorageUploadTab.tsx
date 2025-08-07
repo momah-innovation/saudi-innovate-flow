@@ -9,6 +9,7 @@ import { RTLAware } from '@/components/ui/rtl-aware';
 import { Upload, Settings } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface FixedStorageUploadTabProps {
   onFilesUploaded: () => void;
@@ -58,7 +59,7 @@ export function FixedStorageUploadTab({ onFilesUploaded }: FixedStorageUploadTab
         description: t('storage.files_uploaded_successfully', { count: result.files?.length || 0 })
       });
     } else {
-      console.error('Upload errors:', result.errors);
+      logger.error('Upload errors occurred', { component: 'FixedStorageUploadTab', action: 'handleFileUpload' });
       result.errors?.forEach(error => {
         toast({
           title: t('storage.upload_failed'),

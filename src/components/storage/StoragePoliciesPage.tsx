@@ -10,7 +10,8 @@ import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
 import { useAuth } from '@/contexts/AuthContext'
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { useRTLAwareClasses } from '@/components/ui/rtl-aware'
+import { useRTLAwareClasses } from '@/components/ui/rtl-aware';
+import { logger } from '@/utils/logger';
 import { 
   Shield, 
   Users, 
@@ -76,7 +77,7 @@ export const StoragePoliciesPage: React.FC = () => {
         });
       
       if (error) {
-        console.error('Admin check error:', error);
+        logger.error('Admin check error', { component: 'StoragePoliciesPage', action: 'checkAdminAccess' }, error as Error);
         // Try super_admin if admin check fails
         const { data: superAdminData, error: superAdminError } = await supabase
           .rpc('has_role', { 
@@ -89,7 +90,7 @@ export const StoragePoliciesPage: React.FC = () => {
         setIsAdmin(!!data);
       }
     } catch (error) {
-      console.error('Admin status check failed:', error);
+      logger.error('Admin status check failed', { component: 'StoragePoliciesPage', action: 'fetchUserRole' }, error as Error);
       setIsAdmin(false);
     }
   }, [user?.id]);
@@ -111,7 +112,7 @@ export const StoragePoliciesPage: React.FC = () => {
         const { data: directBuckets, error: storageError } = await supabase.storage.listBuckets();
         
         if (storageError || !directBuckets) {
-          console.error('Both bucket loading methods failed:', { rpcError, storageError });
+          logger.error('Both bucket loading methods failed', { component: 'StoragePoliciesPage', action: 'loadStorageBuckets' });
           toast({
             title: 'Error Loading Buckets',
             description: 'Failed to load storage buckets. Please check your permissions.',
@@ -212,7 +213,7 @@ export const StoragePoliciesPage: React.FC = () => {
         criticalIssues: unprotectedCount
       })
     } catch (error) {
-      console.error('Error loading storage policies:', error)
+      logger.error('Error loading storage policies', { component: 'StoragePoliciesPage', action: 'loadStoragePolicies' }, error as Error);
       toast({
         title: t('error_loading_policies'),
         description: t('failed_to_fetch_storage_policy'),

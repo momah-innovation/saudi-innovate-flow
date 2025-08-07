@@ -17,6 +17,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { useBookmarks } from '@/hooks/useBookmarks';
+import { logger } from '@/utils/logger';
 
 interface SavedAnalyticsData {
   totalBookmarks: number;
@@ -99,7 +100,7 @@ export const SavedItemsAnalyticsDashboard = ({ className }: SavedAnalyticsDashbo
 
       setData(analyticsData);
     } catch (error) {
-      console.error('Error loading saved analytics data:', error);
+      logger.error('Error loading saved analytics data', { component: 'SavedItemsAnalyticsDashboard', action: 'fetchSavedAnalyticsData' }, error as Error);
     } finally {
       setLoading(false);
     }

@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { Globe, MapPin, TrendingUp } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { logger } from '@/utils/logger';
 
 
 interface GeographicAnalyticsProps {
@@ -57,7 +58,7 @@ export const GeographicAnalytics = ({ opportunityId }: GeographicAnalyticsProps)
         setTotalViews(0);
       }
     } catch (error) {
-      console.error('Error loading geographic data:', error);
+      logger.error('Error loading geographic data', { component: 'GeographicAnalytics', action: 'fetchGeographicData' }, error as Error);
       // Set empty state on error
       setGeoData([]);
       setTotalViews(0);

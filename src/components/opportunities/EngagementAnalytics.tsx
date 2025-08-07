@@ -14,7 +14,8 @@ import {
   Activity,
   MousePointer
 } from 'lucide-react';
-import { ChartPlaceholder } from '@/components/common/ChartPlaceholder'
+import { ChartPlaceholder } from '@/components/common/ChartPlaceholder';
+import { logger } from '@/utils/logger';
 
 interface EngagementAnalyticsProps {
   opportunityId: string;
@@ -110,7 +111,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
         hourlyEngagement
       });
     } catch (error) {
-      console.error('Error loading engagement data:', error);
+      logger.error('Error loading engagement data', { component: 'EngagementAnalytics', action: 'fetchEngagementData' }, error as Error);
     } finally {
       setLoading(false);
     }

@@ -29,6 +29,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface BulkFileActionsProps {
   selectedFiles: any[];
@@ -229,7 +230,7 @@ export function BulkFileActions({
       setAssigneeId('');
       setAssignmentNotes('');
     } catch (error) {
-      console.error('Error assigning files:', error);
+      logger.error('Error assigning files', { component: 'BulkFileActions', action: 'assignFiles' }, error as Error);
       toast({
         title: t('assignment_failed'),
         description: t('failed_to_assign_files'),

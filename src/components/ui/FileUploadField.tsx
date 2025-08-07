@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { logger } from '@/utils/logger';
 
 interface FileUploadFieldProps {
   value?: string[];
@@ -93,7 +94,7 @@ export function FileUploadField({
           .upload(fileName, file);
 
         if (error) {
-          console.error('Upload error:', error);
+          logger.error('Upload error', { component: 'FileUploadField', action: 'uploadFile' }, error as Error);
           toast({
             title: 'خطأ في الرفع',
             description: `فشل في رفع ${file.name}`,
@@ -119,7 +120,7 @@ export function FileUploadField({
       });
 
     } catch (error) {
-      console.error('Upload error:', error);
+      logger.error('Upload error', { component: 'FileUploadField', action: 'handleUpload' }, error as Error);
       toast({
         title: 'خطأ في الرفع',
         description: 'حدث خطأ أثناء رفع الملفات',

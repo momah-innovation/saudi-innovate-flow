@@ -15,6 +15,7 @@ import { AnalyticsExportDialog } from './AnalyticsExportDialog';
 import { OpportunityLivePresence } from './OpportunityLivePresence';
 import { useUserJourneyTracker } from '@/hooks/useUserJourneyTracker';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 import { 
   BarChart3, 
   X,
@@ -155,7 +156,7 @@ export const RedesignedOpportunityAnalyticsDialog = ({
 
       setAnalytics(realAnalytics);
     } catch (error) {
-      console.error('Error loading analytics:', error);
+      logger.error('Error loading analytics', { component: 'RedesignedOpportunityAnalyticsDialog', action: 'fetchOpportunityAnalytics' }, error as Error);
       // Fallback data
       const fallbackAnalytics: AnalyticsData = {
         totalViews: 0,

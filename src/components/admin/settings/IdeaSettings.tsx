@@ -13,12 +13,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
 
 interface SettingsData {
-  [key: string]: string | number | boolean | null | undefined;
+  [key: string]: any;
 }
 
 interface IdeaSettingsProps {
   settings: SettingsData;
-  onSettingChange: (key: string, value: string | number | boolean | null) => void;
+  onSettingChange: (key: string, value: any) => void;
 }
 
 export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {

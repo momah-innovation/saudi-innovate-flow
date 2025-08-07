@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from './button';
 import { Avatar, AvatarFallback, AvatarImage } from './avatar';
 import { toast } from 'sonner';
+import { logger } from '@/utils/logger';
 
 interface AvatarUploadProps {
   currentAvatarUrl?: string | null;
@@ -66,7 +67,7 @@ export function AvatarUpload({
       onAvatarUpdate?.(publicUrl);
       toast.success('Avatar updated successfully!');
     } catch (error) {
-      console.error('Error uploading avatar:', error);
+      logger.error('Error uploading avatar', { component: 'AvatarUpload', action: 'uploadAvatar' }, error as Error);
       toast.error('Error uploading avatar. Please try again.');
     } finally {
       setUploading(false);
@@ -112,7 +113,7 @@ export function AvatarUpload({
       onAvatarUpdate?.('');
       toast.success('Avatar removed');
     } catch (error) {
-      console.error('Error removing avatar:', error);
+      logger.error('Error removing avatar', { component: 'AvatarUpload', action: 'removeAvatar' }, error as Error);
       toast.error('Error removing avatar');
     } finally {
       setUploading(false);

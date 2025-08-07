@@ -19,6 +19,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/logger';
 
 interface SavedNotification {
   id: string;
@@ -113,7 +114,7 @@ export const SavedNotificationCenter = ({ className }: SavedNotificationCenterPr
       setNotifications(mockNotifications);
       setUnreadCount(mockNotifications.filter(n => !n.isRead).length);
     } catch (error) {
-      console.error('Error loading notifications:', error);
+      logger.error('Error loading notifications', { component: 'SavedNotificationCenter', action: 'fetchNotifications' }, error as Error);
     } finally {
       setLoading(false);
     }

@@ -163,7 +163,7 @@ export const currentSessionProgress = {
     ],
     
     metrics: {
-      consoleLogsFixed: 312,
+      consoleLogsFixed: 337,
       anyTypesFixed: 237,    
       buildErrors: 0,
       healthScore: 100,
@@ -181,8 +181,8 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 31,
-    anyTypesToReplace: 280,
+    consoleLogsToMigrate: 22,
+    anyTypesToReplace: 218,
     estimatedSessionsRemaining: 1
   },
   
