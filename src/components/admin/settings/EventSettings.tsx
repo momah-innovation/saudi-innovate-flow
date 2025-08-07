@@ -9,11 +9,7 @@ import { Plus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
-
-interface EventSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
-}
+import { EventSettingsProps } from "@/types/admin-settings";
 
 export function EventSettings({ settings, onSettingChange }: EventSettingsProps) {
   const { toast } = useToast();

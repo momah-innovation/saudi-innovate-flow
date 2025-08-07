@@ -9,11 +9,7 @@ import { Plus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
-
-interface CampaignSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
-}
+import { CampaignSettingsProps } from "@/types/admin-settings";
 
 export function CampaignSettings({ settings, onSettingChange }: CampaignSettingsProps) {
   const { toast } = useToast();

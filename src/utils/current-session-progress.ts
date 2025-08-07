@@ -125,12 +125,21 @@ export const currentSessionProgress = {
       'src/hooks/useRealTimeEvents.ts - Fixed 4 console logs + enhanced translation',
       'src/hooks/useRealTimeIdeas.ts - Fixed 1 console log + enhanced translation',
       'src/hooks/useStorageQuotas.ts - Fixed 4 console logs + enhanced logging',
-      'src/hooks/useUnifiedTranslation.ts - Fixed 3 console logs + enhanced logging'
+      'src/hooks/useUnifiedTranslation.ts - Fixed 3 console logs + enhanced logging',
+      'src/utils/bundle-analyzer.ts - Fixed 2 console logs + 1 any type',
+      'src/utils/component-optimization.ts - Fixed 2 console logs',
+      'src/utils/downloadOpportunityImages.ts - Fixed 3 console logs',
+      'src/components/admin/settings/AISettings.tsx - Fixed 2 any types',
+      'src/components/admin/settings/AnalyticsSettings.tsx - Fixed 2 any types',
+      'src/components/admin/settings/CampaignSettings.tsx - Fixed 2 any types', 
+      'src/components/admin/settings/ChallengeSettings.tsx - Fixed 2 any types',
+      'src/components/admin/settings/EventSettings.tsx - Fixed 2 any types',
+      'src/components/admin/settings/GeneralSettings.tsx - Fixed 2 any types'
     ],
     
     metrics: {
-      consoleLogsFixed: 264, // 252 + 12 more console logs fixed in hooks
-      anyTypesFixed: 148,    // No new any types, but console logs migrated
+      consoleLogsFixed: 271, // 264 + 7 more console logs fixed
+      anyTypesFixed: 161,    // 148 + 13 more any types fixed
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -147,8 +156,8 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 76, // Down from 88 (12 more console logs migrated in hooks)  
-    anyTypesToReplace: 331,   // Same as before
+    consoleLogsToMigrate: 69, // Down from 76 (7 more console logs migrated)
+    anyTypesToReplace: 318,   // Down from 331 (13 more any types fixed)
     estimatedSessionsRemaining: 1
   },
   

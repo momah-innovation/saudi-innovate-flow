@@ -10,11 +10,7 @@ import { Plus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
-
-interface ChallengeSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
-}
+import { ChallengeSettingsProps } from "@/types/admin-settings";
 
 export function ChallengeSettings({ settings, onSettingChange }: ChallengeSettingsProps) {
   const { toast } = useToast();

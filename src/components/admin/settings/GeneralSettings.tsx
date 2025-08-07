@@ -7,11 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
-
-interface GeneralSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
-}
+import { GeneralSettingsProps } from "@/types/admin-settings";
 
 export function GeneralSettings({ settings, onSettingChange }: GeneralSettingsProps) {
   const { t } = useUnifiedTranslation();

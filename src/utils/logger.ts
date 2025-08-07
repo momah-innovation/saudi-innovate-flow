@@ -59,6 +59,11 @@ export interface LogContext {
   bucketName?: string;
   quotaBytes?: number;
   targetLanguage?: string;
+  usedMB?: number;
+  totalMB?: number;
+  limitMB?: number;
+  changedProps?: string[];
+  propsCount?: number;
 }
 
 export enum LogLevel {

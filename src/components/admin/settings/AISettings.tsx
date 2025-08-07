@@ -11,11 +11,7 @@ import { Plus, X, Bot } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
-
-interface AISettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
-}
+import { AISettingsProps } from "@/types/admin-settings";
 
 export function AISettings({ settings, onSettingChange }: AISettingsProps) {
   const { toast } = useToast();

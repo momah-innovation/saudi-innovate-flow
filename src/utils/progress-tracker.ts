@@ -197,4 +197,24 @@ progressTracker.markComponentCompleted('src/pages/EvaluationsPage.tsx', 2, 0);
 progressTracker.markComponentCompleted('src/pages/EventsBrowse.tsx', 3, 0);
 progressTracker.markComponentCompleted('src/pages/SavedItems.tsx', 1, 0);
 progressTracker.markComponentCompleted('src/pages/TeamWorkspace.tsx', 2, 0);
+
+// Mark latest utility and admin settings fixes
+progressTracker.initializeComponent('src/utils/bundle-analyzer.ts', 2, 1);
+progressTracker.initializeComponent('src/utils/component-optimization.ts', 2, 0);
+progressTracker.initializeComponent('src/utils/downloadOpportunityImages.ts', 3, 0);
+progressTracker.initializeComponent('src/components/admin/settings/AISettings.tsx', 0, 2);
+progressTracker.initializeComponent('src/components/admin/settings/AnalyticsSettings.tsx', 0, 2);
+progressTracker.initializeComponent('src/components/admin/settings/CampaignSettings.tsx', 0, 2);
+progressTracker.initializeComponent('src/components/admin/settings/ChallengeSettings.tsx', 0, 2);
+progressTracker.initializeComponent('src/components/admin/settings/EventSettings.tsx', 0, 2);
+progressTracker.initializeComponent('src/components/admin/settings/GeneralSettings.tsx', 0, 2);
+progressTracker.markComponentCompleted('src/utils/bundle-analyzer.ts', 2, 1);
+progressTracker.markComponentCompleted('src/utils/component-optimization.ts', 2, 0);
+progressTracker.markComponentCompleted('src/utils/downloadOpportunityImages.ts', 3, 0);
+progressTracker.markComponentCompleted('src/components/admin/settings/AISettings.tsx', 0, 2);
+progressTracker.markComponentCompleted('src/components/admin/settings/AnalyticsSettings.tsx', 0, 2);
+progressTracker.markComponentCompleted('src/components/admin/settings/CampaignSettings.tsx', 0, 2);
+progressTracker.markComponentCompleted('src/components/admin/settings/ChallengeSettings.tsx', 0, 2);
+progressTracker.markComponentCompleted('src/components/admin/settings/EventSettings.tsx', 0, 2);
+progressTracker.markComponentCompleted('src/components/admin/settings/GeneralSettings.tsx', 0, 2);
 progressTracker.logProgress();

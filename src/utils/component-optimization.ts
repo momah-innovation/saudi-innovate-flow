@@ -5,6 +5,7 @@
 
 import React, { memo, forwardRef, ComponentType, PropsWithChildren } from 'react';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { logger } from './logger';
 
 /**
  * Enhanced memo with custom comparison and debug info
@@ -20,7 +21,11 @@ export function optimizedMemo<T extends ComponentType<any>>(
         key => prevProps[key] !== nextProps[key]
       );
       if (changedProps.length > 0) {
-        console.log(`${debugName} props changed:`, changedProps);
+        logger.debug('Component props changed', { 
+          component: debugName, 
+          changedProps,
+          propsCount: changedProps.length 
+        });
       }
     }
     
@@ -47,7 +52,7 @@ export function withPerformanceMonitoring<P extends object>(
       return () => {
         const end = performance.now();
         if (process.env.NODE_ENV === 'development') {
-          console.log(`${name} lifecycle time: ${end - start}ms`);
+          logger.performance('Component lifecycle', end - start, { component: name });
         }
       };
     }, []);

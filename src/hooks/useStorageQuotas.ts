@@ -73,7 +73,7 @@ export const useStorageQuotas = () => {
         throw error
       }
       
-      logger.info('Storage quota set successfully', { bucketName, quotaBytes, data });
+      logger.info('Storage quota set successfully', { bucketName, quotaBytes });
       await fetchQuotas()
       return { success: true, data }
     } catch (err) {
@@ -145,7 +145,7 @@ export const useStorageQuotas = () => {
         throw error
       }
       
-      logger.info('Auto setup completed successfully', { data });
+      logger.info('Auto setup completed successfully', { operation: 'autoSetupQuotas' });
       await fetchQuotas()
       return { success: true, data }
     } catch (err) {

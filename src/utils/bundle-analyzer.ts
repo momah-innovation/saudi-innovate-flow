@@ -4,6 +4,7 @@
  */
 
 import { heavyImportOptimizations, bundleOptimizations } from './performance-optimization';
+import { logger } from './logger';
 
 export interface BundleAnalysisResult {
   totalSize: number;
@@ -100,7 +101,11 @@ export const createBundleMonitor = () => {
         const entries = list.getEntries();
         entries.forEach((entry) => {
           if (entry.name.includes('.js') || entry.name.includes('.css')) {
-            console.log(`Loaded: ${entry.name} (${entry.duration}ms)`);
+            logger.debug('Bundle resource loaded', { 
+              component: 'BundleAnalyzer', 
+              fileName: entry.name, 
+              duration: entry.duration 
+            });
           }
         });
       });
@@ -122,10 +127,12 @@ export const createBundleMonitor = () => {
 export const trackMemoryUsage = () => {
   if (process.env.NODE_ENV === 'development' && 'memory' in performance) {
     const memInfo = (performance as any).memory;
-    console.log('Memory Usage:', {
-      used: `${Math.round(memInfo.usedJSHeapSize / 1024 / 1024)} MB`,
-      total: `${Math.round(memInfo.totalJSHeapSize / 1024 / 1024)} MB`,
-      limit: `${Math.round(memInfo.jsHeapSizeLimit / 1024 / 1024)} MB`
+    logger.debug('Memory usage tracked', {
+      component: 'BundleAnalyzer',
+      action: 'trackMemoryUsage',
+      usedMB: Math.round(memInfo.usedJSHeapSize / 1024 / 1024),
+      totalMB: Math.round(memInfo.totalJSHeapSize / 1024 / 1024),
+      limitMB: Math.round(memInfo.jsHeapSizeLimit / 1024 / 1024)
     });
   }
 };

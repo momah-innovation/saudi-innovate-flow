@@ -10,11 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 import { supabase } from "@/integrations/supabase/client";
-
-interface AnalyticsSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
-}
+import { AnalyticsSettingsProps } from "@/types/admin-settings";
 
 export function AnalyticsSettings({ settings, onSettingChange }: AnalyticsSettingsProps) {
   const { toast } = useToast();
