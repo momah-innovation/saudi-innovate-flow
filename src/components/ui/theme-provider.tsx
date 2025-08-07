@@ -1,4 +1,5 @@
 import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
+import { logger } from '@/utils/logger';
 
 type ThemeVariant = 'default' | 'modern' | 'minimal' | 'vibrant';
 type ColorScheme = 'light' | 'dark' | 'auto';
@@ -38,7 +39,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         return { ...defaultTheme, ...JSON.parse(savedTheme) };
       }
     } catch (error) {
-      console.error('Error loading saved theme:', error);
+      logger.error('Error loading saved theme', { component: 'ThemeProvider', action: 'loadTheme' }, error as Error);
     }
     return defaultTheme;
   });

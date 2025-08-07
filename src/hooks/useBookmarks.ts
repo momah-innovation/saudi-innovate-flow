@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/logger';
 
 export type BookmarkType = 'challenge' | 'event' | 'idea' | 'focus_question' | 'campaign' | 'sector' | 'stakeholder' | 'expert' | 'partner' | 'opportunity';
 
@@ -19,17 +20,17 @@ interface Collection {
 }
 
 export function useBookmarks() {
-  const [challengeBookmarks, setChallengeBookmarks] = useState<any[]>([]);
-  const [eventBookmarks, setEventBookmarks] = useState<any[]>([]);
-  const [ideaBookmarks, setIdeaBookmarks] = useState<any[]>([]);
-  const [focusQuestionBookmarks, setFocusQuestionBookmarks] = useState<any[]>([]);
-  const [campaignBookmarks, setCampaignBookmarks] = useState<any[]>([]);
-  const [sectorBookmarks, setSectorBookmarks] = useState<any[]>([]);
-  const [stakeholderBookmarks, setStakeholderBookmarks] = useState<any[]>([]);
-  const [expertBookmarks, setExpertBookmarks] = useState<any[]>([]);
-  const [partnerBookmarks, setPartnerBookmarks] = useState<any[]>([]);
-  const [opportunityBookmarks, setOpportunityBookmarks] = useState<any[]>([]);
-  const [publicTeams, setPublicTeams] = useState<any[]>([]);
+  const [challengeBookmarks, setChallengeBookmarks] = useState<unknown[]>([]);
+  const [eventBookmarks, setEventBookmarks] = useState<unknown[]>([]);
+  const [ideaBookmarks, setIdeaBookmarks] = useState<unknown[]>([]);
+  const [focusQuestionBookmarks, setFocusQuestionBookmarks] = useState<unknown[]>([]);
+  const [campaignBookmarks, setCampaignBookmarks] = useState<unknown[]>([]);
+  const [sectorBookmarks, setSectorBookmarks] = useState<unknown[]>([]);
+  const [stakeholderBookmarks, setStakeholderBookmarks] = useState<unknown[]>([]);
+  const [expertBookmarks, setExpertBookmarks] = useState<unknown[]>([]);
+  const [partnerBookmarks, setPartnerBookmarks] = useState<unknown[]>([]);
+  const [opportunityBookmarks, setOpportunityBookmarks] = useState<unknown[]>([]);
+  const [publicTeams, setPublicTeams] = useState<unknown[]>([]);
   const [collections, setCollections] = useState<Collection[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();

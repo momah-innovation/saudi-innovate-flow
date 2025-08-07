@@ -6,6 +6,7 @@ import { Heart, Bookmark, Share2, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useDirection } from '@/components/ui/direction-provider';
+import { logger } from '@/utils/logger';
 
 interface InteractionButtonsProps {
   itemId: string;
@@ -72,8 +73,8 @@ export const InteractionButtons = ({
           setBookmarked(!!bookmark);
         }
         
-      } catch (error) {
-        console.error('Error checking interactions:', error);
+        } catch (error) {
+        logger.error('Error checking interactions', { component: 'InteractionButtons', action: 'checkInteractions', itemId, itemType }, error as Error);
       }
     };
 
@@ -130,7 +131,7 @@ export const InteractionButtons = ({
         description: `${title}`,
       });
     } catch (error) {
-      console.error('Error liking:', error);
+      logger.error('Error liking', { component: 'InteractionButtons', action: 'handleLike', itemId, itemType }, error as Error);
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'فشل في العملية' : 'Failed to process action',
@@ -188,7 +189,7 @@ export const InteractionButtons = ({
         });
       }
     } catch (error) {
-      console.error('Error bookmarking:', error);
+      logger.error('Error bookmarking', { component: 'InteractionButtons', action: 'handleBookmark', itemId, itemType }, error as Error);
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'فشل في الحفظ' : 'Failed to bookmark',

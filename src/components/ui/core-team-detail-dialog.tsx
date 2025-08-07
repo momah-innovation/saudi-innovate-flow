@@ -23,6 +23,7 @@ import {
 import { CoreTeamMemberData } from './core-team-card';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/logger';
 
 interface CoreTeamDetailDialogProps {
   open: boolean;
@@ -32,14 +33,30 @@ interface CoreTeamDetailDialogProps {
   children?: ReactNode;
 }
 
+interface AssignmentData {
+  title: string;
+  description?: string;
+  status: string;
+  created_at: string;
+}
+
+interface ActivityData {
+  description: string;
+  created_at: string;
+}
+
+interface ItemData {
+  title: string;
+}
+
 interface RelatedData {
-  campaigns: any[];
-  challenges: any[];
-  events: any[];
-  assignments: any[];
-  activities: any[];
-  stakeholders: any[];
-  partners: any[];
+  campaigns: ItemData[];
+  challenges: ItemData[];
+  events: ItemData[];
+  assignments: AssignmentData[];
+  activities: ActivityData[];
+  stakeholders: unknown[];
+  partners: unknown[];
 }
 
 export function CoreTeamDetailDialog({
@@ -102,7 +119,7 @@ export function CoreTeamDetailDialog({
       });
 
     } catch (error) {
-      console.error('Error fetching related data:', error);
+      logger.error('Error fetching related data', { component: 'CoreTeamDetailDialog', action: 'fetchRelatedData', itemId: data.id }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في تحميل البيانات المرتبطة.",

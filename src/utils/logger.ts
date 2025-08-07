@@ -70,6 +70,9 @@ export interface LogContext {
   value?: any;
   taskId?: string;
   budget?: number;
+  itemId?: string;
+  itemType?: string;
+  fontKey?: string;
 }
 
 export enum LogLevel {

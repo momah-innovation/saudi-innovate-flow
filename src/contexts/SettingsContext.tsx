@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 
 export interface AllSystemSettings {
   // General Settings - snake_case to match database
@@ -447,7 +448,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
         error: null 
       }));
     } catch (error) {
-      console.error('Error loading settings:', error);
+      logger.error('Error loading settings', { component: 'SettingsProvider', action: 'fetchSettings' }, error as Error);
       setSettings(prev => ({
         ...prev,
         loading: false,

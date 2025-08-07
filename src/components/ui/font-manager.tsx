@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { logger } from '@/utils/logger';
 
 export interface FontConfig {
   family: string;
@@ -69,7 +70,7 @@ export class FontManager {
 
     const config = FONT_CONFIGS[fontKey];
     if (!config) {
-      console.warn(`Font configuration not found for: ${fontKey}`);
+      logger.warn(`Font configuration not found for: ${fontKey}`, { component: 'FontManager', action: 'loadFont', fontKey });
       return Promise.reject(new Error(`Font not found: ${fontKey}`));
     }
 
@@ -77,7 +78,7 @@ export class FontManager {
       await this.loadGoogleFont(config);
       this.loadedFonts.add(fontKey);
     } catch (error) {
-      console.error(`Failed to load font: ${fontKey}`, error);
+      logger.error(`Failed to load font: ${fontKey}`, { component: 'FontManager', action: 'loadFont', fontKey }, error as Error);
       throw error;
     }
   }

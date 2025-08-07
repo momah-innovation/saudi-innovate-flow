@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { useToast } from '@/hooks/use-toast'
-// Remove unused imports for now
+import { logger } from '@/utils/logger'
 
 export interface EnhancedFileUploaderProps {
   config: FileUploadConfig
@@ -163,7 +163,7 @@ export const EnhancedFileUploader = forwardRef<EnhancedFileUploaderRef, Enhanced
         throw new Error(result.errors?.[0]?.error || 'Upload failed')
       }
     } catch (error) {
-      console.error('Upload error:', error)
+      logger.error('Upload error', { component: 'EnhancedFileUploader', action: 'upload' }, error as Error);
       toast({
         title: 'Upload failed',
         description: error instanceof Error ? error.message : 'An error occurred during upload',

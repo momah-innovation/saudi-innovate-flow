@@ -18,6 +18,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { supabase } from "@/integrations/supabase/client"
+import { logger } from '@/utils/logger'
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state"
 const SIDEBAR_COOKIE_MAX_AGE_DEFAULT = 60 * 60 * 24 * 7
@@ -43,7 +44,7 @@ const getSidebarCookieMaxAge = async (): Promise<number> => {
     
     return 60 * 60 * 24 * days; // Convert days to seconds
   } catch (error) {
-    console.error('Error fetching sidebar cookie max age:', error);
+    logger.error('Error fetching sidebar cookie max age', { component: 'getSidebarCookieMaxAge', action: 'fetch_system_settings' }, error as Error);
     return SIDEBAR_COOKIE_MAX_AGE_DEFAULT; // fallback value
   }
 };
