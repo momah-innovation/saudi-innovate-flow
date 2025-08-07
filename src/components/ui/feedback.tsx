@@ -1,8 +1,8 @@
+import { useSettingsManager } from '@/hooks/useSettingsManager';
+import { Star, MessageSquare, ThumbsUp, ThumbsDown } from 'lucide-react';
 import React, { useState } from 'react';
-import { Star, Heart, ThumbsUp, ThumbsDown, MessageSquare } from 'lucide-react';
 import { Button } from './button';
 import { Textarea } from './textarea';
-import { Card, CardContent, CardHeader, CardTitle } from './card';
 import { Badge } from './badge';
 import { cn } from '@/lib/utils';
 
@@ -33,7 +33,8 @@ export function StarRating({
     lg: 'w-6 h-6'
   };
 
-  const labels = ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
+  const { getSettingValue } = useSettingsManager();
+  const labels = getSettingValue('feedback_rating_labels', ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent']) as string[];
 
   return (
     <div className={cn("flex items-center gap-2", className)}>

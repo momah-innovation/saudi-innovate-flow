@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { cn } from '@/lib/utils';
 
 // Advanced animation hook
@@ -158,9 +159,11 @@ export function MorphingShape({ shape, size = 40, color = 'hsl(var(--primary))',
   const [currentShape, setCurrentShape] = React.useState(shape);
   
   React.useEffect(() => {
-    const shapes = ['circle', 'square', 'triangle'] as const;
+    const { getSettingValue } = useSettingsManager();
+    const shapesData = getSettingValue('animation_shapes', ['circle', 'square', 'triangle']) as string[];
     const interval = setInterval(() => {
-      setCurrentShape(shapes[Math.floor(Math.random() * shapes.length)]);
+      const randomShape = shapesData[Math.floor(Math.random() * shapesData.length)] as 'circle' | 'square' | 'triangle';
+      setCurrentShape(randomShape);
     }, 2000);
     
     return () => clearInterval(interval);
