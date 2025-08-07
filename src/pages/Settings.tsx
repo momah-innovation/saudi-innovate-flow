@@ -11,6 +11,7 @@ import { RoleRequestWizard } from "@/components/admin/RoleRequestWizard";
 import { AppShell } from "@/components/layout/AppShell";
 import { ThemeCustomizer } from "@/components/ui/theme-customizer";
 import { useNavigate } from "react-router-dom";
+import { logger } from '@/utils/logger';
 
 interface UserRole {
   id: string;
@@ -47,7 +48,7 @@ const Settings = () => {
       if (error) throw error;
       setUserRoles(data || []);
     } catch (error) {
-      console.error('Error fetching user roles:', error);
+      logger.error('Error fetching user roles', { userId: userProfile?.id }, error as Error);
     }
   };
 

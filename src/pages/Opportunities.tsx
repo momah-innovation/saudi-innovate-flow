@@ -353,7 +353,7 @@ export default function Opportunities() {
         });
       }
     } catch (error) {
-      console.error('Bookmark error:', error);
+      logger.error('Bookmark error', { opportunityId: opportunity.id }, error as Error);
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'فشل في حفظ الفرصة' : 'Failed to bookmark opportunity',
@@ -412,7 +412,7 @@ export default function Opportunities() {
         throw new Error(result.error);
       }
     } catch (error) {
-      console.error('Error downloading images:', error);
+      logger.error('Error downloading images', {}, error as Error);
       toast({
         title: isRTL ? 'خطأ في تحميل الصور' : 'Error downloading images',
         description: isRTL ? 'فشل في تحميل الصور' : 'Failed to download images',

@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { format, subDays, subMonths, subYears } from 'date-fns';
 import { toast } from 'sonner';
+import { logger } from '@/utils/logger';
 
 interface PlatformStats {
   totalIdeas: number;
@@ -159,7 +160,7 @@ export default function StatisticsPage() {
       setDepartments(departmentsData.data || []);
       setSectors(sectorsData.data || []);
     } catch (error) {
-      console.error('Error loading filter options:', error);
+      logger.error('Error loading filter options', {}, error as Error);
     }
   };
 
@@ -240,7 +241,7 @@ export default function StatisticsPage() {
       });
 
     } catch (error) {
-      console.error('Error loading statistics:', error);
+      logger.error('Error loading statistics', {}, error as Error);
       toast.error(t('errorLoadingData'));
     } finally {
       setLoading(false);
@@ -282,7 +283,7 @@ export default function StatisticsPage() {
       
       setTrendData(monthlyData);
     } catch (error) {
-      console.error('Error loading trend data:', error);
+      logger.error('Error loading trend data', {}, error as Error);
     }
   };
 
@@ -317,7 +318,7 @@ export default function StatisticsPage() {
 
       setCategoryStats(categories.sort((a, b) => b.count - a.count));
     } catch (error) {
-      console.error('Error loading category stats:', error);
+      logger.error('Error loading category stats', {}, error as Error);
     }
   };
 

@@ -484,7 +484,7 @@ export default function IdeasPage() {
       if (error) throw error;
       setComments((data as any) || []);
     } catch (error) {
-      console.error('Error loading comments:', error);
+      logger.error('Error loading comments', { ideaId }, error as Error);
     }
   };
 
@@ -517,7 +517,7 @@ export default function IdeasPage() {
       setNewComment('');
       await loadIdeaComments(selectedIdea.id);
     } catch (error) {
-      console.error('Error adding comment:', error);
+      logger.error('Error adding comment', { ideaId: selectedIdea?.id }, error as Error);
       toast({
         title: isRTL ? 'خطأ في إضافة التعليق' : 'Error adding comment',
         variant: 'destructive'
@@ -551,7 +551,7 @@ export default function IdeasPage() {
           (isRTL ? 'تم حفظ الإشارة المرجعية' : 'Bookmark saved')
       });
     } catch (error) {
-      console.error('Error toggling bookmark:', error);
+      logger.error('Error toggling bookmark', { ideaId }, error as Error);
     }
   };
 
@@ -590,7 +590,7 @@ export default function IdeasPage() {
       // Refresh ideas to show updated counts
       loadIdeas();
     } catch (error) {
-      console.error('Error toggling like:', error);
+      logger.error('Error toggling like', { ideaId: idea.id }, error as Error);
     }
   };
 
