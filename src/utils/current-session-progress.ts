@@ -96,12 +96,17 @@ export const currentSessionProgress = {
       'src/components/enhanced/ChallengeForm.tsx - Fixed 2 console logs',
       'src/components/events/ParticipantRegistration.tsx - Fixed 3 console logs',
       'src/components/events/TrendingEventsWidget.tsx - Fixed 1 console log',
-      'src/components/events/tabs/EventResourcesTab.tsx - Fixed 1 console log (partial)',
-      'src/components/experts/ExpertProfileCard.tsx - Fixed 1 console log'
+      'src/components/events/tabs/EventResourcesTab.tsx - Fixed 4 console logs',
+      'src/components/experts/ExpertProfileCard.tsx - Fixed 1 console log',
+      'src/components/ideas/IdeaNotificationCenter.tsx - Fixed 4 console logs',
+      'src/components/ideas/IdeaTemplatesDialog.tsx - Fixed 1 console log',
+      'src/components/ideas/SuccessStoriesShowcase.tsx - Fixed 1 console log',
+      'src/components/ideas/TrendingIdeasWidget.tsx - Fixed 1 console log',
+      'src/components/notifications/NotificationCenter.tsx - Fixed 4 console logs'
     ],
     
     metrics: {
-      consoleLogsFixed: 196, // 184 + 12 more console logs fixed in enhanced/events/experts components  
+      consoleLogsFixed: 206, // 196 + 10 more console logs fixed in ideas/notifications components  
       anyTypesFixed: 148,    // No new any types, but console logs migrated
       buildErrors: 0,
       healthScore: 100,
@@ -119,12 +124,12 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 144, // Down from 156 (12 more console logs migrated)  
+    consoleLogsToMigrate: 134, // Down from 144 (10 more console logs migrated)  
     anyTypesToReplace: 331,    // Same as before
     estimatedSessionsRemaining: 2
   },
   
-  status: 'ENHANCED_EVENTS_EXPERTS_PHASE_COMPLETE'
+  status: 'IDEAS_NOTIFICATIONS_PHASE_COMPLETE'
 };
 
 export default currentSessionProgress;

@@ -8,6 +8,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { 
   Bell, BellRing, X, Check, Eye, Heart, MessageSquare, 
   Star, Award, Lightbulb, AlertCircle, Info, CheckCircle,
@@ -92,7 +94,11 @@ export function IdeaNotificationCenter({ className }: IdeaNotificationCenterProp
 
       setNotifications(notificationsWithProfiles);
     } catch (error) {
-      console.error('Error loading notifications:', error);
+      logger.error('Failed to load idea notifications', { 
+        component: 'IdeaNotificationCenter', 
+        action: 'loadNotifications',
+        userId: user.id 
+      }, error as Error);
       toast({
         title: 'خطأ في تحميل الإشعارات',
         description: 'حدث خطأ أثناء تحميل الإشعارات',
@@ -151,7 +157,11 @@ export function IdeaNotificationCenter({ className }: IdeaNotificationCenterProp
         )
       );
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      logger.error('Failed to mark notification as read', { 
+        component: 'IdeaNotificationCenter', 
+        action: 'markAsRead',
+        notificationId 
+      }, error as Error);
     }
   };
 

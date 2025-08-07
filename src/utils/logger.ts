@@ -23,6 +23,7 @@ export interface LogContext {
   prompt?: string;
   resourceType?: string;
   resourceId?: string;
+  notificationId?: string;
   filters?: any;
   data?: Record<string, any>;
 }

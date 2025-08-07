@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { 
   TrendingUp, Flame, Eye, Heart, MessageSquare, 
   Star, Trophy, Zap, ArrowRight, ArrowLeft 
@@ -88,7 +90,10 @@ export function TrendingIdeasWidget({ className, onIdeaClick }: TrendingIdeasWid
 
       setTrendingIdeas(ideasWithProfiles);
     } catch (error) {
-      console.error('Error loading trending ideas:', error);
+      logger.error('Failed to load trending ideas', { 
+        component: 'TrendingIdeasWidget', 
+        action: 'loadTrendingIdeas' 
+      }, error as Error);
     } finally {
       setLoading(false);
     }

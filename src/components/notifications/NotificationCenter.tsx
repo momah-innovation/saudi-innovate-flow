@@ -14,10 +14,11 @@ import {
 import { Bell, Check, CheckCircle2, AlertTriangle, Info, X, MoreVertical, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-
 import { useSystemSettings } from '@/contexts/SystemSettingsContext';
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface Notification {
   id: string;
@@ -90,7 +91,11 @@ export function NotificationCenter() {
         type: item.type as 'info' | 'success' | 'warning' | 'error'
       })));
     } catch (error) {
-      console.error('Error fetching notifications:', error);
+      logger.error('Failed to fetch notifications', { 
+        component: 'NotificationCenter', 
+        action: 'fetchNotifications',
+        userId: user.id 
+      }, error as Error);
     } finally {
       setLoading(false);
     }
@@ -111,7 +116,11 @@ export function NotificationCenter() {
         )
       );
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      logger.error('Failed to mark notification as read', { 
+        component: 'NotificationCenter', 
+        action: 'markAsRead',
+        notificationId 
+      }, error as Error);
     }
   };
 
@@ -131,7 +140,11 @@ export function NotificationCenter() {
         prev.map(notif => ({ ...notif, is_read: true }))
       );
     } catch (error) {
-      console.error('Error marking all notifications as read:', error);
+      logger.error('Failed to mark all notifications as read', { 
+        component: 'NotificationCenter', 
+        action: 'markAllAsRead',
+        userId: user.id 
+      }, error as Error);
     }
   };
 
@@ -146,7 +159,11 @@ export function NotificationCenter() {
 
       setNotifications(prev => prev.filter(notif => notif.id !== notificationId));
     } catch (error) {
-      console.error('Error deleting notification:', error);
+      logger.error('Failed to delete notification', { 
+        component: 'NotificationCenter', 
+        action: 'deleteNotification',
+        notificationId 
+      }, error as Error);
     }
   };
 

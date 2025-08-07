@@ -6,6 +6,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { 
   Star, ExternalLink, Calendar, TrendingUp, DollarSign,
   Users, Target, Rocket, CheckCircle, Award
@@ -75,7 +77,10 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
       if (error) throw error;
       setStories((data as any) || []);
     } catch (error) {
-      console.error('Error loading success stories:', error);
+      logger.error('Failed to load success stories', { 
+        component: 'SuccessStoriesShowcase', 
+        action: 'loadSuccessStories' 
+      }, error as Error);
     } finally {
       setLoading(false);
     }

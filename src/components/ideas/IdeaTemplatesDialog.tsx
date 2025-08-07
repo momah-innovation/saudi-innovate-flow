@@ -6,6 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { 
   Palette, FileText, Zap, Users, Lightbulb, TreePine, 
   Cpu, Building, Recycle, Heart, ArrowRight, CheckCircle 
@@ -56,7 +58,10 @@ export function IdeaTemplatesDialog({
       if (error) throw error;
       setTemplates(data || []);
     } catch (error) {
-      console.error('Error loading templates:', error);
+      logger.error('Failed to load idea templates', { 
+        component: 'IdeaTemplatesDialog', 
+        action: 'loadTemplates' 
+      }, error as Error);
       toast({
         title: isRTL ? 'خطأ في تحميل القوالب' : 'Error loading templates',
         variant: 'destructive'
