@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { toast } from 'sonner';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 // Avatar mapping for the existing users
 const AVATAR_MAPPING = [
@@ -29,7 +29,7 @@ interface BulkAvatarUploaderProps {
 }
 
 export function BulkAvatarUploader({ onComplete }: BulkAvatarUploaderProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [results, setResults] = useState<{

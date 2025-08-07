@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -52,7 +52,7 @@ export function AdvancedSearch({
   searchType = 'challenges',
   className
 }: AdvancedSearchProps) {
-  const { t, language, isRTL } = useTranslation();
+  const { t, language, isRTL } = useUnifiedTranslation();
   
   const [filters, setFilters] = useState<SearchFilters>({
     query: '',

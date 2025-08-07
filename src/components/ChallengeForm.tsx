@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,7 +26,7 @@ export function ChallengeForm({
   isLoading = false,
   mode = 'create'
 }: ChallengeFormProps) {
-  const { t, language, isRTL } = useTranslation();
+  const { t, language, isRTL } = useUnifiedTranslation();
   
   const [formData, setFormData] = useState({
     title_ar: initialData?.title_ar || '',

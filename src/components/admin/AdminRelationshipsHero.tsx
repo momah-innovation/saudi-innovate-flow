@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useRTLAwareClasses } from '@/components/ui/rtl-aware';
 import { 
   Network, 
@@ -33,7 +33,7 @@ export function AdminRelationshipsHero({
   networkHealth,
   lastUpdate
 }: AdminRelationshipsHeroProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { flexRow } = useRTLAwareClasses();
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

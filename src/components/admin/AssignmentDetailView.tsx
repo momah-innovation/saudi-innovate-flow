@@ -5,7 +5,7 @@ import { DetailView } from '@/components/ui/detail-view';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, Calendar, DollarSign, Users, Target, AlertTriangle, Clock } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useToast } from '@/hooks/use-toast';
 
 interface Assignment {
@@ -41,7 +41,7 @@ interface AssignmentDetailViewProps {
 }
 
 export function AssignmentDetailView({ assignment, isOpen, onClose }: AssignmentDetailViewProps) {
-  const { t, getDynamicText } = useTranslation();
+  const { t, getDynamicText } = useUnifiedTranslation();
   const { toast } = useToast();
   const [data, setData] = useState<AssignmentDetailData | null>(null);
   const [loading, setLoading] = useState(false);
