@@ -4,6 +4,8 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -168,7 +170,11 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
 
       setMetrics(performanceData);
     } catch (error) {
-      console.error('Error loading performance metrics:', error);
+      logger.error('Failed to load advanced performance metrics', { 
+        component: 'AdvancedPerformanceMetrics', 
+        action: 'loadPerformanceMetrics',
+        opportunityId 
+      }, error as Error);
       // Set fallback data
       setMetrics(generateFallbackMetrics());
     } finally {

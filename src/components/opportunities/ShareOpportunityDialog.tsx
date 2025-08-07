@@ -6,6 +6,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { 
   Share2, 
   Copy, 
@@ -118,7 +120,12 @@ export const ShareOpportunityDialog = ({
       });
 
     } catch (error) {
-      console.error('Error tracking share:', error);
+      logger.error('Failed to track opportunity share', { 
+        component: 'ShareOpportunityDialog', 
+        action: 'trackShare',
+        opportunityId,
+        platform 
+      }, error as Error);
     }
   };
 
@@ -149,7 +156,11 @@ export const ShareOpportunityDialog = ({
         description: isRTL ? 'تم نسخ الرابط' : 'Link copied to clipboard'
       });
     } catch (error) {
-      console.error('Error copying link:', error);
+      logger.error('Failed to copy opportunity link', { 
+        component: 'ShareOpportunityDialog', 
+        action: 'handleCopyLink',
+        opportunityId 
+      }, error as Error);
       toast({
         title: "Error",
         description: "Failed to copy link",

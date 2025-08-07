@@ -5,6 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { 
   Sparkles, TrendingUp, Users, Target, Clock, 
   ArrowRight, Star, Lightbulb, BookOpen 
@@ -85,7 +87,11 @@ export function SmartRecommendations({
         await generateRecommendations();
       }
     } catch (error) {
-      console.error('Error loading recommendations:', error);
+      logger.error('Failed to load smart recommendations', { 
+        component: 'SmartRecommendations', 
+        action: 'loadRecommendations',
+        userId: user.id 
+      }, error as Error);
       // Fallback to popular ideas
       await loadPopularIdeas();
     } finally {
@@ -160,7 +166,11 @@ export function SmartRecommendations({
         await loadPopularIdeas();
       }
     } catch (error) {
-      console.error('Error generating recommendations:', error);
+      logger.error('Failed to generate smart recommendations', { 
+        component: 'SmartRecommendations', 
+        action: 'generateRecommendations',
+        userId: user.id 
+      }, error as Error);
       await loadPopularIdeas();
     }
   };
@@ -189,7 +199,10 @@ export function SmartRecommendations({
 
       setRecommendations(popularRecs as any);
     } catch (error) {
-      console.error('Error loading popular ideas:', error);
+      logger.error('Failed to load popular ideas for recommendations', { 
+        component: 'SmartRecommendations', 
+        action: 'loadPopularIdeas' 
+      }, error as Error);
     }
   };
 
@@ -290,7 +303,11 @@ export function SmartRecommendations({
         onIdeaClick(recommendation.recommended_idea_id);
       }
     } catch (error) {
-      console.error('Error updating recommendation:', error);
+      logger.error('Failed to update recommendation status', { 
+        component: 'SmartRecommendations', 
+        action: 'handleIdeaClick',
+        recommendationId: recommendation.id 
+      }, error as Error);
     }
   };
 

@@ -4,6 +4,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { 
   Users, 
   Clock, 
@@ -115,7 +117,11 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
         applicationSources
       });
     } catch (error) {
-      console.error('Error loading application data:', error);
+      logger.error('Failed to load applications analytics data', { 
+        component: 'ApplicationsAnalytics', 
+        action: 'loadApplicationData',
+        opportunityId 
+      }, error as Error);
     } finally {
       setLoading(false);
     }
