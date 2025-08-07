@@ -11,8 +11,9 @@ import { ChartPlaceholder } from '@/components/common/ChartPlaceholder'
 import { 
   Lightbulb, TrendingUp, TrendingDown, Target, Trophy, 
   Star, Eye, Heart, MessageSquare, CheckCircle, Clock,
-  Users, Building, Zap, Award, RefreshCw, Download
-} from 'lucide-react';
+   Users, Building, Zap, Award, RefreshCw, Download
+ } from 'lucide-react';
+import { logger } from '@/utils/logger';
 
 interface IdeaAnalytics {
   overview: {
@@ -117,7 +118,7 @@ export function IdeaAnalyticsDashboard({ className }: IdeaAnalyticsDashboardProp
       setAnalytics(processedAnalytics);
 
     } catch (error) {
-      console.error('Error loading idea analytics:', error);
+      logger.error('Error loading idea analytics', { component: 'IdeaAnalyticsDashboard', action: 'loadAnalytics' }, error as Error);
     } finally {
       setLoading(false);
     }

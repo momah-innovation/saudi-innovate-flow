@@ -14,8 +14,9 @@ import {
   Activity,
   Clock,
   CheckCircle
-} from 'lucide-react';
+ } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { logger } from '@/utils/logger';
 
 interface AnalyticsData {
   metric_category: string;
@@ -161,7 +162,7 @@ export function AnalyticsDashboard() {
       });
 
     } catch (error) {
-      console.error('Error loading analytics data:', error);
+      logger.error('Error loading analytics data', { component: 'AnalyticsDashboard', action: 'loadAnalyticsData' }, error as Error);
     } finally {
       setIsLoading(false);
     }

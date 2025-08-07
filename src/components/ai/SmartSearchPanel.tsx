@@ -23,6 +23,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { aiService } from '@/services/AIService';
+import { logger } from '@/utils/logger';
 
 interface SearchResult {
   id: string;
@@ -81,7 +82,7 @@ export const SmartSearchPanel: React.FC = () => {
         setSearchHistory(JSON.parse(savedHistory).slice(0, 10));
       }
     } catch (error) {
-      console.error('Error loading search history:', error);
+      logger.error('Error loading search history', { component: 'SmartSearchPanel', action: 'loadSearchHistory' }, error as Error);
     }
   };
 
@@ -96,7 +97,7 @@ export const SmartSearchPanel: React.FC = () => {
         'تقنية البلوك تشين'
       ]);
     } catch (error) {
-      console.error('Error loading popular queries:', error);
+      logger.error('Error loading popular queries', { component: 'SmartSearchPanel', action: 'loadPopularQueries' }, error as Error);
     }
   };
 
@@ -113,7 +114,7 @@ export const SmartSearchPanel: React.FC = () => {
       setSearchHistory(updatedHistory);
       localStorage.setItem(`search_history_${user.id}`, JSON.stringify(updatedHistory));
     } catch (error) {
-      console.error('Error saving search history:', error);
+      logger.error('Error saving search history', { component: 'SmartSearchPanel', action: 'saveSearchToHistory' }, error as Error);
     }
   };
 
@@ -154,7 +155,7 @@ export const SmartSearchPanel: React.FC = () => {
         });
       }
     } catch (error) {
-      console.error('Error performing search:', error);
+      logger.error('Error performing search', { component: 'SmartSearchPanel', action: 'performSearch', query }, error as Error);
       toast({
         title: 'خطأ في البحث',
         description: 'فشل في تنفيذ البحث، يرجى المحاولة مرة أخرى',

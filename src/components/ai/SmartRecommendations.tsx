@@ -6,6 +6,7 @@ import { Sparkles, TrendingUp, Users, Lightbulb, ArrowRight } from 'lucide-react
 import { useAIFeatures } from '@/hooks/useAIFeatures';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 
 interface Recommendation {
   id: string;
@@ -100,7 +101,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
 
       setRecommendations(mockRecommendations);
     } catch (error) {
-      console.error('Error loading recommendations:', error);
+      logger.error('Error loading recommendations', { component: 'SmartRecommendations', action: 'loadRecommendations' }, error as Error);
     } finally {
       setLoading(false);
     }

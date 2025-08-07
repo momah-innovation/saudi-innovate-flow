@@ -13,6 +13,7 @@ export interface LogContext {
   language?: string;
   key?: string;
   ideaId?: string;
+  query?: string;
   data?: Record<string, any>;
 }
 

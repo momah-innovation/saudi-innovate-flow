@@ -8,8 +8,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   Trophy, Star, Medal, Crown, Zap, Target, 
-  TrendingUp, Award, Flame, Sparkles 
-} from 'lucide-react';
+   TrendingUp, Award, Flame, Sparkles 
+ } from 'lucide-react';
+import { logger } from '@/utils/logger';
 
 interface Achievement {
   id: string;
@@ -71,7 +72,7 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
         loadUserStats()
       ]);
     } catch (error) {
-      console.error('Error loading gamification data:', error);
+      logger.error('Error loading gamification data', { component: 'GamificationDashboard', action: 'loadGamificationData' }, error as Error);
     } finally {
       setLoading(false);
     }
