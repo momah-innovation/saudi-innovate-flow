@@ -70,19 +70,6 @@ interface ProfileData {
   avatarUrl?: string;
 }
 
-const SPECIALIZATIONS = [
-  'تقنية المعلومات',
-  'الذكاء الاصطناعي',
-  'البيانات والتحليلات',
-  'الأمن السيبراني',
-  'التحول الرقمي',
-  'إدارة المشاريع',
-  'التطوير المؤسسي',
-  'الخدمات الحكومية',
-  'الابتكار والإبداع',
-  'القيادة والإدارة'
-];
-
 export const ProfileSetup = () => {
   const { t, isRTL } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
@@ -90,7 +77,8 @@ export const ProfileSetup = () => {
   const { user, userProfile, updateProfile } = useAuth();
   const navigate = useNavigate();
   
-  // Get experience levels from settings
+  // Get specializations and experience levels from settings
+  const specializationsData = getSettingValue('specializations', []) as string[];
   const experienceLevelsData = getSettingValue('experience_levels', []) as string[];
   const EXPERIENCE_LEVELS = experienceLevelsData.map((level, index) => {
     const values = ['junior', 'mid', 'senior', 'expert'];
@@ -117,11 +105,6 @@ export const ProfileSetup = () => {
       push: true
     }
   });
-
-  const { user, userProfile, updateProfile } = useAuth();
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  const { t } = useUnifiedTranslation();
 
   useEffect(() => {
     logger.info('ProfileSetup useEffect triggered', { 
@@ -431,7 +414,7 @@ export const ProfileSetup = () => {
               <Label>التخصصات *</Label>
               <p className="text-sm text-muted-foreground">اختر واحد أو أكثر من مجالات خبرتك</p>
               <div className="grid grid-cols-2 gap-2">
-                {SPECIALIZATIONS.map(spec => (
+                {specializationsData.map(spec => (
                   <div key={spec} className="flex items-center space-x-2 space-x-reverse">
                     <Checkbox
                       id={spec}
