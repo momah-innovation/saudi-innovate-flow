@@ -7,6 +7,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   Filter, X, RotateCcw, Target, Star, TrendingUp, 
@@ -39,6 +41,8 @@ export function IdeaFiltersDialog({
   onApplyFilters 
 }: IdeaFiltersDialogProps) {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
+  const { getSettingValue } = useSettingsManager();
   const [localFilters, setLocalFilters] = useState<FilterState>(filters);
   const [sectors, setSectors] = useState<any[]>([]);
   const [challenges, setChallenges] = useState<any[]>([]);

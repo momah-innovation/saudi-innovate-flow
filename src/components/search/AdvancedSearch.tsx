@@ -10,6 +10,7 @@ import { TagSelector } from '@/components/ui/tag-selector';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { cn } from '@/lib/utils';
 import { logger } from '@/utils/logger';
 
@@ -54,6 +55,8 @@ export function AdvancedSearch({
   const [voiceSearchActive, setVoiceSearchActive] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const { toast } = useToast();
+  const { t } = useUnifiedTranslation();
+  const { getSettingValue } = useSettingsManager();
 
   const contentTypes = [
     { id: 'challenges', label: 'التحديات', label_en: 'Challenges' },
