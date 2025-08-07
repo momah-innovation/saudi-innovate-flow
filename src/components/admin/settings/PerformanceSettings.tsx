@@ -18,7 +18,9 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
   const { isRTL } = useDirection();
   const [newCacheStrategy, setNewCacheStrategy] = useState("");
   
-  const cacheStrategies = settings.cache_strategies || ["memory", "redis", "filesystem", "database", "cdn"];
+  const cacheStrategies = Array.isArray(settings.cache_strategies) 
+    ? settings.cache_strategies 
+    : ["memory", "redis", "filesystem", "database", "cdn"];
 
   const addCacheStrategy = () => {
     if (newCacheStrategy.trim() && !cacheStrategies.includes(newCacheStrategy)) {
@@ -102,7 +104,7 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
                 type="number"
                 min="1"
                 max="1440"
-                value={settings.cacheTimeout || 60}
+                value={typeof settings.cacheTimeout === 'number' ? settings.cacheTimeout : 60}
                 onChange={(e) => onSettingChange('cacheTimeout', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
@@ -117,7 +119,7 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
                 type="number"
                 min="10"
                 max="10240"
-                value={settings.maxCacheSize || 512}
+                value={typeof settings.maxCacheSize === 'number' ? settings.maxCacheSize : 512}
                 onChange={(e) => onSettingChange('maxCacheSize', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
@@ -132,7 +134,7 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
                 type="number"
                 min="5"
                 max="100"
-                value={settings.dbConnectionPoolSize || 20}
+                value={typeof settings.dbConnectionPoolSize === 'number' ? settings.dbConnectionPoolSize : 20}
                 onChange={(e) => onSettingChange('dbConnectionPoolSize', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
@@ -147,7 +149,7 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
                 type="number"
                 min="5"
                 max="300"
-                value={settings.requestTimeout || 30}
+                value={typeof settings.requestTimeout === 'number' ? settings.requestTimeout : 30}
                 onChange={(e) => onSettingChange('requestTimeout', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
@@ -158,7 +160,7 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
                 {isRTL ? 'استراتيجية التخزين المؤقت الافتراضية' : 'Default Cache Strategy'}
               </Label>
               <Select 
-                value={settings.defaultCacheStrategy || 'memory'} 
+                value={typeof settings.defaultCacheStrategy === 'string' ? settings.defaultCacheStrategy : 'memory'} 
                 onValueChange={(value) => onSettingChange('defaultCacheStrategy', value)}
               >
                 <SelectTrigger className={isRTL ? 'text-right' : 'text-left'}>
@@ -179,7 +181,7 @@ export function PerformanceSettings({ settings, onSettingChange }: PerformanceSe
                 {isRTL ? 'مستوى الضغط' : 'Compression Level'}
               </Label>
               <Select 
-                value={settings.compressionLevel || 'medium'} 
+                value={typeof settings.compressionLevel === 'string' ? settings.compressionLevel : 'medium'} 
                 onValueChange={(value) => onSettingChange('compressionLevel', value)}
               >
                 <SelectTrigger className={isRTL ? 'text-right' : 'text-left'}>

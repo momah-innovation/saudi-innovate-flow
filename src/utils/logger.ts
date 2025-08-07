@@ -64,6 +64,12 @@ export interface LogContext {
   limitMB?: number;
   changedProps?: string[];
   propsCount?: number;
+  metric?: string;
+  startTime?: number;
+  delay?: number;
+  value?: any;
+  taskId?: string;
+  budget?: number;
 }
 
 export enum LogLevel {

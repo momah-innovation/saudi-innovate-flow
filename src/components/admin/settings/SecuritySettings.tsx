@@ -18,7 +18,9 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
   const { isRTL } = useDirection();
   const [newSecurityRole, setNewSecurityRole] = useState("");
   
-  const securityRoles = settings.security_roles || ["admin", "security_officer", "auditor", "compliance_manager"];
+  const securityRoles = Array.isArray(settings.security_roles) 
+    ? settings.security_roles 
+    : ["admin", "security_officer", "auditor", "compliance_manager"];
 
   const addSecurityRole = () => {
     if (newSecurityRole.trim() && !securityRoles.includes(newSecurityRole)) {
@@ -93,7 +95,7 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
                 type="number"
                 min="5"
                 max="480"
-                value={settings.session_timeout || 60}
+                value={typeof settings.session_timeout === 'number' ? settings.session_timeout : 60}
                 onChange={(e) => onSettingChange('session_timeout', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
@@ -106,7 +108,7 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
                 type="number"
                 min="3"
                 max="10"
-                value={settings.max_login_attempts || 5}
+                value={typeof settings.max_login_attempts === 'number' ? settings.max_login_attempts : 5}
                 onChange={(e) => onSettingChange('max_login_attempts', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
@@ -119,7 +121,7 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
                 type="number"
                 min="30"
                 max="365"
-                value={settings.passwordExpiryDays || 90}
+                value={typeof settings.passwordExpiryDays === 'number' ? settings.passwordExpiryDays : 90}
                 onChange={(e) => onSettingChange('passwordExpiryDays', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
@@ -132,7 +134,7 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
                 type="number"
                 min="5"
                 max="1440"
-                value={settings.accountLockoutDuration || 30}
+                value={typeof settings.accountLockoutDuration === 'number' ? settings.accountLockoutDuration : 30}
                 onChange={(e) => onSettingChange('accountLockoutDuration', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
@@ -181,7 +183,7 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
               <p className="text-sm text-muted-foreground">إجبار المصادقة الثنائية لجميع المستخدمين</p>
             </div>
             <Switch
-              checked={settings.enforceWebauthn || false}
+              checked={Boolean(settings.enforceWebauthn)}
               onCheckedChange={(checked) => onSettingChange('enforceWebauthn', checked)}
             />
           </div>
@@ -209,7 +211,7 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
             <Label htmlFor="passwordPolicy">سياسة كلمات المرور</Label>
             <Textarea
               id="passwordPolicy"
-              value={settings.passwordPolicy || 'كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل، حرف كبير، حرف صغير، رقم، ورمز خاص'}
+              value={typeof settings.passwordPolicy === 'string' ? settings.passwordPolicy : 'كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل، حرف كبير، حرف صغير، رقم، ورمز خاص'}
               onChange={(e) => onSettingChange('passwordPolicy', e.target.value)}
               rows={3}
               placeholder="وصف سياسة كلمات المرور..."
@@ -221,7 +223,7 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
             <Label htmlFor="dataRetentionPolicy">سياسة الاحتفاظ بالبيانات</Label>
             <Textarea
               id="dataRetentionPolicy"
-              value={settings.dataRetentionPolicy || 'يتم الاحتفاظ بالبيانات الشخصية لمدة 5 سنوات من آخر نشاط للمستخدم'}
+              value={typeof settings.dataRetentionPolicy === 'string' ? settings.dataRetentionPolicy : 'يتم الاحتفاظ بالبيانات الشخصية لمدة 5 سنوات من آخر نشاط للمستخدم'}
               onChange={(e) => onSettingChange('dataRetentionPolicy', e.target.value)}
               rows={3}
               placeholder="وصف سياسة الاحتفاظ بالبيانات..."
@@ -233,7 +235,7 @@ export function SecuritySettings({ settings, onSettingChange }: SecuritySettings
             <Label htmlFor="accessControlPolicy">سياسة التحكم في الوصول</Label>
             <Textarea
               id="accessControlPolicy"
-              value={settings.accessControlPolicy || 'الوصول للنظام محدود حسب الصلاحيات المعطاة لكل مستخدم'}
+              value={typeof settings.accessControlPolicy === 'string' ? settings.accessControlPolicy : 'الوصول للنظام محدود حسب الصلاحيات المعطاة لكل مستخدم'}
               onChange={(e) => onSettingChange('accessControlPolicy', e.target.value)}
               rows={3}
               placeholder="وصف سياسة التحكم في الوصول..."

@@ -18,8 +18,12 @@ export function OrganizationalSettings({ settings, onSettingChange }: Organizati
   const [newDepartment, setNewDepartment] = useState("");
   const [newPosition, setNewPosition] = useState("");
   
-  const departments = settings.organizational_departments || ["hr", "finance", "it", "operations", "marketing", "sales", "legal", "research"];
-  const positions = settings.organizational_positions || ["manager", "supervisor", "specialist", "coordinator", "director", "analyst", "consultant"];
+  const departments = Array.isArray(settings.organizational_departments) 
+    ? settings.organizational_departments 
+    : ["hr", "finance", "it", "operations", "marketing", "sales", "legal", "research"];
+  const positions = Array.isArray(settings.organizational_positions) 
+    ? settings.organizational_positions 
+    : ["manager", "supervisor", "specialist", "coordinator", "director", "analyst", "consultant"];
 
   const addDepartment = () => {
     if (newDepartment.trim() && !departments.includes(newDepartment)) {
@@ -149,7 +153,7 @@ export function OrganizationalSettings({ settings, onSettingChange }: Organizati
               <Input
                 id="maxHierarchyLevels"
                 type="number"
-                value={settings.orgMaxHierarchyLevels || 5}
+                value={typeof settings.orgMaxHierarchyLevels === 'number' ? settings.orgMaxHierarchyLevels : 5}
                 onChange={(e) => onSettingChange('orgMaxHierarchyLevels', parseInt(e.target.value))}
                 min="2"
                 max="10"
@@ -162,7 +166,7 @@ export function OrganizationalSettings({ settings, onSettingChange }: Organizati
               <Input
                 id="maxDepartments"
                 type="number"
-                value={settings.orgMaxDepartments || 50}
+                value={typeof settings.orgMaxDepartments === 'number' ? settings.orgMaxDepartments : 50}
                 onChange={(e) => onSettingChange('orgMaxDepartments', parseInt(e.target.value))}
                 min="1"
                 max="200"
@@ -175,7 +179,7 @@ export function OrganizationalSettings({ settings, onSettingChange }: Organizati
               <Input
                 id="maxPositions"
                 type="number"
-                value={settings.orgMaxPositions || 100}
+                value={typeof settings.orgMaxPositions === 'number' ? settings.orgMaxPositions : 100}
                 onChange={(e) => onSettingChange('orgMaxPositions', parseInt(e.target.value))}
                 min="1"
                 max="500"
@@ -188,7 +192,7 @@ export function OrganizationalSettings({ settings, onSettingChange }: Organizati
               <Input
                 id="approvalLevels"
                 type="number"
-                value={settings.orgApprovalLevels || 3}
+                value={typeof settings.orgApprovalLevels === 'number' ? settings.orgApprovalLevels : 3}
                 onChange={(e) => onSettingChange('orgApprovalLevels', parseInt(e.target.value))}
                 min="1"
                 max="5"

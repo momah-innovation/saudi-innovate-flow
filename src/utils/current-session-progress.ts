@@ -145,8 +145,8 @@ export const currentSessionProgress = {
     ],
     
     metrics: {
-      consoleLogsFixed: 286, // 271 + 15 more console logs fixed
-      anyTypesFixed: 177,    // 161 + 16 more any types fixed  
+      consoleLogsFixed: 286,
+      anyTypesFixed: 177,    
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -163,12 +163,12 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 54, // Down from 69 (15 more console logs migrated)
-    anyTypesToReplace: 302,   // Down from 318 (16 more any types fixed)
+    consoleLogsToMigrate: 54,
+    anyTypesToReplace: 302,
     estimatedSessionsRemaining: 1
   },
   
-  status: 'CRITICAL_HOOKS_COMPLETE'
+  status: 'BUILD_ERRORS_FIXED'
 };
 
 export default currentSessionProgress;
