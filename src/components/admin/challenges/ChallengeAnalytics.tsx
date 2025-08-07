@@ -7,6 +7,8 @@ import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/logger";
 import { 
   BarChart3, 
   TrendingUp, 
@@ -19,6 +21,20 @@ import {
   Clock,
   AlertTriangle
 } from "lucide-react";
+
+interface Challenge {
+  id: string;
+  title_ar: string;
+  status: string;
+  priority_level: string;
+  sensitivity_level: string;
+  challenge_type?: string;
+  estimated_budget?: number;
+  ideas?: { id: string }[];
+  implementation_tracker?: {
+    completion_percentage: number;
+  }[];
+}
 
 interface AnalyticsData {
   overview: {
@@ -49,6 +65,7 @@ interface AnalyticsData {
 }
 
 export function ChallengeAnalytics() {
+  const { t } = useUnifiedTranslation();
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState("all");
@@ -78,7 +95,7 @@ export function ChallengeAnalytics() {
       setAnalytics(processedAnalytics);
 
     } catch (error) {
-      console.error('Error fetching analytics:', error);
+      logger.error('Error fetching analytics', { component: 'ChallengeAnalytics', action: 'fetchAnalytics' }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في تحميل بيانات التحليلات",
@@ -89,14 +106,14 @@ export function ChallengeAnalytics() {
     }
   };
 
-  const processAnalyticsData = (challenges: any[]): AnalyticsData => {
+  const processAnalyticsData = (challenges: Challenge[]): AnalyticsData => {
     const overview = {
       totalChallenges: challenges.length,
       activeChallenges: challenges.filter(c => c.status === 'active').length,
       completedChallenges: challenges.filter(c => c.status === 'completed').length,
       totalIdeas: challenges.reduce((sum, c) => sum + (c.ideas?.length || 0), 0),
       totalBudget: challenges.reduce((sum, c) => sum + (c.estimated_budget || 0), 0),
-      averageCompletion: challenges.reduce((sum, c) => sum + (c.implementation_tracker?.completion_percentage || 0), 0) / challenges.length
+      averageCompletion: challenges.reduce((sum, c) => sum + (c.implementation_tracker?.[0]?.completion_percentage || 0), 0) / challenges.length
     };
 
     const byStatus = challenges.reduce((acc, c) => {
@@ -136,7 +153,7 @@ export function ChallengeAnalytics() {
         id: c.id,
         title: c.title_ar,
         ideasCount: c.ideas?.length || 0,
-        completion: c.implementation_tracker?.completion_percentage || 0,
+        completion: c.implementation_tracker?.[0]?.completion_percentage || 0,
         budget: c.estimated_budget || 0
       }))
       .sort((a, b) => b.ideasCount - a.ideasCount)

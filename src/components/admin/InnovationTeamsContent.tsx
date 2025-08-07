@@ -14,9 +14,58 @@ import {
   Clock, CheckCircle, AlertTriangle
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { TeamMemberWizard } from './TeamMemberWizard';
 import { CoreTeamCard, CoreTeamMemberData, CoreTeamCardAction } from '@/components/ui/core-team-card';
 import { CoreTeamDetailDialog } from '@/components/ui/core-team-detail-dialog';
+
+interface TeamMember {
+  id: string;
+  user_id: string;
+  status: 'active' | 'inactive' | 'leave' | 'busy';
+  cic_role: string;
+  specialization: string | string[];
+  bio?: string;
+  location?: string;
+  current_workload?: number;
+  capacity?: number;
+  efficiency_rating?: number;
+  performance_score?: number;
+  availability_status?: 'available' | 'busy' | 'unavailable';
+  skills?: string[];
+  certifications?: string[];
+  experience_years?: number;
+  ideas_submitted?: number;
+  ideas_approved?: number;
+  innovation_score?: number;
+  collaboration_score?: number;
+  join_date?: string;
+  last_active?: string;
+  created_at: string;
+  updated_at: string;
+  max_concurrent_projects?: number;
+  performance_rating?: number;
+  contact_email?: string;
+  department?: string;
+  profiles?: {
+    id: string;
+    name?: string;
+    name_ar?: string;
+    email?: string;
+    profile_image_url?: string;
+    department?: string;
+    position?: string;
+    role?: string;
+  };
+  team_assignments?: TeamAssignment[];
+}
+
+interface TeamAssignment {
+  id: string;
+  team_member_id: string;
+  status: string;
+  workload_percentage?: number;
+}
 
 interface InnovationTeamsContentProps {
   activeTab: string;
@@ -39,10 +88,18 @@ export function InnovationTeamsContent({
   const { user } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
-  const [editingMember, setEditingMember] = useState<any>(null);
-  const [selectedMember, setSelectedMember] = useState<any>(null);
+  const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [showDetailDialog, setShowDetailDialog] = useState(false);
-  const [coreTeamData, setCoreTeamData] = useState({
+  const [coreTeamData, setCoreTeamData] = useState<{
+    members: TeamMember[];
+    metrics: {
+      totalMembers: number;
+      activeMembers: number;
+      avgWorkload: number;
+      totalAssignments: number;
+    };
+  }>({
     members: [],
     metrics: {
       totalMembers: 0,
@@ -121,7 +178,7 @@ export function InnovationTeamsContent({
       });
 
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      logger.error('Error fetching core team data', { component: 'InnovationTeamsContent', action: 'fetchCoreTeamData' }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في تحميل بيانات فريق الابتكار الأساسي.",
@@ -132,7 +189,7 @@ export function InnovationTeamsContent({
     }
   };
 
-  const handleEditMember = (member: any) => {
+  const handleEditMember = (member: TeamMember) => {
     setEditingMember(member);
     onAddDialogChange(true);
   };
@@ -153,7 +210,7 @@ export function InnovationTeamsContent({
 
       fetchCoreTeamData();
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      logger.error('Error removing team member', { component: 'InnovationTeamsContent', action: 'handleRemoveMember', data: { memberId } }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في إزالة عضو الفريق.",
@@ -162,12 +219,12 @@ export function InnovationTeamsContent({
     }
   };
 
-  const handleViewMember = (member: any) => {
+  const handleViewMember = (member: TeamMember) => {
     setSelectedMember(member);
     setShowDetailDialog(true);
   };
 
-  const renderMemberCard = (member: any) => {
+  const renderMemberCard = (member: TeamMember) => {
     const cardData: CoreTeamMemberData = {
       id: member.id,
       name: member.profiles?.name,
@@ -193,8 +250,8 @@ export function InnovationTeamsContent({
       availability_status: member.availability_status,
       
       // Assignments & Projects
-      activeAssignments: member.team_assignments?.filter((a: any) => a.status === 'active')?.length || 0,
-      completedAssignments: member.team_assignments?.filter((a: any) => a.status === 'completed')?.length || 0,
+      activeAssignments: member.team_assignments?.filter((a: TeamAssignment) => a.status === 'active')?.length || 0,
+      completedAssignments: member.team_assignments?.filter((a: TeamAssignment) => a.status === 'completed')?.length || 0,
       
       // Skills & Experience
       skills: member.skills,
@@ -213,7 +270,9 @@ export function InnovationTeamsContent({
       created_at: member.created_at,
       updated_at: member.updated_at,
       
-      ...member // Include any additional fields
+      // Required fields for CoreTeamMemberData
+      max_concurrent_projects: member.max_concurrent_projects || 3,
+      performance_rating: member.performance_rating || 4.0
     };
 
     const actions: CoreTeamCardAction[] = [
@@ -308,7 +367,7 @@ export function InnovationTeamsContent({
             'grid-cols-1'
           }`}>
             {coreTeamData.members
-              .filter((member: any) => 
+              .filter((member: TeamMember) => 
                 !searchTerm || 
                 member.profiles?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 member.profiles?.name_ar?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -393,7 +452,7 @@ export function InnovationTeamsContent({
           onAddDialogChange(open);
           if (!open) setEditingMember(null);
         }}
-        editingMember={editingMember}
+        editingMember={editingMember as any}
         onSuccess={() => {
           fetchCoreTeamData();
           setEditingMember(null);
@@ -429,8 +488,8 @@ export function InnovationTeamsContent({
           availability_status: selectedMember.availability_status,
           
           // Assignments & Projects
-          activeAssignments: selectedMember.team_assignments?.filter((a: any) => a.status === 'active')?.length || 0,
-          completedAssignments: selectedMember.team_assignments?.filter((a: any) => a.status === 'completed')?.length || 0,
+          activeAssignments: selectedMember.team_assignments?.filter((a: TeamAssignment) => a.status === 'active')?.length || 0,
+          completedAssignments: selectedMember.team_assignments?.filter((a: TeamAssignment) => a.status === 'completed')?.length || 0,
           
           // Skills & Experience
           skills: selectedMember.skills,
@@ -449,11 +508,13 @@ export function InnovationTeamsContent({
           created_at: selectedMember.created_at,
           updated_at: selectedMember.updated_at,
           
-          ...selectedMember
+          // Required fields for CoreTeamMemberData
+          max_concurrent_projects: selectedMember.max_concurrent_projects || 3,
+          performance_rating: selectedMember.performance_rating || 4.0
         } : null}
         onEdit={() => {
           setShowDetailDialog(false);
-          handleEditMember(selectedMember);
+          if (selectedMember) handleEditMember(selectedMember);
         }}
       />
     </div>

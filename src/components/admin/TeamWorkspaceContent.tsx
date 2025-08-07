@@ -23,11 +23,81 @@ import {
   PieChart, LineChart
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { CreateProjectDialog } from './team-workspace/CreateProjectDialog';
 import { InviteMemberDialog } from './team-workspace/InviteMemberDialog';
 import { TaskAssignmentDialog } from './team-workspace/TaskAssignmentDialog';
 import { TeamChatSheet } from './team-workspace/TeamChatSheet';
 import { MeetingSchedulerDialog } from './team-workspace/MeetingSchedulerDialog';
+
+interface TeamMemberData {
+  id: string;
+  profiles?: {
+    id: string;
+    name?: string;
+    name_ar?: string;
+    profile_image_url?: string;
+  } | {
+    id: string;
+    name: string;
+    name_ar: string;
+    profile_image_url: string;
+  }[];
+  role?: string;
+  specialization?: string;
+  current_workload?: number;
+  status?: string;
+  cic_role?: string;
+  contact_email?: string;
+  created_at?: string;
+  department?: string;
+  join_date?: string;
+  max_concurrent_projects?: number;
+  notes?: string;
+  performance_rating?: number;
+  updated_at?: string;
+  user_id?: string;
+}
+
+interface ProjectData {
+  id: string;
+  ideas?: {
+    id: string;
+    title_ar?: string;
+  };
+  status?: string;
+  role?: string;
+  joined_at?: string;
+}
+
+interface ActivityData {
+  id: number;
+  type: string;
+  message: string;
+  time: string;
+  user: string;
+}
+
+interface TeamWorkspaceData {
+  assignments: AssignmentData[];
+  projects: ProjectData[];
+  teamMembers: TeamMemberData[];
+  recentActivities: ActivityData[];
+  metrics: {
+    activeProjects: number;
+    completedTasks: number;
+    teamCapacity: number;
+    avgPerformance: number;
+    completionRate: number;
+    deadlinesMet: number;
+  };
+}
+
+interface AssignmentData {
+  id: string;
+  status: string;
+  workload_percentage?: number;
+}
 
 interface TeamWorkspaceContentProps {
   activeView: string;
@@ -46,18 +116,18 @@ export function TeamWorkspaceContent({
   const { user } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
-  const [selectedMember, setSelectedMember] = useState<any>(null);
-  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [selectedMember, setSelectedMember] = useState<TeamMemberData | null>(null);
+  const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
   const [showQuickActions, setShowQuickActions] = useState(false);
   const [showCreateProject, setShowCreateProject] = useState(false);
   const [showInviteMember, setShowInviteMember] = useState(false);
   const [showTaskAssignment, setShowTaskAssignment] = useState(false);
   const [showTeamChat, setShowTeamChat] = useState(false);
   const [showMeetingScheduler, setShowMeetingScheduler] = useState(false);
-  const [activityFeed, setActivityFeed] = useState<any[]>([]);
+  const [activityFeed, setActivityFeed] = useState<ActivityData[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newTaskAssignee, setNewTaskAssignee] = useState('');
-  const [teamData, setTeamData] = useState<any>({
+  const [teamData, setTeamData] = useState<TeamWorkspaceData>({
     assignments: [],
     projects: [],
     teamMembers: [],
@@ -117,7 +187,8 @@ export function TeamWorkspaceContent({
           *,
           profiles!user_id(
             id,
-            display_name,
+            name,
+            name_ar,
             profile_image_url
           )
         `)
@@ -140,7 +211,12 @@ export function TeamWorkspaceContent({
       setTeamData({
         assignments: assignments || [],
         projects: collaborations || [],
-        teamMembers: teamMembers || [],
+        teamMembers: (teamMembers || []).map((member: any) => ({
+          ...member,
+          profiles: Array.isArray(member.profiles) && member.profiles.length > 0 
+            ? member.profiles[0] 
+            : member.profiles
+        })),
         recentActivities,
         metrics: {
           activeProjects,
@@ -153,7 +229,7 @@ export function TeamWorkspaceContent({
       });
 
     } catch (error) {
-      console.error('Error fetching team workspace data:', error);
+      logger.error('Error fetching team workspace data', { component: 'TeamWorkspaceContent', action: 'fetchTeamWorkspaceData' }, error as Error);
       toast({
         title: "Error",
         description: "Failed to load team workspace data.",
@@ -211,9 +287,11 @@ export function TeamWorkspaceContent({
                 <SelectValue placeholder="تكليف عضو" />
               </SelectTrigger>
               <SelectContent>
-                {teamData.teamMembers.map((member: any) => (
-                  <SelectItem key={member.id} value={member.profiles?.display_name || 'مستخدم'}>
-                    {member.profiles?.display_name || 'مستخدم'}
+                {teamData.teamMembers.map((member: TeamMemberData) => (
+                  <SelectItem key={member.id} value={
+                    Array.isArray(member.profiles) ? member.profiles[0]?.name || 'مستخدم' : member.profiles?.name || 'مستخدم'
+                  }>
+                    {Array.isArray(member.profiles) ? member.profiles[0]?.name || 'مستخدم' : member.profiles?.name || 'مستخدم'}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -249,19 +327,21 @@ export function TeamWorkspaceContent({
     </Sheet>
   );
 
-  const MemberDetailDialog = ({ member }: { member: any }) => (
+  const MemberDetailDialog = ({ member }: { member: TeamMemberData }) => (
     <Dialog open={!!selectedMember} onOpenChange={() => setSelectedMember(null)}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <Avatar className="h-12 w-12">
-              <AvatarImage src={member?.profiles?.profile_image_url} />
+              <AvatarImage src={
+                Array.isArray(member?.profiles) ? member.profiles[0]?.profile_image_url : member?.profiles?.profile_image_url
+              } />
               <AvatarFallback>
-                {member?.profiles?.display_name?.charAt(0) || 'U'}
+                {Array.isArray(member?.profiles) ? member.profiles[0]?.name?.charAt(0) || 'U' : member?.profiles?.name?.charAt(0) || 'U'}
               </AvatarFallback>
             </Avatar>
             <div>
-              <h2>{member?.profiles?.display_name || 'مستخدم'}</h2>
+              <h2>{Array.isArray(member?.profiles) ? member.profiles[0]?.name || 'مستخدم' : member?.profiles?.name || 'مستخدم'}</h2>
               <p className="text-sm text-muted-foreground">{member?.role}</p>
             </div>
           </DialogTitle>
@@ -324,7 +404,7 @@ export function TeamWorkspaceContent({
     </Dialog>
   );
 
-  const ProjectDetailDialog = ({ project }: { project: any }) => (
+  const ProjectDetailDialog = ({ project }: { project: ProjectData }) => (
     <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
       <DialogContent className="max-w-3xl">
         <DialogHeader>
