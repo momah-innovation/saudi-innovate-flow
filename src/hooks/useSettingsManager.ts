@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from './useUnifiedTranslation';
-import { useTranslation } from './useAppTranslation';
 import { useToast } from './use-toast';
 
 export interface SettingsManagerProps {
@@ -19,8 +18,7 @@ export interface SettingsManagerProps {
 }
 
 export const useSettingsManager = () => {
-  const { getTranslation } = useUnifiedTranslation();
-  const { language, isRTL } = useTranslation();
+  const { getTranslation, language, isRTL } = useUnifiedTranslation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
 

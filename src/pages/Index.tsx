@@ -6,7 +6,7 @@ import { AdminChallengeManagement } from "@/components/admin/AdminChallengeManag
 import { AppShell } from "@/components/layout/AppShell";
 import { PageContainer, Section, ContentArea, PageHeader } from "@/components/ui";
 import TeamManagement from "./TeamManagement";
-import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 // Force cache refresh
 

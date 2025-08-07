@@ -164,7 +164,7 @@ export const useAppTheme = () => {
   return { theme, setTheme };
 };
 
-export const useAppTranslation = () => {
+export const useAppShellTranslation = () => {
   const { t } = useAppShell();
   return { t };
 };

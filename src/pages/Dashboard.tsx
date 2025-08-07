@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppShell } from '@/components/layout/AppShell';
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
