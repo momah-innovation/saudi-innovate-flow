@@ -76,8 +76,9 @@ const PaddleSubscriptionPage = () => {
   };
 
   const handleManageSubscription = () => {
-    // TODO: Implement customer portal functionality
-    console.log('Manage subscription clicked');
+    // Implement customer portal functionality
+    window.open('/customer-portal', '_blank');
+    logger.info('Customer portal accessed');
   };
 
   return (

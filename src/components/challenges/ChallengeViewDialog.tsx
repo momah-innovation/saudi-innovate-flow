@@ -148,11 +148,26 @@ export function ChallengeViewDialog({
   };
 
   const handleVoteSubmission = async (submissionId: string) => {
-    // TODO: Implement voting logic
-    toast({
-      title: "Voted",
-      description: "Your vote has been recorded",
-    });
+    // Implement voting logic with proper API call
+    try {
+      const { error } = await supabase
+        .from('submission_votes')
+        .insert({ submission_id: submissionId, user_id: user?.id });
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Voted",
+        description: "Your vote has been recorded",
+      });
+    } catch (error) {
+      logger.error('Failed to vote on submission', error);
+      toast({
+        title: "Error",
+        description: "Failed to record your vote",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleBookmarkSubmission = async (submissionId: string) => {
@@ -165,11 +180,26 @@ export function ChallengeViewDialog({
       return;
     }
 
-    // TODO: Implement submission bookmarking when table exists
-    toast({
-      title: "Bookmarked",
-      description: "Submission bookmarked successfully"
-    });
+    // Implement submission bookmarking
+    try {
+      const { error } = await supabase
+        .from('submission_bookmarks')
+        .insert({ submission_id: submissionId, user_id: user?.id });
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Bookmarked",
+        description: "Submission bookmarked successfully"
+      });
+    } catch (error) {
+      logger.error('Failed to bookmark submission', error);
+      toast({
+        title: "Error", 
+        description: "Failed to bookmark submission",
+        variant: "destructive"
+      });
+    }
   };
 
   const getDaysRemaining = () => {
