@@ -21,17 +21,25 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { aiService } from '@/services/AIService';
+import { logger } from '@/utils/logger';
+
+interface ModerationResult {
+  flagged: boolean;
+  confidence: number;
+  categories: string[];
+  reason?: string;
+}
 
 interface ModerationLog {
   id: string;
   content_id: string;
   content_type: string;
   content_text: string;
-  moderation_result: any;
+  moderation_result: ModerationResult;
   flagged: boolean;
   confidence_score: number;
   categories_detected: string[];
-  status: string;
+  status: 'pending' | 'approved' | 'rejected' | 'requires_review';
   created_at: string;
   moderated_by?: string;
   reviewer_id?: string;
@@ -42,7 +50,7 @@ export const ContentModerationPanel: React.FC = () => {
   const [logs, setLogs] = useState<ModerationLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [testContent, setTestContent] = useState('');
-  const [testResult, setTestResult] = useState<any>(null);
+  const [testResult, setTestResult] = useState<ModerationResult | null>(null);
   const [testing, setTesting] = useState(false);
   const [filter, setFilter] = useState<'all' | 'flagged' | 'pending'>('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -73,10 +81,11 @@ export const ContentModerationPanel: React.FC = () => {
 
       setLogs((data || []).map(item => ({
         ...item,
+        moderation_result: (item.moderation_result as unknown) as ModerationResult,
         status: item.status as 'pending' | 'approved' | 'rejected' | 'requires_review'
       })));
     } catch (error) {
-      console.error('Error fetching moderation logs:', error);
+      logger.error('Error fetching moderation logs', { component: 'ContentModerationPanel', action: 'fetchModerationLogs' }, error as Error);
       toast({
         title: t('content_moderation.error'),
         description: t('content_moderation.failed_load_logs'),
@@ -103,7 +112,7 @@ export const ContentModerationPanel: React.FC = () => {
         description: t('content_moderation.content_tested_success'),
       });
     } catch (error) {
-      console.error('Error testing content moderation:', error);
+      logger.error('Error testing content moderation', { component: 'ContentModerationPanel', action: 'testContentModeration' }, error as Error);
       toast({
         title: t('content_moderation.error'),
         description: t('content_moderation.failed_test_content'),
@@ -124,7 +133,7 @@ export const ContentModerationPanel: React.FC = () => {
       if (error) throw error;
 
       setLogs(logs.map(log => 
-        log.id === logId ? { ...log, status: newStatus as any } : log
+        log.id === logId ? { ...log, status: newStatus as ModerationLog['status'] } : log
       ));
 
       toast({
@@ -132,7 +141,7 @@ export const ContentModerationPanel: React.FC = () => {
         description: t('content_moderation.content_status_updated'),
       });
     } catch (error) {
-      console.error('Error updating log status:', error);
+      logger.error('Error updating log status', { component: 'ContentModerationPanel', action: 'updateLogStatus', data: { logId, newStatus } }, error as Error);
       toast({
         title: t('content_moderation.error'),
         description: t('content_moderation.failed_update_status'),

@@ -7,10 +7,26 @@ import { Badge } from '@/components/ui/badge';
 import { useLogflareAnalytics } from '@/hooks/useLogflareAnalytics';
 import { Activity, Database, TrendingUp, AlertCircle, Info, AlertTriangle, Bug } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
+
+interface AnalyticsData {
+  data: {
+    rows: Array<{
+      level?: string;
+      timestamp?: string;
+      message?: string;
+      event_message?: string;
+      metadata?: Record<string, unknown>;
+    }>;
+    schema?: Array<{ name: string; type: string }>;
+  };
+}
 
 export const LogflareAnalyticsDashboard = () => {
   const { getAnalytics, createSource, logEvent, isLoading } = useLogflareAnalytics();
-  const [analyticsData, setAnalyticsData] = useState<any>(null);
+  const { t } = useUnifiedTranslation();
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
   const [customQuery, setCustomQuery] = useState('SELECT * FROM logs ORDER BY timestamp DESC LIMIT 100');
   const [sourceName, setSourceName] = useState('innovation-platform');
   const [newSourceName, setNewSourceName] = useState('');
@@ -22,10 +38,11 @@ export const LogflareAnalyticsDashboard = () => {
 
   const loadAnalytics = async () => {
     try {
+      logger.info('Loading analytics data', { component: 'LogflareAnalyticsDashboard', action: 'loadAnalytics', data: { sourceName } });
       const data = await getAnalytics({ source_name: sourceName, query: customQuery });
       setAnalyticsData(data);
     } catch (error) {
-      console.error('Failed to load analytics:', error);
+      logger.error('Failed to load analytics', { component: 'LogflareAnalyticsDashboard', action: 'loadAnalytics' }, error as Error);
     }
   };
 
@@ -37,7 +54,7 @@ export const LogflareAnalyticsDashboard = () => {
       setNewSourceName('');
       setNewSourceDescription('');
     } catch (error) {
-      console.error('Failed to create source:', error);
+      logger.error('Failed to create source', { component: 'LogflareAnalyticsDashboard', action: 'handleCreateSource' }, error as Error);
     }
   };
 
@@ -81,8 +98,8 @@ export const LogflareAnalyticsDashboard = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold">Logflare Analytics</h2>
-          <p className="text-muted-foreground">Monitor logs and analytics for your innovation platform</p>
+          <h2 className="text-3xl font-bold">{t('analytics.logflare.title', 'Logflare Analytics')}</h2>
+          <p className="text-muted-foreground">{t('analytics.logflare.description', 'Monitor logs and analytics for your innovation platform')}</p>
         </div>
         <div className="flex items-center gap-2">
           <Activity className="h-5 w-5 text-primary" />
@@ -162,7 +179,7 @@ export const LogflareAnalyticsDashboard = () => {
                     
                     <div className="max-h-96 overflow-auto">
                       <div className="space-y-2">
-                        {analyticsData.data.rows.slice(0, 20).map((row: any, index: number) => (
+                        {analyticsData.data.rows.slice(0, 20).map((row, index: number) => (
                           <div key={index} className="flex items-start gap-3 p-3 border rounded-lg">
                             {row.level && getLevelIcon(row.level)}
                             <div className="flex-1 min-w-0">

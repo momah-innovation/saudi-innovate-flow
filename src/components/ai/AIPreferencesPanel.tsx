@@ -8,10 +8,13 @@ import { Badge } from '@/components/ui/badge';
 import { Bot, Brain, Lightbulb, Users, MessageSquare, Settings } from 'lucide-react';
 import { useAIFeatures } from '@/hooks/useAIFeatures';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 export const AIPreferencesPanel: React.FC = () => {
   const { features, preferences, loading, updatePreferences, isFeatureEnabled } = useAIFeatures();
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
 
   if (loading || !preferences) {
     return (
@@ -33,7 +36,8 @@ export const AIPreferencesPanel: React.FC = () => {
     );
   }
 
-  const handlePreferenceChange = (key: keyof typeof preferences, value: any) => {
+  const handlePreferenceChange = (key: keyof typeof preferences, value: string | boolean) => {
+    logger.info('AI preference changed', { component: 'AIPreferencesPanel', action: 'handlePreferenceChange', data: { key, value } });
     updatePreferences({ [key]: value });
   };
 
@@ -51,10 +55,10 @@ export const AIPreferencesPanel: React.FC = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Bot className="h-5 w-5" />
-            إعدادات الذكاء الاصطناعي
+            {t('ai_preferences.title', 'AI Settings')}
           </CardTitle>
           <CardDescription>
-            قم بتخصيص تفضيلاتك لميزات الذكاء الاصطناعي المتاحة في المنصة
+            {t('ai_preferences.description', 'Customize your preferences for AI features available on the platform')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
