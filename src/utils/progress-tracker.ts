@@ -119,6 +119,9 @@ progressTracker.initializeComponent('src/i18n/enhanced-config-v2.ts', 5, 3);
 progressTracker.initializeComponent('src/components/admin/InnovationTeamsContent.tsx', 0, 15);
 progressTracker.initializeComponent('src/components/admin/TeamWorkspaceContent.tsx', 1, 12);
 progressTracker.initializeComponent('src/components/admin/challenges/ChallengeWizardV2.tsx', 2, 12);
+progressTracker.initializeComponent('src/components/admin/challenges/ChallengeDetailView.tsx', 1, 5);
+progressTracker.initializeComponent('src/components/admin/challenges/ChallengeManagementList.tsx', 2, 0);
+progressTracker.initializeComponent('src/components/admin/TeamManagementContent.tsx', 2, 2);
 
 // Mark completed fixes
 progressTracker.markComponentCompleted('src/components/admin/TranslationManagement.tsx', 4, 8);
@@ -127,4 +130,7 @@ progressTracker.markComponentCompleted('src/i18n/enhanced-config-v2.ts', 9, 3);
 progressTracker.markComponentCompleted('src/components/admin/InnovationTeamsContent.tsx', 0, 15);
 progressTracker.markComponentCompleted('src/components/admin/TeamWorkspaceContent.tsx', 1, 12);
 progressTracker.markComponentCompleted('src/components/admin/challenges/ChallengeAnalytics.tsx', 1, 1);
+progressTracker.markComponentCompleted('src/components/admin/TeamManagementContent.tsx', 2, 2);
+progressTracker.markComponentCompleted('src/components/admin/challenges/ChallengeDetailView.tsx', 1, 5);
+progressTracker.markComponentCompleted('src/components/admin/challenges/ChallengeManagementList.tsx', 2, 0);
 progressTracker.logProgress();

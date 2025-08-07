@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/logger";
 
 import { supabase } from "@/integrations/supabase/client";
 import { 
@@ -33,6 +34,59 @@ import { format } from "date-fns";
 
 import { Challenge, ChallengeDetailViewProps } from "@/types/api";
 
+interface RelatedExpert {
+  id: string;
+  status: string;
+  role_type: string;
+  experts?: {
+    id: string;
+    expertise_areas?: string[];
+    user_id: string;
+  };
+}
+
+interface RelatedPartner {
+  id: string;
+  status: string;
+  partnership_type: string;
+  partners?: {
+    id: string;
+    name_ar?: string;
+    name?: string;
+  };
+}
+
+interface FocusQuestion {
+  id: string;
+  question_text_ar: string;
+  question_type: string;
+  is_sensitive: boolean;
+}
+
+interface Event {
+  id: string;
+  title_ar: string;
+  event_date: string;
+  status: string;
+}
+
+interface Idea {
+  id: string;
+  title_ar: string;
+  description_ar?: string;
+  status: string;
+  created_at: string;
+  overall_score?: number;
+}
+
+interface Implementation {
+  id: string;
+  completion_percentage: number;
+  milestones_completed?: number;
+  total_milestones?: number;
+  health_status?: string;
+}
+
 export function ChallengeDetailView({ 
   isOpen, 
   onClose, 
@@ -43,7 +97,15 @@ export function ChallengeDetailView({
   const { toast } = useToast();
   const { t, isRTL } = useUnifiedTranslation();
   
-  const [relatedData, setRelatedData] = useState({
+  const [relatedData, setRelatedData] = useState<{
+    experts: RelatedExpert[];
+    partners: RelatedPartner[];
+    focusQuestions: FocusQuestion[];
+    events: Event[];
+    ideas: Idea[];
+    implementation: Implementation | null;
+    analytics: any;
+  }>({
     experts: [],
     partners: [],
     focusQuestions: [],
@@ -127,7 +189,7 @@ export function ChallengeDetailView({
         analytics: null // Will be calculated
       });
     } catch (error) {
-      console.error('Error fetching related data:', error);
+      logger.error('Error fetching related data', { component: 'ChallengeDetailView', action: 'fetchRelatedData', data: { challengeId: challenge.id } }, error as Error);
     } finally {
       setLoading(false);
     }
@@ -300,7 +362,7 @@ export function ChallengeDetailView({
                       <CardContent>
                         {relatedData.experts.length > 0 ? (
                           <div className="space-y-2">
-                            {relatedData.experts.map((expert: any) => (
+                            {relatedData.experts.map((expert: RelatedExpert) => (
                               <div key={expert.id} className="flex items-center justify-between p-2 border rounded">
                                 <div>
                                   <p className="font-medium">{expert.experts?.expertise_areas?.join(', ') || 'خبير'}</p>
@@ -326,7 +388,7 @@ export function ChallengeDetailView({
                       <CardContent>
                         {relatedData.partners.length > 0 ? (
                           <div className="space-y-2">
-                            {relatedData.partners.map((partner: any) => (
+                            {relatedData.partners.map((partner: RelatedPartner) => (
                               <div key={partner.id} className="flex items-center justify-between p-2 border rounded">
                                 <div>
                                   <p className="font-medium">{partner.partners?.name_ar || partner.partners?.name}</p>
@@ -372,7 +434,7 @@ export function ChallengeDetailView({
                   <CardContent className="pt-6">
                     {relatedData.focusQuestions.length > 0 ? (
                       <div className="space-y-4">
-                        {relatedData.focusQuestions.map((question: any, index) => (
+                        {relatedData.focusQuestions.map((question: FocusQuestion, index) => (
                           <div key={question.id} className="p-4 border rounded-lg">
                             <div className="flex items-start gap-3">
                               <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">
@@ -412,7 +474,7 @@ export function ChallengeDetailView({
                   <CardContent className="pt-6">
                     {relatedData.events.length > 0 ? (
                       <div className="space-y-3">
-                        {relatedData.events.map((event: any) => (
+                        {relatedData.events.map((event: Event) => (
                           <div key={event.id} className="flex items-center gap-3 p-3 border rounded">
                             <Calendar className="w-4 h-4 text-muted-foreground" />
                             <div className="flex-1">
@@ -446,7 +508,7 @@ export function ChallengeDetailView({
                   <CardContent className="pt-6">
                     {relatedData.ideas.length > 0 ? (
                       <div className="space-y-3">
-                        {relatedData.ideas.slice(0, 5).map((idea: any) => (
+                        {relatedData.ideas.slice(0, 5).map((idea: Idea) => (
                           <div key={idea.id} className="flex items-center gap-3 p-3 border rounded">
                             <Lightbulb className="w-4 h-4 text-muted-foreground" />
                             <div className="flex-1">

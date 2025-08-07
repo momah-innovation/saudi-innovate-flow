@@ -13,6 +13,7 @@ import {
   Clock, CheckCircle, AlertTriangle, Plus
 } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -54,8 +55,16 @@ export function TeamManagementContent({
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [innovationTeams, setInnovationTeams] = useState<InnovationTeam[]>([]);
-  const [editingTeam, setEditingTeam] = useState<any>(null);
-  const [teamsData, setTeamsData] = useState({
+  const [editingTeam, setEditingTeam] = useState<InnovationTeam | null>(null);
+  const [teamsData, setTeamsData] = useState<{
+    teams: InnovationTeam[];
+    metrics: {
+      totalTeams: number;
+      activeTeams: number;
+      totalMembers: number;
+      activeProjects: number;
+    };
+  }>({
     teams: [],
     metrics: {
       totalTeams: 0,
@@ -130,7 +139,7 @@ export function TeamManagementContent({
       setInnovationTeams(mockTeams);
 
     } catch (error) {
-      console.error('Error fetching teams data:', error);
+      logger.error('Error fetching teams data', { component: 'TeamManagementContent', action: 'fetchTeamsData' }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في تحميل بيانات فرق الابتكار.",
@@ -141,7 +150,7 @@ export function TeamManagementContent({
     }
   };
 
-  const handleEditTeam = (team: any) => {
+  const handleEditTeam = (team: InnovationTeam) => {
     setEditingTeam(team);
     onAddDialogChange(true);
   };
@@ -156,7 +165,7 @@ export function TeamManagementContent({
 
       fetchTeamsData();
     } catch (error) {
-      console.error('Error removing team:', error);
+      logger.error('Error removing team', { component: 'TeamManagementContent', action: 'handleRemoveTeam', data: { teamId } }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في إزالة فريق الابتكار.",
@@ -308,7 +317,7 @@ export function TeamManagementContent({
             'grid-cols-1'
           }`}>
             {innovationTeams
-              .filter((team: any) => 
+              .filter((team: InnovationTeam) => 
                 !searchTerm || 
                 team.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 team.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||

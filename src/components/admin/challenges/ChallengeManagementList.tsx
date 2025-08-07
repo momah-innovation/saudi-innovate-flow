@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { logger } from "@/utils/logger";
 
 import { 
   Target, 
@@ -90,7 +91,7 @@ export function ChallengeManagementList() {
       if (error) throw error;
       setChallenges(data || []);
     } catch (error) {
-      console.error('Error fetching challenges:', error);
+      logger.error('Error fetching challenges', { component: 'ChallengeManagementList', action: 'fetchChallenges' }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في تحميل التحديات",
@@ -116,7 +117,7 @@ export function ChallengeManagementList() {
         description: "تم حذف التحدي بنجاح"
       });
     } catch (error) {
-      console.error('Error deleting challenge:', error);
+      logger.error('Error deleting challenge', { component: 'ChallengeManagementList', action: 'handleDelete', data: { challengeId } }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في حذف التحدي",
