@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { 
   Brain, 
   TrendingUp, 
@@ -116,7 +118,11 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
         competitiveAnalysis
       });
     } catch (error) {
-      console.error('Error loading advanced analytics:', error);
+      logger.error('Failed to load advanced analytics data', { 
+        component: 'AdvancedAnalytics', 
+        action: 'loadAdvancedData',
+        opportunityId 
+      }, error as Error);
     } finally {
       setLoading(false);
     }

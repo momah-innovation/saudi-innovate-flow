@@ -102,11 +102,16 @@ export const currentSessionProgress = {
       'src/components/ideas/IdeaTemplatesDialog.tsx - Fixed 1 console log',
       'src/components/ideas/SuccessStoriesShowcase.tsx - Fixed 1 console log',
       'src/components/ideas/TrendingIdeasWidget.tsx - Fixed 1 console log',
-      'src/components/notifications/NotificationCenter.tsx - Fixed 4 console logs'
+      'src/components/notifications/NotificationCenter.tsx - Fixed 4 console logs',
+      'src/components/opportunities/AdvancedAnalytics.tsx - Fixed 1 console log',
+      'src/components/opportunities/AnalyticsExportDialog.tsx - Fixed 3 console logs',
+      'src/components/opportunities/ShareOpportunityButton.tsx - Fixed 1 console log',
+      'src/components/search/AdvancedSearch.tsx - Fixed 1 console log',
+      'src/components/search/GlobalSearch.tsx - Fixed 1 console log'
     ],
     
     metrics: {
-      consoleLogsFixed: 206, // 196 + 10 more console logs fixed in ideas/notifications components  
+      consoleLogsFixed: 212, // 206 + 6 more console logs fixed in opportunities/search components  
       anyTypesFixed: 148,    // No new any types, but console logs migrated
       buildErrors: 0,
       healthScore: 100,
@@ -124,12 +129,12 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 134, // Down from 144 (10 more console logs migrated)  
+    consoleLogsToMigrate: 128, // Down from 134 (6 more console logs migrated)  
     anyTypesToReplace: 331,    // Same as before
-    estimatedSessionsRemaining: 2
+    estimatedSessionsRemaining: 1
   },
   
-  status: 'IDEAS_NOTIFICATIONS_PHASE_COMPLETE'
+  status: 'OPPORTUNITIES_SEARCH_PHASE_COMPLETE'
 };
 
 export default currentSessionProgress;

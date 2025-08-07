@@ -9,7 +9,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { TagSelector } from '@/components/ui/tag-selector';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
+import { logger } from '@/utils/logger';
 
 interface SearchFilters {
   query: string;
@@ -118,7 +120,11 @@ export function AdvancedSearch({
       onSearch({ ...filters, sortBy: 'ai_relevance' });
       
     } catch (error) {
-      console.error('AI search error:', error);
+      logger.error('AI semantic search failed', { 
+        component: 'AdvancedSearch', 
+        action: 'handleAiSearch',
+        query: filters.query 
+      }, error as Error);
       toast({
         title: 'خطأ في البحث الذكي',
         description: 'سيتم استخدام البحث التقليدي بدلاً من ذلك',

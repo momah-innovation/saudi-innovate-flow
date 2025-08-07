@@ -8,7 +8,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
+import { logger } from '@/utils/logger';
 
 interface SearchResult {
   id: string;
@@ -249,7 +251,11 @@ export function GlobalSearch({ placeholder, className, onResultClick }: GlobalSe
       setSelectedIndex(0);
 
     } catch (error) {
-      console.error('Search error:', error);
+      logger.error('Global search failed', { 
+        component: 'GlobalSearch', 
+        action: 'performSearch',
+        query: searchQuery 
+      }, error as Error);
       setResults([]);
     } finally {
       setIsLoading(false);

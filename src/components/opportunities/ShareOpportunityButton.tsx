@@ -5,6 +5,8 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Share2, Copy, Mail, MessageCircle, Linkedin, Twitter } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface ShareOpportunityButtonProps {
   opportunityId: string;
@@ -39,7 +41,12 @@ export const ShareOpportunityButton = ({
         }
       });
     } catch (error) {
-      console.error('Error tracking share:', error);
+      logger.error('Failed to track opportunity share', { 
+        component: 'ShareOpportunityButton', 
+        action: 'trackShare',
+        opportunityId,
+        platform 
+      }, error as Error);
     }
   };
 

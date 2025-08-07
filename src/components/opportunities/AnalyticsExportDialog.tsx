@@ -7,6 +7,8 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Download, FileText, Calendar, BarChart3, TrendingUp } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface AnalyticsExportDialogProps {
   opportunityId: string;
@@ -42,7 +44,11 @@ export const AnalyticsExportDialog = ({
       link.click();
       document.body.removeChild(link);
     } catch (error) {
-      console.error('Error exporting CSV:', error);
+      logger.error('Failed to export CSV data', { 
+        component: 'AnalyticsExportDialog', 
+        action: 'exportToCsv',
+        fileName: filename 
+      }, error as Error);
       throw error;
     }
   };
@@ -106,7 +112,11 @@ export const AnalyticsExportDialog = ({
         description: isRTL ? 'تم تصدير تقرير الإحصائيات بنجاح' : 'Analytics report exported successfully',
       });
     } catch (error) {
-      console.error('Error exporting analytics:', error);
+      logger.error('Failed to export analytics summary', { 
+        component: 'AnalyticsExportDialog', 
+        action: 'exportAnalyticsSummary',
+        opportunityId 
+      }, error as Error);
       toast({
         title: isRTL ? 'خطأ في التصدير' : 'Export Error',
         description: isRTL ? 'فشل في تصدير التقرير' : 'Failed to export report',
@@ -148,7 +158,11 @@ export const AnalyticsExportDialog = ({
         description: isRTL ? 'تم تصدير التقرير المفصل بنجاح' : 'Detailed analytics report exported successfully',
       });
     } catch (error) {
-      console.error('Error exporting detailed report:', error);
+      logger.error('Failed to export detailed analytics report', { 
+        component: 'AnalyticsExportDialog', 
+        action: 'exportDetailedReport',
+        opportunityId 
+      }, error as Error);
       toast({
         title: isRTL ? 'خطأ في التصدير' : 'Export Error',
         description: isRTL ? 'فشل في تصدير التقرير المفصل' : 'Failed to export detailed report',
