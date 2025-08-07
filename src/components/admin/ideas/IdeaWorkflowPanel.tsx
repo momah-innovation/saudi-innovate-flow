@@ -72,8 +72,8 @@ interface IdeaWorkflowPanelProps {
 
 export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: IdeaWorkflowPanelProps) {
   const { toast } = useToast();
-  const { t, isRTL } = useUnifiedTranslation();
-  const { generalStatusOptions, assignmentStatusOptions } = useSystemLists();
+  const { t, isRTL, getTranslation } = useUnifiedTranslation();
+  const { getSettingValue } = useSettingsManager();
   
   const [workflowStates, setWorkflowStates] = useState<WorkflowState[]>([]);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
@@ -90,22 +90,15 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("workflow");
 
-  // Status options from system lists
+  // Status options from settings
+  const generalStatusOptions = getSettingValue('workflow_statuses', []) as string[];
   const statusOptions = generalStatusOptions.map(status => ({ 
     value: status, 
-    label: status === 'draft' ? 'مسودة' :
-           status === 'submitted' ? 'مُرسلة' :
-           status === 'under_review' ? 'قيد المراجعة' :
-           status === 'approved' ? 'موافق عليها' :
-           status === 'rejected' ? 'مرفوضة' :
-           status === 'in_development' ? 'قيد التطوير' :
-           status === 'implemented' ? 'منفذة' : status,
+    label: getTranslation(`workflowStatuses.${status}`) || status,
     icon: <Clock className="w-4 h-4" />,
     color: 'gray'
   }));
 
-  const { getSettingValue } = useSettingsManager();
-  
   const ideaAssignmentTypes = getSettingValue('idea_assignment_types', []) as string[];
   const priorityLevels = getSettingValue('priority_levels', []) as string[];
   const assignmentTypes = ideaAssignmentTypes.map(type => ({ 
@@ -113,13 +106,10 @@ export function IdeaWorkflowPanel({ ideaId, currentStatus, onStatusChange }: Ide
     label: getTranslation(`ideaAssignmentTypes.${type}`) || type
   }));
 
-  // Priorities from system lists
+  // Priorities from settings
   const priorities = priorityLevels.map(level => ({ 
     value: level, 
-    label: level === 'low' ? 'منخفضة' :
-           level === 'medium' ? 'متوسطة' :
-           level === 'high' ? 'عالية' :
-           level === 'urgent' ? 'عاجلة' : level
+    label: getTranslation(`priorityLevels.${level}`) || level
   }));
 
   useEffect(() => {
