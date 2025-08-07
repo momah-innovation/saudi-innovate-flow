@@ -9,8 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 interface ObjectEditorProps {
-  value: Record<string, any>;
-  onChange: (newValue: Record<string, any>) => void;
+  value: Record<string, unknown>;
+  onChange: (newValue: Record<string, unknown>) => void;
   onSave?: () => void;
   title: string;
   description?: string;
@@ -26,11 +26,11 @@ export const ObjectEditor: React.FC<ObjectEditorProps> = ({
   isRTL = false 
 }) => {
   const { t: getTranslation } = useUnifiedTranslation();
-  const [objectData, setObjectData] = useState<Record<string, any>>(
+  const [objectData, setObjectData] = useState<Record<string, unknown>>(
     typeof value === 'object' && value !== null ? value : {}
   );
   const [hasChanges, setHasChanges] = useState(false);
-  const [originalData, setOriginalData] = useState<Record<string, any>>(
+  const [originalData, setOriginalData] = useState<Record<string, unknown>>(
     typeof value === 'object' && value !== null ? value : {}
   );
   const [newKeyName, setNewKeyName] = useState('');
@@ -45,7 +45,7 @@ export const ObjectEditor: React.FC<ObjectEditorProps> = ({
     setHasChanges(false);
   }, [value]);
 
-  const handlePropertyChange = (key: string, newValue: any) => {
+  const handlePropertyChange = (key: string, newValue: unknown) => {
     const updatedData = { ...objectData, [key]: newValue };
     setObjectData(updatedData);
     setJsonString(JSON.stringify(updatedData, null, 2));
@@ -100,7 +100,7 @@ export const ObjectEditor: React.FC<ObjectEditorProps> = ({
     onChange(originalData);
   };
 
-  const renderPropertyEditor = (key: string, value: any) => {
+  const renderPropertyEditor = (key: string, value: unknown) => {
     const isNestedObject = typeof value === 'object' && value !== null && !Array.isArray(value);
     
     return (

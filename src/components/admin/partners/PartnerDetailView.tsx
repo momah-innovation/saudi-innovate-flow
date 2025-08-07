@@ -258,7 +258,7 @@ export function PartnerDetailView({
               <CardContent>
                 {relatedData.active_collaborations.length > 0 ? (
                   <div className="space-y-3">
-                    {relatedData.active_collaborations.map((collaboration: any, index) => (
+                    {relatedData.active_collaborations.map((collaboration: { id: string; title_ar: string; status: string; priority_level: string }, index) => (
                       <div key={index} className="flex items-center gap-3 p-3 border rounded-lg">
                         <Target className="w-4 h-4 text-primary" />
                         <div className="flex-1">
@@ -290,7 +290,7 @@ export function PartnerDetailView({
               <CardContent>
                 {relatedData.partnership_history.length > 0 ? (
                   <div className="space-y-3">
-                    {relatedData.partnership_history.map((history: any, index) => (
+                    {relatedData.partnership_history.map((history: { id: string; title: string; date: string; status: string }, index) => (
                       <div key={index} className="flex items-start gap-3 p-3 border rounded-lg">
                         <CheckCircle className="w-4 h-4 mt-1 icon-success" />
                         <div className="flex-1">

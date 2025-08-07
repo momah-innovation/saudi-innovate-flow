@@ -8,8 +8,8 @@ import { useDirection } from "@/components/ui/direction-provider";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 interface ArrayEditorProps {
-  value: string[] | any[];
-  onChange: (newValue: any[]) => void;
+  value: string[] | Record<string, unknown>[];
+  onChange: (newValue: Array<string | Record<string, unknown>>) => void;
   onSave?: () => void;
   title: string;
   description?: string;
@@ -27,9 +27,9 @@ export const ArrayEditor: React.FC<ArrayEditorProps> = ({
   isRTL = false 
 }) => {
   const { t: getTranslation } = useUnifiedTranslation();
-  const [items, setItems] = useState<any[]>(Array.isArray(value) ? value : []);
+  const [items, setItems] = useState<Array<string | Record<string, unknown>>>(Array.isArray(value) ? value : []);
   const [hasChanges, setHasChanges] = useState(false);
-  const [originalItems, setOriginalItems] = useState<any[]>(Array.isArray(value) ? value : []);
+  const [originalItems, setOriginalItems] = useState<Array<string | Record<string, unknown>>>(Array.isArray(value) ? value : []);
 
   useEffect(() => {
     const newItems = Array.isArray(value) ? value : [];
@@ -38,7 +38,7 @@ export const ArrayEditor: React.FC<ArrayEditorProps> = ({
     setHasChanges(false);
   }, [value]);
 
-  const handleItemChange = (index: number, newValue: any) => {
+  const handleItemChange = (index: number, newValue: string | Record<string, unknown>) => {
     const updatedItems = [...items];
     updatedItems[index] = newValue;
     setItems(updatedItems);
@@ -104,7 +104,7 @@ export const ArrayEditor: React.FC<ArrayEditorProps> = ({
     </div>
   );
 
-  const renderObjectItem = (item: any, index: number) => (
+  const renderObjectItem = (item: Record<string, unknown>, index: number) => (
     <Card key={index} className="mb-2">
       <CardContent className="p-3">
         <div className={`flex items-start justify-between mb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
@@ -195,11 +195,13 @@ export const ArrayEditor: React.FC<ArrayEditorProps> = ({
               </p>
             </div>
           ) : (
-            items.map((item, index) =>
-              itemType === 'string' 
-                ? renderStringItem(item, index)
-                : renderObjectItem(item, index)
-            )
+            items.map((item, index) => {
+              if (itemType === 'string') {
+                return renderStringItem(item as string, index);
+              } else {
+                return renderObjectItem(item as Record<string, unknown>, index);
+              }
+            })
           )}
         </div>
 

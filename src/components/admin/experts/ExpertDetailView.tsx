@@ -287,7 +287,7 @@ export function ExpertDetailView({
               <CardContent>
                 {relatedData.team_activities.length > 0 ? (
                   <div className="space-y-3">
-                    {relatedData.team_activities.map((activity: any, index) => (
+                    {relatedData.team_activities.map((activity: { id: string; title: string; date: string }, index) => (
                       <div key={index} className="flex items-start gap-3 p-3 border rounded-lg">
                         <CheckCircle className="w-4 h-4 mt-1 icon-success" />
                         <div className="flex-1">

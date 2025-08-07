@@ -24,7 +24,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
   const { isRTL } = useDirection();
   const { t } = useUnifiedTranslation();
   const [expandedArrays, setExpandedArrays] = useState<Set<string>>(new Set());
-  const [pendingChanges, setPendingChanges] = useState<Record<string, any>>({});
+  const [pendingChanges, setPendingChanges] = useState<Record<string, { value: unknown; category: string; dataType: string }>>({});
   const {
     settings,
     updateSetting,
@@ -52,7 +52,7 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
     return acc;
   }, {} as Record<string, typeof filteredSettings>);
 
-  const handleSettingChange = (key: string, value: any, category: string, dataType: string) => {
+  const handleSettingChange = (key: string, value: unknown, category: string, dataType: string) => {
     // Store pending change
     setPendingChanges(prev => ({ ...prev, [key]: { value, category, dataType } }));
   };
@@ -101,8 +101,8 @@ export const UnifiedSettingsManager: React.FC<UnifiedSettingsManagerProps> = ({
     });
   };
 
-  const renderSettingInput = (setting: any) => {
-    const originalValue = getSettingValue(setting.setting_key, setting.default_value);
+  const renderSettingInput = (setting: { id: string; setting_key: string; setting_category: string; data_type: string; setting_value: unknown; default_value?: unknown }) => {
+    const originalValue = getSettingValue(setting.setting_key, setting.default_value || setting.setting_value);
     const pendingChange = pendingChanges[setting.setting_key];
     const currentValue = pendingChange?.value ?? originalValue;
     const hasChanges = pendingChange !== undefined;

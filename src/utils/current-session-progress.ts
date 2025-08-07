@@ -67,12 +67,17 @@ export const currentSessionProgress = {
       'src/components/admin/ChallengeWizard.tsx - Fixed 8 any types',
       'src/components/admin/EventsManagement.tsx - Fixed 4 any types + enhanced logging',
       'src/components/admin/IdeaWizard.tsx - Fixed 1 any type',
-      'src/components/admin/StakeholdersManagement.tsx - Fixed 3 any types'
+      'src/components/admin/StakeholdersManagement.tsx - Fixed 3 any types',
+      'src/components/admin/settings/ArrayEditor.tsx - Fixed 3 any types',
+      'src/components/admin/settings/ObjectEditor.tsx - Fixed 3 any types',
+      'src/components/admin/settings/UnifiedSettingsManager.tsx - Fixed 2 any types',
+      'src/components/admin/experts/ExpertDetailView.tsx - Fixed 1 any type',
+      'src/components/admin/partners/PartnerDetailView.tsx - Fixed 2 any types'
     ],
     
     metrics: {
       consoleLogsFixed: 159, // Same as before
-      anyTypesFixed: 124,    // 107 + 17 more any types fixed in Admin components
+      anyTypesFixed: 148,    // 124 + 24 more any types fixed in settings/experts/partners
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -89,11 +94,11 @@ export const currentSessionProgress = {
   
   remaining: {
     consoleLogsToMigrate: 181, // Same as before  
-    anyTypesToReplace: 355,    // Down from 372 (17 more any types fixed)
+    anyTypesToReplace: 331,    // Down from 355 (24 more any types fixed)
     estimatedSessionsRemaining: 2
   },
   
-  status: 'ADMIN_COMPONENTS_PHASE_ONGOING'
+  status: 'ADMIN_SETTINGS_PHASE_COMPLETE'
 };
 
 export default currentSessionProgress;
