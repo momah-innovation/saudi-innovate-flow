@@ -9,11 +9,7 @@ import { Plus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
-
-interface FocusQuestionSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
-}
+import { FocusQuestionSettingsProps } from "@/types/admin-settings";
 
 export function FocusQuestionSettings({ settings, onSettingChange }: FocusQuestionSettingsProps) {
   const { toast } = useToast();
@@ -21,7 +17,7 @@ export function FocusQuestionSettings({ settings, onSettingChange }: FocusQuesti
   const { isRTL } = useDirection();
   const [newQuestionType, setNewQuestionType] = useState("");
   
-  const focusQuestionTypes = settings.focus_question_types || ["عام", "تقني", "تجاري", "تأثير", "تنفيذ", "اجتماعي", "أخلاقي", "طبي", "تنظيمي"];
+  const focusQuestionTypes = (settings.focus_question_types as string[]) || ["عام", "تقني", "تجاري", "تأثير", "تنفيذ", "اجتماعي", "أخلاقي", "طبي", "تنظيمي"];
 
   const addQuestionType = () => {
     if (newQuestionType.trim() && !focusQuestionTypes.includes(newQuestionType)) {
@@ -94,7 +90,7 @@ export function FocusQuestionSettings({ settings, onSettingChange }: FocusQuesti
               <Input
                 id="maxQuestionsPerChallenge"
                 type="number"
-                value={settings.maxQuestionsPerChallenge || 10}
+                value={(settings.maxQuestionsPerChallenge as number) || 10}
                 onChange={(e) => onSettingChange('maxQuestionsPerChallenge', parseInt(e.target.value))}
                 min="1"
                 max="50"
@@ -107,7 +103,7 @@ export function FocusQuestionSettings({ settings, onSettingChange }: FocusQuesti
               <Input
                 id="questionMinLength"
                 type="number"
-                value={settings.questionMinLength || 20}
+                value={(settings.questionMinLength as number) || 20}
                 onChange={(e) => onSettingChange('questionMinLength', parseInt(e.target.value))}
                 min="5"
                 max="100"
@@ -120,7 +116,7 @@ export function FocusQuestionSettings({ settings, onSettingChange }: FocusQuesti
               <Input
                 id="questionMaxLength"
                 type="number"
-                value={settings.questionMaxLength || 500}
+                value={(settings.questionMaxLength as number) || 500}
                 onChange={(e) => onSettingChange('questionMaxLength', parseInt(e.target.value))}
                 min="100"
                 max="2000"
@@ -133,7 +129,7 @@ export function FocusQuestionSettings({ settings, onSettingChange }: FocusQuesti
               <Input
                 id="questionResponseTimeLimit"
                 type="number"
-                value={settings.questionResponseTimeLimit || 7}
+                value={(settings.questionResponseTimeLimit as number) || 7}
                 onChange={(e) => onSettingChange('questionResponseTimeLimit', parseInt(e.target.value))}
                 min="1"
                 max="30"
@@ -159,7 +155,7 @@ export function FocusQuestionSettings({ settings, onSettingChange }: FocusQuesti
               <p className="text-sm text-muted-foreground">السماح بطرح أسئلة بدون الكشف عن الهوية</p>
             </div>
             <Switch 
-              checked={settings.enableAnonymousQuestions || false}
+              checked={(settings.enableAnonymousQuestions as boolean) || false}
               onCheckedChange={(checked) => onSettingChange('enableAnonymousQuestions', checked)}
             />
           </div>

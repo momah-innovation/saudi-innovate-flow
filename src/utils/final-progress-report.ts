@@ -3,6 +3,8 @@
  * Comprehensive tracking of all improvements made
  */
 
+import { logger } from './logger';
+
 export interface FixedIssue {
   category: string;
   description: string;
@@ -114,7 +116,7 @@ export class FinalProgressTracker {
   logSuccessSummary(): void {
     const report = this.generateHealthReport();
     
-    console.log(`
+    logger.info(`
 🎯 CODEBASE HEALTH REPORT - ${new Date().toLocaleString()}
 ==========================================================
 

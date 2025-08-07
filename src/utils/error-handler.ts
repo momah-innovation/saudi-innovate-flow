@@ -155,7 +155,7 @@ export class Logger {
 
   static info(message: string, data?: unknown): void {
     if (Logger.isDevelopment) {
-      console.log(`[INFO] ${message}`, data || '');
+      logger.info(message, { data });
     }
     // TODO: Send to logging service in production
   }

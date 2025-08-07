@@ -10,11 +10,7 @@ import { Plus, X, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
-
-interface PerformanceSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
-}
+import { PerformanceSettingsProps } from "@/types/admin-settings";
 
 export function PerformanceSettings({ settings, onSettingChange }: PerformanceSettingsProps) {
   const { toast } = useToast();

@@ -164,12 +164,12 @@ export interface BaseSettingsProps {
   onSettingChange: SettingsChangeHandler;
 }
 
-// Specific props interfaces for each settings component
 export interface AISettingsProps extends BaseSettingsProps {}
 export interface AnalyticsSettingsProps extends BaseSettingsProps {}
 export interface CampaignSettingsProps extends BaseSettingsProps {}
 export interface ChallengeSettingsProps extends BaseSettingsProps {}
 export interface EventSettingsProps extends BaseSettingsProps {}
+export interface FocusQuestionSettingsProps extends BaseSettingsProps {}
 export interface GeneralSettingsProps extends BaseSettingsProps {}
 export interface IntegrationSettingsProps extends BaseSettingsProps {}
 export interface NotificationSettingsProps extends BaseSettingsProps {}
@@ -178,7 +178,9 @@ export interface OrganizationalSettingsProps extends BaseSettingsProps {}
 export interface PartnerSettingsProps extends BaseSettingsProps {}
 export interface PerformanceSettingsProps extends BaseSettingsProps {}
 export interface SecuritySettingsProps extends BaseSettingsProps {}
+export interface SectorManagementSettingsProps extends BaseSettingsProps {}
 export interface StakeholderSettingsProps extends BaseSettingsProps {}
+export interface SystemListSettingsProps extends BaseSettingsProps {}
 export interface TeamSettingsProps extends BaseSettingsProps {}
 export interface UISettingsProps extends BaseSettingsProps {}
 export interface UserManagementSettingsProps extends BaseSettingsProps {}

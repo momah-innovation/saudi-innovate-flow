@@ -11,11 +11,7 @@ import { Plus, X, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
-
-interface OpportunitySettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
-}
+import { OpportunitySettingsProps } from "@/types/admin-settings";
 
 export function OpportunitySettings({ settings, onSettingChange }: OpportunitySettingsProps) {
   const { toast } = useToast();
@@ -24,8 +20,8 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
   const [newOpportunityType, setNewOpportunityType] = useState("");
   const [newApplicationStatus, setNewApplicationStatus] = useState("");
   
-  const opportunityTypes = settings.opportunity_types || ["تطوير حلول", "شراكة تقنية", "تنفيذ مشروع", "استشارة", "تدريب"];
-  const applicationStatusOptions = settings.application_status_options || ["مقدم", "قيد المراجعة", "مقبول", "مرفوض", "معلق"];
+  const opportunityTypes = (settings.opportunity_types as string[]) || ["تطوير حلول", "شراكة تقنية", "تنفيذ مشروع", "استشارة", "تدريب"];
+  const applicationStatusOptions = (settings.application_status_options as string[]) || ["مقدم", "قيد المراجعة", "مقبول", "مرفوض", "معلق"];
 
   const addOpportunityType = () => {
     if (newOpportunityType.trim() && !opportunityTypes.includes(newOpportunityType)) {
@@ -168,7 +164,7 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
                 type="number"
                 min="1"
                 max="365"
-                value={settings.defaultOpportunityDuration || 30}
+                value={(settings.defaultOpportunityDuration as number) || 30}
                 onChange={(e) => onSettingChange('defaultOpportunityDuration', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
@@ -183,7 +179,7 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
                 type="number"
                 min="1"
                 max="1000"
-                value={settings.maxApplicationsPerOpportunity || 100}
+                value={(settings.maxApplicationsPerOpportunity as number) || 100}
                 onChange={(e) => onSettingChange('maxApplicationsPerOpportunity', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
@@ -197,7 +193,7 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
                 id="defaultBudgetMin"
                 type="number"
                 min="0"
-                value={settings.defaultBudgetMin || 0}
+                value={(settings.defaultBudgetMin as number) || 0}
                 onChange={(e) => onSettingChange('defaultBudgetMin', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
@@ -211,7 +207,7 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
                 id="defaultBudgetMax"
                 type="number"
                 min="0"
-                value={settings.defaultBudgetMax || 1000000}
+                value={(settings.defaultBudgetMax as number) || 1000000}
                 onChange={(e) => onSettingChange('defaultBudgetMax', parseInt(e.target.value))}
                 className={isRTL ? 'text-right' : 'text-left'}
               />
@@ -228,7 +224,7 @@ export function OpportunitySettings({ settings, onSettingChange }: OpportunitySe
               </p>
             </div>
             <Switch
-              checked={settings.enableAutoApproval || false}
+              checked={(settings.enableAutoApproval as boolean) || false}
               onCheckedChange={(checked) => onSettingChange('enableAutoApproval', checked)}
             />
           </div>

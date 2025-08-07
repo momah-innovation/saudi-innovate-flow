@@ -129,17 +129,24 @@ export const currentSessionProgress = {
       'src/utils/bundle-analyzer.ts - Fixed 2 console logs + 1 any type',
       'src/utils/component-optimization.ts - Fixed 2 console logs',
       'src/utils/downloadOpportunityImages.ts - Fixed 3 console logs',
-      'src/components/admin/settings/AISettings.tsx - Fixed 2 any types',
-      'src/components/admin/settings/AnalyticsSettings.tsx - Fixed 2 any types',
-      'src/components/admin/settings/CampaignSettings.tsx - Fixed 2 any types', 
-      'src/components/admin/settings/ChallengeSettings.tsx - Fixed 2 any types',
-      'src/components/admin/settings/EventSettings.tsx - Fixed 2 any types',
-      'src/components/admin/settings/GeneralSettings.tsx - Fixed 2 any types'
+      'src/utils/error-handler.ts - Fixed 1 console log',
+      'src/utils/final-progress-report.ts - Fixed 1 console log',
+      'src/utils/performance-monitoring.ts - Fixed 1 console log + 2 any types',
+      'src/utils/performance-optimization.ts - Fixed 5 console logs',
+      'src/utils/performance-tracker.ts - Fixed 2 console logs',
+      'src/components/admin/settings/FocusQuestionSettings.tsx - Fixed 2 any types',
+      'src/components/admin/settings/IntegrationSettings.tsx - Fixed 2 any types',
+      'src/components/admin/settings/NotificationSettings.tsx - Fixed 2 any types',
+      'src/components/admin/settings/OpportunitySettings.tsx - Fixed 2 any types',
+      'src/components/admin/settings/OrganizationalSettings.tsx - Fixed 2 any types',
+      'src/components/admin/settings/PartnerSettings.tsx - Fixed 2 any types',
+      'src/components/admin/settings/PerformanceSettings.tsx - Fixed 2 any types',
+      'src/components/admin/settings/SecuritySettings.tsx - Fixed 2 any types'
     ],
     
     metrics: {
-      consoleLogsFixed: 271, // 264 + 7 more console logs fixed
-      anyTypesFixed: 161,    // 148 + 13 more any types fixed
+      consoleLogsFixed: 286, // 271 + 15 more console logs fixed
+      anyTypesFixed: 177,    // 161 + 16 more any types fixed  
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -156,8 +163,8 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 69, // Down from 76 (7 more console logs migrated)
-    anyTypesToReplace: 318,   // Down from 331 (13 more any types fixed)
+    consoleLogsToMigrate: 54, // Down from 69 (15 more console logs migrated)
+    anyTypesToReplace: 302,   // Down from 318 (16 more any types fixed)
     estimatedSessionsRemaining: 1
   },
   

@@ -3,6 +3,8 @@
  * Tools and utilities for analyzing and optimizing bundle size
  */
 
+import { logger } from './logger';
+
 // Bundle analysis script that can be run to identify optimization opportunities
 export interface BundleAnalysisResult {
   totalSize: number;
@@ -98,7 +100,7 @@ export const performanceMetrics = {
     const start = performance.now();
     renderFn();
     const end = performance.now();
-    console.log(`${componentName} render time: ${end - start}ms`);
+    logger.performance(`${componentName} render`, end - start);
   },
   
   // Track bundle loading times
@@ -106,7 +108,7 @@ export const performanceMetrics = {
     const start = performance.now();
     await loadFn();
     const end = performance.now();
-    console.log(`${bundleName} load time: ${end - start}ms`);
+    logger.performance(`${bundleName} load`, end - start);
   },
   
   // Core Web Vitals tracking
@@ -115,14 +117,14 @@ export const performanceMetrics = {
     new PerformanceObserver((entryList) => {
       const entries = entryList.getEntries();
       const lastEntry = entries[entries.length - 1];
-      console.log('LCP:', lastEntry.startTime);
+      logger.debug('LCP measured', { startTime: lastEntry.startTime });
     }).observe({ entryTypes: ['largest-contentful-paint'] });
     
     // FID (First Input Delay) 
     new PerformanceObserver((entryList) => {
       const entries = entryList.getEntries();
       entries.forEach((entry: any) => {
-        console.log('FID:', entry.processingStart - entry.startTime);
+        logger.debug('FID measured', { delay: entry.processingStart - entry.startTime });
       });
     }).observe({ entryTypes: ['first-input'] });
     
@@ -131,7 +133,7 @@ export const performanceMetrics = {
       const entries = entryList.getEntries();
       entries.forEach((entry: any) => {
         if (!entry.hadRecentInput) {
-          console.log('CLS:', entry.value);
+          logger.debug('CLS measured', { value: entry.value });
         }
       });
     }).observe({ entryTypes: ['layout-shift'] });

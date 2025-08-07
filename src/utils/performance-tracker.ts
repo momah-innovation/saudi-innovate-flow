@@ -3,6 +3,7 @@
  * Comprehensive tracking for Phase 8 completion
  */
 
+import { logger } from './logger';
 import { performanceMetrics, imageOptimizations } from './performance-optimization';
 import { analyzeBundlePerformance, trackMemoryUsage } from './bundle-analyzer';
 import { iconUsageTracker } from './icon-optimization';
@@ -63,7 +64,7 @@ export class Phase8ProgressTracker {
 
   markTaskComplete(taskId: keyof typeof this.tasks) {
     this.completedTasks.add(taskId);
-    console.log(`✅ Phase 8 Task Completed: ${this.tasks[taskId]}`);
+    logger.info(`Phase 8 Task Completed: ${this.tasks[taskId]}`, { taskId });
   }
 
   getProgress(): { completed: number; total: number; percentage: number } {
@@ -158,7 +159,7 @@ export class Phase8ProgressTracker {
     const progress = this.getProgress();
     const remaining = this.getRemainingTasks();
     
-    console.log(`
+    logger.info(`
 📊 Phase 8: Performance Optimization Progress
 ============================================
 ✅ Completed: ${progress.completed}/${progress.total} tasks (${progress.percentage}%)

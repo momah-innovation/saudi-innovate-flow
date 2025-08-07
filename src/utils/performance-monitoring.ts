@@ -3,6 +3,8 @@
  * Tracks and enforces performance budgets in production
  */
 
+import { logger } from './logger';
+
 interface PerformanceBudget {
   // Bundle size limits (in bytes)
   maxBundleSize: number
@@ -165,7 +167,7 @@ export class PerformanceMonitor {
     // In production, send to monitoring service (Sentry, DataDog, etc.)
     if (import.meta.env.PROD) {
       // Example: Send to Sentry
-      console.log('Performance issue reported:', { metric, value, budget })
+      logger.warn('Performance issue reported', { metric, value, budget });
     }
   }
   
