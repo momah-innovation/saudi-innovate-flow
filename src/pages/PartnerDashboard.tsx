@@ -231,7 +231,7 @@ export default function PartnerDashboard() {
       });
       
     } catch (error) {
-      console.error('Error loading partner data:', error);
+      logger.error('Error loading partner data', { partnerId: userProfile?.id }, error as Error);
       
       // Fallback to demo data on error
       setStats({

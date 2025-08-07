@@ -17,6 +17,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { AppShell } from '@/components/layout/AppShell';
+import { logger } from '@/utils/logger';
 import { EnhancedPartnerProfileHero } from '@/components/partners/EnhancedPartnerProfileHero';
 
 interface PartnerProfile {
@@ -211,7 +212,7 @@ export default function PartnerProfile() {
         setIsEditing(true); // New profile, start in edit mode
       }
     } catch (error) {
-      console.error('Error loading partner profile:', error);
+      logger.error('Error loading partner profile', { partnerId: userProfile?.id }, error as Error);
       toast.error('Error loading partner profile');
     } finally {
       setLoading(false);
@@ -248,7 +249,7 @@ export default function PartnerProfile() {
       await loadPartnerProfile();
       
     } catch (error) {
-      console.error('Error saving partner profile:', error);
+      logger.error('Error saving partner profile', { partnerId: userProfile?.id }, error as Error);
       toast.error('Error saving partner profile');
     } finally {
       setSaving(false);

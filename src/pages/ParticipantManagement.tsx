@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ParticipantManagement } from "@/components/events/ParticipantManagement";
 import { AppShell } from "@/components/layout/AppShell";
 import { useToast } from "@/hooks/use-toast";
+import { logger } from '@/utils/logger';
 
 interface Event {
   id: string;
@@ -37,7 +38,7 @@ const ParticipantManagementPage = () => {
 
       setEvent(data);
     } catch (error) {
-      console.error('Error fetching event:', error);
+      logger.error('Error fetching event', { eventId }, error as Error);
       toast({
         title: "Error",
         description: "Failed to fetch event details",

@@ -362,7 +362,7 @@ export default function IdeasPage() {
         });
       }
     } catch (error) {
-      console.error('Error loading personal metrics:', error);
+      logger.error('Error loading personal metrics', { userId: userProfile?.id }, error as Error);
     } finally {
       setLoading(false);
     }
@@ -382,7 +382,7 @@ export default function IdeasPage() {
         title: isRTL ? 'تم حذف المسودة بنجاح' : 'Draft deleted successfully'
       });
     } catch (error) {
-      console.error('Error deleting draft:', error);
+      logger.error('Error deleting draft', { entityId: draftId }, error as Error);
       toast({
         title: isRTL ? 'فشل في حذف المسودة' : 'Failed to delete draft',
         variant: 'destructive'
@@ -422,7 +422,7 @@ export default function IdeasPage() {
       if (error) throw error;
       setBookmarkedIdeas(data?.map(bookmark => bookmark.idea_id) || []);
     } catch (error) {
-      console.error('Error loading bookmarks:', error);
+      logger.error('Error loading bookmarks', { userId: userProfile?.id }, error as Error);
     }
   };
 
@@ -438,7 +438,7 @@ export default function IdeasPage() {
       if (error) throw error;
       setLikedIdeas(data?.map(like => like.idea_id) || []);
     } catch (error) {
-      console.error('Error loading likes:', error);
+      logger.error('Error loading likes', { userId: userProfile?.id }, error as Error);
     }
   };
 
@@ -452,7 +452,7 @@ export default function IdeasPage() {
       if (error) throw error;
       setFeaturedIdeas(data?.map(idea => idea.id) || []);
     } catch (error) {
-      console.error('Error loading featured ideas:', error);
+      logger.error('Error loading featured ideas', {}, error as Error);
     }
   };
 

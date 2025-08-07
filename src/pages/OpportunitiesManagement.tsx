@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import { supabase } from '@/integrations/supabase/client';
 import { Plus, Search, Edit, Trash2, Eye, Calendar, Target, Users, Building, DollarSign, MessageSquare, BarChart3, Clock, Filter } from 'lucide-react';
 import { CreateOpportunityDialog } from '@/components/opportunities/CreateOpportunityDialog';
@@ -92,7 +93,7 @@ export default function OpportunitiesManagement() {
 
       setOpportunities(processedData);
     } catch (error) {
-      console.error('Error loading opportunities:', error);
+      logger.error('Error loading opportunities', {}, error as Error);
       toast({
         title: t('error'),
         description: t('errorLoadingData'),
