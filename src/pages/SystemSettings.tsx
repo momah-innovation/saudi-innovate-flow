@@ -7,10 +7,10 @@ import { AppShell } from "@/components/layout/AppShell";
 import { UnifiedSettingsManager } from "@/components/admin/settings/UnifiedSettingsManager";
 import TranslationManagement from "@/components/admin/TranslationManagement";
 import { useDirection } from "@/components/ui/direction-provider";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 const SystemSettings = () => {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [activeTab, setActiveTab] = useState("all");
   const { isRTL } = useDirection();
 
