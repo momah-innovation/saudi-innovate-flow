@@ -8051,6 +8051,10 @@ export type Database = {
         }
         Returns: Json
       }
+      audit_user_permissions: {
+        Args: { _user_id: string }
+        Returns: Json
+      }
       auto_setup_storage_quotas: {
         Args: Record<PropertyKey, never>
         Returns: Json
