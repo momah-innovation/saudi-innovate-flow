@@ -1,0 +1,43 @@
+-- Add Advanced Search translation keys
+INSERT INTO system_translations (translation_key, text_en, text_ar, category) VALUES
+('advanced_search.title', 'Advanced Search', 'البحث المتقدم', 'search'),
+('advanced_search.filters_active', 'filters active', 'مرشحات نشطة', 'search'),
+('advanced_search.search_query', 'Search Query', 'استعلام البحث', 'search'),
+('advanced_search.search_placeholder', 'Enter your search query...', 'أدخل استعلام البحث...', 'search'),
+('advanced_search.select_status', 'Select status', 'اختر الحالة', 'search'),
+('advanced_search.all_statuses', 'All Statuses', 'جميع الحالات', 'search'),
+('advanced_search.select_priority', 'Select priority', 'اختر الأولوية', 'search'),
+('advanced_search.all_priorities', 'All Priorities', 'جميع الأولويات', 'search'),
+('advanced_search.date_range', 'Date Range', 'نطاق التواريخ', 'search'),
+('advanced_search.start_date', 'Start Date', 'تاريخ البداية', 'search'),
+('advanced_search.end_date', 'End Date', 'تاريخ النهاية', 'search'),
+('advanced_search.budget_range', 'Budget Range', 'نطاق الميزانية', 'search'),
+('advanced_search.minimum_budget', 'Minimum Budget', 'الحد الأدنى للميزانية', 'search'),
+('advanced_search.maximum_budget', 'Maximum Budget', 'الحد الأقصى للميزانية', 'search'),
+('advanced_search.tags', 'Tags', 'العلامات', 'search'),
+('advanced_search.tag_selector_coming_soon', 'Tag selector coming soon', 'منتقي العلامات قريباً', 'search'),
+('advanced_search.clear_filters', 'Clear Filters', 'مسح المرشحات', 'search'),
+
+-- Add Challenge Form translation keys
+('challenge_form.create_challenge', 'Create Challenge', 'إنشاء تحدي', 'challenge'),
+('challenge_form.edit_challenge', 'Edit Challenge', 'تعديل التحدي', 'challenge'),
+('challenge_form.create_challenge_description', 'Create a new innovation challenge to engage participants', 'إنشاء تحدي ابتكاري جديد لإشراك المشاركين', 'challenge'),
+('challenge_form.edit_challenge_description', 'Update challenge details and requirements', 'تحديث تفاصيل ومتطلبات التحدي', 'challenge'),
+('challenge_form.challenge_title', 'Challenge Title', 'عنوان التحدي', 'challenge'),
+('challenge_form.challenge_title_placeholder', 'Enter a compelling challenge title...', 'أدخل عنوان تحدي مثير...', 'challenge'),
+('challenge_form.challenge_description', 'Challenge Description', 'وصف التحدي', 'challenge'),
+('challenge_form.challenge_description_placeholder', 'Describe the challenge objectives and what participants should achieve...', 'اوصف أهداف التحدي وما يجب على المشاركين تحقيقه...', 'challenge'),
+('challenge_form.challenge_type', 'Challenge Type', 'نوع التحدي', 'challenge'),
+('challenge_form.select_challenge_type', 'Select challenge type', 'اختر نوع التحدي', 'challenge'),
+('challenge_form.priority_level', 'Priority Level', 'مستوى الأولوية', 'challenge'),
+('challenge_form.estimated_budget', 'Estimated Budget', 'الميزانية المقدرة', 'challenge'),
+('challenge_form.budget_placeholder', 'Enter budget amount in SAR...', 'أدخل مبلغ الميزانية بالريال السعودي...', 'challenge'),
+('challenge_form.start_date', 'Start Date', 'تاريخ البداية', 'challenge'),
+('challenge_form.end_date', 'End Date', 'تاريخ النهاية', 'challenge'),
+('challenge_form.max_participants', 'Maximum Participants', 'العدد الأقصى للمشاركين', 'challenge'),
+('challenge_form.max_participants_placeholder', 'Enter maximum number of participants...', 'أدخل العدد الأقصى للمشاركين...', 'challenge'),
+('challenge_form.challenge_image', 'Challenge Image', 'صورة التحدي', 'challenge'),
+('challenge_form.saving', 'Saving...', 'جاري الحفظ...', 'challenge'),
+('challenge_form.save_changes', 'Save Changes', 'حفظ التغييرات', 'challenge')
+
+ON CONFLICT (translation_key) DO NOTHING;
