@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
+import React, { useState, useRef, useCallback } from 'react';
 import { Upload, X, File, Image, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -50,7 +51,7 @@ export function FileUploadField({
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const { getSettingValue } = useSettingsManager();
-    const sizes = getSettingValue('file_size_units', ['Bytes', 'KB', 'MB', 'GB']) as string[];
+    const sizes = getSettingValue('file_size_display_units', ['Bytes', 'KB', 'MB', 'GB']) as string[];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
