@@ -10,8 +10,9 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   Filter, X, RotateCcw, Target, Star, TrendingUp, 
-  Calendar, Building, Users, Zap, FileCheck 
-} from 'lucide-react';
+   Calendar, Building, Users, Zap, FileCheck 
+ } from 'lucide-react';
+import { logger } from '@/utils/logger';
 
 interface FilterState {
   status: string[];
@@ -67,7 +68,7 @@ export function IdeaFiltersDialog({
       setSectors(sectorsData || []);
       setChallenges(challengesData || []);
     } catch (error) {
-      console.error('Error loading filter options:', error);
+      logger.error('Error loading filter options', { component: 'IdeaFiltersDialog', action: 'loadFilterOptions' }, error as Error);
     }
   };
 

@@ -23,6 +23,7 @@ import { DashboardHero } from './DashboardHero';
 import { AdminDashboard } from './AdminDashboard';
 import { ExpertDashboard } from './ExpertDashboard';
 import { PartnerDashboard } from './PartnerDashboard';
+import { logger } from '@/utils/logger';
 
 interface DashboardStats {
   totalIdeas: number;
@@ -127,7 +128,7 @@ export default function UserDashboard() {
         loadUserGoals()
       ]);
     } catch (error) {
-      console.error('Error loading dashboard data:', error);
+      logger.error('Error loading dashboard data', { component: 'UserDashboard', action: 'loadDashboardData' }, error as Error);
       toast.error('خطأ في تحميل بيانات لوحة القيادة');
     } finally {
       setLoading(false);

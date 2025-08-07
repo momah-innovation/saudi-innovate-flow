@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, Activity, Clock, CheckCircle, AlertTriangle, User, Database } from 'lucide-react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 
 interface SystemActivity {
   id: string;
@@ -69,7 +70,7 @@ export function SystemActivityDialog({ isOpen, onClose }: SystemActivityDialogPr
 
       setActivities(mappedActivities);
     } catch (error) {
-      console.error('Error fetching system activities:', error);
+      logger.error('Error fetching system activities', { component: 'SystemActivityDialog', action: 'fetchSystemActivities' }, error as Error);
       // Set mock data for demo
       setActivities([
         {

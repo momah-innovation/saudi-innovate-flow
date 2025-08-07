@@ -13,8 +13,9 @@ import {
   Heart, MessageSquare, Share2, Flag, Eye, Star, Trophy, Target, 
   Rocket, Zap, FileText, BarChart3, User, Plus, Bookmark,
   Calendar, MapPin, ExternalLink, ThumbsUp, CheckCircle,
-  Lightbulb, Award, Sparkles
-} from 'lucide-react';
+   Lightbulb, Award, Sparkles
+ } from 'lucide-react';
+import { logger } from '@/utils/logger';
 
 interface Idea {
   id: string;
@@ -121,7 +122,7 @@ export function IdeaDetailDialog({
       if (error) throw error;
       setComments(data || []);
     } catch (error) {
-      console.error('Error loading comments:', error);
+      logger.error('Error loading comments', { component: 'IdeaDetailDialog', action: 'loadComments', ideaId: idea.id }, error as Error);
     }
   };
 
@@ -134,7 +135,7 @@ export function IdeaDetailDialog({
         .update({ view_count: (idea.view_count || 0) + 1 })
         .eq('id', idea.id);
     } catch (error) {
-      console.error('Error incrementing view count:', error);
+      logger.error('Error incrementing view count', { component: 'IdeaDetailDialog', action: 'incrementViewCount', ideaId: idea.id }, error as Error);
     }
   };
 
@@ -169,7 +170,7 @@ export function IdeaDetailDialog({
       setShowCommentForm(false);
       await loadComments();
     } catch (error) {
-      console.error('Error adding comment:', error);
+      logger.error('Error adding comment', { component: 'IdeaDetailDialog', action: 'handleAddComment', ideaId: idea.id }, error as Error);
       toast({
         title: isRTL ? 'خطأ في إضافة التعليق' : 'Error adding comment',
         variant: 'destructive'

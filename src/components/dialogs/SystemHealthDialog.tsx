@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Loader2, Server, Database, HardDrive, Cpu, Wifi, Shield, AlertTriangle, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 
 interface SystemHealth {
   overall_status: 'healthy' | 'warning' | 'critical';
@@ -58,7 +59,7 @@ export function SystemHealthDialog({ isOpen, onClose }: SystemHealthDialogProps)
 
       setHealth(mockHealth);
     } catch (error) {
-      console.error('Error fetching system health:', error);
+      logger.error('Error fetching system health', { component: 'SystemHealthDialog', action: 'fetchSystemHealth' }, error as Error);
     } finally {
       setLoading(false);
     }

@@ -82,11 +82,16 @@ export const currentSessionProgress = {
       'src/components/ai/SmartSearchPanel.tsx - Fixed 4 console logs',
       'src/components/analytics/AnalyticsDashboard.tsx - Fixed 1 console log',
       'src/components/ideas/GamificationDashboard.tsx - Fixed 1 console log',
-      'src/components/ideas/IdeaAnalyticsDashboard.tsx - Fixed 1 console log'
+      'src/components/ideas/IdeaAnalyticsDashboard.tsx - Fixed 1 console log',
+      'src/components/dashboard/UserDashboard.tsx - Fixed 1 console log',
+      'src/components/dialogs/SystemActivityDialog.tsx - Fixed 1 console log',
+      'src/components/dialogs/SystemHealthDialog.tsx - Fixed 1 console log',
+      'src/components/ideas/IdeaDetailDialog.tsx - Fixed 3 console logs',
+      'src/components/ideas/IdeaFiltersDialog.tsx - Fixed 1 console log'
     ],
     
     metrics: {
-      consoleLogsFixed: 170, // 162 + 8 more console logs fixed in AI/analytics/ideas components
+      consoleLogsFixed: 177, // 170 + 7 more console logs fixed in dashboard/dialogs/ideas components
       anyTypesFixed: 148,    // No new any types, but console logs migrated
       buildErrors: 0,
       healthScore: 100,
@@ -103,12 +108,12 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 170, // Down from 178 (8 more console logs migrated)  
+    consoleLogsToMigrate: 163, // Down from 170 (7 more console logs migrated)  
     anyTypesToReplace: 331,    // Same as before
     estimatedSessionsRemaining: 2
   },
   
-  status: 'AI_ANALYTICS_IDEAS_PHASE_COMPLETE'
+  status: 'DASHBOARD_DIALOGS_IDEAS_PHASE_COMPLETE'
 };
 
 export default currentSessionProgress;
