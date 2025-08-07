@@ -13,8 +13,8 @@ import { useDirection } from "@/components/ui/direction-provider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface IntegrationSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
+  settings: Record<string, unknown>;
+  onSettingChange: (key: string, value: unknown) => void;
 }
 
 export function IntegrationSettings({ settings, onSettingChange }: IntegrationSettingsProps) {

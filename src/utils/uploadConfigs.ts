@@ -248,7 +248,7 @@ export const UPLOAD_CONFIGS = {
 
 // Helper functions for creating upload configurations
 export const createUploadConfig = (
-  baseConfig: typeof UPLOAD_CONFIGS[keyof typeof UPLOAD_CONFIGS] | any,
+  baseConfig: typeof UPLOAD_CONFIGS[keyof typeof UPLOAD_CONFIGS],
   entityId?: string,
   tableName?: string,
   columnName?: string
@@ -316,13 +316,13 @@ export const getUploadConfig = (
 // New function to resolve upload configuration dynamically
 export function resolveUploadConfig(
   configKey: string,
-  uploaderSettings?: any,
+  uploaderSettings?: Record<string, unknown>,
   entityId?: string,
   tableName?: string,
   columnName?: string
 ): FileUploadConfig | null {
   // Try to get database configuration first
-  const dbConfig = uploaderSettings?.getUploadConfig?.(configKey)
+  const dbConfig = (uploaderSettings as any)?.getUploadConfig?.(configKey)
   
   // Fallback to hardcoded config
   const hardcodedConfig = UPLOAD_CONFIGS[configKey as keyof typeof UPLOAD_CONFIGS]

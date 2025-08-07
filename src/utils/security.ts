@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client'
+import { logger } from './logger'
 import { fileValidation } from '@/config/production'
 
 /**
@@ -37,7 +38,7 @@ export class SecureFileUpload {
       })
     
     if (error) {
-      console.error('File upload failed:', error)
+      logger.error('File upload failed', { component: 'SecurityUtils', action: 'secureFileUpload' }, error as Error)
       throw new Error('File upload failed')
     }
     
@@ -70,7 +71,7 @@ export class SecureFileUpload {
         throw new Error('File contains malicious content')
       }
     } catch (error) {
-      console.warn('Virus scanning unavailable, proceeding without scan')
+      logger.warn('Virus scanning unavailable, proceeding without scan', { component: 'SecurityUtils', action: 'scanFile' })
       // In production, you might want to reject uploads if scanning fails
     }
   }

@@ -1,5 +1,5 @@
 interface AnalyticsCache {
-  data: any;
+  data: Record<string, unknown>;
   timestamp: number;
   opportunityId: string;
 }
@@ -8,7 +8,7 @@ class AnalyticsCacheManager {
   private cache = new Map<string, AnalyticsCache>();
   private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
-  set(opportunityId: string, data: any) {
+  set(opportunityId: string, data: Record<string, unknown>) {
     this.cache.set(opportunityId, {
       data,
       timestamp: Date.now(),
@@ -16,7 +16,7 @@ class AnalyticsCacheManager {
     });
   }
 
-  get(opportunityId: string): any | null {
+  get(opportunityId: string): Record<string, unknown> | null {
     const cached = this.cache.get(opportunityId);
     if (!cached) return null;
 

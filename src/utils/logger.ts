@@ -27,7 +27,7 @@ export interface LogContext {
   opportunityId?: string;
   platform?: string;
   selectedTypes?: string[];
-  filters?: any;
+  filters?: Record<string, unknown>;
   data?: Record<string, any>;
   debugName?: string;
   renderCount?: number;
@@ -35,7 +35,7 @@ export interface LogContext {
   transformedCount?: number;
   roles?: string[];
   count?: number;
-  sensitivityLevels?: any[];
+  sensitivityLevels?: unknown[];
   sampleId?: string;
   timeSinceLastRender?: number;
   props?: Record<string, any>;
@@ -67,7 +67,7 @@ export interface LogContext {
   metric?: string;
   startTime?: number;
   delay?: number;
-  value?: any;
+  value?: unknown;
   taskId?: string;
   budget?: number;
   itemId?: string;
@@ -81,6 +81,8 @@ export interface LogContext {
   stepName?: string;
   participantId?: string;
   planId?: string;
+  endpoint?: string;
+  responseTime?: number;
 }
 
 export enum LogLevel {
@@ -137,12 +139,12 @@ class Logger {
   }
 
   // Specialized methods for common use cases
-  api(action: string, status: 'success' | 'error', data?: any, error?: Error): void {
+  api(action: string, status: 'success' | 'error', data?: Record<string, unknown>, error?: Error): void {
     const level = status === 'success' ? LogLevel.INFO : LogLevel.ERROR;
     this.log(level, `API ${action}`, { action, status, data }, error);
   }
 
-  user(action: string, userId?: string, data?: any): void {
+  user(action: string, userId?: string, data?: Record<string, unknown>): void {
     this.log(LogLevel.INFO, `User action: ${action}`, { action, userId, data });
   }
 

@@ -53,7 +53,7 @@ export class PerformanceMonitor {
       // FID (First Input Delay)
       const fidObserver = new PerformanceObserver((list) => {
         const entries = list.getEntries()
-        entries.forEach((entry: any) => {
+        entries.forEach((entry: PerformanceEventTiming) => {
           const fid = entry.processingStart - entry.startTime
           this.vitals.fid = fid
           this.checkBudget('fid', fid)
@@ -100,7 +100,7 @@ export class PerformanceMonitor {
     
     const budget = budgetMap[metric]
     if (budget && value > budget) {
-      console.warn(`Performance budget exceeded for ${metric}: ${value} > ${budget}`)
+      logger.warn('Performance budget exceeded', { component: 'PerformanceMonitor', metric, value, budget })
       
       // Send to monitoring service in production
       this.reportPerformanceIssue(metric, value, budget)
@@ -121,7 +121,7 @@ export class PerformanceMonitor {
         const responseTime = performance.now() - startTime
         
         if (responseTime > PERFORMANCE_BUDGET.maxAPIResponseTime) {
-          console.warn(`API response time exceeded for ${endpoint}: ${responseTime}ms`)
+          logger.warn('API response time exceeded', { component: 'PerformanceMonitor', endpoint, responseTime, budget: PERFORMANCE_BUDGET.maxAPIResponseTime })
           this.reportPerformanceIssue('api', responseTime, PERFORMANCE_BUDGET.maxAPIResponseTime)
         }
         
@@ -129,7 +129,7 @@ export class PerformanceMonitor {
       })
       .catch((error) => {
         const responseTime = performance.now() - startTime
-        console.error(`API call failed for ${endpoint} after ${responseTime}ms:`, error)
+        logger.error('API call failed', { component: 'PerformanceMonitor', endpoint, responseTime }, error as Error)
         throw error
       })
   }
@@ -143,7 +143,7 @@ export class PerformanceMonitor {
       const usedMB = memory.usedJSHeapSize / 1024 / 1024
       
       if (usedMB > PERFORMANCE_BUDGET.maxMemoryUsage) {
-        console.warn(`Memory usage exceeded: ${usedMB}MB > ${PERFORMANCE_BUDGET.maxMemoryUsage}MB`)
+        logger.warn('Memory usage exceeded', { component: 'PerformanceMonitor', usedMB, budget: PERFORMANCE_BUDGET.maxMemoryUsage })
         this.reportPerformanceIssue('memory', usedMB, PERFORMANCE_BUDGET.maxMemoryUsage)
       }
     }

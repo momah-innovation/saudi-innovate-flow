@@ -123,7 +123,7 @@ export const performanceMetrics = {
     // FID (First Input Delay) 
     new PerformanceObserver((entryList) => {
       const entries = entryList.getEntries();
-      entries.forEach((entry: any) => {
+      entries.forEach((entry: PerformanceEventTiming) => {
         logger.debug('FID measured', { delay: entry.processingStart - entry.startTime });
       });
     }).observe({ entryTypes: ['first-input'] });
@@ -132,8 +132,8 @@ export const performanceMetrics = {
     new PerformanceObserver((entryList) => {
       const entries = entryList.getEntries();
       entries.forEach((entry: any) => {
-        if (!entry.hadRecentInput) {
-          logger.debug('CLS measured', { value: entry.value });
+        if (!(entry as any).hadRecentInput) {
+          logger.debug('CLS measured', { value: (entry as any).value });
         }
       });
     }).observe({ entryTypes: ['layout-shift'] });

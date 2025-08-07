@@ -12,8 +12,8 @@ import { useDirection } from "@/components/ui/direction-provider";
 import { supabase } from "@/integrations/supabase/client";
 
 interface PartnerSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
+  settings: Record<string, unknown>;
+  onSettingChange: (key: string, value: unknown) => void;
 }
 
 export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsProps) {
