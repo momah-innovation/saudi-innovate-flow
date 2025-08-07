@@ -24,6 +24,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { SystemActivityDialog } from '@/components/dialogs/SystemActivityDialog';
 import { SystemHealthDialog } from '@/components/dialogs/SystemHealthDialog';
 import { TestPrivilegeElevation } from '@/components/admin/TestPrivilegeElevation';
+import { logger } from '@/utils/logger';
 
 export default function AdminDashboard() {
   const { toast } = useToast();
@@ -113,7 +114,7 @@ export default function AdminDashboard() {
       }
       
     } catch (error) {
-      console.error('Error loading dashboard data:', error);
+      logger.error('Failed to load admin dashboard data', { component: 'AdminDashboard', action: 'loadDashboardData' }, error as Error);
       toast({
         title: 'Error',
         description: 'Failed to load dashboard data',

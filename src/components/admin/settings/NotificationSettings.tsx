@@ -13,8 +13,8 @@ import { useDirection } from "@/components/ui/direction-provider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface NotificationSettingsProps {
-  settings: Record<string, unknown>;
-  onSettingChange: (key: string, value: unknown) => void;
+  settings: any;
+  onSettingChange: (key: string, value: any) => void;
 }
 
 export function NotificationSettings({ settings, onSettingChange }: NotificationSettingsProps) {

@@ -11,6 +11,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { ChallengeActivityHub as ActivityHubComponent } from '@/components/challenges/ChallengeActivityHub';
+import { logger } from '@/utils/logger';
 import { AdminLayout } from '@/components/layout/AdminLayout';
 import {
   ArrowLeft,
@@ -77,7 +78,7 @@ export default function ChallengeActivityHub() {
       if (error) throw error;
       setChallenge(data);
     } catch (error) {
-      console.error('Error fetching challenge:', error);
+      logger.error('Failed to fetch challenge data', { component: 'ChallengeActivityHub', action: 'fetchChallenge', challengeId }, error as Error);
       toast({
         variant: "destructive",
         title: isRTL ? "خطأ" : "Error",

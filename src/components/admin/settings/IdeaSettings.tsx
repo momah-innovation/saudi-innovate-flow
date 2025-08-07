@@ -13,12 +13,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
 
 interface SettingsData {
-  [key: string]: unknown;
+  [key: string]: any;
 }
 
 interface IdeaSettingsProps {
   settings: SettingsData;
-  onSettingChange: (key: string, value: unknown) => void;
+  onSettingChange: (key: string, value: any) => void;
 }
 
 export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
@@ -52,7 +52,7 @@ export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
 
       if (error) throw error;
 
-      const settingsObj = data?.reduce((acc: Record<string, unknown>, setting: Record<string, unknown>) => {
+      const settingsObj = data?.reduce((acc: any, setting: any) => {
         acc[setting.setting_key] = setting.setting_value;
         return acc;
       }, {} as SettingsData) || {};
@@ -63,7 +63,7 @@ export function IdeaSettings({ settings, onSettingChange }: IdeaSettingsProps) {
     }
   };
 
-  const updateSystemSetting = async (key: string, value: unknown) => {
+  const updateSystemSetting = async (key: string, value: any) => {
     try {
       const { error } = await supabase
         .from('system_settings')

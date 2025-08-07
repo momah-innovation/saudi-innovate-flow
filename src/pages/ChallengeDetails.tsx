@@ -35,6 +35,7 @@ import { useSystemLists } from "@/hooks/useSystemLists";
 import { ChallengeExpertAssignmentWizard } from "@/components/challenges/ChallengeExpertAssignmentWizard";
 import { ChallengeFocusQuestionWizard } from "@/components/challenges/ChallengeFocusQuestionWizard";
 import { AdminLayout } from "@/components/layout/AdminLayout";
+import { logger } from '@/utils/logger';
 
 interface Challenge {
   id: string;
@@ -159,7 +160,7 @@ const ChallengeDetails = () => {
         setSystemSettings(settings);
       }
     } catch (error) {
-      console.error('Error loading system settings:', error);
+      logger.error('Failed to load system settings', { component: 'ChallengeDetails', action: 'loadSystemSettings' }, error as Error);
     }
   };
 
@@ -281,7 +282,7 @@ const ChallengeDetails = () => {
       // Also refetch to ensure data consistency
       fetchAssignedExperts();
     } catch (error) {
-      console.error('Error removing expert:', error);
+      logger.error('Failed to remove expert from challenge', { component: 'ChallengeDetails', action: 'removeExpert' }, error as Error);
       toast({
         title: "Error",
         description: "Failed to remove expert",
@@ -302,7 +303,7 @@ const ChallengeDetails = () => {
         .single();
 
       if (challengeError) {
-        console.error('Error fetching challenge:', challengeError);
+        logger.error('Failed to fetch challenge details', { component: 'ChallengeDetails', action: 'fetchChallengeDetails', challengeId }, challengeError as Error);
         toast({
           title: "Error",
           description: "Failed to load challenge details",
@@ -324,7 +325,7 @@ const ChallengeDetails = () => {
         .order('order_sequence');
 
       if (questionsError) {
-        console.error('Error fetching focus questions:', questionsError);
+        logger.error('Failed to fetch focus questions', { component: 'ChallengeDetails', action: 'fetchFocusQuestions', challengeId }, questionsError as Error);
       } else {
         setFocusQuestions((questionsData as any) || []);
       }
@@ -362,7 +363,7 @@ const ChallengeDetails = () => {
       }
 
     } catch (error) {
-      console.error('Error in fetchChallengeDetails:', error);
+      logger.error('Error in fetchChallengeDetails', { component: 'ChallengeDetails', action: 'fetchChallengeDetails', challengeId }, error as Error);
       toast({
         title: "Error",
         description: "An unexpected error occurred",
@@ -439,7 +440,7 @@ const ChallengeDetails = () => {
 
       setOrgHierarchy(hierarchy);
     } catch (error) {
-      console.error('Error fetching organizational hierarchy:', error);
+      logger.error('Failed to fetch organizational hierarchy', { component: 'ChallengeDetails', action: 'fetchOrganizationalHierarchy' }, error as Error);
     }
   };
 
@@ -485,7 +486,7 @@ const ChallengeDetails = () => {
         description: "Challenge updated successfully",
       });
     } catch (error) {
-      console.error('Error saving field:', error);
+      logger.error('Failed to save challenge field', { component: 'ChallengeDetails', action: 'saveField', challengeId }, error as Error);
       toast({
         title: "Error", 
         description: "Failed to save changes",
@@ -515,7 +516,7 @@ const ChallengeDetails = () => {
         description: `Challenge marked as ${newSensitivity}`,
       });
     } catch (error) {
-      console.error('Error updating sensitivity:', error);
+      logger.error('Failed to update challenge sensitivity', { component: 'ChallengeDetails', action: 'updateSensitivity', challengeId }, error as Error);
       toast({
         title: "Error",
         description: "Failed to update sensitivity level",
