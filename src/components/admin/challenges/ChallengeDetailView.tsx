@@ -104,7 +104,12 @@ export function ChallengeDetailView({
     events: Event[];
     ideas: Idea[];
     implementation: Implementation | null;
-    analytics: any;
+    analytics: {
+      views?: number;
+      submissions?: number;
+      participants?: number;
+      completion_rate?: number;
+    };
   }>({
     experts: [],
     partners: [],
@@ -245,10 +250,10 @@ export function ChallengeDetailView({
             <div className="space-y-2">
               <DialogTitle className="text-2xl font-bold">{challenge.title_ar}</DialogTitle>
               <div className="flex items-center gap-2">
-                <Badge variant={getStatusColor(challenge.status) as any}>
+                <Badge variant={getStatusColor(challenge.status) as 'default' | 'secondary' | 'destructive' | 'outline'}>
                   {getStatusLabel(challenge.status)}
                 </Badge>
-                <Badge variant={getPriorityColor(challenge.priority_level) as any}>
+                <Badge variant={getPriorityColor(challenge.priority_level) as 'default' | 'secondary' | 'destructive' | 'outline'}>
                   {getPriorityLabel(challenge.priority_level)}
                 </Badge>
                 <Badge variant="outline">{challenge.challenge_type}</Badge>

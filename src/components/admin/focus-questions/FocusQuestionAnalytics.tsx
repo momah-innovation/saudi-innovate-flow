@@ -88,7 +88,16 @@ export function FocusQuestionAnalytics() {
     }
   };
 
-  const processAnalyticsData = (questions: any[]): AnalyticsData => {
+  interface QuestionData {
+    id: string;
+    is_sensitive?: boolean;
+    challenge_id?: string;
+    question_type?: string;
+    created_at?: string;
+    complexity_level?: string;
+  }
+  
+  const processAnalyticsData = (questions: QuestionData[]): AnalyticsData => {
     const overview = {
       totalQuestions: questions.length,
       activeQuestions: questions.filter(q => !q.is_sensitive || q.challenge_id).length,

@@ -58,7 +58,7 @@ interface DatabaseRecord {
   name?: string;
   name_ar?: string;
   name_en?: string;
-  [key: string]: any;
+  [key: string]: string | number | boolean | null | undefined;
 }
 
 interface SystemLists {
