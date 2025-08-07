@@ -16,7 +16,7 @@ import {
   Calendar
  } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
+import { getInitials, useSystemSettings } from '@/contexts/SystemSettingsContext';
 
 interface ExpertProfile {
   id: string;

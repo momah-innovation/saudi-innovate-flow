@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { cn } from '@/lib/utils';
-import { getInitials } from '@/hooks/useSystemSettings';
+import { getInitials } from '@/contexts/SystemSettingsContext';
 
 interface ProfileHeroProps {
   userProfile?: any;

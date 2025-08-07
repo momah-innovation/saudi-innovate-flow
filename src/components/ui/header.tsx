@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { NotificationCenter } from "@/components/notifications/NotificationCenter";
-import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
+import { getInitials, useSystemSettings } from '@/contexts/SystemSettingsContext';
 import { Heading1 } from "@/components/ui";
 import { useDirection, directionUtils } from "@/components/ui";
 import { useTheme } from "@/components/ui/theme-provider";

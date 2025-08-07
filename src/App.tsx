@@ -7,7 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { I18nextProvider } from "react-i18next";
-import i18n from "./i18n/config";
+import i18n from "./i18n/enhanced-config-v2";
 import { AuthProvider } from "@/contexts/AuthContext";
 
 import { DirectionProvider } from "@/components/ui/direction-provider";

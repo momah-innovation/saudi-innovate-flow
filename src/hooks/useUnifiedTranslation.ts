@@ -93,7 +93,7 @@ export function useUnifiedTranslation() {
 
       // Strategy 2: i18next static translation with full interpolation support
       const i18nextResult = i18nextT(key, fallbackOrOptions);
-      if (i18nextResult && i18nextResult !== key && i18nextResult.trim() !== '') {
+      if (i18nextResult && i18nextResult !== key && typeof i18nextResult === 'string' && i18nextResult.trim() !== '') {
         return i18nextResult;
       }
 

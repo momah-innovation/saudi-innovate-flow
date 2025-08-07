@@ -14,7 +14,7 @@ import { Separator } from '@/components/ui/separator';
 import { CheckCircle2, XCircle, Clock, Search, UserCheck, MessageSquare, Eye, User, Shield, Calendar, Mail, Building, Phone } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
+import { getInitials, useSystemSettings } from '@/contexts/SystemSettingsContext';
 import { useSystemLists } from '@/hooks/useSystemLists';
 import { ExpertProfileView } from '@/components/experts/ExpertProfileCard';
 

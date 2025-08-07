@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useSystemTranslations } from './useSystemTranslations';
+import { useUnifiedTranslation } from './useUnifiedTranslation';
 import { useTranslation } from './useAppTranslation';
 import { useToast } from './use-toast';
 
@@ -19,7 +19,7 @@ export interface SettingsManagerProps {
 }
 
 export const useSettingsManager = () => {
-  const { getTranslation } = useSystemTranslations();
+  const { getTranslation } = useUnifiedTranslation();
   const { language, isRTL } = useTranslation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -87,13 +87,13 @@ export const useSettingsManager = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['all-system-settings'] });
       toast({
-        title: getTranslation('settings.save.success', 'Settings saved successfully'),
-        description: getTranslation('settings.save.success.description', 'Your changes have been saved'),
+        title: getTranslation('settings.save.success') || 'Settings saved successfully',
+        description: getTranslation('settings.save.success.description') || 'Your changes have been saved',
       });
     },
     onError: (error) => {
       toast({
-        title: getTranslation('settings.save.error', 'Error saving settings'),
+        title: getTranslation('settings.save.error') || 'Error saving settings',
         description: error.message,
         variant: "destructive"
       });
@@ -113,13 +113,13 @@ export const useSettingsManager = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['all-system-settings'] });
       toast({
-        title: getTranslation('settings.delete.success', 'Setting deleted'),
-        description: getTranslation('settings.delete.success.description', 'The setting has been removed'),
+        title: getTranslation('settings.delete.success') || 'Setting deleted',
+        description: getTranslation('settings.delete.success.description') || 'The setting has been removed',
       });
     },
     onError: (error) => {
       toast({
-        title: getTranslation('settings.delete.error', 'Error deleting setting'),
+        title: getTranslation('settings.delete.error') || 'Error deleting setting',
         description: error.message,
         variant: "destructive"
       });
@@ -148,13 +148,13 @@ export const useSettingsManager = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['all-system-settings'] });
       toast({
-        title: getTranslation('settings.bulk.success', 'Settings saved'),
-        description: getTranslation('settings.bulk.success.description', 'All changes have been saved'),
+        title: getTranslation('settings.bulk.success') || 'Settings saved',
+        description: getTranslation('settings.bulk.success.description') || 'All changes have been saved',
       });
     },
     onError: (error) => {
       toast({
-        title: getTranslation('settings.bulk.error', 'Error saving settings'),
+        title: getTranslation('settings.bulk.error') || 'Error saving settings',
         description: error.message,
         variant: "destructive"
       });
@@ -188,12 +188,12 @@ export const useSettingsManager = () => {
 
   // Get localized label for setting
   const getSettingLabel = (key: string) => {
-    return getTranslation(`settings.${key}.label`, key.replace(/_/g, ' '));
+    return getTranslation(`settings.${key}.label`) || key.replace(/_/g, ' ');
   };
 
   // Get localized description for setting
   const getSettingDescription = (key: string) => {
-    return getTranslation(`settings.${key}.description`, '');
+    return getTranslation(`settings.${key}.description`) || '';
   };
 
   // Check if setting is shared across systems

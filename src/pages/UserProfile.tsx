@@ -12,7 +12,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { AppShell } from "@/components/layout/AppShell";
 import { useNavigate } from "react-router-dom";
-import { getInitials, useSystemSettings } from '@/hooks/useSystemSettings';
+import { getInitials, useSystemSettings } from '@/contexts/SystemSettingsContext';
 import { EnhancedProfileHero } from '@/components/profile/EnhancedProfileHero';
 
 interface ProfileForm {
