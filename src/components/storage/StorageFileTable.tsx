@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Eye, Download, Trash2, FileImage, FileText, Video, Music, Files } from 'lucide-react'
 import { format } from 'date-fns'
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface StorageFile {
   name: string

@@ -8,7 +8,7 @@ import {
   Calendar,
   Database
 } from 'lucide-react';
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface StorageStatsCardsProps {
   stats: {

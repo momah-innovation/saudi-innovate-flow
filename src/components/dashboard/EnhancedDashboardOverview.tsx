@@ -11,7 +11,7 @@ import {
   BarChart3, PieChart, LineChart, Globe, Shield, Cpu, ArrowUp, ArrowDown, Minus
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { supabase } from "@/integrations/supabase/client";
 import { useDirection } from "@/components/ui/direction-provider";
 import { toast } from "sonner";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";

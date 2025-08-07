@@ -9,7 +9,7 @@ import { StoragePoliciesHero } from './StoragePoliciesHero'
 import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
 import { useAuth } from '@/contexts/AuthContext'
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useRTLAwareClasses } from '@/components/ui/rtl-aware'
 import { 
   Shield, 

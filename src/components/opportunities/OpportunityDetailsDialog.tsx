@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { ShareOpportunityDialog } from './ShareOpportunityDialog';
 import { BookmarkOpportunityButton } from './BookmarkOpportunityButton';
 import { LikeOpportunityButton } from './LikeOpportunityButton';

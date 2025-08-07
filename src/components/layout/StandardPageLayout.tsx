@@ -8,7 +8,7 @@ import { CompactSearchAndFilters } from "@/components/ui/compact-search-filters"
 import { BulkActions } from "@/components/ui/bulk-actions";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 // Use unified ViewMode from layout-selector
 export type FilterConfig = {

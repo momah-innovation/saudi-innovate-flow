@@ -16,7 +16,7 @@ import {
   User, Mail, Phone, MapPin, Globe, Calendar, Shield, 
   Bell, Lock, Camera, Save, Edit2, CheckCircle
 } from 'lucide-react';
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface ProfileSettings {
   emailNotifications: boolean;

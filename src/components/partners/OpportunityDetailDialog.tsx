@@ -17,7 +17,7 @@ import {
   Calendar, DollarSign, Users, FileText, 
   Target, Clock, Send, Building
 } from 'lucide-react';
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { toast } from 'sonner';
 
 interface OpportunityItem {

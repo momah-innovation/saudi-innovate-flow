@@ -14,7 +14,7 @@ import {
   Calendar, DollarSign, Users, FileText, 
   Target, TrendingUp, MessageSquare, Edit
 } from 'lucide-react';
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface Partnership {
   id: string;

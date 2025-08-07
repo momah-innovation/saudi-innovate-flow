@@ -13,7 +13,7 @@ import {
 import { cn } from '@/lib/utils';
 // import { useAuth } from '@/hooks/useAuth';
 // import { useProfile } from '@/hooks/useProfile';
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';

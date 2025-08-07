@@ -20,7 +20,7 @@ import {
   Building
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { cn } from '@/lib/utils';
 
 interface PartnerDashboardHeroProps {

@@ -1,7 +1,7 @@
 import { Languages } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export function LanguageToggle() {
   const { language, setLanguage } = useDirection();

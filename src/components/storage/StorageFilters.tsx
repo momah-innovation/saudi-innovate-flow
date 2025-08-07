@@ -23,7 +23,7 @@ import {
   FileAudio,
   File
 } from 'lucide-react';
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 export interface FilterOptions {
   fileType: string;

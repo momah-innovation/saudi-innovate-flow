@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { ConfigurationDialog } from './ConfigurationDialog'
 import { useToast } from '@/hooks/use-toast'
-import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useSystemHealth } from '@/hooks/useSystemHealth'
 import { supabase } from '@/integrations/supabase/client'
 import { 

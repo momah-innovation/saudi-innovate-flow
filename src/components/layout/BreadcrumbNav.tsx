@@ -7,7 +7,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Home } from "lucide-react";
-import { useUnifiedTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useDirection } from "@/components/ui/direction-provider";
 
 interface BreadcrumbNavProps {
