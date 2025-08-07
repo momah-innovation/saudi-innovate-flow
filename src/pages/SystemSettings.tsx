@@ -11,17 +11,24 @@ import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRoleAccess } from "@/hooks/useRoleAccess";
 import { usePerformanceMonitor } from "@/hooks/performance/use-optimization";
+import { useToast } from "@/hooks/use-toast";
+import { useSystemSettings } from "@/contexts/SystemSettingsContext";
+import { useDebounce } from "@/hooks/useDebounce";
 import { logger } from "@/utils/logger";
 const SystemSettings = () => {
   const { t } = useUnifiedTranslation();
   const [activeTab, setActiveTab] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const { isRTL } = useDirection();
   
   // Authentication and permissions
   const { userProfile, hasRole } = useAuth();
   const { permissions } = useRoleAccess();
   
-  // Performance monitoring
+  // Essential hooks for system settings functionality
+  const { toast } = useToast();
+  const systemSettings = useSystemSettings();
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const performanceMonitor = usePerformanceMonitor('SystemSettings');
   
   // Track admin access to system settings
