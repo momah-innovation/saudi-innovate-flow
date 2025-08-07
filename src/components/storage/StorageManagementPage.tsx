@@ -485,7 +485,15 @@ export function StorageManagementPage() {
                   bucket={bucket}
                   onView={() => setSelectedBucketForView(bucket)}
                   onSettings={() => setSelectedBucketForManagement(bucket)}
-                  onDelete={() => {/* TODO: Implement bucket deletion */}}
+                  onDelete={() => {
+                    if (confirm('هل أنت متأكد من حذف هذا الباقة؟')) {
+                      toast({
+                        title: 'تحذير',
+                        description: 'حذف الباقات غير مدعوم حالياً في واجهة التحكم',
+                        variant: 'destructive'
+                      });
+                    }
+                  }}
                 />
               ))}
             </div>

@@ -99,7 +99,13 @@ export class AppErrorHandler {
       component: context 
     });
     
-    // TODO: Send to error tracking service (Sentry, LogRocket, etc.)
+    // Send to error tracking service
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'exception', {
+        description: logData.message,
+        fatal: (logData as any).severity === 'critical' || false
+      });
+    }
   }
 
   /**

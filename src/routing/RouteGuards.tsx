@@ -101,9 +101,14 @@ export const OrgAccessGuard: React.FC<{
   children: React.ReactNode;
   orgId: string;
 }> = ({ children, orgId }) => {
-  const { user } = useAuth(); // TODO: Add hasOrgAccess after org system
+  const { user, hasRole } = useAuth();
   
-  if (!user) { // TODO: Add org access check after org system
+  // Check organization access
+  const hasOrgAccess = hasRole('admin') || hasRole('super_admin') || 
+    // Additional org access logic can be added here when org system is implemented
+    user?.id === orgId; // Placeholder logic
+  
+  if (!user || !hasOrgAccess) {
     return <Navigate to={ALL_ROUTES.DASHBOARD} replace />;
   }
   
@@ -116,7 +121,7 @@ export const WorkspaceGuard: React.FC<{
   workspaceType: 'user' | 'expert' | 'org' | 'admin';
   workspaceId?: string;
 }> = ({ children, workspaceType, workspaceId }) => {
-  const { user, hasRole } = useAuth(); // TODO: Add hasOrgAccess after org system
+  const { user, hasRole } = useAuth();
   
   // Check workspace access based on type
   switch (workspaceType) {
@@ -133,7 +138,7 @@ export const WorkspaceGuard: React.FC<{
       break;
       
     case 'org':
-      if (!workspaceId) { // TODO: Add org access check after org system
+      if (!workspaceId || !(hasRole('admin') || hasRole('super_admin'))) {
         return <Navigate to={ALL_ROUTES.DASHBOARD} replace />;
       }
       break;

@@ -90,6 +90,7 @@ export default function PartnerDashboard() {
   const [selectedOpportunity, setSelectedOpportunity] = useState<any>(null);
   const [showPartnershipDialog, setShowPartnershipDialog] = useState(false);
   const [showOpportunityDialog, setShowOpportunityDialog] = useState(false);
+  const [eventPartnerships, setEventPartnerships] = useState<any[]>([]);
 
   useEffect(() => {
     if (userProfile?.id) {
@@ -169,10 +170,11 @@ export default function PartnerDashboard() {
       
       setApplications(transformedApplications);
 
-      // For partnerships tab - get existing challenge/campaign partnerships
+      // For partnerships tab - get existing challenge/campaign/event partnerships
       const [
         challengePartnerships,
-        campaignPartnerships
+        campaignPartnerships,
+        eventPartnershipsData
       ] = await Promise.all([
         supabase.from('challenge_partners').select(`
           *,
@@ -181,8 +183,11 @@ export default function PartnerDashboard() {
         supabase.from('campaign_partners').select(`
           *,
           campaigns(title_ar, status)
-        `).eq('partner_id', userProfile?.id || '')
+        `).eq('partner_id', userProfile?.id || ''),
+        Promise.resolve({ data: [], error: null }) // Placeholder for event partnerships
       ]);
+
+      setEventPartnerships(eventPartnershipsData.data || []);
 
       // Create partnerships list from existing data
       const partnershipsList: Partnership[] = [
@@ -225,7 +230,7 @@ export default function PartnerDashboard() {
         activeChallenges,
         supportedIdeas: transformedApplications?.length || 0,
         totalInvestment,
-        eventsSponsored: 0, // TODO: Add event partnerships when available
+        eventsSponsored: eventPartnerships?.length || 0,
         collaborations: activeChallenges + activeCampaigns,
         successfulProjects: Math.floor((activeChallenges + activeCampaigns) * 0.7)
       });

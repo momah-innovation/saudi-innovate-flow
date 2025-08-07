@@ -90,8 +90,24 @@ export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: U
 
       if (inviteError) throw inviteError;
 
-      // TODO: Send email invitation via edge function
-      // For now, we'll show the invitation link
+      // Send email invitation via edge function
+      try {
+        const { error: emailError } = await supabase.functions.invoke('send-invitation-email', {
+          body: {
+            to: formData.email,
+            invitationToken: tokenData,
+            organizerName: 'نظام رواد الابتكار',
+            role: formData.initial_roles[0] || 'innovator'
+          }
+        });
+        
+        if (emailError) {
+          console.warn('Email sending failed, showing invitation link instead:', emailError);
+        }
+      } catch (emailError) {
+        console.warn('Email service unavailable, showing invitation link instead:', emailError);
+      }
+
       const inviteLink = `${window.location.origin}/auth?invite=${tokenData}`;
       
       toast({
