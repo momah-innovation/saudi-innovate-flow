@@ -148,7 +148,7 @@ const EventsBrowse = () => {
             .eq('event_id', event.id);
 
           if (countError) {
-            console.error('Error getting participant count:', countError);
+            logger.error('Failed to get participant count', { component: 'EventsBrowse', action: 'getParticipantCount', eventId: event.id }, countError as Error);
             return { 
               ...event, 
               registered_participants: 0,
@@ -167,7 +167,7 @@ const EventsBrowse = () => {
       setEvents(eventsWithCounts);
       
     } catch (error) {
-      console.error('Error loading events:', error);
+      logger.error('Failed to load events', { component: 'EventsBrowse', action: 'loadEvents' }, error as Error);
       toast({
         title: isRTL ? 'خطأ في تحميل الفعاليات' : 'Error loading events',
         description: isRTL ? 'حدث خطأ أثناء تحميل الفعاليات' : 'An error occurred while loading events',
@@ -242,7 +242,7 @@ const EventsBrowse = () => {
       loadEvents();
       
     } catch (error) {
-      console.error('Error registering for event:', error);
+      logger.error('Failed to register for event', { component: 'EventsBrowse', action: 'registerForEvent' }, error as Error);
       toast({
         title: isRTL ? 'خطأ في التسجيل' : 'Registration Error',
         description: isRTL ? 'حدث خطأ أثناء التسجيل في الفعالية' : 'An error occurred while registering for the event',

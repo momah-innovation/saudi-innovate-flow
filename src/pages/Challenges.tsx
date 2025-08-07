@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 import { AppShell } from '@/components/layout/AppShell';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -86,7 +87,7 @@ export default function Challenges() {
 
       setChallenges(transformedData);
     } catch (error) {
-      console.error('Error fetching challenges:', error);
+      logger.error('Failed to fetch challenges', { component: 'Challenges', action: 'fetchChallenges' }, error as Error);
       toast({
         title: 'خطأ',
         description: 'فشل في تحميل التحديات',
@@ -125,7 +126,7 @@ export default function Challenges() {
       
       fetchChallenges(); // Refresh to update participant count
     } catch (error) {
-      console.error('Error participating:', error);
+      logger.error('Failed to participate in challenge', { component: 'Challenges', action: 'participate', challengeId }, error as Error);
       toast({
         title: 'خطأ',
         description: 'فشل في التسجيل في التحدي',

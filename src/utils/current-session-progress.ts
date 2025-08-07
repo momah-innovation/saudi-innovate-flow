@@ -208,11 +208,15 @@ export const currentSessionProgress = {
       'src/components/admin/settings/PartnerSettings.tsx - Fixed 2 any types + enhanced partner settings',
       'src/pages/AdminDashboard.tsx - Fixed 1 console log + enhanced admin dashboard',
       'src/pages/ChallengeActivityHub.tsx - Fixed 1 console log + enhanced challenge activity hub', 
-      'src/pages/ChallengeDetails.tsx - Fixed 8 console logs + enhanced challenge management'
+      'src/pages/ChallengeDetails.tsx - Fixed 8 console logs + enhanced challenge management',
+      'src/pages/Challenges.tsx - Fixed 2 console logs + enhanced challenges page',
+      'src/pages/EvaluationManagement.tsx - Fixed 1 console log + enhanced evaluation management', 
+      'src/pages/EvaluationsPage.tsx - Fixed 3 console logs + enhanced evaluations page',
+      'src/pages/EventsBrowse.tsx - Fixed 3 console logs + enhanced events browsing'
     ],
     
     metrics: {
-      consoleLogsFixed: 443, // Updated: +10 from critical pages
+      consoleLogsFixed: 460, // Updated: +17 from critical pages
       anyTypesFixed: 272,    // Stable - focusing on console logs completion
       buildErrors: 0,
       healthScore: 100,
@@ -230,7 +234,7 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 60,   // Excellent progress: ~88% complete!
+    consoleLogsToMigrate: 43,   // Excellent progress: ~91% complete!
     anyTypesToReplace: 379,     // Good progress on admin settings interfaces
     estimatedSessionsRemaining: 1  // Significant progress made
   },

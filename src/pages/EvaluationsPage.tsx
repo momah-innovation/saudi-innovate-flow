@@ -121,7 +121,7 @@ const EvaluationsPage = () => {
       }
 
     } catch (error) {
-      console.error("Error fetching evaluations:", error);
+      logger.error('Failed to fetch evaluations', { component: 'EvaluationsPage', action: 'fetchEvaluations' }, error as Error);
       toast({
         title: "Error",
         description: "Failed to fetch evaluations",
@@ -221,7 +221,7 @@ const EvaluationsPage = () => {
       
       setComments(commentsData || []);
     } catch (error) {
-      console.error('Error fetching comments:', error);
+      logger.error('Failed to fetch evaluation comments', { component: 'EvaluationsPage', action: 'fetchComments' }, error as Error);
     }
     
     setIsDetailDialogOpen(true);
@@ -257,7 +257,7 @@ const EvaluationsPage = () => {
       
       setComments(commentsData || []);
     } catch (error) {
-      console.error('Error adding comment:', error);
+      logger.error('Failed to add evaluation comment', { component: 'EvaluationsPage', action: 'addComment' }, error as Error);
       toast({
         title: 'Error',
         description: 'Failed to add comment',

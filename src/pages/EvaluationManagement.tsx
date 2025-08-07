@@ -41,6 +41,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 
 interface EvaluationCriteria {
   id: string;
@@ -186,7 +187,7 @@ const EvaluationManagement = () => {
       ]);
       
     } catch (error) {
-      console.error('Error fetching data:', error);
+      logger.error('Failed to fetch evaluation data', { component: 'EvaluationManagement', action: 'fetchData' }, error as Error);
       toast({
         title: 'Error',
         description: 'Failed to fetch evaluation management data',
