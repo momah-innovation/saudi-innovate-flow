@@ -2,18 +2,73 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/logger';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, userData?: { name: string; name_ar?: string }) => Promise<{ error: any }>;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, userData?: { name: string; name_ar?: string }) => Promise<{ error: Error | null }>;
+  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   hasRole: (role: string) => boolean;
-  userProfile: any;
+  userProfile: UserProfile | null;
   refreshProfile: () => Promise<void>;
-  updateProfile: (profileData: any) => Promise<{ error: any }>;
+  updateProfile: (profileData: ProfileUpdateData) => Promise<{ error: Error | null }>;
+}
+
+interface UserProfile {
+  id: string;
+  email?: string;
+  name?: string;
+  name_ar?: string;
+  name_en?: string;
+  phone?: string;
+  department?: string;
+  position?: string;
+  job_title?: string;
+  bio?: string;
+  bio_ar?: string;
+  bio_en?: string;
+  preferred_language?: string;
+  status?: string;
+  profile_completion_percentage: number;
+  user_roles?: Array<{ role: string; is_active: boolean; expires_at?: string }>;
+  basic_access?: boolean;
+  
+  // Profile image and avatar fields
+  profile_image_url?: string;
+  avatar_url?: string;
+  
+  // Additional fields used in various components
+  organization?: string;
+  location?: string;
+  website?: string;
+  experience_level?: string;
+  specializations?: string[];
+  languages?: string[];
+  notification_preferences?: {
+    email: boolean;
+    sms: boolean;
+    push: boolean;
+  };
+  
+  // UI display fields
+  display_name?: string;
+  sector?: string;
+  linkedin_url?: string;
+  twitter_url?: string;
+  roles?: string[];
+}
+
+interface ProfileUpdateData {
+  fullName: string;
+  fullNameAr?: string;
+  phone?: string;
+  department?: string;
+  jobTitle?: string;
+  bio?: string;
+  languages?: string[];
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -30,19 +85,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [userProfile, setUserProfile] = useState<any>(null);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const { toast } = useToast();
 
   const fetchUserProfile = async (userId: string) => {
     try {
       // First, trigger profile completion calculation
-      console.log('Triggering profile completion calculation for user:', userId);
+      logger.info('Triggering profile completion calculation', { 
+        component: 'AuthContext', 
+        action: 'fetchUserProfile',
+        userId 
+      });
       const { error: calcError } = await supabase.functions.invoke('calculate-profile-completion', {
         body: { user_id: userId }
       });
 
       if (calcError) {
-        console.warn('Warning: Failed to calculate profile completion:', calcError);
+        logger.warn('Failed to calculate profile completion', { 
+          component: 'AuthContext', 
+          action: 'fetchUserProfile' 
+        }, calcError);
         // Continue with profile fetch even if calculation fails
       }
 
@@ -64,14 +126,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const { data: userRoles, error: rolesError } = rolesResponse;
 
       if (profileError) {
-        console.error('Error fetching profile:', profileError);
+        logger.error('Error fetching profile', { component: 'AuthContext', action: 'fetchUserProfile', userId }, profileError);
         // Don't block user access - set empty profile to allow dashboard access
-        setUserProfile({ id: userId, basic_access: true });
+        setUserProfile({ id: userId, basic_access: true, profile_completion_percentage: 0 });
         return;
       }
 
       if (rolesError) {
-        console.log('No roles found for user:', rolesError);
+        logger.info('No roles found for user', { component: 'AuthContext', action: 'fetchUserProfile', userId });
       }
 
       // Combine profile with roles
@@ -81,16 +143,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       };
 
       setUserProfile(enrichedProfile);
-      console.log('AuthContext: Profile loaded successfully:', {
-        userId,
-        profileId: enrichedProfile.id,
-        completion: enrichedProfile.profile_completion_percentage,
-        roles: enrichedProfile.user_roles?.map(r => r.role)
+      logger.info('AuthContext: Profile loaded successfully', {
+        component: 'AuthContext',
+        action: 'fetchUserProfile',
+        data: {
+          userId,
+          profileId: enrichedProfile.id,
+          completion: enrichedProfile.profile_completion_percentage,
+          roles: enrichedProfile.user_roles?.map(r => r.role)
+        }
       });
     } catch (error) {
-      console.error('Error in fetchUserProfile:', error);
+      logger.error('Error in fetchUserProfile', { component: 'AuthContext', action: 'fetchUserProfile', userId }, error as Error);
       // Provide basic access even if profile fetch fails
-      setUserProfile({ id: userId, basic_access: true });
+      setUserProfile({ id: userId, basic_access: true, profile_completion_percentage: 0 });
     }
   };
 
@@ -100,7 +166,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const updateProfile = async (profileData: any) => {
+  const updateProfile = async (profileData: ProfileUpdateData) => {
     if (!user) {
       return { error: { message: 'No user found' } };
     }
@@ -310,7 +376,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const hasRole = (role: string): boolean => {
     if (!userProfile?.user_roles) return false;
     
-    return userProfile.user_roles.some((userRole: any) => 
+    return userProfile.user_roles.some((userRole: { role: string; is_active: boolean; expires_at?: string }) => 
       userRole.role === role && 
       userRole.is_active && 
       (!userRole.expires_at || new Date(userRole.expires_at) > new Date())

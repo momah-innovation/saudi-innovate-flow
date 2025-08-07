@@ -2,22 +2,35 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Auth } from '@/components/auth/Auth';
 import { Loader2 } from 'lucide-react';
+import { logger } from '@/utils/logger';
 
 const AuthPage = () => {
   const { user, loading, userProfile } = useAuth();
 
-  console.log('AuthPage Debug:', {
-    hasUser: !!user,
-    loading,
-    userProfile: userProfile?.id ? 'loaded' : 'null',
-    profileCompletion: userProfile?.profile_completion_percentage
+  logger.debug('AuthPage Debug', {
+    component: 'AuthPage',
+    action: 'render',
+    data: {
+      hasUser: !!user,
+      loading,
+      userProfile: userProfile?.id ? 'loaded' : 'null',
+      profileCompletion: userProfile?.profile_completion_percentage
+    }
   });
 
   // Redirect if already authenticated
   if (user && !loading && userProfile) {
     // All authenticated users with sufficient profile completion go to dashboard
     const redirectPath = userProfile.profile_completion_percentage >= 80 ? "/dashboard" : "/profile/setup";
-    console.log('AuthPage: Redirecting authenticated user to:', redirectPath, 'Profile completion:', userProfile.profile_completion_percentage, 'Roles:', userProfile.user_roles?.map(r => r.role));
+    logger.info('AuthPage: Redirecting authenticated user', {
+      component: 'AuthPage',
+      action: 'redirect',
+      data: {
+        redirectPath,
+        profileCompletion: userProfile.profile_completion_percentage,
+        roles: userProfile.user_roles?.map(r => r.role)
+      }
+    });
     return <Navigate to={redirectPath} replace />;
   }
 

@@ -166,7 +166,13 @@ progressTracker.markComponentCompleted('src/components/admin/TestPrivilegeElevat
 progressTracker.initializeComponent('src/components/auth/ProfileSetup.tsx', 3, 1);
 progressTracker.initializeComponent('src/components/auth/ProtectedRoute.tsx', 5, 0);
 progressTracker.initializeComponent('src/components/dashboard/AdminDashboard.tsx', 1, 1);
+progressTracker.initializeComponent('src/components/ui/error-boundary.tsx', 1, 0);
+progressTracker.initializeComponent('src/contexts/AuthContext.tsx', 3, 3);
+progressTracker.initializeComponent('src/pages/Auth.tsx', 2, 0);
 progressTracker.markComponentCompleted('src/components/auth/ProfileSetup.tsx', 3, 1);
 progressTracker.markComponentCompleted('src/components/auth/ProtectedRoute.tsx', 5, 0);
 progressTracker.markComponentCompleted('src/components/dashboard/AdminDashboard.tsx', 1, 1);
+progressTracker.markComponentCompleted('src/components/ui/error-boundary.tsx', 1, 0);
+progressTracker.markComponentCompleted('src/contexts/AuthContext.tsx', 3, 3);
+progressTracker.markComponentCompleted('src/pages/Auth.tsx', 2, 0);
 progressTracker.logProgress();

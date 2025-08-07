@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AlertTriangle, RefreshCw, Home, Bug } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { logger } from '@/utils/logger';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -58,7 +59,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
     // Log error to console in development
     if (process.env.NODE_ENV === 'development') {
-      console.error('Error Boundary caught an error:', error, errorInfo);
+      logger.error('Error Boundary caught an error', { component: 'ErrorBoundary', action: 'componentDidCatch' }, error);
     }
 
     // In production, you might want to send to error reporting service
@@ -102,9 +103,13 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       };
       
       // Send to error reporting service
-      console.log('Error report:', errorReport);
+      logger.info('Error report created', { 
+        component: 'ErrorBoundary', 
+        action: 'logErrorToService',
+        data: { errorId: this.state.errorId, message: error.message }
+      });
     } catch (loggingError) {
-      console.error('Failed to log error:', loggingError);
+      logger.error('Failed to log error', { component: 'ErrorBoundary', action: 'logErrorToService' }, loggingError as Error);
     }
   };
 
@@ -284,7 +289,7 @@ export function PageErrorBoundary({ children }: { children: ReactNode }) {
       resetOnPropsChange={true}
       onError={(error, errorInfo) => {
         // Log page-level errors with high priority
-        console.error('Page Error:', error, errorInfo);
+        logger.error('Page Error', { component: 'PageErrorBoundary', action: 'onError' }, error);
       }}
     >
       {children}
@@ -304,7 +309,7 @@ export function ComponentErrorBoundary({
     <ErrorBoundary 
       level="component"
       onError={(error, errorInfo) => {
-        console.warn(`Component Error in ${componentName}:`, error, errorInfo);
+        logger.warn(`Component Error in ${componentName}`, { component: 'ComponentErrorBoundary', action: 'onError', data: { componentName }}, error);
       }}
     >
       {children}
@@ -334,7 +339,7 @@ export function FormErrorBoundary({
       level="component"
       onError={(error, errorInfo) => {
         onFormError?.(error);
-        console.warn('Form Error:', error, errorInfo);
+        logger.warn('Form Error', { component: 'FormErrorBoundary', action: 'onError' }, error);
       }}
       fallback={
         <Card className="p-6 border-destructive/20">
