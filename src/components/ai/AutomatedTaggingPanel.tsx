@@ -21,13 +21,19 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { aiService } from '@/services/AIService';
+import { logger } from '@/utils/logger';
+
+interface TagData {
+  tag: string;
+  confidence?: number;
+}
 
 interface TagSuggestion {
   id: string;
   entity_id: string;
   entity_type: string;
-  suggested_tags: any;
-  confidence_scores: any;
+  suggested_tags: TagData[];
+  confidence_scores: Record<string, number>;
   status: string;
   created_at: string;
   reviewed_by?: string;
@@ -81,14 +87,16 @@ export const AutomatedTaggingPanel: React.FC = () => {
 
       setSuggestions((data || []).map(item => ({
         ...item,
-        suggested_tags: Array.isArray(item.suggested_tags) ? item.suggested_tags : [],
-        confidence_scores: item.confidence_scores || {}
+        suggested_tags: Array.isArray(item.suggested_tags) ? 
+          item.suggested_tags.map((tag: any) => typeof tag === 'string' ? { tag } : tag) : [],
+        confidence_scores: typeof item.confidence_scores === 'object' && item.confidence_scores !== null ? 
+          item.confidence_scores as Record<string, number> : {}
       })));
     } catch (error) {
-      console.error('Error fetching tag suggestions:', error);
+      logger.error('Error fetching tag suggestions', { component: 'AutomatedTaggingPanel', action: 'fetchTagSuggestions' }, error as Error);
       toast({
-        title: t('automated_tagging.error'),
-        description: t('automated_tagging.failed_load_suggestions'),
+        title: t('automated_tagging.error', 'Error'),
+        description: t('automated_tagging.failed_load_suggestions', 'Failed to load suggestions'),
         variant: 'destructive',
       });
     } finally {
@@ -116,7 +124,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
         });
       }
     } catch (error) {
-      console.error('Error fetching stats:', error);
+      logger.error('Error fetching stats', { component: 'AutomatedTaggingPanel', action: 'fetchStats' }, error as Error);
     }
   };
 
@@ -126,17 +134,17 @@ export const AutomatedTaggingPanel: React.FC = () => {
       await aiService.suggestTags(entityId, entityType, content);
       
       toast({
-        title: t('automated_tagging.tags_generated'),
-        description: t('automated_tagging.tags_generated_success'),
+        title: t('automated_tagging.tags_generated', 'Tags generated'),
+        description: t('automated_tagging.tags_generated_success', 'Tags generated successfully'),
       });
 
       fetchTagSuggestions();
       fetchStats();
     } catch (error) {
-      console.error('Error generating tags:', error);
+      logger.error('Error generating tags', { component: 'AutomatedTaggingPanel', action: 'generateTagsForEntity' }, error as Error);
       toast({
-        title: t('automated_tagging.error'),
-        description: t('automated_tagging.failed_generate_tags'),
+        title: t('automated_tagging.error', 'Error'),
+        description: t('automated_tagging.failed_generate_tags', 'Failed to generate tags'),
         variant: 'destructive',
       });
     } finally {
@@ -159,7 +167,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
       if (suggestion) {
         // Here you would add logic to apply tags to the actual entity
         // This depends on your tag system implementation
-        console.log('Applying tags to entity:', suggestion.entity_id, tags);
+        logger.info('Applying tags to entity', { component: 'AutomatedTaggingPanel', action: 'approveSuggestion', data: { entityId: suggestion.entity_id, tags } });
       }
 
       setSuggestions(suggestions.map(s => 
@@ -167,16 +175,16 @@ export const AutomatedTaggingPanel: React.FC = () => {
       ));
 
       toast({
-        title: t('automated_tagging.approved_success'),
-        description: t('automated_tagging.tags_applied_success'),
+        title: t('automated_tagging.approved_success', 'Approved successfully'),
+        description: t('automated_tagging.tags_applied_success', 'Tags applied successfully'),
       });
 
       fetchStats();
     } catch (error) {
-      console.error('Error approving suggestion:', error);
+      logger.error('Error approving suggestion', { component: 'AutomatedTaggingPanel', action: 'approveSuggestion' }, error as Error);
       toast({
-        title: t('automated_tagging.error'),
-        description: t('automated_tagging.failed_apply_tags'),
+        title: t('automated_tagging.error', 'Error'),
+        description: t('automated_tagging.failed_apply_tags', 'Failed to apply tags'),
         variant: 'destructive',
       });
     }
@@ -202,10 +210,10 @@ export const AutomatedTaggingPanel: React.FC = () => {
 
       fetchStats();
     } catch (error) {
-      console.error('Error rejecting suggestion:', error);
+      logger.error('Error rejecting suggestion', { component: 'AutomatedTaggingPanel', action: 'rejectSuggestion' }, error as Error);
       toast({
-        title: t('automated_tagging.error'),
-        description: t('automated_tagging.failed_reject_suggestion'),
+        title: t('automated_tagging.error', 'Error'),
+        description: t('automated_tagging.failed_reject_suggestion', 'Failed to reject suggestion'),
         variant: 'destructive',
       });
     }
@@ -238,10 +246,10 @@ export const AutomatedTaggingPanel: React.FC = () => {
       fetchTagSuggestions();
       fetchStats();
     } catch (error) {
-      console.error('Error running bulk tagging:', error);
+      logger.error('Error running bulk tagging', { component: 'AutomatedTaggingPanel', action: 'runBulkTagging' }, error as Error);
       toast({
-        title: t('automated_tagging.error'),
-        description: t('automated_tagging.failed_bulk_tagging'),
+        title: t('automated_tagging.error', 'Error'),
+        description: t('automated_tagging.failed_bulk_tagging', 'Failed to run bulk tagging'),
         variant: 'destructive',
       });
     } finally {
@@ -411,7 +419,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                       <div>
                         <h4 className="font-medium mb-2">{t('automated_tagging.suggested_tags')}</h4>
                         <div className="flex flex-wrap gap-1">
-                          {suggestion.suggested_tags.map((tag: any, index: number) => {
+                          {suggestion.suggested_tags.map((tag: TagData, index: number) => {
                             const confidence = suggestion.confidence_scores[tag.tag] || tag.confidence || 0;
                             return (
                               <Badge
@@ -422,7 +430,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                                   opacity: 0.6 + (confidence * 0.4) // Visual confidence indicator
                                 }}
                               >
-                                {tag.tag || tag}
+                                {typeof tag === 'string' ? tag : tag.tag}
                                 {confidence > 0 && (
                                   <span className="ml-1 text-xs opacity-70">
                                     {Math.round(confidence * 100)}%
@@ -440,7 +448,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
                             size="sm"
                             onClick={() => approveSuggestion(
                               suggestion.id, 
-                              suggestion.suggested_tags.map((tag: any) => tag.tag || tag)
+                              suggestion.suggested_tags.map((tag: TagData) => typeof tag === 'string' ? tag : tag.tag)
                             )}
                             className="text-success-foreground bg-success hover:bg-success/90"
                           >

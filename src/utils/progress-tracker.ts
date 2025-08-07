@@ -152,7 +152,13 @@ progressTracker.markComponentCompleted('src/components/admin/settings/IdeaSettin
 progressTracker.initializeComponent('src/components/admin/RoleRequestWizard.tsx', 3, 0);
 progressTracker.initializeComponent('src/components/admin/TestProfileCalculation.tsx', 3, 1);
 progressTracker.initializeComponent('src/components/admin/focus-questions/FocusQuestionManagementList.tsx', 2, 0);
+progressTracker.initializeComponent('src/components/ai/AutomatedTaggingPanel.tsx', 7, 3);
+progressTracker.initializeComponent('src/components/admin/StakeholderWizard.tsx', 1, 0);
+progressTracker.initializeComponent('src/components/admin/TestPrivilegeElevation.tsx', 2, 1);
 progressTracker.markComponentCompleted('src/components/admin/RoleRequestWizard.tsx', 3, 0);
 progressTracker.markComponentCompleted('src/components/admin/TestProfileCalculation.tsx', 3, 1);
 progressTracker.markComponentCompleted('src/components/admin/focus-questions/FocusQuestionManagementList.tsx', 2, 0);
+progressTracker.markComponentCompleted('src/components/ai/AutomatedTaggingPanel.tsx', 7, 3);
+progressTracker.markComponentCompleted('src/components/admin/StakeholderWizard.tsx', 1, 0);
+progressTracker.markComponentCompleted('src/components/admin/TestPrivilegeElevation.tsx', 2, 1);
 progressTracker.logProgress();

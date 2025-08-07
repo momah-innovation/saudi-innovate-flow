@@ -3,10 +3,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 export function TestPrivilegeElevation() {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<Record<string, any> | null>(null);
+  const { t } = useUnifiedTranslation();
 
   const testElevation = async () => {
     setLoading(true);
@@ -20,15 +23,15 @@ export function TestPrivilegeElevation() {
       });
       
       if (error) {
-        console.error('Function error:', error);
+        logger.error('Function error', { component: 'TestPrivilegeElevation', action: 'testElevation' }, error as Error);
         setResult({ error: error.message, details: error });
         return;
       }
       
       // Function executed successfully
       setResult(data);
-    } catch (err) {
-      console.error('Request error:', err);
+    } catch (err: any) {
+      logger.error('Request error', { component: 'TestPrivilegeElevation', action: 'testElevation' }, err as Error);
       setResult({ error: err.message, details: err });
     } finally {
       setLoading(false);
@@ -38,7 +41,7 @@ export function TestPrivilegeElevation() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Test Privilege Elevation</CardTitle>
+        <CardTitle>{t('admin.testPrivilegeElevation', 'Test Privilege Elevation')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <Button 

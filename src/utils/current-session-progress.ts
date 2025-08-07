@@ -23,12 +23,15 @@ export const currentSessionProgress = {
       'src/components/admin/settings/IdeaSettings.tsx - Fixed 2 console logs + 2 any types',
       'src/components/admin/RoleRequestWizard.tsx - Fixed 3 console logs',
       'src/components/admin/TestProfileCalculation.tsx - Fixed 3 console logs + 1 any type',
-      'src/components/admin/focus-questions/FocusQuestionManagementList.tsx - Fixed 2 console logs'
+      'src/components/admin/focus-questions/FocusQuestionManagementList.tsx - Fixed 2 console logs',
+      'src/components/ai/AutomatedTaggingPanel.tsx - Fixed 7 console logs + 3 any types',
+      'src/components/admin/StakeholderWizard.tsx - Fixed 1 console log',
+      'src/components/admin/TestPrivilegeElevation.tsx - Fixed 2 console logs + 1 any type'
     ],
     
     metrics: {
-      consoleLogsFixed: 51,
-      anyTypesFixed: 90,
+      consoleLogsFixed: 61,
+      anyTypesFixed: 95,
       buildErrors: 0,
       healthScore: 100,
       translationSystemStatus: 'STABLE'
@@ -43,8 +46,8 @@ export const currentSessionProgress = {
   },
   
   remaining: {
-    consoleLogsToMigrate: 289, // Down from 297
-    anyTypesToReplace: 389,    // Down from 390
+    consoleLogsToMigrate: 279, // Down from 289
+    anyTypesToReplace: 384,    // Down from 389
     estimatedSessionsRemaining: 4
   },
   

@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { Building, User, Mail, Phone, Users, Target } from "lucide-react";
+import { logger } from "@/utils/logger";
 
 interface Stakeholder {
   id?: string;
@@ -202,10 +203,10 @@ export function StakeholderWizard({
       onClose();
       return true;
     } catch (error) {
-      console.error("Error saving stakeholder:", error);
+      logger.error('Error saving stakeholder', { component: 'StakeholderWizard', action: 'handleSubmit' }, error as Error);
       toast({
-        title: t('stakeholder_wizard.error'),
-        description: t('stakeholder_wizard.save_failed'),
+        title: t('stakeholder_wizard.error', 'Error'),
+        description: t('stakeholder_wizard.save_failed', 'Failed to save stakeholder'),
         variant: "destructive",
       });
       return false;
