@@ -42,8 +42,24 @@ export function TeamWizard({
     objectives: [] as string[],
   });
 
-  const [departments, setDepartments] = useState<any[]>([]);
-  const [managers, setManagers] = useState<any[]>([]);
+  interface DepartmentData {
+    id: string;
+    name?: string;
+    name_ar?: string;
+  }
+  
+  interface ManagerData {
+    id: string;
+    name?: string;
+    email?: string;
+    position?: string;
+    display_name?: string;
+    first_name?: string;
+    last_name?: string;
+  }
+  
+  const [departments, setDepartments] = useState<DepartmentData[]>([]);
+  const [managers, setManagers] = useState<ManagerData[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
 

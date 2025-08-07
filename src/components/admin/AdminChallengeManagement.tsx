@@ -310,7 +310,15 @@ export function AdminChallengeManagement() {
           setShowWizard(false);
           setSelectedChallenge(null);
         }}
-        challenge={selectedChallenge}
+        challenge={selectedChallenge ? { 
+          ...selectedChallenge, 
+          start_date: selectedChallenge.start_date || '', 
+          end_date: selectedChallenge.end_date || '',
+          estimated_budget: selectedChallenge.estimated_budget || 0,
+          actual_budget: selectedChallenge.actual_budget || 0,
+          vision_2030_goal: selectedChallenge.vision_2030_goal || '',
+          kpi_alignment: selectedChallenge.kpi_alignment || ''
+        } : undefined}
       />
 
       {selectedChallenge && (

@@ -8,7 +8,15 @@ import { logger } from '@/utils/logger';
 
 export function TestPrivilegeElevation() {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<Record<string, any> | null>(null);
+  interface TestResult {
+    success?: boolean;
+    message?: string;
+    data?: Record<string, unknown>;
+    error?: string;
+    details?: unknown;
+  }
+  
+  const [result, setResult] = useState<TestResult | null>(null);
   const { t } = useUnifiedTranslation();
 
   const testElevation = async () => {

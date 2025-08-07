@@ -69,10 +69,28 @@ export function OrganizationalStructureManagement() {
   const [domains, setDomains] = useState<Domain[]>([]);
   const [subDomains, setSubDomains] = useState<SubDomain[]>([]);
   const [services, setServices] = useState<Service[]>([]);
-  const [sectors, setSectors] = useState<any[]>([]);
+  interface SectorData {
+    id: string;
+    name?: string;
+    name_ar?: string;
+    description?: string;
+  }
+  
+  const [sectors, setSectors] = useState<SectorData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedItem, setSelectedItem] = useState<any>(null);
+  interface SelectedItemData {
+    id: string;
+    name?: string;
+    name_ar?: string;
+    description?: string;
+    type?: string;
+    deputy_minister?: string;
+    contact_email?: string;
+    created_at?: string;
+  }
+  
+  const [selectedItem, setSelectedItem] = useState<SelectedItemData | null>(null);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();

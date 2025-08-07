@@ -195,7 +195,7 @@ export function AssignmentDetailView({ assignment, isOpen, onClose }: Assignment
     ...(data?.sensitivity_level ? [{
       label: t('sensitivity'),
       value: t(data.sensitivity_level),
-      variant: 'outline'
+      variant: 'outline' as const
     }] : [])
   ];
 
