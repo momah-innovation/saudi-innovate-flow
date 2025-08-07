@@ -19,17 +19,26 @@ interface Collection {
   updated_at: string;
 }
 
+interface BookmarkItem {
+  challenge_id?: string;
+  event_id?: string;
+  idea_id?: string;
+  opportunity_id?: string;
+  partner_id?: string;
+  [key: string]: any;
+}
+
 export function useBookmarks() {
-  const [challengeBookmarks, setChallengeBookmarks] = useState<unknown[]>([]);
-  const [eventBookmarks, setEventBookmarks] = useState<unknown[]>([]);
-  const [ideaBookmarks, setIdeaBookmarks] = useState<unknown[]>([]);
-  const [focusQuestionBookmarks, setFocusQuestionBookmarks] = useState<unknown[]>([]);
-  const [campaignBookmarks, setCampaignBookmarks] = useState<unknown[]>([]);
-  const [sectorBookmarks, setSectorBookmarks] = useState<unknown[]>([]);
-  const [stakeholderBookmarks, setStakeholderBookmarks] = useState<unknown[]>([]);
-  const [expertBookmarks, setExpertBookmarks] = useState<unknown[]>([]);
-  const [partnerBookmarks, setPartnerBookmarks] = useState<unknown[]>([]);
-  const [opportunityBookmarks, setOpportunityBookmarks] = useState<unknown[]>([]);
+  const [challengeBookmarks, setChallengeBookmarks] = useState<BookmarkItem[]>([]);
+  const [eventBookmarks, setEventBookmarks] = useState<BookmarkItem[]>([]);
+  const [ideaBookmarks, setIdeaBookmarks] = useState<BookmarkItem[]>([]);
+  const [focusQuestionBookmarks, setFocusQuestionBookmarks] = useState<BookmarkItem[]>([]);
+  const [campaignBookmarks, setCampaignBookmarks] = useState<BookmarkItem[]>([]);
+  const [sectorBookmarks, setSectorBookmarks] = useState<BookmarkItem[]>([]);
+  const [stakeholderBookmarks, setStakeholderBookmarks] = useState<BookmarkItem[]>([]);
+  const [expertBookmarks, setExpertBookmarks] = useState<BookmarkItem[]>([]);
+  const [partnerBookmarks, setPartnerBookmarks] = useState<BookmarkItem[]>([]);
+  const [opportunityBookmarks, setOpportunityBookmarks] = useState<BookmarkItem[]>([]);
   const [publicTeams, setPublicTeams] = useState<unknown[]>([]);
   const [collections, setCollections] = useState<Collection[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,7 +63,7 @@ export function useBookmarks() {
       if (error) throw error;
       setChallengeBookmarks(data || []);
     } catch (error) {
-      console.error('Error fetching challenge bookmarks:', error);
+      logger.error('Error fetching challenge bookmarks', { component: 'useBookmarks', action: 'fetchChallengeBookmarks' }, error as Error);
     }
   };
 
@@ -77,7 +86,7 @@ export function useBookmarks() {
       if (error) throw error;
       setEventBookmarks(data || []);
     } catch (error) {
-      console.error('Error fetching event bookmarks:', error);
+      logger.error('Error fetching event bookmarks', { component: 'useBookmarks', action: 'fetchEventBookmarks' }, error as Error);
     }
   };
 
@@ -102,7 +111,7 @@ export function useBookmarks() {
       if (error) throw error;
       setIdeaBookmarks(data || []);
     } catch (error) {
-      console.error('Error fetching idea bookmarks:', error);
+      logger.error('Error fetching idea bookmarks', { component: 'useBookmarks', action: 'fetchIdeaBookmarks' }, error as Error);
     }
   };
 
@@ -127,7 +136,7 @@ export function useBookmarks() {
       if (error) throw error;
       setFocusQuestionBookmarks(data || []);
     } catch (error) {
-      console.error('Error fetching focus question bookmarks:', error);
+      logger.error('Error fetching focus question bookmarks', { component: 'useBookmarks', action: 'fetchFocusQuestionBookmarks' }, error as Error);
     }
   };
 
@@ -152,7 +161,7 @@ export function useBookmarks() {
       if (error) throw error;
       setCampaignBookmarks(data || []);
     } catch (error) {
-      console.error('Error fetching campaign bookmarks:', error);
+      logger.error('Error fetching campaign bookmarks', { component: 'useBookmarks', action: 'fetchCampaignBookmarks' }, error as Error);
     }
   };
 
@@ -177,7 +186,7 @@ export function useBookmarks() {
       if (error) throw error;
       setSectorBookmarks(data || []);
     } catch (error) {
-      console.error('Error fetching sector bookmarks:', error);
+      logger.error('Error fetching sector bookmarks', { component: 'useBookmarks', action: 'fetchSectorBookmarks' }, error as Error);
     }
   };
 
@@ -202,7 +211,7 @@ export function useBookmarks() {
       if (error) throw error;
       setStakeholderBookmarks(data || []);
     } catch (error) {
-      console.error('Error fetching stakeholder bookmarks:', error);
+      logger.error('Error fetching stakeholder bookmarks', { component: 'useBookmarks', action: 'fetchStakeholderBookmarks' }, error as Error);
     }
   };
 
@@ -226,7 +235,7 @@ export function useBookmarks() {
       if (error) throw error;
       setExpertBookmarks(data || []);
     } catch (error) {
-      console.error('Error fetching expert bookmarks:', error);
+      logger.error('Error fetching expert bookmarks', { component: 'useBookmarks', action: 'fetchExpertBookmarks' }, error as Error);
     }
   };
 
@@ -251,7 +260,7 @@ export function useBookmarks() {
       if (error) throw error;
       setPartnerBookmarks(data || []);
     } catch (error) {
-      console.error('Error fetching partner bookmarks:', error);
+      logger.error('Error fetching partner bookmarks', { component: 'useBookmarks', action: 'fetchPartnerBookmarks' }, error as Error);
     }
   };
 
@@ -293,7 +302,7 @@ export function useBookmarks() {
         setOpportunityBookmarks(data || []);
       }
     } catch (error) {
-      console.error('Error fetching opportunity bookmarks:', error);
+      logger.error('Error fetching opportunity bookmarks', { component: 'useBookmarks', action: 'fetchOpportunityBookmarks' }, error as Error);
     }
   };
 
@@ -315,7 +324,7 @@ export function useBookmarks() {
       if (error) throw error;
       setPublicTeams(data || []);
     } catch (error) {
-      console.error('Error fetching public teams:', error);
+      logger.error('Error fetching public teams', { component: 'useBookmarks', action: 'fetchPublicTeams' }, error as Error);
     }
   };
 
@@ -332,7 +341,7 @@ export function useBookmarks() {
       if (error) throw error;
       setCollections(data || []);
     } catch (error) {
-      console.error('Error fetching collections:', error);
+      logger.error('Error fetching collections', { component: 'useBookmarks', action: 'fetchCollections' }, error as Error);
     }
   };
 
@@ -419,7 +428,7 @@ export function useBookmarks() {
       fetchAllBookmarks();
       return true;
     } catch (error) {
-      console.error('Error adding bookmark:', error);
+      logger.error('Error adding bookmark', { component: 'useBookmarks', action: 'addBookmark', type, itemId }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في حفظ العنصر",
@@ -465,7 +474,7 @@ export function useBookmarks() {
       fetchAllBookmarks();
       return true;
     } catch (error) {
-      console.error('Error removing bookmark:', error);
+      logger.error('Error removing bookmark', { component: 'useBookmarks', action: 'removeBookmark', bookmarkId, type }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في حذف العنصر",
@@ -485,7 +494,7 @@ export function useBookmarks() {
       });
       return true;
     } catch (error) {
-      console.error('Error updating bookmark:', error);
+      logger.error('Error updating bookmark', { component: 'useBookmarks', action: 'updateBookmark', bookmarkId, type }, error as Error);
       toast({
         title: "خطأ",
         description: "فشل في تحديث العنصر",

@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dialog'
 import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
+import { logger } from '@/utils/logger'
 import { 
   Upload, 
   Download, 
@@ -71,7 +72,7 @@ export const VersionedFileUploader: React.FC<VersionedFileUploaderProps> = ({
       if (error) throw error
       setVersions(data || [])
     } catch (error) {
-      console.error('Error fetching file versions:', error)
+      logger.error('Error fetching file versions', { component: 'VersionedFileUploader', action: 'fetchVersions', fileRecordId }, error as Error)
       toast({
         title: 'Error',
         description: 'Failed to fetch file versions',
@@ -136,7 +137,7 @@ export const VersionedFileUploader: React.FC<VersionedFileUploaderProps> = ({
         onVersionCreated(versionId)
       }
     } catch (error) {
-      console.error('Error creating version:', error)
+      logger.error('Error creating version', { component: 'VersionedFileUploader', action: 'createNewVersion', fileRecordId }, error as Error)
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to create new version',
@@ -164,7 +165,7 @@ export const VersionedFileUploader: React.FC<VersionedFileUploaderProps> = ({
 
       await fetchVersions()
     } catch (error) {
-      console.error('Error restoring version:', error)
+      logger.error('Error restoring version', { component: 'VersionedFileUploader', action: 'restoreVersion', versionId }, error as Error)
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to restore version',

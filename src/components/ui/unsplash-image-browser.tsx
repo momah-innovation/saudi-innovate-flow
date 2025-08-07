@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import { supabase } from '@/integrations/supabase/client'
 import { toast } from 'sonner'
+import { logger } from '@/utils/logger'
 
 interface UnsplashImage {
   id: string
@@ -157,7 +158,7 @@ export function UnsplashImageBrowser({
         setShowDetails(parsed.showDetails !== false)
         setThumbnailSize([parsed.thumbnailSize || 150])
       } catch (error) {
-        console.error('Error loading preferences:', error)
+        logger.error('Error loading preferences', { component: 'UnsplashImageBrowser', action: 'loadPreferences' }, error as Error)
       }
     }
 
@@ -166,7 +167,7 @@ export function UnsplashImageBrowser({
       try {
         setRecentSearches(JSON.parse(recentSearches))
       } catch (error) {
-        console.error('Error loading recent searches:', error)
+        logger.error('Error loading recent searches', { component: 'UnsplashImageBrowser', action: 'loadRecentSearches' }, error as Error)
       }
     }
 
@@ -175,7 +176,7 @@ export function UnsplashImageBrowser({
       try {
         setRecentlyViewed(JSON.parse(recentlyViewed))
       } catch (error) {
-        console.error('Error loading recently viewed:', error)
+        logger.error('Error loading recently viewed', { component: 'UnsplashImageBrowser', action: 'loadRecentlyViewed' }, error as Error)
       }
     }
   }, [])
@@ -236,7 +237,7 @@ export function UnsplashImageBrowser({
         localStorage.setItem('unsplash-recent-searches', JSON.stringify(updatedRecent))
       }
     } catch (error) {
-      console.error('Error searching images:', error)
+      logger.error('Error searching images', { component: 'UnsplashImageBrowser', action: 'searchImages', query }, error as Error)
       toast.error('Failed to search images')
     } finally {
       setLoading(false)

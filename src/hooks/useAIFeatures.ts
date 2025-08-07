@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { logger } from '@/utils/logger';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import type { Json } from '@/integrations/supabase/types';
@@ -50,7 +51,7 @@ export const useAIFeatures = () => {
       if (error) throw error;
       setFeatures(data || []);
     } catch (err) {
-      console.error('Error fetching AI features:', err);
+      logger.error('Error fetching AI features', { component: 'useAIFeatures', action: 'fetchFeatures' }, err as Error);
       setError('Failed to load AI features');
       toast({
         title: 'خطأ',
@@ -101,7 +102,7 @@ export const useAIFeatures = () => {
         setPreferences(data);
       }
     } catch (err) {
-      console.error('Error fetching user preferences:', err);
+      logger.error('Error fetching user preferences', { component: 'useAIFeatures', action: 'fetchUserPreferences' }, err as Error);
       setError('Failed to load AI preferences');
     }
   };
@@ -126,7 +127,7 @@ export const useAIFeatures = () => {
         description: 'تم تحديث تفضيلات الذكاء الاصطناعي بنجاح',
       });
     } catch (err) {
-      console.error('Error updating preferences:', err);
+      logger.error('Error updating preferences', { component: 'useAIFeatures', action: 'updatePreferences' }, err as Error);
       toast({
         title: 'خطأ',
         description: 'فشل في تحديث التفضيلات',

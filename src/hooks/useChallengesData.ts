@@ -71,7 +71,7 @@ export const useChallengesData = () => {
         .order('created_at', { ascending: false });
 
       if (challengesError) {
-        console.error('Error fetching challenges:', challengesError);
+        logger.error('Error fetching challenges', { component: 'useChallengesData', action: 'fetchChallenges' }, challengesError);
         throw challengesError;
       }
 
@@ -163,7 +163,7 @@ export const useChallengesData = () => {
       });
 
     } catch (error) {
-      console.error('Error fetching challenges:', error);
+      logger.error('Error fetching challenges', { component: 'useChallengesData', action: 'fetchChallenges' }, error as Error);
       toast({
         title: t('fetch_error', 'خطأ في جلب البيانات'),
         description: t('challenges_fetch_error', 'حدث خطأ أثناء جلب بيانات التحديات'),

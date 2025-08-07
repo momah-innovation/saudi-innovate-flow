@@ -73,6 +73,10 @@ export interface LogContext {
   itemId?: string;
   itemType?: string;
   fontKey?: string;
+  type?: string;
+  bookmarkId?: string;
+  fileRecordId?: string;
+  versionId?: string;
 }
 
 export enum LogLevel {

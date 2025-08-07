@@ -34,15 +34,25 @@ interface CoreTeamDetailDialogProps {
 }
 
 interface AssignmentData {
-  title: string;
+  assignment_id: string;
+  title?: string;
+  assignment_type?: string;
   description?: string;
   status: string;
   created_at: string;
+  due_date?: string;
+  assigned_by?: string;
+  actual_hours?: number;
+  estimated_hours?: number;
 }
 
 interface ActivityData {
-  description: string;
+  activity_description: string;
+  description?: string;
   created_at: string;
+  activity_type?: string;
+  activity_date?: string;
+  end_time?: string;
 }
 
 interface ItemData {
@@ -419,7 +429,7 @@ export function CoreTeamDetailDialog({
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="font-medium">{assignment.title || 'مهمة غير معنونة'}</h4>
+                  <h4 className="font-medium">{assignment.title || assignment.assignment_type || 'مهمة غير معنونة'}</h4>
                   <p className="text-sm text-muted-foreground">{assignment.description}</p>
                 </div>
                 <Badge variant={assignment.status === 'active' ? 'default' : 'secondary'}>
@@ -447,7 +457,7 @@ export function CoreTeamDetailDialog({
               <div className="flex items-start gap-3">
                 <Activity className="h-4 w-4 mt-1 text-muted-foreground" />
                 <div className="flex-1">
-                  <p className="text-sm">{activity.description}</p>
+                  <p className="text-sm">{activity.description || activity.activity_description}</p>
                   <p className="text-xs text-muted-foreground mt-1">
                     {new Date(activity.created_at).toLocaleString('ar-SA')}
                   </p>
