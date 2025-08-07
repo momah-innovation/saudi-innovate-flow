@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Settings, Database, List, Bot, Palette, Zap, Filter, Languages } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Settings, Database, List, Bot, Palette, Zap, Filter, Languages, RefreshCw } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { UnifiedSettingsManager } from "@/components/admin/settings/UnifiedSettingsManager";
 import TranslationManagement from "@/components/admin/TranslationManagement";
@@ -16,9 +17,10 @@ import { useSystemSettings } from "@/contexts/SystemSettingsContext";
 import { useDebounce } from "@/hooks/useDebounce";
 import { logger } from "@/utils/logger";
 const SystemSettings = () => {
-  const { t } = useUnifiedTranslation();
+  const { t, refreshTranslations } = useUnifiedTranslation();
   const [activeTab, setActiveTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const { isRTL } = useDirection();
   
   // Authentication and permissions
@@ -92,9 +94,38 @@ const SystemSettings = () => {
     <AppShell>
       <div className={`container mx-auto p-6 space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
         {/* Header */}
-        <div className={isRTL ? 'text-right' : 'text-left'}>
-          <h1 className="text-3xl font-bold">{t('systemSettings', 'System Settings')}</h1>
-          <p className="text-muted-foreground">{t('systemSettingsDescription', 'Manage and configure system-wide settings and preferences')}</p>
+        <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={isRTL ? 'text-right' : 'text-left'}>
+            <h1 className="text-3xl font-bold">{t('systemSettings', 'System Settings')}</h1>
+            <p className="text-muted-foreground">{t('systemSettingsDescription', 'Manage and configure system-wide settings and preferences')}</p>
+          </div>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={async () => {
+              setIsRefreshing(true);
+              try {
+                await refreshTranslations();
+                toast({
+                  title: "Translations Refreshed",
+                  description: "Translation cache has been cleared and reloaded.",
+                });
+              } catch (error) {
+                toast({
+                  title: "Refresh Failed",
+                  description: "Failed to refresh translations. Please try again.",
+                  variant: "destructive",
+                });
+              } finally {
+                setIsRefreshing(false);
+              }
+            }}
+            disabled={isRefreshing}
+            className="gap-2"
+          >
+            <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            {isRefreshing ? 'Refreshing...' : 'Refresh Translations'}
+          </Button>
         </div>
 
         {/* Settings Management */}

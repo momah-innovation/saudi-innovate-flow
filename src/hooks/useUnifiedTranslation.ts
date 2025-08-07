@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation as useI18nextTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { queryKeys } from '@/lib/query/query-keys';
@@ -19,13 +19,14 @@ interface SystemTranslation {
  */
 export function useUnifiedTranslation() {
   const { t: i18nextT, i18n } = useI18nextTranslation();
+  const queryClient = useQueryClient();
   
   // Normalize language code (en-US -> en, ar-SA -> ar)
   const language = i18n.language.split('-')[0] as 'en' | 'ar';
   const isRTL = language === 'ar';
 
   // Fetch database translations with React Query
-  const { data: dbTranslations = [], isLoading, error } = useQuery({
+  const { data: dbTranslations = [], isLoading, error, refetch } = useQuery({
     queryKey: queryKeys.system.translation(language),
     queryFn: async () => {
       logger.debug('Fetching unified translations from database', { language });
@@ -44,10 +45,10 @@ export function useUnifiedTranslation() {
       });
       return data as SystemTranslation[];
     },
-    staleTime: 10 * 60 * 1000, // 10 minutes
-    gcTime: 30 * 60 * 1000, // 30 minutes
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    staleTime: 1 * 60 * 1000, // 1 minute - reduced for debugging
+    gcTime: 5 * 60 * 1000, // 5 minutes - reduced for debugging
+    refetchOnWindowFocus: true, // Enable refetch on focus for debugging
+    refetchOnMount: true, // Enable refetch on mount for debugging
     retry: 3,
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
@@ -224,6 +225,14 @@ export function useUnifiedTranslation() {
     };
   };
 
+  // Function to refresh translations
+  const refreshTranslations = async () => {
+    await queryClient.invalidateQueries({
+      queryKey: queryKeys.system.translation(language)
+    });
+    await refetch();
+  };
+
   return {
     // Core translation functions
     t,
@@ -236,6 +245,7 @@ export function useUnifiedTranslation() {
     hasTranslation,
     getCategoryTranslations,
     getTranslationWithLoading,
+    refreshTranslations,
     
     // State information
     language,
