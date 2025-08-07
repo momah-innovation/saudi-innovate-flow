@@ -3,9 +3,10 @@ import { Star, MessageSquare, ThumbsUp, ThumbsDown } from 'lucide-react';
 import React, { useState } from 'react';
 import { Button } from './button';
 import { Textarea } from './textarea';
+import { Card, CardContent, CardHeader, CardTitle } from './card';
 import { Badge } from './badge';
-import { cn } from '@/lib/utils';
 
+import { cn } from '@/lib/utils';
 interface StarRatingProps {
   rating: number;
   onChange: (rating: number) => void;
