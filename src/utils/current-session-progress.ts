@@ -154,7 +154,7 @@ export const currentSessionProgress = {
       'src/components/admin/settings/UserManagementSettings.tsx - Fixed 2 any types + enhanced interfaces',
       'src/components/ideas/IdeaNotificationCenter.tsx - Fixed 2 console logs + enhanced logging',
       'src/components/opportunities/ComprehensiveAnalyticsDashboard.tsx - Fixed 1 console log + enhanced logging',
-      'src/components/admin/TeamWorkspaceContent.tsx - Fixed 1 any type + enhanced interfaces',
+      'src/components/admin/TeamWorkspaceContent.tsx - Fixed 8 any types + enhanced interfaces',
       'src/components/admin/TestPrivilegeElevation.tsx - Fixed 1 any type + enhanced error handling',
       'src/components/storage/StorageManagementPage.tsx - Fixed 4 console logs + enhanced logging',
       'src/components/storage/UploaderSettingsTab.tsx - Fixed 6 console logs + enhanced logging',

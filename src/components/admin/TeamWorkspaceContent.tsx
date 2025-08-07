@@ -211,7 +211,7 @@ export function TeamWorkspaceContent({
       setTeamData({
         assignments: assignments || [],
         projects: collaborations || [],
-        teamMembers: (teamMembers || []).map((member: any) => ({
+        teamMembers: (teamMembers || []).map((member: TeamMemberData) => ({
           ...member,
           profiles: Array.isArray(member.profiles) && member.profiles.length > 0 
             ? member.profiles[0] 
@@ -584,7 +584,7 @@ export function TeamWorkspaceContent({
           <CardContent>
             <ScrollArea className="h-80">
               <div className="space-y-4">
-                {teamData.recentActivities.map((activity: any) => (
+                {teamData.recentActivities.map((activity: ActivityData) => (
                   <div key={activity.id} className="flex items-start gap-3 p-3 hover:bg-muted/50 rounded-lg transition-colors">
                     <div className={`w-2 h-2 rounded-full mt-2 ${
                       activity.type === 'assignment' ? 'activity-assignment' :
@@ -616,7 +616,7 @@ export function TeamWorkspaceContent({
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {teamData.assignments.slice(0, 5).map((assignment: any) => (
+            {teamData.assignments.slice(0, 5).map((assignment: AssignmentData) => (
               <div key={assignment.id} className="flex items-center justify-between p-3 border rounded-lg hover:shadow-sm transition-shadow cursor-pointer">
                 <div className="flex-1">
                   <h4 className="font-medium">{assignment.assignment_type}</h4>
@@ -652,7 +652,7 @@ export function TeamWorkspaceContent({
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {teamData.teamMembers.slice(0, 5).map((member: any) => (
+            {teamData.teamMembers.slice(0, 5).map((member: TeamMemberData) => (
               <div 
                 key={member.id} 
                 className="flex items-center gap-3 p-2 hover:bg-muted/50 rounded-lg transition-colors cursor-pointer"
@@ -719,7 +719,7 @@ export function TeamWorkspaceContent({
 
       {/* Projects Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {teamData.projects.map((project: any) => (
+        {teamData.projects.map((project: ProjectData) => (
           <Card 
             key={project.id} 
             className="hover:shadow-lg transition-all duration-200 cursor-pointer group"
@@ -843,7 +843,7 @@ export function TeamWorkspaceContent({
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-success">
-              {teamData.teamMembers.filter((m: any) => m.status === 'active').length}
+              {teamData.teamMembers.filter((m: TeamMemberData) => m.status === 'active').length}
             </div>
           </CardContent>
         </Card>
@@ -867,7 +867,7 @@ export function TeamWorkspaceContent({
 
       {/* Team Members Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {teamData.teamMembers.map((member: any) => (
+        {teamData.teamMembers.map((member: TeamMemberData) => (
           <Card 
             key={member.id} 
             className="hover:shadow-lg transition-all duration-200 cursor-pointer group"

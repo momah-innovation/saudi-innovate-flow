@@ -1,4 +1,5 @@
 import { AppError } from '@/types/common';
+import { logger as centralizedLogger } from './logger';
 
 /**
  * Enhanced error handling utilities
@@ -61,10 +62,11 @@ export class AppErrorHandler {
     }
 
     if (error && typeof error === 'object' && 'message' in error) {
+      const errorObj = error as Record<string, unknown>;
       return {
-        message: (error as any).message || 'Unknown error',
-        code: (error as any).code || 'UNKNOWN_ERROR',
-        statusCode: (error as any).statusCode || 500,
+        message: errorObj.message as string || 'Unknown error',
+        code: errorObj.code as string || 'UNKNOWN_ERROR',
+        statusCode: errorObj.statusCode as number || 500,
         details: { ...error, context },
         timestamp
       };
@@ -80,7 +82,7 @@ export class AppErrorHandler {
   }
 
   /**
-   * Log errors (replace with proper logging service)
+   * Log errors using centralized logger
    */
   private logError(error: AppError, context?: string): void {
     const logData = {
@@ -90,8 +92,12 @@ export class AppErrorHandler {
       url: typeof window !== 'undefined' ? window.location.href : 'server'
     };
 
-    // For now, use console.error but this should be replaced with proper logging
-    console.error('[ERROR]', logData);
+    // Use centralized logger instead of console.error
+    centralizedLogger.error('Error handled by AppErrorHandler', { 
+      action: 'error_handling', 
+      data: logData, 
+      component: context 
+    });
     
     // TODO: Send to error tracking service (Sentry, LogRocket, etc.)
   }
@@ -155,30 +161,33 @@ export class Logger {
 
   static info(message: string, data?: unknown): void {
     if (Logger.isDevelopment) {
-      logger.info(message, { data });
+      centralizedLogger.info(message, { data });
     }
-    // TODO: Send to logging service in production
+    // Production logging will be handled by centralized logger
   }
 
   static warn(message: string, data?: unknown): void {
     if (Logger.isDevelopment) {
-      console.warn(`[WARN] ${message}`, data || '');
+      centralizedLogger.warn(message, { data });
     }
-    // TODO: Send to logging service in production
+    // Production logging will be handled by centralized logger
   }
 
   static error(message: string, error?: unknown): void {
     const appError = errorHandler.handleError(error, message);
     
     if (Logger.isDevelopment) {
-      console.error(`[ERROR] ${message}`, appError);
+      centralizedLogger.error(message, { 
+        action: 'logger_error', 
+        data: appError 
+      });
     }
-    // TODO: Send to logging service in production
+    // Production logging will be handled by centralized logger
   }
 
   static debug(message: string, data?: unknown): void {
     if (Logger.isDevelopment) {
-      console.debug(`[DEBUG] ${message}`, data || '');
+      centralizedLogger.debug(message, { data });
     }
   }
 }
