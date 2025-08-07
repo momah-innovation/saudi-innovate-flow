@@ -12,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 interface UserInvitationWizardProps {
   open: boolean;
@@ -23,7 +23,7 @@ interface UserInvitationWizardProps {
 export function UserInvitationWizard({ open, onOpenChange, onInvitationSent }: UserInvitationWizardProps) {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { availableUserRoles } = useSystemLists();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({

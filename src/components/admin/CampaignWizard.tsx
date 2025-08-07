@@ -30,7 +30,7 @@ import {
   Check
 } from "lucide-react";
 import { useSystemLists } from "@/hooks/useSystemLists";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { CampaignFormData, SystemLists } from "@/types";
 
 // Use the centralized CampaignFormData type
@@ -49,7 +49,7 @@ export function CampaignWizard({
   onSuccess 
 }: CampaignWizardProps) {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { generalStatusOptions, campaignThemeOptions } = useSystemLists();
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);

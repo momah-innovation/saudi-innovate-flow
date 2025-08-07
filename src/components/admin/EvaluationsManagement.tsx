@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Loader2, Eye, Edit, Filter, Search, FileCheck, Star } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { AdminEvaluationsHero } from "@/components/admin/AdminEvaluationsHero";
 import { ViewLayouts } from "@/components/ui/view-layouts";
@@ -79,7 +79,7 @@ export function EvaluationsManagement({
   const [filterType, setFilterType] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { expertRoleTypes } = useSystemLists();
 
   const { evaluatorTypes } = useSystemLists();

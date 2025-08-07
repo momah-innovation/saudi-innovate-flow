@@ -5,10 +5,10 @@ import { IdeasManagementList, Idea } from "./ideas/IdeasManagementList";
 import { IdeaAnalytics } from "./ideas/IdeaAnalytics";
 import { IdeaWizard } from "./IdeaWizard";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 export function IdeasManagement() {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [activeTab, setActiveTab] = useState("ideas");
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);

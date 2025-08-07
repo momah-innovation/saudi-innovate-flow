@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Edit, Trash2, Users, Building, Network, Mail, Search, Filter, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 interface Deputy {
   id: string;
@@ -74,7 +74,7 @@ export function OrganizationalStructureManagement() {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
 
   // States for dialogs and editing
   const [isDeputyDialogOpen, setIsDeputyDialogOpen] = useState(false);

@@ -6,7 +6,7 @@ import { FocusQuestionDetailView } from "./focus-questions/FocusQuestionDetailVi
 import { EmptyState } from "@/components/ui/empty-state";
 import { ViewLayouts } from "@/components/ui/view-layouts";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 import { 
   HelpCircle, 
@@ -62,7 +62,7 @@ export function FocusQuestionManagement({ viewMode, searchTerm, showAddDialog, o
   const [selectedQuestion, setSelectedQuestion] = useState<FocusQuestion | null>(null);
   const [showDetailView, setShowDetailView] = useState(false);
   const { toast } = useToast();
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
 
   useEffect(() => {
     fetchFocusQuestions();

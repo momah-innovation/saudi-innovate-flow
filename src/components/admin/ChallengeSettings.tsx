@@ -14,7 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, Clock, Shield, Bell, Users, Archive, Settings as SettingsIcon } from "lucide-react";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 interface Challenge {
   id: string;
@@ -42,7 +42,7 @@ export const ChallengeSettings: React.FC<ChallengeSettingsProps> = ({
   onClose,
   onUpdate
 }) => {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { toast } = useToast();
   const { challengeSensitivityLevels } = useSystemLists();
   const [loading, setLoading] = useState(false);

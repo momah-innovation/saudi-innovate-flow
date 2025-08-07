@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
 import { 
   Users, 
@@ -63,7 +63,7 @@ export function TeamMemberWizard({
   onSuccess 
 }: TeamMemberWizardProps) {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { teamRoleOptions, teamSpecializationOptions } = useSystemLists();
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);

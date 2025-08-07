@@ -13,7 +13,7 @@ import { Calendar, Clock, Plus, Search, Users, UserCheck, Target, AlertCircle, C
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from '@/hooks/useSystemLists';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { ExpertProfileDialog } from './ExpertProfileDialog';
 
 interface Expert {
@@ -58,7 +58,7 @@ interface ChallengeExpert {
 
 export function ExpertAssignmentManagement() {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { assignmentStatusOptions, expertRoleTypes } = useSystemLists();
   const [activeTab, setActiveTab] = useState("assignments");
   const [maxWorkload, setMaxWorkload] = useState(5);

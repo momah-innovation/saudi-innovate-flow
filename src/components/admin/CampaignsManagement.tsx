@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ViewLayouts } from '@/components/ui/view-layouts';
 import { ManagementCard } from '@/components/ui/management-card';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CampaignWizard } from './CampaignWizard';
@@ -61,7 +61,7 @@ interface CampaignsManagementProps {
 }
 
 export function CampaignsManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: CampaignsManagementProps) {
-  const { language } = useTranslation();
+  const { language } = useUnifiedTranslation();
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);

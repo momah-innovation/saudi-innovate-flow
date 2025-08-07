@@ -22,7 +22,7 @@ import {
   Eye, Edit3, Archive, Star, Heart, ThumbsUp, ArrowRight, ExternalLink,
   PieChart, LineChart
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { CreateProjectDialog } from './team-workspace/CreateProjectDialog';
 import { InviteMemberDialog } from './team-workspace/InviteMemberDialog';
 import { TaskAssignmentDialog } from './team-workspace/TaskAssignmentDialog';
@@ -42,7 +42,7 @@ export function TeamWorkspaceContent({
   viewMode, 
   searchTerm 
 }: TeamWorkspaceContentProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);

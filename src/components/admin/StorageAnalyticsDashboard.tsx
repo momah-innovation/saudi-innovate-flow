@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRTLAwareClasses } from '@/components/ui/rtl-aware'
-import { useTranslation } from '@/hooks/useAppTranslation'
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
@@ -40,7 +40,7 @@ const CHART_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#8
 
 export const StorageAnalyticsDashboard: React.FC<StorageAnalyticsDashboardProps> = ({ className }) => {
   const { analytics, loading, error, refreshAnalytics } = useStorageAnalytics()
-  const { t } = useTranslation()
+  const { t } = useUnifiedTranslation()
   const { mr } = useRTLAwareClasses()
 
   const formatBytes = (bytes: number): string => {

@@ -12,7 +12,7 @@ import {
   Edit, MoreVertical, UserX, Crown,
   Clock, CheckCircle, AlertTriangle, Plus
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -49,7 +49,7 @@ export function TeamManagementContent({
   showAddDialog,
   onAddDialogChange
 }: TeamManagementContentProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);

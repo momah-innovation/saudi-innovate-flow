@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslation } from "@/hooks/useAppTranslation";
+import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 
 import { supabase } from "@/integrations/supabase/client";
 import { 
@@ -41,7 +41,7 @@ export function ChallengeDetailView({
   onRefresh 
 }: ChallengeDetailViewProps) {
   const { toast } = useToast();
-  const { t, isRTL } = useTranslation();
+  const { t, isRTL } = useUnifiedTranslation();
   
   const [relatedData, setRelatedData] = useState({
     experts: [],

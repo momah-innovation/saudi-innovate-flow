@@ -61,30 +61,45 @@ export function useUnifiedTranslation() {
   }, [dbTranslations]);
 
   /**
-   * Primary translation function - STANDARDIZED PATTERN ONLY
-   * t(key, fallback, options) - fallback and options are optional
+   * Primary translation function - SUPPORTS BOTH OLD AND NEW PATTERNS TEMPORARILY
+   * New: t(key, fallback, options)
+   * Old: t(key, options) - for backward compatibility during migration
    */
-  const t = (key: string, fallback?: string, options?: Record<string, any>): string => {
+  const t = (key: string, fallbackOrOptions?: string | Record<string, any>, options?: Record<string, any>): string => {
     try {
+      let fallback: string | undefined;
+      let interpolationOptions: Record<string, any> | undefined;
+      
+      // Handle parameter variations
+      if (typeof fallbackOrOptions === 'string') {
+        // New pattern: t(key, fallback, options)
+        fallback = fallbackOrOptions;
+        interpolationOptions = options;
+      } else if (typeof fallbackOrOptions === 'object' && fallbackOrOptions !== null) {
+        // Old pattern: t(key, options) - backward compatibility
+        interpolationOptions = fallbackOrOptions;
+        fallback = undefined;
+      }
+
       // Strategy 1: Database translation (highest priority)
       const dbTranslation = translationMap.get(key);
       if (dbTranslation) {
         const text = dbTranslation[language];
         if (text && text.trim() !== '') {
-          return interpolateText(text, options);
+          return interpolateText(text, interpolationOptions);
         }
       }
 
       // Strategy 2: Provided fallback
       if (fallback && fallback.trim() !== '') {
-        return interpolateText(fallback, options);
+        return interpolateText(fallback, interpolationOptions);
       }
 
       // Strategy 3: Return key as last resort
       return key;
     } catch (error) {
       console.warn(`Translation error for key "${key}":`, error);
-      return fallback || key;
+      return (typeof fallbackOrOptions === 'string' ? fallbackOrOptions : undefined) || key;
     }
   };
 

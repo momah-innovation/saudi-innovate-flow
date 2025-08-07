@@ -7,7 +7,7 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { AdminFocusQuestionWizard } from './AdminFocusQuestionWizard';
 import { HelpCircle, Plus } from 'lucide-react';
 
@@ -30,7 +30,7 @@ interface FocusQuestion {
 
 const FocusQuestionsManagement = () => {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [focusQuestions, setFocusQuestions] = useState<FocusQuestion[]>([]);
   const [showWizard, setShowWizard] = useState(false);

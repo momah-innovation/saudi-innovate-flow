@@ -13,7 +13,7 @@ import {
   Edit, MoreVertical, UserX, Crown,
   Clock, CheckCircle, AlertTriangle
 } from 'lucide-react';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { TeamMemberWizard } from './TeamMemberWizard';
 import { CoreTeamCard, CoreTeamMemberData, CoreTeamCardAction } from '@/components/ui/core-team-card';
 import { CoreTeamDetailDialog } from '@/components/ui/core-team-detail-dialog';
@@ -35,7 +35,7 @@ export function InnovationTeamsContent({
   showAddDialog,
   onAddDialogChange
 }: InnovationTeamsContentProps) {
-  const { t } = useTranslation();
+  const { t } = useUnifiedTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);

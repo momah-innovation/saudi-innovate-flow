@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ManagementCard } from '@/components/ui/management-card';
 import { ViewLayouts } from '@/components/ui/view-layouts';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useAppTranslation';
 import { StakeholderWizard } from './StakeholderWizard';
 import { 
   User,
@@ -106,7 +106,7 @@ interface StakeholdersManagementProps {
 }
 
 export function StakeholdersManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: StakeholdersManagementProps) {
-  const { language } = useTranslation();
+  const { language } = useUnifiedTranslation();
   const [selectedStakeholder, setSelectedStakeholder] = useState<any>(null);
 
   const handleEdit = (stakeholder: any) => {

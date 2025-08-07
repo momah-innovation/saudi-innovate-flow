@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ManagementCard } from '@/components/ui/management-card';
 import { ViewLayouts } from '@/components/ui/view-layouts';
-import { useTranslation } from '@/hooks/useAppTranslation';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { EventWizard } from '@/components/events/EventWizard';
 import { ComprehensiveEventWizard } from '@/components/events/ComprehensiveEventWizard';
 import { ComprehensiveEventDialog } from '@/components/events/ComprehensiveEventDialog';
@@ -25,7 +25,7 @@ interface EventsManagementProps {
 }
 
 export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: EventsManagementProps) {
-  const { language } = useTranslation();
+  const { language } = useUnifiedTranslation();
   const { toast } = useToast();
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [viewEvent, setViewEvent] = useState<any>(null);
