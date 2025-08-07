@@ -66,7 +66,7 @@ interface ChallengeData {
   priority_level?: string;
   start_date?: string;
   end_date?: string;
-  challenge_type?: string;
+  challenge_type: string; // Made required to match external Challenge interface
   image_url?: string;
 }
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
@@ -742,7 +742,7 @@ interface ChallengeData {
         <>
           {/* Enhanced Challenge View Dialog */}
           <ChallengeViewDialog
-            challenge={selectedChallenge}
+            challenge={selectedChallenge as any}
             open={detailDialogOpen}
             onOpenChange={setDetailDialogOpen}
             onParticipate={handleParticipate}

@@ -35,13 +35,27 @@ import {
 } from 'lucide-react';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
 
+interface Challenge {
+  id: string;
+  title_ar: string;
+  description_ar: string;
+  challenge_type: string;
+  category: string;
+  participants?: number;
+  status: string;
+  start_date?: string;
+  end_date?: string;
+  estimated_budget?: number;
+  image_url?: string;
+}
+
 interface ChallengeViewDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  challenge: any;
-  onParticipate?: (challenge: any) => void;
-  onSubmit?: (challenge: any) => void;
-  onBookmark?: (challenge: any) => void;
+  challenge: Challenge | null;
+  onParticipate?: (challenge: Challenge) => void;
+  onSubmit?: (challenge: Challenge) => void;
+  onBookmark?: (challenge: Challenge) => void;
 }
 
 export function ChallengeViewDialog({ 
