@@ -37,6 +37,8 @@ import { AdvancedSearch } from '@/components/ui/advanced-search';
 import { CalendarView } from '@/components/ui/calendar-scheduler';
 
 import { cn } from '@/lib/utils';
+import { logger } from '@/utils/logger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 const DesignSystem = () => {
   const [copiedToken, setCopiedToken] = useState<string | null>(null);

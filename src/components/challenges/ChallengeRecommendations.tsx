@@ -21,6 +21,8 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface Challenge {
   id: string;
@@ -120,7 +122,11 @@ export const ChallengeRecommendations = ({
         }
       }
     } catch (error) {
-      console.error('Error loading recommendations:', error);
+      logger.error('Error loading recommendations', { 
+        component: 'ChallengeRecommendations', 
+        action: 'loadRecommendations',
+        userId: user?.id
+      }, error as Error);
     } finally {
       setLoading(false);
     }

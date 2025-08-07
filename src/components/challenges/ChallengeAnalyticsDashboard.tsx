@@ -21,6 +21,8 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { getStatusMapping, getPriorityMapping, challengesPageConfig } from '@/config/challengesPageConfig';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface AnalyticsData {
   totalChallenges: number;
@@ -136,7 +138,10 @@ export const ChallengeAnalyticsDashboard = ({
       });
 
     } catch (error) {
-      console.error('Error loading analytics:', error);
+      logger.error('Error loading analytics', { 
+        component: 'ChallengeAnalyticsDashboard', 
+        action: 'loadAnalytics'
+      }, error as Error);
     } finally {
       setLoading(false);
     }

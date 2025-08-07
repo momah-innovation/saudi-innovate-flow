@@ -29,6 +29,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
 import { cn } from '@/lib/utils';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface Challenge {
   id: string;
@@ -303,7 +305,14 @@ export const ChallengeSubmitDialog = ({
       setLoading(true);
       await submitSubmission(false);
     } catch (error) {
-      console.error('Submission error:', error);
+      logger.error('Submission error', { 
+        component: 'ChallengeSubmitDialog', 
+        action: 'handleSubmit',
+        data: {
+          challengeId: challenge?.id,
+          userId: user?.id
+        }
+      }, error as Error);
       toast({
         title: isRTL ? 'خطأ في التسليم' : 'Submission Error',
         description: isRTL ? 'حدث خطأ أثناء تسليم المشروع' : 'An error occurred while submitting',

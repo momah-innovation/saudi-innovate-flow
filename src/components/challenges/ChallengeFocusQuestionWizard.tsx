@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { logger } from "@/utils/logger";
 
 interface FocusQuestion {
   id: string;
@@ -122,7 +123,11 @@ export function ChallengeFocusQuestionWizard({
       onQuestionSaved();
       onOpenChange(false);
     } catch (error) {
-      console.error('Error saving focus question:', error);
+      logger.error('Error saving focus question', { 
+        component: 'ChallengeFocusQuestionWizard', 
+        action: 'handleSave',
+        data: { challengeId, isEditing, questionId: question?.id }
+      }, error as Error);
       toast({
         title: "خطأ",
         description: `فشل في ${isEditing ? 'تحديث' : 'إنشاء'} السؤال المحوري`,

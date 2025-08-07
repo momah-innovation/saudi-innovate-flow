@@ -16,6 +16,8 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { getPriorityMapping, getCategoryMapping, challengesPageConfig } from '@/config/challengesPageConfig';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface TrendingChallenge {
   id: string;
@@ -88,7 +90,10 @@ export const ChallengeTrendingWidget = ({
       setTrendingChallenges(sorted);
       
     } catch (error) {
-      console.error('Error loading trending challenges:', error);
+      logger.error('Error loading trending challenges', { 
+        component: 'ChallengeTrendingWidget', 
+        action: 'loadTrendingChallenges'
+      }, error as Error);
     } finally {
       setLoading(false);
     }

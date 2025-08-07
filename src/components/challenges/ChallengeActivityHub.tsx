@@ -25,6 +25,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { getActivityTypeMapping, challengesPageConfig } from '@/config/challengesPageConfig';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface Challenge {
   id: string;
@@ -142,7 +144,11 @@ export const ChallengeActivityHub = ({
       setActivities(mockActivities);
       
     } catch (error) {
-      console.error('Error loading collaboration data:', error);
+      logger.error('Error loading collaboration data', { 
+        component: 'ChallengeActivityHub', 
+        action: 'loadCollaborationData',
+        data: { challengeId: challenge.id }
+      }, error as Error);
     } finally {
       setLoading(false);
     }

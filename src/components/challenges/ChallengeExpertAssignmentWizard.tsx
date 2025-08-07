@@ -12,6 +12,8 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { challengesPageConfig } from '@/config/challengesPageConfig';
 import { cn } from '@/lib/utils';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 import {
   Users,
   Search,
@@ -78,7 +80,10 @@ export const ChallengeExpertAssignmentWizard = ({
 
       setExperts(expertsWithProfiles);
     } catch (error) {
-      console.error('Error loading experts:', error);
+      logger.error('Error loading experts', { 
+        component: 'ChallengeExpertAssignmentWizard', 
+        action: 'loadExperts'
+      }, error as Error);
       setExperts([]);
     }
   };
@@ -130,7 +135,11 @@ export const ChallengeExpertAssignmentWizard = ({
       onOpenChange(false);
       setSelectedExperts([]);
     } catch (error) {
-      console.error('Error assigning experts:', error);
+      logger.error('Error assigning experts', { 
+        component: 'ChallengeExpertAssignmentWizard', 
+        action: 'handleAssignExperts',
+        data: { challengeId: challenge.id, selectedExperts }
+      }, error as Error);
       toast({
         title: isRTL ? 'خطأ' : 'Error',
         description: isRTL ? 'فشل في تعيين الخبراء' : 'Failed to assign experts',

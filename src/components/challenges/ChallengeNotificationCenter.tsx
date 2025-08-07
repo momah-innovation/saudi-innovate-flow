@@ -24,6 +24,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { getNotificationTypeMapping } from '@/config/challengesPageConfig';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { logger } from '@/utils/logger';
 
 interface ChallengeNotification {
   id: string;
@@ -108,7 +110,11 @@ export const ChallengeNotificationCenter = ({
       setNotifications(data || []);
       setUnreadCount(data?.filter(n => !n.is_read).length || 0);
     } catch (error) {
-      console.error('Error loading notifications:', error);
+      logger.error('Error loading notifications', { 
+        component: 'ChallengeNotificationCenter', 
+        action: 'loadNotifications',
+        userId: user?.id
+      }, error as Error);
     } finally {
       setLoading(false);
     }
@@ -130,7 +136,11 @@ export const ChallengeNotificationCenter = ({
       );
       setUnreadCount(prev => Math.max(0, prev - 1));
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      logger.error('Error marking notification as read', { 
+        component: 'ChallengeNotificationCenter', 
+        action: 'markAsRead',
+        data: { notificationId }
+      }, error as Error);
     }
   };
 
@@ -151,7 +161,11 @@ export const ChallengeNotificationCenter = ({
       );
       setUnreadCount(0);
     } catch (error) {
-      console.error('Error marking all as read:', error);
+      logger.error('Error marking all as read', { 
+        component: 'ChallengeNotificationCenter', 
+        action: 'markAllAsRead',
+        userId: user?.id
+      }, error as Error);
     }
   };
 

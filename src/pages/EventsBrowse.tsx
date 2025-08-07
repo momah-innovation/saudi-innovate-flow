@@ -17,6 +17,8 @@ import { EventWaitlistDialog } from '@/components/events/EventWaitlistDialog';
 import { EventReviewsDialog } from '@/components/events/EventReviewsDialog';
 import { EventSocialShare } from '@/components/events/EventSocialShare';
 import { EnhancedEventsHero } from '@/components/events/EnhancedEventsHero';
+import { logger } from '@/utils/logger';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
 import { EventAnalyticsDashboard } from '@/components/events/EventAnalyticsDashboard';
 import { TrendingEventsWidget } from '@/components/events/TrendingEventsWidget';
