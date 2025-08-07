@@ -76,7 +76,7 @@ export default function UserDashboard() {
   const { isRTL } = useDirection();
   const navigate = useNavigate();
   
-  const primaryRole = getPrimaryRole();
+  const [primaryRole, setPrimaryRole] = useState<string>('innovator');
   
   const [stats, setStats] = useState<DashboardStats>({
     totalIdeas: 0,
@@ -95,6 +95,12 @@ export default function UserDashboard() {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedIdea, setSelectedIdea] = useState<any>(null);
+
+  useEffect(() => {
+    // Update primary role when user profile changes
+    const role = getPrimaryRole();
+    setPrimaryRole(role);
+  }, [userProfile, getPrimaryRole]);
 
   useEffect(() => {
     if (userProfile?.id) {
