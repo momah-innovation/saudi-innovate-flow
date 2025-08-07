@@ -96,7 +96,7 @@ export function FocusQuestionFilters({
   const getActiveFilters = () => {
     const filters = [];
     if (questionType !== 'all') {
-      const typeLabel = questionTypeOptions.find(opt => opt.value === questionType)?.label;
+      const typeLabel = typeOptions.find(opt => opt.value === questionType)?.label;
       filters.push({ key: 'type', label: `النوع: ${typeLabel}` });
     }
     if (sensitivity !== 'all') {
