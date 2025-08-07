@@ -63,19 +63,20 @@ export function AdvancedSearch({
     { id: 'partners', label: 'الشركاء', label_en: 'Partners' }
   ];
 
-  const statusOptions = [
-    { id: 'active', label: 'نشط', label_en: 'Active' },
-    { id: 'planning', label: 'قيد التخطيط', label_en: 'Planning' },
-    { id: 'completed', label: 'مكتمل', label_en: 'Completed' },
-    { id: 'paused', label: 'متوقف', label_en: 'Paused' }
-  ];
+  const generalStatusOptions = getSettingValue('workflow_statuses', []) as string[];
+  const priorityLevels = getSettingValue('priority_levels', []) as string[];
+  
+  const statusOptions = generalStatusOptions.map(status => ({ 
+    id: status.toLowerCase(), 
+    label: status, 
+    label_en: status 
+  }));
 
-  const priorityOptions = [
-    { id: 'critical', label: 'حرج', label_en: 'Critical' },
-    { id: 'high', label: 'عالي', label_en: 'High' },
-    { id: 'medium', label: 'متوسط', label_en: 'Medium' },
-    { id: 'low', label: 'منخفض', label_en: 'Low' }
-  ];
+  const priorityOptions = priorityLevels.map(priority => ({ 
+    id: priority.toLowerCase(), 
+    label: priority, 
+    label_en: priority 
+  }));
 
   const sortOptions = [
     { id: 'relevance', label: 'الصلة', label_en: 'Relevance' },

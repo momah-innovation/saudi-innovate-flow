@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -49,6 +50,7 @@ export const EventFilters = ({
   activeFiltersCount 
 }: EventFiltersProps) => {
   const { isRTL } = useDirection();
+  const { getSettingValue } = useSettingsManager();
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 
   const updateFilter = (key: keyof EventFilterState, value: any) => {
@@ -62,36 +64,29 @@ export const EventFilters = ({
     updateFilter('features', newFeatures);
   };
 
+  const eventFormatOptions = getSettingValue('event_format_options', []) as string[];
+  const eventTypeOptionsData = getSettingValue('event_type_options', []) as string[];
+  const eventCategoriesData = getSettingValue('event_categories', []) as string[];
+  const eventStatusOptionsData = getSettingValue('event_status_options', []) as string[];
+
   const formatOptions = [
     { value: 'all', label: isRTL ? 'جميع الأشكال' : 'All Formats' },
-    { value: 'virtual', label: isRTL ? 'افتراضي' : 'Virtual' },
-    { value: 'in_person', label: isRTL ? 'حضوري' : 'In Person' },
-    { value: 'hybrid', label: isRTL ? 'مختلط' : 'Hybrid' }
+    ...eventFormatOptions.map(format => ({ value: format.toLowerCase(), label: format }))
   ];
 
   const eventTypeOptions = [
     { value: 'all', label: isRTL ? 'جميع الأنواع' : 'All Types' },
-    { value: 'workshop', label: isRTL ? 'ورشة عمل' : 'Workshop' },
-    { value: 'conference', label: isRTL ? 'مؤتمر' : 'Conference' },
-    { value: 'seminar', label: isRTL ? 'ندوة' : 'Seminar' },
-    { value: 'networking', label: isRTL ? 'تواصل' : 'Networking' },
-    { value: 'hackathon', label: isRTL ? 'هاكاثون' : 'Hackathon' },
-    { value: 'training', label: isRTL ? 'تدريب' : 'Training' }
+    ...eventTypeOptionsData.map(type => ({ value: type.toLowerCase(), label: type }))
   ];
 
   const categoryOptions = [
     { value: 'all', label: isRTL ? 'جميع الفئات' : 'All Categories' },
-    { value: 'standalone', label: isRTL ? 'مستقل' : 'Standalone' },
-    { value: 'campaign', label: isRTL ? 'حملة' : 'Campaign' },
-    { value: 'challenge', label: isRTL ? 'تحدي' : 'Challenge' }
+    ...eventCategoriesData.map(category => ({ value: category.toLowerCase(), label: category }))
   ];
 
   const statusOptions = [
     { value: 'all', label: isRTL ? 'جميع الحالات' : 'All Status' },
-    { value: 'scheduled', label: isRTL ? 'مجدول' : 'Scheduled' },
-    { value: 'ongoing', label: isRTL ? 'جاري' : 'Ongoing' },
-    { value: 'completed', label: isRTL ? 'مكتمل' : 'Completed' },
-    { value: 'cancelled', label: isRTL ? 'ملغي' : 'Cancelled' }
+    ...eventStatusOptionsData.map(status => ({ value: status.toLowerCase(), label: status }))
   ];
 
   const sortOptions = [

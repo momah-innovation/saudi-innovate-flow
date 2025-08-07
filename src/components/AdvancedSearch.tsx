@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -53,6 +54,7 @@ export function AdvancedSearch({
   className
 }: AdvancedSearchProps) {
   const { t, language, isRTL } = useUnifiedTranslation();
+  const { getSettingValue } = useSettingsManager();
   
   const [filters, setFilters] = useState<SearchFilters>({
     query: '',
@@ -149,12 +151,12 @@ export function AdvancedSearch({
     ]
   };
 
-  const priorityOptions = [
-    { value: 'low', label: 'Low Priority', labelAr: 'أولوية منخفضة' },
-    { value: 'medium', label: 'Medium Priority', labelAr: 'أولوية متوسطة' },
-    { value: 'high', label: 'High Priority', labelAr: 'أولوية عالية' },
-    { value: 'urgent', label: 'Urgent', labelAr: 'طارئ' }
-  ];
+  const priorityLevels = getSettingValue('priority_levels', []) as string[];
+  const priorityOptions = priorityLevels.map(priority => ({ 
+    value: priority.toLowerCase(), 
+    label: priority, 
+    labelAr: priority 
+  }));
 
   return (
     <Card className={cn("w-full", className)}>

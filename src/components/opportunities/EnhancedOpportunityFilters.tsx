@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -53,6 +54,7 @@ export const EnhancedOpportunityFilters = ({
   className = ""
 }: EnhancedOpportunityFiltersProps) => {
   const { isRTL } = useDirection();
+  const { getSettingValue } = useSettingsManager();
   const [categories, setCategories] = useState<any[]>([]);
   const [sectors, setSectors] = useState<any[]>([]);
   const [departments, setDepartments] = useState<any[]>([]);
@@ -114,18 +116,18 @@ export const EnhancedOpportunityFilters = ({
     { value: 'consulting', label: isRTL ? 'استشارات' : 'Consulting' }
   ];
 
-  const statusOptions = [
-    { value: 'open', label: isRTL ? 'مفتوحة' : 'Open' },
-    { value: 'closed', label: isRTL ? 'مغلقة' : 'Closed' },
-    { value: 'review', label: isRTL ? 'قيد المراجعة' : 'Under Review' },
-    { value: 'pending', label: isRTL ? 'معلقة' : 'Pending' }
-  ];
+  const opportunityStatusOptions = getSettingValue('opportunity_status_options', []) as string[];
+  const priorityLevels = getSettingValue('priority_levels', []) as string[];
 
-  const priorityOptions = [
-    { value: 'high', label: isRTL ? 'عالية' : 'High' },
-    { value: 'medium', label: isRTL ? 'متوسطة' : 'Medium' },
-    { value: 'low', label: isRTL ? 'منخفضة' : 'Low' }
-  ];
+  const statusOptions = opportunityStatusOptions.map(status => ({ 
+    value: status.toLowerCase(), 
+    label: status 
+  }));
+
+  const priorityOptions = priorityLevels.map(priority => ({ 
+    value: priority.toLowerCase(), 
+    label: priority 
+  }));
 
   const deadlineOptions = [
     { value: 'week', label: isRTL ? 'خلال أسبوع' : 'Within a week' },

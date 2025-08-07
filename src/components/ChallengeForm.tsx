@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
-import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-// TagSelector will be implemented in next phase
 import { FileUploader } from '@/components/ui/file-uploader';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
+import { useSettingsManager } from '@/hooks/useSettingsManager';
+import { useDirection } from '@/components/ui/direction-provider';
 import { Calendar, MapPin, DollarSign, Clock, Target, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -40,6 +44,7 @@ export function ChallengeForm({
   mode = 'create'
 }: ChallengeFormProps) {
   const { t, language, isRTL } = useUnifiedTranslation();
+  const { getSettingValue } = useSettingsManager();
   
   const [formData, setFormData] = useState({
     title_ar: initialData?.title_ar || '',
@@ -73,12 +78,12 @@ export function ChallengeForm({
     { value: 'fintech', label: 'Financial Technology', labelAr: 'التقنية المالية' }
   ];
 
-  const priorityLevels = [
-    { value: 'low', label: 'Low Priority', labelAr: 'أولوية منخفضة' },
-    { value: 'medium', label: 'Medium Priority', labelAr: 'أولوية متوسطة' },
-    { value: 'high', label: 'High Priority', labelAr: 'أولوية عالية' },
-    { value: 'urgent', label: 'Urgent', labelAr: 'طارئ' }
-  ];
+  const priorityLevelsData = getSettingValue('priority_levels', []) as string[];
+  const priorityLevels = priorityLevelsData.map(priority => ({ 
+    value: priority.toLowerCase(), 
+    label: priority, 
+    labelAr: priority 
+  }));
 
   return (
     <div className={cn(

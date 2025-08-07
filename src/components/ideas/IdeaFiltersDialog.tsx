@@ -72,21 +72,18 @@ export function IdeaFiltersDialog({
     }
   };
 
-  const statusOptions = [
-    { value: 'pending', label: isRTL ? 'في الانتظار' : 'Pending' },
-    { value: 'under_review', label: isRTL ? 'قيد المراجعة' : 'Under Review' },
-    { value: 'approved', label: isRTL ? 'موافق عليها' : 'Approved' },
-    { value: 'rejected', label: isRTL ? 'مرفوضة' : 'Rejected' },
-    { value: 'in_development', label: isRTL ? 'قيد التطوير' : 'In Development' },
-    { value: 'implemented', label: isRTL ? 'منفذة' : 'Implemented' }
-  ];
+  const ideaStatusOptions = getSettingValue('idea_status_options', []) as string[];
+  const ideaMaturityLevels = getSettingValue('idea_maturity_levels', []) as string[];
 
-  const maturityOptions = [
-    { value: 'concept', label: isRTL ? 'مفهوم' : 'Concept' },
-    { value: 'prototype', label: isRTL ? 'نموذج أولي' : 'Prototype' },
-    { value: 'mvp', label: isRTL ? 'منتج أدنى قابل للتطبيق' : 'MVP' },
-    { value: 'pilot', label: isRTL ? 'تجريبي' : 'Pilot' }
-  ];
+  const statusOptions = ideaStatusOptions.map(status => ({ 
+    value: status.toLowerCase().replace(' ', '_'), 
+    label: status 
+  }));
+
+  const maturityOptions = ideaMaturityLevels.map(maturity => ({ 
+    value: maturity.toLowerCase(), 
+    label: maturity 
+  }));
 
   const dateRangeOptions = [
     { value: 'all', label: isRTL ? 'جميع الفترات' : 'All time' },

@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useSystemLists } from "@/hooks/useSystemLists";
+import { useSettingsManager } from "@/hooks/useSettingsManager";
 import { logger } from "@/utils/error-handler";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
@@ -29,6 +30,7 @@ export function TeamWizard({
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
   const { generalStatusOptions } = useSystemLists();
+  const { getSettingValue } = useSettingsManager();
   
   const [formData, setFormData] = useState({
     name: "",
@@ -63,13 +65,12 @@ export function TeamWizard({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  // Team type options
-  const teamTypeOptions = [
-    { value: "innovation", label: "فريق ابتكار" },
-    { value: "evaluation", label: "فريق تقييم" },
-    { value: "implementation", label: "فريق تنفيذ" },
-    { value: "research", label: "فريق بحث" },
-  ];
+  // Team type options from settings
+  const teamTypeOptionsData = getSettingValue('team_type_options', []) as string[];
+  const teamTypeOptions = teamTypeOptionsData.map(type => ({ 
+    value: type.toLowerCase(), 
+    label: type 
+  }));
 
   // Status options
   const statusOptions = generalStatusOptions.map(status => ({ 
