@@ -66,9 +66,9 @@ interface SystemListsHook {
 
 export const useSystemLists = (): SystemListsHook => {
   const [settings, setSettings] = useState<SystemListsHook>({
-    challengePriorityLevels: ['low', 'medium', 'high'],
+    challengePriorityLevels: ['low', 'medium', 'high', 'urgent'],
     challengeSensitivityLevels: ['normal', 'sensitive', 'confidential'],
-    challengeTypes: ['technology', 'sustainability', 'healthcare', 'education', 'governance'],
+    challengeTypes: ['innovation', 'improvement', 'research', 'development'],
     challengeStatusOptions: ['draft', 'published', 'active', 'closed', 'archived', 'completed'],
     partnerStatusOptions: ['active', 'inactive', 'pending', 'suspended'],
     partnerTypeOptions: ['government', 'private', 'academic', 'non_profit', 'international'],
@@ -216,7 +216,14 @@ export const useSystemLists = (): SystemListsHook => {
             'challenge_filter_status_options',
             'navigation_menu_visibility_roles',
             'data_export_formats',
-            'chart_visualization_colors'
+            'chart_visualization_colors',
+            // New array-based settings for compatibility
+            'idea_categories',
+            'evaluation_criteria',
+            'available_themes',
+            'campaign_themes',
+            'opportunity_types',
+            'user_role_types'
           ]);
         
         if (data) {
