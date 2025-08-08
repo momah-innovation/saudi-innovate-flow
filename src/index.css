@@ -651,8 +651,7 @@
 
 /* Button state fixes */
 .bg-primary {
-  background-color: hsl(var(--primary)) !important;
-  color: hsl(var(--primary-foreground)) !important;
+  color: white !important;
 }
 
 .bg-primary:active {
