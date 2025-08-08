@@ -12,10 +12,7 @@ import { useDirection } from '@/components/ui/direction-provider';
 import { useState, useEffect } from 'react';
 import { InteractionButtons } from '@/components/ui/interaction-buttons';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
-import { useEventInteractions } from '@/hooks/useEventInteractions';
-import { useParticipants } from '@/hooks/useParticipants';
-import { useRealTimeEvents } from '@/hooks/useRealTimeEvents';
+import { useEventState } from '@/hooks/useEventState';
 
 interface Event {
   id: string;
@@ -56,41 +53,15 @@ export const EnhancedEventCard = ({
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(isBookmarked);
   
-  // Use centralized event interaction hooks
-  const { 
-    interactions,
-    registerForEvent,
-    toggleBookmark,
-    refetch: refetchInteractions,
-    refreshAfterRegistrationChange
-  } = useEventInteractions(event?.id || null);
-
+  // Use unified event state management
   const {
-    participants,
-    cancelRegistration,
-    fetchParticipants
-  } = useParticipants(event?.id || null);
-  
-  // Set up real-time updates
-  useRealTimeEvents({
-    onParticipantUpdate: (eventId, count) => {
-      if (eventId === event.id) {
-        console.log('🔄 Real-time participant update for EnhancedEventCard:', eventId, count);
-        fetchParticipants(); // Refresh participants when count changes
-        refetchInteractions(); // Refresh interactions as well
-      }
-    },
-    onEventUpdate: (update) => {
-      if (update.event_id === event.id) {
-        console.log('🔄 Real-time event update for EnhancedEventCard:', update);
-        refetchInteractions(); // Refresh when event is updated
-      }
-    }
-  });
-  
-  // Find current user's participation
-  const currentUserParticipation = participants.find(p => p.user_id === user?.id);
-  const isRegistered = !!currentUserParticipation;
+    isRegistered,
+    participantCount,
+    loading,
+    userParticipation,
+    registerForEvent,
+    cancelRegistration
+  } = useEventState(event?.id || null);
 
   const getStatusClass = (status: string) => {
     switch (status) {
@@ -135,10 +106,10 @@ export const EnhancedEventCard = ({
 
   const getRegistrationPercentage = () => {
     if (!event.max_participants) return 0;
-    return Math.min((event.registered_participants / event.max_participants) * 100, 100);
+    return Math.min((participantCount / event.max_participants) * 100, 100);
   };
 
-  const isEventFull = event.max_participants && event.registered_participants >= event.max_participants;
+  const isEventFull = event.max_participants && participantCount >= event.max_participants;
   const isEventSoon = () => {
     const eventDate = new Date(event.event_date);
     const now = new Date();
@@ -149,19 +120,12 @@ export const EnhancedEventCard = ({
 
   const handleRegistrationToggle = async () => {
     try {
-      if (isRegistered && currentUserParticipation) {
+      if (isRegistered) {
         console.log('🔄 Cancelling registration for event:', event.id);
-        await cancelRegistration(currentUserParticipation.id, event.id);
-        // Force immediate refresh of both data sources
-        await Promise.all([
-          fetchParticipants(),
-          refetchInteractions()
-        ]);
+        await cancelRegistration();
       } else {
         console.log('🔄 Registering for event:', event.id);
         await registerForEvent();
-        // Force immediate refresh after successful registration
-        await fetchParticipants();
       }
     } catch (error) {
       console.error('Failed to toggle registration:', error);
@@ -170,7 +134,7 @@ export const EnhancedEventCard = ({
 
   const handleBookmark = async () => {
     try {
-      await toggleBookmark();
+      // For now just toggle local state - can integrate with bookmark system later
       setBookmarked(!bookmarked);
     } catch (error) {
       console.error('Failed to toggle bookmark:', error);
@@ -296,9 +260,9 @@ export const EnhancedEventCard = ({
                       variant={getButtonVariant()}
                       size="sm" 
                       onClick={handleRegistrationAction}
-                      disabled={(isEventFull && !isRegistered) || (isEventPast() && !isRegistered)}
+                      disabled={loading || (isEventFull && !isRegistered) || (isEventPast() && !isRegistered)}
                     >
-                      {getRegistrationButtonText()}
+                      {loading ? (isRTL ? 'جاري التحديث...' : 'Updating...') : getRegistrationButtonText()}
                     </Button>
                   </div>
                 </div>
@@ -308,7 +272,7 @@ export const EnhancedEventCard = ({
               {event.max_participants && (
                 <div className="mt-2">
                   <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                    <span>{event.registered_participants}/{event.max_participants} {isRTL ? 'مسجل' : 'registered'}</span>
+                    <span>{participantCount}/{event.max_participants} {isRTL ? 'مسجل' : 'registered'}</span>
                     <span>{Math.round(getRegistrationPercentage())}%</span>
                   </div>
                   <Progress value={getRegistrationPercentage()} className="h-1.5" />
@@ -418,7 +382,7 @@ export const EnhancedEventCard = ({
         {event.max_participants && (
           <div className="mt-3">
             <div className="flex justify-between text-xs text-muted-foreground mb-1">
-              <span>{event.registered_participants}/{event.max_participants} {isRTL ? 'مسجل' : 'registered'}</span>
+              <span>{participantCount}/{event.max_participants} {isRTL ? 'مسجل' : 'registered'}</span>
               <span>{Math.round(getRegistrationPercentage())}%</span>
             </div>
             <Progress value={getRegistrationPercentage()} className="h-1.5" />
@@ -431,7 +395,7 @@ export const EnhancedEventCard = ({
         <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
           <div className="flex items-center gap-1">
             <Users className="w-4 h-4" />
-            <span>{event.registered_participants} {isRTL ? 'مسجل' : 'registered'}</span>
+            <span>{participantCount} {isRTL ? 'مسجل' : 'registered'}</span>
           </div>
           <div className="flex items-center gap-1">
             <Ticket className="w-4 h-4" />
@@ -445,9 +409,9 @@ export const EnhancedEventCard = ({
             variant={getButtonVariant()}
             onClick={handleRegistrationAction}
             className="w-full h-9"
-            disabled={(isEventFull && !isRegistered) || (isEventPast() && !isRegistered)}
+            disabled={loading || (isEventFull && !isRegistered) || (isEventPast() && !isRegistered)}
           >
-            {getRegistrationButtonText()}
+            {loading ? (isRTL ? 'جاري التحديث...' : 'Updating...') : getRegistrationButtonText()}
           </Button>
         </div>
       </CardContent>
