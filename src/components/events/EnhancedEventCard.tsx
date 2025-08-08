@@ -57,11 +57,11 @@ export const EnhancedEventCard = ({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'upcoming':
-      case 'scheduled': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'ongoing': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400';
-      case 'completed': return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
-      case 'cancelled': return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'scheduled': return 'bg-scheduled text-scheduled-foreground border-scheduled-border';
+      case 'ongoing': return 'bg-active text-active-foreground border-active-border';
+      case 'completed': return 'bg-complete text-complete-foreground border-complete-border';
+      case 'cancelled': return 'bg-destructive text-destructive-foreground border-destructive';
+      default: return 'bg-muted text-muted-foreground border-border';
     }
   };
 
@@ -78,12 +78,12 @@ export const EnhancedEventCard = ({
 
   const getEventTypeColor = (type: string) => {
     switch (type) {
-      case 'workshop': return 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/20 dark:text-purple-400';
-      case 'conference': return 'bg-indigo-100 text-indigo-800 border-indigo-200 dark:bg-indigo-900/20 dark:text-indigo-400';
-      case 'webinar': return 'bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-900/20 dark:text-cyan-400';
-      case 'meetup': return 'bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/20 dark:text-orange-400';
-      case 'hackathon': return 'bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400';
+      case 'workshop': return 'bg-innovation text-innovation-foreground border-innovation-border';
+      case 'conference': return 'bg-technology text-technology-foreground border-technology-border';
+      case 'webinar': return 'bg-info text-info-foreground border-info-border';
+      case 'meetup': return 'bg-social text-social-foreground border-social-border';
+      case 'hackathon': return 'bg-sustainability text-sustainability-foreground border-sustainability-border';
+      default: return 'bg-muted text-muted-foreground border-border';
     }
   };
 
@@ -150,7 +150,7 @@ export const EnhancedEventCard = ({
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="font-semibold truncate text-foreground">{event.title_ar}</h3>
                     {isEventSoon() && (
-                      <Badge variant="secondary" className="text-xs bg-orange-100 text-orange-800 border-orange-200">
+                      <Badge className="bg-warning text-warning-foreground border-warning-border text-xs">
                         {isRTL ? 'قريباً' : 'Soon'}
                       </Badge>
                     )}
@@ -241,13 +241,13 @@ export const EnhancedEventCard = ({
             {getStatusText(event.status)}
           </Badge>
           {event.format === 'virtual' && (
-            <Badge variant="secondary" className="bg-white/90 text-gray-700">
+            <Badge variant="secondary" className="bg-overlay-light/90 text-foreground">
               <Globe className="w-3 h-3 mr-1" />
               {isRTL ? 'عبر الإنترنت' : 'Online'}
             </Badge>
           )}
           {isEventSoon() && (
-            <Badge className="bg-orange-100 text-orange-800 border-orange-200">
+            <Badge className="bg-warning text-warning-foreground border-warning-border">
               {isRTL ? 'قريباً' : 'Soon'}
             </Badge>
           )}
@@ -343,6 +343,7 @@ export const EnhancedEventCard = ({
             {isRTL ? 'التفاصيل' : 'Details'}
           </Button>
           <Button 
+            variant="default"
             onClick={() => onRegister(event)}
             className="flex-1 h-9"
             disabled={event.status === 'completed' || isEventFull}
