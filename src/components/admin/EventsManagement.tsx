@@ -248,7 +248,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
           onAddDialogChange(false);
           setSelectedEvent(null);
         }}
-        event={selectedEvent ? selectedEvent as unknown as EventFormData : undefined}
+        event={selectedEvent ? selectedEvent as unknown as EventData : undefined}
         onSave={(eventData) => {
           // Event saved successfully
           loadEvents(); // Reload events after save
