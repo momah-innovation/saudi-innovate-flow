@@ -407,7 +407,32 @@ export function ChallengeManagementList() {
           setShowWizard(false);
           setSelectedChallenge(null);
         }}
-        challenge={selectedChallenge || undefined} // Type compatibility fix
+        challenge={selectedChallenge ? {
+          ...selectedChallenge,
+          title_ar: selectedChallenge.title_ar || '',
+          description_ar: selectedChallenge.description_ar || '',
+          status: selectedChallenge.status || '',
+          priority_level: selectedChallenge.priority_level || '',
+          sensitivity_level: selectedChallenge.sensitivity_level || '',
+          challenge_type: selectedChallenge.challenge_type || '',
+          start_date: selectedChallenge.start_date || '',
+          end_date: selectedChallenge.end_date || '',
+          estimated_budget: selectedChallenge.estimated_budget || 0,
+          actual_budget: selectedChallenge.actual_budget || 0,
+          vision_2030_goal: selectedChallenge.vision_2030_goal || '',
+          kpi_alignment: selectedChallenge.kpi_alignment || '',
+          collaboration_details: selectedChallenge.collaboration_details || '',
+          internal_team_notes: selectedChallenge.internal_team_notes || '',
+          challenge_owner_id: selectedChallenge.challenge_owner_id || '',
+          assigned_expert_id: selectedChallenge.assigned_expert_id || '',
+          partner_organization_id: selectedChallenge.partner_organization_id || '',
+          department_id: selectedChallenge.department_id || '',
+          deputy_id: selectedChallenge.deputy_id || '',
+          sector_id: selectedChallenge.sector_id || '',
+          domain_id: selectedChallenge.domain_id || '',
+          sub_domain_id: selectedChallenge.sub_domain_id || '',
+          service_id: selectedChallenge.service_id || ''
+        } : undefined} // Type compatibility fix
       />
 
       <ChallengeDetailView

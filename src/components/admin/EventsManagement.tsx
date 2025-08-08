@@ -248,7 +248,24 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
           onAddDialogChange(false);
           setSelectedEvent(null);
         }}
-        event={selectedEvent || undefined}
+        event={selectedEvent ? {
+          ...selectedEvent,
+          description_ar: selectedEvent.description_ar || '',
+          title_ar: selectedEvent.title_ar || '',
+          event_type: selectedEvent.event_type || '',
+          event_category: selectedEvent.event_category || '',
+          event_date: selectedEvent.event_date || '',
+          start_time: selectedEvent.start_time || '',
+          end_time: selectedEvent.end_time || '',
+          format: selectedEvent.format || '',
+          status: selectedEvent.status || '',
+          event_visibility: selectedEvent.event_visibility || '',
+          is_recurring: selectedEvent.is_recurring || false,
+          target_stakeholder_groups: selectedEvent.target_stakeholder_groups || [],
+          partner_organizations: selectedEvent.partner_organizations || [],
+          related_focus_questions: selectedEvent.related_focus_questions || [],
+          inherit_from_campaign: selectedEvent.inherit_from_campaign || false
+        } : undefined}
         onSave={(eventData) => {
           // Event saved successfully
           loadEvents(); // Reload events after save
