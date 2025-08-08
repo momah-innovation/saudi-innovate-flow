@@ -36,7 +36,14 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     try {
       const savedTheme = localStorage.getItem('ui-theme');
       if (savedTheme) {
-        return { ...defaultTheme, ...JSON.parse(savedTheme) };
+        const parsed = JSON.parse(savedTheme);
+        // Force fix bad color if it exists
+        if (parsed.primaryColor === 'hsl(346.8 77.2% 49.8%)') {
+          console.log('🔧 Fixing bad saved theme color');
+          parsed.primaryColor = '272 65% 22%';
+          localStorage.setItem('ui-theme', JSON.stringify(parsed));
+        }
+        return { ...defaultTheme, ...parsed };
       }
     } catch (error) {
       logger.error('Error loading saved theme', { component: 'ThemeProvider', action: 'loadTheme' }, error as Error);
