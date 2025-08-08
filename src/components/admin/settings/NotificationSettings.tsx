@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { AdminNotificationSettings } from './AdminNotificationSettings';
 
 interface NotificationSettingsProps {
   settings: Record<string, unknown>;
@@ -48,6 +49,13 @@ export function NotificationSettings({ settings, onSettingChange }: Notification
 
   return (
     <div className={cn("space-y-6", direction)}>
+      {/* Admin Notification Management */}
+      <AdminNotificationSettings 
+        settings={settings}
+        onSettingChange={onSettingChange}
+      />
+      
+      {/* Legacy Notification Settings - keeping for backward compatibility */}
       {/* Notification Types */}
       <Card>
         <CardHeader>
