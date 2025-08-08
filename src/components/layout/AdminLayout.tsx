@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import { UnifiedHeader } from '@/components/layout/UnifiedHeader';
+// Removed UnifiedHeader import - AppShell provides unified header
 import { NavigationSidebar } from './NavigationSidebar';
 import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
@@ -28,12 +28,7 @@ export function AdminLayout({ children, title, breadcrumbs }: AdminLayoutProps) 
       
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col">
-        {/* Global Header */}
-        <header className="h-14 flex items-center border-b bg-background">
-          <div className="flex-1 min-w-0 px-4">
-            <UnifiedHeader variant="admin" onSidebarToggle={() => setSidebarOpen(!sidebarOpen)} />
-          </div>
-        </header>
+        {/* Header removed - AppShell provides unified header */}
         
         {/* Breadcrumb Navigation */}
         {breadcrumbs && breadcrumbs.length > 0 && (
