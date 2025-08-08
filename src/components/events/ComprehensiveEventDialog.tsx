@@ -32,6 +32,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { useEventDetails } from '@/hooks/useEventDetails';
+import { useEventState } from '@/hooks/useEventState';
 import { useEventInteractions } from '@/hooks/useEventInteractions';
 import { useParticipants } from '@/hooks/useParticipants';
 import { useRealTimeEvents } from '@/hooks/useRealTimeEvents';
@@ -100,14 +101,21 @@ export const ComprehensiveEventDialog = ({
     refetch
   } = useEventDetails(event?.id || null);
 
+  // Use unified state management instead of old hooks
+  const {
+    isRegistered,
+    participantCount,
+    loading: stateLoading,
+    registerForEvent: unifiedRegister,
+    cancelRegistration: unifiedCancel,
+    refreshEventState
+  } = useEventState(event?.id || null);
+
   const {
     interactions,
     loading: interactionsLoading,
     toggleBookmark,
-    toggleLike,
-    registerForEvent,
-    refetch: refetchInteractions,
-    refreshAfterRegistrationChange
+    toggleLike
   } = useEventInteractions(event?.id || null);
 
   const {
@@ -118,20 +126,7 @@ export const ComprehensiveEventDialog = ({
     fetchParticipants
   } = useParticipants(event?.id || null);
 
-  // Set up real-time updates
-  useRealTimeEvents({
-    onParticipantUpdate: (eventId, count) => {
-      if (eventId === event?.id) {
-        fetchParticipants(); // Refresh participants when count changes
-        refetchInteractions(); // Refresh interactions as well
-      }
-    },
-    onEventUpdate: (update) => {
-      if (update.event_id === event?.id) {
-        refetchInteractions(); // Refresh when event is updated
-      }
-    }
-  });
+  // Unified real-time already handled by useEventState hook
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -411,7 +406,7 @@ export const ComprehensiveEventDialog = ({
                 <CardContent>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
-                      <div className="text-2xl font-bold text-foreground">{interactions?.participants_count || event.registered_participants}</div>
+                      <div className="text-2xl font-bold text-foreground">{participantCount || event.registered_participants}</div>
                       <div className="text-xs text-muted-foreground">{isRTL ? 'مسجل' : 'Registered'}</div>
                     </div>
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
@@ -504,8 +499,8 @@ export const ComprehensiveEventDialog = ({
                         if (findError) throw findError;
 
                         if (participation) {
-                          await cancelRegistration(participation.id, event.id);
-                          refreshAfterRegistrationChange(); // Refresh the interactions data
+                          await unifiedCancel();
+                          refreshEventState(); // Refresh the state data
                           fetchParticipants(); // Refresh participants data
                         }
                       } catch (error) {
@@ -513,7 +508,7 @@ export const ComprehensiveEventDialog = ({
                       }
                     } else {
                       // Register for event
-                      await registerForEvent();
+                      await unifiedRegister();
                       fetchParticipants(); // Refresh participants data
                     }
                   }}

@@ -37,6 +37,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
+import { useEventState } from '@/hooks/useEventState';
 import { useEventInteractions } from '@/hooks/useEventInteractions';
 import { useEventDetails } from '@/hooks/useEventDetails';
 import { PartnersStakeholdersTab } from './tabs/PartnersStakeholdersTab';
@@ -109,7 +110,15 @@ export const EnhancedEventDetailDialog = ({
   const [feedbackText, setFeedbackText] = useState('');
   const [resources, setResources] = useState<any[]>([]);
 
-  // Use the new event interactions hook
+  // Use unified state management
+  const {
+    isRegistered,
+    participantCount,
+    loading: stateLoading,
+    registerForEvent: unifiedRegister,
+    cancelRegistration: unifiedCancel
+  } = useEventState(event?.id || null);
+
   const { interactions, toggleBookmark, toggleLike } = useEventInteractions(event?.id || null);
   
   // Use the new event details hook
@@ -364,7 +373,7 @@ export const EnhancedEventDetailDialog = ({
               </div>
               <div className="text-center p-4 bg-muted/50 rounded-lg">
                 <Users className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <div className="text-lg font-bold">{event.registered_participants}/{event.max_participants || '∞'}</div>
+                <div className="text-lg font-bold">{participantCount || event.registered_participants}/{event.max_participants || '∞'}</div>
                 <div className="text-xs text-muted-foreground">{isRTL ? 'المسجلين' : 'Registered'}</div>
               </div>
               <div className="text-center p-4 bg-muted/50 rounded-lg">

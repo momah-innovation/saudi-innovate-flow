@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useAuth } from '@/contexts/AuthContext';
+import { useEventState } from '@/hooks/useEventState';
 import { useEventDetails } from '@/hooks/useEventDetails';
 import { useEventInteractions } from '@/hooks/useEventInteractions';
 import { AttendeesTab } from './tabs/AttendeesTab';
@@ -84,6 +85,15 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
     participants, 
     campaignInfo 
   } = useEventDetails(event?.id || null);
+
+  // Use unified state management
+  const {
+    isRegistered,
+    participantCount,
+    loading: stateLoading,
+    registerForEvent: unifiedRegister,
+    cancelRegistration: unifiedCancel
+  } = useEventState(event?.id || null);
 
   const { interactions } = useEventInteractions(event?.id || null);
 
@@ -196,7 +206,7 @@ export const EventDetailDialog = ({ event, open, onOpenChange, onRegister }: Eve
               </div>
               <div className="text-center p-3 bg-muted/50 rounded-lg">
                 <Users className="w-5 h-5 mx-auto mb-1 text-primary" />
-                <div className="text-lg font-bold">{event.registered_participants}/{event.max_participants || '∞'}</div>
+                <div className="text-lg font-bold">{participantCount || event.registered_participants}/{event.max_participants || '∞'}</div>
                 <div className="text-xs text-muted-foreground">{isRTL ? 'المسجلين' : 'Registered'}</div>
               </div>
               <div className="text-center p-3 bg-muted/50 rounded-lg">
