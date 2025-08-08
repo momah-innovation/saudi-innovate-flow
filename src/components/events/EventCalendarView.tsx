@@ -47,8 +47,8 @@ interface CalendarEvent {
 }
 
 interface EventCalendarViewProps {
-  events: any[];
-  onEventSelect: (event: any) => void;
+  events: CalendarEvent[];
+  onEventSelect: (event: CalendarEvent) => void;
   loading?: boolean;
   className?: string;
 }

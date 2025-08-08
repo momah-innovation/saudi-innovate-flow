@@ -9,7 +9,7 @@ import { logger } from '@/utils/logger';
 /**
  * Hook for optimized callback with dependency tracking
  */
-export function useOptimizedCallback<T extends (...args: any[]) => any>(
+export function useOptimizedCallback<T extends (...args: unknown[]) => unknown>(
   callback: T,
   deps: React.DependencyList
 ): T {

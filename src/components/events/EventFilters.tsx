@@ -53,7 +53,7 @@ export const EventFilters = ({
   const { getSettingValue } = useSettingsManager();
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 
-  const updateFilter = (key: keyof EventFilterState, value: any) => {
+  const updateFilter = (key: keyof EventFilterState, value: string | string[] | boolean | number[]) => {
     onFiltersChange({ ...filters, [key]: value });
   };
 

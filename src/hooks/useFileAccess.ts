@@ -6,7 +6,7 @@ export interface FileAccessLog {
   id: string
   file_record_id: string
   event_type: string
-  event_details: any
+  event_details: Record<string, unknown>
   performed_by: string
   created_at: string
   file_path?: string
@@ -60,7 +60,7 @@ export const useFileAccess = () => {
         id: log.id,
         file_record_id: log.file_record_id,
         event_type: log.event_type,
-        event_details: log.event_details,
+        event_details: log.event_details as Record<string, unknown>,
         performed_by: log.performed_by,
         created_at: log.created_at,
         file_path: log.file_records?.file_path,

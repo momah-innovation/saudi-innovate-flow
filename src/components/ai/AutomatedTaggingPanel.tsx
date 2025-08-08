@@ -88,7 +88,7 @@ export const AutomatedTaggingPanel: React.FC = () => {
       setSuggestions((data || []).map(item => ({
         ...item,
         suggested_tags: Array.isArray(item.suggested_tags) ? 
-          item.suggested_tags.map((tag: any) => typeof tag === 'string' ? { tag } : tag) : [],
+          item.suggested_tags.map((tag: string | { tag: string }) => typeof tag === 'string' ? { tag } : tag) : [],
         confidence_scores: typeof item.confidence_scores === 'object' && item.confidence_scores !== null ? 
           item.confidence_scores as Record<string, number> : {}
       })));

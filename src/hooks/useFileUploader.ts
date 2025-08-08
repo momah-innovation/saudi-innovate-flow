@@ -300,7 +300,7 @@ export const useFileUploader = () => {
 
       // Update database if specified
       if (resolvedFinalConfig.tableName && resolvedFinalConfig.columnName && resolvedFinalConfig.entityId && movedFiles.length > 0) {
-        const updateData: any = {}
+        const updateData: Record<string, string | string[]> = {}
         
         if (resolvedFinalConfig.maxFiles === 1) {
           updateData[resolvedFinalConfig.columnName] = movedFiles[0].path

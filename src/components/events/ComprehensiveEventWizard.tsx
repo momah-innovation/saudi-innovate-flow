@@ -97,7 +97,7 @@ interface EventFormData {
 interface ComprehensiveEventWizardProps {
   isOpen: boolean;
   onClose: () => void;
-  event?: any;
+  event?: EventFormData;
   onSave: (eventData: EventFormData) => void;
 }
 
@@ -214,7 +214,7 @@ export const ComprehensiveEventWizard = ({
     }
   };
 
-  const handleInputChange = (field: keyof EventFormData, value: any) => {
+  const handleInputChange = (field: keyof EventFormData, value: string | number | boolean | string[] | Date) => {
     setFormData(prev => ({
       ...prev,
       [field]: value

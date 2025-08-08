@@ -27,14 +27,14 @@ export function useDebounce<T>(value: T, delay: number): T {
 /**
  * Hook for throttled functions (scroll, resize)
  */
-export function useThrottle<T extends (...args: any[]) => any>(
+export function useThrottle<T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): T {
   const inThrottle = useRef(false);
   
   return useCallback(
-    ((...args: any[]) => {
+    ((...args: unknown[]) => {
       if (!inThrottle.current) {
         func.apply(null, args);
         inThrottle.current = true;

@@ -12,7 +12,7 @@ interface EventNotification {
   type: string;
   is_read: boolean;
   created_at: string;
-  metadata?: any;
+  metadata?: Record<string, unknown>;
 }
 
 export const useEventNotifications = () => {
@@ -43,7 +43,7 @@ export const useEventNotifications = () => {
 
       if (error) throw error;
 
-      setNotifications(data || []);
+      setNotifications(data as EventNotification[] || []);
       const unread = (data || []).filter(n => !n.is_read).length;
       setUnreadCount(unread);
 

@@ -25,7 +25,7 @@ interface BookmarkItem {
   idea_id?: string;
   opportunity_id?: string;
   partner_id?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export function useBookmarks() {
@@ -61,7 +61,7 @@ export function useBookmarks() {
         .eq('user_id', user.id);
 
       if (error) throw error;
-      setChallengeBookmarks(data || []);
+      setChallengeBookmarks(data as any || []);
     } catch (error) {
       logger.error('Error fetching challenge bookmarks', { component: 'useBookmarks', action: 'fetchChallengeBookmarks' }, error as Error);
     }
@@ -397,7 +397,7 @@ export function useBookmarks() {
           return false;
       }
 
-      const insertData: any = {
+      const insertData: Record<string, string> = {
         user_id: user.id,
         [fieldName]: itemId
       };

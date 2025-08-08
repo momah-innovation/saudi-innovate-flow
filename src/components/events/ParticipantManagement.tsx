@@ -126,7 +126,7 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
 
   const updateParticipantStatus = async (participantId: string, newStatus: string) => {
     try {
-      const updateData: any = {
+      const updateData: { attendance_status: string; updated_at: string; check_in_time?: string } = {
         attendance_status: newStatus,
         updated_at: new Date().toISOString()
       };
@@ -165,7 +165,7 @@ export function ParticipantManagement({ eventId, eventTitle, maxParticipants }: 
 
   const bulkUpdateStatus = async (newStatus: string) => {
     try {
-      const updateData: any = {
+      const updateData: { attendance_status: string; updated_at: string; check_in_time?: string } = {
         attendance_status: newStatus,
         updated_at: new Date().toISOString()
       };
