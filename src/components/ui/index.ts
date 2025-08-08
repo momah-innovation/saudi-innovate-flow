@@ -1,5 +1,5 @@
 // Header Component
-export { Header } from './header';
+// Header removed - use UnifiedHeader from layout instead
 
 // Core Layout Components
 export { LayoutSelector } from './layout-selector';
