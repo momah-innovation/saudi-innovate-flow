@@ -66,8 +66,8 @@ export function FocusQuestionAnalytics() {
         .from('focus_questions')
         .select(`
           *,
-          ideas(id),
-          event_focus_question_links(id)
+          ideas(id, title_ar, status),
+          event_focus_question_links(id, events(title_ar))
         `);
 
       if (questionsError) throw questionsError;
@@ -96,8 +96,8 @@ export function FocusQuestionAnalytics() {
     created_at?: string;
     complexity_level?: string;
     question_text_ar?: string;
-    ideas?: any[];
-    event_focus_question_links?: any[];
+    ideas?: { id: string; title_ar: string; status: string }[];
+    event_focus_question_links?: { id: string; events?: { title_ar: string } }[];
   }
   
   const processAnalyticsData = (questions: QuestionData[]): AnalyticsData => {

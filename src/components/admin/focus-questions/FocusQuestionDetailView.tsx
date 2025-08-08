@@ -193,7 +193,7 @@ export function FocusQuestionDetailView({
   }: { 
     id: keyof typeof openSections; 
     title: string; 
-    icon: any; 
+    icon: React.ComponentType<{ className?: string }>; 
     count?: number; 
     children: React.ReactNode; 
   }) => (
@@ -372,7 +372,7 @@ export function FocusQuestionDetailView({
             >
               {relatedData.ideas.length > 0 ? (
                 <div className="space-y-3">
-                  {relatedData.ideas.map((idea: any) => (
+                  {relatedData.ideas.map((idea: { id: string; title_ar: string; description_ar: string; status: string; created_at: string }) => (
                     <div key={idea.id} className="flex items-start gap-3 p-4 border rounded-lg">
                       <Eye className="w-5 h-5 text-muted-foreground mt-1" />
                       <div className="flex-1 space-y-2" dir="rtl">
@@ -416,7 +416,7 @@ export function FocusQuestionDetailView({
             >
               {relatedData.responses.length > 0 ? (
                 <div className="space-y-3">
-                  {relatedData.responses.slice(0, 10).map((response: any) => (
+                  {relatedData.responses.slice(0, 10).map((response: QuestionResponse) => (
                     <div key={response.id} className="p-4 border rounded-lg space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -458,7 +458,7 @@ export function FocusQuestionDetailView({
             >
               {relatedData.events.length > 0 ? (
                 <div className="space-y-3">
-                  {relatedData.events.map((eventLink: any) => (
+                  {relatedData.events.map((eventLink: { id: string; events?: { title_ar: string; description_ar?: string; event_date: string; start_date: string; location: string; status?: string; format?: string } }) => (
                     <div key={eventLink.id} className="p-4 border rounded-lg space-y-2">
                       <div className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <div className="flex-1">

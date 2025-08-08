@@ -13,12 +13,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
 
 interface SettingsData {
-  [key: string]: any;
+  [key: string]: string | number | boolean | string[] | number[];
 }
 
 interface EvaluationSettingsProps {
   settings: SettingsData;
-  onSettingChange: (key: string, value: any) => void;
+  onSettingChange: (key: string, value: string | number | boolean | string[] | number[]) => void;
 }
 
 export function EvaluationSettings({ settings, onSettingChange }: EvaluationSettingsProps) {
@@ -54,7 +54,7 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
 
       if (error) throw error;
 
-      const settingsObj = data?.reduce((acc: any, setting: any) => {
+      const settingsObj = data?.reduce((acc: SettingsData, setting: { setting_key: string; setting_value: string | number | boolean | string[] | number[] }) => {
         acc[setting.setting_key] = setting.setting_value;
         return acc;
       }, {} as SettingsData) || {};
@@ -65,7 +65,7 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
     }
   };
 
-  const updateSystemSetting = async (key: string, value: any) => {
+  const updateSystemSetting = async (key: string, value: string | number | boolean | string[] | number[]) => {
     try {
       const { error } = await supabase
         .from('system_settings')
@@ -226,7 +226,7 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
               <Input
                 id="minEvaluatorsPerIdea"
                 type="number"
-                value={settings.minEvaluatorsPerIdea || 2}
+                value={Number(settings.minEvaluatorsPerIdea) || 2}
                 onChange={(e) => onSettingChange('minEvaluatorsPerIdea', parseInt(e.target.value))}
                 min="1"
                 max="10"
@@ -239,7 +239,7 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
               <Input
                 id="maxEvaluatorsPerIdea"
                 type="number"
-                value={settings.maxEvaluatorsPerIdea || 5}
+                value={Number(settings.maxEvaluatorsPerIdea) || 5}
                 onChange={(e) => onSettingChange('maxEvaluatorsPerIdea', parseInt(e.target.value))}
                 min="1"
                 max="20"
@@ -252,7 +252,7 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
               <Input
                 id="evaluationTimeLimit"
                 type="number"
-                value={settings.evaluationTimeLimit || 7}
+                value={Number(settings.evaluationTimeLimit) || 7}
                 onChange={(e) => onSettingChange('evaluationTimeLimit', parseInt(e.target.value))}
                 min="1"
                 max="30"
@@ -265,7 +265,7 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
               <Input
                 id="minEvaluationScore"
                 type="number"
-                value={settings.minEvaluationScore || 1}
+                value={Number(settings.minEvaluationScore) || 1}
                 onChange={(e) => onSettingChange('minEvaluationScore', parseInt(e.target.value))}
                 min="1"
                 max="5"
@@ -278,7 +278,7 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
               <Input
                 id="maxEvaluationScore"
                 type="number"
-                value={settings.maxEvaluationScore || 10}
+                value={Number(settings.maxEvaluationScore) || 10}
                 onChange={(e) => onSettingChange('maxEvaluationScore', parseInt(e.target.value))}
                 min="5"
                 max="100"
@@ -291,7 +291,7 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
               <Input
                 id="passingScore"
                 type="number"
-                value={settings.passingScore || 70}
+                value={Number(settings.passingScore) || 70}
                 onChange={(e) => onSettingChange('passingScore', parseInt(e.target.value))}
                 min="1"
                 max="100"
@@ -306,7 +306,7 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
               <p className="text-sm text-muted-foreground">إخفاء هوية المقيمين عن بعضهم البعض</p>
             </div>
             <Switch 
-              checked={Boolean(settings.enableAnonymousEvaluation !== false)}
+              checked={Boolean(settings.enableAnonymousEvaluation)}
               onCheckedChange={(checked) => onSettingChange('enableAnonymousEvaluation', checked)}
             />
           </div>
@@ -317,7 +317,7 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
               <p className="text-sm text-muted-foreground">السماح للمقيمين بمناقشة التقييمات</p>
             </div>
             <Switch 
-              checked={settings.enableCollaborativeEvaluation || false}
+              checked={Boolean(settings.enableCollaborativeEvaluation)}
               onCheckedChange={(checked) => onSettingChange('enableCollaborativeEvaluation', checked)}
             />
           </div>
@@ -328,7 +328,7 @@ export function EvaluationSettings({ settings, onSettingChange }: EvaluationSett
               <p className="text-sm text-muted-foreground">مطالبة المقيمين بكتابة تعليقات مفصلة</p>
             </div>
             <Switch 
-              checked={settings.requireEvaluationComments !== false}
+              checked={Boolean(settings.requireEvaluationComments)}
               onCheckedChange={(checked) => onSettingChange('requireEvaluationComments', checked)}
             />
           </div>

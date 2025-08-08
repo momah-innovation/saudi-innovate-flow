@@ -156,7 +156,7 @@ export function IdeaDetailView({
   }: { 
     id: keyof typeof openSections; 
     title: string; 
-    icon: any; 
+    icon: React.ComponentType<{ className?: string }>; 
     count?: number; 
     children: React.ReactNode; 
   }) => (
@@ -386,7 +386,20 @@ export function IdeaDetailView({
             >
               {relatedData.evaluations.length > 0 ? (
                 <div className="space-y-3">
-                  {relatedData.evaluations.map((evaluation: any) => (
+                  {relatedData.evaluations.map((evaluation: { 
+                    id: string; 
+                    evaluator_type: string; 
+                    technical_feasibility: number;
+                    financial_viability: number;
+                    market_potential: number;
+                    evaluation_date: string;
+                    strengths?: string;
+                    weaknesses?: string;
+                    recommendations?: string;
+                    overall_score: number; 
+                    comments: string; 
+                    created_at: string 
+                  }) => (
                     <div key={evaluation.id} className="p-4 border rounded-lg space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">

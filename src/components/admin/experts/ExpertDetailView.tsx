@@ -24,7 +24,7 @@ import {
   CheckCircle
 } from "lucide-react";
 import { format } from "date-fns";
-import type { ExpertDetailView, ExpertDetailViewProps, BadgeVariant } from "@/types/api";
+import type { ExpertDetailView, ExpertDetailViewProps } from "@/types/api";
 import type { BadgeVariant } from "@/types";
 
 export function ExpertDetailView({ 

@@ -77,13 +77,26 @@ export function IdeaCommentsPanel({ ideaId, isOpen, onClose }: IdeaCommentsPanel
       const rootComments: Comment[] = [];
 
       // First pass: create all comments
-      data.forEach((commentData: any) => {
+      data.forEach((commentData: {
+        id: string;
+        content: string;
+        created_at: string;
+        updated_at: string;
+        parent_comment_id?: string;
+        author_id: string;
+        is_internal: boolean;
+        comment_type: string;
+        profiles?: { name?: string; name_ar?: string; email?: string; avatar_url?: string };
+      }) => {
         const formattedComment: Comment = {
           ...commentData,
+          author_id: commentData.author_id,
+          is_internal: commentData.is_internal,
+          comment_type: commentData.comment_type,
           author: commentData.profiles ? {
             name: commentData.profiles.name || commentData.profiles.name_ar || 'مستخدم غير معروف',
             email: commentData.profiles.email || '',
-            profile_image_url: commentData.profiles.profile_image_url
+            profile_image_url: commentData.profiles.avatar_url
           } : { name: 'مستخدم غير معروف', email: '' },
           replies: []
         };

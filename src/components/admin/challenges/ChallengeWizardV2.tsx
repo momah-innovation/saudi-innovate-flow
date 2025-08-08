@@ -58,7 +58,7 @@ interface DatabaseRecord {
   name?: string;
   name_ar?: string;
   name_en?: string;
-  [key: string]: string | number | boolean | null | undefined;
+  [key: string]: string | number | boolean | string[] | null | undefined;
 }
 
 interface SystemLists {
@@ -169,8 +169,8 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
         domains: domainsRes.data || [],
         subDomains: subDomainsRes.data || [],
         services: servicesRes.data || [],
-        partners: (partnersRes.data || []) as Partner[],
-        experts: (expertsRes.data || []) as Expert[],
+        partners: partnersRes.data || [],
+        experts: expertsRes.data || [],
         focusQuestions: focusQuestionsRes.data || []
       });
     } catch (error) {

@@ -43,7 +43,7 @@ export const ArraySettingsEditor: React.FC<ArraySettingsEditorProps> = ({
   };
 
   const removeItem = (index: number) => {
-    const updatedItems = items.filter((_: any, i: number) => i !== index);
+    const updatedItems = items.filter((_: string, i: number) => i !== index);
     updateSetting({
       key: settingKey,
       value: updatedItems,
