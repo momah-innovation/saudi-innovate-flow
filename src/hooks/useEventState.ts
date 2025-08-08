@@ -31,23 +31,37 @@ export const useEventState = (eventId: string | null) => {
 
     try {
       // Get user's participation status
-      const { data: userParticipation } = await supabase
+      const { data: userParticipation, error: participationError } = await supabase
         .from('event_participants')
         .select('*')
         .eq('event_id', eventId)
         .eq('user_id', user.id)
         .maybeSingle();
 
+      if (participationError && participationError.code !== 'PGRST116') {
+        throw participationError;
+      }
+
       // Get total participant count
-      const { count: participantCount } = await supabase
+      const { count: participantCount, error: countError } = await supabase
         .from('event_participants')
         .select('*', { count: 'exact' })
         .eq('event_id', eventId);
 
-      // Get interactions data
-      const { data: interactions } = await supabase.rpc('get_event_stats', {
-        event_uuid: eventId
-      });
+      if (countError) {
+        throw countError;
+      }
+
+      // Get interactions data (optional, don't fail if it doesn't work)
+      let interactions = null;
+      try {
+        const { data: interactionsData } = await supabase.rpc('get_event_stats', {
+          event_uuid: eventId
+        });
+        interactions = interactionsData;
+      } catch (interactionError) {
+        console.warn('⚠️ Could not load event interactions:', interactionError);
+      }
 
       setState({
         isRegistered: !!userParticipation,
@@ -102,6 +116,11 @@ export const useEventState = (eventId: string | null) => {
       )
       .subscribe((status) => {
         console.log('📡 Unified real-time subscription status:', status);
+        if (status === 'SUBSCRIBED') {
+          console.log('✅ Unified real-time connected for event:', eventId);
+        } else if (status === 'CHANNEL_ERROR') {
+          console.error('❌ Unified real-time connection failed for event:', eventId);
+        }
       });
 
     return () => {

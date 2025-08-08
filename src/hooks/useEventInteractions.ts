@@ -110,28 +110,40 @@ export function useEventInteractions(eventId: string | null) {
       setLoading(true);
 
       // Check user registration
-      const { data: registrationData } = await supabase
+      const { data: registrationData, error: regError } = await supabase
         .from('event_participants')
         .select('id')
         .eq('event_id', eventId)
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
+
+      if (regError && regError.code !== 'PGRST116') {
+        throw regError;
+      }
 
       // Check user bookmark
-      const { data: bookmarkData } = await supabase
+      const { data: bookmarkData, error: bookmarkError } = await supabase
         .from('event_bookmarks')
         .select('id')
         .eq('event_id', eventId)
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
+
+      if (bookmarkError && bookmarkError.code !== 'PGRST116') {
+        throw bookmarkError;
+      }
 
       // Check user like
-      const { data: likeData } = await supabase
+      const { data: likeData, error: likeError } = await supabase
         .from('event_likes')
         .select('id')
         .eq('event_id', eventId)
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
+
+      if (likeError && likeError.code !== 'PGRST116') {
+        throw likeError;
+      }
 
       setInteractions(prev => ({
         ...prev,
@@ -301,9 +313,17 @@ export function useEventInteractions(eventId: string | null) {
         .from('events')
         .select('event_date')
         .eq('id', eventId)
-        .single();
+        .maybeSingle();
 
       if (eventError) throw eventError;
+      if (!eventData) {
+        toast({
+          title: 'خطأ',
+          description: 'الفعالية غير موجودة',
+          variant: 'destructive'
+        });
+        return;
+      }
 
       const eventDate = new Date(eventData.event_date);
       const now = new Date();
