@@ -15,10 +15,10 @@
     --popover-foreground: 240 10% 3.9%;
     
     /* Primary - Modern purple with good contrast */
-    --primary: 262 83% 58%;
+    --primary: 280 84% 12%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 262 83% 52%;
-    --primary-active: 262 83% 45%;
+    --primary-hover: 280 84% 16%;
+    --primary-active: 280 84% 8%;
     
     /* Secondary - Refined grays */
     --secondary: 240 4.8% 95.9%;
@@ -40,7 +40,7 @@
     /* Border and input */
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 262 83% 58%;
+    --ring: 280 84% 12%;
     
     /* === STATUS COLORS === */
     --success: 142 71% 45%;
@@ -85,7 +85,7 @@
     --inactive-border: 240 5.9% 90%;
     
     /* === CATEGORY COLORS === */
-    --innovation: 262 83% 58%;
+    --innovation: 280 84% 12%;
     --innovation-foreground: 0 0% 100%;
     --innovation-light: 262 100% 97%;
     --innovation-border: 262 83% 70%;
@@ -105,7 +105,7 @@
     --social-light: 328 100% 96%;
     --social-border: 328 86% 80%;
     
-    --partner: 262 83% 58%;
+    --partner: 280 84% 12%;
     --partner-foreground: 0 0% 100%;
     --partner-light: 262 100% 97%;
     --partner-border: 262 83% 70%;
@@ -164,9 +164,9 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
     
-    --primary: 262 83% 70%;
+    --primary: 280 84% 20%;
     --primary-foreground: 240 10% 3.9%;
-    --primary-hover: 262 83% 75%;
+    --primary-hover: 280 84% 25%;
     
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
@@ -183,7 +183,7 @@
     
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 262 83% 70%;
+    --ring: 280 84% 20%;
     
     /* Dark mode status colors */
     --success: 142 71% 55%;
@@ -663,6 +663,55 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* === SEMANTIC COLOR UTILITIES === */
+  .text-semantic-success {
+    @apply text-success;
+  }
+
+  .text-semantic-warning {
+    @apply text-warning;
+  }
+
+  .text-semantic-error {
+    @apply text-destructive;
+  }
+
+  .text-semantic-info {
+    @apply text-info;
+  }
+
+  .bg-semantic-success {
+    @apply bg-success;
+  }
+
+  .bg-semantic-warning {
+    @apply bg-warning;
+  }
+
+  .bg-semantic-error {
+    @apply bg-destructive;
+  }
+
+  .bg-semantic-info {
+    @apply bg-info;
+  }
+
+  .border-semantic-success {
+    @apply border-success-border;
+  }
+
+  .border-semantic-warning {
+    @apply border-warning-border;
+  }
+
+  .border-semantic-error {
+    @apply border-destructive;
+  }
+
+  .border-semantic-info {
+    @apply border-info-border;
   }
 }
 
