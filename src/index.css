@@ -14,12 +14,12 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 84% 4.9%;
     
-    /* Enhanced Primary - RGB(59, 20, 93) converted to HSL */
+    /* Enhanced Primary - RGB(59, 20, 93) converted to HSL - Fixed contrast */
     --primary: 272 65% 22%;
-    --primary-foreground: 0 0% 100%;
+    --primary-foreground: 0 0% 100% !important;
     --primary-hover: 272 65% 28%;
     --primary-active: 272 65% 18%;
-    --primary-active-foreground: 0 0% 85%;
+    --primary-active-foreground: 0 0% 100% !important;
     --primary-light: 272 65% 95%;
     --primary-muted: 272 20% 90%;
     
