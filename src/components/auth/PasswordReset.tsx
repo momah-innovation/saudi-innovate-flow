@@ -49,10 +49,10 @@ export const PasswordReset = () => {
         title: "تم الإرسال بنجاح",
         description: "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "خطأ في النظام",
-        description: error.message || "حدث خطأ غير متوقع",
+        description: (error as Error).message || "حدث خطأ غير متوقع",
         variant: "destructive",
       });
     } finally {

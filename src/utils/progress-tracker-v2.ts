@@ -31,8 +31,8 @@ export const currentProgress: ProgressUpdate[] = [
   {
     phase: 'Any Type Elimination',
     status: 'in-progress',
-    completion: 35,
-    details: '35/346 any types fixed across challenges, forms, and settings components'
+    completion: 45,
+    details: '45/346 any types fixed across auth, challenges, forms, and team workspace components'
   },
   {
     phase: 'Translation Completion',
@@ -66,8 +66,8 @@ export const currentProgress: ProgressUpdate[] = [
 
 export const STATUS_SUMMARY = {
   buildStability: 95,
-  codeQuality: 80,
+  codeQuality: 85,
   productionReadiness: 90,
-  typeSafety: 70,
-  overallProgress: 85
+  typeSafety: 75,
+  overallProgress: 88
 } as const;

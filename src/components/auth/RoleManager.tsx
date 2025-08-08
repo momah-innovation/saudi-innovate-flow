@@ -95,10 +95,10 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
 
       if (error) throw error;
       setUserRoles(data || []);
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "خطأ في تحميل الأدوار",
-        description: error.message,
+        description: (error as Error).message,
         variant: "destructive",
       });
     }
@@ -139,10 +139,10 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
       setExpirationDays('30');
       await fetchUserRoles();
       onRoleChange?.();
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "خطأ في تعيين الدور",
-        description: error.message,
+        description: (error as Error).message,
         variant: "destructive",
       });
     } finally {
@@ -167,10 +167,10 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
 
       await fetchUserRoles();
       onRoleChange?.();
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "خطأ في إلغاء الدور",
-        description: error.message,
+        description: (error as Error).message,
         variant: "destructive",
       });
     } finally {

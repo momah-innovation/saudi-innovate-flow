@@ -101,10 +101,10 @@ export const Auth = () => {
           name: formData.fullName!
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "خطأ في العملية",
-        description: error.message || "حدث خطأ غير متوقع",
+        description: (error as Error).message || "حدث خطأ غير متوقع",
         variant: "destructive",
       });
     } finally {

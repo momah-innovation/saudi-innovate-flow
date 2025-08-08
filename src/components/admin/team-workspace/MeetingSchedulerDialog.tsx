@@ -19,7 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 interface MeetingSchedulerDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  teamMembers: any[];
+  teamMembers: { id: string; profiles?: { display_name: string; profile_image_url?: string }; role: string }[];
 }
 
 export function MeetingSchedulerDialog({ open, onOpenChange, teamMembers }: MeetingSchedulerDialogProps) {
@@ -41,7 +41,7 @@ export function MeetingSchedulerDialog({ open, onOpenChange, teamMembers }: Meet
     allowRecording: false
   });
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: string, value: string | boolean | string[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 

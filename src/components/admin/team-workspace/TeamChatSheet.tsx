@@ -16,13 +16,13 @@ import { useAuth } from '@/contexts/AuthContext';
 interface TeamChatSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  teamMembers: any[];
+  teamMembers: { id: string; profiles?: { display_name: string; profile_image_url?: string }; role: string }[];
 }
 
 interface Message {
   id: string;
   content: string;
-  sender: any;
+  sender: { id: string; name: string; profile_image_url?: string; role: string };
   timestamp: Date;
   type: 'text' | 'file' | 'system';
   reactions?: { emoji: string; users: string[] }[];

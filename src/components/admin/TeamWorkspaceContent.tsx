@@ -691,11 +691,11 @@ export function TeamWorkspaceContent({
       </div>
 
       <QuickActionsPanel />
-      <CreateProjectDialog open={showCreateProject} onOpenChange={setShowCreateProject} teamMembers={teamData.teamMembers} />
+      <CreateProjectDialog open={showCreateProject} onOpenChange={setShowCreateProject} teamMembers={teamData.teamMembers as any} />
       <InviteMemberDialog open={showInviteMember} onOpenChange={setShowInviteMember} />
-      <TaskAssignmentDialog open={showTaskAssignment} onOpenChange={setShowTaskAssignment} teamMembers={teamData.teamMembers} selectedMember={selectedMember} />
-      <TeamChatSheet open={showTeamChat} onOpenChange={setShowTeamChat} teamMembers={teamData.teamMembers} />
-      <MeetingSchedulerDialog open={showMeetingScheduler} onOpenChange={setShowMeetingScheduler} teamMembers={teamData.teamMembers} />
+      <TaskAssignmentDialog open={showTaskAssignment} onOpenChange={setShowTaskAssignment} teamMembers={teamData.teamMembers as any} selectedMember={selectedMember as any} />
+      <TeamChatSheet open={showTeamChat} onOpenChange={setShowTeamChat} teamMembers={teamData.teamMembers as any} />
+      <MeetingSchedulerDialog open={showMeetingScheduler} onOpenChange={setShowMeetingScheduler} teamMembers={teamData.teamMembers as any} />
       {selectedMember && <MemberDetailDialog member={selectedMember} />}
     </div>
   );

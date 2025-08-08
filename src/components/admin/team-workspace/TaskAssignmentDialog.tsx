@@ -15,8 +15,8 @@ import { useToast } from '@/hooks/use-toast';
 interface TaskAssignmentDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  teamMembers: any[];
-  selectedMember?: any;
+  teamMembers: { id: string; profiles?: { display_name: string; profile_image_url?: string }; role: string; specialization: string; current_workload?: number }[];
+  selectedMember?: { id: string; profiles?: { display_name: string; profile_image_url?: string }; role: string; specialization: string; current_workload?: number };
 }
 
 export function TaskAssignmentDialog({ 

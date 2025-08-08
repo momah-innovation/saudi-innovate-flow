@@ -67,10 +67,10 @@ export const EmailVerification = () => {
       setTimeout(() => {
         navigate('/dashboard');
       }, 2000);
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "خطأ في التحقق",
-        description: error.message || "حدث خطأ غير متوقع",
+        description: (error as Error).message || "حدث خطأ غير متوقع",
         variant: "destructive",
       });
     } finally {
@@ -106,10 +106,10 @@ export const EmailVerification = () => {
 
       setCanResend(false);
       setResendTimer(60);
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "خطأ في الإرسال",
-        description: error.message || "حدث خطأ غير متوقع",
+        description: (error as Error).message || "حدث خطأ غير متوقع",
         variant: "destructive",
       });
     }

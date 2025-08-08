@@ -90,10 +90,10 @@ export const UpdatePassword = () => {
         title: "تم التحديث بنجاح",
         description: "تم تحديث كلمة المرور بنجاح",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "خطأ في النظام",
-        description: error.message || "حدث خطأ غير متوقع",
+        description: (error as Error).message || "حدث خطأ غير متوقع",
         variant: "destructive",
       });
     } finally {
