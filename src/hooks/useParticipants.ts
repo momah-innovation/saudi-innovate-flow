@@ -42,7 +42,12 @@ export function useParticipants(eventId: string | null) {
             filter: `event_id=eq.${eventId}`
           },
           (payload) => {
-            console.log('Real-time participants change:', payload);
+            console.log('🔥 REAL-TIME: Participants list change detected:', {
+              eventType: payload.eventType,
+              eventId: eventId,
+              userId: (payload.new as any)?.user_id || (payload.old as any)?.user_id,
+              payload: payload
+            });
             // Immediately refresh the participants list
             fetchParticipants();
           }

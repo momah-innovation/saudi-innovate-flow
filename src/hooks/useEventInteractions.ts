@@ -38,7 +38,11 @@ export function useEventInteractions(eventId: string | null) {
             filter: `event_id=eq.${eventId}`
           },
           (payload) => {
-            console.log('Real-time participant change:', payload);
+            console.log('🔥 REAL-TIME: Participant change detected:', {
+              eventType: payload.eventType,
+              eventId: eventId,
+              payload: payload
+            });
             loadEventInteractions();
             loadEventStats();
           }
