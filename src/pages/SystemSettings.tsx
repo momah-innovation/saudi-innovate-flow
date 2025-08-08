@@ -107,13 +107,13 @@ const SystemSettings = () => {
               try {
                 await refreshTranslations();
                 toast({
-                  title: "Translations Refreshed",
-                  description: "Translation cache has been cleared and reloaded.",
+                  title: t('translations_refreshed', 'Translations Refreshed'),
+                  description: t('translations_refreshed_description', 'Translation cache has been cleared and reloaded.'),
                 });
               } catch (error) {
                 toast({
-                  title: "Refresh Failed",
-                  description: "Failed to refresh translations. Please try again.",
+                  title: t('refresh_failed', 'Refresh Failed'),
+                  description: t('refresh_failed_description', 'Failed to refresh translations. Please try again.'),
                   variant: "destructive",
                 });
               } finally {
@@ -124,7 +124,7 @@ const SystemSettings = () => {
             className="gap-2"
           >
             <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-            {isRefreshing ? 'Refreshing...' : 'Refresh Translations'}
+            {isRefreshing ? t('refreshing', 'Refreshing...') : t('refresh_translations', 'Refresh Translations')}
           </Button>
         </div>
 
