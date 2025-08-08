@@ -311,6 +311,17 @@ export const EnhancedEventCard = ({
             <span className="flex-1">{event.location || (event.format === 'virtual' ? (isRTL ? 'عبر الإنترنت' : 'Online') : 'TBD')}</span>
           </div>
         </div>
+
+        {/* Registration Progress */}
+        {event.max_participants && (
+          <div className="mt-3">
+            <div className="flex justify-between text-xs text-muted-foreground mb-1">
+              <span>{event.registered_participants}/{event.max_participants} {isRTL ? 'مسجل' : 'registered'}</span>
+              <span>{Math.round(getRegistrationPercentage())}%</span>
+            </div>
+            <Progress value={getRegistrationPercentage()} className="h-1.5" />
+          </div>
+        )}
       </CardHeader>
 
       <CardContent className="pt-0 px-4 pb-4">
