@@ -62,6 +62,7 @@ export const AUTHENTICATED_ROUTES = {
   SUBMIT_IDEA: '/submit-idea',
   DRAFTS: '/drafts',
   SAVED_ITEMS: '/saved',
+  OPPORTUNITIES: '/opportunities',
   
   // Specific content routes
   CHALLENGE_DETAILS: '/challenges/:challengeId',
@@ -100,7 +101,6 @@ export const ADMIN_ROUTES = {
 
 // Dashboard routes (unified admin interface)
 export const DASHBOARD_ROUTES = {
-  DASHBOARD: '/dashboard',
   DASHBOARD_USERS: '/dashboard/users',
   DASHBOARD_ROLES: '/dashboard/roles', 
   DASHBOARD_ACCESS_CONTROL: '/dashboard/access-control',

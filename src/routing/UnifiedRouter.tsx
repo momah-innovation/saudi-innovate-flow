@@ -115,7 +115,7 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     withAppShell: true,
   },
   {
-    path: '/opportunities',
+    path: ALL_ROUTES.OPPORTUNITIES,
     component: OpportunitiesPage,
     requireAuth: true,
     requireProfile: true,
@@ -198,7 +198,7 @@ const RouteRenderer: React.FC<{ config: UnifiedRouteConfig }> = ({ config }) => 
     <ProtectedRoute
       requireAuth={routeProps.requireAuth}
       requireProfile={routeProps.requireProfile}
-      requiredRole={Array.isArray(routeProps.requiredRole) ? routeProps.requiredRole[0] : routeProps.requiredRole}
+      requiredRole={routeProps.requiredRole}
       subscriptionRequired={routeProps.subscriptionRequired}
       redirectTo={routeProps.redirectTo}
     >
