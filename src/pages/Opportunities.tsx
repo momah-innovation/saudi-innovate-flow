@@ -40,32 +40,17 @@ import {
   Filter,
   Briefcase
 } from 'lucide-react';
+import { Opportunity } from '@/types/opportunities';
 
-interface OpportunityItem {
-  id: string;
-  title_ar: string;
-  title_en?: string;
-  description_ar: string;
-  description_en?: string;
-  opportunity_type: string;
-  budget_min?: number;
-  budget_max?: number;
-  deadline: string;
-  status: string;
-  priority_level?: string;
-  contact_person?: string;
-  contact_email?: string;
-  location?: string;
-  image_url?: string;
-  requirements?: string | null;
-  benefits?: string | null;
-  sector?: { name_ar: string; name: string };
-  department?: { name_ar: string; name: string };
-  category?: { name_ar: string; name: string; name_en?: string; color?: string };
-  created_at: string;
+interface OpportunityItem extends Opportunity {
   applications_count?: number;
   views_count?: number;
   likes_count?: number;
+  sector?: { name_ar?: string; name?: string };
+  department?: { name_ar?: string; name?: string };
+  category?: { name_ar?: string; name?: string; name_en?: string; color?: string };
+  requirements?: string | null;
+  benefits?: string | null;
 }
 
 export default function Opportunities() {
@@ -218,8 +203,8 @@ export default function Opportunities() {
     // Apply search filter
     if (filters.search) {
       filtered = filtered.filter(opp =>
-        (isRTL ? opp.title_ar : opp.title_en || opp.title_ar).toLowerCase().includes(filters.search.toLowerCase()) ||
-        (isRTL ? opp.description_ar : opp.description_en || opp.description_ar).toLowerCase().includes(filters.search.toLowerCase())
+        (isRTL ? opp.title_ar : (opp.title_en as string) || opp.title_ar).toLowerCase().includes(filters.search.toLowerCase()) ||
+        (isRTL ? (opp.description_ar as string) : (opp.description_en as string) || (opp.description_ar as string)).toLowerCase().includes(filters.search.toLowerCase())
       );
     }
 
@@ -429,7 +414,12 @@ export default function Opportunities() {
       {opportunities.map((opportunity) => (
         <OpportunityCard
           key={opportunity.id}
-          opportunity={opportunity}
+          opportunity={{
+            ...opportunity,
+            description_ar: opportunity.description_ar || '',
+            opportunity_type: opportunity.opportunity_type || 'general',
+            deadline: opportunity.deadline || new Date().toISOString()
+          }}
           onView={handleViewDetails}
           onEdit={() => {}}
           showActions={true}
@@ -441,10 +431,10 @@ export default function Opportunities() {
   const featuredOpportunity = opportunities.length > 0 ? {
     id: opportunities[0].id,
     title_ar: opportunities[0].title_ar,
-    title_en: opportunities[0].title_en,
+    title_en: opportunities[0].title_en as string || opportunities[0].title_ar,
     applications: opportunities[0].applications_count || 0,
     budget: opportunities[0].budget_max || opportunities[0].budget_min || 0,
-    daysLeft: Math.ceil((new Date(opportunities[0].deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)),
+    daysLeft: Math.ceil((new Date(opportunities[0].deadline || '').getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)),
     image: '/opportunity-images/opportunities-hero.jpg'
   } : undefined;
 
@@ -577,8 +567,8 @@ export default function Opportunities() {
 
             {/* Sidebar with Widgets */}
             <div className="space-y-6">
-              <TrendingOpportunitiesWidget opportunities={opportunities.slice(0, 5)} />
-              <OpportunityRecommendations opportunities={opportunities.slice(0, 3)} />
+            <TrendingOpportunitiesWidget opportunities={opportunities.slice(0, 5) as Opportunity[]} />
+            <OpportunityRecommendations opportunities={opportunities.slice(0, 3) as Opportunity[]} />
             </div>
           </div>
         </div>
@@ -605,10 +595,10 @@ export default function Opportunities() {
           onOpenChange={setTemplatesDialogOpen}
         />
 
-        <OpportunityAnalyticsDashboard
+        <OpportunityAnalyticsDashboard 
           open={analyticsDialogOpen}
           onOpenChange={setAnalyticsDialogOpen}
-          opportunities={opportunities}
+          opportunities={opportunities as Opportunity[]}
         />
       </PageLayout>
     </AppShell>

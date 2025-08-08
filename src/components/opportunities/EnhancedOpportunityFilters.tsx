@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { useDirection } from '@/components/ui/direction-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { Category, Sector, Department } from '@/types/opportunities';
 import { 
   Search, 
   Filter, 

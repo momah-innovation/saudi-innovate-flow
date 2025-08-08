@@ -137,8 +137,8 @@ export const RedesignedOpportunityAnalyticsDialog = ({
       const viewsHistory = viewsHistoryData.data || [];
       const summary = summaryData?.[0];
 
-      const engagementMetrics = calculateEngagementMetrics(journey);
-      const recentTrends = calculateTrends(applications, likes, shares, bookmarks, analytics, viewsHistory);
+  const engagementMetrics = calculateEngagementMetrics(journey as unknown as ViewSession[]);
+  const recentTrends = calculateTrends(applications as unknown as Application[], likes as unknown as Like[], shares as unknown as Share[], bookmarks as unknown as Bookmark[], analytics, viewsHistory as unknown as ViewSession[]);
       setTrends(recentTrends);
 
       const realAnalytics: AnalyticsData = {
@@ -149,9 +149,9 @@ export const RedesignedOpportunityAnalyticsDialog = ({
         totalBookmarks: bookmarks.length,
         totalComments: comments.length,
         conversionRate: summary?.conversion_rate || 0,
-        viewsData: generateViewsDataFromReal(applications, viewsHistory),
-        applicationSourceData: generateApplicationSourceData(applications),
-        timelineData: generateTimelineFromReal(applications, likes, shares, bookmarks, comments),
+        viewsData: generateViewsDataFromReal(applications as unknown as Application[], viewsHistory as unknown as ViewSession[]),
+        applicationSourceData: generateApplicationSourceData(applications as unknown as Application[]),
+        timelineData: generateTimelineFromReal(applications as unknown as Application[], likes as unknown as Like[], shares as unknown as Share[], bookmarks as unknown as Bookmark[], comments as unknown as Comment[]),
         engagementMetrics
       };
 
@@ -255,8 +255,8 @@ export const RedesignedOpportunityAnalyticsDialog = ({
     }
 
     const timeSpentData = journey
-      .filter(j => j.time_from_previous_ms > 0)
-      .map(j => j.time_from_previous_ms / 1000);
+      .filter(j => j.time_from_previous_ms && Number(j.time_from_previous_ms) > 0)
+      .map(j => Number(j.time_from_previous_ms) / 1000);
     
     const avgTimeOnPage = timeSpentData.length > 0 
       ? Math.round(timeSpentData.reduce((sum, time) => sum + time, 0) / timeSpentData.length)
