@@ -87,7 +87,7 @@ export function useEventInteractions(eventId: string | null) {
       if (error) throw error;
 
       if (stats && typeof stats === 'object') {
-        const eventStats = stats as any;
+        const eventStats: any = stats;
         setInteractions(prev => ({
           ...prev,
           likes_count: eventStats.likes_count || 0,

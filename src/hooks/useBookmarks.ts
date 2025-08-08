@@ -61,7 +61,7 @@ export function useBookmarks() {
         .eq('user_id', user.id);
 
       if (error) throw error;
-      setChallengeBookmarks(data as any || []);
+      setChallengeBookmarks(data || []);
     } catch (error) {
       logger.error('Error fetching challenge bookmarks', { component: 'useBookmarks', action: 'fetchChallengeBookmarks' }, error as Error);
     }
