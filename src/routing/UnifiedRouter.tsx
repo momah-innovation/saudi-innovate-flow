@@ -1,11 +1,22 @@
-// Centralized Route Configuration with RBAC
-import React, { lazy } from 'react';
+// Unified Route Management System - Single Source of Truth
+// Consolidates all routing logic and RBAC into one cohesive system
+
+import React, { lazy, Suspense } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { AppShell } from '@/components/layout/AppShell';
 import { ALL_ROUTES } from './routes';
 import { UserRole } from '@/hooks/useRoleAccess';
+import { Loader2 } from 'lucide-react';
 
-// Lazy load components - using existing pages
+// Loading component
+const LoadingFallback = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <Loader2 className="h-8 w-8 animate-spin" />
+  </div>
+);
+
+// Lazy load all components
 const LandingPage = lazy(() => import('@/pages/LandingPage'));
 const AuthPage = lazy(() => import('@/pages/Auth'));
 const AdminDashboard = lazy(() => import('@/pages/AdminDashboard'));
@@ -26,7 +37,8 @@ const EventsBrowse = lazy(() => import('@/pages/EventsBrowse'));
 const ChallengesBrowse = lazy(() => import('@/pages/ChallengesBrowse'));
 const AccessControlManagement = lazy(() => import('@/pages/dashboard/AccessControlManagement'));
 
-export interface RouteConfigItem {
+// Route configuration interface
+export interface UnifiedRouteConfig {
   path: string;
   component: React.ComponentType;
   public?: boolean;
@@ -34,16 +46,26 @@ export interface RouteConfigItem {
   requireProfile?: boolean;
   requiredRole?: UserRole | UserRole[];
   subscriptionRequired?: boolean;
-  redirectTo?: string;
   withAppShell?: boolean;
-  exact?: boolean;
+  redirectTo?: string;
 }
 
-export const routeConfig: RouteConfigItem[] = [
+// Centralized route definitions
+export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
   // Public routes
   {
     path: ALL_ROUTES.HOME,
     component: LandingPage,
+    public: true,
+  },
+  {
+    path: ALL_ROUTES.AUTH,
+    component: AuthPage,
+    public: true,
+  },
+  {
+    path: ALL_ROUTES.HELP,
+    component: HelpPage,
     public: true,
   },
   {
@@ -56,18 +78,8 @@ export const routeConfig: RouteConfigItem[] = [
     component: EventsBrowse,
     public: true,
   },
-  {
-    path: ALL_ROUTES.HELP,
-    component: HelpPage,
-    public: true,
-  },
-  {
-    path: ALL_ROUTES.AUTH,
-    component: AuthPage,
-    public: true,
-  },
 
-  // Authenticated routes
+  // Authenticated user routes
   {
     path: ALL_ROUTES.DASHBOARD,
     component: UserDashboard,
@@ -163,14 +175,16 @@ export const routeConfig: RouteConfigItem[] = [
   },
 ];
 
-// Route renderer function
-export const renderRoute = (config: RouteConfigItem): React.ReactElement => {
+// Route renderer component
+const RouteRenderer: React.FC<{ config: UnifiedRouteConfig }> = ({ config }) => {
   const { component: Component, ...routeProps } = config;
 
+  // Public routes render directly
   if (config.public) {
     return <Component />;
   }
 
+  // Wrap with AppShell if requested
   const content = config.withAppShell ? (
     <AppShell>
       <Component />
@@ -179,6 +193,7 @@ export const renderRoute = (config: RouteConfigItem): React.ReactElement => {
     <Component />
   );
 
+  // Wrap with ProtectedRoute for auth/role checks
   return (
     <ProtectedRoute
       requireAuth={routeProps.requireAuth}
@@ -191,3 +206,26 @@ export const renderRoute = (config: RouteConfigItem): React.ReactElement => {
     </ProtectedRoute>
   );
 };
+
+// Main unified router component
+export const UnifiedRouter: React.FC = () => {
+  return (
+    <BrowserRouter>
+      <Suspense fallback={<LoadingFallback />}>
+        <Routes>
+          {UNIFIED_ROUTES.map((routeConfig) => (
+            <Route
+              key={routeConfig.path}
+              path={routeConfig.path}
+              element={<RouteRenderer config={routeConfig} />}
+            />
+          ))}
+          {/* Catch-all route */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  );
+};
+
+export default UnifiedRouter;
