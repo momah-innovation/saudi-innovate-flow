@@ -25,6 +25,56 @@ export function useEventInteractions(eventId: string | null) {
     if (eventId && user) {
       loadEventInteractions();
       loadEventStats();
+      
+      // Set up direct real-time subscription for this specific event
+      const eventChannel = supabase
+        .channel(`event_interactions_${eventId}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'event_participants',
+            filter: `event_id=eq.${eventId}`
+          },
+          (payload) => {
+            console.log('Real-time participant change:', payload);
+            loadEventInteractions();
+            loadEventStats();
+          }
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'event_likes',
+            filter: `event_id=eq.${eventId}`
+          },
+          (payload) => {
+            console.log('Real-time likes change:', payload);
+            loadEventInteractions();
+            loadEventStats();
+          }
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'event_bookmarks',
+            filter: `event_id=eq.${eventId}`
+          },
+          (payload) => {
+            console.log('Real-time bookmarks change:', payload);
+            loadEventInteractions();
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(eventChannel);
+      };
     }
   }, [eventId, user]);
 
