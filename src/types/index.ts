@@ -157,11 +157,28 @@ export interface Opportunity {
   description_ar: string;
   description_en?: string;
   opportunity_type: string;
-  status: string;
+  status: "open" | "cancelled" | "on_hold" | "closed";
   deadline?: string;
   budget_range?: string;
   requirements?: string[];
   benefits?: string[];
+  // Additional fields for compatibility
+  title?: string;
+  description?: string;
+  type?: string;
+  department_id?: string;
+  contact_person?: string;
+  contact_email?: string;
+  application_deadline?: string;
+  start_date?: string;
+  end_date?: string;
+  required_skills?: string[];
+  preferred_qualifications?: string[];
+  location?: string;
+  is_remote?: boolean;
+  salary_min?: number;
+  salary_max?: number;
+  currency?: string;
   created_at: string;
   updated_at: string;
 }
@@ -256,8 +273,41 @@ export interface SubDomain extends Department {}
 export interface Service extends Department {}
 
 // Form data interfaces
-export interface CampaignFormData extends Campaign {}
-export interface IdeaFormData extends Idea {}
+export interface CampaignFormData extends Campaign {
+  title_ar: string;
+  description_ar: string;
+  theme?: string;
+  success_metrics?: string[];
+  start_date?: string;
+  end_date?: string;
+  registration_deadline?: string;
+  target_participants?: number;
+  target_ideas?: number;
+  budget?: number;
+  campaign_manager_id?: string;
+  sector_id?: string;
+  deputy_id?: string;
+  department_id?: string;
+  challenge_id?: string;
+  sector_ids?: string[];
+  deputy_ids?: string[];
+  department_ids?: string[];
+  challenge_ids?: string[];
+  partner_ids?: string[];
+  stakeholder_ids?: string[];
+}
+export interface IdeaFormData extends Idea {
+  title_ar: string;
+  description_ar: string;
+  innovator_id?: string;
+  maturity_level?: string;
+  challenge_id?: string;
+  focus_question_id?: string;
+  solution_approach?: string;
+  implementation_plan?: string;
+  expected_impact?: string;
+  resource_requirements?: string;
+}
 export interface EventFormData extends Event {}
 
 export interface SystemLists {
