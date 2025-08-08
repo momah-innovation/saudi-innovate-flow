@@ -258,18 +258,18 @@ export const EnhancedEventCard = ({
           <Button
             variant="secondary"
             size="sm"
-            className="bg-white/90 hover:bg-white"
+            className="bg-black/20 hover:bg-black/30 backdrop-blur-sm border-white/20"
             onClick={handleBookmark}
           >
-            <BookmarkIcon className={`w-4 h-4 ${bookmarked ? 'fill-current text-primary' : ''}`} />
+            <BookmarkIcon className={`w-4 h-4 text-white ${bookmarked ? 'fill-current' : ''}`} />
           </Button>
           <Button
             variant="secondary"
             size="sm"
-            className="bg-white/90 hover:bg-white"
+            className="bg-black/20 hover:bg-black/30 backdrop-blur-sm border-white/20"
             onClick={() => setLiked(!liked)}
           >
-            <Heart className={`w-4 h-4 ${liked ? 'fill-current text-red-500' : ''}`} />
+            <Heart className={`w-4 h-4 text-white ${liked ? 'fill-current text-red-500' : ''}`} />
           </Button>
         </div>
 
