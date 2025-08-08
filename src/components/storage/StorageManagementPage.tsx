@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { StorageBucket, StorageFile, LayoutType as StorageLayoutType } from '@/types/storage';
+import { StorageBucket, StorageFile, SortOptions } from '@/types/storage';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/ui/page-header';
 import { StorageHero } from './StorageHero';
@@ -17,7 +17,7 @@ import { FileViewDialog } from './FileViewDialog';
 import { BucketManagementDialog } from './BucketManagementDialog';
 import { BucketViewDialog } from './BucketViewDialog';
 
-import { StorageFilters, type FilterOptions, type SortOptions } from './StorageFilters';
+import { StorageFilters, type FilterOptions } from './StorageFilters';
 import { LayoutSelector, ViewMode } from '@/components/ui/layout-selector';
 import { StorageFileCard } from './StorageFileCard';
 import { StorageFileTable } from './StorageFileTable';
@@ -107,7 +107,7 @@ export function StorageManagementPage() {
   });
 
   // Bulk selection state
-  const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<StorageFile[]>([]);
 
   // Helper functions for filters
   const getActiveFilterCount = () => {
@@ -170,7 +170,7 @@ export function StorageManagementPage() {
       setBuckets(bucketsData);
 
       // Load files from all buckets
-      let allFiles: any[] = [];
+      let allFiles: StorageFile[] = [];
 
       for (const bucket of bucketsData || []) {
         const { data: files, error: filesError } = await supabase.storage.from(bucket.id).list('', {
@@ -197,7 +197,7 @@ export function StorageManagementPage() {
               full_path: file.name
             }));
           
-          allFiles = [...allFiles, ...processedFiles];
+          allFiles = [...allFiles, ...(processedFiles as StorageFile[])];
         }
       }
 
@@ -318,8 +318,8 @@ export function StorageManagementPage() {
 
         <StorageHero 
           totalFiles={files.length}
-          totalSize={files.reduce((acc, file) => acc + (file.metadata?.size || 0), 0)}
-          usedSpace={files.reduce((acc, file) => acc + (file.metadata?.size || 0), 0)}
+          totalSize={files.reduce((acc, file) => acc + (typeof file.metadata === 'object' && file.metadata && 'size' in file.metadata ? (file.metadata.size as number) : 0), 0)}
+          usedSpace={files.reduce((acc, file) => acc + (typeof file.metadata === 'object' && file.metadata && 'size' in file.metadata ? (file.metadata.size as number) : 0), 0)}
           totalSpace={100 * 1024 * 1024 * 1024}
           publicFiles={files.filter(f => f.is_public).length}
           privateFiles={files.filter(f => !f.is_public).length}
@@ -343,8 +343,8 @@ export function StorageManagementPage() {
             <StorageStatsCards 
               stats={{
                 totalFiles: files.length,
-                totalSize: files.reduce((acc, file) => acc + (file.metadata?.size || 0), 0),
-                usedSpace: files.reduce((acc, file) => acc + (file.metadata?.size || 0), 0),
+                totalSize: files.reduce((acc, file) => acc + (typeof file.metadata === 'object' && file.metadata && 'size' in file.metadata ? (file.metadata.size as number) : 0), 0),
+                usedSpace: files.reduce((acc, file) => acc + (typeof file.metadata === 'object' && file.metadata && 'size' in file.metadata ? (file.metadata.size as number) : 0), 0),
                 totalSpace: 100 * 1024 * 1024 * 1024,
                 publicFiles: files.filter(f => f.is_public).length,
                 privateFiles: files.filter(f => !f.is_public).length,
@@ -373,7 +373,7 @@ export function StorageManagementPage() {
                           </div>
                         </div>
                         <Badge variant="secondary">
-                          {file.metadata?.size ? `${(file.metadata.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown'}
+                          {typeof file.metadata === 'object' && file.metadata && 'size' in file.metadata ? `${((file.metadata.size as number) / 1024 / 1024).toFixed(2)} MB` : 'Unknown'}
                         </Badge>
                       </div>
                     ))}
@@ -457,7 +457,7 @@ export function StorageManagementPage() {
               </div>
             ) : filesLayout === 'table' ? (
               <StorageFileTable 
-                files={filteredFiles}
+                files={filteredFiles as any[]}
                 onView={handleFileView}
                 onDownload={handleFileDownload}
                 onDelete={handleFileDelete}
@@ -467,7 +467,7 @@ export function StorageManagementPage() {
                 {filteredFiles.map((file, index) => (
                   <StorageFileCard
                     key={`${file.bucket_id}-${file.name}-${index}`}
-                    file={file}
+                    file={file as any}
                     onView={() => handleFileView(file)}
                     onDownload={() => handleFileDownload(file)}
                     onDelete={() => handleFileDelete(file)}

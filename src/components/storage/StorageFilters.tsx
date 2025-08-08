@@ -39,15 +39,7 @@ export interface SortOptions {
   direction: 'asc' | 'desc';
 }
 
-interface StorageFiltersProps {
-  buckets: any[];
-  filters: FilterOptions;
-  sortBy: SortOptions;
-  onFiltersChange: (filters: FilterOptions) => void;
-  onSortChange: (sort: SortOptions) => void;
-  onClearFilters: () => void;
-  activeFilterCount: number;
-}
+import { StorageFiltersProps } from '@/types/storage';
 
 export function StorageFilters({
   buckets,
@@ -57,7 +49,10 @@ export function StorageFilters({
   onSortChange,
   onClearFilters,
   activeFilterCount
-}: StorageFiltersProps) {
+}: StorageFiltersProps & {
+  onClearFilters: () => void;
+  activeFilterCount: number;
+}) {
   const { t, isRTL } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -106,7 +101,7 @@ export function StorageFilters({
       <div className="flex items-center gap-2">
         <Select
           value={sortBy.field}
-          onValueChange={(field) => onSortChange({ ...sortBy, field: field as any })}
+          onValueChange={(field) => onSortChange({ ...sortBy, field: field as 'name' | 'size' | 'type' | 'date' })}
         >
           <SelectTrigger className="w-32">
             <SelectValue placeholder={t('sort_by')} />

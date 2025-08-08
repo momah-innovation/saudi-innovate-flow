@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FixedStorageUploadTabProps, StorageFile } from '@/types/storage';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,14 +12,10 @@ import { useToast } from '@/hooks/use-toast';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
 
-interface FixedStorageUploadTabProps {
-  onFilesUploaded: () => void;
-}
-
 export function FixedStorageUploadTab({ onFilesUploaded }: FixedStorageUploadTabProps) {
   const { toast } = useToast();
   const { t } = useUnifiedTranslation();
-  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<StorageFile[]>([]);
   
   const { 
     uploadConfigs = {}, 
@@ -52,7 +49,7 @@ export function FixedStorageUploadTab({ onFilesUploaded }: FixedStorageUploadTab
     
     if (result.success) {
       // Files uploaded successfully
-      setUploadedFiles(prev => [...prev, ...(result.files || [])]);
+      setUploadedFiles(prev => [...prev, ...(result.files as unknown as StorageFile[] || [])]);
       onFilesUploaded(); // Refresh parent data
       toast({
         title: t('storage.upload_successful'),
@@ -245,7 +242,7 @@ export function FixedStorageUploadTab({ onFilesUploaded }: FixedStorageUploadTab
                 {uploadedFiles.slice(-10).map((file, index) => (
                   <div key={index} className="text-sm p-2 bg-muted rounded flex items-center justify-between">
                     <span className="truncate">{file.name}</span>
-                    <Badge variant="secondary">{(file.size / 1024 / 1024).toFixed(2)} MB</Badge>
+                    <Badge variant="secondary">{file.size ? (file.size / 1024 / 1024).toFixed(2) : 'Unknown'} MB</Badge>
                   </div>
                 ))}
               </div>

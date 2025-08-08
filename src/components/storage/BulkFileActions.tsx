@@ -30,14 +30,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 import { logger } from '@/utils/logger';
-
-interface BulkFileActionsProps {
-  selectedFiles: any[];
-  onSelectionChange: (files: any[]) => void;
-  onFilesUpdated: () => void;
-  buckets: any[];
-  allFiles: any[];
-}
+import { BulkFileActionsProps, TeamMember } from '@/types/storage';
 
 export function BulkFileActions({
   selectedFiles,
@@ -56,7 +49,7 @@ export function BulkFileActions({
   const [assignmentNotes, setAssignmentNotes] = useState('');
   
   // This would come from useOrganizationalData hook
-  const teamMembers: any[] = []; // Placeholder for now
+  const teamMembers: TeamMember[] = []; // Placeholder for now
 
   const selectAll = () => {
     onSelectionChange(allFiles);

@@ -1,4 +1,8 @@
-// Storage Type Definitions
+/**
+ * Storage System Types - Type definitions for storage management functionality
+ */
+
+// Base storage interfaces
 export interface StorageBucket {
   id: string;
   name: string;
@@ -8,112 +12,152 @@ export interface StorageBucket {
   owner?: string;
   file_size_limit?: number;
   allowed_mime_types?: string[];
+  
+  // Allow additional database fields
+  [key: string]: unknown;
 }
 
 export interface StorageFile {
-  id: string;
+  id?: string;
   name: string;
-  bucket_id: string;
-  owner: string;
-  created_at: string;
-  updated_at: string;
+  bucket_id?: string;
+  size?: number;
   last_accessed_at?: string;
+  created_at?: string;
+  updated_at?: string;
+  metadata?: unknown; // Made flexible for different metadata structures
+  
+  // File-specific properties
+  type?: string;
+  extension?: string;
+  path?: string;
   is_public?: boolean;
   full_path?: string;
-  signedUrl?: string;
-  publicUrl?: string;
-  metadata: {
-    eTag: string;
-    size: number;
-    mimetype: string;
-    cacheControl: string;
-    lastModified: string;
-    contentLength: number;
-    httpStatusCode: number;
-  };
+  owner?: string;
+  
+  // Allow additional database fields
+  [key: string]: unknown;
 }
 
-export interface BucketStats {
-  bucket_name: string;
-  file_count: number;
-  total_size: number;
-  created_at: string;
-  public_access: boolean;
-}
-
-export interface UploadConfig {
+// Upload configuration
+export interface UploaderConfig {
+  id: string;
   bucket: string;
-  maxSizeMB: number;
-  maxFiles: number;
-  allowedTypes: string[];
-  compressionEnabled: boolean;
-  thumbnailGeneration: boolean;
-  autoCleanupEnabled: boolean;
-  cleanupDays: number;
+  bucket_exists?: boolean;
+  max_file_size: number;
+  allowed_types: string[];
+  auto_cleanup_days: number;
+  description?: string;
+  is_active: boolean;
+  created_at: string;
+  
+  // Allow additional fields
+  [key: string]: unknown;
 }
 
 export interface GlobalSettings {
   autoCleanupEnabled: boolean;
   defaultCleanupDays: number;
-  maxConcurrentUploads: number;
-  chunkSizeMB: number;
-  retryAttempts: number;
+  maxUploadSize: number;
+  allowedFileTypes: string[];
   compressionEnabled: boolean;
-  thumbnailGeneration: boolean;
+  
+  // Allow additional settings
+  [key: string]: unknown;
 }
 
-export interface FileUploadResult {
-  success: boolean;
-  files?: StorageFile[];
-  errors?: string[];
-  uploadedCount?: number;
-  failedCount?: number;
-}
-
-export interface StoragePolicy {
-  id: string;
-  name: string;
-  bucket_id: string;
-  operation: 'SELECT' | 'INSERT' | 'UPDATE' | 'DELETE';
-  condition: string;
-  check?: string;
-  with_check?: boolean;
-  roles: string[];
-  created_at: string;
-}
-
-export interface BucketInfo extends StorageBucket {
-  policies: StoragePolicy[];
-  file_count?: number;
-  total_size?: number;
-  security_level?: 'public' | 'private' | 'restricted';
-}
-
+// Filter and sort options
 export interface FilterOptions {
-  fileType?: string;
-  bucket?: string;
-  visibility?: string;
-  sizeRange?: string;
-  dateRange?: string;
+  fileType: string;
+  bucket: string;
+  visibility: string;
+  sizeRange: string;
+  dateRange: string;
 }
 
 export interface SortOptions {
-  field?: string;
-  direction?: 'asc' | 'desc';
+  field: 'name' | 'size' | 'type' | 'date';
+  direction: 'asc' | 'desc';
 }
 
-export type LayoutType = 'cards' | 'list' | 'grid' | 'table';
-
-// Error Types
-export interface StorageError {
-  message: string;
-  code?: string;
-  details?: Record<string, any>;
+// Team member for assignments
+export interface TeamMember {
+  id: string;
+  name: string;
+  name_ar?: string;
+  email: string;
+  role: string;
+  department?: string;
+  avatar_url?: string;
 }
 
-// API Response Types
-export interface StorageApiResponse<T = any> {
-  data?: T;
-  error?: StorageError;
-  success: boolean;
+// Bulk actions
+export interface BulkFileActionsProps {
+  selectedFiles: StorageFile[];
+  onSelectionChange: (files: StorageFile[]) => void;
+  onFilesUpdated: () => void;
+  buckets: StorageBucket[];
+  allFiles: StorageFile[];
+}
+
+// Storage statistics
+export interface StorageStats {
+  totalFiles: number;
+  totalSize: number;
+  recentUploads: number;
+  buckets: number;
+}
+
+export interface StorageStatsCardsProps {
+  stats: StorageStats;
+  files: StorageFile[];
+}
+
+// Storage filters props
+export interface StorageFiltersProps {
+  buckets: StorageBucket[];
+  filters: FilterOptions;
+  sortBy: SortOptions;
+  onFiltersChange: (filters: FilterOptions) => void;
+  onSortChange: (sort: SortOptions) => void;
+}
+
+// Upload tab props
+export interface FixedStorageUploadTabProps {
+  onFilesUploaded?: (files?: StorageFile[]) => void;
+}
+
+// Policy management
+export interface StoragePolicy {
+  id: string;
+  bucket_id: string;
+  role?: string;
+  command: 'SELECT' | 'INSERT' | 'UPDATE' | 'DELETE';
+  definition: string;
+  check?: string;
+  
+  // Allow additional fields
+  [key: string]: unknown;
+}
+
+// Hook return types
+export interface UseStorageReturn {
+  buckets: StorageBucket[];
+  files: StorageFile[];
+  loading: boolean;
+  error: string | null;
+  uploadFile: (file: File, bucket: string) => Promise<StorageFile>;
+  deleteFile: (fileName: string, bucket: string) => Promise<void>;
+  refreshData: () => Promise<void>;
+}
+
+export interface UseStoragePoliciesReturn {
+  policies: StoragePolicy[];
+  buckets: StorageBucket[];
+  loading: boolean;
+  error: string | null;
+  createPolicy: (policy: Partial<StoragePolicy>) => Promise<void>;
+  updatePolicy: (id: string, updates: Partial<StoragePolicy>) => Promise<void>;
+  deletePolicy: (id: string) => Promise<void>;
+  refreshPolicies: () => Promise<void>;
 }
