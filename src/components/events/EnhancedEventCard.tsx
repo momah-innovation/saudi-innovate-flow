@@ -347,7 +347,7 @@ export const EnhancedEventCard = ({
           <Button 
             variant="primary"
             onClick={() => onRegister(event)}
-            className="flex-1 h-9 !text-white bg-primary hover:bg-primary-hover font-medium"
+            className="flex-1 h-9"
             disabled={event.status === 'completed' || isEventFull}
           >
             {isEventFull ? 
