@@ -22,7 +22,7 @@ interface ThemeContextType {
 const defaultTheme: ThemeConfig = {
   variant: 'default',
   colorScheme: 'auto',
-  primaryColor: '272 65% 22%', // Match index.css primary color - HSL values only
+  primaryColor: 'hsl(280 84% 12%)', // Match index.css primary color
   borderRadius: 'md',
   animations: true,
   compactMode: false
@@ -36,14 +36,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     try {
       const savedTheme = localStorage.getItem('ui-theme');
       if (savedTheme) {
-        const parsed = JSON.parse(savedTheme);
-        // Force fix bad color if it exists
-        if (parsed.primaryColor === 'hsl(346.8 77.2% 49.8%)') {
-          console.log('🔧 Fixing bad saved theme color');
-          parsed.primaryColor = '272 65% 22%';
-          localStorage.setItem('ui-theme', JSON.stringify(parsed));
-        }
-        return { ...defaultTheme, ...parsed };
+        return { ...defaultTheme, ...JSON.parse(savedTheme) };
       }
     } catch (error) {
       logger.error('Error loading saved theme', { component: 'ThemeProvider', action: 'loadTheme' }, error as Error);
@@ -53,10 +46,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = (newTheme: Partial<ThemeConfig>) => {
     const updatedTheme = { ...theme, ...newTheme };
-    // Reset to default primary color if needed
-    if (updatedTheme.primaryColor === 'hsl(346.8 77.2% 49.8%)') {
-      updatedTheme.primaryColor = '272 65% 22%';
-    }
     setThemeState(updatedTheme);
     localStorage.setItem('ui-theme', JSON.stringify(updatedTheme));
   };
@@ -94,23 +83,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       root.classList.remove('no-animations');
     }
 
-    // Apply custom primary color if provided and different from default
-    console.log('🎨 === THEME DEBUG START ===');
-    console.log('🎨 Theme primary color setting:', theme.primaryColor);
-    console.log('🎨 Theme object:', theme);
-    
-    if (theme.primaryColor && theme.primaryColor !== '272 65% 22%') {
-      console.log('🎨 Theme Provider OVERRIDING primary color to:', theme.primaryColor);
-      console.log('🎨 Current CSS --primary value before override:', getComputedStyle(root).getPropertyValue('--primary').trim());
+    // Apply custom primary color if provided
+    if (theme.primaryColor) {
       root.style.setProperty('--primary', theme.primaryColor);
-      console.log('🎨 CSS --primary value after override:', getComputedStyle(root).getPropertyValue('--primary').trim());
-    } else {
-      // Remove any inline override to use CSS default
-      console.log('🎨 Theme Provider REMOVING inline override, using CSS default');
-      root.style.removeProperty('--primary');
-      console.log('🎨 CSS --primary value (should be CSS default):', getComputedStyle(root).getPropertyValue('--primary').trim());
     }
-    console.log('🎨 === THEME DEBUG END ===');
   };
 
   // Apply theme on mount and when theme changes
@@ -147,7 +123,7 @@ export function useTheme() {
 export const themePresets = {
   default: {
     variant: 'default' as ThemeVariant,
-    primaryColor: '272 65% 22%', // Match index.css --primary
+    primaryColor: 'hsl(280 84% 12%)', // Match index.css --primary
     borderRadius: 'md' as const
   },
   modern: {

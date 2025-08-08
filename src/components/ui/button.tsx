@@ -11,8 +11,8 @@ const buttonVariants = cva(
     variants: {
       variant: {
         // Enhanced Primary with micro-interactions
-        default: "bg-primary text-primary-foreground hover:bg-primary-hover hover:text-primary-foreground active:bg-primary-active active:!text-primary-active-foreground shadow-sm hover:shadow-md active:shadow-sm border-0 font-semibold",
-        primary: "bg-primary text-primary-foreground hover:bg-primary-hover hover:text-primary-foreground active:bg-primary-active active:!text-primary-active-foreground shadow-sm hover:shadow-md active:shadow-sm border-0 font-semibold",
+        default: "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active shadow-sm hover:shadow-md active:shadow-sm border-0 font-semibold",
+        primary: "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active shadow-sm hover:shadow-md active:shadow-sm border-0 font-semibold",
         
         // Secondary variants
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-hover active:bg-secondary-active border border-border",
@@ -79,21 +79,6 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
-    // Enhanced debug logging for primary buttons
-    React.useEffect(() => {
-      if (variant === 'primary' || variant === 'default') {
-        const root = document.documentElement;
-        const computedStyle = getComputedStyle(root);
-        console.log('🔴 === BUTTON DEBUG START ===');
-        console.log('🔴 Button variant:', variant);
-        console.log('🔴 CSS --primary value:', computedStyle.getPropertyValue('--primary').trim());
-        console.log('🔴 CSS --primary-foreground value:', computedStyle.getPropertyValue('--primary-foreground').trim());
-        console.log('🔴 Inline style --primary:', root.style.getPropertyValue('--primary') || 'none');
-        console.log('🔴 Theme class on html:', root.className);
-        console.log('🔴 === BUTTON DEBUG END ===');
-      }
-    }, [variant]);
-    
     const Comp = asChild ? Slot : "button"
     return (
       <Comp

@@ -29,7 +29,6 @@ export default {
 					foreground: "hsl(var(--primary-foreground))",
 					hover: "hsl(var(--primary-hover))",
 					active: "hsl(var(--primary-active))",
-					"active-foreground": "hsl(var(--primary-active-foreground))",
 					light: "hsl(var(--primary-light))",
 					muted: "hsl(var(--primary-muted))",
 				},

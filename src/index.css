@@ -14,12 +14,11 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 84% 4.9%;
     
-    /* Enhanced Primary - RGB(59, 20, 93) converted to HSL - Fixed contrast */
+    /* Enhanced Primary - RGB(59, 20, 93) converted to HSL */
     --primary: 272 65% 22%;
     --primary-foreground: 0 0% 100%;
     --primary-hover: 272 65% 28%;
-    --primary-active: 272 65% 18%;
-    --primary-active-foreground: 0 0% 100%;
+    --primary-active: 272 65% 16%;
     --primary-light: 272 65% 95%;
     --primary-muted: 272 20% 90%;
     
@@ -172,8 +171,8 @@
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    --shadow-glow: 0 0 20px hsl(280 84% 12% / 0.15);
-    --shadow-colored: 0 8px 16px hsl(280 84% 12% / 0.2);
+    --shadow-glow: 0 0 20px rgb(280 84% 12% / 0.15);
+    --shadow-colored: 0 8px 16px rgb(280 84% 12% / 0.2);
     
     /* === ENHANCED GRADIENTS === */
     --gradient-primary: linear-gradient(99deg, rgba(59, 20, 93, 1) 51%, rgba(23, 8, 38, 1) 99%);
@@ -194,11 +193,10 @@
     --popover-foreground: 210 40% 98%;
     
     /* Enhanced Primary - Brighter in dark mode */
-    --primary: 272 65% 85%;
+    --primary: 272 65% 35%;
     --primary-foreground: 222 84% 4.9%;
     --primary-hover: 272 65% 40%;
     --primary-active: 272 65% 30%;
-    --primary-active-foreground: 222 84% 4.9%;
     --primary-light: 272 65% 15%;
     --primary-muted: 272 20% 20%;
     
@@ -323,8 +321,8 @@
     --overlay-button-hover: 217 32.6% 22%;
     
     /* Enhanced Dark Mode Shadows */
-    --shadow-glow: 0 0 20px hsl(272 65% 35% / 0.3);
-    --shadow-colored: 0 8px 16px hsl(272 65% 35% / 0.4);
+    --shadow-glow: 0 0 20px rgb(272 65% 35% / 0.3);
+    --shadow-colored: 0 8px 16px rgb(272 65% 35% / 0.4);
     
     /* Enhanced Dark Mode Gradients */
     --gradient-primary: linear-gradient(99deg, rgba(59, 20, 93, 1) 51%, rgba(23, 8, 38, 1) 99%);
@@ -414,7 +412,7 @@
   }
   
   .interactive-button {
-    @apply bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active active:text-primary-active-foreground transition-colors duration-200 rounded-md px-4 py-2 font-medium text-sm;
+    @apply bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active transition-colors duration-200 rounded-md px-4 py-2 font-medium text-sm;
   }
 
   /* Modern Glass Effect */
@@ -422,6 +420,10 @@
     @apply bg-background/80 backdrop-blur-md border border-border/50 shadow-lg;
   }
 
+  /* Focus States */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background;
+  }
 }
 
 /* Component Enhancements */
@@ -439,6 +441,9 @@
   }
 }
 
+.lang-en {
+  font-family: 'Inter', 'Arial', sans-serif;
+}
 
 /* RTL-specific styles */
 .rtl {
@@ -642,18 +647,238 @@
   }
 }
 
+/* === COMPREHENSIVE UTILITY CLASSES === */
+@layer utilities {
+  /* === STATUS CLASSES === */
+  .status-scheduled {
+    @apply bg-scheduled text-scheduled-foreground border border-scheduled-border rounded-full px-3 py-1 text-xs font-medium;
+  }
+  
+  .status-active {
+    @apply bg-active text-active-foreground border border-active-border rounded-full px-3 py-1 text-xs font-medium;
+  }
+  
+  .status-completed {
+    @apply bg-complete text-complete-foreground border border-complete-border rounded-full px-3 py-1 text-xs font-medium;
+  }
+  
+  .status-cancelled {
+    @apply bg-destructive text-destructive-foreground border border-destructive rounded-full px-3 py-1 text-xs font-medium;
+  }
+  
+  .status-pending {
+    @apply bg-pending text-pending-foreground border border-pending-border rounded-full px-3 py-1 text-xs font-medium;
+  }
+
+  .status-open {
+    @apply bg-success text-success-foreground border border-success-border rounded-full px-3 py-1 text-xs font-medium;
+  }
+  
+  .status-closed {
+    @apply bg-inactive text-inactive-foreground border border-inactive-border rounded-full px-3 py-1 text-xs font-medium;
+  }
+
+  /* === PRIORITY CLASSES === */
+  .priority-high {
+    @apply bg-priority-high text-priority-high-foreground border border-priority-high-border rounded-md px-2 py-1 text-xs font-medium;
+  }
+  
+  .priority-medium {
+    @apply bg-priority-medium text-priority-medium-foreground border border-priority-medium-border rounded-md px-2 py-1 text-xs font-medium;
+  }
+  
+  .priority-low {
+    @apply bg-priority-low text-priority-low-foreground border border-priority-low-border rounded-md px-2 py-1 text-xs font-medium;
+  }
+
+  /* === EVENT TYPE CLASSES === */
+  .event-workshop {
+    @apply bg-innovation text-innovation-foreground border border-innovation-border rounded-md px-2 py-1 text-xs font-medium;
+  }
+  
+  .event-conference {
+    @apply bg-technology text-technology-foreground border border-technology-border rounded-md px-2 py-1 text-xs font-medium;
+  }
+  
+  .event-webinar {
+    @apply bg-info text-info-foreground border border-info-border rounded-md px-2 py-1 text-xs font-medium;
+  }
+  
+  .event-meetup {
+    @apply bg-social text-social-foreground border border-social-border rounded-md px-2 py-1 text-xs font-medium;
+  }
+  
+  .event-hackathon {
+    @apply bg-sustainability text-sustainability-foreground border border-sustainability-border rounded-md px-2 py-1 text-xs font-medium;
+  }
+
+  /* === OVERLAY CLASSES === */
+  .overlay-primary {
+    @apply bg-overlay-background/10 text-overlay-text border border-overlay-button/20 backdrop-blur-sm hover:bg-overlay-background/20 transition-all duration-200;
+  }
+  
+  .overlay-secondary {
+    @apply bg-background/10 text-overlay-text border border-overlay-button/20 backdrop-blur-sm hover:bg-background/20 transition-all duration-200;
+  }
+
+  /* === INTERACTIVE STATES === */
+  .interactive-card {
+    @apply bg-card text-card-foreground border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5;
+  }
+  
+  .interactive-button {
+    @apply bg-primary text-primary-foreground hover:bg-primary-hover transition-colors duration-200 rounded-md px-4 py-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+  }
+
+  .interactive-hover {
+    @apply hover:bg-accent hover:text-accent-foreground transition-colors duration-200;
+  }
+
+  /* === VALIDATION STATES === */
+  .validation-success {
+    @apply bg-success text-success-foreground border border-success-border rounded-md px-3 py-2 text-sm;
+  }
+  
+  .validation-warning {
+    @apply bg-warning text-warning-foreground border border-warning-border rounded-md px-3 py-2 text-sm;
+  }
+  
+  .validation-error {
+    @apply bg-destructive text-destructive-foreground border border-destructive rounded-md px-3 py-2 text-sm;
+  }
+  
+  .validation-info {
+    @apply bg-info text-info-foreground border border-info-border rounded-md px-3 py-2 text-sm;
+  }
+
+  /* === GLASSMORPHISM EFFECTS === */
+  .glass-effect {
+    @apply bg-background/80 backdrop-blur-md border border-border/50 shadow-lg;
+  }
+
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-md border border-border/50 shadow-lg rounded-lg;
+  }
+
+  /* === GRADIENT BACKGROUNDS === */
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-success {
+    background: var(--gradient-success);
+  }
+
+  .gradient-warning {
+    background: var(--gradient-warning);
+  }
+
+  .gradient-info {
+    background: var(--gradient-info);
+  }
+
+  .gradient-subtle {
+    background: var(--gradient-subtle);
+  }
+
+  /* === FOCUS STATES === */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all duration-200;
+  }
+
+  /* === ANIMATION UTILITIES === */
+  .animate-hover-lift {
+    @apply transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  /* === TEXT UTILITIES === */
+  .text-gradient-primary {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* === SEMANTIC COLOR UTILITIES === */
+  .text-semantic-success {
+    @apply text-success;
+  }
+
+  .text-semantic-warning {
+    @apply text-warning;
+  }
+
+  .text-semantic-error {
+    @apply text-destructive;
+  }
+
+  .text-semantic-info {
+    @apply text-info;
+  }
+
+  .bg-semantic-success {
+    @apply bg-success;
+  }
+
+  .bg-semantic-warning {
+    @apply bg-warning;
+  }
+
+  .bg-semantic-error {
+    @apply bg-destructive;
+  }
+
+  .bg-semantic-info {
+    @apply bg-info;
+  }
+
+  .border-semantic-success {
+    @apply border-success-border;
+  }
+
+  .border-semantic-warning {
+    @apply border-warning-border;
+  }
+
+  .border-semantic-error {
+    @apply border-destructive;
+  }
+
+  .border-semantic-info {
+    @apply border-info-border;
+  }
+}
+
+/* === COMPONENT BASE STYLES === */
+@layer components {
+  .modern-card {
+    @apply bg-card text-card-foreground border border-border rounded-lg shadow-sm p-6 transition-all duration-200;
+  }
+  
+  .modern-button {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  }
+  
+  .modern-input {
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .hero-section {
+    @apply relative overflow-hidden min-h-screen flex items-center;
+  }
+
+  .stat-card {
+    @apply bg-card/80 backdrop-blur-sm border border-border/50 rounded-lg p-4 transition-all duration-200 hover:scale-105;
+  }
+
+  .badge-modern {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-medium border transition-colors;
+  }
+}
+
 /* Global animation settings */
 * {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform;
-  transition-duration: 200ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Button state fixes */
-.bg-primary {
-  color: white !important;
-}
-
-.bg-primary:active {
-  color: hsl(var(--primary-active-foreground)) !important;
+  transition-duration: var(--duration-200);
+  transition-timing-function: var(--ease-out);
 }
