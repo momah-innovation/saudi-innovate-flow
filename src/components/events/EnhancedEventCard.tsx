@@ -60,12 +60,14 @@ export const EnhancedEventCard = ({
     interactions,
     registerForEvent,
     toggleBookmark,
-    refetch: refetchInteractions
+    refetch: refetchInteractions,
+    refreshAfterRegistrationChange
   } = useEventInteractions(event?.id || null);
 
   const {
     participants,
-    cancelRegistration
+    cancelRegistration,
+    fetchParticipants
   } = useParticipants(event?.id || null);
   
   // Find current user's participation
@@ -131,10 +133,12 @@ export const EnhancedEventCard = ({
     try {
       if (isRegistered && currentUserParticipation) {
         await cancelRegistration(currentUserParticipation.id, event.id);
+        refreshAfterRegistrationChange(); // Refresh interactions data
+        fetchParticipants(); // Refresh participants data
       } else {
         await registerForEvent();
+        fetchParticipants(); // Refresh participants data
       }
-      refetchInteractions(); // Refresh interaction data
     } catch (error) {
       console.error('Failed to toggle registration:', error);
     }

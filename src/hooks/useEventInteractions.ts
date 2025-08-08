@@ -289,12 +289,19 @@ export function useEventInteractions(eventId: string | null) {
     loadEventStats();
   };
 
+  // Add a function to refresh after external registration changes
+  const refreshAfterRegistrationChange = () => {
+    loadEventInteractions();
+    loadEventStats();
+  };
+
   return {
     interactions,
     loading,
     toggleBookmark,
     toggleLike,
     registerForEvent,
-    refetch
+    refetch,
+    refreshAfterRegistrationChange
   };
 }

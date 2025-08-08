@@ -105,14 +105,16 @@ export const ComprehensiveEventDialog = ({
     toggleBookmark,
     toggleLike,
     registerForEvent,
-    refetch: refetchInteractions
+    refetch: refetchInteractions,
+    refreshAfterRegistrationChange
   } = useEventInteractions(event?.id || null);
 
   const {
     participants: allParticipants,
     loading: participantsLoading,
     updateParticipantStatus,
-    cancelRegistration
+    cancelRegistration,
+    fetchParticipants
   } = useParticipants(event?.id || null);
 
   const getStatusColor = (status: string) => {
@@ -487,7 +489,8 @@ export const ComprehensiveEventDialog = ({
 
                         if (participation) {
                           await cancelRegistration(participation.id, event.id);
-                          refetchInteractions(); // Refresh the interactions data
+                          refreshAfterRegistrationChange(); // Refresh the interactions data
+                          fetchParticipants(); // Refresh participants data
                         }
                       } catch (error) {
                         console.error('Failed to cancel registration:', error);
@@ -495,7 +498,7 @@ export const ComprehensiveEventDialog = ({
                     } else {
                       // Register for event
                       await registerForEvent();
-                      refetchInteractions(); // Refresh the interactions data
+                      fetchParticipants(); // Refresh participants data
                     }
                   }}
                   disabled={(() => {
