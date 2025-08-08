@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { LayoutGrid, List, Grid, Table, Calendar } from "lucide-react";
-import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
+import { useDirection } from "@/components/ui/direction-provider";
 
 export type ViewMode = 'cards' | 'list' | 'grid' | 'table' | 'calendar';
 
@@ -17,14 +17,14 @@ export function LayoutSelector({
   supportedLayouts = ['cards', 'list', 'grid'],
   className 
 }: LayoutSelectorProps) {
-  const { t } = useUnifiedTranslation();
+  const { language } = useDirection();
   
   const allLayouts = [
-    { value: 'cards' as const, icon: LayoutGrid, labelKey: 'cards' },
-    { value: 'list' as const, icon: List, labelKey: 'list' },
-    { value: 'grid' as const, icon: Grid, labelKey: 'grid' },
-    { value: 'table' as const, icon: Table, labelKey: 'table' },
-    { value: 'calendar' as const, icon: Calendar, labelKey: 'calendar' }
+    { value: 'cards' as const, icon: LayoutGrid, label: 'Cards', labelAr: 'بطاقات' },
+    { value: 'list' as const, icon: List, label: 'List', labelAr: 'قائمة' },
+    { value: 'grid' as const, icon: Grid, label: 'Grid', labelAr: 'شبكة' },
+    { value: 'table' as const, icon: Table, label: 'Table', labelAr: 'جدول' },
+    { value: 'calendar' as const, icon: Calendar, label: 'Calendar', labelAr: 'تقويم' }
   ];
 
   const enabledLayouts = allLayouts.filter(layout => 
@@ -37,7 +37,9 @@ export function LayoutSelector({
   
   return (
     <div className={`flex items-center gap-1 p-1.5 bg-accent/20 backdrop-blur-sm border border-border rounded-xl shadow-sm ${className}`}>
-      {enabledLayouts.map(({ value, icon: Icon, labelKey }) => (
+      {enabledLayouts.map(({ value, icon: Icon, label, labelAr }) => {
+        const displayLabel = language === 'ar' ? labelAr : label;
+        return (
         <Button
           key={value}
           variant={viewMode === value ? 'default' : 'ghost'}
@@ -48,12 +50,13 @@ export function LayoutSelector({
               ? 'bg-primary text-primary-foreground shadow-md border-0'
               : 'hover:bg-accent hover:text-accent-foreground'
           }`}
-          title={t(labelKey)}
+          title={displayLabel}
         >
           <Icon className="w-4 h-4" />
-          {t(labelKey)}
+          {displayLabel}
         </Button>
-      ))}
+        );
+      })}
     </div>
   );
 }
