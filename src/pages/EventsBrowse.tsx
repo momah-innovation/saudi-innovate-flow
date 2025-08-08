@@ -25,6 +25,7 @@ import { TrendingEventsWidget } from '@/components/events/TrendingEventsWidget';
 import { EventStatsWidget } from '@/components/events/EventStatsWidget';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useParticipants } from '@/hooks/useParticipants';
 import { Plus, Calendar, TrendingUp, MapPin, Grid, List, CalendarDays, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
@@ -251,6 +252,72 @@ const EventsBrowse = () => {
     }
   };
 
+  const cancelRegistration = async (event: Event) => {
+    if (!user) {
+      toast({
+        title: isRTL ? 'يرجى تسجيل الدخول' : 'Please log in',
+        description: isRTL ? 'يجب تسجيل الدخول لإلغاء التسجيل' : 'You need to log in to cancel registration',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    try {
+      // Find the user's participation record
+      const { data: participation, error: findError } = await supabase
+        .from('event_participants')
+        .select('id')
+        .eq('event_id', event.id)
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (findError) throw findError;
+
+      if (!participation) {
+        toast({
+          title: isRTL ? 'لم يتم العثور على التسجيل' : 'Registration not found',
+          description: isRTL ? 'لم يتم العثور على تسجيلك في هذه الفعالية' : 'Your registration for this event was not found',
+          variant: 'destructive'
+        });
+        return;
+      }
+
+      // Delete the participation record
+      const { error: deleteError } = await supabase
+        .from('event_participants')
+        .delete()
+        .eq('id', participation.id);
+
+      if (deleteError) throw deleteError;
+
+      // Update event registered participants count
+      const { error: updateError } = await supabase
+        .from('events')
+        .update({ 
+          registered_participants: Math.max(0, event.registered_participants - 1)
+        })
+        .eq('id', event.id);
+
+      if (updateError) throw updateError;
+
+      toast({
+        title: isRTL ? 'تم إلغاء التسجيل بنجاح!' : 'Successfully Cancelled!',
+        description: isRTL ? `تم إلغاء تسجيلك من فعالية "${event.title_ar}"` : `Your registration for "${event.title_ar}" has been cancelled`,
+      });
+
+      // Reload events to update participant count
+      loadEvents();
+      
+    } catch (error) {
+      logger.error('Failed to cancel registration', { component: 'EventsBrowse', action: 'cancelRegistration' }, error as Error);
+      toast({
+        title: isRTL ? 'خطأ في إلغاء التسجيل' : 'Cancellation Error',
+        description: isRTL ? 'حدث خطأ أثناء إلغاء التسجيل' : 'An error occurred while cancelling registration',
+        variant: 'destructive'
+      });
+    }
+  };
+
   // Filter events based on search
   const getFilteredEvents = () => {
     let filtered = [...events];
@@ -290,6 +357,7 @@ const EventsBrowse = () => {
             event={event}
             onViewDetails={handleViewDetails}
             onRegister={registerForEvent}
+            onCancelRegistration={cancelRegistration}
             viewMode={viewMode as 'cards' | 'list' | 'grid'}
           />
         ))}
