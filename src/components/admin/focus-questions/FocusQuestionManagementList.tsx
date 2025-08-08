@@ -291,7 +291,7 @@ export function FocusQuestionManagementList() {
                 badges={[
                   { 
                     label: getTypeLabel(question.question_type),
-                    variant: getTypeColor(question.question_type) as any
+                    variant: getTypeColor(question.question_type) as 'default' | 'destructive' | 'secondary' | 'outline'
                   },
                   ...(question.is_sensitive ? [{ 
                     label: 'حساس', 

@@ -407,7 +407,7 @@ export function ChallengeManagementList() {
           setShowWizard(false);
           setSelectedChallenge(null);
         }}
-        challenge={selectedChallenge as any} // Type compatibility fix
+        challenge={selectedChallenge || undefined} // Type compatibility fix
       />
 
       <ChallengeDetailView
