@@ -104,7 +104,8 @@ export const ComprehensiveEventDialog = ({
     loading: interactionsLoading,
     toggleBookmark,
     toggleLike,
-    registerForEvent
+    registerForEvent,
+    refetch: refetchInteractions
   } = useEventInteractions(event?.id || null);
 
   const {
@@ -486,7 +487,7 @@ export const ComprehensiveEventDialog = ({
 
                         if (participation) {
                           await cancelRegistration(participation.id, event.id);
-                          refetch(); // Refresh the interactions data
+                          refetchInteractions(); // Refresh the interactions data
                         }
                       } catch (error) {
                         console.error('Failed to cancel registration:', error);
@@ -494,7 +495,7 @@ export const ComprehensiveEventDialog = ({
                     } else {
                       // Register for event
                       await registerForEvent();
-                      refetch(); // Refresh the interactions data
+                      refetchInteractions(); // Refresh the interactions data
                     }
                   }}
                   disabled={(() => {
