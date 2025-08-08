@@ -151,6 +151,11 @@ export const EnhancedEventCard = ({
   };
 
   const handleRegistrationAction = () => {
+    // Prevent registration/cancellation for past events
+    if (isEventPast()) {
+      return;
+    }
+    
     if (isRegistered) {
       onCancelRegistration?.(event);
       setIsRegistered(false);
@@ -160,8 +165,15 @@ export const EnhancedEventCard = ({
     }
   };
 
+  const isEventPast = () => {
+    const eventDate = new Date(event.event_date);
+    const now = new Date();
+    return eventDate < now;
+  };
+
   const getRegistrationButtonText = () => {
     if (checkingRegistration) return isRTL ? 'جاري التحقق...' : 'Checking...';
+    if (isEventPast()) return isRTL ? 'انتهت الفعالية' : 'Event Ended';
     if (isEventFull) return isRTL ? 'ممتلئ' : 'Full';
     if (event.status === 'completed') return isRTL ? 'انتهى' : 'Ended';
     if (isRegistered) return isRTL ? 'إلغاء التسجيل' : 'Cancel Registration';
@@ -243,7 +255,7 @@ export const EnhancedEventCard = ({
                       variant={isRegistered ? "destructive" : "primary"}
                       size="sm" 
                       onClick={handleRegistrationAction}
-                      disabled={event.status === 'completed' || (isEventFull && !isRegistered) || checkingRegistration}
+                      disabled={event.status === 'completed' || (isEventFull && !isRegistered) || checkingRegistration || isEventPast()}
                     >
                       {getRegistrationButtonText()}
                     </Button>
@@ -392,7 +404,7 @@ export const EnhancedEventCard = ({
             variant={isRegistered ? "destructive" : "primary"}
             onClick={handleRegistrationAction}
             className="w-full h-9"
-            disabled={event.status === 'completed' || (isEventFull && !isRegistered) || checkingRegistration}
+            disabled={event.status === 'completed' || (isEventFull && !isRegistered) || checkingRegistration || isEventPast()}
           >
             {getRegistrationButtonText()}
           </Button>

@@ -127,11 +127,15 @@ const EventsBrowse = () => {
 
       // Apply tab-based filtering
       const today = new Date().toISOString().split('T')[0];
+      const threeMonthsAgo = new Date();
+      threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+      const threeMonthsAgoStr = threeMonthsAgo.toISOString().split('T')[0];
       
       if (activeTab === 'upcoming') {
         query = query.gte('event_date', today);
       } else if (activeTab === 'past') {
-        query = query.lt('event_date', today);
+        // Only show past events from the last 3 months
+        query = query.lt('event_date', today).gte('event_date', threeMonthsAgoStr);
       } else if (activeTab === 'today') {
         query = query.eq('event_date', today);
       }
@@ -211,6 +215,18 @@ const EventsBrowse = () => {
       return;
     }
 
+    // Check if event is in the past
+    const eventDate = new Date(event.event_date);
+    const now = new Date();
+    if (eventDate < now) {
+      toast({
+        title: isRTL ? 'لا يمكن التسجيل' : 'Registration Not Available',
+        description: isRTL ? 'لا يمكن التسجيل في فعالية انتهت' : 'Cannot register for a past event',
+        variant: 'destructive'
+      });
+      return;
+    }
+
     try {
       const { error } = await supabase
         .from('event_participants')
@@ -257,6 +273,18 @@ const EventsBrowse = () => {
       toast({
         title: isRTL ? 'يرجى تسجيل الدخول' : 'Please log in',
         description: isRTL ? 'يجب تسجيل الدخول لإلغاء التسجيل' : 'You need to log in to cancel registration',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    // Check if event is in the past
+    const eventDate = new Date(event.event_date);
+    const now = new Date();
+    if (eventDate < now) {
+      toast({
+        title: isRTL ? 'لا يمكن إلغاء التسجيل' : 'Cannot Cancel Registration',
+        description: isRTL ? 'لا يمكن إلغاء التسجيل من فعالية انتهت' : 'Cannot cancel registration for a past event',
         variant: 'destructive'
       });
       return;
