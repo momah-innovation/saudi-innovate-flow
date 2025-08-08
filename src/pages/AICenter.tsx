@@ -29,9 +29,9 @@ const AICenter: React.FC = () => {
   const featureCards = [
     {
       icon: Brain,
-      title: 'تقييم الأفكار',
+      title: t('ai.idea_evaluation'),
       title_en: 'Idea Evaluation',
-      description: 'تقييم شامل للأفكار باستخدام الذكاء الاصطناعي',
+      description: t('ai.idea_evaluation_desc'),
       description_en: 'Comprehensive AI-powered idea evaluation',
       feature_name: 'idea_evaluation',
       color: 'bg-blue-100 text-blue-800',
@@ -39,9 +39,9 @@ const AICenter: React.FC = () => {
     },
     {
       icon: Lightbulb,
-      title: 'مساعد التحديات',
+      title: t('ai.challenge_assist'),
       title_en: 'Challenge Assistant',
-      description: 'مساعدة في إنشاء وتطوير التحديات',
+      description: t('ai.challenge_assist_desc'),
       description_en: 'AI assistance for creating and developing challenges',
       feature_name: 'challenge_assist',
       color: 'bg-green-100 text-green-800',
@@ -49,9 +49,9 @@ const AICenter: React.FC = () => {
     },
     {
       icon: MessageSquare,
-      title: 'اكتشاف الأفكار المشابهة',
+      title: t('ai.similar_ideas'),
       title_en: 'Similar Ideas Detection',
-      description: 'اكتشاف الأفكار المشابهة لمنع التكرار',
+      description: t('ai.similar_ideas_desc'),
       description_en: 'Detect similar ideas to prevent duplication',
       feature_name: 'similar_idea_detection',
       color: 'bg-orange-100 text-orange-800',
@@ -59,9 +59,9 @@ const AICenter: React.FC = () => {
     },
     {
       icon: Users,
-      title: 'مطابقة الشركاء الذكية',
+      title: t('ai.smart_partner_matching'),
       title_en: 'Smart Partner Matching',
-      description: 'توصيات الشركاء باستخدام الذكاء الاصطناعي',
+      description: t('ai.smart_partner_matching_desc'),
       description_en: 'AI-powered partner recommendations',
       feature_name: 'smart_partner_matching',
       color: 'bg-purple-100 text-purple-800',
@@ -69,9 +69,9 @@ const AICenter: React.FC = () => {
     },
     {
       icon: Settings,
-      title: 'توليد الأسئلة المحورية',
+      title: t('ai.focus_questions'),
       title_en: 'Focus Question Generation',
-      description: 'توليد أسئلة محورية للتحديات',
+      description: t('ai.focus_questions_desc'),
       description_en: 'Generate focus questions for challenges',
       feature_name: 'focus_question_generation',
       color: 'bg-indigo-100 text-indigo-800',
@@ -79,9 +79,9 @@ const AICenter: React.FC = () => {
     },
     {
       icon: BarChart3,
-      title: 'تحليلات ذكية',
+      title: t('ai.smart_analytics'),
       title_en: 'Smart Analytics',
-      description: 'تحليلات متقدمة بالذكاء الاصطناعي',
+      description: t('ai.smart_analytics_desc'),
       description_en: 'Advanced AI-powered analytics',
       feature_name: 'smart_analytics',
       color: 'bg-cyan-100 text-cyan-800',
@@ -102,9 +102,9 @@ const AICenter: React.FC = () => {
               <Bot className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold">مركز الذكاء الاصطناعي</h1>
+              <h1 className="text-3xl font-bold">{t('ai.page_title')}</h1>
               <p className="text-muted-foreground">
-                استخدم قوة الذكاء الاصطناعي لتحسين تجربة الابتكار
+                {t('ai.page_description')}
               </p>
             </div>
           </div>
@@ -118,7 +118,7 @@ const AICenter: React.FC = () => {
                     <Zap className="h-4 w-4 text-blue-600" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-muted-foreground">الميزات المتاحة</p>
+                    <p className="text-sm font-medium text-muted-foreground">{t('ai.features_available')}</p>
                     <p className="text-2xl font-bold">{enabledFeatures.length}</p>
                   </div>
                 </div>
@@ -132,7 +132,7 @@ const AICenter: React.FC = () => {
                     <Sparkles className="h-4 w-4 text-orange-600" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-muted-foreground">ميزات تجريبية</p>
+                    <p className="text-sm font-medium text-muted-foreground">{t('ai.beta_features')}</p>
                     <p className="text-2xl font-bold">{betaFeatures.length}</p>
                   </div>
                 </div>
@@ -146,7 +146,7 @@ const AICenter: React.FC = () => {
                     <TrendingUp className="h-4 w-4 text-green-600" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-muted-foreground">معدل الدقة</p>
+                    <p className="text-sm font-medium text-muted-foreground">{t('ai.accuracy_rate')}</p>
                     <p className="text-2xl font-bold">95%</p>
                   </div>
                 </div>
@@ -160,7 +160,7 @@ const AICenter: React.FC = () => {
                     <Brain className="h-4 w-4 text-purple-600" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-muted-foreground">استخدام شهري</p>
+                    <p className="text-sm font-medium text-muted-foreground">{t('ai.monthly_usage')}</p>
                     <p className="text-2xl font-bold">1.2K</p>
                   </div>
                 </div>
@@ -171,10 +171,10 @@ const AICenter: React.FC = () => {
 
         <Tabs defaultValue="features" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="features">الميزات</TabsTrigger>
-            <TabsTrigger value="recommendations">التوصيات</TabsTrigger>
-            <TabsTrigger value="evaluation">تقييم الأفكار</TabsTrigger>
-            <TabsTrigger value="settings">الإعدادات</TabsTrigger>
+            <TabsTrigger value="features">{t('tab.features')}</TabsTrigger>
+            <TabsTrigger value="recommendations">{t('tab.recommendations')}</TabsTrigger>
+            <TabsTrigger value="evaluation">{t('tab.evaluation')}</TabsTrigger>
+            <TabsTrigger value="settings">{t('tab.settings')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="features" className="space-y-6">
@@ -196,7 +196,7 @@ const AICenter: React.FC = () => {
                             <CardTitle className="text-lg">{feature.title}</CardTitle>
                             {featureData?.is_beta && (
                               <Badge variant="secondary" className="text-xs mt-1">
-                                تجريبي
+                                {t('ai.beta_label')}
                               </Badge>
                             )}
                           </div>
@@ -219,7 +219,7 @@ const AICenter: React.FC = () => {
                         
                         {featureData?.usage_limit_per_month && (
                           <div className="text-xs text-muted-foreground">
-                            الحد الأقصى: {featureData.usage_limit_per_month} استخدام/شهر
+                            {t('ai.max_usage')}: {featureData.usage_limit_per_month} {t('ai.usage_per_month')}
                           </div>
                         )}
                         
@@ -229,7 +229,7 @@ const AICenter: React.FC = () => {
                           className="w-full"
                           disabled={!isEnabled}
                         >
-                          {isEnabled ? 'استخدام الميزة' : 'غير متاح'}
+                          {isEnabled ? t('ai.use_feature') : t('ai.not_available')}
                         </Button>
                       </div>
                     </CardContent>
