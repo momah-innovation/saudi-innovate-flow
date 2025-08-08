@@ -34,6 +34,7 @@ import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { useEventDetails } from '@/hooks/useEventDetails';
 import { useEventInteractions } from '@/hooks/useEventInteractions';
 import { useParticipants } from '@/hooks/useParticipants';
+import { useRealTimeEvents } from '@/hooks/useRealTimeEvents';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { AttendeesTab } from './tabs/AttendeesTab';
@@ -116,6 +117,21 @@ export const ComprehensiveEventDialog = ({
     cancelRegistration,
     fetchParticipants
   } = useParticipants(event?.id || null);
+
+  // Set up real-time updates
+  useRealTimeEvents({
+    onParticipantUpdate: (eventId, count) => {
+      if (eventId === event?.id) {
+        fetchParticipants(); // Refresh participants when count changes
+        refetchInteractions(); // Refresh interactions as well
+      }
+    },
+    onEventUpdate: (update) => {
+      if (update.event_id === event?.id) {
+        refetchInteractions(); // Refresh when event is updated
+      }
+    }
+  });
 
   const getStatusColor = (status: string) => {
     switch (status) {

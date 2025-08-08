@@ -6,6 +6,7 @@ import { CalendarIcon, MapPin, Users, Clock, Bookmark, Ticket, UserMinus } from 
 import { useDirection } from '@/components/ui/direction-provider';
 import { useEventInteractions } from '@/hooks/useEventInteractions';
 import { useParticipants } from '@/hooks/useParticipants';
+import { useRealTimeEvents } from '@/hooks/useRealTimeEvents';
 import { supabase } from '@/integrations/supabase/client';
 import { useState, useEffect } from 'react';
 
@@ -61,6 +62,21 @@ export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCar
     cancelRegistration,
     fetchParticipants
   } = useParticipants(event?.id || null);
+
+  // Set up real-time updates
+  useRealTimeEvents({
+    onParticipantUpdate: (eventId, count) => {
+      if (eventId === event.id) {
+        fetchParticipants(); // Refresh participants when count changes
+        refetchInteractions(); // Refresh interactions as well
+      }
+    },
+    onEventUpdate: (update) => {
+      if (update.event_id === event.id) {
+        refetchInteractions(); // Refresh when event is updated
+      }
+    }
+  });
 
   const getStatusColor = (status: string) => {
     switch (status) {

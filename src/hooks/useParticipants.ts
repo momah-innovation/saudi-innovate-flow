@@ -29,6 +29,28 @@ export function useParticipants(eventId: string | null) {
   useEffect(() => {
     if (eventId) {
       fetchParticipants();
+      
+      // Set up real-time subscription for participants
+      const participantsChannel = supabase
+        .channel(`event_participants_${eventId}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'event_participants',
+            filter: `event_id=eq.${eventId}`
+          },
+          (payload) => {
+            console.log('Participants change detected:', payload);
+            fetchParticipants(); // Refresh participants list
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(participantsChannel);
+      };
     }
   }, [eventId]);
 

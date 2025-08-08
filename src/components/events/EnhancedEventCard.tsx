@@ -15,6 +15,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useEventInteractions } from '@/hooks/useEventInteractions';
 import { useParticipants } from '@/hooks/useParticipants';
+import { useRealTimeEvents } from '@/hooks/useRealTimeEvents';
 
 interface Event {
   id: string;
@@ -69,6 +70,21 @@ export const EnhancedEventCard = ({
     cancelRegistration,
     fetchParticipants
   } = useParticipants(event?.id || null);
+  
+  // Set up real-time updates
+  useRealTimeEvents({
+    onParticipantUpdate: (eventId, count) => {
+      if (eventId === event.id) {
+        fetchParticipants(); // Refresh participants when count changes
+        refetchInteractions(); // Refresh interactions as well
+      }
+    },
+    onEventUpdate: (update) => {
+      if (update.event_id === event.id) {
+        refetchInteractions(); // Refresh when event is updated
+      }
+    }
+  });
   
   // Find current user's participation
   const currentUserParticipation = participants.find(p => p.user_id === user?.id);
