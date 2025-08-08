@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { toast } from 'sonner';
+import { logger } from '@/utils/logger';
 
 export interface ExportFormat {
   id: string;
@@ -76,7 +77,7 @@ export function ExportActions({
       
       toast.success(t('export.success', 'Export completed successfully'));
     } catch (error) {
-      console.error('Export failed:', error);
+      logger.error('Export operation failed', { action: 'export', data: { format, filename, error } });
       toast.error(t('export.error', 'Export failed. Please try again.'));
     }
   };

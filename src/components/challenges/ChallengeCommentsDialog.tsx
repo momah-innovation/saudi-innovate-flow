@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import type { Comment } from '@/types/comments';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -31,7 +32,7 @@ export function ChallengeCommentsDialog({
 }: ChallengeCommentsDialogProps) {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [comments, setComments] = useState<unknown[]>([]);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyText, setReplyText] = useState('');
@@ -60,7 +61,7 @@ export function ChallengeCommentsDialog({
         .order('created_at', { ascending: true });
 
       if (error) throw error;
-      setComments(data || []);
+      setComments((data || []).map(item => ({ ...item, is_edited: item.is_edited || false })));
     } catch (error) {
       toast({
         title: "خطأ",
@@ -156,19 +157,19 @@ export function ChallengeCommentsDialog({
 
   const handleLikeComment = async (commentId: string) => {
     try {
-      const comment = comments.find(c => (c as any).id === commentId);
+      const comment = comments.find(c => c.id === commentId);
       if (!comment) return;
 
       const { error } = await supabase
         .from('challenge_comments')
-        .update({ likes_count: (comment as any).likes_count + 1 })
+        .update({ likes_count: comment.likes_count + 1 })
         .eq('id', commentId);
 
       if (error) throw error;
 
       setComments(prev => prev.map(c => 
-        (c as any).id === commentId 
-          ? { ...(c as any), likes_count: (c as any).likes_count + 1 }
+        c.id === commentId 
+          ? { ...c, likes_count: c.likes_count + 1 }
           : c
       ));
     } catch (error) {
@@ -190,7 +191,7 @@ export function ChallengeCommentsDialog({
 
       if (error) throw error;
 
-      setComments(prev => prev.filter(c => (c as any).id !== commentId));
+      setComments(prev => prev.filter(c => c.id !== commentId));
       
       toast({
         title: "تم حذف التعليق",
@@ -206,16 +207,16 @@ export function ChallengeCommentsDialog({
   };
 
   const organizeComments = () => {
-    const topLevel = comments.filter(c => !(c as any).parent_comment_id);
-    const replies = comments.filter(c => (c as any).parent_comment_id);
+    const topLevel = comments.filter(c => !c.parent_comment_id);
+    const replies = comments.filter(c => c.parent_comment_id);
     
     return topLevel.map(comment => ({
-      ...(comment as any),
-      replies: replies.filter(r => (r as any).parent_comment_id === (comment as any).id)
+      ...comment,
+      replies: replies.filter(r => r.parent_comment_id === comment.id)
     }));
   };
 
-  const renderComment = (comment: unknown, isReply = false) => (
+  const renderComment = (comment: Comment, isReply = false) => (
     <div key={(comment as any).id} className={`space-y-3 ${isReply ? 'ml-8 pl-4 border-l-2 border-muted' : ''}`}>
       <div className="flex gap-3">
         <Avatar className="h-8 w-8">

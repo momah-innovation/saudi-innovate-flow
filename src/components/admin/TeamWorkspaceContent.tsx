@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import type { TeamMember } from '@/types/workspace';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -691,11 +692,89 @@ export function TeamWorkspaceContent({
       </div>
 
       <QuickActionsPanel />
-      <CreateProjectDialog open={showCreateProject} onOpenChange={setShowCreateProject} teamMembers={teamData.teamMembers as any} />
+      <CreateProjectDialog 
+        open={showCreateProject} 
+        onOpenChange={setShowCreateProject} 
+        teamMembers={teamData.teamMembers.map(member => ({
+          id: member.id,
+          role: member.role || '',
+          specialization: Array.isArray(member.specialization) ? member.specialization[0] : member.specialization || '',
+          current_workload: member.current_workload,
+          profiles: {
+            display_name: Array.isArray(member.profiles) 
+              ? member.profiles[0]?.name || 'مستخدم'
+              : member.profiles?.name || 'مستخدم',
+            profile_image_url: Array.isArray(member.profiles)
+              ? member.profiles[0]?.profile_image_url
+              : member.profiles?.profile_image_url
+          }
+        }))} 
+      />
       <InviteMemberDialog open={showInviteMember} onOpenChange={setShowInviteMember} />
-      <TaskAssignmentDialog open={showTaskAssignment} onOpenChange={setShowTaskAssignment} teamMembers={teamData.teamMembers as any} selectedMember={selectedMember as any} />
-      <TeamChatSheet open={showTeamChat} onOpenChange={setShowTeamChat} teamMembers={teamData.teamMembers as any} />
-      <MeetingSchedulerDialog open={showMeetingScheduler} onOpenChange={setShowMeetingScheduler} teamMembers={teamData.teamMembers as any} />
+      <TaskAssignmentDialog 
+        open={showTaskAssignment} 
+        onOpenChange={setShowTaskAssignment} 
+        teamMembers={teamData.teamMembers.map(member => ({
+          id: member.id,
+          role: member.role || '',
+          specialization: Array.isArray(member.specialization) ? member.specialization[0] : member.specialization || '',
+          current_workload: member.current_workload,
+          profiles: {
+            display_name: Array.isArray(member.profiles) 
+              ? member.profiles[0]?.name || 'مستخدم'
+              : member.profiles?.name || 'مستخدم',
+            profile_image_url: Array.isArray(member.profiles)
+              ? member.profiles[0]?.profile_image_url
+              : member.profiles?.profile_image_url
+          }
+        }))}
+        selectedMember={selectedMember ? {
+          id: selectedMember.id,
+          role: selectedMember.role || '',
+          specialization: Array.isArray(selectedMember.specialization) ? selectedMember.specialization[0] : selectedMember.specialization || '',
+          current_workload: selectedMember.current_workload,
+          profiles: {
+            display_name: Array.isArray(selectedMember.profiles) 
+              ? selectedMember.profiles[0]?.name || 'مستخدم'
+              : selectedMember.profiles?.name || 'مستخدم',
+            profile_image_url: Array.isArray(selectedMember.profiles)
+              ? selectedMember.profiles[0]?.profile_image_url
+              : selectedMember.profiles?.profile_image_url
+          }
+        } : undefined}
+      />
+      <TeamChatSheet 
+        open={showTeamChat} 
+        onOpenChange={setShowTeamChat} 
+        teamMembers={teamData.teamMembers.map(member => ({
+          id: member.id,
+          role: member.role || '',
+          profiles: {
+            display_name: Array.isArray(member.profiles) 
+              ? member.profiles[0]?.name || 'مستخدم'
+              : member.profiles?.name || 'مستخدم',
+            profile_image_url: Array.isArray(member.profiles)
+              ? member.profiles[0]?.profile_image_url
+              : member.profiles?.profile_image_url
+          }
+        }))}
+      />
+      <MeetingSchedulerDialog 
+        open={showMeetingScheduler} 
+        onOpenChange={setShowMeetingScheduler} 
+        teamMembers={teamData.teamMembers.map(member => ({
+          id: member.id,
+          role: member.role || '',
+          profiles: {
+            display_name: Array.isArray(member.profiles) 
+              ? member.profiles[0]?.name || 'مستخدم'
+              : member.profiles?.name || 'مستخدم',
+            profile_image_url: Array.isArray(member.profiles)
+              ? member.profiles[0]?.profile_image_url
+              : member.profiles?.profile_image_url
+          }
+        }))}
+      />
       {selectedMember && <MemberDetailDialog member={selectedMember} />}
     </div>
   );

@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
+import { logger } from '@/utils/logger';
 
 export interface BulkAction {
   id: string;
@@ -79,7 +80,7 @@ export function useBulkActions<T>(config: UseBulkActionsConfig<T>) {
       toast.success(t('success.bulk_action_completed', `${action.label} completed successfully for ${selectedItemObjects.length} item(s)`));
       clearSelection();
     } catch (error) {
-      console.error('Bulk action failed:', error);
+      logger.error('Bulk action operation failed', { action: 'bulk_action', data: { actionId, itemCount: selectedItemObjects.length, error } });
       toast.error(t('error.bulk_action_failed', `Failed to ${action.label.toLowerCase()}. Please try again.`));
     } finally {
       setIsProcessing(false);
