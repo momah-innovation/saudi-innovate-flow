@@ -87,7 +87,7 @@ const Index = () => {
   const renderContent = () => {
     const wrapInSection = (title: string, description: string, content: React.ReactNode) => (
       <>
-        <PageHeader title={title} description={description} />
+        {/* Removed duplicate PageHeader - AppShell already provides header */}
         <Section>
           <ContentArea>
             {content}

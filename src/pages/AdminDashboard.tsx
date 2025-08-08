@@ -148,15 +148,7 @@ export default function AdminDashboard() {
 
   return (
     <PageLayout>
-      <PageHeader
-        title="Admin Dashboard"
-        description="System administration and management tools"
-        actionButton={{
-          label: "Refresh Data",
-          icon: <RefreshCw className="w-4 h-4" />,
-          onClick: refreshData
-        }}
-      />
+      {/* Removed duplicate PageHeader - AppShell already provides header */}
 
       <div className="space-y-6">
         {/* Enhanced Hero Dashboard */}
