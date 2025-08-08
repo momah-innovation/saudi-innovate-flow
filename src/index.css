@@ -172,8 +172,8 @@
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    --shadow-glow: 0 0 20px rgb(280 84% 12% / 0.15);
-    --shadow-colored: 0 8px 16px rgb(280 84% 12% / 0.2);
+    --shadow-glow: 0 0 20px hsl(280 84% 12% / 0.15);
+    --shadow-colored: 0 8px 16px hsl(280 84% 12% / 0.2);
     
     /* === ENHANCED GRADIENTS === */
     --gradient-primary: linear-gradient(99deg, rgba(59, 20, 93, 1) 51%, rgba(23, 8, 38, 1) 99%);
@@ -323,8 +323,8 @@
     --overlay-button-hover: 217 32.6% 22%;
     
     /* Enhanced Dark Mode Shadows */
-    --shadow-glow: 0 0 20px rgb(272 65% 35% / 0.3);
-    --shadow-colored: 0 8px 16px rgb(272 65% 35% / 0.4);
+    --shadow-glow: 0 0 20px hsl(272 65% 35% / 0.3);
+    --shadow-colored: 0 8px 16px hsl(272 65% 35% / 0.4);
     
     /* Enhanced Dark Mode Gradients */
     --gradient-primary: linear-gradient(99deg, rgba(59, 20, 93, 1) 51%, rgba(23, 8, 38, 1) 99%);
