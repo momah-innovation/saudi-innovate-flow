@@ -70,7 +70,7 @@ export const EnhancedIdeasHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Background with animated gradients */}
-      <div className="absolute inset-0 bg-gradient-primary">
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, hsl(262, 83%, 58%), hsl(262, 83%, 52%))' }}>
         <div className="absolute inset-0 bg-[url('/idea-images/lightbulb-innovation.jpg')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
       </div>

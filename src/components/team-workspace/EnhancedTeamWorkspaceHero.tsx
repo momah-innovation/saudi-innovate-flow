@@ -61,7 +61,7 @@ export const EnhancedTeamWorkspaceHero = ({
   return (
     <div className="relative overflow-hidden">
       {/* Background with animated gradients */}
-      <div className="absolute inset-0 bg-gradient-primary">
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, hsl(262, 83%, 58%), hsl(262, 83%, 52%))' }}>
         <div className="absolute inset-0 bg-[url('/dashboard-images/team-collaboration.jpg')] opacity-10 bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
       </div>
@@ -141,7 +141,7 @@ export const EnhancedTeamWorkspaceHero = ({
                 <Button
                   onClick={onJoinTeam}
                   size="lg"
-                  className="bg-gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  className="gradient-primary text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
                   <UserPlus className="w-5 h-5 mr-2" />
                   {isRTL ? 'انضم لفريق' : 'Join Team'}
@@ -222,7 +222,7 @@ export const EnhancedTeamWorkspaceHero = ({
                   />
 
                   <Button 
-                    className="w-full bg-gradient-primary hover:opacity-90 text-white"
+                    className="w-full gradient-primary hover:opacity-90 text-white"
                   >
                     {isRTL ? 'دخول مساحة العمل' : 'Enter Workspace'}
                     <ArrowRight className="w-4 h-4 ml-2" />
