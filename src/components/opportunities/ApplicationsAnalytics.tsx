@@ -23,7 +23,7 @@ import { ChartPlaceholder } from '@/components/common/ChartPlaceholder'
 
 interface ApplicationsAnalyticsProps {
   opportunityId: string;
-  analytics: any;
+  analytics: Record<string, unknown>;
 }
 
 interface ApplicationData {
@@ -128,7 +128,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
     }
   };
 
-  const generateApplicationsOverTime = (applications: any[]) => {
+  const generateApplicationsOverTime = (applications: Record<string, unknown>[]) => {
     const last30Days = [];
     let cumulative = 0;
     
@@ -153,7 +153,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
     return last30Days;
   };
 
-  const generateDailyApplications = (applications: any[]) => {
+  const generateDailyApplications = (applications: Record<string, unknown>[]) => {
     const last7Days = [];
     
     for (let i = 6; i >= 0; i--) {
@@ -174,7 +174,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
     return last7Days;
   };
 
-  const calculateAvgProcessingTime = (applications: any[]) => {
+  const calculateAvgProcessingTime = (applications: Record<string, unknown>[]) => {
     const processedApps = applications.filter(app => 
       app.reviewed_at && app.submitted_at
     );
@@ -190,7 +190,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
     return Math.round(totalTime / processedApps.length / (1000 * 60 * 60 * 24)); // Days
   };
 
-  const generateConversionFunnel = (applications: any[]) => {
+  const generateConversionFunnel = (applications: Record<string, unknown>[]) => {
     const totalViews = analytics.totalViews || 0;
     
     // Use real data only - no assumptions about "started" applications
@@ -208,7 +208,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
     return stages;
   };
 
-  const generateApplicationSources = (applications: any[]) => {
+  const generateApplicationSources = (applications: Record<string, unknown>[]) => {
     // Count real application sources from application_source field
     const sourceCounts = applications.reduce((acc, app) => {
       const source = app.application_source || 'direct';

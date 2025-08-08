@@ -25,7 +25,7 @@ import { ChartPlaceholder } from '@/components/common/ChartPlaceholder'
 
 interface AdvancedAnalyticsProps {
   opportunityId: string;
-  analytics: any;
+  analytics: Record<string, unknown>;
 }
 
 interface AdvancedData {
@@ -128,7 +128,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
     }
   };
 
-  const generateUserJourneyAnalysis = (journeys: any[]) => {
+  const generateUserJourneyAnalysis = (journeys: Record<string, unknown>[]) => {
     const steps = [
       { step: isRTL ? 'زيارة الصفحة' : 'Page Visit', users: 0, dropoff: 0, time: 0 },
       { step: isRTL ? 'قراءة التفاصيل' : 'Read Details', users: 0, dropoff: 0, time: 0 },
@@ -170,7 +170,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
     return steps;
   };
 
-  const generateBehaviorPatterns = (journeys: any[], sessions: any[]) => {
+  const generateBehaviorPatterns = (journeys: Record<string, unknown>[], sessions: Record<string, unknown>[]) => {
     // Calculate real behavior patterns from journey data
     const actionCounts: Record<string, number> = journeys.reduce((acc, journey) => {
       const stepData = journey.step_data || {};
@@ -188,7 +188,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
     })).slice(0, 5);
   };
 
-  const generatePredictiveMetrics = (analytics: any, journeys: any[], sessions: any[]) => {
+  const generatePredictiveMetrics = (analytics: Record<string, unknown>, journeys: Record<string, unknown>[], sessions: Record<string, unknown>[]) => {
     const currentApplications = analytics.totalApplications || 0;
     const currentViews = analytics.totalViews || 0;
     const conversionRate = currentViews > 0 ? (currentApplications / currentViews) * 100 : 0;
@@ -220,7 +220,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
     };
   };
 
-  const generatePerformanceMetrics = (sessions: any[], presence: any[]) => {
+  const generatePerformanceMetrics = (sessions: Record<string, unknown>[], presence: Record<string, unknown>[]) => {
     const avgTimeSpent = sessions.length > 0 
       ? sessions.reduce((sum, s) => sum + (s.time_spent || 0), 0) / sessions.length
       : 0;
@@ -242,9 +242,9 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
     };
   };
 
-  const generateAudienceInsights = (journeys: any[], sessions: any[]) => {
+  const generateAudienceInsights = (journeys: Record<string, unknown>[], sessions: Record<string, unknown>[]) => {
     // Calculate real audience segments from journey data
-    const userSegments = journeys.reduce((acc: any, journey: any) => {
+    const userSegments = journeys.reduce((acc: Record<string, unknown>, journey: Record<string, unknown>) => {
       const stepCount = journey.step_data?.step_count || 1;
       let segment = 'casual_browsers';
       
@@ -258,13 +258,13 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
 
     // Calculate demographics from session and journey data
     const calculateDemographics = () => {
-      const ageGroups = sessions.reduce((acc: any, session: any) => {
+      const ageGroups = sessions.reduce((acc: Record<string, number>, session: Record<string, unknown>) => {
         const age = session.metadata?.age_group || 'unknown';
         acc[age] = (acc[age] || 0) + 1;
         return acc;
       }, {});
       
-      const mostCommonAge = Object.entries(ageGroups).sort(([,a]: any, [,b]: any) => b - a)[0]?.[0] || '25-34';
+      const mostCommonAge = Object.entries(ageGroups).sort(([,a]: [string, number], [,b]: [string, number]) => b - a)[0]?.[0] || '25-34';
       const agePercentage = ageGroups[mostCommonAge] ? Math.round((ageGroups[mostCommonAge] / sessions.length) * 100) : 0;
       
       return [
@@ -283,7 +283,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
         { segment: isRTL ? 'متصفحون' : 'Casual Browsers', count: userSegments.casual_browsers || 0, engagement: Math.round((userSegments.casual_browsers || 0) / journeys.length * 100) }
       ],
       demographics: calculateDemographics(),
-      interests: journeys.reduce((acc: any, journey: any) => {
+      interests: journeys.reduce((acc: Record<string, number>, journey: Record<string, unknown>) => {
         const interests = journey.step_data?.interests || [];
         interests.forEach((interest: string) => {
           acc[interest] = (acc[interest] || 0) + 1;
@@ -293,7 +293,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
     };
   };
 
-  const generateCompetitiveAnalysis = (analytics: any) => {
+  const generateCompetitiveAnalysis = (analytics: Record<string, unknown>) => {
     // Calculate position based on views and applications compared to other opportunities
     const totalViews = analytics?.view_count || 0;
     const totalApplications = analytics?.application_count || 0;

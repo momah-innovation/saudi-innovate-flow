@@ -24,7 +24,7 @@ export const AnalyticsExportDialog = ({
   const [isExporting, setIsExporting] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const exportToCsv = async (data: any[], filename: string) => {
+  const exportToCsv = async (data: Record<string, unknown>[], filename: string) => {
     try {
       const headers = Object.keys(data[0] || {});
       const csvContent = [

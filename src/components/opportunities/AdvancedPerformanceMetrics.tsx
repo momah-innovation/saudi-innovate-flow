@@ -124,7 +124,7 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
       });
 
       // Calculate trends from historical data by comparing with previous periods
-      const calculateTrendFromHistory = (current: number, historical: any[], field: string) => {
+      const calculateTrendFromHistory = (current: number, historical: Record<string, unknown>[], field: string) => {
         if (historical.length < 2) return { change: 0, direction: 'stable' as const };
         
         const previousValue = historical[historical.length - 2]?.[field] || 0;
@@ -182,7 +182,7 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
     }
   };
 
-  const calculatePeakHours = (sessions: any[]) => {
+  const calculatePeakHours = (sessions: Record<string, unknown>[]) => {
     const hourCounts = sessions.reduce((acc, session) => {
       const hour = new Date(session.created_at).getHours();
       acc[hour] = (acc[hour] || 0) + 1;
