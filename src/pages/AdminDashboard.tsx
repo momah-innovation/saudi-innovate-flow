@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { PageHeader } from '@/components/ui/page-header';
+// Removed PageHeader import - AppShell provides unified header
 import { AdminDashboardHero } from '@/components/admin/AdminDashboardHero';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
