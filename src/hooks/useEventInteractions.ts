@@ -38,14 +38,18 @@ export function useEventInteractions(eventId: string | null) {
             table: 'event_participants',
             filter: `event_id=eq.${eventId}`
           },
-          (payload) => {
-            console.log('🔥 REAL-TIME: Participant change detected:', {
+          async (payload) => {
+            console.log('🔥 REAL-TIME: Participant change detected in useEventInteractions:', {
               eventType: payload.eventType,
               eventId: eventId,
               payload: payload
             });
-            loadEventInteractions();
-            loadEventStats();
+            
+            // Force reload both interactions and stats
+            await Promise.all([
+              loadEventInteractions(),
+              loadEventStats()
+            ]);
           }
         )
         .on(

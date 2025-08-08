@@ -44,25 +44,34 @@ export const useRealTimeEvents = ({
           table: 'event_participants'
         },
         async (payload) => {
-          logger.info('Event participants change', { 
+          const eventId = (payload.new as any)?.event_id || (payload.old as any)?.event_id;
+          console.log('🔥 REAL-TIME: Participants list change detected:', {
             eventType: payload.eventType,
-            eventId: (payload.new as any)?.event_id 
+            eventId,
+            userId: (payload.new as any)?.user_id || (payload.old as any)?.user_id,
+            payload
           });
           
-          if (payload.eventType === 'INSERT') {
-            // Get updated participant count
+          if (eventId) {
+            // Get updated participant count for any change (INSERT, UPDATE, DELETE)
             const { count } = await supabase
               .from('event_participants')
               .select('*', { count: 'exact' })
-              .eq('event_id', (payload.new as any).event_id);
+              .eq('event_id', eventId);
 
-            onParticipantUpdate?.((payload.new as any).event_id, count || 0);
+            console.log('🔄 Updated participant count for event:', eventId, 'count:', count);
+            onParticipantUpdate?.(eventId, count || 0);
 
-            // Show notification if it's not the current user
-            if ((payload.new as any).user_id !== user.id) {
+            // Show notification based on event type
+            if (payload.eventType === 'INSERT' && (payload.new as any).user_id !== user.id) {
               toast({
                 title: t('new_registration', 'New Registration!'),
                 description: t('event_registration_notification', 'Someone just registered for an event you\'re interested in.'),
+              });
+            } else if (payload.eventType === 'DELETE' && (payload.old as any).user_id !== user.id) {
+              toast({
+                title: t('registration_cancelled', 'Registration Cancelled'),
+                description: t('event_cancellation_notification', 'Someone cancelled their registration for an event.'),
               });
             }
           }
