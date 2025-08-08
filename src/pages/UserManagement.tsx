@@ -207,7 +207,7 @@ export default function UserManagement() {
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <CardTitle className="text-sm font-medium">
               {t("totalUsers")}
             </CardTitle>
@@ -215,14 +215,14 @@ export default function UserManagement() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">156</div>
-            <p className="text-xs text-muted-foreground">
+            <p className={`text-xs text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
               +12% {t("fromLastMonth")}
             </p>
           </CardContent>
         </Card>
         
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <CardTitle className="text-sm font-medium">
               {t("activeUsers")}
             </CardTitle>
@@ -230,14 +230,14 @@ export default function UserManagement() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">142</div>
-            <p className="text-xs text-muted-foreground">
+            <p className={`text-xs text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
               +8% {t("fromLastMonth")}
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <CardTitle className="text-sm font-medium">
               {t("pendingInvitations")}
             </CardTitle>
@@ -245,14 +245,14 @@ export default function UserManagement() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">14</div>
-            <p className="text-xs text-muted-foreground">
+            <p className={`text-xs text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
               -2% {t("fromLastMonth")}
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <CardTitle className="text-sm font-medium">
               {t("expertUsers")}
             </CardTitle>
@@ -260,7 +260,7 @@ export default function UserManagement() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">28</div>
-            <p className="text-xs text-muted-foreground">
+            <p className={`text-xs text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
               +4% {t("fromLastMonth")}
             </p>
           </CardContent>
@@ -270,16 +270,16 @@ export default function UserManagement() {
       {/* Users Table */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <CardTitle>{t("users")}</CardTitle>
-            <div className="flex items-center gap-2">
+            <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <div className="relative">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Search className={`absolute top-2.5 h-4 w-4 text-muted-foreground ${isRTL ? 'right-2' : 'left-2'}`} />
                 <Input
                   placeholder={searchPlaceholder}
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  className="pl-8 w-[300px]"
+                  className={`w-[300px] ${isRTL ? 'pr-8 pl-3' : 'pl-8 pr-3'}`}
                 />
               </div>
               <Button variant="outline" size="sm">
