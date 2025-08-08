@@ -114,7 +114,10 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
         statusBreakdown,
         dailyApplications,
         avgProcessingTime,
-        conversionFunnel,
+        conversionFunnel: conversionFunnel.map(stage => ({
+          ...stage,
+          count: Number(stage.count) || 0
+        })),
         applicationSources
       });
     } catch (error) {
@@ -137,9 +140,10 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
       date.setDate(date.getDate() - i);
       const dateStr = date.toISOString().split('T')[0];
       
-      const dayApplications = applications.filter(app => 
-        app.created_at.startsWith(dateStr)
-      ).length;
+      const dayApplications = applications.filter(app => {
+        const createdAt = app.created_at as string;
+        return createdAt && createdAt.startsWith(dateStr);
+      }).length;
       
       cumulative += dayApplications;
       
@@ -161,9 +165,10 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
       date.setDate(date.getDate() - i);
       const dateStr = date.toISOString().split('T')[0];
       
-      const dayCount = applications.filter(app => 
-        app.created_at.startsWith(dateStr)
-      ).length;
+      const dayCount = applications.filter(app => {
+        const createdAt = app.created_at as string;
+        return createdAt && createdAt.startsWith(dateStr);
+      }).length;
       
       last7Days.push({
         date: dateStr,
@@ -182,8 +187,8 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
     if (processedApps.length === 0) return 0;
     
     const totalTime = processedApps.reduce((sum, app) => {
-      const submitTime = new Date(app.submitted_at).getTime();
-      const reviewTime = new Date(app.reviewed_at).getTime();
+      const submitTime = new Date(app.submitted_at as string).getTime();
+      const reviewTime = new Date(app.reviewed_at as string).getTime();
       return sum + (reviewTime - submitTime);
     }, 0);
     
@@ -191,7 +196,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
   };
 
   const generateConversionFunnel = (applications: Record<string, unknown>[]) => {
-    const totalViews = analytics.totalViews || 0;
+    const totalViews = Number(analytics.totalViews) || 0;
     
     // Use real data only - no assumptions about "started" applications
     const stages = [
@@ -202,19 +207,19 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
     ];
     
     // Calculate percentages for review and approved stages based on total applications
-    stages[2].percentage = applications.length > 0 ? Math.round((stages[2].count / applications.length) * 100) : 0;
-    stages[3].percentage = applications.length > 0 ? Math.round((stages[3].count / applications.length) * 100) : 0;
+    stages[2].percentage = applications.length > 0 ? Math.round((Number(stages[2].count) / applications.length) * 100) : 0;
+    stages[3].percentage = applications.length > 0 ? Math.round((Number(stages[3].count) / applications.length) * 100) : 0;
     
     return stages;
   };
 
   const generateApplicationSources = (applications: Record<string, unknown>[]) => {
     // Count real application sources from application_source field
-    const sourceCounts = applications.reduce((acc, app) => {
-      const source = app.application_source || 'direct';
+    const sourceCounts = applications.reduce((acc: Record<string, number>, app) => {
+      const source = (app.application_source as string) || 'direct';
       acc[source] = (acc[source] || 0) + 1;
       return acc;
-    }, {} as Record<string, number>);
+    }, {});
     
     const total = applications.length;
     if (total === 0) return [];
@@ -333,7 +338,7 @@ export const ApplicationsAnalytics = ({ opportunityId, analytics }: Applications
               <Target className="w-5 h-5 text-purple-500" />
               <div>
                 <p className="text-2xl font-bold">
-                  {((applicationData.totalApplications / Math.max(1, analytics.totalViews)) * 100).toFixed(1)}%
+                  {((applicationData.totalApplications / Math.max(1, Number(analytics.totalViews))) * 100).toFixed(1)}%
                 </p>
                 <p className="text-sm text-muted-foreground">{isRTL ? 'معدل التحويل' : 'Conversion Rate'}</p>
                 {/* Real trend calculated from data */}

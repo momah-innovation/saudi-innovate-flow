@@ -345,13 +345,13 @@ export const RedesignedOpportunityAnalyticsDialog = ({
       case 'engagement':
         return <EngagementAnalytics opportunityId={opportunityId} analytics={analytics} />;
       case 'applications':
-        return <ApplicationsAnalytics opportunityId={opportunityId} analytics={analytics} />;
+        return <ApplicationsAnalytics opportunityId={opportunityId} analytics={analytics as unknown as Record<string, unknown>} />;
       case 'geographic':
         return <GeographicAnalytics opportunityId={opportunityId} />;
       case 'performance':
         return <AdvancedPerformanceMetrics opportunityId={opportunityId} />;
       case 'advanced':
-        return <AdvancedAnalytics opportunityId={opportunityId} analytics={analytics} />;
+        return <AdvancedAnalytics opportunityId={opportunityId} analytics={analytics as unknown as Record<string, unknown>} />;
       default:
         return <AnalyticsOverview analytics={analytics} trends={trends} />;
     }

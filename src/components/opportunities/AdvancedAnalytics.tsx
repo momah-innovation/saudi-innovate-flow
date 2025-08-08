@@ -184,8 +184,8 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
   };
 
   const generateBehaviorPatterns = (journeys: Record<string, unknown>[], sessions: Record<string, unknown>[]) => {
-    // Calculate real behavior patterns from journey data
-    const actionCounts: Record<string, number> = journeys.reduce((acc: Record<string, number>, journey) => {
+    // Calculate real behavior patterns from journey data 
+    const actionCounts = journeys.reduce((acc: Record<string, number>, journey) => {
       const stepData = (journey.step_data as Record<string, unknown>) || {};
       const action = (stepData.step_name as string) || 'unknown';
       acc[action] = (acc[action] || 0) + 1;
@@ -194,11 +194,14 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
 
     const totalActions = Object.values(actionCounts).reduce((sum: number, count: number) => sum + count, 0);
     
-    return Object.entries(actionCounts).map(([action, count]) => ({
-      action: action.replace('_', ' ').charAt(0).toUpperCase() + action.slice(1),
-      frequency: totalActions > 0 ? Math.round((count / totalActions) * 100) : 0,
-      impact: count > (totalActions * 0.1) ? 'high' : 'medium'
-    })).slice(0, 5);
+    return Object.keys(actionCounts).map((action) => {
+      const count = actionCounts[action];
+      return {
+        action: action.replace('_', ' ').charAt(0).toUpperCase() + action.slice(1),
+        frequency: totalActions > 0 ? Math.round((count / totalActions) * 100) : 0,
+        impact: count > (totalActions * 0.1) ? 'high' : 'medium'
+      };
+    }).slice(0, 5);
   };
 
   const generatePredictiveMetrics = (analytics: Record<string, unknown>, journeys: Record<string, unknown>[], sessions: Record<string, unknown>[]) => {

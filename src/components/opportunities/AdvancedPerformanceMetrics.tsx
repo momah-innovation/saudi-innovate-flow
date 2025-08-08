@@ -127,7 +127,7 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
       const calculateTrendFromHistory = (current: number, historical: Record<string, unknown>[], field: string) => {
         if (historical.length < 2) return { change: 0, direction: 'stable' as const };
         
-        const previousValue = historical[historical.length - 2]?.[field] || 0;
+        const previousValue = Number(historical[historical.length - 2]?.[field]) || 0;
         const change = current > 0 && previousValue > 0 
           ? Math.round(((current - previousValue) / previousValue) * 100)
           : 0;
@@ -162,7 +162,10 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
         qualityScore,
         totalInteractions,
         uniqueVisitors,
-        returningVisitors: sessions.filter(s => s.view_count && s.view_count > 1).length,
+        returningVisitors: sessions.filter(s => {
+          const viewCount = s.view_count as number;
+          return viewCount && viewCount > 1;
+        }).length,
         peakViewingHours: calculatePeakHours(sessions),
         recommendations,
         trends
@@ -184,8 +187,10 @@ export const AdvancedPerformanceMetrics = ({ opportunityId }: AdvancedPerformanc
 
   const calculatePeakHours = (sessions: Record<string, unknown>[]) => {
     const hourCounts = sessions.reduce((acc, session) => {
-      const hour = new Date(session.created_at).getHours();
-      acc[hour] = (acc[hour] || 0) + 1;
+      const timestamp = session.created_at as string;
+      if (!timestamp) return acc;
+      const hour = new Date(timestamp).getHours();
+      acc[hour] = Number(acc[hour] || 0) + 1;
       return acc;
     }, {} as Record<number, number>);
     
