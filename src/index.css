@@ -649,11 +649,11 @@
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Button active state fix - Force override */
-.bg-primary:active,
-button.bg-primary:active,
-[class*="bg-primary"]:active {
-  color: red !important;
-  transform: scale(0.95) !important;
-  background-color: yellow !important;
+/* Button state fixes */
+.bg-primary {
+  color: white !important;
+}
+
+.bg-primary:active {
+  color: hsl(var(--primary-active-foreground)) !important;
 }
