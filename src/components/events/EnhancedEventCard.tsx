@@ -151,8 +151,12 @@ export const EnhancedEventCard = ({
   };
 
   const handleRegistrationAction = () => {
-    // Prevent registration/cancellation for past events
+    // For past events, handle differently based on registration status
     if (isEventPast()) {
+      if (isRegistered) {
+        // Could open materials, feedback, or certificate dialog
+        onViewDetails(event);
+      }
       return;
     }
     
@@ -165,6 +169,16 @@ export const EnhancedEventCard = ({
     }
   };
 
+  const getButtonVariant = () => {
+    if (isEventPast() && isRegistered) {
+      return "secondary"; // Different styling for attended events
+    }
+    if (isEventPast() || event.status === 'completed') {
+      return "outline"; // Muted styling for ended events
+    }
+    return isRegistered ? "destructive" : "primary";
+  };
+
   const isEventPast = () => {
     const eventDate = new Date(event.event_date);
     const now = new Date();
@@ -173,7 +187,15 @@ export const EnhancedEventCard = ({
 
   const getRegistrationButtonText = () => {
     if (checkingRegistration) return isRTL ? 'جاري التحقق...' : 'Checking...';
-    if (isEventPast()) return isRTL ? 'انتهت الفعالية' : 'Event Ended';
+    
+    if (isEventPast()) {
+      if (isRegistered) {
+        return isRTL ? 'تم الحضور' : 'Attended';
+      } else {
+        return isRTL ? 'انتهت الفعالية' : 'Event Ended';
+      }
+    }
+    
     if (isEventFull) return isRTL ? 'ممتلئ' : 'Full';
     if (event.status === 'completed') return isRTL ? 'انتهى' : 'Ended';
     if (isRegistered) return isRTL ? 'إلغاء التسجيل' : 'Cancel Registration';
@@ -252,10 +274,10 @@ export const EnhancedEventCard = ({
                       <BookmarkIcon className={`w-4 h-4 ${bookmarked ? 'fill-current text-primary' : ''}`} />
                     </Button>
                     <Button 
-                      variant={isRegistered ? "destructive" : "primary"}
+                      variant={getButtonVariant()}
                       size="sm" 
                       onClick={handleRegistrationAction}
-                      disabled={event.status === 'completed' || (isEventFull && !isRegistered) || checkingRegistration || isEventPast()}
+                      disabled={(isEventFull && !isRegistered) || checkingRegistration || (isEventPast() && !isRegistered)}
                     >
                       {getRegistrationButtonText()}
                     </Button>
@@ -401,10 +423,10 @@ export const EnhancedEventCard = ({
         {/* Action Button */}
         <div className="flex" onClick={(e) => e.stopPropagation()}>
           <Button 
-            variant={isRegistered ? "destructive" : "primary"}
+            variant={getButtonVariant()}
             onClick={handleRegistrationAction}
             className="w-full h-9"
-            disabled={event.status === 'completed' || (isEventFull && !isRegistered) || checkingRegistration || isEventPast()}
+            disabled={(isEventFull && !isRegistered) || checkingRegistration || (isEventPast() && !isRegistered)}
           >
             {getRegistrationButtonText()}
           </Button>
