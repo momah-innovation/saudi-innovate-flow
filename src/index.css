@@ -14,13 +14,13 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 84% 4.9%;
     
-    /* Enhanced Primary - Rich Deep Purple */
-    --primary: 280 84% 12%;
+    /* Enhanced Primary - RGB(59, 20, 93) converted to HSL */
+    --primary: 272 65% 22%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 280 84% 16%;
-    --primary-active: 280 84% 8%;
-    --primary-light: 280 84% 95%;
-    --primary-muted: 280 20% 90%;
+    --primary-hover: 272 65% 28%;
+    --primary-active: 272 65% 16%;
+    --primary-light: 272 65% 95%;
+    --primary-muted: 272 20% 90%;
     
     /* Enhanced Secondary - Sophisticated Grays */
     --secondary: 210 40% 98%;
@@ -45,7 +45,7 @@
     /* Enhanced Border and Input */
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 280 84% 12%;
+    --ring: 272 65% 22%;
     
     /* === ENHANCED STATUS COLORS === */
     /* Success - Vibrant Green */
@@ -102,7 +102,7 @@
     
     /* === ENHANCED CATEGORY COLORS === */
     /* Innovation - Deep Purple */
-    --innovation: 280 84% 12%;
+    --innovation: 272 65% 22%;
     --innovation-foreground: 0 0% 100%;
     --innovation-light: 280 84% 97%;
     --innovation-border: 280 84% 70%;
@@ -175,13 +175,13 @@
     --shadow-colored: 0 8px 16px rgb(280 84% 12% / 0.2);
     
     /* === ENHANCED GRADIENTS === */
-    --gradient-primary: linear-gradient(135deg, hsl(280 84% 12%), hsl(280 84% 16%));
+    --gradient-primary: linear-gradient(135deg, hsl(272 65% 22%), hsl(272 65% 28%));
     --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 76% 50%));
     --gradient-warning: linear-gradient(135deg, hsl(38 92% 50%), hsl(48 100% 65%));
     --gradient-info: linear-gradient(135deg, hsl(199 89% 48%), hsl(204 100% 65%));
     --gradient-subtle: linear-gradient(135deg, hsl(210 40% 98%), hsl(270 95% 97%));
-    --gradient-overlay: linear-gradient(135deg, hsl(280 84% 12% / 0.9), hsl(280 84% 8% / 0.95));
-    --gradient-hero: linear-gradient(135deg, hsl(280 84% 12%), hsl(240 100% 27%));
+    --gradient-overlay: linear-gradient(135deg, hsl(272 65% 22% / 0.9), hsl(272 65% 16% / 0.95));
+    --gradient-hero: linear-gradient(135deg, hsl(272 65% 22%), hsl(240 100% 27%));
   }
 
   .dark {
@@ -193,12 +193,12 @@
     --popover-foreground: 210 40% 98%;
     
     /* Enhanced Primary - Brighter in dark mode */
-    --primary: 280 84% 25%;
+    --primary: 272 65% 35%;
     --primary-foreground: 222 84% 4.9%;
-    --primary-hover: 280 84% 30%;
-    --primary-active: 280 84% 20%;
-    --primary-light: 280 84% 10%;
-    --primary-muted: 280 20% 15%;
+    --primary-hover: 272 65% 40%;
+    --primary-active: 272 65% 30%;
+    --primary-light: 272 65% 15%;
+    --primary-muted: 272 20% 20%;
     
     /* Enhanced Dark Mode Secondary */
     --secondary: 217 32.6% 17.5%;
@@ -223,7 +223,7 @@
     /* Enhanced Dark Mode Borders */
     --border: 217 32.6% 17.5%;
     --input: 217 32.6% 17.5%;
-    --ring: 280 84% 25%;
+    --ring: 272 65% 35%;
     
     /* Enhanced Dark Mode Status Colors */
     --success: 142 71% 45%;
@@ -271,7 +271,7 @@
     --inactive-border: 220 14% 70%;
     
     /* Enhanced Dark Mode Categories */
-    --innovation: 280 84% 30%;
+    --innovation: 272 65% 35%;
     --innovation-foreground: 222 84% 4.9%;
     --innovation-light: 280 84% 15%;
     --innovation-border: 280 84% 45%;
@@ -321,17 +321,17 @@
     --overlay-button-hover: 217 32.6% 22%;
     
     /* Enhanced Dark Mode Shadows */
-    --shadow-glow: 0 0 20px rgb(280 84% 25% / 0.3);
-    --shadow-colored: 0 8px 16px rgb(280 84% 25% / 0.4);
+    --shadow-glow: 0 0 20px rgb(272 65% 35% / 0.3);
+    --shadow-colored: 0 8px 16px rgb(272 65% 35% / 0.4);
     
     /* Enhanced Dark Mode Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(280 84% 25%), hsl(280 84% 30%));
+    --gradient-primary: linear-gradient(135deg, hsl(272 65% 35%), hsl(272 65% 40%));
     --gradient-success: linear-gradient(135deg, hsl(142 71% 45%), hsl(142 71% 60%));
     --gradient-warning: linear-gradient(135deg, hsl(38 92% 55%), hsl(48 100% 70%));
     --gradient-info: linear-gradient(135deg, hsl(199 89% 55%), hsl(204 100% 70%));
     --gradient-subtle: linear-gradient(135deg, hsl(217 32.6% 17.5%), hsl(217 32.6% 22%));
-    --gradient-overlay: linear-gradient(135deg, hsl(280 84% 25% / 0.9), hsl(280 84% 20% / 0.95));
-    --gradient-hero: linear-gradient(135deg, hsl(280 84% 25%), hsl(240 100% 35%));
+    --gradient-overlay: linear-gradient(135deg, hsl(272 65% 35% / 0.9), hsl(272 65% 30% / 0.95));
+    --gradient-hero: linear-gradient(135deg, hsl(272 65% 35%), hsl(240 100% 35%));
   }
 }
 
