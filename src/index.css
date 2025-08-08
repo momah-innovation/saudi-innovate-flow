@@ -649,7 +649,14 @@
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Button active state fix */
-.bg-primary:active {
+/* Button active state fix - Force override */
+.bg-primary:active,
+button.bg-primary:active,
+[class*="bg-primary"]:active {
   color: hsl(var(--primary-active-foreground)) !important;
+}
+
+/* Debug - temporary red color to verify CSS is loading */
+.bg-primary:active {
+  color: red !important;
 }
