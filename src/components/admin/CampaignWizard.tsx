@@ -426,24 +426,23 @@ export function CampaignWizard({
       case 0:
         return (
           <div className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="title_ar">عنوان الحملة *</Label>
+              <Label htmlFor="title_ar">{t('form.campaign_title')} *</Label>
               <Input
                 id="title_ar"
                 value={formData.title_ar}
                 onChange={(e) => setFormData(prev => ({ ...prev, title_ar: e.target.value }))}
-                placeholder="أدخل عنوان الحملة"
+                placeholder={t('placeholder.enter_campaign_title')}
                 dir="rtl"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description_ar">وصف الحملة *</Label>
+              <Label htmlFor="description_ar">{t('form.campaign_description')} *</Label>
               <Textarea
                 id="description_ar"
                 value={formData.description_ar}
                 onChange={(e) => setFormData(prev => ({ ...prev, description_ar: e.target.value }))}
-                placeholder="أدخل وصف تفصيلي للحملة"
+                placeholder={t('placeholder.enter_campaign_description')}
                 dir="rtl"
                 rows={4}
               />
@@ -451,40 +450,33 @@ export function CampaignWizard({
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="status">حالة الحملة *</Label>
+                <Label htmlFor="status">{t('form.campaign_status')} *</Label>
                 <Select value={formData.status} onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="اختر حالة الحملة" />
+                  <SelectTrigger dir="rtl">
+                    <SelectValue placeholder={t('placeholder.select_campaign_status')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="planning">تخطيط</SelectItem>
+                    <SelectItem value="planning">{t('status.planning')}</SelectItem>
                     {generalStatusOptions.filter(status => ['active', 'completed', 'cancelled'].includes(status)).map(status => (
                       <SelectItem key={status} value={status}>
-                        {status === 'active' ? 'نشطة' : status === 'completed' ? 'مكتملة' : 'ملغية'}
+                        {status === 'active' ? t('status.female_active') : status === 'completed' ? t('status.female_completed') : t('status.female_cancelled')}
                       </SelectItem>
                     ))}
-                    <SelectItem value="archived">مؤرشفة</SelectItem>
+                    <SelectItem value="archived">{t('status.female_archived')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="theme">موضوع الحملة *</Label>
+                <Label htmlFor="theme">{t('form.theme')} *</Label>
                 <Select value={formData.theme} onValueChange={(value) => setFormData(prev => ({ ...prev, theme: value }))}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="اختر موضوع الحملة" />
+                  <SelectTrigger dir="rtl">
+                    <SelectValue placeholder={t('form.theme')} />
                   </SelectTrigger>
                   <SelectContent>
                     {campaignThemeOptions.map(theme => (
                       <SelectItem key={theme} value={theme}>
-                        {theme === 'digital_transformation' ? 'التحول الرقمي' :
-                         theme === 'sustainability' ? 'الاستدامة' :
-                         theme === 'smart_cities' ? 'المدن الذكية' :
-                         theme === 'healthcare' ? 'الرعاية الصحية' :
-                         theme === 'education' ? 'التعليم' :
-                         theme === 'fintech' ? 'التكنولوجيا المالية' :
-                         theme === 'energy' ? 'الطاقة' :
-                         theme === 'transportation' ? 'النقل' : theme}
+                        {t(`theme.${theme}`) || theme}
                       </SelectItem>
                     ))}
                   </SelectContent>

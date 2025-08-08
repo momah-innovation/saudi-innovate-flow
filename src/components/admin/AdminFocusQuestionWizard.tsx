@@ -159,8 +159,8 @@ export function AdminFocusQuestionWizard({
         if (error) throw error;
         
         toast({
-          title: "نجح التحديث",
-          description: "تم تحديث السؤال المحوري بنجاح",
+          title: t('success.update_success'),
+          description: t('success.question_updated'),
         });
       } else {
         // Create new question
@@ -171,8 +171,8 @@ export function AdminFocusQuestionWizard({
         if (error) throw error;
         
         toast({
-          title: "نجح الإنشاء",
-          description: "تم إنشاء السؤال المحوري بنجاح",
+          title: t('success.create_success'),
+          description: t('success.question_created'),
         });
       }
 
@@ -182,13 +182,13 @@ export function AdminFocusQuestionWizard({
       // Handle specific database errors using toast notifications
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       if (errorMessage.includes('duplicate')) {
-        setErrors({ question_text_ar: "يوجد سؤال مماثل بالفعل" });
+        setErrors({ question_text_ar: t('error.duplicate_error') });
       } else if (errorMessage.includes('constraint')) {
-        setErrors({ general: "خطأ في القيود المدخلة" });
+        setErrors({ general: t('error.constraint_error') });
       } else {
         toast({
-          title: "خطأ",
-          description: errorMessage || "فشل في حفظ السؤال المحوري",
+          title: t('error.validation_error'),
+          description: errorMessage || t('error.save_failed'),
           variant: "destructive",
         });
       }
@@ -201,7 +201,7 @@ export function AdminFocusQuestionWizard({
     {
       id: "question-content",
       title: "محتوى السؤال",
-      description: "أدخل نص السؤال المحوري",
+      description: t('description.enter_question_details'),
       validation: validateQuestionText,
       content: (
         <div className="space-y-6">
@@ -223,7 +223,7 @@ export function AdminFocusQuestionWizard({
                   setErrors({ ...errors, question_text_ar: "" });
                 }
               }}
-              placeholder="أدخل نص السؤال المحوري الذي ستطرحه على المبتكرين"
+              placeholder={t('placeholder.enter_question_text')}
               rows={4}
               dir="rtl"
               className={errors.question_text_ar ? "border-destructive" : ""}
@@ -311,7 +311,7 @@ export function AdminFocusQuestionWizard({
               onValueChange={(value) => setFormData({ ...formData, challenge_id: value })}
             >
               <SelectTrigger>
-                <SelectValue placeholder="اختر التحدي (اختياري)" />
+                <SelectValue placeholder={t('placeholder.select_challenge')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="none">بدون ربط بتحدي محدد</SelectItem>
@@ -342,9 +342,9 @@ export function AdminFocusQuestionWizard({
               onCheckedChange={(checked) => setFormData({ ...formData, is_sensitive: checked })}
             />
             <div className="space-y-1">
-              <Label htmlFor="is_sensitive">سؤال حساس</Label>
+              <Label htmlFor="is_sensitive">{t('form.sensitive_question')}</Label>
               <p className="text-sm text-muted-foreground">
-                الأسئلة الحساسة تكون مرئية لأعضاء الفريق فقط
+                {t('description.sensitive_questions')}
               </p>
             </div>
           </div>

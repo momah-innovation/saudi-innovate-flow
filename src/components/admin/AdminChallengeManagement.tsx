@@ -80,8 +80,8 @@ export function AdminChallengeManagement() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: "خطأ",
-        description: "فشل في تحميل التحديات",
+        title: t('error.validation_error'),
+        description: t('error.load_failed'),
         variant: "destructive"
       });
     } finally {
@@ -100,14 +100,14 @@ export function AdminChallengeManagement() {
       
       setChallenges(prev => prev.filter(c => c.id !== challengeId));
       toast({
-        title: "تم بنجاح",
-        description: "تم حذف التحدي بنجاح"
+        title: t('success.delete_success'),
+        description: t('success.challenge_deleted')
       });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: "خطأ",
-        description: "فشل في حذف التحدي",
+        title: t('error.validation_error'),
+        description: t('error.delete_failed'),
         variant: "destructive"
       });
     }
@@ -149,24 +149,12 @@ export function AdminChallengeManagement() {
   }, []);
 
   const getStatusLabel = useCallback((status: string) => {
-    const labels = {
-      draft: 'مسودة',
-      active: 'نشط',
-      completed: 'مكتمل',
-      cancelled: 'ملغي',
-      on_hold: 'معلق'
-    };
-    return labels[status as keyof typeof labels] || status;
-  }, []);
+    return t(`status.${status}`) || status;
+  }, [t]);
 
   const getPriorityLabel = useCallback((priority: string) => {
-    const labels = {
-      high: 'عالي',
-      medium: 'متوسط',
-      low: 'منخفض'
-    };
-    return labels[priority as keyof typeof labels] || priority;
-  }, []);
+    return t(`priority.${priority}`) || priority;
+  }, [t]);
 
   const filteredChallenges = useMemo(() => challenges.filter(challenge => {
     const matchesSearch = challenge.title_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -182,11 +170,11 @@ export function AdminChallengeManagement() {
       type: 'select' as const,
       options: [
         { label: 'الكل', value: 'all' },
-        { label: 'مسودة', value: 'draft' },
-        { label: 'نشط', value: 'active' },
-        { label: 'مكتمل', value: 'completed' },
-        { label: 'ملغي', value: 'cancelled' },
-        { label: 'معلق', value: 'on_hold' }
+          { label: t('status.draft'), value: 'draft' },
+          { label: t('status.active'), value: 'active' },
+          { label: t('status.completed'), value: 'completed' },
+          { label: t('status.cancelled'), value: 'cancelled' },
+          { label: t('status.on_hold'), value: 'on_hold' }
       ],
       value: statusFilter,
       onChange: setStatusFilter
