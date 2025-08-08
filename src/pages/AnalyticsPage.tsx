@@ -11,8 +11,9 @@ import {
   ArrowUp, ArrowDown, Download
 } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
 
-const mockAnalytics = {
+const createMockAnalytics = (t: any) => ({
   overview: {
     totalUsers: 2847,
     activeProjects: 156,
@@ -34,39 +35,42 @@ const mockAnalytics = {
   topChallenges: [
     {
       id: 1,
-      title: 'التحول الرقمي للمؤسسات',
+      title: t('challenge.digital_transformation_gov'),
       title_en: 'Digital Transformation for Organizations',
       participants: 245,
       submissions: 67,
       completion_rate: 87,
-      category: 'تقنية',
+      category: t('category.technology'),
       category_en: 'Technology'
     },
     {
       id: 2,
-      title: 'حلول الذكاء الاصطناعي',
+      title: t('challenge.ai_solutions'),
       title_en: 'AI Solutions',
       participants: 189,
       submissions: 43,
       completion_rate: 78,
-      category: 'ذكاء اصطناعي',
+      category: t('category.ai'),
       category_en: 'Artificial Intelligence'
     },
     {
       id: 3,
-      title: 'الاستدامة البيئية',
+      title: t('challenge.environmental_sustainability'),
       title_en: 'Environmental Sustainability',
       participants: 167,
       submissions: 39,
       completion_rate: 91,
-      category: 'بيئة',
+      category: t('category.environment'),
       category_en: 'Environment'
     }
   ]
-};
+});
 
 const AnalyticsPage = () => {
   const { isRTL } = useDirection();
+  const { t } = useUnifiedTranslation();
+  
+  const mockAnalytics = createMockAnalytics(t);
 
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat(isRTL ? 'ar-SA' : 'en-US').format(num);
@@ -120,7 +124,7 @@ const AnalyticsPage = () => {
             </Badge>
           </div>
           <Badge className="bg-primary/10 text-primary">
-            {challenge.completion_rate}% {isRTL ? 'مكتمل' : 'Complete'}
+            {challenge.completion_rate}% {t('label.complete')}
           </Badge>
         </div>
       </CardHeader>
@@ -128,14 +132,14 @@ const AnalyticsPage = () => {
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <span className="text-muted-foreground">{isRTL ? 'المشاركين:' : 'Participants:'}</span>
+              <span className="text-muted-foreground">{t('label.participants')}:</span>
               <div className="font-medium flex items-center gap-1">
                 <Users className="h-4 w-4" />
                 {formatNumber(challenge.participants)}
               </div>
             </div>
             <div>
-              <span className="text-muted-foreground">{isRTL ? 'المساهمات:' : 'Submissions:'}</span>
+              <span className="text-muted-foreground">{t('label.submissions')}:</span>
               <div className="font-medium flex items-center gap-1">
                 <Target className="h-4 w-4" />
                 {formatNumber(challenge.submissions)}
@@ -145,7 +149,7 @@ const AnalyticsPage = () => {
           
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span>{isRTL ? 'معدل الإكمال' : 'Completion Rate'}</span>
+              <span>{t('label.completion_rate')}</span>
               <span>{challenge.completion_rate}%</span>
             </div>
             <Progress value={challenge.completion_rate} className="h-2" />
@@ -153,7 +157,7 @@ const AnalyticsPage = () => {
 
           <Button variant="outline" size="sm" className="w-full">
             <Eye className="h-4 w-4 mr-2" />
-            {isRTL ? 'عرض التفاصيل' : 'View Details'}
+            {t('action.view_details')}
           </Button>
         </div>
       </CardContent>
@@ -163,12 +167,12 @@ const AnalyticsPage = () => {
   return (
     <AppShell>
       <PageLayout
-        title={isRTL ? 'التحليلات' : 'Analytics'}
-        description={isRTL ? 'تحليلات شاملة للأداء والاتجاهات والمؤشرات الرئيسية' : 'Comprehensive analytics for performance, trends, and key metrics'}
+        title={t('page.analytics_title')}
+        description={t('page.analytics_description')}
         secondaryActions={
           <Button>
             <Download className="h-4 w-4 mr-2" />
-            {isRTL ? 'تصدير التقرير' : 'Export Report'}
+            {t('button.export_report')}
           </Button>
         }
       >
@@ -177,7 +181,7 @@ const AnalyticsPage = () => {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <MetricCard
               icon={Users}
-              title={isRTL ? 'إجمالي المستخدمين' : 'Total Users'}
+              title={t('metric.total_users')}
               value={formatNumber(mockAnalytics.overview.totalUsers)}
               trend="up"
               trendValue="+12.5%"
@@ -185,7 +189,7 @@ const AnalyticsPage = () => {
             />
             <MetricCard
               icon={Target}
-              title={isRTL ? 'المشاريع النشطة' : 'Active Projects'}
+              title={t('metric.active_projects')}
               value={formatNumber(mockAnalytics.overview.activeProjects)}
               trend="up"
               trendValue="+8.2%"
@@ -193,7 +197,7 @@ const AnalyticsPage = () => {
             />
             <MetricCard
               icon={Activity}
-              title={isRTL ? 'التحديات المكتملة' : 'Completed Challenges'}
+              title={t('metric.completed_challenges')}
               value={formatNumber(mockAnalytics.overview.completedChallenges)}
               trend="up"
               trendValue="+15.3%"
@@ -201,7 +205,7 @@ const AnalyticsPage = () => {
             />
             <MetricCard
               icon={DollarSign}
-              title={isRTL ? 'الإيرادات' : 'Revenue'}
+              title={t('metric.revenue')}
               value={formatCurrency(mockAnalytics.overview.revenue)}
               trend="up"
               trendValue="+18.7%"
@@ -209,7 +213,7 @@ const AnalyticsPage = () => {
             />
             <MetricCard
               icon={TrendingUp}
-              title={isRTL ? 'معدل النمو' : 'Growth Rate'}
+              title={t('metric.growth_rate')}
               value={`${mockAnalytics.overview.growthRate}%`}
               trend="up"
               trendValue="+2.1%"
@@ -217,7 +221,7 @@ const AnalyticsPage = () => {
             />
             <MetricCard
               icon={BarChart3}
-              title={isRTL ? 'معدل المشاركة' : 'Engagement Rate'}
+              title={t('metric.engagement_rate')}
               value={`${mockAnalytics.overview.engagementRate}%`}
               trend="up"
               trendValue="+5.4%"
@@ -227,11 +231,11 @@ const AnalyticsPage = () => {
 
           <Tabs defaultValue="overview" className="w-full">
             <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="overview">{isRTL ? 'نظرة عامة' : 'Overview'}</TabsTrigger>
-              <TabsTrigger value="users">{isRTL ? 'المستخدمين' : 'Users'}</TabsTrigger>
-              <TabsTrigger value="projects">{isRTL ? 'المشاريع' : 'Projects'}</TabsTrigger>
-              <TabsTrigger value="financial">{isRTL ? 'المالية' : 'Financial'}</TabsTrigger>
-              <TabsTrigger value="performance">{isRTL ? 'الأداء' : 'Performance'}</TabsTrigger>
+              <TabsTrigger value="overview">{t('tab.overview')}</TabsTrigger>
+              <TabsTrigger value="users">{t('tab.users')}</TabsTrigger>
+              <TabsTrigger value="projects">{t('tab.projects')}</TabsTrigger>
+              <TabsTrigger value="financial">{t('tab.financial')}</TabsTrigger>
+              <TabsTrigger value="performance">{t('tab.performance')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">
