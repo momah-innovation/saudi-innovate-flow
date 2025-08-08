@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Application, Like, Share, Bookmark, Comment, ViewSession } from '@/types/opportunities';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -182,7 +183,7 @@ export const RedesignedOpportunityAnalyticsDialog = ({
   };
 
   // Helper functions from original component
-  const generateViewsDataFromReal = (applications: any[], viewsHistory: any[]) => {
+  const generateViewsDataFromReal = (applications: Application[], viewsHistory: ViewSession[]) => {
     const last30Days = new Map();
     
     for (let i = 30; i >= 0; i--) {
@@ -202,7 +203,7 @@ export const RedesignedOpportunityAnalyticsDialog = ({
     return Array.from(last30Days.values());
   };
 
-  const generateApplicationSourceData = (applications: any[]) => {
+  const generateApplicationSourceData = (applications: Application[]) => {
     const sourceCounts = new Map();
     const total = applications.length;
     
@@ -228,7 +229,7 @@ export const RedesignedOpportunityAnalyticsDialog = ({
     })).sort((a, b) => b.count - a.count);
   };
 
-  const generateTimelineFromReal = (applications: any[], likes: any[], shares: any[], bookmarks: any[], comments: any[]) => {
+  const generateTimelineFromReal = (applications: Application[], likes: Like[], shares: Share[], bookmarks: Bookmark[], comments: Comment[]) => {
     const timeline = new Map();
     
     for (let i = 7; i >= 0; i--) {
@@ -248,7 +249,7 @@ export const RedesignedOpportunityAnalyticsDialog = ({
     return Array.from(timeline.values());
   };
 
-  const calculateEngagementMetrics = (journey: any[]) => {
+  const calculateEngagementMetrics = (journey: ViewSession[]) => {
     if (journey.length === 0) {
       return { avgTimeOnPage: 0, bounceRate: 0, returnVisitors: 0 };
     }
@@ -286,7 +287,7 @@ export const RedesignedOpportunityAnalyticsDialog = ({
     return { avgTimeOnPage, bounceRate, returnVisitors };
   };
 
-  const calculateTrends = (applications: any[], likes: any[], shares: any[], bookmarks: any[], analytics: any, viewsHistory: any[]) => {
+  const calculateTrends = (applications: Application[], likes: Like[], shares: Share[], bookmarks: Bookmark[], analytics: unknown, viewsHistory: ViewSession[]) => {
     const now = new Date();
     const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
     const prevWeek = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);

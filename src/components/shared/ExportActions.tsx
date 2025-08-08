@@ -21,10 +21,10 @@ export interface ExportFormat {
 }
 
 export interface ExportActionsProps {
-  data: any[];
+  data: unknown[];
   filename?: string;
   formats?: ExportFormat[];
-  onExport?: (format: string, data: any[]) => void;
+  onExport?: (format: string, data: unknown[]) => void;
   disabled?: boolean;
   className?: string;
 }
@@ -82,7 +82,7 @@ export function ExportActions({
     }
   };
 
-  const defaultExport = async (format: string, data: any[], filename: string) => {
+  const defaultExport = async (format: string, data: unknown[], filename: string) => {
     switch (format) {
       case 'csv':
         exportToCsv(data, filename);
@@ -103,8 +103,8 @@ export function ExportActions({
     }
   };
 
-  const exportToCsv = (data: any[], filename: string) => {
-    if (data.length === 0) return;
+  const exportToCsv = (data: unknown[], filename: string) => {
+    if ((data as Record<string, unknown>[]).length === 0) return;
 
     const headers = Object.keys(data[0]);
     const csvContent = [
@@ -124,7 +124,7 @@ export function ExportActions({
     downloadFile(csvContent, `${filename}.csv`, 'text/csv');
   };
 
-  const exportToJson = (data: any[], filename: string) => {
+  const exportToJson = (data: unknown[], filename: string) => {
     const jsonContent = JSON.stringify(data, null, 2);
     downloadFile(jsonContent, `${filename}.json`, 'application/json');
   };

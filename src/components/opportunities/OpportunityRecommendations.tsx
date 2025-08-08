@@ -4,9 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Lightbulb, Clock, Target, ArrowRight } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 
-interface OpportunityRecommendationsProps {
-  opportunities: any[];
-}
+import { OpportunityRecommendationsProps } from '@/types/opportunities';
 
 export const OpportunityRecommendations = ({ opportunities }: OpportunityRecommendationsProps) => {
   const { isRTL } = useDirection();
@@ -52,7 +50,7 @@ export const OpportunityRecommendations = ({ opportunities }: OpportunityRecomme
               
               <div className={`flex items-center gap-2 text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Target className="w-3 h-3" />
-                <span className="line-clamp-1">{opportunity.opportunity_type}</span>
+                <span className="line-clamp-1">{opportunity.opportunity_type as string}</span>
               </div>
             </div>
           </div>

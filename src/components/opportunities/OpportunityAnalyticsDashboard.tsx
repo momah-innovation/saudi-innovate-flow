@@ -5,11 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { BarChart3, Users, TrendingUp, DollarSign, Target, Calendar } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 
-interface OpportunityAnalyticsDashboardProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  opportunities: any[];
-}
+import { OpportunityAnalyticsDashboardProps } from '@/types/opportunities';
 
 export const OpportunityAnalyticsDashboard = ({ 
   open, 
@@ -21,7 +17,7 @@ export const OpportunityAnalyticsDashboard = ({
   const stats = {
     totalOpportunities: opportunities.length,
     activeOpportunities: opportunities.filter(o => o.status === 'open').length,
-    totalApplications: opportunities.reduce((sum, o) => sum + (o.applications_count || 0), 0),
+    totalApplications: opportunities.reduce((sum, o) => sum + (Number(o.applications_count) || 0), 0),
     averageBudget: opportunities.length > 0 
       ? opportunities.reduce((sum, o) => sum + (o.budget_max || o.budget_min || 0), 0) / opportunities.length 
       : 0
@@ -101,7 +97,7 @@ export const OpportunityAnalyticsDashboard = ({
             <CardContent>
               <div className="space-y-3">
                 {opportunities
-                  .sort((a, b) => (b.applications_count || 0) - (a.applications_count || 0))
+                  .sort((a, b) => (Number(b.applications_count) || 0) - (Number(a.applications_count) || 0))
                   .slice(0, 5)
                   .map((opportunity, index) => (
                     <div key={opportunity.id} className={`flex items-center justify-between p-3 rounded-lg border ${isRTL ? 'text-right' : 'text-left'}`}>
@@ -110,7 +106,7 @@ export const OpportunityAnalyticsDashboard = ({
                         <div>
                           <div className="font-medium">{opportunity.title_ar}</div>
                           <div className="text-sm text-muted-foreground">
-                            {opportunity.applications_count || 0} {isRTL ? 'طلب' : 'applications'}
+                            {Number(opportunity.applications_count) || 0} {isRTL ? 'طلب' : 'applications'}
                           </div>
                         </div>
                       </div>

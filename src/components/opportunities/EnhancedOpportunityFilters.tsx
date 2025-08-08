@@ -55,9 +55,9 @@ export const EnhancedOpportunityFilters = ({
 }: EnhancedOpportunityFiltersProps) => {
   const { isRTL } = useDirection();
   const { getSettingValue } = useSettingsManager();
-  const [categories, setCategories] = useState<any[]>([]);
-  const [sectors, setSectors] = useState<any[]>([]);
-  const [departments, setDepartments] = useState<any[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [sectors, setSectors] = useState<Sector[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {

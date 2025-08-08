@@ -4,9 +4,7 @@ import { Button } from '@/components/ui/button';
 import { TrendingUp, Users, Calendar, DollarSign, ArrowRight } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 
-interface TrendingOpportunitiesWidgetProps {
-  opportunities: any[];
-}
+import { TrendingOpportunitiesWidgetProps } from '@/types/opportunities';
 
 export const TrendingOpportunitiesWidget = ({ opportunities }: TrendingOpportunitiesWidgetProps) => {
   const { isRTL } = useDirection();
@@ -35,9 +33,9 @@ export const TrendingOpportunitiesWidget = ({ opportunities }: TrendingOpportuni
               </h4>
               <div className={`flex items-center gap-2 mt-1 text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Users className="w-3 h-3" />
-                <span>{opportunity.applications_count || 0}</span>
+                <span>{Number(opportunity.applications_count) || 0}</span>
                 <DollarSign className="w-3 h-3 ml-2" />
-                <span>{opportunity.budget_max ? `${opportunity.budget_max.toLocaleString()}` : 'TBD'}</span>
+                <span>{(opportunity.budget_max as number) ? `${(opportunity.budget_max as number).toLocaleString()}` : 'TBD'}</span>
               </div>
             </div>
           </div>

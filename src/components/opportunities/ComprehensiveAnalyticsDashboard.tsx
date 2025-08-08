@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Application, Like, Share, ViewSession } from '@/types/opportunities';
 import { logger } from '@/utils/logger';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -261,16 +262,16 @@ export const ComprehensiveAnalyticsDashboard = () => {
     };
   };
 
-  const generateEngagementTrend = (applications: any[], likes: any[], shares: any[], viewSessions: any[]) => {
+  const generateEngagementTrend = (applications: Application[], likes: Like[], shares: Share[], viewSessions: ViewSession[]) => {
     const last30Days = [];
     for (let i = 29; i >= 0; i--) {
       const date = new Date();
       date.setDate(date.getDate() - i);
       const dateStr = date.toISOString().split('T')[0];
       
-      const dayViews = viewSessions.filter(s => s.created_at.startsWith(dateStr)).length;
-      const dayApplications = applications.filter(a => a.created_at.startsWith(dateStr)).length;
-      const dayLikes = likes.filter(l => l.created_at.startsWith(dateStr)).length;
+      const dayViews = viewSessions.filter(s => s.created_at && s.created_at.startsWith(dateStr)).length;
+      const dayApplications = applications.filter(a => a.created_at && a.created_at.startsWith(dateStr)).length;
+      const dayLikes = likes.filter(l => l.created_at && l.created_at.startsWith(dateStr)).length;
       const dayShares = shares.filter(s => s.created_at.startsWith(dateStr)).length;
       
       last30Days.push({

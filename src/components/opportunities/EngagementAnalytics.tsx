@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Like, Share, Comment, Bookmark } from '@/types/opportunities';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
@@ -90,13 +91,13 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
       const returnVisitorsRate = sessions.length > 0 ? (returningVisitors / sessions.length) * 100 : 0;
 
       // Generate engagement trend data
-      const engagementTrend = generateEngagementTrend(likes, shares, comments, bookmarks);
+      const engagementTrend = generateEngagementTrend(likes as Like[], shares as Share[], comments as Comment[], bookmarks as Bookmark[]);
       
       // Generate platform shares breakdown
-      const platformShares = generatePlatformShares(shares);
+      const platformShares = generatePlatformShares(shares as Share[]);
       
       // Generate hourly engagement pattern
-      const hourlyEngagement = generateHourlyEngagement([...likes, ...shares, ...comments]);
+      const hourlyEngagement = generateHourlyEngagement([...likes, ...shares, ...comments] as (Like | Share | Comment | Bookmark)[]);
 
       setEngagementData({
         totalLikes: likes.length,
@@ -117,7 +118,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
     }
   };
 
-  const generateEngagementTrend = (likes: any[], shares: any[], comments: any[], bookmarks: any[]) => {
+  const generateEngagementTrend = (likes: Like[], shares: Share[], comments: Comment[], bookmarks: Bookmark[]) => {
     const last7Days = [];
     for (let i = 6; i >= 0; i--) {
       const date = new Date();
@@ -140,7 +141,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
     return last7Days;
   };
 
-  const generatePlatformShares = (shares: any[]) => {
+  const generatePlatformShares = (shares: Share[]) => {
     const platforms = shares.reduce((acc, share) => {
       const platform = share.platform || 'other';
       acc[platform] = (acc[platform] || 0) + 1;
@@ -155,7 +156,7 @@ export const EngagementAnalytics = ({ opportunityId, analytics }: EngagementAnal
     }));
   };
 
-  const generateHourlyEngagement = (activities: any[]) => {
+  const generateHourlyEngagement = (activities: (Like | Share | Comment | Bookmark)[]) => {
     const hourlyData = Array.from({ length: 24 }, (_, hour) => ({ hour, engagement: 0 }));
     
     activities.forEach(activity => {

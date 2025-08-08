@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Application, Comment } from '@/types/opportunities';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -52,8 +53,8 @@ export const EnhancedOpportunityDetailDialog = ({
   
   const [isApplied, setIsApplied] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [applications, setApplications] = useState<any[]>([]);
-  const [comments, setComments] = useState<any[]>([]);
+  const [applications, setApplications] = useState<Application[]>([]);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [likes, setLikes] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
 
@@ -130,7 +131,7 @@ export const EnhancedOpportunityDetailDialog = ({
         .order('created_at', { ascending: false })
         .limit(5);
       
-      setApplications(data || []);
+      setApplications((data as Application[]) || []);
     } catch (error) {
       // Applications loading failed - continue without blocking UI
     }
@@ -148,7 +149,7 @@ export const EnhancedOpportunityDetailDialog = ({
         .order('created_at', { ascending: false })
         .limit(10);
       
-      setComments(data || []);
+      setComments((data as Comment[]) || []);
     } catch (error) {
       // Comments loading failed - continue without blocking UI
     }
@@ -499,8 +500,8 @@ export const EnhancedOpportunityDetailDialog = ({
                         <div key={app.id} className="p-3 border rounded-lg">
                           <div className="flex justify-between items-start">
                             <div>
-                              <div className="font-medium">{app.organization_name || 'Individual Application'}</div>
-                              <div className="text-sm text-muted-foreground">{app.contact_person}</div>
+                              <div className="font-medium">{(app.organization_name as string) || 'Individual Application'}</div>
+                              <div className="text-sm text-muted-foreground">{app.contact_person as string}</div>
                             </div>
                             <Badge variant={app.status === 'pending' ? 'secondary' : 'default'}>
                               {app.status}
