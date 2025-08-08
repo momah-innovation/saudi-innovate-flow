@@ -174,23 +174,23 @@ const App = () => {
                               <h2 className="text-2xl font-semibold">{t('marketplace.available_opportunities')}</h2>
                               <div className="space-y-4">
                                 <div className="border rounded-lg p-4">
-                                  <h3 className="font-semibold mb-2">تطوير تطبيق خدمات حكومية</h3>
+                                  <h3 className="font-semibold mb-2">{t('opportunity.gov_app_title')}</h3>
                                   <p className="text-muted-foreground text-sm mb-3">
-                                    مطلوب فريق لتطوير تطبيق موحد للخدمات الحكومية
+                                    {t('opportunity.gov_app_desc')}
                                   </p>
                                   <div className="flex justify-between items-center">
-                                    <span className="badge bg-success/10 text-success">مفتوحة</span>
-                                    <span className="text-sm text-muted-foreground">الموعد النهائي: 30 أيام</span>
+                                    <span className="badge bg-success/10 text-success">{t('status.open')}</span>
+                                    <span className="text-sm text-muted-foreground">{t('label.deadline')}: 30 {t('label.days')}</span>
                                   </div>
                                 </div>
                                 <div className="border rounded-lg p-4">
-                                  <h3 className="font-semibold mb-2">حلول إنترنت الأشياء للمباني الحكومية</h3>
+                                  <h3 className="font-semibold mb-2">{t('opportunity.iot_buildings_title')}</h3>
                                   <p className="text-muted-foreground text-sm mb-3">
-                                    تقنيات ذكية لإدارة الطاقة والأمان في المباني
+                                    {t('opportunity.iot_buildings_desc')}
                                   </p>
                                   <div className="flex justify-between items-center">
-                                    <span className="badge bg-yellow-100 text-yellow-800">قيد المراجعة</span>
-                                    <span className="text-sm text-muted-foreground">الموعد النهائي: 15 أيام</span>
+                                    <span className="badge bg-yellow-100 text-yellow-800">{t('status.under_review')}</span>
+                                    <span className="text-sm text-muted-foreground">{t('label.deadline')}: 15 {t('label.days')}</span>
                                   </div>
                                 </div>
                               </div>
@@ -199,18 +199,18 @@ const App = () => {
                               <h2 className="text-2xl font-semibold">{t('marketplace.partnerships')}</h2>
                               <div className="space-y-4">
                                 <div className="border rounded-lg p-4">
-                                  <h3 className="font-semibold mb-2">مايكروسوفت السعودية</h3>
+                                  <h3 className="font-semibold mb-2">{t('partner.microsoft_saudi')}</h3>
                                   <p className="text-muted-foreground text-sm mb-3">
-                                    شراكة في مجال الحوسبة السحابية والذكاء الاصطناعي
+                                    {t('partner.microsoft_desc')}
                                   </p>
-                                  <span className="badge bg-info/10 text-info">شريك استراتيجي</span>
+                                  <span className="badge bg-info/10 text-info">{t('partner.strategic')}</span>
                                 </div>
                                 <div className="border rounded-lg p-4">
-                                  <h3 className="font-semibold mb-2">جامعة الملك عبدالله</h3>
+                                  <h3 className="font-semibold mb-2">{t('partner.kaust')}</h3>
                                   <p className="text-muted-foreground text-sm mb-3">
-                                    تعاون في البحث والتطوير والابتكار التقني
+                                    {t('partner.kaust_desc')}
                                   </p>
-                                  <span className="badge bg-purple-100 text-purple-800">شريك أكاديمي</span>
+                                  <span className="badge bg-purple-100 text-purple-800">{t('partner.academic')}</span>
                                 </div>
                               </div>
                             </div>
