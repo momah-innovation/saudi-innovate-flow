@@ -1,20 +1,20 @@
-// Theme-Aware Protected Route Component
-// Provides comprehensive route protection with theming support
+// Enhanced Protected Route Component with RBAC
+// Centralized route protection with role-based access control
 
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { ALL_ROUTES } from '@/routing/routes';
 import { logger } from '@/utils/logger';
+import { UserRole } from '@/hooks/useRoleAccess';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requireAuth?: boolean;
   requireProfile?: boolean;
-  requiredRole?: string;
+  requiredRole?: UserRole | UserRole[];
   subscriptionRequired?: boolean;
   redirectTo?: string;
-  
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
@@ -64,17 +64,24 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to={ALL_ROUTES.PROFILE_SETUP} replace />;
   }
 
-  // Check role requirements
-  if (requiredRole && !hasRole(requiredRole)) {
-    logger.info('ProtectedRoute: Redirecting to dashboard - insufficient role', {
-      component: 'ProtectedRoute',
-      action: 'redirectToDashboard',
-      data: {
-        requiredRole,
-        hasRole: hasRole(requiredRole)
-      }
-    });
-    return <Navigate to={ALL_ROUTES.DASHBOARD} replace />;
+  // Check role requirements - support both single role and array of roles
+  if (requiredRole) {
+    const hasRequiredRole = Array.isArray(requiredRole) 
+      ? requiredRole.some(role => hasRole(role))
+      : hasRole(requiredRole);
+      
+    if (!hasRequiredRole) {
+      logger.info('ProtectedRoute: Redirecting to dashboard - insufficient role', {
+        component: 'ProtectedRoute',
+        action: 'redirectToDashboard',
+        data: {
+          requiredRole,
+          hasRequiredRole,
+          userRoles: userProfile?.user_roles?.map(r => r.role)
+        }
+      });
+      return <Navigate to={ALL_ROUTES.DASHBOARD} replace />;
+    }
   }
 
   // Check subscription requirements (placeholder for Phase 4)
