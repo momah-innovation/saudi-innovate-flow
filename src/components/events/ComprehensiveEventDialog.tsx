@@ -437,7 +437,17 @@ export const ComprehensiveEventDialog = ({
                   </div>
                 )}
 
-                {interactions?.isRegistered ? (
+                {event.budget && event.budget > 0 && (
+                  <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="w-5 h-5 text-muted-foreground" />
+                      <span className="font-medium">{isRTL ? 'رسوم التسجيل' : 'Registration Fee'}</span>
+                    </div>
+                    <span className="text-lg font-bold">{event.budget.toLocaleString()} {isRTL ? 'ر.س' : 'SAR'}</span>
+                  </div>
+                )}
+
+                {interactions?.isRegistered && (
                   <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
                     <div className="flex items-center gap-2 text-green-800 dark:text-green-400 mb-2">
                       <CheckCircle2 className="w-5 h-5" />
@@ -447,88 +457,104 @@ export const ComprehensiveEventDialog = ({
                       {isRTL ? 'أنت مسجل في هذه الفعالية. سيتم إرسال تفاصيل إضافية قريباً.' : 'You are registered for this event. Additional details will be sent soon.'}
                     </p>
                   </div>
-                ) : (
-                  <div className="space-y-4">
-                    {event.budget && event.budget > 0 && (
-                      <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                        <div className="flex items-center gap-2">
-                          <DollarSign className="w-5 h-5 text-muted-foreground" />
-                          <span className="font-medium">{isRTL ? 'رسوم التسجيل' : 'Registration Fee'}</span>
-                        </div>
-                        <span className="text-lg font-bold">{event.budget.toLocaleString()} {isRTL ? 'ر.س' : 'SAR'}</span>
-                      </div>
-                    )}
-                    
-                    
-                    <Button 
-                      onClick={() => {
-                        const eventDate = new Date(event.event_date);
-                        const now = new Date();
-                        const isEventPast = eventDate < now;
-                        
-                        if (isEventPast) {
-                          // For past events, do nothing or show materials/feedback
-                          return;
-                        }
-                        registerForEvent();
-                      }}
-                      disabled={(() => {
-                        const eventDate = new Date(event.event_date);
-                        const now = new Date();
-                        const isEventPast = eventDate < now;
-                        
-                        return isEventFull || 
-                               event.status === 'completed' || 
-                               event.status === 'مكتمل' || 
-                               interactionsLoading || 
-                               (isEventPast && !interactions?.isRegistered);
-                      })()}
-                      variant={(() => {
-                        const eventDate = new Date(event.event_date);
-                        const now = new Date();
-                        const isEventPast = eventDate < now;
-                        
-                        if (isEventPast && interactions?.isRegistered) {
-                          return "secondary";
-                        }
-                        if (isEventPast || event.status === 'completed') {
-                          return "outline";
-                        }
-                        return "default";
-                      })()}
-                      className="w-full"
-                      size="lg"
-                    >
-                      {(() => {
-                        const eventDate = new Date(event.event_date);
-                        const now = new Date();
-                        const isEventPast = eventDate < now;
-                        
-                        if (isEventPast) {
-                          if (interactions?.isRegistered) {
-                            return isRTL ? 'تم الحضور' : 'Attended';
-                          } else {
-                            return isRTL ? 'انتهت الفعالية' : 'Event Ended';
-                          }
-                        }
-                        
-                        if (isEventFull) {
-                          return isRTL ? 'الفعالية ممتلئة' : 'Event Full';
-                        }
-                        
-                        if (event.status === 'completed' || event.status === 'مكتمل') {
-                          return isRTL ? 'انتهت الفعالية' : 'Event Ended';
-                        }
-                        
-                        if (interactions?.isRegistered) {
-                          return isRTL ? 'مسجل' : 'Registered';
-                        }
-                        
-                        return isRTL ? 'سجل الآن' : 'Register Now';
-                      })()}
-                    </Button>
-                  </div>
                 )}
+                
+                <Button 
+                  onClick={async () => {
+                    const eventDate = new Date(event.event_date);
+                    const now = new Date();
+                    const isEventPast = eventDate < now;
+                    
+                    if (isEventPast) {
+                      // For past events, do nothing or show materials/feedback
+                      return;
+                    }
+
+                    if (interactions?.isRegistered) {
+                      // Cancel registration
+                      try {
+                        if (!user || !event) return;
+                        
+                        const { data: participation, error: findError } = await supabase
+                          .from('event_participants')
+                          .select('id')
+                          .eq('event_id', event.id)
+                          .eq('user_id', user.id)
+                          .maybeSingle();
+
+                        if (findError) throw findError;
+
+                        if (participation) {
+                          await cancelRegistration(participation.id, event.id);
+                          refetch(); // Refresh the interactions data
+                        }
+                      } catch (error) {
+                        console.error('Failed to cancel registration:', error);
+                      }
+                    } else {
+                      // Register for event
+                      await registerForEvent();
+                      refetch(); // Refresh the interactions data
+                    }
+                  }}
+                  disabled={(() => {
+                    const eventDate = new Date(event.event_date);
+                    const now = new Date();
+                    const isEventPast = eventDate < now;
+                    
+                    return isEventFull || 
+                           event.status === 'completed' || 
+                           event.status === 'مكتمل' || 
+                           interactionsLoading || 
+                           (isEventPast && !interactions?.isRegistered);
+                  })()}
+                  variant={(() => {
+                    const eventDate = new Date(event.event_date);
+                    const now = new Date();
+                    const isEventPast = eventDate < now;
+                    
+                    if (isEventPast && interactions?.isRegistered) {
+                      return "secondary";
+                    }
+                    if (isEventPast || event.status === 'completed') {
+                      return "outline";
+                    }
+                    if (interactions?.isRegistered && !isEventPast) {
+                      return "destructive";
+                    }
+                    return "default";
+                  })()}
+                  className="w-full"
+                  size="lg"
+                >
+                  {(() => {
+                    const eventDate = new Date(event.event_date);
+                    const now = new Date();
+                    const isEventPast = eventDate < now;
+                    
+                    if (isEventPast) {
+                      if (interactions?.isRegistered) {
+                        return isRTL ? 'تم الحضور' : 'Attended';
+                      } else {
+                        return isRTL ? 'انتهت الفعالية' : 'Event Ended';
+                      }
+                    }
+                    
+                    if (isEventFull) {
+                      return isRTL ? 'الفعالية ممتلئة' : 'Event Full';
+                    }
+                    
+                    if (event.status === 'completed' || event.status === 'مكتمل') {
+                      return isRTL ? 'انتهت الفعالية' : 'Event Ended';
+                    }
+                    
+                    if (interactions?.isRegistered) {
+                      return isRTL ? 'إلغاء التسجيل' : 'Cancel Registration';
+                    }
+                    
+                    return isRTL ? 'سجل الآن' : 'Register Now';
+                  })()}
+                </Button>
               </CardContent>
             </Card>
           </TabsContent>
