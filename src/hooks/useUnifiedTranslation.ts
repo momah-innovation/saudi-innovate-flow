@@ -31,29 +31,44 @@ export function useUnifiedTranslation() {
     queryFn: async () => {
       logger.debug('Fetching unified translations from database', { language });
       
-      // Fetch ALL translations without limit - using range to get all rows
-      const { data, error, count } = await supabase
-        .from('system_translations')
-        .select('*', { count: 'exact' })
-        .range(0, 10000); // Ensure we get all translations
+      // Multiple attempts to fetch ALL translations
+      let allTranslations: any[] = [];
+      let hasMore = true;
+      let start = 0;
+      const batchSize = 1000;
+      
+      while (hasMore) {
+        const { data, error, count } = await supabase
+          .from('system_translations')
+          .select('*', { count: 'exact' })
+          .range(start, start + batchSize - 1);
 
-      if (error) {
-        logger.error('Database translation fetch failed', { language }, error);
-        throw error;
+        if (error) {
+          logger.error('Database translation fetch failed', { language }, error);
+          throw error;
+        }
+        
+        if (data) {
+          allTranslations.push(...data);
+          start += batchSize;
+          hasMore = data.length === batchSize;
+        } else {
+          hasMore = false;
+        }
+        
+        console.log(`🔥 BATCH ${Math.floor(start/batchSize)}: loaded ${data?.length || 0} translations, total so far: ${allTranslations.length}`);
       }
       
-      console.log('🔥 TRANSLATIONS FETCH COMPLETE:', { 
-        loaded: data?.length || 0, 
-        totalInDB: count,
-        hasLimit: (data?.length || 0) !== count,
+      console.log('🔥 ALL TRANSLATIONS LOADED:', { 
+        totalLoaded: allTranslations.length,
         language
       });
       
       logger.info('Database translations fetched successfully', { 
         language, 
-        count: data?.length || 0
+        count: allTranslations.length
       });
-      return data as SystemTranslation[];
+      return allTranslations as SystemTranslation[];
     },
     staleTime: 1 * 60 * 1000, // 1 minute - reduced for debugging
     gcTime: 5 * 60 * 1000, // 5 minutes - reduced for debugging
