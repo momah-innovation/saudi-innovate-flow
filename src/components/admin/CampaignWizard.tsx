@@ -426,6 +426,7 @@ export function CampaignWizard({
       case 0:
         return (
           <div className="space-y-6">
+            <div className="space-y-2">
               <Label htmlFor="title_ar">{t('form.campaign_title')} *</Label>
               <Input
                 id="title_ar"
