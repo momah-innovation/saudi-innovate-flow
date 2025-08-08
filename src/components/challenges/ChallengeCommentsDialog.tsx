@@ -61,7 +61,7 @@ export function ChallengeCommentsDialog({
         .order('created_at', { ascending: true });
 
       if (error) throw error;
-      setComments((data || []).map(item => ({ ...item, is_edited: item.is_edited || false })));
+      setComments((data || []) as Comment[]);
     } catch (error) {
       toast({
         title: "خطأ",
@@ -97,7 +97,7 @@ export function ChallengeCommentsDialog({
 
       if (error) throw error;
 
-      setComments(prev => [...prev, data]);
+      setComments(prev => [...prev, data as Comment]);
       setNewComment('');
       
       toast({
@@ -138,7 +138,7 @@ export function ChallengeCommentsDialog({
 
       if (error) throw error;
 
-      setComments(prev => [...prev, data]);
+      setComments(prev => [...prev, data as Comment]);
       setReplyText('');
       setReplyingTo(null);
       
@@ -318,7 +318,7 @@ export function ChallengeCommentsDialog({
         </div>
       </div>
       
-      {(comment as any).replies?.map((reply: unknown, index: number) => renderComment(reply, true))}
+      {(comment as any).replies?.map((reply: Comment, index: number) => renderComment(reply, true))}
     </div>
   );
 

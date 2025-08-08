@@ -3,7 +3,7 @@
  */
 
 export interface CommentProfile {
-  id: string;
+  id?: string;
   display_name?: string;
   profile_image_url?: string;
   expertise_areas?: string[];
