@@ -16,10 +16,10 @@
     
     /* Enhanced Primary - RGB(59, 20, 93) converted to HSL - Fixed contrast */
     --primary: 272 65% 22%;
-    --primary-foreground: 0 0% 100% !important;
+    --primary-foreground: 210 40% 98%;
     --primary-hover: 272 65% 28%;
     --primary-active: 272 65% 18%;
-    --primary-active-foreground: 0 0% 100% !important;
+    --primary-active-foreground: 210 40% 95%;
     --primary-light: 272 65% 95%;
     --primary-muted: 272 20% 90%;
     
@@ -194,11 +194,11 @@
     --popover-foreground: 210 40% 98%;
     
     /* Enhanced Primary - Brighter in dark mode */
-    --primary: 272 65% 35%;
-    --primary-foreground: 0 0% 100% !important;
+    --primary: 272 65% 85%;
+    --primary-foreground: 222 84% 4.9%;
     --primary-hover: 272 65% 40%;
     --primary-active: 272 65% 30%;
-    --primary-active-foreground: 0 0% 100% !important;
+    --primary-active-foreground: 222 84% 4.9%;
     --primary-light: 272 65% 15%;
     --primary-muted: 272 20% 20%;
     
