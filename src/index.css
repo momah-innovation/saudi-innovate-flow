@@ -195,10 +195,10 @@
     
     /* Enhanced Primary - Brighter in dark mode */
     --primary: 272 65% 35%;
-    --primary-foreground: 0 0% 100%;
+    --primary-foreground: 0 0% 100% !important;
     --primary-hover: 272 65% 40%;
     --primary-active: 272 65% 30%;
-    --primary-active-foreground: 0 0% 85%;
+    --primary-active-foreground: 0 0% 100% !important;
     --primary-light: 272 65% 15%;
     --primary-muted: 272 20% 20%;
     
