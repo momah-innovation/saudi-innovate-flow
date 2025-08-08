@@ -19,6 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useSettingsManager } from '@/hooks/useSettingsManager';
 import { useSidebarPersistence } from '@/contexts/SidebarContext';
+import { MenuItem, UserProfile, GroupLabels, GroupedMenuItems } from '@/types/navigation';
 
 /**
  * NavigationSidebar - Overlay navigation with role-based menu items
@@ -401,19 +402,19 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
   }, []);
 
   // Check if user can see a menu item
-  const canAccessItem = (item: any) => {
+  const canAccessItem = (item: MenuItem) => {
     if (item.roles.includes('all')) return true;
     
     if (!userProfile?.user_roles?.length) {
       return item.roles.includes('innovator');
     }
     
-    const userRoles = userProfile.user_roles.map((role: any) => role.role);
-    return item.roles.some((role: string) => userRoles.includes(role));
+    const userRoles = userProfile.user_roles.map((role) => role.role);
+    return item.roles.some((role) => userRoles.includes(role));
   };
 
   const groupedItems = useMemo(() => {
-    const groups: Record<string, any[]> = {};
+    const groups: GroupedMenuItems = {};
     
     menuItems.forEach(item => {
       if (canAccessItem(item)) {
@@ -427,7 +428,7 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
     return groups;
   }, [menuItems, userProfile]);
 
-  const groupLabels: Record<string, { en: string; ar: string }> = {
+  const groupLabels: GroupLabels = {
     main: { en: 'Dashboard', ar: 'لوحة التحكم' },
     discover: { en: 'Discover', ar: 'استكشاف' },
     personal: { en: 'Personal', ar: 'شخصي' },
@@ -443,7 +444,7 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
   const { getSettingValue } = useSettingsManager();
   const groupOrder = getSettingValue('navigation_group_order', ['main', 'discover', 'personal', 'workflow', 'subscription', 'analytics', 'admin', 'system', 'settings']) as string[];
 
-  const renderMenuItems = (items: any[]) => {
+  const renderMenuItems = (items: MenuItem[]) => {
     return items.map((item) => {
       const isActive = location.pathname === item.path;
       
@@ -475,7 +476,7 @@ export function NavigationSidebar({ open, onOpenChange }: NavigationSidebarProps
     });
   };
 
-  const renderGroup = (groupKey: string, items: any[]) => {
+  const renderGroup = (groupKey: string, items: MenuItem[]) => {
     if (groupKey === 'old') {
       return (
         <Collapsible key={groupKey} open={isOldLinksOpen} onOpenChange={setIsOldLinksOpen}>

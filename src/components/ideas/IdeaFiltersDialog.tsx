@@ -15,6 +15,7 @@ import {
    Calendar, Building, Users, Zap, FileCheck 
  } from 'lucide-react';
 import { logger } from '@/utils/logger';
+import { Sector, Challenge } from '@/types/ideas';
 
 interface FilterState {
   status: string[];
@@ -44,8 +45,8 @@ export function IdeaFiltersDialog({
   const { t } = useUnifiedTranslation();
   const { getSettingValue } = useSettingsManager();
   const [localFilters, setLocalFilters] = useState<FilterState>(filters);
-  const [sectors, setSectors] = useState<any[]>([]);
-  const [challenges, setChallenges] = useState<any[]>([]);
+  const [sectors, setSectors] = useState<Sector[]>([]);
+  const [challenges, setChallenges] = useState<Challenge[]>([]);
 
   useEffect(() => {
     if (isOpen) {
@@ -69,8 +70,8 @@ export function IdeaFiltersDialog({
         .eq('status', 'active')
         .order('title_ar');
 
-      setSectors(sectorsData || []);
-      setChallenges(challengesData || []);
+      setSectors((sectorsData as Sector[]) || []);
+      setChallenges((challengesData as Challenge[]) || []);
     } catch (error) {
       logger.error('Error loading filter options', { component: 'IdeaFiltersDialog', action: 'loadFilterOptions' }, error as Error);
     }

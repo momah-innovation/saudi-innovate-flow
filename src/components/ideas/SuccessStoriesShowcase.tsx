@@ -75,7 +75,7 @@ export function SuccessStoriesShowcase({ limit = 6, showHeader = true }: Success
         .limit(limit);
 
       if (error) throw error;
-      setStories((data as any) || []);
+      setStories((data as unknown as SuccessStory[]) || []);
     } catch (error) {
       logger.error('Failed to load success stories', { 
         component: 'SuccessStoriesShowcase', 

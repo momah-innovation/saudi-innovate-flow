@@ -14,49 +14,7 @@ import {
    Users, Building, Zap, Award, RefreshCw, Download
  } from 'lucide-react';
 import { logger } from '@/utils/logger';
-
-interface IdeaAnalytics {
-  overview: {
-    totalIdeas: number;
-    approvedIdeas: number;
-    implementedIdeas: number;
-    averageScore: number;
-    totalViews: number;
-    totalLikes: number;
-    totalComments: number;
-    implementationRate: number;
-  };
-  statusDistribution: Array<{
-    name: string;
-    value: number;
-    color: string;
-  }>;
-  maturityDistribution: Array<{
-    level: string;
-    count: number;
-    percentage: number;
-  }>;
-  scoreDistribution: Array<{
-    range: string;
-    count: number;
-  }>;
-  monthlyTrends: Array<{
-    month: string;
-    ideas: number;
-    approved: number;
-    implemented: number;
-  }>;
-  topSectors: Array<{
-    name: string;
-    count: number;
-    percentage: number;
-  }>;
-  topChallenges: Array<{
-    title: string;
-    ideas: number;
-    avgScore: number;
-  }>;
-}
+import { IdeaAnalytics, Idea } from '@/types/ideas';
 
 interface IdeaAnalyticsDashboardProps {
   className?: string;
@@ -124,7 +82,7 @@ export function IdeaAnalyticsDashboard({ className }: IdeaAnalyticsDashboardProp
     }
   };
 
-  const processIdeasData = (ideas: any[]): IdeaAnalytics => {
+  const processIdeasData = (ideas: Idea[]): IdeaAnalytics => {
     const totalIdeas = ideas.length;
     const approvedIdeas = ideas.filter(i => i.status === 'approved').length;
     const implementedIdeas = ideas.filter(i => i.status === 'implemented').length;
@@ -233,7 +191,7 @@ export function IdeaAnalyticsDashboard({ className }: IdeaAnalyticsDashboardProp
     };
   };
 
-  const generateMonthlyTrends = (ideas: any[]) => {
+  const generateMonthlyTrends = (ideas: Idea[]) => {
     const months = [];
     const now = new Date();
     

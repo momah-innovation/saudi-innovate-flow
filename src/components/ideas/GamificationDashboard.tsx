@@ -11,33 +11,8 @@ import {
    TrendingUp, Award, Flame, Sparkles 
  } from 'lucide-react';
 import { logger } from '@/utils/logger';
-
-interface Achievement {
-  id: string;
-  achievement_type: string;
-  achievement_level: string;
-  title: string;
-  description: string;
-  points_earned: number;
-  icon_name: string;
-  earned_at: string;
-  metadata: any;
-}
-
-interface LeaderboardEntry {
-  id: string;
-  user_id: string;
-  total_points: number;
-  ideas_submitted: number;
-  ideas_implemented: number;
-  engagement_score: number;
-  rank_position: number;
-  profiles?: {
-    name: string;
-    name_ar: string;
-    profile_image_url?: string;
-  } | null;
-}
+import { Achievement, LeaderboardEntry, UserStats, IconsMapping } from '@/types/ideas';
+import type { LucideIcon } from 'lucide-react';
 
 interface GamificationDashboardProps {
   userId?: string;
@@ -49,7 +24,7 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
   const { user, userProfile } = useAuth();
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
-  const [userStats, setUserStats] = useState({
+  const [userStats, setUserStats] = useState<UserStats>({
     totalPoints: 0,
     level: 'novice',
     progress: 0,
@@ -91,7 +66,7 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
       .limit(10);
 
     if (error) throw error;
-    setAchievements(data || []);
+    setAchievements((data as Achievement[]) || []);
   };
 
   const loadLeaderboard = async () => {
@@ -112,7 +87,7 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
       .limit(10);
 
     if (error) throw error;
-    setLeaderboard((data as any) || []);
+    setLeaderboard((data as LeaderboardEntry[]) || []);
   };
 
   const loadUserStats = async () => {
@@ -168,7 +143,7 @@ export function GamificationDashboard({ userId, showLeaderboard = true }: Gamifi
   };
 
   const getAchievementIcon = (iconName: string) => {
-    const icons: { [key: string]: any } = {
+    const icons: IconsMapping = {
       trophy: Trophy,
       star: Star,
       medal: Medal,

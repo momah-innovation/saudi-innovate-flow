@@ -81,7 +81,7 @@ export function SmartRecommendations({
       if (recError) throw recError;
 
       if (existingRecs && existingRecs.length > 0) {
-        setRecommendations(existingRecs as any);
+        setRecommendations(existingRecs as unknown as Recommendation[]);
       } else {
         // Generate new recommendations if none exist
         await generateRecommendations();
@@ -197,7 +197,7 @@ export function SmartRecommendations({
         ideas: idea
       }));
 
-      setRecommendations(popularRecs as any);
+      setRecommendations(popularRecs);
     } catch (error) {
       logger.error('Failed to load popular ideas for recommendations', { 
         component: 'SmartRecommendations', 
