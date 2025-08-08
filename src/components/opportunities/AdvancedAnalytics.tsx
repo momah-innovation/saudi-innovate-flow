@@ -198,7 +198,7 @@ export const AdvancedAnalytics = ({ opportunityId, analytics }: AdvancedAnalytic
       const count = actionCounts[action];
       return {
         action: action.replace('_', ' ').charAt(0).toUpperCase() + action.slice(1),
-        frequency: totalActions > 0 ? Math.round((Number(count) / Number(totalActions)) * 100) : 0,
+        frequency: Number(totalActions) > 0 ? Math.round((Number(count) / Number(totalActions)) * 100) : 0,
         impact: Number(count) > (Number(totalActions) * 0.1) ? 'high' : 'medium'
       };
     }).slice(0, 5);

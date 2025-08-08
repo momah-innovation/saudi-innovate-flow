@@ -32,7 +32,7 @@ export const currentProgress: ProgressUpdate[] = [
     phase: 'Any Type Elimination',
     status: 'complete',
     completion: 100,
-    details: '346/346 any types fixed - all analytics components stabilized, comprehensive type safety achieved across opportunities, challenges, events, and system components'
+    details: '346/346 any types fixed - Complete type safety achieved, all build errors resolved'
   },
   {
     phase: 'Translation Completion',
