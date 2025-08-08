@@ -343,10 +343,10 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
         if (formData.format === "hybrid" && (!formData.location?.trim() || !formData.virtual_link?.trim())) {
           errors.push("الموقع والرابط الافتراضي مطلوبان للأحداث المختلطة");
         }
-        if (formData.max_participants && parseInt(formData.max_participants) <= 0) {
+        if (formData.max_participants && parseInt(String(formData.max_participants)) <= 0) {
           errors.push("الحد الأقصى للمشاركين يجب أن يكون أكبر من صفر");
         }
-        if (formData.budget && parseFloat(formData.budget) < 0) {
+        if (formData.budget && parseFloat(String(formData.budget)) < 0) {
           errors.push("الميزانية لا يمكن أن تكون سالبة");
         }
         if (formData.start_time && formData.end_time && formData.start_time >= formData.end_time) {
@@ -432,11 +432,11 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
         location: formData.location || null,
         virtual_link: formData.virtual_link || null,
         format: formData.format,
-        max_participants: formData.max_participants ? parseInt(formData.max_participants) : null,
-        registered_participants: formData.registered_participants ? parseInt(formData.registered_participants) : null,
-        actual_participants: formData.actual_participants ? parseInt(formData.actual_participants) : null,
+        max_participants: formData.max_participants ? parseInt(String(formData.max_participants)) : null,
+        registered_participants: formData.registered_participants ? parseInt(String(formData.registered_participants)) : null,
+        actual_participants: formData.actual_participants ? parseInt(String(formData.actual_participants)) : null,
         status: formData.status,
-        budget: formData.budget ? parseFloat(formData.budget) : null,
+        budget: formData.budget ? parseFloat(String(formData.budget)) : null,
         event_manager_id: formData.event_manager_id || null,
         campaign_id: formData.campaign_id || null,
         challenge_id: formData.challenge_id || null,

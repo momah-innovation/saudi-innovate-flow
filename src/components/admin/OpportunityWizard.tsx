@@ -117,10 +117,10 @@ export function OpportunityWizard({
     if (opportunity) {
       setFormData({
         title: opportunity.title || "",
-        description: opportunity.description || "",
-        requirements: opportunity.requirements || "",
-        benefits: opportunity.benefits || "",
-        type: opportunity.type || "job",
+        description: Array.isArray(opportunity.description) ? opportunity.description.join(', ') : (opportunity.description || ""),
+        requirements: Array.isArray(opportunity.requirements) ? opportunity.requirements.join(', ') : (opportunity.requirements || ""),
+        benefits: Array.isArray(opportunity.benefits) ? opportunity.benefits.join(', ') : (opportunity.benefits || ""),
+        type: (opportunity.type as 'job' | 'internship' | 'volunteer' | 'partnership' | 'grant' | 'competition') || "job",
         status: opportunity.status || "open",
         department_id: opportunity.department_id || "",
         contact_person: opportunity.contact_person || "",

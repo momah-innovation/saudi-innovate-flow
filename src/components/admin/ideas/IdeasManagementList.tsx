@@ -70,7 +70,7 @@ interface IdeaListItem {
 
 export type { IdeaListItem as Idea };
 
-interface IdeasManagementListProps extends ManagementListProps {
+interface IdeasManagementListProps extends ManagementListProps<IdeaListItem> {
   viewMode: 'cards' | 'list' | 'grid';
   searchTerm: string;
   selectedItems: string[];

@@ -59,6 +59,7 @@ export function IdeasManagement() {
         
         <TabsContent value="ideas">
           <IdeasManagementList
+            data={[]} // Empty data prop - component manages its own data
             viewMode={viewMode}
             searchTerm={searchTerm}
             selectedItems={selectedItems}

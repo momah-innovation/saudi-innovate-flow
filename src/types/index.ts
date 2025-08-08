@@ -156,11 +156,11 @@ export interface Opportunity {
   title_en?: string;
   description_ar: string;
   description_en?: string;
-  opportunity_type: string;
+  opportunity_type: "job" | "internship" | "volunteer" | "partnership" | "grant" | "competition";
   status: "open" | "cancelled" | "on_hold" | "closed";
   deadline?: string;
-  budget_range?: string;
-  requirements?: string[];
+  budget_range?: string | string[]; // Can be string or array
+  requirements?: string | string[]; // Can be string or array  
   benefits?: string[];
   // Additional fields for compatibility
   title?: string;
@@ -231,6 +231,9 @@ export interface Team {
   id: string;
   name: string;
   description?: string;
+  department_id?: string; // Missing property
+  manager_id?: string; // Missing property
+  max_members?: number; // Missing property
   created_at: string;
   updated_at: string;
 }
@@ -272,18 +275,26 @@ export interface Domain extends Department {}
 export interface SubDomain extends Department {}
 export interface Service extends Department {}
 
-// Form data interfaces
-export interface CampaignFormData extends Campaign {
+// Form data interfaces - matching actual component usage (not extending base types)
+export interface CampaignFormData {
+  // Optional base fields for forms
+  id?: string;
+  title?: string;
+  description?: string;
+  created_at?: string;
+  updated_at?: string;
+  // Form-specific fields
   title_ar: string;
   description_ar: string;
+  status: string;
   theme?: string;
-  success_metrics?: string[];
+  success_metrics?: string; // String, not array - based on actual usage
   start_date?: string;
   end_date?: string;
   registration_deadline?: string;
-  target_participants?: number;
-  target_ideas?: number;
-  budget?: number;
+  target_participants?: number | null;
+  target_ideas?: number | null;
+  budget?: number | null;
   campaign_manager_id?: string;
   sector_id?: string;
   deputy_id?: string;
@@ -296,9 +307,17 @@ export interface CampaignFormData extends Campaign {
   partner_ids?: string[];
   stakeholder_ids?: string[];
 }
-export interface IdeaFormData extends Idea {
+export interface IdeaFormData {
+  // Optional base fields for forms
+  id?: string;
+  title?: string;
+  description?: string;
+  created_at?: string;
+  updated_at?: string;
+  // Form-specific fields
   title_ar: string;
   description_ar: string;
+  status: string;
   innovator_id?: string;
   maturity_level?: string;
   challenge_id?: string;
@@ -307,8 +326,47 @@ export interface IdeaFormData extends Idea {
   implementation_plan?: string;
   expected_impact?: string;
   resource_requirements?: string;
+  campaign_id?: string;
+  event_id?: string;
 }
-export interface EventFormData extends Event {}
+export interface EventFormData {
+  // Optional base fields for forms
+  id?: string;
+  created_at?: string;
+  updated_at?: string;
+  // Required Event fields
+  title_ar: string;
+  title_en?: string;
+  description_ar: string;
+  description_en?: string;
+  event_type: string;
+  status: string;
+  start_date?: string; // Optional for form
+  end_date?: string;
+  location?: string;
+  registration_deadline?: string;
+  // Additional properties used in EventWizard
+  event_date?: string;
+  format?: string;
+  budget?: string | number;
+  virtual_link?: string;
+  start_time?: string;
+  end_time?: string;
+  is_recurring?: boolean;
+  max_participants?: string | number; // Used as string in form
+  registered_participants?: string; // Used as string in form, not number
+  actual_participants?: string; // Used as string in form, not number
+  event_manager_id?: string;
+  campaign_id?: string;
+  challenge_id?: string;
+  sector_id?: string;
+  event_visibility?: string;
+  event_category?: string;
+  inherit_from_campaign?: boolean;
+  recurrence_pattern?: string;
+  recurrence_end_date?: string;
+  target_stakeholder_groups?: string[];
+}
 
 export interface SystemLists {
   departments: Department[];
@@ -319,7 +377,7 @@ export interface SystemLists {
   services: Service[];
 }
 
-export interface ManagementListProps<T> {
+export interface ManagementListProps<T = unknown> {
   data: T[];
   onEdit?: (item: T) => void;
   onDelete?: (id: string) => void;
