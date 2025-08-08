@@ -2,8 +2,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { CalendarIcon, MapPin, Users, Clock, Bookmark, Ticket } from 'lucide-react';
+import { CalendarIcon, MapPin, Users, Clock, Bookmark, Ticket, UserMinus } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
+import { useEventInteractions } from '@/hooks/useEventInteractions';
+import { useParticipants } from '@/hooks/useParticipants';
+import { supabase } from '@/integrations/supabase/client';
+import { useState, useEffect } from 'react';
 
 interface Event {
   id: string;
@@ -28,12 +32,33 @@ interface Event {
 interface EventCardProps {
   event: Event;
   onViewDetails: (event: Event) => void;
-  onRegister: (event: Event) => void;
   viewMode?: 'cards' | 'list' | 'grid';
 }
 
-export const EventCard = ({ event, onViewDetails, onRegister, viewMode = 'cards' }: EventCardProps) => {
+export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCardProps) => {
   const { isRTL } = useDirection();
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  
+  // Get current user ID
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setCurrentUserId(user?.id || null);
+    };
+    getCurrentUser();
+  }, []);
+  
+  // Use centralized event interaction hooks
+  const { 
+    interactions,
+    registerForEvent,
+    refetch: refetchInteractions
+  } = useEventInteractions(event?.id || null);
+
+  const {
+    participants,
+    cancelRegistration
+  } = useParticipants(event?.id || null);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -63,6 +88,24 @@ export const EventCard = ({ event, onViewDetails, onRegister, viewMode = 'cards'
   };
 
   const isEventFull = event.max_participants && event.registered_participants >= event.max_participants;
+  const isPastEvent = new Date(event.event_date) < new Date();
+  
+  // Find current user's participation
+  const currentUserParticipation = participants.find(p => p.user_id === currentUserId);
+  const isRegistered = !!currentUserParticipation;
+
+  const handleRegistrationToggle = async () => {
+    try {
+      if (isRegistered && currentUserParticipation) {
+        await cancelRegistration(currentUserParticipation.id, event.id);
+      } else {
+        await registerForEvent();
+      }
+      refetchInteractions(); // Refresh interaction data
+    } catch (error) {
+      console.error('Failed to toggle registration:', error);
+    }
+  };
 
   return (
     <Card className="hover:shadow-lg transition-all duration-300 hover-scale animate-fade-in">
@@ -114,10 +157,31 @@ export const EventCard = ({ event, onViewDetails, onRegister, viewMode = 'cards'
             </Button>
             <Button 
               size="sm" 
-              onClick={() => onRegister(event)}
-              disabled={event.status === 'completed' || isEventFull}
+              variant={isRegistered ? "destructive" : "default"}
+              onClick={handleRegistrationToggle}
+              disabled={(() => {
+                if (isPastEvent) return true;
+                if (event.status === 'completed' || event.status === 'cancelled') return true;
+                if (!isRegistered && isEventFull) return true;
+                return false;
+              })()}
             >
-              {isRTL ? 'التسجيل' : 'Register'}
+              {(() => {
+                if (isPastEvent) {
+                  return isRegistered 
+                    ? (isRTL ? 'مسجل/حضر' : 'Registered/Attended')
+                    : (isRTL ? 'غير مسجل/انتهت الفعالية' : 'Not Registered/Event Ended');
+                }
+                if (isRegistered) {
+                  return (
+                    <>
+                      <UserMinus className="h-4 w-4 mr-2" />
+                      {isRTL ? 'إلغاء التسجيل' : 'Cancel Registration'}
+                    </>
+                  );
+                }
+                return isRTL ? 'التسجيل' : 'Register';
+              })()}
             </Button>
           </div>
         </div>

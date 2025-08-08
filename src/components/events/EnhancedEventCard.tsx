@@ -13,6 +13,8 @@ import { useState, useEffect } from 'react';
 import { InteractionButtons } from '@/components/ui/interaction-buttons';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { useEventInteractions } from '@/hooks/useEventInteractions';
+import { useParticipants } from '@/hooks/useParticipants';
 
 interface Event {
   id: string;
@@ -38,9 +40,6 @@ interface Event {
 interface EnhancedEventCardProps {
   event: Event;
   onViewDetails: (event: Event) => void;
-  onRegister: (event: Event) => void;
-  onCancelRegistration?: (event: Event) => void;
-  onBookmark?: (event: Event) => void;
   viewMode?: 'cards' | 'list' | 'grid';
   isBookmarked?: boolean;
 }
@@ -48,9 +47,6 @@ interface EnhancedEventCardProps {
 export const EnhancedEventCard = ({ 
   event, 
   onViewDetails, 
-  onRegister, 
-  onCancelRegistration,
-  onBookmark,
   viewMode = 'cards',
   isBookmarked = false
 }: EnhancedEventCardProps) => {
@@ -58,8 +54,23 @@ export const EnhancedEventCard = ({
   const { user } = useAuth();
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(isBookmarked);
-  const [isRegistered, setIsRegistered] = useState(false);
-  const [checkingRegistration, setCheckingRegistration] = useState(false);
+  
+  // Use centralized event interaction hooks
+  const { 
+    interactions,
+    registerForEvent,
+    toggleBookmark,
+    refetch: refetchInteractions
+  } = useEventInteractions(event?.id || null);
+
+  const {
+    participants,
+    cancelRegistration
+  } = useParticipants(event?.id || null);
+  
+  // Find current user's participation
+  const currentUserParticipation = participants.find(p => p.user_id === user?.id);
+  const isRegistered = !!currentUserParticipation;
 
   const getStatusClass = (status: string) => {
     switch (status) {
@@ -116,41 +127,29 @@ export const EnhancedEventCard = ({
     return diffDays <= 3 && diffDays > 0;
   };
 
-  useEffect(() => {
-    if (user) {
-      checkRegistrationStatus();
-    } else {
-      setIsRegistered(false);
-    }
-  }, [event.id, user]);
-
-  const checkRegistrationStatus = async () => {
-    if (!user) return;
-    
+  const handleRegistrationToggle = async () => {
     try {
-      setCheckingRegistration(true);
-      const { data, error } = await supabase
-        .from('event_participants')
-        .select('id')
-        .eq('event_id', event.id)
-        .eq('user_id', user.id)
-        .maybeSingle();
-
-      if (error && error.code !== 'PGRST116') throw error;
-      setIsRegistered(!!data);
+      if (isRegistered && currentUserParticipation) {
+        await cancelRegistration(currentUserParticipation.id, event.id);
+      } else {
+        await registerForEvent();
+      }
+      refetchInteractions(); // Refresh interaction data
     } catch (error) {
-      console.error('Failed to check registration status:', error);
-    } finally {
-      setCheckingRegistration(false);
+      console.error('Failed to toggle registration:', error);
     }
   };
 
-  const handleBookmark = () => {
-    setBookmarked(!bookmarked);
-    onBookmark?.(event);
+  const handleBookmark = async () => {
+    try {
+      await toggleBookmark();
+      setBookmarked(!bookmarked);
+    } catch (error) {
+      console.error('Failed to toggle bookmark:', error);
+    }
   };
 
-  const handleRegistrationAction = () => {
+  const handleRegistrationAction = async () => {
     // For past events, handle differently based on registration status
     if (isEventPast()) {
       if (isRegistered) {
@@ -160,13 +159,7 @@ export const EnhancedEventCard = ({
       return;
     }
     
-    if (isRegistered) {
-      onCancelRegistration?.(event);
-      setIsRegistered(false);
-    } else {
-      onRegister(event);
-      setIsRegistered(true);
-    }
+    await handleRegistrationToggle();
   };
 
   const getButtonVariant = () => {
@@ -186,8 +179,6 @@ export const EnhancedEventCard = ({
   };
 
   const getRegistrationButtonText = () => {
-    if (checkingRegistration) return isRTL ? 'جاري التحقق...' : 'Checking...';
-    
     if (isEventPast()) {
       if (isRegistered) {
         return isRTL ? 'تم الحضور' : 'Attended';
@@ -277,7 +268,7 @@ export const EnhancedEventCard = ({
                       variant={getButtonVariant()}
                       size="sm" 
                       onClick={handleRegistrationAction}
-                      disabled={(isEventFull && !isRegistered) || checkingRegistration || (isEventPast() && !isRegistered)}
+                      disabled={(isEventFull && !isRegistered) || (isEventPast() && !isRegistered)}
                     >
                       {getRegistrationButtonText()}
                     </Button>
@@ -426,7 +417,7 @@ export const EnhancedEventCard = ({
             variant={getButtonVariant()}
             onClick={handleRegistrationAction}
             className="w-full h-9"
-            disabled={(isEventFull && !isRegistered) || checkingRegistration || (isEventPast() && !isRegistered)}
+            disabled={(isEventFull && !isRegistered) || (isEventPast() && !isRegistered)}
           >
             {getRegistrationButtonText()}
           </Button>

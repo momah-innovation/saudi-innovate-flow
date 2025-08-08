@@ -384,8 +384,6 @@ const EventsBrowse = () => {
             key={event.id}
             event={event}
             onViewDetails={handleViewDetails}
-            onRegister={registerForEvent}
-            onCancelRegistration={cancelRegistration}
             viewMode={viewMode as 'cards' | 'list' | 'grid'}
           />
         ))}
