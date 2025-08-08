@@ -653,10 +653,7 @@
 .bg-primary:active,
 button.bg-primary:active,
 [class*="bg-primary"]:active {
-  color: hsl(var(--primary-active-foreground)) !important;
-}
-
-/* Debug - temporary red color to verify CSS is loading */
-.bg-primary:active {
   color: red !important;
+  transform: scale(0.95) !important;
+  background-color: yellow !important;
 }
