@@ -11,6 +11,7 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { useState } from 'react';
 import { InteractionButtons } from '@/components/ui/interaction-buttons';
+import { getStatusColor, getCategoryColor, getOverlayColor } from '@/utils/colorUtils';
 
 interface Event {
   id: string;
@@ -54,17 +55,6 @@ export const EnhancedEventCard = ({
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(isBookmarked);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'upcoming':
-      case 'scheduled': return 'bg-scheduled text-scheduled-foreground border-scheduled-border';
-      case 'ongoing': return 'bg-active text-active-foreground border-active-border';
-      case 'completed': return 'bg-complete text-complete-foreground border-complete-border';
-      case 'cancelled': return 'bg-destructive text-destructive-foreground border-destructive';
-      default: return 'bg-muted text-muted-foreground border-border';
-    }
-  };
-
   const getStatusText = (status: string) => {
     switch (status) {
       case 'upcoming':
@@ -77,14 +67,7 @@ export const EnhancedEventCard = ({
   };
 
   const getEventTypeColor = (type: string) => {
-    switch (type) {
-      case 'workshop': return 'bg-innovation text-innovation-foreground border-innovation-border';
-      case 'conference': return 'bg-technology text-technology-foreground border-technology-border';
-      case 'webinar': return 'bg-info text-info-foreground border-info-border';
-      case 'meetup': return 'bg-social text-social-foreground border-social-border';
-      case 'hackathon': return 'bg-sustainability text-sustainability-foreground border-sustainability-border';
-      default: return 'bg-muted text-muted-foreground border-border';
-    }
+    return getCategoryColor(type);
   };
 
   const formatDate = (dateString: string) => {
@@ -176,9 +159,9 @@ export const EnhancedEventCard = ({
 
                 <div className="flex flex-col items-end gap-2">
                   <div className="flex items-center gap-1">
-                    <Badge className={getStatusColor(event.status)}>
-                      {getStatusText(event.status)}
-                    </Badge>
+            <Badge className={getStatusColor(event.status)}>
+              {getStatusText(event.status)}
+            </Badge>
                   </div>
                   <div className="flex items-center gap-1">
                     <Button variant="ghost" size="sm" onClick={handleBookmark}>
@@ -242,7 +225,7 @@ export const EnhancedEventCard = ({
             {getStatusText(event.status)}
           </Badge>
           {event.format === 'virtual' && (
-            <Badge variant="secondary" className="bg-overlay-light/90 text-foreground">
+            <Badge variant="secondary" className={getOverlayColor('secondary')}>
               <Globe className="w-3 h-3 mr-1" />
               {isRTL ? 'عبر الإنترنت' : 'Online'}
             </Badge>
@@ -259,24 +242,24 @@ export const EnhancedEventCard = ({
           <Button
             variant="secondary"
             size="sm"
-            className="bg-black/20 hover:bg-black/30 backdrop-blur-sm border-white/20"
+            className={getOverlayColor('primary')}
             onClick={handleBookmark}
           >
-            <BookmarkIcon className={`w-4 h-4 text-white ${bookmarked ? 'fill-current' : ''}`} />
+            <BookmarkIcon className={`w-4 h-4 ${bookmarked ? 'fill-current text-primary' : ''}`} />
           </Button>
           <Button
             variant="secondary"
             size="sm"
-            className="bg-black/20 hover:bg-black/30 backdrop-blur-sm border-white/20"
+            className={getOverlayColor('primary')}
             onClick={() => setLiked(!liked)}
           >
-            <Heart className={`w-4 h-4 text-white ${liked ? 'fill-current text-red-500' : ''}`} />
+            <Heart className={`w-4 h-4 ${liked ? 'fill-current text-destructive' : ''}`} />
           </Button>
         </div>
 
         {/* Date Badge */}
         <div className="absolute bottom-3 left-3">
-          <div className="bg-white/95 rounded-lg p-2 text-center min-w-[3rem]">
+          <div className="bg-background/95 border border-border rounded-lg p-2 text-center min-w-[3rem]">
             <div className="text-xs font-medium text-muted-foreground">
               {new Date(event.event_date).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', { month: 'short' })}
             </div>

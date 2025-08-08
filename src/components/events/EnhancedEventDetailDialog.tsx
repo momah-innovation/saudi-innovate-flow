@@ -302,7 +302,7 @@ export const EnhancedEventDetailDialog = ({
             {/* Format Badge */}
             {event.format === 'virtual' && (
               <div className="absolute bottom-4 left-4">
-                <Badge variant="secondary" className="bg-white/90 text-gray-700">
+                <Badge variant="secondary">
                   <Globe className="w-3 h-3 mr-1" />
                   {isRTL ? 'عبر الإنترنت' : 'Online Event'}
                 </Badge>
@@ -330,7 +330,7 @@ export const EnhancedEventDetailDialog = ({
                 {event.title_ar}
               </h1>
               <div className="flex items-center gap-2 text-white/90">
-                <Badge variant="outline" className="bg-white/20 text-white border-white/30">
+                <Badge variant="outline" className="bg-background/20 text-overlay-text border-overlay-button/30">
                   {event.event_type}
                 </Badge>
                 {averageRating > 0 && (

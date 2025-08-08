@@ -174,8 +174,8 @@ export const EnhancedOpportunityCard = ({
           onClick={handleBookmark}
           className={`absolute top-3 left-3 transition-all duration-200 ${
             isBookmarked 
-              ? 'bg-primary text-white hover:bg-primary/90' 
-              : 'bg-white/80 hover:bg-white text-gray-700'
+              ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
+              : 'bg-background/80 hover:bg-background text-foreground'
           }`}
         >
           <BookmarkIcon className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
