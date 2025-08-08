@@ -67,12 +67,14 @@ export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCar
   useRealTimeEvents({
     onParticipantUpdate: (eventId, count) => {
       if (eventId === event.id) {
+        console.log('🔄 Real-time participant update for EventCard:', eventId, count);
         fetchParticipants(); // Refresh participants when count changes
         refetchInteractions(); // Refresh interactions as well
       }
     },
     onEventUpdate: (update) => {
       if (update.event_id === event.id) {
+        console.log('🔄 Real-time event update for EventCard:', update);
         refetchInteractions(); // Refresh when event is updated
       }
     }
@@ -115,12 +117,18 @@ export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCar
   const handleRegistrationToggle = async () => {
     try {
       if (isRegistered && currentUserParticipation) {
+        console.log('🔄 Cancelling registration for event:', event.id);
         await cancelRegistration(currentUserParticipation.id, event.id);
-        refreshAfterRegistrationChange(); // Refresh interactions data
-        fetchParticipants(); // Refresh participants data
+        // Force immediate refresh of both data sources
+        await Promise.all([
+          fetchParticipants(),
+          refetchInteractions()
+        ]);
       } else {
+        console.log('🔄 Registering for event:', event.id);
         await registerForEvent();
-        fetchParticipants(); // Refresh participants data
+        // Force immediate refresh after successful registration
+        await fetchParticipants();
       }
     } catch (error) {
       console.error('Failed to toggle registration:', error);

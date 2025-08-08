@@ -105,6 +105,7 @@ export function ParticipantRegistration({ event, onRegistrationChange }: Partici
         return;
       }
 
+      console.log('🔄 Registering for event in dialog:', event.id);
       const { error } = await supabase
         .from('event_participants')
         .insert({
@@ -131,7 +132,8 @@ export function ParticipantRegistration({ event, onRegistrationChange }: Partici
         description: "Successfully registered for the event!",
       });
 
-      checkRegistrationStatus();
+      // Immediate state refresh
+      await checkRegistrationStatus();
       onRegistrationChange?.();
     } catch (error) {
       logger.error('Failed to register for event', { 
@@ -156,6 +158,7 @@ export function ParticipantRegistration({ event, onRegistrationChange }: Partici
     try {
       setRegistering(true);
 
+      console.log('🔄 Cancelling registration in dialog:', event.id);
       const { error } = await supabase
         .from('event_participants')
         .delete()
@@ -178,6 +181,7 @@ export function ParticipantRegistration({ event, onRegistrationChange }: Partici
         description: "Registration cancelled successfully",
       });
 
+      // Immediate state refresh
       setParticipant(null);
       onRegistrationChange?.();
     } catch (error) {
