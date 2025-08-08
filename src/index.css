@@ -198,6 +198,7 @@
     --primary-foreground: 0 0% 100%;
     --primary-hover: 272 65% 40%;
     --primary-active: 272 65% 30%;
+    --primary-active-foreground: 0 0% 85%;
     --primary-light: 272 65% 15%;
     --primary-muted: 272 20% 20%;
     
@@ -413,7 +414,7 @@
   }
   
   .interactive-button {
-    @apply bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active transition-colors duration-200 rounded-md px-4 py-2 font-medium text-sm;
+    @apply bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active active:text-primary-active-foreground transition-colors duration-200 rounded-md px-4 py-2 font-medium text-sm;
   }
 
   /* Modern Glass Effect */
