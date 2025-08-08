@@ -5,43 +5,53 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  // Base styles with modern interactions
-  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  // Base styles following modern UI principles
+  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-[0.98] hover:scale-[1.02]",
   {
     variants: {
       variant: {
-        // Primary - Main action button
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/95 shadow-sm hover:shadow-md font-semibold",
-        primary: "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/95 shadow-sm hover:shadow-md font-semibold",
+        // Enhanced Primary with micro-interactions
+        default: "bg-primary text-primary-foreground hover:bg-primary-hover hover:text-primary-foreground active:bg-primary-active active:!text-primary-active-foreground shadow-sm hover:shadow-md active:shadow-sm border-0 font-semibold",
+        primary: "bg-primary text-primary-foreground hover:bg-primary-hover hover:text-primary-foreground active:bg-primary-active active:!text-primary-active-foreground shadow-sm hover:shadow-md active:shadow-sm border-0 font-semibold",
         
-        // Secondary - Alternative action
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/70 border border-border",
+        // Secondary variants
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-hover active:bg-secondary-active border border-border",
         
-        // Outline - Subtle emphasis
+        // Outline variants
         outline: "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground hover:border-accent",
         
-        // Ghost - Minimal style
+        // Ghost variants
         ghost: "hover:bg-accent hover:text-accent-foreground",
         
-        // Link - Text button
-        link: "text-primary underline-offset-4 hover:underline hover:text-primary/80",
+        // Link variant
+        link: "text-primary underline-offset-4 hover:underline hover:text-primary-hover",
         
-        // Status variants with proper contrast
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive/95 shadow-sm hover:shadow-md",
-        success: "bg-success text-success-foreground hover:bg-success/90 active:bg-success/95 shadow-sm hover:shadow-md",
-        warning: "bg-warning text-warning-foreground hover:bg-warning/90 active:bg-warning/95 shadow-sm hover:shadow-md",
-        info: "bg-info text-info-foreground hover:bg-info/90 active:bg-info/95 shadow-sm hover:shadow-md",
+        // Status variants using semantic tokens
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive shadow-sm hover:shadow-md",
+        success: "bg-success text-success-foreground hover:bg-success/90 active:bg-success shadow-sm hover:shadow-md",
+        warning: "bg-warning text-warning-foreground hover:bg-warning/90 active:bg-warning shadow-sm hover:shadow-md",
+        info: "bg-info text-info-foreground hover:bg-info/90 active:bg-info shadow-sm hover:shadow-md",
         
         // Subtle status variants
-        "destructive-subtle": "bg-destructive-light text-destructive border border-destructive-border hover:bg-destructive/10",
-        "success-subtle": "bg-success-light text-success border border-success-border hover:bg-success/10",
-        "warning-subtle": "bg-warning-light text-warning border border-warning-border hover:bg-warning/10",
-        "info-subtle": "bg-info-light text-info border border-info-border hover:bg-info/10",
+        "destructive-subtle": "bg-destructive-light text-destructive border border-destructive-border hover:bg-destructive hover:text-destructive-foreground",
+        "success-subtle": "bg-success-light text-success border border-success-border hover:bg-success hover:text-success-foreground",
+        "warning-subtle": "bg-warning-light text-warning border border-warning-border hover:bg-warning hover:text-warning-foreground",
+        "info-subtle": "bg-info-light text-info border border-info-border hover:bg-info hover:text-info-foreground",
         
-        // Special variants
-        gradient: "bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:from-primary/90 hover:to-primary/70 shadow-md hover:shadow-lg",
-        elevated: "bg-card text-card-foreground border border-border shadow-lg hover:shadow-xl hover:bg-accent hover:text-accent-foreground",
-        glass: "bg-background/80 text-foreground border border-border/50 backdrop-blur-sm shadow-lg hover:bg-background/90",
+        // Overlay variants for hero sections
+        "overlay-primary": "bg-overlay-button/10 text-overlay-text border border-overlay-button/20 backdrop-blur-sm hover:bg-overlay-button/20 hover:border-overlay-button/30",
+        "overlay-secondary": "bg-background/10 text-overlay-text border border-overlay-button/20 backdrop-blur-sm hover:bg-background/20",
+        "overlay-ghost": "text-overlay-text hover:bg-overlay-button/10 backdrop-blur-sm",
+        
+        // Gradient variants
+        "gradient-primary": "bg-gradient-to-r from-primary to-primary-hover text-primary-foreground hover:opacity-90 shadow-md hover:shadow-lg",
+        "gradient-success": "bg-gradient-to-r from-success to-success/80 text-success-foreground hover:opacity-90 shadow-md hover:shadow-lg",
+        "gradient-info": "bg-gradient-to-r from-info to-info/80 text-info-foreground hover:opacity-90 shadow-md hover:shadow-lg",
+        
+        // Special purpose variants
+        cta: "bg-gradient-to-r from-primary via-primary-hover to-primary text-primary-foreground hover:opacity-90 shadow-lg hover:shadow-xl font-semibold",
+        elevated: "bg-background text-foreground border border-border shadow-lg hover:shadow-xl hover:bg-accent hover:text-accent-foreground",
+        glass: "bg-background/80 text-foreground border border-border/50 backdrop-blur-md shadow-lg hover:bg-background/90",
       },
       size: {
         xs: "h-7 px-2 text-xs rounded-sm",
@@ -69,6 +79,21 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
+    // Enhanced debug logging for primary buttons
+    React.useEffect(() => {
+      if (variant === 'primary' || variant === 'default') {
+        const root = document.documentElement;
+        const computedStyle = getComputedStyle(root);
+        console.log('🔴 === BUTTON DEBUG START ===');
+        console.log('🔴 Button variant:', variant);
+        console.log('🔴 CSS --primary value:', computedStyle.getPropertyValue('--primary').trim());
+        console.log('🔴 CSS --primary-foreground value:', computedStyle.getPropertyValue('--primary-foreground').trim());
+        console.log('🔴 Inline style --primary:', root.style.getPropertyValue('--primary') || 'none');
+        console.log('🔴 Theme class on html:', root.className);
+        console.log('🔴 === BUTTON DEBUG END ===');
+      }
+    }, [variant]);
+    
     const Comp = asChild ? Slot : "button"
     return (
       <Comp

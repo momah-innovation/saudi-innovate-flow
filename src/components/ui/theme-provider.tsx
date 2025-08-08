@@ -39,6 +39,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         const parsed = JSON.parse(savedTheme);
         // Force fix bad color if it exists
         if (parsed.primaryColor === 'hsl(346.8 77.2% 49.8%)') {
+          console.log('🔧 Fixing bad saved theme color');
           parsed.primaryColor = '272 65% 22%';
           localStorage.setItem('ui-theme', JSON.stringify(parsed));
         }
@@ -94,12 +95,22 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
 
     // Apply custom primary color if provided and different from default
+    console.log('🎨 === THEME DEBUG START ===');
+    console.log('🎨 Theme primary color setting:', theme.primaryColor);
+    console.log('🎨 Theme object:', theme);
+    
     if (theme.primaryColor && theme.primaryColor !== '272 65% 22%') {
+      console.log('🎨 Theme Provider OVERRIDING primary color to:', theme.primaryColor);
+      console.log('🎨 Current CSS --primary value before override:', getComputedStyle(root).getPropertyValue('--primary').trim());
       root.style.setProperty('--primary', theme.primaryColor);
+      console.log('🎨 CSS --primary value after override:', getComputedStyle(root).getPropertyValue('--primary').trim());
     } else {
       // Remove any inline override to use CSS default
+      console.log('🎨 Theme Provider REMOVING inline override, using CSS default');
       root.style.removeProperty('--primary');
+      console.log('🎨 CSS --primary value (should be CSS default):', getComputedStyle(root).getPropertyValue('--primary').trim());
     }
+    console.log('🎨 === THEME DEBUG END ===');
   };
 
   // Apply theme on mount and when theme changes
