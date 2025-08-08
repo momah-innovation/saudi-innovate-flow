@@ -24,7 +24,8 @@ import {
   CheckCircle
 } from "lucide-react";
 import { format } from "date-fns";
-import type { ExpertDetailView, ExpertDetailViewProps } from "@/types/api";
+import type { ExpertDetailView, ExpertDetailViewProps, BadgeVariant } from "@/types/api";
+import type { BadgeVariant } from "@/types";
 
 export function ExpertDetailView({ 
   isOpen, 
@@ -112,7 +113,7 @@ export function ExpertDetailView({
                 {expert.profiles?.name || 'خبير'}
               </DialogTitle>
               <div className="flex items-center gap-2 flex-wrap">
-                <Badge variant={getAvailabilityColor(expert.availability_status) as any}>
+                <Badge variant={getAvailabilityColor(expert.availability_status) as BadgeVariant}>
                   {expert.availability_status === 'available' ? 'متاح' : 
                    expert.availability_status === 'busy' ? 'مشغول' : 'غير متاح'}
                 </Badge>

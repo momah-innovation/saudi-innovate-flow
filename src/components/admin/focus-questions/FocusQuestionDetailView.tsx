@@ -25,8 +25,9 @@ import {
   Activity,
   Clock,
   User
-} from "lucide-react";
+ } from "lucide-react";
 import { format } from "date-fns";
+import type { QuestionResponse } from "@/types";
 
 interface Challenge {
   id: string;
@@ -137,7 +138,7 @@ export function FocusQuestionDetailView({
       ]);
 
       // Mock responses and analytics for now since tables might not exist
-      const mockResponses: any[] = [];
+      const mockResponses: QuestionResponse[] = [];
       const analytics = {
         totalResponses: mockResponses.length,
         averageRating: 0,

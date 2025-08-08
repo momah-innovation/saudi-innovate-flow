@@ -17,7 +17,7 @@ import { logger } from '@/utils/logger';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemLists } from "@/hooks/useSystemLists";
-import type { Challenge } from "@/types";
+import type { Challenge, Partner, Expert } from "@/types";
 
 interface ChallengeFormData {
   id?: string;
@@ -169,8 +169,8 @@ export function ChallengeWizardV2({ isOpen, onClose, onSuccess, challenge }: Cha
         domains: domainsRes.data || [],
         subDomains: subDomainsRes.data || [],
         services: servicesRes.data || [],
-        partners: (partnersRes.data || []) as any[],
-        experts: (expertsRes.data || []) as any[],
+        partners: (partnersRes.data || []) as Partner[],
+        experts: (expertsRes.data || []) as Expert[],
         focusQuestions: focusQuestionsRes.data || []
       });
     } catch (error) {
