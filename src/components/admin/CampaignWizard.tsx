@@ -492,30 +492,30 @@ export function CampaignWizard({
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="target_participants">عدد المشاركين المستهدف</Label>
+                <Label htmlFor="target_participants">{t('label.target_participants')}</Label>
                 <Input
                   id="target_participants"
                   type="number"
                   value={formData.target_participants || ""}
                   onChange={(e) => setFormData(prev => ({ ...prev, target_participants: e.target.value ? Number(e.target.value) : null }))}
-                  placeholder="أدخل عدد المشاركين"
+                  placeholder={t('placeholder.enter_participants_count')}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="target_ideas">عدد الأفكار المستهدف</Label>
+                <Label htmlFor="target_ideas">{t('label.target_ideas')}</Label>
                 <Input
                   id="target_ideas"
                   type="number"
                   value={formData.target_ideas || ""}
                   onChange={(e) => setFormData(prev => ({ ...prev, target_ideas: e.target.value ? Number(e.target.value) : null }))}
-                  placeholder="أدخل عدد الأفكار"
+                  placeholder={t('placeholder.enter_ideas_count')}
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="success_metrics">مقاييس النجاح *</Label>
+              <Label htmlFor="success_metrics">{t('label.success_metrics')} *</Label>
               <Textarea
                 id="success_metrics"
                 value={formData.success_metrics}
