@@ -10,7 +10,7 @@ import {
   Eye, MessageCircle, Trophy, Brain, Zap, Activity, Bell, ChevronRight,
   BookOpen, Bookmark, Heart, Share2, Download, ExternalLink
 } from 'lucide-react';
-import { PageLayout } from '@/components/layout/PageLayout';
+// Removed PageLayout import - AppShell provides the layout
 import { useAuth } from '@/contexts/AuthContext';
 import { useRoleAccess } from '@/hooks/useRoleAccess';
 import { useUnifiedTranslation } from '@/hooks/useUnifiedTranslation';
@@ -323,11 +323,7 @@ export default function UserDashboard() {
         rolePermissions={permissions}
       />
       
-      <PageLayout
-        title={currentLanguage === 'ar' ? `لوحة القيادة - ${primaryRole === 'admin' || primaryRole === 'super_admin' ? 'المدير' : primaryRole === 'expert' ? 'الخبير' : primaryRole === 'partner' ? 'الشريك' : 'المبتكر'}` : `${primaryRole === 'admin' || primaryRole === 'super_admin' ? 'Admin' : primaryRole === 'expert' ? 'Expert' : primaryRole === 'partner' ? 'Partner' : 'Innovator'} Dashboard`}
-        description={`${currentLanguage === 'ar' ? 'أهلاً بك' : 'Welcome'} ${userProfile?.display_name || (currentLanguage === 'ar' ? 'المستخدم' : 'User')}! ${currentLanguage === 'ar' ? 'إليك نظرة عامة على أنشطتك' : 'Here\'s an overview of your activities'}`}
-        className="space-y-6"
-      >
+      <div className="container mx-auto px-6 py-8 space-y-6">
         {/* Role-specific Dashboard Content */}
         {(primaryRole === 'admin' || primaryRole === 'super_admin') && (
           <AdminDashboard 
@@ -693,7 +689,7 @@ export default function UserDashboard() {
         </Tabs>
         </div>
         )}
-      </PageLayout>
+      </div>
     </AppShell>
   );
 }
