@@ -38,7 +38,7 @@ interface ChallengeNotification {
   action_url?: string;
   is_read: boolean;
   created_at: string;
-  metadata?: any;
+  metadata?: Record<string, unknown>;
   challenge?: {
     title_ar: string;
     image_url?: string;

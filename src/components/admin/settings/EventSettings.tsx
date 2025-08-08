@@ -6,9 +6,18 @@ import { useUnifiedTranslation } from "@/hooks/useUnifiedTranslation";
 import { useDirection } from "@/components/ui/direction-provider";
 import { ArraySettingsEditor } from "./ArraySettingsEditor";
 
+interface EventSettingsData {
+  maxParticipants: number;
+  registrationDeadlineDays: number;
+  allowOpenRegistration: boolean;
+  enableAttendanceTracking: boolean;
+  eventTypes: string[];
+  eventCategories: string[];
+}
+
 interface EventSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
+  settings: EventSettingsData;
+  onSettingChange: (key: keyof EventSettingsData, value: EventSettingsData[keyof EventSettingsData]) => void;
 }
 
 export function EventSettings({ settings, onSettingChange }: EventSettingsProps) {

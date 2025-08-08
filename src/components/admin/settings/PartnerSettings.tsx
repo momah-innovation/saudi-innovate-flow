@@ -7,8 +7,8 @@ import { useDirection } from "@/components/ui/direction-provider";
 import { ArraySettingsEditor } from "./ArraySettingsEditor";
 
 interface PartnerSettingsProps {
-  settings: any;
-  onSettingChange: (key: string, value: any) => void;
+  settings: Record<string, unknown>;
+  onSettingChange: (key: string, value: unknown) => void;
 }
 
 export function PartnerSettings({ settings, onSettingChange }: PartnerSettingsProps) {

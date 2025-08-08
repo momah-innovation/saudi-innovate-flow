@@ -31,7 +31,7 @@ export function ChallengeCommentsDialog({
 }: ChallengeCommentsDialogProps) {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [comments, setComments] = useState<any[]>([]);
+  const [comments, setComments] = useState<{ id: string; content: string; author_name: string; created_at: string; replies?: unknown[] }[]>([]);
   const [newComment, setNewComment] = useState('');
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyText, setReplyText] = useState('');
@@ -215,7 +215,7 @@ export function ChallengeCommentsDialog({
     }));
   };
 
-  const renderComment = (comment: any, isReply = false) => (
+  const renderComment = (comment: { id: string; content: string; author_name: string; created_at: string; replies?: unknown[] }, isReply = false) => (
     <div key={comment.id} className={`space-y-3 ${isReply ? 'ml-8 pl-4 border-l-2 border-muted' : ''}`}>
       <div className="flex gap-3">
         <Avatar className="h-8 w-8">
@@ -317,7 +317,7 @@ export function ChallengeCommentsDialog({
         </div>
       </div>
       
-      {comment.replies?.map((reply: any) => renderComment(reply, true))}
+      {comment.replies?.map((reply: unknown, index: number) => renderComment(reply as { id: string; content: string; author_name: string; created_at: string; replies?: unknown[] }, true))}
     </div>
   );
 

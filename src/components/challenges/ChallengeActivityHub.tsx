@@ -62,8 +62,8 @@ export const ChallengeActivityHub = ({
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('activity');
   const [activities, setActivities] = useState<ChallengeActivity[]>([]);
-  const [participants, setParticipants] = useState<any[]>([]);
-  const [submissions, setSubmissions] = useState<any[]>([]);
+  const [participants, setParticipants] = useState<{ id: string; name: string; avatar_url?: string; joined_at: string }[]>([]);
+  const [submissions, setSubmissions] = useState<{ id: string; title: string; author: string; submitted_at: string; status: string }[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -207,7 +207,7 @@ export const ChallengeActivityHub = ({
     </div>
   );
 
-  const ParticipantItem = ({ participant }: { participant: any }) => (
+  const ParticipantItem = ({ participant }: { participant: { id: string; name: string; avatar_url?: string; joined_at: string } }) => (
     <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
       <Avatar className="w-10 h-10">
         <AvatarImage src={participant.profiles?.avatar_url} />
@@ -234,7 +234,7 @@ export const ChallengeActivityHub = ({
     </div>
   );
 
-  const SubmissionItem = ({ submission }: { submission: any }) => (
+  const SubmissionItem = ({ submission }: { submission: { id: string; title: string; author: string; submitted_at: string; status: string } }) => (
     <Card className="hover:shadow-md transition-shadow">
       <CardContent className="p-4">
         <div className="flex items-start gap-3">

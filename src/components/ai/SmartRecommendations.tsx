@@ -16,7 +16,7 @@ interface Recommendation {
   confidence_score: number;
   reason: string;
   action_url?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 interface SmartRecommendationsProps {

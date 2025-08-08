@@ -33,7 +33,7 @@ interface Expert {
 }
 
 interface ChallengeExpertAssignmentWizardProps {
-  challenge: any;
+  challenge: { id: string; title_ar: string; title_en?: string; description_ar?: string };
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onAssignmentComplete?: () => void;

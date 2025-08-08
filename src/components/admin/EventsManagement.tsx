@@ -42,6 +42,12 @@ interface EventData {
   end_time?: string;
   format?: string;
   actual_participants?: number;
+  // Additional properties to match EventFormData
+  is_recurring?: boolean;
+  target_stakeholder_groups?: string[];
+  partner_organizations?: string[];
+  related_focus_questions?: string[];
+  inherit_from_campaign?: boolean;
 }
 
 export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDialogChange }: EventsManagementProps) {
@@ -242,7 +248,7 @@ export function EventsManagement({ viewMode, searchTerm, showAddDialog, onAddDia
           onAddDialogChange(false);
           setSelectedEvent(null);
         }}
-        event={selectedEvent}
+        event={selectedEvent as any}
         onSave={(eventData) => {
           // Event saved successfully
           loadEvents(); // Reload events after save

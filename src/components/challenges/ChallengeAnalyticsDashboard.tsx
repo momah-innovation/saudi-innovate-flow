@@ -77,7 +77,7 @@ export const ChallengeAnalyticsDashboard = ({
       const totalPrizes = challenges?.reduce((sum, c) => sum + (c.estimated_budget || 0), 0) || 0;
 
       // Category breakdown
-      const categoryBreakdown = challenges?.reduce((acc: any[], challenge) => {
+      const categoryBreakdown = challenges?.reduce((acc: { category: string; count: number }[], challenge) => {
         const category = challenge.challenge_type || 'other';
         const existing = acc.find(item => item.category === category);
         if (existing) {
@@ -177,7 +177,7 @@ export const ChallengeAnalyticsDashboard = ({
     title: string;
     value: string | number;
     change?: string;
-    icon: any;
+    icon: React.ComponentType<{ className?: string }>;
     color?: string;
     trend?: "up" | "down";
   }) => (

@@ -279,8 +279,7 @@ export const ComprehensiveEventWizard = ({
         challenge_id: formData.challenge_id === 'none' ? null : formData.challenge_id,
         sector_id: formData.sector_id === 'none' ? null : formData.sector_id,
         event_manager_id: user?.id,
-        registered_participants: event?.registered_participants || 0,
-        actual_participants: event?.actual_participants || 0
+        current_registrations: 0
       };
 
       let savedEventId = formData.id;

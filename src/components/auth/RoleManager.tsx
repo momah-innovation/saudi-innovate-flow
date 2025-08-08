@@ -181,7 +181,7 @@ export const RoleManager: React.FC<RoleManagerProps> = ({ targetUserId, onRoleCh
   const getRoleBadgeVariant = (role: AppRole, isActive: boolean) => {
     if (!isActive) return 'outline';
     
-    if (role.includes('admin' as any)) return 'destructive';
+    if (role.includes('admin')) return 'destructive';
     if (role === 'evaluator') return 'default';
     if (role === 'innovator') return 'secondary';
     return 'outline';
