@@ -289,12 +289,9 @@ export const EnhancedEventCard = ({
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
-            <CardTitle className="text-lg line-clamp-2 mb-2">
+            <CardTitle className="text-lg line-clamp-2 mb-3">
               {event.title_ar}
             </CardTitle>
-            <CardDescription className="line-clamp-2">
-              {event.description_ar}
-            </CardDescription>
           </div>
           <Badge className={getEventTypeColor(event.event_type)}>
             {event.event_type}
