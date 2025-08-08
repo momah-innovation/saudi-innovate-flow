@@ -1,0 +1,20 @@
+-- Add AdminChallengeManagement translations
+INSERT INTO system_translations (translation_key, text_en, text_ar, category) VALUES
+('filter.all_status', 'All', 'الكل', 'ui'),
+('label.status_filter', 'Status', 'الحالة', 'ui'), 
+('title.challenge_management', 'Challenge Management', 'إدارة التحديات', 'admin'),
+('description.challenge_management', 'Create and manage innovation challenges', 'إنشاء وإدارة التحديات الابتكارية', 'admin'),
+('button.new_challenge', 'New Challenge', 'تحدي جديد', 'admin'),
+('empty.no_challenges_title', 'No challenges found', 'لا توجد تحديات', 'admin'),
+('empty.no_challenges_description', 'Start by creating a new innovation challenge to attract creative ideas', 'ابدأ بإنشاء تحدي ابتكاري جديد لجذب الأفكار المبدعة', 'admin'),
+('button.create_new_challenge', 'Create New Challenge', 'إنشاء تحدي جديد', 'admin'),
+('label.start_date', 'Start Date', 'تاريخ البداية', 'form'),
+('label.end_date', 'End Date', 'تاريخ النهاية', 'form'),
+('label.estimated_budget', 'Estimated Budget', 'الميزانية المقدرة', 'form'),
+('currency.sar', 'SAR', 'ريال', 'ui'),
+('label.sensitivity_level', 'Sensitivity Level', 'مستوى الحساسية', 'form'),
+('action.view', 'View', 'عرض', 'ui'),
+('action.edit', 'Edit', 'تعديل', 'ui'),
+('action.settings', 'Settings', 'إعدادات', 'ui'),
+('action.delete', 'Delete', 'حذف', 'ui'),
+('confirm.delete_challenge', 'Are you sure you want to delete "{title}"?', 'هل أنت متأكد من حذف "{title}"؟', 'ui');
