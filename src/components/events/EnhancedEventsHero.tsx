@@ -157,7 +157,7 @@ export const EnhancedEventsHero = ({
                 onClick={onShowFilters}
                 variant="outline"
                 size="lg"
-                className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
+                className="border-white/60 bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm font-medium shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <Filter className="w-5 h-5 mr-2" />
                 {isRTL ? 'تصفية متقدمة' : 'Advanced Filters'}
