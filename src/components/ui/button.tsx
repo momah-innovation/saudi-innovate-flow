@@ -11,8 +11,8 @@ const buttonVariants = cva(
     variants: {
       variant: {
         // Enhanced Primary with micro-interactions
-        default: "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active shadow-sm hover:shadow-md active:shadow-sm border-0 font-semibold",
-        primary: "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active shadow-sm hover:shadow-md active:shadow-sm border-0 font-semibold",
+        default: "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active shadow-sm hover:shadow-lg active:shadow-sm border-0 font-semibold transition-all duration-300 hover:scale-105 active:scale-95",
+        primary: "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active shadow-sm hover:shadow-lg active:shadow-sm border-0 font-semibold transition-all duration-300 hover:scale-105 active:scale-95",
         
         // Secondary variants
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-hover active:bg-secondary-active border border-border",
