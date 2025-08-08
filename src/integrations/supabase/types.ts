@@ -8377,6 +8377,14 @@ export type Database = {
         }
         Returns: string
       }
+      test_realtime_config: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          table_name: string
+          replica_identity: string
+          in_publication: boolean
+        }[]
+      }
       trigger_idea_workflow_change: {
         Args: { p_idea_id: string; p_to_status: string; p_reason?: string }
         Returns: boolean

@@ -53,12 +53,17 @@ export function useParticipants(eventId: string | null) {
             fetchParticipants();
           }
         )
-        .subscribe((status) => {
-          console.log('📡 Participants real-time subscription status:', status);
+        .subscribe((status, err) => {
+          console.log('📡 Participants real-time subscription status:', status, err);
           if (status === 'SUBSCRIBED') {
             console.log('✅ Successfully subscribed to participants updates for event:', eventId);
           } else if (status === 'CHANNEL_ERROR') {
-            console.error('❌ Participants subscription error for event:', eventId);
+            console.error('❌ Participants subscription error for event:', eventId, err);
+            console.log('🔄 Falling back to manual refresh for participants');
+          } else if (status === 'TIMED_OUT') {
+            console.warn('⏰ Participants subscription timed out for event:', eventId);
+          } else if (status === 'CLOSED') {
+            console.warn('🔒 Participants subscription closed for event:', eventId);
           }
         });
 

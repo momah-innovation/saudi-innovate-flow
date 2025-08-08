@@ -75,12 +75,18 @@ export function useEventInteractions(eventId: string | null) {
             loadEventInteractions();
           }
         )
-        .subscribe((status) => {
-          console.log('📡 Real-time subscription status for event interactions:', status);
+        .subscribe((status, err) => {
+          console.log('📡 Real-time subscription status for event interactions:', status, err);
           if (status === 'SUBSCRIBED') {
             console.log('✅ Successfully subscribed to real-time updates for event:', eventId);
           } else if (status === 'CHANNEL_ERROR') {
-            console.error('❌ Real-time subscription error for event:', eventId);
+            console.error('❌ Real-time subscription error for event:', eventId, err);
+            // Try to fallback to polling or show user notification
+            console.log('🔄 Falling back to manual refresh for real-time updates');
+          } else if (status === 'TIMED_OUT') {
+            console.warn('⏰ Real-time subscription timed out for event:', eventId);
+          } else if (status === 'CLOSED') {
+            console.warn('🔒 Real-time subscription closed for event:', eventId);
           }
         });
 
