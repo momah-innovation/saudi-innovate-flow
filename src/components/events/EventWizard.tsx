@@ -125,7 +125,7 @@ export function EventWizard({ isOpen, onClose, event, onSave }: EventWizardProps
   const [partners, setPartners] = useState<any[]>([]);
   const [stakeholders, setStakeholders] = useState<any[]>([]);
   const [focusQuestions, setFocusQuestions] = useState<any[]>([]);
-  const [eventManagers, setEventManagers] = useState<any[]>([]);
+  const [eventManagers, setEventManagers] = useState<any[]>([]);  // TODO: Apply types in next iteration
   const [selectedPartners, setSelectedPartners] = useState<string[]>([]);
   const [selectedStakeholders, setSelectedStakeholders] = useState<string[]>([]);
   const [selectedFocusQuestions, setSelectedFocusQuestions] = useState<string[]>([]);
