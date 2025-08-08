@@ -301,33 +301,16 @@ export const EnhancedEventCard = ({
         </div>
 
         {/* Event Meta */}
-        <div className="grid grid-cols-2 gap-3 mt-3 text-sm text-muted-foreground">
+        <div className="space-y-2 text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
             <Clock className="w-4 h-4" />
             <span>{event.start_time || 'TBD'}</span>
           </div>
           <div className="flex items-center gap-2">
             <MapPinIcon className="w-4 h-4" />
-            <span className="truncate">{event.location || (event.format === 'virtual' ? (isRTL ? 'عبر الإنترنت' : 'Online') : 'TBD')}</span>
+            <span className="flex-1">{event.location || (event.format === 'virtual' ? (isRTL ? 'عبر الإنترنت' : 'Online') : 'TBD')}</span>
           </div>
         </div>
-
-        {/* Registration Progress */}
-        {event.max_participants && (
-          <div className="mt-3">
-            <div className="flex justify-between text-sm text-muted-foreground mb-2">
-              <span>{isRTL ? 'التسجيل' : 'Registration'}</span>
-              <span>{event.registered_participants}/{event.max_participants}</span>
-            </div>
-            <Progress value={getRegistrationPercentage()} className="h-2" />
-            <div className="flex justify-between text-xs text-muted-foreground mt-1">
-              <span>{Math.round(getRegistrationPercentage())}% {isRTL ? 'ممتلئ' : 'full'}</span>
-              {getRegistrationPercentage() > 80 && (
-                <span className="text-orange-600">{isRTL ? 'أماكن محدودة' : 'Limited spots'}</span>
-              )}
-            </div>
-          </div>
-        )}
       </CardHeader>
 
       <CardContent className="pt-0 px-4 pb-4">
