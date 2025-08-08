@@ -23,6 +23,7 @@ export function useEventInteractions(eventId: string | null) {
 
   useEffect(() => {
     if (eventId && user) {
+      console.log('🚀 Setting up real-time subscriptions for event:', eventId);
       loadEventInteractions();
       loadEventStats();
       
@@ -74,11 +75,21 @@ export function useEventInteractions(eventId: string | null) {
             loadEventInteractions();
           }
         )
-        .subscribe();
+        .subscribe((status) => {
+          console.log('📡 Real-time subscription status for event interactions:', status);
+          if (status === 'SUBSCRIBED') {
+            console.log('✅ Successfully subscribed to real-time updates for event:', eventId);
+          } else if (status === 'CHANNEL_ERROR') {
+            console.error('❌ Real-time subscription error for event:', eventId);
+          }
+        });
 
       return () => {
+        console.log('🔌 Unsubscribing from real-time for event:', eventId);
         supabase.removeChannel(eventChannel);
       };
+    } else {
+      console.log('⏸️ No real-time setup - missing eventId or user:', { eventId, userId: user?.id });
     }
   }, [eventId, user]);
 

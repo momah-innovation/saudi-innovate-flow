@@ -28,6 +28,7 @@ export function useParticipants(eventId: string | null) {
 
   useEffect(() => {
     if (eventId) {
+      console.log('🚀 Setting up participants real-time subscription for event:', eventId);
       fetchParticipants();
       
       // Set up direct real-time subscription for participants
@@ -52,11 +53,21 @@ export function useParticipants(eventId: string | null) {
             fetchParticipants();
           }
         )
-        .subscribe();
+        .subscribe((status) => {
+          console.log('📡 Participants real-time subscription status:', status);
+          if (status === 'SUBSCRIBED') {
+            console.log('✅ Successfully subscribed to participants updates for event:', eventId);
+          } else if (status === 'CHANNEL_ERROR') {
+            console.error('❌ Participants subscription error for event:', eventId);
+          }
+        });
 
       return () => {
+        console.log('🔌 Unsubscribing from participants real-time for event:', eventId);
         supabase.removeChannel(participantsChannel);
       };
+    } else {
+      console.log('⏸️ No participants real-time setup - missing eventId:', eventId);
     }
   }, [eventId]);
 
