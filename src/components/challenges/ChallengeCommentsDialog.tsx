@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils';
 interface ChallengeCommentsDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  challenge: any;
+  challenge: { id: string; title_ar: string; title_en?: string; description_ar?: string };
 }
 
 export function ChallengeCommentsDialog({ 
@@ -31,7 +31,7 @@ export function ChallengeCommentsDialog({
 }: ChallengeCommentsDialogProps) {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [comments, setComments] = useState<{ id: string; content: string; author_name: string; created_at: string; replies?: unknown[] }[]>([]);
+  const [comments, setComments] = useState<unknown[]>([]);
   const [newComment, setNewComment] = useState('');
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyText, setReplyText] = useState('');
@@ -156,19 +156,19 @@ export function ChallengeCommentsDialog({
 
   const handleLikeComment = async (commentId: string) => {
     try {
-      const comment = comments.find(c => c.id === commentId);
+      const comment = comments.find(c => (c as any).id === commentId);
       if (!comment) return;
 
       const { error } = await supabase
         .from('challenge_comments')
-        .update({ likes_count: comment.likes_count + 1 })
+        .update({ likes_count: (comment as any).likes_count + 1 })
         .eq('id', commentId);
 
       if (error) throw error;
 
       setComments(prev => prev.map(c => 
-        c.id === commentId 
-          ? { ...c, likes_count: c.likes_count + 1 }
+        (c as any).id === commentId 
+          ? { ...(c as any), likes_count: (c as any).likes_count + 1 }
           : c
       ));
     } catch (error) {
@@ -190,7 +190,7 @@ export function ChallengeCommentsDialog({
 
       if (error) throw error;
 
-      setComments(prev => prev.filter(c => c.id !== commentId));
+      setComments(prev => prev.filter(c => (c as any).id !== commentId));
       
       toast({
         title: "تم حذف التعليق",
@@ -206,65 +206,65 @@ export function ChallengeCommentsDialog({
   };
 
   const organizeComments = () => {
-    const topLevel = comments.filter(c => !c.parent_comment_id);
-    const replies = comments.filter(c => c.parent_comment_id);
+    const topLevel = comments.filter(c => !(c as any).parent_comment_id);
+    const replies = comments.filter(c => (c as any).parent_comment_id);
     
     return topLevel.map(comment => ({
-      ...comment,
-      replies: replies.filter(r => r.parent_comment_id === comment.id)
+      ...(comment as any),
+      replies: replies.filter(r => (r as any).parent_comment_id === (comment as any).id)
     }));
   };
 
-  const renderComment = (comment: { id: string; content: string; author_name: string; created_at: string; replies?: unknown[] }, isReply = false) => (
-    <div key={comment.id} className={`space-y-3 ${isReply ? 'ml-8 pl-4 border-l-2 border-muted' : ''}`}>
+  const renderComment = (comment: unknown, isReply = false) => (
+    <div key={(comment as any).id} className={`space-y-3 ${isReply ? 'ml-8 pl-4 border-l-2 border-muted' : ''}`}>
       <div className="flex gap-3">
         <Avatar className="h-8 w-8">
-          <AvatarImage src={comment.profiles?.profile_image_url} />
+          <AvatarImage src={(comment as any).profiles?.profile_image_url} />
           <AvatarFallback>
-            {comment.profiles?.display_name?.charAt(0) || 'U'}
+            {(comment as any).profiles?.display_name?.charAt(0) || 'U'}
           </AvatarFallback>
         </Avatar>
         
         <div className="flex-1 space-y-2">
           <div className="flex items-center gap-2">
             <span className="font-medium text-sm">
-              {comment.profiles?.display_name || 'مستخدم'}
+              {(comment as any).profiles?.display_name || 'مستخدم'}
             </span>
-            {comment.is_expert_comment && (
+            {(comment as any).is_expert_comment && (
               <Badge variant="secondary" className="text-xs">
                 <Star className="h-3 w-3 mr-1" />
                 خبير
               </Badge>
             )}
-            {comment.is_pinned && (
+            {(comment as any).is_pinned && (
               <Badge variant="outline" className="text-xs">
                 <Pin className="h-3 w-3 mr-1" />
                 مثبت
               </Badge>
             )}
             <span className="text-xs text-muted-foreground">
-              {new Date(comment.created_at).toLocaleDateString('ar-SA')}
+              {new Date((comment as any).created_at).toLocaleDateString('ar-SA')}
             </span>
           </div>
           
-          <p className="text-sm">{comment.content}</p>
+          <p className="text-sm">{(comment as any).content}</p>
           
           <div className="flex items-center gap-4">
             <Button
               size="sm"
               variant="ghost"
-              onClick={() => handleLikeComment(comment.id)}
+              onClick={() => handleLikeComment((comment as any).id)}
               className="h-auto p-1 text-xs"
             >
               <ThumbsUp className="h-3 w-3 mr-1" />
-              {comment.likes_count || 0}
+              {(comment as any).likes_count || 0}
             </Button>
             
             {!isReply && (
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => setReplyingTo(comment.id)}
+                onClick={() => setReplyingTo((comment as any).id)}
                 className="h-auto p-1 text-xs"
               >
                 <Reply className="h-3 w-3 mr-1" />
@@ -272,11 +272,11 @@ export function ChallengeCommentsDialog({
               </Button>
             )}
             
-            {comment.user_id === user?.id && (
+            {(comment as any).user_id === user?.id && (
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => handleDeleteComment(comment.id)}
+                onClick={() => handleDeleteComment((comment as any).id)}
                 className={`h-auto p-1 text-xs ${challengesPageConfig.ui.colors.stats.red} hover:${challengesPageConfig.ui.colors.stats.red.replace('500', '600')}`}
               >
                 <Trash2 className="h-3 w-3 mr-1" />
@@ -285,7 +285,7 @@ export function ChallengeCommentsDialog({
             )}
           </div>
           
-          {replyingTo === comment.id && (
+          {replyingTo === (comment as any).id && (
             <div className="space-y-2 mt-3">
               <Textarea
                 placeholder="اكتب ردك..."
@@ -296,7 +296,7 @@ export function ChallengeCommentsDialog({
               <div className="flex gap-2">
                 <Button
                   size="sm"
-                  onClick={() => handleAddReply(comment.id)}
+                  onClick={() => handleAddReply((comment as any).id)}
                   disabled={!replyText.trim()}
                 >
                   إرسال الرد
@@ -317,7 +317,7 @@ export function ChallengeCommentsDialog({
         </div>
       </div>
       
-      {comment.replies?.map((reply: unknown, index: number) => renderComment(reply as { id: string; content: string; author_name: string; created_at: string; replies?: unknown[] }, true))}
+      {(comment as any).replies?.map((reply: unknown, index: number) => renderComment(reply, true))}
     </div>
   );
 
