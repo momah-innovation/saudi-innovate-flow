@@ -44,7 +44,7 @@ interface RecentActivity {
   description: string;
   date: string;
   status?: string;
-  metadata?: any;
+  metadata?: Record<string, unknown>;
 }
 
 interface Achievement {
@@ -286,7 +286,7 @@ export default function UserDashboard() {
     };
     
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
-    return <Badge variant={config.variant as any}>{config.text}</Badge>;
+    return <Badge variant={config.variant as 'default' | 'secondary' | 'destructive' | 'outline'}>{config.text}</Badge>;
   };
 
   const getGoalIcon = (type: string) => {

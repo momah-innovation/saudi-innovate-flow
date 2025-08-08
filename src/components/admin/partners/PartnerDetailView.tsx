@@ -79,11 +79,11 @@ export function PartnerDetailView({
     }
   };
 
-  const getPartnershipStatusColor = (status: string) => {
+  const getPartnershipStatusColor = (status: string): 'default' | 'secondary' | 'destructive' | 'outline' => {
     switch (status) {
       case 'active': return 'default';
-      case 'pending': return 'warning';
-      case 'inactive': return 'secondary';
+      case 'pending': return 'secondary';
+      case 'inactive': return 'outline';
       case 'terminated': return 'destructive';
       default: return 'secondary';
     }
@@ -122,7 +122,7 @@ export function PartnerDetailView({
                 {partner.name_ar || partner.name}
               </DialogTitle>
               <div className="flex items-center gap-2 flex-wrap">
-                <Badge variant={getPartnershipStatusColor(partner.partnership_status) as any}>
+                <Badge variant={getPartnershipStatusColor(partner.partnership_status)}>
                   {getPartnershipStatusLabel(partner.partnership_status)}
                 </Badge>
                 <Badge variant="outline">

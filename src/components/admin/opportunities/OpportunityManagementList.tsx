@@ -421,7 +421,7 @@ export function OpportunityManagementList({
           setShowWizard(false);
           setSelectedOpportunity(null);
         }}
-        opportunity={selectedOpportunity as any}
+        opportunity={selectedOpportunity}
       />
     </div>
   );

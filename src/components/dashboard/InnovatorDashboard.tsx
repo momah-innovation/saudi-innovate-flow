@@ -50,7 +50,16 @@ export const InnovatorDashboard = () => {
       setLoading(true);
       const { data: challengesData, error } = await supabase
         .from('challenges')
-        .select('*')
+        .select(`
+          id,
+          title_ar,
+          description_ar,
+          status,
+          priority_level,
+          sensitivity_level,
+          challenge_type,
+          created_at
+        `)
         .eq('status', 'published')
         .order('created_at', { ascending: false });
 
@@ -64,7 +73,24 @@ export const InnovatorDashboard = () => {
         return;
       }
 
-      setChallenges((challengesData as any) || []);
+      // Transform data to match Challenge interface
+      const transformedChallenges: Challenge[] = (challengesData || []).map(challenge => ({
+        id: challenge.id,
+        title: challenge.title_ar || 'Untitled Challenge',
+        title_ar: challenge.title_ar,
+        description: challenge.description_ar || 'No description available',
+        description_ar: challenge.description_ar,
+        status: challenge.status,
+        priority_level: challenge.priority_level,
+        sensitivity_level: challenge.sensitivity_level,
+        challenge_type: challenge.challenge_type,
+        start_date: undefined,
+        end_date: undefined,
+        estimated_budget: undefined,
+        created_at: challenge.created_at
+      }));
+
+      setChallenges(transformedChallenges);
     } catch (error) {
       logger.error('Error in fetchChallenges', { component: 'InnovatorDashboard', action: 'fetchChallenges' }, error as Error);
       // Show some sample challenges for demo purposes

@@ -437,7 +437,7 @@ export function IdeasManagementList({
 
       {/* Detail View Dialog */}
       <IdeaDetailView
-        idea={selectedIdea as any}
+        idea={selectedIdea}
         isOpen={showDetailView}
         onClose={() => {
           setShowDetailView(false);
