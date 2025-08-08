@@ -11,7 +11,6 @@ import {
 import { useDirection } from '@/components/ui/direction-provider';
 import { useState } from 'react';
 import { InteractionButtons } from '@/components/ui/interaction-buttons';
-import { getStatusColor, getCategoryColor, getOverlayColor } from '@/utils/colorUtils';
 
 interface Event {
   id: string;
@@ -55,6 +54,29 @@ export const EnhancedEventCard = ({
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(isBookmarked);
 
+  const getStatusClass = (status: string) => {
+    switch (status) {
+      case 'upcoming':
+      case 'scheduled': return 'status-scheduled';
+      case 'ongoing': return 'status-active';
+      case 'completed': return 'status-completed';
+      case 'cancelled': return 'status-cancelled';
+      case 'pending': return 'status-pending';
+      default: return 'bg-muted text-muted-foreground border-border';
+    }
+  };
+
+  const getEventTypeClass = (type: string) => {
+    switch (type) {
+      case 'workshop': return 'event-workshop';
+      case 'conference': return 'event-conference';
+      case 'webinar': return 'event-webinar';
+      case 'meetup': return 'event-meetup';
+      case 'hackathon': return 'event-hackathon';
+      default: return 'bg-muted text-muted-foreground border-border';
+    }
+  };
+
   const getStatusText = (status: string) => {
     switch (status) {
       case 'upcoming':
@@ -64,10 +86,6 @@ export const EnhancedEventCard = ({
       case 'cancelled': return isRTL ? 'ملغي' : 'Cancelled';
       default: return status;
     }
-  };
-
-  const getEventTypeColor = (type: string) => {
-    return getCategoryColor(type);
   };
 
   const formatDate = (dateString: string) => {
@@ -159,7 +177,7 @@ export const EnhancedEventCard = ({
 
                 <div className="flex flex-col items-end gap-2">
                   <div className="flex items-center gap-1">
-            <Badge className={getStatusColor(event.status)}>
+            <Badge className={getStatusClass(event.status)}>
               {getStatusText(event.status)}
             </Badge>
                   </div>
@@ -221,11 +239,11 @@ export const EnhancedEventCard = ({
         
         {/* Overlay Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
-          <Badge className={getStatusColor(event.status)}>
+          <Badge className={getStatusClass(event.status)}>
             {getStatusText(event.status)}
           </Badge>
           {event.format === 'virtual' && (
-            <Badge variant="secondary" className={getOverlayColor('secondary')}>
+            <Badge variant="secondary" className="overlay-secondary">
               <Globe className="w-3 h-3 mr-1" />
               {isRTL ? 'عبر الإنترنت' : 'Online'}
             </Badge>
@@ -242,7 +260,7 @@ export const EnhancedEventCard = ({
           <Button
             variant="secondary"
             size="sm"
-            className={getOverlayColor('primary')}
+            className="overlay-primary"
             onClick={handleBookmark}
           >
             <BookmarkIcon className={`w-4 h-4 ${bookmarked ? 'fill-current text-primary' : ''}`} />
@@ -250,7 +268,7 @@ export const EnhancedEventCard = ({
           <Button
             variant="secondary"
             size="sm"
-            className={getOverlayColor('primary')}
+            className="overlay-primary"
             onClick={() => setLiked(!liked)}
           >
             <Heart className={`w-4 h-4 ${liked ? 'fill-current text-destructive' : ''}`} />
@@ -274,7 +292,7 @@ export const EnhancedEventCard = ({
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex justify-between items-start mb-3">
-              <Badge className={getEventTypeColor(event.event_type)}>
+              <Badge className={getEventTypeClass(event.event_type)}>
                 {event.event_type}
               </Badge>
             </div>

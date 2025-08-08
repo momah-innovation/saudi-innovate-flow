@@ -501,6 +501,144 @@
   font-family: 'Inter', 'Arial', sans-serif;
 }
 
+/* === SEMANTIC UTILITY CLASSES === */
+@layer utilities {
+  /* Status Classes */
+  .status-scheduled {
+    @apply bg-scheduled text-scheduled-foreground border-scheduled-border;
+  }
+  
+  .status-active {
+    @apply bg-active text-active-foreground border-active-border;
+  }
+  
+  .status-completed {
+    @apply bg-complete text-complete-foreground border-complete-border;
+  }
+  
+  .status-cancelled {
+    @apply bg-destructive text-destructive-foreground border-destructive;
+  }
+  
+  .status-pending {
+    @apply bg-pending text-pending-foreground border-pending-border;
+  }
+  
+  .status-open {
+    @apply bg-success text-success-foreground border-success-border;
+  }
+  
+  .status-closed {
+    @apply bg-inactive text-inactive-foreground border-inactive-border;
+  }
+
+  /* Priority Classes */
+  .priority-high {
+    @apply bg-priority-high text-priority-high-foreground border-priority-high-border;
+  }
+  
+  .priority-medium {
+    @apply bg-priority-medium text-priority-medium-foreground border-priority-medium-border;
+  }
+  
+  .priority-low {
+    @apply bg-priority-low text-priority-low-foreground border-priority-low-border;
+  }
+
+  /* Category Classes */
+  .category-innovation {
+    @apply bg-innovation text-innovation-foreground border-innovation-border;
+  }
+  
+  .category-technology {
+    @apply bg-technology text-technology-foreground border-technology-border;
+  }
+  
+  .category-sustainability {
+    @apply bg-sustainability text-sustainability-foreground border-sustainability-border;
+  }
+  
+  .category-social {
+    @apply bg-social text-social-foreground border-social-border;
+  }
+  
+  .category-research {
+    @apply bg-info text-info-foreground border-info-border;
+  }
+  
+  .category-partnership {
+    @apply bg-partner text-partner-foreground border-partner-border;
+  }
+
+  /* Event Type Classes */
+  .event-workshop {
+    @apply bg-innovation text-innovation-foreground border-innovation-border;
+  }
+  
+  .event-conference {
+    @apply bg-technology text-technology-foreground border-technology-border;
+  }
+  
+  .event-webinar {
+    @apply bg-info text-info-foreground border-info-border;
+  }
+  
+  .event-meetup {
+    @apply bg-social text-social-foreground border-social-border;
+  }
+  
+  .event-hackathon {
+    @apply bg-sustainability text-sustainability-foreground border-sustainability-border;
+  }
+
+  /* Overlay Classes for Hero Sections */
+  .overlay-primary {
+    @apply bg-overlay-background/20 text-overlay-text border-overlay-button/30 backdrop-blur-sm;
+  }
+  
+  .overlay-secondary {
+    @apply bg-background/20 text-overlay-text border-overlay-button/30 backdrop-blur-sm;
+  }
+  
+  .overlay-accent {
+    @apply bg-accent/20 text-accent-foreground border-accent/30 backdrop-blur-sm;
+  }
+
+  /* Interactive States */
+  .interactive-hover {
+    @apply hover:bg-accent hover:text-accent-foreground transition-colors;
+  }
+  
+  .interactive-active {
+    @apply bg-primary text-primary-foreground;
+  }
+  
+  .interactive-disabled {
+    @apply bg-muted text-muted-foreground opacity-50 cursor-not-allowed;
+  }
+
+  /* Validation States */
+  .validation-success {
+    @apply bg-success text-success-foreground border-success-border;
+  }
+  
+  .validation-warning {
+    @apply bg-warning text-warning-foreground border-warning-border;
+  }
+  
+  .validation-error {
+    @apply bg-destructive text-destructive-foreground border-destructive;
+  }
+  
+  .validation-info {
+    @apply bg-info text-info-foreground border-info-border;
+  }
+}
+
+.lang-en {
+  font-family: 'Inter', 'Arial', sans-serif;
+}
+
 /* RTL-specific styles */
 .rtl {
   direction: rtl;
