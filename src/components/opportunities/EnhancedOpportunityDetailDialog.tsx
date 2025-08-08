@@ -234,7 +234,7 @@ export const EnhancedOpportunityDetailDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-6xl max-h-[95vh] overflow-hidden p-0">
         {/* Header with Hero Image */}
-        <div className="relative h-48 bg-gradient-primary overflow-hidden">
+        <div className="relative h-48 gradient-primary overflow-hidden">
           {opportunity.image_url && (
             <img 
               src={opportunity.image_url.startsWith('http') 

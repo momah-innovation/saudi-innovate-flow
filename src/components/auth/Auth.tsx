@@ -147,7 +147,7 @@ export const Auth = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
-            <div className="h-16 w-16 rounded-xl bg-gradient-primary flex items-center justify-center text-primary-foreground text-2xl font-bold">
+            <div className="h-16 w-16 rounded-xl gradient-primary flex items-center justify-center text-primary-foreground text-2xl font-bold">
               رواد
             </div>
           </div>
@@ -290,7 +290,7 @@ export const Auth = () => {
 
               <Button
                 type="submit"
-                className="w-full h-11 bg-gradient-primary hover:opacity-90 text-primary-foreground"
+                className="w-full h-11 gradient-primary hover:opacity-90 text-primary-foreground"
                 disabled={isLoading}
               >
                 {isLoading ? "جارٍ التحميل..." : activeTab === 'login' ? "تسجيل الدخول" : "إنشاء الحساب"}

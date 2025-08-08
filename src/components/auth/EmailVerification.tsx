@@ -131,7 +131,7 @@ export const EmailVerification = () => {
           <CardContent>
             <Button 
               onClick={() => navigate('/dashboard')}
-              className="w-full bg-gradient-primary hover:opacity-90 text-primary-foreground"
+              className="w-full gradient-primary hover:opacity-90 text-primary-foreground"
             >
               الانتقال إلى لوحة التحكم
             </Button>
@@ -145,7 +145,7 @@ export const EmailVerification = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-subtle p-4">
       <Card className="w-full max-w-md border-0 shadow-2xl backdrop-blur-sm bg-card/80">
         <CardHeader className="text-center space-y-4">
-          <div className="w-16 h-16 rounded-xl bg-gradient-primary flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 rounded-xl gradient-primary flex items-center justify-center mx-auto">
             {isVerifying ? (
               <RefreshCw className="h-8 w-8 text-primary-foreground animate-spin" />
             ) : (
