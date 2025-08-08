@@ -647,3 +647,8 @@
   transition-duration: 200ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* Button active state fix */
+.bg-primary:active {
+  color: hsl(var(--primary-active-foreground)) !important;
+}
