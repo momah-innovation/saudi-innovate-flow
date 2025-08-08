@@ -1,11 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { CalendarIcon, MapPin, Users, Clock, Bookmark, Ticket, UserMinus } from 'lucide-react';
+import { CalendarIcon, MapPin, Users, Clock, Ticket, UserMinus } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
 import { useEventState } from '@/hooks/useEventState';
-import { useState, useEffect } from 'react';
 
 interface Event {
   id: string;
@@ -41,7 +39,6 @@ export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCar
     isRegistered,
     participantCount,
     loading,
-    userParticipation,
     registerForEvent,
     cancelRegistration
   } = useEventState(event?.id || null);
