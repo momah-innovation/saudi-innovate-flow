@@ -2,14 +2,12 @@
  * Centralized type definitions for the application
  */
 
-// Badge variants - matching shadcn/ui badge component
+// Badge variants - matching shadcn/ui badge component  
 export type BadgeVariant = 
   | "default" 
   | "secondary" 
   | "destructive" 
-  | "outline"
-  | "success"
-  | "warning";
+  | "outline";
 
 // Common data structures
 export interface Partner {
@@ -198,4 +196,81 @@ export interface DatabaseExpert extends Expert {
 
 export interface DatabasePartner extends Partner {
   partnership_events?: Array<{ events: Event }>;
+}
+
+// Legacy type definitions for compatibility
+export interface Idea {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Profile extends UserProfile {}
+
+export interface Team {
+  id: string;
+  name: string;
+  description?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Assignment {
+  id: string;
+  team_id: string;
+  user_id: string;
+  role: string;
+  assigned_at: string;
+}
+
+export interface Campaign {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Evaluation {
+  id: string;
+  idea_id: string;
+  score: number;
+  feedback?: string;
+  created_at: string;
+}
+
+export interface Department {
+  id: string;
+  name: string;
+  description?: string;
+}
+
+export interface Deputy extends Department {}
+export interface Sector extends Department {}
+export interface Domain extends Department {}
+export interface SubDomain extends Department {}
+export interface Service extends Department {}
+
+// Form data interfaces
+export interface CampaignFormData extends Campaign {}
+export interface IdeaFormData extends Idea {}
+export interface EventFormData extends Event {}
+
+export interface SystemLists {
+  departments: Department[];
+  deputies: Deputy[];
+  sectors: Sector[];
+  domains: Domain[];
+  subDomains: SubDomain[];
+  services: Service[];
+}
+
+export interface ManagementListProps<T> {
+  data: T[];
+  onEdit?: (item: T) => void;
+  onDelete?: (id: string) => void;
 }

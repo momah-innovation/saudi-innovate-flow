@@ -407,7 +407,7 @@ export function ChallengeManagementList() {
           setShowWizard(false);
           setSelectedChallenge(null);
         }}
-        challenge={selectedChallenge as DatabaseChallenge}
+        challenge={selectedChallenge as unknown as DatabaseChallenge}
       />
 
       <ChallengeDetailView
