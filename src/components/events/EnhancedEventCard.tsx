@@ -341,13 +341,13 @@ export const EnhancedEventCard = ({
 
         {/* Action Buttons */}
         <div className="flex gap-2">
-          <Button variant="info-subtle" onClick={() => onViewDetails(event)} className="flex-1 h-9">
+          <Button variant="outline" onClick={() => onViewDetails(event)} className="flex-1 h-9 border-info text-info hover:bg-info hover:text-info-foreground">
             {isRTL ? 'التفاصيل' : 'Details'}
           </Button>
           <Button 
-            variant="primary"
+            variant="outline"
             onClick={() => onRegister(event)}
-            className="flex-1 h-9"
+            className="flex-1 h-9 border-info text-info hover:bg-info hover:text-info-foreground"
             disabled={event.status === 'completed' || isEventFull}
           >
             {isEventFull ? 
