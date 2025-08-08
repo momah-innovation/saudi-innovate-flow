@@ -1,0 +1,186 @@
+import { useState, useEffect, useCallback } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
+
+interface EventState {
+  isRegistered: boolean;
+  participantCount: number;
+  loading: boolean;
+  userParticipation: any | null;
+  interactions: any | null;
+}
+
+export const useEventState = (eventId: string | null) => {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [state, setState] = useState<EventState>({
+    isRegistered: false,
+    participantCount: 0,
+    loading: false,
+    userParticipation: null,
+    interactions: null
+  });
+
+  // Centralized refresh function
+  const refreshEventState = useCallback(async () => {
+    if (!eventId || !user) return;
+    
+    console.log('🔄 Refreshing event state for:', eventId);
+    setState(prev => ({ ...prev, loading: true }));
+
+    try {
+      // Get user's participation status
+      const { data: userParticipation } = await supabase
+        .from('event_participants')
+        .select('*')
+        .eq('event_id', eventId)
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      // Get total participant count
+      const { count: participantCount } = await supabase
+        .from('event_participants')
+        .select('*', { count: 'exact' })
+        .eq('event_id', eventId);
+
+      // Get interactions data
+      const { data: interactions } = await supabase.rpc('get_event_stats', {
+        event_uuid: eventId
+      });
+
+      setState({
+        isRegistered: !!userParticipation,
+        participantCount: participantCount || 0,
+        loading: false,
+        userParticipation,
+        interactions
+      });
+
+      console.log('✅ Event state refreshed:', {
+        isRegistered: !!userParticipation,
+        participantCount: participantCount || 0,
+        eventId
+      });
+
+    } catch (error) {
+      console.error('❌ Failed to refresh event state:', error);
+      setState(prev => ({ ...prev, loading: false }));
+    }
+  }, [eventId, user]);
+
+  // Set up real-time subscriptions
+  useEffect(() => {
+    if (!eventId) return;
+
+    console.log('🚀 Setting up unified real-time for event:', eventId);
+    
+    // Initial load
+    refreshEventState();
+
+    // Real-time subscription for participants
+    const channel = supabase
+      .channel(`event-state-${eventId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'event_participants',
+          filter: `event_id=eq.${eventId}`
+        },
+        async (payload) => {
+          console.log('🔥 UNIFIED REAL-TIME: Event state change detected:', {
+            eventType: payload.eventType,
+            eventId,
+            userId: (payload.new as any)?.user_id || (payload.old as any)?.user_id
+          });
+          
+          // Force immediate refresh
+          await refreshEventState();
+        }
+      )
+      .subscribe((status) => {
+        console.log('📡 Unified real-time subscription status:', status);
+      });
+
+    return () => {
+      console.log('🔌 Cleaning up unified real-time for event:', eventId);
+      supabase.removeChannel(channel);
+    };
+  }, [eventId, refreshEventState]);
+
+  // Registration actions
+  const registerForEvent = useCallback(async () => {
+    if (!user || !eventId) return;
+
+    console.log('🔄 Registering for event via unified state:', eventId);
+    setState(prev => ({ ...prev, loading: true }));
+
+    try {
+      const { error } = await supabase
+        .from('event_participants')
+        .insert({
+          event_id: eventId,
+          user_id: user.id,
+          attendance_status: 'registered',
+          registration_type: 'self_registered'
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Successfully registered for the event!",
+      });
+
+      // Real-time will trigger refresh automatically
+    } catch (error) {
+      console.error('❌ Registration failed:', error);
+      toast({
+        title: "Error",
+        description: "Failed to register for event",
+        variant: "destructive",
+      });
+      setState(prev => ({ ...prev, loading: false }));
+    }
+  }, [user, eventId, toast]);
+
+  const cancelRegistration = useCallback(async () => {
+    if (!user || !eventId || !state.userParticipation) return;
+
+    console.log('🔄 Cancelling registration via unified state:', eventId);
+    setState(prev => ({ ...prev, loading: true }));
+
+    try {
+      const { error } = await supabase
+        .from('event_participants')
+        .delete()
+        .eq('id', state.userParticipation.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Registration cancelled successfully",
+      });
+
+      // Real-time will trigger refresh automatically
+    } catch (error) {
+      console.error('❌ Cancellation failed:', error);
+      toast({
+        title: "Error",
+        description: "Failed to cancel registration",
+        variant: "destructive",
+      });
+      setState(prev => ({ ...prev, loading: false }));
+    }
+  }, [user, eventId, state.userParticipation, toast]);
+
+  return {
+    ...state,
+    registerForEvent,
+    cancelRegistration,
+    refreshEventState
+  };
+};

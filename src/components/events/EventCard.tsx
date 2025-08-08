@@ -4,10 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { CalendarIcon, MapPin, Users, Clock, Bookmark, Ticket, UserMinus } from 'lucide-react';
 import { useDirection } from '@/components/ui/direction-provider';
-import { useEventInteractions } from '@/hooks/useEventInteractions';
-import { useParticipants } from '@/hooks/useParticipants';
-import { useRealTimeEvents } from '@/hooks/useRealTimeEvents';
-import { supabase } from '@/integrations/supabase/client';
+import { useEventState } from '@/hooks/useEventState';
 import { useState, useEffect } from 'react';
 
 interface Event {
@@ -38,47 +35,16 @@ interface EventCardProps {
 
 export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCardProps) => {
   const { isRTL } = useDirection();
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   
-  // Get current user ID
-  useEffect(() => {
-    const getCurrentUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setCurrentUserId(user?.id || null);
-    };
-    getCurrentUser();
-  }, []);
-  
-  // Use centralized event interaction hooks
-  const { 
-    interactions,
-    registerForEvent,
-    refetch: refetchInteractions,
-    refreshAfterRegistrationChange
-  } = useEventInteractions(event?.id || null);
-
+  // Use unified event state management
   const {
-    participants,
-    cancelRegistration,
-    fetchParticipants
-  } = useParticipants(event?.id || null);
-
-  // Set up real-time updates
-  useRealTimeEvents({
-    onParticipantUpdate: (eventId, count) => {
-      if (eventId === event.id) {
-        console.log('🔄 Real-time participant update for EventCard:', eventId, count);
-        fetchParticipants(); // Refresh participants when count changes
-        refetchInteractions(); // Refresh interactions as well
-      }
-    },
-    onEventUpdate: (update) => {
-      if (update.event_id === event.id) {
-        console.log('🔄 Real-time event update for EventCard:', update);
-        refetchInteractions(); // Refresh when event is updated
-      }
-    }
-  });
+    isRegistered,
+    participantCount,
+    loading,
+    userParticipation,
+    registerForEvent,
+    cancelRegistration
+  } = useEventState(event?.id || null);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -107,28 +73,17 @@ export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCar
       date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
-  const isEventFull = event.max_participants && event.registered_participants >= event.max_participants;
+  const isEventFull = event.max_participants && participantCount >= event.max_participants;
   const isPastEvent = new Date(event.event_date) < new Date();
-  
-  // Find current user's participation
-  const currentUserParticipation = participants.find(p => p.user_id === currentUserId);
-  const isRegistered = !!currentUserParticipation;
 
   const handleRegistrationToggle = async () => {
     try {
-      if (isRegistered && currentUserParticipation) {
+      if (isRegistered) {
         console.log('🔄 Cancelling registration for event:', event.id);
-        await cancelRegistration(currentUserParticipation.id, event.id);
-        // Force immediate refresh of both data sources
-        await Promise.all([
-          fetchParticipants(),
-          refetchInteractions()
-        ]);
+        await cancelRegistration();
       } else {
         console.log('🔄 Registering for event:', event.id);
         await registerForEvent();
-        // Force immediate refresh after successful registration
-        await fetchParticipants();
       }
     } catch (error) {
       console.error('Failed to toggle registration:', error);
@@ -172,7 +127,7 @@ export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCar
           </div>
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4" />
-            <span>{event.registered_participants}/{event.max_participants || '∞'}</span>
+            <span>{participantCount}/{event.max_participants || '∞'}</span>
           </div>
         </div>
 
@@ -188,6 +143,7 @@ export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCar
               variant={isRegistered ? "destructive" : "default"}
               onClick={handleRegistrationToggle}
               disabled={(() => {
+                if (loading) return true;
                 if (isPastEvent) return true;
                 if (event.status === 'completed' || event.status === 'cancelled') return true;
                 if (!isRegistered && isEventFull) return true;
@@ -195,6 +151,9 @@ export const EventCard = ({ event, onViewDetails, viewMode = 'cards' }: EventCar
               })()}
             >
               {(() => {
+                if (loading) {
+                  return isRTL ? 'جاري التحديث...' : 'Updating...';
+                }
                 if (isPastEvent) {
                   return isRegistered 
                     ? (isRTL ? 'مسجل/حضر' : 'Registered/Attended')
