@@ -285,8 +285,8 @@ export function ExpertAssignmentManagement() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       toast({
-        title: "Error",
-        description: "Failed to assign expert. Please try again.",
+        title: t('error', 'Error'),
+        description: t('toast.assign_expert_failed', 'Failed to assign expert. Please try again.'),
         variant: "destructive",
       });
     }
@@ -850,7 +850,7 @@ export function ExpertAssignmentManagement() {
               <Textarea
                 value={assignmentNotes}
                 onChange={(e) => setAssignmentNotes(e.target.value)}
-                placeholder="Additional notes about this assignment..."
+                placeholder={t('placeholder.assignment_notes', 'Additional notes about this assignment...')}
                 rows={profileTextareaRows}
               />
             </div>
