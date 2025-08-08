@@ -64,6 +64,16 @@ export const UNIFIED_ROUTES: UnifiedRouteConfig[] = [
     public: true,
   },
   {
+    path: '/signup',
+    component: AuthPage,
+    public: true,
+  },
+  {
+    path: '/login',
+    component: AuthPage,
+    public: true,
+  },
+  {
     path: ALL_ROUTES.HELP,
     component: HelpPage,
     public: true,
