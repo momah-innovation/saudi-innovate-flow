@@ -30,18 +30,28 @@ export function useUnifiedTranslation() {
     queryKey: queryKeys.system.translation(language),
     queryFn: async () => {
       logger.debug('Fetching unified translations from database', { language });
-      const { data, error } = await supabase
+      
+      // Fetch ALL translations without limit - using range to get all rows
+      const { data, error, count } = await supabase
         .from('system_translations')
-        .select('*');
+        .select('*', { count: 'exact' })
+        .range(0, 10000); // Ensure we get all translations
 
       if (error) {
         logger.error('Database translation fetch failed', { language }, error);
         throw error;
       }
       
+      console.log('🔥 TRANSLATIONS FETCH COMPLETE:', { 
+        loaded: data?.length || 0, 
+        totalInDB: count,
+        hasLimit: (data?.length || 0) !== count,
+        language
+      });
+      
       logger.info('Database translations fetched successfully', { 
         language, 
-        count: data?.length || 0 
+        count: data?.length || 0
       });
       return data as SystemTranslation[];
     },
@@ -96,16 +106,21 @@ export function useUnifiedTranslation() {
       if (dbTranslation) {
         const text = dbTranslation[language];
         if (text && text.trim() !== '') {
-          return interpolateText(text, interpolationOptions);
+          const result = interpolateText(text, interpolationOptions);
+          console.log(`✅ DB translation for "${key}": "${result}"`);
+          return result;
         }
       }
 
       // Strategy 2: Provided fallback
       if (fallback && fallback.trim() !== '') {
-        return interpolateText(fallback, interpolationOptions);
+        const result = interpolateText(fallback, interpolationOptions);
+        console.log(`⚠️ Using fallback for "${key}": "${result}"`);
+        return result;
       }
 
       // Strategy 3: Return key as last resort
+      console.error(`❌ NO TRANSLATION for "${key}" (mapSize: ${translationMap.size}, language: ${language})`);
       return key;
     } catch (error) {
       logger.warn('Translation error occurred', { key, language }, error as Error);
